@@ -51,8 +51,8 @@ void FormatDBSupportTaskSettings::reset() {
 
 FormatDBSupportTask::FormatDBSupportTask(const FormatDBSupportTaskSettings &_settings)
     : Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      prepareTask(NULL),
-      formatDBTask(NULL),
+      prepareTask(nullptr),
+      formatDBTask(nullptr),
       settings(_settings) {
     GCOUNTER(cvar, "FormatDBSupportTask");
     externalToolLog = settings.outputPath + "MakeBLASTDB.log";
@@ -68,7 +68,7 @@ void FormatDBSupportTask::prepare() {
 
 QList<Task *> FormatDBSupportTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(subTask != NULL, result);
+    CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
 
     if (subTask == prepareTask) {

@@ -190,20 +190,20 @@ Task *PWMatrixSearchWorker::tick() {
         models << modelPort->get().getData().toMap().value(PWMatrixWorkerFactory::WMATRIX_SLOT.getId()).value<PWMatrix>();
     }
     if (!modelPort->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (dataPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(dataPort);
         if (inputMessage.isEmpty() || models.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         QVariantMap map = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = map.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -214,7 +214,7 @@ Task *PWMatrixSearchWorker::tick() {
             config.complOnly = (strand < 0);
             if (strand <= 0) {
                 DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
-                if (compTT != NULL) {
+                if (compTT != nullptr) {
                     config.complTT = compTT;
                 }
             }
@@ -233,12 +233,12 @@ Task *PWMatrixSearchWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void PWMatrixSearchWorker::sl_taskFinished(Task *t) {
     QList<SharedAnnotationData> res;
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

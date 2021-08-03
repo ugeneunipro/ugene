@@ -73,7 +73,7 @@ QStringList getCompValues() {
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
 BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext *seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-    : BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx), regionSelector(NULL) {
+    : BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx), regionSelector(nullptr) {
     dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
@@ -192,7 +192,7 @@ void BlastPlusSupportRunDialog::sl_runQuery() {
 
     QString error = ca_c->validate();
     if (!error.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Wrong parameters for creating annotations"), error);
+        QMessageBox::critical(nullptr, tr("Wrong parameters for creating annotations"), error);
         return;
     }
     settings.outputResFile = ca_c->getModel().newDocUrl;
@@ -221,7 +221,7 @@ void BlastPlusSupportRunDialog::sl_runQuery() {
     lastDBPath = dbSelector->databasePathLineEdit->text();
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 5;    //By default set output file format to xml
-    if (seqCtx != NULL) {
+    if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(settings.aobj);
     }
     accept();
@@ -230,7 +230,7 @@ void BlastPlusSupportRunDialog::sl_runQuery() {
 //BlastPlusWithExtFileSpecifySupportRunDialog
 BlastPlusWithExtFileSpecifySupportRunDialog::BlastPlusWithExtFileSpecifySupportRunDialog(QString &lastDBPath, QString &lastDBName, QWidget *parent)
     : BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), hasValidInput(false) {
-    ca_c = NULL;
+    ca_c = nullptr;
     wasNoOpenProject = false;
     //create input file widget
     QWidget *widget = new QWidget(parent);
@@ -281,11 +281,11 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(co
     CHECK(!url.isEmpty(), );
 
     Project *proj = AppContext::getProject();
-    if (NULL == proj) {
+    if (nullptr == proj) {
         wasNoOpenProject = true;
     } else {
         Document *doc = proj->findDocumentByURL(url);
-        if (doc != NULL) {
+        if (doc != nullptr) {
             if (doc->isLoaded()) {
                 tryApplyDoc(doc);
             } else {
@@ -310,7 +310,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::loadDoc(const QString &url) {
     FormatDetectionConfig config;
     config.useExtensionBonus = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url, config);
-    CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), onFormatError(), );
+    CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), onFormatError(), );
 
     DocumentFormat *format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), onFormatError(), );
@@ -325,15 +325,15 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::loadDoc(const QString &url) {
 
 void BlastPlusWithExtFileSpecifySupportRunDialog::sl_inputFileOpened() {
     Task *t = qobject_cast<Task *>(sender());
-    CHECK(NULL != t, );
+    CHECK(nullptr != t, );
     CHECK(t->isFinished() && !t->hasError(), );
 
     Project *proj = AppContext::getProject();
-    SAFE_POINT(NULL != proj, "No opened project", );
+    SAFE_POINT(nullptr != proj, "No opened project", );
 
     QString url = t->property(INPUT_URL_PROP).toString();
     Document *doc = proj->findDocumentByURL(url);
-    SAFE_POINT(NULL != doc, "No loaded document", );
+    SAFE_POINT(nullptr != doc, "No loaded document", );
 
     tryApplyDoc(doc);
 }
@@ -359,7 +359,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
             continue;
         }
         U2SequenceObject *seq = dynamic_cast<U2SequenceObject *>(obj);
-        SAFE_POINT(NULL != seq, "NULL sequence object", );
+        SAFE_POINT(nullptr != seq, "NULL sequence object", );
 
         BlastTaskSettings localSettings;
         U2OpStatusImpl os;
@@ -383,7 +383,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
     ca_m.sequenceObjectRef = sequencesRefList[0];
     ca_m.sequenceLen = 10;
     ca_m.defaultIsNewDoc = true;
-    if (NULL == ca_c) {
+    if (nullptr == ca_c) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
         annotationWidgetLayout->addWidget(ca_c->getWidget());
     } else {
@@ -466,7 +466,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_runQuery() {
 
     QString error = ca_c->validate();
     if (!error.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Wrong parameters for creating annotations"), error);
+        QMessageBox::critical(nullptr, tr("Wrong parameters for creating annotations"), error);
         return;
     }
 
@@ -496,7 +496,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_runQuery() {
     if (!docAlreadyInProject) {
         QString url = inputFileLineEdit->text();
         Task *t = AppContext::getProjectLoader()->openWithProjectTask(url);
-        if (t != NULL) {
+        if (t != nullptr) {
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
     }
@@ -508,13 +508,13 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_runQuery() {
     accept();
 }
 void BlastPlusWithExtFileSpecifySupportRunDialog::sl_cancel() {
-    if (qobject_cast<BlastPlusWithExtFileSpecifySupportRunDialog *>(sender()) == NULL) {
+    if (qobject_cast<BlastPlusWithExtFileSpecifySupportRunDialog *>(sender()) == nullptr) {
         reject();
         return;
     }
     if (wasNoOpenProject) {
         ProjectService *projService = AppContext::getProjectService();
-        CHECK(NULL != projService, );
+        CHECK(nullptr != projService, );
         AppContext::getTaskScheduler()->registerTopLevelTask(projService->closeProjectTask());
     }
 }

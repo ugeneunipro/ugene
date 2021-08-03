@@ -32,7 +32,7 @@ InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &
 
 QList<Task *> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(NULL != subTask, result);
+    CHECK(nullptr != subTask, result);
     CHECK(!subTask->getStateInfo().isCoR(), result);
 
     if (pcrTask == subTask) {

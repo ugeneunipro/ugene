@@ -564,27 +564,40 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
     DNASequenceSelection *sel = ctx->getSequenceSelection();
     CHECK(!sel->isEmpty(), );
 
-    QPen pen1(Qt::black, 1, Qt::DashLine);
-    p.setPen(pen1);
+    QPen framePen(Qt::black, 1, Qt::DashLine);
+    p.setPen(framePen);
 
     const QVector<U2Region> &selectedRegions = sel->getSelectedRegions();
-    foreach (const U2Region &reg, selectedRegions) {
-        U2Region r = reg.intersect(visibleRange);
-        highlight(p, r, directLine, canvasSize, visibleRange);
+    for (const U2Region &selectedRegion : qAsConst(selectedRegions)) {
+        U2Region visibleSelectedRegion = selectedRegion.intersect(visibleRange);
+        if (visibleSelectedRegion.isEmpty()) {
+            continue;
+        }
+        highlight(p, visibleSelectedRegion, directLine, canvasSize, visibleRange);
         if (detView->hasComplementaryStrand()) {
-            highlight(p, r, complementLine, canvasSize, visibleRange);
+            highlight(p, visibleSelectedRegion, complementLine, canvasSize, visibleRange);
         }
         if (detView->hasTranslations()) {
-            int translLine = posToDirectTransLine(reg.startPos);
-            if (translLine >= 0 && r.length >= 3) {
-                int translLen = reg.endPos() > r.endPos() ? r.length : r.length / 3 * 3;
-                highlight(p, U2Region(r.startPos, translLen), translLine, canvasSize, visibleRange);
+            int translLine = posToDirectTransLine(selectedRegion.startPos);
+            if (translLine >= 0 && visibleSelectedRegion.length >= 3) {
+                qint64 frameStart = visibleSelectedRegion.startPos;
+                qint64 frameLength = visibleSelectedRegion.length;
+                if (selectedRegion.endPos() == visibleSelectedRegion.endPos()) {
+                    frameLength -= (visibleSelectedRegion.endPos() - selectedRegion.startPos) % 3;
+                }
+                U2Region frameRegion(frameStart, frameLength);
+                highlight(p, frameRegion, translLine, canvasSize, visibleRange);
             }
             if (detView->hasComplementaryStrand()) {
-                int complTransLine = posToComplTransLine(reg.endPos());
-                if (complTransLine >= 0 && r.length >= 3) {
-                    const qint64 translLen = reg.startPos < r.startPos ? r.length : r.length / 3 * 3;
-                    highlight(p, U2Region(r.endPos() - translLen, translLen), complTransLine, canvasSize, visibleRange);
+                int complTransLine = posToComplTransLine(selectedRegion.endPos());
+                if (complTransLine >= 0 && visibleSelectedRegion.length >= 3) {
+                    qint64 frameEnd = visibleSelectedRegion.endPos();
+                    qint64 frameLength = visibleSelectedRegion.length;
+                    if (selectedRegion.startPos == visibleSelectedRegion.startPos) {
+                        frameLength -= (selectedRegion.endPos() - visibleSelectedRegion.startPos) % 3;
+                    }
+                    U2Region frameRegion(frameEnd - frameLength, frameLength);
+                    highlight(p, frameRegion, complTransLine, canvasSize, visibleRange);
                 }
             }
         }

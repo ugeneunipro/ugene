@@ -1,6 +1,6 @@
 <multi-test>
 
-    <!-- try to check alphabet  in multy sequence(no last line conservation)(must be NUCL_RNA_EXTENDED_ALPHABET) -->
+    <!-- try to check alphabet in multy sequence with no last line conservation: must be NUCL_RNA_DEFAULT_ALPHABET -->
 
     <load-document index="doc" url="msf/1.msf" io="local_file" format="msf"/>
     <find-object-by-name index="obj" doc="doc" name="1" type="OT_MSA"/>

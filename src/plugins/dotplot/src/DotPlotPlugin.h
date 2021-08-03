@@ -79,7 +79,7 @@ class DotPlotViewAction : public ADVSequenceWidgetAction {
     Q_OBJECT
 public:
     DotPlotViewAction()
-        : ADVSequenceWidgetAction(DOTPLOT_ACTION_NAME, tr("Show dot plot")), view(NULL) {
+        : ADVSequenceWidgetAction(DOTPLOT_ACTION_NAME, tr("Show dot plot")), view(nullptr) {
     }
     ~DotPlotViewAction() {
     }

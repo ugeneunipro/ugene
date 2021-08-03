@@ -106,7 +106,7 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new StringtieGeneAbundanceReportPrompter(NULL));
+    proto->setPrompter(new StringtieGeneAbundanceReportPrompter(nullptr));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -28,6 +28,15 @@ LRegionsSelection::LRegionsSelection(const GSelectionType &type, QObject *p)
     connect(this, SIGNAL(si_selectionChanged(LRegionsSelection *, QVector<U2Region>, QVector<U2Region>)), SLOT(sl_selectionChanged()));
 }
 
+bool LRegionsSelection::contains(qint64 pos) const {
+    for (const U2Region &region : qAsConst(regions)) {
+        if (region.contains(pos)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void LRegionsSelection::clear() {
     if (isEmpty()) {
         return;

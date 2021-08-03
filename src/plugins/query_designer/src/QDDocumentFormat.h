@@ -56,7 +56,7 @@ class QDGObject : public GObject {
 public:
     static const GObjectType TYPE;
     QDGObject(const QString &objectName, const QString &data, const QVariantMap &map = QVariantMap())
-        : GObject(TYPE, objectName), serializedScene(data), scene(NULL) {
+        : GObject(TYPE, objectName), serializedScene(data), scene(nullptr) {
         Q_UNUSED(map);
     }
 
@@ -80,7 +80,7 @@ class QDViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
     static const GObjectViewFactoryId ID;
-    QDViewFactory(QObject *p = NULL)
+    QDViewFactory(QObject *p = nullptr)
         : GObjectViewFactory(ID, U2::QueryDesignerPlugin::tr("Query Designer"), p) {
     }
 

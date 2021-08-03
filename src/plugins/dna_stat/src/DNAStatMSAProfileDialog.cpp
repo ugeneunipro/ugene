@@ -50,7 +50,7 @@ const QString DNAStatMSAProfileDialog::CSV = "csv";
 DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget *p, MSAEditor *_c)
     : QDialog(p),
       ctx(_c),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929709");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -72,7 +72,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString &newFormat) {
 
 void DNAStatMSAProfileDialog::initSaveController() {
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     QString domain = "plugin_dna_stat";
@@ -102,7 +102,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     s.profileName = msaObj->getGObjectName();
@@ -152,7 +152,7 @@ void DNAStatMSAProfileTask::run() {
         return;
     }
 
-    QFile *f = NULL;
+    QFile *f = nullptr;
     if (s.outFormat == DNAStatMSAProfileOutputFormat_Show || s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
         bool forIntervalViewer = s.outFormat == DNAStatMSAProfileOutputFormat_Show;
         if (s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
@@ -309,7 +309,7 @@ void DNAStatMSAProfileTask::run() {
         }
     }
 
-    if (f != NULL) {
+    if (f != nullptr) {
         f->write(resultText.toLocal8Bit());
         f->close();
         delete f;

@@ -44,13 +44,13 @@ namespace U2 {
 #define EXPECTED_RESULTS_ATTR "expected_results"
 
 Translator::Translator(const U2SequenceObject *s, const QString &tid)
-    : seq(s), complTransl(NULL), aminoTransl(NULL) {
+    : seq(s), complTransl(nullptr), aminoTransl(nullptr) {
     const DNAAlphabet *al = seq->getAlphabet();
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
     aminoTransl = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, ("NCBI-GenBank #" + tid));
     assert(aminoTransl);
     DNATranslation *complT = tr->lookupComplementTranslation(al);
-    if (complT != NULL) {
+    if (complT != nullptr) {
         complTransl = complT;
     }
 }
@@ -175,7 +175,7 @@ void GTest_ORFMarkerTask::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_ORFMarkerTask::prepare() {
     U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
-    CHECK_EXT(mySequence != NULL, setError("Can't cast to sequence from GObject"), );
+    CHECK_EXT(mySequence != nullptr, setError("Can't cast to sequence from GObject"), );
 
     Translator tr(mySequence, translationId);
     settings.complementTT = tr.getComplTranslation();

@@ -57,6 +57,9 @@ public:
     /** Clears current selection. */
     void clear() override;
 
+    /** Returns true if selection contains given point. */
+    bool contains(qint64 pos) const;
+
     static QVector<U2Region> cropSelection(qint64 sequenceLength, const QVector<U2Region> &regions);
 
 signals:

@@ -109,8 +109,8 @@ void TaskViewDockWidget::updateState() {
     bool hasTaskWithReport = false;
     foreach (QTreeWidgetItem *i, selItems) {
         TVTreeItem *ti = static_cast<TVTreeItem *>(i);
-        hasActiveTask = hasActiveTask || ti->task != NULL;
-        hasTaskWithReport = hasTaskWithReport || ti->reportButton != NULL;
+        hasActiveTask = hasActiveTask || ti->task != nullptr;
+        hasTaskWithReport = hasTaskWithReport || ti->reportButton != nullptr;
     }
     cancelTaskAction->setEnabled(hasActiveTask);
     viewReportAction->setEnabled(hasTaskWithReport && selItems.size() == 1);
@@ -188,14 +188,14 @@ TVTreeItem *TaskViewDockWidget::createTaskItem(Task *task) {
 void TaskViewDockWidget::sl_itemDoubleClicked(QTreeWidgetItem *item, int column) {
     Q_UNUSED(column);
     TVTreeItem *ti = static_cast<TVTreeItem *>(item);
-    if (ti != NULL && ti->reportButton != NULL) {
+    if (ti != nullptr && ti->reportButton != nullptr) {
         activateReport(ti);
     }
 }
 
 void TaskViewDockWidget::sl_cancelTaskByButton() {
     TVButton *b = qobject_cast<TVButton *>(sender());
-    if (b->ti->task != NULL) {
+    if (b->ti->task != nullptr) {
         b->ti->task->cancel();
     } else {
         removeReport(b->ti);
@@ -203,13 +203,13 @@ void TaskViewDockWidget::sl_cancelTaskByButton() {
 }
 
 TVTreeItem *TaskViewDockWidget::findItem(Task *t, bool topLevelOnly) const {
-    SAFE_POINT(NULL != t, "An attempt to fild item for a NULL task", NULL);
+    SAFE_POINT(nullptr != t, "An attempt to fild item for a NULL task", nullptr);
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         QTreeWidgetItem *item = tree->topLevelItem(i);
-        SAFE_POINT(NULL != item, QString("%1 top level item is NULL").arg(i), NULL);
+        SAFE_POINT(nullptr != item, QString("%1 top level item is NULL").arg(i), nullptr);
 
         TVTreeItem *ti = dynamic_cast<TVTreeItem *>(item);
-        SAFE_POINT(NULL != ti, QString("%1 QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), NULL);
+        SAFE_POINT(nullptr != ti, QString("%1 QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (ti->task == t) {
             return ti;
@@ -219,32 +219,32 @@ TVTreeItem *TaskViewDockWidget::findItem(Task *t, bool topLevelOnly) const {
         }
         if (!topLevelOnly) {
             TVTreeItem *res = findChildItem(ti, t);
-            if (res != NULL) {
+            if (res != nullptr) {
                 return res;
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 TVTreeItem *TaskViewDockWidget::findChildItem(TVTreeItem *ti, Task *t) const {
-    SAFE_POINT(NULL != ti, "TVTreeItem is NULL", NULL);
+    SAFE_POINT(nullptr != ti, "TVTreeItem is NULL", nullptr);
     for (int i = 0, n = ti->childCount(); i < n; i++) {
         QTreeWidgetItem *item = ti->child(i);
-        SAFE_POINT(NULL != item, QString("%1 child item is NULL").arg(i), NULL);
+        SAFE_POINT(nullptr != item, QString("%1 child item is NULL").arg(i), nullptr);
 
         TVTreeItem *cti = dynamic_cast<TVTreeItem *>(item);
-        SAFE_POINT(NULL != ti, QString("%1 child QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), NULL);
+        SAFE_POINT(nullptr != ti, QString("%1 child QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (cti->task == t) {
             return cti;
         }
         TVTreeItem *res = findChildItem(cti, t);
-        if (res != NULL) {
+        if (res != nullptr) {
             return res;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task *t) {
@@ -253,8 +253,8 @@ void TaskViewDockWidget::sl_onTopLevelTaskRegistered(Task *t) {
 
 void TaskViewDockWidget::sl_onTopLevelTaskUnregistered(Task *t) {
     TVTreeItem *ti = findItem(t, true);
-    CHECK(ti != NULL, );
-    disconnect(t, NULL, this, NULL);
+    CHECK(ti != nullptr, );
+    disconnect(t, nullptr, this, nullptr);
     delete ti;
 }
 
@@ -275,13 +275,13 @@ int TaskViewDockWidget::countAvailableReports() const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         QTreeWidgetItem *item = tree->topLevelItem(i);
         TVTreeItem *ti = static_cast<TVTreeItem *>(item);
-        res += ti->reportButton == NULL ? 0 : 1;
+        res += ti->reportButton == nullptr ? 0 : 1;
     }
     return res;
 }
 
 void TaskViewDockWidget::removeReport(TVTreeItem *ti) {
-    SAFE_POINT(ti->reportButton != NULL, L10N::nullPointerError("report button"), );
+    SAFE_POINT(ti->reportButton != nullptr, L10N::nullPointerError("report button"), );
     delete ti;
     emit si_reportsCountChanged();
 }
@@ -294,12 +294,12 @@ void TaskViewDockWidget::sl_onRemoveTaskReport() {
 }
 
 void TaskViewDockWidget::activateReport(TVTreeItem *ti) {
-    SAFE_POINT(ti->reportButton != NULL, L10N::nullPointerError("report button"), );
+    SAFE_POINT(ti->reportButton != nullptr, L10N::nullPointerError("report button"), );
     uiLog.details(tr("Activating task report: %1").arg(ti->taskName));
 
     MWMDIManager *mdi = AppContext::getMainWindow()->getMDIManager();
-    MWMDIWindow *w = ti->reportWindowId != -1 ? NULL : mdi->getWindowById(ti->reportWindowId);
-    if (w != NULL) {
+    MWMDIWindow *w = ti->reportWindowId != -1 ? nullptr : mdi->getWindowById(ti->reportWindowId);
+    if (w != nullptr) {
         mdi->activateWindow(w);
         return;
     }
@@ -311,7 +311,7 @@ void TaskViewDockWidget::activateReport(TVTreeItem *ti) {
 void TaskViewDockWidget::sl_onSubtaskAdded(Task *sub) {
     Task *parent = qobject_cast<Task *>(sender());
     TVTreeItem *ti = findItem(parent, false);
-    CHECK(ti != NULL, );
+    CHECK(ti != nullptr, );
     if (ti->isExpanded() || ti->childCount() > 0) {
         TVTreeItem *childItem = createTaskItem(sub);
         ti->addChild(childItem);
@@ -321,10 +321,10 @@ void TaskViewDockWidget::sl_onSubtaskAdded(Task *sub) {
 
 void TaskViewDockWidget::sl_onTaskProgress() {
     Task *t = qobject_cast<Task *>(sender());
-    CHECK(NULL != t, );
+    CHECK(nullptr != t, );
     TVTreeItem *ti = findItem(t, false);
-    if (ti == NULL) {
-        if (t != NULL) {
+    if (ti == nullptr) {
+        if (t != nullptr) {
             assert(!t->isTopLevelTask());
         }
         return;
@@ -335,7 +335,7 @@ void TaskViewDockWidget::sl_onTaskProgress() {
 void TaskViewDockWidget::sl_onTaskDescription() {
     Task *t = qobject_cast<Task *>(sender());
     TVTreeItem *ti = findItem(t, false);
-    if (ti == NULL) {
+    if (ti == nullptr) {
         assert(!t->isTopLevelTask());
         return;
     }
@@ -343,9 +343,9 @@ void TaskViewDockWidget::sl_onTaskDescription() {
 }
 
 void TaskViewDockWidget::sl_onStateChanged(Task *t) {
-    SAFE_POINT(NULL != t, "Task is NULL", );
+    SAFE_POINT(nullptr != t, "Task is NULL", );
     TVTreeItem *ti = findItem(t, false);
-    if (ti == NULL) {
+    if (ti == nullptr) {
         assert(!t->isTopLevelTask());
         return;
     }
@@ -387,11 +387,11 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem *qi) {
         return;
     }
     TVTreeItem *ti = static_cast<TVTreeItem *>(qi);
-    if (ti->task == NULL) {
+    if (ti->task == nullptr) {
         return;
     }
     if (qi->childIndicatorPolicy() != QTreeWidgetItem::ShowIndicator) {    //all taskitems with subtasks have QTreeWidgetItem::ShowIndicator
-        assert(ti->task == NULL || ti->task->getSubtasks().isEmpty());
+        assert(ti->task == nullptr || ti->task->getSubtasks().isEmpty());
         return;
     }
 
@@ -407,7 +407,7 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem *qi) {
 
 void TaskViewDockWidget::selectTask(Task *t) {
     TVTreeItem *ti = findItem(t, true);
-    if (ti == NULL) {
+    if (ti == nullptr) {
         assert(!t->isTopLevelTask());
         return;
     }
@@ -496,7 +496,7 @@ void TVReportWindow::showContextMenu(const QPoint &pos, const QString &url) {
 }
 
 QAction *TVReportWindow::createOpenAction(const QString &name, const QString &url, QObject *parent, const QString &icon) {
-    QAction *action = NULL;
+    QAction *action = nullptr;
     if (icon.isEmpty()) {
         action = new QAction(name, parent);
     } else {
@@ -523,7 +523,7 @@ QAction *TVReportWindow::createFileAction(const QString &url, QObject *parent) {
 
 void TVReportWindow::sl_open() {
     QAction *dirAction = qobject_cast<QAction *>(sender());
-    CHECK(NULL != dirAction, );
+    CHECK(nullptr != dirAction, );
 
     QString url = dirAction->data().toString();
     QDesktopServices::openUrl(QUrl("file:///" + url));
@@ -549,8 +549,8 @@ TVTreeItem::TVTreeItem(TaskViewDockWidget *_w, Task *t)
     taskId = task->getTaskId();
     taskName = task->getTaskName();
     assert(!taskName.isEmpty());
-    reportButton = NULL;
-    cancelButton = NULL;
+    reportButton = nullptr;
+    cancelButton = nullptr;
     wasCanceled = false;
     wasError = false;
     updateVisual();
@@ -559,14 +559,14 @@ TVTreeItem::TVTreeItem(TaskViewDockWidget *_w, Task *t)
 void TVTreeItem::updateVisual() {
     setText(TVColumns_Name, taskName);
 
-    if (task == NULL || task->isFinished()) {
+    if (task == nullptr || task->isFinished()) {
         setIcon(TVColumns_Name, wasError ? w->wasErrorIcon : w->finishedIcon);
     } else {
         setIcon(TVColumns_Name, task->isRunning() ? w->activeIcon : w->waitingIcon);
         setChildIndicatorPolicy(task->getSubtasks().isEmpty() ? QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
     }
 
-    if (task != NULL) {
+    if (task != nullptr) {
         QString state;
         if (task->isCanceled()) {
             if (task->isFinished()) {
@@ -613,7 +613,7 @@ void TVTreeItem::detachFromTask() {
         TVTreeItem *ci = static_cast<TVTreeItem *>(child(i));
         ci->detachFromTask();
     }
-    task = NULL;
+    task = nullptr;
 }
 
 }    // namespace U2

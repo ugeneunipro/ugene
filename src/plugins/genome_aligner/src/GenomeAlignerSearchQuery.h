@@ -45,8 +45,8 @@ public:
 class SearchQuery {
     Q_DISABLE_COPY(SearchQuery)
 public:
-    SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl = NULL);
-    SearchQuery(const U2AssemblyRead &shortRead, SearchQuery *revCompl = NULL);
+    SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl = nullptr);
+    SearchQuery(const U2AssemblyRead &shortRead, SearchQuery *revCompl = nullptr);
     ~SearchQuery();
 
     QString getName() const;

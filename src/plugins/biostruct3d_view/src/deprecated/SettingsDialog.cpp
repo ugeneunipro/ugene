@@ -35,7 +35,7 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    glWidget = NULL;
+    glWidget = nullptr;
     initColorSchemes();
 }
 

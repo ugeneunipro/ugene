@@ -34,7 +34,7 @@ namespace U2 {
 
 void UHMM3PhmmerDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     GTGlobals::sleep(1000);
     QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "mainTabWidget", dialog);

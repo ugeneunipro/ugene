@@ -72,7 +72,7 @@ namespace U2 {
 
 void GTest_Bowtie::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-    bowtieTask = NULL;
+    bowtieTask = nullptr;
     indexName = "";
     readsFileName = "";
     patternFileName = "";

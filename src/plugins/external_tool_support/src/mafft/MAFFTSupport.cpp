@@ -132,7 +132,7 @@ void MAFFTSupportContext::initViewContext(GObjectView *view) {
 void MAFFTSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
@@ -173,7 +173,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
 
     MSAEditor *msaEditor = action->getMsaEditor();
     MultipleSequenceAlignmentObject *alignmentObject = msaEditor->getMaObject();
-    SAFE_POINT(alignmentObject != NULL, "Alignment object is NULL during aligning with MAFFT!", );
+    SAFE_POINT(alignmentObject != nullptr, "Alignment object is NULL during aligning with MAFFT!", );
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!", );
 
     MAFFTSupportTaskSettings settings;
@@ -189,8 +189,8 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 }    // namespace U2

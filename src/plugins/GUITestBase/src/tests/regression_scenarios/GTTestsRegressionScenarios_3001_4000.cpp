@@ -246,9 +246,9 @@ GUI_TEST_CLASS_DEFINITION(test_3035) {
                                                 << "Connect to UGENE shared database...");
     // import, remove, drag'n'drop, empty recycle bin, restore from recycle bin. is prohibited
     GTUtilsProjectTreeView::click(os, "Recycle bin", Qt::RightButton);
-    CHECK_SET_ERR(QApplication::activePopupWidget() == NULL, "popup menu unexpectidly presents on recyble bin");
+    CHECK_SET_ERR(QApplication::activePopupWidget() == nullptr, "popup menu unexpectidly presents on recyble bin");
     GTUtilsProjectTreeView::click(os, "export_tests", Qt::RightButton);
-    CHECK_SET_ERR(QApplication::activePopupWidget() == NULL, "popup menu unexpectidly presents on export_tests");
+    CHECK_SET_ERR(QApplication::activePopupWidget() == nullptr, "popup menu unexpectidly presents on export_tests");
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "export_tests");
     QModelIndex index = GTUtilsProjectTreeView::findIndex(os, "et0001_sequence", parent);
@@ -437,7 +437,7 @@ GUI_TEST_CLASS_DEFINITION(test_3074) {
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
     QWidget *msaView = GTWidget::findWidget(os, "COI");
-    CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
 
@@ -568,7 +568,7 @@ GUI_TEST_CLASS_DEFINITION(test_3102) {
     GTLogTracer logTracer;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
-    CHECK_SET_ERR(NULL != databaseDoc, "UGENE public databased connection error");
+    CHECK_SET_ERR(nullptr != databaseDoc, "UGENE public databased connection error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3103) {
@@ -667,7 +667,7 @@ GUI_TEST_CLASS_DEFINITION(test_3125) {
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
     QWidget *msaView = GTWidget::findWidget(os, "COI");
-    CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/3125.aln", QStringList() << "Phaneroptera_falcata", 6, 600));
@@ -826,7 +826,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    CHECK_SET_ERR(algorithmBox != NULL, "Cannot find boxAlgorithm widget!");
+    CHECK_SET_ERR(algorithmBox != nullptr, "Cannot find boxAlgorithm widget!");
 
     GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_3139) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    CHECK_SET_ERR(NULL != seqArea, "MSA Editor isn't opened.!");
+    CHECK_SET_ERR(nullptr != seqArea, "MSA Editor isn't opened.!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3140) {
@@ -907,7 +907,7 @@ GUI_TEST_CLASS_DEFINITION(test_3142) {
     GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
 
     QWidget *msaWidget = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    CHECK_SET_ERR(msaWidget != NULL, "MSASequenceArea not found");
+    CHECK_SET_ERR(msaWidget != nullptr, "MSASequenceArea not found");
 
     GTUtilsLog::check(os, l);
 }
@@ -986,13 +986,13 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
         }
         void run() override {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
-            CHECK(NULL != button, );
-            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", NULL, GTGlobals::FindOptions(false)));
-            CHECK(NULL == check, );
+            CHECK(nullptr != button, );
+            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, GTGlobals::FindOptions(false)));
+            CHECK(nullptr == check, );
             GTWidget::click(os, button);
         }
     };
@@ -1031,10 +1031,10 @@ public:
     void run() override {
         QWidget *activeModal = GTWidget::getActiveModalWidget(os);
         QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
-        CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
+        CHECK_SET_ERR(messageBox != nullptr, "messageBox is NULL");
 
         QAbstractButton *button = messageBox->button(b);
-        CHECK_SET_ERR(button != NULL, "There is no such button in messagebox");
+        CHECK_SET_ERR(button != nullptr, "There is no such button in messagebox");
 
         GTWidget::click(os, button);
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
@@ -1329,7 +1329,7 @@ GUI_TEST_CLASS_DEFINITION(test_3221) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "long_annotation_name  (0, 10)");
-    CHECK_SET_ERR(NULL != annotationGroup, "Annotations have not been found");
+    CHECK_SET_ERR(nullptr != annotationGroup, "Annotations have not been found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3223) {
@@ -1485,13 +1485,13 @@ GUI_TEST_CLASS_DEFINITION(test_3253) {
     GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(NULL != splitterHandle, "splitterHandle is not present");
+    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
 
     QWidget *chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
-    CHECK_SET_ERR(NULL != chromaView, "chromaView is NULL");
+    CHECK_SET_ERR(nullptr != chromaView, "chromaView is NULL");
 
     QWidget *annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
-    CHECK_SET_ERR(NULL != annotationTreeWidget, "annotationTreeWidget is NULL");
+    CHECK_SET_ERR(nullptr != annotationTreeWidget, "annotationTreeWidget is NULL");
 
     QSize startSize = chromaView->size();
     GTMouseDriver::moveTo(QPoint(annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).x() + 100, annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).y()));
@@ -1514,9 +1514,9 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     QWidget *annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_A1#berezikov");
-    CHECK_SET_ERR(toolbar != NULL, "Cannot find views_tool_bar_A1#berezikov");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_A1#berezikov");
     QToolButton *showDetView = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "show_hide_details_view", toolbar));
-    CHECK_SET_ERR(showDetView != NULL, "Cannot find show_hide_details_view widget or cast it to QToolButton");
+    CHECK_SET_ERR(showDetView != nullptr, "Cannot find show_hide_details_view widget or cast it to QToolButton");
     if (!showDetView->isChecked()) {
         GTWidget::click(os, showDetView);
     }
@@ -1525,7 +1525,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION", toolbar));
 
     QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_det_view_A1#berezikov"));
-    CHECK_SET_ERR(NULL != splitterHandle, "splitterHandle is not present");
+    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
 
     QWidget *detView = GTWidget::findWidget(os, "render_area_A1#berezikov");
     QSize startSize = detView->size();
@@ -1912,7 +1912,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     //2. Open any sequence from database
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != seqView, "View wasn't opened");
 
     //3. Use context menu on sequence area. Choose "new annotation"
 
@@ -1947,7 +1947,7 @@ GUI_TEST_CLASS_DEFINITION(test_3308) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Structural Alignment"
                                                                         << "align_with"));
     QWidget *widget3d = GTWidget::findWidget(os, "1-1CF7");
-    CHECK_SET_ERR(NULL != widget3d, "3D widget was not found");
+    CHECK_SET_ERR(nullptr != widget3d, "3D widget was not found");
     GTWidget::click(os, widget3d, Qt::RightButton);
 }
 
@@ -1961,7 +1961,7 @@ GUI_TEST_CLASS_DEFINITION(test_3312) {
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/test_3312/COI_3312");
 
     QWidget *msaView = GTWidget::findWidget(os, "COI_3312");
-    CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
 
     //3. Rename the object.
     //Expected state: object is successfully renamed, there are no errors in the log.
@@ -2185,7 +2185,7 @@ GUI_TEST_CLASS_DEFINITION(test_3335) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem(os, "Annotations");
     QWidget *relatedSequenceView = GTUtilsMdi::findWindow(os, "renamed sequence [human_T1.fa]");
-    CHECK_SET_ERR(NULL != relatedSequenceView, "A view for the related sequence was not opened");
+    CHECK_SET_ERR(nullptr != relatedSequenceView, "A view for the related sequence was not opened");
 
     GTUtilsLog::check(os, lt);
 }
@@ -2205,20 +2205,20 @@ GUI_TEST_CLASS_DEFINITION(test_3342) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const GTGlobals::FindOptions fo(false);
-    QWidget *dotplotWgt = GTWidget::findWidget(os, "dotplot widget", NULL, fo);
-    CHECK_SET_ERR(dotplotWgt == NULL, "There should be NO dotpot widget");
+    QWidget *dotplotWgt = GTWidget::findWidget(os, "dotplot widget", nullptr, fo);
+    CHECK_SET_ERR(dotplotWgt == nullptr, "There should be NO dotpot widget");
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
     dotplotWgt = GTWidget::findWidget(os, "dotplot widget");
-    CHECK_SET_ERR(dotplotWgt != NULL, "No dotpot widget");
+    CHECK_SET_ERR(dotplotWgt != nullptr, "No dotpot widget");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
 
-    dotplotWgt = GTWidget::findWidget(os, "dotplot widget", NULL, fo);
-    CHECK_SET_ERR(dotplotWgt == NULL, "There should be NO dotpot widget");
+    dotplotWgt = GTWidget::findWidget(os, "dotplot widget", nullptr, fo);
+    CHECK_SET_ERR(dotplotWgt == nullptr, "There should be NO dotpot widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3344) {
@@ -2309,10 +2309,10 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
     GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
-    CHECK_SET_ERR(generalItem != NULL, "Invalid annotation tree item");
+    CHECK_SET_ERR(generalItem != nullptr, "Invalid annotation tree item");
 
     AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
-    CHECK_SET_ERR(NULL != annotation, "Annotation tree item not found");
+    CHECK_SET_ERR(nullptr != annotation, "Annotation tree item not found");
     CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_identity"), "Annotation qualifier not found");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -2460,7 +2460,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_1) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2480,7 +2480,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_2) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2500,7 +2500,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_3) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2520,7 +2520,7 @@ GUI_TEST_CLASS_DEFINITION(test_3398_4) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2536,7 +2536,7 @@ GUI_TEST_CLASS_DEFINITION(test_3437) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected: file opened in msa editor
     QWidget *w = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    CHECK_SET_ERR(w != NULL, "msa editor not opened");
+    CHECK_SET_ERR(w != nullptr, "msa editor not opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3402) {
@@ -2557,11 +2557,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
         if (topLevelTasks.isEmpty()) {
             continue;
         }
-        QList<Task *> subTasks;
         for (const Task *task : qAsConst(topLevelTasks)) {
-            subTasks.append(task->getPureSubtasks());
-        }
-        for (const Task *task : qAsConst(subTasks)) {
             if (task != nullptr && task->getTaskName().contains("Opening view")) {
                 isTaskFound = true;
                 break;
@@ -2635,18 +2631,18 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
     QWidget *circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
 
-    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == circularView2, "Unexpected circular view is opened!");
+    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
 
     //3. Press "Toggle circular views" button
 
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
-    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == circularView1, "Unexpected circular view is opened!");
+    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == circularView1, "Unexpected circular view is opened!");
 
-    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == circularView2, "Unexpected circular view is opened!");
+    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
     //4. Press "Toggle circular views" again
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
@@ -2750,11 +2746,11 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget *exportButton = GTWidget::findWidget(os, "exportHighlightning");
-    CHECK_SET_ERR(exportButton != NULL, "exportButton not found");
+    CHECK_SET_ERR(exportButton != nullptr, "exportButton not found");
 
     class ExportHighlightedDialogFiller : public Filler {
     public:
@@ -2764,12 +2760,12 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *filePath = dialog->findChild<QLineEdit *>("fileNameEdit");
-            CHECK_SET_ERR(filePath != NULL, "fileNameEdit is NULL");
+            CHECK_SET_ERR(filePath != nullptr, "fileNameEdit is NULL");
             CHECK_SET_ERR(!GTLineEdit::copyText(os, filePath).isEmpty(), "Default file path is empty");
             GTLineEdit::setText(os, filePath, "");
 
             QPushButton *exportButton = dialog->findChild<QPushButton *>();
-            CHECK_SET_ERR(exportButton != NULL, "ExportButton is NULL");
+            CHECK_SET_ERR(exportButton != nullptr, "ExportButton is NULL");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTWidget::click(os, exportButton);
@@ -2804,11 +2800,11 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget *exportButton = GTWidget::findWidget(os, "exportHighlightning");
-    CHECK_SET_ERR(exportButton != NULL, "exportButton not found");
+    CHECK_SET_ERR(exportButton != nullptr, "exportButton not found");
 
     class CancelExportHighlightedDialogFiller : public Filler {
     public:
@@ -2818,10 +2814,10 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *startPos = dialog->findChild<QSpinBox *>("startLineEdit");
-            CHECK_SET_ERR(startPos != NULL, "startLineEdit is NULL");
+            CHECK_SET_ERR(startPos != nullptr, "startLineEdit is NULL");
 
             QSpinBox *endPos = dialog->findChild<QSpinBox *>("endLineEdit");
-            CHECK_SET_ERR(endPos != NULL, "endLineEdit is NULL");
+            CHECK_SET_ERR(endPos != nullptr, "endLineEdit is NULL");
 
             GTSpinBox::checkLimits(os, startPos, 1, 604);
             GTSpinBox::checkLimits(os, endPos, 1, 604);
@@ -2829,9 +2825,9 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             //GTGlobals::sleep();
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != NULL, "Cancel button is NULL");
+            CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
             GTWidget::click(os, button);
         }
     };
@@ -2915,7 +2911,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
 
     QLineEdit *outputFilePathEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outputFileLineEdit"));
-    CHECK_SET_ERR(NULL != outputFilePathEdit, "Invalid output file path edit field");
+    CHECK_SET_ERR(nullptr != outputFilePathEdit, "Invalid output file path edit field");
 
     GTWidget::setFocus(os, outputFilePathEdit);
 #ifndef Q_OS_DARWIN
@@ -3089,7 +3085,7 @@ GUI_TEST_CLASS_DEFINITION(test_3484_1) {
     GTWidget::click(os, tree);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_3484_1", testDir + "_common_data/scenarios/sandbox/proj_3484_1"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -3105,7 +3101,7 @@ GUI_TEST_CLASS_DEFINITION(test_3484_1) {
 
     GTUtilsDocument::loadDocument(os, "COI_3484_1.aln");
     QGraphicsView *treeView1 = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView1 != NULL, "TreeView not found");
+    CHECK_SET_ERR(treeView1 != nullptr, "TreeView not found");
 
     GTUtilsDocument::removeDocument(os, "COI_3484_1.nwk");
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -3141,9 +3137,9 @@ GUI_TEST_CLASS_DEFINITION(test_3504) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found");
     QScrollBar *scroll = treeView->horizontalScrollBar();
-    CHECK_SET_ERR(scroll != NULL, "TreeView does not have a horisontal scroll bar");
+    CHECK_SET_ERR(scroll != nullptr, "TreeView does not have a horisontal scroll bar");
     CHECK_SET_ERR(scroll->isVisible(), "Horisontal scroll bar is hidden");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Unrooted"));
@@ -3153,7 +3149,7 @@ GUI_TEST_CLASS_DEFINITION(test_3504) {
     GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
 
     scroll = treeView->horizontalScrollBar();
-    CHECK_SET_ERR(scroll != NULL, "TreeView does not have a horisontal scroll bar");
+    CHECK_SET_ERR(scroll != nullptr, "TreeView does not have a horisontal scroll bar");
     CHECK_SET_ERR(scroll->isVisible(), "Horisontal scroll bar is hidden");
 }
 
@@ -3353,10 +3349,10 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
-    CHECK_SET_ERR(editor != NULL, "MsaEditor not found");
+    CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
     MaEditorNameList *nameList = editor->getUI()->getEditorNameList();
-    CHECK_SET_ERR(nameList != NULL, "MSANameList is empty");
+    CHECK_SET_ERR(nameList != nullptr, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 
     GTUtilsLog::check(os, l);
@@ -3466,7 +3462,7 @@ GUI_TEST_CLASS_DEFINITION(test_3563_2) {
     QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "Ca21chr5 features");
     CHECK_SET_ERR(idxGff.isValid(), "Can not find 'Ca21 chr5 features' object");
     QWidget *seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(seqArea != NULL, "No sequence view opened");
+    CHECK_SET_ERR(seqArea != nullptr, "No sequence view opened");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -3489,7 +3485,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *separateRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("separateRB"));
-            CHECK_SET_ERR(separateRB != NULL, "radio button not found");
+            CHECK_SET_ERR(separateRB != nullptr, "radio button not found");
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3512,7 +3508,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
     GTWidget::findWidget(os, "ArrowHeader_Common Statistics");
 
     GTGlobals::FindOptions widgetFindSafeOptions(false);
-    QWidget *charOccurWidget = GTWidget::findWidget(os, "ArrowHeader_Characters Occurrence", NULL, widgetFindSafeOptions);
+    QWidget *charOccurWidget = GTWidget::findWidget(os, "ArrowHeader_Characters Occurrence", nullptr, widgetFindSafeOptions);
     CHECK_SET_ERR(!charOccurWidget->isVisible(), "Character Occurrence section is unexpectedly visible");
 
     // 4. Select second sequence
@@ -3531,7 +3527,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *separateRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("separateRB"));
-            CHECK_SET_ERR(separateRB != NULL, "radio button not found");
+            CHECK_SET_ERR(separateRB != nullptr, "radio button not found");
             GTRadioButton::click(os, separateRB);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3561,7 +3557,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
     // Expected state : only length info appears
     GTWidget::findWidget(os, "ArrowHeader_Common Statistics");
     GTGlobals::FindOptions widgetFindSafeOptions(false);
-    charOccurWidget = GTWidget::findWidget(os, "ArrowHeader_Characters Occurrence", NULL, widgetFindSafeOptions);
+    charOccurWidget = GTWidget::findWidget(os, "ArrowHeader_Characters Occurrence", nullptr, widgetFindSafeOptions);
     CHECK_SET_ERR(!charOccurWidget->isVisible(), "Character Occurrence section is unexpectedly visible");
 }
 
@@ -3646,7 +3642,7 @@ GUI_TEST_CLASS_DEFINITION(test_3609_1) {
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
     QLineEdit *goToPosLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "go_to_pos_line_edit"));
-    CHECK_SET_ERR(goToPosLineEdit != NULL, "GoTo lineEdit is NULL");
+    CHECK_SET_ERR(goToPosLineEdit != nullptr, "GoTo lineEdit is NULL");
     bool inputResult = GTLineEdit::tryToSetText(os, goToPosLineEdit, "50000");
     CHECK_SET_ERR(inputResult == false, "Invalid goToPosition is accepted");
 
@@ -3677,12 +3673,12 @@ GUI_TEST_CLASS_DEFINITION(test_3609_2) {
     GTWidget::click(os, seqWidget, Qt::RightButton);
 
     QLineEdit *goToPosLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "go_to_pos_line_edit"));
-    CHECK_SET_ERR(goToPosLineEdit != NULL, "GoTo lineEdit is NULL");
+    CHECK_SET_ERR(goToPosLineEdit != nullptr, "GoTo lineEdit is NULL");
 
     GTLineEdit::setText(os, goToPosLineEdit, "199960");
 
     QWidget *goBtn = GTWidget::findWidget(os, "Go!");
-    CHECK_SET_ERR(goBtn != NULL, "Go! button is NULL");
+    CHECK_SET_ERR(goBtn != nullptr, "Go! button is NULL");
     GTWidget::click(os, goBtn);
 
     GTUtilsLog::check(os, l);
@@ -3742,7 +3738,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-            CHECK_SET_ERR(plainText != NULL, "plain text not found");
+            CHECK_SET_ERR(plainText != nullptr, "plain text not found");
             GTWidget::click(os, plainText);
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
             GTKeyboardDriver::keyClick('=');
@@ -3818,7 +3814,7 @@ GUI_TEST_CLASS_DEFINITION(test_3613) {
                                                                               << "Current read"));
     GTUtilsDialog::waitForDialog(os, new ExportReadsDialogFiller(os, sandBoxDir + "test_3613.fa"));
     QWidget *readsArea = GTWidget::findWidget(os, "assembly_reads_area");
-    CHECK_SET_ERR(readsArea != NULL, "Assembly reads area not found");
+    CHECK_SET_ERR(readsArea != nullptr, "Assembly reads area not found");
     GTWidget::click(os, readsArea, Qt::RightButton);
 
     GTUtilsLog::check(os, l);
@@ -4127,7 +4123,7 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     GTThread::waitForMainThread();
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(treeView != NULL, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
 
     QModelIndex prnt = GTUtilsProjectTreeView::findIndex(os, "Human (hg19)");
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "chr2", prnt);
@@ -4139,9 +4135,10 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "test_3656.fa"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "Export sequence to document"), "Task is not running!");
+    QString exportTaskName = "Opening view for document: test_3656.fa";
+    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, exportTaskName), "Task is not running: " + exportTaskName);
 
-    GTUtilsTaskTreeView::cancelTask(os, "Export sequence to document");
+    GTUtilsTaskTreeView::cancelTask(os, exportTaskName);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3658) {
@@ -4198,7 +4195,7 @@ GUI_TEST_CLASS_DEFINITION(test_3676) {
     GTWidget::click(os, GTWidget::findWidget(os, "primer3_action_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QTreeWidgetItem *testPrimer = GTUtilsAnnotationsTreeView::findItem(os, "testPrimer");
-    CHECK_SET_ERR(testPrimer != NULL, "Can not find item with name \"testPrimer\"");
+    CHECK_SET_ERR(testPrimer != nullptr, "Can not find item with name \"testPrimer\"");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3687_1) {
@@ -4238,13 +4235,13 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *wgt = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
+    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 
     GTKeyboardDriver::keyClick(Qt::Key_Tab, Qt::ControlModifier);
 
     wgt = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
+    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "Start Page", "Start Page should be opened!");
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -4252,7 +4249,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     wgt = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
+    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
@@ -4504,7 +4501,7 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
             QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
-            CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
+            CHECK_SET_ERR(memBox != nullptr, "memorySpinBox not found");
             GTSpinBox::setValue(os, memBox, 200, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4592,7 +4589,7 @@ GUI_TEST_CLASS_DEFINITION(test_3749) {
             GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 10));
             GTMouseDriver::click();
             QWidget *contextMenu = QApplication::activePopupWidget();
-            CHECK_SET_ERR(NULL == contextMenu, "There is an unexpected context menu");
+            CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
         }
     };
 
@@ -4620,7 +4617,7 @@ GUI_TEST_CLASS_DEFINITION(test_3753) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_sequence"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
@@ -4686,16 +4683,16 @@ GUI_TEST_CLASS_DEFINITION(test_3768) {
         }
         void run() override {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
 
             QCheckBox *ckInit = GTWidget::findExactWidget<QCheckBox *>(os, "ckInit", w);
-            CHECK(NULL != ckInit, );
+            CHECK(nullptr != ckInit, );
             GTCheckBox::setChecked(os, ckInit, false);
 
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(nullptr != button, );
             GTWidget::click(os, button);
         }
     };
@@ -4790,12 +4787,12 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
             //GTWidget::click(os, GTWidget::findWidget(os, "outHmmfileToolButton"));
 
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
 
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(nullptr != button, );
             GTWidget::click(os, button);
         }
     };
@@ -5152,9 +5149,9 @@ GUI_TEST_CLASS_DEFINITION(test_3829) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
             QAbstractButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(okButton != NULL, "okButton is NULL");
+            CHECK_SET_ERR(okButton != nullptr, "okButton is NULL");
             //    Agree with warning.
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTWidget::click(os, okButton);
@@ -5198,7 +5195,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
         }
     }
     QWidget *assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
-    CHECK_SET_ERR(NULL != assemblyView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != assemblyView, "View wasn't opened");
 
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsAssemblyBrowser::goToPosition(os, 1);
@@ -5384,7 +5381,7 @@ GUI_TEST_CLASS_DEFINITION(test_3901) {
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
 
     //3. Create an annotation with region: join(50..60,20..30,80..90).
@@ -5514,20 +5511,20 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
         }
         void run() override {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
 
             QLineEdit *start = w->findChild<QLineEdit *>("start_edit_line");
-            CHECK_SET_ERR(start != NULL, "start_edit_line not found");
+            CHECK_SET_ERR(start != nullptr, "start_edit_line not found");
             GTLineEdit::setText(os, start, "1000");
 
             QLineEdit *end = w->findChild<QLineEdit *>("end_edit_line");
-            CHECK_SET_ERR(end != NULL, "end_edit_line not found");
+            CHECK_SET_ERR(end != nullptr, "end_edit_line not found");
             GTLineEdit::setText(os, end, "4000");
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(nullptr != button, );
             GTWidget::click(os, button);
         }
     };
@@ -5667,7 +5664,7 @@ GUI_TEST_CLASS_DEFINITION(test_3953) {
     GTKeyboardDriver::keyClick(Qt::Key_Home);
 
     QPushButton *getAnnotations = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
-    CHECK_SET_ERR(getAnnotations != NULL, "getAnnotationsPushButton is NULL");
+    CHECK_SET_ERR(getAnnotations != nullptr, "getAnnotationsPushButton is NULL");
     CHECK_SET_ERR(getAnnotations->isEnabled() == true, QString("getAnnotationsPushButton is not active"));
 
     for (int i = 0; i <= pattern.length(); i++) {
@@ -5748,14 +5745,14 @@ GUI_TEST_CLASS_DEFINITION(test_3975) {
     QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "scaffold_1 features");
     CHECK_SET_ERR(idxGff.isValid(), "Can not find 'scaffold_1 features' object");
     QWidget *seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(seqArea != NULL, "No sequence view opened");
+    CHECK_SET_ERR(seqArea != nullptr, "No sequence view opened");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "chromosome  (0, 1)");
-    CHECK_SET_ERR(NULL != annotationGroup, "Annotations have not been found");
+    CHECK_SET_ERR(nullptr != annotationGroup, "Annotations have not been found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3983) {

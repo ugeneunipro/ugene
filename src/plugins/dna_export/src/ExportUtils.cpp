@@ -35,11 +35,13 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/OpenViewTask.h>
 
 #include "ExportSequenceTask.h"
 #include "ExportSequencesDialog.h"
-#include "ExportTasks.h"
 #include "dialogs/ExportMca2MsaDialog.h"
 #include "tasks/ExportMca2MsaTask.h"
 
@@ -61,7 +63,7 @@ Task *ExportUtils::wrapExportTask(DocumentProviderTask *t, bool addToProject) {
     if (!addToProject) {
         return t;
     }
-    return new AddExportedDocumentAndOpenViewTask(t);
+    return new AddDocumentAndOpenViewTask(t);
 }
 
 QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
@@ -80,7 +82,7 @@ QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
 }
 
 void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject) {
-    SAFE_POINT(NULL != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
+    SAFE_POINT(nullptr != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
 
     Document *document = mcaObject->getDocument();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(document->getURL(), mcaObject->getGObjectName(), BaseDocumentFormats::UGENEDB, "");

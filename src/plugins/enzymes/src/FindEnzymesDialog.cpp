@@ -153,7 +153,7 @@ void EnzymesSelectorWidget::loadFile(const QString &url) {
     }
     if (ti.hasError()) {
         if (isVisible()) {
-            QMessageBox::critical(NULL, tr("Error"), ti.getError());
+            QMessageBox::critical(nullptr, tr("Error"), ti.getError());
         } else {
             ioLog.error(ti.getError());
         }
@@ -191,7 +191,7 @@ void EnzymesSelectorWidget::saveFile(const QString &url) {
 
     if (ti.hasError()) {
         if (isVisible()) {
-            QMessageBox::critical(NULL, tr("Error"), ti.getError());
+            QMessageBox::critical(nullptr, tr("Error"), ti.getError());
         } else {
             uiLog.error(ti.getError());
         }
@@ -256,7 +256,7 @@ EnzymeGroupTreeItem *EnzymesSelectorWidget::findGroupItem(const QString &s, bool
         tree->addTopLevelItem(gi);
         return gi;
     }
-    return NULL;
+    return nullptr;
 }
 
 void EnzymesSelectorWidget::sl_filterTextChanged(const QString &filterText) {
@@ -390,8 +390,8 @@ void EnzymesSelectorWidget::sl_saveSelectionToFile() {
 
 void EnzymesSelectorWidget::sl_openDBPage() {
     QTreeWidgetItem *ci = tree->currentItem();
-    EnzymeTreeItem *item = ci == NULL || ci->parent() == 0 ? NULL : static_cast<EnzymeTreeItem *>(tree->currentItem());
-    if (item == NULL) {
+    EnzymeTreeItem *item = ci == nullptr || ci->parent() == 0 ? nullptr : static_cast<EnzymeTreeItem *>(tree->currentItem());
+    if (item == nullptr) {
         QMessageBox::critical(this, tr("Error!"), tr("No enzyme selected!"));
         return;
     }
@@ -404,7 +404,7 @@ void EnzymesSelectorWidget::sl_openDBPage() {
 }
 
 void EnzymesSelectorWidget::sl_itemChanged(QTreeWidgetItem *item, int col) {
-    if (item->parent() == NULL || col != 0 || ignoreItemChecks) {
+    if (item->parent() == nullptr || col != 0 || ignoreItemChecks) {
         return;
     }
     EnzymeTreeItem *ei = static_cast<EnzymeTreeItem *>(item);
@@ -682,7 +682,7 @@ void EnzymeGroupTreeItem::updateVisual() {
 }
 
 bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
-    if (other.parent() != NULL) {
+    if (other.parent() != nullptr) {
         return true;
     }
     int col = treeWidget()->sortColumn();

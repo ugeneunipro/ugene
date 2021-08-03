@@ -32,7 +32,7 @@ namespace LocalWorkflow {
 class GenomicLibraryPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    GenomicLibraryPropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    GenomicLibraryPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
 
     QVariant value();
 

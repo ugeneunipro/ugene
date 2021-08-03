@@ -520,7 +520,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
 // Service
 ExternalToolSupportService::ExternalToolSupportService()
     : Service(Service_ExternalToolSupport, tr("External tools support"), tr("Provides support to run external tools from UGENE"), QList<ServiceType>() << Service_ProjectView) {
-    projectViewController = NULL;
+    projectViewController = nullptr;
 }
 
 void ExternalToolSupportService::serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) {
@@ -533,7 +533,7 @@ void ExternalToolSupportService::serviceStateChangedCallback(ServiceState oldSta
         projectViewController = new ETSProjectViewItemsContoller(this);
     } else {
         delete projectViewController;
-        projectViewController = NULL;
+        projectViewController = nullptr;
     }
 }
 

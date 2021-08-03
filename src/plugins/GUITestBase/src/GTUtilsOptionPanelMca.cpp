@@ -105,7 +105,7 @@ QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getHeight"
 int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os) {
     QLabel *alignmentHeightLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "seqNumLabel"));
-    GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
+    GT_CHECK_RESULT(alignmentHeightLabel != nullptr, "alignmentHeightLabel not found", -1);
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok == true, "label text is not int", -1);
@@ -116,7 +116,7 @@ int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getLength"
 int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os) {
     QLabel *alignmentLengthLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "lengthLabel"));
-    GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
+    GT_CHECK_RESULT(alignmentLengthLabel != nullptr, "alignmentLengthLabel not found", -1);
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok == true, "label text is not int", -1);
@@ -135,7 +135,7 @@ void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus &os, int threshold) {
 int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
     openTab(os, Consensus);
     QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
-    GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
+    GT_CHECK_RESULT(nullptr != thresholdSlider, "thresholdSlider is NULL", -1);
     return thresholdSlider->value();
 }
 #undef GT_METHOD_NAME
@@ -144,7 +144,7 @@ int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
 void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString exportFileName) {
     openTab(os, Consensus);
     QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", );
+    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", );
     GTLineEdit::setText(os, exportToFileLineEdit, exportFileName);
 }
 #undef GT_METHOD_NAME
@@ -153,7 +153,7 @@ void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString e
 QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
     QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != NULL, "exportToFileLineEdit is NULL", QString());
+    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", QString());
     return GTLineEdit::getText(os, exportToFileLineEdit);
 }
 #undef GT_METHOD_NAME

@@ -37,7 +37,7 @@ public:
                     Priority_High };
 
     GTAbstractGUIAction(Priority priority)
-        : priority(priority), obj(NULL) {
+        : priority(priority), obj(nullptr) {
     }
     virtual ~GTAbstractGUIAction() {
     }
@@ -52,7 +52,7 @@ public:
     virtual GTAbstractGUIAction *clone() const = 0;
 
     const QString objectClassName() const {
-        return NULL == obj ? "" : obj->metaObject()->className();
+        return nullptr == obj ? "" : obj->metaObject()->className();
     }
     static bool lessThan(const GTAbstractGUIAction *lv, const GTAbstractGUIAction *rv) {
         return lv->priority > rv->priority;

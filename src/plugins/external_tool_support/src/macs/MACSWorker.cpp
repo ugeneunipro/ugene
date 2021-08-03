@@ -93,7 +93,7 @@ static const QString BROAD_CUTOFF_ATTR_ID("broad_cutoff");    //(MACS 2)
 /* Worker */
 /************************************************************************/
 MACSWorker::MACSWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL), output(NULL) {
+    : BaseWorker(p), inChannel(nullptr), output(nullptr) {
 }
 
 void MACSWorker::init() {
@@ -128,7 +128,7 @@ Task *MACSWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void MACSWorker::cleanup() {

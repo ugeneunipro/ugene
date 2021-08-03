@@ -30,6 +30,8 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QTextEdit>
+#include <QToolButton>
 #include <QWidget>
 
 #include "GTGlobals.h"
@@ -114,11 +116,20 @@ public:
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
     static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
+    /** Calls findExactWidget with QTextEdit type. Shortcut method. */
+    static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
     /** Calls findExactWidget with QCheckBox type. Shortcut method. */
     static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
     static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QToolButton type. Shortcut method. */
+    static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QSlider type. Shortcut method. */
+    static QSlider *findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */

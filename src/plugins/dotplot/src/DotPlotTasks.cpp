@@ -241,13 +241,13 @@ void DotPlotLoadDocumentsTask::prepare() {
 
 Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
     if (inFile == "") {
-        return NULL;
+        return nullptr;
     }
     GUrl url(inFile);
 
     Project *project = AppContext::getProject();
 
-    SAFE_POINT(project, "project is NULL", NULL);
+    SAFE_POINT(project, "project is NULL", nullptr);
     Document *doc = project->findDocumentByURL(url);
 
     // document already present in the project
@@ -258,11 +258,11 @@ Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(inFile);
     if (formats.isEmpty()) {
         stateInfo.setError(tr("Detecting format error for file %1").arg(inFile));
-        return NULL;
+        return nullptr;
     }
 
     DocumentFormat *format = formats.first().format;
-    SAFE_POINT(format, "format is NULL", NULL);
+    SAFE_POINT(format, "format is NULL", nullptr);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
 
     QVariantMap hints;
@@ -272,7 +272,7 @@ Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
     }
 
     doc = format->createNewUnloadedDocument(iof, url, stateInfo, hints);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
     doc->setUserModLock(false);
 
     addSubTask(new AddDocumentTask(doc));    // add document to the project

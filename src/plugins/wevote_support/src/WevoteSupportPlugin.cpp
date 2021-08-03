@@ -41,7 +41,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 WevoteSupportPlugin::WevoteSupportPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     etRegistry->registerEntry(new WevoteSupport());
 
@@ -50,7 +50,7 @@ WevoteSupportPlugin::WevoteSupportPlugin()
 
 WevoteSupportPlugin::~WevoteSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
     etRegistry->unregisterEntry(WevoteSupport::TOOL_ID);
 }
 

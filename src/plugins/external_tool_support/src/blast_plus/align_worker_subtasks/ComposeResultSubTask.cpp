@@ -67,8 +67,8 @@ ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference
       reads(reads),
       subTasks(subTasks),
       storage(storage),
-      mcaObject(NULL),
-      referenceSequenceObject(NULL) {
+      mcaObject(nullptr),
+      referenceSequenceObject(nullptr) {
     tpm = Task::Progress_Manual;
 }
 
@@ -92,7 +92,7 @@ void ComposeResultSubTask::prepare() {
 
 void ComposeResultSubTask::run() {
     referenceSequenceObject = StorageUtils::getSequenceObject(storage, reference);
-    CHECK_EXT(NULL != referenceSequenceObject, setError(L10N::nullPointerError("reference sequence object")), );
+    CHECK_EXT(nullptr != referenceSequenceObject, setError(L10N::nullPointerError("reference sequence object")), );
 
     DbiConnection con(storage->getDbiRef(), stateInfo);
     CHECK_OP(stateInfo, );
@@ -123,20 +123,20 @@ U2SequenceObject *ComposeResultSubTask::takeReferenceSequenceObject() {
     U2SequenceObject *reference = referenceSequenceObject;
 
     QScopedPointer<DbiConnection> con(new DbiConnection(storage->getDbiRef(), stateInfo));
-    CHECK_OP(stateInfo, NULL);
-    CHECK(con->dbi != NULL, NULL);
+    CHECK_OP(stateInfo, nullptr);
+    CHECK(con->dbi != nullptr, nullptr);
 
     U2DataId seqId = referenceSequenceObject->getSequenceRef().entityId;
     con->dbi->getObjectDbi()->setTrackModType(seqId, TrackOnUpdate, stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
-    referenceSequenceObject = NULL;
+    referenceSequenceObject = nullptr;
     return reference;
 }
 
 MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
     MultipleChromatogramAlignmentObject *alignment = mcaObject;
-    mcaObject = NULL;
+    mcaObject = nullptr;
     return alignment;
 }
 
@@ -284,7 +284,7 @@ U2Location ComposeResultSubTask::getLocation(const U2Region &region, bool isComp
 }
 
 BlastAndSwReadTask *ComposeResultSubTask::getBlastSwTask(int readNum) {
-    CHECK_EXT(readNum < subTasks.size(), setError(L10N::internalError("Wrong reads number")), NULL);
+    CHECK_EXT(readNum < subTasks.size(), setError(L10N::internalError("Wrong reads number")), nullptr);
     return subTasks[readNum];
 }
 
@@ -348,7 +348,7 @@ U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoReference() {
-    CHECK_EXT(referenceSequenceObject != NULL, setError(L10N::nullPointerError("Reference sequence")), );
+    CHECK_EXT(referenceSequenceObject != nullptr, setError(L10N::nullPointerError("Reference sequence")), );
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );

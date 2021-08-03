@@ -144,7 +144,7 @@ void KrakenClassifyWorkerFactory::init() {
 
         QString minikrakenPath;
         U2DataPath *minikrakenDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID);
-        if (NULL != minikrakenDataPath && minikrakenDataPath->isValid()) {
+        if (nullptr != minikrakenDataPath && minikrakenDataPath->isValid()) {
             minikrakenPath = minikrakenDataPath->getPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID);
         }
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, minikrakenPath);
@@ -199,7 +199,7 @@ void KrakenClassifyWorkerFactory::init() {
                                                                                                                        "It does this by examining the k-mers within a read and querying a database with those."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new KrakenClassifyPrompter(NULL));
+    proto->setPrompter(new KrakenClassifyPrompter(nullptr));
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL_ID);
     proto->setValidator(new KrakenClassifyValidator());
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));

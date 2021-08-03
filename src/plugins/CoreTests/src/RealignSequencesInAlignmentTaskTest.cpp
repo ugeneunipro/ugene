@@ -69,7 +69,7 @@ void GTest_Realign::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_Realign::prepare() {
     doc = getContext<Document>(this, inputObjectName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(inputObjectName));
         return;
     }
@@ -81,13 +81,13 @@ void GTest_Realign::prepare() {
     }
 
     GObject *obj = list.first();
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    assert(obj != NULL);
+    assert(obj != nullptr);
     msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }

@@ -1,0 +1,8 @@
+<multi-test>
+
+    <load-document index="doc" url="newick/quoted-1-node.newick" io="local_file" format="newick"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_PTREE"/>
+
+</multi-test>

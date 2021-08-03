@@ -88,8 +88,8 @@ void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &re
 }
 
 void BaseContentGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    SAFE_POINT(d != NULL, L10N::nullPointerError("window graph"), );
-    SAFE_POINT(o != NULL, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT(d != nullptr, L10N::nullPointerError("window graph"), );
+    SAFE_POINT(o != nullptr, L10N::nullPointerError("sequence object"), );
 
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
     res.reserve(nSteps);

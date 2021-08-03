@@ -44,6 +44,7 @@
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
@@ -52,6 +53,7 @@ McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
+    selectionController = new McaEditorSelectionController(this);
     initZoom();
     initFont();
 
@@ -111,7 +113,7 @@ int McaEditor::getRowContentIndent(int rowId) const {
 }
 
 bool McaEditor::isChromatogramRowExpanded(int rowIndex) const {
-    return !ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(rowIndex);
+    return !collapseModel->isGroupWithMaRowIndexCollapsed(rowIndex);
 }
 
 QString McaEditor::getReferenceRowName() const {
@@ -139,7 +141,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     GCOUNTER(cvar, "Show/hide chromatogram in MCA");
-    ui->getCollapseModel()->collapseAll(!show);
+    collapseModel->collapseAll(!show);
     sl_saveChromatogramState();
     emit si_completeUpdate();
 }
@@ -154,7 +156,7 @@ void McaEditor::sl_showGeneralTab() {
 void McaEditor::sl_showConsensusTab() {
     OptionsPanel *optionsPanel = getOptionsPanel();
     SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
-                                     " when msaconsensustab opening was initiated", );
+                                        " when msaconsensustab opening was initiated", );
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
@@ -242,7 +244,7 @@ void McaEditor::initActions() {
 void McaEditor::updateActions() {
     MaEditor::updateActions();
     MaEditorSelection selection = getSelection();
-    gotoSelectedReadAction->setEnabled(selection.height() > 0);
+    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
 }
 
 void McaEditor::sl_saveOverviewState() {
@@ -346,12 +348,16 @@ void McaEditor::addEditMenu(QMenu *menu) {
 void McaEditor::sl_gotoSelectedRead() {
     GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
     MaEditorSelection selection = getSelection();
-    int rowIndex = selection.y();
-    CHECK(selection.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
+    QRect selectionRect = selection.toRect();
+    int rowIndex = selectionRect.y();
+    CHECK(selectionRect.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
 
     MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
     int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();
     ui->getSequenceArea()->centerPos(rowStartPos);
 }
 
+MaEditorSelectionController *McaEditor::getSelectionController() const {
+    return selectionController;
+}
 }    // namespace U2

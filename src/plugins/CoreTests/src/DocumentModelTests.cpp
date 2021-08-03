@@ -69,25 +69,25 @@ static QString getTempDir(const GTestEnvironment *env) {
 }
 
 void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
-    loadTask = NULL;
+    loadTask = nullptr;
     contextAdded = false;
     docContextName = el.attribute("index");
     needVerifyLog = false;
     QVariantMap hints;
 
-    if (NULL != el.attribute("message")) {
+    if (nullptr != el.attribute("message")) {
         expectedLogMessage = el.attribute("message");
     }
 
-    if (NULL != el.attribute("message2")) {
+    if (nullptr != el.attribute("message2")) {
         expectedLogMessage2 = el.attribute("message2");
     }
 
-    if (NULL != el.attribute("no-message")) {
+    if (nullptr != el.attribute("no-message")) {
         unexpectedLogMessage = el.attribute("no-message");
     }
 
-    if (NULL != el.attribute("sequence-mode")) {
+    if (nullptr != el.attribute("sequence-mode")) {
         QString seqMode = el.attribute("sequence-mode");
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -110,7 +110,7 @@ void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
     IOAdapterId io = el.attribute("io");
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
     DocumentFormatId format = el.attribute("format");
-    if (iof == NULL) {
+    if (iof == nullptr) {
         stateInfo.setError(QString("io_adapter_not_found_%1").arg(io));
     } else if (format.isEmpty()) {
         stateInfo.setError(QString("doc_format_is_not_specified"));
@@ -161,7 +161,7 @@ void GTest_LoadDocument::prepare() {
 }
 
 Task::ReportResult GTest_LoadDocument::report() {
-    if (loadTask != NULL && loadTask->hasError()) {
+    if (loadTask != nullptr && loadTask->hasError()) {
         stateInfo.setError(loadTask->getError());
     } else if (!docContextName.isEmpty()) {
         addContext(docContextName, loadTask->getDocument());
@@ -186,7 +186,7 @@ void GTest_SaveDocument::init(XMLTestFormat *tf, const QDomElement &el) {
         return;
     }
 
-    saveTask = NULL;
+    saveTask = nullptr;
     QString dir = getTempDir(env);
     if (!QDir(dir).exists()) {
         bool ok = QDir::root().mkpath(dir);
@@ -201,7 +201,7 @@ void GTest_SaveDocument::init(XMLTestFormat *tf, const QDomElement &el) {
     IOAdapterId io = el.attribute("io");
     iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
 
-    if (iof == NULL) {
+    if (iof == nullptr) {
         stateInfo.setError(QString("io_adapter_not_found_%1").arg(io));
         return;
     }
@@ -212,7 +212,7 @@ void GTest_SaveDocument::init(XMLTestFormat *tf, const QDomElement &el) {
 void GTest_SaveDocument::prepare() {
     //////////////////////
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return;
     }
@@ -220,7 +220,7 @@ void GTest_SaveDocument::prepare() {
     SaveDocFlags saveTaskFlags = SaveDoc_Overwrite;
     if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        CHECK_EXT(NULL != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
+        CHECK_EXT(nullptr != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
         doc = doc->getSimpleCopy(format, iof, url);
         saveTaskFlags |= SaveDoc_DestroyButDontUnload;
     }
@@ -253,7 +253,7 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) {
     message = el.attribute("message");
 
     QVariantMap hints;
-    if (NULL != el.attribute("sequence-mode")) {
+    if (nullptr != el.attribute("sequence-mode")) {
         QString seqMode = el.attribute("sequence-mode");
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -268,7 +268,7 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_LoadBrokenDocument::report() {
     Document *doc = loadTask->getDocument();
-    if (doc == NULL && loadTask->hasError()) {
+    if (doc == nullptr && loadTask->hasError()) {
         CHECK(!message.isEmpty(), ReportResult_Finished);
         if (loadTask->getError().contains(message)) {
             return ReportResult_Finished;
@@ -292,22 +292,22 @@ void GTest_LoadBrokenDocument::cleanup() {
  * GTest_ImportDocument
  *******************************/
 void GTest_ImportDocument::init(XMLTestFormat *, const QDomElement &el) {
-    importTask = NULL;
+    importTask = nullptr;
     contextAdded = false;
     DocumentFormatId outFormatId = el.attribute("outFormat");
     QString outUrlAttr = el.attribute("outUrl");
     docContextName = el.attribute("index");
     needVerifyLog = false;
 
-    if (NULL != el.attribute("message")) {
+    if (nullptr != el.attribute("message")) {
         expectedLogMessage = el.attribute("message");
     }
 
-    if (NULL != el.attribute("message2")) {
+    if (nullptr != el.attribute("message2")) {
         expectedLogMessage2 = el.attribute("message2");
     }
 
-    if (NULL != el.attribute("no-message")) {
+    if (nullptr != el.attribute("no-message")) {
         unexpectedLogMessage = el.attribute("no-message");
     }
 
@@ -334,14 +334,14 @@ void GTest_ImportDocument::init(XMLTestFormat *, const QDomElement &el) {
     QList<FormatDetectionResult> detectionRes = DocumentUtils::detectFormat(url, conf);
     CHECK_EXT(!detectionRes.isEmpty(), setError("Format is not recognized"), );
 
-    FormatDetectionResult *bestRes = NULL;
+    FormatDetectionResult *bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
-        if (NULL != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
+        if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
             break;
         }
     }
-    CHECK_EXT(NULL != bestRes && NULL != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(nullptr != bestRes && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
@@ -394,7 +394,7 @@ void GTest_ImportDocument::prepare() {
 }
 
 Task::ReportResult GTest_ImportDocument::report() {
-    if (NULL != importTask && importTask->hasError()) {
+    if (nullptr != importTask && importTask->hasError()) {
         stateInfo.setError(importTask->getError());
     } else if (!docContextName.isEmpty()) {
         addContext(docContextName, importTask->getDocument());
@@ -435,14 +435,14 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) 
     QList<FormatDetectionResult> detectionRes = DocumentUtils::detectFormat(url, conf);
     CHECK_EXT(!detectionRes.isEmpty(), setError("Format is not recognized"), );
 
-    FormatDetectionResult *bestRes = NULL;
+    FormatDetectionResult *bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
-        if (NULL != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
+        if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
             break;
         }
     }
-    CHECK_EXT(NULL != bestRes && NULL != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(nullptr != bestRes && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
@@ -457,7 +457,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) 
 
 Task::ReportResult GTest_ImportBrokenDocument::report() {
     Document *doc = importTask->getDocument();
-    if (doc == NULL && importTask->hasError()) {
+    if (doc == nullptr && importTask->hasError()) {
         CHECK(!message.isEmpty(), ReportResult_Finished);
         if (importTask->getError().contains(message)) {
             return ReportResult_Finished;
@@ -541,7 +541,7 @@ void GTest_DocumentNumObjects::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DocumentNumObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
@@ -574,7 +574,7 @@ void GTest_DocumentObjectNames::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DocumentObjectNames::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
@@ -624,7 +624,7 @@ void GTest_DocumentObjectTypes::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DocumentObjectTypes::report() {
     const Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
@@ -678,12 +678,12 @@ void GTest_FindGObjectByName::init(XMLTestFormat *tf, const QDomElement &el) {
 
     objContextName = el.attribute("index");
 
-    result = NULL;
+    result = nullptr;
 }
 
 Task::ReportResult GTest_FindGObjectByName::report() {
     const Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
@@ -697,7 +697,7 @@ Task::ReportResult GTest_FindGObjectByName::report() {
             break;
         }
     }
-    if (result == NULL) {
+    if (result == nullptr) {
         stateInfo.setError(QString("object not found: name '%1',type '%2' ").arg(objName).arg(type));
     } else if (!objContextName.isEmpty()) {
         addContext(objContextName, result);
@@ -706,7 +706,7 @@ Task::ReportResult GTest_FindGObjectByName::report() {
 }
 
 void GTest_FindGObjectByName::cleanup() {
-    if (result != NULL && !objContextName.isEmpty()) {
+    if (result != nullptr && !objContextName.isEmpty()) {
         removeContext(objContextName);
     }
 
@@ -795,11 +795,6 @@ void GTest_CompareFiles::init(XMLTestFormat *tf, const QDomElement &el) {
 static const qint64 READ_LINE_MAX_SZ = 2048;
 
 Task::ReportResult GTest_CompareFiles::report() {
-    if (mixed_lines) {
-        compareMixed();
-        return ReportResult_Finished;
-    }
-
     QFile f1(doc1Path);
     if (!f1.open(QIODevice::ReadOnly)) {
         setError(QString("Cannot open file '%1'!").arg(doc1Path));
@@ -809,6 +804,11 @@ Task::ReportResult GTest_CompareFiles::report() {
     QFile f2(doc2Path);
     if (!f2.open(QIODevice::ReadOnly)) {
         setError(QString("Cannot open file '%1'!").arg(doc2Path));
+        return ReportResult_Finished;
+    }
+
+    if (mixed_lines) {
+        compareMixed();
         return ReportResult_Finished;
     }
 
@@ -883,13 +883,13 @@ Task::ReportResult GTest_CompareFiles::report() {
 
 IOAdapter *GTest_CompareFiles::createIoAdapter(const QString &filePath) {
     IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    CHECK_EXT(NULL != factory, setError("IOAdapterFactory is NULL"), NULL);
+    CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
     IOAdapter *ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {
         delete ioAdapter;
         setError(QString("Can't open file '%1'").arg(filePath));
-        return NULL;
+        return nullptr;
     }
 
     return ioAdapter;
@@ -1016,13 +1016,13 @@ Task::ReportResult GTest_Compare_VCF_Files::report() {
 
 IOAdapter *GTest_Compare_VCF_Files::createIoAdapter(const QString &filePath) {
     IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    CHECK_EXT(NULL != factory, setError("IOAdapterFactory is NULL"), NULL);
+    CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
     IOAdapter *ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {
         delete ioAdapter;
         setError(QString("Can't open file '%1'").arg(filePath));
-        return NULL;
+        return nullptr;
     }
 
     return ioAdapter;

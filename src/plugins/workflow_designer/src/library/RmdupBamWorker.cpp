@@ -150,7 +150,7 @@ void RmdupBamWorkerFactory::init() {
 /* RmdupBamWorker */
 /************************************************************************/
 RmdupBamWorker::RmdupBamWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL), outUrls("") {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
 void RmdupBamWorker::init() {
@@ -161,12 +161,12 @@ void RmdupBamWorker::init() {
 Task *RmdupBamWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         const QString detectedFormat = FileAndDirectoryUtils::detectFormat(url);
         if (detectedFormat.isEmpty()) {
             coreLog.info(tr("Unknown file format: ") + url);
-            return NULL;
+            return nullptr;
         }
 
         if (detectedFormat == BaseDocumentFormats::BAM) {
@@ -190,7 +190,7 @@ Task *RmdupBamWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void RmdupBamWorker::cleanup() {
@@ -201,7 +201,7 @@ namespace {
 QString getTargetUrl(Task *task) {
     SamtoolsRmdupTask *rmdupTask = dynamic_cast<SamtoolsRmdupTask *>(task);
 
-    if (NULL != rmdupTask) {
+    if (nullptr != rmdupTask) {
         return rmdupTask->getResult();
     }
     return "";

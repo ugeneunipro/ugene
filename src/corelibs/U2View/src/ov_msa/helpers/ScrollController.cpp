@@ -30,21 +30,21 @@
 #include "RowHeightController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi, MaCollapseModel *collapsibleModel)
+ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
-      collapsibleModel(collapsibleModel),
       savedFirstVisibleMaRow(0),
       savedFirstVisibleMaRowOffset(0) {
     connect(this, SIGNAL(si_visibleAreaChanged()), maEditorUi, SIGNAL(si_completeRedraw()));
-    connect(collapsibleModel, SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
-    connect(collapsibleModel, SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
 void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
@@ -242,29 +242,28 @@ void ScrollController::scrollToMovedSelection(int deltaX, int deltaY) {
 void ScrollController::scrollToMovedSelection(ScrollController::Direction direction) {
     U2Region fullyVisibleRegion;
     U2Region selectionRegion;
-    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    int selectionEdgePosition = 0;
-    const QSize widgetWize = ui->getSequenceArea()->size();
-
+    int selectionEdgePosition;
+    QSize widgetSize = ui->getSequenceArea()->size();
+    QRect selectionRect = ui->getEditor()->getSelection().toRect();
     switch (direction) {
         case Up:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-            selectionRegion = selection.getYRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
             selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
             break;
         case Down:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-            selectionRegion = selection.getYRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
             selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case Left:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-            selectionRegion = selection.getXRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
             selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
             break;
         case Right:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-            selectionRegion = selection.getXRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
             selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case None:
@@ -279,11 +278,11 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
         switch (direction) {
             case Up:
             case Down:
-                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetWize.height());
+                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetSize.height());
                 break;
             case Left:
             case Right:
-                scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+                scrollToBase(static_cast<int>(selectionEdgePosition), widgetSize.width());
                 break;
             case None:
                 return;
@@ -317,13 +316,13 @@ int ScrollController::getFirstVisibleMaRowIndex(bool countClipped) const {
 
 int ScrollController::getFirstVisibleViewRowIndex(bool countClipped) const {
     int maRowIndex = getFirstVisibleMaRowIndex(countClipped);
-    return collapsibleModel->getViewRowIndexByMaRowIndex(maRowIndex);
+    return maEditor->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 }
 
 int ScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
     int lastVisibleViewRow = ui->getRowHeightController()->getViewRowIndexByGlobalYPosition(vScrollBar->value() + widgetHeight);
     if (lastVisibleViewRow < 0) {
-        lastVisibleViewRow = collapsibleModel->getViewRowCount() - 1;
+        lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
     U2Region lastRowScreenRegion = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(lastVisibleViewRow);
     bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;

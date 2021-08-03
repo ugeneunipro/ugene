@@ -84,7 +84,7 @@ QString CutAdaptFastqPrompter::composeRichDoc() {
 /************************************************************************/
 void CutAdaptFastqWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(CutadaptSupport::ADAPTERS_DATA_NAME);
@@ -143,7 +143,7 @@ void CutAdaptFastqWorkerFactory::init() {
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *adaptersAttr = NULL;
+        Attribute *adaptersAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
@@ -208,7 +208,7 @@ QString CutAdaptFastqWorker::getDefaultFileName() const {
 }
 
 Task *CutAdaptFastqWorker::getTask(const BaseNGSSetting &settings) const {
-    if (settings.listeners[0] != NULL) {
+    if (settings.listeners[0] != nullptr) {
         settings.listeners[0]->setLogProcessor(new CutAdaptLogProcessor(monitor(), getActorId()));
     }
     return new CutAdaptFastqTask(settings);
@@ -231,7 +231,7 @@ void CutAdaptFastqTask::prepareStep() {
         }
     } else {
         ExternalToolRunTask *etTask = getExternalToolTask(CutadaptSupport::ET_CUTADAPT_ID, new CutAdaptParser());
-        CHECK(etTask != NULL, );
+        CHECK(etTask != nullptr, );
 
         addSubTask(etTask);
     }

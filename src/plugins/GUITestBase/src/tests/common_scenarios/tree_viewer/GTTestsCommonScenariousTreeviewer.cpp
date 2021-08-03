@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     //Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
     //4. Remove document "COI.nwk" from project view.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.nwk"));
@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //7. Click  OK button
     //Expected state: philogenetic tree appears
     QWidget *w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != NULL, "treeView not found");
+    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -202,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     //3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     //Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
     //4. Remove document "COI.nwk" from project view.
     //GTUtilsDialog::waitForDialog(os,new MessageBoxDialogFiller(os,QMessageBox::No));
@@ -210,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    QWidget *w = GTWidget::findWidget(os, "treeView", NULL, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(w == 0, "treeView not deleted")
 
     GTUtilsProjectTreeView::findIndex(os, "COI.nwk", GTGlobals::FindOptions(false));
@@ -233,7 +233,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     //7. Click  OK button
     //Expected state: philogenetic tree appears
     QWidget *w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != NULL, "treeView not found");
+    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -255,7 +255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     //3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     //Expected state: philogenetic tree appears
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
     //4. Remove document "COI.nwk" from project view.
     //GTUtilsDialog::waitForDialog(os,new MessageBoxDialogFiller(os,QMessageBox::No));
@@ -264,8 +264,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
-    QWidget *w = GTWidget::findWidget(os, "treeView", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == NULL, "treeView not deleted")
+    QWidget *w = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(w == nullptr, "treeView not deleted")
 
     GTUtilsProjectTreeView::findIndex(os, "COI.nwk", GTGlobals::FindOptions(false));
 
@@ -287,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     //7. Click  OK button
     //Expected state: philogenetic tree appears
     QWidget *w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != NULL, "treeView not found");
+    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -658,7 +658,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::doubleClick();
 
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != NULL, "treeView not found");
+    CHECK_SET_ERR(treeView != nullptr, "treeView not found");
     //3. Close the opened view
 
     //4. Activate bookmark
@@ -905,7 +905,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     QWidget *optionsPanelContainer = GTWidget::findWidget(os, "AddTreeWidget");
 
     QWidget *openButton = GTWidget::findButtonByText(os, QObject::tr("Open tree"), optionsPanelContainer);
-    CHECK_SET_ERR(NULL != openButton, "The \"Open Tree\" button is not found");
+    CHECK_SET_ERR(nullptr != openButton, "The \"Open Tree\" button is not found");
 
     // 3. Press the first one
     // Expected state: the "Select files to open..." dialog has appeared
@@ -916,7 +916,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     // Expected state: tree view has appeared together with the alignment
     QWidget *treeView = qobject_cast<QWidget *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(NULL != treeView, "Unable to find tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
 
     // 5. Close the tree view
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -931,7 +931,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     optionsPanelContainer = GTWidget::findWidget(os, "AddTreeWidget");
 
     QWidget *buildButton = GTWidget::findButtonByText(os, QObject::tr("Build tree"), optionsPanelContainer);
-    CHECK_SET_ERR(NULL != buildButton, "The \"Build Tree\" button is not found");
+    CHECK_SET_ERR(nullptr != buildButton, "The \"Build Tree\" button is not found");
 
     // 6. On the "Tree settings" tab press the "Build tree" button
     // Expected state: the "Build Phylogenetic Tree" dialog has appeared
@@ -944,7 +944,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     // Expected state: a new file with tree has been created and has appeared along with the alignment
     treeView = qobject_cast<QWidget *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(NULL != treeView, "Unable to find tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -966,7 +966,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(NULL != treeView, "Unable to find tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Unable to find tree view");
 
     //4. Open the "Tree Setting" option panel tab
     // it does automatically
@@ -978,7 +978,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //5. Check the "Align labels" checkbox in the "Labels" section
     QCheckBox *alignLabelsButton = dynamic_cast<QCheckBox *>(
         GTWidget::findWidget(os, "alignLabelsCheck"));
-    CHECK_SET_ERR(NULL != alignLabelsButton, "The \"Align labels\" button is not found");
+    CHECK_SET_ERR(nullptr != alignLabelsButton, "The \"Align labels\" button is not found");
     GTCheckBox::setChecked(os, alignLabelsButton, true);
 
     const QList<QGraphicsItem *> treeViewItems = treeView->items();
@@ -992,7 +992,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //6. Check the "Show names" checkbox twice
     QCheckBox *showNamesButton = dynamic_cast<QCheckBox *>(
         GTWidget::findWidget(os, "showNamesCheck"));
-    CHECK_SET_ERR(NULL != showNamesButton, "The \"Show names\" button is not found");
+    CHECK_SET_ERR(nullptr != showNamesButton, "The \"Show names\" button is not found");
     GTCheckBox::setChecked(os, showNamesButton, false);
 
     GTCheckBox::setChecked(os, showNamesButton, true);
@@ -1026,9 +1026,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     QAbstractButton *swap = GTWidget::findButtonByText(os, "Swap Sibling");    //GTAction::button(os, "Swap Siblings");
     QAbstractButton *reroot = GTWidget::findButtonByText(os, "Reroot");    // GTAction::button(os, "Reroot tree");
 
-    CHECK_SET_ERR(collapse != NULL, "1. Collapse action button not found");
-    CHECK_SET_ERR(swap != NULL, "1. Swap action button not found");
-    CHECK_SET_ERR(reroot != NULL, "1. Re-root action button not found");
+    CHECK_SET_ERR(collapse != nullptr, "1. Collapse action button not found");
+    CHECK_SET_ERR(swap != nullptr, "1. Swap action button not found");
+    CHECK_SET_ERR(reroot != nullptr, "1. Re-root action button not found");
 
     CHECK_SET_ERR(!collapse->isEnabled(), "2. Collapse action is unexpectedly enabled");
     CHECK_SET_ERR(!swap->isEnabled(), "2. Swap action is unexpectedly enabled");

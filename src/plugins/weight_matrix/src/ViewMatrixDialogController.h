@@ -39,8 +39,8 @@ namespace U2 {
 class MatrixAndLogoController : public QWidget, public Ui_MatrixAndLogoWidget {
     Q_OBJECT
 public:
-    MatrixAndLogoController(PFMatrix matrix, QWidget *parent = NULL);
-    MatrixAndLogoController(PWMatrix matrix, QWidget *parent = NULL);
+    MatrixAndLogoController(PFMatrix matrix, QWidget *parent = nullptr);
+    MatrixAndLogoController(PWMatrix matrix, QWidget *parent = nullptr);
 
 private:
     AlignmentLogoRenderArea *logoArea;
@@ -50,8 +50,8 @@ class ViewMatrixDialogController : public QDialog, public Ui_ViewMatrixDialog {
     Q_OBJECT
 
 public:
-    ViewMatrixDialogController(PFMatrix matrix, QWidget *w = NULL);
-    ViewMatrixDialogController(PWMatrix matrix, QWidget *w = NULL);
+    ViewMatrixDialogController(PFMatrix matrix, QWidget *w = nullptr);
+    ViewMatrixDialogController(PWMatrix matrix, QWidget *w = nullptr);
 private slots:
     void sl_onCloseButton();
 

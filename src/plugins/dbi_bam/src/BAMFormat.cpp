@@ -53,8 +53,8 @@ BAMFormat::BAMFormat()
 }
 
 void BAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    CHECK_EXT(d != NULL, os.setError(L10N::badArgument("doc")), );
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
+    CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
     QList<GObject *> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
     GUrl url = io->getURL();

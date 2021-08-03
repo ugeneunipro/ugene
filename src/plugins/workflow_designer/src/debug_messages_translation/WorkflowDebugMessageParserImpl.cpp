@@ -105,9 +105,9 @@ WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() 
 void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &convertedType, const QString &schemeName, quint32 messageNumber) {
     SAFE_POINT(!convertedType.isEmpty(), "Invalid message type detected!", );
     const AppSettings *appSettings = AppContext::getAppSettings();
-    SAFE_POINT(NULL != appSettings, "Invalid application settings' storage!", );
+    SAFE_POINT(nullptr != appSettings, "Invalid application settings' storage!", );
     const UserAppsSettings *userSettings = appSettings->getUserAppsSettings();
-    SAFE_POINT(NULL != userSettings, "Invalid user application settings' storage!", );
+    SAFE_POINT(nullptr != userSettings, "Invalid user application settings' storage!", );
     QString tmpFolderUrl = (userSettings->getCurrentProcessTemporaryDirPath());
     tmpFolderUrl.replace("//", "/");
 
@@ -126,7 +126,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
             ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);
         } else {
             GObject *objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
-            if (Q_LIKELY(NULL != objectToWrite)) {
+            if (Q_LIKELY(nullptr != objectToWrite)) {
                 ExportObjectUtils::exportObject2Document(objectToWrite, baseFileUrl, false);
                 ++messageCounter;
             }
@@ -135,7 +135,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
 }
 
 BaseMessageTranslator *WorkflowDebugMessageParserImpl::createMessageTranslator(const QString &messageType, const QVariant &messageData) const {
-    BaseMessageTranslator *result = NULL;
+    BaseMessageTranslator *result = nullptr;
     if (BaseSlots::DNA_SEQUENCE_SLOT().getId() == messageType) {
         result = new SequenceMessageTranslator(messageData, context);
     } else if (BaseSlots::ANNOTATION_TABLE_SLOT().getId() == messageType) {
@@ -155,9 +155,9 @@ BaseMessageTranslator *WorkflowDebugMessageParserImpl::createMessageTranslator(c
 }
 
 GObject *WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString &messageType, const QVariant &messageData) const {
-    GObject *result = NULL;
+    GObject *result = nullptr;
     if (BaseSlots::TEXT_SLOT().getId() == messageType) {
-        SAFE_POINT(messageData.canConvert<QString>(), "Supplied message doesn't contain text data", NULL);
+        SAFE_POINT(messageData.canConvert<QString>(), "Supplied message doesn't contain text data", nullptr);
         const QString documentText = messageData.value<QString>();
         U2OpStatus2Log os;
         result = TextObject::createInstance(documentText, "wd_investigation_tmp_text_object", context->getDataStorage()->getDbiRef(), os);
@@ -167,7 +167,7 @@ GObject *WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString &m
     }
     SAFE_POINT(messageData.canConvert<SharedDbiDataHandler>(),
                "Supplied message doesn't contain DB reference",
-               NULL);
+               nullptr);
     SharedDbiDataHandler objectId = messageData.value<SharedDbiDataHandler>();
 
     if (BaseSlots::DNA_SEQUENCE_SLOT().getId() == messageType) {
@@ -179,7 +179,7 @@ GObject *WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString &m
     } else if (BaseSlots::VARIATION_TRACK_SLOT().getId() == messageType) {
         result = StorageUtils::getVariantTrackObject(context->getDataStorage(), objectId);
     }
-    SAFE_POINT(NULL != result, "Could not obtain object from dbi", NULL);
+    SAFE_POINT(nullptr != result, "Could not obtain object from dbi", nullptr);
     return result;
 }
 

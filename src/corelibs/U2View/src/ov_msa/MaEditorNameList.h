@@ -67,12 +67,12 @@ protected slots:
     void sl_editSequenceName();
 
 private slots:
-    void sl_copyCurrentSequence();
+    /** Copies whole selected row content into clipboard without any formatting. */
+    void sl_copyWholeRow();
     void sl_lockedStateChanged();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
     void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();
-    void sl_onGroupColorsChanged(const GroupColorSchema &);
 
 protected slots:
     virtual void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
@@ -93,7 +93,14 @@ protected:
     void wheelEvent(QWheelEvent *we) override;
     //todo context menu?
     int getSelectedMaRow() const;
-    void moveSelection(int offset);
+
+    /**
+     * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
+     * If 'resetXRange' is set to 'false' keeps X-range of the selection unchanged,
+     *  otherwise resets X-range to the 'whole-row' selection.
+     */
+    void moveSelection(int offset, bool resetXRange);
+
     void scrollSelectionToView(bool fromStart);
 
     bool completeRedraw;
@@ -103,10 +110,6 @@ protected:
 
 public:
     qint64 sequenceIdAtPos(const QPoint &p);
-    void clearGroupsColors();
-
-    /* Returns region of the selected view rows. */
-    U2Region getSelection() const;
 
     QFont getFont(bool selected) const;
 
@@ -116,7 +119,11 @@ signals:
     void si_stopMaChanging(bool modified);
 
 protected:
-    virtual void setSelection(int startSeq, int count);
+    /**
+     * Sets selection MA editor selection to the given state.
+     * The method is called for all selection change events triggered in the name-list component.
+     * May be overriden to adjust behavior. */
+    virtual void setSelection(const MaEditorSelection &selection);
 
     void moveSelectedRegion(int shift);
 
@@ -138,8 +145,6 @@ protected:
 
     virtual void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool isSelected, bool isReference);
 
-    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool isSelected);
-
     virtual void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference);
 
     virtual void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect, bool isSelected, bool isReference);
@@ -149,8 +154,6 @@ protected:
     virtual void drawText(QPainter &p, const QString &name, const QRect &rect, bool selected);
 
     virtual void drawCollapsePrimitive(QPainter &p, bool collapsed, const QRect &rect);
-
-    void clearSelection();
 
     /*
      * Triggers expand collapse on the currently selected set of collapse group headers.
@@ -169,13 +172,15 @@ protected:
     QScrollBar *nhBar;
     QPoint mousePressPoint;
     bool dragging;
-    GroupColorSchema groupColors;
-
     QRubberBand *rubberBand;
 
 public:
     QAction *editSequenceNameAction;
-    QAction *copyCurrentSequenceAction;
+
+    /** Copies whole selected rows. Ignores actual selected column range. */
+    QAction *copyWholeRowAction;
+
+    // TODO: remove this action. It triggers the same code with ui->delSelectionAction and exists only to show a different text in the context menu.
     QAction *removeSequenceAction;
 
 protected:

@@ -35,10 +35,10 @@ public:
     static QList<GraphicsButtonItem *> getUnselectedNodes(HI::GUITestOpStatus &os);
     static QList<GraphicsButtonItem *> getNodes(HI::GUITestOpStatus &os);
 
-    static QList<QGraphicsSimpleTextItem *> getLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
-    static QList<QGraphicsSimpleTextItem *> getVisibleLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
-    static QList<QGraphicsSimpleTextItem *> getDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
-    static QList<QGraphicsSimpleTextItem *> getVisibleDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
+    static QList<QGraphicsSimpleTextItem *> getLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = nullptr);
+    static QList<QGraphicsSimpleTextItem *> getVisibleLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = nullptr);
+    static QList<QGraphicsSimpleTextItem *> getDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = nullptr);
+    static QList<QGraphicsSimpleTextItem *> getVisibleDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = nullptr);
     static QStringList getLabelsText(HI::GUITestOpStatus &os);
     static QList<double> getDistancesValues(HI::GUITestOpStatus &os);
     static QPoint getGlobalCenterCoord(HI::GUITestOpStatus &os, QGraphicsItem *item);

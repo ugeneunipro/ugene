@@ -46,7 +46,7 @@ ClarkSupportPlugin::ClarkSupportPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION),
       testFactories(nullptr) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     ClarkSupport::registerTools(etRegistry);
 
@@ -78,7 +78,7 @@ ClarkSupportPlugin::~ClarkSupportPlugin() {
     }
 
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
     ClarkSupport::unregisterTools(etRegistry);
 }
 

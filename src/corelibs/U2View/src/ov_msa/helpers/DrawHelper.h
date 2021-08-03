@@ -26,14 +26,11 @@
 
 namespace U2 {
 
-class MaEditorWgt;
-class MaEditorSelection;
-class MaCollapseModel;
-class ScrollController;
+class MaEditor;
 
 class U2VIEW_EXPORT DrawHelper {
 public:
-    DrawHelper(MaEditorWgt *maEditorWgt);
+    DrawHelper(MaEditor *editor);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
     U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
@@ -41,12 +38,11 @@ public:
 
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
 
-    QRect getSelectionScreenRect(const MaEditorSelection &selection) const;
+    /** Returns screen coordinates for the given rect of columns and rows. */
+    QRect getScreenRect(const QRect &columnsAndRowsRect) const;
 
 private:
-    MaEditorWgt *ui;
-    ScrollController *scrollController;
-    MaCollapseModel *collapsibleModel;
+    MaEditor *const editor;
 };
 
 }    // namespace U2

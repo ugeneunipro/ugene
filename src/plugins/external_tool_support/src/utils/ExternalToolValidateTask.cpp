@@ -120,9 +120,9 @@ void ExternalToolJustValidateTask::run() {
     CHECK(!hasError(), );
 
     for (const ExternalToolValidation &validation : qAsConst(validations)) {
-        if (externalToolProcess != NULL) {
+        if (externalToolProcess != nullptr) {
             delete externalToolProcess;
-            externalToolProcess = NULL;
+            externalToolProcess = nullptr;
         }
 
         checkArchitecture(validation.executableFile);
@@ -195,7 +195,7 @@ void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     QStringList additionalPaths;
     for (const QString &toolId : qAsConst(externalTool->getDependencies())) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
-        if (NULL != masterTool) {
+        if (nullptr != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
         }
     }
@@ -322,8 +322,8 @@ void ExternalToolJustValidateTask::performAdditionalChecks() {
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString &_toolId, const QString &_toolName)
     : ExternalToolValidateTask(_toolId, _toolName, TaskFlags(TaskFlag_CancelOnSubtaskCancel | TaskFlag_NoRun)),
       toolIsFound(false),
-      searchTask(NULL),
-      validateTask(NULL) {
+      searchTask(nullptr),
+      validateTask(nullptr) {
 }
 
 void ExternalToolSearchAndValidateTask::prepare() {

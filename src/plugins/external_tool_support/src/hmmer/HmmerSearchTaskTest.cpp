@@ -158,7 +158,7 @@ void GTest_UHMM3Search::init(XMLTestFormat *tf, const QDomElement &el) {
 
     hmmFilename = el.attribute(HMM_FILENAME_TAG);
 
-    searchTask = NULL;
+    searchTask = nullptr;
 
     seqDocCtxName = el.attribute(SEQ_DOC_CTX_NAME_TAG);
     setSearchTaskSettings(settings, el, stateInfo);
@@ -166,7 +166,7 @@ void GTest_UHMM3Search::init(XMLTestFormat *tf, const QDomElement &el) {
     hmmFilename = el.attribute(HMM_FILENAME_TAG);
 
     outputDir = el.attribute(OUTPUT_DIR_TAG);
-    settings.annotationTable = NULL;
+    settings.annotationTable = nullptr;
     settings.noali = false;
 }
 
@@ -191,7 +191,7 @@ void GTest_UHMM3Search::setAndCheckArgs() {
     outputDir = env->getVar("TEMP_DATA_DIR") + "/" + outputDir;
 
     Document *seqDoc = getContext<Document>(this, seqDocCtxName);
-    if (NULL == seqDoc) {
+    if (nullptr == seqDoc) {
         stateInfo.setError(QString("context %1 not found").arg(seqDocCtxName));
         return;
     }
@@ -213,13 +213,13 @@ void GTest_UHMM3Search::prepare() {
 }
 
 QList<Task *> GTest_UHMM3Search::onSubTaskFinished(Task *sub) {
-    assert(NULL != sub);
+    assert(nullptr != sub);
     QList<Task *> res;
     if (searchTask != sub) {
         return res;
     }
     OutputCollector *collector = dynamic_cast<OutputCollector *>(searchTask->getListener(0));
-    if (collector != NULL) {
+    if (collector != nullptr) {
         QString hmmSearchLog = collector->getLog();
         //TODO: check non empty log and file existence after writing
         QFile file(settings.workingDir + "/output.txt");
@@ -299,8 +299,8 @@ static UHMM3SearchSeqDomainResult getDomainRes(QStringList &tokens) {
     return res;
 }
 
-static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = NULL) {
-    assert(NULL != io);
+static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = nullptr) {
+    assert(nullptr != io);
     to.clear();
     QByteArray buf(BUF_SZ, TERM_SYM);
     bool there = false;
@@ -321,7 +321,7 @@ static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = NULL) 
         throw QString("unexpected_end_of_file_found");
     }
 
-    if (NULL != tokens) {
+    if (nullptr != tokens) {
         *tokens = QString(to).split(QRegExp("\\s+"), QString::SkipEmptyParts);
     }
 }

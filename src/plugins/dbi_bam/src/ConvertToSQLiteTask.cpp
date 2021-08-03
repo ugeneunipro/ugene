@@ -72,7 +72,7 @@ class BamIterator : public Iterator {
 public:
     BamIterator(BamReader &reader)
         : reader(reader),
-          alignmentReader(NULL, 0, 0),
+          alignmentReader(nullptr, 0, 0),
           alignmentReaderValid(false),
           readValid(false) {
     }
@@ -331,7 +331,7 @@ class SequentialDbiIterator : public DbiIterator {
 public:
     SequentialDbiIterator(int referenceId, bool skipUnmapped, Iterator &inputIterator, TaskStateInfo &stateInfo, const IOAdapter &ioAdapter)
         : referenceIterator(referenceId, inputIterator),
-          skipUnmappedIterator(skipUnmapped ? new SkipUnmappedIterator(referenceIterator) : NULL),
+          skipUnmappedIterator(skipUnmapped ? new SkipUnmappedIterator(referenceIterator) : nullptr),
           iterator(skipUnmapped ? dynamic_cast<Iterator *>(skipUnmappedIterator.data()) : dynamic_cast<Iterator *>(&referenceIterator)),
           readsImported(0),
           stateInfo(stateInfo),
@@ -499,9 +499,9 @@ qint64 ConvertToSQLiteTask::importReads() {
     qint64 totalReadsImported = 0;
     QScopedPointer<IOAdapter> ioAdapter(prepareIoAdapter());
 
-    BamReader *bamReader = NULL;
-    SamReader *samReader = NULL;
-    QScopedPointer<Reader> reader(NULL);
+    BamReader *bamReader = nullptr;
+    SamReader *samReader = nullptr;
+    QScopedPointer<Reader> reader(nullptr);
     if (sam) {
         samReader = new SamReader(*ioAdapter);
         reader.reset(samReader);
@@ -554,7 +554,7 @@ void ConvertToSQLiteTask::updateAttributes() {
     DbiConnection connection(dstDbiRef, stateInfo);
     SAFE_POINT_EXT(!stateInfo.hasError(), throw Exception(getError()), );
     U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
-    CHECK(NULL != attributeDbi, );
+    CHECK(nullptr != attributeDbi, );
 
     foreach (int referenceId, importers.keys()) {
         const U2Assembly &assembly = importers[referenceId]->getAssembly();
@@ -710,7 +710,7 @@ qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader *samReader, BamReader 
     }
 
     QScopedPointer<SkipUnmappedIterator> skipUnmappedIterator;
-    Iterator *iterator = NULL;
+    Iterator *iterator = nullptr;
     if (!bamInfo.isUnmappedSelected()) {
         skipUnmappedIterator.reset(new SkipUnmappedIterator(*inputIterator));
         iterator = skipUnmappedIterator.data();
@@ -895,7 +895,7 @@ void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2Assembly
 
 IOAdapter *ConvertToSQLiteTask::prepareIoAdapter() {
     IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
-    SAFE_POINT_EXT(NULL != factory, throw IOException(L10N::nullPointerError("IO adapter factory")), NULL);
+    SAFE_POINT_EXT(nullptr != factory, throw IOException(L10N::nullPointerError("IO adapter factory")), nullptr);
     QScopedPointer<IOAdapter> ioAdapter(factory->createIOAdapter());
 
     if (!ioAdapter->open(sourceUrl, IOAdapterMode_Read)) {

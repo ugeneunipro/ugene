@@ -99,7 +99,7 @@ QString RemoteDBFetcherPrompter::composeRichDoc() {
 /* class RemoteDBFetcherWorker : public BaseWorker */
 
 RemoteDBFetcherWorker::RemoteDBFetcherWorker(Actor *a)
-    : BaseWorker(a), output(NULL) {
+    : BaseWorker(a), output(nullptr) {
 }
 
 void RemoteDBFetcherWorker::init() {
@@ -171,13 +171,13 @@ void RemoteDBFetcherWorker::sl_taskFinished() {
     }
 
     Document *doc = loadTask->getDocument();
-    SAFE_POINT(NULL != doc, "NULL document", );
+    SAFE_POINT(nullptr != doc, "NULL document", );
     doc->setDocumentOwnsDbiResources(false);
     monitor()->addOutputFile(doc->getURLString(), getActorId());
 
     foreach (GObject *gobj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
         U2SequenceObject *dnao = qobject_cast<U2SequenceObject *>(gobj);
-        SAFE_POINT(NULL != dnao, "NULL sequence", );
+        SAFE_POINT(nullptr != dnao, "NULL sequence", );
 
         QList<GObject *> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject *> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(gobj,
@@ -378,7 +378,7 @@ void RemoteDBFetcherFactory::init() {
 /* class FetchSequenceByIdFromAnnotationWorker : public BaseWorker */
 
 FetchSequenceByIdFromAnnotationWorker::FetchSequenceByIdFromAnnotationWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void FetchSequenceByIdFromAnnotationWorker::init() {
@@ -411,7 +411,7 @@ Task *FetchSequenceByIdFromAnnotationWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         QVariantMap qm = inputMessage.getData().toMap();
         const QList<SharedAnnotationData> inputAnns = StorageUtils::getAnnotationTable(context->getDataStorage(),
@@ -427,7 +427,7 @@ Task *FetchSequenceByIdFromAnnotationWorker::tick() {
         }
 
         if (accIds.isEmpty()) {
-            return NULL;
+            return nullptr;
         }
 
         QVariantMap hints;
@@ -441,7 +441,7 @@ Task *FetchSequenceByIdFromAnnotationWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void FetchSequenceByIdFromAnnotationWorker::cleanup() {
@@ -461,13 +461,13 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
     }
 
     Document *doc = loadTask->getDocument();
-    SAFE_POINT(NULL != doc, "NULL document", );
+    SAFE_POINT(nullptr != doc, "NULL document", );
     doc->setDocumentOwnsDbiResources(false);
     monitor()->addOutputFile(doc->getURLString(), getActorId());
 
     foreach (GObject *gobj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
         U2SequenceObject *dnao = qobject_cast<U2SequenceObject *>(gobj);
-        SAFE_POINT(NULL != dnao, "NULL sequence", );
+        SAFE_POINT(nullptr != dnao, "NULL sequence", );
 
         QList<GObject *> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject *> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(gobj,

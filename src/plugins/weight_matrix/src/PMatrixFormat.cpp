@@ -82,7 +82,7 @@ FormatCheckResult PFMatrixFormat::checkRawData(const QByteArray &rawData, const 
 
 Document *PFMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     QList<GObject *> objs;
@@ -96,10 +96,10 @@ Document *PFMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
             os.setError(tr("Zero length or corrupted model\nMaybe model data are not enough for selected algorithm"));
         }
     }
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     PFMatrixObject *mObj = PFMatrixObject::createInstance(m, QFileInfo(io->getURL().getURLString()).baseName(), dbiRef, os, fs);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     objs.append(mObj);
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 }
@@ -121,12 +121,12 @@ bool PFMatrixViewFactory::canCreateView(const MultiGSelection &multiSelection) {
 Task *PFMatrixViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single /* = false*/) {
     QSet<Document *> documents = SelectionUtils::findDocumentsWithObjects(PFMatrixObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
     if (documents.size() == 0) {
-        return NULL;
+        return nullptr;
     }
-    Task *result = (single || documents.size() == 1) ? NULL : new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    Task *result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
     foreach (Document *d, documents) {
         Task *t = new OpenPFMatrixViewTask(d);
-        if (result == NULL) {
+        if (result == nullptr) {
             return t;
         }
         result->addSubTask(t);
@@ -210,7 +210,7 @@ FormatCheckResult PWMatrixFormat::checkRawData(const QByteArray &rawData, const 
 
 Document *PWMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     QList<GObject *> objs;
@@ -224,10 +224,10 @@ Document *PWMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
             os.setError(tr("Zero length or corrupted model.\nMaybe model data are not enough for selected algorithm"));
         }
     }
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     PWMatrixObject *mObj = PWMatrixObject::createInstance(m, QFileInfo(io->getURL().getURLString()).baseName(), dbiRef, os, fs);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     objs.append(mObj);
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 }
@@ -249,12 +249,12 @@ bool PWMatrixViewFactory::canCreateView(const MultiGSelection &multiSelection) {
 Task *PWMatrixViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single /* = false*/) {
     QSet<Document *> documents = SelectionUtils::findDocumentsWithObjects(PWMatrixObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
     if (documents.size() == 0) {
-        return NULL;
+        return nullptr;
     }
-    Task *result = (single || documents.size() == 1) ? NULL : new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    Task *result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
     foreach (Document *d, documents) {
         Task *t = new OpenPWMatrixViewTask(d);
-        if (result == NULL) {
+        if (result == nullptr) {
             return t;
         }
         result->addSubTask(t);

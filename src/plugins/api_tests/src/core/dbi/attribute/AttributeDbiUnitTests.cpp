@@ -41,8 +41,8 @@ static const QString OBJECT_ATTRIBUTES_CHILD_ID = "object_attributes_child_id";
 
 const QString &AttributeTestData::ATT_DB_URL("attribute-dbi.ugenedb");
 
-U2AttributeDbi *AttributeTestData::attributeDbi = NULL;
-QList<U2DataId> *AttributeTestData::objects = NULL;
+U2AttributeDbi *AttributeTestData::attributeDbi = nullptr;
+QList<U2DataId> *AttributeTestData::objects = nullptr;
 TestDbiProvider AttributeTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -73,21 +73,21 @@ void AttributeTestData::init() {
     SAFE_POINT_OP(opStatus, );
 
     attributeDbi = dbi->getAttributeDbi();
-    SAFE_POINT(NULL != attributeDbi, "attribute database not loaded", );
+    SAFE_POINT(nullptr != attributeDbi, "attribute database not loaded", );
 }
 
 U2AttributeDbi *AttributeTestData::getAttributeDbi() {
-    if (attributeDbi == NULL) {
+    if (attributeDbi == nullptr) {
         AttributeTestData::init();
     }
     return attributeDbi;
 }
 
 void AttributeTestData::shutdown() {
-    if (attributeDbi != NULL) {
+    if (attributeDbi != nullptr) {
         U2OpStatusImpl opStatus;
         dbiProvider.close();
-        attributeDbi = NULL;
+        attributeDbi = nullptr;
         SAFE_POINT_OP(opStatus, );
     }
 }

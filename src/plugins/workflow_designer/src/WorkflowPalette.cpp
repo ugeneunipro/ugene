@@ -50,7 +50,7 @@ const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
 WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry *reg, SchemaConfig *schemaConfig, QWidget *parent)
     : QWidget(parent) {
     setupUi(this);
-    nameFilter = new NameFilterLayout(NULL);
+    nameFilter = new NameFilterLayout(nullptr);
     elementsList = new WorkflowPaletteElements(reg, schemaConfig, this);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
@@ -200,7 +200,7 @@ QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem &opt, const QModelInd
 /* WorkflowPaletteElements */
 /************************************************************************/
 WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, SchemaConfig *_schemaConfig, QWidget *parent)
-    : QTreeWidget(parent), overItem(NULL), currentAction(NULL), protoRegistry(reg), schemaConfig(_schemaConfig) {
+    : QTreeWidget(parent), overItem(nullptr), currentAction(nullptr), protoRegistry(reg), schemaConfig(_schemaConfig) {
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
     setItemDelegate(new PaletteDelegate(this));
@@ -228,8 +228,8 @@ QMenu *WorkflowPaletteElements::createMenu(const QString &name) {
 
 void WorkflowPaletteElements::createMenu(QMenu *menu) {
     menu->clear();
-    QMenu *dataSink = NULL, *dataSource = NULL, *userScript = NULL, *externalTools = NULL;
-    QAction *firstAction = NULL;
+    QMenu *dataSink = nullptr, *dataSource = nullptr, *userScript = nullptr, *externalTools = nullptr;
+    QAction *firstAction = nullptr;
     QMapIterator<QString, QList<QAction *>> it(categoryMap);
     while (it.hasNext()) {
         it.next();
@@ -261,10 +261,10 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
         }
     }
 
-    if (NULL != dataSource) {
+    if (nullptr != dataSource) {
         menu->insertMenu(firstAction, dataSource);
     }
-    if (NULL != dataSink) {
+    if (nullptr != dataSink) {
         menu->insertMenu(firstAction, dataSink);
     }
     if (userScript) {
@@ -281,7 +281,7 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry *reg) {
     actionMap.clear();
     while (it.hasNext()) {
         it.next();
-        QTreeWidgetItem *category = NULL;
+        QTreeWidgetItem *category = nullptr;
 
         foreach (ActorPrototype *proto, it.value()) {
             QString name = proto->getDisplayName();
@@ -289,7 +289,7 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry *reg) {
                 !NameFilterLayout::filterMatched(nameFilter, it.key().getDisplayName())) {
                 continue;
             }
-            if (NULL == category) {
+            if (nullptr == category) {
                 category = new QTreeWidgetItem(this);
                 category->setText(0, it.key().getDisplayName());
                 category->setData(0, Qt::UserRole, it.key().getId());
@@ -426,7 +426,7 @@ QAction *WorkflowPaletteElements::getActionByProto(Workflow::ActorPrototype *pro
 void WorkflowPaletteElements::resetSelection() {
     if (currentAction) {
         currentAction->setChecked(false);
-        currentAction = NULL;
+        currentAction = nullptr;
     }
 }
 
@@ -528,7 +528,7 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
     } else if (checked) {
         currentAction = senderAction;
     } else {
-        currentAction = NULL;
+        currentAction = nullptr;
     }
     if (currentAction) {
         Workflow::ActorPrototype *actor = currentAction->data().value<Workflow::ActorPrototype *>();
@@ -681,7 +681,7 @@ void WorkflowPaletteElements::leaveEvent(QEvent *) {
         return;
     }
     QTreeWidgetItem *prev = overItem;
-    overItem = NULL;
+    overItem = nullptr;
     if (prev) {
         QModelIndex index = indexFromItem(prev);
         update(index);
@@ -791,7 +791,7 @@ bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype *proto) c
 }
 
 void WorkflowPaletteElements::sl_nameFilterChanged(const QString &filter) {
-    overItem = NULL;
+    overItem = nullptr;
     oldNameFilter = nameFilter;
     nameFilter = filter.toLower();
     rebuild();

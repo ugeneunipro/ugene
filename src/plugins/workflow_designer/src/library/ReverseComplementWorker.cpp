@@ -111,7 +111,7 @@ Task *RCWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
@@ -134,27 +134,27 @@ Task *RCWorker::tick() {
             if (input->isEnded()) {
                 output->setEnded();
             }
-            return NULL;
+            return nullptr;
         }
         if (type == "reverse-complement") {
             complTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
-            if (complTT == NULL) {
+            if (complTT == nullptr) {
                 coreLog.info(tr("Can't find complement translation"));
                 if (input->isEnded()) {
                     output->setEnded();
                 }
-                return NULL;
+                return nullptr;
             }
             complTT->translate(seq.seq.data(), seq.seq.size(), seq.seq.data(), seq.seq.size());
             TextUtils::reverse(seq.seq.data(), seq.seq.size());
         } else if (type == "norev") {
             complTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
-            if (complTT == NULL) {
+            if (complTT == nullptr) {
                 coreLog.info(tr("Can't find complement translation"));
                 if (input->isEnded()) {
                     output->setEnded();
                 }
-                return NULL;
+                return nullptr;
             }
             complTT->translate(seq.seq.data(), seq.seq.size(), seq.seq.data(), seq.seq.size());
         } else {
@@ -173,7 +173,7 @@ Task *RCWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace LocalWorkflow

@@ -26,7 +26,6 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
-#include <QLineEdit>
 #include <QStyle>
 
 #include "drivers/GTMouseDriver.h"
@@ -123,12 +122,24 @@ QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
 }
 
+QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
+}
+
 QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
 }
 
 QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
+}
+
+QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+}
+
+QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
 }
 
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {

@@ -47,7 +47,7 @@ class SiteconModel;
 class SiteconSearchDialogController : public QDialog, public Ui_SiteconSearchDialog {
     Q_OBJECT
 public:
-    SiteconSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = NULL);
+    SiteconSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
     ~SiteconSearchDialogController();
 
 public slots:

@@ -158,7 +158,7 @@ QDElementStatement *QDDocument::getElement(const QString &id) const {
             return stmt;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<QDElementStatement *> QDDocument::getElements(QDStatementType type) const {
@@ -273,7 +273,7 @@ bool QDDocument::addElement(QDElementStatement *el) {
         }
     }
     elements.append(el);
-    assert(el->document == NULL);
+    assert(el->document == nullptr);
     el->document = this;
     return true;
 }

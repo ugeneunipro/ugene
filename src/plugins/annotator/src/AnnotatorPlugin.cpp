@@ -51,7 +51,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 AnnotatorPlugin::AnnotatorPlugin()
-    : Plugin(tr("DNA Annotator"), tr("This plugin contains routines to manipulate and search DNA sequence annotations")), viewCtx(NULL) {
+    : Plugin(tr("DNA Annotator"), tr("This plugin contains routines to manipulate and search DNA sequence annotations")), viewCtx(nullptr) {
     if (AppContext::getMainWindow()) {
         QString customAnnotationDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/custom_annotations";
         QString plasmidFeaturesPath = customAnnotationDir + "/plasmid_features.txt";
@@ -71,7 +71,7 @@ AnnotatorPlugin::AnnotatorPlugin()
     //Annotator test
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = AnnotatorTests::createTestFactories();
@@ -118,7 +118,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
     }
 
     ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
-    if (seqCtx == NULL) {
+    if (seqCtx == nullptr) {
         return;
     }
 
@@ -133,7 +133,7 @@ void AnnotatorViewContext::sl_showCustomAutoAnnotationDialog() {
     assert(av);
 
     ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
-    if (seqCtx == NULL) {
+    if (seqCtx == nullptr) {
         return;
     }
 

@@ -48,9 +48,9 @@ const QString CuffmergeSupportTask::outSubDirBaseName("cuffmerge_out");
 CuffmergeSupportTask::CuffmergeSupportTask(const CuffmergeSettings &_settings)
     : ExternalToolSupportTask(tr("Running Cuffmerge task"), TaskFlags_FOSE_COSC), settings(_settings),
       fileNum(0),
-      mergeTask(NULL),
-      loadResultTask(NULL) {
-    SAFE_POINT_EXT(NULL != settings.storage, setError(tr("Workflow data storage is NULL")), );
+      mergeTask(nullptr),
+      loadResultTask(nullptr) {
+    SAFE_POINT_EXT(nullptr != settings.storage, setError(tr("Workflow data storage is NULL")), );
     SAFE_POINT_EXT(!settings.annotationTables.isEmpty(), setError(tr("There are no annotations to process")), );
 }
 
@@ -81,7 +81,7 @@ QList<Task *> CuffmergeSupportTask::onSubTaskFinished(Task *subTask) {
     }
 
     QList<Task *> newSubTasks;
-    if (writeTasks.isEmpty() && NULL == mergeTask) {
+    if (writeTasks.isEmpty() && nullptr == mergeTask) {
         newSubTasks << createCuffmergeTask();
     }
 
@@ -93,7 +93,7 @@ QList<Task *> CuffmergeSupportTask::onSubTaskFinished(Task *subTask) {
 
     else if (subTask == loadResultTask) {
         QScopedPointer<Document> doc(loadResultTask->takeDocument());
-        SAFE_POINT_EXT(NULL != doc, setError(L10N::nullPointerError("document with annotations")), newSubTasks);
+        SAFE_POINT_EXT(nullptr != doc, setError(L10N::nullPointerError("document with annotations")), newSubTasks);
         doc->setDocumentOwnsDbiResources(false);
         foreach (GObject *object, doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE)) {
             doc->removeObject(object, DocumentObjectRemovalMode_Release);
@@ -124,7 +124,7 @@ QString CuffmergeSupportTask::getAnnsFilePath() {
 
 Task *CuffmergeSupportTask::createWriteTask(const Workflow::SharedDbiDataHandler &annTableHandler, const QString &filePath) {
     Document *doc = prepareDocument(annTableHandler, filePath);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     docs << doc;
     SaveDocumentTask *task = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), filePath);
@@ -152,7 +152,7 @@ void CuffmergeSupportTask::writeFileList() {
 
 Task *CuffmergeSupportTask::createCuffmergeTask() {
     writeFileList();
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     QStringList args;
     {
@@ -190,7 +190,7 @@ LoadDocumentTask *CuffmergeSupportTask::createLoadResultDocumentTask(const QStri
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFMERGE)), NULL);
+    SAFE_POINT_EXT(nullptr != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFMERGE)), nullptr);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());
@@ -206,16 +206,16 @@ QList<AnnotationTableObject *> CuffmergeSupportTask::takeResult() {
 
 Document *CuffmergeSupportTask::prepareDocument(const Workflow::SharedDbiDataHandler &annTableHandler, const QString &filePath) {
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::GTF);
-    SAFE_POINT_EXT(NULL != format, setError(L10N::nullPointerError("GTF format")), NULL);
+    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("GTF format")), nullptr);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(L10N::nullPointerError("I/O adapter factory")), NULL);
+    SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("I/O adapter factory")), nullptr);
 
     AnnotationTableObject *annTable = Workflow::StorageUtils::getAnnotationTableObject(settings.storage, annTableHandler);
-    SAFE_POINT_EXT(NULL != annTable, setError(L10N::nullPointerError("source annotation data")), NULL);
+    SAFE_POINT_EXT(nullptr != annTable, setError(L10N::nullPointerError("source annotation data")), nullptr);
 
     Document *doc = format->createNewLoadedDocument(iof, filePath, stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
     doc->setDocumentOwnsDbiResources(false);
     doc->addObject(annTable);
 
@@ -231,7 +231,7 @@ QStringList CuffmergeSupportTask::getOutputFiles() const {
 /************************************************************************/
 CuffmergeSettings::CuffmergeSettings()
     : minIsoformFraction(0.05),
-      storage(NULL) {
+      storage(nullptr) {
 }
 
 }    // namespace U2

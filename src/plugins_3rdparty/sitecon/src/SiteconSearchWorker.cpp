@@ -226,20 +226,20 @@ Task *SiteconSearchWorker::tick() {
         models << modelPort->get().getData().toMap().value(SiteconWorkerFactory::SITECON_SLOT.getId()).value<SiteconModel>();
     }
     if (!modelPort->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (dataPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(dataPort);
         if (inputMessage.isEmpty() || models.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
 
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -250,7 +250,7 @@ Task *SiteconSearchWorker::tick() {
             config.complOnly = (strand < 0);
             if (strand <= 0) {
                 DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
-                if (compTT != NULL) {
+                if (compTT != nullptr) {
                     config.complTT = compTT;
                 }
             }
@@ -270,12 +270,12 @@ Task *SiteconSearchWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SiteconSearchWorker::sl_taskFinished(Task *t) {
     QList<SharedAnnotationData> res;
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

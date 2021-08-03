@@ -75,12 +75,25 @@ public:
     static void moveToSequence(HI::GUITestOpStatus &os, int rowNumber);
     static void moveToSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void clickSequence(HI::GUITestOpStatus &os, int rowNumber, Qt::MouseButton mouseButton = Qt::LeftButton);
-    static void clickSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    /** Clicks sequence with a mouse button and a keyboard key pressed. */
+    static void clickSequenceName(HI::GUITestOpStatus &os,
+                                  const QString &sequenceName,
+                                  const Qt::MouseButton& mouseButton = Qt::LeftButton,
+                                  const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
+
     static void moveToColumn(HI::GUITestOpStatus &os, int column);
     static void clickColumn(HI::GUITestOpStatus &os, int column, Qt::MouseButton mouseButton = Qt::LeftButton);
 
     static void selectRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
+
+    /** Select rows in the name list by name using Ctrl + Mouse click. Fails if any of the rows is not found. */
+    static void selectRowsByName(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
     static void selectColumns(HI::GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
+
+    /** Checks that MSA editor selection is equal to the given rect. Fails if not. */
+    static void checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects);
 
     static void clearSelection(HI::GUITestOpStatus &os);
 

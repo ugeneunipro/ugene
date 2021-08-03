@@ -47,7 +47,7 @@ QMenu *MWMenuManagerImpl::getTopLevelMenu(const QString &sysName) const {
             return m;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void MWMenuManagerImpl::setMenuBarEnabled(bool enable) {
@@ -56,7 +56,7 @@ void MWMenuManagerImpl::setMenuBarEnabled(bool enable) {
     }
 
     foreach (const QPointer<QAction> &action, additionalActions) {
-        if (NULL != action) {
+        if (nullptr != action) {
             action->setEnabled(enable);
         }
     }
@@ -73,7 +73,7 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
         return qmenu;
     }
     QMenu *menuBefore = getTopLevelMenu(afterSysName);
-    if (menuBefore == NULL) {
+    if (menuBefore == nullptr) {
         menuBefore = getTopLevelMenu(MWMENU_TOOLS);
     }
     qmenu = new QMenu(title, menuBar);
@@ -118,7 +118,7 @@ static void touchMenu(QMenu *menu) {
 bool MWMenuManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::ActionAdded || event->type() == QEvent::ActionRemoved) {
         QMenu *menu = qobject_cast<QMenu *>(obj);
-        assert(menu != NULL);
+        assert(menu != nullptr);
         //coreLog.trace("aaa:EventFilter (Menu Manager)");
 #ifndef Q_OS_DARWIN
         menu->setEnabled(!menu->isEmpty());
@@ -149,7 +149,7 @@ void MWMenuManagerImpl::unlinkTopLevelMenu(QMenu *m) {
 void MWMenuManagerImpl::linkTopLevelMenu(QMenu *m) {
     assert(!menuBar->actions().contains(m->menuAction()));
     const QList<QAction *> &activeActions = menuBar->actions();
-    QAction *nextActiveAction = NULL;
+    QAction *nextActiveAction = nullptr;
     for (int i = toplevelMenus.indexOf(m) + 1; i < toplevelMenus.size(); i++) {
         QMenu *tmpM = toplevelMenus.at(i);
         if (activeActions.contains(tmpM->menuAction())) {

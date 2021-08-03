@@ -229,7 +229,7 @@ QString ORFPrompter::composeRichDoc() {
  * ORFWorker
  *****************************/
 ORFWorker::ORFWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void ORFWorker::init() {
@@ -265,7 +265,7 @@ Task *ORFWorker::tick() {
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
 
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
 
         const DNAAlphabet *alphabet = seqObj->getAlphabet();
@@ -274,7 +274,7 @@ Task *ORFWorker::tick() {
             config.searchRegion.length = seqObj->getSequenceLength();
             if (config.strand != ORFAlgorithmStrand_Direct) {
                 DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-                if (compTT != NULL) {
+                if (compTT != nullptr) {
                     config.complementTT = compTT;
                 } else {
                     config.strand = ORFAlgorithmStrand_Direct;
@@ -294,7 +294,7 @@ Task *ORFWorker::tick() {
         output->setEnded();
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ORFWorker::sl_taskFinished() {
@@ -303,7 +303,7 @@ void ORFWorker::sl_taskFinished() {
         return;
     }
     QList<ORFFindResult> res = t->popResults();
-    if (NULL != output) {
+    if (nullptr != output) {
         const QList<SharedAnnotationData> annsList = ORFFindResult::toTable(res, resultName);
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsList);

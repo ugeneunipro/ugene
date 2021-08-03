@@ -43,7 +43,7 @@ namespace U2 {
 /////////////////////////////////////////////////////////////////////
 
 MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, const MuscleTaskSettings &_config, MuscleContext *ctx)
-    : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(NULL), refineTreeTask(NULL), refineTask(NULL) {
+    : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(nullptr), refineTreeTask(nullptr), refineTask(nullptr) {
     //assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
     workpool = new MuscleWorkPool(ctx, _config, stateInfo, _config.nThreads, ma, res, _config.regionToAlign.startPos == 0);
@@ -51,8 +51,9 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment &ma, Mult
     prepareTask->setSubtaskProgressWeight(0);
     addSubTask(prepareTask);
 
-    TaskResourceUsage resourseUsage(RESOURCE_MEMORY, estimateMemoryUsageInMb(ma), true);
-    resourseUsage.errorMessage = tr("There is not enough memory to align these sequences with MUSCLE.");
+    int memoryEstimationInMb = estimateMemoryUsageInMb(ma);
+    TaskResourceUsage resourseUsage(RESOURCE_MEMORY, memoryEstimationInMb, true);
+    resourseUsage.errorMessage = tr("There is not enough memory to align these sequences with MUSCLE. Required memory size: %1 Mb").arg(memoryEstimationInMb);
     addTaskResource(resourseUsage);
 }
 
@@ -91,7 +92,7 @@ QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {
 void MuscleParallelTask::cleanup() {
     //delete workpool->ph;
     delete workpool;
-    workpool = NULL;
+    workpool = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +293,7 @@ void MusclePrepareTask::cleanup() {
 
 ProgressiveAlignTask::ProgressiveAlignTask(MuscleWorkPool *_wp)
     : Task(tr("ProgressiveAlignTask"), TaskFlags_FOSCOE), workpool(_wp) {
-    assert(_wp != NULL);
+    assert(_wp != nullptr);
 }
 
 void ProgressiveAlignTask::prepare() {
@@ -372,7 +373,7 @@ void ProgressiveAlignTask::cleanup() {
 
 ProgressiveAlignWorker::ProgressiveAlignWorker(MuscleWorkPool *_wp, int _workerID)
     : Task(tr("ProgressiveAlignWorker"), TaskFlags_FOSCOE), workpool(_wp), workerID(_workerID) {
-    assert(_wp != NULL);
+    assert(_wp != nullptr);
     assert(workerID >= 0);
     uTreeNodeIndex = NULL_NEIGHBOR;
 }
@@ -488,7 +489,7 @@ extern bool TryRealign(MSA &msaIn, const Tree &tree, const unsigned Leaves1[], u
 
 RefineTreeTask::RefineTreeTask(MuscleWorkPool *_workpool)
     : Task(tr("RefineTreeTask"), TaskFlags_FOSCOE), workpool(_workpool) {
-    assert(workpool != NULL);
+    assert(workpool != nullptr);
 }
 
 void RefineTreeTask::run() {
@@ -535,7 +536,7 @@ void RefineTreeTask::_run() {
 
 RefineTask::RefineTask(MuscleWorkPool *_workpool)
     : Task(tr("RefineTask"), TaskFlags_RBSF_FOSCOE), workpool(_workpool) {
-    assert(workpool != NULL);
+    assert(workpool != nullptr);
     tpm = Progress_Manual;
     workpool->refineTI = &stateInfo;
     setMaxParallelSubtasks(workpool->nThreads);
@@ -599,9 +600,9 @@ void RefineTask::_run() {
 ////////////////////////////////////////////////////////////////////////////
 
 RefineWorker::RefineWorker(MuscleWorkPool *_workpool, int _workerID)
-    : Task(QString("RefineWorker"), TaskFlags_FOSCOE), workpool(_workpool), workerID(_workerID), Leaves1(NULL), Leaves2(NULL) {
+    : Task(QString("RefineWorker"), TaskFlags_FOSCOE), workpool(_workpool), workerID(_workerID), Leaves1(nullptr), Leaves2(nullptr) {
     assert(workerID >= 0);
-    assert(workpool != NULL);
+    assert(workpool != nullptr);
 }
 
 void RefineWorker::run() {

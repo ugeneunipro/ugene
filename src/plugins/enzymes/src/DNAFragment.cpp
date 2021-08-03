@@ -38,7 +38,7 @@ namespace U2 {
 
 DNAFragment::DNAFragment(const SharedAnnotationData &fragment, U2SequenceObject *sObj, const QList<AnnotationTableObject *> relatedAnns)
     : annotatedFragment(fragment), dnaObj(sObj), relatedAnnotations(relatedAnns), reverseCompl(false) {
-    SAFE_POINT(sObj != NULL, "Invalid sequence object detected!", );
+    SAFE_POINT(sObj != nullptr, "Invalid sequence object detected!", );
     updateTerms();
 }
 
@@ -74,11 +74,11 @@ QList<DNAFragment> DNAFragment::findAvailableFragments(const QList<GObject *> &a
     QList<DNAFragment> fragments;
     foreach (GObject *obj, aObjects) {
         AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(obj);
-        assert(aObj != NULL);
+        assert(aObj != nullptr);
         foreach (Annotation *a, aObj->getAnnotations()) {
             if (isDNAFragment(a)) {
                 // Find related sequence object
-                U2SequenceObject *dnaObj = NULL;
+                U2SequenceObject *dnaObj = nullptr;
                 QList<GObjectRelation> relations = aObj->getObjectRelations();
                 foreach (const GObjectRelation &relation, relations) {
                     if (relation.role != ObjectRole_Sequence) {
@@ -87,7 +87,7 @@ QList<DNAFragment> DNAFragment::findAvailableFragments(const QList<GObject *> &a
                     GObject *relatedObj = GObjectUtils::selectObjectByReference(relation.ref, sObjects, UOF_LoadedOnly);
                     dnaObj = qobject_cast<U2SequenceObject *>(relatedObj);
                 }
-                if (dnaObj == NULL) {
+                if (dnaObj == nullptr) {
                     continue;
                 }
                 // Find related annotation tables
@@ -242,7 +242,7 @@ QByteArray DNAFragment::getSourceSequenceRegion(const U2Region region, U2OpStatu
 }
 
 void DNAFragment::updateTerms() {
-    if (annotatedFragment.data() == NULL) {
+    if (annotatedFragment.data() == nullptr) {
         return;
     }
     updateLeftTerm();
@@ -261,7 +261,7 @@ void DNAFragment::updateTerms() {
 }
 
 void DNAFragment::updateLeftTerm() {
-    assert(annotatedFragment.data() != NULL);
+    assert(annotatedFragment.data() != nullptr);
     leftTerm.enzymeId = annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_TERM).toLatin1();
     leftTerm.overhang = annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_OVERHANG).toLatin1();
     leftTerm.type = annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_TYPE).toLatin1();
@@ -269,7 +269,7 @@ void DNAFragment::updateLeftTerm() {
 }
 
 void DNAFragment::updateRightTerm() {
-    assert(annotatedFragment.data() != NULL);
+    assert(annotatedFragment.data() != nullptr);
     rightTerm.enzymeId = annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_TERM).toLatin1();
     rightTerm.overhang = annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_OVERHANG).toLatin1();
     rightTerm.type = annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_TYPE).toLatin1();

@@ -40,6 +40,7 @@
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MaEditorSelection.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MuscleTask.h"
@@ -57,7 +58,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 MusclePlugin::MusclePlugin()
     : Plugin(tr("MUSCLE"),
              tr("A port of MUSCLE package for multiple sequence alignment. Check http://www.drive5.com/muscle/ for the original version")),
-      ctx(NULL) {
+      ctx(nullptr) {
     if (AppContext::getMainWindow()) {
         ctx = new MuscleMSAEditorContext(this);
         ctx->init();
@@ -75,7 +76,7 @@ MusclePlugin::MusclePlugin()
     //uMUSCLE Test
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = UMUSCLETests ::createTestFactories();
@@ -109,15 +110,15 @@ MusclePlugin::~MusclePlugin() {
 
 MSAEditor *MuscleAction::getMSAEditor() const {
     MSAEditor *e = qobject_cast<MSAEditor *>(getObjectView());
-    SAFE_POINT(e != NULL, "Can't get an appropriate MSA Editor", NULL);
+    SAFE_POINT(e != nullptr, "Can't get an appropriate MSA Editor", nullptr);
     return e;
 }
 
 void MuscleAction::sl_updateState() {
     StateLockableItem *item = qobject_cast<StateLockableItem *>(sender());
-    SAFE_POINT(item != NULL, "Unexpected sender: expect StateLockableItem", );
+    SAFE_POINT(item != nullptr, "Unexpected sender: expect StateLockableItem", );
     MSAEditor *msaEditor = getMSAEditor();
-    CHECK(msaEditor != NULL, );
+    CHECK(msaEditor != nullptr, );
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
@@ -127,8 +128,8 @@ MuscleMSAEditorContext::MuscleMSAEditorContext(QObject *p)
 
 void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
-    CHECK(msaed->getMaObject() != NULL, );
+    SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != nullptr, );
 
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
@@ -167,19 +168,19 @@ void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
 void MuscleMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(v);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
 }
 
 void MuscleMSAEditorContext::sl_align() {
-    MuscleAction *action = qobject_cast<MuscleAction *>(sender());
-    assert(action != NULL);
+    auto action = qobject_cast<MuscleAction *>(sender());
+    assert(action != nullptr);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getSelectionRect();
+    const QRect selection = action->getMSAEditor()->getSelection().toRect();
     MuscleTaskSettings s;
     if (!selection.isNull()) {
         int width = selection.width();
@@ -199,7 +200,7 @@ void MuscleMSAEditorContext::sl_align() {
     }
 
     AlignGObjectTask *muscleTask = new MuscleGObjectRunFromSchemaTask(obj, s);
-    Task *alignTask = NULL;
+    Task *alignTask = nullptr;
 
     if (dlg->translateToAmino()) {
         QString trId = dlg->getTranslationId();
@@ -211,8 +212,8 @@ void MuscleMSAEditorContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    ed->resetCollapseModel();
 }
 
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
@@ -234,26 +235,26 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     connect(msaObject, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction *action = qobject_cast<MuscleAction *>(sender());
-    assert(action != NULL);
+    assert(action != nullptr);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (obj == NULL)
+    if (obj == nullptr)
         return;
     assert(!obj->isStateLocked());
 
     LastUsedDirHelper lod;
 #ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog);
+        lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog);
     } else
 #endif
-        lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+        lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
 
     if (lod.url.isEmpty()) {
         return;
@@ -263,8 +264,8 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    ed->resetCollapseModel();
 }
 
 }    // namespace U2

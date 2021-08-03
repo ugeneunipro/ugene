@@ -55,7 +55,7 @@ public:
 class SchemaWorkerPrompter : public PrompterBase<SchemaWorkerPrompter> {
     Q_OBJECT
 public:
-    SchemaWorkerPrompter(Actor *p = NULL)
+    SchemaWorkerPrompter(Actor *p = nullptr)
         : PrompterBase<SchemaWorkerPrompter>(p) {
     }
     QString composeRichDoc();

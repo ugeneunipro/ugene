@@ -58,7 +58,9 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 class MaEditorSelection;
+class MaEditorSelectionController;
 class MultipleAlignment;
+class MaCollapseModel;
 class MaModificationInfo;
 
 class SNPSettings {
@@ -107,7 +109,7 @@ public:
     static const float zoomMult;    // SANGER_TODO: should be dependable on the view
 
 public:
-    MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj);
+    MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj);
 
     virtual QVariantMap saveState();
 
@@ -143,14 +145,11 @@ public:
 
     bool isAlignmentEmpty() const;
 
+    /* Returns current selection controller. */
+    virtual MaEditorSelectionController *getSelectionController() const = 0;
+
     /* Returns current selection. */
     const MaEditorSelection &getSelection() const;
-
-    /*
-     * Shortcut for getSelection().toRect().
-     * Note: this method is useful because we have no "MaEditorSelection" type available outside of the U2View today.
-     */
-    QRect getSelectionRect() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const;    // SANGER_TODO: order the methods
@@ -173,7 +172,8 @@ public:
 
     void updateReference();
 
-    void resetCollapsibleModel();    // SANGER_TODO: collapsible shouldn't be here
+    /** Sets row ordering mode to 'Original' and resets collapse model to the original row order. */
+    void resetCollapseModel();
 
     void exportHighlighted() {
         sl_exportHighlighted();
@@ -200,6 +200,9 @@ public:
      */
     virtual void setRowOrderMode(MaEditorRowOrderMode mode);
 
+    /** Returns collapse model instance. The returned value is never null. */
+    MaCollapseModel *getCollapseModel() const;
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -208,7 +211,6 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint &cursorPosition);
-    void si_clearSelection();
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint &pos) = 0;
@@ -225,6 +227,7 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
+    void sl_onClearActionTriggered();
 
     /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
     virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
@@ -285,6 +288,9 @@ protected:
     /** Active row ordering mode in the view. */
     MaEditorRowOrderMode rowOrderMode;
 
+    /** Collapse model instance. Created in the constructor and is never changed. */
+    MaCollapseModel *const collapseModel;
+
 public:
     QAction *saveAlignmentAction;
     QAction *saveAlignmentAsAction;
@@ -296,7 +302,10 @@ public:
     QAction *resetZoomAction;
     QAction *saveScreenshotAction;
     QAction *exportHighlightedAction;
+
+    /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction *clearSelectionAction;
+
     QAction *copyConsensusAction;
     QAction *copyConsensusWithGapsAction;
 };

@@ -58,7 +58,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 SiteconPlugin::SiteconPlugin()
-    : Plugin(tr("SITECON"), tr("SITECON - is a program package for revealing and analysis of conservative conformational and physicochemical properties in transcription factor binding sites sets.")), ctxADV(NULL) {
+    : Plugin(tr("SITECON"), tr("SITECON - is a program package for revealing and analysis of conservative conformational and physicochemical properties in transcription factor binding sites sets.")), ctxADV(nullptr) {
     if (AppContext::getMainWindow()) {
         ctxADV = new SiteconADVContext(this);
         ctxADV->init();
@@ -72,7 +72,7 @@ SiteconPlugin::SiteconPlugin()
     LocalWorkflow::SiteconWorkerFactory::init();
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/sitecon_models";
 

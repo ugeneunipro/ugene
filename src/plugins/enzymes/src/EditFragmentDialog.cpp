@@ -219,7 +219,7 @@ void EditFragmentDialog::sl_onRightResetClicked() {
 bool EditFragmentDialog::isValidOverhang(const QString &text) {
     QByteArray seq(text.toLatin1());
     const DNAAlphabet *alph = U2AlphabetUtils::findBestAlphabet(seq);
-    return alph != NULL && alph->isNucleic() ? true : false;
+    return alph != nullptr && alph->isNucleic() ? true : false;
 }
 
 void EditFragmentDialog::resetLeftOverhang() {

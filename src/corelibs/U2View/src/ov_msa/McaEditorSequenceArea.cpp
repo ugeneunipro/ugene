@@ -36,6 +36,7 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include "McaEditorReferenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/RowHeightController.h"
 #include "helpers/ScrollController.h"
@@ -189,44 +190,29 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
-    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = 0).
-    CHECK((sel.width() == 1 && sel.height() == 1) || sel.width() == 0, );
-    if (sel.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
-        // clear selection if gap is clicked
-        emit si_clearReferenceSelection();
-        MaEditorSequenceArea::setSelection(MaEditorSelection());
-        return;
-    }
-    if (sel.isEmpty()) {
-        emit si_clearReferenceSelection();
-    }
-    MaEditorSequenceArea::setSelection(sel);
-}
-
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
-    CHECK(selection.width() == 1 && selection.height() == 1, );
+    QRect selectionRect = editor->getSelection().toRect();
+    CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
     const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
-    if (dy == 0 && mca->isTrailingOrLeadingGap(selection.y(), selection.x() + dx)) {
+    if (dy == 0 && mca->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x() + dx)) {
         return;
     }
 
-    int nextRowToSelect = selection.y() + dy;
+    int nextRowToSelect = selectionRect.y() + dy;
     if (dy != 0) {
-        bool noRowAvailabe = true;
-        for (; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selection.x() + dx)) {
-                noRowAvailabe = false;
+        bool noRowAvailable = true;
+        for (; nextRowToSelect >= 0 && nextRowToSelect < editor->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
+            if (!mca->isTrailingOrLeadingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
+                noRowAvailable = false;
                 break;
             }
         }
-        CHECK(!noRowAvailabe, );
+        CHECK(!noRowAvailable, );
     }
 
-    QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
-    MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
-    setSelection(newSelection);
+    QRect newSelectionRect(selectionRect.x() + dx, nextRowToSelect, selectionRect.width(), selectionRect.height());
+    setSelectionRect(newSelectionRect);
     const QPoint &cursorPosition = editor->getCursorPosition();
     editor->setCursorPosition(QPoint(cursorPosition.x() + dx, nextRowToSelect));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
@@ -335,14 +321,17 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 
 void McaEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    SAFE_POINT(nullptr != maObj, "MaObj is NULL", );
+    SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
+    const MaEditorSelection& selection = editor->getSelection();
+    QRect selectionRect = selection.toRect();
 
     const bool readOnly = maObj->isStateLocked();
     const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     const bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
-    const bool isSingleSymbolSelected = (selection.width() == 1 && selection.height() == 1);
-    const bool hasGapBeforeSelection = (!selection.isEmpty() && selection.x() > 0 && maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
+    const bool isSingleSymbolSelected = (selectionRect.width() == 1 && selectionRect.height() == 1);
+    const bool hasGapBeforeSelection = !selection.isEmpty() && selectionRect.x() > 0 &&
+                                       maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
 
     ui->delSelectionAction->setEnabled(canEditSelectedArea);
     updateTrimActions(canEditSelectedArea);
@@ -364,8 +353,9 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
-    int currentPos = getSelection().x();
+    const MaEditorSelection& selection = editor->getSelection();
+    SAFE_POINT(!selection.isEmpty(), "selection is empty", );
+    int currentPos = selection.toRect().x();
 
     mcaObj->trimRow(maRowIndex, currentPos, os, edge);
     CHECK_OP(os, );
@@ -382,7 +372,7 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
-    int currentSelection = getSelection().x();
+    int currentSelection = editor->getSelection().toRect().x();
     if (start == currentSelection) {
         trimLeftEndAction->setEnabled(false);
     }
@@ -396,10 +386,10 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
-    SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
-    SAFE_POINT(r != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
-    r->drawReferenceSelection(painter);
-    r->drawNameListSelection(painter);
+    auto mcaRenderer = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+    SAFE_POINT(mcaRenderer != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
+    mcaRenderer->drawReferenceSelection(painter);
+    mcaRenderer->drawNameListSelection(painter);
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
@@ -408,7 +398,7 @@ void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &h
 }
 
 QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionName) {
-    QAction *showTraceAction = new QAction(actionName, this);
+    auto showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
     showTraceAction->setEnabled(true);
@@ -420,10 +410,10 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != nullptr, );
+    const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
-    assert(isInRange(selection.topLeft()));
-    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+    SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );
 
     MultipleChromatogramAlignmentObject *maObj = getEditor()->getMaObject();
     CHECK(maObj != nullptr && !maObj->isStateLocked(), );
@@ -437,15 +427,15 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    int xSelection = selection.x();
+    QRect selectionRect = selection.toRect();
     maObj->changeLength(os, maObj->getLength() + 1);
-    maObj->insertCharacter(selection.y(), xSelection, newCharacter);
+    maObj->insertCharacter(selectionRect.y(), selectionRect.x(), newCharacter);
 
     GCounter::increment(newCharacter == U2Msa::GAP_CHAR ? "Insert gap into a new column" : "Insert character into a new column", editor->getFactoryId());
 
     // insert char into the reference
     U2SequenceObject *ref = getEditor()->getMaObject()->getReferenceObj();
-    U2Region region = U2Region(xSelection, 0);
+    U2Region region = U2Region(selectionRect.x(), 0);
     ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
     SAFE_POINT_OP(os, );
 
@@ -473,8 +463,8 @@ void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
     if (!modInfo.rowListChanged) {
         return;
     }
-    MultipleAlignmentObject *maObject = getEditor()->getMaObject();
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MultipleAlignmentObject *maObject = editor->getMaObject();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     QSet<int> expandedGroupIndexes;
     for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
         const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroup(i);

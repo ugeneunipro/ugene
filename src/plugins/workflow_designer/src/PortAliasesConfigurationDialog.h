@@ -39,7 +39,7 @@ struct PortAliasesCfgDlgModel {
 class PortAliasesConfigurationDialog : public QDialog, public Ui_PortAliasesConfigurationDialog {
     Q_OBJECT
 public:
-    PortAliasesConfigurationDialog(const Schema &sc, QWidget *p = NULL);
+    PortAliasesConfigurationDialog(const Schema &sc, QWidget *p = nullptr);
 
     /*
      * it removes empty aliases from model

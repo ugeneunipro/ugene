@@ -53,7 +53,7 @@ OPGroupParameters InSilicoPcrOPWidgetFactory::getOPGroupParameters() {
 }
 
 bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
-    SAFE_POINT(filter != NULL, L10N::nullPointerError("Options Panel Filter"), false);
+    SAFE_POINT(filter != nullptr, L10N::nullPointerError("Options Panel Filter"), false);
 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }

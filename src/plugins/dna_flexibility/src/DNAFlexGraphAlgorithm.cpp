@@ -46,7 +46,7 @@ void DNAFlexGraphAlgorithm::calculate(
     const U2Region &region,
     const GSequenceGraphWindowData *windowData,
     U2OpStatus &os) {
-    assert(windowData != NULL);
+    assert(windowData != nullptr);
 
     const QByteArray &sequence = getSequenceData(sequenceObject, os);
     CHECK_OP(os, );

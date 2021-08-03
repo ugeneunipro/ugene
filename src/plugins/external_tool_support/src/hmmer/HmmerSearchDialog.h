@@ -43,8 +43,8 @@ public:
 class HmmerSearchDialog : public QDialog, public Ui_HmmerSearchDialog {
     Q_OBJECT
 public:
-    HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-    HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent = NULL);
+    HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = nullptr);
+    HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent = nullptr);
 
     static const QString DOM_E_PLUS_PREFIX;
     static const QString DOM_E_MINUS_PREFIX;

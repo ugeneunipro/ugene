@@ -206,7 +206,7 @@ void SnpEffFactory::init() {
 //////////////////////////////////////////////////////////////////////////
 //SnpEffWorker
 SnpEffWorker::SnpEffWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL) {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
 void SnpEffWorker::init() {
@@ -217,7 +217,7 @@ void SnpEffWorker::init() {
 Task *SnpEffWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), getValue<QString>(CUSTOM_DIR_ID), context->workingDir());
         U2OpStatusImpl os;
@@ -249,7 +249,7 @@ Task *SnpEffWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SnpEffWorker::cleanup() {
@@ -258,7 +258,7 @@ void SnpEffWorker::cleanup() {
 namespace {
 QString getTargetTaskUrl(Task *task) {
     SnpEffTask *curtask = dynamic_cast<SnpEffTask *>(task);
-    if (NULL != curtask) {
+    if (nullptr != curtask) {
         return curtask->getResult();
     }
     return "";
@@ -266,7 +266,7 @@ QString getTargetTaskUrl(Task *task) {
 
 QString getSummaryUrl(Task *task) {
     SnpEffTask *curtask = dynamic_cast<SnpEffTask *>(task);
-    if (NULL != curtask) {
+    if (nullptr != curtask) {
         return curtask->getSummaryUrl();
     }
     return "";

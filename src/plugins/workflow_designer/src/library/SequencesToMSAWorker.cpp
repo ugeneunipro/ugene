@@ -57,7 +57,7 @@ Task *SequencesToMSAWorker::tick() {
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -69,7 +69,7 @@ Task *SequencesToMSAWorker::tick() {
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void MSAFromSequencesTask::run() {
@@ -93,7 +93,7 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task *t) {
             ma->setName("Multiple alignment");
         }
 
-        SAFE_POINT(NULL != outPort, "NULL outPort!", );
+        SAFE_POINT(nullptr != outPort, "NULL outPort!", );
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(ma);
 
         outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), qVariantFromValue<SharedDbiDataHandler>(msaId)));

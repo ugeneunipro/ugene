@@ -48,14 +48,14 @@ using namespace HI;
 #define GT_CLASS_NAME "GTSequenceReadingModeDialogUtils"
 
 GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus &os, CustomScenario *scenario)
-    : Filler(os, "MultipleDocumentsReadingModeSelectorController", scenario), dialog(NULL) {
+    : Filler(os, "MultipleDocumentsReadingModeSelectorController", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"
 void GTSequenceReadingModeDialogUtils::commonScenario() {
     GTGlobals::sleep(1000);
     QWidget *openDialog = QApplication::activeModalWidget();
-    GT_CHECK(openDialog != NULL, "dialog not found");
+    GT_CHECK(openDialog != nullptr, "dialog not found");
 
     dialog = openDialog;
 
@@ -80,7 +80,7 @@ void GTSequenceReadingModeDialogUtils::selectMode() {
     }
 
     QRadioButton *radioButton = dialog->findChild<QRadioButton *>(buttonName);
-    GT_CHECK(radioButton != NULL, "radio button not found");
+    GT_CHECK(radioButton != nullptr, "radio button not found");
 
     if (!radioButton->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
@@ -115,7 +115,7 @@ void GTSequenceReadingModeDialogUtils::setNumSymbolsParts() {
 #define GT_METHOD_NAME "setNumSymbolsFiles"
 void GTSequenceReadingModeDialogUtils::setNumSymbolsFiles() {
     QSpinBox *spinBox = dialog->findChild<QSpinBox *>(FILE_GAP);
-    GT_CHECK(spinBox != NULL, "spinBox not found");
+    GT_CHECK(spinBox != nullptr, "spinBox not found");
 
     changeSpinBoxValue(spinBox, GTSequenceReadingModeDialog::numSymbolFiles);
 }
@@ -128,7 +128,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
     }
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>(NEW_DOC_NAME);
-    GT_CHECK(lineEdit != NULL, "lineEdit not found");
+    GT_CHECK(lineEdit != nullptr, "lineEdit not found");
 
     GTLineEdit::clear(os, lineEdit);
     GTLineEdit::setText(os, lineEdit, GTSequenceReadingModeDialog::newDocName);
@@ -138,7 +138,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
 #define GT_METHOD_NAME "selectSaveDocument"
 void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
     QCheckBox *saveBox = dialog->findChild<QCheckBox *>(SAVE_BOX);
-    GT_CHECK(saveBox != NULL, "save check box not found");
+    GT_CHECK(saveBox != nullptr, "save check box not found");
 
     if (GTSequenceReadingModeDialog::saveDocument != saveBox->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
@@ -163,19 +163,19 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
 #define GT_METHOD_NAME "clickButton"
 void GTSequenceReadingModeDialogUtils::clickButton() {
     QDialogButtonBox *buttonBox = dialog->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-    GT_CHECK(buttonBox != NULL, "button box not found");
+    GT_CHECK(buttonBox != nullptr, "button box not found");
 
     QList<QAbstractButton *> buttonList = buttonBox->buttons();
     GT_CHECK(buttonList.size() != 0, "button not found");
 
-    QPushButton *btn = NULL;
+    QPushButton *btn = nullptr;
     foreach (QAbstractButton *b, buttonList) {
         if (buttonBox->standardButton(b) == GTSequenceReadingModeDialog::button) {
             btn = qobject_cast<QPushButton *>(b);
             break;
         }
     }
-    GT_CHECK(btn != NULL, "button not found");
+    GT_CHECK(btn != nullptr, "button not found");
 
     GTWidget::click(os, btn /*, UseMethod*/);
 }

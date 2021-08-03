@@ -238,7 +238,6 @@ void CmdlineTaskRunner::prepare() {
         args << QString("--%1=\"%2\"").arg(REPORT_FILE_ARG).arg(config.reportFile);
     }
 
-    args << config.arguments;
     if (config.withPluginList) {
         args << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(config.pluginList.join(";"));
     }
@@ -247,6 +246,8 @@ void CmdlineTaskRunner::prepare() {
         QString logLevel = getLogLevelName(config.logLevel).toLower();
         args << ("--log-level-" + logLevel);
     }
+
+    args << config.arguments;
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert(ENV_SEND_CRASH_REPORTS, "0");

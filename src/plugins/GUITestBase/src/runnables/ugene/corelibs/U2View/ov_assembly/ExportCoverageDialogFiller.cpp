@@ -43,14 +43,14 @@ namespace U2 {
 
 ExportCoverageDialogFiller::ExportCoverageDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "ExportCoverageDialog"),
-      dialog(NULL),
+      dialog(nullptr),
       actions(actions) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportCoverageDialogFiller::commonScenario() {
     dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Active modal widget not found");
+    GT_CHECK(dialog != nullptr, "Active modal widget not found");
 
     foreach (const Action &action, actions) {
         switch (action.first) {
@@ -183,7 +183,7 @@ void ExportCoverageDialogFiller::checkFilePath(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected file path from the action data");
     QLineEdit *leFilePath = GTWidget::findExactWidget<QLineEdit *>(os, "leFilePath", dialog);
-    GT_CHECK(NULL != leFilePath, "A file path line edit wasn't found");
+    GT_CHECK(nullptr != leFilePath, "A file path line edit wasn't found");
     GT_CHECK(leFilePath->text() == actionData.toString(), QString("An unexpected file path: expected '%1', got '%2'").arg(actionData.toString()).arg(leFilePath->text()));
 }
 #undef GT_METHOD_NAME
@@ -193,7 +193,7 @@ void ExportCoverageDialogFiller::checkFormat(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected format name from the action data");
     QComboBox *cbFormat = GTWidget::findExactWidget<QComboBox *>(os, "cbFormat", dialog);
-    GT_CHECK(NULL != cbFormat, "A format combobox wasn't found");
+    GT_CHECK(nullptr != cbFormat, "A format combobox wasn't found");
     GT_CHECK(cbFormat->currentText() == actionData.toString(), QString("An unexpected format is set: expect '%1' got '%2'").arg(actionData.toString()).arg(cbFormat->currentText()));
 }
 #undef GT_METHOD_NAME
@@ -203,7 +203,7 @@ void ExportCoverageDialogFiller::checkCompress(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     QCheckBox *chbCompress = GTWidget::findExactWidget<QCheckBox *>(os, "chbCompress", dialog);
-    GT_CHECK(NULL != chbCompress, "A compress checkbox wasn't found");
+    GT_CHECK(nullptr != chbCompress, "A compress checkbox wasn't found");
     GT_CHECK(chbCompress->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
 #undef GT_METHOD_NAME
@@ -213,7 +213,7 @@ void ExportCoverageDialogFiller::checkOptionsVisibility(const QVariant &actionDa
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected groupbox visibility state from the action data");
     QWidget *gbAdditionalOptions = GTWidget::findWidget(os, "gbAdditionalOptions", dialog);
-    GT_CHECK(NULL != gbAdditionalOptions, "An additional options widget wasn't found");
+    GT_CHECK(nullptr != gbAdditionalOptions, "An additional options widget wasn't found");
     GT_CHECK(gbAdditionalOptions->isVisible() == actionData.toBool(), "An unexpected additional options groupbox visibility state");
 }
 #undef GT_METHOD_NAME
@@ -223,7 +223,7 @@ void ExportCoverageDialogFiller::checkExportCoverage(const QVariant &actionData)
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     QCheckBox *chbExportCoverage = GTWidget::findExactWidget<QCheckBox *>(os, "chbExportCoverage", dialog);
-    GT_CHECK(NULL != chbExportCoverage, "An export coverage checkbox wasn't found");
+    GT_CHECK(nullptr != chbExportCoverage, "An export coverage checkbox wasn't found");
     GT_CHECK(chbExportCoverage->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
 #undef GT_METHOD_NAME
@@ -233,7 +233,7 @@ void ExportCoverageDialogFiller::checkExportBasesQuantity(const QVariant &action
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     QCheckBox *chbExportBasesQuantity = GTWidget::findExactWidget<QCheckBox *>(os, "chbExportBasesQuantity", dialog);
-    GT_CHECK(NULL != chbExportBasesQuantity, "An export bases count checkbox wasn't found");
+    GT_CHECK(nullptr != chbExportBasesQuantity, "An export bases count checkbox wasn't found");
     GT_CHECK(chbExportBasesQuantity->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
 #undef GT_METHOD_NAME
@@ -243,7 +243,7 @@ void ExportCoverageDialogFiller::checkThreshold(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get an expected spinbox value from the action data");
     QSpinBox *sbThreshold = GTWidget::findExactWidget<QSpinBox *>(os, "sbThreshold", dialog);
-    GT_CHECK(NULL != sbThreshold, "A threshold spinbox wasn't found");
+    GT_CHECK(nullptr != sbThreshold, "A threshold spinbox wasn't found");
     GT_CHECK(sbThreshold->value() == actionData.toInt(), "An unexpected spinbox value");
 }
 #undef GT_METHOD_NAME
@@ -252,7 +252,7 @@ void ExportCoverageDialogFiller::checkThreshold(const QVariant &actionData) {
 void ExportCoverageDialogFiller::checkThresholdBounds(const QVariant &actionData) {
     GT_CHECK(actionData.canConvert<QPoint>(), "Can't get a QPoint with expected spinbox bounds values from the action data");
     QSpinBox *sbThreshold = GTWidget::findExactWidget<QSpinBox *>(os, "sbThreshold", dialog);
-    GT_CHECK(NULL != sbThreshold, "A threshold spinbox wasn't found");
+    GT_CHECK(nullptr != sbThreshold, "A threshold spinbox wasn't found");
     const QPoint spinboxBounds = actionData.value<QPoint>();
     GTSpinBox::checkLimits(os, sbThreshold, spinboxBounds.x(), spinboxBounds.y());
 }

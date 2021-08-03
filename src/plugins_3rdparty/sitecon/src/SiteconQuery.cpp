@@ -99,7 +99,7 @@ QString QDSiteconActor::getText() const {
 }
 
 Task *QDSiteconActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    Task *t = NULL;
+    Task *t = nullptr;
     assert(!location.isEmpty());
 
     const QString &urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
@@ -135,7 +135,7 @@ Task *QDSiteconActor::getAlgorithmTask(const QVector<U2Region> &location) {
     QDStrandOption stOp = getStrandToRun();
     if (stOp == QDStrand_ComplementOnly || stOp == QDStrand_Both) {
         DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
-        if (compTT != NULL) {
+        if (compTT != nullptr) {
             settings.complTT = compTT;
         }
     }

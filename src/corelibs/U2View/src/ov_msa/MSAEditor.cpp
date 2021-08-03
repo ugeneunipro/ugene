@@ -51,9 +51,11 @@
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
+#include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
 #include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
@@ -64,6 +66,8 @@ const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-a
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
+    selectionController = new MaEditorSelectionController(this);
+
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
@@ -206,7 +210,7 @@ bool MSAEditor::onCloseEvent() {
 }
 
 MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
-    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
 
@@ -274,7 +278,7 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     const MaEditorSelection &selection = getSelection();
     ui->copySelectionAction->setDisabled(selection.isEmpty());
 
-    //TODO:? move the signal emit point to a correct location.
+    // TODO:? move the signal emit point to a correct location.
     auto sequenceArea = qobject_cast<MSAEditorSequenceArea *>(ui->getSequenceArea());
     SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
     emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
@@ -290,15 +294,9 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     copyMenu->addSeparator();
     copyMenu->addAction(ui->cutSelectionAction);
 
-    auto nameList = qobject_cast<MaEditorNameList *>(ui->getEditorNameList());
-    SAFE_POINT(nameList != nullptr, "nameList is null", );
     copyMenu->addSeparator();
-
-    copyMenu->addAction(nameList->copyCurrentSequenceAction);
-
-    //TODO: trigger action update on selection change, not in the menu activation code!
-    int selectedMaRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selection.y());
-    nameList->copyCurrentSequenceAction->setDisabled(selectedMaRowIndex == -1);
+    MaEditorNameList *nameList = ui->getEditorNameList();
+    copyMenu->addAction(nameList->copyWholeRowAction);
 }
 
 void MSAEditor::addEditMenu(QMenu *m) {
@@ -408,7 +406,7 @@ void MSAEditor::addNavigationMenu(QMenu *m) {
 
 void MSAEditor::addTreeMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Tree"));
-    //em->setIcon(QIcon(":core/images/tree.png"));
+    // em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
@@ -495,7 +493,9 @@ QWidget *MSAEditor::createWidget() {
 
     connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
     connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_updateRealignAction()));
+    connect(getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_updateRealignAction()));
 
     qDeleteAll(filters);
 
@@ -504,6 +504,8 @@ QWidget *MSAEditor::createWidget() {
     sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
+
+    new MoveToObjectMaController(this);
 
     initDragAndDropSupport();
     updateActions();
@@ -653,13 +655,11 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    int startSeq = selection.y();
-    int endSeq = selection.y() + selection.height() - 1;
-    MaCollapseModel *model = ui->getCollapseModel();
     const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
     QSet<qint64> rowIds;
-    for (int i = startSeq; i <= endSeq; i++) {
-        rowIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
+    QRect selectionRect = selection.toRect();
+    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
+        rowIds.insert(ma->getRow(collapseModel->getMaRowIndexByViewRowIndex(i))->getRowId());
     }
     Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
     TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
@@ -698,8 +698,9 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     const MaEditorSelection &selection = getSelection();
-    bool isWholeSequenceSelection = selection.width() == maObject->getLength() && selection.height() >= 1;
-    bool isAllRowsSelection = selection.height() == ui->getCollapseModel()->getViewRowCount();
+    QRect selectionRect = selection.toRect();
+    bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
+    bool isAllRowsSelection = selectionRect.height() == collapseModel->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
@@ -734,7 +735,8 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
 
     MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     const MaEditorSelection &selection = getSelection();
-    U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
+    QRect selectionRect = selection.toRect();
+    U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
     msa->sortRows(sortType, sortOrder, sortRange);
 
     // Switch into 'Original' ordering mode.
@@ -840,7 +842,6 @@ static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>
 }
 
 void MSAEditor::updateCollapseModel() {
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
     if (rowOrderMode == MaEditorRowOrderMode::Original) {
         // Synchronize collapsible model with a current alignment.
         collapseModel->reset(getMaRowIds());
@@ -907,4 +908,9 @@ void MSAEditor::addFreeModeMasterMarker(QObject *marker) {
 void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
     freeModeMasterMarkersSet.remove(marker);
 }
+
+MaEditorSelectionController *MSAEditor::getSelectionController() const {
+    return selectionController;
+}
+
 }    // namespace U2

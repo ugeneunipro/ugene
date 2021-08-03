@@ -237,6 +237,8 @@ public:
 
     MultipleChromatogramAlignmentRow getExplicitCopy() const;
 
+    MultipleAlignmentData *getMultipleAlignmentData() const override;
+
     void setAdditionalInfo(const QVariantMap &additionalInfo);
     QVariantMap getAdditionalInfo() const;
 
@@ -258,12 +260,6 @@ private:
      * Warning: it is not verified that the row sequence is not empty.
      */
     static void addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset);
-
-    /**
-     * Joins sequence chars and gaps into one byte array.
-     * "keepOffset" specifies to take into account gaps at the beginning of the row.
-     */
-    QByteArray joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const;
 
     /** Gets the length of all gaps */
     inline int getGapsLength() const;

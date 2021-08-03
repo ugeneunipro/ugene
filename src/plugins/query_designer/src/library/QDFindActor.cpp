@@ -81,11 +81,11 @@ Task *QDFindActor::getAlgorithmTask(const QVector<U2Region> &location) {
     }
 
     if (settings.strand != FindAlgorithmStrand_Direct) {
-        DNATranslation *compTT = NULL;
+        DNATranslation *compTT = nullptr;
         if (scheme->getSequence().alphabet->isNucleic()) {
             compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(scheme->getSequence().alphabet);
         }
-        if (compTT != NULL) {
+        if (compTT != nullptr) {
             settings.complementTT = compTT;
         } else {
             QString err = tr("%1: can not find complement translation.").arg(getParameters()->getLabel());

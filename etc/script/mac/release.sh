@@ -15,12 +15,13 @@ APP_BUNDLE_DIR_NAME="ugene_app"
 APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 APP_NAME="Unipro UGENE.app"
 APP_DIR="${APP_BUNDLE_DIR}/${APP_NAME}"
-APP_EXE_DIR="${APP_DIR}/Contents/MacOS"
+APP_CONTENTS_DIR="${APP_DIR}/Contents"
+APP_EXE_DIR="${APP_CONTENTS_DIR}/MacOS"
 SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
-export ARCHITECTURE=x86_64
 ARCHITECTURE_FILE_SUFFIX=x86-64
+SIGN_IDENTITY="Developer ID Application: Alteametasoft"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
@@ -48,16 +49,22 @@ rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
-rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}"/tools "${APP_EXE_DIR}" || {
+rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
-echo "##teamcity[blockClosed name='Copy files']"
+
+# These tools can't be signed as is today and require some pre-processing.
+mv "${APP_EXE_DIR}/tools/python2/lib/python2.7" "${APP_CONTENTS_DIR}/Resources/"
+cd "${APP_EXE_DIR}/tools/python2/lib"
+ln -s "../../../../Resources/python2.7" .
+cd "${TEAMCITY_WORK_DIR}"
+
+echo " ##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
-# Validate bundle content.
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
+find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
 if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
@@ -75,7 +82,7 @@ function dump_symbols() {
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
-  "${SOURCE_DIR}/installer/macosx/dump_syms_x86_64" "${1}" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+  "${SOURCE_DIR}/etc/script/mac/dump_syms_x86_64" "${1}" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
@@ -95,11 +102,20 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
-echo "##teamcity[blockOpened name='Build DMG']"
+echo "##teamcity[blockOpened name='Sign app bundle']"
+codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+  "${APP_EXE_DIR}/ugeneui" || exit 1
+echo "##teamcity[blockClosed name='Sign app bundle']"
+
+echo "##teamcity[blockOpened name='Create DMG']"
 echo pkg-dmg running...
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
-"${SOURCE_DIR}/installer/macosx/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
+"${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
   --target "${RELEASE_FILE_NAME}" \
-  --volname "Unipro UGENE ${VERSION}" --symlink /Applications
+  --volname "Unipro UGENE ${VERSION}" --symlink /Applications || exit 1
+echo "##teamcity[blockClosed name='Create DMG']"
 
-echo "##teamcity[blockClosed name='Build DMG']"
+echo "##teamcity[blockOpened name='Notarize DMG']"
+bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
+echo "##teamcity[blockClosed name='Notarize DMG']"

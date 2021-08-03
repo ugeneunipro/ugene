@@ -153,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
     QTreeWidgetItem *par = items[2]->parent();
-    while (par != NULL) {
+    while (par != nullptr) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
     }
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction *zoom = GTAction::findActionByText(os, "Zoom In");
-    CHECK_SET_ERR(zoom != NULL, "Cannot find Zoom In action");
+    CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
     //Expected state : the Zoom View has been zoomed to the region of the annotation location.
@@ -179,7 +179,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
 
     //5. In the Details View scroll to coordinate 5050. Double - click on the annotation located there.
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, true);
 
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
 
     //2. Switch on the editing mode.
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
     //3. Double-click in the Details View on the direct strand between coordinates 6 and 7.
@@ -662,7 +662,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
     QTreeWidgetItem *par = items[2]->parent();
-    while (par != NULL) {
+    while (par != nullptr) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
     }
@@ -670,7 +670,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction *zoom = GTAction::findActionByText(os, "Zoom In");
-    CHECK_SET_ERR(zoom != NULL, "Cannot find Zoom In action");
+    CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
     //    Expected state : the Zoom View has been zoomed to the region of the annotation location.
@@ -688,7 +688,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
 
     //5. In the Details View scroll to coordinate 5050. Click on the annotation located there.
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, false);
 
@@ -706,7 +706,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
 
     //2. Switch on the editing mode.
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
     //3. Click in the Details View on the direct strand between coordinates 6 and 7.

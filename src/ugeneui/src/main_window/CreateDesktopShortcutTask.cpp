@@ -71,11 +71,11 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
     CoInitialize(0);
     // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
     // has already been called.
-    hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID *)&psl);
+    hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID *)&psl);
     if (SUCCEEDED(hres)) {
         // Set the path to the shortcut target and add the description.
         WCHAR path[MAX_PATH];
-        GetModuleFileNameW(NULL, path, MAX_PATH);
+        GetModuleFileNameW(nullptr, path, MAX_PATH);
         psl->SetPath(path);
         psl->SetDescription(L"Unipro UGENE");
 

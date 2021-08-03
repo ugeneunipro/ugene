@@ -82,7 +82,7 @@ QString SlopbedPrompter::composeRichDoc() {
 /************************************************************************/
 void SlopbedWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
@@ -138,7 +138,7 @@ void SlopbedWorkerFactory::init() {
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *genomeAttr = NULL;
+        Attribute *genomeAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
@@ -255,7 +255,7 @@ SlopbedTask::SlopbedTask(const BaseNGSSetting &settings)
 
 void SlopbedTask::prepareStep() {
     Task *etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
-    CHECK(etTask != NULL, );
+    CHECK(etTask != nullptr, );
 
     addSubTask(etTask);
 }
@@ -450,7 +450,7 @@ QString GenomecovPrompter::composeRichDoc() {
 /************************************************************************/
 void GenomecovWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
@@ -529,7 +529,7 @@ void GenomecovWorkerFactory::init() {
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *genomeAttr = NULL;
+        Attribute *genomeAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
@@ -667,7 +667,7 @@ GenomecovTask::GenomecovTask(const BaseNGSSetting &settings)
 
 void GenomecovTask::prepareStep() {
     Task *etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
-    CHECK(etTask != NULL, );
+    CHECK(etTask != nullptr, );
 
     addSubTask(etTask);
 }
@@ -766,9 +766,9 @@ const static QString UNIQUE("unique");
 
 BedtoolsIntersectWorker::BedtoolsIntersectWorker(Actor *a)
     : BaseWorker(a, false),
-      inputA(NULL),
-      inputB(NULL),
-      output(NULL) {
+      inputA(nullptr),
+      inputB(nullptr),
+      output(nullptr) {
 }
 
 void BedtoolsIntersectWorker::init() {
@@ -785,7 +785,7 @@ Task *BedtoolsIntersectWorker::tick() {
         return createTask();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 bool BedtoolsIntersectWorker::isReady() const {
@@ -807,7 +807,7 @@ void BedtoolsIntersectWorker::sl_taskFinished(Task *task) {
         return;
     }
     BedtoolsIntersectAnnotationsByEntityTask *intersectTask = qobject_cast<BedtoolsIntersectAnnotationsByEntityTask *>(task);
-    if (intersectTask == NULL) {
+    if (intersectTask == nullptr) {
         return;
     }
     setDone();
@@ -817,7 +817,7 @@ void BedtoolsIntersectWorker::sl_taskFinished(Task *task) {
 
     foreach (GObject *gObj, objList) {
         AnnotationTableObject *obj = qobject_cast<AnnotationTableObject *>(gObj);
-        CHECK_EXT(obj != NULL, output->setEnded(), );
+        CHECK_EXT(obj != nullptr, output->setEnded(), );
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(obj);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
                             qVariantFromValue<SharedDbiDataHandler>(tableId)));
@@ -860,7 +860,7 @@ U2EntityRef BedtoolsIntersectWorker::getAnnotationsEntityRef(const Message &m, c
 
     const SharedDbiDataHandler dbiHandler = data[portId].value<SharedDbiDataHandler>();
     const AnnotationTableObject *obj = StorageUtils::getAnnotationTableObject(context->getDataStorage(), dbiHandler);
-    CHECK_EXT(obj != NULL, os.setError(tr("Can not get annotation table object")), U2EntityRef());
+    CHECK_EXT(obj != nullptr, os.setError(tr("Can not get annotation table object")), U2EntityRef());
 
     return obj->getEntityRef();
 }

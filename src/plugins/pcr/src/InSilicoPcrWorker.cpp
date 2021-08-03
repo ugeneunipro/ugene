@@ -140,7 +140,7 @@ void InSilicoPcrWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, InSilicoPcrWorker::tr("In Silico PCR"), InSilicoPcrWorker::tr("Simulates PCR for input sequences and primer pairs. Creates the table with the PCR statistics."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new InSilicoPcrPrompter(NULL));
+    proto->setPrompter(new InSilicoPcrPrompter(nullptr));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -156,10 +156,10 @@ InSilicoPcrPrompter::InSilicoPcrPrompter(Actor *a)
 
 QString InSilicoPcrPrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    SAFE_POINT(NULL != input, "No input port", "");
+    SAFE_POINT(nullptr != input, "No input port", "");
     const Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    const QString producerName = (NULL != producer) ? producer->getLabel() : unsetStr;
+    const QString producerName = (nullptr != producer) ? producer->getLabel() : unsetStr;
     const QString primersLink = getHyperlink(PRIMERS_ATTR_ID, getURL(PRIMERS_ATTR_ID));
     return tr("Simulates PCR for the sequences from <u>%1</u> and primer pairs from <u>%2</u>.").arg(producerName).arg(primersLink);
 }
@@ -176,7 +176,7 @@ Task *InSilicoPcrWorker::createPrepareTask(U2OpStatus &os) const {
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
     LoadDocumentTask *task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
-    if (NULL == task) {
+    if (nullptr == task) {
         os.setError(tr("Can not read the primers file: ") + primersUrl);
     }
     return task;
@@ -184,7 +184,7 @@ Task *InSilicoPcrWorker::createPrepareTask(U2OpStatus &os) const {
 
 void InSilicoPcrWorker::onPrepared(Task *task, U2OpStatus &os) {
     LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask *>(task);
-    CHECK_EXT(NULL != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
+    CHECK_EXT(nullptr != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
     CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
@@ -217,7 +217,7 @@ void InSilicoPcrWorker::fetchPrimers(const QList<GObject *> &objects, U2OpStatus
 Primer InSilicoPcrWorker::createPrimer(GObject *object, bool &skipped, U2OpStatus &os) {
     Primer result;
     U2SequenceObject *primerSeq = qobject_cast<U2SequenceObject *>(object);
-    CHECK_EXT(NULL != primerSeq, os.setError(L10N::nullPointerError("Primer sequence")), result);
+    CHECK_EXT(nullptr != primerSeq, os.setError(L10N::nullPointerError("Primer sequence")), result);
 
     if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
         skipped = true;
@@ -234,18 +234,18 @@ Primer InSilicoPcrWorker::createPrimer(GObject *object, bool &skipped, U2OpStatu
 QList<Message> InSilicoPcrWorker::fetchResult(Task *task, U2OpStatus &os) {
     QList<Message> result;
     InSilicoPcrReportTask *reportTask = qobject_cast<InSilicoPcrReportTask *>(task);
-    if (NULL != reportTask) {
+    if (nullptr != reportTask) {
         monitor()->addOutputFile(getValue<QString>(REPORT_ATTR_ID), actor->getId(), true);
         return result;
     }
 
     MultiTask *multiTask = qobject_cast<MultiTask *>(task);
-    CHECK_EXT(NULL != multiTask, os.setError(L10N::nullPointerError("MultiTask")), result);
+    CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("MultiTask")), result);
 
     InSilicoPcrReportTask::TableRow tableRow;
     foreach (Task *t, multiTask->getTasks()) {
         InSilicoPcrWorkflowTask *pcrTask = qobject_cast<InSilicoPcrWorkflowTask *>(t);
-        CHECK_EXT(NULL != multiTask, os.setError(L10N::nullPointerError("InSilicoPcrTask")), result);
+        CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("InSilicoPcrTask")), result);
 
         int pairNumber = pcrTask->property(PAIR_NUMBER_PROP_ID).toInt();
         SAFE_POINT_EXT(pairNumber >= 0 && pairNumber < primers.size(), os.setError(L10N::internalError("Out of range")), result);
@@ -307,7 +307,7 @@ int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings &settings, c
 }
 
 Task *InSilicoPcrWorker::onInputEnded() {
-    CHECK(!reported, NULL);
+    CHECK(!reported, nullptr);
     reported = true;
     return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
 }
@@ -323,7 +323,7 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
     }
     if (seq->getSequenceLength() > InSilicoPcrTaskSettings::MAX_SEQUENCE_LENGTH) {
         os.setError(tr("The sequence is too long: ") + seq->getSequenceName());
-        return NULL;
+        return nullptr;
     }
 
     ExtractProductSettings productSettings;
@@ -339,7 +339,7 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
 
     InSilicoPcrTaskSettings pcrSettings;
     pcrSettings.sequence = seq->getWholeSequenceData(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     pcrSettings.isCircular = seq->isCircular();
     pcrSettings.forwardMismatches = getValue<int>(MISMATCHES_ATTR_ID);
     pcrSettings.reverseMismatches = pcrSettings.forwardMismatches;

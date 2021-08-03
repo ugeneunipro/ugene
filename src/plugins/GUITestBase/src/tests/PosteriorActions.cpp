@@ -77,7 +77,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Clear the clipboard
 
     QWidget *popupWidget = QApplication::activePopupWidget();
-    while (popupWidget != NULL) {
+    while (popupWidget != nullptr) {
 #ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
         fakeClock.startWorkaroundForMacCGEvents(1, true);
@@ -88,7 +88,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     }
 
     QWidget *modalWidget = QApplication::activeModalWidget();
-    while (modalWidget != NULL) {
+    while (modalWidget != nullptr) {
 #ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
         fakeClock.startWorkaroundForMacCGEvents(1, true);

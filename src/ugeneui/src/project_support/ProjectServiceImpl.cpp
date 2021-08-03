@@ -48,14 +48,14 @@ namespace U2 {
 
 ProjectServiceImpl::ProjectServiceImpl(Project *_pr)
     : ProjectService(tr("Project"), tr("Project service is available when opened a project file. Other services that depends on Project service will be automatically started after this service is enabled.")) {
-    saveAction = NULL;
-    saveAsAction = NULL;
-    closeProjectAction = NULL;
-    projectActionsSeparator = NULL;
-    exportProjectAction = NULL;
+    saveAction = nullptr;
+    saveAsAction = nullptr;
+    closeProjectAction = nullptr;
+    projectActionsSeparator = nullptr;
+    exportProjectAction = nullptr;
 
     pr = _pr;
-    assert(pr != NULL);
+    assert(pr != nullptr);
 }
 
 ProjectServiceImpl::~ProjectServiceImpl() {
@@ -140,7 +140,7 @@ Task::ReportResult ProjectServiceEnableTask::report() {
     AppContextImpl::getApplicationContext()->setProjectService(psi);
     AppContextImpl::getApplicationContext()->setProject(psi->getProject());
 
-    assert(psi->saveAction == NULL && psi->closeProjectAction == NULL);
+    assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
     psi->saveAction = new QAction(QIcon(":ugene/images/project_save.png"), tr("&Save all"), psi);
     psi->saveAction->setObjectName(ACTION_PROJECTSUPPORT__SAVE_PROJECT);
@@ -186,17 +186,17 @@ ProjectServiceDisableTask::ProjectServiceDisableTask(ProjectServiceImpl *_psi)
 }
 
 Task::ReportResult ProjectServiceDisableTask::report() {
-    AppContextImpl::getApplicationContext()->setProject(NULL);
-    AppContextImpl::getApplicationContext()->setProjectService(NULL);
+    AppContextImpl::getApplicationContext()->setProject(nullptr);
+    AppContextImpl::getApplicationContext()->setProjectService(nullptr);
 
     delete psi->saveAction;
-    psi->saveAction = NULL;
+    psi->saveAction = nullptr;
 
     delete psi->closeProjectAction;
-    psi->closeProjectAction = NULL;
+    psi->closeProjectAction = nullptr;
 
     delete psi->projectActionsSeparator;
-    psi->projectActionsSeparator = NULL;
+    psi->projectActionsSeparator = nullptr;
 
     return ReportResult_Finished;
 }

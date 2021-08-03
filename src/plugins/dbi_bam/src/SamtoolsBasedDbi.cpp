@@ -48,7 +48,7 @@ static const QByteArray ATTRIBUTE_SEP(":~!ugene-attribute!~:");
 /* SamtoolsBasedDbi */
 /************************************************************************/
 SamtoolsBasedDbi::SamtoolsBasedDbi()
-    : U2AbstractDbi(SamtoolsBasedDbiFactory::ID), assembliesCount(0), bamHandler(NULL), header(NULL), index(NULL) {
+    : U2AbstractDbi(SamtoolsBasedDbiFactory::ID), assembliesCount(0), bamHandler(nullptr), header(nullptr), index(nullptr) {
 }
 
 SamtoolsBasedDbi::~SamtoolsBasedDbi() {
@@ -105,7 +105,7 @@ bool SamtoolsBasedDbi::initBamStructures(const GUrl &fileName) {
     QByteArray urlBA = fileName.getURLString().toLocal8Bit();
     const char *url = urlBA.constData();
     bamHandler = bam_open(url, "r");
-    if (NULL == bamHandler) {
+    if (nullptr == bamHandler) {
         throw IOException(BAMDbiPlugin::tr("Can't open file '%1'").arg(url));
     }
 
@@ -115,12 +115,12 @@ bool SamtoolsBasedDbi::initBamStructures(const GUrl &fileName) {
     } else {
         throw Exception("Only indexed sorted BAM files could be used by this DBI");
     }
-    if (NULL == index) {
+    if (nullptr == index) {
         throw IOException(BAMDbiPlugin::tr("Can't load index file for '%1'").arg(url));
     }
 
     header = bam_header_read(bamHandler);
-    if (NULL == header) {
+    if (nullptr == header) {
         throw IOException(BAMDbiPlugin::tr("Can't read header from file '%1'").arg(url));
     }
     return true;
@@ -130,17 +130,17 @@ void SamtoolsBasedDbi::cleanup() {
     assemblyDbi.reset();
     objectDbi.reset();
     attributeDbi.reset();
-    if (NULL != header) {
+    if (nullptr != header) {
         bam_header_destroy(header);
-        header = NULL;
+        header = nullptr;
     }
-    if (NULL != index) {
+    if (nullptr != index) {
         bam_index_destroy(index);
-        index = NULL;
+        index = nullptr;
     }
-    if (NULL != bamHandler) {
+    if (nullptr != bamHandler) {
         bam_close(bamHandler);
-        bamHandler = NULL;
+        bamHandler = nullptr;
     }
     state = U2DbiState_Void;
 }
@@ -187,7 +187,7 @@ U2AssemblyDbi *SamtoolsBasedDbi::getAssemblyDbi() {
     if (U2DbiState_Ready == state) {
         return assemblyDbi.data();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -195,7 +195,7 @@ U2ObjectDbi *SamtoolsBasedDbi::getObjectDbi() {
     if (U2DbiState_Ready == state) {
         return objectDbi.data();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -203,7 +203,7 @@ U2AttributeDbi *SamtoolsBasedDbi::getAttributeDbi() {
     if (U2DbiState_Ready == state) {
         return attributeDbi.data();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -356,7 +356,7 @@ qint64 SamtoolsBasedObjectDbi::getFolderGlobalVersion(const QString &folder, U2O
 
 U2DbiIterator<U2DataId> *SamtoolsBasedObjectDbi::getObjectsByVisualName(const QString &, U2DataType, U2OpStatus &) {
     // TODO:
-    return NULL;
+    return nullptr;
 }
 
 void SamtoolsBasedObjectDbi::renameObject(const U2DataId & /*id*/, const QString & /*newName*/, U2OpStatus &os) {
@@ -528,8 +528,8 @@ int bamFetchFunction(const bam1_t *b, void *data) {
 void SamtoolsBasedReadsIterator::fetchNextChunk() {
     bamFile bam = dbi.getBamFile();
     const bam_index_t *idx = dbi.getIndex();
-    SAFE_POINT_EXT(NULL != bam, nextPosToRead = INT_MAX, );
-    SAFE_POINT_EXT(NULL != idx, nextPosToRead = INT_MAX, );
+    SAFE_POINT_EXT(nullptr != bam, nextPosToRead = INT_MAX, );
+    SAFE_POINT_EXT(nullptr != idx, nextPosToRead = INT_MAX, );
 
     void *data = (void *)(this);
     borderReadIds = newBorderReadIds;
@@ -564,7 +564,7 @@ U2Assembly SamtoolsBasedAssemblyDbi::getAssemblyObject(const U2DataId &id, U2OpS
               U2Assembly());
 
     const bam_header_t *header = dbi.getHeader();
-    SAFE_POINT(NULL != header, "NULL BAM header", U2Assembly());
+    SAFE_POINT(nullptr != header, "NULL BAM header", U2Assembly());
 
     CHECK_EXT(U2Type::Assembly == dbi.getEntityTypeById(id),
               os.setError(BAMDbiPlugin::tr("The specified object is not an assembly")),
@@ -604,7 +604,7 @@ qint64 SamtoolsBasedAssemblyDbi::countReads(const U2DataId &assemblyId, const U2
 
 U2DbiIterator<U2AssemblyRead> *SamtoolsBasedAssemblyDbi::getReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os, bool /*sortedHint*/) {
     int id = SamtoolsBasedAssemblyDbi::toSamtoolsId(assemblyId, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     U2Region targetReg = this->getCorrectRegion(assemblyId, r, os);
     return new SamtoolsBasedReadsIterator(id, targetReg, dbi);
 }
@@ -616,12 +616,12 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxPackedRow(const U2DataId &, const U2Regio
 
 U2DbiIterator<U2AssemblyRead> *SamtoolsBasedAssemblyDbi::getReadsByRow(const U2DataId &, const U2Region &, qint64, qint64, U2OpStatus &os) {
     os.setError("Operation not supported: BAM::SamtoolsBasedAssemblyDbi::getReadsByRow");
-    return NULL;
+    return nullptr;
 }
 
 U2DbiIterator<U2AssemblyRead> *SamtoolsBasedAssemblyDbi::getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os) {
     int id = SamtoolsBasedAssemblyDbi::toSamtoolsId(assemblyId, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     U2Region targetReg = this->getCorrectRegion(assemblyId, U2_REGION_MAX, os);
     return new SamtoolsBasedReadsIterator(id, targetReg, dbi, name);
 }
@@ -631,7 +631,7 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpSt
     CHECK_OP(os, 0);
 
     const bam_header_t *header = dbi.getHeader();
-    CHECK_EXT(NULL != header, os.setError("NULL header"), 0);
+    CHECK_EXT(nullptr != header, os.setError("NULL header"), 0);
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
     qint64 targetLength = header->target_len[id];
@@ -707,7 +707,7 @@ U2IntegerAttribute SamtoolsBasedAttributeDbi::getIntegerAttribute(const U2DataId
         CHECK_OP(os, result);
 
         const bam_header_t *header = dbi.getHeader();
-        CHECK_EXT(NULL != header, os.setError("NULL header"), result);
+        CHECK_EXT(nullptr != header, os.setError("NULL header"), result);
         CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), result);
         qint64 length = header->target_len[id];
         result = U2IntegerAttribute(objIdStr, U2BaseAttributeName::reference_length, length);

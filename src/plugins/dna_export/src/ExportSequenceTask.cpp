@@ -54,7 +54,7 @@ namespace U2 {
 QMap<U2EntityRef, int> ExportSequenceItem::sequencesRefCounts = QMap<U2EntityRef, int>();
 
 ExportSequenceItem::ExportSequenceItem()
-    : circular(false), alphabet(NULL), length(0), complTT(NULL), aminoTT(NULL), backTT(NULL) {
+    : circular(false), alphabet(nullptr), length(0), complTT(nullptr), aminoTT(nullptr), backTT(nullptr) {
 }
 
 ExportSequenceItem::ExportSequenceItem(const ExportSequenceItem &other)
@@ -165,7 +165,7 @@ bool ExportSequenceItem::isEmpty() const {
 }
 
 void ExportSequenceItem::setSequenceInfo(U2SequenceObject *seqObj) {
-    SAFE_POINT(NULL != seqObj, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
 
     seqRef = seqObj->getEntityRef();
     name = seqObj->getGObjectName();
@@ -189,8 +189,8 @@ ExportSequenceTaskSettings::ExportSequenceTaskSettings()
 //ExportSequenceTask
 
 ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
-    : DocumentProviderTask("", TaskFlag_None), config(s) {
-    setTaskName(tr("Export sequence to '%1'").arg(QFileInfo(s.fileName).fileName()));
+    : DocumentProviderTask(tr("Export sequence to %1").arg(s.fileName), TaskFlag_None), config(s) {
+    documentDescription = QFileInfo(s.fileName).fileName();
     setVerboseLogMode(true);
 }
 
@@ -207,7 +207,7 @@ bool checkFrame(const QVector<U2Region> &regions, int frame) {
 
 ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
     ExportSequenceItem complEi = ei;
-    CHECK_EXT(NULL != ei.complTT, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
+    CHECK_EXT(nullptr != ei.complTT, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
     importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name + "|rev-compl", ei.circular);
@@ -248,7 +248,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resul
 QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
     QList<ExportSequenceItem> res;
 
-    CHECK_EXT(NULL != ei.aminoTT, os.setError(ExportSequenceTask::tr("Amino translation not found")), res);
+    CHECK_EXT(nullptr != ei.aminoTT, os.setError(ExportSequenceTask::tr("Amino translation not found")), res);
     SAFE_POINT(ei.aminoTT->isThree2One(), "Invalid amino translation", res);
 
     const int nFrames = allFrames ? 3 : 1;
@@ -317,7 +317,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
 
 ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, const U2DbiRef &resultDbiRef, U2OpStatus &os) {
     ExportSequenceItem backEi = ei;
-    CHECK_EXT(NULL != ei.backTT, os.setError(ExportSequenceTask::tr("Back-translation not found")), backEi);
+    CHECK_EXT(nullptr != ei.backTT, os.setError(ExportSequenceTask::tr("Back-translation not found")), backEi);
     SAFE_POINT(ei.backTT->isOne2Three(), "Invalid reverse translation", backEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
@@ -326,7 +326,7 @@ ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, cons
 
     // translate
     const DNATranslation1to3Impl *trans = dynamic_cast<const DNATranslation1to3Impl *>(ei.backTT);
-    SAFE_POINT(NULL != trans, L10N::nullPointerError("DNA translation"), backEi);
+    SAFE_POINT(nullptr != trans, L10N::nullPointerError("DNA translation"), backEi);
     const BackTranslationMode translationMode = mostProbable ? USE_MOST_PROBABLE_CODONS : USE_FREQUENCE_DISTRIBUTION;
 
     U2SequenceObject seqObject(ei.name, ei.seqRef);
@@ -430,9 +430,9 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
     QList<ExportSequenceItem> result;
     for (int i = 0, n = items.size(); i < n; ++i) {
         ExportSequenceItem &ei = items[i];
-        if (ei.aminoTT != NULL) {
+        if (ei.aminoTT != nullptr) {
             result.append(toAmino(ei, allAminoFrames, resDbiRef, os));
-        } else if (ei.backTT != NULL) {
+        } else if (ei.backTT != nullptr) {
             result.append(backToNucleic(ei, mostProbableTranslation, resDbiRef, os));
         } else {
             result.append(ei);
@@ -445,15 +445,14 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
 }    // namespace
 
 void ExportSequenceTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(config.formatId);
-    SAFE_POINT(NULL != f, L10N::nullPointerError("sequence document format"), );
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
-    SAFE_POINT(NULL != iof, L10N::nullPointerError("I/O adapter factory"), );
-    resultDocument = f->createNewLoadedDocument(iof, config.fileName, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, config.fileName, stateInfo));
     CHECK_OP(stateInfo, );
 
-    const U2DbiRef dbiRef = resultDocument->getDbiRef();
+    const U2DbiRef dbiRef = exportedDocument->getDbiRef();
 
     DbiOperationsBlock dbiBlock(dbiRef, stateInfo);
     Q_UNUSED(dbiBlock);
@@ -489,10 +488,15 @@ void ExportSequenceTask::run() {
         resultItems = notMergedItems;
     }
 
-    saveExportItems2Doc(resultItems, config.sequenceName, resultDocument, stateInfo);
+    saveExportItems2Doc(resultItems, config.sequenceName, exportedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
-    //store the document
-    f->storeDocument(resultDocument, stateInfo);
+    // Store the document.
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    exportedDocument.reset(); // Release resources.
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, config.fileName, {}, stateInfo);
 }
 
 ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem &first, const ExportSequenceItem &second, U2OpStatus &os) {
@@ -503,11 +507,11 @@ ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceIt
 // Export sequence under annotations
 
 ExportSequenceAItem::ExportSequenceAItem()
-    : aminoTT(NULL), complTT(NULL) {
+    : aminoTT(nullptr), complTT(nullptr) {
 }
 
 ExportAnnotationSequenceTask::ExportAnnotationSequenceTask(const ExportAnnotationSequenceTaskSettings &s)
-    : DocumentProviderTask(tr("Export annotations"), TaskFlags_NR_FOSE_COSC), config(s), exportSubTask(NULL) {
+    : DocumentProviderTask(tr("Export annotations"), TaskFlags_NR_FOSE_COSC), config(s), exportSubTask(nullptr) {
     extractSubTask = new ExportAnnotationSequenceSubTask(config);
     addSubTask(extractSubTask);
 }
@@ -558,12 +562,12 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
                 continue;
             }
 
-            if (ad->getStrand().isCompementary() && NULL != ei.complTT) {
+            if (ad->getStrand().isCompementary() && nullptr != ei.complTT) {
                 TextUtils::reverse(chunkContent.data(), currentChunkSize);
                 ei.complTT->translate(chunkContent.data(), currentChunkSize);
             }
 
-            if (NULL != ei.aminoTT) {
+            if (nullptr != ei.aminoTT) {
                 int translationSize = currentChunkSize / 3;
                 QByteArray translation(translationSize, ei.aminoTT->getDstAlphabet()->getDefaultSymbol());
                 ei.aminoTT->translate(chunkContent.constData(), currentChunkSize, translation.data(), translationSize);

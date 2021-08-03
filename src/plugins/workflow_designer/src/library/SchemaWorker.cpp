@@ -42,7 +42,7 @@ bool SchemaWorker::isDone() const {
 }
 
 Task *SchemaWorker::tick() {
-    return NULL;
+    return nullptr;
 }
 
 void SchemaWorker::init() {

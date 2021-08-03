@@ -29,7 +29,7 @@ namespace U2 {
 class AppSettingsGUIImpl : public AppSettingsGUI {
     Q_OBJECT
 public:
-    AppSettingsGUIImpl(QObject *p = NULL);
+    AppSettingsGUIImpl(QObject *p = nullptr);
 
     ~AppSettingsGUIImpl();
 

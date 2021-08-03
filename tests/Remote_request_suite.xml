@@ -1,6 +1,0 @@
-<suite name="Remote request tests">
-    <!--Uncomment this and set appropriate value if non-standard scripts dir needed. By default scripts will be found by ugene (in installation or dev paths) -->
-    <!--Note: trailing slash is important -->
-    <!-- <env-var name ="SCRIPTS_PATH" value="../../scripts/" />  -->
-    <test-dir path="Remote_request" test-format="XML" test-ext="*.xml"/>
-</suite>

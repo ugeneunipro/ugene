@@ -23,8 +23,8 @@
 
 #include <QHBoxLayout>
 
-#include <U2Core/DbiConnection.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DbiConnection.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -32,8 +32,8 @@
 
 #include <U2View/SequenceObjectContext.h>
 
+#include "MaCollapseModel.h"
 #include "McaEditor.h"
-#include "McaEditorNameList.h"
 #include "McaEditorReferenceArea.h"
 #include "McaReferenceCharController.h"
 #include "mca_reads/McaAlternativeMutationsWidget.h"
@@ -41,16 +41,14 @@
 
 namespace U2 {
 
-const QMap<bool, const char*> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = { {true,  QT_TR_NOOP("Mutations mode: alternative")},
-                                                                                     {false, QT_TR_NOOP("Mutations mode: normal")} };
+const QMap<bool, const char *> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = {{true, QT_TR_NOOP("Mutations mode: alternative")},
+                                                                                     {false, QT_TR_NOOP("Mutations mode: normal")}};
 
 McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                        MaEditorSequenceArea *seqArea,
-                                       McaEditorNameList *nameList,
                                        McaReferenceCharController *refCharController)
     : MaEditorStatusBar(mobj, seqArea),
-      refCharController(refCharController),
-      nameList(nameList) {
+      refCharController(refCharController) {
     setObjectName("mca_editor_status_bar");
     setStatusBarStyle();
 
@@ -62,7 +60,10 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                tr("Read position %1 of %2"));
     selectionLabel->hide();
 
-    connect(nameList, SIGNAL(si_selectionChanged()), SLOT(sl_update()));
+    connect(seqArea->getEditor()->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_update()));
+
     connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
 
     updateLabels();
@@ -102,22 +103,22 @@ void McaEditorStatusBar::updateLabels() {
 }
 
 void McaEditorStatusBar::updateLineLabel() {
-    const U2Region selection = nameList->getSelection();
-    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.startPos + 1),
+    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
+    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.getRectList().first().top() + 1),
                       QString::number(aliObj->getNumRows()));
 }
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    if (!seqArea->getSelection().isEmpty()) {
+    MaEditor *editor = seqArea->getEditor();
+    const MaEditorSelection &selection = editor->getSelection();
+    if (selection.getWidth() == 1) {
         positions = getGappedPositionInfo();
-    } else {
-        const U2Region rowsSelection = nameList->getSelection();
-        if (!rowsSelection.isEmpty()) {
-            const MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(rowsSelection.startPos);
-            const QString rowLength = QString::number(row->getUngappedLength());
-            positions = QPair<QString, QString>(NONE_MARK, rowLength);
-        }
+    } else if (!selection.isEmpty()) {
+        int firstSelectedViewRowIndex = selection.getRectList().first().top();
+        int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRowIndex);
+        int ungappedLength = editor->getMaObject()->getRow(maRowIndex)->getUngappedLength();
+        positions = QPair<QString, QString>(NONE_MARK, QString::number(ungappedLength));
     }
     positionLabel->update(positions.first, positions.second);
     positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
@@ -132,8 +133,7 @@ void McaEditorStatusBar::updateMutationsLabel() {
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
     auto attributeId = McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId();
-    auto objectAttributes
-        = attributeDbi->getObjectAttributes(aliObj->getEntityRef().entityId, attributeId, os);
+    auto objectAttributes = attributeDbi->getObjectAttributes(aliObj->getEntityRef().entityId, attributeId, os);
     CHECK_OP(os, );
     SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1,
                QString("Unexpected %1 objectAttributes size").arg(attributeId), );

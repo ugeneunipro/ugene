@@ -72,7 +72,7 @@ bool Primer::operator==(const Primer &p) const {
 }
 
 bool Primer::areEqual(const Primer *p1, const Primer *p2) {
-    if (p1 != NULL && p2 != NULL) {
+    if (p1 != nullptr && p2 != nullptr) {
         return (*p1 == *p2);
     } else {
         return (p1 == p2);
@@ -138,9 +138,9 @@ void Primer::setEndStability(double endStability) {
 // PrimerPair
 
 PrimerPair::PrimerPair()
-    : leftPrimer(NULL),
-      rightPrimer(NULL),
-      internalOligo(NULL),
+    : leftPrimer(nullptr),
+      rightPrimer(nullptr),
+      internalOligo(nullptr),
       complAny(0),
       complEnd(0),
       productSize(0),
@@ -149,9 +149,9 @@ PrimerPair::PrimerPair()
 }
 
 PrimerPair::PrimerPair(const primer_pair &primerPair, int offset)
-    : leftPrimer((NULL == primerPair.left) ? NULL : new Primer(*primerPair.left)),
-      rightPrimer((NULL == primerPair.right) ? NULL : new Primer(*primerPair.right)),
-      internalOligo((NULL == primerPair.intl) ? NULL : new Primer(*primerPair.intl)),
+    : leftPrimer((nullptr == primerPair.left) ? nullptr : new Primer(*primerPair.left)),
+      rightPrimer((nullptr == primerPair.right) ? nullptr : new Primer(*primerPair.right)),
+      internalOligo((nullptr == primerPair.intl) ? nullptr : new Primer(*primerPair.intl)),
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
@@ -169,9 +169,9 @@ PrimerPair::PrimerPair(const primer_pair &primerPair, int offset)
 }
 
 PrimerPair::PrimerPair(const PrimerPair &primerPair)
-    : leftPrimer((primerPair.leftPrimer.isNull()) ? NULL : new Primer(*primerPair.leftPrimer)),
-      rightPrimer((primerPair.rightPrimer.isNull()) ? NULL : new Primer(*primerPair.rightPrimer)),
-      internalOligo((primerPair.internalOligo.isNull()) ? NULL : new Primer(*primerPair.internalOligo)),
+    : leftPrimer((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer)),
+      rightPrimer((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer)),
+      internalOligo((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo)),
       complAny(primerPair.complAny),
       complEnd(primerPair.complEnd),
       productSize(primerPair.productSize),
@@ -180,9 +180,9 @@ PrimerPair::PrimerPair(const PrimerPair &primerPair)
 }
 
 PrimerPair &PrimerPair::operator=(const PrimerPair &primerPair) {
-    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? NULL : new Primer(*primerPair.leftPrimer));
-    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? NULL : new Primer(*primerPair.rightPrimer));
-    internalOligo.reset((primerPair.internalOligo.isNull()) ? NULL : new Primer(*primerPair.internalOligo));
+    leftPrimer.reset((primerPair.leftPrimer.isNull()) ? nullptr : new Primer(*primerPair.leftPrimer));
+    rightPrimer.reset((primerPair.rightPrimer.isNull()) ? nullptr : new Primer(*primerPair.rightPrimer));
+    internalOligo.reset((primerPair.internalOligo.isNull()) ? nullptr : new Primer(*primerPair.internalOligo));
     complAny = primerPair.complAny;
     complEnd = primerPair.complEnd;
     productSize = primerPair.productSize;
@@ -232,15 +232,15 @@ int PrimerPair::getProductSize() const {
 }
 
 void PrimerPair::setLeftPrimer(Primer *leftPrimer) {
-    this->leftPrimer.reset((NULL == leftPrimer) ? NULL : new Primer(*leftPrimer));
+    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new Primer(*leftPrimer));
 }
 
 void PrimerPair::setRightPrimer(Primer *rightPrimer) {
-    this->rightPrimer.reset((NULL == rightPrimer) ? NULL : new Primer(*rightPrimer));
+    this->rightPrimer.reset((nullptr == rightPrimer) ? nullptr : new Primer(*rightPrimer));
 }
 
 void PrimerPair::setInternalOligo(Primer *internalOligo) {
-    this->internalOligo.reset((NULL == internalOligo) ? NULL : new Primer(*internalOligo));
+    this->internalOligo.reset((nullptr == internalOligo) ? nullptr : new Primer(*internalOligo));
 }
 
 void PrimerPair::setComplAny(short complAny) {
@@ -376,7 +376,7 @@ Primer3Task::Primer3Task(const Primer3TaskSettings &settingsArg)
 void Primer3Task::run() {
     if (!settings.getRepeatLibrary().isEmpty()) {
         read_seq_lib(&settings.getPrimerArgs()->repeat_lib, settings.getRepeatLibrary().constData(), "mispriming library");
-        if (NULL != settings.getPrimerArgs()->repeat_lib.error.data) {
+        if (nullptr != settings.getPrimerArgs()->repeat_lib.error.data) {
             pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->repeat_lib.error.data);
             pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->repeat_lib.error.data);
             return;
@@ -384,7 +384,7 @@ void Primer3Task::run() {
     }
     if (!settings.getMishybLibrary().isEmpty()) {
         read_seq_lib(&settings.getPrimerArgs()->io_mishyb_library, settings.getMishybLibrary().constData(), "internal oligo mishyb library");
-        if (NULL != settings.getPrimerArgs()->io_mishyb_library.error.data) {
+        if (nullptr != settings.getPrimerArgs()->io_mishyb_library.error.data) {
             pr_append_new_chunk(&settings.getPrimerArgs()->glob_err, settings.getPrimerArgs()->io_mishyb_library.error.data);
             pr_append_new_chunk(&settings.getSeqArgs()->error, settings.getPrimerArgs()->io_mishyb_library.error.data);
             return;
@@ -416,13 +416,13 @@ void Primer3Task::run() {
     settings.getIntProperty("PRIMER_NUM_RETURN", &maxCount);
 
     if (settings.getTask() == pick_left_only) {
-        if (primers.left != NULL) {
+        if (primers.left != nullptr) {
             for (int i = 0; i < settings.getSeqArgs()->left_expl.ok && i < maxCount; ++i) {
                 singlePrimers.append(Primer(*(primers.left + i)));
             }
         }
     } else if (settings.getTask() == pick_right_only) {
-        if (primers.right != NULL) {
+        if (primers.right != nullptr) {
             for (int i = 0; i < settings.getSeqArgs()->right_expl.ok && i < maxCount; ++i) {
                 singlePrimers.append(Primer(*(primers.right + i)));
             }
@@ -431,19 +431,19 @@ void Primer3Task::run() {
 
     if (primers.best_pairs.num_pairs > 0) {
         std::free(primers.best_pairs.pairs);
-        primers.best_pairs.pairs = NULL;
+        primers.best_pairs.pairs = nullptr;
     }
-    if (NULL != primers.left) {
+    if (nullptr != primers.left) {
         std::free(primers.left);
-        primers.left = NULL;
+        primers.left = nullptr;
     }
-    if (NULL != primers.right) {
+    if (nullptr != primers.right) {
         std::free(primers.right);
-        primers.right = NULL;
+        primers.right = nullptr;
     }
-    if (NULL != primers.intl) {
+    if (nullptr != primers.intl) {
         std::free(primers.intl);
-        primers.intl = NULL;
+        primers.intl = nullptr;
     }
 }
 
@@ -860,13 +860,13 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     int index = 0;
     foreach (const PrimerPair &pair, bestPairs) {
         QList<SharedAnnotationData> annotations;
-        if (NULL != pair.getLeftPrimer()) {
+        if (nullptr != pair.getLeftPrimer()) {
             annotations.append(oligoToAnnotation(annName, *pair.getLeftPrimer(), pair.getProductSize(), U2Strand::Direct));
         }
-        if (NULL != pair.getInternalOligo()) {
+        if (nullptr != pair.getInternalOligo()) {
             annotations.append(oligoToAnnotation("internalOligo", *pair.getInternalOligo(), pair.getProductSize(), U2Strand::Direct));
         }
-        if (NULL != pair.getRightPrimer()) {
+        if (nullptr != pair.getRightPrimer()) {
             annotations.append(oligoToAnnotation(annName, *pair.getRightPrimer(), pair.getProductSize(), U2Strand::Complementary));
         }
         resultAnnotations[groupName + "/pair " + QString::number(index + 1)].append(annotations);

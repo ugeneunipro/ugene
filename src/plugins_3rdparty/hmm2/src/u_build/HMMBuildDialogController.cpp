@@ -49,7 +49,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Mul
     : QDialog(p),
       ma(_ma->getCopy()),
       profileName(_pn),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930810");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -69,7 +69,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Mul
     connect(msaFileButton, SIGNAL(clicked()), SLOT(sl_msaFileClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_okClicked()));
     
-    task = NULL;
+    task = nullptr;
 }
 
 void HMMBuildDialogController::sl_msaFileClicked() {
@@ -85,7 +85,7 @@ void HMMBuildDialogController::sl_msaFileClicked() {
 }
 
 void HMMBuildDialogController::sl_okClicked() {
-    if (task != NULL) {
+    if (task != nullptr) {
         accept(); //go to background
         return;
     }
@@ -139,7 +139,7 @@ void HMMBuildDialogController::sl_okClicked() {
 
 
 void HMMBuildDialogController::reject() {
-    if (task!=NULL) {
+    if (task!=nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -147,7 +147,7 @@ void HMMBuildDialogController::reject() {
 
 void HMMBuildDialogController::sl_onStateChanged() {
     Task* t = qobject_cast<Task*>(sender());
-    assert(task!=NULL);
+    assert(task!=nullptr);
     if (task!=t || t->getState() != Task::State_Finished) {
         return;
     }
@@ -164,7 +164,7 @@ void HMMBuildDialogController::sl_onStateChanged() {
     cancelButton->setText(tr("Close"));
 
     AppContext::getTaskScheduler()->disconnect(this);
-    task = NULL;
+    task = nullptr;
 
 }
 
@@ -196,8 +196,8 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
     : Task("", TaskFlag_ReportingIsSupported),
       settings(s),
       outFile(_outFile),
-      loadTask(NULL),
-      buildTask(NULL)
+      loadTask(nullptr),
+      buildTask(nullptr)
 {
     setTaskName(tr("Build HMM profile '%1' -> '%2'").arg(QFileInfo(inFile).fileName()).arg(QFileInfo(outFile).fileName()));
     setVerboseLogMode(true);
@@ -227,7 +227,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
 
 HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s) 
 : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
-settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(NULL), buildTask(NULL)
+settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(nullptr), buildTask(nullptr)
 {
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
     setVerboseLogMode(true);
@@ -283,14 +283,14 @@ void HMMBuildToFileTask::_run() {
     if (stateInfo.hasError()) {
         return;
     }
-    assert(buildTask!=NULL);
+    assert(buildTask!=nullptr);
     assert(buildTask->getState() == Task::State_Finished);
     if (buildTask->getStateInfo().hasError()) {
         stateInfo.setError(  buildTask->getStateInfo().getError() );
         return;
     }
     plan7_s* hmm = buildTask->getHMM();
-    assert(hmm!=NULL);
+    assert(hmm!=nullptr);
 	IOAdapterFactory* iof;
 	iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(outFile));
 	
@@ -301,7 +301,7 @@ void HMMBuildToFileTask::_run() {
 QString HMMBuildToFileTask::generateReport() const {
     QString res;
     res+="<table>";
-    res+="<tr><td width=200><b>" + tr("Source alignment") + "</b></td><td>" + (loadTask ==  NULL ? settings.name : loadTask->getURL().getURLString()) + "</td></tr>";
+    res+="<tr><td width=200><b>" + tr("Source alignment") + "</b></td><td>" + (loadTask ==  nullptr ? settings.name : loadTask->getURL().getURLString()) + "</td></tr>";
     res+="<tr><td><b>" + tr("Profile name") + "</b></td><td>" + settings.name + "</td></tr>";
     if (hasError()) {
         res+="<tr><td width=200><b>" + tr("Task was not finished") + "</b></td><td></td></tr>";
@@ -325,14 +325,14 @@ QString HMMBuildToFileTask::generateReport() const {
 
 
 HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma) 
-  : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(NULL)
+  : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(nullptr)
 {
     GCOUNTER( cvar, "HMMBuildTask" );
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
 }
 
 HMMBuildTask::~HMMBuildTask() {
-    if (hmm!=NULL) {
+    if (hmm!=nullptr) {
         FreePlan7(hmm);
     }
 }
@@ -361,7 +361,7 @@ void HMMBuildTask::_run() {
     //everything ok here: fill msa
 
     msa_struct* msa = MSAAlloc(ma->getNumRows(), ma->getLength());
-    if (msa == NULL) {
+    if (msa == nullptr) {
         stateInfo.setError(  tr("Error creating MSA structure") );
         return;
     }
@@ -383,7 +383,7 @@ void HMMBuildTask::_run() {
         stateInfo.setError(  e.error );
     }
     
-    assert(hmm!=NULL || stateInfo.hasError());
+    assert(hmm!=nullptr || stateInfo.hasError());
     
     MSAFree(msa);
 }

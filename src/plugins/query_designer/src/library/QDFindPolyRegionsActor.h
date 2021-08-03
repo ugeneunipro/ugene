@@ -40,7 +40,7 @@ public:
     DNATranslation *complTT;
     QDStrandOption strand;
     FindPolyRegionsSettings()
-        : ch('A'), percent(0), minLen(0), offset(0), complTT(NULL) {
+        : ch('A'), percent(0), minLen(0), offset(0), complTT(nullptr) {
     }
 };
 

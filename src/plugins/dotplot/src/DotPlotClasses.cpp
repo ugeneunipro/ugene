@@ -90,7 +90,7 @@ void DotPlotMiniMap::draw(QPainter &p, int shiftX, int shiftY, const QPointF &zo
 DotPlotResultsListener::DotPlotResultsListener() {
     dotPlotList = QSharedPointer<QList<DotPlotResults>>(new QList<DotPlotResults>());
     stateOk = true;
-    rfTask = NULL;
+    rfTask = nullptr;
 }
 
 DotPlotResultsListener::~DotPlotResultsListener() {

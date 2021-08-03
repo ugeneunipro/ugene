@@ -1,10 +1,9 @@
 <multi-test>
     <run-cmdline
             task="hmm3-search"
-            in="!common_data_dir!hmmer3/search/14-3-3_epsilon2_transl.fa"
-            hmm="!common_data_dir!hmmer3/build/14-3-3.hmm"
+            in-seq="!common_data_dir!hmmer3/search/14-3-3_epsilon2.fa"
+            in-hmm="!common_data_dir!hmmer3/build/14-3-3.hmm"
             out="!tmp_data_dir!hmm3-search_0005.gb"
-            max="True"
     />
 
     <load-document index="doc1" url="hmm3-search_0005.gb" io="local_file" format="genbank" dir="temp"/>

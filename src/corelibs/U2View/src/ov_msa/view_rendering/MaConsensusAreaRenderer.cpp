@@ -35,6 +35,7 @@
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
@@ -117,9 +118,10 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
+    QRect selectionRect = editor->getSelection().toRect();
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
-    consensusRenderData.selectedRegion = ui->getSequenceArea()->getSelection().getXRegion();
+    consensusRenderData.selectedRegion = U2Region::fromXRange(selectionRect);
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
     MSAConsensusAlgorithm *algorithm = area->getConsensusAlgorithm();
@@ -304,8 +306,9 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
-    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    consensusRenderData.selectedRegion = U2Region(selection.x(), selection.width());
+    const MaEditorSelection &selection = editor->getSelection();
+    QRect selectionRect = selection.toRect();
+    consensusRenderData.selectedRegion = U2Region(selectionRect.x(), selectionRect.width());
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
     consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 

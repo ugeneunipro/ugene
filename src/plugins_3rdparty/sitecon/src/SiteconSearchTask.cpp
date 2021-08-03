@@ -35,8 +35,8 @@ SiteconSearchTask::SiteconSearchTask(const SiteconModel &m, const QByteArray &se
     c.seq = wholeSeq.constData();
     c.seqSize = wholeSeq.length();
     c.complTrans = cfg.complTT;
-    c.strandToWalk = cfg.complTT == NULL ? StrandOption_DirectOnly : StrandOption_Both;
-    c.aminoTrans = NULL;
+    c.strandToWalk = cfg.complTT == nullptr ? StrandOption_DirectOnly : StrandOption_Both;
+    c.aminoTrans = nullptr;
     c.walkCircular = false;
 
     c.chunkSize = seq.length();
@@ -58,7 +58,7 @@ void SiteconSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
     ti.progress = 0;
     qint64 lenPerPercent = seqLen / 100;
     qint64 pLeft = lenPerPercent;
-    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : NULL;
+    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
     for (int i = 0, n = seqLen - modelSize; i <= n && !ti.cancelFlag; i++, --pLeft) {
         float psum = SiteconAlgorithm::calculatePSum(seq + i, modelSize, model->matrix, model->settings, model->deviationThresh, complTT);
         if (psum < 0 || psum >= 1) {
@@ -111,9 +111,9 @@ void SiteconSearchTask::cleanup() {
     delete model;
     delete lock;
 
-    cfg = NULL;
-    model = NULL;
-    lock = NULL;
+    cfg = nullptr;
+    model = nullptr;
+    lock = nullptr;
 }
 
 }    // namespace U2

@@ -76,7 +76,7 @@ namespace U2 {
 
 void GTest_Bwa::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-    bwaTask = NULL;
+    bwaTask = nullptr;
     indexName = "";
     readsFileName = "";
     patternFileName = "";

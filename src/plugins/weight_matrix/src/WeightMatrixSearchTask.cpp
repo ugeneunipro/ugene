@@ -58,8 +58,8 @@ WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, co
     c.seq = seq.constData();
     c.seqSize = seq.length();
     c.complTrans = cfg.complTT;
-    c.strandToWalk = cfg.complTT == NULL ? StrandOption_DirectOnly : StrandOption_Both;
-    c.aminoTrans = NULL;
+    c.strandToWalk = cfg.complTT == nullptr ? StrandOption_DirectOnly : StrandOption_Both;
+    c.aminoTrans = nullptr;
 
     c.chunkSize = seq.length();
     c.overlapSize = 0;
@@ -80,7 +80,7 @@ void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateI
     ti.progress = 0;
     int lenPerPercent = seqLen / 100;
     int pLeft = lenPerPercent;
-    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : NULL;
+    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
     for (int i = 0, n = seqLen - modelSize; i <= n && !ti.cancelFlag; i++, --pLeft) {
         float psum = WeightMatrixAlgorithm::getScore(seq + i, modelSize, model, complTT);
         if (psum < -1e-6 || psum > 1 + 1e-6) {

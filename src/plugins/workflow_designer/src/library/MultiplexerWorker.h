@@ -36,7 +36,7 @@ enum MultiplexingRules {
 class MultiplexerPrompter : public PrompterBase<MultiplexerPrompter> {
     Q_OBJECT
 public:
-    MultiplexerPrompter(Actor *p = NULL)
+    MultiplexerPrompter(Actor *p = nullptr)
         : PrompterBase<MultiplexerPrompter>(p) {
     }
 

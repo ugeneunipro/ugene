@@ -65,7 +65,7 @@ Workflow::ActorPrototype *ChooseItemDialog::select(const QList<Workflow::ActorPr
     if (exec() == QDialog::Accepted) {
         return items.at(listWidget->currentRow());
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

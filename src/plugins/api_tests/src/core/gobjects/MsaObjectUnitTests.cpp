@@ -63,7 +63,7 @@ U2DbiRef MsaObjectTestData::getDbiRef() {
 
 MultipleSequenceAlignmentObject *MsaObjectTestData::getTestAlignmentObject(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
     const U2EntityRef entityRef = getTestAlignmentRef(dbiRef, name, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new MultipleSequenceAlignmentObject(name, entityRef);
 }

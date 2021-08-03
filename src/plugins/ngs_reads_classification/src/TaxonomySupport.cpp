@@ -75,7 +75,7 @@ static const QString CLASSIFICATION_SLOT_TYPE_ID("tax-classification");
 const TaxID TaxonomyTree::UNDEFINED_ID = (TaxID)-1;
 const TaxID TaxonomyTree::UNCLASSIFIED_ID = 0;
 
-TaxonomyTree *TaxonomyTree::the_tree = NULL;
+TaxonomyTree *TaxonomyTree::the_tree = nullptr;
 const int RANK_SHIFT = (sizeof(TaxID) - sizeof(char)) * 8;
 const TaxID RANK_MASK = 0xFF << RANK_SHIFT;
 
@@ -99,7 +99,7 @@ DataTypePtr TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE() {
 }
 
 TaxonomyTree *TaxonomyTree::getInstance() {
-    if (the_tree == NULL) {
+    if (the_tree == nullptr) {
         //fixme data race???
         the_tree = load(new TaxonomyTree);
     }
@@ -193,10 +193,10 @@ private:
 
 TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree) {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT(NULL != dataPathRegistry, "U2DataPathRegistry is NULL", tree);
+    SAFE_POINT(nullptr != dataPathRegistry, "U2DataPathRegistry is NULL", tree);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.details(QString("Taxonomy data are not configured")), tree);
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(), algoLog.details(QString("Taxonomy data are not configured")), tree);
 
     bool hasError = false;
 
@@ -568,7 +568,7 @@ PropertyDelegate *TaxonomyDelegate::clone() {
 
 void TaxonomyDelegate::sl_commit() {
     TaxonomyPropertyWidget *editor = qobject_cast<TaxonomyPropertyWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 

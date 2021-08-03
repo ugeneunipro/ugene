@@ -144,11 +144,7 @@ UgeneContextWrapper::UgeneContextWrapper(const QString &workingDirectoryPath)
 
     appContext = AppContextImpl::getApplicationContext();
     appContext->setWorkingDirectoryPath(workingDirectoryPath);
-
     QCoreApplication::addLibraryPath(workingDirectoryPath);
-    const QString devPluginsPath = QDir(workingDirectoryPath + "/../../installer/windows")
-                                       .absolutePath();
-    QCoreApplication::addLibraryPath(devPluginsPath);
 
     setSearchPaths();
     cmdLineRegistry = new CMDLineRegistry(QStringList());

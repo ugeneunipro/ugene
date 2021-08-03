@@ -137,6 +137,7 @@ data/cmdline/generate-dna.uwl
 data/cmdline/hmm2-build.uwl
 data/cmdline/hmm2-search.uwl
 data/cmdline/hmm3-build-and-search.uwl
+data/cmdline/hmm3-search.uwl
 data/cmdline/join-quality.uwl
 data/cmdline/local-blast+.uwl
 data/cmdline/pfm-build.uwl
@@ -1544,4 +1545,3 @@ ugeneui.exe
 ugeneui.map
 vcruntime140.dll
 vcruntime140_1.dll
-version.nsis

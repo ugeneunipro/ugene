@@ -107,7 +107,7 @@ Task *Text2SequenceWorker::tick() {
         QByteArray txt = inputMessage.getData().toMap().value(BaseSlots::TEXT_SLOT().getId()).value<QString>().toUtf8();
 
         const DNAAlphabet *alphabet = (alId == ALPHABET_ATTR_ID_DEF_VAL) ? U2AlphabetUtils::findBestAlphabet(txt) : U2AlphabetUtils::getById(alId);
-        if (alphabet == NULL) {
+        if (alphabet == nullptr) {
             QString msg;
             if (alId == ALPHABET_ATTR_ID_DEF_VAL) {
                 msg = tr("Alphabet cannot be automatically detected");
@@ -132,7 +132,7 @@ Task *Text2SequenceWorker::tick() {
         setDone();
         outSeqPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void Text2SequenceWorker::cleanup() {

@@ -105,7 +105,7 @@ QString QDORFActor::getText() const {
 }
 
 Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
-    Task *t = NULL;
+    Task *t = nullptr;
     const DNASequence &dnaSeq = scheme->getSequence();
     QMap<QString, Attribute *> params = cfg->getParameters();
 
@@ -129,11 +129,11 @@ Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     settings.searchRegion = U2Region(0, dnaSeq.length());
 
     if (settings.strand != ORFAlgorithmStrand_Direct) {
-        DNATranslation *compTT = NULL;
+        DNATranslation *compTT = nullptr;
         if (dnaSeq.alphabet->isNucleic()) {
             compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
         }
-        if (compTT != NULL) {
+        if (compTT != nullptr) {
             settings.complementTT = compTT;
         } else {
             settings.strand = ORFAlgorithmStrand_Direct;

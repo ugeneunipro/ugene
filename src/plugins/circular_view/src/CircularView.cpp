@@ -193,7 +193,7 @@ QSize CircularView::sizeHint() const {
 }
 
 bool CircularView::isCircularTopology() const {
-    SAFE_POINT(ctx->getSequenceObject() != NULL, "Sequence object is NULL", false);
+    SAFE_POINT(ctx->getSequenceObject() != nullptr, "Sequence object is NULL", false);
     return ctx->getSequenceObject()->isCircular();
 }
 
@@ -367,9 +367,9 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView *d)
       rotationDegree(0),
       mouseAngle(0),
       oldYlevel(0) {
-    SAFE_POINT(d != NULL, tr("CircularView is NULL"), );
+    SAFE_POINT(d != nullptr, tr("CircularView is NULL"), );
     settings = d->getSettings();
-    SAFE_POINT(settings != NULL, tr("Circular view settings are NULL"), );
+    SAFE_POINT(settings != nullptr, tr("Circular view settings are NULL"), );
     settingsWereChanged = false;
 
     setMouseTracking(true);
@@ -498,13 +498,13 @@ void CircularViewRenderArea::drawAnnotationsSelection(QPainter &p) {
             if (circItems.contains(annotation)) {
                 CircularAnnotationItem *item = circItems[annotation];
                 item->setSelected(true);
-                item->paint(&p, NULL, this);
+                item->paint(&p, nullptr, this);
                 foreach (const CircularAnnotationRegionItem *r, item->getRegions()) {
-                    SAFE_POINT(r != NULL, "NULL annotation region item is CV!", );
+                    SAFE_POINT(r != nullptr, "NULL annotation region item is CV!", );
                     CircularAnnotationLabel *lbl = r->getLabel();
-                    SAFE_POINT(lbl != NULL, "NULL annotation label item is CV!", );
+                    SAFE_POINT(lbl != nullptr, "NULL annotation label item is CV!", );
                     if (lbl->isVisible()) {
-                        lbl->paint(&p, NULL, this);
+                        lbl->paint(&p, nullptr, this);
                     }
                 }
             }
@@ -521,7 +521,7 @@ void CircularViewRenderArea::drawSequenceName(QPainter &p) {
     boldPen.setWidth(3);
     SequenceObjectContext *ctx = view->getSequenceContext();
 
-    assert(ctx->getSequenceGObject() != NULL);
+    assert(ctx->getSequenceGObject() != nullptr);
 
     QString docName = ctx->getSequenceGObject()->getGObjectName();
     QString seqLen = QString::number(ctx->getSequenceLength()) + " bp";
@@ -753,7 +753,7 @@ void CircularViewRenderArea::drawAnnotations(QPainter &p) {
     evaluateLabelPositions(font);
 
     foreach (CircularAnnotationItem *item, circItems) {
-        item->paint(&p, NULL, this);
+        item->paint(&p, nullptr, this);
     }
     if (settings->labelMode == CircularViewSettings::None) {
         return;
@@ -763,7 +763,7 @@ void CircularViewRenderArea::drawAnnotations(QPainter &p) {
         label->setLabelPosition();
     }
     foreach (CircularAnnotationLabel *label, labelList) {
-        label->paint(&p, NULL, this);
+        label->paint(&p, nullptr, this);
     }
 }
 
@@ -780,7 +780,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
     }
 
     SequenceObjectContext *ctx = view->getSequenceContext();
-    SAFE_POINT(ctx != NULL, "Sequence object context is NULL", );
+    SAFE_POINT(ctx != nullptr, "Sequence object context is NULL", );
     int seqLen = ctx->getSequenceLength();
 
     const QVector<U2Region> aDataLocation = aData->getRegions();
@@ -907,7 +907,7 @@ CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem
     }
 
     QPainterPath path = createAnnotationArrowPath(startAngle, spanAngle, dAlpha, outerRect, innerRect, middleRect, isComplementaryStrand, isShort);
-    CHECK(path.length() != 0, NULL);
+    CHECK(path.length() != 0, nullptr);
     qreal centerPercent = 0;
     if (!isShort) {
         qreal center = PI * (middleRect.width() / 2) * (spanAngle - dAlpha) / 360;
@@ -915,7 +915,7 @@ CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem
     }
 
     CircularAnnotationRegionItem *regItem = new CircularAnnotationRegionItem(path, isShort, index);
-    CHECK(regItem != NULL, NULL);
+    CHECK(regItem != nullptr, nullptr);
     regItem->setArrowCenterPercentage(centerPercent);
 
     return regItem;

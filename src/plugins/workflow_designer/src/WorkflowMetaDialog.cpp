@@ -41,7 +41,7 @@ namespace U2 {
 WorkflowMetaDialog::WorkflowMetaDialog(QWidget *p, const Metadata &meta)
     : QDialog(p),
       meta(meta),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929936");
 

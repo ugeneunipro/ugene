@@ -80,7 +80,7 @@ void TestStarter::cleanup() {
     //saveEnv();
     deallocateSuites();
     delete env;
-    env = NULL;
+    env = nullptr;
     //Task::cleanup();
 }
 
@@ -134,7 +134,7 @@ GTestSuite *TestStarter::findTestSuiteByURL(const QString &url) {
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void TestStarter::readBuiltInVars() {
@@ -160,7 +160,7 @@ void TestStarter::readSavedSuites() {
     QString url;
     foreach (const QString &url, suiteUrls) {
         GTestSuite *ts = GTestSuite::readTestSuite(url, err);
-        if (ts == NULL) {
+        if (ts == nullptr) {
             ioLog.error(tr("error_reading_ts_%1_error_%2").arg(url).arg(err));
         } else {
             addTestSuite(ts);
@@ -214,7 +214,7 @@ void TestStarter::sl_refresh() {
 TestRunnerTask *TestStarter::createRunTask() {
     if (env->containsEmptyVars()) {
         coreLog.error(tr("Not all environment variables set"));
-        return NULL;
+        return nullptr;
     }
     QList<GTestState *> testsToRun;
     foreach (GTestSuite *ts, suites) {

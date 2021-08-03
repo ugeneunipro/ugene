@@ -62,7 +62,7 @@ QList<Task *> FindTandemsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    if (qobject_cast<TandemFinder *>(subTask) != NULL) {
+    if (qobject_cast<TandemFinder *>(subTask) != nullptr) {
         TandemFinder *tandemFinderTask = qobject_cast<TandemFinder *>(subTask);
         QList<SharedAnnotationData> annotations = importTandemAnnotations(tandemFinderTask->getResults(),
                                                                           tandemFinderTask->getSettings().seqRegion.startPos,
@@ -145,11 +145,11 @@ void TandemFinder::run() {
 }
 
 QList<Task *> TandemFinder::onSubTaskFinished(Task *subTask) {
-    if (qobject_cast<SequenceWalkerTask *>(subTask) != NULL) {
+    if (qobject_cast<SequenceWalkerTask *>(subTask) != nullptr) {
         setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         return regionTasks;
     }
-    if (qobject_cast<TandemFinder_Region *>(subTask) != NULL) {
+    if (qobject_cast<TandemFinder_Region *>(subTask) != nullptr) {
         TandemFinder_Region *regionTask = qobject_cast<TandemFinder_Region *>(subTask);
         const quint64 offs = regionTask->getRegionOffset();
         QMutexLocker foundTandemsLocker(&tandemsAccessMutex);
@@ -185,7 +185,7 @@ TandemFinder_Region::~TandemFinder_Region() {
 }
 
 QList<Task *> TandemFinder_Region::onSubTaskFinished(Task *subTask) {
-    if (qobject_cast<ConcreteTandemFinder *>(subTask) != NULL) {
+    if (qobject_cast<ConcreteTandemFinder *>(subTask) != nullptr) {
         subTask->cleanup();
     }
     return QList<Task *>();
@@ -216,7 +216,7 @@ void TandemFinder_Region::addResults(const QMap<Tandem, Tandem> &tandems) {
 }
 
 ConcreteTandemFinder::ConcreteTandemFinder(QString taskName, const char *_sequence, const long _seqSize, const FindTandemsTaskSettings &_settings, const int _prefixLength)
-    : Task(taskName, TaskFlags_FOSCOE), sequence(_sequence), seqSize(_seqSize), index(NULL), suffixArray(NULL),
+    : Task(taskName, TaskFlags_FOSCOE), sequence(_sequence), seqSize(_seqSize), index(nullptr), suffixArray(nullptr),
       settings(_settings), prefixLength(_prefixLength), suffArrSize(_seqSize - _prefixLength + 1) {
     Q_ASSERT(settings.minRepeatCount > 1);
     int suffArrMemory;
@@ -240,14 +240,14 @@ void ConcreteTandemFinder::prepare() {
         CreateSArrayIndexTask *indexTask = new CreateSArrayIndexTask(sequence, seqSize, prefixLength, 'N', nuclTable, bitMaskCharBitsNum);
         indexTask->setSubtaskProgressWeight(arrayPercent / 100.0F);
         // TODO fix algorithm selection
-        if (qobject_cast<ExactSizedTandemFinder *>(this) != NULL) {
+        if (qobject_cast<ExactSizedTandemFinder *>(this) != nullptr) {
             addSubTask(indexTask);
         }
     }
 }
 
 QList<Task *> ConcreteTandemFinder::onSubTaskFinished(Task *subTask) {
-    if (qobject_cast<CreateSArrayIndexTask *>(subTask) != NULL) {
+    if (qobject_cast<CreateSArrayIndexTask *>(subTask) != nullptr) {
         index = qobject_cast<const CreateSArrayIndexTask *>(subTask)->index;
     }
     return QList<Task *>();
@@ -282,7 +282,7 @@ void ExactSizedTandemFinder::run() {
     }
     int minPeriod = qMax(settings.minPeriod, prefixLength / 2);
     int maxPeriod = qMin(settings.maxPeriod, prefixLength);
-    if (index == NULL) {
+    if (index == nullptr) {
         try {
             suffixArray = new SuffixArray(sequence, seqSize, prefixLength);
         } catch (...) {
@@ -320,7 +320,7 @@ void ExactSizedTandemFinder::run() {
                 } else {
                     const char *seq0 = index->sarr2seq(currentDiffPos);    //seqCast(currentDiffPos,0);
                     const char *seq1 = index->sarr2seq(currentDiffPos + suffixOffset);    //seqCast(currentDiffPos,suffixOffset);
-                    if (seq0 == NULL || seq1 == NULL) {
+                    if (seq0 == nullptr || seq1 == nullptr) {
                         continue;
                     }
                     // in the other words  prefix currentDiffPos[0]==currentDiffPos[suffixOffset]
@@ -447,7 +447,7 @@ void LargeSizedTandemFinder::run() {
     }
     int minPeriod = qMax(settings.minPeriod, prefixLength);
     int maxPeriod = settings.maxPeriod;
-    if (index == NULL) {
+    if (index == nullptr) {
         try {
             suffixArray = new SuffixArray(sequence, seqSize, prefixLength);
         } catch (...) {

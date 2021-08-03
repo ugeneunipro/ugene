@@ -45,6 +45,8 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportAnnotationsDialog.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -60,7 +62,6 @@
 #include "ExportSelectedSeqRegionsTask.h"
 #include "ExportSequences2MSADialog.h"
 #include "ExportSequencesDialog.h"
-#include "ExportTasks.h"
 #include "ExportUtils.h"
 #include "GetSequenceByIdDialog.h"
 
@@ -71,7 +72,7 @@ namespace U2 {
 
 ExportSequenceViewItemsController::ExportSequenceViewItemsController(QObject *p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID),
-      av(NULL) {
+      av(nullptr) {
 }
 
 void ExportSequenceViewItemsController::initViewContext(GObjectView *v) {
@@ -85,7 +86,7 @@ void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView *v,
     assert(resources.size() == 1);
     QObject *r = resources.first();
     ADVExportContext *vc = qobject_cast<ADVExportContext *>(r);
-    assert(vc != NULL);
+    assert(vc != nullptr);
     vc->buildMenu(m);
 }
 
@@ -93,7 +94,7 @@ void ExportSequenceViewItemsController::init() {
     GObjectViewWindowContext::init();
     if (!viewResources.value(av).isEmpty()) {
         QMenu *actions = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_ACTIONS);
-        SAFE_POINT(NULL != actions, "Actions menu not found.", );
+        SAFE_POINT(nullptr != actions, "Actions menu not found.", );
         actions->clear();
         AppContext::getMainWindow()->getMDIManager()->getActiveWindow()->setupViewMenu(actions);
     }
@@ -102,7 +103,7 @@ void ExportSequenceViewItemsController::init() {
 //////////////////////////////////////////////////////////////////////////
 // ADV view context
 
-//TODO: define global BLAST text constants in CoreLibs
+// TODO: define global BLAST text constants in CoreLibs
 #define BLAST_ANNOTATION_NAME "blast result"
 
 ADVExportContext::ADVExportContext(AnnotatedDNAView *v)
@@ -208,14 +209,14 @@ void ADVExportContext::updateActions() {
 
 void ADVExportContext::buildMenu(QMenu *m) {
     QMenu *alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     alignMenu->addAction(sequenceToAlignmentAction);
     alignMenu->addAction(sequenceToAlignmentWithTranslationAction);
     alignMenu->addAction(annotationsToAlignmentAction);
     alignMenu->addAction(annotationsToAlignmentWithTranslatedAction);
 
     QMenu *exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
-    SAFE_POINT(exportMenu != NULL, "exportMenu", );
+    SAFE_POINT(exportMenu != nullptr, "exportMenu", );
     exportMenu->addAction(sequence2SequenceAction);
     exportMenu->addAction(annotations2SequenceAction);
     exportMenu->addAction(annotations2CSVAction);
@@ -289,7 +290,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     QMap<const ADVSequenceObjectContext *, QList<SharedAnnotationData>> annotationsPerSeq;
     foreach (Annotation *a, annotations) {
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(a->getGObject());
-        if (seqCtx == NULL) {
+        if (seqCtx == nullptr) {
             continue;
         }
 
@@ -299,13 +300,13 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
             continue;
         }
         U2SequenceObject *seqObj = seqCtx->getSequenceObject();
-        if (GObjectUtils::findComplementTT(seqObj->getAlphabet()) == NULL) {
+        if (GObjectUtils::findComplementTT(seqObj->getAlphabet()) == nullptr) {
             allowComplement = false;
         }
-        if (GObjectUtils::findAminoTT(seqObj, false) == NULL) {
+        if (GObjectUtils::findAminoTT(seqObj, false) == nullptr) {
             allowTranslation = false;
         }
-        if (GObjectUtils::findBackTranslationTT(seqObj) == NULL) {
+        if (GObjectUtils::findBackTranslationTT(seqObj) == nullptr) {
             allowBackTranslation = false;
         }
     }
@@ -344,7 +345,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
         ExportSequenceAItem ei;
         ei.sequence = seqCtx->getSequenceObject();
         ei.complTT = seqCtx->getComplementTT();
-        ei.aminoTT = d->translate ? seqCtx->getAminoTT() : NULL;
+        ei.aminoTT = d->translate ? seqCtx->getAminoTT() : nullptr;
         if (d->useSpecificTable && ei.sequence->getAlphabet()->isNucleic()) {
             DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
             ei.aminoTT = tr->lookupTranslation(ei.sequence->getAlphabet(), DNATranslationType_NUCL_2_AMINO, d->translationTable);
@@ -358,21 +359,21 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
 
 void ADVExportContext::sl_saveSelectedSequences() {
     ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
-    DNASequenceSelection *sel = NULL;
-    if (seqCtx != NULL) {
-        //TODO: support multi-export..
+    DNASequenceSelection *sel = nullptr;
+    if (seqCtx != nullptr) {
+        // TODO: support multi-export..
         sel = seqCtx->getSequenceSelection();
     }
-    if (sel == NULL || sel->isEmpty()) {
+    if (sel == nullptr || sel->isEmpty()) {
         QMessageBox::warning(view->getWidget(), L10N::warningTitle(), tr("No sequence regions selected!"));
         return;
     }
 
     const QVector<U2Region> &regions = sel->getSelectedRegions();
     bool merge = regions.size() > 1;
-    bool complement = seqCtx->getComplementTT() != NULL;
-    bool amino = seqCtx->getAminoTT() != NULL;
-    bool nucleic = GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject()) != NULL;
+    bool complement = seqCtx->getComplementTT() != nullptr;
+    bool amino = seqCtx->getAminoTT() != nullptr;
+    bool nucleic = GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject()) != nullptr;
 
     QString fileExt = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA)->getSupportedDocumentFileExtensions().first();
     QString dirPath;
@@ -399,11 +400,11 @@ void ADVExportContext::sl_saveSelectedSequences() {
     ExportSequenceTaskSettings s;
     ExportUtils::loadDNAExportSettingsFromDlg(s, d.data());
 
-    const DNATranslation *aminoTrans = NULL;
+    const DNATranslation *aminoTrans = nullptr;
     if (d->translate) {
         aminoTrans = d->useSpecificTable ? GObjectUtils::findAminoTT(seqCtx->getSequenceObject(), false, d->translationTable) : seqCtx->getAminoTT();
     }
-    const DNATranslation *backTrans = d->backTranslate ? GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject(), d->translationTable) : NULL;
+    const DNATranslation *backTrans = d->backTranslate ? GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject(), d->translationTable) : nullptr;
     const DNATranslation *complTrans = seqCtx->getComplementTT();
     Task *t = ExportUtils::wrapExportTask(new ExportSelectedSeqRegionsTask(seqCtx->getSequenceObject(), seqCtx->getAnnotationObjects(true), regions, s, aminoTrans, backTrans, complTrans), d->addToProject);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
@@ -427,9 +428,9 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
     ADVSequenceObjectContext *sequenceContext = view->getActiveSequenceContext();
 
     GUrl url;
-    if (doc != NULL) {
+    if (doc != nullptr) {
         url = doc->getURL();
-    } else if (sequenceContext != NULL) {
+    } else if (sequenceContext != nullptr) {
         url = sequenceContext->getSequenceGObject()->getDocument()->getURL();
     } else {
         url = GUrl("newfile");
@@ -444,11 +445,11 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
         return;
     }
 
-    //TODO: lock documents or use shared-data objects
+    // TODO: lock documents or use shared-data objects
     std::stable_sort(annotationSet.begin(), annotationSet.end(), Annotation::annotationLessThan);
 
     // run task
-    Task *t = NULL;
+    Task *t = nullptr;
     if (d->fileFormat() == ExportAnnotationsDialog::CSV_FORMAT_ID) {
         U2OpStatusImpl os;
         QByteArray seqData = sequenceContext->getSequenceObject()->getWholeSequenceData(os);
@@ -481,7 +482,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
         SAFE_POINT(annotation->getName() == BLAST_ANNOTATION_NAME, tr("%1 is not a BLAST annotation").arg(annotation->getName()), );
 
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(annotation->getGObject());
-        CHECK_EXT(seqCtx != NULL, os.setError(tr("No sequence object found")), );
+        CHECK_EXT(seqCtx != nullptr, os.setError(tr("No sequence object found")), );
         CHECK_EXT(seqCtx == commonSeq, os.setError(tr("Can not export BLAST annotations from different sequences")), );
 
         QString qVal = annotation->findFirstQualifierValue(qualiferId);
@@ -498,7 +499,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
         if (!subjSeq.isEmpty()) {
             ma->addRow(rowName, subjSeq.toLatin1());
         } else {
-            AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, NULL, NULL, os);
+            AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, nullptr, nullptr, os);
             CHECK_OP(os, );
             ma->addRow(rowName, rowSequence);
         }
@@ -524,16 +525,16 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")), );
 
     // check that all sequences are present and have the same alphabets
-    const DNAAlphabet *al = NULL;
+    const DNAAlphabet *al = nullptr;
     foreach (const Annotation *annotation, selection) {
         AnnotationTableObject *ao = annotation->getGObject();
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(ao);
-        CHECK_EXT(seqCtx != NULL, os.setError(tr("No sequence object found")), );
-        if (al == NULL) {
+        CHECK_EXT(seqCtx != nullptr, os.setError(tr("No sequence object found")), );
+        if (al == nullptr) {
             al = seqCtx->getAlphabet();
         } else {
             const DNAAlphabet *al2 = seqCtx->getAlphabet();
-            //BUG524: support alphabet reduction
+            // BUG524: support alphabet reduction
             CHECK_EXT(al->getType() == al2->getType(), os.setError(tr("Different sequence alphabets")), );
             al = al->getMap().count(true) >= al2->getMap().count(true) ? al : al2;
         }
@@ -550,7 +551,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
         maxLen = qMax(maxLen, annotation->getRegionsLen());
         CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
         const DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
-        const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : NULL;
+        const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
         QByteArray rowSequence;
         AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, complTT, aminoTT, os);
         CHECK_OP(os, );
@@ -564,9 +565,9 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
 void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, bool translate, U2OpStatus &os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: Input alignment is not empty!")), );
 
-    const DNAAlphabet *al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : NULL;
+    const DNAAlphabet *al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : nullptr;
 
-    //derive alphabet
+    // derive alphabet
     int nItems = 0;
     bool forceTranslation = false;
     foreach (ADVSequenceObjectContext *c, view->getSequenceContexts()) {
@@ -575,7 +576,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
         }
         nItems += c->getSequenceSelection()->getSelectedRegions().count();
         const DNAAlphabet *seqAl = c->getAlphabet();
-        if (al == NULL) {
+        if (al == nullptr) {
             al = seqAl;
         } else if (al != seqAl) {
             if (al->isNucleic() && seqAl->isAmino()) {
@@ -593,7 +594,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
     CHECK_EXT(nItems >= 2, os.setError(tr("At least 2 sequences required")), );
     ma->setAlphabet(al);
 
-    //cache sequences
+    // cache sequences
     QSet<QString> names;
     qint64 maxLen = 0;
     foreach (ADVSequenceObjectContext *seqCtx, view->getSequenceContexts()) {
@@ -601,13 +602,13 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
             continue;
         }
         const DNAAlphabet *seqAl = seqCtx->getAlphabet();
-        DNATranslation *aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : NULL;
+        DNATranslation *aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : nullptr;
         foreach (const U2Region &r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
             maxLen = qMax(maxLen, r.length);
             CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
             QByteArray seq = seqCtx->getSequenceData(r, os);
             CHECK_OP(os, );
-            if (aminoTT != NULL) {
+            if (aminoTT != nullptr) {
                 int len = aminoTT->translate(seq.data(), seq.size());
                 seq.resize(len);
             }
@@ -627,7 +628,7 @@ void ADVExportContext::selectionToAlignment(const QString &title, bool annotatio
         prepareMAFromSequences(ma, translate, os);
     }
     if (os.hasError()) {
-        QMessageBox::critical(NULL, L10N::errorTitle(), os.getError());
+        QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;
     }
 
@@ -755,7 +756,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);
 
     if (os.hasError()) {
-        QMessageBox::critical(NULL, L10N::errorTitle(), os.getError());
+        QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());
         return;
     }
 
@@ -763,4 +764,4 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-}    //namespace U2
+}    // namespace U2

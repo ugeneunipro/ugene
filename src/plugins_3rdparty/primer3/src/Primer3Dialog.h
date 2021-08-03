@@ -41,7 +41,7 @@ public:
 
     Primer3TaskSettings getSettings()const;
     const CreateAnnotationModel &getCreateAnnotationModel()const;
-    U2Region getRegion(bool *ok = NULL)const;
+    U2Region getRegion(bool *ok = nullptr)const;
     QString checkModel();
     bool prepareAnnotationObject();
 public:

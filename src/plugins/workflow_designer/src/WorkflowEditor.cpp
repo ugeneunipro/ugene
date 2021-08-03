@@ -52,10 +52,10 @@ namespace U2 {
 WorkflowEditor::WorkflowEditor(WorkflowView *p)
     : QWidget(p),
       owner(p),
-      custom(NULL),
-      customWidget(NULL),
-      subject(NULL),
-      actor(NULL),
+      custom(nullptr),
+      customWidget(nullptr),
+      subject(nullptr),
+      actor(nullptr),
       onFirstTableShow(true) {
     GCOUNTER(cvar, "WorkflowEditor");
     setupUi(this);
@@ -129,7 +129,7 @@ void WorkflowEditor::setEditable(bool editable) {
 
 void WorkflowEditor::sl_updatePortTable() {
     Actor *a = qobject_cast<Actor *>(sender());
-    CHECK(a != NULL, );
+    CHECK(a != nullptr, );
 
     removePortTable(inputPortWidget);
     removePortTable(outputPortWidget);
@@ -299,13 +299,13 @@ void WorkflowEditor::reset() {
     caption->setText("");
     nameEdit->hide();
     paramBox->setTitle(tr("Parameters"));
-    setDescriptor(NULL);
-    edit(NULL);
-    if (NULL != actor) {
+    setDescriptor(nullptr);
+    edit(nullptr);
+    if (nullptr != actor) {
         disconnect(actor, SIGNAL(si_modified()), this, SLOT(sl_updatePortTable()));
     }
-    actor = NULL;
-    actorModel->setActor(NULL);
+    actor = nullptr;
+    actorModel->setActor(nullptr);
     propDoc->setText("");
 
     inputPortBox->setEnabled(false);
@@ -345,14 +345,14 @@ void WorkflowEditor::reset() {
     paramHeight = 0;
     inputHeight = 0;
     outputHeight = 0;
-    if (NULL != specialParameters) {
+    if (nullptr != specialParameters) {
         specialParameters->setEnabled(false);
         specialParameters->reset();
     }
 }
 
 void WorkflowEditor::commitDatasets(const QString &attrId, const QList<Dataset> &sets) {
-    assert(NULL != actor);
+    assert(nullptr != actor);
     Attribute *attr = actor->getParameter(attrId);
     attr->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
     sendModified();
@@ -382,14 +382,14 @@ void WorkflowEditor::editActor(Actor *a) {
         nameEdit->show();
         setDescriptor(a->getProto(), tr("To configure the parameters of the element go to \"Parameters\" area below."));
         edit(a);
-        if (NULL != specialParameters) {
+        if (nullptr != specialParameters) {
             specialParameters->editActor(a);
         }
 
         createInputPortTable(a);
         createOutputPortTable(a);
         paramHeight = table->rowHeight(0) * (table->model()->rowCount() + 3);
-        if (NULL != specialParameters && specialParameters->isVisible()) {
+        if (nullptr != specialParameters && specialParameters->isVisible()) {
             paramHeight += specialParameters->contentHeight();
         }
         paramBox->setTitle(tr("Parameters"));
@@ -457,7 +457,7 @@ void WorkflowEditor::editPort(Port *p) {
         paramHeight = ed->getOptimalHeight();
 
         edit(p);
-        bool invisible = ((NULL != ed && ed->isEmpty()) || !p->isEnabled());
+        bool invisible = ((nullptr != ed && ed->isEmpty()) || !p->isEnabled());
         paramBox->setVisible(!invisible);
         if (invisible) {
             paramHeight = 0;
@@ -484,12 +484,12 @@ void WorkflowEditor::setDescriptor(Descriptor *d, const QString &hint) {
 
 void WorkflowEditor::edit(Configuration *cfg) {
     paramBox->setEnabled(true);
-    if (NULL != specialParameters) {
+    if (nullptr != specialParameters) {
         specialParameters->setEnabled(true);
     }
     disconnect(paramBox, SIGNAL(toggled(bool)), tableSplitter, SLOT(setVisible(bool)));
 
-    if (NULL != custom) {
+    if (nullptr != custom) {
         custom->commit();
     }
     delete customWidget;
@@ -498,8 +498,8 @@ void WorkflowEditor::edit(Configuration *cfg) {
     removePortTable(outputPortWidget);
 
     subject = cfg;
-    custom = cfg ? cfg->getEditor() : NULL;
-    customWidget = custom ? custom->getWidget() : NULL;
+    custom = cfg ? cfg->getEditor() : nullptr;
+    customWidget = custom ? custom->getWidget() : nullptr;
 
     if (customWidget) {
         connect(paramBox, SIGNAL(toggled(bool)), customWidget, SLOT(setVisible(bool)));
@@ -559,12 +559,12 @@ void WorkflowEditor::sl_linkActivated(const QString &url) {
     table->setCurrentIndex(modelIndex);
     QWidget *w = table->indexWidget(modelIndex);
     PropertyWidget *pw = dynamic_cast<PropertyWidget *>(w);
-    CHECK(NULL != pw, );
+    CHECK(nullptr != pw, );
     pw->activate();
 }
 
 void WorkflowEditor::setSpecialPanelEnabled(bool isEnabled) {
-    if (NULL != specialParameters) {
+    if (nullptr != specialParameters) {
         specialParameters->setDatasetsEnabled(isEnabled);
     }
 }
@@ -590,9 +590,9 @@ void SpecialParametersPanel::editActor(Actor *a) {
     bool visible = false;
     foreach (const QString &attrId, a->getParameters().keys()) {
         Attribute *attr = a->getParameter(attrId);
-        CHECK(NULL != attr, );
+        CHECK(nullptr != attr, );
         URLAttribute *urlAttr = dynamic_cast<URLAttribute *>(attr);
-        if (NULL == urlAttr) {
+        if (nullptr == urlAttr) {
             continue;
         }
         sets[attrId] = urlAttr->getAttributePureValue().value<QList<Dataset>>();
@@ -609,7 +609,7 @@ void SpecialParametersPanel::editActor(Actor *a) {
 
 void SpecialParametersPanel::sl_datasetsChanged() {
     AttributeDatasetsController *ctrl = dynamic_cast<AttributeDatasetsController *>(sender());
-    CHECK(NULL != ctrl, );
+    CHECK(nullptr != ctrl, );
     CHECK(controllers.values().contains(ctrl), );
     QString attrId = controllers.key(ctrl);
     sets[attrId] = ctrl->getDatasets();
@@ -620,7 +620,7 @@ void SpecialParametersPanel::reset() {
     foreach (AttributeDatasetsController *controller, controllers.values()) {
         removeWidget(controller);
         delete controller;
-        controller = NULL;
+        controller = nullptr;
     }
     controllers.clear();
     sets.clear();
@@ -628,7 +628,7 @@ void SpecialParametersPanel::reset() {
 }
 
 void SpecialParametersPanel::addWidget(AttributeDatasetsController *controller) {
-    CHECK(NULL != controller, );
+    CHECK(nullptr != controller, );
     QWidget *newWidget = controller->getWigdet();
     if (!editor->isEnabled()) {
         newWidget->setEnabled(false);
@@ -637,7 +637,7 @@ void SpecialParametersPanel::addWidget(AttributeDatasetsController *controller) 
 }
 
 void SpecialParametersPanel::removeWidget(AttributeDatasetsController *controller) {
-    CHECK(NULL != controller, );
+    CHECK(nullptr != controller, );
     disconnect(controller, SIGNAL(si_attributeChanged()), this, SLOT(sl_datasetsChanged()));
     this->layout()->removeWidget(controller->getWigdet());
 }

@@ -73,7 +73,7 @@ static const QString GENOME("genome");
 /* Worker */
 /************************************************************************/
 Peak2GeneWorker::Peak2GeneWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL), output(NULL) {
+    : BaseWorker(p), inChannel(nullptr), output(nullptr) {
 }
 
 void Peak2GeneWorker::init() {
@@ -108,7 +108,7 @@ Task *Peak2GeneWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void Peak2GeneWorker::cleanup() {
@@ -173,7 +173,7 @@ QString Peak2GeneComboBoxWithUrlsDelegate::getAttributeName() {
 
 void Peak2GeneWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(Peak2GeneSupport::REF_GENES_DATA_NAME);
@@ -243,7 +243,7 @@ void Peak2GeneWorkerFactory::init() {
                               Peak2GeneWorker::tr("Genome file"),
                               Peak2GeneWorker::tr("Select a genome file (sqlite3 file) to search refGenes (--genome)."));
 
-        Attribute *annGrAttr = NULL;
+        Attribute *annGrAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {

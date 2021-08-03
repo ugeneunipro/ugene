@@ -164,7 +164,7 @@ void GTest_FindSingleSequenceRepeatsTask::prepare() {
         return;
     }
     U2SequenceObject *seq1IObj = getContext<U2SequenceObject>(this, seq);
-    if (seq1IObj == NULL) {
+    if (seq1IObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -334,7 +334,7 @@ void GTest_FindTandemRepeatsTask::prepare() {
     //    TaskResourceUsage* tru = AppContext::getTaskScheduler()->getTaskResources(NULL).constData();
     const DNAAlphabet *alph = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     seqObj = new DNASequence(QString("sequence"), sequence.toLatin1(), alph);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -474,7 +474,7 @@ void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *tf, const QDomElement 
 void GTest_FindRealTandemRepeatsTask::prepare() {
     CHECK_OP(stateInfo, );
     U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, sequence);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -619,14 +619,14 @@ void GTest_SArrayBasedFindTask::prepare() {
     CHECK_OP(stateInfo, );
 
     U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, seqObjName);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError(QString("Can't find index sequence %1").arg(seqObjName));
         return;
     }
     DNAAlphabetType seqType = seqObj->getAlphabet()->getType();
     char unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N' : '\0';
 
-    const quint32 *bitMask = NULL;
+    const quint32 *bitMask = nullptr;
     int bitCharLen = 0;
 
     if (useBitMask) {

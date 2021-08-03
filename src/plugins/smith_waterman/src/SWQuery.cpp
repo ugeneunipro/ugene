@@ -66,7 +66,7 @@ void SWAlgoEditor::populate() {
 QDSWActor::QDSWActor(QDActorPrototype const *proto)
     : QDActor(proto), algo(0) {
     units["sw"] = new QDSchemeUnit(this);
-    algo = NULL;
+    algo = nullptr;
 }
 
 int QDSWActor::getMinResultLen() const {
@@ -117,12 +117,12 @@ QString QDSWActor::getText() const {
 }
 
 Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
-    Task *task = NULL;
+    Task *task = nullptr;
     assert(scheme);
     QMap<QString, Attribute *> params = cfg->getParameters();
 
-    settings.aminoTT = NULL;
-    settings.complTT = NULL;
+    settings.aminoTT = nullptr;
+    settings.complTT = nullptr;
     switch (getStrandToRun()) {
     case QDStrand_Both:
         settings.strand = StrandOption_Both;
@@ -167,11 +167,11 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     settings.sqnc = dnaSeq.seq;
 
     if (settings.strand != StrandOption_DirectOnly) {
-        DNATranslation *compTT = NULL;
+        DNATranslation *compTT = nullptr;
         if (dnaSeq.alphabet->isNucleic()) {
             compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
         }
-        if (compTT != NULL) {
+        if (compTT != nullptr) {
             settings.complTT = compTT;
         } else {
             //Could not find complement translation, searching only direct strand
@@ -203,7 +203,7 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     task = new Task(tr("SSearch"), TaskFlag_NoRun);
     foreach (const U2Region &r, searchLocation) {
         SmithWatermanSettings stngs(settings);
-        SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(NULL,
+        SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(nullptr,
                                                                                              U2FeatureTypes::MiscFeature,
                                                                                              QString(),
                                                                                              QString(),

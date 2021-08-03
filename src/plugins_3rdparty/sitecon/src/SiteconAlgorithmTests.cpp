@@ -88,7 +88,7 @@ void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement &el) 
 
 void GTest_CalculateACGTContent::prepare() {
     Document *doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
@@ -98,12 +98,12 @@ void GTest_CalculateACGTContent::prepare() {
         return;
     }
     GObject *obj = list.first();
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (mao == NULL) {
+    if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
@@ -183,7 +183,7 @@ void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElem
 
 void GTest_CalculateDispersionAndAverage::prepare() {
     Document *doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
@@ -193,12 +193,12 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         return;
     }
     GObject *obj = list.first();
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (mao == NULL) {
+    if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
@@ -270,7 +270,7 @@ void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement &e
 
 void GTest_CalculateFirstTypeError::prepare() {
     Document *doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
@@ -280,12 +280,12 @@ void GTest_CalculateFirstTypeError::prepare() {
         return;
     }
     GObject *obj = list.first();
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (mao == NULL) {
+    if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
@@ -351,7 +351,7 @@ void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement &
 
 void GTest_CalculateSecondTypeError::prepare() {
     Document *doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
@@ -361,12 +361,12 @@ void GTest_CalculateSecondTypeError::prepare() {
         return;
     }
     GObject *obj = list.first();
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (mao == NULL) {
+    if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
@@ -496,7 +496,7 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_SiteconSearchTask::prepare() {
     U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
-    CHECK_EXT(mySequence != NULL, setError(QString("error can't cast to sequence from GObject")), );
+    CHECK_EXT(mySequence != nullptr, setError(QString("error can't cast to sequence from GObject")), );
 
     SiteconSearchCfg cfg;
     cfg.complOnly = complOnly;
@@ -571,12 +571,12 @@ Task::ReportResult GTest_CompareSiteconModels::report() {
     //SiteconModel model1 = getContext<SiteconModel>(doc1ContextName);
     //SiteconModel model2 = getContext<SiteconModel>(doc2ContextName);
     Document *doc1 = getContext<Document>(this, doc1ContextName);
-    if (doc1 == NULL) {
+    if (doc1 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(doc1ContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, doc2ContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(doc2ContextName));
         return ReportResult_Finished;
     }

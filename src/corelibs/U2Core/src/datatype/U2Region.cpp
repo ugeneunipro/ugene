@@ -173,6 +173,14 @@ int U2Region::findOverlappingRegion(const QVector<U2Region> &rs) const {
     return -1;
 }
 
+U2Region U2Region::fromXRange(const QRect &rect) {
+    return U2Region(rect.x(), rect.width());
+}
+
+U2Region U2Region::fromYRange(const QRect &rect) {
+    return U2Region(rect.y(), rect.height());
+}
+
 static bool _registerMeta() {
     qRegisterMetaType<U2Region>("U2Region");
     qRegisterMetaTypeStreamOperators<U2Region>("U2::U2Region");

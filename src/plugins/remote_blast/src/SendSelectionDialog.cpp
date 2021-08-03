@@ -294,7 +294,7 @@ void SendSelectionDialog::sl_scriptSelected(int index) {
 void SendSelectionDialog::sl_OK() {
     QString error = ca_c->validate();
     if (!error.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Error"), error);
+        QMessageBox::critical(nullptr, tr("Error"), error);
         return;
     }
     retries = retrySpinBox->value();

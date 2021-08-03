@@ -22,50 +22,131 @@
 #ifndef _U2_MA_EDITOR_SELECTION_
 #define _U2_MA_EDITOR_SELECTION_
 
+#include <QList>
 #include <QRect>
 
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
-/************************************************************************/
-/* MaEditorSelection */
-/************************************************************************/
+class MaEditor;
+class McaEditor;
+
+/** Data model for selection in MSA editor: list of visual non-overlapping rectangles. */
 class U2VIEW_EXPORT MaEditorSelection {
 public:
-    MaEditorSelection();
-    MaEditorSelection(int left, int top, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
+    /** Creates a new empty MSA editor selection first and calls buildSafeSelectionRects() on the given rect list. */
+    MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
 
-    /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
+    /**
+     * Builds 'safe' selection rects list.
+     * The result contains non-empty non-intersecting/non-touching each other rects with a unified left/right coordinates (bounding) sorted by top position. */
+    static QList<QRect> buildSafeSelectionRects(const QList<QRect> &rectList);
+
+    /** Returns true if the selection contains no rects. */
     bool isEmpty() const;
 
-    QPoint topLeft() const;
-    QPoint bottomRight() const;
+    /** Returns true if selection contains multiple rectangles. */
+    bool isMultiRegionSelection() const;
 
-    /** Returns rect under select. This rect is always valid. For the empty selection returns Rect(0, 0, 0, 0); */
+    /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
+    bool isSingleRegionSelection() const;
+
+    /** Returns true if selection contains 1 rect with 1x1 dimension. */
+    bool isSingleBaseSelection() const;
+
+    /** Returns sum of height of all selected rects. */
+    int getCountOfSelectedRows() const;
+
+    /**
+     * Returns selection state as a rect.
+     * The returned rect is a bounding rect for all rects in the 'rectList'.
+     * If 'rectList' is empty the method returns an empty (0, 0, 0, 0) rect.
+     * Warning: this method is unsafe and will be removed. Use getRectList() to deal with each individual selection rect correctly.
+     */
     QRect toRect() const;
 
-    int x() const;
-    int y() const;
+    /** Returns width of the selection. Note: all rects in the selection have unified width (left & right coordinates). */
+    int getWidth() const;
 
-    int width() const;
-    int height() const;
+    /** Returns list of selected rects. */
+    const QList<QRect> &getRectList() const;
 
-    int right() const;
-    int bottom() const;
+    /** Returns true if the given point addressed by column/row is in the selection. */
+    bool contains(int columnIndex, int rowIndex) const;
 
-    U2Region getXRegion() const;
-    U2Region getYRegion() const;
+    /** Returns true if the given point addressed by column/row is in the selection. */
+    bool contains(const QPoint &columnAndRowPoint) const;
 
+    /** Returns true if the given row (any its part) is in the selection. */
+    bool containsRow(int rowIndex) const;
+
+    /** Returns view row indexes of all rows present in the selection. */
+    QList<int> getSelectedRowIndexes() const;
+
+    /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
 
-    MaEditorSelection intersected(const MaEditorSelection &selection) const;
+    /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
+    bool operator!=(const MaEditorSelection &other) const;
 
 private:
-    explicit MaEditorSelection(QRect &rect);
-    QRect selArea;
+    /**
+     * Unsorted list of visual non-overlapping on-screen rectangles.
+     * The list may contain only valid rectangles with x>=0, y>=0, height>0 and width>=0.
+     * Width equal to 0 is allowed by historical reasons (see MCA editor) and is processed as a 'whole row' selection.
+     */
+    QList<QRect> rectList;
+};
+
+/** MSA/MCA editor selection controller. */
+class U2VIEW_EXPORT MaEditorSelectionController : public QObject {
+    Q_OBJECT
+public:
+    explicit MaEditorSelectionController(MaEditor *editor);
+
+    /** Returns current selection state. */
+    const MaEditorSelection &getSelection() const;
+
+    /** Sets new selection instance. Emits si_selectionChanged signal. */
+    virtual void setSelection(const MaEditorSelection &selection);
+
+signals:
+
+    /** Signal emitted every time selection is changed. */
+    void si_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
+
+public slots:
+    /** Sets selection to empty selection. Emits signal that selection is changed. */
+    virtual void clearSelection();
+
+protected:
+    /** Current selection with view rows/column coordinates. */
+    MaEditorSelection selection;
+
+private:
+    /** MSA/MCA editor instance. Never null. */
+    MaEditor *const editor;
+};
+
+/**
+ * Selection controller for MCA editor.
+ * TODO: move out of ov_msa to ov_mca together with other mca specific classes.
+ */
+class U2VIEW_EXPORT McaEditorSelectionController : public MaEditorSelectionController {
+    Q_OBJECT
+public:
+    explicit McaEditorSelectionController(McaEditor *editor);
+
+    /** Sets new selection instance. Emits si_selectionChanged signal. */
+    void setSelection(const MaEditorSelection &selection) override;
+
+public slots:
+    /** Clears both MA & reference sequence selections. */
+    void clearSelection() override;
+
+private:
+    McaEditor *const mcaEditor;
 };
 
 }    // namespace U2

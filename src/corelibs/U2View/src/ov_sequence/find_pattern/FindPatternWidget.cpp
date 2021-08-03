@@ -193,8 +193,9 @@ protected:
     }
 };
 
-FindPatternEventFilter::FindPatternEventFilter(QObject *parent)
-    : QObject(parent) {
+FindPatternEventFilter::FindPatternEventFilter(QTextEdit *textEdit)
+    : QObject(textEdit) {
+    textEdit->installEventFilter(this);
 }
 
 bool FindPatternEventFilter::eventFilter(QObject *obj, QEvent *event) {
@@ -280,13 +281,10 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
 
         checkState();
 
-        FindPatternEventFilter *findPatternEventFilter = new FindPatternEventFilter(this);
-        textPattern->installEventFilter(findPatternEventFilter);
-
         setFocusProxy(textPattern);
-
         trackedSelection = nullptr;
 
+        auto findPatternEventFilter = new FindPatternEventFilter(textPattern);
         connect(findPatternEventFilter, SIGNAL(si_enterPressed()), SLOT(sl_onEnterPressed()));
         connect(findPatternEventFilter, SIGNAL(si_shiftEnterPressed()), SLOT(sl_onShiftEnterPressed()));
         connect(createAnnotationController, SIGNAL(si_usePatternNamesStateChanged()), SLOT(sl_usePatternNamesCbClicked()));
@@ -530,10 +528,6 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index) {
         editEnd->show();
         editStart->setReadOnly(false);
         editEnd->setReadOnly(false);
-
-        ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
-        SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus!", );
-        getCompleteSearchRegion(regionIsCorrect, activeContext->getSequenceLength());
         checkState();
     } else if (optionIndex == RegionSelectionIndex_CurrentSelectedRegion) {
         editStart->show();
@@ -660,120 +654,116 @@ void FindPatternWidget::updateLayout() {
     }
 }
 
-void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, const QString &additionalMsg) {
+void FindPatternWidget::setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg) {
     if (show) {
-        if (!messageFlags.contains(messageFlag)) {
-            messageFlags.append(messageFlag);
-        }
+        messageFlagMap.insert(messageFlag, additionalMsg);
     } else {
-        messageFlags.removeAll(messageFlag);
+        messageFlagMap.remove(messageFlag);
     }
 
-    if (!messageFlags.isEmpty()) {
-#ifndef Q_OS_DARWIN
-        const QString lineBreakShortcut = "Ctrl+Enter";
-#else
-        const QString lineBreakShortcut = "Cmd+Enter";
-#endif
-        QString text = "";
-        for (const MessageFlag &flag : qAsConst(messageFlags)) {
-            switch (flag) {
-                case PatternIsTooLong: {
-                    const QString message = tr("The value is longer than the search region."
-                                               " Please input a shorter value or select another region!");
-                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    break;
-                }
-                case PatternAlphabetDoNotMatch: {
-                    const QString message = tr("Warning: input value contains characters that"
-                                               " do not match the active alphabet!");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                    GUIUtils::setWidgetWarning(textPattern, true);
-                    break;
-                }
-                case PatternsWithBadAlphabetInFile: {
-                    const QString message = tr("Warning: file contains patterns that"
-                                               " do not match the active alphabet! Those patterns were ignored ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                    break;
-                }
-                case PatternsWithBadRegionInFile: {
-                    const QString message = tr("Warning: file contains patterns that"
-                                               " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
-                    break;
-                }
-                case PleaseInputAtLeastOneSearchPatternTip: {
-                    const QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
-                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
-                    break;
-                }
-                case AnnotationNotValidName: {
-                    const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    if (!additionalMsg.isEmpty()) {
-                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
-                    }
-                    const QString msg = tr(" Please input valid annotation names. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                    break;
-                }
-                case AnnotationNotValidFastaParsedName: {
-                    const QString message = tr("Warning: annotation names are invalid. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    if (!additionalMsg.isEmpty()) {
-                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
-                    }
-                    const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                    break;
-                }
-                case NoPatternToSearch: {
-                    const QString message = tr("Warning: there is no pattern to search. ");
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                    break;
-                }
-                case SearchRegionIncorrect: {
-                    const QString message = tr("Warning: there is no pattern to search. ");
-                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
-                    break;
-                }
-                case PatternWrongRegExp: {
-                    const QString message = tr("Warning: the input regular expression is invalid! ");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    GUIUtils::setWidgetWarning(textPattern, true);
-                    break;
-                }
-                case SequenceIsTooBig: {
-                    text.clear();    // the search is blocked at all -- any other messages are meaningless
-                    const QString message = tr("Warning: current sequence is too long to search in.");
-                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                    break;
-                }
-                default:
-                    FAIL("Unexpected value of the error flag in show/hide error message for pattern!", );
-            }
-        }
-        lblErrorMessage->setText(text);
-    } else {
-        lblErrorMessage->setText("");
-    }
     if (messageFlag != PleaseInputAtLeastOneSearchPatternTip) {
         // Show PleaseInputAtLeastOneSearchPatternTip only if there are no other messages.
-        bool hasNoFlagsOrOnlyTheTip = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
+        bool hasNoFlagsOrOnlyTheTip = messageFlagMap.isEmpty() ||
+                                      (messageFlagMap.size() == 1 && messageFlagMap.contains(PleaseInputAtLeastOneSearchPatternTip));
         bool isShowEmptyPatternHintOn = hasNoFlagsOrOnlyTheTip && textPattern->toPlainText().trimmed().isEmpty();
-        showHideMessage(isShowEmptyPatternHintOn, PleaseInputAtLeastOneSearchPatternTip);
+        setMessageFlag(PleaseInputAtLeastOneSearchPatternTip, isShowEmptyPatternHintOn);
     }
-    bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
-    if (hasNoErrors) {
+    updateErrorLabelState();
+}
+
+void FindPatternWidget::updateErrorLabelState() {
+    QString errorHtml = buildErrorLabelHtml();
+    lblErrorMessage->setText(errorHtml);
+    bool hasNoPatternErrors = messageFlagMap.isEmpty() ||
+                              messageFlagMap.contains(SequenceIsTooBig) ||
+                              (messageFlagMap.size() == 1 && messageFlagMap.contains(PleaseInputAtLeastOneSearchPatternTip));
+    if (hasNoPatternErrors) {
         GUIUtils::setWidgetWarning(textPattern, false);
     }
+}
+
+QString FindPatternWidget::buildErrorLabelHtml() const {
+    if (messageFlagMap.contains(SequenceIsTooBig)) {
+        // The search is not possible - any other messages are meaningless.
+        QString message = tr("Warning: current sequence is too long to search in.");
+        return tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+    }
+    QString text = "";
+    QList<MessageFlag> errorFlags = messageFlagMap.keys();
+    for (const MessageFlag &flag : qAsConst(errorFlags)) {
+        QString customErrorMessage = messageFlagMap[flag];
+        text += text.isEmpty() ? "" : "<br>";
+        switch (flag) {
+            case SearchRegionIncorrect: {
+                SAFE_POINT(!customErrorMessage.isEmpty(), "InvalidSearchRegion must provide a valid error message.", "");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
+                break;
+            }
+            case PatternAlphabetDoNotMatch: {
+                QString message = tr("Warning: input value contains characters that"
+                                     " do not match the active alphabet!");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
+                GUIUtils::setWidgetWarning(textPattern, true);
+                break;
+            }
+            case PatternsWithBadAlphabetInFile: {
+                QString message = tr("Warning: file contains patterns that"
+                                     " do not match the active alphabet! Those patterns were ignored ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
+                break;
+            }
+            case PatternsWithBadRegionInFile: {
+                QString message = tr("Warning: file contains patterns that"
+                                     " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::warningColorLabelHtmlStr()).arg(message);
+                break;
+            }
+            case PleaseInputAtLeastOneSearchPatternTip: {
+                QString lineBreakShortcut = isOsMac() ? "Cmd+Enter" : "Ctrl+Enter";
+                QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
+                text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::infoColorLabelHtmlStr()).arg(message);
+                break;
+            }
+            case AnnotationNotValidName: {
+                QString message = tr("Warning: annotation name or annotation group name are invalid. ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                if (!customErrorMessage.isEmpty()) {
+                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
+                }
+                const QString msg = tr(" Please input valid annotation names. ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+                break;
+            }
+            case AnnotationNotValidFastaParsedName: {
+                QString message = tr("Warning: annotation names are invalid. ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                if (!customErrorMessage.isEmpty()) {
+                    text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
+                }
+                const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+                break;
+            }
+            case NoPatternToSearch: {
+                QString message = tr("Warning: there is no pattern to search. ");
+                text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
+                break;
+            }
+            case PatternWrongRegExp: {
+                QString message = tr("Warning: the input regular expression is invalid! ");
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                GUIUtils::setWidgetWarning(textPattern, true);
+                break;
+            }
+            default:
+                FAIL("Unexpected value of the error flag in show/hide error message for pattern!", "");
+        }
+    }
+    return text;
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged() {
@@ -861,7 +851,7 @@ bool FindPatternWidget::verifyPatternAlphabet() {
     QString patterns = patternNoNames.join("");
 
     bool alphabetIsOk = checkAlphabet(patterns);
-    showHideMessage(!alphabetIsOk, PatternAlphabetDoNotMatch);
+    setMessageFlag(PatternAlphabetDoNotMatch, !alphabetIsOk);
 
     bool result = alphabetIsOk;
 
@@ -870,19 +860,19 @@ bool FindPatternWidget::verifyPatternAlphabet() {
 
         // Check that all symbols are ascii
         if (pattern.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
-            showHideMessage(true, PatternWrongRegExp);
+            setMessageFlag(PatternWrongRegExp, true);
             result = false;
         } else {
             QRegExp regExp(pattern.toUtf8());
             if (regExp.isValid()) {
-                showHideMessage(false, PatternWrongRegExp);
+                setMessageFlag(PatternWrongRegExp, false);
             } else {
-                showHideMessage(true, PatternWrongRegExp);
+                setMessageFlag(PatternWrongRegExp, true);
                 result = false;
             }
         }
     } else {
-        showHideMessage(false, PatternWrongRegExp);
+        setMessageFlag(PatternWrongRegExp, false);
     }
     return result;
 }
@@ -897,24 +887,11 @@ void FindPatternWidget::sl_onSequenceModified() {
     verifyPatternAlphabet();
 }
 
-void FindPatternWidget::showTooLongSequenceError() {
-    showHideMessage(true, SequenceIsTooBig);
-
-    showHideMessage(false, AnnotationNotValidFastaParsedName);
-    showHideMessage(false, AnnotationNotValidName);
-    showHideMessage(false, PatternAlphabetDoNotMatch);
-    showHideMessage(false, PatternsWithBadRegionInFile);
-    showHideMessage(false, PatternsWithBadAlphabetInFile);
-    showHideMessage(false, NoPatternToSearch);
-    showHideMessage(false, SearchRegionIncorrect);
-    GUIUtils::setWidgetWarning(textPattern, false);
-}
-
 void FindPatternWidget::checkState() {
     //validate annotation name
     QString v = createAnnotationController->validate();
     if (!v.isEmpty()) {
-        showHideMessage(true, AnnotationNotValidName, v);
+        setMessageFlag(AnnotationNotValidName, true, v);
         createAnnotationController->setFocusToNameEdit();
         getAnnotationsPushButton->setDisabled(true);
         return;
@@ -922,93 +899,61 @@ void FindPatternWidget::checkState() {
     if (usePatternNames && !usePatternFromFileRadioButton->isChecked()) {
         for (const QString &name : qAsConst(nameList)) {
             if (!Annotation::isValidAnnotationName(name)) {
-                showHideMessage(true, AnnotationNotValidFastaParsedName);
+                setMessageFlag(AnnotationNotValidFastaParsedName, true);
                 return;
             }
         }
-        showHideMessage(false, AnnotationNotValidFastaParsedName);
+        setMessageFlag(AnnotationNotValidFastaParsedName, false);
     }
 
     getAnnotationsPushButton->setEnabled(!findPatternResults.isEmpty());
 
-    // Disable the "Search" button if the pattern is empty
-    //and pattern is not loaded from a file
-    if (textPattern->toPlainText().isEmpty() && !usePatternFromFileRadioButton->isChecked()) {
-        showHideMessage(false, PatternAlphabetDoNotMatch);
+    QString pattern = textPattern->toPlainText();
+
+    // Disable the "Search" button if the pattern is empty and pattern is not loaded from a file.
+    if (pattern.isEmpty() && !usePatternFromFileRadioButton->isChecked()) {
+        setMessageFlag(NoPatternToSearch, false);
         GUIUtils::setWidgetWarning(textPattern, false);
         return;
     }
 
-    // Show warning if the region is not correct
-    if (!regionIsCorrect) {
-        showHideMessage(true, SearchRegionIncorrect);
+    // Check region.
+    QString regionErrorMessage = checkSearchRegion();
+    if (!regionErrorMessage.isEmpty()) {
+        GUIUtils::setWidgetWarning(textPattern, true);
+        setMessageFlag(SearchRegionIncorrect, true, regionErrorMessage);
         return;
     }
-    if (!usePatternFromFileRadioButton->isChecked()) {
-        // Show warning if the length of the pattern is greater than the search region length
-        // Not for RegExp algorithm
-        if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
-            bool regionOk = checkPatternRegion(textPattern->toPlainText());
-            if (!regionOk) {
-                GUIUtils::setWidgetWarning(textPattern, true);
-                showHideMessage(true, PatternIsTooLong);
-                return;
-            } else {
-                GUIUtils::setWidgetWarning(textPattern, false);
-                showHideMessage(false, PatternIsTooLong);
-            }
-        }
-    } else {
-        GUIUtils::setWidgetWarning(textPattern, false);
-        showHideMessage(false, PatternAlphabetDoNotMatch);
+    if (usePatternFromFileRadioButton->isChecked()) {
+        setMessageFlag(PatternAlphabetDoNotMatch, false);
     }
-
-    showHideMessage(false, AnnotationNotValidFastaParsedName);
-    showHideMessage(false, AnnotationNotValidName);
-    showHideMessage(false, PatternsWithBadRegionInFile);
-    showHideMessage(false, PatternsWithBadAlphabetInFile);
-    showHideMessage(false, NoPatternToSearch);
-    showHideMessage(false, SearchRegionIncorrect);
-    showHideMessage(false, SequenceIsTooBig);
+    setMessageFlag(AnnotationNotValidFastaParsedName, false);
+    setMessageFlag(AnnotationNotValidName, false);
+    setMessageFlag(PatternsWithBadRegionInFile, false);
+    setMessageFlag(PatternsWithBadAlphabetInFile, false);
+    setMessageFlag(NoPatternToSearch, false);
+    setMessageFlag(SearchRegionIncorrect, false);
+    setMessageFlag(SequenceIsTooBig, false);
+    GUIUtils::setWidgetWarning(textPattern, false);
 }
 
 void FindPatternWidget::enableDisableMatchSpin() {
     spinMatch->setEnabled(!((textPattern->toPlainText().isEmpty() && !usePatternFromFileRadioButton->isChecked()) || isAminoSequenceSelected));
 }
 
-U2Region FindPatternWidget::getCompleteSearchRegion(bool &isRegionCorrect, qint64 maxLen) const {
+U2Region FindPatternWidget::getSearchRegion() const {
+    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    qint64 sequenceLength = activeContext->getSequenceLength();
     if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence) {
-        isRegionCorrect = true;
-        return U2Region(0, maxLen);
+        return U2Region(0, sequenceLength);
     }
-    bool ok = false;
-    QString startText = editStart->text();
-    qint64 value1 = startText.toLongLong(&ok) - 1;
-    if (!ok || value1 < 0) {
-        isRegionCorrect = false;
-        return U2Region();
-    }
-
-    QString endText = editEnd->text();
-    int value2 = endText.toLongLong(&ok);
-    if (!ok || value2 <= 0 || value2 > maxLen) {
-        isRegionCorrect = false;
-        return U2Region();
-    }
-
-    if (value1 > value2) {    // start > end
-        value2 += maxLen;
-    }
-
-    isRegionCorrect = true;
-    return U2Region(value1, value2 - value1);
-}
-
-int FindPatternWidget::getMaxError(const QString &pattern) const {
-    if (selectedAlgorithm == FindAlgorithmPatternSettings_Exact) {
-        return 0;
-    }
-    return int((float)(1 - float(spinMatch->value()) / 100) * pattern.length());
+    bool startIsOk = false;
+    bool endIsOk = false;
+    qint64 start = editStart->text().toLongLong(&startIsOk) - 1;
+    qint64 end = editEnd->text().toLongLong(&endIsOk) - 1;
+    U2Region resultRegion(start, end - start + 1);
+    CHECK(startIsOk && endIsOk && resultRegion.length > 0 && U2Region(0, sequenceLength).contains(resultRegion), {});
+    return resultRegion;
 }
 
 QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternField(U2OpStatus &os) const {
@@ -1082,7 +1027,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     FindAlgorithmTaskSettings settings;
     U2OpStatusImpl os;
     settings.sequence = activeContext->getSequenceObject()->getWholeSequenceData(os);
-    CHECK_OP_EXT(os, showTooLongSequenceError(), );    // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
+    CHECK_OP_EXT(os, setMessageFlag(SequenceIsTooBig, true), );    // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
     settings.sequenceAlphabet = activeContext->getSequenceObject()->getAlphabet();
     settings.searchIsCircular = activeContext->getSequenceObject()->isCircular();
 
@@ -1127,9 +1072,8 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     previousMaxResult = settings.maxResult2Find;
 
     // Region
-    bool regionIsCorrectRef = false;
-    U2Region region = getCompleteSearchRegion(regionIsCorrectRef, activeContext->getSequenceLength());
-    CHECK(regionIsCorrectRef, );
+    U2Region region = getSearchRegion();
+    CHECK(!region.isEmpty(), );
     settings.searchRegion = region;
 
     // Algorithm settings
@@ -1248,20 +1192,16 @@ bool FindPatternWidget::checkAlphabet(const QString &pattern) {
     return false;
 }
 
-bool FindPatternWidget::checkPatternRegion(const QString &pattern) {
-    int maxError = getMaxError(pattern);
-    qint64 patternLength = pattern.length();
-    qint64 minMatch = patternLength - maxError;
-    SAFE_POINT(minMatch > 0, "Search pattern length is greater than max error value!", false);
-
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus!", false);
-    bool isRegionCorrect = false;
-    qint64 regionLength = getCompleteSearchRegion(isRegionCorrect, activeContext->getSequenceLength()).length;
-
-    SAFE_POINT(regionLength > 0 && isRegionCorrect, "Incorrect region length when enabling/disabling the pattern search button.", false);
-
-    return minMatch <= regionLength;
+QString FindPatternWidget::checkSearchRegion() const {
+    U2Region region = getSearchRegion();
+    if (region.isEmpty()) {
+        return tr("Warning: Invalid search region.");
+    }
+    QString pattern = textPattern->toPlainText();
+    if (!usePatternFromFileRadioButton->isChecked() && selectedAlgorithm != FindAlgorithmPatternSettings_RegExp && region.length < pattern.length()) {
+        return tr("Warning: Search region is too small.");
+    }
+    return "";
 }
 
 void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {

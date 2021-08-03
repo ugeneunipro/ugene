@@ -51,8 +51,8 @@ namespace U2 {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor *editor)
-    : editor(editor),
+MaEditorWgt::MaEditorWgt(MaEditor *_editor)
+    : editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
       consensusArea(nullptr),
@@ -64,18 +64,18 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(nullptr),
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
-      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       enableCollapsingOfSingleRowGroups(false),
-      scrollController(new ScrollController(editor, this, collapseModel)),
+      scrollController(new ScrollController(editor, this)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(nullptr),
-      drawHelper(new DrawHelper(this)),
+      drawHelper(new DrawHelper(editor)),
       delSelectionAction(nullptr),
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
       pasteAction(nullptr),
       pasteBeforeAction(nullptr),
       cutSelectionAction(nullptr) {
+    SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
     setFocusPolicy(Qt::ClickFocus);
 
@@ -92,7 +92,7 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
+MaEditorStatusBar *MaEditorWgt::getStatusBar() const {
     return statusBar;
 }
 
@@ -229,8 +229,8 @@ void MaEditorWgt::initWidgets() {
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
@@ -293,6 +293,10 @@ void MaEditorWgt::sl_countUndo() {
 
 void MaEditorWgt::sl_countRedo() {
     GCounter::increment("Redo", editor->getFactoryId());
+}
+
+MaEditor *MaEditorWgt::getEditor() const {
+    return editor;
 }
 
 }    // namespace U2

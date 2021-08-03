@@ -109,7 +109,7 @@ SamplesWidget::SamplesWidget(WorkflowScene *scene, QWidget *parent)
 
 QTreeWidgetItem *SamplesWidget::getSampleItem(const QString &category, const QString &id) {
     QList<QTreeWidgetItem *> items = findItems(category, Qt::MatchExactly);
-    CHECK(1 == items.size(), NULL);
+    CHECK(1 == items.size(), nullptr);
 
     for (int i = 0; i < items.first()->childCount(); i++) {
         QTreeWidgetItem *sampleItem = items.first()->child(i);
@@ -119,12 +119,12 @@ QTreeWidgetItem *SamplesWidget::getSampleItem(const QString &category, const QSt
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void SamplesWidget::activateSample(const QString &category, const QString &id) {
     QTreeWidgetItem *sampleItem = getSampleItem(category, id);
-    CHECK(NULL != sampleItem, );
+    CHECK(nullptr != sampleItem, );
 
     scrollToItem(sampleItem);
     setCurrentItem(sampleItem);
@@ -133,7 +133,7 @@ void SamplesWidget::activateSample(const QString &category, const QString &id) {
 
 void SamplesWidget::loadSample(const QString &category, const QString &id) {
     QTreeWidgetItem *sampleItem = getSampleItem(category, id);
-    CHECK(NULL != sampleItem, );
+    CHECK(nullptr != sampleItem, );
 
     activateItem(sampleItem);
     return;
@@ -147,7 +147,7 @@ void SamplesWidget::activateItem(QTreeWidgetItem *item) {
 
 void SamplesWidget::handleTreeItem(QTreeWidgetItem *item) {
     if (item && !item->data(0, DATA_ROLE).isValid()) {
-        item = NULL;
+        item = nullptr;
     }
 
     glass->setItem(item);
@@ -157,8 +157,8 @@ void SamplesWidget::handleTreeItem(QTreeWidgetItem *item) {
 void SamplesWidget::cancelItem() {
     selectionModel()->clear();
     if (isHidden()) {
-        emit setupGlass(NULL);
-        glass->setItem(NULL);
+        emit setupGlass(nullptr);
+        glass->setItem(nullptr);
     } else {
         emit setupGlass(glass);
     }
@@ -248,7 +248,7 @@ void SamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
     if (textRect.contains(position)) {
         emit itemActivated(item);
     } else {
-        item = NULL;
+        item = nullptr;
         scene->update();
     }
 }
@@ -262,13 +262,13 @@ void SamplePane::keyPressEvent(QKeyEvent *event) {
 }
 
 SamplePane::SamplePane(WorkflowScene *_scene)
-    : item(NULL), scene(_scene) {
+    : item(nullptr), scene(_scene) {
     m_document = new QTextDocument(this);
 }
 
 void SamplePane::paint(QPainter *painter) {
     const WorkflowView *ctrl = scene->getController();
-    SAFE_POINT(NULL != ctrl, "NULL workflow controller", );
+    SAFE_POINT(nullptr != ctrl, "NULL workflow controller", );
     if (!item && ctrl->isShowSamplesHint()) {
         DesignerGUIUtils::paintSamplesArrow(painter);
         return;
@@ -317,7 +317,7 @@ void LoadSamplesTask::scanDir(const QString &s, int depth) {
         sample.content = in.readAll();
 
         Metadata meta;
-        QString err = HRSchemaSerializer::string2Schema(sample.content, NULL, &meta);
+        QString err = HRSchemaSerializer::string2Schema(sample.content, nullptr, &meta);
         if (!err.isEmpty()) {
             coreLog.error(tr("Failed to load sample: %1").arg(err));
             continue;
@@ -397,7 +397,7 @@ SamplesWrapper::SamplesWrapper(SamplesWidget *samples, QWidget *parent)
     QVBoxLayout *vl = new QVBoxLayout(this);
     vl->setContentsMargins(0, 3, 0, 0);
     vl->setSpacing(3);
-    NameFilterLayout *hl = new NameFilterLayout(NULL);
+    NameFilterLayout *hl = new NameFilterLayout(nullptr);
     vl->addLayout(hl);
     vl->addWidget(samples);
 

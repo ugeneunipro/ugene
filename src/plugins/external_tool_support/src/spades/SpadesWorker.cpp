@@ -179,7 +179,7 @@ const QString SpadesWorker::K_MER_AUTO = "Auto";
 /* Worker */
 /************************************************************************/
 SpadesWorker::SpadesWorker(Actor *p)
-    : BaseWorker(p, false), output(NULL) {
+    : BaseWorker(p, false), output(nullptr) {
 }
 
 void SpadesWorker::init() {
@@ -213,7 +213,7 @@ Task *SpadesWorker::tick() {
     trySetDone(os);
     CHECK(!os.hasError(), new FailTask(os.getError()));
 
-    CHECK(processInputMessagesAndCheckReady(), NULL);
+    CHECK(processInputMessagesAndCheckReady(), nullptr);
 
     GenomeAssemblyTaskSettings settings = getSettings(os);
     CHECK(!os.hasError(), new FailTask(os.getError()));
@@ -267,7 +267,7 @@ Task *SpadesWorker::tick() {
 
         settings.reads << read;
     }
-    CHECK(!settings.reads.isEmpty(), NULL);
+    CHECK(!settings.reads.isEmpty(), nullptr);
 
     int currentMetadataId = messageCounter == 1 ? messageId : MessageMetadata::INVALID_ID;
     output->setContext(unitedPortContext, currentMetadataId);
@@ -306,7 +306,7 @@ bool SpadesWorker::processInputMessagesAndCheckReady() {
     for (int i = 0; i < readsFetchers.size(); i++) {
         const QString portId = readsFetchers[i].getPortId();
         Port *port = actor->getPort(portId);
-        SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), false);
+        SAFE_POINT(port != nullptr, QString("Port with id %1 not found").arg(portId), false);
         CHECK_CONTINUE(port->isEnabled());
 
         readsFetchers[i].processInputMessage();
@@ -326,7 +326,7 @@ void SpadesWorker::trySetDone(U2OpStatus &os) {
     for (int i = 0; i < readsFetchers.size(); i++) {
         const QString portId = readsFetchers[i].getPortId();
         Port *port = actor->getPort(portId);
-        SAFE_POINT(port != NULL, QString("Port with id %1 not found").arg(portId), );
+        SAFE_POINT(port != nullptr, QString("Port with id %1 not found").arg(portId), );
         CHECK_CONTINUE(port->isEnabled());
 
         const bool fetcherHasFullDataset = readsFetchers[i].hasFullDataset();
@@ -354,7 +354,7 @@ void SpadesWorker::sl_taskFinished() {
 
     QString scaffoldUrl = t->getResultUrl();
     SpadesTask *spadesTask = qobject_cast<SpadesTask *>(t->getAssemblyTask());
-    CHECK(spadesTask != NULL, );
+    CHECK(spadesTask != nullptr, );
     QString contigsUrl = spadesTask->getContigsUrl();
 
     QVariantMap data;

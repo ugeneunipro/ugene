@@ -42,10 +42,10 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
     SAFE_POINT(editor != nullptr, L10N::nullPointerError("MaEditor"), );
 
     if (region.isEmpty() && selectedIndexes.isEmpty()) {
-        int startSeq = -1;
-        int endSeq = -1;
-        int startPos = -1;
-        int endPos = -1;
+        int startSeq;
+        int endSeq;
+        int startPos;
+        int endPos;
         const MaEditorSelection &selection = editor->getSelection();
         if (selection.isEmpty()) {
             startPos = 0;
@@ -53,10 +53,11 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
             startSeq = 0;
             endSeq = editor->getNumSequences();
         } else {
-            startSeq = selection.y();
-            endSeq = selection.y() + selection.height();
-            startPos = selection.x();
-            endPos = selection.x() + selection.width();
+            QRect selectionREct = selection.toRect();
+            startSeq = selectionREct.y();
+            endSeq = selectionREct.y() + selectionREct.height();
+            startPos = selectionREct.x();
+            endPos = selectionREct.x() + selectionREct.width();
         }
         window = U2Region(startPos, endPos - startPos);
         for (int i = startSeq; i <= endSeq; i++) {

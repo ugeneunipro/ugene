@@ -32,7 +32,7 @@ namespace LocalWorkflow {
 class TrimmomaticPrompter : public PrompterBase<TrimmomaticPrompter> {
     Q_DECLARE_TR_FUNCTIONS(TrimmomaticPrompter)
 public:
-    TrimmomaticPrompter(Actor *actor = NULL);
+    TrimmomaticPrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

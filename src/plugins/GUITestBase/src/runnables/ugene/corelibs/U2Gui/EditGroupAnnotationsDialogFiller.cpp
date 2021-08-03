@@ -42,10 +42,10 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 void EditGroupAnnotationsFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
-    GT_CHECK(lineEdit != NULL, "line edit not found");
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, groupName);
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);

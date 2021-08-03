@@ -142,7 +142,7 @@ QString MAFFTPrompter::composeRichDoc() {
 * MAFFTWorker
 ****************************/
 MAFFTWorker::MAFFTWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void MAFFTWorker::init() {
@@ -155,7 +155,7 @@ Task *MAFFTWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.gapOpenPenalty = actor->getParameter(GAP_OPEN_PENALTY)->getAttributeValue<float>(context);
         cfg.gapExtenstionPenalty = actor->getParameter(GAP_EXT_PENALTY)->getAttributeValue<float>(context);
@@ -172,12 +172,12 @@ Task *MAFFTWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         MAFFTSupportTask *supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
@@ -188,7 +188,7 @@ Task *MAFFTWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void MAFFTWorker::sl_taskFinished() {
@@ -203,7 +203,7 @@ void MAFFTWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     send(t->resultMA);
     algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA->getName()));
 }
@@ -212,7 +212,7 @@ void MAFFTWorker::cleanup() {
 }
 
 void MAFFTWorker::send(const MultipleSequenceAlignment &msa) {
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
     m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

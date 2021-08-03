@@ -264,7 +264,7 @@ void TrimmomaticWorkerFactory::init() {
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new TrimmomaticPrompter(NULL));
+    proto->setPrompter(new TrimmomaticPrompter(nullptr));
     proto->addExternalTool(JavaSupport::ET_JAVA_ID);
     proto->addExternalTool(TrimmomaticSupport::ET_TRIMMOMATIC_ID);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));

@@ -135,7 +135,7 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
 void ClustalOSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
@@ -170,8 +170,8 @@ void ClustalOSupportContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void ClustalOSupportContext::sl_addAlignmentToAlignment() {
@@ -199,8 +199,8 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     connect(msaObject, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {

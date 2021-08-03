@@ -230,9 +230,6 @@ int main(int argc, char **argv) {
     appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
-    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../installer/windows").absolutePath();
-    QCoreApplication::addLibraryPath(devPluginsPath);    //dev version
-
     setSearchPaths();
 
     // parse all cmdline arguments
@@ -498,136 +495,136 @@ int main(int argc, char **argv) {
 
     delete tsbc;
 
-    appContext->setCredentialsAsker(NULL);
+    appContext->setCredentialsAsker(nullptr);
     delete credentialsAsker;
 
-    appContext->setPasswordStorage(NULL);
+    appContext->setPasswordStorage(nullptr);
     delete passwordStorage;
 
-    appContext->setDataPathRegistry(NULL);
+    appContext->setDataPathRegistry(nullptr);
     delete dpr;
 
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
 
-    appContext->setVirtualFileSystemRegistry(NULL);
+    appContext->setVirtualFileSystemRegistry(nullptr);
     delete vfsReg;
 
-    appContext->setRecentlyDownloadedCache(NULL);
+    appContext->setRecentlyDownloadedCache(nullptr);
     delete rdc;
 
     delete swrfr;
-    appContext->setSWResultFilterRegistry(NULL);
+    appContext->setSWResultFilterRegistry(nullptr);
 
     delete swar;
-    appContext->setSmithWatermanTaskFactoryRegistry(NULL);
+    appContext->setSmithWatermanTaskFactoryRegistry(nullptr);
 
     delete msfr;
-    appContext->setMolecularSurfaceFactoryRegistry(NULL);
+    appContext->setMolecularSurfaceFactoryRegistry(nullptr);
 
     delete smr;
-    appContext->setSubstMatrixRegistry(NULL);
+    appContext->setSubstMatrixRegistry(nullptr);
 
     delete sreg;
-    appContext->setServiceRegistry(NULL);
+    appContext->setServiceRegistry(nullptr);
 
     delete psp;
-    appContext->setPluginSupport(NULL);
+    appContext->setPluginSupport(nullptr);
 
     delete tf;
     appContext->setTestFramework(0);
 
     delete dal;
-    appContext->setDNAAlphabetRegistry(NULL);
+    appContext->setDNAAlphabetRegistry(nullptr);
 
     delete dbxrr;
     appContext->setDBXRefRegistry(0);
 
     delete dtr;
-    appContext->setDNATranslationRegistry(NULL);
+    appContext->setDNATranslationRegistry(nullptr);
 
     delete io;
-    appContext->setIOAdapterRegistry(NULL);
+    appContext->setIOAdapterRegistry(nullptr);
 
     delete dfr;
-    appContext->setDocumentFormatRegistry(NULL);
+    appContext->setDocumentFormatRegistry(nullptr);
 
     delete dbiRegistry;
-    appContext->setDbiRegistry(NULL);
+    appContext->setDbiRegistry(nullptr);
 
     delete schemaRegistry;
-    appContext->setUdrSchemaRegistry(NULL);
+    appContext->setUdrSchemaRegistry(nullptr);
 
     delete ts;
-    appContext->setTaskScheduler(NULL);
+    appContext->setTaskScheduler(nullptr);
 
     delete asr;
-    appContext->setAnnotationSettingsRegistry(NULL);
+    appContext->setAnnotationSettingsRegistry(nullptr);
 
     delete resTrack;
-    appContext->setResourceTracker(NULL);
+    appContext->setResourceTracker(nullptr);
 
     delete cgr;
-    appContext->setCudaGpuRegistry(NULL);
+    appContext->setCudaGpuRegistry(nullptr);
 
 #ifdef OPENCL_SUPPORT
     delete oclgr;
 #endif
-    appContext->setOpenCLGpuRegistry(NULL);
+    appContext->setOpenCLGpuRegistry(nullptr);
 
-    appContext->setAppSettings(NULL);
+    appContext->setAppSettings(nullptr);
     delete appSettings;
 
     delete settings;
-    appContext->setSettings(NULL);
+    appContext->setSettings(nullptr);
 
     delete globalSettings;
-    appContext->setGlobalSettings(NULL);
+    appContext->setGlobalSettings(nullptr);
 
     delete cmdLineRegistry;
-    appContext->setCMDLineRegistry(NULL);
+    appContext->setCMDLineRegistry(nullptr);
 
     delete sspar;
-    appContext->setSecStructPedictAlgRegistry(NULL);
+    appContext->setSecStructPedictAlgRegistry(nullptr);
 
-    appContext->setExternalToolRegistry(NULL);
+    appContext->setExternalToolRegistry(nullptr);
     delete etr;
 
-    appContext->setScriptingToolRegistry(NULL);
+    appContext->setScriptingToolRegistry(nullptr);
     delete str;
 
     delete msaConsReg;
-    appContext->setMSAConsensusAlgorithmRegistry(NULL);
+    appContext->setMSAConsensusAlgorithmRegistry(nullptr);
 
     delete msaDistReg;
-    appContext->setMSADistanceAlgorithmRegistry(NULL);
+    appContext->setMSADistanceAlgorithmRegistry(nullptr);
 
     delete assemblyConsReg;
-    appContext->setAssemblyConsensusAlgorithmRegistry(NULL);
+    appContext->setAssemblyConsensusAlgorithmRegistry(nullptr);
 
-    appContext->setPWMConversionAlgorithmRegistry(NULL);
+    appContext->setPWMConversionAlgorithmRegistry(nullptr);
     delete pwmConvReg;
 
     delete dbr;
-    appContext->setDataBaseRegistry(NULL);
+    appContext->setDataBaseRegistry(nullptr);
 
-    appContext->setQDActorFactoryRegistry(NULL);
+    appContext->setQDActorFactoryRegistry(nullptr);
     delete qpr;
 
     delete cdsfr;
-    appContext->setCDSearchFactoryRegistry(NULL);
+    appContext->setCDSearchFactoryRegistry(nullptr);
 
-    appContext->setStructuralAlignmentAlgorithmRegistry(NULL);
+    appContext->setStructuralAlignmentAlgorithmRegistry(nullptr);
     delete saar;
 
-    appContext->setConvertFactoryRegistry(NULL);
+    appContext->setConvertFactoryRegistry(nullptr);
     delete convertFactoryRegistry;
 
     delete splicedAlignmentTaskRegistry;
-    appContext->setSplicedAlignmentTaskRegistry(NULL);
+    appContext->setSplicedAlignmentTaskRegistry(nullptr);
 
     delete pwr;
-    appContext->setAlignmentAlgorithmsRegistry(NULL);
+    appContext->setAlignmentAlgorithmsRegistry(nullptr);
 
     CrashHandler::shutdown();
 

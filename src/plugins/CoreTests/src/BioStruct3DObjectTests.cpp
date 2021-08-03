@@ -65,13 +65,13 @@ void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *tf, const QDomElement &
 
 Task::ReportResult GTest_BioStruct3DNumberOfAtoms::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
-    if (biostructObj == NULL) {
+    if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -111,13 +111,13 @@ void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat *tf, const QDomElement 
 
 Task::ReportResult GTest_BioStruct3DNumberOfChains::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
-    if (biostructObj == NULL) {
+    if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -204,13 +204,13 @@ void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *tf, const QDomElement
 
 Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
-    if (biostructObj == NULL) {
+    if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -221,7 +221,7 @@ Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
 
     const SharedAtom atom = biostructObj->getBioStruct3D().getAtomById(atomId, modelId);
 
-    if (atom == NULL) {
+    if (atom == nullptr) {
         stateInfo.setError(QString("atom with index = %1 not found").arg(atomId));
         return ReportResult_Finished;
     }
@@ -285,13 +285,13 @@ void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *tf, const QDomElement 
 
 Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
-    if (biostructObj == NULL) {
+    if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -301,7 +301,7 @@ Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
     }
 
     const SharedAtom atom = biostructObj->getBioStruct3D().getAtomById(atomId, modelId);
-    if (atom == NULL) {
+    if (atom == nullptr) {
         stateInfo.setError(QString("atom with index = %1 not found").arg(atomId));
         return ReportResult_Finished;
     }
@@ -360,13 +360,13 @@ void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *tf, const QDomElement
 
 Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
-    if (biostructObj == NULL) {
+    if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -378,7 +378,7 @@ Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
     }
 
     const SharedAtom atom = bioStruct.getAtomById(atomId, modelId);
-    if (atom == NULL) {
+    if (atom == nullptr) {
         stateInfo.setError(QString("atom with index = %1 not found").arg(atomId));
         return ReportResult_Finished;
     }

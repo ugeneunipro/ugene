@@ -49,7 +49,7 @@ ProjectImpl::ProjectImpl(const QString &_name, const QString &_url, const QList<
     resourceTracker = AppContext::getAppSettings()->getAppResourcePool()->getResource(RESOURCE_MEMORY);
 
     MWMDIManager *mdi = AppContext::getMainWindow()->getMDIManager();
-    if (mdi != NULL) {
+    if (mdi != nullptr) {
         connect(mdi, SIGNAL(si_windowAdded(MWMDIWindow *)), SLOT(sl_onMdiWindowAdded(MWMDIWindow *)));
         connect(mdi, SIGNAL(si_windowClosing(MWMDIWindow *)), SLOT(sl_onMdiWindowClosing(MWMDIWindow *)));
     }
@@ -95,19 +95,19 @@ void ProjectImpl::setProjectURL(const QString &newURL) {
 
 Document *ProjectImpl::findDocumentByURL(const QString &url) const {
     foreach (Document *d, docs) {
-        SAFE_POINT(d != NULL, tr("Project contains NULL document"), NULL);
+        SAFE_POINT(d != nullptr, tr("Project contains NULL document"), nullptr);
         if (d->getURLString() == url) {
             return d;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void ProjectImpl::addDocument(Document *d) {
-    SAFE_POINT(NULL != d, "NULL document", );
+    SAFE_POINT(nullptr != d, "NULL document", );
     coreLog.details(tr("Adding document to the project: %1").arg(d->getURLString()));
 
-    assert(findDocumentByURL(d->getURL()) == NULL);
+    assert(findDocumentByURL(d->getURL()) == nullptr);
     setParentStateLockItem_static(d, this);
 
     d->setGHints(new ModTrackHints(this, d->getGHintsMap(), true));
@@ -126,7 +126,7 @@ void ProjectImpl::addDocument(Document *d) {
 
 bool ProjectImpl::lockResources(int sizeMB, const QString &url, QString &error) {
     Document *doc = findDocumentByURL(url);
-    SAFE_POINT_EXT(NULL != doc, error = tr("Find document failed during resource locking"), false);
+    SAFE_POINT_EXT(nullptr != doc, error = tr("Find document failed during resource locking"), false);
 
     if (resourceTracker->tryAcquire(sizeMB)) {
         resourceUsage[doc->getName()] = sizeMB;
@@ -138,10 +138,10 @@ bool ProjectImpl::lockResources(int sizeMB, const QString &url, QString &error) 
 }
 
 void ProjectImpl::removeDocument(Document *d, bool autodelete) {
-    SAFE_POINT(NULL != d, tr("No document provided for removeDocument"), );
+    SAFE_POINT(nullptr != d, tr("No document provided for removeDocument"), );
     coreLog.details(tr("Removing document from the project: %1").arg(d->getURLString()));
 
-    setParentStateLockItem_static(d, NULL);
+    setParentStateLockItem_static(d, nullptr);
     if (docs.contains(d)) {
         docs.removeOne(d);
         d->disconnect(this);
@@ -165,14 +165,14 @@ void ProjectImpl::sl_onStateModified(GObjectViewState *) {
 
 void ProjectImpl::sl_onMdiWindowAdded(MWMDIWindow *w) {
     GObjectViewWindow *vw = qobject_cast<GObjectViewWindow *>(w);
-    if (vw != NULL) {
+    if (vw != nullptr) {
         connect(vw->getObjectView(), SIGNAL(si_nameChanged(const QString &)), SLOT(sl_onViewRenamed(const QString &)));
     }
 }
 
 void ProjectImpl::sl_onMdiWindowClosing(MWMDIWindow *w) {
     GObjectViewWindow *vw = qobject_cast<GObjectViewWindow *>(w);
-    if (vw != NULL) {
+    if (vw != nullptr) {
         vw->getObjectView()->disconnect(this);
     }
 }
@@ -185,7 +185,7 @@ void ProjectImpl::addState(GObjectViewState *s) {
 }
 
 void ProjectImpl::addGObjectViewState(GObjectViewState *s) {
-    assert(GObjectViewUtils::findStateInList(s->getViewName(), s->getStateName(), objectViewStates) == NULL);
+    assert(GObjectViewUtils::findStateInList(s->getViewName(), s->getStateName(), objectViewStates) == nullptr);
     addState(s);
     emit si_objectViewStateAdded(s);
 }

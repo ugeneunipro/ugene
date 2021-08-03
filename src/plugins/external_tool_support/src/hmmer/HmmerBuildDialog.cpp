@@ -91,7 +91,7 @@ void HmmerBuildDialog::initSaveController() {
 
 HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget *parent)
     : QDialog(parent),
-      saveController(NULL) {
+      saveController(nullptr) {
     initialize();
     model.alignment = ma->getCopy();
     model.alignmentUsing = !model.alignment->isEmpty();
@@ -202,13 +202,13 @@ void HmmerBuildDialog::sl_buildButtonClicked() {
         return;
     }
 
-    Task *buildTask = NULL;
+    Task *buildTask = nullptr;
     if (model.alignmentUsing) {
         buildTask = new HmmerBuildFromMsaTask(model.buildSettings, model.alignment);
     } else {
         buildTask = new HmmerBuildFromFileTask(model.buildSettings, model.inputFile);
     }
-    assert(NULL != buildTask);
+    assert(nullptr != buildTask);
 
     AppContext::getTaskScheduler()->registerTopLevelTask(buildTask);
     QDialog::accept();

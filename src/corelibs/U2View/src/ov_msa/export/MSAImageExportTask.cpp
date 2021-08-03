@@ -30,6 +30,7 @@
 #include "ov_msa/MSASelectSubalignmentDialog.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ui_MSAExportSettings.h"
 
 namespace U2 {
@@ -306,12 +307,12 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    CHECK(!selection.isEmpty(), );
-    msaSettings.region = U2Region(selection.x(), selection.width());
+    QRect selectionRect = ui->getEditor()->getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    msaSettings.region = U2Region(selectionRect.x(), selectionRect.width());
     msaSettings.seqIdx.clear();
-    MaCollapseModel *model = ui->getCollapseModel();
-    for (qint64 viewRowIndex = selection.y(); viewRowIndex <= selection.bottom(); viewRowIndex++) {
+    MaCollapseModel *model = ui->getEditor()->getCollapseModel();
+    for (qint64 viewRowIndex = selectionRect.y(); viewRowIndex <= selectionRect.bottom(); viewRowIndex++) {
         int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
         msaSettings.seqIdx.append(maRowIndex);
     }
@@ -383,7 +384,7 @@ bool MSAImageExportController::canExportToSvg() const {
 
 void MSAImageExportController::updateSeqIdx() const {
     CHECK(msaSettings.exportAll, );
-    MaCollapseModel *model = ui->getCollapseModel();
+    MaCollapseModel *model = ui->getEditor()->getCollapseModel();
     msaSettings.seqIdx.clear();
     for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
         if (model->getViewRowIndexByMaRowIndex(i, true) != -1) {

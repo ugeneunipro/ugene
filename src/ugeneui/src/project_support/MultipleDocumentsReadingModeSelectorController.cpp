@@ -53,7 +53,7 @@ bool MultipleDocumentsReadingModeSelectorController::adjustReadingMode(QVariantM
 
 bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const FormatDetectionResult &formatResult, QMap<QString, qint64> *headerSequenceLengths) {
     QVariantMap docHints = formatResult.rawDataCheckResult.properties;
-    if (formatResult.format == NULL) {
+    if (formatResult.format == nullptr) {
         return false;
     }
     if (formatResult.format->getFormatId() == BaseDocumentFormats::PLAIN_GENBANK) {
@@ -91,7 +91,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
 
 MultipleDocumentsReadingModeDialog::MultipleDocumentsReadingModeDialog(const QList<GUrl> &_urls, QWidget *parent)
     : QDialog(parent),
-      saveController(NULL),
+      saveController(nullptr),
       urls(_urls) {
 }
 
@@ -254,7 +254,7 @@ void MultipleDocumentsReadingModeDialog::initMsaSaveController() {
 
 void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
     QListWidgetItem *item = listDocuments->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
     int row = listDocuments->row(item);
@@ -273,7 +273,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
 
 void MultipleDocumentsReadingModeDialog::sl_onMoveDown() {
     QListWidgetItem *item = listDocuments->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
     int row = listDocuments->row(item);

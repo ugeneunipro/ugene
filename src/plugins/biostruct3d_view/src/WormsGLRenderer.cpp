@@ -174,13 +174,13 @@ void WormsGLRenderer::createObjects3D() {
             int modelId = 0;
             foreach (const BioPolymerModel &bpModel, bpolymer.bpModels.values()) {
                 if (bpModel.monomerMap.contains(startId) && bpModel.monomerMap.contains(endId)) {
-                    Object3D *obj = NULL;
+                    Object3D *obj = nullptr;
                     if (ss->type == SecondaryStructure::Type_AlphaHelix) {
                         obj = createHelix3D(startId, endId, bpModel);
                     } else if (ss->type == SecondaryStructure::Type_BetaStrand) {
                         obj = createStrand3D(startId, endId, bpModel);
                     }
-                    if (obj != NULL) {
+                    if (obj != nullptr) {
                         wormMap[chainId].models[modelId].objects.append(obj);
                     }
                 }

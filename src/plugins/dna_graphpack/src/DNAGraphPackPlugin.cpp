@@ -45,7 +45,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
         DNAGraphPackPlugin *plug = new DNAGraphPackPlugin();
         return plug;
     }
-    return NULL;
+    return nullptr;
 }
 
 DNAGraphPackPlugin::DNAGraphPackPlugin()
@@ -82,7 +82,7 @@ void DNAGraphPackViewContext::initViewContext(GObjectView *view) {
 
 void DNAGraphPackViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenceWidget) {
     ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(_sequenceWidget);
-    if (sequenceWidget == NULL || sequenceWidget->getSequenceObject() == NULL) {
+    if (sequenceWidget == nullptr || sequenceWidget->getSequenceObject() == nullptr) {
         return;
     }
 

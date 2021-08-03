@@ -56,6 +56,8 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
+#include "ov_msa/view_rendering/MaEditorSelection.h"
+
 #define BadAlphabetWarning 0
 #define DuplicateSequenceWarning 1
 
@@ -117,8 +119,9 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 
 void PairAlign::initParameters() {
     const MaEditorSelection &selection = msa->getSelection();
-    if (selection.height() == 2) {
-        int selectionPos = selection.y();
+    QRect selectionRect = selection.toRect();
+    if (selectionRect.height() == 2) {
+        int selectionPos = selectionRect.y();
         qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
         qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();

@@ -64,7 +64,7 @@ static const quint64 c03 = 0x0303030303030303LL;
 
 class BitMask {
     BitMask()
-        : origSequence(NULL), origSequenceSize(0) {
+        : origSequence(nullptr), origSequenceSize(0) {
     }
     const char *origSequence;
     const quint32 origSequenceSize;
@@ -133,7 +133,7 @@ public:
     }
     ~BitMask() {
         delete[] bitSequence;
-        bitSequence = NULL;
+        bitSequence = nullptr;
     }
 
     void setPrefixLen(const int prefLen) {

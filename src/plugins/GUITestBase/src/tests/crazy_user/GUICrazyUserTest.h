@@ -36,7 +36,7 @@ class GTCrazyUserMonitor : QObject {
     Q_OBJECT
 public:
     GTCrazyUserMonitor()
-        : timer(NULL) {
+        : timer(nullptr) {
         timer = new QTimer();
 
         timer->connect(timer, SIGNAL(timeout()), this, SLOT(checkActiveWidget()));

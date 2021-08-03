@@ -45,6 +45,15 @@
 
 namespace U2 {
 
+CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64> &_rowIds,
+                                                       const U2Region &_columnRange,
+                                                       const GUrl &_url,
+                                                       bool _saveImmediately,
+                                                       bool _addToProject,
+                                                       const DocumentFormatId &_formatIdToSave)
+    : rowIds(_rowIds), columnRange(_columnRange), url(_url), saveImmediately(_saveImmediately), addToProject(_addToProject), formatIdToSave(_formatIdToSave) {
+}
+
 CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
       origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
@@ -57,6 +66,7 @@ void CreateSubalignmentTask::prepare() {
     DocumentFormat *dfd = dfr->getFormatById(cfg.formatIdToSave);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(cfg.url));
+    QList<qint64> resultRowIds;
     if (createCopy) {
         QVariantMap hints = origDoc->getGHintsMap();
         if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
@@ -65,6 +75,7 @@ void CreateSubalignmentTask::prepare() {
         resultDocument = dfd->createNewLoadedDocument(iof, cfg.url, stateInfo, hints);
         CHECK_OP(stateInfo, );
 
+        // TODO: do not copy whole object. Copy only cfg.rowIds.
         MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
@@ -73,34 +84,31 @@ void CreateSubalignmentTask::prepare() {
         resultDocument->addObject(resultMAObj);
         GObjectUtils::updateRelationsURL(resultMAObj, origDoc->getURL(), cfg.url);
         QList<GObjectRelation> phyTreeRelations = resultMAObj->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-        foreach (GObjectRelation phyTreeRel, phyTreeRelations) {
+        for (const GObjectRelation& phyTreeRel : qAsConst(phyTreeRelations)) {
             resultMAObj->removeObjectRelation(phyTreeRel);
+        }
+        // Remap row ids.
+        QMap<qint64, qint64> rowIdRemap;
+        for (int i = 0; i < origMAObj->getNumRows() && i < resultMAObj->getNumRows(); i++) {
+            qint64 oldRowId = origMAObj->getRow(i)->getRowId();
+            qint64 resultRowId = resultMAObj->getRow(i)->getRowId();
+            rowIdRemap[oldRowId] = resultRowId;
+        }
+        for (const qint64 oldRowId : qAsConst(cfg.rowIds)) {
+            if (rowIdRemap.contains(oldRowId)) {
+                resultRowIds << rowIdRemap[oldRowId];
+            }
         }
     } else {
         CHECK_EXT(origDoc->isStateLocked(), setError(tr("Document is locked: %1").arg(origDoc->getURLString())), );
         resultDocument = origDoc;
         resultMAObj = origMAObj;
+        resultRowIds = cfg.rowIds;
         docOwner = false;
     }
 
     //TODO: add "remove empty rows and columns" flag to crop function
-    if (cfg.rowIds.isEmpty()) {
-        resultMAObj->crop(cfg.window, cfg.sequenceNames.toSet());
-    } else {
-        QList<qint64> resultRowIdList;    // Maps original row ids to the result row ids by index.
-        if (createCopy) {
-            // Remap old object row ids into new object row ids before calling 'crop'.
-            for (qint64 origRowId : qAsConst(cfg.rowIds)) {
-                int rowIndex = origMAObj->getRowPosById(origRowId);
-                SAFE_POINT(rowIndex >= 0, "Failed to find row by id: " + QString::number(origRowId), );
-                MultipleAlignmentRow row = resultMAObj->getRow(rowIndex);
-                resultRowIdList << row->getRowId();
-            }
-        } else {
-            resultRowIdList = cfg.rowIds;
-        }
-        resultMAObj->crop(cfg.window, resultRowIdList);
-    }
+    resultMAObj->crop(resultRowIds, cfg.columnRange);
 
     if (cfg.saveImmediately) {
         addSubTask(new SaveDocumentTask(resultDocument, iof));

@@ -126,7 +126,7 @@ public:
 class SpadesPrompter : public PrompterBase<SpadesPrompter> {
     Q_OBJECT
 public:
-    SpadesPrompter(Actor *p = NULL)
+    SpadesPrompter(Actor *p = nullptr)
         : PrompterBase<SpadesPrompter>(p) {
     }
 

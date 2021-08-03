@@ -34,6 +34,7 @@
 #include "ScrollController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -63,7 +64,7 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
     connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));
-    connect(maEditorWgt->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
 }
 
 QAction *MaAmbiguousCharactersController::getPreviousAction() const {
@@ -92,7 +93,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
     QPoint nextAmbiguous = findNextAmbiguous(direction);
     if (nextAmbiguous != INVALID_POINT) {
         maEditorWgt->getScrollController()->centerPoint(nextAmbiguous, maEditorWgt->getSequenceArea()->size());
-        maEditorWgt->getSequenceArea()->setSelection(MaEditorSelection(nextAmbiguous, 1, 1));
+        maEditorWgt->getSequenceArea()->setSelectionRect(QRect(nextAmbiguous.x(), nextAmbiguous.y(), 1, 1));
     } else {
         // no mismatches - show notification
         NotificationStack::addNotification(tr("There are no ambiguous characters in the alignment."), Info_Not);
@@ -100,9 +101,9 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
 }
 
 QPoint MaAmbiguousCharactersController::getStartPosition() const {
-    const MaEditorSelection selection = maEditorWgt->getSequenceArea()->getSelection();
+    const MaEditorSelection &selection = maEditorWgt->getEditor()->getSelection();
     if (!selection.isEmpty()) {
-        return selection.topLeft();
+        return selection.toRect().topLeft();
     }
 
     return QPoint(maEditorWgt->getScrollController()->getFirstVisibleBase(),
@@ -143,7 +144,7 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     if (nullptr == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
-                                            maEditorWgt->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
+                                            maEditor->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
         cachedIterator->setCircular(true);
         cachedIterator->setIterateInCoreRegionsOnly(true);
     }

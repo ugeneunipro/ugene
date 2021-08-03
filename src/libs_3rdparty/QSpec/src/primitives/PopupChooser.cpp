@@ -41,7 +41,7 @@ PopupChooser::PopupChooser(GUITestOpStatus &os, const QStringList &namePath, GTG
 #define GT_METHOD_NAME "getMenuPopup"
 QMenu *PopupChooser::getMenuPopup(GUITestOpStatus &os) {
     GTGlobals::sleep(100);    // TODO: do we need this sleep?
-    GTMouseDriver::release();    //TODO: do we need this release?
+    GTMouseDriver::release();    // TODO: do we need this release?
     return GTWidget::getActivePopupMenu(os);
 }
 #undef GT_METHOD_NAME
@@ -89,7 +89,7 @@ void PopupChooserByText::commonScenario() {
 #define GT_CLASS_NAME "PopupChecker"
 
 PopupChecker::PopupChecker(GUITestOpStatus &os, CustomScenario *scenario)
-    : Filler(os, GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::Popup), scenario) {
+    : Filler(os, GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::Popup), scenario), useMethod(GTGlobals::UseMouse) {
 }
 
 PopupChecker::PopupChecker(GUITestOpStatus &os, const QStringList &namePath, CheckOptions options, GTGlobals::UseMethod useMethod)
@@ -132,7 +132,7 @@ void PopupChecker::commonScenario() {
         GT_CHECK(!act->isEnabled(), "action '" + act->objectName() + "' is enabled");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(IsDisabled");
     }
-    if (options.testFlag(IsChecable)) {
+    if (options.testFlag(IsCheckable)) {
         GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checkable");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(IsCheckable)");
     }
@@ -144,7 +144,7 @@ void PopupChecker::commonScenario() {
         GT_CHECK(!act->isChecked(), "action '" + act->objectName() + "' is checked");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(IsUnchecked)");
     }
-    for (int i = 0; i < namePath.size() + 1; i++) {
+    for (int i = 0; i < namePath.size(); i++) {
         PopupChooser::clickEsc(os);
         GTGlobals::sleep(250);
     }
@@ -230,7 +230,7 @@ void PopupCheckerByText::commonScenario() {
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsDisabled");
         }
 
-        if (options.testFlag(PopupChecker::IsChecable)) {
+        if (options.testFlag(PopupChecker::IsCheckable)) {
             GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checkable");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsCheckable)");
         }

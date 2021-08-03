@@ -252,7 +252,7 @@ GUI_TEST_CLASS_DEFINITION(test_1011) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *pw = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(pw != NULL, "cant get panview idget");
+    CHECK_SET_ERR(pw != nullptr, "cant get panview idget");
     QList<QScrollBar *> widgetList = pw->findChildren<QScrollBar *>();
     CHECK_SET_ERR(widgetList.size() == 2, "scroll bars count should be 2");
     foreach (QScrollBar *sbar, widgetList) {
@@ -441,7 +441,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
-        CHECK_SET_ERR(bookmarksTree != NULL, "bookmarksTreeWidget is NULL");
+        CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
@@ -475,7 +475,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
-        CHECK_SET_ERR(bookmarksTree != NULL, "bookmarksTreeWidget is NULL");
+        CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
@@ -509,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_2) {
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
-        CHECK_SET_ERR(bookmarksTree != NULL, "bookmarksTreeWidget is NULL");
+        CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
@@ -545,7 +545,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
-        CHECK_SET_ERR(bookmarksTree != NULL, "bookmarksTreeWidget is NULL");
+        CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
@@ -581,7 +581,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
-        CHECK_SET_ERR(bookmarksTree != NULL, "bookmarksTreeWidget is NULL");
+        CHECK_SET_ERR(bookmarksTree != nullptr, "bookmarksTreeWidget is NULL");
 
         int bookmarksCount = bookmarksTree->topLevelItemCount();
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
@@ -737,12 +737,12 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
 
     // get the list of sequences in file and read names in assembly
     Document *seqDoc = GTUtilsDocument::getDocument(os, "test_1038_seq");
-    CHECK_SET_ERR(seqDoc != NULL, "Document is NULL");
+    CHECK_SET_ERR(seqDoc != nullptr, "Document is NULL");
     QList<GObject *> seqList = seqDoc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
     CHECK_SET_ERR(!seqList.isEmpty(), "The list of sequences is empty");
     QList<QByteArray> seqNames;
     foreach (GObject *obj, seqList) {
-        CHECK_SET_ERR(obj != NULL, "GObject is NULL");
+        CHECK_SET_ERR(obj != nullptr, "GObject is NULL");
         seqNames << obj->getGObjectName().toLatin1();
     }
 
@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
 
     U2OpStatus2Log u2os;
     U2DbiIterator<U2AssemblyRead> *it = model->getReads(U2Region(0, model->getModelLength(u2os)), u2os);
-    CHECK_SET_ERR(it != NULL, "NULL iterator");
+    CHECK_SET_ERR(it != nullptr, "NULL iterator");
 
     int matchCount = 0;
     while (it->hasNext()) {
@@ -1031,7 +1031,7 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree", dialog));
-            CHECK_SET_ERR(NULL != tree, "tree widger not found");
+            CHECK_SET_ERR(nullptr != tree, "tree widger not found");
 
             QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
             foreach (QTreeWidgetItem *item, items) {
@@ -1217,7 +1217,7 @@ GUI_TEST_CLASS_DEFINITION(test_1069) {
 
     //Expected state: auto-annotations are switched off
     QTreeWidgetItem *annItem = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(annItem == NULL, "Auto-annotations are switched on");
+    CHECK_SET_ERR(annItem == nullptr, "Auto-annotations are switched on");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1071) {
@@ -1300,21 +1300,21 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
             GTUtilsDialog::waitForDialog(os, new OkClicker2(os));
 
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
 
             QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", w));
             GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 0));
             GTMouseDriver::click();
 
             QToolButton *editButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "editButton", w));
-            CHECK_SET_ERR(editButton != NULL, "editButton not found!");
+            CHECK_SET_ERR(editButton != nullptr, "editButton not found!");
             GTWidget::click(os, editButton);
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
 
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(nullptr != button, );
             GTWidget::click(os, button);
         }
     };
@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTMouseDriver::click();
 
     QToolButton *editButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "editButton"));
-    CHECK_SET_ERR(editButton != NULL, "editButton not found!");
+    CHECK_SET_ERR(editButton != nullptr, "editButton not found!");
 
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, editButton);
@@ -1437,9 +1437,9 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {    //commit AboutDialogController.cpp
 #ifdef Q_OS_DARWIN
     //hack for mac
     MainWindow *mw = AppContext::getMainWindow();
-    CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
+    CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
     QMainWindow *mainWindow = mw->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != NULL, "QMainWindow is NULL");
+    CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
     QWidget *w = qobject_cast<QWidget *>(mainWindow);
     GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
 #endif
@@ -1462,13 +1462,13 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {    //commit AboutDialogController.cpp
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //getting an info string
             QWidget *w = dialog->findChild<QWidget *>("about_widget");
-            CHECK_SET_ERR(w != NULL, "aboutWidget not found");
+            CHECK_SET_ERR(w != nullptr, "aboutWidget not found");
 
             QObject *parent = w->findChild<QObject *>("parent");
-            CHECK_SET_ERR(parent != NULL, "parentObject not found");
+            CHECK_SET_ERR(parent != nullptr, "parentObject not found");
 
             QObject *child = parent->findChild<QObject *>();
-            CHECK_SET_ERR(child != NULL, "childObject not found");
+            CHECK_SET_ERR(child != nullptr, "childObject not found");
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit") || text.contains("32-bit"), text);
@@ -1750,7 +1750,7 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QListWidget *availableEnzymeWidget = GTWidget::findExactWidget<QListWidget *>(os, "availableEnzymeWidget", dialog);
-            CHECK_SET_ERR(NULL != availableEnzymeWidget, "Cannot find available enzyme list widget");
+            CHECK_SET_ERR(nullptr != availableEnzymeWidget, "Cannot find available enzyme list widget");
 
             QList<QListWidgetItem *> items = availableEnzymeWidget->findItems("BamHI", Qt::MatchStartsWith);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes starting with 'BamHI'");
@@ -2010,7 +2010,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_1) {
             GTWidget::click(os, addRefButton);
 
             QLineEdit *resultFileNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "resultFileNameEdit", dialog));
-            CHECK_SET_ERR(resultFileNameEdit != NULL, "resultFileNameEdit is NULL");
+            CHECK_SET_ERR(resultFileNameEdit != nullptr, "resultFileNameEdit is NULL");
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_1.sam"), "Incorrect output file");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -2037,7 +2037,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QCheckBox *samBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "samBox", dialog));
             CHECK_OP(os, );
-            CHECK_SET_ERR(samBox != NULL, "samBox is NULL");
+            CHECK_SET_ERR(samBox != nullptr, "samBox is NULL");
             GTCheckBox::setChecked(os, samBox, false);
             CHECK_OP(os, );
 
@@ -2051,7 +2051,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
             CHECK_OP(os, );
 
             QLineEdit *resultFileNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "resultFileNameEdit", dialog));
-            CHECK_SET_ERR(resultFileNameEdit != NULL, "resultFileNameEdit is NULL");
+            CHECK_SET_ERR(resultFileNameEdit != nullptr, "resultFileNameEdit is NULL");
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_2.ugenedb"), "Incorrect output file");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -2219,7 +2219,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastn");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             QLineEdit *entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
-            CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
+            CHECK_SET_ERR(nullptr != entrezQueryEdit, "entrezQueryEdit is NULL");
             CHECK_SET_ERR(entrezQueryEdit->isVisible(), "entrezQueryEdit is unexpectedly not visible");
 
             //    4) Set "Search the search type" to "blastp"
@@ -2228,7 +2228,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastp");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
-            CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
+            CHECK_SET_ERR(nullptr != entrezQueryEdit, "entrezQueryEdit is NULL");
             CHECK_SET_ERR(entrezQueryEdit->isVisible(), "entrezQueryEdit is unexpectedly not visible");
 
             //    5) Set "Search the search type" to "cdd"
@@ -2236,7 +2236,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 0);
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "cdd");
             QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog);
-            CHECK_SET_ERR(NULL != tabWidget, "tabWidget is NULL");
+            CHECK_SET_ERR(nullptr != tabWidget, "tabWidget is NULL");
             CHECK_SET_ERR(!tabWidget->isTabEnabled(1), "'Advanced options' tab is unexpectedly enabled");
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2488,15 +2488,15 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     QWidget *parent = GTWidget::findWidget(os, "test_1234.fa");
-    CHECK_SET_ERR(NULL != parent, "Failed to find parent widget!");
+    CHECK_SET_ERR(nullptr != parent, "Failed to find parent widget!");
 
     ADVSingleSequenceWidget *seq0 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent));
     ADVSingleSequenceWidget *seq1 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1", parent));
     ADVSingleSequenceWidget *seq2 = dynamic_cast<ADVSingleSequenceWidget *>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2", parent));
 
-    CHECK_SET_ERR(NULL != seq0, "Failed to find a sequence widget for seq0!");
-    CHECK_SET_ERR(NULL != seq1, "Failed to find a sequence widget for seq1!");
-    CHECK_SET_ERR(NULL != seq2, "Failed to find a sequence widget for seq2!");
+    CHECK_SET_ERR(nullptr != seq0, "Failed to find a sequence widget for seq0!");
+    CHECK_SET_ERR(nullptr != seq1, "Failed to find a sequence widget for seq1!");
+    CHECK_SET_ERR(nullptr != seq2, "Failed to find a sequence widget for seq2!");
 
     U2OpStatus2Log u2os;
 
@@ -2540,7 +2540,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
         virtual void run() {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *comboBox = dialog->findChild<QComboBox *>("formatCombo");
-            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
             int index = comboBox->findText("FASTA");
 
             CHECK_SET_ERR(index != -1, QString("item \"FASTA\" in combobox not found"));
@@ -2550,13 +2550,13 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
 
             QLineEdit *lineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit"));
-            CHECK_SET_ERR(lineEdit != NULL, "fileNameEdit not found");
+            CHECK_SET_ERR(lineEdit != nullptr, "fileNameEdit not found");
             CHECK_SET_ERR(GTLineEdit::copyText(os, lineEdit).endsWith(".fa"), "Wrong extension");
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != NULL, "cancel button is NULL");
+            CHECK_SET_ERR(button != nullptr, "cancel button is NULL");
             GTWidget::click(os, button);
         }
     };
@@ -2594,16 +2594,16 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
 
             QComboBox *comboBox = dialog->findChild<QComboBox *>("formatCombo");
-            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+            CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
             int index = comboBox->findText("SAM");
 
             CHECK_SET_ERR(index != -1, QString("item \"SAM\" in combobox not found"));
             GTComboBox::selectItemByIndex(os, comboBox, index);
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != NULL, "ok button is NULL");
+            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
             GTWidget::click(os, button);
         }
     };
@@ -2916,7 +2916,7 @@ GUI_TEST_CLASS_DEFINITION(test_1263) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     // Excepted state: PCR product has been created
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)") != NULL, "Item Fragment (185965-186160) not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)") != nullptr, "Item Fragment (185965-186160) not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1266) {
@@ -2973,7 +2973,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
 
     //Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
     QTabBar *tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar *>("");
-    CHECK_SET_ERR(NULL != tabs, "No tab bar");
+    CHECK_SET_ERR(nullptr != tabs, "No tab bar");
     CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040025"), "Wrong tab name");
 }
 
@@ -3004,7 +3004,7 @@ GUI_TEST_CLASS_DEFINITION(test_1288) {
     GTUtilsWorkflowDesigner::click(os, "Find Pattern");
     //    Expected: "Plain text" slot in "Find Pattern" has value "<empty>".
     QTableWidget *tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
+    CHECK_SET_ERR(tw != nullptr, "InputPortsTable is NULL");
     QString s = GTUtilsWorkflowDesigner::getCellValue(os, "Plain text", tw);
 
     CHECK_SET_ERR(s == "<empty>", "unexpected value: " + s);
@@ -3045,7 +3045,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != NULL, "Ok button is NULL");
+            CHECK_SET_ERR(button != nullptr, "Ok button is NULL");
             GTWidget::click(os, button);
         }
     };
@@ -3086,7 +3086,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     GTUtilsWorkflowDesigner::click(os, "Find Substrings");
 
     QTableWidget *tw = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(tw != NULL, "InputPortsTable is NULL");
+    CHECK_SET_ERR(tw != nullptr, "InputPortsTable is NULL");
 
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read Sequence)", GTUtilsWorkflowDesigner::comboValue, tw);
 
@@ -3294,7 +3294,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
+            CHECK_SET_ERR(nullptr != algorithmBox, "algorithmBox is NULL");
             GTComboBox::selectItemByText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3592,13 +3592,13 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
     class CustomPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
-            CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL");
+            CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
 
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Add element");
 
             activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
             QAction *dataReadersAction = GTMenu::getMenuItem(os, activePopupMenu, "Data Readers", true);
-            CHECK_SET_ERR(NULL == dataReadersAction, "Data Readers item is unexpectly found");
+            CHECK_SET_ERR(nullptr == dataReadersAction, "Data Readers item is unexpectly found");
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -3662,7 +3662,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
 
     GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algorithms);
     QTreeWidgetItem *treeItem = GTUtilsWorkflowDesigner::findTreeItem(os, settings.elementName, GTUtilsWorkflowDesigner::algorithms);
-    CHECK_SET_ERR(treeItem != NULL, "Element not found");
+    CHECK_SET_ERR(treeItem != nullptr, "Element not found");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
@@ -3906,11 +3906,11 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     QLabel *hint = qobject_cast<QLabel *>(GTWidget::findWidget(os, "HINT_HIGHLIGHTNING"));
-    CHECK_SET_ERR(hint != NULL, "Hint not found");
+    CHECK_SET_ERR(hint != nullptr, "Hint not found");
     CHECK_SET_ERR(!hint->text().isEmpty(), "Hint is empty, but must not be");
 
     QComboBox *highlightingBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "READS_HIGHLIGHTNING_COMBO"));
-    CHECK_SET_ERR(highlightingBox != NULL, "READS_HIGHLIGHTNING_COMBO not found");
+    CHECK_SET_ERR(highlightingBox != nullptr, "READS_HIGHLIGHTNING_COMBO not found");
     GTComboBox::selectItemByText(os, highlightingBox, "Nucleotide");
     CHECK_SET_ERR(hint->text().isEmpty(), "Hint is not empty, but must be");
 
@@ -4153,7 +4153,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 profile");
 
-    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", NULL, GTGlobals::FindOptions(false)) == NULL, "addButton is shown");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, GTGlobals::FindOptions(false)) == nullptr, "addButton is shown");
 
     GTUtilsWorkflowDesigner::click(os, "Read HMM2 Profile");
 
@@ -4169,7 +4169,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 #ifdef Q_OS_DARWIN
     GTMouseDriver::doubleClick();
 #endif
-    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton") != NULL, "addButton is hiden");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton") != nullptr, "addButton is hiden");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -4178,7 +4178,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
     GTUtilsWorkflowDesigner::click(os, "Read HMM2 Profile");
 
-    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", NULL, GTGlobals::FindOptions(false)) == NULL, "addButton is shown");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, GTGlobals::FindOptions(false)) == nullptr, "addButton is shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1427) {
@@ -4247,11 +4247,11 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
             GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
 
             //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Start"));
             QPushButton *okButton = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(okButton != NULL, "ok button is NULL");
+            CHECK_SET_ERR(okButton != nullptr, "ok button is NULL");
             GTWidget::click(os, okButton);
         }
     };
@@ -4275,7 +4275,7 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Sequence Marker");
 
     QToolButton *addButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "addButton"));
-    CHECK_SET_ERR(addButton != NULL, "AddButton not found!");
+    CHECK_SET_ERR(addButton != nullptr, "AddButton not found!");
 
     class OkClicker : public Filler {
     public:
@@ -4284,11 +4284,11 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
         }
         virtual void run() {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(nullptr != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(nullptr != buttonBox, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(nullptr != button, );
             GTWidget::click(os, button);
         }
     };
@@ -4296,7 +4296,7 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
     GTWidget::click(os, addButton);
 
     QTableView *groupTable = qobject_cast<QTableView *>(GTWidget::findWidget(os, "markerTable"));
-    CHECK_SET_ERR(groupTable != NULL, "MarkerTable not found");
+    CHECK_SET_ERR(groupTable != nullptr, "MarkerTable not found");
     for (int i = 1; i < 3; i++) {
         GTUtilsDialog::waitForDialog(os, new OkClicker(os));
         GTWidget::click(os, addButton);
@@ -4511,7 +4511,7 @@ GUI_TEST_CLASS_DEFINITION(test_1435) {
 
     GTUtilsWorkflowDesigner::click(os, "Element_1435");
     WorkflowProcessItem *element = GTUtilsWorkflowDesigner::getWorker(os, "Element_1435");
-    CHECK_SET_ERR(element != NULL, "Worker not found");
+    CHECK_SET_ERR(element != nullptr, "Worker not found");
     int portCount = GTUtilsWorkflowDesigner::getPorts(os, element).size();
     CHECK_SET_ERR(portCount == 3,
                   QString("Port number is wrong. Expected: 3. Current %1").arg(portCount));
@@ -4556,7 +4556,7 @@ GUI_TEST_CLASS_DEFINITION(test_1442_1) {
 
     GTWidget::findWidget(os, "Matrix viewer");    // check that matrix view is presented
 
-    QWidget *logoWidget = GTWidget::findWidget(os, "logoWidget", NULL);
+    QWidget *logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
     CHECK_SET_ERR(logoWidget->isVisible(), "Logo widget is unexpectedly invisible");
 }
 
@@ -4572,7 +4572,7 @@ GUI_TEST_CLASS_DEFINITION(test_1442_2) {
 
     GTWidget::findWidget(os, "Matrix viewer");    // check that matrix view is presented
 
-    QWidget *logoWidget = GTWidget::findWidget(os, "logoWidget", NULL);
+    QWidget *logoWidget = GTWidget::findWidget(os, "logoWidget", nullptr);
     CHECK_SET_ERR(!logoWidget->isVisible(), "Logo widget is unexpectedly visible");
 }
 
@@ -4689,7 +4689,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", QApplication::activeModalWidget());
-            CHECK_SET_ERR(NULL != comboMatrix, "Matrix combobox is NULL");
+            CHECK_SET_ERR(nullptr != comboMatrix, "Matrix combobox is NULL");
             GTComboBox::selectItemByText(os, comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -4822,7 +4822,7 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     const QString clipboardContent = GTClipboard::text(os);
 
     QPlainTextEdit *logTextEdit = logView->findChild<QPlainTextEdit *>();
-    CHECK_SET_ERR(NULL != logTextEdit, "Log view text edit field is not found")
+    CHECK_SET_ERR(nullptr != logTextEdit, "Log view text edit field is not found")
 
     const QString logTextEditContent = logTextEdit->toPlainText();
     CHECK_SET_ERR(logTextEditContent == clipboardContent,
@@ -4942,7 +4942,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Assembly (BAM/SAM)");
     WorkflowProcessItem *toBam = GTUtilsWorkflowDesigner::getWorker(os, "To BAM");
-    CHECK_SET_ERR(toBam != NULL, "\'To BAM\' element not found");
+    CHECK_SET_ERR(toBam != nullptr, "\'To BAM\' element not found");
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
 
@@ -4952,7 +4952,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, -200));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    CHECK_SET_ERR(readSeq != NULL, "\'Read Sequence 1\' element not found");
+    CHECK_SET_ERR(readSeq != nullptr, "\'Read Sequence 1\' element not found");
     GTUtilsWorkflowDesigner::connect(os, readSeq, toBam);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
@@ -5235,7 +5235,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
             GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
             GTMouseDriver::click();
             QWidget *contextMenu = QApplication::activePopupWidget();
-            CHECK_SET_ERR(NULL == contextMenu, "There is an unexpected context menu");
+            CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
         }
     };
 
@@ -5265,14 +5265,14 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
     //    Expected state: Tree view contect menu appears.
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
     QWidget *contextMenu = QApplication::activePopupWidget();
-    CHECK_SET_ERR(NULL != contextMenu, "There is no expected context menu");
+    CHECK_SET_ERR(nullptr != contextMenu, "There is no expected context menu");
 
     //    5. Click somewhere on the tree view to close menu.
     //    Expected state: The context menu closes, there are not any another menus.
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
     GTMouseDriver::click(Qt::LeftButton);
     contextMenu = QApplication::activePopupWidget();
-    CHECK_SET_ERR(NULL == contextMenu, "There is an unexpected context menu");
+    CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1560) {
@@ -5354,7 +5354,7 @@ GUI_TEST_CLASS_DEFINITION(test_1568) {
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_1568.nwk", 0, 0, true));
     QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    CHECK_SET_ERR(tree != NULL, "Build Tree action not found");
+    CHECK_SET_ERR(tree != nullptr, "Build Tree action not found");
     GTWidget::click(os, tree);
 
     GTUtilsMdi::closeWindow(os, "COI [COI.aln]");
@@ -5636,7 +5636,7 @@ GUI_TEST_CLASS_DEFINITION(test_1594) {
     //    Expected: the progress of the workflow process changes correctly (from 0% up to 100%).
     QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
     for (int i = 0; i < 180; i++) {
-        if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) == NULL) {
+        if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) == nullptr) {
             break;
         }
         QString text = taskProgressBar->text();
@@ -5646,7 +5646,7 @@ GUI_TEST_CLASS_DEFINITION(test_1594) {
         CHECK_SET_ERR(isNumber, QString("The progress must be a number: %1").arg(text));
         CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     }
-    if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) != NULL) {
+    if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
     }
 }
@@ -6042,19 +6042,13 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1626) {
+    //TEST UPDATED: for now it is impossible to run KALIGN on raw alphabet alignment
     //1. Open file _common_data/regression/1626/1626.fa
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1626", "1626.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Align with KAlign
-    //Expected state: UGENE not crasesh, KAlign can return error message, its okay
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseKey));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //3. Change color scheme
+    //2. Change color scheme
     //Expected state: color scheme changed successfully
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Tailor"));
@@ -6099,11 +6093,11 @@ GUI_TEST_CLASS_DEFINITION(test_1628) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Montana_montana", "йцукен123");
 
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
-    CHECK_SET_ERR(undo != NULL, "Undo button is NULL");
+    CHECK_SET_ERR(undo != nullptr, "Undo button is NULL");
     GTWidget::click(os, undo);
 
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
-    CHECK_SET_ERR(redo != NULL, "Redo button is NULL");
+    CHECK_SET_ERR(redo != nullptr, "Redo button is NULL");
     GTWidget::click(os, redo);
 
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -6275,7 +6269,7 @@ GUI_TEST_CLASS_DEFINITION(test_1653) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
     QSpinBox *spin = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinBoxMatch"));
-    CHECK_SET_ERR(spin != NULL, "spinBoxMatch not found!");
+    CHECK_SET_ERR(spin != nullptr, "spinBoxMatch not found!");
     CHECK_SET_ERR(spin->isHidden(), "Warning spinbox is unexpectedly visible");
 }
 
@@ -6337,8 +6331,8 @@ GUI_TEST_CLASS_DEFINITION(test_1658) {
     GTGlobals::sleep(500);
     //    Expected state: MSA view opens without tree view, no error messages in log appear
 
-    QWidget *treeWidget = GTWidget::findWidget(os, "treeView", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(treeWidget == NULL, "tree view unexpectidly presents");
+    QWidget *treeWidget = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(treeWidget == nullptr, "tree view unexpectidly presents");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1660) {
@@ -6564,7 +6558,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_3) {
 
     QWidget *wgt = QApplication::focusWidget();
     QTextEdit *edit = qobject_cast<QTextEdit *>(wgt);
-    CHECK_SET_ERR(edit != NULL, "Text edit is not in focus");
+    CHECK_SET_ERR(edit != nullptr, "Text edit is not in focus");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1673_4) {
@@ -6578,8 +6572,8 @@ GUI_TEST_CLASS_DEFINITION(test_1673_4) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     //Expected result: "Search in Sequence" tab has been opened, other tabs have been closed
-    QWidget *prevButton = GTWidget::findWidget(os, "prevAnnotationButton", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == prevButton, "Annotations options panel is not closed");
+    QWidget *prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == prevButton, "Annotations options panel is not closed");
     GTWidget::findWidget(os, "FindPatternWidget");
     CHECK_SET_ERR(GTWidget::findWidget(os, "textPattern")->hasFocus(), "Find pattern field has no focus");
 }
@@ -6766,7 +6760,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
             }
 
             QTabWidget *tabWidget = dialog->findChild<QTabWidget *>();
-            CHECK_SET_ERR(tabWidget != NULL, "tabWidget not found");
+            CHECK_SET_ERR(tabWidget != nullptr, "tabWidget not found");
             GTTabWidget::setCurrentIndex(os, tabWidget, 1);
 
             GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"));
@@ -6952,7 +6946,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
 
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
     QWidget *samplesWidget = GTWidget::findWidget(os, "samples");
-    CHECK_SET_ERR(NULL != samplesWidget, "Samples widget is NULL");
+    CHECK_SET_ERR(nullptr != samplesWidget, "Samples widget is NULL");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
     GTUtilsTask::cancelTask(os, "Execute workflow");
 }
@@ -7727,7 +7721,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
 
     //3. Change the value of the scale spinbox. E.g. set it to 75%
     QComboBox *scaleCombo = dynamic_cast<QComboBox *>(GTWidget::findWidget(os, "wdScaleCombo"));
-    CHECK_SET_ERR(NULL != scaleCombo, "Unable to find scale combobox!");
+    CHECK_SET_ERR(nullptr != scaleCombo, "Unable to find scale combobox!");
     GTComboBox::selectItemByText(os, scaleCombo, "75%");
 
     //4. Store the scheme to some file using "Save scheme as" button
@@ -7745,7 +7739,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
 
     //Expected state: scheme is opened in WD, its scale is 75%
     scaleCombo = dynamic_cast<QComboBox *>(GTWidget::findWidget(os, "wdScaleCombo"));
-    CHECK_SET_ERR(NULL != scaleCombo, "Unable to find scale combobox!");
+    CHECK_SET_ERR(nullptr != scaleCombo, "Unable to find scale combobox!");
     CHECK_SET_ERR(scaleCombo->currentText() == "75%", "Unexpected scale value!");
 }
 

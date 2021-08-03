@@ -158,7 +158,7 @@ GLFrame *GLFrameManager::getGLWidgetFrame(QGLWidget *widget) {
     if (widgetFrameMap.contains(widget)) {
         return widgetFrameMap.value(widget);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

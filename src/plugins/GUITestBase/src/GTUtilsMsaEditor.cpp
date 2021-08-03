@@ -37,6 +37,7 @@
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
@@ -114,7 +115,7 @@ MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
 MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaGraphOverview *result = GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
+    GT_CHECK_RESULT(nullptr != result, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -123,7 +124,7 @@ MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
 MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaSimpleOverview *result = GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaSimpleOverview is not found", NULL);
+    GT_CHECK_RESULT(nullptr != result, "MaSimpleOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -184,11 +185,11 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int viewRowInde
 #define GT_METHOD_NAME "getColumnHeaderRect"
 QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus &os, int column) {
     MSAEditorConsensusArea *consensusArea = getConsensusArea(os);
-    GT_CHECK_RESULT(NULL != consensusArea, "Consensus area is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != consensusArea, "Consensus area is NULL", QRect());
     MSAEditorSequenceArea *sequenceArea = getSequenceArea(os);
-    GT_CHECK_RESULT(NULL != sequenceArea, "Sequence area is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != sequenceArea, "Sequence area is NULL", QRect());
     MSAEditor *editor = getEditor(os);
-    GT_CHECK_RESULT(NULL != editor, "MSA Editor is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
     BaseWidthController *baseWidthController = editor->getUI()->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
@@ -260,9 +261,17 @@ void GTUtilsMsaEditor::clickSequence(GUITestOpStatus &os, int rowNumber, Qt::Mou
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickSequenceName"
-void GTUtilsMsaEditor::clickSequenceName(GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton) {
+void GTUtilsMsaEditor::clickSequenceName(GUITestOpStatus &os, const QString &sequenceName, const Qt::MouseButton &mouseButton, const Qt::KeyboardModifiers &modifiers) {
     moveToSequenceName(os, sequenceName);
+
+    QList<Qt::Key> modifierKeys = GTKeyboardDriver::modifiersToKeys(modifiers);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyPress(key);
+    }
     GTMouseDriver::click(mouseButton);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyRelease(key);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -302,6 +311,14 @@ void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int l
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "selectRowsByName"
+void GTUtilsMsaEditor::selectRowsByName(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
+        clickSequenceName(os, rowName, Qt::LeftButton, Qt::ControlModifier);
+    }
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "selectColumns"
 void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, GTGlobals::UseMethod method) {
     switch (method) {
@@ -327,6 +344,29 @@ void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber,
 void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
     Q_UNUSED(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkSelection"
+void GTUtilsMsaEditor::checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects) {
+    MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
+    QList<QRect> selectedRects = msaEditor->getSelection().getRectList();
+    CHECK_SET_ERR(selectedRects.size() == expectedRects.size(), QString("Expected selection size: %1, actual: %2").arg(expectedRects.size()).arg(selectedRects.size()));
+    for (int i = 0; i < selectedRects.size(); i++) {
+        QRect expectedRect = expectedRects[i];
+        QRect selectedRect = selectedRects[i];
+        CHECK_SET_ERR(selectedRect == expectedRect,
+                      QString("Selection rect is not equal to the expected one, idx: %1, rect: (x:%2, y:%3, w: %4, h: %5), expected: (x: %6, y: %7, w: %8, h: %9)")
+                          .arg(i)
+                          .arg(selectedRect.x())
+                          .arg(selectedRect.y())
+                          .arg(selectedRect.width())
+                          .arg(selectedRect.height())
+                          .arg(expectedRect.x())
+                          .arg(expectedRect.y())
+                          .arg(expectedRect.width())
+                          .arg(expectedRect.height()));
+    }
 }
 #undef GT_METHOD_NAME
 

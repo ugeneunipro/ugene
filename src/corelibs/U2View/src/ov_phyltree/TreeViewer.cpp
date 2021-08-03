@@ -493,7 +493,7 @@ void TreeViewerUI::setOptionValue(TreeViewOption option, QVariant value) {
     }
 }
 
-void TreeViewerUI::setTreeLayout(TreeLayout newLayout) {
+void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
     switch (newLayout) {
         case RECTANGULAR_LAYOUT:
             curTreeViewer->getRectangularLayoutAction()->setChecked(true);

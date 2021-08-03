@@ -30,11 +30,10 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -54,8 +53,6 @@ static const QString OUT_HMM_URL_PORT_ID("out-hmm3");
 
 static const QString SEED_ATTR("seed");
 
-static const QString HMM3_PROFILE_DEFAULT_NAME("hmm3_profile");
-
 void HmmerBuildWorkerFactory::init() {
     QList<PortDescriptor *> p;
     QList<Attribute *> a;
@@ -71,16 +68,22 @@ void HmmerBuildWorkerFactory::init() {
         p << new PortDescriptor(od, DataTypePtr(new MapDataType("hmm3.build", outM)), false /*input*/, true /*multi*/);
     }
 
-    Descriptor sed(SEED_ATTR, HmmerBuildWorker::tr("Random seed"), HmmerBuildWorker::tr("Random generator seed. 0 - means that one-time arbitrary seed will be used."));
+    Descriptor seedAttr(SEED_ATTR, HmmerBuildWorker::tr("Random seed"), HmmerBuildWorker::tr("Random generator seed. 0 - means that one-time arbitrary seed will be used."));
+    a << new Attribute(seedAttr, BaseTypes::NUM_TYPE(), false, QVariant(42));
 
-    a << new Attribute(sed, BaseTypes::NUM_TYPE(), false, QVariant(42));
+    auto outputFileNameAttribute = new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false);
+    a << outputFileNameAttribute;
 
-    Descriptor desc(HmmerBuildWorkerFactory::ACTOR, HmmerBuildWorker::tr("HMM3 Build"), HmmerBuildWorker::tr("Builds a HMM3 profile from a multiple sequence alignment."
-                                                                                                             "<p>The HMM3 profile is a statistical model which captures position-specific information"
-                                                                                                             " about how conserved each column of the alignment is, and which residues are likely."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate *> delegates;
+    delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate("", "", false, false, true);
 
+    Descriptor desc(HmmerBuildWorkerFactory::ACTOR,
+                    HmmerBuildWorker::tr("HMM3 Build"),
+                    HmmerBuildWorker::tr("Builds a HMM3 profile from a multiple sequence alignment."
+                                         "<p>The HMM3 profile is a statistical model which captures position-specific information"
+                                         " about how conserved each column of the alignment is, and which residues are likely."));
+
+    auto proto = new IntegralBusActorPrototype(desc, p, a);
     {
         QVariantMap m;
         m["minimum"] = 0;
@@ -134,8 +137,8 @@ QString HmmerBuildPrompter::composeRichDoc() {
 ******************************/
 HmmerBuildWorker::HmmerBuildWorker(Actor *a)
     : BaseWorker(a),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 void HmmerBuildWorker::init() {
@@ -156,18 +159,23 @@ Task *HmmerBuildWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.seed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        cfg.profileUrl = monitor()->outputDir() + "hmmer_build/" + QFileInfo(context->getMetadataStorage().get(inputMessage.getMetadataId()).getFileUrl()).baseName() + ".hmm";
-        HmmerBuildFromMsaTask *task = new HmmerBuildFromMsaTask(cfg, msa);
+        QString outputUrl = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
+        if (!outputUrl.isEmpty()) {
+            cfg.profileUrl = outputUrl;
+        } else {
+            cfg.profileUrl = monitor()->outputDir() + "hmmer_build/" + QFileInfo(context->getMetadataStorage().get(inputMessage.getMetadataId()).getFileUrl()).baseName() + ".hmm";
+        }
+        auto task = new HmmerBuildFromMsaTask(cfg, msa);
         task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
@@ -175,12 +183,12 @@ Task *HmmerBuildWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void HmmerBuildWorker::sl_taskFinished(Task *task) {
     HmmerBuildFromMsaTask *buildTask = qobject_cast<HmmerBuildFromMsaTask *>(task);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
     }

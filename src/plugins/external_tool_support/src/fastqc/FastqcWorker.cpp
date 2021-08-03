@@ -167,7 +167,7 @@ void FastQCFactory::init() {
 //////////////////////////////////////////////////////////////////////////
 //FastQCWorker
 FastQCWorker::FastQCWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL) {
+    : BaseWorker(a), inputUrlPort(nullptr) {
 }
 
 void FastQCWorker::init() {

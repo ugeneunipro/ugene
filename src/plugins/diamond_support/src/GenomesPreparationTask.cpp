@@ -59,7 +59,7 @@ void GenomesPreparationTask::run() {
     while (reader.hasNext()) {
         CHECK_OP(stateInfo, );
         DNASequence *sequence(reader.getNextSequenceObject());
-        CHECK_EXT(NULL != sequence, setError(reader.getErrorMessage()), );
+        CHECK_EXT(nullptr != sequence, setError(reader.getErrorMessage()), );
         const bool written = writer.writeNextSequence(*sequence);
         CHECK_EXT(written, setError(L10N::errorWritingFile(preparedGenomesFileUrl)), );
     }
