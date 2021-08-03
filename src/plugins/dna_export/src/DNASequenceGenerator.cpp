@@ -90,7 +90,7 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, 
     }
 }
 
-void evaluate(const QByteArray &seq, QMap<char, qreal> &result) {
+static void evaluate(const QByteArray &seq, QMap<char, qreal> &result) {
     QMap<char, int> occurrencesMap;
     foreach (char ch, seq) {
         if (!occurrencesMap.keys().contains(ch)) {
