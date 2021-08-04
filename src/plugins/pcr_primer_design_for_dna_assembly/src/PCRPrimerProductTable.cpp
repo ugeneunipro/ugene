@@ -100,10 +100,12 @@ void PCRPrimerProductTable::sl_selectionChanged() {
     Annotation *selectedAnnotation = getSelectedAnnotation();
     if (selectedAnnotation != nullptr) {
         for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
-            context->getAnnotationsSelection()->clear();
-            context->getSequenceSelection()->clear();
-            context->emitClearSelectedAnnotationRegions();
-            context->emitAnnotationActivated(selectedAnnotation, 0);
+            if (selectedAnnotation->getGObject() != nullptr && context->getAnnotationObjects(true).contains(selectedAnnotation->getGObject())) {
+                context->getAnnotationsSelection()->clear();
+                context->getSequenceSelection()->clear();
+                context->emitClearSelectedAnnotationRegions();
+                context->emitAnnotationActivated(selectedAnnotation, 0);
+            }
         }
     }
 }
