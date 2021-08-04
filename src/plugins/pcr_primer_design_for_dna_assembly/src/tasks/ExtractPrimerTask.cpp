@@ -140,7 +140,6 @@ DNASequence ExtractPrimerTask::getProductSequence() {
     primerSequence.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, settings.fragmentLocation, stateInfo);
     CHECK_OP(stateInfo, primerSequence);
     primerSequence.setName(settings.fragmentName + " annotations");
-    primerSequence.seq.mid(settings.fragmentLocation.startPos, settings.fragmentLocation.length);
     return primerSequence;
 }
 
