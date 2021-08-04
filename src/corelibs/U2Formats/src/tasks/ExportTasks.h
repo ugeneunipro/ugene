@@ -42,6 +42,13 @@ public:
 
     void run() override;
 
+    /**
+     * Maximum MSA size in bytes that can be loaded/stored by UGENE safely.
+     * UGENE loads a full MSA model into a memory in a lot of places across the codebase.
+     * This constant should be limit the maxim size of MSA produced by UGENE, so UGENE won't create objects it can't handle.
+     */
+    static constexpr qint64 MAX_SAFE_ALIGNMENT_SIZE_TO_EXPORT = 100 * 1000 * 1000;
+
 private:
     MultipleSequenceAlignment ma;
     QString url;

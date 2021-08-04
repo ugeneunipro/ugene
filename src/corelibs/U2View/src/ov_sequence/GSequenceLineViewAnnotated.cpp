@@ -213,7 +213,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                 if (processAllRegions) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
-                    int mousePressPos = renderArea->coordToPos(renderAreaPoint);
+                    qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
                     for (int i = 0; i < annotationRegions.size(); i++) {
                         const U2Region &region = annotationRegions[i];
                         if (region.contains(mousePressPos)) {

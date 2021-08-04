@@ -437,7 +437,7 @@ void GSequenceLineView::setCoherentRangeView(GSequenceLineView *_rangeView) {
 void GSequenceLineView::sl_onFrameRangeChanged() {
     SAFE_POINT(frameView != nullptr, "frameView is NULL", );
     U2Region newRangeNC = frameView->getVisibleRange();
-    int len = ctx->getSequenceLength();
+    qint64 len = ctx->getSequenceLength();
     if (newRangeNC.endPos() > len) {
         newRangeNC.startPos = 0;
         if (newRangeNC.length > len) {
@@ -652,7 +652,7 @@ void GSequenceLineViewRenderArea::drawFrame(QPainter &p) {
     if (visibleFrameRange.isEmpty()) {
         return;
     }
-    float scale = getCurrentScale();
+    double scale = getCurrentScale();
     int xStart = (int)(scale * (visibleFrameRange.startPos - visibleRange.startPos));
     int xLen = qMax((int)(scale * visibleFrameRange.length), 4);
     QPen pen(Qt::lightGray, 2, Qt::DashLine);

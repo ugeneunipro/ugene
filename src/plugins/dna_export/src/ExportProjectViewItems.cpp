@@ -22,7 +22,6 @@
 #include "ExportProjectViewItems.h"
 
 #include <QAction>
-#include <QInputDialog>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMessageBox>
@@ -50,13 +49,11 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
 #include <U2Core/SelectionUtils.h>
-#include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/ExportTasks.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -389,6 +386,19 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
     QList<GObject *> sequenceObjects = SelectionUtils::findObjectsKeepOrder(GObjectTypes::SEQUENCE, &ms, UOF_LoadedOnly);
     if (sequenceObjects.isEmpty()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("No sequence objects selected!"));
+        return;
+    }
+
+    // Check sequence length does not exceed MSA size that UGENE can handle safely.
+    // UGENE often loads MSA into memory in full and huge MSA may crash UGENE.
+    qint64 totalSequenceSize = 0;
+    for (const GObject *obj : sequenceObjects) {
+        if (auto sequenceObject = qobject_cast<const U2SequenceObject *>(obj)) {
+            totalSequenceSize += sequenceObject->getSequenceLength();
+        }
+    }
+    if (totalSequenceSize >= ExportAlignmentTask::MAX_SAFE_ALIGNMENT_SIZE_TO_EXPORT) {
+        QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Sequence is too large to be exported as a multiple alignment"));
         return;
     }
 

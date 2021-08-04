@@ -626,22 +626,22 @@ void DetView::updateVisibleRange() {
             visibleLinesCount++;
         }
 
-        int visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
+        qint64 visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
 
-        int lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
+        qint64 lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
         if (detArea->height() - detArea->getLinesCount() * detArea->getShiftsCount() * detArea->getShiftHeight() > 0 && lastLine > 0) {
             lastLine--;
         }
-        int lastStartPos = lastLine * detArea->getSymbolsPerLine();
+        qint64 lastStartPos = lastLine * detArea->getSymbolsPerLine();
 
         bool posAtTheEnd = visibleRange.startPos > lastStartPos;
-        visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+        visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
         bool emptyLineDetected = (visibleRangeLen - visibleRange.length) > detArea->getSymbolsPerLine();
 
         if (posAtTheEnd || (emptyLineDetected && visibleRange.startPos + visibleRangeLen >= seqLen)) {
             // scroll to the end
             visibleRange.startPos = qMax(0, (verticalScrollBar->maximum() / numShiftsInOneLine) * detArea->getSymbolsPerLine());
-            visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+            visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
             currentShiftsCounter = qMax(0, verticalScrollBar->maximum() % numShiftsInOneLine);
         }
     } else {
@@ -690,7 +690,7 @@ void DetView::updateVerticalScrollBar() {
     int maximum;
     if (isWrapMode()) {
         DetViewRenderArea *detArea = getDetViewRenderArea();
-        int linesCount = seqLen / detArea->getSymbolsPerLine();
+        qint64 linesCount = seqLen / detArea->getSymbolsPerLine();
         if (seqLen % detArea->getSymbolsPerLine() != 0) {
             linesCount++;
         }

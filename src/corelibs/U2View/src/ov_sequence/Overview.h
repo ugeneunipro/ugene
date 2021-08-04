@@ -110,7 +110,7 @@ public:
      * Returns sequence position corresponding to the given on-screen X coordinate.
      * OverviewRenderArea is a true single-line-view, so the result does not depend on Y coordinate.
      */
-    int coordXToPos(int coordX) const {
+    qint64 coordXToPos(int coordX) const {
         return coordToPos(QPoint(coordX, 0));
     }
 

@@ -57,7 +57,6 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -590,7 +589,7 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
     // Generate a large sequence.
     // Check that test does not time-outs and the generated sequence contains expected base distribution.
 
-    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7370.fa");
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7367.fa");
     model.percentA = 10;
     model.percentC = 20;
     model.percentG = 30;
@@ -635,6 +634,21 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
     CHECK_SET_ERR(percentT >= model.percentT - diff && percentT <= model.percentT + diff, "Invalid percent of T: " + QString::number(percentT));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7368) {
+    // Generate a large sequence (>=100mb).
+    // Check that error dialog is shown when such a big sequence is exported as an alignment.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7368.fa");
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
+    GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
