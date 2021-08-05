@@ -649,6 +649,7 @@ GUI_TEST_CLASS_DEFINITION(test_7368) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
     GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
 }
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
