@@ -25,6 +25,7 @@
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -226,9 +227,10 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString filter = f2 + "\n" + f1;
+    auto selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
 
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with sequences"), lod, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with sequences"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
     auto alignTask = new MuscleAddSequencesToProfileTask(msaObject, lod.url, MuscleAddSequencesToProfileTask::Sequences2Profile);
@@ -248,13 +250,10 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
         return;
     assert(!obj->isStateLocked());
 
+    auto filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
+    auto selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
     LastUsedDirHelper lod;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, filter, &selectedFilter);
 
     if (lod.url.isEmpty()) {
         return;

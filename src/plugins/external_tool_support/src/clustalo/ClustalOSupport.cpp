@@ -189,9 +189,10 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString filter = f2 + "\n" + f1;
+    QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
 
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with another alignment"), lod, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with another alignment"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
     ClustalOSupportTaskSettings settings;
