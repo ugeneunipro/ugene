@@ -56,6 +56,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorConsensusAreaSettings.h \
+           src/ov_msa/MaEditorContext.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/MaEditorState.h \
@@ -109,6 +110,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/mca_reads/McaAlternativeMutationsWidget.h \
            src/ov_msa/mca_reads/McaReadsTabFactory.h \
+           src/ov_msa/move_to_object/MoveToObjectMaController.h \
            src/ov_msa/overview/MaEditorOverviewArea.h \
            src/ov_msa/overview/MaGraphCalculationTask.h \
            src/ov_msa/overview/MaGraphOverview.h \
@@ -337,6 +339,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorConsensusAreaSettings.cpp \
+           src/ov_msa/MaEditorContext.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/MaEditorState.cpp \
@@ -388,6 +391,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/mca_reads/McaAlternativeMutationsWidget.cpp \
            src/ov_msa/mca_reads/McaReadsTabFactory.cpp \
+           src/ov_msa/move_to_object/MoveToObjectMaController.cpp \
            src/ov_msa/overview/MaEditorOverviewArea.cpp \
            src/ov_msa/overview/MaGraphCalculationTask.cpp \
            src/ov_msa/overview/MaGraphOverview.cpp \

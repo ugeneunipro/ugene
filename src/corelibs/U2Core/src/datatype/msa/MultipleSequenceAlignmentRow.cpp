@@ -176,7 +176,7 @@ QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus &os, qint64 
         return sequence.constSequence();
     }
 
-    QByteArray bytes = joinCharsAndGaps(true, true);
+    QByteArray bytes = getSequenceWithGaps(true, true);
 
     // Append additional gaps, if necessary
     if (length > bytes.count()) {
@@ -198,11 +198,11 @@ int MultipleSequenceAlignmentRowData::getRowLength() const {
 }
 
 QByteArray MultipleSequenceAlignmentRowData::getCore() const {
-    return joinCharsAndGaps(false, false);
+    return getSequenceWithGaps(false, false);
 }
 
 QByteArray MultipleSequenceAlignmentRowData::getData() const {
-    return joinCharsAndGaps(true, true);
+    return getSequenceWithGaps(true, true);
 }
 
 qint64 MultipleSequenceAlignmentRowData::getCoreLength() const {
@@ -508,34 +508,6 @@ void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapM
     }
 }
 
-QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const {
-    QByteArray bytes = sequence.constSequence();
-    int beginningOffset = 0;
-
-    if (gaps.isEmpty()) {
-        return bytes;
-    }
-
-    for (int i = 0; i < gaps.size(); ++i) {
-        QByteArray gapsBytes;
-        if (!keepOffset && (0 == gaps[i].offset)) {
-            beginningOffset = gaps[i].gap;
-            continue;
-        }
-
-        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
-        bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
-    }
-    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
-    if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());
-        bytes.append(gapsBytes);
-    }
-
-    return bytes;
-}
-
 void MultipleSequenceAlignmentRowData::mergeConsecutiveGaps() {
     MsaRowUtils::mergeConsecutiveGaps(gaps);
 }
@@ -611,6 +583,10 @@ void MultipleSequenceAlignmentRowData::setParentAlignment(MultipleSequenceAlignm
 
 int MultipleSequenceAlignmentRowData::getCoreStart() const {
     return MsaRowUtils::getCoreStart(gaps);
+}
+
+MultipleAlignmentData *MultipleSequenceAlignmentRowData::getMultipleAlignmentData() const {
+    return alignment;
 }
 
 }    // namespace U2

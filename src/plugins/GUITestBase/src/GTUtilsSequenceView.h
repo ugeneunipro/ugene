@@ -52,16 +52,16 @@ public:
     static QString getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length);
     static QString getEndOfSequenceAsString(HI::GUITestOpStatus &os, int length);
     static int getLengthOfSequence(HI::GUITestOpStatus &os);
-    static int getVisiableStart(HI::GUITestOpStatus &os, int widgetNumber = 0);
+    static int getVisibleStart(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
 
-    static void goToPosition(HI::GUITestOpStatus &os, int position);
+    static void goToPosition(HI::GUITestOpStatus &os, qint64 position);
 
     /** Moves mouse to the safe sequence view area (Pan or Det view, not a scrollbar) and clicks (brings focus) into it. */
     static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os);
@@ -90,7 +90,7 @@ public:
      * */
     static void clickAnnotationDet(HI::GUITestOpStatus &os, const QString &annotationName, int annotationRegionStartPos, int sequenceWidgetIndex = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
-    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
     static GSequenceGraphView *getGraphView(HI::GUITestOpStatus &os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
@@ -98,6 +98,9 @@ public:
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
 
     static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
+
+    /** Enables editing mode, sets cursor to the offset, enters the sequence and disables editing mode. */
+    static void insertSubsequence(HI::GUITestOpStatus &os, qint64 offset, const QString &subsequence, bool isDirectStrand = true);
 
     /** It is supposed, that the editing mode is enabled and DetView is visible.
       * The method sets the cursor before the @position (0-based) in the first sequence in the view
@@ -110,8 +113,11 @@ public:
     static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region &region);
 
     static void clickOnDetView(HI::GUITestOpStatus &os);
+
+    /** Enables det-view widget if it is not visible. */
+    static void makeDetViewVisible(HI::GUITestOpStatus& os);
 };
 
 }    // namespace U2
 
-#endif    // GTSEQUENCEVIEWUTILS_H
+#endif    // _U2_GT_UTILS_SEQUENCE_VIEW_H

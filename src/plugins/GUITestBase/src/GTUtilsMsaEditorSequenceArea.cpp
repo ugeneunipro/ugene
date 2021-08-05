@@ -285,7 +285,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getCurrentRowNames"
 QStringList GTUtilsMSAEditorSequenceArea::getCurrentRowNames(GUITestOpStatus &os) {
     MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
-    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     int viewRowCount = collapseModel->getViewRowCount();
     QStringList rowNameList;
     for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {

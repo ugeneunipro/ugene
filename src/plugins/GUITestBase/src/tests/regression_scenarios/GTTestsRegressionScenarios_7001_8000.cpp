@@ -61,6 +61,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -642,6 +643,55 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
     GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
 }
 #endif    //SW2_BUILD_WITH_CUDA
+
+GUI_TEST_CLASS_DEFINITION(test_7367) {
+    // Generate a large sequence.
+    // Check that test does not time-outs and the generated sequence contains expected base distribution.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7370.fa");
+    model.percentA = 10;
+    model.percentC = 20;
+    model.percentG = 30;
+    model.percentT = 40;
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    qint64 a = 0, c = 0, g = 0, t = 0;
+    for (const QChar &ch : qAsConst(sequence)) {
+        switch (ch.toLatin1()) {
+            case 'A':
+                a++;
+                break;
+            case 'C':
+                c++;
+                break;
+            case 'G':
+                g++;
+                break;
+            case 'T':
+                t++;
+                break;
+            default:
+                CHECK_SET_ERR(false, QString("Got invalid character: ") + ch);
+        }
+    }
+    qint64 percentA = a * 100 / sequence.length();
+    qint64 percentC = c * 100 / sequence.length();
+    qint64 percentG = g * 100 / sequence.length();
+    qint64 percentT = t * 100 / sequence.length();
+
+    int diff = 2;    // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
+    CHECK_SET_ERR(percentA >= model.percentA - diff && percentA <= model.percentA + diff, "Invalid percent of A: " + QString::number(percentA));
+    CHECK_SET_ERR(percentC >= model.percentC - diff && percentC <= model.percentC + diff, "Invalid percent of C: " + QString::number(percentC));
+    CHECK_SET_ERR(percentG >= model.percentG - diff && percentG <= model.percentG + diff, "Invalid percent of G: " + QString::number(percentG));
+    CHECK_SET_ERR(percentT >= model.percentT - diff && percentT <= model.percentT + diff, "Invalid percent of T: " + QString::number(percentT));
+}
 
 }    // namespace GUITest_regression_scenarios
 

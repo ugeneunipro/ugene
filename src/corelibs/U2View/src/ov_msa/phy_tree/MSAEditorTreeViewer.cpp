@@ -98,7 +98,7 @@ QWidget *MSAEditorTreeViewer::createWidget() {
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), msaTreeViewerUi, SLOT(sl_onReferenceSeqChanged(qint64)));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged()));
 
-    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     connect(collapseModel, SIGNAL(si_toggled()), this, SLOT(sl_alignmentCollapseModelChanged()));
 
     MSAEditorSequenceArea *msaSequenceArea = editor->getUI()->getSequenceArea();
@@ -193,7 +193,7 @@ bool MSAEditorTreeViewer::checkTreeAndMsaNameListsAreSynchronized() const {
         SAFE_POINT(!namesInGroup.isEmpty(), "Group must have at least 1 sequence!", false);
         treeNameList << namesInGroup[0];
     }
-    const MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    const MaCollapseModel *collapseModel = editor->getCollapseModel();
     int msaViewRowCount = collapseModel->getViewRowCount();
     if (msaViewRowCount != treeNameList.size()) {
         return false;

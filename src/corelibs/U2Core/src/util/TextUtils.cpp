@@ -205,9 +205,20 @@ qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 bu
 
 QStringList TextUtils::split(const QString &text, int chunkSize) {
     if (text.length() < chunkSize) {
-        return QStringList() << text;
+        return {text};
     }
     QStringList result;
+    for (int i = 0; i < text.length(); i += chunkSize) {
+        result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
+    }
+    return result;
+}
+
+QList<QByteArray> TextUtils::split(const QByteArray &text, int chunkSize) {
+    if (text.length() < chunkSize) {
+        return {text};
+    }
+    QList<QByteArray> result;
     for (int i = 0; i < text.length(); i += chunkSize) {
         result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
     }

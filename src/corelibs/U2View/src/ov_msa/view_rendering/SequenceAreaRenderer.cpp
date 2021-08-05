@@ -145,7 +145,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    int viewRowIndex = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
+    int viewRowIndex = editor->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 
     painter.save();
     for (int column = columns.startPos; column <= regionEnd; column++) {

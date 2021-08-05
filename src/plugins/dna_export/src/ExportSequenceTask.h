@@ -103,7 +103,7 @@ class ExportSequenceTask : public DocumentProviderTask {
 public:
     ExportSequenceTask(const ExportSequenceTaskSettings &s);
 
-    void run();
+    void run() override;
 
     static ExportSequenceItem mergedCircularItem(const ExportSequenceItem &first,
                                                  const ExportSequenceItem &second,

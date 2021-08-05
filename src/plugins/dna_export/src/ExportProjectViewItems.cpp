@@ -54,6 +54,8 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -69,7 +71,6 @@
 #include "ExportSequenceTask.h"
 #include "ExportSequences2MSADialog.h"
 #include "ExportSequencesDialog.h"
-#include "ExportTasks.h"
 #include "ExportUtils.h"
 #include "ImportAnnotationsFromCSVDialog.h"
 #include "ImportAnnotationsFromCSVTask.h"
@@ -197,7 +198,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu &m) {
         sub->addAction(exportDNAChromatogramAction);
     }
 
-    //import part
+    // import part
     set = SelectionUtils::findObjects(GObjectTypes::SEQUENCE, &ms, UOF_LoadedOnly);
     set.append(SelectionUtils::findObjects(GObjectTypes::ANNOTATION_TABLE, &ms, UOF_LoadedOnly));
     if (!set.isEmpty()) {

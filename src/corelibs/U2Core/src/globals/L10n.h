@@ -124,6 +124,15 @@ public:
     static QString errorDocumentNotFound(const GUrl &url) {
         return tr("Document not found: %1").arg(url.getURLString());
     }
+
+    static QString errorObjectNotFound(const QString &objectName) {
+        return tr("Object not found: %1").arg(objectName);
+    }
+
+    static QString errorObjectIsReadOnly(const QString &objectName) {
+        return tr("Object is read only: %1").arg(objectName);
+    }
+
     static QString suffixBp() {
         return tr(" bp");
     }

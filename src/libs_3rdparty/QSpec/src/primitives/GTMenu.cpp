@@ -59,25 +59,25 @@ QMenu *GTMenu::showMainMenu(GUITestOpStatus &os, const QString &menuName, GTGlob
     int key = 0, key_pos = 0;
 
     switch (m) {
-    case GTGlobals::UseMouse:
-        pos = mainWindow->menuBar()->actionGeometry(menu).center();
-        gPos = mainWindow->menuBar()->mapToGlobal(pos);
+        case GTGlobals::UseMouse:
+            pos = mainWindow->menuBar()->actionGeometry(menu).center();
+            gPos = mainWindow->menuBar()->mapToGlobal(pos);
 
-        GTMouseDriver::moveTo(gPos);
-        GTMouseDriver::click();
-        break;
+            GTMouseDriver::moveTo(gPos);
+            GTMouseDriver::click();
+            break;
 
-    case GTGlobals::UseKeyBoard:
-    case GTGlobals::UseKey:
-        menuText = menu->text();
-        key_pos = menuText.indexOf('&');
-        key = (menuText.at(key_pos + 1)).toLatin1();
+        case GTGlobals::UseKeyBoard:
+        case GTGlobals::UseKey:
+            menuText = menu->text();
+            key_pos = menuText.indexOf('&');
+            key = (menuText.at(key_pos + 1)).toLatin1();
 
-        GTKeyboardDriver::keyClick(key, Qt::AltModifier);
-        break;
+            GTKeyboardDriver::keyClick(key, Qt::AltModifier);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(1000);
@@ -122,12 +122,12 @@ bool compare(QString s1, QString s2, Qt::MatchFlag mathcFlag, bool replaceSpecSy
         s2.remove('&');
     }
     switch (mathcFlag) {
-    case Qt::MatchContains:
-        return s1.contains(s2);
-    case Qt::MatchExactly:
-        return s1 == s2;
-    default:
-        return false;
+        case Qt::MatchContains:
+            return s1.contains(s2);
+        case Qt::MatchExactly:
+            return s1 == s2;
+        default:
+            return false;
     }
 }
 
@@ -160,15 +160,15 @@ QMenu *GTMenu::showContextMenu(GUITestOpStatus &os, QWidget *ground, GTGlobals::
     GT_CHECK_RESULT(ground != NULL, "ground widget is NULL", NULL);
 
     switch (m) {
-    case GTGlobals::UseMouse:
-        GTWidget::click(os, ground, Qt::RightButton);
-        break;
+        case GTGlobals::UseMouse:
+            GTWidget::click(os, ground, Qt::RightButton);
+            break;
 
-    case GTGlobals::UseKey:
+        case GTGlobals::UseKey:
 
-        break;
-    default:
-        break;
+            break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(1000);
@@ -222,7 +222,7 @@ QPoint GTMenu::actionPos(GUITestOpStatus &os, const QMenu *menu, QAction *action
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickMenuItem"
-QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, GTGlobals::UseMethod m, bool byText, Qt::MatchFlag matchFlag) {
+QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, GTGlobals::UseMethod useMethod, bool byText, Qt::MatchFlag matchFlag) {
     GT_CHECK_RESULT(menu != nullptr, "menu not found", nullptr);
     GT_CHECK_RESULT(!itemName.isEmpty(), "itemName is empty", nullptr);
 
@@ -233,38 +233,39 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
     QPoint cursorPosition = GTMouseDriver::getMousePosition();
     QPoint menuCorner = menu->mapToGlobal(QPoint(0, 0));
 
-    switch (m) {
-    case GTGlobals::UseMouse: {
-        QPoint actionPosition = actionPos(os, menu, action);
-        bool isVerticalMenu = cursorPosition.y() < menuCorner.y();    // TODO: assuming here that submenu is always lower then menu
-        QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :    // move by Y first
-                                              QPoint(actionPosition.x(), cursorPosition.y());    // move by X first
+    switch (useMethod) {
+        case GTGlobals::UseMouse: {
+            QPoint actionPosition = actionPos(os, menu, action);
+            bool isVerticalMenu = cursorPosition.y() < menuCorner.y();    // TODO: assuming here that submenu is always lower then menu
+            QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :    // move by Y first
+                                     QPoint(actionPosition.x(), cursorPosition.y());    // move by X first
 
-        GTMouseDriver::moveTo(firstMoveTo);
-        GTGlobals::sleep(200);
+            GTMouseDriver::moveTo(firstMoveTo);
+            GTGlobals::sleep(200);
 
-        GTMouseDriver::moveTo(actionPosition);    // move cursor to action
-        GTGlobals::sleep(200);
+            GTMouseDriver::moveTo(actionPosition);    // move cursor to action
+            GTGlobals::sleep(200);
 
 #ifdef Q_OS_WIN
-        GTMouseDriver::click();
-#else
-        QMenu *actionMenu = action->menu();
-        bool isClickingSubMenu = actionMenu != nullptr;
-        if (!isClickingSubMenu) {
             GTMouseDriver::click();
-        }
+#else
+            QMenu *actionMenu = action->menu();
+            bool isClickingSubMenu = actionMenu != nullptr;
+            if (!isClickingSubMenu) {
+                GTMouseDriver::click();
+            }
 #endif
-        break;
-    }
-    case GTGlobals::UseKey:
-        while (action != menu->activeAction()) {
-            GTKeyboardDriver::keyClick(Qt::Key_Down);
+            break;
         }
-        GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::NoModifier, false);
-        break;
-    default:
-        break;
+        case GTGlobals::UseKey:
+            while (action != menu->activeAction()) {
+                GTKeyboardDriver::keyClick(Qt::Key_Down);
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Enter, Qt::NoModifier, false);
+            break;
+        default:
+            GT_CHECK_RESULT(false, "clickMenuItem: unsupported method" + QString::number(useMethod), nullptr);
+            break;
     }
     GTThread::waitForMainThread();
     QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());

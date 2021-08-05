@@ -34,6 +34,8 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include "ImportQualityScoresTask.h"
 
 namespace U2 {

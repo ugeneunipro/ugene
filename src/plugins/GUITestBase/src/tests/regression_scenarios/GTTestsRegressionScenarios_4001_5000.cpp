@@ -209,14 +209,14 @@ GUI_TEST_CLASS_DEFINITION(test_4008) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsChecable));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsCheckable));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsChecable));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsCheckable));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 
@@ -279,7 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     //    Current state:
     //    Runtime error occurred(x86 version of UGENE)
     //    Windows hangs(x64 version)
-    l.checkMessage("Nothing to write");
+    GTLogTracer::checkMessage("Nothing to write");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
@@ -600,8 +600,8 @@ GUI_TEST_CLASS_DEFINITION(test_4064) {
 
 GUI_TEST_CLASS_DEFINITION(test_4065) {
     /* 1. Open _common_data/scenarios/_regression/4065/example_bam.bam
- * 2. Check log for error: "No bam index given, preparing sequential import"
-*/
+     * 2. Check log for error: "No bam index given, preparing sequential import"
+     */
     GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam", sandBoxDir + "example_bam.bam");
     GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam.bai", sandBoxDir + "example_bam.bam.bai");
     GTLogTracer l;
@@ -609,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
     GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool hasMessage = l.checkMessage("No bam index given");
+    bool hasMessage = GTLogTracer::checkMessage("No bam index given");
     CHECK_SET_ERR(false == hasMessage, "Error message is found. Bam index file not found.");
 }
 
@@ -831,10 +831,10 @@ GUI_TEST_CLASS_DEFINITION(test_4093) {
 
 GUI_TEST_CLASS_DEFINITION(test_4095) {
     /* 1. Open file "test/_common_data/fasta/fa1.fa"
- * 2. Call context menu on the sequence view { Edit sequence -> Reverse sequence }
- *   Expected state: nucleotides order has reversed
- *   Current state: nothing happens
-*/
+     * 2. Call context menu on the sequence view { Edit sequence -> Reverse sequence }
+     *   Expected state: nucleotides order has reversed
+     *   Current state: nothing happens
+     */
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ADV_MENU_REPLACE_WHOLE_SEQUENCE << ACTION_EDIT_RESERVE_SEQUENCE));
@@ -898,9 +898,9 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
 }
 GUI_TEST_CLASS_DEFINITION(test_4097) {
     /* 1. Open "_common_data/vector_nti_sequence/unrefined.gb".
- * 2. Export the document somewhere to the vector NTI sequence format.
- *   Expected state: the saved file contains only 8 entries in the COMMENT section and doesn't contain "Vector_NTI_Display_Data_(Do_Not_Edit!)" comment.
-*/
+     * 2. Export the document somewhere to the vector NTI sequence format.
+     *   Expected state: the saved file contains only 8 entries in the COMMENT section and doesn't contain "Vector_NTI_Display_Data_(Do_Not_Edit!)" comment.
+     */
     GTFileDialog::openFile(os, testDir + "_common_data/vector_nti_sequence", "unrefined.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -925,10 +925,10 @@ GUI_TEST_CLASS_DEFINITION(test_4097) {
 }
 GUI_TEST_CLASS_DEFINITION(test_4099) {
     /* 1. Open file _common_data/scenarios/_regression/4099/p4228.gb
- * 2. Select CDS annotation 1656..2450 and select 'label' item
- *   Expected state: Value has "Tn5 neomycin resistance"
- *   Note: The value of the "label" qualifier is displayed both on the circular view and the zoom view as annotation names.
-*/
+     * 2. Select CDS annotation 1656..2450 and select 'label' item
+     *   Expected state: Value has "Tn5 neomycin resistance"
+     *   Note: The value of the "label" qualifier is displayed both on the circular view and the zoom view as annotation names.
+     */
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4099", "p4228.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
@@ -1033,14 +1033,14 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
 
 GUI_TEST_CLASS_DEFINITION(test_4106) {
     /* 1. Open "data/samples/CLUSTALW/ty3.aln.gz".
- * 2. Select a sequence that is two sequences above the last visible sequence in the name list area.
- * 3. Press and hold "shift" key.
- * 4. Click "down" key twice.
- *   Expected state: three sequences are selected, the msa is not scrolled down.
- * 5. Click "down" again.
- *   Expected state: four sequences are selected
- *   Current state: the state is not changed.
-*/
+     * 2. Select a sequence that is two sequences above the last visible sequence in the name list area.
+     * 3. Press and hold "shift" key.
+     * 4. Click "down" key twice.
+     *   Expected state: three sequences are selected, the msa is not scrolled down.
+     * 5. Click "down" again.
+     *   Expected state: four sequences are selected
+     *   Current state: the state is not changed.
+     */
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1282,11 +1282,11 @@ GUI_TEST_CLASS_DEFINITION(test_4121) {
 
 GUI_TEST_CLASS_DEFINITION(test_4122) {
     /* 1. Open "data/samples/Genbank/murine.gb".
- * 2. Search any existing pattern.
- * 3. Try to create annotations from the search results to the existing annotations table.
- *   Expected state: annotations are created.
- *   Current state: annotations are not created, a safe point is triggered
-*/
+     * 2. Search any existing pattern.
+     * 3. Try to create annotations from the search results to the existing annotations table.
+     *   Expected state: annotations are created.
+     *   Current state: annotations are not created, a safe point is triggered
+     */
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
@@ -1307,12 +1307,12 @@ GUI_TEST_CLASS_DEFINITION(test_4122) {
 
 GUI_TEST_CLASS_DEFINITION(test_4124) {
     /* 1. Select {Tools -> NGS data analysis -> Map reads to reference...} menu item in the main menu.
- * 2. Select UGENE genome aligner, use input data samples/FASTA/human_T1.fa, unset "use 'best'-mode" option. The output path should be default. Align reads.
- *   Expected state: there is some result assembly.
- * 3. Remove the result document from the project, remove the result file. Align reads with same parameters again.
- *   Expected state: there is the same result assembly.
- *   Current state: a message box appears: "Failed to detect file format..."
-*/
+     * 2. Select UGENE genome aligner, use input data samples/FASTA/human_T1.fa, unset "use 'best'-mode" option. The output path should be default. Align reads.
+     *   Expected state: there is some result assembly.
+     * 3. Remove the result document from the project, remove the result file. Align reads with same parameters again.
+     *   Expected state: there is the same result assembly.
+     *   Current state: a message box appears: "Failed to detect file format..."
+     */
 
     class Scenario_test_4124 : public CustomScenario {
     public:
@@ -1358,14 +1358,14 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
 
 GUI_TEST_CLASS_DEFINITION(test_4127) {
     /* 1. Open attached file _common_data/scenarios/_regression/4127/merged_document.gb
- * 2. Press "Find ORFs" tool button
- *   Expected state: "ORF marker" dialog appeared
- * 3. Open "Output" tab in the dialog
- * 4. Press "Create new table" radio button
- * 5. Press "Ok"
- *   Current state: UGENE crashes
- *   Expected state: UGENE does not crash
-*/
+     * 2. Press "Find ORFs" tool button
+     *   Expected state: "ORF marker" dialog appeared
+     * 3. Open "Output" tab in the dialog
+     * 4. Press "Create new table" radio button
+     * 5. Press "Ok"
+     *   Current state: UGENE crashes
+     *   Expected state: UGENE does not crash
+     */
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4127", "merged_document.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     class OrfScenario : public CustomScenario {
@@ -1734,17 +1734,17 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
 
 GUI_TEST_CLASS_DEFINITION(test_4170) {
     /* Annotation pattern line edit should be disabled if "Use pattern name" option checked.
- * 1. Open file data/samples/FASTA/human_T1.fa
- * 2. enter search pattern :
- *   >pattern1
- *   TGGCAAGCT
- * 3. Expand annotation parameters
- * 4. Set annotation name "pat"
- * 5. Set Use "pattern name" option checked
- *   Expected state: "Annotation name" line edit is disabled
- * 6. Press "Create annotations"
- *   Expected state: here is one created annotation in annotation tree view with name "pattern1"
-*/
+     * 1. Open file data/samples/FASTA/human_T1.fa
+     * 2. enter search pattern :
+     *   >pattern1
+     *   TGGCAAGCT
+     * 3. Expand annotation parameters
+     * 4. Set annotation name "pat"
+     * 5. Set Use "pattern name" option checked
+     *   Expected state: "Annotation name" line edit is disabled
+     * 6. Press "Create annotations"
+     *   Expected state: here is one created annotation in annotation tree view with name "pattern1"
+     */
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2117,11 +2117,11 @@ GUI_TEST_CLASS_DEFINITION(test_4188_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4194) {
     /* 1. Open WD
- * 2. Add element "Filter Annotations by Name"
- * Expected state: It should have two parameters: "Annotation names" and "Annotation names file"
- * 3. Click the toolbar button "Validate workflow"
- * Expected state: Showed error message about empty fields
-*/
+     * 2. Add element "Filter Annotations by Name"
+     * Expected state: It should have two parameters: "Annotation names" and "Annotation names file"
+     * 3. Click the toolbar button "Validate workflow"
+     * Expected state: Showed error message about empty fields
+     */
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     WorkflowProcessItem *filter = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
@@ -2477,13 +2477,13 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
     /* 1. Open Workflow Designer
- * 2. Add elements Read File URL(s) and Write Plain Text
- * 3. Set as input file human_T1.fa
- * 3. Add "Element with CMD" _common_data/scenarios/_regression/4295/test_4295.etc
- * 4. Connect elements Read File URL(s) > Element with CMD > Write Plain Text
- * 5. Run workflow
- * Expected state: no errors in log
- */
+     * 2. Add elements Read File URL(s) and Write Plain Text
+     * 3. Set as input file human_T1.fa
+     * 3. Add "Element with CMD" _common_data/scenarios/_regression/4295/test_4295.etc
+     * 4. Connect elements Read File URL(s) > Element with CMD > Write Plain Text
+     * 5. Run workflow
+     * Expected state: no errors in log
+     */
     //clean up
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "test_4295");
@@ -2896,9 +2896,9 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
 
 GUI_TEST_CLASS_DEFINITION(test_4359) {
     /* 1. Open human_T1
- * 2. Open Primer3 dialog
- *   Expected state: the "Pick primers" button should be in focus
- */
+     * 2. Open Primer3 dialog
+     *   Expected state: the "Pick primers" button should be in focus
+     */
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2923,10 +2923,10 @@ GUI_TEST_CLASS_DEFINITION(test_4359) {
 }
 GUI_TEST_CLASS_DEFINITION(test_4368) {
     /* 1. Open "data/samples/CLUSTALW/COI.aln".
- * 2. Open "Statistics" options panel tab.
- * 3. Set any reference sequence.
- * 4. Set "Show distances column" option.
- */
+     * 2. Open "Statistics" options panel tab.
+     * 3. Set any reference sequence.
+     * 4. Set "Show distances column" option.
+     */
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4163,7 +4163,7 @@ GUI_TEST_CLASS_DEFINITION(test_4676_1) {
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     // Open the view again.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
     // Expected state: undo action is enabled.
@@ -5307,17 +5307,13 @@ GUI_TEST_CLASS_DEFINITION(test_4804_2) {
     //    2. Add rna extended sequence via menu {Actions->Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Extended RNA\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from file...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/standard_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended RNA\" to \"Raw\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from file...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -5567,8 +5563,8 @@ GUI_TEST_CLASS_DEFINITION(test_4860) {
 
     QWidget *next = GTWidget::findWidget(os, "nextPushButton");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).size() == 1, "Incorrect selection: selected region should be only one");
-    int startPosPrev = GTUtilsSequenceView::getSelection(os).first().startPos;
-    int startPosNext = -1;
+    qint64 startPosPrev = GTUtilsSequenceView::getSelection(os).first().startPos;
+    qint64 startPosNext = -1;
     for (int i = 0; i < 10; i++) {
         GTWidget::click(os, next);
 
@@ -5730,12 +5726,12 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
 
 GUI_TEST_CLASS_DEFINITION(test_4913) {
     /* 1. Open an amino acid sequence: data/samples/Swiss-Prot/P16152.txt
-    * 2. Open the NCBI BLAST dialog.
-    *   Expected result: the "blastp" tool is set up.
-    * 3. Open the "Advanced options" tab.
-    *   Expected result: The "Word size" parameter is set to "6".
-    * 4. Press "Esc" button.
-    */
+     * 2. Open the NCBI BLAST dialog.
+     *   Expected result: the "blastp" tool is set up.
+     * 3. Open the "Advanced options" tab.
+     *   Expected result: The "Word size" parameter is set to "6".
+     * 4. Press "Esc" button.
+     */
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
     GTUtilsProject::openFile(os, dataDir + "samples/Swiss-Prot/P16152.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6007,12 +6003,12 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4985) {
-    // Create file _common_data/scenarios/sandbox/A.fa with text "A"
-    // Open this file
-    // Delete this file from hard disk
-    // "File Modification Detected" dialog appears. Click "No"
-    // On Start Page open recent file A.fa
-    //      Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
+    // Create a file _common_data/scenarios/sandbox/A.fa with text "A".
+    // Open this file.
+    // Delete this file from hard disk.
+    // "File Modification Detected" dialog appears. Click "No".
+    // On Start Page open recent file A.fa.
+    // Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
 
     QString filePath = testDir + "_common_data/scenarios/sandbox/A.fa";
     IOAdapterUtils::writeTextFile(filePath, "A");
@@ -6025,8 +6021,8 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsStartPage::openStartPage(os);
 
-    QString expected = "File doesn't exist: " + QFileInfo(filePath).absoluteFilePath();
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, expected));
+    QString expected = "does not exist";
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", expected));
     GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
 }
 

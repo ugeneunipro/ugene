@@ -1510,6 +1510,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5903);
     REGISTER_TEST(GUITest_regression_scenarios::test_5905);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5941);
     REGISTER_TEST(GUITest_regression_scenarios::test_5947);
     REGISTER_TEST(GUITest_regression_scenarios::test_5948);
     REGISTER_TEST(GUITest_regression_scenarios::test_5950);
@@ -1702,6 +1703,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6752);
     REGISTER_TEST(GUITest_regression_scenarios::test_6754);
     REGISTER_TEST(GUITest_regression_scenarios::test_6760);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6797_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6797_2);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_6807);
     REGISTER_TEST(GUITest_regression_scenarios::test_6808);
     REGISTER_TEST(GUITest_regression_scenarios::test_6808_1);
@@ -1768,6 +1772,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
     REGISTER_TEST(GUITest_regression_scenarios::test_7293);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_7367);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2381,6 +2387,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_1);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_2);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0094);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0095);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0096);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment

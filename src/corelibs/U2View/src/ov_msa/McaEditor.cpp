@@ -113,7 +113,7 @@ int McaEditor::getRowContentIndent(int rowId) const {
 }
 
 bool McaEditor::isChromatogramRowExpanded(int rowIndex) const {
-    return !ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(rowIndex);
+    return !collapseModel->isGroupWithMaRowIndexCollapsed(rowIndex);
 }
 
 QString McaEditor::getReferenceRowName() const {
@@ -141,7 +141,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     GCOUNTER(cvar, "Show/hide chromatogram in MCA");
-    ui->getCollapseModel()->collapseAll(!show);
+    collapseModel->collapseAll(!show);
     sl_saveChromatogramState();
     emit si_completeUpdate();
 }

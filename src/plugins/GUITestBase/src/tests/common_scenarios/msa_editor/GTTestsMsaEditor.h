@@ -254,6 +254,10 @@ GUI_TEST_CLASS_DECLARATION(test_0093_2)
 // Groups sort.
 GUI_TEST_CLASS_DECLARATION(test_0094)
 
+// Move to another alignment
+GUI_TEST_CLASS_DECLARATION(test_0095)
+GUI_TEST_CLASS_DECLARATION(test_0096)
+
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_msa_editor
 

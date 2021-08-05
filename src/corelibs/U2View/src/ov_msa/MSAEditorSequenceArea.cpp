@@ -150,7 +150,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     connect(this, SIGNAL(si_startMaChanging()), ui, SIGNAL(si_startMaChanging()));
     connect(this, SIGNAL(si_stopMaChanging(bool)), ui, SIGNAL(si_stopMaChanging(bool)));
 
-    connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_modelChanged()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
@@ -319,9 +319,8 @@ void MSAEditorSequenceArea::sl_delCol() {
     CHECK(!dlg.isNull(), );
 
     if (dlg->result() == QDialog::Accepted) {
-        MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-        SAFE_POINT(collapsibleModel != nullptr, "NULL collapsible model!", );
-        collapsibleModel->reset(editor->getMaRowIds());
+        MaCollapseModel *collapseModel = editor->getCollapseModel();
+        collapseModel->reset(editor->getMaRowIds());
 
         DeleteMode deleteMode = dlg->getDeleteMode();
         int value = dlg->getValue();
@@ -447,7 +446,7 @@ void MSAEditorSequenceArea::sl_saveSequence() {
     SAFE_POINT(df != nullptr, "Unknown document format", );
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
-    MaCollapseModel *model = editor->getUI()->getCollapseModel();
+    MaCollapseModel *model = editor->getCollapseModel();
     const MultipleAlignment &ma = editor->getMaObject()->getMultipleAlignment();
     QSet<qint64> seqIds;
     QRect selectionRect = editor->getSelection().toRect();
@@ -459,8 +458,8 @@ void MSAEditorSequenceArea::sl_saveSequence() {
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {
-    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    if (!collapsibleModel->hasGroupsWithMultipleRows()) {
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    if (!collapseModel->hasGroupsWithMultipleRows()) {
         toggleSequenceRowOrderAction->setChecked(false);
         refreshSequenceRowOrder->setEnabled(false);
     }
@@ -473,7 +472,7 @@ void MSAEditorSequenceArea::sl_copySelection() {
     CHECK(!selection.isEmpty(), );
 
     MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     QString textMimeContent;
     QString ugeneMimeContent;
     U2OpStatus2Log os;
@@ -508,7 +507,7 @@ void MSAEditorSequenceArea::sl_copySelectionFormatted() {
         // Whole sequence.
         viewRects << QRect(0, 0, editor->getAlignmentLen(), getViewRowCount());
     }
-    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MaCollapseModel *collapseModel = editor->getCollapseModel();
     U2Region columnRange = U2Region::fromXRange(viewRects.first());
     QList<qint64> allRowIds = editor->getMaObject()->getRowIds();
     QList<qint64> selectedRowIds;
@@ -790,7 +789,7 @@ void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject *marker, const QList<
     msaEditor->setRowOrderMode(MaEditorRowOrderMode::Free);
     msaEditor->addFreeModeMasterMarker(marker);
     updateRowOrderActionsState();
-    ui->getCollapseModel()->update(collapsibleGroupList);
+    editor->getCollapseModel()->update(collapsibleGroupList);
 }
 
 void MSAEditorSequenceArea::disableFreeRowOrderMode(QObject *marker) {

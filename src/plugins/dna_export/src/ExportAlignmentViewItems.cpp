@@ -42,9 +42,10 @@
 #include <U2View/MaEditorSelection.h>
 //#include <U2View/ma
 
+#include <U2Formats/ExportTasks.h>
+
 #include "ExportAlignmentViewItems.h"
 #include "ExportMSA2MSADialog.h"
-#include "ExportTasks.h"
 #include "ExportUtils.h"
 
 namespace U2 {

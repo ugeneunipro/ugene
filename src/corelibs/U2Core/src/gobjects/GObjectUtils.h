@@ -39,7 +39,11 @@ public:
 
     static GObject *selectOne(const QList<GObject *> &objects, GObjectType type, UnloadedObjectFilter f);
 
-    static QList<GObject *> findAllObjects(UnloadedObjectFilter f, GObjectType t = GObjectType());
+    /**
+     * Returns list of all objects from the active project that match the parameters.
+     * 'objectType' may be empty. In this case any object type is matched.
+     */
+    static QList<GObject *> findAllObjects(const UnloadedObjectFilter &unloadedObjectFilter, const GObjectType &objectType = GObjectType(), bool writableOnly = false);
 
     /*
      * Select objects from @fromObjects that are referenced by relations stored in @obj with @relationRole and @type.

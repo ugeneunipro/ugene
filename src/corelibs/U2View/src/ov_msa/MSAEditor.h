@@ -132,7 +132,7 @@ public:
     void removeFreeModeMasterMarker(QObject *marker);
 
 protected slots:
-    void sl_onContextMenuRequested(const QPoint &pos);
+    void sl_onContextMenuRequested(const QPoint &pos) override;
 
     void sl_buildTree();
     void sl_align();

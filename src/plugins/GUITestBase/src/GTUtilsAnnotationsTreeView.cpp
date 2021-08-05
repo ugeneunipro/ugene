@@ -546,6 +546,13 @@ void GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(HI::GUITestOpStatus 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNoAnnotations"
+void GTUtilsAnnotationsTreeView::checkNoAnnotations(HI::GUITestOpStatus &os) {
+    QTreeWidgetItem *annotationItem = findFirstAnnotation(os, {false});
+    CHECK_SET_ERR(annotationItem == nullptr, "There should be no annotations");
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }    // namespace U2

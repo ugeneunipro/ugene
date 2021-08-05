@@ -145,6 +145,17 @@ bool MaEditorSelection::containsRow(int rowIndex) const {
     }
     return false;
 }
+
+QList<int> MaEditorSelection::getSelectedRowIndexes() const {
+    QList<int> selectedRowIndexes;
+    for (const QRect &rect : qAsConst(rectList)) {
+        for (int rowIndex = rect.top(); rowIndex <= rect.bottom(); rowIndex++) {
+            selectedRowIndexes << rowIndex;
+        }
+    }
+    return selectedRowIndexes;
+}
+
 /************************************************************************/
 /* MaEditorSelectionController */
 /************************************************************************/
@@ -168,6 +179,14 @@ void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelec
     MaEditorSelection oldSelection = selection;
     selection = newSelection;
     emit si_selectionChanged(selection, oldSelection);
+}
+
+int MaEditorSelection::getCountOfSelectedRows() const {
+    int count = 0;
+    for (const QRect &rect : qAsConst(rectList)) {
+        count += rect.height();
+    }
+    return count;
 }
 
 /************************************************************************/

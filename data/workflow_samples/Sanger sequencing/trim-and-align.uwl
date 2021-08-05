@@ -90,7 +90,7 @@ workflow "Trim and map Sanger reads"{
             }
         }
         wizard {
-            help-page-id:16122701;
+            help-page-id:65930523;
 	    auto-run: true;
             name:"Map Sanger Reads to Reference";
             page {

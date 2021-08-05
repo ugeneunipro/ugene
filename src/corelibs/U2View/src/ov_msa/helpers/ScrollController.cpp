@@ -36,16 +36,15 @@
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi, MaCollapseModel *collapsibleModel)
+ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
-      collapsibleModel(collapsibleModel),
       savedFirstVisibleMaRow(0),
       savedFirstVisibleMaRowOffset(0) {
     connect(this, SIGNAL(si_visibleAreaChanged()), maEditorUi, SIGNAL(si_completeRedraw()));
-    connect(collapsibleModel, SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
-    connect(collapsibleModel, SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
 void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
@@ -317,13 +316,13 @@ int ScrollController::getFirstVisibleMaRowIndex(bool countClipped) const {
 
 int ScrollController::getFirstVisibleViewRowIndex(bool countClipped) const {
     int maRowIndex = getFirstVisibleMaRowIndex(countClipped);
-    return collapsibleModel->getViewRowIndexByMaRowIndex(maRowIndex);
+    return maEditor->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 }
 
 int ScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
     int lastVisibleViewRow = ui->getRowHeightController()->getViewRowIndexByGlobalYPosition(vScrollBar->value() + widgetHeight);
     if (lastVisibleViewRow < 0) {
-        lastVisibleViewRow = collapsibleModel->getViewRowCount() - 1;
+        lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
     U2Region lastRowScreenRegion = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(lastVisibleViewRow);
     bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;

@@ -160,13 +160,12 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
 }
 
 int MaEditorSequenceArea::getViewRowCount() const {
-    return ui->getCollapseModel()->getViewRowCount();
+    return editor->getCollapseModel()->getViewRowCount();
 }
 
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
-    MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(model != nullptr, tr("Invalid collapsible item model!"), -1);
+    MaCollapseModel *model = editor->getCollapseModel();
     return model->getMaRowIndexByViewRowIndex(num);
 }
 
@@ -193,11 +192,11 @@ bool MaEditorSequenceArea::isInRange(const QRect &rect) const {
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
     return QPoint(
         qBound(0, point.x(), editor->getAlignmentLen() - 1),
-        qBound(0, point.y(), ui->getCollapseModel()->getViewRowCount() - 1));
+        qBound(0, point.y(), editor->getCollapseModel()->getViewRowCount() - 1));
 }
 
 QRect MaEditorSequenceArea::boundWithVisibleRange(const QRect &rect) const {
-    QRect visibleRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getViewRowCount());
+    QRect visibleRect(0, 0, editor->getAlignmentLen(), editor->getCollapseModel()->getViewRowCount());
     return rect.intersected(visibleRect);
 }
 
@@ -210,7 +209,7 @@ bool MaEditorSequenceArea::isPositionVisible(int position, bool countClipped) co
 }
 
 bool MaEditorSequenceArea::isRowVisible(int rowNumber, bool countClipped) const {
-    const int rowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber);
+    int rowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(rowNumber);
     return ui->getDrawHelper()->getVisibleMaRowIndexes(height(), countClipped, countClipped).contains(rowIndex);
 }
 
@@ -273,7 +272,7 @@ QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
     QList<QRect> selectedRectList = editor->getSelection().getRectList();
     for (const QRect &rect : selectedRectList) {
         U2Region rowRange = U2Region::fromYRange(rect);
-        QList<int> maRowIndexesPerRect = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(rowRange, true);
+        QList<int> maRowIndexesPerRect = editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(rowRange, true);
         maRowIndexes << maRowIndexesPerRect;
     }
     return maRowIndexes;
@@ -285,7 +284,7 @@ int MaEditorSequenceArea::getTopSelectedMaRow() const {
         return -1;
     }
     int firstSelectedViewRow = selection.toRect().y();
-    return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRow);
+    return editor->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRow);
 }
 
 QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const {
@@ -798,7 +797,7 @@ void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
     // Select the longest continuous region for the new selection
     QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
     QSet<int> selectedViewIndexesSet;
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
         selectedViewIndexesSet << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
     }

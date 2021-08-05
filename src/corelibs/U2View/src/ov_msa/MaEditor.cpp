@@ -43,6 +43,7 @@
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
+#include "MaCollapseModel.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
@@ -56,7 +57,7 @@ SNPSettings::SNPSettings()
 
 const float MaEditor::zoomMult = 1.25;
 
-MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
+MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj)
     : GObjectView(factoryId, viewName),
       ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
@@ -66,6 +67,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
       rowOrderMode(MaEditorRowOrderMode::Original),
+      collapseModel(new MaCollapseModel(this, obj->getRowIds())),
       exportHighlightedAction(nullptr),
       clearSelectionAction(nullptr) {
     GCOUNTER(cvar, factoryId);
@@ -210,10 +212,9 @@ void MaEditor::updateReference() {
     }
 }
 
-void MaEditor::resetCollapsibleModel() {
-    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    SAFE_POINT(collapsibleModel != nullptr, "CollapseModel is null!", );
-    collapsibleModel->reset(getMaRowIds());
+void MaEditor::resetCollapseModel() {
+    setRowOrderMode(MaEditorRowOrderMode::Original);
+    collapseModel->reset(getMaRowIds());
 }
 
 void MaEditor::sl_zoomIn() {
@@ -540,4 +541,7 @@ void MaEditor::sl_onClearActionTriggered() {
     getSelectionController()->clearSelection();
 }
 
+MaCollapseModel *MaEditor::getCollapseModel() const {
+    return collapseModel;
+}
 }    // namespace U2

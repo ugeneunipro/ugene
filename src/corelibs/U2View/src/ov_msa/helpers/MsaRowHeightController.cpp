@@ -32,7 +32,7 @@ MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt)
 }
 
 int MsaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
-    bool isVisible = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex) >= 0;
+    bool isVisible = ui->getEditor()->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex) >= 0;
     return isVisible ? getSingleRowHeight() : 0;
 }
 

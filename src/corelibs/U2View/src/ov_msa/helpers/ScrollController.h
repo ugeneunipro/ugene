@@ -30,7 +30,6 @@ class GScrollBar;
 class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
-class MaCollapseModel;
 
 class U2VIEW_EXPORT ScrollController : public QObject {
     Q_OBJECT
@@ -44,7 +43,7 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor *maEditor, MaEditorWgt *ui, MaCollapseModel *collapsibleModel);
+    ScrollController(MaEditor *maEditor, MaEditorWgt *ui);
 
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
@@ -119,7 +118,6 @@ private:
 
     MaEditor *maEditor;
     MaEditorWgt *ui;
-    MaCollapseModel *collapsibleModel;
     GScrollBar *hScrollBar;
     GScrollBar *vScrollBar;
 
