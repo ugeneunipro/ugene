@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString McaReadsTabFactory::GROUP_ID = "OP_MCA_READS";
 const QString McaReadsTabFactory::GROUP_ICON_STR = ":core/images/graphs.png";
-const QString McaReadsTabFactory::GROUP_DOC_PAGE = "TODO";
+const QString McaReadsTabFactory::GROUP_DOC_PAGE = "66814020";
 
 McaReadsTabFactory::McaReadsTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
