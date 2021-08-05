@@ -33,6 +33,7 @@
 #include <U2Designer/URLLineEdit.h>
 
 #include <U2Lang/ConfigurationEditor.h>
+#include <U2Lang/PropertyNameFormatter.h>
 
 class QStandardItem;
 class QStandardItemModel;
@@ -143,9 +144,9 @@ private slots:
 class ComboBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr, const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter = nullptr);
+    QVariant value() override;
+    void setValue(const QVariant &value) override;
 
     static ComboBoxWidget *createBooleanWidget(QWidget *parent = nullptr);
 
@@ -231,7 +232,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr);
+    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr, const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 

@@ -37,6 +37,7 @@ HEADERS += src/library/BaseActorCategories.h \
            src/model/Peer.h \
            src/model/Port.h \
            src/model/PortRelation.h \
+           src/model/PropertyNameFormatter.h \
            src/model/QDConstraint.h \
            src/model/QDScheme.h \
            src/model/QueryDesignerRegistry.h \
@@ -153,6 +154,7 @@ SOURCES += src/library/BaseActorCategories.cpp \
            src/model/PairedReadsPortValidator.cpp \
            src/model/Port.cpp \
            src/model/PortRelation.cpp \
+           src/model/PropertyNameFormatter.cpp \
            src/model/QDConstraint.cpp \
            src/model/QDScheme.cpp \
            src/model/QueryDesignerRegistry.cpp \

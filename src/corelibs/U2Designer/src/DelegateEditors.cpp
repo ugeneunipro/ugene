@@ -25,7 +25,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -36,7 +35,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ScriptEditorDialog.h>
 
-#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "PropertyWidget.h"
@@ -46,7 +44,7 @@ namespace U2 {
 DelegateEditor::DelegateEditor(const DelegateEditor &other)
     : ConfigurationEditor(other) {
     foreach (const QString &id, other.delegates.keys()) {
-        delegates[id] = other.delegates[id]->clone();
+        delegates[id] = other.delegates[id]->createCopy();
     }
 }
 
@@ -129,8 +127,8 @@ void SpinBoxDelegate::sl_commit() {
 }
 
 /********************************
-* DoubleSpinBoxDelegate
-********************************/
+ * DoubleSpinBoxDelegate
+ ********************************/
 const int DoubleSpinBoxDelegate::DEFAULT_DECIMALS_VALUE = 5;
 
 DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(const QVariantMap &props, QObject *parent)
@@ -183,8 +181,8 @@ void DoubleSpinBoxDelegate::sl_commit() {
 }
 
 /********************************
-* ComboBoxDelegate
-********************************/
+ * ComboBoxDelegate
+ ********************************/
 ComboBoxDelegate::ComboBoxDelegate(const QVariantMap &items, QObject *parent)
     : PropertyDelegate(parent) {
     foreach (QString key, items.keys()) {
@@ -197,7 +195,7 @@ ComboBoxDelegate::ComboBoxDelegate(const QList<ComboItem> &items, QObject *paren
 }
 
 PropertyWidget *ComboBoxDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new ComboBoxWidget(comboItems, parent);
+    return new ComboBoxWidget(comboItems, parent, propertyNameFormatter);
 }
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
@@ -212,7 +210,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
             l.append(qMakePair(key, m.value(key)));
         }
     }
-    ComboBoxWidget *editor = new ComboBoxWidget(l, parent);
+    auto editor = new ComboBoxWidget(l, parent, propertyNameFormatter);
     connect(editor, SIGNAL(valueChanged(const QString &)), SLOT(sl_commit()));
     connect(editor, SIGNAL(valueChanged(const QString &)), SIGNAL(si_valueChanged(const QString &)));
 
@@ -267,8 +265,8 @@ void ComboBoxDelegate::sl_commit() {
 }
 
 /********************************
-* ComboBoxWithUrlsDelegate
-********************************/
+ * ComboBoxWithUrlsDelegate
+ ********************************/
 
 PropertyWidget *ComboBoxWithUrlsDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxWithUrlWidget(items, isPath, parent);
@@ -307,8 +305,8 @@ QVariant ComboBoxWithUrlsDelegate::getDisplayValue(const QVariant &val) const {
 }
 
 /********************************
-* ComboBoxEditableDelegate
-********************************/
+ * ComboBoxEditableDelegate
+ ********************************/
 
 PropertyWidget *ComboBoxEditableDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxEditableWidget(items, parent);
@@ -347,8 +345,8 @@ QVariant ComboBoxEditableDelegate::getDisplayValue(const QVariant &val) const {
 }
 
 /********************************
-* ComboBoxWithDbUrlsDelegate
-********************************/
+ * ComboBoxWithDbUrlsDelegate
+ ********************************/
 ComboBoxWithDbUrlsDelegate::ComboBoxWithDbUrlsDelegate(QObject *parent)
     : PropertyDelegate(parent) {
 }
@@ -402,8 +400,8 @@ PropertyDelegate::Type ComboBoxWithDbUrlsDelegate::type() const {
 }
 
 /********************************
-* ComboBoxWithChecksDelegate
-********************************/
+ * ComboBoxWithChecksDelegate
+ ********************************/
 
 PropertyWidget *ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxWithChecksWidget(items, parent);
@@ -412,7 +410,7 @@ PropertyWidget *ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os
 QWidget *ComboBoxWithChecksDelegate::createEditor(QWidget *parent,
                                                   const QStyleOptionViewItem & /* option */,
                                                   const QModelIndex & /* index */) const {
-    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent);
+    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent, propertyNameFormatter);
     connect(editor, SIGNAL(valueChanged(const QString &)), this, SIGNAL(si_valueChanged(const QString &)));
     connect(editor, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_commit()));
     return editor;
@@ -448,8 +446,8 @@ void ComboBoxWithChecksDelegate::sl_commit() {
 }
 
 /********************************
-* ComboBoxWithBoolsDelegate
-********************************/
+ * ComboBoxWithBoolsDelegate
+ ********************************/
 
 ComboBoxWithBoolsDelegate::ComboBoxWithBoolsDelegate(QObject *parent)
     : ComboBoxDelegate(boolMap(), parent) {
@@ -463,8 +461,8 @@ QVariantMap ComboBoxWithBoolsDelegate::boolMap() {
 }
 
 /********************************
-* URLDelegate
-********************************/
+ * URLDelegate
+ ********************************/
 URLDelegate::URLDelegate(const QString &filter, const QString &type, const Options &_options, QObject *parent, const QString &format)
     : PropertyDelegate(parent),
       lastDirType(type),
@@ -585,8 +583,8 @@ PropertyDelegate::Type URLDelegate::type() const {
 }
 
 /********************************
-* FileModeDelegate
-********************************/
+ * FileModeDelegate
+ ********************************/
 FileModeDelegate::FileModeDelegate(bool appendSupported, QObject *parent)
     : ComboBoxDelegate(QVariantMap(), parent) {
     comboItems.append(qMakePair(U2::WorkflowUtils::tr("Overwrite"), SaveDoc_Overwrite));
@@ -615,8 +613,8 @@ void SchemaRunModeDelegate::sl_valueChanged(const QString &val) {
 }
 
 /********************************
-* ScriptSelectionWidget
-********************************/
+ * ScriptSelectionWidget
+ ********************************/
 const int NO_SCRIPT_ITEM_ID = 0;
 const int USER_SCRIPT_ITEM_ID = 1;
 const QPair<QString, int> NO_SCRIPT_ITEM_STR("no script", NO_SCRIPT_ITEM_ID);
@@ -676,8 +674,8 @@ void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
 }
 
 /********************************
-* AttributeScriptDelegate
-********************************/
+ * AttributeScriptDelegate
+ ********************************/
 AttributeScriptDelegate::AttributeScriptDelegate(QObject *parent)
     : PropertyDelegate(parent) {
 }
@@ -832,7 +830,7 @@ void StringListDelegate::setModelData(QWidget *editor, QAbstractItemModel *model
 
 /********************************
  * StringSelectorDelegate
-********************************/
+ ********************************/
 QWidget *StringSelectorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const {
     QWidget *editor = new QWidget(parent);
     valueEdit = new QLineEdit(editor);

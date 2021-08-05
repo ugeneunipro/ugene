@@ -36,6 +36,7 @@ namespace U2 {
 class ConfigurationEditor;
 class DelegateTags;
 class PropertyDelegate;
+class PropertyNameFormatter;
 
 /**
  * base class for controller of configuration editor
@@ -101,8 +102,7 @@ signals:
 class U2LANG_EXPORT PropertyWidget : public QWidget {
     Q_OBJECT
 public:
-    PropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
-    virtual ~PropertyWidget();
+    PropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr, const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter = nullptr);
 
     virtual QVariant value() = 0;
     virtual void setRequired();
@@ -118,6 +118,9 @@ public:
     const DelegateTags *tags() const;
     void setSchemaConfig(SchemaConfig *value);
 
+    /** Returns formatter property name if formatter is set or the original property name is there is no formatter. */
+    QString getFormattedPropertyName(const QString &propertyName) const;
+
 public slots:
     virtual void setValue(const QVariant &value) = 0;
     virtual void processDelegateTags() {
@@ -132,6 +135,7 @@ protected:
 protected:
     const DelegateTags *_tags;
     SchemaConfig *schemaConfig;
+    QSharedPointer<PropertyNameFormatter> propertyNameFormatter;
 };
 
 /**
@@ -140,6 +144,7 @@ protected:
  */
 class U2LANG_EXPORT PropertyDelegate : public QItemDelegate {
     Q_OBJECT
+
 public:
     enum Type {
         NO_TYPE,
@@ -152,7 +157,6 @@ public:
     PropertyDelegate(QObject *parent = 0);
     virtual ~PropertyDelegate();
     virtual QVariant getDisplayValue(const QVariant &v) const;
-    virtual PropertyDelegate *clone();
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
     virtual void getItems(QVariantMap &) const {
     }
@@ -163,9 +167,25 @@ public:
     DelegateTags *tags() const;
     void setSchemaConfig(SchemaConfig *value);
 
+    /** Returns current property name formatter instance. */
+    const QSharedPointer<PropertyNameFormatter> &getPropertyNameFormatter() const;
+
+    /** Sets property name formatter for the widget. */
+    void setPropertyNameFormatter(const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter);
+
+    /** Creates an exact copy of the current delegate with all fields initialized. */
+    PropertyDelegate *createCopy();
+
 protected:
+    /**
+     * Instantiate a copy of the delegate and fills all fields not listed in the base PropertyDelegate class.
+     * The PropertyDelegate class itself is responsible to initialize all own fields.
+     */
+    virtual PropertyDelegate *clone() = 0;
+
     DelegateTags *_tags;
     SchemaConfig *schemaConfig;
+    QSharedPointer<PropertyNameFormatter> propertyNameFormatter;
 };    // PropertyDelegate
 
 class U2LANG_EXPORT DelegateTags : public QObject {

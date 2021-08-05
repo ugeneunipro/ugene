@@ -39,7 +39,6 @@
 #include <U2Lang/SchemaConfig.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLContainer.h>
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "OutputFileDialog.h"
@@ -186,13 +185,13 @@ void DoubleSpinBoxWidget::sl_valueChanged(double value) {
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent)
-    : PropertyWidget(parent) {
+ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter)
+    : PropertyWidget(parent, nullptr, propertyNameFormatter) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
-    foreach (const ComboItem p, items) {
-        comboBox->addItem(p.first, p.second);
+    for (const ComboItem &item : qAsConst(items)) {
+        comboBox->addItem(getFormattedPropertyName(item.first), item.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
@@ -409,8 +408,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), cm(nullptr), items(_items) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<PropertyNameFormatter> &propertyNameFormatter)
+    : PropertyWidget(parent, nullptr, propertyNameFormatter), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -472,7 +471,7 @@ void ComboBoxWithChecksWidget::initModelView() {
     cm->setItem(i++, ghostItem);
 
     for (auto it = items.begin(); it != items.end(); ++it) {
-        QStandardItem *item = new QStandardItem(it.key());
+        auto item = new QStandardItem(getFormattedPropertyName(it.key()));
         item->setCheckable(true);
         item->setEditable(false);
         item->setSelectable(false);

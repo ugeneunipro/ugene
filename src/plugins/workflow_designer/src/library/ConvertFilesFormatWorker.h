@@ -56,7 +56,6 @@ private:
     IntegralBus *inputUrlPort;
     IntegralBus *outputUrlPort;
     QString targetFormat;
-    QStringList selectedFormatExtensions;
     QStringList excludedFormats;
 
 public slots:

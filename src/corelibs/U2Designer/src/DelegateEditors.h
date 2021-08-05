@@ -42,6 +42,7 @@
 #include <U2Designer/URLLineEdit.h>
 
 #include <U2Lang/ConfigurationEditor.h>
+#include <U2Lang/PropertyNameFormatter.h>
 
 #include "PropertyWidget.h"
 
@@ -206,8 +207,6 @@ class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
 public:
     ComboBoxDelegate(const QVariantMap &comboItems, QObject *parent = 0);    // items: visible name -> value
     ComboBoxDelegate(const QList<ComboItem> &comboItems, QObject *parent = 0);    // items: visible name -> value
-    virtual ~ComboBoxDelegate() {
-    }
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -328,9 +327,6 @@ public:
     ComboBoxWithChecksDelegate(const QVariantMap &items, QObject *parent = 0)
         : PropertyDelegate(parent), items(items) {
     }
-    virtual ~ComboBoxWithChecksDelegate() {
-    }
-
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
 

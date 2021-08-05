@@ -25,17 +25,20 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Lang/PropertyNameFormatter.h>
+
 namespace U2 {
 
-PropertyWidget::PropertyWidget(QWidget *parent, DelegateTags *_tags)
-    : QWidget(parent), _tags(_tags), schemaConfig(nullptr) {
+PropertyWidget::PropertyWidget(QWidget *parent, DelegateTags *_tags, const QSharedPointer<PropertyNameFormatter> &_propertyNameFormatter)
+    : QWidget(parent), _tags(_tags), schemaConfig(nullptr), propertyNameFormatter(_propertyNameFormatter) {
     QHBoxLayout *l = new QHBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     this->setLayout(l);
 }
 
-PropertyWidget::~PropertyWidget() {
+QString PropertyWidget::getFormattedPropertyName(const QString &propertyName) const {
+    return propertyNameFormatter.isNull() ? propertyName : propertyNameFormatter->format(propertyName);
 }
 
 void PropertyWidget::addMainWidget(QWidget *w) {
@@ -81,8 +84,11 @@ QVariant PropertyDelegate::getDisplayValue(const QVariant &v) const {
     return v;
 }
 
-PropertyDelegate *PropertyDelegate::clone() {
-    return new PropertyDelegate(parent());
+PropertyDelegate *PropertyDelegate::createCopy() {
+    PropertyDelegate *copy = clone();
+    copy->setParent(parent());
+    copy->setPropertyNameFormatter(propertyNameFormatter);
+    return copy;
 }
 
 PropertyWidget *PropertyDelegate::createWizardWidget(U2OpStatus &os, QWidget * /*parent*/) const {
@@ -100,6 +106,14 @@ DelegateTags *PropertyDelegate::tags() const {
 
 void PropertyDelegate::setSchemaConfig(SchemaConfig *value) {
     schemaConfig = value;
+}
+
+const QSharedPointer<PropertyNameFormatter> &PropertyDelegate::getPropertyNameFormatter() const {
+    return propertyNameFormatter;
+}
+
+void PropertyDelegate::setPropertyNameFormatter(const QSharedPointer<PropertyNameFormatter> &newPropertyNameFormatter) {
+    propertyNameFormatter = newPropertyNameFormatter;
 }
 
 const QString DelegateTags::PLACEHOLDER_TEXT = "placeholder_text";
