@@ -22,6 +22,7 @@
 #include "GTFileDialog.h"
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
@@ -41,23 +42,26 @@
 
 #define FILE_NAME_LINE_EDIT "fileNameEdit"
 #define CURRENT_FODLER_COMBO_BOX "lookInCombo"
+#define FILE_TYPE_COMBO_BOX "fileTypeCombo"
 
 namespace HI {
 #define GT_CLASS_NAME "GTFileDialogUtils"
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path, const QString &_fileName, Button _button, GTGlobals::UseMethod _method, TextInput textInput)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path, const QString &_fileName, Button _button, GTGlobals::UseMethod _method, const QString& _filter, TextInput textInput)
     : Filler(_os, "QFileDialog"),
       fileName(_fileName),
       button(_button),
       method(_method),
+      filter(_filter),
       textInput(textInput) {
     init(_path + "/" + fileName);
 }
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method, Button b, TextInput textInput)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method, Button b, const QString& _filter, TextInput textInput)
     : Filler(os, "QFileDialog"),
       button(b),
       method(method),
+      filter(_filter),
       textInput(textInput) {
     init(filePath);
 }
@@ -99,6 +103,8 @@ void GTFileDialogUtils::commonScenario() {
     // opening file or getting size
     GTGlobals::sleep(300);
     setViewMode(Detail);
+    GTGlobals::sleep(300);
+    applyFilter();
     GTGlobals::sleep(300);
     selectFile();
     GTGlobals::sleep(300);
@@ -320,6 +326,19 @@ void GTFileDialogUtils::setViewMode(ViewMode v) {
     }
 
     GTGlobals::sleep(100);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "applyFilter"
+void GTFileDialogUtils::applyFilter() {
+    if (filter.isEmpty()) {
+        return;
+    }
+
+    QComboBox* comboBox = fileDialog->findChild<QComboBox*>(FILE_TYPE_COMBO_BOX);
+    GT_CHECK_RESULT(comboBox != nullptr, QString("combo box \"%1\" not found").arg(FILE_TYPE_COMBO_BOX), );
+
+    GTComboBox::selectItemByText(os, comboBox, filter, GTGlobals::UseMouse);
 }
 #undef GT_METHOD_NAME
 

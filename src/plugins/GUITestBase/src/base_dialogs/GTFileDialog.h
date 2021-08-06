@@ -41,11 +41,11 @@ public:
                      CopyPaste };
 
 #ifdef Q_OS_DARWIN
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste);
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, const QString& filter = QString(), TextInput = CopyPaste);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, const QString& filter = QString(), TextInput = CopyPaste);
 #else
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing);
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, const QString& filter = QString(), TextInput = Typing);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, const QString& filter = QString(), TextInput = Typing);
 #endif
 
     GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *customScenario);
@@ -60,11 +60,13 @@ protected:
     void selectFile();
     void clickButton(Button);
     void setViewMode(ViewMode);
+    void applyFilter();
 
     QWidget *fileDialog;
     QString path, fileName;
     Button button;
     GTGlobals::UseMethod method;
+    QString filter;
     TextInput textInput;
 };
 

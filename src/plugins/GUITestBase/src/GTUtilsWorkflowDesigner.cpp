@@ -951,7 +951,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QSt
 
     GTFileDialogUtils::TextInput t = pastePath ? GTFileDialogUtils::CopyPaste : GTFileDialogUtils::Typing;
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, GTGlobals::UseMouse, GTFileDialogUtils::Open, t);
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, GTGlobals::UseMouse, GTFileDialogUtils::Open, QString(), t);
     GTUtilsDialog::waitForDialog(os, ob);
 
     GTWidget::click(os, addFileButton);

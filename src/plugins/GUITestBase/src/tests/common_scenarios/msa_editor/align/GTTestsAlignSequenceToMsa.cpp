@@ -33,7 +33,10 @@
 #include <QApplication>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ExternalToolRegistry.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2View/MSAEditor.h>
 
@@ -234,7 +237,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb"));
+    auto gbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_GENBANK, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb", GTFileDialogUtils::Open, GTGlobals::UseMouse, gbFormatFilter));
 
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -265,7 +269,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTFileDialog::openFile(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", "TUB.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/", "COI na.aln"));
+    auto clustalFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/", "COI na.aln", GTFileDialogUtils::Open, GTGlobals::UseMouse, clustalFormatFilter));
 
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -282,7 +287,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 3. Click "Align sequence(s) to this alignment" button on the toolbar.
     // 4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
+    auto fastqFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTQ, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastqFormatFilter));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -504,7 +510,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
 
     // Click "Align sequence(s) to this alignment" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/two_seqs.aln" as input data.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/two_seqs.aln"));
+    auto clustalFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/two_seqs.aln", GTGlobals::UseMouse, GTFileDialogUtils::Open, clustalFormatFilter));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

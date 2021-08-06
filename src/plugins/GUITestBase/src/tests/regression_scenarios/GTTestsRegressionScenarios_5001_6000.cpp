@@ -57,6 +57,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
@@ -1406,7 +1408,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, GTFileDialogUtils::CopyPaste);
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, QString(), GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(os, ob);
     ob->openFileDialog();
 
@@ -2562,7 +2564,8 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
 
     // Click Align sequences to alignment->Align sequence to profile with MUSCLE...
     // Select "\samples\CLUSTALW\COI.aln"
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
+    auto clustalFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln", GTGlobals::UseMouse, GTFileDialogUtils::Open, clustalFormatFilter));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to alignment with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

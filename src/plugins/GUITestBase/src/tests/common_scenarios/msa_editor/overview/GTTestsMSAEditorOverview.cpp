@@ -32,6 +32,9 @@
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -123,7 +126,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Align "samples/CLUSTALW/HIV-1.aln"
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/HIV-1.aln"));
+    auto clustalFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/HIV-1.aln", GTGlobals::UseMouse, GTFileDialogUtils::Open, clustalFormatFilter));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -498,7 +502,8 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
+    auto fastqFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTQ, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastqFormatFilter));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

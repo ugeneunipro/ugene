@@ -64,10 +64,12 @@
 #include <QtWidgets/QTextBrowser>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
 
@@ -5090,7 +5092,8 @@ GUI_TEST_CLASS_DEFINITION(test_1527_1) {
     // 2. {MSA Editor context menu} -> Align -> Align sequences to profile with MUSCLE
     // 3. Select empty "test.aln" in the profile browsing dialog.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align sequences to profile with MUSCLE", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/1527/", "test.aln"));
+    auto clustalFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/1527/", "test.aln", GTFileDialogUtils::Open, GTGlobals::UseMouse, clustalFormatFilter));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
 
