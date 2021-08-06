@@ -358,6 +358,7 @@ void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
 void ScrollController::sl_collapsibleModelChanged() {
     int firstVisibleMaRowOffset = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(savedFirstVisibleMaRow);
     setVScrollbarValue(firstVisibleMaRowOffset + savedFirstVisibleMaRowOffset);
+    updateVerticalScrollBar();
 }
 
 int ScrollController::getAdditionalXOffset() const {

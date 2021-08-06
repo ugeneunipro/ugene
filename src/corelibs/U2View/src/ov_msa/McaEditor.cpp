@@ -164,6 +164,12 @@ QWidget *McaEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
     ui = new McaEditorWgt(this);
 
+    collapseModel->reset(getMaRowIds());
+
+    bool showChromatograms = AppContext::getSettings()->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
+    collapseModel->collapseAll(!showChromatograms);
+    GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
+
     QString objName = "mca_editor_" + maObject->getGObjectName();
     ui->setObjectName(objName);
 
