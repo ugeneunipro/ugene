@@ -30,6 +30,8 @@
 #include <QVariant>
 #include <QWidget>
 
+#include <U2Core/Formatters.h>
+
 #include <U2Designer/URLLineEdit.h>
 
 #include <U2Lang/ConfigurationEditor.h>
@@ -137,13 +139,25 @@ private slots:
     void sl_valueChanged(double value);
 };
 
+class ComboBoxWidgetBase : public PropertyWidget {
+public:
+    ComboBoxWidgetBase( QWidget *parent = nullptr, const QSharedPointer<StringFormatter>& formatter = nullptr);
+
+    /** Returns formatted value for the item with the given name. */
+    QString getFormattedItemText(const QString &itemKey) const;
+
+protected:
+    QSharedPointer<StringFormatter> formatter;
+
+};
+
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-class ComboBoxWidget : public PropertyWidget {
+class ComboBoxWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr);
+    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter>& formatter = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -228,10 +242,10 @@ private:
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
+class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr);
+    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -249,6 +263,9 @@ protected slots:
 
 private:
     void initModelView();
+
+    /** Returns formatted version of the current value. */
+    QString getFormattedValue();
 };
 
 /************************************************************************/

@@ -28,6 +28,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/Formatters.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
@@ -81,43 +82,42 @@ QString ConvertFilesFormatPrompter::composeRichDoc() {
 /************************************************************************/
 /* ConvertFilesFormatWorkerFactory */
 /************************************************************************/
-namespace {
 enum OutDirectory {
     FILE_DIRECTORY = 0,
-    WORKFLOW_INTERNAL,
-    CUSTOM
+    WORKFLOW_INTERNAL = 1,
+    CUSTOM = 2,
 };
-enum MapType { IDS,
-               BOOLEANS
+
+enum MapType {
+    IDS = 1,
+    BOOLEANS = 2,
 };
-QVariantMap getFormatsMap(MapType mapType) {
+
+static QVariantMap getFormatsMap(const MapType &mapType) {
     const QList<DocumentFormatId> allFormats = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
 
     QVariantMap result;
-    foreach (const DocumentFormatId &fid, allFormats) {
+    for (const DocumentFormatId &fid : qAsConst(allFormats)) {
         const DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
-        if (nullptr == format || format->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
+        if (format == nullptr || format->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
             continue;
         }
-        if (format->checkFlags(DocumentFormatFlag_SupportWriting) || (BOOLEANS == mapType)) {
-            if (BOOLEANS == mapType) {
-                result[fid] = false;
-            } else {
-                result[fid] = fid;
-            }
+        if (mapType == MapType::BOOLEANS) {
+            result[fid] = false;
+        } else if (format->checkFlags(DocumentFormatFlag_SupportWriting)) {
+            result[fid] = fid;
         }
     }
     return result;
 }
-}    // namespace
 
 void ConvertFilesFormatWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, ConvertFilesFormatWorker::tr("File Format Conversion"), ConvertFilesFormatWorker::tr("Converts the file to selected format if it is not excluded."));
 
     QList<PortDescriptor *> p;
     {
-        Descriptor inD(INPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("A file to perform format conversion"));
-        Descriptor outD(OUTPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("File of selected format"));
+        Descriptor inD(INPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("A source file to convert"));
+        Descriptor outD(OUTPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("A target file to save the converted result"));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -139,29 +139,33 @@ void ConvertFilesFormatWorkerFactory::init() {
         Descriptor customDir(CUSTOM_DIR_ID, ConvertFilesFormatWorker::tr("Custom folder"), ConvertFilesFormatWorker::tr("Select the custom output folder."));
 
         a << new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
-        a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(WORKFLOW_INTERNAL));
+        a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(OutDirectory::WORKFLOW_INTERNAL));
         Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
-        customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, CUSTOM));
+        customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, OutDirectory::CUSTOM));
         a << customDirAttr;
-        //a << new Attribute( customDir, BaseTypes::STRING_TYPE(), false, QString(""));
         a << new Attribute(excludedFormats, BaseTypes::STRING_TYPE(), false);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
+    QSharedPointer<StringFormatter> documentNameFormatter(new DocumentNameByIdFormatter());
     {
-        QVariantMap formatsIds = getFormatsMap(IDS);
-        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(formatsIds);
+        QVariantMap formatsNameByIdMap = getFormatsMap(MapType::IDS);
+        auto formatByIdCombo = new ComboBoxDelegate(formatsNameByIdMap);
+        formatByIdCombo->setItemTextFormatter(documentNameFormatter);
+        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatByIdCombo;
 
-        QVariantMap formatsBooleans = getFormatsMap(BOOLEANS);
-        delegates[EXCLUDED_FORMATS_ID] = new ComboBoxWithChecksDelegate(formatsBooleans);
+        QVariantMap excludedFormatByIdMap = getFormatsMap(MapType::BOOLEANS);
+        auto excludedFormatIdCombo = new ComboBoxWithChecksDelegate(excludedFormatByIdMap);
+        excludedFormatIdCombo->setItemTextFormatter(documentNameFormatter);
+        delegates[EXCLUDED_FORMATS_ID] = excludedFormatIdCombo;
 
         QVariantMap directoryMap;
         QString fileDir = ConvertFilesFormatWorker::tr("Input file");
         QString workflowDir = ConvertFilesFormatWorker::tr("Workflow");
         QString customD = ConvertFilesFormatWorker::tr("Custom");
-        directoryMap[fileDir] = FILE_DIRECTORY;
-        directoryMap[workflowDir] = WORKFLOW_INTERNAL;
-        directoryMap[customD] = CUSTOM;
+        directoryMap[fileDir] = OutDirectory::FILE_DIRECTORY;
+        directoryMap[workflowDir] = OutDirectory::WORKFLOW_INTERNAL;
+        directoryMap[customD] = OutDirectory::CUSTOM;
         delegates[OUT_MODE_ID] = new ComboBoxDelegate(directoryMap);
 
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
