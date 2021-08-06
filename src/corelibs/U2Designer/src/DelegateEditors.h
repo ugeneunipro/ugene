@@ -206,7 +206,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxBaseDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxBaseDelegate(QObject *parent = 0);
+    ComboBoxBaseDelegate(QObject *parent = nullptr);
 
     /** Updates item text formatter. */
     void setItemTextFormatter(const QSharedPointer<StringFormatter> &formatter);

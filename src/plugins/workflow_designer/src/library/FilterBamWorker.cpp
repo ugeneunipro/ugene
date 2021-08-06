@@ -22,18 +22,12 @@
 #include "FilterBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -183,7 +177,9 @@ void FilterBamWorkerFactory::init() {
         QVariantMap formatMap;
         formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
         formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
-        delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
+        auto outputFormatComboBoxDelegate = new ComboBoxDelegate(formatMap);
+        outputFormatComboBoxDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        delegates[OUT_FORMAT_ID] = outputFormatComboBoxDelegate;
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(0);
         lenMap["maximum"] = QVariant(254);
