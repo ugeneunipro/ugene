@@ -60,7 +60,7 @@ void SampleActionsManager::registerAction(const SampleAction &action) {
 
 int SampleActionsManager::getValidClickedActionId(U2OpStatus &os) const {
     QAction *a = qobject_cast<QAction *>(sender());
-    CHECK_EXT(NULL != a, os.setError(L10N::internalError("Unexpected method call")), -1);
+    CHECK_EXT(nullptr != a, os.setError(L10N::internalError("Unexpected method call")), -1);
 
     bool ok = false;
     int id = a->property(ID_PROPERTY).toInt(&ok);

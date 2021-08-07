@@ -35,11 +35,11 @@ static const QString OUTPUT_PORT_PREFIX = "out-";
 
 U2ErrorType getActorPrototype(const QString &elementType,
                               U2::Workflow::ActorPrototype **outProto) {
-    *outProto = NULL;
+    *outProto = nullptr;
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
-    CHECK(NULL != prototypeRegistry, U2_INVALID_CALL);
+    CHECK(nullptr != prototypeRegistry, U2_INVALID_CALL);
     U2::Workflow::ActorPrototype *prototype = prototypeRegistry->getProto(elementType);
-    CHECK(NULL != prototype, U2_UNKNOWN_ELEMENT);
+    CHECK(nullptr != prototype, U2_UNKNOWN_ELEMENT);
     *outProto = prototype;
     return U2_OK;
 }
@@ -48,7 +48,7 @@ U2ErrorType getElementPorts(const QString &elementType,
                             QList<U2::Workflow::PortDescriptor *> &ports) {
     U2ErrorType result = U2_OK;
     ports.clear();
-    U2::Workflow::ActorPrototype *prototype = NULL;
+    U2::Workflow::ActorPrototype *prototype = nullptr;
     CHECK(U2_OK == (result = getActorPrototype(elementType, &prototype)), result);
     ports = prototype->getPortDesciptors();
     return result;
@@ -65,16 +65,16 @@ namespace U2 {
 U2ErrorType WorkflowElementFacade::getElementNameByType(const QString &type, QString &name) {
     U2ErrorType result = U2_OK;
     name = QString();
-    Workflow::ActorPrototype *prototype = NULL;
+    Workflow::ActorPrototype *prototype = nullptr;
     CHECK(U2_OK == (result = getActorPrototype(type, &prototype)), result);
     name = prototype->getDisplayName();
     return result;
 }
 
 U2ErrorType WorkflowElementFacade::doesElementTypeExist(const QString &type, bool *exists) {
-    Workflow::ActorPrototype *prototype = NULL;
+    Workflow::ActorPrototype *prototype = nullptr;
     U2ErrorType result = getActorPrototype(type, &prototype);
-    *exists = (NULL != prototype);
+    *exists = (nullptr != prototype);
     return result;
 }
 
@@ -83,9 +83,9 @@ U2ErrorType WorkflowElementFacade::doesElementHaveParameter(const QString &eleme
                                                             bool *has) {
     U2ErrorType result = U2_OK;
     *has = false;
-    Workflow::ActorPrototype *prototype = NULL;
+    Workflow::ActorPrototype *prototype = nullptr;
     CHECK(U2_OK == (result = getActorPrototype(elementType, &prototype)), result);
-    *has = (NULL != prototype->getAttribute(parameterName));
+    *has = (nullptr != prototype->getAttribute(parameterName));
     if (!(*has)) {
         return U2_INVALID_NAME;
     }
@@ -192,7 +192,7 @@ U2ErrorType WorkflowElementFacade::getReadElementTypeForSlot(const QString &slot
 
 U2ErrorType WorkflowElementFacade::getWriteElementTypeForSlot(const QString &slotId,
                                                               QString &writerType) {
-    U2::Workflow::ActorPrototype *prototype = NULL;
+    U2::Workflow::ActorPrototype *prototype = nullptr;
     writerType = WRITE_ELEMENT_PREFIX + slotId;
     U2ErrorType result = getActorPrototype(writerType, &prototype);
     CHECK(U2_OK != result, result);
@@ -205,8 +205,8 @@ U2ErrorType WorkflowElementFacade::getWriteElementTypeForSlot(const QString &slo
         QList<ActorPrototype *>::iterator currElement = currGroup.begin();
         while (currElement != currGroup.end()) {
             QList<PortDescriptor *> currPorts = (*currElement)->getPortDesciptors();
-            Workflow::PortDescriptor *port = currPorts.isEmpty() ? NULL : currPorts.first();
-            if (NULL != port && port->isInput()) {
+            Workflow::PortDescriptor *port = currPorts.isEmpty() ? nullptr : currPorts.first();
+            if (nullptr != port && port->isInput()) {
                 QList<Descriptor> slotList = port->getOwnTypeMap().keys();
                 foreach (Descriptor slotDescriptor, slotList) {
                     if (slotDescriptor.getId() == slotId) {

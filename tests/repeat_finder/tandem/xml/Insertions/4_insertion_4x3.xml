@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    CAAC-CAA-CAA
+
+    Tandems
+    Tandem repeat CAA 3x3 at pos 0
+    Insertions
+    3
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="CAACCAACAA" minSize="3" repeatCount="3" expected_result=""/>
+</multi-test>

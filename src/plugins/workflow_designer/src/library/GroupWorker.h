@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class GroupPrompter : public PrompterBase<GroupPrompter> {
     Q_OBJECT
 public:
-    GroupPrompter(Actor *p = NULL)
+    GroupPrompter(Actor *p = nullptr)
         : PrompterBase<GroupPrompter>(p) {
     }
 

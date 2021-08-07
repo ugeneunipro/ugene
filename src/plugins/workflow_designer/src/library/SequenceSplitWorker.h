@@ -47,7 +47,7 @@ class SequenceSplitWorker : public BaseWorker {
     Q_OBJECT
 public:
     SequenceSplitWorker(Actor *p)
-        : BaseWorker(p), seqPort(NULL), outPort(NULL), useAcceptedOrFiltered(false) {
+        : BaseWorker(p), seqPort(nullptr), outPort(nullptr), useAcceptedOrFiltered(false) {
     }
 
     virtual void init();

@@ -31,7 +31,7 @@ namespace U2 {
 class U2CORE_EXPORT VFSAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    VFSAdapterFactory(QObject *p = NULL);
+    VFSAdapterFactory(QObject *p = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -61,7 +61,7 @@ protected:
 class U2CORE_EXPORT VFSAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    VFSAdapter(VFSAdapterFactory *f, QObject *o = NULL);
+    VFSAdapter(VFSAdapterFactory *f, QObject *o = nullptr);
     ~VFSAdapter() {
         if (isOpen())
             close();
@@ -70,7 +70,7 @@ public:
     virtual bool open(const GUrl &url, IOAdapterMode m);
 
     virtual bool isOpen() const {
-        return buffer != NULL;
+        return buffer != nullptr;
     }
 
     virtual void close();

@@ -1,0 +1,4 @@
+<suite name="GUrl file URL canonicalization tests" test-timeout="30">
+
+    <test-dir path="gurl" test-format="XML" test-ext="*.xml"/>
+</suite>

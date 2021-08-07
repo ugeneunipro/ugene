@@ -33,7 +33,7 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT ACEFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT ACEFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     ACEFormat(QObject *p);

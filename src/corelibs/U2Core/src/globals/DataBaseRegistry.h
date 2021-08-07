@@ -42,7 +42,7 @@ public:
         return error;
     }
     virtual QByteArray getOutputFile() {
-        return NULL;
+        return nullptr;
     }
     virtual ~HttpRequest() {};
 
@@ -64,7 +64,7 @@ public:
 class U2CORE_EXPORT DataBaseRegistry : public QObject {
     Q_OBJECT
 public:
-    DataBaseRegistry(QObject *o = NULL);
+    DataBaseRegistry(QObject *o = nullptr);
     ~DataBaseRegistry();
     bool registerDataBase(DataBaseFactory *f, const QString &id);
     DataBaseFactory *getFactoryById(const QString &id);

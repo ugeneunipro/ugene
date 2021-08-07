@@ -106,7 +106,7 @@ QString ExportPhredQualityPrompter::composeRichDoc() {
  * ExportPhredQualityWorker
  *************************************/
 ExportPhredQualityWorker::ExportPhredQualityWorker(Actor *a)
-    : BaseWorker(a), input(NULL), currentTask(NULL) {
+    : BaseWorker(a), input(nullptr), currentTask(nullptr) {
 }
 
 void ExportPhredQualityWorker::init() {
@@ -115,16 +115,16 @@ void ExportPhredQualityWorker::init() {
 }
 
 Task *ExportPhredQualityWorker::tick() {
-    if (currentTask != NULL && currentTask->getState() != Task::State_Finished) {
-        return NULL;
+    if (currentTask != nullptr && currentTask->getState() != Task::State_Finished) {
+        return nullptr;
     }
 
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         U2SequenceObject *seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
-        if (NULL == seqObj) {
-            return NULL;
+        if (nullptr == seqObj) {
+            return nullptr;
         }
 
         // Optimize clean up
@@ -132,7 +132,7 @@ Task *ExportPhredQualityWorker::tick() {
 
         ExportQualityScoresConfig cfg;
         cfg.dstFilePath = fileName;
-        if (currentTask == NULL) {
+        if (currentTask == nullptr) {
             cfg.appendData = false;
         }
 
@@ -141,7 +141,7 @@ Task *ExportPhredQualityWorker::tick() {
     }
 
     setDone();
-    return NULL;
+    return nullptr;
 }
 
 void ExportPhredQualityWorker::cleanup() {

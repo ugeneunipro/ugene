@@ -65,7 +65,7 @@ Task::ReportResult ShiftSequenceStartTask::report() {
 
     QList<Document *> documentsToUpdate;
     Project *p = AppContext::getProject();
-    if (p != NULL) {
+    if (p != nullptr) {
         if (p->isStateLocked()) {
             return ReportResult_CallMeAgain;
         }

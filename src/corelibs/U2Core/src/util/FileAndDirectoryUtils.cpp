@@ -34,17 +34,17 @@ namespace U2 {
 
 int FileAndDirectoryUtils::MIN_LENGTH_TO_WRITE = 32768;
 
-#if defined(Q_OS_LINUX) | defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) | defined(Q_OS_DARWIN)
 const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "~/";
 #else
 const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
 QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
-    if (NULL != r.format) {
+    if (nullptr != r.format) {
         return r.format->getFormatId();
     }
-    if (NULL != r.importer) {
+    if (nullptr != r.importer) {
         return r.importer->getId();
     }
     return "";
@@ -127,7 +127,7 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString &url) {
 }
 
 void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
-    if (Q_LIKELY(f == NULL || str.length() <= MIN_LENGTH_TO_WRITE)) {
+    if (Q_LIKELY(f == nullptr || str.length() <= MIN_LENGTH_TO_WRITE)) {
         return;
     }
     f->write(str.toLocal8Bit());

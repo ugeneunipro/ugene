@@ -38,7 +38,7 @@ class EMBLGenbankDataEntry;
 class IOAdapter;
 class ParserState;
 
-class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormat {
+class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     EMBLGenbankAbstractDocument(const DocumentFormatId &id, const QString &formatName, int maxLineSize, DocumentFormatFlags flags, QObject *p);
@@ -116,7 +116,7 @@ public:
 class ParserState {
 public:
     ParserState(int off, IOAdapter *io, EMBLGenbankDataEntry *e, U2OpStatus &si)
-        : valOffset(off), entry(e), io(io), buff(NULL), len(0), si(si) {
+        : valOffset(off), entry(e), io(io), buff(nullptr), len(0), si(si) {
     }
 
     const int valOffset;

@@ -39,7 +39,11 @@ public:
 
     static GObject *selectOne(const QList<GObject *> &objects, GObjectType type, UnloadedObjectFilter f);
 
-    static QList<GObject *> findAllObjects(UnloadedObjectFilter f, GObjectType t = GObjectType());
+    /**
+     * Returns list of all objects from the active project that match the parameters.
+     * 'objectType' may be empty. In this case any object type is matched.
+     */
+    static QList<GObject *> findAllObjects(const UnloadedObjectFilter &unloadedObjectFilter, const GObjectType &objectType = GObjectType(), bool writableOnly = false);
 
     /*
      * Select objects from @fromObjects that are referenced by relations stored in @obj with @relationRole and @type.
@@ -72,9 +76,9 @@ public:
 
     static DNATranslation *findComplementTT(const DNAAlphabet *al);
 
-    static DNATranslation *findAminoTT(U2SequenceObject *so, bool fromHintsOnly, const QString &table = NULL);
+    static DNATranslation *findAminoTT(U2SequenceObject *so, bool fromHintsOnly, const QString &table = nullptr);
 
-    static DNATranslation *findBackTranslationTT(U2SequenceObject *so, const QString &table = NULL);
+    static DNATranslation *findBackTranslationTT(U2SequenceObject *so, const QString &table = nullptr);
 
     //checks object type for both loaded and unloaded states
     static bool hasType(GObject *obj, const GObjectType &type);

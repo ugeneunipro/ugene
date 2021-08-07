@@ -41,9 +41,9 @@ void FindAnnotationCollocationsDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "getPlusButton"
 QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
-    QToolButton *result = NULL;
+    QToolButton *result = nullptr;
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", NULL);
+    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", nullptr);
 
     QList<QToolButton *> toolList = dialog->findChildren<QToolButton *>();
     foreach (QToolButton *but, toolList) {
@@ -52,7 +52,7 @@ QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
         }
     }
 
-    GT_CHECK_RESULT(result, "PlusButton not found", NULL);
+    GT_CHECK_RESULT(result, "PlusButton not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME

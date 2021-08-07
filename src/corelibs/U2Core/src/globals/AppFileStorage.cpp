@@ -119,12 +119,12 @@ void WorkflowProcess::unuseFiles() {
 /* AppFileStorage */
 /************************************************************************/
 AppFileStorage::AppFileStorage()
-    : storage(NULL) {
+    : storage(nullptr) {
 }
 
 void AppFileStorage::init(U2OpStatus &os) {
     UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    CHECK_EXT(NULL != settings, os.setError("NULL user application settings"), );
+    CHECK_EXT(nullptr != settings, os.setError("NULL user application settings"), );
 
     storageDir = settings->getFileStorageDir();
 
@@ -140,7 +140,7 @@ void AppFileStorage::init(U2OpStatus &os) {
 }
 
 AppFileStorage::~AppFileStorage() {
-    if (NULL != storage) {
+    if (nullptr != storage) {
         U2OpStatusImpl os;
         storage->shutdown(os);
         if (os.isCoR()) {
@@ -289,7 +289,7 @@ QString AppFileStorage::createDirectory() const {
         bool created = storageRoot.mkpath(storageRoot.path());
         SAFE_POINT(created, QString("Can not create a folder: %1").arg(storageRoot.path()), "");
     }
-    uint time = QDateTime::currentDateTime().toTime_t();
+    qint64 time = QDateTime::currentDateTime().toSecsSinceEpoch() / 1000;
     QString baseDirName = QByteArray::number(time);
 
     int idx = 0;

@@ -40,11 +40,13 @@ class ExportSequenceViewItemsController : public GObjectViewWindowContext {
     Q_OBJECT
 public:
     ExportSequenceViewItemsController(QObject *p);
-    void init();
+
+    void init() override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *v, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 private:
     AnnotatedDNAView *av;

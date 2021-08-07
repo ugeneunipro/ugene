@@ -175,7 +175,7 @@ void SuffixArray::sortDeeper(const quint32 begin, const quint32 end) {
         qSortBuffer[suffRunner - begin] = suffix | ((bits[suffix] << usablePrefixLen * 2) & HI_DWORD_MASK);
     }
     //qsort(begin, end-1);
-    qSort(qSortBuffer, qSortBuffer + end - begin);
+    std::sort(qSortBuffer, qSortBuffer + end - begin);
     for (quint32 suffRunner = begin; suffRunner < end; suffRunner++) {
         suffixes[suffRunner] = qSortBuffer[suffRunner - begin] & LO_DWORD_MASK;
     }
@@ -201,7 +201,7 @@ void SuffixArray::sortUndefinedDeeper(const quint32 begin, const quint32 end) {
                 areaSize++;
             }
             U2::memmove(qSortBuffer + areaOffs, qSortBuffer + areaOffs + areaSize, areaSize);
-            qSort(qSortBuffer, qSortBuffer + end - begin - areaSize);
+            std::sort(qSortBuffer, qSortBuffer + end - begin - areaSize);
             U2::memmove(qSortBuffer + areaOffs + areaSize, qSortBuffer + areaOffs, areaSize);
             for (quint32 fillRunner = 0; fillRunner < areaSize; fillRunner++) {
                 //fill with garbage

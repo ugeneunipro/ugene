@@ -49,16 +49,16 @@ const QString PhmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt"
 PhmmerSearchTask::PhmmerSearchTask(const PhmmerSearchSettings &settings)
     : ExternalToolSupportTask(tr("Search with phmmer"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      saveSequenceTask(NULL),
-      phmmerTask(NULL),
-      parseTask(NULL),
+      saveSequenceTask(nullptr),
+      phmmerTask(nullptr),
+      parseTask(nullptr),
       removeWorkingDir(false) {
     GCOUNTER(cvar, "HMMER Search");
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 }
 
 QList<SharedAnnotationData> PhmmerSearchTask::getAnnotations() const {
-    CHECK(NULL != parseTask, QList<SharedAnnotationData>());
+    CHECK(nullptr != parseTask, QList<SharedAnnotationData>());
     return parseTask->getAnnotations();
 }
 
@@ -66,7 +66,7 @@ void PhmmerSearchTask::prepare() {
     prepareWorkingDir();
 
     if (settings.targetSequenceUrl.isEmpty()) {
-        SAFE_POINT_EXT(NULL != settings.targetSequence, setError(L10N::nullPointerError("sequence object")), );
+        SAFE_POINT_EXT(nullptr != settings.targetSequence, setError(L10N::nullPointerError("sequence object")), );
         prepareSequenceSaveTask();
         addSubTask(saveSequenceTask);
     } else {
@@ -88,7 +88,7 @@ QList<Task *> PhmmerSearchTask::onSubTaskFinished(Task *subTask) {
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
-        if (settings.annotationTable != NULL) {
+        if (settings.annotationTable != nullptr) {
             Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
             createAnnotationsTask->setSubtaskProgressWeight(5);
             result << createAnnotationsTask;
@@ -109,7 +109,7 @@ QString PhmmerSearchTask::generateReport() const {
         return res;
     }
 
-    if (NULL != settings.annotationTable && NULL != settings.annotationTable->getDocument()) {
+    if (nullptr != settings.annotationTable && nullptr != settings.annotationTable->getDocument()) {
         res += "<tr><td><b>" + tr("Result annotation table: ") + "</b></td><td>" + settings.annotationTable->getDocument()->getName() + "</td></tr>";
     }
     res += "<tr><td><b>" + tr("Result annotation group: ") + "</b></td><td>" + settings.pattern.groupName + "</td></tr>";

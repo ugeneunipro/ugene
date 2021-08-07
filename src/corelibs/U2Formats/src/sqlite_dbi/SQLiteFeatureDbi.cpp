@@ -26,7 +26,7 @@
 
 #include "SQLiteObjectDbi.h"
 
-static const QString FDBI_FIELDS("f.id, f.class, f.type, f.parent, f.root, f.name, f.sequence, f.strand, f.start, f.len ");
+static const QString FDBI_FIELDS("f.id, f.class, f.type, f.parent, f.root, f.name, f.sequence, f.strand, f.start, f.len");
 
 namespace U2 {
 
@@ -38,7 +38,6 @@ static QString getQueryForFeatureDeletionTrigger() {
     return "CREATE TRIGGER FeatureDeletion BEFORE DELETE ON Feature "
            "FOR EACH ROW "
            "BEGIN "
-           "DELETE FROM FeatureLocationRTreeIndex WHERE id = OLD.id;"
            "DELETE FROM Feature WHERE parent = OLD.id;"
            "END";
 }
@@ -64,12 +63,6 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE TABLE AnnotationTable (object INTEGER PRIMARY KEY, rootId INTEGER NOT NULL, "
                      "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE, "
                      "FOREIGN KEY(rootId) REFERENCES Feature(id) ON DELETE CASCADE)",
-                     db,
-                     os)
-        .execute();
-
-    //Feature index
-    SQLiteWriteQuery("CREATE VIRTUAL TABLE FeatureLocationRTreeIndex USING rtree_i32(id, start, end)",
                      db,
                      os)
         .execute();
@@ -194,27 +187,27 @@ static void add(QString &buf, const QString &str, const QString &op, int &n) {
 static QString toSqlCompareOp(ComparisonOp op) {
     QString res;
     switch (op) {
-    case ComparisonOp_EQ:
-        res = "=";
-        break;
-    case ComparisonOp_NEQ:
-        res = "!=";
-        break;
-    case ComparisonOp_GT:
-        res = ">";
-        break;
-    case ComparisonOp_GET:
-        res = ">=";
-        break;
-    case ComparisonOp_LT:
-        res = "<";
-        break;
-    case ComparisonOp_LET:
-        res = "<=";
-        break;
-    default:
-        res = "?";
-        break;
+        case ComparisonOp_EQ:
+            res = "=";
+            break;
+        case ComparisonOp_NEQ:
+            res = "!=";
+            break;
+        case ComparisonOp_GT:
+            res = ">";
+            break;
+        case ComparisonOp_GET:
+            res = ">=";
+            break;
+        case ComparisonOp_LT:
+            res = "<";
+            break;
+        case ComparisonOp_LET:
+            res = "<=";
+            break;
+        default:
+            res = "?";
+            break;
     }
     return res;
 }
@@ -222,14 +215,14 @@ static QString toSqlCompareOp(ComparisonOp op) {
 static QString toSqlOrderOp(OrderOp op) {
     QString res;
     switch (op) {
-    case OrderOp_Asc:
-        res = "ASC";
-        break;
-    case OrderOp_Desc:
-        res = "DESC";
-        break;
-    default:
-        break;
+        case OrderOp_Asc:
+            res = "ASC";
+            break;
+        case OrderOp_Desc:
+            res = "DESC";
+            break;
+        default:
+            break;
     }
     return res;
 }
@@ -237,24 +230,24 @@ static QString toSqlOrderOp(OrderOp op) {
 static QString toSqlOrderOpFromCompareOp(ComparisonOp op) {
     QString res;
     switch (op) {
-    case ComparisonOp_EQ:
-        break;
-    case ComparisonOp_NEQ:
-        break;
-    case ComparisonOp_GT:
-        res = "ASC";
-        break;
-    case ComparisonOp_GET:
-        res = "ASC";
-        break;
-    case ComparisonOp_LT:
-        res = "DESC";
-        break;
-    case ComparisonOp_LET:
-        res = "DESC";
-        break;
-    default:
-        break;
+        case ComparisonOp_EQ:
+            break;
+        case ComparisonOp_NEQ:
+            break;
+        case ComparisonOp_GT:
+            res = "ASC";
+            break;
+        case ComparisonOp_GET:
+            res = "ASC";
+            break;
+        case ComparisonOp_LT:
+            res = "DESC";
+            break;
+        case ComparisonOp_LET:
+            res = "DESC";
+            break;
+        default:
+            break;
     }
     return res;
 }
@@ -320,14 +313,10 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     bool oneClosestFeature = (ComparisonOp_Invalid != fq.closestFeature);
     if (useRegion) {
         if (!oneClosestFeature) {    //check if intersects
-            if (1 != fq.intersectRegion.length) {
-                add(wherePart, QString("fr.id = f.id AND fr.start < ?%2 AND fr.end > ?%1").arg(n + 1).arg(n + 2), "", n);
-            } else {
-                add(wherePart, QString("f.start < ?%2 AND f.start + f.len > ?%1").arg(n + 1).arg(n + 2), "", n);
-            }
+            add(wherePart, QString("f.start < ?%2 AND f.start + f.len > ?%1").arg(n + 1).arg(n + 2), "", n);
             n += 2;
         } else {    //check if close
-            add(wherePart, QString("fr.id = f.id AND fr.start %1 ?%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", n);
+            add(wherePart, QString("f.start %1 ?%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", n);
             n++;
         }
     }
@@ -359,9 +348,9 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
             wherePart += " ORDER BY fk.value";
         } else if (OrderOp_None != fq.startPosOrderOp && useRegion) {
             if (!oneClosestFeature) {
-                wherePart += " ORDER BY fr.start ";
+                wherePart += " ORDER BY f.start ";
             } else {
-                wherePart += QString(" ORDER BY fr.start %1 ")
+                wherePart += QString(" ORDER BY f.start %1 ")
                                  .arg(toSqlOrderOpFromCompareOp(fq.closestFeature));
             }
         }
@@ -370,9 +359,6 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     QString tablesPart = "Feature AS f";
     if (useKeyTable) {
         tablesPart += ", FeatureKey AS fk";
-    }
-    if (useRegion && (1 != fq.intersectRegion.length || oneClosestFeature)) {
-        tablesPart += ", FeatureLocationRTreeIndex AS fr";
     }
 
     QString fullQuery = selectPart + " FROM " + tablesPart;
@@ -384,7 +370,7 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     }
 
     QSharedPointer<SQLiteQuery> q;
-    if (NULL == trans) {
+    if (nullptr == trans) {
         q = QSharedPointer<SQLiteReadQuery>(new SQLiteReadQuery(fullQuery, db, os));
     } else {
         q = trans->getPreparedQuery(fullQuery, db, os);
@@ -448,8 +434,8 @@ qint64 SQLiteFeatureDbi::countFeatures(const FeatureQuery &fq, U2OpStatus &os) {
 
 U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeatures(const FeatureQuery &fq, U2OpStatus &os) {
     QSharedPointer<SQLiteQuery> q = createFeatureQuery("SELECT " + FDBI_FIELDS, fq, true, os);
-    CHECK_OP(os, NULL);
-    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
+    CHECK_OP(os, nullptr);
+    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 QList<U2FeatureKey> SQLiteFeatureDbi::getFeatureKeys(const U2DataId &featureId, U2OpStatus &os) {
@@ -521,7 +507,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     CHECK_OP(os, );
 
     if (fullQueryPresents) {
-        SAFE_POINT(NULL != fullQuery.data(), "Invalid database query detected", );
+        SAFE_POINT(nullptr != fullQuery.data(), "Invalid database query detected", );
         for (int currentFullQuery = 0; currentFullQuery < fullBindQueryCount && !os.isCoR(); ++currentFullQuery) {
             const int firstBindingPos = residualBindQueryCount + currentFullQuery * maximumBoundKeysNumber;
             const int lastBindingPos = residualBindQueryCount + (currentFullQuery + 1) * maximumBoundKeysNumber;
@@ -547,9 +533,6 @@ void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKe
                                       "VALUES(?1,    ?2,   ?3,     ?4,   ?5,   ?6,       ?7,     ?8,    ?9,   ?10)");
     QSharedPointer<SQLiteQuery> qf = t.getPreparedQuery(queryStringf, db, os);
 
-    static const QString queryStringr("INSERT INTO FeatureLocationRTreeIndex(id, start, end) VALUES(?1, ?2, ?3)");
-    QSharedPointer<SQLiteQuery> qr = t.getPreparedQuery(queryStringr, db, os);
-
     CHECK_OP(os, );
     qf->bindInt32(1, feature.featureClass);
     qf->bindInt32(2, feature.featureType);
@@ -562,12 +545,6 @@ void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKe
     qf->bindInt64(9, feature.location.region.length);
     qf->bindInt32(10, qHash(feature.name));
     feature.id = qf->insert(U2Type::Feature);
-    CHECK_OP(os, );
-
-    qr->bindDataId(1, feature.id);
-    qr->bindInt64(2, feature.location.region.startPos);
-    qr->bindInt64(3, feature.location.region.endPos());
-    qr->execute();
     CHECK_OP(os, );
 
     addFeatureKeys(keys, feature.id, db, os);
@@ -669,12 +646,6 @@ void SQLiteFeatureDbi::updateLocation(const U2DataId &featureId, const U2Feature
     qf.bindDataId(4, featureId);
     qf.execute();
     CHECK_OP(os, );
-
-    SQLiteWriteQuery qr("UPDATE FeatureLocationRTreeIndex SET start = ?1, end = ?2 WHERE id = ?3", db, os);
-    qr.bindInt64(1, location.region.startPos);
-    qr.bindInt64(2, location.region.endPos());
-    qr.bindDataId(3, featureId);
-    qr.execute();
 }
 
 void SQLiteFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newType, U2OpStatus &os) {
@@ -714,7 +685,7 @@ void SQLiteFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStat
 namespace {
 
 void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, DbRef *db, U2OpStatus &os) {
-    SAFE_POINT(NULL != db, "Invalid database handler", );
+    SAFE_POINT(nullptr != db, "Invalid database handler", );
 
     QString idsList = "(";
     for (int i = 1, n = parentIds.count(); i <= n; i++) {
@@ -775,9 +746,8 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRegion(const U2Region &
     SQLiteTransaction t(db, os);
 
     const bool selectByRoot = !rootId.isEmpty();
-    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f "
-                                                            "INNER JOIN FeatureLocationRTreeIndex AS fr ON f.id = fr.id WHERE " +
-                                  (selectByRoot ? QString("f.root = ?3 AND ") : QString()) + (contains ? "fr.start >= ?1 AND fr.end <= ?2" : "fr.start <= ?2 AND fr.end >= ?1");
+    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f WHERE " +
+                                  (selectByRoot ? QString("f.root = ?3 AND ") : QString()) + (contains ? "f.start >= ?1 AND f.start + f.len <= ?2" : "f.start <= ?2 AND f.start + f.len >= ?1");
 
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryByRegion, db, os);
 
@@ -787,7 +757,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRegion(const U2Region &
         q->bindDataId(3, rootId);
     }
 
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
@@ -799,8 +769,8 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesBySequence(const QString 
 
     q->bindDataId(1, seqId);
     q->bindString(2, featureName);
-    CHECK_OP(os, NULL);
-    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
+    CHECK_OP(os, nullptr);
+    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByParent(const U2DataId &parentId, const QString &featureName, const U2DataId &seqId, U2OpStatus &os, SubfeatureSelectionMode mode) {
@@ -815,7 +785,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByParent(const U2DataId &
     if (includeParent) {
         q->bindDataId(2, parentId);
     }
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
@@ -827,7 +797,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRoot(const U2DataId &ro
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryStringk, db, os);
 
     q->bindDataId(1, rootId);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 
@@ -840,7 +810,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByName(const U2DataId &ro
 
     q->bindDataId(1, rootId);
     q->bindInt32(2, qHash(name));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 

@@ -34,7 +34,7 @@ namespace U2 {
 
 BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
-      saveController(NULL),
+      saveController(nullptr),
       settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "");

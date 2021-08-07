@@ -45,7 +45,7 @@ namespace U2 {
 
 NcbiSearchDialogFiller::NcbiSearchDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "SearchGenbankSequenceDialog"),
-      dialog(NULL),
+      dialog(nullptr),
       actions(actions) {
 }
 
@@ -56,63 +56,63 @@ void NcbiSearchDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case SetField:
-            setField(action.second);
-            break;
-        case SetTerm:
-            setTerm(action.second);
-            break;
-        case AddTerm:
-            addTerm();
-            break;
-        case RemoveTerm:
-            removeTerm(action.second);
-            break;
-        case SetDatabase:
-            setDatabase(action.second);
-            break;
-        case CheckQuery:
-            checkQuery(action.second);
-            break;
-        case ClickResultByNum:
-            clickResultByNum(action.second);
-            break;
-        case ClickResultById:
-            clickResultById(action.second);
-            break;
-        case ClickResultByDesc:
-            clickResultByDesc(action.second);
-            break;
-        case ClickResultBySize:
-            clickResultBySize(action.second);
-            break;
-        case SelectResultsByNumbers:
-            selectResultsByNumbers(action.second);
-            break;
-        case SelectResultsByIds:
-            selectResultsByIds(action.second);
-            break;
-        case SelectResultsByDescs:
-            selectResultsByDescs(action.second);
-            break;
-        case SelectResultsBySizes:
-            selectResultsBySizes(action.second);
-            break;
-        case SetResultLimit:
-            setResultLimit(action.second);
-            break;
-        case ClickSearch:
-            clickSearch();
-            break;
-        case ClickDownload:
-            clickDownload(action.second);
-            break;
-        case ClickClose:
-            clickClose();
-            break;
-        case WaitTasksFinish:
-            waitTasksFinish();
-            break;
+            case SetField:
+                setField(action.second);
+                break;
+            case SetTerm:
+                setTerm(action.second);
+                break;
+            case AddTerm:
+                addTerm();
+                break;
+            case RemoveTerm:
+                removeTerm(action.second);
+                break;
+            case SetDatabase:
+                setDatabase(action.second);
+                break;
+            case CheckQuery:
+                checkQuery(action.second);
+                break;
+            case ClickResultByNum:
+                clickResultByNum(action.second);
+                break;
+            case ClickResultById:
+                clickResultById(action.second);
+                break;
+            case ClickResultByDesc:
+                clickResultByDesc(action.second);
+                break;
+            case ClickResultBySize:
+                clickResultBySize(action.second);
+                break;
+            case SelectResultsByNumbers:
+                selectResultsByNumbers(action.second);
+                break;
+            case SelectResultsByIds:
+                selectResultsByIds(action.second);
+                break;
+            case SelectResultsByDescs:
+                selectResultsByDescs(action.second);
+                break;
+            case SelectResultsBySizes:
+                selectResultsBySizes(action.second);
+                break;
+            case SetResultLimit:
+                setResultLimit(action.second);
+                break;
+            case ClickSearch:
+                clickSearch();
+                break;
+            case ClickDownload:
+                clickDownload(action.second);
+                break;
+            case ClickClose:
+                clickClose();
+                break;
+            case WaitTasksFinish:
+                waitTasksFinish();
+                break;
         }
     }
 }
@@ -125,7 +125,7 @@ void NcbiSearchDialogFiller::setField(const QVariant &actionData) {
     GT_CHECK(canConvert, "Can't get the block number and the field name from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
     QWidget *blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(NULL != blockWidget, "Block widget is NULL");
+    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
     GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "term_box", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME
@@ -137,7 +137,7 @@ void NcbiSearchDialogFiller::setTerm(const QVariant &actionData) {
     GT_CHECK(canConvert, "Can't get the block number and the query term from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
     QWidget *blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
-    GT_CHECK(NULL != blockWidget, "Block widget is NULL");
+    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "queryEditLineEdit", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME
@@ -154,7 +154,7 @@ void NcbiSearchDialogFiller::removeTerm(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the block number from the action data");
     QWidget *blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(actionData.toInt()), dialog);
-    GT_CHECK(NULL != blockWidget, "Block widget is NULL");
+    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_block_button", blockWidget));
 }
 #undef GT_METHOD_NAME
@@ -172,7 +172,7 @@ void NcbiSearchDialogFiller::checkQuery(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the expected query text from the action data");
     QTextEdit *queryEdit = GTWidget::findExactWidget<QTextEdit *>(os, "queryEdit", dialog);
-    GT_CHECK(NULL != queryEdit, "Query edit is NULL");
+    GT_CHECK(nullptr != queryEdit, "Query edit is NULL");
     GT_CHECK(actionData.toString() == queryEdit->toPlainText(), QString("Query text is unexpected: expect '%1', got '%2'").arg(actionData.toString()).arg(queryEdit->toPlainText()));
 }
 #undef GT_METHOD_NAME
@@ -182,7 +182,7 @@ void NcbiSearchDialogFiller::clickResultByNum(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the result number from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
-    GT_CHECK(NULL != treeWidget, "Tree widget is NULL");
+    GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
     QList<QTreeWidgetItem *> resultItems = GTTreeWidget::getItems(os, treeWidget);
     GT_CHECK(actionData.toInt() < resultItems.size(), "Result number is out of range");
     GTTreeWidget::click(os, resultItems[actionData.toInt()]);
@@ -197,8 +197,8 @@ void NcbiSearchDialogFiller::clickResultById(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the result ID from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
-    GT_CHECK(NULL != treeWidget, "Tree widget is NULL");
-    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), NULL, 0));
+    GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
+    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), nullptr, 0));
 }
 #undef GT_METHOD_NAME
 
@@ -207,8 +207,8 @@ void NcbiSearchDialogFiller::clickResultByDesc(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the result description from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
-    GT_CHECK(NULL != treeWidget, "Tree widget is NULL");
-    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), NULL, 1));
+    GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
+    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), nullptr, 1));
 }
 #undef GT_METHOD_NAME
 
@@ -217,8 +217,8 @@ void NcbiSearchDialogFiller::clickResultBySize(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the result sequence size from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
-    GT_CHECK(NULL != treeWidget, "Tree widget is NULL");
-    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), NULL, 2));
+    GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
+    GTTreeWidget::click(os, GTTreeWidget::findItem(os, treeWidget, actionData.toString(), nullptr, 2));
 }
 #undef GT_METHOD_NAME
 
@@ -336,9 +336,9 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
 
     if (doubleEnter) {
         QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-        GT_CHECK(box != NULL, "buttonBox is NULL");
+        GT_CHECK(box != nullptr, "buttonBox is NULL");
         QPushButton *button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != NULL, "cancel button is NULL");
+        GT_CHECK(button != nullptr, "cancel button is NULL");
         GTWidget::click(os, button);
         return;
     }
@@ -354,13 +354,13 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
     GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
 
     button = box->button(QDialogButtonBox::Cancel);
-    GT_CHECK(button != NULL, "cancel button is NULL");
+    GT_CHECK(button != nullptr, "cancel button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME

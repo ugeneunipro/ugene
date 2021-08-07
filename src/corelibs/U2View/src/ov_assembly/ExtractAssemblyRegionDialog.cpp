@@ -42,14 +42,14 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget *p, ExtractAsse
     : QDialog(p), settings(settings) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "60228221");
+    new HelpButton(this, buttonBox, "65929853");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController();
 
     QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), settings->regionToExtract);
-    regionSelector = new RegionSelector(this, settings->assemblyLength, false, NULL, false, presets);
+    regionSelector = new RegionSelector(this, settings->assemblyLength, false, nullptr, false, presets);
     regionSelector->setCurrentPreset(tr("Visible"));
     regionSelector->removePreset(RegionSelector::WHOLE_SEQUENCE);
     regionSelectorWidget->layout()->addWidget(regionSelector);

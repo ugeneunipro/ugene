@@ -22,11 +22,12 @@
 #ifndef _U2_INSILICO_PCR_WORKER_H_
 #define _U2_INSILICO_PCR_WORKER_H_
 
+#include <U2Core/Primer.h>
+
 #include <U2Lang/BaseThroughWorker.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "InSilicoPcrTask.h"
-#include "Primer.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -58,14 +59,14 @@ public:
         QMap<int, int> productsNumber;    // pair number -> products count
     };
 
-    InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl);
+    InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &primersUrl);
     void run();
 
 private:
     QByteArray chapterName(const QString &name) const;
-    QByteArray createReport() const;
+    QString createReport();
     QByteArray productsTable() const;
-    QByteArray primerDetails() const;
+    QString primerDetails();
     QByteArray chapterContent(const QByteArray &content) const;
     QByteArray chapter(const QByteArray &name, const QByteArray &content) const;
     QString readHtml() const;
@@ -74,6 +75,7 @@ private:
     QList<TableRow> table;
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
+    QString primersUrl;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {

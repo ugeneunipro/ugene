@@ -35,7 +35,7 @@ namespace U2 {
 NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names)
     : QDialog(parent), inSlots(inSlots), names(names) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -92,17 +92,17 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
     } else if (BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type ||
                BaseTypes::ANNOTATION_TABLE_TYPE() == type) {
         GrouperSlotsCfgModel *m = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
-        assert(NULL != m);
+        assert(nullptr != m);
         QStringList mergeSeqSlots = m->getMergeSeqSlotsNames();
         return new AnnsActionDialog(parent, action, mergeSeqSlots);
     }
-    return NULL;
+    return nullptr;
 }
 
 AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -112,7 +112,7 @@ AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, Q
     }
 
     int idx = 0;
-    if (NULL != action) {
+    if (nullptr != action) {
         assert(ActionTypes::MERGE_ANNS == action->getType());
         if (action->hasParameter(ActionParameters::SEQ_SLOT)) {
             QString offsetSlot = action->getParameterValue(ActionParameters::SEQ_SLOT).toString();
@@ -148,11 +148,11 @@ GrouperSlotAction AnnsActionDialog::getAction() const {
 SequeceActionDialog::SequeceActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    if (NULL != action) {
+    if (nullptr != action) {
         if (ActionTypes::MERGE_SEQUENCE == action->getType()) {
             mergeSeqButton->setChecked(true);
 
@@ -212,10 +212,10 @@ GrouperSlotAction SequeceActionDialog::getAction() const {
 MsaActionDialog::MsaActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    if (NULL != action) {
+    if (nullptr != action) {
         assert(ActionTypes::MERGE_MSA == action->getType());
         if (action->hasParameter(ActionParameters::MSA_NAME)) {
             QString msaName = action->getParameterValue(ActionParameters::MSA_NAME).toString();
@@ -245,10 +245,10 @@ GrouperSlotAction MsaActionDialog::getAction() const {
 StringActionDialog::StringActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    if (NULL != action) {
+    if (nullptr != action) {
         assert(ActionTypes::MERGE_STRING == action->getType());
         if (action->hasParameter(ActionParameters::SEPARATOR)) {
             QString sep = action->getParameterValue(ActionParameters::SEPARATOR).toString();

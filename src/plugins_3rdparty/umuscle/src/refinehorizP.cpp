@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
@@ -178,7 +181,7 @@ namespace U2 {
             
             unsigned i = workpool->refineGetJob(&msaIn, workerID);
 
-            MuscleContext *ctx = workpool->ctx;
+//            MuscleContext *ctx = workpool->ctx;
 //            unsigned &g_uTreeSplitNode1 = ctx->muscle.g_uTreeSplitNode1;
 //            unsigned &g_uTreeSplitNode2 = ctx->muscle.g_uTreeSplitNode2;
 //            unsigned &g_uRefineHeightSubtree = ctx->refinehoriz.g_uRefineHeightSubtree;

@@ -65,12 +65,12 @@ void OffsetRegions::clear() {
 
 McaReferenceCharController::McaReferenceCharController(QObject *p, McaEditor *editor)
     : QObject(p),
-      refObject(NULL),
+      refObject(nullptr),
       ungappedLength(-1) {
     SequenceObjectContext *ctx = editor->getReferenceContext();
-    SAFE_POINT(ctx != NULL, "SequenceObjectContext is NULL", );
+    SAFE_POINT(ctx != nullptr, "SequenceObjectContext is NULL", );
     refObject = ctx->getSequenceObject();
-    SAFE_POINT(ctx != NULL, "Reference U2SequenceObject is NULL", );
+    SAFE_POINT(ctx != nullptr, "Reference U2SequenceObject is NULL", );
     initRegions();
 
     connect(refObject, SIGNAL(si_sequenceChanged()), SLOT(sl_update()));
@@ -125,7 +125,7 @@ void McaReferenceCharController::sl_update(const MultipleAlignment &, const MaMo
 
 void McaReferenceCharController::initRegions() {
     charRegions.clear();
-    SAFE_POINT(refObject != NULL, "MCA reference object is NULL", );
+    SAFE_POINT(refObject != nullptr, "MCA reference object is NULL", );
 
     U2OpStatusImpl os;
     QByteArray data = refObject->getWholeSequenceData(os);

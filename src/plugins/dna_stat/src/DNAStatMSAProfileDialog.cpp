@@ -33,6 +33,7 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -49,9 +50,9 @@ const QString DNAStatMSAProfileDialog::CSV = "csv";
 DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget *p, MSAEditor *_c)
     : QDialog(p),
       ctx(_c),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228077");
+    new HelpButton(this, buttonBox, "65929709");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     initSaveController();
@@ -71,7 +72,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString &newFormat) {
 
 void DNAStatMSAProfileDialog::initSaveController() {
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     QString domain = "plugin_dna_stat";
@@ -101,7 +102,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     s.profileName = msaObj->getGObjectName();
@@ -121,6 +122,14 @@ void DNAStatMSAProfileDialog::accept() {
     }
     AppContext::getTaskScheduler()->registerTopLevelTask(new DNAStatMSAProfileTask(s));
     QDialog::accept();
+}
+
+void DNAStatMSAProfileDialog::showAlignmentIsTooBigWarning() {
+    warningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>")
+        .arg(Theme::errorColorLabelHtmlStr())
+        .arg(tr("Warning: report is too big to be shown in UGENE.")));
+    saveBox->setChecked(true);
+    saveBox->setCheckable(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,7 +152,7 @@ void DNAStatMSAProfileTask::run() {
         return;
     }
 
-    QFile *f = NULL;
+    QFile *f = nullptr;
     if (s.outFormat == DNAStatMSAProfileOutputFormat_Show || s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
         bool forIntervalViewer = s.outFormat == DNAStatMSAProfileOutputFormat_Show;
         if (s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
@@ -300,7 +309,7 @@ void DNAStatMSAProfileTask::run() {
         }
     }
 
-    if (f != NULL) {
+    if (f != nullptr) {
         f->write(resultText.toLocal8Bit());
         f->close();
         delete f;

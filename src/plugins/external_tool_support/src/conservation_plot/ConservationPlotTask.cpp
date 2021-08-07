@@ -49,9 +49,9 @@ namespace U2 {
 const QString ConservationPlotTask::BASE_DIR_NAME("ConservationPlot_tmp");
 
 ConservationPlotTask::ConservationPlotTask(const ConservationPlotSettings &_settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &_plotData)
-    : ExternalToolSupportTask("ConservationPlot annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), treatDoc(NULL), treatTask(NULL), storage(storage), plotData(_plotData), activeSubtasks(0), etTask(NULL) {
+    : ExternalToolSupportTask("ConservationPlot annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), treatDoc(nullptr), treatTask(nullptr), storage(storage), plotData(_plotData), activeSubtasks(0), etTask(nullptr) {
     GCOUNTER(cvar, "NGS:ConservationPlotTask");
-    SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
+    SAFE_POINT_EXT(nullptr != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 
 ConservationPlotTask::~ConservationPlotTask() {
@@ -62,7 +62,7 @@ void ConservationPlotTask::cleanup() {
     plotData.clear();
 
     delete treatDoc;
-    treatDoc = NULL;
+    treatDoc = nullptr;
 
     //remove tmp files
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BASE_DIR_NAME);
@@ -84,8 +84,8 @@ void ConservationPlotTask::prepare() {
     CHECK_OP(stateInfo, );
 
     foreach (const Workflow::SharedDbiDataHandler &annTableHandler, plotData) {
-        Document *bedDoc = NULL;
-        SaveDocumentTask *saveTask = NULL;
+        Document *bedDoc = nullptr;
+        SaveDocumentTask *saveTask = nullptr;
 
         QString name = getSettings().label;
         name = name.replace(' ', '_');
@@ -105,12 +105,12 @@ void ConservationPlotTask::prepare() {
 }
 
 Document *ConservationPlotTask::createDoc(const Workflow::SharedDbiDataHandler &annTableHandler, const QString &name) {
-    Document *doc = NULL;
+    Document *doc = nullptr;
 
     QString docUrl = workingDir + "/" + name + ".bed";
 
     DocumentFormat *bedFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BED);
-    CHECK_EXT(NULL != bedFormat, stateInfo.setError("NULL bed format"), doc);
+    CHECK_EXT(nullptr != bedFormat, stateInfo.setError("NULL bed format"), doc);
 
     doc = bedFormat->createNewLoadedDocument(
         IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), docUrl, stateInfo);
@@ -118,7 +118,7 @@ Document *ConservationPlotTask::createDoc(const Workflow::SharedDbiDataHandler &
     doc->setDocumentOwnsDbiResources(false);
 
     AnnotationTableObject *annTable = Workflow::StorageUtils::getAnnotationTableObject(storage, annTableHandler);
-    SAFE_POINT_EXT(NULL != annTable, setError(tr("An annotation table object wasn't found in the workflow data storage")), NULL);
+    SAFE_POINT_EXT(nullptr != annTable, setError(tr("An annotation table object wasn't found in the workflow data storage")), nullptr);
     doc->addObject(annTable);
 
     return doc;
@@ -148,7 +148,7 @@ QList<Task *> ConservationPlotTask::onSubTaskFinished(Task *subTask) {
             QStringList args = settings.getArguments(docNames);
 
             ExternalTool *rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
-            SAFE_POINT(NULL != rTool, "R script tool wasn't found in the registry", result);
+            SAFE_POINT(nullptr != rTool, "R script tool wasn't found in the registry", result);
             const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
             etTask = new ExternalToolRunTask(ConservationPlotSupport::ET_CONSERVATION_PLOT_ID, args, new ConservationPlotLogParser(), workingDir, QStringList() << rDir);

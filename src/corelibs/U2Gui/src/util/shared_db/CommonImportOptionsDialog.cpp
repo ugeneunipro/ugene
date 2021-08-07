@@ -30,7 +30,7 @@ namespace U2 {
 CommonImportOptionsDialog::CommonImportOptionsDialog(const QString &baseFolder, const ImportToDatabaseOptions &options, QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229313");
+    new HelpButton(this, buttonBox, "65930945");
     init(baseFolder, options);
 }
 

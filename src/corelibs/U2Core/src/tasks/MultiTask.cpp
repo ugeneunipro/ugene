@@ -36,7 +36,7 @@ MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withL
         addSubTask(t);
     }
     if (withLock) {
-        SAFE_POINT(AppContext::getProject() != NULL, "MultiTask::no project", );
+        SAFE_POINT(AppContext::getProject() != nullptr, "MultiTask::no project", );
         l = new StateLock(getTaskName(), StateLockFlag_LiveLock);
         AppContext::getProject()->lockState(l);
     }

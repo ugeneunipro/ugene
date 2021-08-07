@@ -65,11 +65,11 @@ namespace U2 {
 
 LoadUnloadedDocumentTask::LoadUnloadedDocumentTask(Document *d, const LoadDocumentTaskConfig &_config)
     : DocumentProviderTask("", TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_CollectChildrenWarnings),
-      loadTask(NULL),
+      loadTask(nullptr),
       unloadedDoc(d),
       config(_config) {
     assert(config.checkObjRef.objType != GObjectTypes::UNLOADED);
-    assert(unloadedDoc != NULL);
+    assert(unloadedDoc != nullptr);
 
     setVerboseLogMode(true);
     setTaskName(tr("Load '%1'").arg(d->getName()));
@@ -79,7 +79,7 @@ LoadUnloadedDocumentTask::LoadUnloadedDocumentTask(Document *d, const LoadDocume
 }
 
 void LoadUnloadedDocumentTask::prepare() {
-    if (unloadedDoc == NULL) {
+    if (unloadedDoc == nullptr) {
         stateInfo.setError(tr("Document not found"));
         return;
     }
@@ -112,7 +112,7 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
     Task::ReportResult res = ReportResult_Finished;
     Project *p = AppContext::getProject();
 
-    if (unloadedDoc == NULL) {
+    if (unloadedDoc == nullptr) {
         stateInfo.setError(tr("Document was removed"));
     } else {
         propagateSubtaskError();
@@ -123,7 +123,7 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
             clearResourceUse();
             resName.clear();
         }
-    } else if (isCanceled() || (loadTask != NULL && loadTask->isCanceled())) {
+    } else if (isCanceled() || (loadTask != nullptr && loadTask->isCanceled())) {
         //do nothing
     } else if (unloadedDoc->isLoaded()) {
         //do nothing
@@ -168,16 +168,16 @@ LoadUnloadedDocumentTask *LoadUnloadedDocumentTask::findActiveLoadingTask(Docume
     QList<Task *> tasks = AppContext::getResourceTracker()->getResourceUsers(res);
     foreach (Task *t, tasks) {
         LoadUnloadedDocumentTask *lut = qobject_cast<LoadUnloadedDocumentTask *>(t);
-        if (lut != NULL) {
+        if (lut != nullptr) {
             return lut;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool LoadUnloadedDocumentTask::addLoadingSubtask(Task *t, const LoadDocumentTaskConfig &config) {
     GObject *o = GObjectUtils::selectObjectByReference(config.checkObjRef, UOF_LoadedAndUnloaded);
-    if (o == NULL) {
+    if (o == nullptr) {
         t->setError(tr("Annotation object not found"));
         return false;
     }
@@ -190,7 +190,7 @@ bool LoadUnloadedDocumentTask::addLoadingSubtask(Task *t, const LoadDocumentTask
 
 Document *LoadUnloadedDocumentTask::getDocument(bool) {
     if (unloadedDoc.isNull()) {
-        return NULL;
+        return nullptr;
     }
     return DocumentProviderTask::getDocument();
 }
@@ -200,7 +200,7 @@ Document *LoadUnloadedDocumentTask::getDocument(bool) {
 
 LoadDocumentTask::LoadDocumentTask(DocumentFormatId f, const GUrl &u, IOAdapterFactory *i, const QVariantMap &map, const LoadDocumentTaskConfig &_config)
     : DocumentProviderTask("", TaskFlag_None),
-      format(NULL),
+      format(nullptr),
       url(u),
       iof(i),
       hints(map),
@@ -213,7 +213,7 @@ LoadDocumentTask::LoadDocumentTask(DocumentFormatId f, const GUrl &u, IOAdapterF
 
 LoadDocumentTask::LoadDocumentTask(DocumentFormat *f, const GUrl &u, IOAdapterFactory *i, const QVariantMap &map, const LoadDocumentTaskConfig &_config)
     : DocumentProviderTask("", TaskFlag_None),
-      format(NULL),
+      format(nullptr),
       url(u),
       iof(i),
       hints(map),
@@ -239,8 +239,8 @@ static bool isLoadFromMultipleFiles(QVariantMap &hints) {
 
 void LoadDocumentTask::init() {
     tpm = Progress_Manual;
-    CHECK_EXT(format != NULL, setError(tr("Document format is NULL!")), );
-    CHECK_EXT(iof != NULL, setError(tr("IO adapter factory is NULL!")), );
+    CHECK_EXT(format != nullptr, setError(tr("Document format is NULL!")), );
+    CHECK_EXT(iof != nullptr, setError(tr("IO adapter factory is NULL!")), );
     documentDescription = url.getURLString();
     if (format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE)) {
         CaseAnnotationsMode mode = AppContext::getAppSettings()->getFormatAppsSettings()->getCaseAnnotationsMode();
@@ -254,39 +254,39 @@ LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const
 }
 
 LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints) {
-    CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), NULL);
+    CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), nullptr);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    CHECK_EXT(iof != nullptr, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), NULL);
+    CHECK_EXT(iof != nullptr, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), nullptr);
 
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
-    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), NULL);
+    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), nullptr);
 
     DocumentFormat *df = dfs.first().format;
-    SAFE_POINT_EXT(NULL != df, os.setError(tr("Document format is NULL (format ID: '%1', file URL: '%2')").arg(df->getFormatId()).arg(url.getURLString())), NULL);
+    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is NULL (format ID: '%1', file URL: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
     return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 
 DocumentProviderTask *LoadDocumentTask::getCommonLoadDocTask(const GUrl &url) {
     if (url.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    if (iof == NULL) {
-        return NULL;
+    if (iof == nullptr) {
+        return nullptr;
     }
 
     FormatDetectionConfig conf;
     conf.useImporters = true;
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url, conf);
     if (dfs.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
     DocumentFormat *df = dfs.first().format;
     DocumentImporter *di = dfs.first().importer;
-    DocumentProviderTask *task = NULL;
+    DocumentProviderTask *task = nullptr;
 
     if (df) {
         task = new LoadDocumentTask(df->getFormatId(), url, iof);
@@ -339,14 +339,14 @@ static QList<Document *> loadMulti(const QVariantMap &fs, U2OpStatus &os) {
         QVariantMap fsLocal;
         fsLocal.unite(fs);
         fsLocal.remove(DocumentReadingMode_SequenceMergeGapSize);
-        SAFE_POINT_EXT(AppContext::getDocumentFormatRegistry() != NULL, os.setError("DocumentFormatRegistry is NULL"), docs);
+        SAFE_POINT_EXT(AppContext::getDocumentFormatRegistry() != nullptr, os.setError("DocumentFormatRegistry is NULL"), docs);
         DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formats[0].format->getFormatId());
-        SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != NULL, os.setError("IOAdapterRegistry is NULL"), docs);
+        SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, os.setError("IOAdapterRegistry is NULL"), docs);
         IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(gurl));
-        SAFE_POINT_EXT(factory != NULL, os.setError("IOAdapterFactory is NULL"), docs);
+        SAFE_POINT_EXT(factory != nullptr, os.setError("IOAdapterFactory is NULL"), docs);
         Document *doc = df->loadDocument(factory, gurl, fsLocal, localOs);
         CHECK_OP(os, docs);
-        SAFE_POINT_EXT(doc != NULL, os.setError("Document is NULL"), docs);
+        SAFE_POINT_EXT(doc != nullptr, os.setError("Document is NULL"), docs);
         docs << df->loadDocument(factory, gurl, fsLocal, localOs);
 
         CHECK_OP(os, docs);
@@ -378,10 +378,10 @@ static Document *loadFromMultipleFiles(IOAdapterFactory *iof, QVariantMap &fs, U
         foreach (Document *doc, docs) {
             delete doc;
         }
-        return NULL;
+        return nullptr;
     }
 
-    Document *doc = NULL;
+    Document *doc = nullptr;
     QString newStringUrl = fs[ProjectLoaderHint_MultipleFilesMode_URLDocument].toString();
     GUrl newUrl(newStringUrl, GUrl_File);
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(fs[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat].toString());
@@ -391,18 +391,18 @@ static Document *loadFromMultipleFiles(IOAdapterFactory *iof, QVariantMap &fs, U
     if (fs.value(DocumentReadingMode_SequenceMergeGapSize, -1) != -1) {
         ref = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         QList<GObject *> sequences = U1SequenceUtils::mergeSequences(docs, ref, newStringUrl, fs, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
         newObjects << sequences;
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
         MultipleSequenceAlignmentObject *msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
-        CHECK_OP(os, NULL);
-        SAFE_POINT_EXT(NULL != msaObject, os.setError("The alignment object is NULL!"), NULL);
+        CHECK_OP(os, nullptr);
+        SAFE_POINT_EXT(nullptr != msaObject, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;
         ref = U2DbiRef();
     } else {
         os.setError("Multiple files reading mode: unsupported flags");
     }
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     doc = new Document(df, iof, newUrl, ref, newObjects, fs);
 
@@ -434,17 +434,17 @@ void LoadDocumentTask::run() {
         } else {
             resultDocument = format->loadDocument(iof, url, hints, stateInfo);
         }
-    } catch (std::bad_alloc) {
-        resultDocument = NULL;
+    } catch (std::bad_alloc &) {
+        resultDocument = nullptr;
         setError(tr("Not enough memory to load document %1").arg(url.getURLString()));
     }
 
-    if (resultDocument != NULL) {
+    if (resultDocument != nullptr) {
         if (!renameList.isEmpty()) {
             renameObjects(resultDocument, renameList);
         }
         Document *convertedDoc = DocumentUtils::createCopyRestructuredWithHints(resultDocument, stateInfo, true);
-        if (convertedDoc != NULL) {
+        if (convertedDoc != nullptr) {
             delete resultDocument;
             resultDocument = convertedDoc;
         }
@@ -454,18 +454,18 @@ void LoadDocumentTask::run() {
             if (docObjects > maxObjects) {
                 setError(tr("Maximum number of objects per document limit reached for %1. Try different options for opening the document!").arg(resultDocument->getURLString()));
                 delete resultDocument;
-                resultDocument = NULL;
+                resultDocument = nullptr;
             }
         }
     }
     if (config.checkObjRef.isValid() && !hasError()) {
         processObjRef();
     }
-    if ((NULL != resultDocument) && hints.value(ProjectLoaderHint_DontCheckForExistence, false).toBool()) {
+    if ((nullptr != resultDocument) && hints.value(ProjectLoaderHint_DontCheckForExistence, false).toBool()) {
         resultDocument->getGHints()->set(ProjectLoaderHint_DontCheckForExistence, true);
     }
-    assert(stateInfo.isCoR() || resultDocument != NULL);
-    assert(resultDocument == NULL || resultDocument->isLoaded());
+    assert(stateInfo.isCoR() || resultDocument != nullptr);
+    assert(resultDocument == nullptr || resultDocument->isLoaded());
 }
 
 Task::ReportResult LoadDocumentTask::report() {
@@ -478,10 +478,10 @@ Task::ReportResult LoadDocumentTask::report() {
 
 void LoadDocumentTask::processObjRef() {
     assert(config.checkObjRef.isValid());
-    assert(resultDocument != NULL);
+    assert(resultDocument != nullptr);
 
-    if (GObjectUtils::selectObjectByReference(config.checkObjRef, resultDocument->getObjects(), UOF_LoadedOnly) == NULL) {
-        if (config.objFactory == NULL) {
+    if (GObjectUtils::selectObjectByReference(config.checkObjRef, resultDocument->getObjects(), UOF_LoadedOnly) == nullptr) {
+        if (config.objFactory == nullptr) {
             stateInfo.setError(tr("Object not found: %1").arg(config.checkObjRef.objName));
         } else {
             assert(!resultDocument->isStateLocked());
@@ -492,7 +492,7 @@ void LoadDocumentTask::processObjRef() {
                 stateInfo.setError(tr("Can't add object. Document format constraints check failed: %1").arg(resultDocument->getName()));
             } else {
                 GObject *obj = config.objFactory->create(config.checkObjRef);
-                assert(obj != NULL);
+                assert(obj != nullptr);
                 resultDocument->addObject(obj);
             }
         }
@@ -566,10 +566,10 @@ QString LoadDocumentTask::getURLString() const {
 
 GObject *LDTObjectFactory::create(const GObjectReference &ref) {
     // TODO: handle other core types
-    SAFE_POINT(ref.objType == GObjectTypes::ANNOTATION_TABLE, "Invalid object type!", NULL);
+    SAFE_POINT(ref.objType == GObjectTypes::ANNOTATION_TABLE, "Invalid object type!", nullptr);
     U2OpStatusImpl os;
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
     return new AnnotationTableObject(ref.objName, dbiRef);
 }
 

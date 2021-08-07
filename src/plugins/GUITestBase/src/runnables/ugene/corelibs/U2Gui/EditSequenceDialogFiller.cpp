@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -47,9 +48,8 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
       useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {
     if (!documentLocation.isEmpty()) {
-        documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + documentLocation);
+        documentLocation = GTFileDialog::toAbsoluteNativePath(documentLocation);
     }
-    documentLocation = QDir::toNativeSeparators(documentLocation);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
     mergeAnnotations = _mergeAnnotations;
@@ -58,55 +58,55 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
 #define GT_METHOD_NAME "commonScenario"
 void InsertSequenceFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-    GT_CHECK(plainText != NULL, "plain text not found");
+    GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     QString radioButtonName;
     switch (regionResolvingMode) {
-    case Resize:
-        radioButtonName = "resizeRB";
-        break;
-    case Remove:
-        radioButtonName = "removeRB";
-        break;
-    case SplitJoin:
-        radioButtonName = "splitRB";
-        break;
-    case SplitSeparate:
-        radioButtonName = "split_separateRB";
-        break;
+        case Resize:
+            radioButtonName = "resizeRB";
+            break;
+        case Remove:
+            radioButtonName = "removeRB";
+            break;
+        case SplitJoin:
+            radioButtonName = "splitRB";
+            break;
+        case SplitSeparate:
+            radioButtonName = "split_separateRB";
+            break;
     }
 
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     QRadioButton *regionResolvingMode = dialog->findChild<QRadioButton *>(radioButtonName);    //"regionResolvingMode");
-    GT_CHECK(regionResolvingMode != NULL, "regionResolvingMode not found");
+    GT_CHECK(regionResolvingMode != nullptr, "regionResolvingMode not found");
     GTRadioButton::click(os, regionResolvingMode);
 
     QSpinBox *insertPositionSpin = dialog->findChild<QSpinBox *>("insertPositionSpin");
-    GT_CHECK(insertPositionSpin != NULL, "insertPositionSpin not found");
+    GT_CHECK(insertPositionSpin != nullptr, "insertPositionSpin not found");
     GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
 
     QGroupBox *checkButton = dialog->findChild<QGroupBox *>(QString::fromUtf8("saveToAnotherBox"));
-    GT_CHECK(checkButton != NULL, "Check box not found");
+    GT_CHECK(checkButton != nullptr, "Check box not found");
 
     if ((saveToNewFile && !checkButton->isChecked()) || (!saveToNewFile && checkButton->isChecked())) {
         QPoint checkPos;
         switch (useMethod) {
-        case GTGlobals::UseMouse:
-            checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
-            GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
-            GTMouseDriver::click();
-            break;
-        case GTGlobals::UseKey:
-            GTWidget::setFocus(os, checkButton);
-            GTKeyboardDriver::keyClick(Qt::Key_Space);
-            break;
-        default:
-            break;
+            case GTGlobals::UseMouse:
+                checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
+                GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
+                GTMouseDriver::click();
+                break;
+            case GTGlobals::UseKey:
+                GTWidget::setFocus(os, checkButton);
+                GTKeyboardDriver::keyClick(Qt::Key_Space);
+                break;
+            default:
+                break;
         }
     }
 
@@ -114,15 +114,15 @@ void InsertSequenceFiller::commonScenario() {
 
     if (saveToNewFile) {
         QCheckBox *checkButton1 = dialog->findChild<QCheckBox *>(QString::fromUtf8("mergeAnnotationsBox"));
-        GT_CHECK(checkButton1 != NULL, "Check box not found");
+        GT_CHECK(checkButton1 != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton1, mergeAnnotations);
 
         QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
-        GT_CHECK(lineEdit != NULL, "line edit not found");
+        GT_CHECK(lineEdit != nullptr, "line edit not found");
         GTLineEdit::setText(os, lineEdit, documentLocation);
 
         QComboBox *comboBox = dialog->findChild<QComboBox *>();
-        GT_CHECK(comboBox != NULL, "ComboBox not found");
+        GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
         int index = comboBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

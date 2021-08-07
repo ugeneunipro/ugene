@@ -63,7 +63,7 @@ AppSettingsGUIPageWidget *NetworkSettingsPageController::createWidget(AppSetting
     return r;
 }
 
-const QString NetworkSettingsPageController::helpPageId = QString("60227717");
+const QString NetworkSettingsPageController::helpPageId = QString("65929349");
 
 NetworkSettingsPageWidget::NetworkSettingsPageWidget() {
     setupUi(this);
@@ -161,7 +161,7 @@ AppSettingsGUIPageState *NetworkSettingsPageWidget::getState(QString &err) const
             webBrowserEdit->setFocus();
             err = tr("File not exists");
             delete state;
-            return NULL;
+            return nullptr;
         }
         state->webBrowserUrl = wbUrl;
         state->useDefaultWebBrowser = false;

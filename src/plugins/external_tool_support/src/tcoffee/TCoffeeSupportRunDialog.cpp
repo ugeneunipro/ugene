@@ -41,7 +41,7 @@ namespace U2 {
 TCoffeeSupportRunDialog::TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229215");
+    new HelpButton(this, buttonBox, "65930847");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -67,9 +67,9 @@ void TCoffeeSupportRunDialog::accept() {
 TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229215");
+    new HelpButton(this, buttonBox, "65930847");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "muscle.h"
 
 // Adjusted PAM200 scoring matrix as used by default in MAFFT.

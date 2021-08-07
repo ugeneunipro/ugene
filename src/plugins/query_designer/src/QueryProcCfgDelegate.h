@@ -76,7 +76,7 @@ public:
             QItemDelegate::setModelData(editor, model, index);
         }
 
-        QVariant val = model->data(index, (d == NULL) ? (int)Qt::EditRole : (int)ConfigurationEditor::ItemValueRole);
+        QVariant val = model->data(index, (d == nullptr) ? (int)Qt::EditRole : (int)ConfigurationEditor::ItemValueRole);
         if (val != old) {
             if (d) {
                 model->setData(index, d->getDisplayValue(val), Qt::DisplayRole);

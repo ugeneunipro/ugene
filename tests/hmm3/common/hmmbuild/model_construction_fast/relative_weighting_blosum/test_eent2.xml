@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wblosum fast eent, model: 2-Hacid_dh, has SS_cons, RF annotations
+	cmd: ./hmmbuild -fast -wblosum -eent -ere 7.9 1-cysPrx_C_wblosum_fast_eent2.hmm 1-cysPrx_C.sto -->
+
+    <uhmmer3-build inputFile="stockholm/1-cysPrx_C.sto" outputFile="test_1-cysPrx_C_wblosum_fast_eent2.hmm"
+                   mc="fast" rw="wblosum" ew="eent 7.9" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/1-cysPrx_C_wblosum_fast_eent2.hmm" file2="test_1-cysPrx_C_wblosum_fast_eent2.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

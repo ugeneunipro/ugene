@@ -34,17 +34,23 @@ class McaEditorStatusBar : public MaEditorStatusBar {
 public:
     McaEditorStatusBar(MultipleAlignmentObject *mobj,
                        MaEditorSequenceArea *seqArea,
-                       McaEditorNameList *nameList,
                        McaReferenceCharController *refCharController);
 
+    void setMutationStatus(bool isAlternativeMutationsEnabled);
+
 private:
+    /** Set ups initial layout of the status bar. Called as a part of the constructor. */
     void setupLayout();
-    void updateLabels();
-    void updateLineLabel();
-    void updatePositionLabel();
+
+    void updateLabels() override;
+    void updateLineLabel() override;
+    void updatePositionLabel() override;
+    void updateMutationsLabel();
 
     McaReferenceCharController *refCharController;
-    McaEditorNameList *nameList;
+    QLabel* mutationsStatus = nullptr;
+
+    static const QMap<bool, const char*> MUTATION_MODE_ON_OFF_STATE_MAP;
 };
 
 }    // namespace U2

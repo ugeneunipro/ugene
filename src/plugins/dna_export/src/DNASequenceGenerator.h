@@ -38,7 +38,7 @@ class SaveDocumentTask;
 class DNASequenceGeneratorConfig {
 public:
     DNASequenceGeneratorConfig()
-        : addToProj(false), saveDoc(true), alphabet(NULL), length(0), numSeqs(1), useRef(true), window(0), seed(0) {
+        : addToProj(false), saveDoc(true), alphabet(nullptr), length(0), numSeqs(1), useRef(true), window(0), seed(0) {
     }
 
     const DNAAlphabet *getAlphabet() const {
@@ -143,8 +143,8 @@ class GenerateDNASequenceTask : public Task {
 public:
     GenerateDNASequenceTask(const QMap<char, qreal> &baseContent_, int length_, int window_, int count_, int seed_);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     QList<U2Sequence> getResults() const {
         return results;

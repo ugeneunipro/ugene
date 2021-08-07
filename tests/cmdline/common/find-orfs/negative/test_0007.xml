@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="find-orfs"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_orfsn0007_tmp.gbk"
+                 require-stop-codon="true"
+                 require-init-codon="vv"
+                 allow-alternative-codons="true"
+                 min-length="5"
+                 message="Incorrect value"/>
+</multi-test>

@@ -84,7 +84,7 @@ public:
 class CEASReportPrompter : public PrompterBase<CEASReportPrompter> {
     Q_OBJECT
 public:
-    CEASReportPrompter(Actor *p = NULL)
+    CEASReportPrompter(Actor *p = nullptr)
         : PrompterBase<CEASReportPrompter>(p) {
     }
 

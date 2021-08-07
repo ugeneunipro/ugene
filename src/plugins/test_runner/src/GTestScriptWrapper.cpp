@@ -22,7 +22,8 @@
 #include "GTestScriptWrapper.h"
 
 #include <QScriptContext>
-#include <QScriptEngine>
+
+#include <U2Core/ScriptEngine.h>
 
 namespace U2 {
 
@@ -33,7 +34,7 @@ QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEn
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Mouse Click can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -76,7 +77,7 @@ QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptE
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Mouse DClick can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -119,7 +120,7 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
     int argsCount = ctx->argumentCount();
     if (argsCount > 0 && argsCount < 4) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Mouse Move can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -156,7 +157,7 @@ QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEn
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Mouse Press can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -199,7 +200,7 @@ QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScript
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Mouse Release can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -242,7 +243,7 @@ QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngi
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Key Click can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -280,7 +281,7 @@ QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEng
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Key Clicks can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -318,7 +319,7 @@ QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngi
     int argsCount = ctx->argumentCount();
     if (argsCount > 2 && argsCount < 6) {
         QWidget *widget = (QWidget *)ctx->argument(1).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Key Event can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -356,7 +357,7 @@ QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngi
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Key Press can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {
@@ -394,7 +395,7 @@ QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEn
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
         QWidget *widget = (QWidget *)ctx->argument(0).toQObject();
-        if (widget == NULL) {
+        if (widget == nullptr) {
             result = " Key Release can't find widget ";
             ctx->throwError(" can't find widget ");
         } else {

@@ -86,7 +86,9 @@ SplashScreenWidget::SplashScreenWidget() {
     setObjectName("splash_screen_widget");
 
     Version v = Version::appVersion();
-    version = v.text;
+    version = QString::number(v.major) +
+              (v.minor == 0 ? "" : "." + QString::number(v.minor)) +
+              (v.suffix.isEmpty() ? "" : "-" + v.suffix);
 
     QImage image(":ugene/images/ugene_splash.png");
     QSize widgetSize = image.size();
@@ -166,28 +168,8 @@ void SplashScreenWidget::drawInfo() {
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont(font);
     p.setPen(QColor(0, 46, 59));
-    auto versionWithoutDev = version.split("-").first();
-    auto majorAndMinorVersions = versionWithoutDev.split(".");
-    SAFE_POINT(majorAndMinorVersions.size() == 2, "Version has been split unexpetedly", );
 
-    bool ok = false;
-    auto minor = majorAndMinorVersions.last().toInt(&ok);
-    SAFE_POINT(ok, "Minor version isn't number", );
-
-    QString versionSign;
-    if (minor == 0) {
-        versionSign = majorAndMinorVersions.first();
-    } else {
-        versionSign = majorAndMinorVersions.join(".");
-    }
-
-    if (version.contains("-dev")) {
-        versionSign += "-dev";
-    }
-    QString text = tr("Version ") + versionSign + tr(" is loading");
-    for (int i = 0; i < dots_number; i++) {
-        text.append(".");
-    }
+    QString text = tr("Version ") + version + tr(" is loading") + QString(".").repeated(dots_number);
     p.drawText(17, 285, text);
 
     if (!activeTaskName.isEmpty()) {
@@ -196,6 +178,5 @@ void SplashScreenWidget::drawInfo() {
         p.setFont(font);
         p.drawText(18, 290 + VERSION_HEIGHT_PX, activeTaskName);
     }
-    p.end();
 }
 }    // namespace U2

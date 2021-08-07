@@ -49,9 +49,9 @@ const QString HmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt";
 HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
     : ExternalToolSupportTask(tr("HMMER search"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      saveSequenceTask(NULL),
-      hmmerTask(NULL),
-      parseTask(NULL),
+      saveSequenceTask(nullptr),
+      hmmerTask(nullptr),
+      parseTask(nullptr),
       removeWorkingDir(false),
       hmm2Mode(false) {
     GCOUNTER(cvar, "HMMER Search");
@@ -59,7 +59,7 @@ HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
 }
 
 QList<SharedAnnotationData> HmmerSearchTask::getAnnotations() const {
-    CHECK(NULL != parseTask, QList<SharedAnnotationData>());
+    CHECK(nullptr != parseTask, QList<SharedAnnotationData>());
     return parseTask->getAnnotations();
 }
 
@@ -67,7 +67,7 @@ void HmmerSearchTask::prepare() {
     prepareWorkingDir();
 
     if (settings.sequenceUrl.isEmpty()) {
-        SAFE_POINT_EXT(NULL != settings.sequence, setError(L10N::nullPointerError("sequence object")), );
+        SAFE_POINT_EXT(nullptr != settings.sequence, setError(L10N::nullPointerError("sequence object")), );
         prepareSequenceSaveTask();
         addSubTask(saveSequenceTask);
     } else {
@@ -88,7 +88,7 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
-        if (settings.annotationTable != NULL) {
+        if (settings.annotationTable != nullptr) {
             Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
             createAnnotationsTask->setSubtaskProgressWeight(5);
             result << createAnnotationsTask;
@@ -109,7 +109,7 @@ QString HmmerSearchTask::generateReport() const {
         return res;
     }
 
-    if (NULL != settings.annotationTable && NULL != settings.annotationTable->getDocument()) {
+    if (nullptr != settings.annotationTable && nullptr != settings.annotationTable->getDocument()) {
         res += "<tr><td><b>" + tr("Result annotation table: ") + "</b></td><td>" + settings.annotationTable->getDocument()->getName() + "</td></tr>";
     }
     res += "<tr><td><b>" + tr("Result annotation group: ") + "</b></td><td>" + settings.pattern.groupName + "</td></tr>";
@@ -178,19 +178,19 @@ QStringList HmmerSearchTask::getArguments() const {
     }
 
     switch (settings.useBitCutoffs) {
-    case HmmerSearchSettings::None:
-        break;
-    case HmmerSearchSettings::p7H_GA:
-        arguments << "--cut_ga";
-        break;
-    case HmmerSearchSettings::p7H_TC:
-        arguments << "--cut_nc";
-        break;
-    case HmmerSearchSettings::p7H_NC:
-        arguments << "--cut_tc";
-        break;
-    default:
-        FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
+        case HmmerSearchSettings::None:
+            break;
+        case HmmerSearchSettings::p7H_GA:
+            arguments << "--cut_ga";
+            break;
+        case HmmerSearchSettings::p7H_TC:
+            arguments << "--cut_nc";
+            break;
+        case HmmerSearchSettings::p7H_NC:
+            arguments << "--cut_tc";
+            break;
+        default:
+            FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
     }
 
     if (settings.doMax) {

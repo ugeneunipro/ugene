@@ -45,7 +45,7 @@ protected:
 private:
     void unlinkTopLevelMenu(QMenu *);
     void linkTopLevelMenu(QMenu *);
-    QMenu *createTopLevelMenu(const QString &sysName, const QString &title, const QString &afterSysName = QString::null);
+    QMenu *createTopLevelMenu(const QString &sysName, const QString &title, const QString &afterSysName = QString());
     void updateTopLevelMenuVisibility(QMenu *m);
     QMenuBar *menuBar;
     QList<QMenu *> toplevelMenus;

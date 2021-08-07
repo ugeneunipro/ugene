@@ -52,13 +52,13 @@ GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem *parent, qr
     QPointF p = mapFromScene(0, 0);
     setTransform(QTransform().translate(p.x(), p.y()).rotate((direction == GraphicsBranchItem::up ? -1 : 1) * h / M_PI * 180).translate(-p.x(), -p.y()));
 
-    if (from->getNameText() != NULL) {
+    if (from->getNameText() != nullptr) {
         nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
         nameText->setFont(from->getNameText()->font());
 
         nameText->setBrush(from->getNameText()->brush());
     }
-    if (from->getDistanceText() != NULL) {
+    if (from->getDistanceText() != nullptr) {
         distanceText = new QGraphicsSimpleTextItem(from->getDistanceText()->text(), this);
         distanceText->setFont(from->getDistanceText()->font());
         distanceText->setBrush(from->getDistanceText()->brush());
@@ -99,7 +99,7 @@ QPainterPath GraphicsCircularBranchItem::shape() const {
 }
 
 void GraphicsCircularBranchItem::setLabelPositions() {
-    if (nameText != NULL) {
+    if (nameText != nullptr) {
         QRectF rect = nameText->boundingRect();
         qreal h = rect.height();
         nameText->setPos(GraphicsBranchItem::TextSpace, -h * 0.5);
@@ -108,7 +108,7 @@ void GraphicsCircularBranchItem::setLabelPositions() {
             nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
     }
-    if (distanceText != NULL) {
+    if (distanceText != nullptr) {
         QRectF rect = distanceText->boundingRect();
         if (distanceText->scenePos().x() < 0) {
             QPointF p(rect.center().x(), rect.height());

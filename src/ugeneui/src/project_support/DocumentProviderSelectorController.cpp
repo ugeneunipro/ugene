@@ -72,7 +72,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     setupUi(this);
 
     setObjectName("Select Document Format");
-    new HelpButton(this, buttonBox, "60228067");
+    new HelpButton(this, buttonBox, "65929699");
     gbFormats->setTitle(QString("Options for %1").arg(url.fileName()));
     buttonBox->button(QDialogButtonBox::Cancel)->setAutoDefault(false);
     buttonBox->button(QDialogButtonBox::Cancel)->setDefault(false);
@@ -112,7 +112,7 @@ int DocumentProviderSelectorController::getSelectedFormatIdx() const {
 
 QString DocumentProviderSelectorController::getButtonName(const GObjectType &objectType) {
     GObjectViewFactoryRegistry *objectViewFactoriesRegistry = AppContext::getObjectViewFactoryRegistry();
-    SAFE_POINT(NULL != objectViewFactoriesRegistry, L10N::nullPointerError("Object View Factories Registry"), "");
+    SAFE_POINT(nullptr != objectViewFactoriesRegistry, L10N::nullPointerError("Object View Factories Registry"), "");
 
     QString typeName;
     QString id;
@@ -127,21 +127,21 @@ QString DocumentProviderSelectorController::getButtonName(const GObjectType &obj
     }
 
     GObjectViewFactory *factory = objectViewFactoriesRegistry->getFactoryById(id);
-    SAFE_POINT(NULL != factory, L10N::nullPointerError("GObject View Factory"), "");
+    SAFE_POINT(nullptr != factory, L10N::nullPointerError("GObject View Factory"), "");
 
     QString res = tr("%1 in the %2").arg(typeName).arg(factory->getName());
     return res;
 }
 
 ImportWidget *DocumentProviderSelectorController::getRadioButtonWgt(const FormatDetectionResult &result, QString &radioButtonName, const GUrl &url, int it) {
-    ImportWidget *wgt = NULL;
-    if (result.format != NULL) {
+    ImportWidget *wgt = nullptr;
+    if (result.format != nullptr) {
         GObjectType supportedType = result.format->getSupportedObjectTypes().toList().first();
         radioButtonName = result.format->getRadioButtonText();
         if (radioButtonName.isEmpty() && !supportedType.isEmpty()) {
             radioButtonName = getButtonName(supportedType);
         }
-    } else if (result.importer != NULL) {
+    } else if (result.importer != nullptr) {
         GObjectType supportedType = result.importer->getSupportedObjectTypes().toList().first();
         QString formatId = result.importer->getId();
         radioButtonName = result.importer->getRadioButtonText();
@@ -176,7 +176,7 @@ void DocumentProviderSelectorController::addFormatRadioButton(const GUrl &url, Q
     formatsLayout->addWidget(rbFormat);
 
     radioButtonConnectedWidget << wgt;
-    if (wgt != NULL) {
+    if (wgt != nullptr) {
         formatsLayout->addWidget(wgt);
     }
 }
@@ -187,7 +187,7 @@ void DocumentProviderSelectorController::accept() {
     int size = formatInfo.size();
     for (int i = 0; i < size; i++) {
         DocumentFormatId formatId;
-        if (radioButtonConnectedWidget[i] != NULL) {
+        if (radioButtonConnectedWidget[i] != nullptr) {
             QVariantMap settings = radioButtonConnectedWidget[i]->getSettings();
             formatId = settings[ImportHint_FormatId].toString();
             formatDetectionResults[i].rawDataCheckResult.properties.unite(settings);
@@ -207,18 +207,18 @@ void DocumentProviderSelectorController::sl_enableConvertInfo(int) {
     int size = formatsRadioButtons.size();
     for (int i = 0; i < size; i++) {
         bool state = formatsRadioButtons[i]->isChecked();
-        if (radioButtonConnectedWidget[i] != NULL) {
+        if (radioButtonConnectedWidget[i] != nullptr) {
             radioButtonConnectedWidget[i]->setEnabled(state);
         }
     }
 }
 
 void DocumentProviderSelectorController::fillTitle(const FormatDetectionResult &result) {
-    if (result.format != NULL) {
+    if (result.format != nullptr) {
         QString formatId = result.format->getFormatId();
         title += QString("%1__").arg(formatId);
         formatInfo << formatId;
-    } else if (result.importer != NULL) {
+    } else if (result.importer != nullptr) {
         QString formatId = result.importer->getId();
         title += QString("%1__").arg(formatId);
         formatInfo << formatId;

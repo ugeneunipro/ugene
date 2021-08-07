@@ -59,7 +59,7 @@ AppSettingsGUIPageWidget *LogSettingsPageController::createWidget(AppSettingsGUI
     return w;
 }
 
-const QString LogSettingsPageController::helpPageId = QString("60227724");
+const QString LogSettingsPageController::helpPageId = QString("65929356");
 
 //////////////////////////////////////////////////////////////////////////
 // widget
@@ -73,7 +73,7 @@ LogSettingsPageWidget::LogSettingsPageWidget() {
     connect(tableWidget, SIGNAL(currentCellChanged(int, int, int, int)), SLOT(sl_currentCellChanged(int, int, int, int)));
     connect(fileOutCB, SIGNAL(stateChanged(int)), SLOT(sl_outFileStateChanged(int)));
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // Layout fix for mac: the font size is bigger than in another systems.
     tableWidget->horizontalHeader()->setDefaultSectionSize(110);
 #endif
@@ -130,7 +130,7 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 
     QList<QString> categoryNames = settings.getLoggerSettings().keys();
-    qSort(categoryNames);
+    std::sort(categoryNames.begin(), categoryNames.end());
     foreach (const QString &categoryName, categoryNames) {
         const LoggerSettings &cs = settings.getLoggerSettings(categoryName);
         QTableWidgetItem *nameItem = new QTableWidgetItem(cs.categoryName);
@@ -147,7 +147,8 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
 
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(tableWidget->cellWidget(0, i + 1));
-        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked : Qt::PartiallyChecked);
+        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked
+                                                                                                                : Qt::PartiallyChecked);
     }
 
     tableWidget->resizeRowsToContents();
@@ -203,7 +204,7 @@ AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
         bool writeble = file.open(QIODevice::WriteOnly);
         file.close();
         if (!writeble || lf.fileName().isEmpty()) {
-            QMessageBox::warning(NULL, tr("Warning"), tr("Unable to open log file for writing, log writing to file disabled"), QMessageBox::Ok);
+            QMessageBox::warning(nullptr, tr("Warning"), tr("Unable to open log file for writing, log writing to file disabled"), QMessageBox::Ok);
             fileOutCB->setChecked(false);
         }
     }
@@ -258,7 +259,7 @@ void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem *item) {
     int nEqual = 0;
     for (int row = 1; row < tableWidget->rowCount(); row++) {
         QTableWidgetItem *catItem = tableWidget->item(row, column);
-        assert(catItem != NULL);
+        assert(catItem != nullptr);
         nEqual += catItem->checkState() == item->checkState() ? 1 : 0;
     }
     if (nEqual == tableWidget->rowCount() - 1) {

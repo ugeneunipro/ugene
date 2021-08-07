@@ -60,7 +60,7 @@ SplicedAlignmentTaskFactory *SplicedAlignmentTaskRegistry::getAlgorithm(const QS
     if (algMap.contains(algId)) {
         return algMap.value(algId);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

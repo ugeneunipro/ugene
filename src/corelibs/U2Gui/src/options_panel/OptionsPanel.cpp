@@ -40,7 +40,7 @@ OptionsPanel::OptionsPanel(GObjectView *_objView)
 }
 
 OptionsPanel::~OptionsPanel() {
-    if (NULL == widget->parentWidget()) {
+    if (nullptr == widget->parentWidget()) {
         delete widget;
     }
 }
@@ -75,7 +75,7 @@ void OptionsPanel::openGroupById(const QString &groupId, const QVariantMap &opti
 
 void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
     OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
-    SAFE_POINT(NULL != opWidgetFactory,
+    SAFE_POINT(nullptr != opWidgetFactory,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
 
     // Implement the logic of the groups opening/closing
@@ -127,7 +127,7 @@ void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &o
 
     QList<QWidget *> commonWidgets;
     foreach (OPCommonWidgetFactory *commonWidgetFactory, opCommonWidgetFactories) {
-        SAFE_POINT(NULL != commonWidgetFactory, "NULL OP common widget factory!", );
+        SAFE_POINT(nullptr != commonWidgetFactory, "NULL OP common widget factory!", );
         QWidget *commonWidget = commonWidgetFactory->createWidget(objView, options);
         commonWidgets.append(commonWidget);
     }
@@ -147,7 +147,7 @@ void OptionsPanel::closeOptionsGroup(const QString &groupId) {
     }
 
     GroupHeaderImageWidget *headerWidget = widget->findHeaderWidgetByGroupId(groupId);
-    SAFE_POINT(NULL != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
+    SAFE_POINT(nullptr != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
 
     widget->deleteOptionsWidget(groupId);
     headerWidget->setHeaderDeselected();
@@ -162,7 +162,7 @@ OPWidgetFactory *OptionsPanel::findFactoryByGroupId(const QString &groupId) {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

@@ -177,7 +177,7 @@ void PWMatrixWorkerFactory::init() {
 }
 
 Worker *PWMatrixWorkerFactory::createWorker(Actor *a) {
-    BaseWorker *w = NULL;
+    BaseWorker *w = nullptr;
     if (PWMatrixReader::ACTOR_ID == a->getProto()->getId()) {
         w = new PWMatrixReader(a);
     } else if (PWMatrixWriter::ACTOR_ID == a->getProto()->getId()) {
@@ -197,7 +197,7 @@ QString PWMatrixReadPrompter::composeRichDoc() {
 
 QString PWMatrixWritePrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(WMATRIX_IN_PORT_ID));
-    SAFE_POINT(NULL != input, "NULL input port", "");
+    SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(WMATRIX_IN_PORT_ID, PWMatrixWorkerFactory::WMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
@@ -220,7 +220,7 @@ Task *PWMatrixReader::tick() {
         tasks.append(t);
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void PWMatrixReader::sl_taskFinished() {
@@ -245,7 +245,7 @@ Task *PWMatrixWriter::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
-            return NULL;
+            return nullptr;
         }
         url = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
         fileMode = actor->getParameter(BaseAttributes::FILE_MODE_ATTRIBUTE().getId())->getAttributeValue<uint>(context);
@@ -278,7 +278,7 @@ Task *PWMatrixWriter::tick() {
     } else if (input->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -399,7 +399,7 @@ void PFMatrixWorkerFactory::init() {
 }
 
 Worker *PFMatrixWorkerFactory::createWorker(Actor *a) {
-    BaseWorker *w = NULL;
+    BaseWorker *w = nullptr;
     if (PFMatrixReader::ACTOR_ID == a->getProto()->getId()) {
         w = new PFMatrixReader(a);
     } else if (PFMatrixWriter::ACTOR_ID == a->getProto()->getId()) {
@@ -419,7 +419,7 @@ QString PFMatrixReadPrompter::composeRichDoc() {
 
 QString PFMatrixWritePrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(FMATRIX_IN_PORT_ID));
-    SAFE_POINT(NULL != input, "NULL input port", "");
+    SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(FMATRIX_IN_PORT_ID, PFMatrixWorkerFactory::FMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
@@ -442,7 +442,7 @@ Task *PFMatrixReader::tick() {
         tasks.append(t);
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void PFMatrixReader::sl_taskFinished() {
@@ -467,7 +467,7 @@ Task *PFMatrixWriter::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
-            return NULL;
+            return nullptr;
         }
         url = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
         fileMode = actor->getParameter(BaseAttributes::FILE_MODE_ATTRIBUTE().getId())->getAttributeValue<uint>(context);
@@ -500,7 +500,7 @@ Task *PFMatrixWriter::tick() {
     } else if (input->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 }    //namespace LocalWorkflow

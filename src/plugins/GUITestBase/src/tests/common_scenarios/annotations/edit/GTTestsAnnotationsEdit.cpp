@@ -59,7 +59,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
     //     2) UGENE window titled with text "UGENE"
     QString expectedTitle;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     expectedTitle = "proj2 UGENE";
 #else
     expectedTitle = "-* UGENE";
@@ -81,7 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != nullptr, "Item BB not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
@@ -111,7 +111,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != nullptr, "Item BB not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)");
 
@@ -122,7 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)") != NULL, "Item B_group not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)") != nullptr, "Item B_group not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
@@ -152,7 +152,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != nullptr, "Item BB not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)");
 
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC  (0, 1)") != NULL, "Item BB not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC  (0, 1)") != nullptr, "Item BB not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -190,7 +190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != nullptr, "Item CC not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -218,7 +218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != nullptr, "Item CC not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "CC");
     Runnable *filler1 = new EditAnnotationFiller(os, "C", "80 ..90");
@@ -227,7 +227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "C") != NULL, "Item C not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "C") != nullptr, "Item C not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -255,7 +255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != nullptr, "Item CC not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
     Runnable *filler1 = new EditAnnotationFiller(os, "BB", "30 ..120");
@@ -264,7 +264,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB") != NULL, "Item BB not found in tree widget");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB") != nullptr, "Item BB not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -529,7 +529,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
     QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", options);
-    CHECK_SET_ERR(NULL == annotationItem, "The annotation 'misc_feature' unexpectedly was not removed");
+    CHECK_SET_ERR(nullptr == annotationItem, "The annotation 'misc_feature' unexpectedly was not removed");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group_new", "misc_feature_1", "1..500"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
@@ -543,7 +543,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", options);
-    CHECK_SET_ERR(NULL == annotationItem, "The annotation 'misc_feature_1' unexpectedly was not removed");
+    CHECK_SET_ERR(nullptr == annotationItem, "The annotation 'misc_feature_1' unexpectedly was not removed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {

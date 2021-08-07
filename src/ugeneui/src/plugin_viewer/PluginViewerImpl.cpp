@@ -56,9 +56,9 @@ DisablePluginViewerTask::DisablePluginViewerTask(PluginViewerImpl *_pv)
 }
 
 Task::ReportResult DisablePluginViewerTask::report() {
-    AppContextImpl::getApplicationContext()->setPluginViewer(NULL);
+    AppContextImpl::getApplicationContext()->setPluginViewer(nullptr);
     delete pv->viewer;
-    pv->viewer = NULL;
+    pv->viewer = nullptr;
     return ReportResult_Finished;
 }
 

@@ -20,7 +20,7 @@
  */
 
 #include "TaskSchedulerImpl.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "SleepPreventerMac.h"
 #endif
 
@@ -93,7 +93,7 @@ TaskSchedulerImpl::~TaskSchedulerImpl() {
 
 void TaskSchedulerImpl::cancelTask(Task *task) {
     if (task->getState() < Task::State_Finished) {
-        taskLog.info(tr("Canceling task: %1").arg(task->getTaskName()));
+        taskLog.trace(tr("Canceling task: %1").arg(task->getTaskName()));
         getTaskStateInfo(task).cancelFlag = true;
         resumeThreadWithTask(task);    // for the case when task's thread is paused. it should be resumed and terminated
         foreach (const QPointer<Task> &t, task->getSubtasks()) {
@@ -116,7 +116,7 @@ void onBadAlloc(Task *task) {
 
 void TaskSchedulerImpl::propagateStateToParent(Task *task) {
     Task *parentTask = task->getParentTask();
-    if (parentTask == NULL) {
+    if (parentTask == nullptr) {
         return;
     }
     if (parentTask->hasError() || parentTask->isCanceled()) {
@@ -202,7 +202,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         hasFinished = true;
         promoteTask(ti, Task::State_Finished);
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QCoreApplication::processEvents();
 #endif
 
@@ -221,8 +221,8 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         // notify parent that subtask finished, check if there are new subtasks from parent
         if (pti != nullptr) {
             Task *parentTask = pti->task;
-            SAFE_POINT(parentTask != NULL, "When notifying parentTask about finished task: parentTask is NULL", hasFinished);
-            SAFE_POINT(task != NULL, "When notifying parentTask about finished task: task is NULL", hasFinished);
+            SAFE_POINT(parentTask != nullptr, "When notifying parentTask about finished task: parentTask is NULL", hasFinished);
+            SAFE_POINT(task != nullptr, "When notifying parentTask about finished task: task is NULL", hasFinished);
             propagateStateToParent(task);
             QList<Task *> newSubTasks;
             if (parentTask->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr) {
@@ -241,7 +241,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
                 newSubTasks = onSubTaskFinished(parentTask, task);
             }
             foreach (Task *newSub, newSubTasks) {
-                if (newSub != NULL) {
+                if (newSub != nullptr) {
                     pti->newSubtasks.append(newSub);
                     addSubTask(parentTask, newSub);
                 } else {
@@ -283,18 +283,18 @@ void TaskSchedulerImpl::processNewSubtasks() {
             Task *newSub = ti->newSubtasks[j];
             bool ok = addToPriorityQueue(newSub, ti);
             if (ok) {
-                ti->newSubtasks[j] = NULL;
+                ti->newSubtasks[j] = nullptr;
                 nRun++;
             }
         }
         if (nRun == nNew) {
             ti->newSubtasks.clear();
-            tasksWithNewSubtasks[i] = NULL;
+            tasksWithNewSubtasks[i] = nullptr;
         } else if (nRun > 0) {
-            ti->newSubtasks.removeAll(NULL);
+            ti->newSubtasks.removeAll(nullptr);
         }
     }
-    tasksWithNewSubtasks.removeAll(NULL);
+    tasksWithNewSubtasks.removeAll(nullptr);
 }
 
 void TaskSchedulerImpl::runReady() {
@@ -307,12 +307,12 @@ void TaskSchedulerImpl::runReady() {
             if (state == Task::State_Prepared) {
                 promoteTask(ti, Task::State_Running);
             }
-            if (ti->thread == NULL) {
+            if (ti->thread == nullptr) {
                 ti->selfRunFinished = true;
             }
             continue;
         }
-        if (ti->thread != NULL) {    //task is already running in a separate thread
+        if (ti->thread != nullptr) {    //task is already running in a separate thread
             assert(state == Task::State_Running);
             continue;
         }
@@ -359,7 +359,7 @@ void TaskSchedulerImpl::runThread(TaskInfo *ti) {
 }
 
 QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall) {
-    QString errorString = QString::null;
+    QString errorString = QString();
 
     if (prepareStage) {    //task must be New
         SAFE_POINT(task->getState() == Task::State_New, "Attempt to lock prepare-stage resources for non-NEW task!", L10N::internalError());
@@ -523,7 +523,7 @@ void TaskSchedulerImpl::prepareNewTasks() {
             }
             continue;
         }
-        bool ok = addToPriorityQueue(task, NULL);
+        bool ok = addToPriorityQueue(task, nullptr);
         if (!ok) {
             newTasks.append(task);
         }
@@ -556,7 +556,7 @@ void TaskSchedulerImpl::registerTopLevelTask(Task *task) {
 }
 
 bool TaskSchedulerImpl::addToPriorityQueue(Task *task, TaskInfo *pti) {
-    if (pti != NULL && (pti->task->isCanceled() || pti->task->hasError())) {    //canceled tasks are not processed
+    if (pti != nullptr && (pti->task->isCanceled() || pti->task->hasError())) {    //canceled tasks are not processed
         task->cancel();
     }
 
@@ -606,7 +606,7 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task *task, TaskInfo *pti) {
 }
 
 void TaskSchedulerImpl::unregisterTopLevelTask(Task *task) {
-    SAFE_POINT(task != NULL, "Trying to unregister NULL task", );
+    SAFE_POINT(task != nullptr, "Trying to unregister NULL task", );
     SAFE_POINT(topLevelTasks.contains(task), QString("Trying to unregister task that is not top-level"), );
     CHECK_OPERATIONS(loadingTasks.isEmpty() || !stateIsLoaded, assert(false), QString("Loading tasks are absent or the state shouldn't be 'loadled"));
 
@@ -638,7 +638,7 @@ void TaskSchedulerImpl::stopTask(Task *task) {
     foreach (TaskInfo *ti, priorityQueue) {    //stop task if its running
         if (ti->task == task) {
             cancelTask(task);
-            if (ti->thread != NULL && !ti->thread->isFinished()) {
+            if (ti->thread != nullptr && !ti->thread->isFinished()) {
                 ti->thread->wait();    //TODO: try avoid blocking here
             }
             assert(readyToFinish(ti));
@@ -707,8 +707,8 @@ static QString state2String(Task::State state) {
 void TaskSchedulerImpl::checkSerialPromotion(TaskInfo *pti, Task *subtask) {
 #ifdef _DEBUG
     assert(!subtask->isNew());    //must be promoted at this point -> check algorithm depends requirement
-    Task *task = pti == NULL ? NULL : pti->task;
-    if (task == NULL) {
+    Task *task = pti == nullptr ? nullptr : pti->task;
+    if (task == nullptr) {
         return;
     }
     int nParallel = task->getNumParallelSubtasks();
@@ -740,7 +740,7 @@ void TaskSchedulerImpl::checkSerialPromotion(TaskInfo *pti, Task *subtask) {
 }
 
 void TaskSchedulerImpl::createSleepPreventer() {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     sleepPreventer = new SleepPreventer;
 #else
     sleepPreventer = new SleepPreventerMac;
@@ -783,7 +783,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
     checkSerialPromotion(pti, ti->task);
     switch (newState) {
         case Task::State_Prepared:
-            if (pti != NULL) {
+            if (pti != nullptr) {
                 pti->numPreparedSubtasks++;
             }
             if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
@@ -792,7 +792,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
             break;
         case Task::State_Running:
             tti.startTime = GTimer::currentTimeMicros();
-            if (pti != NULL) {
+            if (pti != nullptr) {
                 pti->numPreparedSubtasks--;
                 pti->numRunningSubtasks++;
                 if (pti->task->getState() < Task::State_Running) {
@@ -805,7 +805,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
             checkFinishedState(ti);
             tti.finishTime = GTimer::currentTimeMicros();
             tsi.setDescription(QString());
-            if (pti != NULL) {
+            if (pti != nullptr) {
                 if (ti->selfRunFinished) {
                     pti->numRunningSubtasks--;
                 }
@@ -830,7 +830,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
     }
 #ifdef _DEBUG
     Task *parentTask = task->getParentTask();
-    if (parentTask != NULL) {
+    if (parentTask != nullptr) {
         int localPreparedSubs, localRunningSubs, localFinishedSubs, localNewSubs, localTotalSubs;
         localTotalSubs = localNewSubs = localPreparedSubs = localRunningSubs = localFinishedSubs = 0;
         foreach (const QPointer<Task> &sub, parentTask->getSubtasks()) {
@@ -918,7 +918,7 @@ void TaskSchedulerImpl::updateTaskProgressAndDesc(TaskInfo *ti) {
 }
 
 void TaskSchedulerImpl::deleteTask(Task *task) {
-    SAFE_POINT(task != NULL, "Trying to delete NULL task", );
+    SAFE_POINT(task != nullptr, "Trying to delete NULL task", );
     foreach (const QPointer<Task> &sub, task->getSubtasks()) {
         //todo: check subtask autodelete ??
         deleteTask(sub.data());
@@ -947,7 +947,7 @@ static QThread::Priority getThreadPriority(Task *t) {
 }
 
 static void updateThreadPriority(TaskInfo *ti) {
-    assert(ti->thread != NULL);
+    assert(ti->thread != nullptr);
     QThread::Priority tp = getThreadPriority(ti->task->getTopLevelParentTask());
     if (ti->thread->priority() != tp && ti->thread->isRunning()) {
         ti->thread->setPriority(tp);
@@ -964,7 +964,7 @@ void TaskSchedulerImpl::updateOldTasksPriority() {
     n = UPDATE_GRAN;
 
     foreach (TaskInfo *ti, priorityQueue) {
-        if (!ti->task->isRunning() || ti->thread == NULL || !ti->thread->isRunning()) {
+        if (!ti->task->isRunning() || ti->thread == nullptr || !ti->thread->isRunning()) {
             continue;
         }
         updateThreadPriority(ti);
@@ -987,9 +987,9 @@ void TaskSchedulerImpl::sl_processSubtasks() {
 }
 
 Task *TaskSchedulerImpl::getTopLevelTaskById(qint64 id) const {
-    Task *ret = NULL;
+    Task *ret = nullptr;
     foreach (Task *task, topLevelTasks) {
-        assert(NULL != task);
+        assert(nullptr != task);
         if (id == task->getTaskId()) {
             ret = task;
             break;
@@ -1009,14 +1009,14 @@ void TaskSchedulerImpl::pauseThreadWithTask(const Task *task) {
 
 void TaskSchedulerImpl::resumeThreadWithTask(const Task *task) {
     foreach (TaskInfo *ti, priorityQueue) {
-        if (task == ti->task && NULL != ti->thread && ti->thread->isPaused) {
+        if (task == ti->task && nullptr != ti->thread && ti->thread->isPaused) {
             ti->thread->resume();
         }
     }
 }
 
 void TaskSchedulerImpl::onSubTaskFinished(TaskThread *thread, Task *subtask) {
-    if (thread->ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && NULL != subtask && !thread->newSubtasksObtained) {
+    if (thread->ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && nullptr != subtask && !thread->newSubtasksObtained) {
         thread->subtasksLocker.lock();
         try {
             thread->unconsideredNewSubtasks = onSubTaskFinished(thread->ti->task, subtask);
@@ -1030,7 +1030,7 @@ void TaskSchedulerImpl::onSubTaskFinished(TaskThread *thread, Task *subtask) {
 
 TaskThread::TaskThread(TaskInfo *_ti)
     : ti(_ti),
-      finishEventListener(NULL),
+      finishEventListener(nullptr),
       subtasksLocker(),
       unconsideredNewSubtasks(),
       newSubtasksObtained(false),
@@ -1079,7 +1079,7 @@ void TaskThread::run() {
 }
 
 bool TaskThread::event(QEvent *event) {
-    QTimerEvent *timerEvent = NULL;
+    QTimerEvent *timerEvent = nullptr;
     switch (static_cast<int>(event->type())) {
         case GET_NEW_SUBTASKS_EVENT_TYPE:
             getNewSubtasks();
@@ -1092,7 +1092,7 @@ bool TaskThread::event(QEvent *event) {
             break;
         case QEvent::Timer:
             timerEvent = dynamic_cast<QTimerEvent *>(event);
-            assert(NULL != timerEvent);
+            assert(nullptr != timerEvent);
             Q_UNUSED(timerEvent);
 
             if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled() || ti->task->hasError())) {
@@ -1144,7 +1144,7 @@ void TaskThread::appendProcessedSubtask(Task *subtask) {
 }
 
 TaskInfo::~TaskInfo() {
-    if (thread != NULL) {
+    if (thread != nullptr) {
         if (!thread->isFinished()) {
             taskLog.trace("TaskScheduler: Waiting for the thread before delete");
             if (thread->isPaused) {

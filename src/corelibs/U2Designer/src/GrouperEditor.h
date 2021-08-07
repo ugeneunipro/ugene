@@ -38,7 +38,7 @@ class U2DESIGNER_EXPORT GrouperEditor : public ActorConfigurationEditor {
 public:
     GrouperEditor();
     GrouperEditor(const GrouperEditor &)
-        : ActorConfigurationEditor(), grouperModel(NULL) {
+        : ActorConfigurationEditor(), grouperModel(nullptr) {
     }
     virtual ~GrouperEditor();
     virtual QWidget *getWidget();

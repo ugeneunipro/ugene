@@ -52,8 +52,8 @@ bool isNoWritePermission(GUrl &url) {
 
 SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const GUrl &_url, SaveDocFlags _flags)
     : Task(tr("Save document"), TaskFlag_None), doc(_doc), iof(_io), url(_url), flags(_flags) {
-    assert(doc != NULL);
-    if (iof == NULL) {
+    assert(doc != nullptr);
+    if (iof == nullptr) {
         iof = doc->getIOAdapterFactory();
     }
     if (url.isEmpty()) {
@@ -63,13 +63,13 @@ SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const 
         stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
     }
 
-    lock = NULL;
+    lock = nullptr;
 }
 
 SaveDocumentTask::SaveDocumentTask(Document *_doc, SaveDocFlags f, const QSet<QString> &_excludeFileNames)
     : Task(tr("Save document"), TaskFlag_None),
       doc(_doc), iof(doc->getIOAdapterFactory()), url(doc->getURL()), flags(f), excludeFileNames(_excludeFileNames) {
-    assert(doc != NULL);
+    assert(doc != nullptr);
 
     if (isNoWritePermission(url)) {
         stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
@@ -162,7 +162,7 @@ void SaveDocumentTask::run() {
 
 Task::ReportResult SaveDocumentTask::report() {
     if (lock != nullptr) {
-        SAFE_POINT(!doc.isNull(), "document is null!",  ReportResult_Finished);
+        SAFE_POINT(!doc.isNull(), "document is null!", ReportResult_Finished);
         doc->unlockState(lock);
         delete lock;
         lock = nullptr;
@@ -181,7 +181,7 @@ Task::ReportResult SaveDocumentTask::report() {
         if (!dontUnload) {
             doc->unload();
         }
-        CHECK(AppContext::getProject() != NULL, ReportResult_Finished);
+        CHECK(AppContext::getProject() != nullptr, ReportResult_Finished);
         AppContext::getProject()->removeDocument(doc, true);
     }
     if (flags.testFlag(SaveDoc_UnloadAfter)) {
@@ -192,7 +192,7 @@ Task::ReportResult SaveDocumentTask::report() {
     }
     if (flags.testFlag(SaveDoc_OpenAfter)) {
         Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
-        if (NULL != openTask) {
+        if (nullptr != openTask) {
             AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
         }
     }
@@ -297,7 +297,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
             QWidget *activeWindow = qobject_cast<QWidget *>(QApplication::activeWindow());
             QFileDialog::Options options(qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0 ? QFileDialog::DontUseNativeDialog : 0);
             const QString fileName = QFileDialog::getSaveFileName(activeWindow, tr("Save as"), newFileUrl, saveFileFilter, 0, options);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             activeWindow->activateWindow();
 #endif
             if (!fileName.isEmpty()) {
@@ -338,7 +338,7 @@ SaveCopyAndAddToProjectTask::SaveCopyAndAddToProjectTask(Document *doc, IOAdapte
 Task::ReportResult SaveCopyAndAddToProjectTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
     Project *p = AppContext::getProject();
-    CHECK_EXT(p != NULL, setError(tr("No active project found")), ReportResult_Finished);
+    CHECK_EXT(p != nullptr, setError(tr("No active project found")), ReportResult_Finished);
     CHECK_EXT(!p->isStateLocked(), setError(tr("Project is locked")), ReportResult_Finished);
 
     const GUrl &url = saveTask->getURL();
@@ -365,7 +365,7 @@ RelocateDocumentTask::RelocateDocumentTask(const GUrl &fu, const GUrl &tu)
 
 Task::ReportResult RelocateDocumentTask::report() {
     Project *p = AppContext::getProject();
-    if (p == NULL) {
+    if (p == nullptr) {
         setError(tr("No active project found"));
         return ReportResult_Finished;
     }
@@ -374,7 +374,7 @@ Task::ReportResult RelocateDocumentTask::report() {
         return ReportResult_Finished;
     }
     Document *d = p->findDocumentByURL(fromURL);
-    if (d == NULL) {
+    if (d == nullptr) {
         setError(L10N::errorDocumentNotFound(fromURL));
         return ReportResult_Finished;
     }

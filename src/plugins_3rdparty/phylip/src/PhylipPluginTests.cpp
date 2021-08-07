@@ -51,9 +51,9 @@ QList<XMLTestFactory*> PhylipPluginTests::createTestFactories(){
 
 void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement& el) {
     Q_UNUSED(tf);
-    treeObjFromDoc = NULL;
-	task = NULL;
-    input = NULL;
+    treeObjFromDoc = nullptr;
+	task = nullptr;
+    input = nullptr;
     inputDocCtxName = el.attribute("in");
     if (inputDocCtxName.isEmpty()) {
         failMissingValue("in");
@@ -62,7 +62,7 @@ void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement& el) {
     resultCtxName = el.attribute("sample");
     QString bootstrSeed;
     bootstrSeed = el.attribute("bootstrapSeed");
-    if(bootstrSeed == NULL){
+    if(bootstrSeed == nullptr){
         bootStrapSeed = -1;
     }else{
         bootStrapSeed = bootstrSeed.toInt();
@@ -72,7 +72,7 @@ void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement& el) {
 void GTest_NeighborJoin::prepare() {
 
     maDoc = getContext<Document>(this, inputDocCtxName);
-    if (maDoc == NULL) {
+    if (maDoc == nullptr) {
         stateInfo.setError(  QString("context not found %1").arg(inputDocCtxName) );
         return;
     }
@@ -84,13 +84,13 @@ void GTest_NeighborJoin::prepare() {
     }
 
     GObject *obj = list.first();
-    if(obj==NULL){
+    if(obj==nullptr){
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    assert(obj!=NULL);
+    assert(obj!=nullptr);
     MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(ma==NULL){
+    if(ma==nullptr){
         stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
         return;
     }
@@ -98,7 +98,7 @@ void GTest_NeighborJoin::prepare() {
 	input = ma;
 
 	treeDoc = getContext<Document>(this, resultCtxName);
-	if (treeDoc == NULL) {
+	if (treeDoc == nullptr) {
 		stateInfo.setError(  QString("context not found %1").arg(resultCtxName) );
 		return;
 	}
@@ -110,18 +110,18 @@ void GTest_NeighborJoin::prepare() {
 	}
 
 	GObject *obj2 = list2.first();
-	if(obj2==NULL){
+	if(obj2==nullptr){
 		stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::PHYLOGENETIC_TREE) );
 		return;
 	}
 	
 	treeObjFromDoc = qobject_cast<PhyTreeObject*>(obj2);
 	
-	if(treeObjFromDoc == NULL){
+	if(treeObjFromDoc == nullptr){
 		stateInfo.setError(  QString("error can't cast to phylogenetic tree from GObject") );
 		return;
 	}
-	assert( obj != NULL);
+	assert( obj != nullptr);
 
     CreatePhyTreeSettings settings;
     settings.algorithm = PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY;
@@ -140,7 +140,7 @@ void GTest_NeighborJoin::prepare() {
 Task::ReportResult GTest_NeighborJoin::report() {
     if (!task->hasError()) {
         const PhyTree computedTree = task->getResult();
-        if (NULL == computedTree) {
+        if (nullptr == computedTree) {
             stateInfo.setError("Result tree is NULL");
             return ReportResult_Finished;
         }

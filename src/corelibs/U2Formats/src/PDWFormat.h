@@ -35,7 +35,7 @@ class Annotation;
 class AnnotationTableObject;
 class U2SequenceObject;
 
-class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     PDWFormat(QObject *p);

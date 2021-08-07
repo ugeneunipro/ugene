@@ -119,10 +119,10 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence, const DNAAlp
     if (nullptr == alphabet) {
         alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
     }
-    SAFE_POINT(NULL != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
+    SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
 
     DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT(NULL != translator, L10N::nullPointerError("DNA Translator"), "");
+    SAFE_POINT(nullptr != translator, L10N::nullPointerError("DNA Translator"), "");
 
     QByteArray result(sequence.length(), 0);
     translator->translate(sequence.constData(), sequence.length(), result.data(), result.length());
@@ -174,6 +174,14 @@ U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThres
 
     crop(sequence, beginPosition, endPosition - beginPosition + 1);
     return U2Region(beginPosition, endPosition - beginPosition + 1);
+}
+
+int DNASequenceUtils::reverseComplementPos(int directPos, int length) {
+    return length - directPos;
+}
+
+U2Region DNASequenceUtils::reverseComplementRegion(const U2Region& directRegion, int length) {
+    return U2Region (length - directRegion.endPos(), directRegion.length);
 }
 
 }    // namespace U2

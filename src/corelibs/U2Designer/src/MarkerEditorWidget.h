@@ -33,7 +33,7 @@ class Marker;
 class MarkerEditorWidget : public QWidget, public Ui_MarkerEditorWidget {
     Q_OBJECT
 public:
-    MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget *parent = NULL);
+    MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget *parent = nullptr);
     bool checkEditMarkerGroupResult(const QString &oldName, Marker *newMarker, QString &message);
     bool checkAddMarkerGroupResult(Marker *newMarker, QString &message);
 

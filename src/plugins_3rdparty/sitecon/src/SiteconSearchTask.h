@@ -22,19 +22,21 @@
 #ifndef _U2_SITECON_SEARCH_TASK_H_
 #define _U2_SITECON_SEARCH_TASK_H_
 
-#include "SiteconAlgorithm.h"
+#include <QMutex>
 
-#include <U2Core/U2Region.h>
 #include <U2Core/AnnotationData.h>
 #include <U2Core/SequenceWalkerTask.h>
+#include <U2Core/U2Region.h>
 
-#include <QMutex>
+#include "SiteconAlgorithm.h"
 
 namespace U2 {
 
 class SiteconSearchResult {
 public:
-    SiteconSearchResult() : strand(U2Strand::Direct), psum(-1), err1(0), err2(1){}
+    SiteconSearchResult()
+        : strand(U2Strand::Direct), psum(-1), err1(0), err2(1) {
+    }
 
     SharedAnnotationData toAnnotation(const QString &name) const {
         SharedAnnotationData data(new AnnotationData);
@@ -58,46 +60,47 @@ public:
         return list;
     }
 
-
     U2Region region;
     U2Strand strand;
-    float   psum;
-    float   err1;
-    float   err2;
+    float psum;
+    float err1;
+    float err2;
     QString modelInfo;
 };
 
 class SiteconSearchCfg {
 public:
-    SiteconSearchCfg() : minPSUM(0), minE1(0.), maxE2(1.), complTT(NULL), complOnly(false) {}
+    SiteconSearchCfg()
+        : minPSUM(0), minE1(0.), maxE2(1.), complTT(nullptr), complOnly(false) {
+    }
     int minPSUM;
     float minE1;
     float maxE2;
-    DNATranslation* complTT;
-    bool complOnly; //FIXME use strand instead
+    DNATranslation *complTT;
+    bool complOnly;    //FIXME use strand instead
 };
 
 class SiteconSearchTask : public Task, public SequenceWalkerCallback {
     Q_OBJECT
 public:
-    SiteconSearchTask(const SiteconModel& model, const QByteArray& seq, const SiteconSearchCfg& cfg, int resultsOffset);
+    SiteconSearchTask(const SiteconModel &model, const QByteArray &seq, const SiteconSearchCfg &cfg, int resultsOffset);
     virtual ~SiteconSearchTask();
     virtual void cleanup();
-    
-    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti);
+
+    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti);
     QList<SiteconSearchResult> takeResults();
 
 private:
-    void addResult(const SiteconSearchResult& r);
+    void addResult(const SiteconSearchResult &r);
 
-    QMutex                      *lock;
-    SiteconModel                *model;
-    SiteconSearchCfg            *cfg;
-    QList<SiteconSearchResult>  results;
-    int                         resultsOffset;
-    QByteArray                  wholeSeq;
+    QMutex *lock;
+    SiteconModel *model;
+    SiteconSearchCfg *cfg;
+    QList<SiteconSearchResult> results;
+    int resultsOffset;
+    QByteArray wholeSeq;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

@@ -94,7 +94,7 @@ bool PanViewLinesSettings::isRowVisible(int row) const {
 }
 
 PanView::ZoomUseObject::ZoomUseObject()
-    : usingZoom(false), panView(NULL) {
+    : usingZoom(false), panView(nullptr) {
 }
 
 PanView::ZoomUseObject::ZoomUseObject(PanView *pv)
@@ -240,7 +240,7 @@ void PanView::unregisterAnnotations(const QList<Annotation *> &l) {
 
 void PanView::updateRows() {
     PanViewRenderArea *ra = getRenderArea();
-    SAFE_POINT(ra != NULL, "PanViewRenderArea is NULL", );
+    SAFE_POINT(ra != nullptr, "PanViewRenderArea is NULL", );
     /*ra->*/ updateNumVisibleRows();
     int maxSteps = calculateNumRowBarSteps();
     if (qAbs(rowBar->maximum() - rowBar->minimum()) != maxSteps) {
@@ -592,7 +592,7 @@ PanViewRenderArea::PanViewRenderArea(PanView *d, PanViewRenderer *renderer)
     : GSequenceLineViewGridAnnotationRenderArea(d),
       panView(d),
       renderer(renderer) {
-    SAFE_POINT(NULL != renderer, "Renderer is NULL", );
+    SAFE_POINT(nullptr != renderer, "Renderer is NULL", );
 }
 
 void PanViewRenderArea::drawAll(QPaintDevice *pd) {
@@ -648,7 +648,7 @@ void PanViewRenderArea::resizeEvent(QResizeEvent *e) {
     view->addUpdateFlags(GSLV_UF_ViewResized);
 
     PanView *pv = getPanView();
-    SAFE_POINT(pv != NULL, "Panview is NULL", );
+    SAFE_POINT(pv != nullptr, "Panview is NULL", );
     pv->updateNumVisibleRows();
     pv->updateRowBar();
 

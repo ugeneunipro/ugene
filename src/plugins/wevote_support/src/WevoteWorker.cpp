@@ -42,15 +42,15 @@ const QString WevoteWorker::WEVOTE_DIR = "wevote";
 
 WevoteWorker::WevoteWorker(Actor *actor)
     : BaseWorker(actor),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 void WevoteWorker::init() {
     input = ports.value(WevoteWorkerFactory::INPUT_PORT_ID);
     output = ports.value(WevoteWorkerFactory::OUTPUT_PORT_ID);
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(WevoteWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(WevoteWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(WevoteWorkerFactory::INPUT_PORT_ID), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(WevoteWorkerFactory::OUTPUT_PORT_ID), );
 }
 
 Task *WevoteWorker::tick() {
@@ -72,7 +72,7 @@ Task *WevoteWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void WevoteWorker::cleanup() {

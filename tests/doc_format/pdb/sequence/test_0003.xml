@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Load sequence object, check its alphabet, size, a part of sequence -->
+
+    <load-document index="doc" url="pdb/2JQS.pdb" io="local_file" format="pdb"/>
+
+    <find-object-by-name index="obj" doc="doc" name="2JQS chain A sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj" value="9"/>
+    <check-sequence-part obj="obj" value="DRLYSFGLX" seqstart="0"/>
+
+
+</multi-test>

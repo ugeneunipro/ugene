@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="doc" url="Sitecon/Algorithm/DICTY_part.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="ato" doc="doc" name="DICTY" type="OT_SEQUENCE"/>
+
+    <sitecon-search_task sequence="ato" model="Sitecon/Algorithm/siteconBuilds/e2f_44_nw.sitecon" treshhold="85" strand="both" expected_results="7475,85.2,compliment;868,85.2,compliment"/>
+
+</multi-test>

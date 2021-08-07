@@ -23,10 +23,8 @@
 
 #include <QMessageBox>
 #include <QMouseEvent>
-#include <QPushButton>
 
 #include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -42,13 +40,13 @@ LabelClickProvider::LabelClickProvider(QLabel *label, QRadioButton *rb)
 }
 
 bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
-    CHECK(NULL != label, false);
-    CHECK(NULL != rb, false);
+    CHECK(nullptr != label, false);
+    CHECK(nullptr != rb, false);
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonPress == event->type(), false);
     QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-    CHECK(NULL != event, false);
+    CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 
     rb->toggle();
@@ -58,14 +56,14 @@ bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
 DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p)
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227654");
+    new HelpButton(this, buttonBox, "65929285");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setObjectName("DocumentFormatSelectorDialog");
 }
 
-int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &rawData, QList<FormatDetectionResult> &results) {
+int DocumentFormatSelectorController::selectResult(const GUrl &url, const QString &rawDataPreview, QList<FormatDetectionResult> &results) {
     SAFE_POINT(!results.isEmpty(), "Results list is empty!", -1);
     if (results.size() == 1) {
         return 0;
@@ -73,25 +71,21 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &
 
     QObjectScopedPointer<DocumentFormatSelectorController> d = new DocumentFormatSelectorController(results, QApplication::activeModalWidget());
     d->optionsBox->setTitle(tr("Options for %1").arg(url.fileName()));
-    QByteArray safeData = rawData;
-    if (TextUtils::contains(TextUtils::BINARY, safeData.constData(), safeData.size())) {
-        TextUtils::replace(safeData.data(), safeData.length(), TextUtils::BINARY, '?');
-    }
-    d->previewEdit->setPlainText(safeData);
+    d->previewEdit->setPlainText(rawDataPreview);
 
     QVBoxLayout *vbox = new QVBoxLayout();
     QList<DocumentFormatId> detectedIds;
     for (int i = 0; i < results.size(); i++) {
         const FormatDetectionResult &r = results[i];
-        if (NULL != r.format) {
+        if (nullptr != r.format) {
             detectedIds.append(r.format->getFormatId());
         }
         QString text;
         QString objName;
-        if (r.format != NULL) {
+        if (r.format != nullptr) {
             text = tr("<b>%1</b> format. Score: %2 <i>(%3)</i>").arg(r.format->getFormatName()).arg(r.score()).arg(score2Text(r.score()));
             objName = r.format->getFormatName();
-        } else if (r.importer != NULL) {
+        } else if (r.importer != nullptr) {
             // #A6392E is the same color as Theme::errorColorLabelStr(). For some reason Qt's HTML parser cannot handle this value as rgb.
             text = tr("<b><font color=#A6392E>Import: </font>%1</b>. Score: %2 (<i>%3</i>)").arg(r.importer->getImporterName()).arg(r.score()).arg(score2Text(r.score()));
             objName = r.importer->getImporterName();
@@ -138,7 +132,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &
         d->userSelectedFormat = new QComboBox();
         d->userSelectedFormat->setObjectName("userSelectedFormat");
         const DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
-        SAFE_POINT(formatRegistry != NULL, "FormatRegistry is NULL!", -1);
+        SAFE_POINT(formatRegistry != nullptr, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
         constraints.addFlagToExclude(DocumentFormatFlag_Hidden);
         QMap<DocumentFormatId, QString> formats;
@@ -204,7 +198,7 @@ QString DocumentFormatSelectorController::score2Text(int score) {
 
 void DocumentFormatSelectorController::sl_moreFormatInfo() {
     QToolButton *tb = qobject_cast<QToolButton *>(sender());
-    SAFE_POINT(tb != NULL, "Failed to derive selected format info!", );
+    SAFE_POINT(tb != nullptr, "Failed to derive selected format info!", );
     int idx = moreButtons.indexOf(tb);
     const FormatDetectionResult &dr = formatDetectionResults[idx];
     QMessageBox::information(this, tr("Format details for '%1' format").arg(dr.getFormatOrImporterName()), dr.getFormatDescriptionText());

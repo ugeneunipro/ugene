@@ -43,7 +43,7 @@ GraphicsCircularBranchItem *CreateCircularBranchesTask::getBranch(GraphicsRectan
     GraphicsCircularBranchItem *res = new GraphicsCircularBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
     foreach (QGraphicsItem *item, from->childItems()) {
         GraphicsRectangularBranchItem *ri = dynamic_cast<GraphicsRectangularBranchItem *>(item);
-        if (ri != NULL) {
+        if (ri != nullptr) {
             getBranch(ri, res);
         }
     }
@@ -59,7 +59,7 @@ void CreateCircularBranchesTask::run() {
         root1->setWidthW(WIDTH_RADIUS);
     }
 
-    GraphicsCircularBranchItem *r = getBranch(root1, NULL);
+    GraphicsCircularBranchItem *r = getBranch(root1, nullptr);
     r->setVisibleW(false);
     root = r;
     root1->setWidthW(0);

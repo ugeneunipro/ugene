@@ -54,7 +54,7 @@ namespace U2 {
 /* CreateCmdlineBasedWorkerWizard */
 /**********************************************/
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -5px; margin-bottom: -5px; margin-top: -5px; font-size: 20pt; padding-bottom: 10px; color: #0c3762}";
 #elif defined Q_OS_LINUX
 const QString CreateCmdlineBasedWorkerWizard::PAGE_TITLE_STYLE_SHEET = "QLabel {margin-left: -6px; font-size: 16pt; padding-bottom: 5px; color: #0c3762}";
@@ -798,7 +798,7 @@ bool CreateCmdlineBasedWorkerWizardCommandPage::validatePage() {
     msgBox->setWindowTitle(tr("Create Element"));
     msgBox->setText(tr("You don't use listed parameters in template string. Continue?"));
     msgBox->setDetailedText(parameters);
-    QAbstractButton *detailsButton = NULL;
+    QAbstractButton *detailsButton = nullptr;
     foreach (QAbstractButton *button, msgBox->buttons()) {
         if (msgBox->buttonRole(button) == QMessageBox::ActionRole) {
             QString buttoText = button->text();

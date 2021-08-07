@@ -46,10 +46,10 @@ namespace U2 {
 
 CreateDocumentFromTextDialogController::CreateDocumentFromTextDialogController(QWidget *p)
     : QDialog(p),
-      saveController(NULL) {
+      saveController(nullptr) {
     ui = new Ui_CreateDocumentFromTextDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227645");
+    new HelpButton(this, ui->buttonBox, "65929276");
 
     initSaveController();
 

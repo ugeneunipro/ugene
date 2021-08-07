@@ -23,8 +23,7 @@
 #define _U2_IMPORT_PRIMERS_MULTI_TASK_H_
 
 #include <U2Core/MultiTask.h>
-
-#include "Primer.h"
+#include <U2Core/Primer.h>
 
 namespace U2 {
 

@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 // -*- Mode: C++; tab-width: 2; -*-
 // vi: set ts=2:
 //

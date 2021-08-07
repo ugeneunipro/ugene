@@ -25,7 +25,7 @@ namespace U2 {
 namespace Workflow {
 
 ActorConfigurationEditor::ActorConfigurationEditor()
-    : ConfigurationEditor(), cfg(NULL) {
+    : ConfigurationEditor(), cfg(nullptr) {
 }
 
 ActorConfigurationEditor::ActorConfigurationEditor(const ActorConfigurationEditor &other)

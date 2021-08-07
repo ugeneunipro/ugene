@@ -22,7 +22,7 @@
 #ifndef _U2_WORKFLOW_SCRIPT_ENGINE_H_
 #define _U2_WORKFLOW_SCRIPT_ENGINE_H_
 
-#include <QScriptEngine>
+#include <U2Core/ScriptEngine.h>
 
 #include <U2Lang/WorkflowContext.h>
 

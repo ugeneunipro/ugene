@@ -126,7 +126,7 @@ enum FpkmTrackingLineFieldsIndeces { FPKM_TRACKING_ID_INDEX = 0,
  * Description of the format from the Cufflinks manual was used:
  * http://cufflinks.cbcb.umd.edu/manual.html#fpkm_tracking_format
  */
-class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:

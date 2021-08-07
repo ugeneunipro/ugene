@@ -32,10 +32,10 @@ namespace U2 {
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    SAMFormat(QObject *p = NULL);
+    SAMFormat(QObject *p = nullptr);
 
     virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
 
@@ -72,7 +72,7 @@ protected:
 private:
     static bool getSectionTags(QByteArray &line, const QByteArray &sectionName, QList<QByteArray> &tags);
 
-    static bool validateField(int num, QByteArray &field, U2OpStatus *ti = NULL);
+    static bool validateField(int num, QByteArray &field, U2OpStatus *ti = nullptr);
 
     static const QByteArray VERSION;
 

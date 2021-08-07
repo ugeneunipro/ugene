@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- COI.hmm, COI2.fa dna extended alphabet -T -domT 1 domain res here
+	./hmmsearch -T 200 -domT 150 COI.hmm COI2.fa > s_seq_dom_COI_hmm_COI2_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/COI2.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/COI.hmm" seqDoc="seq" domT="150" outputDir="common/hmmsearch/general_search/score_tresholds/nucl_dna_al/COI2/"/>
+
+    <hmm3-search-compare trueOut="hmmer3/search/s_seq_dom_COI_hmm_COI2_fa.out" actualOut="common/hmmsearch/general_search/score_tresholds/nucl_dna_al/COI2/output.txt"/>
+
+</multi-test>

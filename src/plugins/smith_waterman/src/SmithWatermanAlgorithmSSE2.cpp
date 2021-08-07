@@ -37,7 +37,7 @@ extern "C" {
 #    endif
 #endif
 
-#if defined(LAME_MSC) || defined(Q_OS_MAC)
+#if defined(LAME_MSC) || defined(Q_OS_DARWIN)
 inline void xmm_store8(__m64 *m, __m128i x) {
     *(int *)m = _mm_cvtsi128_si32(x);
     *((int *)m + 1) = _mm_cvtsi128_si32(_mm_srli_epi64(x, 32));
@@ -57,6 +57,11 @@ inline __m128i xmm_load8(__m64 *m) {
 }
 
 using namespace std;
+
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
 
 namespace U2 {
 
@@ -104,25 +109,25 @@ void SmithWatermanAlgorithmSSE2::launch(const SMatrix &_substitutionMatrix, cons
         if (minScore <= maxScore) {
             if (maxScore >= 0x8000 || matrixLength >= 0x10000) {
                 switch (resultView) {
-                case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
-                    calculateMatrixForMultipleAlignmentResultWithInt();
-                    break;
-                case SmithWatermanSettings::ANNOTATIONS:
-                    calculateMatrixForAnnotationsResultWithInt();
-                    break;
-                default:
-                    assert(false);
+                    case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
+                        calculateMatrixForMultipleAlignmentResultWithInt();
+                        break;
+                    case SmithWatermanSettings::ANNOTATIONS:
+                        calculateMatrixForAnnotationsResultWithInt();
+                        break;
+                    default:
+                        assert(false);
                 }
             } else {
                 switch (resultView) {
-                case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
-                    calculateMatrixForMultipleAlignmentResultWithShort();
-                    break;
-                case SmithWatermanSettings::ANNOTATIONS:
-                    calculateMatrixForAnnotationsResultWithShort();
-                    break;
-                default:
-                    assert(false);
+                    case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
+                        calculateMatrixForMultipleAlignmentResultWithShort();
+                        break;
+                    case SmithWatermanSettings::ANNOTATIONS:
+                        calculateMatrixForAnnotationsResultWithShort();
+                        break;
+                    default:
+                        assert(false);
                 }
             }
         }

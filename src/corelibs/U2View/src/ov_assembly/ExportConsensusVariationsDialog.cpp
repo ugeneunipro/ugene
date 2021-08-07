@@ -40,7 +40,7 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, con
     : QDialog(p), settings(settings_) {
     setupUi(this);
     setWindowTitle(tr("Export Consensus Variations"));
-    new HelpButton(this, buttonBox, "60228216");
+    new HelpButton(this, buttonBox, "65929848");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     //hide for this dialog
@@ -51,7 +51,7 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, con
 
     U2OpStatus2Log os;
     QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), visibleRegion);
-    regionSelector = new RegionSelector(this, settings.model->getModelLength(os), false, NULL, false, presets);
+    regionSelector = new RegionSelector(this, settings.model->getModelLength(os), false, nullptr, false, presets);
 
     int insertPos = verticalLayout->count() - 3;
     verticalLayout->insertWidget(insertPos, regionSelector);
@@ -90,7 +90,7 @@ void ExportConsensusVariationsDialog::accept() {
     QString algoId = algorithmComboBox->currentText();
     if (algoId != settings.consensusAlgorithm->getId()) {
         AssemblyConsensusAlgorithmFactory *f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
-        SAFE_POINT(f != NULL, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
+        SAFE_POINT(f != nullptr, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
         settings.consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
     }
 

@@ -67,7 +67,7 @@ Header::Header(QWidget *w)
     fix = false;
 }
 
-bool Header::isFixed() {
+bool Header::isFixed() const {
     return fix;
 }
 
@@ -104,10 +104,7 @@ void Header::mouseMoveEvent(QMouseEvent *me) {
 
 NotificationWidget::NotificationWidget(QWidget *w)
     : QFrame(w) {
-    m_mouse_down = false;
-    isFixed = false;
     setFrameShape(Panel);
-
     setWindowFlags(Qt::ToolTip);
     setMouseTracking(true);
 
@@ -118,12 +115,10 @@ NotificationWidget::NotificationWidget(QWidget *w)
     frame->setLayout(layout);
 
     header = new Header(this);
-
-    scrlArea = new QScrollArea(this);
-
-    scrlArea->setWidget(frame);
-    scrlArea->setWidgetResizable(true);
-    scrlArea->installEventFilter(this);
+    scrollArea = new QScrollArea(this);
+    scrollArea->setWidget(frame);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->installEventFilter(this);
 
     QVBoxLayout *vbox = new QVBoxLayout();
     vbox->addWidget(header);
@@ -132,17 +127,13 @@ NotificationWidget::NotificationWidget(QWidget *w)
     setLayout(vbox);
 
     QVBoxLayout *lbox = new QVBoxLayout();
-    lbox->addWidget(scrlArea);
+    lbox->addWidget(scrollArea);
     lbox->setMargin(0);
     lbox->setSpacing(0);
     vbox->addLayout(lbox);
 
     int newWidth = TT_WIDTH + layout->margin() * 2 + 4;
     setFixedSize(newWidth, header->height() + 40);
-}
-
-Header *NotificationWidget::titleBar() const {
-    return header;
 }
 
 void NotificationWidget::setFixed(bool val) {

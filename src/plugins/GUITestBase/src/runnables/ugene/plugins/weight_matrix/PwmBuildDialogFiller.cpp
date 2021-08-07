@@ -36,13 +36,13 @@ namespace U2 {
 
 PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "PWMBuildDialog"),
-      dialog(NULL),
+      dialog(nullptr),
       actions(actions) {
 }
 
 PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
     : Filler(os, "PWMBuildDialog", c),
-      dialog(NULL) {
+      dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"
@@ -52,21 +52,21 @@ void PwmBuildDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case EnterInput:
-            enterInput(action.second);
-            break;
-        case SelectInput:
-            selectInput(action.second);
-            break;
-        case ExpectInvalidFile:
-            expectInvalidFile();
-            break;
-        case ClickCancel:
-            clickCancel();
-            break;
-        default:
-            os.setError("An unimplemented action");
-            FAIL(false, );
+            case EnterInput:
+                enterInput(action.second);
+                break;
+            case SelectInput:
+                selectInput(action.second);
+                break;
+            case ExpectInvalidFile:
+                expectInvalidFile();
+                break;
+            case ClickCancel:
+                clickCancel();
+                break;
+            default:
+                os.setError("An unimplemented action");
+                FAIL(false, );
         }
     }
 }

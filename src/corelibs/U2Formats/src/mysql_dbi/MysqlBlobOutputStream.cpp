@@ -30,14 +30,14 @@ namespace U2 {
 
 MysqlBlobOutputStream::MysqlBlobOutputStream(MysqlDbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int /*size*/, U2OpStatus &os)
     : db(db), tableId(tableId), columnId(columnId), rowId(rowId), wasUsed(false) {
-    SAFE_POINT_EXT(NULL != db, os.setError("Invalid database reference detected!"), );
+    SAFE_POINT_EXT(nullptr != db, os.setError("Invalid database reference detected!"), );
 }
 
 void MysqlBlobOutputStream::close() {
 }
 
 void MysqlBlobOutputStream::write(const char *buffer, int length, U2OpStatus &os) {
-    SAFE_POINT_EXT(NULL != buffer, os.setError("Invalid data buffer detected!"), );
+    SAFE_POINT_EXT(nullptr != buffer, os.setError("Invalid data buffer detected!"), );
 
     MysqlTransaction t(db, os);
     Q_UNUSED(t);

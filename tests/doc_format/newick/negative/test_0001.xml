@@ -1,0 +1,4 @@
+<multi-test>
+    <!-- Multiple nodes have empty names. -->
+    <load-broken-document index="doc" url="newick/sample8.newick" io="local_file" format="newick"/>
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, 2 msa in file
+	cmd: ./hmmbuild 2_msa.hmm 2_msa.sto -->
+
+    <uhmmer3-build inputFile="stockholm/2_msa.sto" outputFile="test_2_msa.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/2_msa.hmm" file2="test_2_msa.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

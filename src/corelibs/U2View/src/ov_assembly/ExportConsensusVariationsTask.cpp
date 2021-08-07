@@ -40,7 +40,7 @@
 namespace U2 {
 
 ExportConsensusVariationsTask::ExportConsensusVariationsTask(const ExportConsensusVariationsTaskSettings &settings_)
-    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC), settings(settings_), consensusTask(NULL), varTrackObject(NULL) {
+    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC), settings(settings_), consensusTask(nullptr), varTrackObject(nullptr) {
     setTaskName(tr("Export consensus variations of assembly '%1' to '%2'")
                     .arg(settings.model->getAssembly().visualName)
                     .arg(QFileInfo(settings.fileName).fileName()));
@@ -51,7 +51,7 @@ void ExportConsensusVariationsTask::prepare() {
     SAFE_POINT_EXT(!settings.fileName.isEmpty(), setError(tr("File name cannot be empty")), );
 
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.formatId);
-    SAFE_POINT_EXT(df != NULL, setError(tr("Internal: couldn't find document format with id '%1'").arg(settings.formatId)), );
+    SAFE_POINT_EXT(df != nullptr, setError(tr("Internal: couldn't find document format with id '%1'").arg(settings.formatId)), );
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.fileName));
     resultDocument = df->createNewLoadedDocument(iof, settings.fileName, stateInfo);
@@ -91,7 +91,7 @@ void ExportConsensusVariationsTask::prepare() {
     addSubTask(new SaveDocumentTask(resultDocument, saveFlags));
 
     Project *p = AppContext::getProject();
-    if (p != NULL && p->findDocumentByURL(resultDocument->getURL()) != NULL) {
+    if (p != nullptr && p->findDocumentByURL(resultDocument->getURL()) != nullptr) {
         // if already has such document in project, do not add
         settings.addToProject = false;
     }
@@ -104,7 +104,7 @@ void ExportConsensusVariationsTask::prepare() {
 QList<Task *> ExportConsensusVariationsTask::onSubTaskFinished(Task *finished) {
     QList<Task *> newSubTasks;
     if (finished == consensusTask) {
-        SAFE_POINT(varTrackObject != NULL, "Variant track object is null", newSubTasks);
+        SAFE_POINT(varTrackObject != nullptr, "Variant track object is null", newSubTasks);
         resultDocument->addObject(varTrackObject);
     }
     return newSubTasks;
@@ -117,7 +117,7 @@ AssemblyConsensusTaskSettings ExportConsensusVariationsTask::getNextSettings() {
 }
 
 void ExportConsensusVariationsTask::reportResult(const ConsensusInfo &result) {
-    SAFE_POINT(varTrackObject != NULL, "Variant track object is null", );
+    SAFE_POINT(varTrackObject != nullptr, "Variant track object is null", );
     SAFE_POINT(settings.refSeq.isValid(), "Reference to sequence is invalid", );
 
     QByteArray consensus = result.consensus;

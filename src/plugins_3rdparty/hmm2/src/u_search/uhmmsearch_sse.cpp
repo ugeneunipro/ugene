@@ -216,13 +216,13 @@ inline int maxComponent( const __m128i& a ) {
     return max;
 }
 
-void p ( const char * name, __m128i arg ) {
-    printf( "%s: {%d, %d, %d, %d}\n", name,
-        at0(arg),
-        at1(arg),
-        at2(arg),
-        at3(arg) );
-}
+//void p ( const char * name, __m128i arg ) {
+//    printf( "%s: {%d, %d, %d, %d}\n", name,
+//        at0(arg),
+//        at1(arg),
+//        at2(arg),
+//        at3(arg) );
+//}
 
 
 float viterbiSSE( hmm_opt* hmm, const unsigned char * seq, int seqLength, int* mscoreC, int* mscoreP, int* iscoreC, int *iscoreP, int* dscoreC, int *dscoreP ){

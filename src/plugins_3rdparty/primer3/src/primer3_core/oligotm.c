@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /*
 Copyright (c) 1996,1997,1998,1999,2000,2001,2004,2006,2007
 Whitehead Institute for Biomedical Research, Steve Rozen
@@ -83,7 +86,7 @@ All rights reserved.
  */
 
 /* Table 1 (old parameters):
- * See table 2 in the paper [Breslauer KJ, Frank R, Blöcker H and
+ * See table 2 in the paper [Breslauer KJ, Frank R, BlÃ¶cker H and
  * Marky LA (1986) "Predicting DNA duplex stability from the base
  * sequence" Proc Natl Acad Sci 83:4746-50
  * http://dx.doi.org/10.1073/pnas.83.11.3746]

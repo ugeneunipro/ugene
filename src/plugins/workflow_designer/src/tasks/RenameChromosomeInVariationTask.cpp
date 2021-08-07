@@ -52,9 +52,9 @@ void RenameChromosomeInVariationTask::run() {
 
     DbiConnection connection(objects.first()->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != connection.dbi, setError(L10N::nullPointerError("dbi")), );
+    SAFE_POINT_EXT(nullptr != connection.dbi, setError(L10N::nullPointerError("dbi")), );
     U2VariantDbi *variantDbi = connection.dbi->getVariantDbi();
-    SAFE_POINT_EXT(NULL != variantDbi, setError(L10N::nullPointerError("variant dbi")), );
+    SAFE_POINT_EXT(nullptr != variantDbi, setError(L10N::nullPointerError("variant dbi")), );
 
     foreach (GObject *object, objects) {
         U2OpStatusImpl os;
@@ -84,9 +84,9 @@ RenameChromosomeInVariationFileTask::RenameChromosomeInVariationFileTask(const Q
       dstFileUrl(dstFileUrl),
       prefixesToReplace(prefixesToReplace),
       prefixReplaceWith(prefixReplaceWith),
-      loadTask(NULL),
-      renameTask(NULL),
-      saveTask(NULL) {
+      loadTask(nullptr),
+      renameTask(nullptr),
+      saveTask(nullptr) {
     SAFE_POINT_EXT(!srcFileUrl.isEmpty(), L10N::badArgument("input file URL"), );
     SAFE_POINT_EXT(!dstFileUrl.isEmpty(), L10N::badArgument("input file URL"), );
     SAFE_POINT_EXT(!prefixesToReplace.isEmpty(), setError("Prefixes to replace are not defined"), );
@@ -99,10 +99,10 @@ QString RenameChromosomeInVariationFileTask::getDstFileUrl() const {
 void RenameChromosomeInVariationFileTask::prepare() {
     DocumentFormat *format = getFormat();
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != format, setError(L10N::nullPointerError("document format")), );
+    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("document format")), );
 
     IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(srcFileUrl));
-    CHECK_EXT(NULL != ioAdapterFactory, setError(L10N::nullPointerError("IO adapter factory")), );
+    CHECK_EXT(nullptr != ioAdapterFactory, setError(L10N::nullPointerError("IO adapter factory")), );
 
     loadTask = new LoadDocumentTask(format, srcFileUrl, ioAdapterFactory);
     addSubTask(loadTask);
@@ -138,7 +138,7 @@ QList<GObject *> RenameChromosomeInVariationFileTask::getVariantTrackObjects() {
     QList<GObject *> objects;
 
     Document *document = loadTask->getDocument();
-    SAFE_POINT_EXT(NULL != document, setError(L10N::nullPointerError("loaded document")), objects);
+    SAFE_POINT_EXT(nullptr != document, setError(L10N::nullPointerError("loaded document")), objects);
 
     const QList<GObject *> variantTrackObjects = document->findGObjectByType(GObjectTypes::VARIANT_TRACK, UOF_LoadedAndUnloaded);
     CHECK_EXT(!variantTrackObjects.isEmpty(), setError(tr("File doesn't contains variant tracks")), objects);
@@ -151,7 +151,7 @@ DocumentFormat *RenameChromosomeInVariationFileTask::getFormat() {
     constraints.supportedObjectTypes << GObjectTypes::VARIANT_TRACK;
 
     QList<FormatDetectionResult> formatDetectionResults = DocumentUtils::detectFormat(srcFileUrl);
-    CHECK_EXT(!formatDetectionResults.isEmpty(), setError(tr("File format is not recognized (%1)").arg(srcFileUrl)), NULL);
+    CHECK_EXT(!formatDetectionResults.isEmpty(), setError(tr("File format is not recognized (%1)").arg(srcFileUrl)), nullptr);
 
     return formatDetectionResults.first().format;
 }

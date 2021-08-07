@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wblosum hand enone, model: Asp, has SS_cons, RF annotations
+	cmd: ./hmmbuild -seed 31 -hand -wblosum -wid 0.57 -enone Asp_wblosum_hand_enone.hmm Asp.sto -->
+
+    <uhmmer3-build inputFile="stockholm/Asp.sto" outputFile="test_Asp_wblosum_hand_enone.hmm"
+                   seed="31" mc="hand" rw="wblosum 0.57" ew="enone" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/Asp_wblosum_hand_enone.hmm" file2="test_Asp_wblosum_hand_enone.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

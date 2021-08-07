@@ -43,7 +43,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 DiamondSupportPlugin::DiamondSupportPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_ID, DiamondSupport::TOOL_NAME));
 
@@ -53,7 +53,7 @@ DiamondSupportPlugin::DiamondSupportPlugin()
 
 DiamondSupportPlugin::~DiamondSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
     etRegistry->unregisterEntry(DiamondSupport::TOOL_ID);
 }
 

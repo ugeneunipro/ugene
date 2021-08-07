@@ -208,8 +208,6 @@ QPoint GTScrollBar::getSliderPosition(GUITestOpStatus &os, QScrollBar *scrollbar
 QPoint GTScrollBar::getUpArrowPosition(GUITestOpStatus &os, QScrollBar *scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(os, scrollbar);
-    QRect grooveRect = scrollbar->style()->subControlRect(QStyle::CC_ScrollBar, &options, QStyle::SC_ScrollBarGroove);
-
     return scrollbar->mapToGlobal(scrollbar->rect().topLeft() + QPoint(5, 5));
 }
 #undef GT_METHOD_NAME
@@ -218,8 +216,6 @@ QPoint GTScrollBar::getUpArrowPosition(GUITestOpStatus &os, QScrollBar *scrollba
 QPoint GTScrollBar::getDownArrowPosition(GUITestOpStatus &os, QScrollBar *scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(os, scrollbar);
-    QRect grooveRect = scrollbar->style()->subControlRect(QStyle::CC_ScrollBar, &options, QStyle::SC_ScrollBarGroove);
-
     return scrollbar->mapToGlobal(scrollbar->rect().bottomRight() - QPoint(5, 5));
 }
 #undef GT_METHOD_NAME

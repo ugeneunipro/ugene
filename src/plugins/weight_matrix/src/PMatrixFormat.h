@@ -47,7 +47,7 @@ class PFMatrixViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
     static const PFMatrixViewFactoryId ID;
-    PFMatrixViewFactory(QObject *p = NULL)
+    PFMatrixViewFactory(QObject *p = nullptr)
         : GObjectViewFactory(ID, tr("PFM Viewer"), p) {
     }
 
@@ -80,7 +80,7 @@ class PWMatrixViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
     static const PWMatrixViewFactoryId ID;
-    PWMatrixViewFactory(QObject *p = NULL)
+    PWMatrixViewFactory(QObject *p = nullptr)
         : GObjectViewFactory(ID, tr("PWM Viewer"), p) {
     }
 

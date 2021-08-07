@@ -146,7 +146,7 @@ static void createRows(IOAdapter *io, char *buff, const int sequnenceNum, const 
 }
 
 AprFormat::AprFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
     formatName = tr("Vector NTI/AlignX");
     formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -176,11 +176,11 @@ Document *AprFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
     QList<GObject *> objs;
     load(io, dbiRef, objs, fs, os);
 
-    CHECK_OP_EXT(os, qDeleteAll(objs), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
 
     if (objs.isEmpty()) {
         os.setError(AprFormat::tr("File doesn't contain any msa objects"));
-        return NULL;
+        return nullptr;
     }
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 
@@ -224,7 +224,7 @@ void AprFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     CHECK_OP(os, );
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al->getAlphabet() != NULL, os.setError(AprFormat::tr("Alphabet is unknown")), );
+    CHECK_EXT(al->getAlphabet() != nullptr, os.setError(AprFormat::tr("Alphabet is unknown")), );
 
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);

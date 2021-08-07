@@ -36,7 +36,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
+    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentData *msaData)
@@ -100,7 +100,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
     : MultipleAlignmentRowData(sequence, gaps),
       alignment(msaData),
       initialRowInDb(rowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -119,7 +119,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
     : MultipleAlignmentRowData(row->sequence, row->gaps),
       alignment(msaData),
       initialRowInDb(row->initialRowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
 MultipleSequenceAlignmentRowData::~MultipleSequenceAlignmentRowData() {
@@ -176,7 +176,7 @@ QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus &os, qint64 
         return sequence.constSequence();
     }
 
-    QByteArray bytes = joinCharsAndGaps(true, true);
+    QByteArray bytes = getSequenceWithGaps(true, true);
 
     // Append additional gaps, if necessary
     if (length > bytes.count()) {
@@ -193,16 +193,16 @@ QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus &os, qint64 
 }
 
 int MultipleSequenceAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
     return alignment->getLength();
 }
 
 QByteArray MultipleSequenceAlignmentRowData::getCore() const {
-    return joinCharsAndGaps(false, false);
+    return getSequenceWithGaps(false, false);
 }
 
 QByteArray MultipleSequenceAlignmentRowData::getData() const {
-    return joinCharsAndGaps(true, true);
+    return getSequenceWithGaps(true, true);
 }
 
 qint64 MultipleSequenceAlignmentRowData::getCoreLength() const {
@@ -368,7 +368,7 @@ bool MultipleSequenceAlignmentRowData::operator==(const MultipleSequenceAlignmen
 bool MultipleSequenceAlignmentRowData::operator==(const MultipleAlignmentRowData &maRowData) const {
     try {
         return (*this == dynamic_cast<const MultipleSequenceAlignmentRowData &>(maRowData));
-    } catch (std::bad_cast) {
+    } catch (std::bad_cast &) {
         FAIL("Can't cast MultipleAlignmentRowData to MultipleSequenceAlignmentRowData", true);
     }
 }
@@ -459,7 +459,7 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
             U2MsaGap gap(index, 1);
             newGapsModel.append(gap);
         }
-        qSort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
+        std::sort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
 
         // Replace the gaps model with the new one
         gaps = newGapsModel;
@@ -506,34 +506,6 @@ void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapM
         U2MsaGap gap(0, offset);
         gapModel.append(gap);
     }
-}
-
-QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const {
-    QByteArray bytes = sequence.constSequence();
-    int beginningOffset = 0;
-
-    if (gaps.isEmpty()) {
-        return bytes;
-    }
-
-    for (int i = 0; i < gaps.size(); ++i) {
-        QByteArray gapsBytes;
-        if (!keepOffset && (0 == gaps[i].offset)) {
-            beginningOffset = gaps[i].gap;
-            continue;
-        }
-
-        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
-        bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
-    }
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", QByteArray());
-    if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());
-        bytes.append(gapsBytes);
-    }
-
-    return bytes;
 }
 
 void MultipleSequenceAlignmentRowData::mergeConsecutiveGaps() {
@@ -611,6 +583,10 @@ void MultipleSequenceAlignmentRowData::setParentAlignment(MultipleSequenceAlignm
 
 int MultipleSequenceAlignmentRowData::getCoreStart() const {
     return MsaRowUtils::getCoreStart(gaps);
+}
+
+MultipleAlignmentData *MultipleSequenceAlignmentRowData::getMultipleAlignmentData() const {
+    return alignment;
 }
 
 }    // namespace U2

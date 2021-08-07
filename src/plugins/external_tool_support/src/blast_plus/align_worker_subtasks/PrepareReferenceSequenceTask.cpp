@@ -46,9 +46,9 @@ PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString &refere
     : DocumentProviderTask(tr("Prepare reference sequence"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       dstDbiRef(dstDbiRef),
-      copyTask(NULL),
-      loadTask(NULL),
-      removeGapsTask(NULL) {
+      copyTask(nullptr),
+      loadTask(nullptr),
+      removeGapsTask(nullptr) {
     SAFE_POINT_EXT(!referenceUrl.isEmpty(), setError("Reference URL is empty"), );
     SAFE_POINT_EXT(dstDbiRef.isValid(), setError("Destination DBI reference is not valid"), );
 }
@@ -77,7 +77,7 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         newSubTasks << loadTask;
     } else if (loadTask == subTask) {
         Document *const document = loadTask->getDocument(false);
-        SAFE_POINT(NULL != document, "Document is NULL", newSubTasks);
+        SAFE_POINT(nullptr != document, "Document is NULL", newSubTasks);
 
         document->setDocumentOwnsDbiResources(false);
 
@@ -86,15 +86,15 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         CHECK_EXT(1 == objects.size(), setError(tr("More than one sequence in the reference file: ") + referenceUrl), newSubTasks);
 
         U2SequenceObject *referenceObject = qobject_cast<U2SequenceObject *>(objects.first());
-        SAFE_POINT_EXT(NULL != referenceObject, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
+        SAFE_POINT_EXT(nullptr != referenceObject, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
         CHECK_EXT(referenceObject->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(referenceObject->getSequenceName())), newSubTasks);
 
         referenceEntityRef = referenceObject->getEntityRef();
 
         newSubTasks << new RemoveGapsFromSequenceTask(referenceObject);
-    } else if (qobject_cast<RemoveGapsFromSequenceTask *>(subTask) != NULL) {
+    } else if (qobject_cast<RemoveGapsFromSequenceTask *>(subTask) != nullptr) {
         Document *doc = loadTask->getDocument(false);
-        SAFE_POINT(NULL != doc, "Document is NULL", newSubTasks);
+        SAFE_POINT(nullptr != doc, "Document is NULL", newSubTasks);
 
         DocumentFormat *fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
         IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));

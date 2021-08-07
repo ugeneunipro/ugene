@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/custom-script-worker-functions/removeFromAlignmentTest/removeFromAlignmentTest.uwl"
+            in="!common_data_dir!cmdline/CBS.sto"
+            row="37"
+            out="!common_data_dir!cmdline/custom-script-worker-functions/removeFromAlignmentTest/result.aln"
+            message="Row is out of range"
+    />
+
+</multi-test>

@@ -22,10 +22,9 @@
 #ifndef _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
 #define _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
 
+#include <U2Core/Primer.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2DbiUtils.h>
-
-#include "Primer.h"
 
 namespace U2 {
 

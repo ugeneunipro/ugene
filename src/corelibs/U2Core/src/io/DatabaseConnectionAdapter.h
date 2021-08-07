@@ -30,7 +30,7 @@ namespace U2 {
 class U2CORE_EXPORT DatabaseConnectionAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    explicit DatabaseConnectionAdapterFactory(QObject *parent = NULL);
+    explicit DatabaseConnectionAdapterFactory(QObject *parent = nullptr);
 
     IOAdapter *createIOAdapter();
 
@@ -49,7 +49,7 @@ protected:
 class U2CORE_EXPORT DatabaseConnectionAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    DatabaseConnectionAdapter(DatabaseConnectionAdapterFactory *factory, QObject *parent = NULL);
+    DatabaseConnectionAdapter(DatabaseConnectionAdapterFactory *factory, QObject *parent = nullptr);
 
     bool open(const GUrl &url, IOAdapterMode m);
     bool isOpen() const;

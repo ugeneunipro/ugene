@@ -39,7 +39,7 @@ class GenericDocReader : public BaseWorker {
     Q_OBJECT
 public:
     GenericDocReader(Actor *a)
-        : BaseWorker(a), ch(NULL), files(NULL) {
+        : BaseWorker(a), ch(nullptr), files(nullptr) {
     }
     virtual ~GenericDocReader();
 
@@ -89,7 +89,7 @@ class LoadSeqTask : public Task {
 public:
     LoadSeqTask(QString url, const QVariantMap &cfg, DNASelector *sel, DbiDataStorage *storage)
         : Task(tr("Read sequences from %1").arg(url), TaskFlag_None),
-          url(url), selector(sel), cfg(cfg), storage(storage), format(NULL) {
+          url(url), selector(sel), cfg(cfg), storage(storage), format(nullptr) {
     }
     virtual void prepare();
     virtual void run();

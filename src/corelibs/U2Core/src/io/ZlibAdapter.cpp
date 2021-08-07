@@ -66,18 +66,17 @@ GzipUtil::GzipUtil(IOAdapter *io, bool doCompression)
     strm.next_in = Z_NULL;
 
     int ret = doCompression ?
-                  /* write a simple gzip header and trailer around the compressed data */
+                            /* write a simple gzip header and trailer around the compressed data */
                   deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 16 + 15, 8, Z_DEFAULT_STRATEGY)
-                  /* enable zlib and gzip decoding with automatic header detection */
-                  :
-                  inflateInit2(&strm, 32 + 15);
+                            /* enable zlib and gzip decoding with automatic header detection */
+                            : inflateInit2(&strm, 32 + 15);
     assert(ret == Z_OK);
     Q_UNUSED(ret);
 }
 
 GzipUtil::~GzipUtil() {
     if (doCompression) {
-        int ret = compress(NULL, 0, true);
+        int ret = compress(nullptr, 0, true);
         if (-1 != ret) {
             assert(ret == 0);
             Q_UNUSED(ret);
@@ -113,22 +112,22 @@ qint64 GzipUtil::uncompress(char *outBuff, qint64 outSize) {
         int ret = inflate(&strm, Z_SYNC_FLUSH);
         assert(ret != Z_STREAM_ERROR); /* state not clobbered */
         switch (ret) {
-        case Z_NEED_DICT:
-        case Z_DATA_ERROR:
-        case Z_MEM_ERROR:
-            return -1;
-        case Z_STREAM_END: {
-            qint64 readBytes = 0;
-            readBytes = outSize - strm.avail_out;
-            inflateReset(&strm);
-            inflateInit2(&strm, 32 + 15);
+            case Z_NEED_DICT:
+            case Z_DATA_ERROR:
+            case Z_MEM_ERROR:
+                return -1;
+            case Z_STREAM_END: {
+                qint64 readBytes = 0;
+                readBytes = outSize - strm.avail_out;
+                inflateReset(&strm);
+                inflateInit2(&strm, 32 + 15);
 
-            return readBytes;
-        }
-        case Z_BUF_ERROR:
-        case Z_FINISH:
-            curPos += outSize - strm.avail_out;
-            return outSize - strm.avail_out;
+                return readBytes;
+            }
+            case Z_BUF_ERROR:
+            case Z_FINISH:
+                curPos += outSize - strm.avail_out;
+                return outSize - strm.avail_out;
         }
         if (strm.avail_out != 0 && strm.avail_in != 0) {
             assert(0);
@@ -180,7 +179,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
     char discard[GZipIndex::WINSIZE];
 
     LocalFileAdapter *localIO = qobject_cast<LocalFileAdapter *>(io);
-    if (NULL == localIO) {
+    if (nullptr == localIO) {
         return false;
     }
     bool ok = localIO->skip(here.in - (here.bits ? 1 : 0));
@@ -222,7 +221,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
 }
 
 ZlibAdapter::ZlibAdapter(IOAdapter *io)
-    : IOAdapter(io->getFactory()), io(io), z(NULL), buf(NULL), rewinded(0) {
+    : IOAdapter(io->getFactory()), io(io), z(nullptr), buf(nullptr), rewinded(0) {
 }
 
 ZlibAdapter::~ZlibAdapter() {
@@ -236,11 +235,11 @@ bool ZlibAdapter::isOpen() const {
 
 void ZlibAdapter::close() {
     delete z;
-    z = NULL;
+    z = nullptr;
     if (buf) {
         delete[] buf->rawData();
         delete buf;
-        buf = NULL;
+        buf = nullptr;
     }
     if (io->isOpen())
         io->close();
@@ -329,7 +328,7 @@ bool ZlibAdapter::skip(qint64 nBytes) {
 }
 
 bool ZlibAdapter::skip(const GZipIndexAccessPoint &point, qint64 offset) {
-    if (NULL == z) {
+    if (nullptr == z) {
         return false;
     }
     if (!point.window.size() || 0 > offset) {

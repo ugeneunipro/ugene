@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- find annotation table in genbank format file -->
+
+    <load-document index="doc" url="genbank/buchnera_prefix.gbk" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_002528 features" type="OT_ANNOTATIONS"/>
+
+</multi-test>

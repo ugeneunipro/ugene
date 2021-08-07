@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- simple.hmm, simple.fa dna default alphabet
+	./hmmsearch dna_def_4.hmm 4.fa > g_4_hmm_4_fa.out -->
+
+    <load-document index="seq" url="fasta/repeat_finder/4.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/dna_def_4.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/nucl_dna_al/no_hits/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_4_hmm_4_fa.out" actualOut="common/hmmsearch/general_search/default_options/nucl_dna_al/no_hits/output.txt"/>
+
+</multi-test>

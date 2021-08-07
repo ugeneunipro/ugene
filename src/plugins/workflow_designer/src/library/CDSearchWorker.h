@@ -48,7 +48,7 @@ class CDSearchWorker : public BaseWorker {
     Q_OBJECT
 public:
     CDSearchWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL), cds(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr), cds(nullptr) {
     }
     virtual void init();
     virtual Task *tick();

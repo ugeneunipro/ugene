@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/vcf/read_write_vcf.uwl"
+            in="!common_data_dir!cmdline/vcf/vcf1.vcf"
+            out="!tmp_data_dir!vcf_0001.vcf"
+            split="0"
+    />
+
+    <compare-docs doc1="cmdline/vcf/out_no_split.vcf" doc2="vcf_0001.vcf" temp="2" by_lines="true"/>
+
+</multi-test>

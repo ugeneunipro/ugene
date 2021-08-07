@@ -44,8 +44,8 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject *p,
     : QObject(p),
       consCache(consCache),
       editor(editor),
-      nextMismatch(NULL),
-      prevMismatch(NULL) {
+      nextMismatch(nullptr),
+      prevMismatch(nullptr) {
     mismatchCache = QBitArray(editor->getAlignmentLen(), false);
     connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int, char)), SLOT(sl_updateItem(int, char)));
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
@@ -98,7 +98,7 @@ void MaConsensusMismatchController::sl_prev() {
 
 void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(editor);
-    CHECK(mcaEditor != NULL, );
+    CHECK(mcaEditor != nullptr, );
 
     SequenceObjectContext *ctx = mcaEditor->getReferenceContext();
     int initialPos = -1;
@@ -116,18 +116,18 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     int pos = initialPos;
     do {
         switch (direction) {
-        case Forward:
-            pos++;
-            if (pos == mismatchCache.size()) {
-                pos = 0;
-            }
-            break;
-        default:
-            pos--;
-            if (pos == -1) {
-                pos = mismatchCache.size() - 1;
-            }
-            break;
+            case Forward:
+                pos++;
+                if (pos == mismatchCache.size()) {
+                    pos = 0;
+                }
+                break;
+            default:
+                pos--;
+                if (pos == -1) {
+                    pos = mismatchCache.size() - 1;
+                }
+                break;
         }
         consCache->updateCacheItem(pos);
         if (mismatchCache[pos] == true) {
@@ -135,11 +135,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
             return;
         }
     } while (pos != initialPos);
-
-    // no mismatches - show notification
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-    CHECK(notificationStack != NULL, );
-    notificationStack->addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
+    NotificationStack::addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
 }
 
 }    // namespace U2

@@ -1,0 +1,10 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- "score" is greater than 1000. -->
+
+<multi-test>
+
+    <load-document index="doc" url="bed/invalid_input/incorrect_score/score_is_too_big.bed" io="local_file" format="bed"/>
+
+</multi-test>
+
+

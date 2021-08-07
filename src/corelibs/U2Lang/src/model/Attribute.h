@@ -24,10 +24,10 @@
 
 #include <cassert>
 
-#include <QScriptEngine>
 #include <QScriptValue>
 #include <QVariant>
 
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/ScriptTask.h>
 #include <U2Core/Task.h>
 

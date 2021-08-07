@@ -47,7 +47,7 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
       d(_d),
       gd(_gd) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227947");
+    new HelpButton(this, buttonBox, "65929579");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -165,7 +165,7 @@ bool SaveGraphCutoffsDialogController::validate() {
 
 void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
     ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
-    CHECK(NULL != advContext, );
+    CHECK(nullptr != advContext, );
     advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 

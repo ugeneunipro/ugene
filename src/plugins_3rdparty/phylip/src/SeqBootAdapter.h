@@ -18,8 +18,16 @@
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 * MA 02110-1301, USA.
 */
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 #include "seqboot.h"
 #include "cons.h"
+#ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#endif
+
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PhyTree.h>

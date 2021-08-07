@@ -48,7 +48,7 @@ const QString GTUtilsDocument::DocumentUnloaded = "Unloaded";
 #define GT_METHOD_NAME "getDocument"
 Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &documentName) {
     Project *p = AppContext::getProject();
-    GT_CHECK_RESULT(p != NULL, "Project does not exist", NULL);
+    GT_CHECK_RESULT(p != nullptr, "Project does not exist", nullptr);
 
     QList<Document *> docs = p->getDocuments();
     foreach (Document *d, docs) {
@@ -57,7 +57,7 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -108,7 +108,7 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
 
 #define GT_METHOD_NAME "getDocumentGObjectView"
 GObjectView *GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus &os, Document *d) {
-    GT_CHECK_RESULT(d != NULL, "Document* is NULL", NULL);
+    GT_CHECK_RESULT(d != nullptr, "Document* is NULL", nullptr);
 
     QList<GObjectView *> gObjectViews = getAllGObjectViews();
     foreach (GObjectView *view, gObjectViews) {
@@ -117,7 +117,7 @@ GObjectView *GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus &os, Do
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 

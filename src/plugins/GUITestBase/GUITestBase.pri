@@ -17,7 +17,7 @@ unix {
 }
 
 win32 {
-    LIBS += User32.lib Gdi32.lib
+    LIBS += User32.lib Gdi32.lib -lole32 -lShell32
     QMAKE_CXXFLAGS += -bigobj
 }
 
@@ -25,5 +25,8 @@ macx {
     LIBS += -framework AppKit
 }
 
+use_cuda() {
+    DEFINES += SW2_BUILD_WITH_CUDA
+}
 
 

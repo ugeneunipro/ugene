@@ -271,7 +271,7 @@ BlastPlusSupportContext::BlastPlusSupportContext(QObject *p)
 
 void BlastPlusSupportContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    assert(av != NULL);
+    assert(av != nullptr);
     Q_UNUSED(av);
 
     ExternalToolSupportAction *queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST+..."), 2000, toolIdList);
@@ -287,10 +287,10 @@ static void setActionFontItalic(QAction *action, bool italic) {
     action->setFont(font);
 }
 
-void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void BlastPlusSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
-    SAFE_POINT(analyseMenu != NULL, "analyseMenu", );
+    SAFE_POINT(analyseMenu != nullptr, "analyseMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(analyseMenu);
     }
@@ -320,7 +320,7 @@ void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
         QMenu *fetchMenu = new QMenu(tr("Fetch sequences from local BLAST database"));
         fetchMenu->menuAction()->setObjectName("fetchMenu");
         QMenu *exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
-        SAFE_POINT(exportMenu != NULL, "exportMenu", );
+        SAFE_POINT(exportMenu != nullptr, "exportMenu", );
         m->insertMenu(exportMenu->menuAction(), fetchMenu);
         fetchSequenceByIdAction->setText(tr("Fetch sequences by 'id' %1").arg(name));
         bool emptyToolPath = AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty();
@@ -388,10 +388,10 @@ void BlastPlusSupportContext::sl_showDialog() {
         settings.querySequence = seqCtx->getSequenceData(region, os);
         CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
         settings.offsInGlobalSeq = region.startPos;
-        SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
+        SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
         settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
         settings.querySequenceObject = seqCtx->getSequenceObject();
-        Task *t = NULL;
+        Task *t = nullptr;
         if (settings.programName == "blastn") {
             t = new BlastNPlusSupportTask(settings);
         } else if (settings.programName == "blastp" || settings.programName == "gpu-blastp") {

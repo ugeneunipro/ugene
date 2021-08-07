@@ -102,7 +102,7 @@ private:
 class SpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    SpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = NULL);
+    SpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
     virtual void processDelegateTags();
@@ -126,7 +126,7 @@ private slots:
 class DoubleSpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    DoubleSpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = NULL);
+    DoubleSpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -143,11 +143,11 @@ private slots:
 class ComboBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = NULL);
+    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
-    static ComboBoxWidget *createBooleanWidget(QWidget *parent = NULL);
+    static ComboBoxWidget *createBooleanWidget(QWidget *parent = nullptr);
 
 signals:
     void valueChanged(const QString &value);
@@ -165,7 +165,7 @@ private slots:
 class ComboBoxEditableWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxEditableWidget(const QVariantMap &items, QWidget *parent = NULL);
+    ComboBoxEditableWidget(const QVariantMap &items, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -189,7 +189,7 @@ private slots:
 class ComboBoxWithUrlWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithUrlWidget(const QVariantMap &items, bool isPath = false, QWidget *parent = NULL);
+    ComboBoxWithUrlWidget(const QVariantMap &items, bool isPath = false, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -214,7 +214,7 @@ private slots:
 class ComboBoxWithDbUrlWidget : public ComboBoxWithUrlWidget {
     Q_OBJECT
 public:
-    ComboBoxWithDbUrlWidget(QWidget *parent = NULL);
+    ComboBoxWithDbUrlWidget(QWidget *parent = nullptr);
 
     QVariantMap getItems() const;
 
@@ -231,7 +231,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = NULL);
+    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -246,6 +246,9 @@ protected:
 protected slots:
     virtual void sl_valueChanged(int index);
     virtual void sl_itemChanged(QStandardItem *item);
+
+private:
+    void initModelView();
 };
 
 /************************************************************************/
@@ -256,7 +259,7 @@ class RunFileSystem;
 class U2DESIGNER_EXPORT URLWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    URLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = NULL);
+    URLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = nullptr);
 
     // PropertyWidget
     virtual QVariant value();
@@ -292,7 +295,7 @@ private slots:
 /************************************************************************/
 class NoFileURLWidget : public URLWidget {
 public:
-    NoFileURLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = NULL);
+    NoFileURLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = nullptr);
 
     static QString finalyze(const QString &url, DelegateTags *tags);
 

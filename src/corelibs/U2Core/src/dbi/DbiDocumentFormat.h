@@ -32,7 +32,7 @@ namespace U2 {
 class U2CORE_EXPORT DbiDocumentFormat : public DocumentFormat {
     Q_OBJECT
 public:
-    DbiDocumentFormat(const U2DbiFactoryId &id, const DocumentFormatId &formatId, const QString &formatName, const QStringList &exits, DocumentFormatFlags flags, QObject *p = NULL);
+    DbiDocumentFormat(const U2DbiFactoryId &id, const DocumentFormatId &formatId, const QString &formatName, const QStringList &exits, DocumentFormatFlags flags, QObject *p = nullptr);
 
     virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
 

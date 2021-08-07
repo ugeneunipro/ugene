@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- COIre.hmm, COIre.fa rna extended alphabet
+	./hmmsearch COIre.hmm COIre.fa > g_COIre_hmm_COIre_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/COIre.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/COIre.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/nucl_rna_al/COIlext/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_COIre_hmm_COIre_fa.out" actualOut="common/hmmsearch/general_search/default_options/nucl_rna_al/COIlext/output.txt"/>
+
+</multi-test>

@@ -38,7 +38,7 @@ class U2SequenceObject;
 class AtomData;
 typedef QSharedDataPointer<AtomData> SharedAtom;
 
-class U2FORMATS_EXPORT PDBFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT PDBFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     PDBFormat(QObject *p);
@@ -78,6 +78,10 @@ private:
         QSet<QByteArray> resIndSet;
         QMap<QString, QString> chainToMoleculeMap;
 
+        // True, if the name of the molecule has not yet been read to the end
+        // (in a multiline name, the semicolon has not yet been read).
+        bool readingMoleculeName;
+
         // Methods
         QByteArray getSpecValue(const QByteArray &specLine, const QByteArray &valueName);
         void parseHeader(BioStruct3D &biostruct, U2OpStatus &ti);
@@ -98,6 +102,9 @@ private:
         void updateResidueIndexes(BioStruct3D &biostruc);
         bool seqResContains(char chainIdentier, int residueIndex, char acronym);
         QByteArray getNextSpecLine();
+
+        // Returns the end-of-name index for `specification`. Changes `readingMoleculeName` if needed.
+        int returnEndOfNameIndexAndUpdateParserState(const QString &specification);
 
     public:
         PDBParser(IOAdapter *io);

@@ -40,8 +40,8 @@ HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings,
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       msa(msa),
-      saveTask(NULL),
-      hmmerTask(NULL),
+      saveTask(nullptr),
+      hmmerTask(nullptr),
       removeWorkingDir(false) {
     SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError(tr("HMM profile URL is empty")), );
 }

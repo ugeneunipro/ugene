@@ -26,8 +26,9 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include "ConvertMca2MsaTask.h"
-#include "ExportTasks.h"
 
 namespace U2 {
 
@@ -40,10 +41,10 @@ ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObj
       fileName(fileName),
       formatId(formatId),
       includeReference(includeReference),
-      convertTask(NULL),
-      exportTask(NULL) {
+      convertTask(nullptr),
+      exportTask(nullptr) {
     GCOUNTER(cvar, "ExportMca2MsaTask");
-    SAFE_POINT_EXT(NULL != mcaObject, setError(L10N::nullPointerError("MCA object")), );
+    SAFE_POINT_EXT(nullptr != mcaObject, setError(L10N::nullPointerError("MCA object")), );
 }
 
 void ExportMca2MsaTask::prepare() {

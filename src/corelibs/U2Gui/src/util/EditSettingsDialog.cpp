@@ -35,27 +35,27 @@ EditSettingsDialog::EditSettingsDialog(const EditSettings &settings, QWidget *pa
     : QDialog(parent) {
     ui = new Ui_EditSettingDialogForm;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227794");
+    new HelpButton(this, ui->buttonBox, "65929426");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     ui->recalculateQuals->setChecked(settings.recalculateQualifiers);
 
     switch (settings.annotationStrategy) {
-    case U1AnnotationUtils::AnnotationStrategyForResize_Resize:
-        ui->resizeRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Remove:
-        ui->removeRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Joined:
-        ui->splitRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Separate:
-        ui->split_separateRadioButton->setChecked(true);
-        break;
-    default:
-        FAIL("Unexpected enum value", );
+        case U1AnnotationUtils::AnnotationStrategyForResize_Resize:
+            ui->resizeRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Remove:
+            ui->removeRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Joined:
+            ui->splitRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Separate:
+            ui->split_separateRadioButton->setChecked(true);
+            break;
+        default:
+            FAIL("Unexpected enum value", );
     }
 }
 

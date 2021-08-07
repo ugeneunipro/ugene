@@ -54,7 +54,7 @@ QString AssemblyMessageTranslator::getTranslation() const {
     SAFE_POINT_OP(os, QString());
 
     U2AssemblyDbi *dbi = connection.dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != dbi, "Invalid assembly DBI!", QString());
+    SAFE_POINT(nullptr != dbi, "Invalid assembly DBI!", QString());
     const U2DataId assemblyId = assemblyRef.entityId;
     const qint64 assemblyLength = dbi->getMaxEndPos(assemblyId, os) + 1;
     SAFE_POINT_OP(os, QString());

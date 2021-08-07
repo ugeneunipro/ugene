@@ -54,12 +54,24 @@ public:
     ClustalOSupportContext(QObject *p);
 
 protected slots:
-    void sl_align_with_ClustalO();
+    /** Re-aligns the current alignment opened in the view. */
+    void sl_align();
+
+    /** Initiates align-sequences-to-the-alignment UI & task. */
+    void sl_addAlignmentToAlignment();
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *view, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+
+private:
+    /**
+     * Checks that ClustalO tool setup is valid. Shows external tools setup dialog to user.
+     * Sets error flag if ClustalO setup is not valid.
+     */
+    static void checkClustalOSetup(U2OpStatus &os);
 };
 
 }    // namespace U2
-#endif    // _U2_CLUSTALO_SUPPORT_H
+#endif    // _U2_CLUSTALO_SUPPORT_H_

@@ -35,7 +35,7 @@ FindPatternTask::FindPatternTask(const FindAlgorithmTaskSettings &settings, bool
     : Task(tr("Searching a pattern in sequence task"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       removeOverlaps(removeOverlaps),
-      findAlgorithmTask(NULL),
+      findAlgorithmTask(nullptr),
       noResults(false) {
 }
 
@@ -53,7 +53,7 @@ QList<Task *> FindPatternTask::onSubTaskFinished(Task *subTask) {
 
         QList<FindAlgorithmResult> resultz = task->popResults();
         if (settings.patternSettings == FindAlgorithmPatternSettings_RegExp) {    //Other algos always return sorted results
-            qSort(resultz.begin(), resultz.end(), FindAlgorithmResult::lessByRegionStartPos);
+            std::sort(resultz.begin(), resultz.end(), FindAlgorithmResult::lessByRegionStartPos);
         }
         if (removeOverlaps && !resultz.isEmpty()) {
             removeOverlappedResults(resultz);
@@ -127,7 +127,7 @@ FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings &settin
 QList<Task *> FindPatternListTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
     FindPatternTask *task = qobject_cast<FindPatternTask *>(subTask);
-    SAFE_POINT(NULL != task, "Failed to cast FindPatternTask!", QList<Task *>());
+    SAFE_POINT(nullptr != task, "Failed to cast FindPatternTask!", QList<Task *>());
     if (!task->hasNoResults()) {
         noResults = false;
     }

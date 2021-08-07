@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     enum ColumnRole {

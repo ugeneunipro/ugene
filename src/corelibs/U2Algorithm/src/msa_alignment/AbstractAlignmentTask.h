@@ -48,7 +48,7 @@ public:
     virtual bool convertCustomSettings();
     virtual bool isValid() const;
 
-    QString algorithmName;
+    QString algorithmId;
     QString realizationName;
     bool inNewWindow;
     U2EntityRef msaRef;    //couldn't be in customSettings. Set manually.

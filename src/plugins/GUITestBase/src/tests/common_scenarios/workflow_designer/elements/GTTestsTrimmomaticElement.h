@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_TRIMMOMATIC_ELEMENT_H_
 #define GTTESTS_TRIMMOMATIC_ELEMENT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
@@ -34,7 +34,6 @@ namespace GUITest_common_scenarios_trimmomatic_element {
 GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
 GUI_TEST_CLASS_DECLARATION(test_0003)
-
 
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_trimmomatic_element

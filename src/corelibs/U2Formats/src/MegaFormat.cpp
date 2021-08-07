@@ -50,7 +50,7 @@ const char MegaFormat::MEGA_START_COMMENT = '!';
 const char MegaFormat::MEGA_END_COMMENT = ';';
 
 MegaFormat::MegaFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::MEGA, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::MEGA, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
     formatName = tr("Mega");
     formatDescription = tr("Mega is a file format of native MEGA program");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -59,16 +59,16 @@ MegaFormat::MegaFormat(QObject *p)
 Document *MegaFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     QList<GObject *> objs;
     load(io, dbiRef, objs, fs, os);
-    CHECK_OP_EXT(os, qDeleteAll(objs), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 }
 
 void MegaFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    CHECK_EXT(d != NULL, os.setError(L10N::badArgument("doc")), );
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
+    CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MultipleSequenceAlignmentObject *obj = NULL;
-    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) == NULL)) {
+    MultipleSequenceAlignmentObject *obj = nullptr;
+    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) == nullptr)) {
         os.setError("No data to write;");
         return;
     }
@@ -321,7 +321,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *
     CHECK_OP(os, );
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al->getAlphabet() != NULL, os.setError(tr("Alphabet is unknown")), );
+    CHECK_EXT(al->getAlphabet() != nullptr, os.setError(tr("Alphabet is unknown")), );
 
     workUpIndels(al);    //replace '.' by symbols from the first sequence
 
@@ -337,7 +337,7 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject
     SAFE_POINT(1 == als.size(), "Mega entry storing: alignment objects count error", );
 
     const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(NULL != obj, "Mega entry storing: NULL alignment object", );
+    SAFE_POINT(nullptr != obj, "Mega entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 

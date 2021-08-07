@@ -56,18 +56,18 @@ public:
     TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
 
     //from GObjectView
-    virtual void buildStaticToolbar(QToolBar *tb);
-    virtual void buildStaticMenu(QMenu *m);
+    void buildStaticToolbar(QToolBar *tb) override;
+    void buildMenu(QMenu *m, const QString &type) override;
 
     void buildMSAEditorStaticToolbar(QToolBar *tb);
 
     void createActions();
 
-    virtual QVariantMap saveState();
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
-    virtual OptionsPanel *getOptionsPanel() {
-        return optionsPanel;
-    }
+    QVariantMap saveState() override;
+
+    Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
+
+    OptionsPanel *getOptionsPanel() override;
 
     QAction *getPrintAction() const {
         return printAction;
@@ -258,17 +258,23 @@ public:
         return getTreeLayout() == CIRCULAR_LAYOUT;
     }
 
+    GraphicsBranchItem *getLastUpdatedBranch() const;
+
     void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
 
-protected:
-    virtual void wheelEvent(QWheelEvent *e);
-    virtual void resizeEvent(QResizeEvent *e);
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void mouseReleaseEvent(QMouseEvent *e);
+signals:
+    /* emits when branch settings is updated */
+    void si_updateBranch();
 
-    virtual void setTreeLayout(TreeLayout newLayout);
+protected:
+     void wheelEvent(QWheelEvent *e) override;
+     void resizeEvent(QResizeEvent *e) override;
+     void mousePressEvent(QMouseEvent *e) override;
+     void mouseReleaseEvent(QMouseEvent *e) override;
+
+    virtual void setTreeLayout(const TreeLayout& newLayout);
 
     /** Returns root item for the tree. */
     GraphicsBranchItem *getRoot() const;
@@ -339,7 +345,7 @@ private:
 
     void updateLayout();
 
-    void updateTextSettings();
+    void updateTextSettings(TreeViewOption option);
 
     void updateBrachSettings();
 
@@ -372,6 +378,7 @@ private:
 
     PhyTreeObject *phyObject;
     GraphicsBranchItem *root;
+    GraphicsBranchItem *lastUpdatedBranch;
     qreal maxNameWidth;
     qreal verticalScale;
     qreal horizontalScale;
@@ -391,7 +398,7 @@ private:
     QAction *exportAction;
 
     OptionsMap settings;
-    bool updatingFromOP;
+    bool dontSendOptionChangedSignal;
 
 protected:
     GraphicsRectangularBranchItem *rectRoot;

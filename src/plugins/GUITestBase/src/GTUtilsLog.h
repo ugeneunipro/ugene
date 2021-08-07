@@ -48,7 +48,7 @@ public:
 
     static QList<LogMessage *> getMessages();
 
-    static bool checkMessage(QString s);
+    static bool checkMessage(const QString &s);
 
     bool isExpectedMessageFound;
     QStringList errorsList;

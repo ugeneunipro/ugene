@@ -1,0 +1,24 @@
+<!-- Verify a valid GTF file: valid names of the annotations. -->
+<!-- In all current tests (i.e. tests with "valid.gtf" file) it is also verified that: -->
+<!--   1) The name of the annotations table object depends on the "seqname" field.  -->
+<!--   2) The test file can contain comments. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/valid.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="seqName features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_start_codon" obj="ATO" name="start_codon"/>
+    <find-annotation-by-name index="ann_CDS" obj="ATO" name="CDS"/>
+    <find-annotation-by-name index="ann_stop_codon" obj="ATO" name="stop_codon"/>
+    <find-annotation-by-name index="ann_5UTR" obj="ATO" name="5UTR"/>
+    <find-annotation-by-name index="ann_3UTR" obj="ATO" name="3UTR"/>
+    <find-annotation-by-name index="ann_inter" obj="ATO" name="inter"/>
+    <find-annotation-by-name index="ann_inter_CNS" obj="ATO" name="inter_CNS"/>
+    <find-annotation-by-name index="ann_intron_CNS" obj="ATO" name="intron_CNS"/>
+    <find-annotation-by-name index="ann_exon" obj="ATO" name="exon"/>
+    <find-annotation-by-name index="ann_transcript" obj="ATO" name="transcript"/>
+    <find-annotation-by-name index="ann_missing_data" obj="ATO" name="missing_data"/>
+
+</multi-test>

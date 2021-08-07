@@ -94,7 +94,7 @@ Task *TreeViewerFactory::createViewTask(const MultiGSelection &multiSelection, b
     }
 
     if (resTasks.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
     if (resTasks.size() == 1 || single) {
@@ -115,7 +115,7 @@ bool TreeViewerFactory::isStateInSelection(const MultiGSelection &multiSelection
     }
     GObjectReference ref = state.getPhyObject();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+    if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     //check that document is in selection
@@ -126,7 +126,7 @@ bool TreeViewerFactory::isStateInSelection(const MultiGSelection &multiSelection
     //check that object is in selection
     QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
     GObject *obj = doc->findGObjectByName(ref.objName);
-    bool res = obj != NULL && selectedObjects.contains(obj);
+    bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 

@@ -36,7 +36,7 @@ namespace U2 {
 TestDbiProvider::TestDbiProvider()
     : useConnectionPool(false) {
     initialized = false;
-    dbi = NULL;
+    dbi = nullptr;
 }
 TestDbiProvider::~TestDbiProvider() {
     close();
@@ -48,7 +48,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
     }
 
     TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
-    QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/" + dbiFileName;
+    QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + dbiFileName;
 
     QString tmpFile = QDir::temp().absoluteFilePath(QFileInfo(originalFile).fileName());
 
@@ -67,7 +67,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
     useConnectionPool = _useConnectionPool;
 
     U2DbiFactory *factory = AppContext::getDbiRegistry()->getDbiFactoryById(SQLITE_DBI_ID);
-    SAFE_POINT(factory != NULL, "No dbi factory", false);
+    SAFE_POINT(factory != nullptr, "No dbi factory", false);
     U2OpStatusImpl opStatus;
 
     if (useConnectionPool) {
@@ -78,7 +78,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
         CHECK_OP(opStatus, false);
     } else {
         dbi = factory->createDbi();
-        SAFE_POINT(NULL != dbi, "dbi not created", false);
+        SAFE_POINT(nullptr != dbi, "dbi not created", false);
         QHash<QString, QString> properties;
         if (_create) {
             properties[U2DbiOptions::U2_DBI_OPTION_CREATE] = U2DbiOptions::U2_DBI_VALUE_ON;
@@ -89,7 +89,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
         SAFE_POINT_OP(opStatus, false);
     }
     U2ObjectDbi *objDbi = dbi->getObjectDbi();
-    SAFE_POINT(NULL != objDbi, "object dbi not loaded", false);
+    SAFE_POINT(nullptr != objDbi, "object dbi not loaded", false);
 
     initialized = true;
     return true;
@@ -99,7 +99,7 @@ void TestDbiProvider::close() {
     if (dbi) {
         if (useConnectionPool) {
             U2DbiRegistry *dbiReg = AppContext::getDbiRegistry();
-            if (NULL != dbiReg) {
+            if (nullptr != dbiReg) {
                 dbiReg->getGlobalDbiPool()->releaseDbi(dbi, opStatus);
             }
         } else {
@@ -108,11 +108,11 @@ void TestDbiProvider::close() {
             delete dbi;
         }
     }
-    dbi = NULL;
+    dbi = nullptr;
     initialized = false;
 }
 U2Dbi *TestDbiProvider::getDbi() {
-    SAFE_POINT(initialized, "Dbi Provider is not initialized", NULL);
+    SAFE_POINT(initialized, "Dbi Provider is not initialized", nullptr);
     return dbi;
 }
 

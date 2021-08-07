@@ -49,8 +49,8 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq"
-                                                                                                                                             << "fq") {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq"
+                                                                                                                                                       << "fq") {
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     formatName = tr("FASTQ");
     formatDescription = tr("FASTQ format is a text-based format for storing both a biological sequence (usually nucleotide sequence) "
@@ -165,7 +165,7 @@ static void readSequence(U2OpStatus &os, IOAdapter *io, QByteArray &sequence, ch
     QByteArray buffArray(DocumentFormat::READ_BUFF_SIZE + 1, 0);
     char *buff = buffArray.data();
 
-    // reading until readUntil symbol i.e. quality or dna sequence name start, ignoring whitespace at the beginning and the end of lines
+    // reading until read symbol i.e. quality or dna sequence name start, ignoring whitespace at the beginning and the end of lines
 
     while (!io->isEof()) {
         bool eolnFound = false;
@@ -384,11 +384,11 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints
             sequenceRef = GObjectReference(io->getURL().getURLString(), u2seq.visualName, GObjectTypes::SEQUENCE, U2EntityRef(dbiRef, u2seq.id));
 
             U2SequenceObject *seqObj = new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
-            CHECK_EXT_BREAK(seqObj != NULL, os.setError("U2SequenceObject is NULL"));
+            CHECK_EXT_BREAK(seqObj != nullptr, os.setError("U2SequenceObject is NULL"));
             seqObj->setQuality(DNAQuality(qualityScores));
             objects << seqObj;
 
-            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, NULL, hints);
+            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
         }
         if (PROGRESS_UPDATE_STEP == progressUpNum) {
             progressUpNum = 0;
@@ -408,7 +408,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints
     CHECK_OP(os, );
     sequenceRef = GObjectReference(io->getURL().getURLString(), u2seq.visualName, GObjectTypes::SEQUENCE, U2EntityRef(dbiRef, u2seq.id));
 
-    U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, NULL, hints);
+    U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
     if (headers.size() > 1) {
@@ -417,7 +417,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints
 }
 
 Document *FastqFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &_hints, U2OpStatus &os) {
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QVariantMap hints = _hints;
     QList<GObject *> objects;
     QMap<QString, QString> skippedLines;
@@ -444,7 +444,7 @@ Document *FastqFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, c
         }
     }
 
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     DocumentFormatUtils::updateFormatHints(objects, hints);
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, hints, lockReason);
 
@@ -454,7 +454,7 @@ Document *FastqFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, c
 void FastqFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
     foreach (GObject *obj, d->getObjects()) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
-        if (seqObj == NULL) {
+        if (seqObj == nullptr) {
             continue;
         }
         QList<GObject *> seqs;
@@ -468,7 +468,7 @@ void FastqFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 }
 
 void writeSequence(U2OpStatus &os, IOAdapter *io, const char *seq, int len, const QString &errorMessage, bool cutLines = true) {
-    CHECK_EXT(io != NULL, os.setError("can't write sequence"), );
+    CHECK_EXT(io != nullptr, os.setError("can't write sequence"), );
 
     static const int lineLength = 80;
 
@@ -509,7 +509,7 @@ void FastqFormat::writeEntry(const QString &sequenceName, const DNASequence &who
 
     //write quality
     QByteArray buf;
-    const char *qualityData = NULL;
+    const char *qualityData = nullptr;
     if (wholeSeq.hasQualityScores()) {
         const QByteArray &quality = wholeSeq.quality.qualCodes;
         CHECK_EXT(wholeSeq.length() == quality.length(), os.setError(errorMessage), );
@@ -528,7 +528,7 @@ void FastqFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObjec
     const QList<GObject *> &seqs = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(1 == seqs.size(), "Fastq entry storing: sequence objects count error", );
     U2SequenceObject *seqObj = dynamic_cast<U2SequenceObject *>(seqs.first());
-    SAFE_POINT(NULL != seqObj, "Fastq entry storing: NULL sequence object", );
+    SAFE_POINT(nullptr != seqObj, "Fastq entry storing: NULL sequence object", );
 
     GUrl url = seqObj->getDocument() ? seqObj->getDocument()->getURL() : GUrl();
     static QString errorMessage = L10N::errorWritingFile(url);
@@ -543,7 +543,7 @@ void FastqFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObjec
 
 DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     U2OpStatus2Log logOs;
-    CHECK_EXT((io != NULL) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT((io != nullptr) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QByteArray readBuff;
     QByteArray sequence;
     QByteArray qualityScores;
@@ -555,7 +555,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     readBuff.clear();
     QString sequenceName = readSequenceName(os, io, '@');
     // check for eof while trying to read another FASTQ block
-    CHECK(!io->isEof(), NULL);
+    CHECK(!io->isEof(), nullptr);
     CHECK_OP(os, new DNASequence());
 
     sequence.clear();
@@ -563,7 +563,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     CHECK_OP(logOs, new DNASequence());
 
     QString qualSequenceName = readSequenceName(logOs, io, '+');
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), nullptr);
     if (!qualSequenceName.isEmpty()) {
         CHECK_EXT(sequenceName == qualSequenceName, logOs.setError(U2::FastqFormat::tr("Not a valid FASTQ file, sequence name differs from quality scores name")), new DNASequence());
     }
@@ -578,7 +578,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     DNASequence *seq = new DNASequence(sequenceName, sequence);
     seq->quality = DNAQuality(qualityScores);
     seq->alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-    SAFE_POINT(seq->alphabet != NULL, "FastqFormat::loadSequence alphabet is NULL", new DNASequence());
+    SAFE_POINT(seq->alphabet != nullptr, "FastqFormat::loadSequence alphabet is NULL", new DNASequence());
 
     if (!seq->alphabet->isCaseSensitive()) {
         TextUtils::translate(TextUtils::UPPER_CASE_MAP, const_cast<char *>(seq->seq.constData()), seq->seq.length());

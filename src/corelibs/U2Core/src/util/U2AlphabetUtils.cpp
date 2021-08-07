@@ -61,7 +61,7 @@ void ExtendedDNAlphabetComparator::buildIndex() {
     V = not T (A or C or G)
     N = A or C or G or T
     */
-    qFill(index, index + DNA_AL_EX_INDEX_SIZE, 0);
+    std::fill(index, index + DNA_AL_EX_INDEX_SIZE, 0);
     index['A' - ' '] = (1 << bit('A'));
     index['C' - ' '] = (1 << bit('C'));
     index['G' - ' '] = (1 << bit('G'));
@@ -108,24 +108,24 @@ bool U2AlphabetUtils::matches(const DNAAlphabet *al, const char *seq, qint64 len
 
 char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId &alphaId) {
     const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(alphaId.id);
-    SAFE_POINT(al != NULL, "Alphabet is not found: " + alphaId.id, 'N');
+    SAFE_POINT(al != nullptr, "Alphabet is not found: " + alphaId.id, 'N');
     return al->getDefaultSymbol();
 }
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma) {
-    const DNAAlphabet *resAl = NULL;
+    const DNAAlphabet *resAl = nullptr;
     for (int i = 0, n = ma->getNumRows(); i < n; i++) {
         const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
         const QByteArray &itemSeq = item->getCore();
         const DNAAlphabet *itemAl = findBestAlphabet(itemSeq);
-        if (resAl == NULL) {
+        if (resAl == nullptr) {
             resAl = itemAl;
         } else {
             resAl = deriveCommonAlphabet(resAl, itemAl);
         }
-        CHECK(resAl != NULL, );
+        CHECK(resAl != nullptr, );
     }
-    CHECK(resAl != NULL, );
+    CHECK(resAl != nullptr, );
     ma->setAlphabet(resAl);
 
     if (!resAl->isCaseSensitive()) {
@@ -134,20 +134,20 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma) {
 }
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma, char ignore) {
-    const DNAAlphabet *resAl = NULL;
+    const DNAAlphabet *resAl = nullptr;
     for (int i = 0, n = ma->getNumRows(); i < n; i++) {
         const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
         QByteArray itemSeq = item->getCore();
         itemSeq.replace(ignore, U2Msa::GAP_CHAR);
         const DNAAlphabet *itemAl = findBestAlphabet(itemSeq);
-        if (resAl == NULL) {
+        if (resAl == nullptr) {
             resAl = itemAl;
         } else {
             resAl = deriveCommonAlphabet(resAl, itemAl);
         }
-        CHECK(resAl != NULL, );
+        CHECK(resAl != nullptr, );
     }
-    CHECK(resAl != NULL, );
+    CHECK(resAl != nullptr, );
     ma->setAlphabet(resAl);
 
     if (!resAl->isCaseSensitive()) {
@@ -162,7 +162,7 @@ const DNAAlphabet *U2AlphabetUtils::findBestAlphabet(const char *seq, qint64 len
             return al;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<const DNAAlphabet *> U2AlphabetUtils::findAllAlphabets(const char *seq, qint64 len) {
@@ -208,12 +208,12 @@ const DNAAlphabet *U2AlphabetUtils::findBestAlphabet(const char *seq, qint64 len
             return al;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 // Note: never returns NULL.
 const DNAAlphabet *U2AlphabetUtils::deriveCommonAlphabet(const DNAAlphabet *al1, const DNAAlphabet *al2) {
-    SAFE_POINT(al1 != NULL && al2 != NULL, "Alphabet is NULL", NULL);
+    SAFE_POINT(al1 != nullptr && al2 != nullptr, "Alphabet is NULL", nullptr);
 
     if (al1 == al2) {
         return al1;

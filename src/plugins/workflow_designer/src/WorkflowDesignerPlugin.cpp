@@ -158,7 +158,7 @@ void WorkflowDesignerPlugin::registerWorkflowTasks() {
 
 void WorkflowDesignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *taskSection = new CMDLineHelpProvider(
         RUN_WORKFLOW,
@@ -227,19 +227,19 @@ Task *WorkflowDesignerService::createServiceDisablingTask() {
 
 WorkflowDesignerService::WorkflowDesignerService()
     : Service(Service_WorkflowDesigner, tr("Workflow Designer"), ""),
-      designerAction(NULL), managerAction(NULL), newWorkflowAction(NULL) {
+      designerAction(nullptr), managerAction(nullptr), newWorkflowAction(nullptr) {
 }
 
 void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool enabledStateChanged) {
     IdRegistry<WelcomePageAction> *welcomePageActions = AppContext::getWelcomePageActionRegistry();
-    SAFE_POINT(NULL != welcomePageActions, L10N::nullPointerError("Welcome Page Actions"), );
+    SAFE_POINT(nullptr != welcomePageActions, L10N::nullPointerError("Welcome Page Actions"), );
 
     if (!enabledStateChanged) {
         return;
     }
     if (isEnabled()) {
-        SAFE_POINT(NULL == designerAction, "Illegal WD service state", );
-        SAFE_POINT(NULL == newWorkflowAction, "Illegal WD service state", );
+        SAFE_POINT(nullptr == designerAction, "Illegal WD service state", );
+        SAFE_POINT(nullptr == newWorkflowAction, "Illegal WD service state", );
 
         if (!AppContext::getPluginSupport()->isAllPluginsLoaded()) {
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_startWorkflowPlugin()));
@@ -251,9 +251,9 @@ void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool ena
     } else {
         welcomePageActions->unregisterEntry(BaseWelcomePageActions::CREATE_WORKFLOW);
         delete newWorkflowAction;
-        newWorkflowAction = NULL;
+        newWorkflowAction = nullptr;
         delete designerAction;
-        designerAction = NULL;
+        designerAction = nullptr;
     }
 }
 
@@ -279,7 +279,7 @@ void WorkflowDesignerService::initNewWorkflowAction() {
     connect(newWorkflowAction, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
     QMenu *fileMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_FILE);
-    QAction *beforeAction = NULL;
+    QAction *beforeAction = nullptr;
     foreach (QAction *action, fileMenu->actions()) {
         if (action->objectName() == ACTION_PROJECTSUPPORT__NEW_SECTION_SEPARATOR) {
             beforeAction = action;
@@ -313,13 +313,13 @@ bool WorkflowDesignerService::checkServiceState() const {
 
 void WorkflowDesignerService::sl_showDesignerWindow() {
     CHECK(checkServiceState(), );
-    WorkflowView::openWD(NULL);    //FIXME
+    WorkflowView::openWD(nullptr);    //FIXME
 }
 
 void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction &action) {
     CHECK(checkServiceState(), );
 
-    WorkflowView *view = WorkflowView::openWD(NULL);
+    WorkflowView *view = WorkflowView::openWD(nullptr);
     CHECK(nullptr != view, );
 
     view->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
@@ -341,7 +341,7 @@ void WorkflowDesignerService::initSampleActions() {
     ngsControl.requiredPlugins << externalToolsPlugin;
 
     // SPAdes is available only on Linux and Mac.
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
     ngsDenovo.requiredPlugins << externalToolsPlugin;
     samples->registerAction(ngsDenovo);

@@ -24,12 +24,10 @@
 #include <QCoreApplication>
 #include <QDir>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -41,8 +39,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "MAFFTSupport.h"
 
@@ -59,34 +55,34 @@ MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment &_inputMsa, c
     : ExternalToolSupportTask("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
-      tmpDoc(NULL),
-      logParser(NULL),
-      saveTemporaryDocumentTask(NULL),
-      mAFFTTask(NULL),
-      loadTmpDocumentTask(NULL),
+      tmpDoc(nullptr),
+      logParser(nullptr),
+      saveTemporaryDocumentTask(nullptr),
+      mAFFTTask(nullptr),
+      loadTmpDocumentTask(nullptr),
       settings(_settings),
-      lock(NULL) {
+      lock(nullptr) {
     GCOUNTER(cvar, "MAFFTSupportTask");
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
 }
 
 MAFFTSupportTask::~MAFFTSupportTask() {
-    if (NULL != tmpDoc) {
+    if (nullptr != tmpDoc) {
         delete tmpDoc;
     }
     //Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
             GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (NULL != obj) {
+            if (nullptr != obj) {
                 MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-                CHECK(NULL != alObj, );
+                CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
                 }
                 delete lock;
-                lock = NULL;
+                lock = nullptr;
             }
         }
     }
@@ -97,10 +93,10 @@ void MAFFTSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (NULL != obj) {
+        if (nullptr != obj) {
             MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
-            lock = new StateLock("ClustalWAligment");
+            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
+            lock = new StateLock("MAFFT Lock");
             alObj->lockState(lock);
         }
     }
@@ -132,7 +128,7 @@ void MAFFTSupportTask::prepare() {
         return;
     }
 
-    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MSAUtils::setUniqueRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
+    saveTemporaryDocumentTask = new SaveMSA2SequencesTask(MSAUtils::createCopyWithIndexedRowNames(inputMsa), url, false, BaseDocumentFormats::FASTA);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
@@ -195,7 +191,7 @@ QList<Task *> MAFFTSupportTask::onSubTaskFinished(Task *subTask) {
         res.append(loadTmpDocumentTask);
     } else if (subTask == loadTmpDocumentTask) {
         tmpDoc = loadTmpDocumentTask->takeDocument();
-        SAFE_POINT(tmpDoc != NULL, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
+        SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
@@ -204,23 +200,18 @@ QList<Task *> MAFFTSupportTask::onSubTaskFinished(Task *subTask) {
             emit si_stateChanged();    //TODO: task can't emit this signal!
             return res;
         }
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
+        bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (NULL != obj) {
+            if (nullptr != obj) {
                 MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
+                SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
 
-                QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
+                MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
-
-                if (rowsOrder.count() != inputMsa->getNumRows()) {
-                    stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
-                    return res;
-                }
 
                 QMap<qint64, QList<U2MsaGap>> rowsGapModel;
                 for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
@@ -236,7 +227,7 @@ QList<Task *> MAFFTSupportTask::onSubTaskFinished(Task *subTask) {
                             alObj->unlockState(lock);
                         }
                         delete lock;
-                        lock = NULL;
+                        lock = nullptr;
                     } else {
                         stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
@@ -253,14 +244,15 @@ QList<Task *> MAFFTSupportTask::onSubTaskFinished(Task *subTask) {
                     alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa->getRowsIds()) {
-                        alObj->updateRowsOrder(stateInfo, rowsOrder);
+                    QList<qint64> resultRowIds = resultMA->getRowsIds();
+                    if (resultRowIds != inputMsa->getRowsIds()) {
+                        alObj->updateRowsOrder(stateInfo, resultRowIds);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }
 
                 Document *currentDocument = alObj->getDocument();
-                SAFE_POINT(NULL != currentDocument, "Document is NULL!", res);
+                SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
                 algoLog.error(tr("Failed to apply the result of aligning with MAFFT: alignment object is not available!"));
@@ -298,12 +290,12 @@ Task::ReportResult MAFFTSupportTask::report() {
 //MAFFTWithExtFileSpecifySupportTask
 MAFFTWithExtFileSpecifySupportTask::MAFFTWithExtFileSpecifySupportTask(const MAFFTSupportTaskSettings &_settings)
     : Task("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
-      mAObject(NULL),
-      currentDocument(NULL),
+      mAObject(nullptr),
+      currentDocument(nullptr),
       cleanDoc(true),
-      saveDocumentTask(NULL),
-      loadDocumentTask(NULL),
-      mAFFTSupportTask(NULL),
+      saveDocumentTask(nullptr),
+      loadDocumentTask(nullptr),
+      mAFFTSupportTask(nullptr),
       settings(_settings) {
     GCOUNTER(cvar, "MAFFTSupportTask");
 }
@@ -344,10 +336,10 @@ QList<Task *> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTas
     }
     if (subTask == loadDocumentTask) {
         currentDocument = loadDocumentTask->takeDocument();
-        SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
         mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
-        SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
         mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
@@ -355,7 +347,7 @@ QList<Task *> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTas
     } else if (subTask == mAFFTSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
-        SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(mAFFTSupportTask->resultMA->getMsaRows());
 
         // Save the current document
@@ -365,7 +357,7 @@ QList<Task *> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTas
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
         Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
-        if (openTask != NULL) {
+        if (openTask != nullptr) {
             res << openTask;
         }
     }

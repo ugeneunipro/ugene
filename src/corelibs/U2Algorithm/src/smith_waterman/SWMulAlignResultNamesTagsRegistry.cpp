@@ -90,7 +90,7 @@ QString SWMulAlignResultNamesTagsRegistry::parseStringWithTags(const QString &st
                 tagExpansionData.setValue(expansionSet.refSequenceName);
             } else if (SUBSEQ_START_POS_TAG_SHORTHAND == tagShorthand || SUBSEQ_END_POS_TAG_SHORTHAND == tagShorthand ||
                        SUBSEQ_LENGTH_TAG_SHORTHAND == tagShorthand) {
-                assert(NULL != expansionSet.curProcessingSubseq);
+                assert(nullptr != expansionSet.curProcessingSubseq);
                 tagExpansionData.setValue(*expansionSet.curProcessingSubseq);
             }
 

@@ -37,7 +37,7 @@ public:
      * So, inserting a big sequence as one huge paragraph will cause perfomance problems.
      * TextEdit splits inserted data to paragraphs with the size PARAGRAPH_SIZE.
      */
-    SequenceTextEdit(QWidget *p = NULL);
+    SequenceTextEdit(QWidget *p = nullptr);
 
 protected:
     virtual void insertFromMimeData(const QMimeData *source);

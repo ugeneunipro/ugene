@@ -3,4 +3,4 @@
 //
 // $Id: analyticalGeometry.C,v 1.2 2002/02/27 12:21:26 sturm Exp $
 
-#include <BALL/MATHS/analyticalGeometry.h>
+//#include <BALL/MATHS/analyticalGeometry.h>

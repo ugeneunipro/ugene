@@ -4,4 +4,4 @@
 // $Id: predicate.C,v 1.2 2005/10/23 12:02:28 oliver Exp $
 //
 
-#include <BALL/CONCEPT/predicate.h>
+//#include <BALL/CONCEPT/predicate.h>

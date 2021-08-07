@@ -31,7 +31,7 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT GFFFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT GFFFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     GFFFormat(QObject *p);

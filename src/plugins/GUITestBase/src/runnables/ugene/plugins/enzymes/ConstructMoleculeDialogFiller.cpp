@@ -34,37 +34,37 @@ namespace U2 {
 
 ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "ConstructMoleculeDialog"),
-      dialog(NULL),
+      dialog(nullptr),
       actions(actions) {
 }
 
 ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
-    : Filler(os, "ConstructMoleculeDialog", scenario), dialog(NULL) {
+    : Filler(os, "ConstructMoleculeDialog", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ConstructMoleculeDialogFiller::commonScenario() {
     dialog = QApplication::activeModalWidget();
-    GT_CHECK(NULL != dialog, "activeModalWidget is NULL");
+    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
 
     foreach (const Action &action, actions) {
         CHECK_OP(os, );
 
         switch (action.first) {
-        case AddAllFragments:
-            addAllFragments();
-            break;
-        case InvertAddedFragment:
-            invertAddedFragment(action.second);
-            break;
-        case ClickCancel:
-            clickCancel();
-            break;
-        case ClickOk:
-            clickOk();
-            break;
-        default:
-            GT_CHECK(false, "An unrecognized action type");
+            case AddAllFragments:
+                addAllFragments();
+                break;
+            case InvertAddedFragment:
+                invertAddedFragment(action.second);
+                break;
+            case ClickCancel:
+                clickCancel();
+                break;
+            case ClickOk:
+                clickOk();
+                break;
+            default:
+                GT_CHECK(false, "An unrecognized action type");
         }
     }
 }
@@ -82,7 +82,7 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant &actionDa
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
-    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "molConstructWidget", dialog), actionData.toString(), NULL, 1, options), 3);
+    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
 }
 #undef GT_METHOD_NAME
 

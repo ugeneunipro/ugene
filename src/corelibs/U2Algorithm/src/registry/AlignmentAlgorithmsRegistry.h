@@ -66,12 +66,22 @@ class U2ALGORITHM_EXPORT AlignmentAlgorithm {
     Q_DISABLE_COPY(AlignmentAlgorithm)
 
 public:
-    AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId = QString("default"));
+    AlignmentAlgorithm(AlignmentAlgorithmType alignmentType,
+                       const QString &id,
+                       const QString &actionName,
+                       AbstractAlignmentTaskFactory *taskFactory,
+                       AlignmentAlgorithmGUIExtensionFactory *guiFactory = nullptr,
+                       const QString &realizationId = "default");
+
     virtual ~AlignmentAlgorithm();
     virtual AbstractAlignmentTaskFactory *getFactory(const QString &_realizationId = QString("default")) const;
     virtual AlignmentAlgorithmGUIExtensionFactory *getGUIExtFactory(const QString &realizationId = QString("default")) const;
 
     const QString &getId() const;
+
+    /** Returns visual algorithm action name. */
+    const QString &getActionName() const;
+
     QStringList getRealizationsList() const;
     bool addAlgorithmRealization(AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId);
     AlgorithmRealization *getAlgorithmRealization(const QString &_realizationId) const;
@@ -85,8 +95,15 @@ public:
 
 protected:
     mutable QMutex mutex;
+
+    /** Unique algorithm identifier. */
     QString id;
+
+    /** Visual localizable algorithm action name, as shown in menus. */
+    QString actionName;
+
     QMap<QString, AlgorithmRealization *> realizations;
+
     AlignmentAlgorithmType alignmentType;
 };
 

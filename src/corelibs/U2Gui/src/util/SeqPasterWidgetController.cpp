@@ -53,7 +53,7 @@ SeqPasterWidgetController::SeqPasterWidgetController(QWidget *p, const QByteArra
     connect(ui->alphabetBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_currentIndexChanged(const QString &)));
 }
 QByteArray SeqPasterWidgetController::getNormSequence(const DNAAlphabet *alph, const QByteArray &seq, bool replace, QChar replaceChar) {
-    assert(alph != NULL);
+    assert(alph != nullptr);
     QByteArray ret;
     if (alph->getId() == BaseDNAAlphabetIds::RAW()) {
         foreach (QChar c, seq) {
@@ -124,13 +124,13 @@ void SeqPasterWidgetController::sl_currentIndexChanged(const QString &newText) {
 QString SeqPasterWidgetController::addSequence(const QString &name, QString data) {
     QByteArray seq = data.remove(QRegExp("\\s")).toLatin1();
 
-    const DNAAlphabet *alph = NULL;
+    const DNAAlphabet *alph = nullptr;
     if (ui->groupBox->isChecked()) {
         alph = U2AlphabetUtils::getById((ui->alphabetBox->itemData(ui->alphabetBox->currentIndex())).toString());
     } else {
-        alph = NULL != preferred ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
+        alph = nullptr != preferred ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
     }
-    CHECK(NULL != alph, tr("Alphabet not detected"));
+    CHECK(nullptr != alph, tr("Alphabet not detected"));
 
     bool replace = ui->replaceRB->isChecked();
     if (replace) {
@@ -160,10 +160,11 @@ QString SeqPasterWidgetController::addSequence(const QString &name, QString data
 
 bool SeqPasterWidgetController::isFastaFormat(const QString &data) {
     DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(NULL != docFormatRegistry, L10N::nullPointerError("document format registry"), false);
+    SAFE_POINT(docFormatRegistry != nullptr, L10N::nullPointerError("document format registry"), false);
     DocumentFormat *fastaFormat = docFormatRegistry->getFormatById(BaseDocumentFormats::FASTA);
-    SAFE_POINT(NULL != fastaFormat, L10N::nullPointerError("FASTA format"), false);
-    return FormatDetection_Matched == fastaFormat->checkRawData(data.toLatin1()).score;
+    SAFE_POINT(fastaFormat != nullptr, L10N::nullPointerError("FASTA format"), false);
+    int score = fastaFormat->checkRawData(data.toLatin1()).score;
+    return score >= FormatDetection_HighSimilarity;
 }
 
 void SeqPasterWidgetController::disableCustomSettings() {
@@ -187,7 +188,7 @@ void SeqPasterWidgetController::selectText() {
 }
 
 void SeqPasterWidgetController::setEventFilter(QObject *evFilter) {
-    if (evFilter == NULL) {
+    if (evFilter == nullptr) {
         return;
     }
     ui->sequenceEdit->installEventFilter(evFilter);

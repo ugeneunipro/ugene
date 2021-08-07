@@ -330,7 +330,7 @@ QString SWPrompter::composeRichDoc() {
  * SWWorker
  **************************/
 SWWorker::SWWorker(Actor *a)
-    : BaseWorker(a, false), input(NULL), output(NULL) {
+    : BaseWorker(a, false), input(nullptr), output(nullptr) {
 }
 
 void SWWorker::init() {
@@ -357,8 +357,8 @@ Task *SWWorker::tick() {
     while (patternPort->hasMessage()) {
         SharedDbiDataHandler ptrnId = patternPort->get().getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> ptrnObj(StorageUtils::getSequenceObject(context->getDataStorage(), ptrnId));
-        if (NULL == ptrnObj.data()) {
-            return NULL;
+        if (nullptr == ptrnObj.data()) {
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence ptrn = ptrnObj->getWholeSequence(os);
@@ -371,22 +371,22 @@ Task *SWWorker::tick() {
         patternNames.insert(ptrn.constData(), ptrn.getName());
     }
     if (!patternPort->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         SmithWatermanSettings cfg;
 
         // sequence
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj.data()) {
-            return NULL;
+        if (nullptr == seqObj.data()) {
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -440,7 +440,7 @@ Task *SWWorker::tick() {
         // filter
         QString filter = actor->getParameter(FILTER_ATTR)->getAttributeValue<QString>(context);
         cfg.resultFilter = AppContext::getSWResultFilterRegistry()->getFilter(filter);
-        if (cfg.resultFilter == NULL) {
+        if (cfg.resultFilter == nullptr) {
             algoLog.error(tr("Incorrect value:  filter name incorrect, default value used"));    //details level won't work
             cfg.resultFilter = AppContext::getSWResultFilterRegistry()->getFilter("none");
         }
@@ -455,11 +455,11 @@ Task *SWWorker::tick() {
         // translations
         cfg.strand = getStrand(actor->getParameter(BaseAttributes::STRAND_ATTRIBUTE().getId())->getAttributeValue<QString>(context));
         if (cfg.strand != StrandOption_DirectOnly) {
-            DNATranslation *compTT = NULL;
+            DNATranslation *compTT = nullptr;
             if (seq.alphabet->isNucleic()) {
                 compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
             }
-            if (compTT != NULL) {
+            if (compTT != nullptr) {
                 cfg.complTT = compTT;
             } else {
                 algoLog.error(tr("Could not find complement translation for %1, searching only direct strand").arg(seq.getName()));
@@ -502,7 +502,7 @@ Task *SWWorker::tick() {
                                      patternNames.value(p, defaultName) :
                                      defaultName;
             SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(
-                NULL, U2FeatureTypes::MiscFeature, resultName, QString(), "", false);
+                nullptr, U2FeatureTypes::MiscFeature, resultName, QString(), "", false);
             config.resultCallback = rcb;
             config.resultListener = new SmithWatermanResultListener();
 
@@ -520,23 +520,23 @@ Task *SWWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SWWorker::sl_taskFinished(Task *t) {
     QList<SharedAnnotationData> annData;
     MultiTask *multiSw = qobject_cast<MultiTask *>(t);
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     QList<Task *> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );
     QStringList ptrns;
     foreach (Task *sub, subs) {
-        SAFE_POINT(NULL != sub, "Invalid task is encountered", );
+        SAFE_POINT(nullptr != sub, "Invalid task is encountered", );
         if (sub->isCanceled()) {
             return;
         }
         SmithWatermanReportCallbackAnnotImpl *rcb = callbacks.take(sub);
-        assert(rcb != NULL);
+        assert(rcb != nullptr);
         if (rcb) {
             // crop long names
             const QString qualifierName = actor->getParameter(PATTERN_NAME_QUAL_ATTR)->getAttributeValue<QString>(context);
@@ -551,8 +551,8 @@ void SWWorker::sl_taskFinished(Task *t) {
         ptrns << patterns.value(sub);
     }
 
-    assert(output != NULL);
-    if (NULL != output) {
+    assert(output != nullptr);
+    if (nullptr != output) {
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annData);
         const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));

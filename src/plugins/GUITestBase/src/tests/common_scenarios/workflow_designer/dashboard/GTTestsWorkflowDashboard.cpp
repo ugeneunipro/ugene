@@ -222,9 +222,7 @@ public:
     }
 
     void run(HI::GUITestOpStatus &os) {
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is nullptr");
-
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
         AppSettingsDialogFiller::setWorkflowOutputDirPath(os, path);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
@@ -2449,8 +2447,6 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     //    6. Close the messagebox.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
@@ -2491,9 +2487,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2626,9 +2620,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2753,9 +2745,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2789,8 +2779,6 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
@@ -2872,8 +2860,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //    12. Close the messagebox.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
@@ -2967,9 +2953,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3071,8 +3055,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
     const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
@@ -3166,9 +3148,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3265,8 +3245,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 
     const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
@@ -3326,9 +3304,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3392,8 +3368,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are unchecked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
@@ -3477,8 +3451,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     coreLog.info("Try to start workflow #2");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     coreLog.info("It seems that workflow was started");
-
-    GTGlobals::sleep();
 }
 
 static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus &os, const QString &file) {
@@ -3618,9 +3590,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                        qMakePair(QString("Align sequences with MUSCLE 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3959,17 +3929,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -4299,17 +4267,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -4476,8 +4442,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //    28. Cancel the dialog.
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
@@ -4640,17 +4604,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), false)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -4819,8 +4781,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
-
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_common_scenarios_workflow_dashboard

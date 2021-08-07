@@ -1,3 +1,5 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
 /************************************************************
 * HMMER - Biological sequence analysis with profile HMMs
 * Copyright (C) 1992-2003 Washington University School of Medicine

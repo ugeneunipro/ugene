@@ -71,6 +71,9 @@ public:
 
     inline static int skip(const QBitArray &map, const char *seq, int len);
 
+    /**  Returns substring with all characters from the 'map' skipped on the left side of the original string. */
+    static QString skip(const QBitArray &map, const QString &text);
+
     inline static int keep(const char *srcSeq, int len, char *dstSeq, const QBitArray &keepMap);
 
     inline static int keep(char *srcSeq, int len, const QBitArray &keepMap) {
@@ -84,6 +87,9 @@ public:
     }
 
     inline static void replace(char *seq, int len, const QBitArray &fromMap, char to);
+
+    /** Replaces all string characters found in the latin1CharCodeMap with the 'replacementChar' in place. */
+    static void replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar);
 
     inline static void applyMap(const QBitArray &map, const char *srcSeq, int len, char *dstSeq);
 
@@ -129,6 +135,18 @@ public:
 
     /** Splits text into chunks of the given length. */
     static QStringList split(const QString &text, int chunkSize);
+
+    /** Splits latin1 text into chunks of the given length. */
+    static QList<QByteArray> split(const QByteArray &text, int chunkSize);
+
+    /** Returns first line found in the text with no line separtors. If there are no line separators returns the text itself. */
+    static QString readFirstLine(const QString &text);
+
+    /** Returns true if the character at the text[charIndex] position is in LINE_BREAK set. */
+    static bool isLineBreak(const QString &text, int charIndex);
+
+    /** Returns true if the character at the text[charIndex] position is in WHITE_SPACE set. */
+    static bool isWhiteSpace(const QString &text, int charIndex);
 };
 
 template<typename T>

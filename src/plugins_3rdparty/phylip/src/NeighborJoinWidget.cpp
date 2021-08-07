@@ -19,6 +19,8 @@
 * MA 02110-1301, USA.
 */
 
+#include "NeighborJoinWidget.h"
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
@@ -26,9 +28,15 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Settings.h>
 
-#include "NeighborJoinWidget.h"
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 #include "dnadist.h"
 #include "protdist.h"
+#ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#endif
 
 namespace U2 {
 
@@ -62,9 +70,8 @@ QList<QString> ConsensusModelTypes::getConsensusModelTypes() {
     return list;
 }
 
-NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
-    CreatePhyTreeWidget(parent)
-{
+NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
+    : CreatePhyTreeWidget(parent) {
     setupUi(this);
     init(ma);
     connectSignals();
@@ -128,11 +135,11 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
 
     //****description******
     //dnadist_makevalues()
-//     for (i = 0; i < spp; i++) {
-//         nodep[i]->x = (phenotype)Malloc(endsite*sizeof(ratelike));
-//         for (j = 0; j < endsite; j++)
-//             nodep[i]->x[j]  = (ratelike)Malloc(rcategs*sizeof(sitelike));
-//     }
+    //     for (i = 0; i < spp; i++) {
+    //         nodep[i]->x = (phenotype)Malloc(endsite*sizeof(ratelike));
+    //         for (j = 0; j < endsite; j++)
+    //             nodep[i]->x[j]  = (ratelike)Malloc(rcategs*sizeof(sitelike));
+    //     }
 
     //rcategs = 1
     //sizeof(sitelike) = 32
@@ -145,8 +152,9 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
 
     if (minMemoryForDistanceMatrixMb > appMemMb - ugeneLowestMemoryUsageMb) {
         msg = tr("Probably, for that alignment there is no enough memory to run PHYLIP dnadist module."
-            "The module will require more than %1 MB in the estimation."
-            "\nIt could cause an error. Do you want to continue?").arg(minMemoryForDistanceMatrixMb);
+                 "The module will require more than %1 MB in the estimation."
+                 "\nIt could cause an error. Do you want to continue?")
+                  .arg(minMemoryForDistanceMatrixMb);
         return false;
     } else {
         return displayOptions->checkMemoryEstimation(msg, msa, settings);
@@ -154,7 +162,7 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
 }
 
 bool NeighborJoinWidget::checkSettings(QString &msg, const CreatePhyTreeSettings &settings) {
-    if (!((settings.seed >= SEED_MIN) && (settings.seed <= SEED_MAX) && (settings.seed%2 == 1))) {
+    if (!((settings.seed >= SEED_MIN) && (settings.seed <= SEED_MAX) && (settings.seed % 2 == 1))) {
         msg = tr("Seed must be odd");
         return false;
     }
@@ -222,7 +230,7 @@ void NeighborJoinWidget::connectSignals() {
 
 int NeighborJoinWidget::getRandomSeed() {
     int seed = 0;
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     seed = qAbs(qrand());
 
     while (!checkSeed(seed)) {
@@ -239,4 +247,4 @@ bool NeighborJoinWidget::checkSeed(int seed) {
     return (seed >= SEED_MIN) && (seed <= SEED_MAX) && ((seed - 1) % 4 == 0);
 }
 
-}   // namespace U2
+}    // namespace U2

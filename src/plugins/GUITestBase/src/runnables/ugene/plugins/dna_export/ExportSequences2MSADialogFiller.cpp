@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -36,12 +36,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceAsAlignmentFiller"
 ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    if (__path.at(__path.count() - 1) != QDir::separator()) {
-        __path += QDir::separator();
-    }
-
-    path = QDir::toNativeSeparators(__path);
+    path = GTFileDialog::toAbsoluteNativePath(_path, true);
 
     comboBoxItems[Clustalw] = "CLUSTALW";
     comboBoxItems[Fasta] = "FASTA";
@@ -61,15 +56,15 @@ ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpSt
 #define GT_METHOD_NAME "run"
 void ExportSequenceAsAlignmentFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
-    GT_CHECK(lineEdit != NULL, "line edit not found");
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
 
     GTLineEdit::setText(os, lineEdit, path + name);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

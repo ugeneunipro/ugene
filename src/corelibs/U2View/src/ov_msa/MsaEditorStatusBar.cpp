@@ -24,10 +24,8 @@
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLineEdit>
-#include <QPushButton>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 
 #include "MSAEditorSequenceArea.h"
@@ -45,7 +43,7 @@ MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSe
 
 void MsaEditorStatusBar::setupLayout() {
     layout->addWidget(lineLabel);
-    layout->addWidget(colomnLabel);
+    layout->addWidget(columnLabel);
     layout->addWidget(positionLabel);
     layout->addWidget(selectionLabel);
 
@@ -57,25 +55,6 @@ void MsaEditorStatusBar::updateLabels() {
     updatePositionLabel();
     updateColumnLabel();
     updateSelectionLabel();
-}
-
-MaSearchValidator::MaSearchValidator(const DNAAlphabet *alphabet, QObject *parent)
-    : QRegExpValidator(parent) {
-    if (!alphabet->isRaw()) {
-        QByteArray alphabetChars = alphabet->getAlphabetChars(true);
-        //remove special characters
-        alphabetChars.remove(alphabetChars.indexOf('*'), 1);
-        alphabetChars.remove(alphabetChars.indexOf('-'), 1);
-        setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
-    }
-}
-
-QValidator::State MaSearchValidator::validate(QString &input, int &pos) const {
-    input = input.simplified();
-    input = input.toUpper();
-    input.remove(" ");
-    input.remove("-");    // Gaps are not used in search model
-    return QRegExpValidator::validate(input, pos);
 }
 
 }    // namespace U2

@@ -81,9 +81,9 @@ void NotificationDialogFiller::commonScenario() {
     }
     QWidget *ok = GTWidget::findButtonByText(os, "Ok", dialog);
     GTWidget::click(os, ok);
-#if defined Q_OS_WIN || defined Q_OS_MAC
+#if defined Q_OS_WIN || defined Q_OS_DARWIN
     dialog = QApplication::activeModalWidget();
-    if (dialog != NULL) {
+    if (dialog != nullptr) {
         ok = GTWidget::findButtonByText(os, "Ok", dialog);
         GTWidget::click(os, ok);
     }
@@ -172,6 +172,14 @@ void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus &os) {
         }
     }
     GT_CHECK(notification == nullptr, "Notification is still active after timeout!");
+}
+
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkNoVisibleNotifications"
+void GTUtilsNotifications::checkNoVisibleNotifications(HI::GUITestOpStatus &os) {
+    QWidget *notification = findAnyVisibleNotificationWidget();
+    GT_CHECK(notification == nullptr, "Found active notification!");
 }
 
 #undef GT_METHOD_NAME

@@ -75,9 +75,9 @@ public:
     virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *_settings) const;
 };
 
-class MafftAddToAligmnentAlgorithm : public AlignmentAlgorithm {
+class MafftAddToAlignmentAlgorithm : public AlignmentAlgorithm {
 public:
-    MafftAddToAligmnentAlgorithm();
+    MafftAddToAlignmentAlgorithm();
 
     bool isAlgorithmAvailable() const;
 };

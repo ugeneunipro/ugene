@@ -35,7 +35,7 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
     charsInRow = maxChar - minChar + 1;
 
     scores.resize(charsInRow * charsInRow);
-    qFill(scores.data(), scores.data() + scores.size(), -1000000);
+    std::fill(scores.data(), scores.data() + scores.size(), -1000000);
 
     minScore = 1000000;
     maxScore = -1000000;
@@ -119,7 +119,7 @@ SMatrix SMatrix::fromQVariant(const QVariant &v) {
         m.scores[i] = float(list.at(n++).toDouble());
     }
 
-    if (m.name.isEmpty() || m.alphabet == NULL || m.validCharacters.isEmpty() || !m.validCharacters.contains(m.minChar) || !m.validCharacters.contains(m.maxChar) || m.maxChar - m.minChar + 1 != m.charsInRow) {
+    if (m.name.isEmpty() || m.alphabet == nullptr || m.validCharacters.isEmpty() || !m.validCharacters.contains(m.minChar) || !m.validCharacters.contains(m.maxChar) || m.maxChar - m.minChar + 1 != m.charsInRow) {
         coreLog.error("Error during substitution matrix deserialization!");
         return SMatrix();
     }

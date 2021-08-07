@@ -36,7 +36,7 @@ void U2VariationUtils::addVariationsToTrack(const U2EntityRef &ref, const QList<
     CHECK_OP(os, );
 
     U2VariantDbi *vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Varian DBI is NULL", );
+    SAFE_POINT(vdbi != nullptr, "Varian DBI is NULL", );
 
     U2VariantTrack track = vdbi->getVariantTrack(ref.entityId, os);
     CHECK_OP(os, );
@@ -50,7 +50,7 @@ U2VariantTrack U2VariationUtils::createVariantTrack(const U2DbiRef &dbiRef, cons
     CHECK_OP(os, U2VariantTrack());
 
     U2VariantDbi *vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Varian DBI is NULL", U2VariantTrack());
+    SAFE_POINT(vdbi != nullptr, "Varian DBI is NULL", U2VariantTrack());
 
     U2VariantTrack track;
     track.sequenceName = seqName;
@@ -97,14 +97,14 @@ QList<U2Variant> U2VariationUtils::getSNPFromSequences(const QByteArray &refSeq,
 
         if (!(ignoreGaps && (refChar == '-' || obsChar == '-'))) {
             switch (mode) {
-            case Mode_Variations:
-                addVariation = (refChar != obsChar);
-                break;
-            case Mode_Similar:
-                addVariation = (refChar == obsChar);
-                break;
-            case Mode_All:
-                addVariation = true;
+                case Mode_Variations:
+                    addVariation = (refChar != obsChar);
+                    break;
+                case Mode_Similar:
+                    addVariation = (refChar == obsChar);
+                    break;
+                case Mode_All:
+                    addVariation = true;
             }
         }
 

@@ -37,10 +37,10 @@ bool DiamondBuildValidator::validateTaxonomy(const Actor *actor, NotificationsLi
     bool isValid = true;
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT_EXT(NULL != dataPathRegistry, problemList << WorkflowNotification("U2DataPathRegistry is NULL", actor->getId()), false);
+    SAFE_POINT_EXT(nullptr != dataPathRegistry, problemList << WorkflowNotification("U2DataPathRegistry is NULL", actor->getId()), false);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(),
               problemList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId()),
               false);
 

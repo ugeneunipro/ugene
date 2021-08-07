@@ -26,9 +26,10 @@ add_definitions(
         -DUGENE_USE_BUNDLED_SQLITE
 
         -DQT_FATAL_ASSERT
+        -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
 )
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.
@@ -48,14 +49,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=return-type"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
-            " -Wno-catch-value"
-            " -Wno-class-memaccess"
-            " -Wno-deprecated-copy"
-            " -Wno-expansion-to-defined"
-            " -Wno-ignored-attributes"
-            " -Wno-implicit-fallthrough"
-            " -Wno-sign-compare"
-            " -Wno-unused-variable"
+            " -Werror=unused-variable"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
 endif ()

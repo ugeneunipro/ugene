@@ -103,8 +103,8 @@ const QString StringTieWorkerFactory::ACTOR_ID("stringtie");
 /************************************************************************/
 StringTieWorker::StringTieWorker(Actor *p)
     : BaseWorker(p),
-      inputPort(NULL),
-      outputPort(NULL) {
+      inputPort(nullptr),
+      outputPort(nullptr) {
 }
 
 void StringTieWorker::init() {
@@ -132,7 +132,7 @@ Task *StringTieWorker::tick() {
         setDone();
         outputPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void StringTieWorker::cleanup() {

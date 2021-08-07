@@ -22,16 +22,17 @@
 #ifndef _U2_SITECON_SEARCH_DIALOG_H_
 #define _U2_SITECON_SEARCH_DIALOG_H_
 
-#include <U2Core/global.h>
-#include <U2Core/U2Region.h>
-#include <U2Gui/RegionSelector.h>
-
 #include <ui_SiteconSearchDialog.h>
 
-#include <QList>
-#include <QTreeWidgetItem>
 #include <QCloseEvent>
+#include <QList>
 #include <QTimer>
+#include <QTreeWidgetItem>
+
+#include <U2Core/U2Region.h>
+#include <U2Core/global.h>
+
+#include <U2Gui/RegionSelector.h>
 
 namespace U2 {
 
@@ -46,7 +47,7 @@ class SiteconModel;
 class SiteconSearchDialogController : public QDialog, public Ui_SiteconSearchDialog {
     Q_OBJECT
 public:
-    SiteconSearchDialogController(ADVSequenceObjectContext* ctx, QWidget *p = NULL);
+    SiteconSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
     ~SiteconSearchDialogController();
 
 public slots:
@@ -56,7 +57,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:
-    
+
     //buttons:
     void sl_selectModelFile();
     void sl_onSaveAnnotations();
@@ -68,14 +69,14 @@ private slots:
     void sl_onTaskFinished();
     void sl_onTimer();
 
-    void sl_onResultActivated(QTreeWidgetItem* i, int col);
-    
+    void sl_onResultActivated(QTreeWidgetItem *i, int col);
+
 private:
     void connectGUI();
     void updateState();
     void updateStatus();
-    void updateModel(const SiteconModel& m);
-    
+    void updateModel(const SiteconModel &m);
+
     bool checkPrevSettings();
     void savePrevSettings();
 
@@ -84,18 +85,18 @@ private:
     void importResults();
 
 private:
-    ADVSequenceObjectContext*   ctx;
-    U2Region                     initialSelection;
-    
-    SiteconModel*       model;
+    ADVSequenceObjectContext *ctx;
+    U2Region initialSelection;
 
-    SiteconSearchTask* task;
-    QTimer* timer;
-    RegionSelector* rs;
-    QPushButton* pbSearch;
-    QPushButton* pbClose;
+    SiteconModel *model;
+
+    SiteconSearchTask *task;
+    QTimer *timer;
+    RegionSelector *rs;
+    QPushButton *pbSearch;
+    QPushButton *pbClose;
 };
 
-}//namespace
+}    // namespace U2
 
 #endif

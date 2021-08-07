@@ -34,7 +34,7 @@ namespace U2 {
 CreateRulerDialogController::CreateRulerDialogController(const QSet<QString> &namesToFilter, int defaultOffset, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227775");
+    new HelpButton(this, buttonBox, "65929407");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -77,12 +77,12 @@ void CreateRulerDialogController::sl_colorButtonClicked() {
 void CreateRulerDialogController::accept() {
     QString n = nameEdit->text();
     if (n.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Error"), tr("Ruler name is empty!"));
+        QMessageBox::critical(nullptr, tr("Error"), tr("Ruler name is empty!"));
         nameEdit->setFocus();
         return;
     }
     if (filter.contains(n)) {
-        QMessageBox::critical(NULL, tr("Error"), tr("Ruler with the same name is already exists!"));
+        QMessageBox::critical(nullptr, tr("Error"), tr("Ruler with the same name is already exists!"));
         nameEdit->setFocus();
         return;
     }

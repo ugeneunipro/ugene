@@ -32,27 +32,7 @@
 
 namespace U2 {
 
-/////////////////////////////////////////////////////////////////
-// Helper-methods to validate parameters
-
 /** Validates 'pos' in an alignment: it must be non-negative and less than or equal to the alignment length */
-bool validatePos(const MultipleSequenceAlignment &al, qint64 pos) {
-    if (pos < 0 || pos > al->getLength()) {
-        coreLog.trace(QString("Invalid position '%1' in '%2' alignment!").arg(pos).arg(al->getName()));
-        return false;
-    }
-    return true;
-}
-
-/** Validates 'count' of characters - it must be positive */
-bool validateCharactersCount(qint64 count) {
-    if (count <= 0) {
-        coreLog.trace(QString("Invalid value of characters count '%1'!").arg(count));
-        return false;
-    }
-    return true;
-}
-
 void MaDbiUtils::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel) {
     bool previousCharIsGap = false;
     int gapsCount = 0;
@@ -101,7 +81,7 @@ qint64 MaDbiUtils::getMaLength(const U2EntityRef &maRef, U2OpStatus &os) {
     CHECK_OP(os, -1);
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), -1);
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi!"), -1);
 
     qint64 length = msaDbi->getMsaLength(maRef.entityId, os);
     CHECK_OP(os, -1);
@@ -115,7 +95,7 @@ void MaDbiUtils::updateMaLength(const U2EntityRef &maRef, qint64 newLen, U2OpSta
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi!"), );
 
     // Update the data
     msaDbi->updateMsaLength(maRef.entityId, newLen, os);
@@ -126,7 +106,7 @@ U2AlphabetId MaDbiUtils::getMaAlphabet(const U2EntityRef &maRef, U2OpStatus &os)
     CHECK_OP(os, U2AlphabetId());
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), U2AlphabetId());
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi!"), U2AlphabetId());
 
     U2AlphabetId alphabet = msaDbi->getMsaAlphabet(maRef.entityId, os);
     CHECK_OP(os, U2AlphabetId());
@@ -141,7 +121,7 @@ void MaDbiUtils::updateMaAlphabet(const U2EntityRef &maRef, const U2AlphabetId &
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi!"), );
 
     // Update the data
     msaDbi->updateMsaAlphabet(maRef.entityId, alphabet, os);
@@ -157,7 +137,7 @@ void MaDbiUtils::renameMa(const U2EntityRef &maRef, const QString &newName, U2Op
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Update the name
     msaDbi->updateMsaName(maRef.entityId, newName, os);
@@ -169,7 +149,7 @@ void MaDbiUtils::updateRowGapModel(const U2EntityRef &msaRef, qint64 rowId, cons
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Update the data
     msaDbi->updateGapModel(msaRef.entityId, rowId, gaps, os);
@@ -208,7 +188,7 @@ void MaDbiUtils::renameRow(const U2EntityRef &msaRef, qint64 rowId, const QStrin
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Update the row name
     msaDbi->updateRowName(msaRef.entityId, rowId, newName, os);
@@ -219,7 +199,7 @@ void MaDbiUtils::moveRows(const U2EntityRef &msaRef, const QList<qint64> &rowsTo
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     if (delta == 0 || rowsToMove.isEmpty()) {
         return;
@@ -332,29 +312,29 @@ void MaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const QL
 
 DbiConnection *MaDbiUtils::getCheckedConnection(const U2DbiRef &dbiRef, U2OpStatus &os) {
     QScopedPointer<DbiConnection> con(new DbiConnection(dbiRef, os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
-    if (NULL == con->dbi) {
+    if (nullptr == con->dbi) {
         os.setError("NULL root dbi");
-        return NULL;
+        return nullptr;
     }
 
-    if (NULL == con->dbi->getMsaDbi()) {
+    if (nullptr == con->dbi->getMsaDbi()) {
         os.setError("NULL MSA dbi");
-        return NULL;
+        return nullptr;
     }
 
-    if (NULL == con->dbi->getSequenceDbi()) {
+    if (con->dbi->getSequenceDbi() == nullptr) {
         os.setError("NULL sequence dbi");
-        return NULL;
+        return nullptr;
     }
     return con.take();
 }
 
 /** Validates that all 'rowIds' contains in the alignment rows */
 bool MaDbiUtils::validateRowIds(const MultipleSequenceAlignment &al, const QList<qint64> &rowIds) {
-    QList<qint64> alRowIds = al->getRowsIds();
-    foreach (qint64 rowId, rowIds) {
+    QSet<qint64> alRowIds = al->getRowsIds().toSet();
+    for (qint64 rowId : qAsConst(rowIds)) {
         if (!alRowIds.contains(rowId)) {
             coreLog.trace(QString("No row ID '%1' in '%2' alignment!").arg(rowId).arg(al->getName()));
             return false;
@@ -749,17 +729,17 @@ void MsaDbiUtils::updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAli
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     U2SequenceDbi *seqDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(NULL != seqDbi, "NULL Sequence Dbi!", );
+    SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi!", );
 
     U2AttributeDbi *attrDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi!", );
+    SAFE_POINT(nullptr != attrDbi, "NULL Attribute Dbi!", );
 
     //// UPDATE MSA OBJECT
     const DNAAlphabet *alphabet = al->getAlphabet();
-    SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL!", );
+    SAFE_POINT(nullptr != alphabet, "The alignment alphabet is NULL!", );
 
     U2Msa msaObj;
     msaObj.id = msaRef.entityId;
@@ -836,10 +816,10 @@ void MsaDbiUtils::updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAli
             sequence.length = rowSeq.length();
 
             const DNAAlphabet *alphabet = rowSeq.alphabet;
-            if (NULL == alphabet) {
+            if (nullptr == alphabet) {
                 alphabet = U2AlphabetUtils::findBestAlphabet(rowSeq.constData(), rowSeq.length());
             }
-            SAFE_POINT(NULL != alphabet, "Failed to get alphabet for a sequence!", );
+            SAFE_POINT(nullptr != alphabet, "Failed to get alphabet for a sequence!", );
             sequence.alphabet.id = alphabet->getId();
 
             seqDbi->createSequenceObject(sequence, "", os);
@@ -883,7 +863,7 @@ void MsaDbiUtils::updateRowContent(const U2EntityRef &msaRef, qint64 rowId, cons
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Update the data
     msaDbi->updateRowContent(msaRef.entityId, rowId, seqBytes, gaps, os);
@@ -895,7 +875,7 @@ void MsaDbiUtils::insertGaps(const U2EntityRef &msaRef, const QList<qint64> &row
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Get the MSA properties
     const U2Msa msaObj = msaDbi->getMsaObject(msaRef.entityId, os);
@@ -1053,7 +1033,6 @@ QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, cha
     U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
     U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
 
-    qint64 msaLength = msaDbi->getMsaLength(msaRef.entityId, os);
     QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_OP(os, modifiedRowIds);
     QVariantMap updateSequenceHints;
@@ -1064,6 +1043,46 @@ QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, cha
         QByteArray sequenceData = sequenceDbi->getSequenceData(msaRow.sequenceId, sequenceRegion, os);
         if (sequenceData.contains(oldChar)) {
             sequenceData.replace(oldChar, newChar);
+            msaDbi->updateRowContent(msaRef.entityId, rowId, sequenceData, msaRow.gaps, os);
+            CHECK_OP(os, modifiedRowIds);
+            modifiedRowIds << rowId;
+        }
+    }
+    return modifiedRowIds;
+}
+
+QList<qint64> MsaDbiUtils::keepOnlyAlphabetChars(const U2EntityRef &msaRef, const DNAAlphabet *alphabet, const QByteArray &replacementMap, U2OpStatus &os) {
+    QList<qint64> modifiedRowIds;
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
+    CHECK_OP(os, modifiedRowIds);
+
+    bool hasReplacementMap = replacementMap.size() == 256;
+    SAFE_POINT(hasReplacementMap || replacementMap.isEmpty(), "replacementMap has invalid size: " + QString::number(replacementMap.size()), modifiedRowIds);
+
+    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+
+    QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
+    CHECK_OP(os, modifiedRowIds);
+    QVariantMap updateSequenceHints;
+    QByteArray alphabetChars = alphabet->getAlphabetChars();
+    QBitArray validCharsMap = TextUtils::createBitMap(alphabetChars);
+    char defaultChar = alphabet->getDefaultSymbol();
+    for (qint64 rowId : qAsConst(rowIds)) {
+        U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
+        CHECK_OP(os, modifiedRowIds);
+        U2Region sequenceRegion(msaRow.gstart, msaRow.gend - msaRow.gstart);
+        QByteArray sequenceData = sequenceDbi->getSequenceData(msaRow.sequenceId, sequenceRegion, os);
+        bool isModified = false;
+        for (int i = 0, n = sequenceData.length(); i < n; i++) {
+            char c = sequenceData[i];
+            if (!validCharsMap.testBit(c)) {
+                isModified = true;
+                char newChar = hasReplacementMap ? replacementMap[(quint8)c] : '\0';
+                sequenceData[i] = validCharsMap.testBit(newChar) ? newChar : defaultChar;
+            }
+        }
+        if (isModified) {
             msaDbi->updateRowContent(msaRef.entityId, rowId, sequenceData, msaRow.gaps, os);
             CHECK_OP(os, modifiedRowIds);
             modifiedRowIds << rowId;
@@ -1100,46 +1119,61 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef &msaRef, const QLis
     return emptyRowIds;
 }
 
-void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
-    // Get the alignment
+void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os) {
+    // Get the alignment.
     MultipleSequenceAlignmentExporter alExporter;
     MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
 
-    // Validate the parameters
-    if (!validatePos(al, pos) ||
-        !validateCharactersCount(count) ||
-        !MaDbiUtils::validateRowIds(al, rowIds)) {
-        os.setError(tr("Failed to crop an alignment!"));
+    // Validate the parameters.
+    if (columnRange.startPos < 0 || columnRange.endPos() > al->getLength()) {
+        os.setError(tr("Invalid crop column range: %1..%2").arg(columnRange.startPos + 1).arg(columnRange.endPos()));
+        uiLog.error(os.getError());
         return;
     }
-
+    if (rowIds.isEmpty()) {
+        os.setError(tr("List of ids to crop is empty"));
+        uiLog.error(os.getError());
+        return;
+    }
+    if (!MaDbiUtils::validateRowIds(al, rowIds)) {
+        os.setError(tr("Invalid crop row ids"));
+        uiLog.error(os.getError());
+        return;
+    }
     // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(msaDbi != nullptr, "NULL Msa Dbi!", );
 
-    // Crop or remove each row
-    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+    bool isRowLengthChanged = columnRange.length < al->getLength();
+
+    // Crop or remove each row.
+    for (int i = 0, n = al->getNumRows(); i < n; i++) {
         MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
-        if (rowIds.contains(rowId)) {
-            U2DataId sequenceId = row->getRowDbInfo().sequenceId;
-            SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
-
-            // Calculate the modified row
-            cropCharsFromRow(row, pos, count);
-
-            // Put the new sequence and gap model into the database
-            msaDbi->updateRowContent(msaRef.entityId, rowId, row->getSequence().constSequence(), row->getGapModel(), os);
-            CHECK_OP(os, );
-        } else {
+        if (!rowIds.contains(rowId)) {
             MsaDbiUtils::removeRow(msaRef, row->getRowId(), os);
             CHECK_OP(os, );
+            continue;
         }
+        if (!isRowLengthChanged) {
+            continue;    // do not touch this column at all.
+        }
+        U2DataId sequenceId = row->getRowDbInfo().sequenceId;
+        SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
+
+        // Calculate the modified row.
+        cropCharsFromRow(row, columnRange.startPos, columnRange.length);
+
+        // Put the new sequence and gap model into the database.
+        msaDbi->updateRowContent(msaRef.entityId, rowId, row->getSequence().constSequence(), row->getGapModel(), os);
+        CHECK_OP(os, );
     }
-    msaDbi->updateMsaLength(msaRef.entityId, count, os);
+    if (isRowLengthChanged) {
+        msaDbi->updateMsaLength(msaRef.entityId, columnRange.length, os);
+    }
     CHECK_OP(os, );
 }
 
@@ -1150,7 +1184,7 @@ QList<qint64> MsaDbiUtils::trim(const U2EntityRef &msaRef, U2OpStatus &os) {
     CHECK_OP(os, invalidResult);
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", invalidResult);
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", invalidResult);
 
     qint64 msaLength = msaDbi->getMsaObject(msaRef.entityId, os).length;
     CHECK_OP(os, invalidResult);
@@ -1212,7 +1246,7 @@ void MsaDbiUtils::addRow(const U2EntityRef &msaRef, qint64 posInMsa, U2MsaRow &r
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Add the row
     msaDbi->addRow(msaRef.entityId, posInMsa, row, os);
@@ -1225,7 +1259,7 @@ void MsaDbiUtils::removeRow(const U2EntityRef &msaRef, qint64 rowId, U2OpStatus 
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Remove the row
     msaDbi->removeRow(msaRef.entityId, rowId, os);

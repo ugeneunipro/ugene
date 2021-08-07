@@ -51,7 +51,7 @@ namespace U2 {
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *obj, const QList<qint64> &preSelectedRowIdList, const U2Region &preSelectedColumnsRegion, QWidget *p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228058");
+    new HelpButton(this, buttonBox, "65929690");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -81,14 +81,14 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     if (selectedColumnRegion.isEmpty()) {
         selectedColumnRegion = U2Region(0, msaLength);
     }
-    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1)); // Visual range starts with 1, not 0.
+    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1));    // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
     const MultipleSequenceAlignment msa = msaObject->getMsa();
     for (int i = 0; i < rowCount; i++) {
         const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
         auto checkBox = new QCheckBox(row->getName(), this);
-        checkBox->setProperty(ROW_ID_PROPERTY, row.data()->getRowId());
+        checkBox->setProperty(ROW_ID_PROPERTY, row->getRowId());
         checkBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         checkBox->setChecked(selectedRowIds.contains(row->getRowId()));
         sequencesTableWidget->setCellWidget(i, 0, checkBox);
@@ -254,7 +254,7 @@ QList<Task *> CreateSubalignmentAndOpenViewTask::onSubTaskFinished(Task *subTask
 
     if ((subTask == csTask) && csTask->getSettings().addToProject) {
         Document *doc = csTask->takeDocument();
-        assert(doc != NULL);
+        assert(doc != nullptr);
         res.append(new AddDocumentAndOpenViewTask(doc));
     }
 

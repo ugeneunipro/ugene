@@ -118,20 +118,20 @@ BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString &fileName, U2
     TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     DocumentFormat *f = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_PDB);
-    SAFE_POINT_EXT(NULL != f, os.setError("NULL format"), BioStruct3D());
+    SAFE_POINT_EXT(nullptr != f, os.setError("NULL format"), BioStruct3D());
 
     QVariantMap hints;
     if (!useSessionDbi) {
         hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(dbiProvider.getDbi()->getDbiRef());
     }
-    QScopedPointer<Document> doc(f->loadDocument(iof, trs->getVar("COMMON_DATA_DIR") + "/" + fileName, hints, os));
+    QScopedPointer<Document> doc(f->loadDocument(iof, trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + fileName, hints, os));
     CHECK_OP(os, BioStruct3D());
 
     QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::BIOSTRUCTURE_3D);
     CHECK_EXT(1 == objs.size(), os.setError("object list size"), BioStruct3D());
 
     BioStruct3DObject *obj = dynamic_cast<BioStruct3DObject *>(objs.first());
-    CHECK_EXT(NULL != obj, os.setError("NULL object"), BioStruct3D());
+    CHECK_EXT(nullptr != obj, os.setError("NULL object"), BioStruct3D());
 
     return obj->getBioStruct3D();
 }

@@ -28,13 +28,13 @@
 namespace U2 {
 
 GObjectReference::GObjectReference(const GObject *obj, bool deriveLoadedType) {
-    SAFE_POINT(obj != NULL && obj->getDocument() != NULL, "GObjectReference:: no object and annotation", );
+    SAFE_POINT(obj != nullptr && obj->getDocument() != nullptr, "GObjectReference:: no object and annotation", );
     docUrl = obj->getDocument()->getURLString();
     objName = obj->getGObjectName();
     entityRef = obj->getEntityRef();
     if (obj->isUnloaded() && deriveLoadedType) {
         const UnloadedObject *uo = qobject_cast<const UnloadedObject *>(obj);
-        SAFE_POINT(uo != NULL, "GObjectReference:: cannot cast UnloadedObject", );
+        SAFE_POINT(uo != nullptr, "GObjectReference:: cannot cast UnloadedObject", );
         objType = uo->getLoadedObjectType();
     } else {
         objType = obj->getGObjectType();

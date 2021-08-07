@@ -2,4 +2,4 @@
 // vi: set ts=2:
 //
 
-#include <BALL/STRUCTURE/graphVertex.h>
+//#include <BALL/STRUCTURE/graphVertex.h>

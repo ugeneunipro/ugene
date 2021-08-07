@@ -54,6 +54,19 @@ public:
           format(NONE) {
     }
 
+    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario)
+        : Filler(os, "DNAStatMSAProfileDialog", customScenario),
+          counts(true),
+          gapScore(false),
+          symdolScore(false),
+          skipGaps(false),
+          format(NONE),
+          filePath("") {
+        checkBoxItems[NONE] = "NONE";
+        checkBoxItems[HTML] = "htmlRB";
+        checkBoxItems[CSV] = "csvRB";
+    }
+
     void commonScenario();
 
 private:

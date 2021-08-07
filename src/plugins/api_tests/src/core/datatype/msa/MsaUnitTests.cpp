@@ -104,7 +104,7 @@ IMPLEMENT_TEST(MsaUnitTests, name_setName) {
 /** Tests alphabet */
 IMPLEMENT_TEST(MsaUnitTests, alphabet_ctor) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    if (NULL == almnt->getAlphabet()) {
+    if (nullptr == almnt->getAlphabet()) {
         SetError("NULL alphabet");
     }
     CHECK_EQUAL(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), almnt->getAlphabet()->getId(), "alphabet ID");
@@ -117,7 +117,7 @@ IMPLEMENT_TEST(MsaUnitTests, alphabet_setAlphabet) {
     const DNAAlphabet *newAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     almnt->setAlphabet(newAlphabet);
 
-    if (NULL == almnt->getAlphabet() || NULL == newAlphabet) {
+    if (nullptr == almnt->getAlphabet() || nullptr == newAlphabet) {
         SetError("NULL alphabet");
     }
     CHECK_EQUAL(newAlphabet->getId(), almnt->getAlphabet()->getId(), "new alignment ID");
@@ -194,7 +194,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("--AG-CT-TA");
 
-    MultipleSequenceAlignment almnt("Alignment with leading gap columns", NULL);
+    MultipleSequenceAlignment almnt("Alignment with leading gap columns", nullptr);
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
 
@@ -217,7 +217,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_nothingToTrim) {
 IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MultipleSequenceAlignment almnt("Alignment", NULL);
+    MultipleSequenceAlignment almnt("Alignment", nullptr);
     almnt->addRow("Row without gaps", seq);
 
     bool result = almnt->trim();
@@ -237,7 +237,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     QByteArray firstSequence("ACGT");
     QByteArray secondSequence("CAC-");
 
-    MultipleSequenceAlignment almnt("Alignment", NULL);
+    MultipleSequenceAlignment almnt("Alignment", nullptr);
     almnt->addRow("First row", firstSequence);
     almnt->addRow("Second row", secondSequence);
 
@@ -263,7 +263,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withGaps) {
 IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MultipleSequenceAlignment almnt("Alignment", NULL);
+    MultipleSequenceAlignment almnt("Alignment", nullptr);
     almnt->addRow("Row without gaps", seq);
 
     bool result = almnt->simplify();
@@ -285,7 +285,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameAsc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    MultipleSequenceAlignment almnt("Alignment name", NULL);
+    MultipleSequenceAlignment almnt("Alignment name", nullptr);
     almnt->addRow("NameBA", firstSequence);
     almnt->addRow("NameAB", secondSequence);
     almnt->addRow("NameAA", thirdSequence);
@@ -304,7 +304,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameDesc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    MultipleSequenceAlignment almnt("Alignment name", NULL);
+    MultipleSequenceAlignment almnt("Alignment name", nullptr);
     almnt->addRow("NameAA", firstSequence);
     almnt->addRow("NameBA", secondSequence);
     almnt->addRow("NameAB", thirdSequence);
@@ -672,11 +672,8 @@ IMPLEMENT_TEST(MsaUnitTests, crop_validParams) {
     almnt->addRow("Third", thirdSequence);
 
     U2Region region(1, 4);
-    QSet<QString> rowNames;
-    rowNames << "First"
-             << "Second";
-
-    almnt->crop(region, rowNames, os);
+    QList<qint64> rowIds = {almnt->getRow(0)->getRowId(), almnt->getRow(1)->getRowId()};
+    almnt->crop(rowIds, region, os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(2, almnt->getNumRows(), "number of rows");

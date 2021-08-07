@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option -->
+
+    <load-document index="doc" url="newick/PF07247_full.nhx" io="local_file" format="newick"/>
+    <save-document doc="doc" url="_temp0002.newick" io="local_file" format="newick"/>
+    <load-document index="doc2" url="_temp0002.newick" io="local_file" format="newick" dir="temp"/>
+    <compare-trees-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

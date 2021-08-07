@@ -1,0 +1,4 @@
+<suite name="PDB Format stress test">
+    <env-var name="DIR_WITH_PDB_FILES"/>
+    <test-dir path="pdb_stress_test" test-format="XML" test-ext="*.xml"/>
+</suite>

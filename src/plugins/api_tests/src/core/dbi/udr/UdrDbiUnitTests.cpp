@@ -117,7 +117,7 @@ void checkWrittenDataSchema2(const UdrRecordId &id, const QByteArray &srcData, U
 
 TestDbiProvider UdrTestData::dbiProvider = TestDbiProvider();
 const QString &UdrTestData::UDR_DB_URL("udr-dbi.ugenedb");
-UdrDbi *UdrTestData::udrDbi = NULL;
+UdrDbi *UdrTestData::udrDbi = nullptr;
 U2DataId UdrTestData::id1("");
 U2DataId UdrTestData::id2("");
 U2DataId UdrTestData::id_2("");
@@ -131,25 +131,25 @@ void UdrTestData::init() {
     SAFE_POINT(ok, "dbi provider failed to initialize", );
 
     udrDbi = dbiProvider.getDbi()->getUdrDbi();
-    SAFE_POINT(NULL != udrDbi, "udr database not loaded", );
+    SAFE_POINT(nullptr != udrDbi, "udr database not loaded", );
 
     initTestData();
 }
 
 void UdrTestData::shutdown() {
-    if (udrDbi != NULL) {
+    if (udrDbi != nullptr) {
         U2OpStatusImpl os;
         dbiProvider.close();
-        udrDbi = NULL;
+        udrDbi = nullptr;
         SAFE_POINT_OP(os, );
     }
 }
 
 void UdrTestData::initTestUdr() {
     UdrSchemaRegistry *reg = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT(NULL != reg, "NULL reg", );
+    SAFE_POINT(nullptr != reg, "NULL reg", );
 
-    if (NULL != reg->getSchemaById(TEST_SCHEMA_ID)) {
+    if (nullptr != reg->getSchemaById(TEST_SCHEMA_ID)) {
         return;
     }
 
@@ -189,7 +189,7 @@ void UdrTestData::initTestUdr() {
 
 void UdrTestData::initTestData() {
     UdrDbi *dbi = UdrTestData::getUdrDbi();
-    SAFE_POINT(NULL != dbi, "NULL dbi", );
+    SAFE_POINT(nullptr != dbi, "NULL dbi", );
 
     U2OpStatusImpl os;
     {    // schema 1
@@ -221,7 +221,7 @@ void UdrTestData::initTestData() {
 }
 
 UdrDbi *UdrTestData::getUdrDbi() {
-    if (udrDbi == NULL) {
+    if (udrDbi == nullptr) {
         UdrTestData::init();
     }
     return udrDbi;

@@ -24,10 +24,12 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+#include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DNATranslation.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -37,6 +39,8 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+
+#include "CodonOccurTask.h"
 
 namespace U2 {
 
@@ -63,6 +67,8 @@ const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic point: ";
 
 const QString SequenceInfo::CHAR_OCCUR_GROUP_ID = "char_occur_group";
 const QString SequenceInfo::DINUCL_OCCUR_GROUP_ID = "dinucl_occur_group";
+const QString SequenceInfo::CODON_OCCUR_GROUP_ID = "codon_occur_group";
+const QString SequenceInfo::AMINO_ACID_OCCUR_GROUP_ID = "amino_acid_occur_group";
 const QString SequenceInfo::STAT_GROUP_ID = "stat_group";
 
 SequenceInfo::SequenceInfo(AnnotatedDNAView *_annotatedDnaView)
@@ -105,7 +111,6 @@ void SequenceInfo::initLayout() {
     charOccurWidget = new ShowHideSubgroupWidget(
         CHAR_OCCUR_GROUP_ID, tr("Characters Occurrence"), charOccurLabel, true);
     charOccurWidget->setObjectName("Characters Occurrence");
-
     mainLayout->addWidget(charOccurWidget);
 
     // Dinucleotides
@@ -113,12 +118,25 @@ void SequenceInfo::initLayout() {
     dinuclWidget = new ShowHideSubgroupWidget(
         DINUCL_OCCUR_GROUP_ID, tr("Dinucleotides"), dinuclLabel, false);
     dinuclWidget->setObjectName("Dinucleotides");
-
     mainLayout->addWidget(dinuclWidget);
+
+    // Codons.
+    codonLabel = new QLabel(this);
+    codonWidget = new ShowHideSubgroupWidget(CODON_OCCUR_GROUP_ID, tr("Codons"), codonLabel, false);
+    codonWidget->setObjectName("options_panel_codons_widget");
+    mainLayout->addWidget(codonWidget);
+
+    // Amino acids.
+    aminoAcidLabel = new QLabel(this);
+    aminoAcidWidget = new ShowHideSubgroupWidget(AMINO_ACID_OCCUR_GROUP_ID, tr("Amino acids"), aminoAcidLabel, false);
+    aminoAcidWidget->setObjectName("options_panel_amino_acids_widget");
+    mainLayout->addWidget(aminoAcidWidget);
 
     // Make some labels selectable by a user (so he could copy them)
     charOccurLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     dinuclLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    codonLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    aminoAcidLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statisticLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     updateLayout();
@@ -127,6 +145,7 @@ void SequenceInfo::initLayout() {
 void SequenceInfo::updateLayout() {
     updateCharOccurLayout();
     updateDinuclLayout();
+    updateCodonOccurLayout();
 }
 
 namespace {
@@ -185,10 +204,18 @@ void SequenceInfo::updateDinuclLayout() {
     }
 }
 
+void SequenceInfo::updateCodonOccurLayout() {
+    ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
+    SAFE_POINT(activeSequenceContext != nullptr, "A sequence context is NULL!", );
+    codonWidget->setVisible(activeSequenceContext->getAlphabet()->isNucleic());
+    aminoAcidWidget->setVisible(activeSequenceContext->getComplementTT() != nullptr && activeSequenceContext->getAminoTT() != nullptr);
+}
+
 void SequenceInfo::updateData() {
     updateCommonStatisticsData();
     updateCharactersOccurrenceData();
     updateDinucleotidesOccurrenceData();
+    updateCodonsOccurrenceData();
 }
 
 void SequenceInfo::updateCommonStatisticsData() {
@@ -209,12 +236,12 @@ QString getValue(const QString &value, bool isValid) {
 
 void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatistics) {
     ADVSequenceWidget *wgt = annotatedDnaView->getActiveSequenceWidget();
-    CHECK(wgt != NULL, );
+    CHECK(wgt != nullptr, );
     ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
-    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
+    SAFE_POINT(ctx != nullptr, tr("Sequence context is NULL"), );
 
     const DNAAlphabet *alphabet = ctx->getAlphabet();
-    SAFE_POINT(alphabet != NULL, tr("Sequence alphabet is NULL"), );
+    SAFE_POINT(alphabet != nullptr, tr("Sequence alphabet is NULL"), );
 
     int availableSpace = getAvailableSpace(alphabet->getType());
 
@@ -311,6 +338,95 @@ void SequenceInfo::updateDinucleotidesOccurrenceData(const DinucleotidesOccurren
     }
 }
 
+void SequenceInfo::updateCodonsOccurrenceData() {
+    if (!getCodonsOccurrenceCache()->isValid(currentRegions)) {
+        launchCalculations(CODON_OCCUR_GROUP_ID);
+    } else {
+        updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
+    }
+}
+
+void SequenceInfo::updateCodonsOccurrenceData(const QMap<QByteArray, qint64> &codonStatMap) {
+    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    SAFE_POINT(activeContext != nullptr, "A sequence context is NULL!", );
+
+    DNATranslation *aminoTranslation = activeContext->getAminoTT();
+    AnnotationSelection *annotationSelection = activeContext->getAnnotationsSelection();
+    DNASequenceSelection *sequenceSelection = activeContext->getSequenceSelection();
+    bool isAnnotationSelection = !annotationSelection->isEmpty();
+    bool isSequenceSelection = !isAnnotationSelection && !sequenceSelection->isEmpty();
+    QString whereInfo = isAnnotationSelection ? (annotationSelection->getAnnotations().size() > 1 ? tr("selected annotations") : tr("selected annotation"))
+                                              : (isSequenceSelection ? (sequenceSelection->regions.size() > 1 ? tr("selected regions") : tr("selected region"))
+                                                                     : tr("whole sequence"));
+    QString frameInfo = isAnnotationSelection ? tr("guided by annotation")
+                                              : (isSequenceSelection ? tr("1 direct and 1 complement")
+                                                                     : tr("3 direct and 3 complement"));
+
+    QString reportHeaderHtml;
+    reportHeaderHtml += "<table cellspacing=5>";
+    reportHeaderHtml += "<tr><td>" + tr("Report for:") + "</td><td><i>" + whereInfo + "</i></td></tr>";
+    reportHeaderHtml += "<tr><td>" + tr("Frames in report:") + "</td><td><i>" + frameInfo + "</i></td></tr>";
+    reportHeaderHtml += "</table>";
+
+    QString codonsHtml = reportHeaderHtml;
+    QString aminoAcidsHtml = reportHeaderHtml;
+
+    if (codonStatMap.isEmpty()) {
+        QString selectionIsTooSmallHtml = "<tr><td>" + tr("Selection is too small") + "</td></tr>";
+        codonsHtml += selectionIsTooSmallHtml;
+        aminoAcidsHtml += selectionIsTooSmallHtml;
+    } else {
+        bool isFinal = codonTaskRunner.isIdle();
+        // Prepare codons report & convert raw codons into amino acids.
+        QList<QByteArray> codons = codonStatMap.keys();
+        QHash<char, qint64> countPerAminoAcid;
+        bool tableColumnIndex = 0;    // Report is written using 2 columns.
+        for (const QByteArray &codon : qAsConst(codons)) {
+            codonsHtml += tableColumnIndex == 0 ? "<tr>" : "";
+            codonsHtml += QString("<td><b>") + QString::fromLatin1(codon) + QString(":&nbsp;&nbsp;</b></td>");
+            qint64 count = codonStatMap.value(codon);
+            codonsHtml += "<td>" + getValue(getFormattedLongNumber(count), isFinal) + "&nbsp;&nbsp;</td>";
+            codonsHtml += tableColumnIndex == 1 ? "</tr>" : "";
+            tableColumnIndex = (tableColumnIndex + 1) % 2;
+            if (aminoTranslation != nullptr) {
+                char acidChar = 0;
+                aminoTranslation->translate(codon.constData(), 3, &acidChar, 1);
+                if (acidChar != 0) {
+                    countPerAminoAcid[acidChar] += count;
+                }
+            }
+        }
+
+        // Prepare amino acids report.
+        QList<CharOccurResult> aminoAcidList;
+        for (auto it = countPerAminoAcid.begin(); it != countPerAminoAcid.end(); it++) {
+            char aminoAcid = it.key();
+            qint64 count = it.value();
+            aminoAcidList << CharOccurResult(aminoAcid, count, 0);
+        }
+        std::sort(aminoAcidList.begin(), aminoAcidList.end(), [](const CharOccurResult &c1, CharOccurResult &c2) {
+            // Reversed order: most frequent is first, if both counts are equal sort by character.
+            return c1.getNumberOfOccur() != c2.getNumberOfOccur() ? c1.getNumberOfOccur() > c2.getNumberOfOccur() : c1.getChar() < c2.getChar();
+        });
+        for (const CharOccurResult &aminoAcid : qAsConst(aminoAcidList)) {
+            aminoAcidsHtml += "<tr>";
+            aminoAcidsHtml += QString("<td><b>") + aminoAcid.getChar() + QString(":&nbsp;&nbsp;</b></td>");
+            aminoAcidsHtml += "<td>" + getValue(getFormattedLongNumber(aminoAcid.getNumberOfOccur()), isFinal) + "&nbsp;&nbsp;</td>";
+            aminoAcidsHtml += "</tr>";
+        }
+    }
+    codonsHtml += "</table>";
+    aminoAcidsHtml += "</table>";
+
+    if (codonLabel->text() != codonsHtml) {
+        codonLabel->setText(codonsHtml);
+    }
+
+    if (aminoAcidLabel->text() != aminoAcidsHtml) {
+        aminoAcidLabel->setText(aminoAcidsHtml);
+    }
+}
+
 void SequenceInfo::connectSlotsForSeqContext(ADVSequenceObjectContext *seqContext) {
     SAFE_POINT(seqContext, "A sequence context is NULL!", );
 
@@ -318,6 +434,11 @@ void SequenceInfo::connectSlotsForSeqContext(ADVSequenceObjectContext *seqContex
             SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)),
             SLOT(sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)));
 
+    connect(seqContext->getAnnotationsSelection(),
+            SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
+            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
+
+    connect(seqContext, SIGNAL(si_aminoTranslationChanged()), SLOT(sl_onAminoTranslationChanged()));
     connect(seqContext->getSequenceObject(), SIGNAL(si_sequenceChanged()), SLOT(sl_onSequenceModified()));
 }
 
@@ -343,15 +464,35 @@ void SequenceInfo::connectSlots() {
     connect(&charOccurTaskRunner, SIGNAL(si_finished()), SLOT(sl_updateCharOccurData()));
     connect(&dinuclTaskRunner, SIGNAL(si_finished()), SLOT(sl_updateDinuclData()));
     connect(&dnaStatisticsTaskRunner, SIGNAL(si_finished()), SLOT(sl_updateStatData()));
+    connect(&codonTaskRunner, SIGNAL(si_finished()), SLOT(sl_updateCodonOccurData()));
 
     // A subgroup has been opened/closed
     connect(charOccurWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
     connect(dinuclWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
+    connect(codonWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
+    connect(aminoAcidWidget, SIGNAL(si_subgroupStateChanged(QString)), SLOT(sl_subgroupStateChanged(QString)));
 }
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
                                          const QVector<U2Region> & /*added*/,
                                          const QVector<U2Region> & /*removed*/) {
+    getCodonsOccurrenceCache()->sl_invalidate();
+    updateCurrentRegions();
+    updateData();
+}
+
+void SequenceInfo::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    if (sequenceContext == nullptr) {
+        return;    // Sequence context may be null when ADV is being destroyed.
+    }
+    getCodonsOccurrenceCache()->sl_invalidate();
+    updateCurrentRegions();
+    updateData();
+}
+
+void SequenceInfo::sl_onAminoTranslationChanged() {
+    getCodonsOccurrenceCache()->sl_invalidate();
     updateCurrentRegions();
     updateData();
 }
@@ -373,17 +514,15 @@ void SequenceInfo::sl_onSequenceAdded(ADVSequenceObjectContext *seqContext) {
     connectSlotsForSeqContext(seqContext);
 }
 
-void SequenceInfo::sl_subgroupStateChanged(QString subgroupId) {
-    if (STAT_GROUP_ID == subgroupId) {
+void SequenceInfo::sl_subgroupStateChanged(const QString &subgroupId) {
+    if (subgroupId == STAT_GROUP_ID) {
         updateCommonStatisticsData();
-    }
-
-    if (CHAR_OCCUR_GROUP_ID == subgroupId) {
+    } else if (subgroupId == CHAR_OCCUR_GROUP_ID) {
         updateCharactersOccurrenceData();
-    }
-
-    if (DINUCL_OCCUR_GROUP_ID == subgroupId) {
+    } else if (subgroupId == DINUCL_OCCUR_GROUP_ID) {
         updateDinucleotidesOccurrenceData();
+    } else if (subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
+        updateCodonsOccurrenceData();
     }
 }
 
@@ -409,18 +548,18 @@ void SequenceInfo::updateCurrentRegions() {
     }
 }
 
-void SequenceInfo::launchCalculations(QString subgroupId) {
+void SequenceInfo::launchCalculations(const QString &subgroupId) {
     // Launch the statistics, characters and dinucleotides calculation tasks,
     // if corresponding groups are present and opened
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != activeContext, "A sequence context is NULL!", );
+    SAFE_POINT(activeContext != nullptr, "A sequence context is NULL!", );
 
     U2SequenceObject *seqObj = activeContext->getSequenceObject();
     U2EntityRef seqRef = seqObj->getSequenceRef();
     const DNAAlphabet *alphabet = activeContext->getAlphabet();
 
     if (subgroupId.isEmpty() || subgroupId == CHAR_OCCUR_GROUP_ID) {
-        if ((!charOccurWidget->isHidden()) && (charOccurWidget->isSubgroupOpened())) {
+        if (!charOccurWidget->isHidden() && charOccurWidget->isSubgroupOpened()) {
             charOccurWidget->showProgress();
             charOccurTaskRunner.run(new CharOccurTask(alphabet, seqRef, currentRegions));
             getCharactersOccurrenceCache()->sl_invalidate();
@@ -429,11 +568,35 @@ void SequenceInfo::launchCalculations(QString subgroupId) {
     }
 
     if (subgroupId.isEmpty() || subgroupId == DINUCL_OCCUR_GROUP_ID) {
-        if ((!dinuclWidget->isHidden()) && (dinuclWidget->isSubgroupOpened())) {
+        if (!dinuclWidget->isHidden() && dinuclWidget->isSubgroupOpened()) {
             dinuclWidget->showProgress();
             dinuclTaskRunner.run(new DinuclOccurTask(alphabet, seqRef, currentRegions));
             getDinucleotidesOccurrenceCache()->sl_invalidate();
             updateDinucleotidesOccurrenceData(getDinucleotidesOccurrenceCache()->getStatistics());
+        }
+    }
+
+    if (subgroupId.isEmpty() || subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
+        bool isCodonReportOpened = codonWidget->isVisible() && codonWidget->isSubgroupOpened();
+        bool isAminoAcidReportOpened = aminoAcidWidget->isVisible() && aminoAcidWidget->isSubgroupOpened();
+        if (isCodonReportOpened || isAminoAcidReportOpened) {
+            if (isCodonReportOpened) {
+                codonWidget->showProgress();
+            }
+            if (isAminoAcidReportOpened) {
+                aminoAcidWidget->showProgress();
+            }
+            DNATranslation *complementTranslation = activeContext->getComplementTT();
+            AnnotationSelection *annotationSelection = activeContext->getAnnotationsSelection();
+            DNASequenceSelection *sequenceSelection = activeContext->getSequenceSelection();
+            auto task = !annotationSelection->isEmpty()
+                            ? new CodonOccurTask(complementTranslation, seqRef, annotationSelection->getAnnotations())
+                            : (!sequenceSelection->isEmpty()
+                                   ? new CodonOccurTask(complementTranslation, seqRef, sequenceSelection->getSelectedRegions())
+                                   : new CodonOccurTask(complementTranslation, seqRef));
+            codonTaskRunner.run(task);
+            getCodonsOccurrenceCache()->sl_invalidate();
+            updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
         }
     }
 
@@ -498,12 +661,11 @@ void SequenceInfo::sl_updateStatData() {
     updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
 }
 
-QString SequenceInfo::formBoldTableRow(const QString &caption, const QString &value, int availableSpace) const {
-    QString result;
-
-    QFontMetrics metrics = statisticLabel->fontMetrics();
-    result = "<tr><td><b>" + tr("%1").arg(caption) + "</b></td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + "</td></tr>";
-    return result;
+void SequenceInfo::sl_updateCodonOccurData() {
+    codonWidget->hideProgress();
+    aminoAcidWidget->hideProgress();
+    getCodonsOccurrenceCache()->setStatistics(codonTaskRunner.getResult(), currentRegions);
+    updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
 }
 
 QString SequenceInfo::formTableRow(const QString &caption, const QString &value, int availableSpace) const {
@@ -516,20 +678,26 @@ QString SequenceInfo::formTableRow(const QString &caption, const QString &value,
 
 StatisticsCache<DNAStatistics> *SequenceInfo::getCommonStatisticsCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getCommonStatisticsCache();
 }
 
 StatisticsCache<CharactersOccurrence> *SequenceInfo::getCharactersOccurrenceCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getCharactersOccurrenceCache();
 }
 
 StatisticsCache<DinucleotidesOccurrence> *SequenceInfo::getDinucleotidesOccurrenceCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getDinucleotidesOccurrenceCache();
+}
+
+StatisticsCache<QMap<QByteArray, qint64>> *SequenceInfo::getCodonsOccurrenceCache() const {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
+    return sequenceContext->getCodonsOccurrenceCache();
 }
 
 }    // namespace U2

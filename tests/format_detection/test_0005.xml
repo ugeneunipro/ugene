@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test fasta -->
+
+    <fd-perfect-match url="fasta/fa1.fa" format="fasta"/>
+
+</multi-test>

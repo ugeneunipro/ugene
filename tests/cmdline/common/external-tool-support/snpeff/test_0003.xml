@@ -1,0 +1,18 @@
+<multi-test>
+    <remove-temp-dir url="snpeff3"/>
+    <create-temp-dir url="snpeff3"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/snpeff/snpeff.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/snpeff/vcf_homhet.vcf"
+            out_dir="!tmp_data_dir!/snpeff3"
+            genome="ebola_zaire"
+            canon="true"
+            hgvs="true"
+            lof="true"
+            motif="true"
+            upDown="500"
+    />
+    <compare-vcf-docs doc1="cmdline/external-tool-support/snpeff/3.vcf" doc2="snpeff3/snpeff/snp_eff.vcf" temp="2"/>
+    <remove-temp-dir url="snpeff3"/>
+</multi-test>
+

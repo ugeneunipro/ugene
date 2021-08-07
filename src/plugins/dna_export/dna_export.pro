@@ -20,7 +20,6 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ExportSequencesDialog.h \
            src/ExportSequenceTask.h \
            src/ExportSequenceViewItems.h \
-           src/ExportTasks.h \
            src/ExportUtils.h \
            src/GenerateDNAWorker.h \
            src/GetSequenceByIdDialog.h \
@@ -63,7 +62,6 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ExportSequencesDialog.cpp \
            src/ExportSequenceTask.cpp \
            src/ExportSequenceViewItems.cpp \
-           src/ExportTasks.cpp \
            src/ExportUtils.cpp \
            src/GenerateDNAWorker.cpp \
            src/GetSequenceByIdDialog.cpp \

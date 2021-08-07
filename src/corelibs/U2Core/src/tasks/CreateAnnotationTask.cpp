@@ -127,7 +127,7 @@ Task::ReportResult CreateAnnotationsTask::report() {
 
 AnnotationTableObject *CreateAnnotationsTask::getAnnotationTableObject() const {
     if (aRef.isValid()) {
-        SAFE_POINT(annotationTableObjectPointer.isNull(), "Unexpected annotation table object content!", NULL);
+        SAFE_POINT(annotationTableObjectPointer.isNull(), "Unexpected annotation table object content!", nullptr);
         return qobject_cast<AnnotationTableObject *>(GObjectUtils::selectObjectByReference(aRef, UOF_LoadedOnly));
     }
     return annotationTableObjectPointer.data();

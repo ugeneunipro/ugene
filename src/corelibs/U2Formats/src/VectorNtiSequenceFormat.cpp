@@ -77,7 +77,7 @@ FormatCheckResult VectorNtiSequenceFormat::checkRawTextData(const QByteArray &ra
 }
 
 void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    U2SequenceObject *seq = NULL;
+    U2SequenceObject *seq = nullptr;
     QList<GObject *> anns;
     if (objectsMap.contains(GObjectTypes::SEQUENCE)) {
         const QList<GObject *> &seqs = objectsMap[GObjectTypes::SEQUENCE];
@@ -86,7 +86,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             seq = dynamic_cast<U2SequenceObject *>(seqs.first());
         }
     }
-    SAFE_POINT(NULL != seq, "Vector NTI entry storing: NULL sequence object", );
+    SAFE_POINT(nullptr != seq, "Vector NTI entry storing: NULL sequence object", );
 
     if (objectsMap.contains(GObjectTypes::ANNOTATION_TABLE)) {
         anns = objectsMap[GObjectTypes::ANNOTATION_TABLE];
@@ -141,7 +141,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     // write annotations
     if (!anns.isEmpty()) {
-        SAFE_POINT_EXT(NULL != seq->getAlphabet(), os.setError(L10N::nullPointerError("sequence alphabet")), );
+        SAFE_POINT_EXT(nullptr != seq->getAlphabet(), os.setError(L10N::nullPointerError("sequence alphabet")), );
         const bool isAmino = seq->getAlphabet()->isAmino();
         writeAnnotations(io, anns, isAmino, os);
         CHECK_OP(os, );
@@ -271,7 +271,7 @@ QList<SharedAnnotationData> VectorNtiSequenceFormat::prepareAnnotations(const QL
     QMap<AnnotationGroup *, QList<SharedAnnotationData>> annotationsByGroups;
     foreach (GObject *object, tablesList) {
         AnnotationTableObject *atObject = qobject_cast<AnnotationTableObject *>(object);
-        CHECK_EXT(NULL != atObject, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
+        CHECK_EXT(nullptr != atObject, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
         foreach (Annotation *annotation, atObject->getAnnotations()) {
             annotationsByGroups[annotation->getGroup()] << annotation->getData();
         }
@@ -284,7 +284,7 @@ QList<SharedAnnotationData> VectorNtiSequenceFormat::prepareAnnotations(const QL
     foreach (AnnotationGroup *group, annotationsByGroups.keys()) {
         sortedAnnotations += annotationsByGroups[group];
     }
-    qStableSort(sortedAnnotations.begin(), sortedAnnotations.end());
+    std::stable_sort(sortedAnnotations.begin(), sortedAnnotations.end());
 
     return sortedAnnotations;
 }

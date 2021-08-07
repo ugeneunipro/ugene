@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: Caudal_act
+	cmd: ./hmmbuild Caudal_act.hmm Caudal_act.sto -->
+
+    <uhmmer3-build inputFile="stockholm/Caudal_act.sto" outputFile="test_Caudal_act.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/Caudal_act.hmm" file2="test_Caudal_act.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

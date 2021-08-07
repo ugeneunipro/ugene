@@ -39,12 +39,12 @@ namespace U2 {
 
 ExportDocumentDialogController::ExportDocumentDialogController(Document *d, QWidget *p)
     : QDialog(p),
-      saveController(NULL),
+      saveController(nullptr),
       sourceDoc(d),
-      sourceObject(NULL) {
+      sourceObject(nullptr) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227664");
+    new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -54,14 +54,14 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document *d, QWid
 ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, QWidget *parent, const QString &initUrl)
     : QDialog(parent),
       ui(new Ui_ExportDocumentDialog()),
-      sourceDoc(NULL),
+      sourceDoc(nullptr),
       sourceObject(object) {
     ui->setupUi(this);
 
     QList<GObject *> objectList = QList<GObject *>() << sourceObject;
     initSaveController(objectList, initUrl);
 
-    new HelpButton(this, ui->buttonBox, "60227664");
+    new HelpButton(this, ui->buttonBox, "65929295");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
@@ -110,7 +110,7 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
 
 QString ExportDocumentDialogController::getDocumentURL() const {
     QString path = saveController->getSaveFileName();
-    if (ui->compressCheck != NULL && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
+    if (ui->compressCheck != nullptr && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
         QString suffix = path.split(".").last();
         if (suffix != "gz") {
             return path + ".gz";

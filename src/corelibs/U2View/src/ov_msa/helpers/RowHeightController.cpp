@@ -36,7 +36,7 @@ RowHeightController::RowHeightController(MaEditorWgt *maEditorWgt)
 }
 
 int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex) const {
-    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MaCollapseModel *collapseModel = ui->getEditor()->getCollapseModel();
     int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(maRowIndex);
     int offset = 0;
     for (int viewRow = 0; viewRow < viewRowIndex; viewRow++) {
@@ -67,7 +67,7 @@ int RowHeightController::getScreenYPositionOfTheFirstVisibleRow(bool countClippe
 }
 
 int RowHeightController::getRowHeightByViewRowIndex(int viewRowIndex) const {
-    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    int maRowIndex = ui->getEditor()->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getRowHeightByMaIndex(maRowIndex);
 }
 
@@ -80,7 +80,7 @@ int RowHeightController::getSumOfRowHeightsByMaIndexes(const QList<int> &maRowIn
 }
 
 int RowHeightController::getTotalAlignmentHeight() const {
-    int viewRowCount = ui->getCollapseModel()->getViewRowCount();
+    int viewRowCount = ui->getEditor()->getCollapseModel()->getViewRowCount();
     U2Region globalYRegion = getGlobalYRegionByViewRowsRegion(U2Region(0, viewRowCount));
     return static_cast<int>(globalYRegion.length);
 }
@@ -93,11 +93,11 @@ int RowHeightController::getSingleRowHeight() const {
 
 int RowHeightController::getMaRowIndexByGlobalYPosition(int y) const {
     int viewRowIndex = getViewRowIndexByGlobalYPosition(y);
-    return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    return ui->getEditor()->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
 }
 
 int RowHeightController::getViewRowIndexByGlobalYPosition(int y) const {
-    const int viewRowCount = ui->getCollapseModel()->getViewRowCount();
+    const int viewRowCount = ui->getEditor()->getCollapseModel()->getViewRowCount();
     int accumulatedHeight = 0;
     for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {
         const int rowHeight = getRowHeightByViewRowIndex(viewRowIndex);
@@ -134,10 +134,10 @@ U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const
 #define OUT_OF_RANGE_OFFSET 5
 
 U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) const {
-    if (ui->getCollapseModel()->getViewRowCount() == 0) {    // empty alignment.
+    MaCollapseModel *collapseModel = ui->getEditor()->getCollapseModel();
+    if (collapseModel->getViewRowCount() == 0) {    // empty alignment.
         return U2Region(-OUT_OF_RANGE_OFFSET, 0);
     }
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
     int viewRowCount = collapseModel->getViewRowCount();
     // Return an empty region after the view for viewRowIndexes > maxRows
     // and a region before the view for viewRowIndex < 0. Use OUT_OF_RANGE_OFFSET for the out of range regions.

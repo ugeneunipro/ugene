@@ -44,7 +44,7 @@ class SQLiteTransaction;
 
 class U2CORE_EXPORT DbRef {
 public:
-    DbRef(sqlite3 *db = NULL)
+    DbRef(sqlite3 *db = nullptr)
         : handle(db), lock(QMutex::Recursive), useTransaction(true) {
     }
 
@@ -220,7 +220,7 @@ public:
     void setError(const QString &err);
 
     bool hasError() const {
-        return (os != NULL) ? os->hasError() : true;
+        return (os != nullptr) ? os->hasError() : true;
     }
 
     void setOpStatus(U2OpStatus &_os) {
@@ -369,7 +369,7 @@ private:
                 return;
             }
             nextResult = loader->load(query.data());
-        } while (filter != NULL && !filter->filter(nextResult));
+        } while (filter != nullptr && !filter->filter(nextResult));
     }
 
     QSharedPointer<SQLiteQuery> query;

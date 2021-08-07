@@ -33,17 +33,18 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 
-#include "ExportConsensus/MaExportConsensusTabFactory.h"
-#include "General/McaGeneralTabFactory.h"
 #include "MSAEditorOffsetsView.h"
 #include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
 #include "McaEditorConsensusArea.h"
 #include "McaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
-#include "Overview/MaEditorOverviewArea.h"
+#include "export_consensus/MaExportConsensusTabFactory.h"
+#include "general/McaGeneralTabFactory.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
+#include "overview/MaEditorOverviewArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
@@ -52,6 +53,7 @@ McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
+    selectionController = new McaEditorSelectionController(this);
     initZoom();
     initFont();
 
@@ -61,7 +63,7 @@ McaEditor::McaEditor(const QString &viewName,
     }
 
     U2SequenceObject *referenceObj = obj->getReferenceObj();
-    SAFE_POINT(NULL != referenceObj, "Trying to open McaEditor without a reference", );
+    SAFE_POINT(nullptr != referenceObj, "Trying to open McaEditor without a reference", );
     referenceCtx = new SequenceObjectContext(referenceObj, this);
 }
 
@@ -86,7 +88,11 @@ void McaEditor::buildStaticToolbar(QToolBar *tb) {
     GObjectView::buildStaticToolbar(tb);
 }
 
-void McaEditor::buildStaticMenu(QMenu *menu) {
+void McaEditor::buildMenu(QMenu *menu, const QString &type) {
+    if (type != MsaEditorMenuType::STATIC) {
+        GObjectView::buildMenu(menu, type);
+        return;
+    }
     addAlignmentMenu(menu);
     addAppearanceMenu(menu);
     addNavigationMenu(menu);
@@ -95,7 +101,7 @@ void McaEditor::buildStaticMenu(QMenu *menu) {
     menu->addAction(showConsensusTabAction);
     menu->addSeparator();
 
-    GObjectView::buildStaticMenu(menu);
+    GObjectView::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -107,7 +113,7 @@ int McaEditor::getRowContentIndent(int rowId) const {
 }
 
 bool McaEditor::isChromatogramRowExpanded(int rowIndex) const {
-    return !ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(rowIndex);
+    return !collapseModel->isGroupWithMaRowIndexCollapsed(rowIndex);
 }
 
 QString McaEditor::getReferenceRowName() const {
@@ -128,14 +134,14 @@ SequenceObjectContext *McaEditor::getReferenceContext() const {
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu menu;
-    buildStaticMenu(&menu);
-    emit si_buildPopupMenu(this, &menu);
+    buildMenu(&menu, MsaEditorMenuType::STATIC);    // TODO: this call triggers extra signal for static menu.
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::CONTEXT);
     menu.exec(QCursor::pos());
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     GCOUNTER(cvar, "Show/hide chromatogram in MCA");
-    ui->getCollapseModel()->collapseAll(!show);
+    collapseModel->collapseAll(!show);
     sl_saveChromatogramState();
     emit si_completeUpdate();
 }
@@ -149,13 +155,13 @@ void McaEditor::sl_showGeneralTab() {
 
 void McaEditor::sl_showConsensusTab() {
     OptionsPanel *optionsPanel = getOptionsPanel();
-    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
-                                     " when msaconsensustab opening was initiated", );
+    SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
+                                        " when msaconsensustab opening was initiated", );
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
 QWidget *McaEditor::createWidget() {
-    Q_ASSERT(ui == NULL);
+    Q_ASSERT(ui == nullptr);
     ui = new McaEditorWgt(this);
 
     QString objName = "mca_editor_" + maObject->getGObjectName();
@@ -187,7 +193,7 @@ void McaEditor::initActions() {
     MaEditor::initActions();
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
 
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
@@ -229,7 +235,7 @@ void McaEditor::initActions() {
 
     gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
     gotoSelectedReadAction->setObjectName("centerReadStartAction");
-    gotoSelectedReadAction->setEnabled(false); // Action state is managed by updateActions().
+    gotoSelectedReadAction->setEnabled(false);    // Action state is managed by updateActions().
     connect(gotoSelectedReadAction, SIGNAL(triggered()), SLOT(sl_gotoSelectedRead()));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -238,18 +244,18 @@ void McaEditor::initActions() {
 void McaEditor::updateActions() {
     MaEditor::updateActions();
     MaEditorSelection selection = getSelection();
-    gotoSelectedReadAction->setEnabled(selection.height() > 0);
+    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
 }
 
 void McaEditor::sl_saveOverviewState() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, showOverviewAction->isChecked());
 }
 
 void McaEditor::sl_saveChromatogramState() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, showChromatogramsAction->isChecked());
 }
 
@@ -271,7 +277,7 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     appearanceMenu->addAction(showChromatogramsAction);
     appearanceMenu->addMenu(sequenceArea->getTraceActionsMenu());
     appearanceMenu->addAction(showOverviewAction);
-    if (offsetsController != NULL) {
+    if (offsetsController != nullptr) {
         appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
     appearanceMenu->addAction(ui->getToggleColumnsAction());
@@ -342,12 +348,16 @@ void McaEditor::addEditMenu(QMenu *menu) {
 void McaEditor::sl_gotoSelectedRead() {
     GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
     MaEditorSelection selection = getSelection();
-    int rowIndex = selection.y();
-    CHECK(selection.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
+    QRect selectionRect = selection.toRect();
+    int rowIndex = selectionRect.y();
+    CHECK(selectionRect.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
 
     MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
     int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();
     ui->getSequenceArea()->centerPos(rowStartPos);
 }
 
+MaEditorSelectionController *McaEditor::getSelectionController() const {
+    return selectionController;
+}
 }    // namespace U2

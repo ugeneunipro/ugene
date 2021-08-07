@@ -110,7 +110,7 @@ public:
     virtual char *translate1to3(char c) const {
         Q_UNUSED(c);
         assert(0);
-        return NULL;
+        return nullptr;
     }
 
 protected:

@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- Finds inverted repeats of len = 3 in 2.fa file, result with 1 repeat -> 3 reported (2+diag) -->
+
+    <load-document index="s1d" url="fasta/repeat_finder/2.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="2" type="OT_SEQUENCE"/>
+
+    <find-repeats seq="s1" w="3" invert="true" expected_result="repeat_finder/res_dna_exact_2.txt"/>
+
+</multi-test>

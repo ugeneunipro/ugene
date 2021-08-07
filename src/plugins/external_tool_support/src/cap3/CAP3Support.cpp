@@ -45,7 +45,7 @@ const QString CAP3Support::CAP3_TMP_DIR = "cap3";
 CAP3Support::CAP3Support(const QString &id, const QString &name, const QString &path)
     : ExternalTool(id, "cap3", name, path) {
     if (AppContext::getMainWindow() != nullptr) {
-        viewCtx = NULL;    //new CAP3SupportContext(this);
+        viewCtx = nullptr;    //new CAP3SupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

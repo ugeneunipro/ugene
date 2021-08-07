@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-const QString InSilicoPcrOPWidgetFactory::GROUP_DOC_PAGE = "60229144";
+const QString InSilicoPcrOPWidgetFactory::GROUP_DOC_PAGE = "65930776";
 
 InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
     : OPWidgetFactory() {
@@ -53,7 +53,7 @@ OPGroupParameters InSilicoPcrOPWidgetFactory::getOPGroupParameters() {
 }
 
 bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
-    SAFE_POINT(filter != NULL, L10N::nullPointerError("Options Panel Filter"), false);
+    SAFE_POINT(filter != nullptr, L10N::nullPointerError("Options Panel Filter"), false);
 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }

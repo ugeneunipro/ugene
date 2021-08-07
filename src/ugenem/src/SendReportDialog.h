@@ -55,7 +55,7 @@ private:
 class SendReportDialog : public QDialog, public Ui_Dialog {
     Q_OBJECT
 public:
-    SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d = NULL);
+    SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d = nullptr);
 
 private:
     void openUgene() const;

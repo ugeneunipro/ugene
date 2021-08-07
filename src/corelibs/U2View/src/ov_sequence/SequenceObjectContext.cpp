@@ -48,11 +48,11 @@ const QVariantList SequenceObjectContext::DEFAULT_TRANSLATIONS = {0, 1, 2, 3, 4,
 SequenceObjectContext::SequenceObjectContext(U2SequenceObject *obj, QObject *parent)
     : QObject(parent),
       seqObj(obj),
-      aminoTT(NULL),
-      complTT(NULL),
-      selection(NULL),
-      translations(NULL),
-      visibleFrames(NULL),
+      aminoTT(nullptr),
+      complTT(nullptr),
+      selection(nullptr),
+      translations(nullptr),
+      visibleFrames(nullptr),
       rowChoosed(false) {
     selection = new DNASequenceSelection(seqObj, this);
     clarifyAminoTT = false;
@@ -61,11 +61,11 @@ SequenceObjectContext::SequenceObjectContext(U2SequenceObject *obj, QObject *par
         DNATranslationRegistry *translationRegistry = AppContext::getDNATranslationRegistry();
         complTT = GObjectUtils::findComplementTT(seqObj->getAlphabet());
         aminoTT = GObjectUtils::findAminoTT(seqObj, true);
-        clarifyAminoTT = aminoTT == NULL;
+        clarifyAminoTT = aminoTT == nullptr;
 
         QList<DNATranslation *> aminoTs = translationRegistry->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
         if (!aminoTs.empty()) {
-            aminoTT = aminoTT == NULL ? translationRegistry->getStandardGeneticCodeTranslation(al) : aminoTT;
+            aminoTT = aminoTT == nullptr ? translationRegistry->getStandardGeneticCodeTranslation(al) : aminoTT;
             translations = new QActionGroup(this);
             foreach (DNATranslation *t, aminoTs) {
                 QAction *a = translations->addAction(t->getTranslationName());
@@ -113,7 +113,7 @@ SequenceObjectContext::SequenceObjectContext(U2SequenceObject *obj, QObject *par
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
     const DNAAlphabet *al = getAlphabet();
     SAFE_POINT(al->isNucleic(), "Unexpected DNA alphabet detected!", );
-    DNATranslation *res = NULL;
+    DNATranslation *res = nullptr;
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
     // try to guess relevant translation from a CDS feature (if any)
     foreach (Annotation *ann, ao->getAnnotationsByName("CDS")) {
@@ -122,12 +122,12 @@ void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
         if (ql.size() > 0) {
             QString guess = "NCBI-GenBank #" + ql.first().value;
             res = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, guess);
-            if (res != NULL) {
+            if (res != nullptr) {
                 break;
             }
         }
     }
-    if (res != NULL) {
+    if (res != nullptr) {
         clarifyAminoTT = false;
         setAminoTranslation(res->getTranslationId());
     }
@@ -269,9 +269,13 @@ StatisticsCache<DinucleotidesOccurrence> *SequenceObjectContext::getDinucleotide
     return &dinucleotidesOccurrenceCache;
 }
 
+StatisticsCache<QMap<QByteArray, qint64>> *SequenceObjectContext::getCodonsOccurrenceCache() {
+    return &codonsOccurrenceCache;
+}
+
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
     AnnotationTableObject *obj = qobject_cast<AnnotationTableObject *>(sender());
-    SAFE_POINT(obj != NULL, tr("Incorrect signal sender!"), );
+    SAFE_POINT(obj != nullptr, tr("Incorrect signal sender!"), );
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
         disconnect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), this, SLOT(sl_onAnnotationRelationChange()));
@@ -279,7 +283,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 }
 
 QMenu *SequenceObjectContext::createGeneticCodeMenu() {
-    CHECK(NULL != translations, NULL);
+    CHECK(nullptr != translations, nullptr);
     QMenu *menu = new QMenu(tr("Select genetic code"));
     menu->setIcon(QIcon(":core/images/tt_switch.png"));
     menu->menuAction()->setObjectName("AminoTranslationAction");
@@ -291,7 +295,7 @@ QMenu *SequenceObjectContext::createGeneticCodeMenu() {
 }
 
 QMenu *SequenceObjectContext::createTranslationFramesMenu(QList<QAction *> menuActions) {
-    SAFE_POINT(visibleFrames != NULL, "SequenceObjectContext: visibleFrames is NULL ?!", NULL);
+    SAFE_POINT(visibleFrames != nullptr, "SequenceObjectContext: visibleFrames is NULL ?!", nullptr);
     QMenu *menu = new QMenu(tr("Show/hide amino acid translations"));
     menu->setIcon(QIcon(":core/images/show_trans.png"));
     menu->menuAction()->setObjectName("Translation frames");
@@ -314,7 +318,7 @@ QMenu *SequenceObjectContext::createTranslationFramesMenu(QList<QAction *> menuA
 void SequenceObjectContext::setAminoTranslation(const QString &tid) {
     const DNAAlphabet *al = getAlphabet();
     DNATranslation *aTT = AppContext::getDNATranslationRegistry()->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, tid);
-    assert(aTT != NULL);
+    assert(aTT != nullptr);
     if (aTT == aminoTT) {
         return;
     }
@@ -435,7 +439,7 @@ bool SequenceObjectContext::isRowChoosed() {
 
 QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() const {
     QVector<bool> result;
-    if (visibleFrames != NULL) {
+    if (visibleFrames != nullptr) {
         foreach (QAction *a, visibleFrames->actions()) {
             result.append(a->isChecked());
         }

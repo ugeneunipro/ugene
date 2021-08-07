@@ -1,0 +1,18 @@
+<unittest>
+
+    FeatureTableObjectUnitTest
+    + createEmptyFeaturesTableObject
+    + addAnnotationSingleRegion
+    + addAnnotationMultipleRegion
+    + getAnnotations
+    + getRootGroup
+    + addAnnotationsToRootGroup
+    + addAnnotationsToSubgroup
+    + removeAnnotation
+    + removeAnnotations
+    + clone
+    + getAnnotationsByName
+    + getAnnotationsByRegion
+    + checkConstraints
+
+</unittest>

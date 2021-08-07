@@ -26,7 +26,7 @@
 namespace U2 {
 namespace Workflow {
 
-WorkflowEnv *WorkflowEnv::instance = NULL;
+WorkflowEnv *WorkflowEnv::instance = nullptr;
 
 bool WorkflowEnv::init(WorkflowEnv *env) {
     if (instance) {
@@ -47,7 +47,7 @@ bool WorkflowEnv::init(WorkflowEnv *env) {
 }
 
 WorkflowEnv *WorkflowEnv::getInstance() {
-    SAFE_POINT(NULL != instance, "WorkflowEnv instance is NULL", NULL);
+    SAFE_POINT(nullptr != instance, "WorkflowEnv instance is NULL", nullptr);
     return instance;
 }
 

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- find annotation table in genbank format file -->
+
+    <load-document index="doc" url="genbank/UGENE-2710.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="RSVTF features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="obj1" doc="doc" name="RSVTR features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="obj2" doc="doc" name="RSVTP features" type="OT_ANNOTATIONS"/>
+
+</multi-test>

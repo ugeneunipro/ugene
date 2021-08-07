@@ -151,13 +151,13 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
     std::wstring wPath = getURLString().toStdWString();
     codePage = codePage < 0 ? CP_THREAD_ACP : codePage;
 
-    DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, NULL, 0, NULL, NULL);
+    DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, nullptr, 0, nullptr, nullptr);
     if (!buffSize) {
         return QByteArray();
     }
 
     char *buffer = new char[buffSize + 1];
-    if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL)) {
+    if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, nullptr, nullptr)) {
         delete[] buffer;
         return QByteArray();
     }

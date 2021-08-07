@@ -24,9 +24,9 @@
 
 #include <QMap>
 #include <QObject>
-#include <QScriptEngine>
 #include <QStringList>
 
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -54,7 +54,7 @@ private:
 class U2CORE_EXPORT DBXRefRegistry : public QObject {
     Q_OBJECT
 public:
-    DBXRefRegistry(QObject *p = NULL);
+    DBXRefRegistry(QObject *p = nullptr);
 
     Q_INVOKABLE DBXRefInfo getRefByKey(const QString &dbxrefKey) const {
         return refsByKey.value(dbxrefKey);

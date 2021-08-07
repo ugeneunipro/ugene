@@ -31,6 +31,7 @@
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "MaEditorWgt.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -38,12 +39,12 @@ namespace U2 {
 /* MaSplitterController */
 /************************************************************************/
 MaSplitterController::MaSplitterController()
-    : seqArea(NULL) {
+    : seqArea(nullptr) {
     splitter = new QSplitter(Qt::Horizontal);
     splitter->setObjectName("msa_editor_horizontal_splitter");
 }
 MaSplitterController::MaSplitterController(QSplitter *spliter)
-    : seqArea(NULL),
+    : seqArea(nullptr),
       splitter(spliter) {
 }
 
@@ -96,7 +97,7 @@ void MaSplitterController::removeWidget(QWidget *wgt) {
         wgt->disconnect(curObj);
     }
     widgets.removeAll(wgt);
-    wgt->setParent(NULL);
+    wgt->setParent(nullptr);
     splitter->setSizes(widgetSizes);
 }
 
@@ -126,7 +127,7 @@ void MaUtilsWidget::setHeightMargin(int _heightMargin) {
 }
 
 void MaUtilsWidget::mousePressEvent(QMouseEvent *) {
-    ui->getSequenceArea()->sl_cancelSelection();
+    ui->getEditor()->getSelectionController()->clearSelection();
 }
 void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);

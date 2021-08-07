@@ -48,7 +48,7 @@ const QString TaskStatusBarCon::NO_TASK_STATUS_BAR_CMD_OPTION = "log-no-task-pro
 bool TaskStatusBarCon::helpRegistered = false;
 
 TaskStatusBarCon::TaskStatusBarCon() {
-    taskToTrack = NULL;
+    taskToTrack = nullptr;
 #ifdef Q_OS_WIN32
     //TO DO: May be use following variant, but it don`t work always
     //COORD conSize=GetLargestConsoleWindowSize(GetStdHandle(STD_OUTPUT_HANDLE));
@@ -74,7 +74,7 @@ void TaskStatusBarCon::setTSBCmdlineHelp() {
     helpRegistered = true;
 
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *noTSBSection = new CMDLineHelpProvider(
         NO_TASK_STATUS_BAR_CMD_OPTION,
@@ -97,7 +97,7 @@ TaskStatusBarCon::~TaskStatusBarCon() {
     printf("                                                                               \r");    //80 spaces
 }
 void TaskStatusBarCon::updateState() {
-    if (taskToTrack == NULL) {
+    if (taskToTrack == nullptr) {
         return;
     }
 
@@ -180,12 +180,12 @@ void TaskStatusBarCon::updateState() {
 }
 
 void TaskStatusBarCon::sl_taskStateChanged(Task *t) {
-    assert(taskToTrack == NULL);
+    assert(taskToTrack == nullptr);
     if (t->isFinished()) {
         return;
     }
     WorkflowRunTask *workflowTask = qobject_cast<WorkflowRunTask *>(t);
-    if (workflowTask == NULL) {    // track progress only for workflow tasks
+    if (workflowTask == nullptr) {    // track progress only for workflow tasks
         return;
     }
     setTaskToTrack(t);
@@ -193,7 +193,7 @@ void TaskStatusBarCon::sl_taskStateChanged(Task *t) {
 }
 
 void TaskStatusBarCon::setTaskToTrack(Task *t) {
-    assert(taskToTrack == NULL);
+    assert(taskToTrack == nullptr);
     taskToTrack = t;
     connect(taskToTrack, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
     connect(taskToTrack, SIGNAL(si_progressChanged()), SLOT(sl_update()));
@@ -208,7 +208,7 @@ void TaskStatusBarCon::sl_taskStateChanged() {
         return;
     }
     taskToTrack->disconnect(this);
-    taskToTrack = NULL;
+    taskToTrack = nullptr;
 
     foreach (Task *newT, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (!newT->isFinished()) {
@@ -216,7 +216,7 @@ void TaskStatusBarCon::sl_taskStateChanged() {
             break;
         }
     }
-    if (taskToTrack == NULL) {
+    if (taskToTrack == nullptr) {
         connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
     }
     updateState();

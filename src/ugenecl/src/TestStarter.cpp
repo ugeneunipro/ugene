@@ -80,7 +80,7 @@ void TestStarter::cleanup() {
     //saveEnv();
     deallocateSuites();
     delete env;
-    env = NULL;
+    env = nullptr;
     //Task::cleanup();
 }
 
@@ -108,11 +108,13 @@ void TestStarter::addTestSuite(GTestSuite *ts) {
 void TestStarter::updateDefaultEnvValues(GTestSuite *) {
     QMap<QString, QString> vars = env->getVars();
     if (vars.contains("COMMON_DATA_DIR") && vars.value("COMMON_DATA_DIR").isEmpty()) {
-        env->setVar("COMMON_DATA_DIR", "/_common_data");
+        QString commonDataDir = qgetenv("COMMON_DATA_DIR");
+        env->setVar("COMMON_DATA_DIR", commonDataDir.isEmpty() ? "/_common_data" : commonDataDir);
     }
 
     if (vars.contains("TEMP_DATA_DIR") && vars.value("TEMP_DATA_DIR").isEmpty()) {
-        env->setVar("TEMP_DATA_DIR", "/_tmp");
+        QString tempDataDir = qgetenv("TEMP_DATA_DIR");
+        env->setVar("TEMP_DATA_DIR", tempDataDir.isEmpty() ? "/_tmp" : tempDataDir);
     }
 }
 
@@ -132,7 +134,7 @@ GTestSuite *TestStarter::findTestSuiteByURL(const QString &url) {
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void TestStarter::readBuiltInVars() {
@@ -158,7 +160,7 @@ void TestStarter::readSavedSuites() {
     QString url;
     foreach (const QString &url, suiteUrls) {
         GTestSuite *ts = GTestSuite::readTestSuite(url, err);
-        if (ts == NULL) {
+        if (ts == nullptr) {
             ioLog.error(tr("error_reading_ts_%1_error_%2").arg(url).arg(err));
         } else {
             addTestSuite(ts);
@@ -212,7 +214,7 @@ void TestStarter::sl_refresh() {
 TestRunnerTask *TestStarter::createRunTask() {
     if (env->containsEmptyVars()) {
         coreLog.error(tr("Not all environment variables set"));
-        return NULL;
+        return nullptr;
     }
     QList<GTestState *> testsToRun;
     foreach (GTestSuite *ts, suites) {

@@ -34,7 +34,7 @@ namespace U2 {
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     FastqFormat(QObject *p);

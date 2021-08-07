@@ -56,7 +56,7 @@ private slots:
 class SpadesPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    SpadesPropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    SpadesPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
 
     QVariant value();
 

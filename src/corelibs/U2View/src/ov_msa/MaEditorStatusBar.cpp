@@ -24,9 +24,9 @@
 #include <QHBoxLayout>
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "MSAEditorSequenceArea.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -37,13 +37,6 @@ MaEditorStatusBar::TwoArgPatternLabel::TwoArgPatternLabel(QString textPattern, Q
     : QLabel(textPattern, parent),
       textPattern(textPattern),
       tooltipPattern(tooltipPattern),
-      fm(QFontMetrics(font(), this)) {
-    setObjectName(objectName);
-    setAlignment(Qt::AlignCenter);
-}
-
-MaEditorStatusBar::TwoArgPatternLabel::TwoArgPatternLabel(QString objectName, QWidget *parent)
-    : QLabel(parent),
       fm(QFontMetrics(font(), this)) {
     setObjectName(objectName);
     setAlignment(Qt::AlignCenter);
@@ -79,7 +72,7 @@ MaEditorStatusBar::MaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequ
 
     selectionPattern = tr("Sel %1");
     lineLabel = new TwoArgPatternLabel(tr("Ln %1 / %2"), tr("Line %1 of %2"), "Line", this);
-    colomnLabel = new TwoArgPatternLabel(tr("Col %1 / %2"), tr("Column %1 of %2"), "Column", this);
+    columnLabel = new TwoArgPatternLabel(tr("Col %1 / %2"), tr("Column %1 of %2"), "Column", this);
     positionLabel = new TwoArgPatternLabel(tr("Pos %1 / %2"), tr("Position %1 of %2"), "Position", this);
     selectionLabel = new TwoArgPatternLabel(selectionPattern, tr("Selection width and height are %1"), "Selection", this);
 
@@ -90,7 +83,9 @@ MaEditorStatusBar::MaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequ
     layout->addStretch(1);
     setLayout(layout);
 
-    connect(seqArea, SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_update()));
+    connect(seqArea->getEditor()->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_update()));
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_update()));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
 
@@ -105,15 +100,17 @@ void MaEditorStatusBar::sl_lockStateChanged() {
     updateLock();
 }
 
-QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint &pos) const {
-    if (pos.isNull()) {
+QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo() const {
+    QRect selectionRect = seqArea->getEditor()->getSelection().toRect();
+    if (selectionRect.isNull()) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
+    QPoint pos = selectionRect.topLeft();
     int maRowIndex = seqArea->getTopSelectedMaRow();
     if (maRowIndex == -1) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
-    MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(maRowIndex);
+    MultipleAlignmentRow row = aliObj->getRow(maRowIndex);
     QString ungappedLength = QString::number(row->getUngappedLength());
     if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
         return QPair<QString, QString>(GAP_MARK, ungappedLength);
@@ -128,35 +125,37 @@ void MaEditorStatusBar::updateLock() {
 }
 
 void MaEditorStatusBar::updateLineLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
-    const int firstSelected = seqArea->getRowIndex(selection.y());
-    const int totalVisible = aliObj->getNumRows();
-    lineLabel->update(selection.isEmpty() || firstSelected == -1 ? NONE_MARK : QString::number(firstSelected + 1),
-                      QString::number(totalVisible));
+    QString currentLineText = NONE_MARK;
+    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
+    if (!selection.isEmpty()) {
+        qint64 firstSelectedViewRowIndex = selection.toRect().y();
+        currentLineText = QString::number(firstSelectedViewRowIndex + 1);
+    }
+    qint64 viewRowCount = seqArea->getViewRowCount();
+    lineLabel->update(currentLineText, QString::number(viewRowCount));
 }
 
 void MaEditorStatusBar::updatePositionLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
-    QPair<QString, QString> pp = getGappedPositionInfo(selection.topLeft());
+    QPair<QString, QString> pp = getGappedPositionInfo();
     positionLabel->update(pp.first, pp.second);
     positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
 }
 
 void MaEditorStatusBar::updateColumnLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
-    const QPoint &pos = selection.topLeft();
-
+    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
+    qint64 x = selection.toRect().x();
     qint64 alignmentLen = aliObj->getLength();
-    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
+    columnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(x + 1), QString::number(alignmentLen));
 }
 
 void MaEditorStatusBar::updateSelectionLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
+    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
     QString selSize;
     if (selection.isEmpty()) {
         selSize = QObject::tr("none");
     } else {
-        selSize = QString::number(selection.width()) + "x" + QString::number(selection.height());
+        QRect selectionRect = selection.toRect();
+        selSize = QString::number(selectionRect.width()) + "x" + QString::number(selectionRect.height());
     }
     QFontMetrics fm(lineLabel->font(), this);
     int maxSelLength = fm.width(selectionPattern.arg(QString::number(aliObj->getLength()) + "x" + QString::number(aliObj->getNumRows())));

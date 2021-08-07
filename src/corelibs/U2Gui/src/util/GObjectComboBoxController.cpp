@@ -192,7 +192,7 @@ bool GObjectComboBoxController::setSelectedObject(const GObjectReference &objRef
 
 GObjectReference GObjectComboBoxController::getSelectedObjectReference() const {
     GObject *object = getSelectedObject();
-    if (NULL != object) {
+    if (nullptr != object) {
         return GObjectReference(object);
     } else {
         return GObjectReference();
@@ -202,12 +202,12 @@ GObjectReference GObjectComboBoxController::getSelectedObjectReference() const {
 GObject *GObjectComboBoxController::getSelectedObject() const {
     int n = combo->currentIndex();
     if (n == -1) {
-        return NULL;
+        return nullptr;
     }
     GObjectReference r = combo->itemData(n).value<GObjectReference>();
-    SAFE_POINT(r.isValid(), "GObjectReverence is invalid", NULL);
+    SAFE_POINT(r.isValid(), "GObjectReverence is invalid", nullptr);
     GObject *obj = GObjectUtils::selectObjectByReference(r, GObjectUtils::findAllObjects(UOF_LoadedAndUnloaded), UOF_LoadedAndUnloaded);
-    assert(obj != NULL);
+    assert(obj != nullptr);
     return obj;
 }
 
@@ -231,7 +231,7 @@ void GObjectComboBoxController::sl_onObjectAdded(GObject *obj) {
 
 void GObjectComboBoxController::sl_onObjectRemoved(GObject *obj) {
     Document *doc = qobject_cast<Document *>(sender());
-    assert(doc != NULL);
+    assert(doc != nullptr);
     QString t = obj->getGObjectType();
     if (t == GObjectTypes::UNLOADED && settings.uof == UOF_LoadedAndUnloaded) {
         t = qobject_cast<UnloadedObject *>(obj)->getLoadedObjectType();

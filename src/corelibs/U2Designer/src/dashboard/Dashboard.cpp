@@ -242,16 +242,16 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
         return;
     }
     switch (id) {
-    case OVERVIEW_TAB_INDEX:
-        stackedWidget->setCurrentIndex(0);
-        break;
-    case INPUT_TAB_INDEX:
-        stackedWidget->setCurrentIndex(1);
-        break;
-    case EXTERNAL_TOOLS_TAB_INDEX:
-        initExternalToolsTabWidget();
-        stackedWidget->setCurrentIndex(2);
-        break;
+        case OVERVIEW_TAB_INDEX:
+            stackedWidget->setCurrentIndex(0);
+            break;
+        case INPUT_TAB_INDEX:
+            stackedWidget->setCurrentIndex(1);
+            break;
+        case EXTERNAL_TOOLS_TAB_INDEX:
+            initExternalToolsTabWidget();
+            stackedWidget->setCurrentIndex(2);
+            break;
     }
 }
 

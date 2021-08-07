@@ -50,10 +50,10 @@ public:
     DotPlotViewContext(QObject *p);
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 
     void createSplitter();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
     DotPlotSplitter *getView(GObjectView *view, bool create);
     void removeDotPlotView(GObjectView *view);
 
@@ -79,7 +79,7 @@ class DotPlotViewAction : public ADVSequenceWidgetAction {
     Q_OBJECT
 public:
     DotPlotViewAction()
-        : ADVSequenceWidgetAction(DOTPLOT_ACTION_NAME, tr("Show dot plot")), view(NULL) {
+        : ADVSequenceWidgetAction(DOTPLOT_ACTION_NAME, tr("Show dot plot")), view(nullptr) {
     }
     ~DotPlotViewAction() {
     }

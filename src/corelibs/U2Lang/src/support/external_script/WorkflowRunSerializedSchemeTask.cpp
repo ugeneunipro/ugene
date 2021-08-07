@@ -48,22 +48,18 @@ BaseSerializedSchemeRunner::BaseSerializedSchemeRunner(const QString &_pathToSch
 WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &_pathToScheme,
                                                                  ScriptableScheduler *_scheduler,
                                                                  QStringList &outputFiles)
-    : BaseSerializedSchemeRunner(_pathToScheme, _scheduler, outputFiles), scheme(NULL),
-      loadTask(NULL), runTask(NULL) {
+    : BaseSerializedSchemeRunner(_pathToScheme, _scheduler, outputFiles), scheme(nullptr),
+      loadTask(nullptr), runTask(nullptr) {
     GCOUNTER(cvar, "workflow_run_from_script");
 
     loadTask = createLoadSchemeTask();
-    if (NULL != loadTask) {
+    if (nullptr != loadTask) {
         addSubTask(loadTask);
     }
 }
 
-WorkflowRunSerializedSchemeTask::~WorkflowRunSerializedSchemeTask() {
-    delete scheme;
-}
-
 QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) {
-    Q_ASSERT(NULL != subtask);
+    Q_ASSERT(nullptr != subtask);
     QList<Task *> res;
 
     propagateSubtaskError();
@@ -107,12 +103,12 @@ LoadWorkflowTask *WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
     const QString approvedPath = WorkflowUtils::findPathToSchemaFile(pathToScheme);
     if (approvedPath.isEmpty()) {
         setError(tr("Cannot find workflow: %1").arg(pathToScheme));
-        return NULL;
+        return nullptr;
     }
 
-    scheme = new Schema();
+    scheme = QSharedPointer<Schema>::create();
     scheme->setDeepCopyFlag(true);
-    return new LoadWorkflowTask(scheme, NULL, approvedPath);
+    return new LoadWorkflowTask(scheme, nullptr, approvedPath);
 }
 
 }    // namespace U2

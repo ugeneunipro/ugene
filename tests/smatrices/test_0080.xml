@@ -1,0 +1,5 @@
+<multi-test>
+
+    <check-subst-matrix file="rna" column="R" row="U" val="-1" alphabet="NUCL_RNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

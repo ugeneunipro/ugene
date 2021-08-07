@@ -68,7 +68,7 @@ void AprImporterTask::prepare() {
     DocumentFormatId formatId = variantFormat.toString();
 
     IOAdapterRegistry *ioar = AppContext::getIOAdapterRegistry();
-    SAFE_POINT_EXT(NULL != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
+    SAFE_POINT_EXT(nullptr != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
 
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();
@@ -86,20 +86,20 @@ QList<Task *> AprImporterTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, res);
 
     DefaultConvertFileTask *convTask = qobject_cast<DefaultConvertFileTask *>(subTask);
-    if (convTask != NULL) {
+    if (convTask != nullptr) {
         QString dstUrl = convTask->getResult();
         SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
 
         QVariantMap hints;
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
         LoadDocumentTask *loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl, hints);
-        CHECK(loadTask != NULL, res);
+        CHECK(loadTask != nullptr, res);
 
         res << loadTask;
     }
 
     LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask *>(subTask);
-    if (loadTask != NULL) {
+    if (loadTask != nullptr) {
         resultDocument = loadTask->takeDocument();
     }
 
@@ -114,7 +114,7 @@ const QString AprImporter::ID = "Vector_NTI_AlignX-importer";
 
 AprImporter::AprImporter()
     : DocumentImporter(ID, tr("Vector NTI/AlignX file importer")) {
-    AprFormat aprFormat(NULL);
+    AprFormat aprFormat(nullptr);
     extensions << aprFormat.getSupportedDocumentFileExtensions();
     formatIds << aprFormat.getFormatId();
     importerDescription = tr("Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats");
@@ -122,7 +122,7 @@ AprImporter::AprImporter()
 }
 
 FormatCheckResult AprImporter::checkRawData(const QByteArray &rawData, const GUrl &url) {
-    AprFormat aprFormat(NULL);
+    AprFormat aprFormat(nullptr);
     return aprFormat.checkRawData(rawData, url);
 }
 

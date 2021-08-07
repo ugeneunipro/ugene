@@ -49,7 +49,7 @@ ImportPrimersDialog::ImportPrimersDialog(QWidget *parent)
     : QDialog(parent),
       waitForConnection(false) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229151");
+    new HelpButton(this, buttonBox, "65930783");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     init();
@@ -79,7 +79,7 @@ void ImportPrimersDialog::sl_addFileClicked() {
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         additionalOptions = QFileDialog::DontUseNativeDialog;
     }
@@ -88,7 +88,7 @@ void ImportPrimersDialog::sl_addFileClicked() {
                                                                 tr("Select primers to import"),
                                                                 dirHelper.dir,
                                                                 filter,
-                                                                NULL,
+                                                                nullptr,
                                                                 QFileDialog::DontConfirmOverwrite | QFileDialog::ReadOnly | additionalOptions);
     CHECK(!fileList.isEmpty(), );
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
@@ -145,7 +145,7 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
 
 void ImportPrimersDialog::sl_connectionComplete() {
     SharedConnectionsDialog *connectionDialog = qobject_cast<SharedConnectionsDialog *>(sender());
-    if (Q_LIKELY(NULL != connectionDialog)) {
+    if (Q_LIKELY(nullptr != connectionDialog)) {
         connectionDialog->deleteLater();
     } else {
         coreLog.error("ImportPrimersDialog::sl_connectionComplete(): an unexpected slot caller");

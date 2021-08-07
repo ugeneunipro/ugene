@@ -37,7 +37,6 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
 #include <U2Gui/GroupOptionsWidget.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OptionsPanelWidget.h>
@@ -46,25 +45,29 @@
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "Highlighting/MsaSchemesMenuBuilder.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
-#include "Overview/MaEditorOverviewArea.h"
-#include "RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
+#include "highlighting/MsaSchemesMenuBuilder.h"
+#include "move_to_object/MoveToObjectMaController.h"
+#include "overview/MaEditorOverviewArea.h"
+#include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
+const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
+const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-align-sequences-to-alignment");
+
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
-      alignSequencesToAlignmentAction(nullptr),
-      realignSomeSequenceAction(nullptr),
       treeManager(this) {
+    selectionController = new MaEditorSelectionController(this);
+
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
@@ -76,7 +79,7 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
 
     sortByNameDescendingAction = new QAction(tr("By name, descending"), this);
     sortByNameDescendingAction->setObjectName("action_sort_by_name_descending");
-    sortByNameAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, descending"));
+    sortByNameDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, descending"));
     connect(sortByNameDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
 
     sortByLengthAscendingAction = new QAction(tr("By length"), this);
@@ -102,6 +105,16 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
     openCustomSettingsAction->setObjectName("Create new color scheme");
     connect(openCustomSettingsAction, SIGNAL(triggered()), SLOT(sl_showCustomSettings()));
+
+    sortGroupsBySizeAscendingAction = new QAction(tr("Sort groups, small first"), this);
+    sortGroupsBySizeAscendingAction->setObjectName("action_sort_groups_by_size_ascending");
+    sortGroupsBySizeAscendingAction->setToolTip(tr("Sort groups by number of sequences in the group, ascending"));
+    connect(sortGroupsBySizeAscendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
+
+    sortGroupsBySizeDescendingAction = new QAction(tr("Sort groups, large first"), this);
+    sortGroupsBySizeDescendingAction->setObjectName("action_sort_groups_by_size_descending");
+    sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
+    connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
     initZoom();
     initFont();
@@ -130,6 +143,16 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     convertRnaToDnaAction->setToolTip(tr("Convert alignment from RNA to DNA alphabet: replace U with T"));
     connect(convertRnaToDnaAction, SIGNAL(triggered()), SLOT(sl_convertBetweenDnaAndRnaAlphabets()));
 
+    convertRawToDnaAction = new QAction(tr("Convert RAW to DNA alphabet"), this);
+    convertRawToDnaAction->setObjectName("convertRawToDnaAction");
+    convertRawToDnaAction->setToolTip(tr("Convert alignment from RAW to DNA alphabet: use N for unknown symbols"));
+    connect(convertRawToDnaAction, SIGNAL(triggered()), SLOT(sl_convertRawToDnaAlphabet()));
+
+    convertRawToAminoAction = new QAction(tr("Convert RAW to Amino alphabet"), this);
+    convertRawToAminoAction->setObjectName("convertRawToAminoAction");
+    convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
+    connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
+
     updateActions();
 }
 
@@ -145,12 +168,20 @@ void MSAEditor::updateActions() {
     if (alignSequencesToAlignmentAction != nullptr) {
         alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
     }
-    buildTreeAction->setEnabled(!isReadOnly && !this->isAlignmentEmpty());
+    buildTreeAction->setEnabled(!isReadOnly && !isAlignmentEmpty());
     sl_updateRealignAction();
 
     auto alphabetId = maObject->getAlphabet()->getId();
     convertDnaToRnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     convertRnaToDnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+    convertRawToDnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::RAW());
+    convertRawToAminoAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::RAW());
+
+    // Sorting of groups is enabled only on "group by content" mode.
+    // This 'virtual' mode is 100% managed by MSA Editor and is not saved to file.
+    bool isGroupBySequenceContent = getRowOrderMode() == MaEditorRowOrderMode::Sequence;
+    sortGroupsBySizeAscendingAction->setEnabled(isGroupBySequenceContent);
+    sortGroupsBySizeDescendingAction->setEnabled(isGroupBySequenceContent);
 }
 
 void MSAEditor::sl_buildTree() {
@@ -178,8 +209,8 @@ bool MSAEditor::onCloseEvent() {
     return true;
 }
 
-const MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
-    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
 
@@ -210,7 +241,11 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
     GObjectView::buildStaticToolbar(tb);
 }
 
-void MSAEditor::buildStaticMenu(QMenu *m) {
+void MSAEditor::buildMenu(QMenu *m, const QString &type) {
+    if (type != MsaEditorMenuType::STATIC) {
+        GObjectView::buildMenu(m, type);
+        return;
+    }
     addAppearanceMenu(m);
 
     addNavigationMenu(m);
@@ -229,7 +264,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addAdvancedMenu(m);
 
-    GObjectView::buildStaticMenu(m);
+    GObjectView::buildMenu(m, type);
 
     GUIUtils::disableEmptySubmenus(m);
 }
@@ -243,7 +278,7 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     const MaEditorSelection &selection = getSelection();
     ui->copySelectionAction->setDisabled(selection.isEmpty());
 
-    //TODO:? move the signal emit point to a correct location.
+    // TODO:? move the signal emit point to a correct location.
     auto sequenceArea = qobject_cast<MSAEditorSequenceArea *>(ui->getSequenceArea());
     SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
     emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
@@ -259,15 +294,9 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     copyMenu->addSeparator();
     copyMenu->addAction(ui->cutSelectionAction);
 
-    auto nameList = qobject_cast<MaEditorNameList *>(ui->getEditorNameList());
-    SAFE_POINT(nameList != nullptr, "nameList is null", );
     copyMenu->addSeparator();
-
-    copyMenu->addAction(nameList->copyCurrentSequenceAction);
-
-    //TODO: trigger action update on selection change, not in the menu activation code!
-    int selectedMaRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selection.y());
-    nameList->copyCurrentSequenceAction->setDisabled(selectedMaRowIndex == -1);
+    MaEditorNameList *nameList = ui->getEditorNameList();
+    copyMenu->addAction(nameList->copyWholeRowAction);
 }
 
 void MSAEditor::addEditMenu(QMenu *m) {
@@ -284,12 +313,18 @@ void MSAEditor::addSortMenu(QMenu *m) {
     menu->addAction(sortByLengthDescendingAction);
     menu->addAction(sortByLeadingGapAscendingAction);
     menu->addAction(sortByLeadingGapDescendingAction);
+
+    if (getRowOrderMode() == MaEditorRowOrderMode::Sequence) {
+        menu->addSeparator();
+        menu->addAction(sortGroupsBySizeDescendingAction);
+        menu->addAction(sortGroupsBySizeAscendingAction);
+    }
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
     MaEditor::addExportMenu(m);
     QMenu *em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
-    SAFE_POINT(em != NULL, "Export menu not found", );
+    SAFE_POINT(em != nullptr, "Export menu not found", );
     em->addAction(saveScreenshotAction);
 }
 
@@ -347,7 +382,7 @@ void MSAEditor::addColorsMenu(QMenu *m) {
 }
 
 void MSAEditor::addHighlightingMenu(QMenu *m) {
-    QMenu *highlightSchemeMenu = new QMenu(tr("Highlighting"), NULL);
+    QMenu *highlightSchemeMenu = new QMenu(tr("Highlighting"), nullptr);
 
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
@@ -371,7 +406,7 @@ void MSAEditor::addNavigationMenu(QMenu *m) {
 
 void MSAEditor::addTreeMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Tree"));
-    //em->setIcon(QIcon(":core/images/tree.png"));
+    // em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
@@ -398,7 +433,7 @@ MsaEditorWgt *MSAEditor::getUI() const {
 }
 
 QWidget *MSAEditor::createWidget() {
-    Q_ASSERT(ui == NULL);
+    Q_ASSERT(ui == nullptr);
     ui = new MsaEditorWgt(this);
 
     QString objName = "msa_editor_" + maObject->getGObjectName();
@@ -458,7 +493,9 @@ QWidget *MSAEditor::createWidget() {
 
     connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
     connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_updateRealignAction()));
+    connect(getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_updateRealignAction()));
 
     qDeleteAll(filters);
 
@@ -467,6 +504,8 @@ QWidget *MSAEditor::createWidget() {
     sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
+
+    new MoveToObjectMaController(this);
 
     initDragAndDropSupport();
     updateActions();
@@ -502,7 +541,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     }
     m.addSeparator();
 
-    emit si_buildPopupMenu(this, &m);
+    emit si_buildMenu(this, &m, MsaEditorMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 
@@ -560,7 +599,7 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
             CHECK(!maObject->isStateLocked(), false)
             U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(gomd->objPtr.data());
             if (dnaObj != nullptr) {
-                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == NULL) {
+                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == nullptr) {
                     return false;
                 }
                 if (e->type() == QEvent::DragEnter) {
@@ -587,54 +626,15 @@ void MSAEditor::initDragAndDropSupport() {
 }
 
 void MSAEditor::sl_align() {
-    QMenu m, *mm;
-
-    addLoadMenu(&m);
-    addCopyPasteMenu(&m);
-    addEditMenu(&m);
-    addSortMenu(&m);
-    m.addSeparator();
-
-    addAlignMenu(&m);
-    addTreeMenu(&m);
-    addStatisticsMenu(&m);
-    addExportMenu(&m);
-    addAdvancedMenu(&m);
-
-    emit si_buildPopupMenu(this, &m);
-
-    GUIUtils::disableEmptySubmenus(&m);
-
-    mm = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(mm != nullptr, "mm", );
-
-    mm->exec(QCursor::pos());
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {
-    MultipleSequenceAlignmentObject *msaObject = getMaObject();
-    CHECK(!maObject->isStateLocked(), );
-
-    ProjectView *pv = AppContext::getProjectView();
-    SAFE_POINT(pv != nullptr, "Project view is null", );
-
-    const GObjectSelection *selection = pv->getGObjectSelection();
-    SAFE_POINT(selection != nullptr, "GObjectSelection is null", );
-
-    QList<GObject *> objects = selection->getSelectedObjects();
-    bool selectFromProject = !objects.isEmpty();
-
-    foreach (GObject *object, objects) {
-        if (object == getMaObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
-            selectFromProject = false;
-            break;
-        }
-    }
-    if (selectFromProject) {
-        alignSequencesFromObjectsToAlignment(objects);
-    } else {
-        alignSequencesFromFilesToAlignment();
-    }
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_searchInSequences() {
@@ -655,49 +655,15 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    int startSeq = selection.y();
-    int endSeq = selection.y() + selection.height() - 1;
-    MaCollapseModel *model = ui->getCollapseModel();
     const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
     QSet<qint64> rowIds;
-    for (int i = startSeq; i <= endSeq; i++) {
-        rowIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
+    QRect selectionRect = selection.toRect();
+    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
+        rowIds.insert(ma->getRow(collapseModel->getMaRowIndexByViewRowIndex(i))->getRowId());
     }
     Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
     TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
-}
-
-void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects) {
-    SequenceObjectsExtractor extractor;
-    extractor.setAlphabet(maObject->getAlphabet());
-    extractor.extractSequencesFromObjects(objects);
-
-    if (!extractor.getSequenceRefs().isEmpty()) {
-        AlignSequencesToAlignmentTask *task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
-        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    }
-}
-
-void MSAEditor::alignSequencesFromFilesToAlignment() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-
-    LastUsedDirHelper lod;
-    QStringList urls;
-#ifdef Q_OS_MAC
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter);
-
-    if (!urls.isEmpty()) {
-        lod.url = urls.first();
-        LoadSequencesAndAlignToAlignmentTask *task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
-        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    }
 }
 
 void MSAEditor::sl_setSeqAsReference() {
@@ -732,8 +698,9 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     const MaEditorSelection &selection = getSelection();
-    bool isWholeSequenceSelection = selection.width() == maObject->getLength() && selection.height() >= 1;
-    bool isAllRowsSelection = selection.height() == ui->getCollapseModel()->getViewRowCount();
+    QRect selectionRect = selection.toRect();
+    bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
+    bool isAllRowsSelection = selectionRect.height() == collapseModel->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
@@ -768,7 +735,8 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
 
     MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     const MaEditorSelection &selection = getSelection();
-    U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
+    QRect selectionRect = selection.toRect();
+    U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
     msa->sortRows(sortType, sortOrder, sortRange);
 
     // Switch into 'Original' ordering mode.
@@ -812,6 +780,137 @@ void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
     char fromChar = isDnaAlphabet ? 'T' : 'U';
     char toChar = isDnaAlphabet ? 'U' : 'T';
     msaObject->replaceAllCharacters(fromChar, toChar, resultAlphabet);
+}
+
+void MSAEditor::sl_convertRawToDnaAlphabet() {
+    CHECK(!maObject->isStateLocked(), )
+
+    auto alphabetId = maObject->getAlphabet()->getId();
+    CHECK(alphabetId == BaseDNAAlphabetIds::RAW(), );
+
+    auto msaObject = getMaObject();
+    auto alphabetRegistry = AppContext::getDNAAlphabetRegistry();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
+    auto resultAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    QByteArray replacementMap(256, '\0');
+    replacementMap['U'] = 'T';
+    msaObject->morphAlphabet(resultAlphabet, replacementMap);
+}
+
+void MSAEditor::sl_convertRawToAminoAlphabet() {
+    CHECK(!maObject->isStateLocked(), )
+
+    auto alphabetId = maObject->getAlphabet()->getId();
+    CHECK(alphabetId == BaseDNAAlphabetIds::RAW(), );
+
+    auto msaObject = getMaObject();
+    auto alphabetRegistry = AppContext::getDNAAlphabetRegistry();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
+    auto resultAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+    msaObject->morphAlphabet(resultAlphabet);
+}
+
+void MSAEditor::sl_sortGroupsBySize() {
+    groupsSortOrder = sender() == sortGroupsBySizeAscendingAction ? GroupsSortOrder::Ascending : GroupsSortOrder::Descending;
+    updateCollapseModel();
+}
+
+// TODO: move this function into MSA?
+/* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
+static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow> &msaRows) {
+    QList<QList<int>> rowGroups;
+    QSet<int> mappedRows;    // contains indexes of the already processed rows.
+    for (int i = 0; i < msaRows.size(); i++) {
+        if (mappedRows.contains(i)) {
+            continue;
+        }
+        const MultipleAlignmentRow &row = msaRows[i];
+        QList<int> rowGroup;
+        rowGroup << i;
+        for (int j = i + 1; j < msaRows.size(); j++) {
+            const MultipleAlignmentRow &next = msaRows[j];
+            if (!mappedRows.contains(j) && MultipleAlignmentRowData::isEqualsIgnoreGaps(next.data(), row.data())) {
+                rowGroup << j;
+                mappedRows.insert(j);
+            }
+        }
+        rowGroups << rowGroup;
+    }
+    return rowGroups;
+}
+
+void MSAEditor::updateCollapseModel() {
+    if (rowOrderMode == MaEditorRowOrderMode::Original) {
+        // Synchronize collapsible model with a current alignment.
+        collapseModel->reset(getMaRowIds());
+        return;
+    } else if (rowOrderMode == MaEditorRowOrderMode::Free) {
+        // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
+        QSet<qint64> maRowIds = getMaRowIds().toSet();
+        QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
+        if (viewModelRowIds != maRowIds) {
+            rowOrderMode = MaEditorRowOrderMode::Original;
+            collapseModel->reset(getMaRowIds());
+        }
+        return;
+    }
+
+    SAFE_POINT(rowOrderMode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
+
+    // Order and group rows by sequence content.
+    MultipleSequenceAlignmentObject *msaObject = getMaObject();
+    QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
+    QVector<MaCollapsibleGroup> newCollapseGroups;
+
+    QSet<qint64> maRowIdsOfNonCollapsedRowsBefore;
+    for (int i = 0; i < collapseModel->getGroupCount(); i++) {
+        const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroup(i);
+        if (!group->isCollapsed) {
+            maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
+        }
+    }
+    for (int i = 0; i < rowGroups.size(); i++) {
+        const QList<int> &maRowsInGroup = rowGroups[i];
+        QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
+        bool isCollapsed = !maRowIdsOfNonCollapsedRowsBefore.contains(maRowIdsInGroup[0]);
+        newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
+    }
+    if (groupsSortOrder != GroupsSortOrder::Original) {
+        std::stable_sort(newCollapseGroups.begin(), newCollapseGroups.end(), [&](const MaCollapsibleGroup &g1, const MaCollapsibleGroup &g2) {
+            int size1 = g1.maRowIds.size();
+            int size2 = g2.maRowIds.size();
+            return groupsSortOrder == GroupsSortOrder::Ascending ? size1 < size2 : size2 < size1;
+        });
+    }
+    collapseModel->update(newCollapseGroups);
+}
+
+void MSAEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
+    if (mode == rowOrderMode) {
+        return;
+    }
+    MaEditor::setRowOrderMode(mode);
+    freeModeMasterMarkersSet.clear();
+    updateCollapseModel();
+    updateActions();
+}
+
+const QSet<QObject *> &MSAEditor::getFreeModeMasterMarkersSet() const {
+    return freeModeMasterMarkersSet;
+}
+
+void MSAEditor::addFreeModeMasterMarker(QObject *marker) {
+    freeModeMasterMarkersSet.insert(marker);
+}
+
+void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
+    freeModeMasterMarkersSet.remove(marker);
+}
+
+MaEditorSelectionController *MSAEditor::getSelectionController() const {
+    return selectionController;
 }
 
 }    // namespace U2

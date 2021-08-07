@@ -53,9 +53,11 @@ public:
     void updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel);
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
-    void crop(const U2Region &window, const QSet<QString> &rowNames);
-    void crop(const U2Region &window, const QList<qint64> &rowIds);
-    void crop(const U2Region &window);
+    /** Keeps only given row ids and given column range in the alignment. */
+    void crop(const QList<qint64> &rowIds, const U2Region &columnRange);
+
+    /** Keeps only given column range in the alignment. */
+    void crop(const U2Region &columnRange);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);
@@ -64,7 +66,18 @@ public:
     void replaceCharacter(int startPos, int rowIndex, char newChar);
 
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
-    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet = nullptr);
+    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);
+
+    /**
+     * Updates MSA alphabet to the 'newAlphabet'.
+     * Keeps only valid chars for the new alphabet, all invalid are replaced with the default symbol.
+     * 'replacementMap' can be used to adjust characters conversion:
+     *  - first a character is mapped using 'replacementMap'
+     *  - next this character is checked that it is valid for the given alphabet.
+     *
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
+     */
+    void morphAlphabet(const DNAAlphabet *newAlphabet, const QByteArray &replacementMap = QByteArray());
 
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 

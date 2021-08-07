@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: 1-cysPrx_C.sto, has SS_cons annotation
+	cmd: ./hmmbuild 1-cysPrx_C.hmm 1-cysPrx_C.sto -->
+
+    <uhmmer3-build inputFile="stockholm/1-cysPrx_C.sto" outputFile="test_1-cysPrx_C.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/1-cysPrx_C.hmm" file2="test_1-cysPrx_C.hmm" tmp1="no" tmp2="yes"/>
+</multi-test>

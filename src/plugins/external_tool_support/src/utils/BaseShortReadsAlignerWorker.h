@@ -102,7 +102,7 @@ protected:
 class ShortReadsAlignerPrompter : public PrompterBase<ShortReadsAlignerPrompter> {
     Q_OBJECT
 public:
-    ShortReadsAlignerPrompter(Actor *p = NULL)
+    ShortReadsAlignerPrompter(Actor *p = nullptr)
         : PrompterBase<ShortReadsAlignerPrompter>(p) {
     }
 

@@ -67,7 +67,7 @@ QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteA
             unitedAlphabetChars.append(secondAlphabetChars[i]);
         }
     }
-    qSort(unitedAlphabetChars.begin(), unitedAlphabetChars.end());
+    std::sort(unitedAlphabetChars.begin(), unitedAlphabetChars.end());
     return unitedAlphabetChars;
 }
 

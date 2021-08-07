@@ -39,7 +39,7 @@ namespace U2 {
 DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227951");
+    new HelpButton(this, buttonBox, "65929583");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -72,7 +72,7 @@ void DotPlotFilesDialog::sl_mergeSecond() {
 // open first file button clicked
 void DotPlotFilesDialog::sl_openFirstFile() {
     LastUsedDirHelper lod("DotPlot first file");
-    lod.url = U2FileDialog::getOpenFileName(NULL, tr("Open first file"), lod.dir, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Open first file"), lod.dir, filter);
 
     SAFE_POINT(firstFileEdit, "firstFileEdit is NULL", );
     if (!lod.url.isEmpty()) {
@@ -103,7 +103,7 @@ void DotPlotFilesDialog::sl_openSecondFile() {
 
         lod.dir = lodFirst.dir;
     }
-    lod.url = U2FileDialog::getOpenFileName(NULL, tr("Open second file"), lod.dir, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Open second file"), lod.dir, filter);
 
     SAFE_POINT(secondFileEdit, "secondFileEdit is NULL", );
     if (!lod.url.isEmpty()) {

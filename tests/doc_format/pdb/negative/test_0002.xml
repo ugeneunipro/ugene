@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document(mandatory records absent)-->
+
+    <load-broken-document url="pdb/broken/bad0002.pdb" io="local_file" format="pdb"/>
+
+</multi-test>

@@ -32,7 +32,7 @@
 namespace U2 {
 
 ShowHideSubgroupWidget::ShowHideSubgroupWidget(QWidget *parent)
-    : QWidget(parent), arrowHeaderWidget(NULL), innerWidget(NULL) {
+    : QWidget(parent), arrowHeaderWidget(nullptr), innerWidget(nullptr) {
 }
 
 ShowHideSubgroupWidget::ShowHideSubgroupWidget(const QString &_id, const QString &caption, QWidget *_innerWidget, bool isOpened)

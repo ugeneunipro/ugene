@@ -1,0 +1,100 @@
+#@UGENE_WORKFLOW
+# Runs a HMM search over sample sequence and saves results as annotations using Genbank file format. To run this workflow, you need to specify appropriate locations for input/output files. This is achieved by selecting a task and editing interesting parameters in Property Inspector panel.Optionally, fine tune the search parameters as you see fit. Then schedule the workflow for execution by pressing CTRL+R shortcut. You can watch its" progress in a Task View of UGENE.
+
+
+
+workflow "New workflow"{
+
+    read-sequence {
+        type:read-sequence;
+        name:"Read Sequence";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+    hmm3-search {
+        type:hmm3-search;
+        name:"HMM3 Search";
+    }
+    write-annotations {
+        type:write-annotations;
+        name:"Write Annotations";
+        url-out:"";
+        write-mode:0;
+    }
+    get-file-list {
+        type:get-file-list;
+        name:"Read File URL(s)";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+
+    .actor-bindings {
+        hmm3-search.out-annotations->write-annotations.in-annotations
+        get-file-list.out-url->hmm3-search.in-hmm3
+        read-sequence.out-sequence->hmm3-search.in-sequence
+    }
+
+    get-file-list.url->hmm3-search.in-hmm3.url
+    read-sequence.sequence->hmm3-search.in-sequence.sequence
+    hmm3-search.annotations->write-annotations.in-annotations.annotations
+
+    .meta {
+        parameter-aliases {
+            read-sequence.url-in {
+                alias:in-seq;
+            }
+            write-annotations.document-format {
+                alias:format;
+                description:"Annotations document format. Default: 'genbank'.";
+            }
+            write-annotations.url-out {
+                alias:out;
+                description:"Output file with annotations";
+            }
+            get-file-list.url-in {
+                alias:in-hmm;
+                description:"Input profile HMM";
+            }
+        }
+        visual {
+            get-file-list {
+                pos:"-870 -555";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                out-url.angle:360;
+            }
+            hmm3-search {
+                pos:"-570 -405";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-hmm3.angle:150;
+                in-sequence.angle:210;
+                out-annotations.angle:360;
+            }
+            read-sequence {
+                pos:"-870 -390";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                out-sequence.angle:360;
+            }
+            write-annotations {
+                pos:"-240 -405";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-annotations.angle:180;
+            }
+            get-file-list.out-url->hmm3-search.in-hmm3 {
+                text-pos:"-45 -48";
+            }
+            hmm3-search.out-annotations->write-annotations.in-annotations {
+                text-pos:"-45 -37";
+            }
+            read-sequence.out-sequence->hmm3-search.in-sequence {
+                text-pos:"-27.5 -24";
+            }
+        }
+    }
+}
+

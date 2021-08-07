@@ -65,8 +65,8 @@ QStringList AlignmentAlgorithmsRegistry::getAvailableAlgorithmIds(AlignmentAlgor
     return selectedAlgorithmIds;
 }
 
-AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId)
-    : id(_id), alignmentType(alignmentType) {
+AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, const QString &_actionName, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId)
+    : id(_id), actionName(_actionName), alignmentType(alignmentType) {
     realizations.insert(_realizationId, new AlgorithmRealization(_realizationId, tf, guif));
 }
 
@@ -76,19 +76,23 @@ AlignmentAlgorithm::~AlignmentAlgorithm() {
 
 AbstractAlignmentTaskFactory *AlignmentAlgorithm::getFactory(const QString &_realizationId) const {
     QMutexLocker locker(&mutex);
-    SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", NULL);
+    SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", nullptr);
     return realizations.value(_realizationId)->getTaskFactory();
 }
 
 AlignmentAlgorithmGUIExtensionFactory *AlignmentAlgorithm::getGUIExtFactory(const QString &_realizationId) const {
     QMutexLocker locker(&mutex);
-    SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", NULL);
-    AlgorithmRealization *algReal = realizations.value(_realizationId, NULL);
+    SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", nullptr);
+    AlgorithmRealization *algReal = realizations.value(_realizationId, nullptr);
     return algReal->getGUIExtFactory();
 }
 
 const QString &AlignmentAlgorithm::getId() const {
     return id;
+}
+
+const QString &AlignmentAlgorithm::getActionName() const {
+    return actionName;
 }
 
 QStringList AlignmentAlgorithm::getRealizationsList() const {
@@ -107,7 +111,7 @@ bool AlignmentAlgorithm::addAlgorithmRealization(AbstractAlignmentTaskFactory *t
 
 AlgorithmRealization *AlignmentAlgorithm::getAlgorithmRealization(const QString &_realizationId) const {
     QMutexLocker locker(&mutex);
-    return realizations.value(_realizationId, NULL);
+    return realizations.value(_realizationId, nullptr);
 }
 
 bool AlignmentAlgorithm::isAlgorithmAvailable() const {

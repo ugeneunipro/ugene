@@ -1,0 +1,17 @@
+<multi-test>
+
+    <create-temp-file url="write-seq-append-0001.fa" data=">old\nAAAA\n"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/seq-seq.uwl"
+            in="!common_data_dir!cmdline/read-write/write/seq4.fa"
+            out="!tmp_data_dir!write-seq-append-0001.fa"
+            action="2"
+    />
+
+    <load-document index="doc" url="write-seq-append-0001.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc" value="5"/>
+
+    <check-temp-file url="write-seq-append-0001_oldcopy1.fa" exists="0"/>
+
+</multi-test>

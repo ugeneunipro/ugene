@@ -46,16 +46,16 @@ void AbstractScriptEditorDelegate::installScriptHighlighter() const {
 
 AbstractScriptEditorDelegate *AbstractScriptEditorDelegate::createInstance(QWidget *parent,
                                                                            ScriptEditorType type) {
-    AbstractScriptEditorDelegate *result = NULL;
+    AbstractScriptEditorDelegate *result = nullptr;
     switch (type) {
-    case LINE_EDIT:
-        result = new LineEditDelegate(parent);
-        break;
-    case TEXT_EDIT:
-        result = new TextEditDelegate(parent);
-        break;
-    default:
-        Q_ASSERT(false);
+        case LINE_EDIT:
+            result = new LineEditDelegate(parent);
+            break;
+        case TEXT_EDIT:
+            result = new TextEditDelegate(parent);
+            break;
+        default:
+            Q_ASSERT(false);
     }
     return result;
 }

@@ -166,7 +166,7 @@ public:
     virtual ~DataTypeValueFactory() {
     }
 
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const = 0;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const = 0;
     virtual QString getId() const = 0;
 
 };    // DataTypeValueFactory

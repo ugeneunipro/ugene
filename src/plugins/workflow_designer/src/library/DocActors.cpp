@@ -230,14 +230,14 @@ QString WriteDocPrompter::composeRichDoc() {
 
     const QString outPortId = target->getInputPorts().first()->getId();
     Attribute *dataStorageAttr = target->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
-    SAFE_POINT(NULL != dataStorageAttr, "Invalid attribute", QString());
+    SAFE_POINT(nullptr != dataStorageAttr, "Invalid attribute", QString());
     const QVariant dataStorage = dataStorageAttr->getAttributePureValue();
 
     QString url;
     const bool storeToDb = dataStorage == BaseAttributes::SHARED_DB_DATA_STORAGE();
     if (storeToDb) {
         Attribute *dbPathAttr = target->getParameter(BaseAttributes::DB_PATH().getId());
-        SAFE_POINT(NULL != dbPathAttr, "Invalid attribute", QString());
+        SAFE_POINT(nullptr != dbPathAttr, "Invalid attribute", QString());
         url = dbPathAttr->getAttributePureValue().toString();
         url = getHyperlink(BaseAttributes::DB_PATH().getId(), url);
     } else if (dataStorage == BaseAttributes::LOCAL_FS_DATA_STORAGE()) {
@@ -254,7 +254,7 @@ QString WriteDocPrompter::composeRichDoc() {
     }
     if (storeToDb) {
         Attribute *dbAttr = target->getParameter(BaseAttributes::DATABASE_ATTRIBUTE().getId());
-        SAFE_POINT(NULL != dbAttr, "Invalid attribute", QString());
+        SAFE_POINT(nullptr != dbAttr, "Invalid attribute", QString());
         const QString dbUrl = dbAttr->getAttributePureValue().toString();
         QString dbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(dbUrl);
         dbName = dbName.isEmpty() ? unsetStr : getHyperlink(BaseAttributes::DATABASE_ATTRIBUTE().getId(), dbName);

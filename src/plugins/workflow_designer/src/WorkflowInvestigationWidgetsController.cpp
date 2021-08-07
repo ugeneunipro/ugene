@@ -43,20 +43,20 @@ namespace U2 {
 
 WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(QWidget *parent)
     : QObject(qobject_cast<QObject *>(parent)),
-      investigationView(NULL),
-      investigationModel(NULL),
-      investigatedLink(NULL),
+      investigationView(nullptr),
+      investigationModel(nullptr),
+      investigatedLink(nullptr),
       investigatorName(),
       wasDisplayed(false),
-      exportInvestigationAction(NULL),
-      copyToClipboardAction(NULL),
-      hideThisColumnAction(NULL),
-      hideAllColumnsButThisAction(NULL),
-      showAllColumnsAction(NULL),
+      exportInvestigationAction(nullptr),
+      copyToClipboardAction(nullptr),
+      hideThisColumnAction(nullptr),
+      hideAllColumnsButThisAction(nullptr),
+      showAllColumnsAction(nullptr),
       selectedColumn(DEFAULT_SELECTED_COLUMN),
       columnWidths() {
     QTabWidget *container = dynamic_cast<QTabWidget *>(parent);
-    Q_ASSERT(NULL != container);
+    Q_ASSERT(nullptr != container);
     Q_UNUSED(container);
 
     exportInvestigationAction = new QAction(
@@ -85,8 +85,8 @@ WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController(
 }
 
 bool WorkflowInvestigationWidgetsController::eventFilter(QObject *watched, QEvent *event) {
-    if (QEvent::Paint == event->type() && NULL != investigationView && watched == dynamic_cast<QObject *>(investigationView->viewport())) {
-        if (NULL == investigationView->model() && NULL != investigatedLink) {
+    if (QEvent::Paint == event->type() && nullptr != investigationView && watched == dynamic_cast<QObject *>(investigationView->viewport())) {
+        if (nullptr == investigationView->model() && nullptr != investigatedLink) {
             createInvestigationModel();
             investigationView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
             adjustInvestigationColumnWidth(investigationView);
@@ -97,7 +97,7 @@ bool WorkflowInvestigationWidgetsController::eventFilter(QObject *watched, QEven
 
 void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workflow::Link *bus) {
     QTabWidget *container = dynamic_cast<QTabWidget *>(parent());
-    Q_ASSERT(NULL != container);
+    Q_ASSERT(nullptr != container);
     const int tabNumberForInvestigation = container->indexOf(investigationView);
     if (-1 != tabNumberForInvestigation) {
         deleteBusInvestigations();
@@ -115,22 +115,22 @@ void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workf
 }
 
 void WorkflowInvestigationWidgetsController::deleteBusInvestigations() {
-    if (NULL != investigationView && NULL != investigationModel) {
+    if (nullptr != investigationView && nullptr != investigationModel) {
         const QBitArray hiddenColumns = investigationModel->getColumnsVisibility();
         for (int column = 0; investigationModel->columnCount() > column; ++column) {
             const int absoluteColumnNumber = investigationModel->getAbsoluteNumberOfVisibleColumn(column);
             columnWidths[investigatedLink][absoluteColumnNumber] = investigationView->columnWidth(column) * static_cast<int>(qPow(-1, hiddenColumns.testBit(absoluteColumnNumber)));
         }
         delete investigationModel;
-        investigationModel = NULL;
+        investigationModel = nullptr;
         investigationView->viewport()->removeEventFilter(this);
         delete investigationView;
-        investigationView = NULL;
+        investigationView = nullptr;
     }
 }
 
 void WorkflowInvestigationWidgetsController::resetInvestigations() {
-    investigatedLink = NULL;
+    investigatedLink = nullptr;
     investigatorName.clear();
     columnWidths.clear();
 }
@@ -147,7 +147,7 @@ void WorkflowInvestigationWidgetsController::createNewInvestigation() {
 }
 
 void WorkflowInvestigationWidgetsController::createInvestigationModel() {
-    Q_ASSERT(NULL != investigatedLink && NULL != investigationView);
+    Q_ASSERT(nullptr != investigatedLink && nullptr != investigationView);
     investigationModel = new InvestigationDataModel(investigatedLink, this);
 
     connect(investigationModel, SIGNAL(si_investigationRequested(const Workflow::Link *, int)), SIGNAL(si_updateCurrentInvestigation(const Workflow::Link *, int)));
@@ -173,8 +173,8 @@ void WorkflowInvestigationWidgetsController::adjustInvestigationColumnWidth(
 
 void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool visible) {
     QTabWidget *container = dynamic_cast<QTabWidget *>(parent());
-    Q_ASSERT(NULL != container);
-    if (!visible && NULL != investigationView) {
+    Q_ASSERT(nullptr != container);
+    if (!visible && nullptr != investigationView) {
         WorkflowInvestigationWidget *currentWidget = dynamic_cast<WorkflowInvestigationWidget *>(container->currentWidget());
         wasDisplayed = (investigationView == currentWidget);
         container->removeTab(container->indexOf(static_cast<QWidget *>(investigationView)));
@@ -182,7 +182,7 @@ void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool
         if (wasDisplayed) {
             container->hide();
         }
-    } else if (visible && NULL != investigatedLink) {
+    } else if (visible && nullptr != investigatedLink) {
         createNewInvestigation();
         investigationView->setParent(container);
         container->addTab(investigationView, investigatorName);

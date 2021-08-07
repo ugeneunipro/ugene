@@ -30,8 +30,8 @@
 #include "MsaEditorNameList.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
-#include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "helpers/MsaRowHeightController.h"
+#include "phy_tree/MSAEditorMultiTreeViewer.h"
 
 namespace U2 {
 
@@ -58,7 +58,6 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
         delete multiTreeViewer;
         multiTreeViewer = nullptr;
         emit si_hideTreeOP();
-        nameList->clearGroupsColors();
     }
 }
 
@@ -71,7 +70,7 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix *matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow *treeView) {
-    if (NULL == multiTreeViewer) {
+    if (nullptr == multiTreeViewer) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
         maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
         multiTreeViewer->addTreeView(treeView);
@@ -91,7 +90,7 @@ void MsaEditorWgt::refreshSimilarityColumn() {
 }
 
 void MsaEditorWgt::showSimilarity() {
-    if (NULL == similarityStatistics) {
+    if (nullptr == similarityStatistics) {
         SimilarityStatisticsSettings settings;
         settings.ma = getEditor()->getMaObject();
         settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
@@ -108,7 +107,7 @@ void MsaEditorWgt::showSimilarity() {
 }
 
 void MsaEditorWgt::hideSimilarity() {
-    if (NULL != similarityStatistics) {
+    if (nullptr != similarityStatistics) {
         similarityStatistics->hide();
         similarityStatistics->cancelPendingTasks();
     }
@@ -139,12 +138,12 @@ void MsaEditorWgt::initStatusBar() {
 }
 
 MSAEditorTreeViewer *MsaEditorWgt::getCurrentTree() const {
-    if (NULL == multiTreeViewer) {
-        return NULL;
+    if (nullptr == multiTreeViewer) {
+        return nullptr;
     }
     GObjectViewWindow *page = qobject_cast<GObjectViewWindow *>(multiTreeViewer->getCurrentWidget());
-    if (NULL == page) {
-        return NULL;
+    if (nullptr == page) {
+        return nullptr;
     }
     return qobject_cast<MSAEditorTreeViewer *>(page->getObjectView());
 }

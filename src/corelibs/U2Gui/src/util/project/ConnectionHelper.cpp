@@ -26,15 +26,15 @@
 namespace U2 {
 
 ConnectionHelper::ConnectionHelper(const U2DbiRef &dbiRef, U2OpStatus &os)
-    : con(NULL), dbi(NULL), oDbi(NULL) {
+    : con(nullptr), dbi(nullptr), oDbi(nullptr) {
     con = new DbiConnection(dbiRef, os);
     CHECK_OP(os, );
 
     dbi = con->dbi;
-    SAFE_POINT_EXT(NULL != dbi, os.setError(QObject::tr("Error! No DBI")), );
+    SAFE_POINT_EXT(nullptr != dbi, os.setError(QObject::tr("Error! No DBI")), );
 
     oDbi = dbi->getObjectDbi();
-    SAFE_POINT_EXT(NULL != oDbi, os.setError(QObject::tr("Error! No object DBI")), );
+    SAFE_POINT_EXT(nullptr != oDbi, os.setError(QObject::tr("Error! No object DBI")), );
 }
 
 ConnectionHelper::~ConnectionHelper() {

@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: tt_query db: tt_db simple test no hits here
+	./phmmer -T 9.77 tt_query.fa tt_db.fa >  tt_query_tt_db_seqT.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/tt_query.fa" db="hmmer3/phmmer/tt_db.fa" seqT="9.77" outputDir="common/phmmer/score_tresholds/no_hits/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/tt_query_tt_db_seqT.out" actualOut="common/phmmer/score_tresholds/no_hits/output.txt"/>
+
+</multi-test>

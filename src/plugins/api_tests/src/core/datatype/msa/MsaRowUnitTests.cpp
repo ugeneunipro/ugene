@@ -1215,7 +1215,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_empty) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initEmptyRow(almnt);
     U2OpStatusImpl os;
-    almnt->crop(0, 1, os);
+    almnt->crop({0, 1}, os);
     CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -1226,7 +1226,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideGap1) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(2, 15, os);
+    almnt->crop({2, 15}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("--ACG--GTT-A-C-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1237,7 +1237,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideGap2) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(3, 15, os);
+    almnt->crop({3, 15}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("-ACG--GTT-A-C--", MsaRowTestUtils::getRowData(row), "row data");
@@ -1248,7 +1248,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_leftGapSide) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(7, 9, os);
+    almnt->crop({7, 9}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("--GTT-A-C", MsaRowTestUtils::getRowData(row), "row data");
@@ -1259,7 +1259,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_rightGapSide) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(4, 11, os);
+    almnt->crop({4, 11}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("ACG--GTT-A-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1270,7 +1270,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideSeq1) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(5, 6, os);
+    almnt->crop({5, 6}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("CG--GT", MsaRowTestUtils::getRowData(row), "row data");
@@ -1281,7 +1281,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideSeq2) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(6, 4, os);
+    almnt->crop({6, 4}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("G--G", MsaRowTestUtils::getRowData(row), "row data");
@@ -1292,7 +1292,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_fromZeroPosGap) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
-    almnt->crop(0, 4, os);
+    almnt->crop({0, 4}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("---A", MsaRowTestUtils::getRowData(row), "row data");
@@ -1303,7 +1303,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_fromZeroPosChar) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(0, 17, os);
+    almnt->crop({0, 17}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("A---ACG--GTT-A-C-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1314,7 +1314,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_lastPosExactly) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithGapsInMiddle(almnt);
     U2OpStatusImpl os;
-    almnt->crop(7, 1, os);
+    almnt->crop({7, 1}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("T", MsaRowTestUtils::getRowData(row), "row data");
@@ -1325,7 +1325,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_fromLastPos) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithGapsInMiddle(almnt);
     U2OpStatusImpl os;
-    almnt->crop(7, 2, os);
+    almnt->crop({7, 2}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("T", MsaRowTestUtils::getRowData(row), "row data");
@@ -1336,7 +1336,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideOneGap1) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(2, 2, os);
+    almnt->crop({2, 2}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("--", MsaRowTestUtils::getRowData(row), "row data");
@@ -1347,7 +1347,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideOneGap2) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(2, 1, os);
+    almnt->crop({2, 1}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1361,7 +1361,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideOneGapLong) {
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
 
     CHECK_EQUAL("A------GT--C-T", MsaRowTestUtils::getRowData(row), "row data");
-    almnt->crop(2, 3, os);
+    almnt->crop({2, 3}, os);
     row = almnt->getMsaRow(0);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL("---", MsaRowTestUtils::getRowData(row), "row data");
@@ -1372,7 +1372,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideCharsOne) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(5, 1, os);
+    almnt->crop({5, 1}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("C", MsaRowTestUtils::getRowData(row), "row data");
@@ -1383,7 +1383,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativePosition) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(-1, 1, os);
+    almnt->crop({-1, 1}, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
@@ -1394,7 +1394,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativeNumOfChars) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(1, -1, os);
+    almnt->crop({1, -1}, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
@@ -1405,7 +1405,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_trailing) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithTrailingGaps(almnt);
     U2OpStatusImpl os;
-    almnt->crop(2, 8, os);
+    almnt->crop({2, 8}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("-GT--T--", MsaRowTestUtils::getRowData(row), "row data");
@@ -1416,7 +1416,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_trailingToGaps) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithTrailingGaps(almnt);
     U2OpStatusImpl os;
-    almnt->crop(0, 9, os);
+    almnt->crop({0, 9}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("CA-GT--T-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1427,7 +1427,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_cropTrailing) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithTrailingGaps(almnt);
     U2OpStatusImpl os;
-    almnt->crop(9, 1, os);
+    almnt->crop({9, 1}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("-", MsaRowTestUtils::getRowData(row), "row data");
@@ -1438,7 +1438,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_oneCharInGaps) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowForModification(almnt);
     U2OpStatusImpl os;
-    almnt->crop(13, 1, os);
+    almnt->crop({13, 1}, os);
     CHECK_NO_ERROR(os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("A", MsaRowTestUtils::getRowData(row), "row data");
@@ -1449,7 +1449,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_posMoreThanLength) {
     MultipleSequenceAlignment almnt;
     MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
-    almnt->crop(13, 1, os);
+    almnt->crop({13, 1}, os);
     CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);

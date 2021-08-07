@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="fasta/alignment_bom.fasta.gz" io="local_file_gzip" format="fasta"/>
+
+    <check-num-objects doc="doc" value="6"/>
+
+
+</multi-test>

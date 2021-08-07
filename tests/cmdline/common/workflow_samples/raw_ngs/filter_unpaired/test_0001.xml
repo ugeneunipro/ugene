@@ -1,0 +1,17 @@
+<multi-test>
+    <remove-temp-dir url="filter_unpaired"/>
+    <create-temp-dir url="filter_unpaired"/>
+
+    <run-cmdline
+            task="!common_data_dir!reads/wrong_order/align_bwa_mem.uwl"
+            in-1="!common_data_dir!reads/wrong_order/e_coli_one_unpaired_1.fastq"
+            in-2="!common_data_dir!reads/wrong_order/e_coli_one_unpaired_2.fastq"
+            reference="!common_data_dir!e_coli/NC_008253.fa"
+            out-dir="!tmp_data_dir!filter_unpaired"
+            out-filename="one_unpaired"
+            filter="false"
+            message="exited with code 1"
+    />
+
+    <remove-temp-dir url="filter_unpaired"/>
+</multi-test>

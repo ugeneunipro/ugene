@@ -125,13 +125,13 @@ protected:
     virtual void initSettingsWidget() = 0;
 
     virtual Task *getExportToSvgTask(const ImageExportTaskSettings &) const {
-        return NULL;
+        return nullptr;
     }
     virtual Task *getExportToPdfTask(const ImageExportTaskSettings &) const {
-        return NULL;
+        return nullptr;
     }
     virtual Task *getExportToBitmapTask(const ImageExportTaskSettings &) const {
-        return NULL;
+        return nullptr;
     }
 
     QWidget *settingsWidget;

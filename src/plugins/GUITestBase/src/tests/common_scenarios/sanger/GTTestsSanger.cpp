@@ -78,9 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
 
         virtual void run() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
@@ -96,7 +94,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             foreach (const QString &read, settings.readUrls) {
                 GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, read));
                 GTWidget::click(os, addReadButton);
-                GTGlobals::sleep();
             }
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -192,9 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: 'Sequence name from file' value is set by default.
             const QString expectedRowNamingPolicy = "Sequence name from file";
             const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
@@ -254,9 +249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: 'Sequence name from file' value is set by default.
             const QString expectedRowNamingPolicy = "Sequence name from file";
             const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
@@ -321,8 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
     public:
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: wizard has appeared.
-            QWidget *wizard = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
             //    2. Fill it with any valid data until the 'Mapping settings' page.
@@ -348,7 +340,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
-            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -391,8 +382,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
     public:
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: wizard has appeared.
-            QWidget *wizard = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
             //    2. Fill it with any valid data until the 'Mapping settings' page.
@@ -421,7 +411,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
-            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -462,9 +451,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Set '_common_data/sanger/dataset3/reference.gb' as reference and the next files as reads:
             //        '_common_data/sanger/dataset3/gaps.ab1'
             //        '_common_data/sanger/dataset3/N.ab1'
@@ -512,7 +499,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                 << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 

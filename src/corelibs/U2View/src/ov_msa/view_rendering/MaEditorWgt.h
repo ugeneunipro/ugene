@@ -37,7 +37,6 @@ namespace U2 {
 class BaseWidthController;
 class DrawHelper;
 class GScrollBar;
-class MaCollapseModel;
 class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
 class MaEditorStatusBar;
@@ -60,12 +59,11 @@ public:
 
     QWidget *createHeaderLabelWidget(const QString &text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,
-                                     QWidget *heightTarget = NULL,
+                                     QWidget *heightTarget = nullptr,
                                      bool proxyMouseEventsToNameList = true);
 
-    MaEditor *getEditor() const {
-        return editor;
-    }
+    /** Returns MA editor instance. The instance is always defined and is never null. */
+    MaEditor *getEditor() const;
 
     MaEditorSequenceArea *getSequenceArea() const {
         return sequenceArea;
@@ -87,6 +85,8 @@ public:
         return offsetsViewController;
     }
 
+    MaEditorStatusBar *getStatusBar() const;
+
     ScrollController *getScrollController() const {
         return scrollController;
     }
@@ -106,10 +106,6 @@ public:
     QAction *getUndoAction() const;
 
     QAction *getRedoAction() const;
-
-    MaCollapseModel *getCollapseModel() const {
-        return collapseModel;
-    }
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const {
@@ -147,7 +143,7 @@ protected:
     virtual void initStatusBar() = 0;
 
 protected:
-    MaEditor *editor;
+    MaEditor *const editor;
     MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;
@@ -164,8 +160,6 @@ protected:
     MaSplitterController maSplitter;
 
     MsaUndoRedoFramework *undoFWK;
-
-    MaCollapseModel *const collapseModel;
 
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;

@@ -1,0 +1,4 @@
+<suite name="Genome Aligner Tests 2" test-timeout="300">
+
+    <test-dir test-format="XML" exclude="" test-ext="*.xml" path="genome_aligner_2"/>
+</suite>

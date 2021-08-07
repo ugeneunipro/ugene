@@ -87,7 +87,7 @@ QString BedGraphToBigWigPrompter::composeRichDoc() {
 /************************************************************************/
 void BedGraphToBigWigFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(BigWigSupport::GENOMES_DATA_NAME);
@@ -133,7 +133,7 @@ void BedGraphToBigWigFactory::init() {
         Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BedGraphToBigWigWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
-        Attribute *genomeAttr = NULL;
+        Attribute *genomeAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
@@ -191,7 +191,7 @@ void BedGraphToBigWigFactory::init() {
 //////////////////////////////////////////////////////////////////////////
 //BedGraphToBigWigWorker
 BedGraphToBigWigWorker::BedGraphToBigWigWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL), outUrls("") {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
 void BedGraphToBigWigWorker::init() {
@@ -202,7 +202,7 @@ void BedGraphToBigWigWorker::init() {
 Task *BedGraphToBigWigWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         const QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), getValue<QString>(CUSTOM_DIR_ID), context->workingDir());
 
@@ -225,7 +225,7 @@ Task *BedGraphToBigWigWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void BedGraphToBigWigWorker::cleanup() {
@@ -236,7 +236,7 @@ namespace {
 QString getTargetTaskUrl(Task *task) {
     BedGraphToBigWigTask *curtask = dynamic_cast<BedGraphToBigWigTask *>(task);
 
-    if (NULL != curtask) {
+    if (nullptr != curtask) {
         return curtask->getResult();
     }
     return "";

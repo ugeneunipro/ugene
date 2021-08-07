@@ -36,7 +36,7 @@ public:
 class U2LANG_EXPORT QDConstraint {
 public:
     QDConstraint(const QList<QDSchemeUnit *> &_units, QDConstraintType _type = QDConstraintTypes::DISTANCE)
-        : cfg(NULL), type(_type), units(_units) {
+        : cfg(nullptr), type(_type), units(_units) {
     }
     virtual ~QDConstraint() {
     }

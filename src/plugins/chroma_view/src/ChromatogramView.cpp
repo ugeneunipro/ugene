@@ -57,7 +57,7 @@ namespace U2 {
 static const char GAP_CHAR = '-';
 
 ChromatogramView::ChromatogramView(QWidget *p, ADVSequenceObjectContext *v, GSequenceLineView *cv, const DNAChromatogram &chroma)
-    : GSequenceLineView(p, v), editDNASeq(NULL) {
+    : GSequenceLineView(p, v), editDNASeq(nullptr) {
     const QString objectName = "chromatogram_view_" + v->getSequenceGObject()->getGObjectName();
     setObjectName(objectName);
 
@@ -154,7 +154,7 @@ void ChromatogramView::buildPopupMenu(QMenu &m) {
     m.insertAction(before, showQVAction);
     m.insertMenu(before, traceActionMenu);
     m.insertSeparator(before);
-    if (editDNASeq != NULL) {
+    if (editDNASeq != nullptr) {
         m.insertAction(before, clearEditableSequence);
         m.insertAction(before, removeChanges);
     } else {
@@ -168,11 +168,11 @@ static const int MAX_DNA_LEN = 1000 * 1000 * 1000;
 
 void ChromatogramView::mousePressEvent(QMouseEvent *me) {
     setFocus();
-    if (me->button() == Qt::RightButton || editDNASeq == NULL) {
+    if (me->button() == Qt::RightButton || editDNASeq == nullptr) {
         GSequenceLineView::mousePressEvent(me);
         return;
     }
-    if (editDNASeq != NULL && editDNASeq->getSequenceLength() > MAX_DNA_LEN) {
+    if (editDNASeq != nullptr && editDNASeq->getSequenceLength() > MAX_DNA_LEN) {
         GSequenceLineView::mousePressEvent(me);
         return;
     }
@@ -249,7 +249,7 @@ void ChromatogramView::sl_onPopupMenuCkicked(QAction *a) {
 void ChromatogramView::sl_addNewSequenceObject() {
     sl_clearEditableSequence();
 
-    assert(editDNASeq == NULL);
+    assert(editDNASeq == nullptr);
 
     AddNewDocumentDialogModel m;
     DocumentFormatConstraints c;
@@ -259,14 +259,14 @@ void ChromatogramView::sl_addNewSequenceObject() {
     c.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     c.addFlagToExclude(DocumentFormatFlag_Hidden);
     c.supportedObjectTypes += GObjectTypes::SEQUENCE;
-    AddNewDocumentDialogController::run(NULL, m, c);
+    AddNewDocumentDialogController::run(nullptr, m, c);
     if (!m.successful) {
         return;
     }
     Project *p = AppContext::getProject();
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(m.format);
-    SAFE_POINT(NULL != format, QString("Format is not registered: '%1'").arg(m.format), );
+    SAFE_POINT(nullptr != format, QString("Format is not registered: '%1'").arg(m.format), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(m.io);
     U2OpStatus2Log os;
     Document *doc = format->createNewLoadedDocument(iof, m.url, os);
@@ -286,7 +286,7 @@ void ChromatogramView::sl_addNewSequenceObject() {
 void ChromatogramView::sl_onAddExistingSequenceObject() {
     sl_clearEditableSequence();
 
-    assert(editDNASeq == NULL);
+    assert(editDNASeq == nullptr);
 
     ProjectTreeControllerModeSettings s;
     s.allowMultipleSelection = false;
@@ -323,7 +323,7 @@ void ChromatogramView::sl_onSequenceObjectLoaded(Task *t) {
     GObject *go = GObjectUtils::selectObjectByReference(lut->getConfig().checkObjRef,
                                                         lut->getDocument()->getObjects(),
                                                         UOF_LoadedOnly);
-    if (go != NULL) {
+    if (go != nullptr) {
         editDNASeq = qobject_cast<U2SequenceObject *>(go);
         QString err = dnaView->addObject(editDNASeq);
         assert(err.isEmpty());
@@ -340,7 +340,7 @@ bool ChromatogramView::isWidgetOnlyObject(GObject *o) const {
 }
 
 void ChromatogramView::sl_clearEditableSequence() {
-    if (editDNASeq == NULL) {
+    if (editDNASeq == nullptr) {
         return;
     }
     dnaView->removeObject(editDNASeq);
@@ -368,7 +368,7 @@ void ChromatogramView::sl_onObjectRemoved(GObjectView *view, GObject *obj) {
 
     CHECK(obj == editDNASeq, );
     indexOfChangedChars.clear();
-    editDNASeq = NULL;
+    editDNASeq = nullptr;
     update();
 }
 
@@ -523,7 +523,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
         hasSel = false;
     }
 
-    if (pd->width() / charWidth > visible.length / dividerBoolShowBaseCallsChars && chromaView->editDNASeq != NULL) {
+    if (pd->width() / charWidth > visible.length / dividerBoolShowBaseCallsChars && chromaView->editDNASeq != nullptr) {
         drawOriginalBaseCalls(0, 0, width(), charHeight, p, visible, chromaView->currentBaseCalls, false);
     }
 
@@ -562,17 +562,18 @@ void ChromatogramViewRenderArea::setAreaHeight(int newH) {
     areaHeight = newH;
 }
 
-qint64 ChromatogramViewRenderArea::coordToPos(int c) const {
+qint64 ChromatogramViewRenderArea::coordToPos(const QPoint &coord) const {
+    int x = coord.x();
     const U2Region &visibleRange = view->getVisibleRange();
     qreal lastBaseCall = kLinearTransformTrace * chroma.baseCalls[chroma.seqLength - 1] + bLinearTransformTrace;
-    if (visibleRange.startPos + visibleRange.length == chroma.seqLength && c > lastBaseCall) {
+    if (visibleRange.startPos + visibleRange.length == chroma.seqLength && x > lastBaseCall) {
         return chroma.seqLength;
     }
     qreal nearestPos = visibleRange.startPos;
     while (nearestPos < chroma.seqLength - 1) {
         qreal leftBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos] + bLinearTransformTrace;
         qreal rightBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos + 1] + bLinearTransformTrace;
-        CHECK_BREAK((leftBaseCallPos + rightBaseCallPos) / 2 < c + (rightBaseCallPos - leftBaseCallPos) / 2);
+        CHECK_BREAK((leftBaseCallPos + rightBaseCallPos) / 2 < x + (rightBaseCallPos - leftBaseCallPos) / 2);
         nearestPos++;
     }
     return qint64(nearestPos);

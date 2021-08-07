@@ -42,9 +42,9 @@ namespace U2 {
 static const QString GROUP_NAME = "Query results";
 
 void GTest_QDSchedulerTest::init(XMLTestFormat *, const QDomElement &el) {
-    sched = NULL;
-    expectedResult = NULL;
-    seqObj = NULL;
+    sched = nullptr;
+    expectedResult = nullptr;
+    seqObj = nullptr;
 
     U2OpStatusImpl os;
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
@@ -79,23 +79,23 @@ void GTest_QDSchedulerTest::prepare() {
         return;
     }
     Document *seqDoc = getContext<Document>(this, seqName);
-    if (seqDoc == NULL) {
+    if (seqDoc == nullptr) {
         stateInfo.setError("can't find sequence");
         return;
     }
     seqObj = qobject_cast<U2SequenceObject *>(seqDoc->findGObjectByType(GObjectTypes::SEQUENCE).first());
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence");
         return;
     }
 
     Document *expDoc = getContext<Document>(this, expectedResName);
-    if (expDoc == NULL) {
+    if (expDoc == nullptr) {
         stateInfo.setError("can't find result");
         return;
     }
     expectedResult = qobject_cast<AnnotationTableObject *>(expDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).first());
-    if (expectedResult == NULL) {
+    if (expectedResult == nullptr) {
         stateInfo.setError("can't find result");
         return;
     }
@@ -139,8 +139,8 @@ QList<Task *> GTest_QDSchedulerTest::onSubTaskFinished(Task *subTask) {
     if (subTask == sched) {
         AnnotationGroup *resG = result->getRootGroup()->getSubgroup(GROUP_NAME, false);
         AnnotationGroup *expResG = expectedResult->getRootGroup()->getSubgroup(GROUP_NAME, false);
-        CHECK_EXT(NULL != resG, setError("Group not found!" + GROUP_NAME), subs);
-        CHECK_EXT(NULL != expResG, setError("Exp group not found!" + GROUP_NAME), subs);
+        CHECK_EXT(nullptr != resG, setError("Group not found!" + GROUP_NAME), subs);
+        CHECK_EXT(nullptr != expResG, setError("Exp group not found!" + GROUP_NAME), subs);
 
         const QList<AnnotationGroup *> res = resG->getSubgroups();
         const QList<AnnotationGroup *> expRes = expResG->getSubgroups();

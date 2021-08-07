@@ -22,12 +22,14 @@
 #ifndef _U2_SITECON_BUILD_DIALOG_CONTROLLER_H_
 #define _U2_SITECON_BUILD_DIALOG_CONTROLLER_H_
 
+#include <ui_SiteconBuildDialog.h>
+
 #include <QDialog>
 
-#include <ui_SiteconBuildDialog.h>
-#include "SiteconAlgorithm.h"
-#include <U2Core/Task.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
+
+#include "SiteconAlgorithm.h"
 
 namespace U2 {
 
@@ -39,7 +41,7 @@ class SiteconBuildDialogController : public QDialog, public Ui_SiteconBuildDialo
     Q_OBJECT
 
 public:
-    SiteconBuildDialogController(SiteconPlugin* p, QWidget* w = NULL);
+    SiteconBuildDialogController(SiteconPlugin *p, QWidget *w = nullptr);
 
 public slots:
     virtual void reject();
@@ -54,40 +56,41 @@ private slots:
 private:
     void initSaveController();
 
-    Task* task;
-    SiteconPlugin* plug;
-    QPushButton* okButton;
-    QPushButton* cancelButton;
+    Task *task;
+    SiteconPlugin *plug;
+    QPushButton *okButton;
+    QPushButton *cancelButton;
     SaveDocumentController *saveController;
 };
 
 class SiteconBuildTask : public Task {
     Q_OBJECT
 public:
-    SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin = QString());
+    SiteconBuildTask(const SiteconBuildSettings &s, const MultipleSequenceAlignment &ma, const QString &origin = QString());
     void run();
-    SiteconModel getResult() const {return m;}
+    SiteconModel getResult() const {
+        return m;
+    }
 
 private:
-    SiteconBuildSettings    settings;
-    MultipleSequenceAlignment              ma;
-    SiteconModel            m;
+    SiteconBuildSettings settings;
+    MultipleSequenceAlignment ma;
+    SiteconModel m;
 };
 
 class SiteconBuildToFileTask : public Task {
     Q_OBJECT
 public:
-    SiteconBuildToFileTask(const QString& inFile, const QString& outFile, const SiteconBuildSettings& s);
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    SiteconBuildToFileTask(const QString &inFile, const QString &outFile, const SiteconBuildSettings &s);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
 
 private:
-    LoadDocumentTask*       loadTask;
-    SiteconBuildTask*       buildTask;
-    QString                 outFile;
-    SiteconBuildSettings    settings;
+    LoadDocumentTask *loadTask;
+    SiteconBuildTask *buildTask;
+    QString outFile;
+    SiteconBuildSettings settings;
 };
 
-} //namespace
+}    // namespace U2
 
 #endif
-

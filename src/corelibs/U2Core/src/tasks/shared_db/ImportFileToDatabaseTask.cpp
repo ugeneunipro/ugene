@@ -94,7 +94,7 @@ DocumentProviderTask *ImportFileToDatabaseTask::detectFormat() {
     FormatDetectionConfig detectionConfig;
     detectionConfig.useImporters = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(GUrl(srcUrl), detectionConfig);
-    CHECK_EXT(!formats.isEmpty(), setError(tr("File format is not recognized")), NULL);
+    CHECK_EXT(!formats.isEmpty(), setError(tr("File format is not recognized")), nullptr);
 
     const FormatDetectionResult preferredFormat = getPreferredFormat(formats);
 

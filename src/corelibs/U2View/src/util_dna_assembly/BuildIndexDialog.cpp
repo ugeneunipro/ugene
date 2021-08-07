@@ -45,15 +45,15 @@ namespace U2 {
 QString BuildIndexDialog::genomePath;
 
 BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidget *p)
-    : QDialog(p), assemblyRegistry(registry), customGUI(NULL) {
+    : QDialog(p), assemblyRegistry(registry), customGUI(nullptr) {
     setupUi(this);
     QMap<QString, QString> helpPagesMap;
-    helpPagesMap.insert("BWA", "60229240");
-    helpPagesMap.insert("BWA-MEM", "60229254");
-    helpPagesMap.insert("BWA-SW", "60229247");
-    helpPagesMap.insert("Bowtie", "60229223");
-    helpPagesMap.insert("Bowtie2", "60229232");
-    helpPagesMap.insert("UGENE Genome Aligner", "60229261");
+    helpPagesMap.insert("BWA", "65930872");
+    helpPagesMap.insert("BWA-MEM", "65930886");
+    helpPagesMap.insert("BWA-SW", "65930879");
+    helpPagesMap.insert("Bowtie", "65930855");
+    helpPagesMap.insert("Bowtie2", "65930864");
+    helpPagesMap.insert("UGENE Genome Aligner", "65930893");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -72,7 +72,7 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidg
     if (!genomePath.isEmpty()) {
         refSeqEdit->setText(genomePath);
         buildIndexUrl(genomePath);
-        SAFE_POINT(NULL != customGUI, "Build Index dialog referenced null pointer", );
+        SAFE_POINT(nullptr != customGUI, "Build Index dialog referenced null pointer", );
         customGUI->validateReferenceSequence(genomePath);
     }
 }
@@ -90,7 +90,7 @@ void BuildIndexDialog::sl_onAddRefButtonClicked() {
         return;
     }
 
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         customGUI->validateReferenceSequence(GUrl(lod.url));
     }
     refSeqEdit->setText(lod.url);
@@ -102,7 +102,7 @@ void BuildIndexDialog::sl_onSetIndexFileNameButtonClicked() {
     lod.url = U2FileDialog::getSaveFileName(this, tr("Set index file name"), lod.dir);
     if (!lod.url.isEmpty()) {
         GUrl index = lod.url;
-        if (index.lastFileSuffix().isEmpty() && customGUI != NULL) {
+        if (index.lastFileSuffix().isEmpty() && customGUI != nullptr) {
             QString extension = customGUI->getIndexFileExtension();
             if (extension.isEmpty()) {
                 index = QString("%1").arg(index.getURLString());
@@ -124,21 +124,21 @@ void BuildIndexDialog::updateState() {
 
 void BuildIndexDialog::addGuiExtension() {
     // cleanup previous extension
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         layout()->removeWidget(customGUI);
         setMinimumHeight(minimumHeight() - customGUI->minimumHeight());
         delete customGUI;
-        customGUI = NULL;
+        customGUI = nullptr;
     }
 
     // insert new extension widget
     DnaAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
-    if (NULL == env) {
+    if (nullptr == env) {
         adjustSize();
         return;
     }
     DnaAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
-    if (gui != NULL && gui->hasBuildIndexWidget()) {
+    if (gui != nullptr && gui->hasBuildIndexWidget()) {
         customGUI = gui->createBuildIndexWidget(this);
         int insertPos = verticalLayout->count() - 1;
         verticalLayout->insertWidget(insertPos, customGUI);
@@ -154,7 +154,7 @@ void BuildIndexDialog::addGuiExtension() {
 void BuildIndexDialog::buildIndexUrl(const GUrl &refUrl) {
     QString extension("");
     GUrl url;
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         extension = customGUI->getIndexFileExtension();
         url = customGUI->buildIndexUrl(refUrl);
     }
@@ -193,15 +193,15 @@ void BuildIndexDialog::accept() {
             CHECK(!msgBox.isNull(), );
 
             switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_EXTERNAL_TOOLS);
-                break;
-            case QMessageBox::No:
-                return;
-                break;
-            default:
-                assert(false);
-                break;
+                case QMessageBox::Yes:
+                    AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_EXTERNAL_TOOLS);
+                    break;
+                case QMessageBox::No:
+                    return;
+                    break;
+                default:
+                    assert(false);
+                    break;
             }
             if (AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
                 return;
@@ -233,7 +233,7 @@ const QString BuildIndexDialog::getIndexFileName() {
 }
 
 QMap<QString, QVariant> BuildIndexDialog::getCustomSettings() {
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         return customGUI->getBuildIndexCustomSettings();
     } else {
         return QMap<QString, QVariant>();

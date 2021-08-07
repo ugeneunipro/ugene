@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "qscore.h"
 
 // Compute the sum of pairs score from two pair maps.

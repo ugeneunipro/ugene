@@ -29,8 +29,8 @@ namespace U2 {
 
 class U2GUI_EXPORT AddNewDocumentDialogModel {
 public:
-    AddNewDocumentDialogModel(const QString &_url = QString::null, DocumentFormatId _format = DocumentFormatId::null)
-        : url(_url), io(IOAdapterId::null), format(_format), successful(false) {
+    AddNewDocumentDialogModel(const QString &_url = QString(), const DocumentFormatId &_format = DocumentFormatId())
+        : url(_url), format(_format), successful(false) {
     }
 
     QString url;

@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Incorrect score-->
+    <load-broken-document index="doc" url="gff/negative/wrong_score.gff" io="local_file" format="gff" sequence-mode="sequence" message="Parsing error: incorrect score parameter at line 5. Score can be a float number or '.' symbol"/>
+
+</multi-test>

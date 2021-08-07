@@ -41,7 +41,7 @@ class WorkflowInvestigationWidgetsController : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(WorkflowInvestigationWidgetsController)
 public:
-    explicit WorkflowInvestigationWidgetsController(QWidget *parent = NULL);
+    explicit WorkflowInvestigationWidgetsController(QWidget *parent = nullptr);
     ~WorkflowInvestigationWidgetsController();
 
     void deleteBusInvestigations();

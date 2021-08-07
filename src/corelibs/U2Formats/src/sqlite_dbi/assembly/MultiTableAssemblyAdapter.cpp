@@ -208,12 +208,12 @@ void MultiTableAssemblyAdapter::initAdaptersGrid(int nRows, int nElens) {
     assert(adaptersGrid.isEmpty());
     adaptersGrid.resize(nRows);
     for (int i = 0; i < nRows; i++) {
-        adaptersGrid[i] = QVector<MTASingleTableAdapter *>(nElens, NULL);
+        adaptersGrid[i] = QVector<MTASingleTableAdapter *>(nElens, nullptr);
     }
 }
 
 MTASingleTableAdapter *MultiTableAssemblyAdapter::createAdapter(int rowPos, int elenPos, U2OpStatus &os) {
-    assert(adaptersGrid.at(rowPos).at(elenPos) == NULL);
+    assert(adaptersGrid.at(rowPos).at(elenPos) == nullptr);
 
     QString suffix = getTableSuffix(rowPos, elenPos);
     SingleTableAssemblyAdapter *sa = new SingleTableAssemblyAdapter(dbi, assemblyId, 'M', suffix, compressor, db, os);
@@ -275,7 +275,7 @@ qint64 MultiTableAssemblyAdapter::getMaxPackedRow(const U2Region &r, U2OpStatus 
         QVector<MTASingleTableAdapter *> elenAdapters = adaptersGrid.at(rowPos);
         for (int elenPos = 0, nElens = elenAdapters.size(); elenPos < nElens; elenPos++) {
             MTASingleTableAdapter *a = elenAdapters.at(elenPos);
-            if (a == NULL) {
+            if (a == nullptr) {
                 continue;
             }
             assert(a->rowPos == rowPos);
@@ -310,7 +310,7 @@ U2DbiIterator<U2AssemblyRead> *MultiTableAssemblyAdapter::getReads(const U2Regio
     }
     if (os.hasError()) {
         qDeleteAll(iterators);
-        return NULL;
+        return nullptr;
     }
     return new MTAReadsIterator(iterators, idExtras, sortedHint);
 }
@@ -332,7 +332,7 @@ U2DbiIterator<U2AssemblyRead> *MultiTableAssemblyAdapter::getReadsByRow(const U2
     }
     if (os.hasError()) {
         qDeleteAll(iterators);
-        return NULL;
+        return nullptr;
     }
     return new MTAReadsIterator(iterators, selectedIdExtras, false);
 }
@@ -347,7 +347,7 @@ U2DbiIterator<U2AssemblyRead> *MultiTableAssemblyAdapter::getReadsByName(const Q
     }
     if (os.hasError()) {
         qDeleteAll(iterators);
-        return NULL;
+        return nullptr;
     }
     return new MTAReadsIterator(iterators, idExtras, false);
 }
@@ -485,7 +485,7 @@ MTASingleTableAdapter *MultiTableAssemblyAdapter::getAdapterByRowAndElenRange(in
     if (rowPos >= adaptersGrid.size()) {
         assert(createIfNotExits);
         if (!createIfNotExits) {
-            return NULL;
+            return nullptr;
         }
         int oldRowSize = adaptersGrid.size();
         int newRowSize = rowPos + 1;
@@ -497,7 +497,7 @@ MTASingleTableAdapter *MultiTableAssemblyAdapter::getAdapterByRowAndElenRange(in
     QVector<MTASingleTableAdapter *> elenAdapters = adaptersGrid.at(rowPos);
     assert(elenAdapters.size() == nElens);
     MTASingleTableAdapter *adapter = elenAdapters.at(elenPos);
-    if (adapter == NULL && createIfNotExits) {
+    if (adapter == nullptr && createIfNotExits) {
         adapter = createAdapter(rowPos, elenPos, os);
     }
     return adapter;
@@ -513,7 +513,7 @@ void MultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds, U2Op
         int elenPos = getElenRangePosById(readId);
         MTASingleTableAdapter *a = getAdapterByRowAndElenRange(rowPos, elenPos, false, os);
 
-        SAFE_POINT(a != NULL, QString("No table adapter was found! row: %1, elen: %2").arg(rowPos).arg(elenPos), );
+        SAFE_POINT(a != nullptr, QString("No table adapter was found! row: %1, elen: %2").arg(rowPos).arg(elenPos), );
 
         if (!readsByAdapter.contains(a)) {
             readsByAdapter[a] = QList<U2DataId>();
@@ -533,7 +533,7 @@ void MultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
 
     foreach (QVector<MTASingleTableAdapter *> adaptersVector, adaptersGrid) {
         foreach (MTASingleTableAdapter *adapter, adaptersVector) {
-            if (NULL != adapter) {
+            if (nullptr != adapter) {
                 adapter->singleTableAdapter->dropReadsTables(os);
             }
         }
@@ -603,7 +603,7 @@ void MultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 p
     int oldRowPos = multiTableAdapter->getRowRangePosById(readId);
     int newRowPos = multiTableAdapter->getRowRangePosByRow(prow);
 
-    SingleTablePackAlgorithmAdapter *sa = NULL;
+    SingleTablePackAlgorithmAdapter *sa = nullptr;
     if (newRowPos == oldRowPos) {
         sa = packAdaptersGrid[oldRowPos][elenPos];
         sa->assignProw(readId, prow, os);
@@ -615,11 +615,11 @@ void MultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 p
     MTASingleTableAdapter *oldA = multiTableAdapter->getAdapterByRowAndElenRange(oldRowPos, elenPos, false, os);
     MTASingleTableAdapter *newA = multiTableAdapter->getAdapterByRowAndElenRange(newRowPos, elenPos, true, os);
 
-    SAFE_POINT(oldA != NULL, QString("Can't find reads table adapter: row: %1, elen: %2").arg(oldRowPos).arg(elenPos), );
-    SAFE_POINT(newA != NULL, QString("Can't find reads table adapter: row: %1, elen: %2").arg(newRowPos).arg(elenPos), );
+    SAFE_POINT(oldA != nullptr, QString("Can't find reads table adapter: row: %1, elen: %2").arg(oldRowPos).arg(elenPos), );
+    SAFE_POINT(newA != nullptr, QString("Can't find reads table adapter: row: %1, elen: %2").arg(newRowPos).arg(elenPos), );
     SAFE_POINT_OP(os, );
 
-    if (sa == NULL) {
+    if (sa == nullptr) {
         sa = new SingleTablePackAlgorithmAdapter(multiTableAdapter->getDbRef(), newA->singleTableAdapter->getReadsTableName());
         packAdapters << sa;
         packAdaptersGrid[newRowPos][elenPos] = sa;
@@ -799,20 +799,20 @@ U2AssemblyRead MTAReadsIterator::next() {
     U2AssemblyRead res;
     if (sortedHint) {
         qint64 minPos = LLONG_MAX;
-        U2DbiIterator<U2AssemblyRead> *minIt = NULL;
+        U2DbiIterator<U2AssemblyRead> *minIt = nullptr;
         foreach (U2DbiIterator<U2AssemblyRead> *it, iterators) {
             if (it->hasNext()) {
                 U2AssemblyRead candidate = it->peek();
-                SAFE_POINT(NULL != candidate.data(), "NULL assembly read", candidate);
+                SAFE_POINT(nullptr != candidate.data(), "NULL assembly read", candidate);
                 if (candidate->leftmostPos < minPos) {
                     minIt = it;
                     minPos = candidate->leftmostPos;
                 }
             }
         }
-        if (NULL != minIt) {
+        if (nullptr != minIt) {
             res = minIt->next();
-            SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+            SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
             int currentIt = iterators.indexOf(minIt);
             const QByteArray &idExtra = idExtras.at(currentIt);
             res->id = addTable2Id(res->id, idExtra);
@@ -824,7 +824,7 @@ U2AssemblyRead MTAReadsIterator::next() {
                 U2DbiIterator<U2AssemblyRead> *it = iterators[currentRange];
                 if (it->hasNext()) {
                     res = it->next();
-                    SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+                    SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
                     const QByteArray &idExtra = idExtras.at(currentRange);
                     res->id = addTable2Id(res->id, idExtra);
                     break;
@@ -840,20 +840,20 @@ U2AssemblyRead MTAReadsIterator::peek() {
     U2AssemblyRead res;
     if (sortedHint) {
         qint64 minPos = LLONG_MAX;
-        U2DbiIterator<U2AssemblyRead> *minIt = NULL;
+        U2DbiIterator<U2AssemblyRead> *minIt = nullptr;
         foreach (U2DbiIterator<U2AssemblyRead> *it, iterators) {
             if (it->hasNext()) {
                 U2AssemblyRead candidate = it->peek();
-                SAFE_POINT(NULL != candidate.data(), "NULL assembly read", candidate);
+                SAFE_POINT(nullptr != candidate.data(), "NULL assembly read", candidate);
                 if (candidate->leftmostPos < minPos) {
                     minIt = it;
                     minPos = candidate->leftmostPos;
                 }
             }
         }
-        if (NULL != minIt) {
+        if (nullptr != minIt) {
             res = minIt->next();
-            SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+            SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
             int currentIt = iterators.indexOf(minIt);
             const QByteArray &idExtra = idExtras.at(currentIt);
             res->id = addTable2Id(res->id, idExtra);
@@ -865,7 +865,7 @@ U2AssemblyRead MTAReadsIterator::peek() {
                 U2DbiIterator<U2AssemblyRead> *it = iterators[currentRange];
                 if (it->hasNext()) {
                     res = it->peek();
-                    SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+                    SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
                     const QByteArray &idExtra = idExtras.at(currentRange);
                     res->id = addTable2Id(res->id, idExtra);
                     break;

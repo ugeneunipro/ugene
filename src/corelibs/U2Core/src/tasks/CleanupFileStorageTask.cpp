@@ -33,7 +33,7 @@ CleanupFileStorageTask::CleanupFileStorageTask()
 
 void CleanupFileStorageTask::run() {
     AppFileStorage *fileStorage = AppContext::getAppFileStorage();
-    CHECK_EXT(NULL != fileStorage, stateInfo.setError("NULL file storage"), );
+    CHECK_EXT(nullptr != fileStorage, stateInfo.setError("NULL file storage"), );
 
     fileStorage->cleanup(stateInfo);
 }

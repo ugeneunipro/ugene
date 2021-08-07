@@ -50,9 +50,9 @@ typedef QFlags<DistanceAlgorithmFlag> DistanceAlgorithmFlags;
 class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSADistanceAlgorithmFactory(const QString &algoId, DistanceAlgorithmFlags flags, QObject *p = NULL);
+    MSADistanceAlgorithmFactory(const QString &algoId, DistanceAlgorithmFlags flags, QObject *p = nullptr);
 
-    virtual MSADistanceAlgorithm *createAlgorithm(const MultipleSequenceAlignment &ma, QObject *parent = NULL) = 0;
+    virtual MSADistanceAlgorithm *createAlgorithm(const MultipleSequenceAlignment &ma, QObject *parent = nullptr) = 0;
 
     QString getId() const {
         return algorithmId;

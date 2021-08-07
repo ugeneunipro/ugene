@@ -82,7 +82,7 @@ Document *ABIFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     quint64 len = 0;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
-        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
+        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), nullptr);
     }
 
     SeekableBuf sf;
@@ -90,23 +90,23 @@ Document *ABIFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     sf.pos = 0;
     sf.size = readBuff.size();
     Document *doc = parseABI(dbiRef, &sf, io, fs, os);
-    CHECK_OP(os, NULL)
-    CHECK_EXT(doc != NULL, os.setError(tr("Not a valid ABIF file: %1").arg(io->toString())), NULL);
+    CHECK_OP(os, nullptr)
+    CHECK_EXT(doc != nullptr, os.setError(tr("Not a valid ABIF file: %1").arg(io->toString())), nullptr);
     return doc;
 }
 
 DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     if (io->isEof()) {
-        return NULL;
+        return nullptr;
     }
 
-    CHECK_EXT((io != NULL) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT((io != nullptr) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
     quint64 len = 0;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
-        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
+        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), nullptr);
     }
 
     SeekableBuf sf;
@@ -185,7 +185,9 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
 #define MODLLabel LABEL("MODL")
 #define BaseConfLabel LABEL("PCON")
 
-#define baseIndex(B) ((B) == 'C' ? 0 : (B) == 'A' ? 1 : (B) == 'G' ? 2 : 3)
+#define baseIndex(B) ((B) == 'C' ? 0 : (B) == 'A' ? 1 \
+                                   : (B) == 'G'   ? 2 \
+                                                  : 3)
 
 /*
 * Gets the offset of the ABI index.
@@ -431,13 +433,13 @@ static void replace_nl(char *string) {
 
 Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
     DNASequence dna;
     DNAChromatogram cd;
 
     if (!loadABIObjects(fp, dna, cd)) {
-        return NULL;
+        return nullptr;
     }
     if (dna.getName().isEmpty()) {
         dna.setName("Sequence");
@@ -447,22 +449,22 @@ Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter
     QVariantMap hints;
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     hints.insert(DBI_FOLDER_HINT, folder);
-    if (dna.alphabet == NULL) {
+    if (dna.alphabet == nullptr) {
         dna.alphabet = U2AlphabetUtils::findBestAlphabet(dna.seq);
-        CHECK_EXT(dna.alphabet != NULL, os.setError(tr("Undefined sequence alphabet")), NULL);
+        CHECK_EXT(dna.alphabet != nullptr, os.setError(tr("Undefined sequence alphabet")), nullptr);
     }
     U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna, dna.alphabet->getId());
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     U2SequenceObject *seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
     DNAChromatogramObject *chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     objects.append(chromObj);
 
     QString seqComment = dna.info.value(DNAInfo::COMMENT).toStringList().join("\n");
     TextObject *textObj = TextObject::createInstance(seqComment, "Info", dbiRef, os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     objects.append(textObj);
 
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
@@ -619,44 +621,44 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
             for (uint i = 0; i < numBases; i++) {
                 qualCodes[i] = DNAQuality::encode(conf[i], DNAQualityType_Sanger);
                 switch (sequence[i]) {
-                case 'A':
-                case 'a':
-                    cd.prob_A[i] = conf[i];
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'A':
+                    case 'a':
+                        cd.prob_A[i] = conf[i];
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'C':
-                case 'c':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = conf[i];
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'C':
+                    case 'c':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = conf[i];
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'G':
-                case 'g':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = conf[i];
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'G':
+                    case 'g':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = conf[i];
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'T':
-                case 't':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = conf[i];
-                    break;
+                    case 'T':
+                    case 't':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = conf[i];
+                        break;
 
-                default:
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    default:
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
                 }
             }
         }

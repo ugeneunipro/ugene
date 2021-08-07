@@ -62,7 +62,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 RepeatFinderPlugin::RepeatFinderPlugin()
-    : Plugin(tr("Repeats Finder"), tr("Search for repeated elements in genetic sequences")), viewCtx(NULL) {
+    : Plugin(tr("Repeats Finder"), tr("Search for repeated elements in genetic sequences")), viewCtx(nullptr) {
     if (AppContext::getMainWindow()) {
         viewCtx = new RepeatViewContext(this);
         viewCtx->init();
@@ -76,7 +76,7 @@ RepeatFinderPlugin::RepeatFinderPlugin()
     //tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = RepeatFinderTests::createTestFactories();
@@ -113,7 +113,7 @@ void RepeatViewContext::sl_showDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
-    assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
+    assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindRepeatsDialog> d = new FindRepeatsDialog(sctx);
     d->exec();
@@ -124,7 +124,7 @@ void RepeatViewContext::sl_showTandemDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
-    assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
+    assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindTandemsDialog> d = new FindTandemsDialog(sctx);
     d->exec();

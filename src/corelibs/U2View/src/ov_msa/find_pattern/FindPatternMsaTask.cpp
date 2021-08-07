@@ -96,7 +96,7 @@ void FindPatternMsaTask::getResultFromTask() {
         regions.append(resultRegionWithGaps);
         totalResultsCounter++;
     }
-    qSort(regions.begin(), regions.end());
+    std::sort(regions.begin(), regions.end());
     qint64 rowId = msaRow->getRowId();
     results.insert(rowId, FindPatternInMsaResult(rowId, regions));
     currentSequenceIndex++;

@@ -75,7 +75,7 @@ public:
 
         const QString fileFormat = DelegateTags::getString(widget->tags(), "format");
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
-        CHECK(NULL != format, false);
+        CHECK(nullptr != format, false);
 
         QStringList formats = format->getSupportedDocumentFileExtensions();
         CHECK(formats.size() > 0, false);
@@ -132,23 +132,23 @@ URLLineEdit::URLLineEdit(const QString &type,
                          bool saveFile,
                          URLWidget *_parent)
     : QLineEdit(_parent),
-      schemaConfig(NULL),
+      schemaConfig(nullptr),
       type(type),
       multi(multi),
       isPath(isPath),
       saveFile(saveFile),
       parent(_parent) {
-    if (saveFile && NULL != parent) {
+    if (saveFile && nullptr != parent) {
         new BaseCompleter(new FilenameCompletionFiller(parent), this);
     }
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
 }
 
 CompletionFiller *URLLineEdit::getCompletionFillerInstance() {
-    if (saveFile && NULL != parent) {
+    if (saveFile && nullptr != parent) {
         return new FilenameCompletionFiller(parent);
     }
-    return NULL;
+    return nullptr;
 }
 
 void URLLineEdit::sl_onBrowse() {
@@ -161,7 +161,7 @@ void URLLineEdit::sl_onBrowseWithAdding() {
 
 void URLLineEdit::browse(bool addFiles) {
     QString FileFilter;
-    if (NULL != parent) {
+    if (nullptr != parent) {
         FileFilter = DelegateTags::getString(parent->tags(), DelegateTags::FILTER);
     }
     LastUsedDirHelper lod(type);
@@ -182,10 +182,10 @@ void URLLineEdit::browse(bool addFiles) {
     if (isPath || multi) {
         QStringList lst;
         if (isPath) {
-            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir, QFileDialog::Options());
+            QString dir = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lastDir, QFileDialog::Options());
             lst << dir;
         } else {
-            lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lastDir, FileFilter);
+            lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lastDir, FileFilter);
         }
 
         if (addFiles) {
@@ -200,15 +200,15 @@ void URLLineEdit::browse(bool addFiles) {
         }
     } else {
         if (saveFile) {
-            lod.url = name = U2FileDialog::getSaveFileName(NULL, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
+            lod.url = name = U2FileDialog::getSaveFileName(nullptr, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
             this->checkExtension(name);
         } else {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-                lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontUseNativeDialog);
+                lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontUseNativeDialog);
             } else
 #endif
-                lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lastDir, FileFilter);
+                lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
         }
     }
     if (!name.isEmpty()) {
@@ -235,11 +235,11 @@ void URLLineEdit::keyPressEvent(QKeyEvent *event) {
 
 void URLLineEdit::checkExtension(QString &name) {
     QString fileFormat;
-    if (NULL != parent) {
+    if (nullptr != parent) {
         fileFormat = DelegateTags::getString(parent->tags(), DelegateTags::FORMAT);
     }
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
-    if (NULL != format && !name.isEmpty()) {
+    if (nullptr != format && !name.isEmpty()) {
         QString newName(name);
         GUrl url(newName);
         QString lastSuffix = url.lastFileSuffix();

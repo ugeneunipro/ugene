@@ -47,7 +47,7 @@ const QString ACEFormat::AF = "AF";
 const QString ACEFormat::BQ = "BQ";
 
 ACEFormat::ACEFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::ACE, DocumentFormatFlags(0), QStringList("ace")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::ACE, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -460,7 +460,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
             os.setProgress(io->getProgress());
         }
         U2AlphabetUtils::assignAlphabet(al);
-        CHECK_EXT(al->getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
+        CHECK_EXT(al->getAlphabet() != nullptr, ACEFormat::tr("Alphabet unknown"), );
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
@@ -483,11 +483,11 @@ Document *ACEFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
     QList<GObject *> objs;
     load(io, dbiRef, objs, fs, os);
 
-    CHECK_OP_EXT(os, qDeleteAll(objs), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
 
     if (objs.isEmpty()) {
         os.setError(ACEFormat::tr("File doesn't contain any msa objects"));
-        return NULL;
+        return nullptr;
     }
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 

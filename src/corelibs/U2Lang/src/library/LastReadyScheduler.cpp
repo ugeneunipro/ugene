@@ -34,7 +34,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 LastReadyScheduler::LastReadyScheduler(Schema *sh)
-    : Scheduler(sh), lastWorker(NULL), canLastTaskBeCanceled(false), requestedActorForNextTick(), timeUpdater(NULL) {
+    : Scheduler(sh), lastWorker(nullptr), canLastTaskBeCanceled(false), requestedActorForNextTick(), timeUpdater(nullptr) {
 }
 
 LastReadyScheduler::~LastReadyScheduler() {
@@ -64,12 +64,12 @@ bool LastReadyScheduler::isReady() const {
 }
 
 inline ActorId LastReadyScheduler::actorId() const {
-    CHECK(NULL != lastWorker, "");
+    CHECK(nullptr != lastWorker, "");
     return lastWorker->getActor()->getId();
 }
 
 inline bool LastReadyScheduler::hasValidFinishedTask() const {
-    return (NULL != lastWorker) && (NULL != lastTask) && (lastTask->isFinished());
+    return (nullptr != lastWorker) && (nullptr != lastTask) && (lastTask->isFinished());
 }
 
 inline qint64 LastReadyScheduler::lastTaskTimeSec() const {
@@ -79,15 +79,15 @@ inline qint64 LastReadyScheduler::lastTaskTimeSec() const {
 }
 
 inline void LastReadyScheduler::measuredTick() {
-    CHECK(NULL != lastWorker, );
+    CHECK(nullptr != lastWorker, );
     lastWorker->deleteBackupMessagesFromPreviousTick();
 
     lastTask = lastWorker->tick(canLastTaskBeCanceled);
 
     delete timeUpdater;
-    timeUpdater = NULL;
+    timeUpdater = nullptr;
 
-    if (NULL != lastTask) {
+    if (nullptr != lastTask) {
         timeUpdater = new ElapsedTimeUpdater(actorId(), context->getMonitor(), lastTask);
         timeUpdater->start(1000);
 
@@ -112,7 +112,7 @@ Task *LastReadyScheduler::tick() {
         }
     }
     assert(0);
-    return NULL;
+    return nullptr;
 }
 
 Task *LastReadyScheduler::replayLastWorkerTick() {
@@ -156,7 +156,7 @@ WorkerState LastReadyScheduler::getWorkerState(const Actor *a) {
 
 WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
     Actor *a = schema->actorById(id);
-    if (NULL == a) {
+    if (nullptr == a) {
         QList<Actor *> actors = schema->actorsByOwnerId(id);
         assert(actors.size() > 0);
 
@@ -166,19 +166,19 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
         foreach (Actor *a, actors) {
             WorkerState state = getWorkerState(a);
             switch (state) {
-            case WorkerRunning:
-                return WorkerRunning;
-            case WorkerWaiting:
-                someWaiting = true;
-                break;
-            case WorkerDone:
-                someDone = true;
-                break;
-            case WorkerReady:
-                someReady = true;
-                break;
-            default:
-                break;
+                case WorkerRunning:
+                    return WorkerRunning;
+                case WorkerWaiting:
+                    someWaiting = true;
+                    break;
+                case WorkerDone:
+                    someDone = true;
+                    break;
+                case WorkerReady:
+                    someReady = true;
+                    break;
+                default:
+                    break;
             }
         }
         if (someWaiting) {
@@ -196,7 +196,7 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
 }
 
 bool LastReadyScheduler::cancelCurrentTaskIfAllowed() {
-    if (NULL == lastTask) {
+    if (nullptr == lastTask) {
         return false;
     }
     if (!lastTask->isFinished() && canLastTaskBeCanceled) {

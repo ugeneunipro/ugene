@@ -27,39 +27,49 @@
 
 #include <QApplication>
 #include <QDialogButtonBox>
-#include <QPushButton>
 
 #include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 
+BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus &_os,
+                                       const QString &_firstFileName,
+                                       const QString &_secondFileName,
+                                       bool _mergeFirstBoxChecked,
+                                       bool _oneSequenceBoxChecked,
+                                       bool _mergeSecondBoxChecked,
+                                       int _gapFirstValue,
+                                       int _gapSecondValue,
+                                       bool cancel)
+    : Filler(_os, "DotPlotFilesDialog"), mergeFirstBoxChecked(_mergeFirstBoxChecked),
+      oneSequenceBoxChecked(_oneSequenceBoxChecked), mergeSecondBoxChecked(_mergeSecondBoxChecked),
+      firstFileName(_firstFileName), secondFileName(_secondFileName), firstGapSize(_gapFirstValue),
+      secondGapSize(_gapSecondValue), cancel(cancel) {
+}
+
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 void BuildDotPlotFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-    GTCheckBox::setChecked(os, dialog->findChild<QCheckBox *>("oneSequenceCheckBox"), oneSequenceBoxChecked);
-    GTLineEdit::setText(os, dialog->findChild<QLineEdit *>("firstFileEdit"), firstFileEdit);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "oneSequenceCheckBox", dialog), oneSequenceBoxChecked);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "firstFileEdit", dialog), firstFileName);
 
-    GTCheckBox::setChecked(os, dialog->findChild<QCheckBox *>("mergeFirstCheckBox"), mergeFirstBoxChecked);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "mergeFirstCheckBox", dialog), mergeFirstBoxChecked);
     if (mergeFirstBoxChecked) {
-        GTSpinBox::setValue(os, dialog->findChild<QSpinBox *>("gapFirst"), gapFirstVal);
+        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapFirst", dialog), firstGapSize);
     }
 
     if (!oneSequenceBoxChecked) {
-        GTLineEdit::setText(os, dialog->findChild<QLineEdit *>("secondFileEdit"), secondFileEdit);
-
-        GTCheckBox::setChecked(os, dialog->findChild<QCheckBox *>("mergeSecondCheckBox"), mergeSecondBoxChecked);
+        GTLineEdit::setText(os, GTWidget::findLineEdit(os, "secondFileEdit", dialog), secondFileName);
+        GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "mergeSecondCheckBox", dialog), mergeSecondBoxChecked);
         if (mergeSecondBoxChecked) {
-            GTSpinBox::setValue(os, dialog->findChild<QSpinBox *>("gapSecond"), gapSecondVal);
+            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapSecond", dialog), secondGapSize);
         }
     }
-
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     if (cancel) {
-        dialog = QApplication::activeModalWidget();
-        GT_CHECK(dialog, "activeModalWidget is NULL");
+        dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
     }
 }

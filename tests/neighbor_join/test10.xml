@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Phylip Neighbor Join Test -->
+    <load-document index="doc" url="neighbor_join/align_04.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="align_04" type="OT_MSA"/>
+    <calc-tree-from-alignment index="tree" obj="obj" algorithm="PHYLIP Neighbor Joining"/>
+    <check-phynode-has-sibling obj="tree" phynode="Jane" sibling="Bob"/>
+    <check-phynode-branch-distance obj="tree" phynode="Harry" value="0.000558"/>
+
+</multi-test>

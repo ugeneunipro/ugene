@@ -42,7 +42,7 @@ U2AnnotationTable U2FeatureUtils::createAnnotationTable(const QString &tableName
     CHECK_OP(os, result);
 
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Feature DBI is not initialized!", result);
+    SAFE_POINT(nullptr != dbi, "Feature DBI is not initialized!", result);
 
     result.visualName = tableName;
     result.rootFeature = rootFeature.id;
@@ -55,7 +55,7 @@ U2AnnotationTable U2FeatureUtils::getAnnotationTable(const U2EntityRef &tableRef
     DbiConnection con(tableRef.dbiRef, os);
     CHECK_OP(os, U2AnnotationTable());
     U2FeatureDbi *featureDbi = con.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != featureDbi, "Feature DBI is not initialized!", U2AnnotationTable());
+    SAFE_POINT(nullptr != featureDbi, "Feature DBI is not initialized!", U2AnnotationTable());
 
     return featureDbi->getAnnotationTableObject(tableRef.entityId, os);
 }
@@ -156,7 +156,7 @@ void U2FeatureUtils::removeFeature(const U2DataId &featureId, const U2DbiRef &db
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     dbi->removeFeaturesByParent(featureId, os, SelectParentFeature);
 }
@@ -170,7 +170,7 @@ void U2FeatureUtils::removeFeatures(const QList<U2DataId> &featureIds, const U2D
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     dbi->removeFeaturesByParents(featureIds, os);
 }
@@ -183,7 +183,7 @@ void U2FeatureUtils::addSubFeatures(const QVector<U2Region> &regions, const U2St
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     foreach (const U2Region &reg, regions) {
         SAFE_POINT(!reg.isEmpty(), "Attempting to assign annotation to an empty region!", );
@@ -221,18 +221,18 @@ QList<FeatureAndKey> U2FeatureUtils::getSortedSubgroups(QList<FeatureAndKey> &fk
 }
 
 AnnotationGroup *U2FeatureUtils::loadAnnotationTable(const U2DataId &rootFeatureId, const U2DbiRef &dbiRef, AnnotationTableObject *parentObj, U2OpStatus &os) {
-    SAFE_POINT(!rootFeatureId.isEmpty(), "Invalid feature ID detected!", NULL);
-    SAFE_POINT(NULL != parentObj, L10N::nullPointerError("Annotation table object"), NULL);
-    SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference detected!", NULL);
+    SAFE_POINT(!rootFeatureId.isEmpty(), "Invalid feature ID detected!", nullptr);
+    SAFE_POINT(nullptr != parentObj, L10N::nullPointerError("Annotation table object"), nullptr);
+    SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference detected!", nullptr);
 
     DbiConnection connection(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, L10N::nullPointerError("Feature DBI"), NULL);
+    SAFE_POINT(nullptr != dbi, L10N::nullPointerError("Feature DBI"), nullptr);
 
-    AnnotationGroup *rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, NULL, parentObj);
+    AnnotationGroup *rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, nullptr, parentObj);
 
-    Annotation *currentAnnotation = NULL;
+    Annotation *currentAnnotation = nullptr;
     QList<FeatureAndKey> rawData = dbi->getFeatureTable(rootFeatureId, os);
     QList<FeatureAndKey> groups = getSortedSubgroups(rawData, rootFeatureId);
     rawData = groups + rawData;
@@ -240,13 +240,13 @@ AnnotationGroup *U2FeatureUtils::loadAnnotationTable(const U2DataId &rootFeature
     foreach (const FeatureAndKey &fnk, rawData) {
         if (U2Feature::Group == fnk.feature.featureClass) {
             rootGroup->addSubgroup(fnk.feature);
-        } else if (NULL != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId))) {
+        } else if (nullptr != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId))) {
             // add a region to an already fetched annotation
-            SAFE_POINT(!fnk.feature.location.region.isEmpty() && !fnk.key.isValid(), "Unexpected feature data fetched from DB", NULL);
+            SAFE_POINT(!fnk.feature.location.region.isEmpty() && !fnk.key.isValid(), "Unexpected feature data fetched from DB", nullptr);
             const_cast<SharedAnnotationData &>(currentAnnotation->getData())->location->regions.append(fnk.feature.location.region);
-        } else if (NULL != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.id))) {
+        } else if (nullptr != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.id))) {
             // add a qualifier to an already fetched annotation
-            SAFE_POINT(fnk.key.isValid(), "Valid feature key expected", NULL);
+            SAFE_POINT(fnk.key.isValid(), "Valid feature key expected", nullptr);
             addFeatureKeyToAnnotation(fnk.key, const_cast<SharedAnnotationData &>(currentAnnotation->getData()), os);
         } else {
             // fetch annotation
@@ -258,10 +258,10 @@ AnnotationGroup *U2FeatureUtils::loadAnnotationTable(const U2DataId &rootFeature
                 aData->location->regions.append(fnk.feature.location.region);
             }
             addFeatureKeyToAnnotation(fnk.key, aData, os);
-            CHECK_OP(os, NULL);
+            CHECK_OP(os, nullptr);
 
             AnnotationGroup *parentGroup = rootGroup->findSubgroupById(fnk.feature.parentFeatureId);
-            SAFE_POINT(NULL != parentGroup, L10N::nullPointerError("annotation group"), NULL);
+            SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("annotation group"), nullptr);
             parentGroup->addShallowAnnotations(QList<Annotation *>() << new Annotation(fnk.feature.id, aData, parentGroup, parentObj), false);
         }
     }
@@ -275,7 +275,7 @@ void U2FeatureUtils::updateFeatureParent(const U2DataId &featureId, const U2Data
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *fDbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != fDbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != fDbi, "Invalid DBI pointer encountered!", );
 
     fDbi->updateParentId(featureId, newParentId, os);
     CHECK_OP(os, );
@@ -287,7 +287,7 @@ void U2FeatureUtils::updateFeatureType(const U2DataId &featureId, U2FeatureType 
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *fDbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != fDbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != fDbi, "Invalid DBI pointer encountered!", );
 
     fDbi->updateType(featureId, newType, os);
 }
@@ -300,7 +300,7 @@ void U2FeatureUtils::updateFeatureName(const U2DataId &featureId, const QString 
     connection.open(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *fDbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != fDbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != fDbi, "Invalid DBI pointer encountered!", );
 
     fDbi->updateName(featureId, newName, os);
 }
@@ -313,7 +313,7 @@ void U2FeatureUtils::updateFeatureLocation(const U2DataId &featureId, const U2Da
     connection.open(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     dbi->removeFeaturesByParent(featureId, os, NotSelectParentFeature);
 
@@ -350,7 +350,7 @@ void U2FeatureUtils::addFeatureKey(const U2DataId &featureId, const U2FeatureKey
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     dbi->addKey(featureId, key, os);
 }
@@ -363,7 +363,7 @@ void U2FeatureUtils::removeFeatureKey(const U2DataId &featureId, const U2Feature
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, );
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", );
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", );
 
     dbi->removeKey(featureId, key, os);
 }
@@ -377,7 +377,7 @@ SharedAnnotationData U2FeatureUtils::getAnnotationDataFromFeature(const U2DataId
     connection.open(dbiRef, op);
     CHECK_OP(op, result);
     U2FeatureDbi *fDbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != fDbi, "Invalid DBI pointer encountered!", result);
+    SAFE_POINT(nullptr != fDbi, "Invalid DBI pointer encountered!", result);
 
     // extract feature keys first to check if the feature actually represents an annotation group
     QList<U2FeatureKey> fKeys = fDbi->getFeatureKeys(featureId, op);
@@ -430,7 +430,7 @@ QList<U2Feature> U2FeatureUtils::getFeaturesByParent(const U2DataId &parentFeatu
     connection.open(dbiRef, os);
     CHECK_OP(os, result);
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", result);
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", result);
 
     QScopedPointer<U2DbiIterator<U2Feature>> featureIter(dbi->getFeaturesByParent(parentFeatureId, QString(), U2DataId(), os, mode));
     CHECK_OP(os, result);
@@ -463,7 +463,7 @@ QList<U2Feature> U2FeatureUtils::getFeaturesByRoot(const U2DataId &rootFeatureId
     connection.open(dbiRef, os);
     CHECK_OP(os, result);
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Invalid DBI pointer encountered!", result);
+    SAFE_POINT(nullptr != dbi, "Invalid DBI pointer encountered!", result);
 
     QScopedPointer<U2DbiIterator<U2Feature>> featureIter(dbi->getFeaturesByRoot(rootFeatureId, featureClass, os));
     CHECK_OP(os, result);
@@ -495,7 +495,7 @@ U2Feature U2FeatureUtils::getFeatureById(const U2DataId &id, const U2DbiRef &dbi
     CHECK_OP(op, result);
 
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Feature DBI is not initialized!", result);
+    SAFE_POINT(nullptr != dbi, "Feature DBI is not initialized!", result);
 
     result = dbi->getFeature(id, op);
     return result;

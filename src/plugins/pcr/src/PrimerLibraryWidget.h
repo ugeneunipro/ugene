@@ -24,11 +24,11 @@
 
 #include <QAbstractItemModel>
 
+#include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
 
 #include <U2Gui/MainWindow.h>
 
-#include "Primer.h"
 #include "ui_PrimerLibraryWidget.h"
 
 namespace U2 {

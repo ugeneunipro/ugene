@@ -50,7 +50,7 @@ const QString PhmmerSearchDialog::DOM_E_MINUS_PREFIX = "1E";
 const QString PhmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME = "signal";
 
 PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
-    : QDialog(parent), seqCtx(NULL) {
+    : QDialog(parent), seqCtx(nullptr) {
     init(seqObj);
 }
 
@@ -60,10 +60,10 @@ PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget
 }
 
 void PhmmerSearchDialog::init(U2SequenceObject *seqObj) {
-    assert(NULL != seqObj);
+    assert(nullptr != seqObj);
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "60229196");
+    new HelpButton(this, buttonBox, "65930828");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -83,9 +83,9 @@ void PhmmerSearchDialog::init(U2SequenceObject *seqObj) {
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
     QWidget *firstTab = mainTabWidget->widget(0);
-    assert(NULL != firstTab);
+    assert(nullptr != firstTab);
     QVBoxLayout *curLayout = qobject_cast<QVBoxLayout *>(firstTab->layout());
-    assert(NULL != curLayout);
+    assert(nullptr != curLayout);
     curLayout->insertWidget(ANNOTATIONS_WIDGET_LOCATION, annotationsWidgetController->getWidget());
 
     connect(queryToolButton, SIGNAL(clicked()), SLOT(sl_queryToolButtonClicked()));
@@ -194,7 +194,7 @@ void PhmmerSearchDialog::accept() {
         QMessageBox::critical(this, tr("Error: bad arguments!"), err);
         return;
     }
-    if (seqCtx != NULL) {
+    if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 

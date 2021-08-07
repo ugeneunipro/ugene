@@ -78,7 +78,7 @@ const SAMFormat::Field SAMFormat::samFields[] = {    //alignment section fields 
 
 bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
     if (!samFields[num].getPattern().exactMatch(field)) {
-        if (ti != NULL) {
+        if (ti != nullptr) {
             ti->setError(SAMFormat::tr("Field \"%1\" not matched pattern \"%2\", expected pattern \"%3\"").arg(samFields[num].name).arg(QString(field)).arg(samFields[num].getPattern().pattern()));
         }
         return false;
@@ -87,7 +87,7 @@ bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
 }
 
 SAMFormat::SAMFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList() << "sam") {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList() << "sam") {
     formatName = tr("SAM");
     formatDescription = tr("The Sequence Alignment/Map (SAM) format is a generic alignment format for"
                            "storing read alignments against reference sequence");
@@ -168,7 +168,7 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray &rawData, const G
 //}
 
 Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* dbiRef */, const QVariantMap & /* _fs */, U2OpStatus & /* os */) {
-    FAIL("Not implemented", NULL);
+    FAIL("Not implemented", nullptr);
 
     //CHECK_EXT(io != NULL   && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     //
@@ -325,8 +325,8 @@ Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* 
 }
 
 void SAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    CHECK_EXT(d != NULL, os.setError(L10N::badArgument("doc")), );
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
+    CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
     QList<GObject *> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
     GUrl url = io->getURL();
@@ -450,7 +450,7 @@ bool SAMFormat::storeAlignedRead(int offset, const DNASequence &read, IOAdapter 
     static const QString rowDataNotCigar = "%1" + TAB + flag + TAB + "%2" + TAB + "%3" + TAB + mapq + TAB + "%4M" + TAB + mrnm + TAB + mpos + TAB + isize + TAB + "%5" + TAB + "%6" + "\n";
     static const QString rowDataCigar = "%1" + TAB + flag + TAB + "%2" + TAB + "%3" + TAB + mapq + TAB + "%4" + TAB + mrnm + TAB + mpos + TAB + isize + TAB + "%5" + TAB + "%6" + "\n";
 
-    if (NULL == io || !io->isOpen()) {
+    if (nullptr == io || !io->isOpen()) {
         return false;
     }
     io->setFormatMode(IOAdapter::TextMode);

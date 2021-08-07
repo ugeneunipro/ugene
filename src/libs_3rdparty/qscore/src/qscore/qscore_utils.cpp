@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "qscore.h"
 
 void Quit_Qscore(const char *szFormat, ...)

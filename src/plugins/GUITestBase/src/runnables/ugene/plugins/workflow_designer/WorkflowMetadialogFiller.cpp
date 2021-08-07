@@ -36,7 +36,7 @@ void WorkflowMetaDialogFiller::commonScenario() {
 
     QLineEdit *urlEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "urlEdit", dialog));
     GT_CHECK(urlEdit, "urlEdit not found");
-    GTLineEdit::setText(os, urlEdit, url);
+    GTLineEdit::setText(os, urlEdit, url, false, true);
 
     QLineEdit *nameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameEdit", dialog));
     GT_CHECK(nameEdit, "urlEdit not found");

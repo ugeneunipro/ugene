@@ -32,7 +32,7 @@
 namespace U2 {
 
 AssemblySequenceArea::AssemblySequenceArea(AssemblyBrowserUi *ui_, char skipChar_)
-    : QWidget(ui_), browser(ui_->getWindow()), ui(ui_), model(ui_->getModel()), cellRenderer(NULL), skipChar(skipChar_) {
+    : QWidget(ui_), browser(ui_->getWindow()), ui(ui_), model(ui_->getModel()), cellRenderer(nullptr), skipChar(skipChar_) {
     setFixedHeight(FIXED_HEIGHT);
     connectSlots();
     sl_redraw();
@@ -61,7 +61,7 @@ void AssemblySequenceArea::setDiffCellRenderer() {
 void AssemblySequenceArea::initCellRenderer(QString id) {
     AssemblyCellRendererFactoryRegistry *factories = browser->getCellRendererRegistry();
     AssemblyCellRendererFactory *f = factories->getFactoryById(id);
-    SAFE_POINT(f != NULL, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(id), );
+    SAFE_POINT(f != nullptr, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(id), );
     cellRenderer.reset(f->create());
 }
 
@@ -169,7 +169,7 @@ void AssemblySequenceArea::sl_zoomPerformed() {
 // AssemblyReferenceArea
 
 AssemblyReferenceArea::AssemblyReferenceArea(AssemblyBrowserUi *ui_)
-    : AssemblySequenceArea(ui_), referenceAreaMenu(new QMenu(this)), unassociateReferenceAction(NULL) {
+    : AssemblySequenceArea(ui_), referenceAreaMenu(new QMenu(this)), unassociateReferenceAction(nullptr) {
     setToolTip(tr("Reference sequence"));
     // setup menu
     referenceAreaMenu->addAction(ui_->getWindow()->getSetReferenceAction());

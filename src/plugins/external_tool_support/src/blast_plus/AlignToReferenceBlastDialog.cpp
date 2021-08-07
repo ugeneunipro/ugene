@@ -67,14 +67,14 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
 
 QString AlignToReferenceBlastCmdlineTask::Settings::getRowNamingPolicyString() const {
     switch (rowNaming) {
-    case SequenceName:
-        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
-        break;
-    case FileName:
-        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
-        break;
-    default:
-        FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
+        case SequenceName:
+            return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
+            break;
+        case FileName:
+            return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
+            break;
+        default:
+            FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
 }
 
@@ -94,8 +94,8 @@ const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-u
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
     : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      cmdlineTask(NULL),
-      loadRef(NULL),
+      cmdlineTask(nullptr),
+      loadRef(nullptr),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
     GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
 }
@@ -113,7 +113,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
 
     FormatDetectionConfig config;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
-    CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
+    CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong reference format")), );
 
     DocumentFormat *format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), setError(tr("wrong reference format")), );
@@ -188,7 +188,7 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
 
 QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(subTask != NULL, result);
+    CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
     if (loadRef == subTask) {
         QFileInfo resultFile(settings.resultAlignmentFile);
@@ -224,7 +224,7 @@ QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask)
         // add load document task
         FormatDetectionConfig config;
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
-        CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
+        CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong output format")), result);
 
         DocumentFormat *format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
@@ -242,7 +242,7 @@ void AlignToReferenceBlastCmdlineTask::run() {
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
-    if (loadRef != NULL) {
+    if (loadRef != nullptr) {
         loadRef->cleanup();
     }
     return ReportResult_Finished;
@@ -250,12 +250,12 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
 
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
-      saveController(NULL),
+      saveController(nullptr),
       savableWidget(this) {
     setupUi(this);
     GCOUNTER(cvar, "'Map reads to reference' dialog opening");
 
-    new HelpButton(this, buttonBox, "60228130");
+    new HelpButton(this, buttonBox, "65929762");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -280,7 +280,7 @@ void AlignToReferenceBlastDialog::initSaveController() {
     conf.defaultFormatId = BaseDocumentFormats::UGENEDB;
     conf.fileDialogButton = setOutputButton;
     conf.fileNameEdit = outputLineEdit;
-    conf.formatCombo = NULL;
+    conf.formatCombo = nullptr;
     conf.parentWidget = this;
     conf.saveTitle = tr("Select Output File...");
     conf.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + DEFAULT_OUTPUT_FILE_NAME;
@@ -307,7 +307,7 @@ void AlignToReferenceBlastDialog::accept() {
     QStringList readUrls;
     for (int i = 0; i < readsListWidget->count(); i++) {
         QListWidgetItem *item = readsListWidget->item(i);
-        SAFE_POINT(item != NULL, "Item is NULL", );
+        SAFE_POINT(item != nullptr, "Item is NULL", );
         QString s = item->text();
         readUrls.append(s);
     }

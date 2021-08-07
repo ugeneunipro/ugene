@@ -35,15 +35,15 @@ QString U2Region::toString(Format format) const {
     QString halfLength = FormatUtils::splitThousands(length / 2);
 
     switch (format) {
-    case FormatDash:
-        return QString("%1 - %2").arg(start, end);
-    case FormatPlusMinus:
-        return QString("%1 &plusmn; %2").arg(middle, halfLength);
-    case FormatDots:
-        return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
-    case FormatBrackets:
-    default:
-        return QString("[%1, %2)").arg(start, end);
+        case FormatDash:
+            return QString("%1 - %2").arg(start, end);
+        case FormatPlusMinus:
+            return QString("%1 &plusmn; %2").arg(middle, halfLength);
+        case FormatDots:
+            return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
+        case FormatBrackets:
+        default:
+            return QString("[%1, %2)").arg(start, end);
     }
 }
 
@@ -70,7 +70,7 @@ QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region> &_regions
 
 QVector<U2Region> U2Region::join(QVector<U2Region> &regions) {
     QVector<U2Region> result = regions;
-    qStableSort(result.begin(), result.end());    //sort by region start pos first
+    std::stable_sort(result.begin(), result.end());    //sort by region start pos first
     for (int i = 0; i < result.size() - 1;) {
         const U2Region &ri0 = result[i];
         const U2Region &ri1 = result[i + 1];
@@ -171,6 +171,14 @@ int U2Region::findOverlappingRegion(const QVector<U2Region> &rs) const {
         }
     }
     return -1;
+}
+
+U2Region U2Region::fromXRange(const QRect &rect) {
+    return U2Region(rect.x(), rect.width());
+}
+
+U2Region U2Region::fromYRange(const QRect &rect) {
+    return U2Region(rect.y(), rect.height());
 }
 
 static bool _registerMeta() {

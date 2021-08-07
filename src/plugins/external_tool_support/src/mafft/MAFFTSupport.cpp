@@ -65,7 +65,7 @@ MAFFTSupport::MAFFTSupport()
     versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
-    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAligmnentAlgorithm());
+    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAlignmentAlgorithm());
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {
@@ -119,28 +119,20 @@ MAFFTSupportContext::MAFFTSupportContext(QObject *p)
 }
 
 void MAFFTSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
-    CHECK(msaEditor->getMaObject() != NULL, );
+    auto msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
-    bool objLocked = msaEditor->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
-
-    AlignMsaAction *alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
+    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, msaEditor, tr("Align with MAFFT..."), 2000);
     alignAction->setObjectName("Align with MAFFT");
-
-    addViewAction(alignAction);
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
-
-    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
+    addViewAction(alignAction);
 }
 
-void MAFFTSupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void MAFFTSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
@@ -181,7 +173,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
 
     MSAEditor *msaEditor = action->getMsaEditor();
     MultipleSequenceAlignmentObject *alignmentObject = msaEditor->getMaObject();
-    SAFE_POINT(alignmentObject != NULL, "Alignment object is NULL during aligning with MAFFT!", );
+    SAFE_POINT(alignmentObject != nullptr, "Alignment object is NULL during aligning with MAFFT!", );
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!", );
 
     MAFFTSupportTaskSettings settings;
@@ -197,8 +189,8 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 }    // namespace U2

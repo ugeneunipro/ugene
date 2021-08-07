@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     PhylipFormat(QObject *p, const DocumentFormatId &id);

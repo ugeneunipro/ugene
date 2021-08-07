@@ -1,0 +1,19 @@
+<multi-test>
+
+    <!-- uHMMER Search test: nucleic dna extended alphabet, emulate hmmsw behaviour-->
+
+    <load-document index="doc" url="fasta/Nucl_dna_ext_al_seq.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/nucl_dna_ext_al/COI_na_dna_ext(hmmsw).hmm" seqdoc="doc" expert_opt="0"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="1"/>
+
+    <check-annotation-location annotation="ann" location="1240..1242" complement="0"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="Score" value="-15.1"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="E-value" value="1"/>
+
+</multi-test>

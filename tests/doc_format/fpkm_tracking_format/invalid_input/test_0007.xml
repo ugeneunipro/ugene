@@ -1,0 +1,7 @@
+<!-- Verify an invalid FPKM File Format that can't be opened: invalid header - incorrect name of the 'coverage' column. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="fpkm_tracking_format/invalid/invalid_header_coverage_column.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+</multi-test>

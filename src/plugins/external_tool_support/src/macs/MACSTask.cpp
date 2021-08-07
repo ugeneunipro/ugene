@@ -50,7 +50,7 @@ const QString MACSTask::BASE_DIR_NAME("macs_tmp");
 const QString MACSTask::BASE_SUBDIR_NAME("macs");
 
 MACSTask::MACSTask(const MACSSettings &_settings, const GUrl &_treatUrl, const GUrl &_conUrl)
-    : ExternalToolSupportTask(tr("MACS peak calling"), TaskFlag_CollectChildrenWarnings), settings(_settings), treatUrl(_treatUrl), conUrl(_conUrl), peaksDoc(NULL), summitsDoc(NULL), peaksTask(NULL), summitsTask(NULL), etTask(NULL) {
+    : ExternalToolSupportTask(tr("MACS peak calling"), TaskFlag_CollectChildrenWarnings), settings(_settings), treatUrl(_treatUrl), conUrl(_conUrl), peaksDoc(nullptr), summitsDoc(nullptr), peaksTask(nullptr), summitsTask(nullptr), etTask(nullptr) {
     GCOUNTER(cvar, "NGS:MACSTask");
 }
 
@@ -60,9 +60,9 @@ MACSTask::~MACSTask() {
 
 void MACSTask::cleanup() {
     delete peaksDoc;
-    peaksDoc = NULL;
+    peaksDoc = nullptr;
     delete summitsDoc;
-    summitsDoc = NULL;
+    summitsDoc = nullptr;
 
     //remove tmp files
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BASE_DIR_NAME);
@@ -133,12 +133,12 @@ const MACSSettings &MACSTask::getSettings() {
 
 QList<AnnotationTableObject *> MACSTask::getPeaks() const {
     QList<AnnotationTableObject *> res;
-    CHECK(NULL != peaksDoc, res);
+    CHECK(nullptr != peaksDoc, res);
 
     const QList<GObject *> objects = peaksDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     foreach (GObject *ao, objects) {
         AnnotationTableObject *aobj = qobject_cast<AnnotationTableObject *>(ao);
-        SAFE_POINT(NULL != aobj, L10N::nullPointerError("annotation table object"), res);
+        SAFE_POINT(nullptr != aobj, L10N::nullPointerError("annotation table object"), res);
         res << aobj;
         peaksDoc->removeObject(aobj, DocumentObjectRemovalMode_Release);
     }
@@ -148,12 +148,12 @@ QList<AnnotationTableObject *> MACSTask::getPeaks() const {
 
 QList<AnnotationTableObject *> MACSTask::getPeakSummits() const {
     QList<AnnotationTableObject *> res;
-    CHECK(NULL != summitsDoc, res);
+    CHECK(nullptr != summitsDoc, res);
 
     const QList<GObject *> objects = summitsDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     foreach (GObject *ao, objects) {
         AnnotationTableObject *aobj = qobject_cast<AnnotationTableObject *>(ao);
-        SAFE_POINT(NULL != aobj, L10N::nullPointerError("annotation table object"), res);
+        SAFE_POINT(nullptr != aobj, L10N::nullPointerError("annotation table object"), res);
         res << aobj;
         summitsDoc->removeObject(aobj, DocumentObjectRemovalMode_Release);
     }

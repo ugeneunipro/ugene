@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- fn3.hmm, titin.fa amino alphabet
+	./hmmsearch fn3.hmm titin.fa > g_fn3_hmm_titin_fa.out -->
+
+    <load-document index="seq" url="fasta/titin.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/build/fn3.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/amino_al/fr3_titin/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_fn3_hmm_titin_fa.out" actualOut="common/hmmsearch/general_search/default_options/amino_al/fr3_titin/output.txt"/>
+
+</multi-test>

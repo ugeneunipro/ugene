@@ -40,11 +40,11 @@ void ElapsedTimeUpdater::sl_taskFinished(Task *) {
     stop();
     qint64 newElapsedTime = GTimer::currentTimeMicros() - executedTask->getTimeInfo().startTime;
     monitor->addTick(newElapsedTime - elapsedTime, runningActorId);
-    executedTask = NULL;
+    executedTask = nullptr;
 }
 
 ElapsedTimeUpdater::~ElapsedTimeUpdater() {
-    CHECK(NULL != executedTask, );
+    CHECK(nullptr != executedTask, );
     qint64 newElapsedTime = executedTask->getTimeInfo().finishTime - executedTask->getTimeInfo().startTime;
     if (newElapsedTime > elapsedTime) {
         monitor->addTick(newElapsedTime - elapsedTime, runningActorId);

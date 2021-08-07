@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Load document from every MMDB file in specified dir -->
+
+    <try-load-all-mmdb-documents/>
+
+</multi-test>

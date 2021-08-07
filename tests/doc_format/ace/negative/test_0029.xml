@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document url="ace/one_string.ace" format="ace" io="local_file" message="Line is too long"/>
+
+</multi-test>

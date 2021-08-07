@@ -40,7 +40,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
                                                                      const QList<DNASequence> &sequenceList,
                                                                      int insertRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
+    : Task(tr("Add sequences to alignment task"), TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
       sequenceList(sequenceList),
       insertRowIndex(insertRowIndex),
       maObj(obj),

@@ -31,25 +31,22 @@ namespace U2 {
 
 MsaEditorNameList::MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar) {
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
 }
 
-void MsaEditorNameList::sl_buildStaticMenu(GObjectView *, QMenu *menu) {
-    buildMenu(menu);
-}
-
-void MsaEditorNameList::sl_buildContextMenu(GObjectView *, QMenu *menu) {
-    buildMenu(menu);
+void MsaEditorNameList::sl_buildMenu(GObjectView *, QMenu *menu, const QString &menuType) {
+    if (menuType == MsaEditorMenuType::CONTEXT || menuType == MsaEditorMenuType::STATIC) {
+        buildMenu(menu);
+    }
 }
 
 void MsaEditorNameList::buildMenu(QMenu *menu) {
     QMenu *editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu not found", );
+    SAFE_POINT(editMenu != nullptr, "editMenu not found", );
 
     editMenu->insertAction(editMenu->actions().last(), removeSequenceAction);
 
-    CHECK(qobject_cast<MSAEditor *>(editor) != NULL, );
+    CHECK(qobject_cast<MSAEditor *>(editor) != nullptr, );
     CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
 
     editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);

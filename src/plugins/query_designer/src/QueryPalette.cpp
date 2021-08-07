@@ -54,7 +54,7 @@ public:
             QStyleOptionButton buttonOption;
 
             buttonOption.state = option.state;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             buttonOption.state |= QStyle::State_Raised;
 #endif
             buttonOption.state &= ~QStyle::State_HasFocus;
@@ -138,7 +138,7 @@ private:
 const QString QueryPalette::MIME_TYPE("application/x-ugene-query-id");
 
 QueryPalette::QueryPalette(QWidget *parent /* =NULL */)
-    : QTreeWidget(parent), overItem(NULL), currentAction(NULL) {
+    : QTreeWidget(parent), overItem(nullptr), currentAction(nullptr) {
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
     setItemDelegate(new PaletteDelegate(this));
@@ -219,7 +219,7 @@ void QueryPalette::sl_selectProcess(bool checked) {
     }
     if (!checked) {
         update(indexFromItem(actionMap.value(currentAction)));
-        currentAction = NULL;
+        currentAction = nullptr;
     } else {
         currentAction = qobject_cast<QAction *>(sender());
         assert(currentAction);
@@ -228,7 +228,7 @@ void QueryPalette::sl_selectProcess(bool checked) {
     if (checked && currentAction && currentAction->data().type() != QVariant::String) {
         emit processSelected(currentAction->data().value<QDActorPrototype *>());
     } else {
-        emit processSelected(NULL);
+        emit processSelected(nullptr);
     }
 }
 
@@ -295,7 +295,7 @@ void QueryPalette::mouseMoveEvent(QMouseEvent *event) {
 
 void QueryPalette::leaveEvent(QEvent *) {
     QTreeWidgetItem *prev = overItem;
-    overItem = NULL;
+    overItem = nullptr;
     if (prev) {
         QModelIndex index = indexFromItem(prev);
         update(index);
@@ -321,7 +321,7 @@ void QueryPalette::restoreState(const QVariant &v) {
 void QueryPalette::resetSelection() {
     if (currentAction) {
         currentAction->setChecked(false);
-        currentAction = NULL;
+        currentAction = nullptr;
     }
 }
 

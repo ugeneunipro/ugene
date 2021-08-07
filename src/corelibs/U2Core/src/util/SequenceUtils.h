@@ -37,7 +37,7 @@ public:
     /** Extract sequence parts marked by the regions
         Note: the order of complemented regions is also reversed
         */
-    static QList<QByteArray> extractRegions(const QByteArray &seq, const QVector<U2Region> &regions, const DNATranslation *complTT, const DNATranslation *aminoTT = NULL, bool circular = false, bool join = false);
+    static QList<QByteArray> extractRegions(const QByteArray &seq, const QVector<U2Region> &regions, const DNATranslation *complTT, const DNATranslation *aminoTT = nullptr, bool circular = false, bool join = false);
 
     /** Joins sequence parts into a single sequence, with given gap */
     static QByteArray joinRegions(const QList<QByteArray> &parts, int gapSize = 0);

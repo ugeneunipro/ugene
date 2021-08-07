@@ -27,10 +27,9 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2Msa.h>
-
-#include "Primer.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 
@@ -52,7 +51,7 @@ bool InSilicoPcrProduct::isValid() const {
 
 InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlags_FOSE_COSC),
-      settings(settings), forwardSearch(NULL), reverseSearch(NULL), minProductSize(0) {
+      settings(settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
 }
@@ -75,9 +74,9 @@ int getMaxError(const InSilicoPcrTaskSettings &settings, U2Strand::Direction dir
 FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Direction direction) {
     FindAlgorithmTaskSettings result;
     const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    SAFE_POINT_EXT(NULL != alphabet, setError(L10N::nullPointerError("DNA Alphabet")), result);
+    SAFE_POINT_EXT(nullptr != alphabet, setError(L10N::nullPointerError("DNA Alphabet")), result);
     DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT_EXT(NULL != translator, setError(L10N::nullPointerError("DNA Translator")), result);
+    SAFE_POINT_EXT(nullptr != translator, setError(L10N::nullPointerError("DNA Translator")), result);
 
     result.sequence = settings.sequence;
     result.searchIsCircular = settings.isCircular;

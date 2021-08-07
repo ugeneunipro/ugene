@@ -79,16 +79,16 @@ inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
 
 QString getLogLevelName(LogLevel l) {
     switch (l) {
-    case LogLevel_TRACE:
-        return "TRACE";
-    case LogLevel_DETAILS:
-        return "DETAILS";
-    case LogLevel_INFO:
-        return "INFO";
-    case LogLevel_ERROR:
-        return "ERROR";
-    default:
-        assert(0);
+        case LogLevel_TRACE:
+            return "TRACE";
+        case LogLevel_DETAILS:
+            return "DETAILS";
+        case LogLevel_INFO:
+            return "INFO";
+        case LogLevel_ERROR:
+            return "ERROR";
+        default:
+            assert(0);
     }
     return "";
 }
@@ -108,8 +108,8 @@ const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-f
 QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree) {
     QList<long> children;
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    char *buff = NULL;
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
+    char *buff = nullptr;
     size_t len = 255;
     char command[256] = {0};
 
@@ -144,7 +144,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     do {
         if (pe32.th32ParentProcessID == processId) {
             hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-            if (hProcess != NULL) {
+            if (hProcess != nullptr) {
                 CloseHandle(hProcess);
                 children << pe32.th32ProcessID;
             }
@@ -178,7 +178,7 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
         uiLog.trace("    kill process: " + QString::number(child));
         result += killProcess(child);
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
         usleep(1000000);
 #elif defined(Q_OS_WIN)
         Sleep(1000);
@@ -204,7 +204,7 @@ int CmdlineTaskRunner::killProcessTree(qint64 processId) {
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
     int result = 0;
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     int exist = QProcess::execute("kill -0 " + QString::number(processId));
     if (exist == 0) {
         result = QProcess::execute("kill -9 " + QString::number(processId));
@@ -213,7 +213,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
     DWORD dwDesiredAccess = PROCESS_TERMINATE;
     BOOL bInheritHandle = FALSE;
     HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, processId);
-    if (hProcess != NULL) {
+    if (hProcess != nullptr) {
         result = TerminateProcess(hProcess, 1);
         CloseHandle(hProcess);
     }
@@ -222,7 +222,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
 }
 
 CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
-    : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL) {
+    : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(nullptr) {
     tpm = Progress_Manual;
 }
 
@@ -238,7 +238,6 @@ void CmdlineTaskRunner::prepare() {
         args << QString("--%1=\"%2\"").arg(REPORT_FILE_ARG).arg(config.reportFile);
     }
 
-    args << config.arguments;
     if (config.withPluginList) {
         args << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(config.pluginList.join(";"));
     }
@@ -247,6 +246,8 @@ void CmdlineTaskRunner::prepare() {
         QString logLevel = getLogLevelName(config.logLevel).toLower();
         args << ("--log-level-" + logLevel);
     }
+
+    args << config.arguments;
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert(ENV_SEND_CRASH_REPORTS, "0");
@@ -261,7 +262,7 @@ void CmdlineTaskRunner::prepare() {
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
     process->start(cmdlineUgenePath, args);
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-    QString processId = NULL != process->pid() ? QString::number(process->pid()->dwProcessId) : "unknown";
+    QString processId = nullptr != process->pid() ? QString::number(process->pid()->dwProcessId) : "unknown";
     processLogPrefix = QString("process:%1>").arg(processId);
 #else
     processLogPrefix = QString("process:%1>").arg(process->pid());
@@ -271,7 +272,7 @@ void CmdlineTaskRunner::prepare() {
 }
 
 Task::ReportResult CmdlineTaskRunner::report() {
-    CHECK(NULL != process, ReportResult_Finished);
+    CHECK(nullptr != process, ReportResult_Finished);
     if (hasError()) {
         return ReportResult_Finished;
     }
@@ -336,20 +337,20 @@ QString CmdlineTaskRunner::readStdout() {
 void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
     QString msg;
     switch (error) {
-    case QProcess::FailedToStart:
-        msg = tr("The process '%1' failed to start. Either the invoked program is missing, "
-                 "or you may have insufficient permissions to invoke the program")
-                  .arg(CMDLineRegistryUtils::getCmdlineUgenePath());
-        break;
-    case QProcess::Crashed:
-        msg = tr("The process '%1' crashed some time after starting successfully").arg(CMDLineRegistryUtils::getCmdlineUgenePath());
-        break;
-    case QProcess::WriteError:
-    case QProcess::ReadError:
-        msg = tr("Error occurred while reading from or writing to channel");
-        break;
-    default:
-        msg = tr("Unknown error occurred");
+        case QProcess::FailedToStart:
+            msg = tr("The process '%1' failed to start. Either the invoked program is missing, "
+                     "or you may have insufficient permissions to invoke the program")
+                      .arg(CMDLineRegistryUtils::getCmdlineUgenePath());
+            break;
+        case QProcess::Crashed:
+            msg = tr("The process '%1' crashed some time after starting successfully").arg(CMDLineRegistryUtils::getCmdlineUgenePath());
+            break;
+        case QProcess::WriteError:
+        case QProcess::ReadError:
+            msg = tr("Error occurred while reading from or writing to channel");
+            break;
+        default:
+            msg = tr("Unknown error occurred");
     }
     setError(msg);
 }

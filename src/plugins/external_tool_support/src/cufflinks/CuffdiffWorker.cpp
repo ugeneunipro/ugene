@@ -303,7 +303,7 @@ QString CuffdiffPrompter::composeRichDoc() {
  * CuffdiffWorker
  *****************************/
 CuffdiffWorker::CuffdiffWorker(Actor *actor)
-    : BaseWorker(actor, false), inAssembly(NULL), inTranscript(NULL), groupBySamples(false) {
+    : BaseWorker(actor, false), inAssembly(nullptr), inTranscript(nullptr), groupBySamples(false) {
 }
 
 void CuffdiffWorker::initSlotsState() {
@@ -340,7 +340,7 @@ Task *CuffdiffWorker::tick() {
         takeAssembly();
     }
     if (!inAssembly->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (inTranscript->hasMessage()) {
@@ -351,7 +351,7 @@ Task *CuffdiffWorker::tick() {
     } else if (inTranscript->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void CuffdiffWorker::sl_onTaskFinished() {

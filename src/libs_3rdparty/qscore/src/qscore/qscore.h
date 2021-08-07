@@ -14,7 +14,10 @@
 #include <vector>
 #include <string>
 
+#ifndef UINT_MAX
 #define UINT_MAX 0xffffffff
+#endif
+
 #ifdef _MSC_VER
 #  if _MSC_VER < 1900
 #include <hash_map>
@@ -24,8 +27,8 @@ typedef stdext::hash_map<std::string, unsigned> StrToInt;
 typedef std::unordered_map<std::string, unsigned> StrToInt;
 #  endif
 #else
+#undef __DEPRECATED // disable warning message about deprecated dependency.
 #include <ext/hash_map>
-#define HASH_MAP	
 
 struct HashStringToUnsigned
 	{

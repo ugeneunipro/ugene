@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerLibrary.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -34,7 +35,6 @@
 #include <U2Gui/HelpButton.h>
 
 #include "EditPrimerDialog.h"
-#include "PrimerLibrary.h"
 #include "PrimerLibraryTable.h"
 #include "PrimerLibraryTableController.h"
 #include "export/ExportPrimersDialog.h"
@@ -50,9 +50,9 @@
 namespace U2 {
 
 PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
-    : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL) {
+    : QWidget(parent), editPrimerButton(nullptr), removePrimersButton(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229151");
+    new HelpButton(this, buttonBox, "65930783");
 
     QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));

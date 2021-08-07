@@ -45,6 +45,7 @@
 
 namespace U2 {
 
+//TODO: calling tr() int static context! Translator is not initialized yet!
 const QString GenomeAlignerTask::taskName(QObject::tr("UGENE Genome Aligner"));
 const QString GenomeAlignerTask::OPTION_ALIGN_REVERSED("align_reversed");
 const QString GenomeAlignerTask::OPTION_OPENCL("use_gpu_optimization");
@@ -53,26 +54,24 @@ const QString GenomeAlignerTask::OPTION_MISMATCHES("mismatches_allowed");
 const QString GenomeAlignerTask::OPTION_PERCENTAGE_MISMATCHES("mismatches_percentage_allowed");
 const QString GenomeAlignerTask::OPTION_INDEX_DIR("dir_of_the_index_file");
 const QString GenomeAlignerTask::OPTION_BEST("best_mode");
-const QString GenomeAlignerTask::OPTION_DBI_IO("dbi_io");
 const QString GenomeAlignerTask::OPTION_QUAL_THRESHOLD("quality_threshold");
 const QString GenomeAlignerTask::OPTION_READS_MEMORY_SIZE("reads_mem_size");
 const QString GenomeAlignerTask::OPTION_SEQ_PART_SIZE("seq_part_size");
 
 GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settings, bool _justBuildIndex)
     : DnaAssemblyToReferenceTask(_settings, TaskFlags_NR_FOSE_COSC, _justBuildIndex),
-      loadDbiTask(NULL),
-      createIndexTask(NULL),
-      readTask(NULL),
-      findTask(NULL),
-      writeTask(NULL),
-      pWriteTask(NULL),
-      unzipTask(NULL),
-      seqReader(NULL),
-      seqWriter(NULL),
+      loadDbiTask(nullptr),
+      createIndexTask(nullptr),
+      readTask(nullptr),
+      findTask(nullptr),
+      writeTask(nullptr),
+      pWriteTask(nullptr),
+      unzipTask(nullptr),
+      seqReader(nullptr),
+      seqWriter(nullptr),
       justBuildIndex(_justBuildIndex),
-      bunchSize(0),
-      index(NULL),
-      lastQuery(NULL) {
+      index(nullptr),
+      lastQuery(nullptr) {
     GCOUNTER(cvar, "GenomeAlignerTask");
     setMaxParallelSubtasks(4);
     hasResults = false;
@@ -80,7 +79,6 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
     readsAligned = 0;
     shortreadLoadTime = 0;
     resultWriteTime = 0;
-    searchTime = 0;
     indexLoadTime = 0;
     shortreadIOTime = 0;
     currentProgress = 0.0f;
@@ -154,7 +152,7 @@ void GenomeAlignerTask::prepare() {
 
     setupCreateIndexTask();
 
-    if (unzipTask != NULL) {
+    if (unzipTask != nullptr) {
         addSubTask(unzipTask);
     } else {
         addSubTask(createIndexTask);
@@ -178,9 +176,9 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
     }
 
     if (subTask == createIndexTask) {
-        SAFE_POINT(createIndexTask != NULL, "Create index task error", subTasks);
+        SAFE_POINT(createIndexTask != nullptr, "Create index task error", subTasks);
         delete index;
-        index = NULL;
+        index = nullptr;
         index = createIndexTask->index;
     }
 
@@ -191,7 +189,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
         return subTasks;
     }
 
-    assert(createIndexTask != NULL);
+    assert(createIndexTask != nullptr);
     qint64 time = (subTask->getTimeInfo().finishTime - subTask->getTimeInfo().startTime);
     if (subTask == createIndexTask) {
         seqReader = new GenomeAlignerUrlReader(settings.getShortReadUrls());
@@ -204,7 +202,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
                 } else {
                     setError(error);
                 }
-                if (NULL != pWriteTask) {
+                if (nullptr != pWriteTask) {
                     pWriteTask->setFinished();
                 }
             }
@@ -226,7 +224,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
                                                        referenceSequenceUrl);
             } catch (const QString &exeptionMessage) {
                 setError(exeptionMessage);
-                if (NULL != pWriteTask) {
+                if (nullptr != pWriteTask) {
                     pWriteTask->setFinished();
                 }
                 return subTasks;
@@ -287,7 +285,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
 
             alignContext.minReadLength = INT_MAX;
             alignContext.maxReadLength = 0;
-            readTask = new ReadShortReadsSubTask(&lastQuery, seqReader, settings, alignContext, readMemSize * 1000 * 1000);
+            readTask = new ReadShortReadsSubTask(seqReader, settings, alignContext, readMemSize * 1000 * 1000);
             readTask->setSubtaskProgressWeight(0.0f);
             subTasks.append(readTask);
             findTask = new GenomeAlignerFindTask(index, &alignContext, pWriteTask);
@@ -336,7 +334,7 @@ Task::ReportResult GenomeAlignerTask::report() {
 
     qint64 nReadsProcessed = readsAligned;
     if (!alignContext.bestMode) {
-        SAFE_POINT_EXT(NULL != pWriteTask,
+        SAFE_POINT_EXT(nullptr != pWriteTask,
                        stateInfo.setError("No parallel write task in non best mode"),
                        ReportResult_Finished);
         nReadsProcessed = pWriteTask->getWrittenReadsCount();

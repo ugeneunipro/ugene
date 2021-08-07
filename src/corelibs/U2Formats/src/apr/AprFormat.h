@@ -35,7 +35,7 @@ namespace U2 {
 class IOAdapter;
 class MultipleSequenceAlignment;
 
-class U2FORMATS_EXPORT AprFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT AprFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     AprFormat(QObject *p);

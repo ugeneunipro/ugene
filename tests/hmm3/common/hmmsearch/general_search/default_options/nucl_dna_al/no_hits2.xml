@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- simple.hmm, COI.fa dna extended alphabet
+	./hmmsearch simple.hmm COI.fa > g_simple_hmm_COI_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/COI.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/simple.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/nucl_dna_al/no_hits2/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_simple_hmm_COI_fa.out" actualOut="common/hmmsearch/general_search/default_options/nucl_dna_al/no_hits2/output.txt"/>
+
+</multi-test>

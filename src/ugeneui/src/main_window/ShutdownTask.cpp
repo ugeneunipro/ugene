@@ -64,12 +64,12 @@ static Service *findServiceToDisable(ServiceRegistry *sr) {
         }
     }
     assert(nEnabled == 0);
-    return NULL;
+    return nullptr;
 }
 
 static bool closeViews() {
     MWMDIManager *wm = AppContext::getMainWindow()->getMDIManager();
-    MWMDIWindow *w = NULL;
+    MWMDIWindow *w = nullptr;
     // close windows one by one, asking active window first
     // straightforward foreach() cycle appears not flexible enough,
     // as interdependent windows may close each other (happened with TestRunner and TestReporter)
@@ -89,10 +89,10 @@ static bool closeViews() {
 // This function prepends empty string to RecentProjects in UGENE SETTINGS in order
 // to prevent project auto loading on next UGENE launch
 static void cancelProjectAutoLoad() {
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     QString emptyUrl;
     recentFiles.prepend(emptyUrl);
-    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles, true);
+    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles);
 }
 
 void ShutdownTask::prepare() {
@@ -100,7 +100,7 @@ void ShutdownTask::prepare() {
     mw->setShutDownInProcess(true);
 
     Project *currProject = AppContext::getProject();
-    if (currProject == NULL) {
+    if (currProject == nullptr) {
         cancelProjectAutoLoad();
     }
 
@@ -142,14 +142,14 @@ QList<Task *> ShutdownTask::onSubTaskFinished(Task *subTask) {
 
     ServiceRegistry *sr = AppContext::getServiceRegistry();
     Service *s = findServiceToDisable(sr);
-    if (s != NULL) {
+    if (s != nullptr) {
         res.append(sr->disableServiceTask(s));
     }
 
     // fetch documents from project while it's not released
     if (!docsToRemoveAreFetched) {
         Project *proj = AppContext::getProject();
-        if (NULL != proj) {
+        if (nullptr != proj) {
             docsToRemove = proj->getDocuments();
         }
         docsToRemoveAreFetched = true;
@@ -195,7 +195,7 @@ CloseWindowsTask::CloseWindowsTask()
 
 void CloseWindowsTask::prepare() {
     Project *proj = AppContext::getProject();
-    if (proj == NULL) {
+    if (proj == nullptr) {
         return;
     }
     if (proj->isTreeItemModified() || proj->getProjectURL().isEmpty()) {

@@ -1,0 +1,17 @@
+<multi-test>
+    <remove-temp-dir url="bwa3"/>
+    <create-temp-dir url="bwa3"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out_dir="!tmp_data_dir!bwa3"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            use-miss-prob="false"
+            max-diff="2"
+            seed-length="64"
+            max-gap="3"
+            best-hits="5"
+    />
+    <compare-sam-by-length file1="bwa3/bwa/out.sam" file2="bwa/aln_pattern/max_diff/e_coli_max_diff_2.sam"/>
+    <remove-temp-dir url="bwa3"/>
+</multi-test>

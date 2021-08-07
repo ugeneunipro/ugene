@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wblosum fast enone, model: Asp, has SS_cons, RF annotations
+	cmd: ./hmmbuild -seed 15 -fast -wblosum -wid 0.57 -enone 2-Hacid_dh_C_wblosum_fast_enone.hmm 2-Hacid_dh_C.sto -->
+
+    <uhmmer3-build inputFile="stockholm/2-Hacid_dh_C.sto" outputFile="test_2-Hacid_dh_C_wblosum_fast_enone.hmm"
+                   seed="15" mc="fast" rw="wblosum 0.57" ew="enone" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/2-Hacid_dh_C_wblosum_fast_enone.hmm" file2="test_2-Hacid_dh_C_wblosum_fast_enone.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

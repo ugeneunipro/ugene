@@ -75,7 +75,7 @@ class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentR
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData = NULL);
+    MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData = nullptr);
 
     /** Creates a row in memory. */
     MultipleSequenceAlignmentRowData(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData);
@@ -221,6 +221,8 @@ public:
 
     MultipleSequenceAlignmentRow getExplicitCopy() const;
 
+    MultipleAlignmentData *getMultipleAlignmentData() const override;
+
 private:
     /** Splits input to sequence bytes and gaps model */
     static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);
@@ -230,12 +232,6 @@ private:
      * Warning: it is not verified that the row sequence is not empty.
      */
     static void addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset);
-
-    /**
-     * Joins sequence chars and gaps into one byte array.
-     * "keepOffset" specifies to take into account gaps at the beginning of the row.
-     */
-    QByteArray joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const;
 
     /** Gets the length of all gaps */
     inline int getGapsLength() const;

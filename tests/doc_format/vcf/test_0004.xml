@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- A file with long strings -->
+    <load-document index="doc" url="vcf/G55414.annotated.vcf.gz" io="local_file_gzip" format="vcf"/>
+
+</multi-test>

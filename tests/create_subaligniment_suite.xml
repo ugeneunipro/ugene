@@ -1,0 +1,4 @@
+<suite name="Create subaligniment tests">
+
+    <test-dir path="subaligniment" test-format="XML" test-ext="*.xml"/>
+</suite>

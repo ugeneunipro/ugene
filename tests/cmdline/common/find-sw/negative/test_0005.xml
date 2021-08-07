@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_swn0005_tmp.gbk"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/aggct.fa"
+                 score="qqqwead"
+                 matrix="auto"
+                 filter="none"
+                 message="Incorrect value"
+    />
+</multi-test>

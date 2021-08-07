@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- test must find part in first position, in last position, in the middle( NUKL DNA ALPHABET)-->
+
+    <load-document index="doc" url="genbank/base_ext_nucl_all_symb.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="B" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="RAATGTGAAT" seqstart="0"/>
+
+    <check-sequence-part obj="obj" value="GAATTGCA" seqstart="6"/>
+
+    <check-sequence-part obj="obj" value="GCATTCCGGG" seqstart="60"/>
+
+</multi-test>

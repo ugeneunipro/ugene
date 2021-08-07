@@ -33,7 +33,7 @@ namespace U2 {
 PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
     : QDialog(w) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229281");
+    new HelpButton(this, buttonBox, "65930913");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -160,7 +160,7 @@ JasparGroupTreeItem::JasparGroupTreeItem(const QString &_s)
 }
 
 bool JasparGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
-    if (other.parent() != NULL) {
+    if (other.parent() != nullptr) {
         return true;
     }
     int col = treeWidget()->sortColumn();

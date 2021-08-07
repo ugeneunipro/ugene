@@ -48,9 +48,9 @@ namespace U2 {
 
 CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings &_settings)
     : ExternalToolSupportTask("CAP3SupportTask", TaskFlags_NR_FOSE_COSC),
-      prepareDataForCAP3Task(NULL),
-      cap3Task(NULL),
-      copyResultTask(NULL),
+      prepareDataForCAP3Task(nullptr),
+      cap3Task(nullptr),
+      copyResultTask(nullptr),
       settings(_settings) {
     GCOUNTER(cvar, "CAP3SupportTask");
     setMaxParallelSubtasks(1);
@@ -152,7 +152,7 @@ QList<Task *> RunCap3AndOpenResultTask::onSubTaskFinished(Task *subTask) {
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = !openView;
         Task *loadTask = loader->openWithProjectTask(url, hints);
-        if (NULL != loadTask) {
+        if (nullptr != loadTask) {
             subTasks << loadTask;
         }
     }
@@ -244,7 +244,7 @@ void PrepareInputForCAP3Task::run() {
             return;
         }
         DNASequence *seq = seqReader.getNextSequenceObject();
-        if (seq == NULL) {
+        if (seq == nullptr) {
             setError(seqReader.getErrorMessage());
             return;
         }

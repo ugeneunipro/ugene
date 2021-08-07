@@ -66,7 +66,7 @@ GTestFormat *GTestFormatRegistry::findFormat(const GTestFormatId &id) {
             return f;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 const QString TestFramework::TEST_TIMEOUT_CMD_OPTION = "test-timeout";
@@ -85,7 +85,7 @@ void TestFramework::setTRHelpSections() {
     helpRegistered = true;
 
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *testTimeoutSection = new CMDLineHelpProvider(
         TEST_TIMEOUT_CMD_OPTION,
@@ -127,9 +127,9 @@ void TestFramework::setTRHelpSections() {
 
 void TestFramework::setTestRunnerSettings() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
     Settings *settings = AppContext::getSettings();
-    assert(NULL != settings);
+    assert(nullptr != settings);
 
     // TODO: make constants TIME_OUT_VAR and NUM_THREADS
     int timeOut = cmdLineRegistry->getParameterValue(TEST_TIMEOUT_CMD_OPTION).toInt();

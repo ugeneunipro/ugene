@@ -85,7 +85,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QSet<GObjectType> acceptableTypes;
@@ -115,7 +114,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "NC_017775.gb");
@@ -160,7 +158,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "Q9IGQ6;A0N8V2", 4, true, true, false, sandBoxDir + "remote_request/test_0006"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "Q9IGQ6.txt");
@@ -195,7 +192,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -232,7 +228,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, searchActions));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -269,7 +264,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, searchActions));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -344,7 +338,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTGlobals::sleep(10000);    //some time needed for request
     GTUtilsDocument::isDocumentLoaded(os, "1CRN.pdb");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -366,7 +359,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "P16152", 5, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "P16152.txt");
@@ -386,7 +378,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D0VTW9", 6, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "D0VTW9.txt");

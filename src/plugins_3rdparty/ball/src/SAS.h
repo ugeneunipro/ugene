@@ -24,23 +24,20 @@
 
 #include <U2Algorithm/MolecularSurface.h>
 
-namespace U2
-{
+namespace U2 {
 
-class SolventAccessibleSurface : public MolecularSurface
-{
+class SolventAccessibleSurface : public MolecularSurface {
 public:
     SolventAccessibleSurface();
     virtual qint64 estimateMemoryUsage(int numberOfAtoms);
-    virtual void calculate(const QList<SharedAtom>& atoms, int& progress);
+    virtual void calculate(const QList<SharedAtom> &atoms, int &progress);
 };
 
-class SolventAccessibleSurfaceFactory : public MolecularSurfaceFactory
-{
+class SolventAccessibleSurfaceFactory : public MolecularSurfaceFactory {
 public:
-    virtual MolecularSurface *createInstance()const;
+    virtual MolecularSurface *createInstance() const;
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // SAS_H
+#endif    // SAS_H

@@ -290,7 +290,8 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
                QString("Invalid parameters for ChromatogramUtils::insertBase: pos - %1, chrom.sequence len - %2")
                    .arg(posUngapped)
                    .arg(chromatogram.seqLength), );
-    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().offset == 0 ? gapModel.first().gap : 0;
+    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().offset == 0 ? gapModel.first().gap
+                                                                           : 0;
     DNAChromatogram gappedChrom = getGappedChromatogram(chromatogram, gapModel);
 
     //when you try to insert a character before the first symbol of the row,
@@ -316,7 +317,8 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
 
 DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram &chromatogram, const QList<U2MsaGap> &gapModel) {
     DNAChromatogram gappedChromatogram = chromatogram;
-    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().offset == 0 ? gapModel.first() : U2MsaGap();
+    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().offset == 0 ? gapModel.first()
+                                                                                               : U2MsaGap();
     foreach (const U2MsaGap &gap, gapModel) {
         if (gap.offset == 0) {
             continue;

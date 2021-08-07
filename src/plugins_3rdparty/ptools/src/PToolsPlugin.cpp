@@ -50,7 +50,7 @@ PToolsPlugin::PToolsPlugin() : Plugin(tr("PTools"), tr("Structural alignment alg
     // PToolsAligner tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=NULL);
+    assert(xmlTestFormat!=nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = StructualAlignerTests::createTestFactories();

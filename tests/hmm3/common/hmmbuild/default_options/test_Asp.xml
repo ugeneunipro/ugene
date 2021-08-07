@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: Asp, has RF, SS_cons annotation
+	cmd: ./hmmbuild Asp.hmm Asp.sto -->
+
+    <uhmmer3-build inputFile="stockholm/Asp.sto" outputFile="test_Asp.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/Asp.hmm" file2="test_Asp.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

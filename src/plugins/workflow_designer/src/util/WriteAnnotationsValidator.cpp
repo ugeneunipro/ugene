@@ -31,19 +31,19 @@ bool WriteAnnotationsValidator::validate(const Actor *actor, NotificationsList &
     Q_UNUSED(options);
 
     Port *port = actor->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID());
-    if (port == NULL) {
+    if (port == nullptr) {
         notificationList << WorkflowNotification(tr("Input port is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("Input port is NULL", false);
     }
 
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(port);
-    if (input == NULL) {
+    if (input == nullptr) {
         notificationList << WorkflowNotification(tr("IntegralBusPort is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("IntegralBusPort is NULL", false);
     }
 
     Attribute *attribute = actor->getParameter("write_names");
-    if (attribute == NULL) {
+    if (attribute == nullptr) {
         notificationList << WorkflowNotification(tr("Attribute is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("Attribute is NULL", false);
     }

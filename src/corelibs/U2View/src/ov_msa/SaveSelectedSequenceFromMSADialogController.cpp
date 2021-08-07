@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-#if defined(Q_OS_LINUX) | defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) | defined(Q_OS_DARWIN)
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 #else
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
@@ -48,10 +48,10 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfil
 
 SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget *p, const QString &defaultCustomFilename)
     : QDialog(p),
-      saveController(NULL),
+      saveController(nullptr),
       ui(new Ui_SaveSelectedSequenceFromMSADialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60228060");
+    new HelpButton(this, ui->buttonBox, "65929692");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -71,7 +71,7 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
     url = saveController->getSaveDirName();
     formatId = ui->formatCombo->currentData().toString();
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    CHECK(df != NULL, )
+    CHECK(df != nullptr, )
     QString extension = df->getSupportedDocumentFileExtensions().first();
     if (ui->customFileNameEdit->isEnabled()) {
         QString filePath = url + QDir::separator() + ui->customFileNameEdit->text() + "." + extension;
@@ -129,7 +129,7 @@ void SaveSelectedSequenceFromMSADialogController::initSaveController() {
 
 SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig()
     : SaveDocumentControllerConfig(),
-      folderLineEdit(NULL) {
+      folderLineEdit(nullptr) {
 }
 
 SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig &config, const DocumentFormatConstraints &formatConstraints, QObject *parent)
@@ -157,7 +157,7 @@ void SaveDocumentInFolderController::init() {
     setPath(path);
 
     initFormatComboBox();
-    CHECK(conf.fileDialogButton != NULL, );
+    CHECK(conf.fileDialogButton != nullptr, );
     connect(conf.fileDialogButton, SIGNAL(clicked()), SLOT(sl_fileDialogButtonClicked()));
 }
 
@@ -168,7 +168,7 @@ void SaveDocumentInFolderController::setPath(const QString &path) {
 
 void SaveDocumentInFolderController::initFormatComboBox() {
     QString currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
-    CHECK(conf.formatCombo != NULL, );
+    CHECK(conf.formatCombo != nullptr, );
 
     QStringList sortedFormatNames = formatsInfo.getNames();
     sortedFormatNames.sort(Qt::CaseInsensitive);

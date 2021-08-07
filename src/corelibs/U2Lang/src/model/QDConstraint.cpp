@@ -131,42 +131,42 @@ bool QDConstraintController::match(const U2Region &srcReg,
                                    int min,
                                    int max) {
     switch (type) {
-    case E2S: {
-        int srcEnds = srcReg.endPos();
-        int dstStarts = dstReg.startPos;
-        int distance = dstStarts - srcEnds;
-        if (distance <= max && distance >= min) {
-            return true;
+        case E2S: {
+            int srcEnds = srcReg.endPos();
+            int dstStarts = dstReg.startPos;
+            int distance = dstStarts - srcEnds;
+            if (distance <= max && distance >= min) {
+                return true;
+            }
         }
-    }
-        return false;
-    case S2E: {
-        int srcStarts = srcReg.startPos;
-        int dstEnds = dstReg.endPos();
-        int distance = dstEnds - srcStarts;
-        if (distance <= max && distance >= min) {
-            return true;
+            return false;
+        case S2E: {
+            int srcStarts = srcReg.startPos;
+            int dstEnds = dstReg.endPos();
+            int distance = dstEnds - srcStarts;
+            if (distance <= max && distance >= min) {
+                return true;
+            }
         }
-    }
-        return false;
-    case S2S: {
-        int srcStarts = srcReg.startPos;
-        int dstStarts = dstReg.startPos;
-        int distance = dstStarts - srcStarts;
-        if (distance <= max && distance >= min) {
-            return true;
+            return false;
+        case S2S: {
+            int srcStarts = srcReg.startPos;
+            int dstStarts = dstReg.startPos;
+            int distance = dstStarts - srcStarts;
+            if (distance <= max && distance >= min) {
+                return true;
+            }
         }
-    }
-        return false;
-    case E2E: {
-        int srcEnds = srcReg.endPos();
-        int dstEnds = dstReg.endPos();
-        int distance = dstEnds - srcEnds;
-        if (distance <= max && distance >= min) {
-            return true;
+            return false;
+        case E2E: {
+            int srcEnds = srcReg.endPos();
+            int dstEnds = dstReg.endPos();
+            int distance = dstEnds - srcEnds;
+            if (distance <= max && distance >= min) {
+                return true;
+            }
         }
-    }
-        return false;
+            return false;
     }
     return false;
 }
@@ -175,8 +175,8 @@ U2Region QDConstraintController::matchLocation(QDDistanceConstraint *dc, const Q
     int start = 0;
     int end = 0;
 
-    QDSchemeUnit *src = NULL;
-    QDSchemeUnit *dst = NULL;
+    QDSchemeUnit *src = nullptr;
+    QDSchemeUnit *dst = nullptr;
     QDDistanceType type = dc->distanceType();
     int minDist = dc->getMin();
     int maxDist = dc->getMax();
@@ -193,43 +193,43 @@ U2Region QDConstraintController::matchLocation(QDDistanceConstraint *dc, const Q
     if (src == r->owner) {
         int len = dst->getActor()->getMaxResultLen();
         switch (type) {
-        case E2S:
-            start = r->region.endPos() + minDist;
-            end = r->region.endPos() + maxDist + len;
-            break;
-        case E2E:
-            end = r->region.endPos() + maxDist;
-            start = r->region.endPos() + minDist - len;
-            break;
-        case S2S:
-            start = r->region.startPos + minDist;
-            end = r->region.startPos + maxDist + len;
-            break;
-        case S2E:
-            end = r->region.startPos + maxDist;
-            start = r->region.startPos + minDist - len;
-            break;
+            case E2S:
+                start = r->region.endPos() + minDist;
+                end = r->region.endPos() + maxDist + len;
+                break;
+            case E2E:
+                end = r->region.endPos() + maxDist;
+                start = r->region.endPos() + minDist - len;
+                break;
+            case S2S:
+                start = r->region.startPos + minDist;
+                end = r->region.startPos + maxDist + len;
+                break;
+            case S2E:
+                end = r->region.startPos + maxDist;
+                start = r->region.startPos + minDist - len;
+                break;
         }
     } else {
         assert(dst == r->owner);
         int len = src->getActor()->getMaxResultLen();
         switch (type) {
-        case E2S:
-            start = r->region.startPos - maxDist - len;
-            end = r->region.startPos - minDist;
-            break;
-        case E2E:
-            end = r->region.endPos() - minDist;
-            start = r->region.endPos() - maxDist - len;
-            break;
-        case S2S:
-            start = r->region.startPos - maxDist;
-            end = r->region.startPos - minDist + len;
-            break;
-        case S2E:
-            start = r->region.endPos() - maxDist;
-            end = r->region.endPos() - minDist + len;
-            break;
+            case E2S:
+                start = r->region.startPos - maxDist - len;
+                end = r->region.startPos - minDist;
+                break;
+            case E2E:
+                end = r->region.endPos() - minDist;
+                start = r->region.endPos() - maxDist - len;
+                break;
+            case S2S:
+                start = r->region.startPos - maxDist;
+                end = r->region.startPos - minDist + len;
+                break;
+            case S2E:
+                start = r->region.endPos() - maxDist;
+                end = r->region.endPos() - minDist + len;
+                break;
         }
     }
 

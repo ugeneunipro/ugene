@@ -30,13 +30,13 @@
 #elif defined(Q_OS_LINUX)
 #    include <QCoreApplication>
 #    include <QFile>
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 #    include <QCoreApplication>
 #    include <QDir>
 #    include <QFileInfo>
 #    include <QProcess>
 #    include <QTemporaryFile>
-#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
+#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -69,14 +69,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
     // has already been called.
     hres = CoCreateInstance(CLSID_ShellLink,
-                            NULL,
+                            nullptr,
                             CLSCTX_INPROC_SERVER,
                             IID_IShellLink,
                             (LPVOID *)&psl);
     if (SUCCEEDED(hres)) {
         // Set the path to the shortcut target and add the description.
         WCHAR path[MAX_PATH];
-        GetModuleFileNameW(NULL, path, MAX_PATH);
+        GetModuleFileNameW(nullptr, path, MAX_PATH);
         psl->SetPath(path);
         psl->SetDescription(L"Unipro UGENE");
 
@@ -119,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     } else {
         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     QFile ugeneui_path(QCoreApplication::applicationFilePath());
     QFileInfo fileInfo(ugeneui_path);
     QString filename(fileInfo.fileName());

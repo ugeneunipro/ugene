@@ -35,7 +35,7 @@ class MAFFTSupport : public ExternalTool {
 public:
     MAFFTSupport();
 
-    GObjectViewWindowContext *getViewContext() const{
+    GObjectViewWindowContext *getViewContext() const {
         return viewCtx;
     }
 
@@ -57,8 +57,9 @@ protected slots:
     void sl_align_with_MAFFT();
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *view, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 }    // namespace U2

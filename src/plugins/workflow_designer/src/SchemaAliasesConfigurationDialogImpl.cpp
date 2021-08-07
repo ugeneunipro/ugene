@@ -36,7 +36,7 @@ namespace Workflow {
 SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const Schema &schema, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228388");
+    new HelpButton(this, buttonBox, "65930020");
 
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -52,7 +52,7 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const
     paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
     foreach (Actor *actor, schema.getProcesses()) {
-        assert(actor != NULL);
+        assert(actor != nullptr);
         int pos = procsListWidget->count();
         QListWidgetItem *item = new QListWidgetItem(actor->getLabel());
         procsListWidget->insertItem(pos, item);
@@ -67,11 +67,11 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const
 
 void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema &schema) {
     foreach (Actor *actor, schema.getProcesses()) {
-        assert(actor != NULL);
+        assert(actor != nullptr);
         QMap<Descriptor, QString> aliasMap;
         QMap<Descriptor, QString> helpMap;
         foreach (Attribute *attr, actor->getParameters().values()) {
-            assert(attr != NULL);
+            assert(attr != nullptr);
             QString alias = actor->getParamAliases().value(attr->getId());
             QString help = actor->getAliasHelp().value(alias);
             aliasMap.insert(*attr, alias);

@@ -1,0 +1,31 @@
+<multi-test>
+    <remove-temp-dir url="bwa4"/>
+    <create-temp-dir url="bwa4"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000_1.fa"
+            out_dir="!tmp_data_dir!bwa4"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            use-miss-prob="false"
+            max-diff="5"
+            index-alg="is"
+            seed-length="10"
+            max-gap="6"
+            best-hits="30"
+            scaled-gap="true"
+            non-iterative="false"
+            enable-long-gaps="false"
+            indel-offset="2"
+            long-deletions="7"
+            max-queue="1000000"
+            barcode-length="2"
+            num-threads="2"
+            max-seed="1"
+            mistmatch-penalty="2"
+            gap-open-penalty="9"
+            gap-ext-penalty="7"
+            quality-threshold="4"
+    />
+    <compare-sam-by-length file1="bwa4/bwa/out.sam" file2="bwa/aln_pattern/max_diff/ecoli_1_is_all_params.sam"/>
+    <remove-temp-dir url="bwa4"/>
+</multi-test>

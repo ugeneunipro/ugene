@@ -24,8 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -36,7 +34,6 @@
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/NoFailTaskWrapper.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -51,13 +48,13 @@ namespace LocalWorkflow {
  * ClustalOWorkerFactory
  ****************************/
 const QString ClustalOWorkerFactory::ACTOR_ID("ClustalO");
-const QString NUM_ITERATIONS("num-iterations");
-const QString MAX_GT_ITERATIONS("max-guidetree-iterations");
-const QString MAX_HMM_ITERATIONS("max-hmm-iterations");
-const QString SET_AUTO("set-auto");
-const QString NUM_PROCESSORS("num-processors");
-const QString EXT_TOOL_PATH("path");
-const QString TMP_DIR_PATH("temp-dir");
+
+static const QString NUM_ITERATIONS("num-iterations");
+static const QString MAX_GT_ITERATIONS("max-guidetree-iterations");
+static const QString MAX_HMM_ITERATIONS("max-hmm-iterations");
+static const QString SET_AUTO("set-auto");
+static const QString EXT_TOOL_PATH("path");
+static const QString TMP_DIR_PATH("temp-dir");
 
 void ClustalOWorkerFactory::init() {
     QList<PortDescriptor *> p;
@@ -149,7 +146,7 @@ QString ClustalOPrompter::composeRichDoc() {
 * ClustalOWorker
 ****************************/
 ClustalOWorker::ClustalOWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void ClustalOWorker::init() {
@@ -162,10 +159,10 @@ Task *ClustalOWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.numIterations = actor->getParameter(NUM_ITERATIONS)->getAttributeValue<int>(context);
-        cfg.maxGuidetreeIterations = actor->getParameter(MAX_GT_ITERATIONS)->getAttributeValue<int>(context);
+        cfg.maxGuideTreeIterations = actor->getParameter(MAX_GT_ITERATIONS)->getAttributeValue<int>(context);
         cfg.maxHMMIterations = actor->getParameter(MAX_HMM_ITERATIONS)->getAttributeValue<int>(context);
         cfg.setAutoOptions = actor->getParameter(SET_AUTO)->getAttributeValue<bool>(context);
         cfg.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
@@ -181,12 +178,12 @@ Task *ClustalOWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalO.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         ClustalOSupportTask *supportTask = new ClustalOSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
@@ -197,30 +194,38 @@ Task *ClustalOWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ClustalOWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    auto wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
     CHECK(wrapper->isFinished(), );
-    ClustalOSupportTask *t = qobject_cast<ClustalOSupportTask *>(wrapper->originalTask());
-    if (t->isCanceled()) {
+    auto clustalOTask = qobject_cast<ClustalOSupportTask *>(wrapper->originalTask());
+    if (clustalOTask->isCanceled()) {
         return;
     }
-    if (t->hasError()) {
-        coreLog.error(t->getError());
+    if (clustalOTask->hasError()) {
+        coreLog.error(clustalOTask->getError());
         return;
     }
 
-    SAFE_POINT(NULL != output, "NULL output!", );
-    SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(t->resultMA);
+    SAFE_POINT(output != nullptr, "NULL output!", );
+    SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(clustalOTask->getResultAlignment());
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-    algoLog.info(tr("Aligned %1 with ClustalO").arg(t->resultMA->getName()));
+    algoLog.info(tr("Aligned %1 with ClustalO").arg(clustalOTask->getResultAlignment()->getName()));
 }
 
 void ClustalOWorker::cleanup() {
+}
+
+ClustalOWorkerFactory::ClustalOWorkerFactory()
+    : DomainFactory(ACTOR_ID) {
+}
+
+Worker *ClustalOWorkerFactory::createWorker(Actor *actor) {
+    return new ClustalOWorker(actor);
 }
 
 }    //namespace LocalWorkflow

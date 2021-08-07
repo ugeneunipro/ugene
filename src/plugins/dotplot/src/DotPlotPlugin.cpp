@@ -51,7 +51,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 DotPlotPlugin::DotPlotPlugin()
-    : Plugin(tr("Dotplot"), tr("Build dotplot for sequences")), viewCtx(NULL) {
+    : Plugin(tr("Dotplot"), tr("Build dotplot for sequences")), viewCtx(nullptr) {
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_initDotPlotView()));
 }
 
@@ -88,7 +88,7 @@ void DotPlotViewContext::sl_loadTaskStateChanged(Task *task) {
     }
 
     if (loadTask->getStateInfo().hasError()) {
-        QMessageBox::critical(NULL, tr("Error"), tr("Error opening files"));
+        QMessageBox::critical(nullptr, tr("Error"), tr("Error opening files"));
         return;
     }
 
@@ -141,28 +141,28 @@ void DotPlotViewContext::sl_showDotPlotDialog() {
 
 static U2SequenceObject *getSequenceByFile(QString file) {
     Project *project = AppContext::getProject();
-    SAFE_POINT(project != NULL, "No project loaded", NULL);
+    SAFE_POINT(project != nullptr, "No project loaded", nullptr);
 
     Document *doc = project->findDocumentByURL(GUrl(file));
-    CHECK(doc != NULL, NULL);
+    CHECK(doc != nullptr, nullptr);
 
     QList<GObject *> sequences = GObjectUtils::select(doc->getObjects(), GObjectTypes::SEQUENCE, UOF_LoadedOnly);
     if (!sequences.isEmpty()) {
         return qobject_cast<U2SequenceObject *>(sequences.first());
     }
-    return NULL;
+    return nullptr;
 }
 
 // called from the context menu
 void DotPlotViewContext::sl_buildDotPlot() {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
-    CHECK(action != NULL, )
+    CHECK(action != nullptr, )
     showBuildDotPlotDialog(action->getObjectView());
 }
 
 void DotPlotViewContext::showBuildDotPlotDialog(GObjectView *ov) {
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(ov);
-    CHECK(dnaView != NULL, )
+    CHECK(dnaView != nullptr, )
 
     DotPlotWidget *dotPlot = new DotPlotWidget(dnaView);
     dotPlot->setSequences(getSequenceByFile(firstFile), getSequenceByFile(secondFile));
@@ -176,7 +176,7 @@ void DotPlotViewContext::showBuildDotPlotDialog(GObjectView *ov) {
         connect(dotPlot, SIGNAL(si_removeDotPlot()), SLOT(sl_removeDotPlot()));
     } else {
         delete dotPlot;    // user clicked cancel button
-        dotPlot = NULL;
+        dotPlot = nullptr;
     }
     createdByWizard = false;
 }
@@ -197,7 +197,7 @@ void DotPlotViewContext::sl_removeDotPlot() {
     if (splitter) {
         splitter->removeView(dotPlot);
         delete dotPlot;
-        dotPlot = NULL;
+        dotPlot = nullptr;
 
         // remove empty splitter from dnaView
         if (splitter->isEmpty()) {
@@ -229,7 +229,7 @@ void DotPlotViewContext::initViewContext(GObjectView *v) {
         //        createdByWizard = false;
 
         QWidget *widget = av->getWidget()->parentWidget();
-        Q_ASSERT(widget != NULL);
+        Q_ASSERT(widget != nullptr);
         widget->showMaximized();
 
         // once view is ready and activated we will show build-dot-plot dialog
@@ -239,13 +239,13 @@ void DotPlotViewContext::initViewContext(GObjectView *v) {
 
 // create if needed and return DotPlotSplitter in the dnaView
 DotPlotSplitter *DotPlotViewContext::getView(GObjectView *view, bool create) {
-    DotPlotSplitter *dotPlotView = NULL;
+    DotPlotSplitter *dotPlotView = nullptr;
 
     // search for DotPlotSpliter in the view
     QList<QObject *> resources = viewResources.value(view);
     foreach (QObject *r, resources) {
         dotPlotView = qobject_cast<DotPlotSplitter *>(r);
-        if (dotPlotView != NULL) {
+        if (dotPlotView != nullptr) {
             return dotPlotView;
         }
     }
@@ -264,7 +264,7 @@ DotPlotSplitter *DotPlotViewContext::getView(GObjectView *view, bool create) {
 }
 
 // context menu opened
-void DotPlotViewContext::buildMenu(U2::GObjectView *v, QMenu *m) {
+void DotPlotViewContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<QObject *> resources = viewResources.value(v);
     foreach (QObject *r, resources) {
         DotPlotSplitter *dotPlotView = qobject_cast<DotPlotSplitter *>(r);
@@ -298,7 +298,7 @@ void DotPlotViewContext::removeDotPlotView(GObjectView *view) {
 void DotPlotViewContext::sl_windowActivated(MWMDIWindow *w) {
     // check if we need to show DP dialog for this window
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
-    CHECK(ow != NULL, )
+    CHECK(ow != nullptr, )
     GObjectView *view = ow->getObjectView();
     if (view->property(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG).toInt() != 1) {
         return;

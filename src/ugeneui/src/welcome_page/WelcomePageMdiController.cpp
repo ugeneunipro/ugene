@@ -73,8 +73,8 @@ void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
 void WelcomePageMdiController::sl_onRecentChanged() {
     CHECK(welcomePage != nullptr, );
     auto settings = AppContext::getSettings();
-    QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
-    QStringList recentFiles = settings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
+    QStringList recentFiles = settings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
     welcomePage->updateRecent(recentProjects, recentFiles);
 }
 

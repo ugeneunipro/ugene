@@ -74,7 +74,7 @@ void ColorDialogFiller::commonScenario() {
     GTSpinBox::setValue(os, spinList.at(5), b, GTGlobals::UseKeyBoard);
 
     GTGlobals::sleep();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));
 #else
     GTKeyboardDriver::keyClick(Qt::Key_Enter);

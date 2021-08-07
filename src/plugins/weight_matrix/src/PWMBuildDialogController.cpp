@@ -61,11 +61,11 @@ namespace U2 {
 
 PWMBuildDialogController::PWMBuildDialogController(QWidget *w)
     : QDialog(w),
-      saveController(NULL),
-      logoArea(NULL) {
-    task = NULL;
+      saveController(nullptr),
+      logoArea(nullptr) {
+    task = nullptr;
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229283");
+    new HelpButton(this, buttonBox, "65930915");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -97,7 +97,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
         return;
     }
 
-    DocumentFormat *format = NULL;
+    DocumentFormat *format = nullptr;
     foreach (const FormatDetectionResult &i, formats) {
         if (i.format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = i.format;
@@ -105,7 +105,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
         }
     }
 
-    if (format == NULL) {
+    if (format == nullptr) {
         foreach (const FormatDetectionResult &i, formats) {
             if (i.format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE)) {
                 format = i.format;
@@ -114,7 +114,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
         }
     }
 
-    if (format == NULL) {
+    if (format == nullptr) {
         reportError(tr("Could not detect the format of the file. Files must be in supported multiple alignment or sequence formats."));
         return;
     }
@@ -172,7 +172,7 @@ void PWMBuildDialogController::replaceLogo(const MultipleSequenceAlignment &ma) 
         logoWidget->setMinimumHeight(LOGO_HEIGHT);
         logoWidget->show();
 
-        if (logoArea != NULL) {
+        if (logoArea != nullptr) {
             logoArea->replaceSettings(logoSettings);
         } else {
             logoArea = new AlignmentLogoRenderArea(logoSettings, logoWidget);
@@ -191,7 +191,7 @@ void PWMBuildDialogController::sl_matrixTypeChanged(bool matrixType) {
 }
 
 void PWMBuildDialogController::sl_okButtonClicked() {
-    if (task != NULL) {
+    if (task != nullptr) {
         accept();    //go to background
         return;
     }
@@ -248,7 +248,7 @@ void PWMBuildDialogController::sl_okButtonClicked() {
 
 void PWMBuildDialogController::sl_onStateChanged() {
     Task *t = qobject_cast<Task *>(sender());
-    assert(task != NULL);
+    assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
@@ -266,7 +266,7 @@ void PWMBuildDialogController::sl_onStateChanged() {
     }
     okButton->setText(tr("Start"));
     cancelButton->setText(tr("Close"));
-    task = NULL;
+    task = nullptr;
 }
 
 void PWMBuildDialogController::sl_onProgressChanged() {
@@ -311,7 +311,7 @@ void PWMBuildDialogController::initWeightSaveController() {
 }
 
 void PWMBuildDialogController::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     if (lastURL != "") {
@@ -357,7 +357,7 @@ void PFMatrixBuildTask::run() {
 }
 
 PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString &inFile, const QString &_outFile, const PMBuildSettings &s)
-    : Task(tr("Build Weight Matrix"), TaskFlag_NoRun), loadTask(NULL), buildTask(NULL), outFile(_outFile), settings(s) {
+    : Task(tr("Build Weight Matrix"), TaskFlag_NoRun), loadTask(nullptr), buildTask(nullptr), outFile(_outFile), settings(s) {
     tpm = Task::Progress_SubTasksBased;
 
     DocumentFormatConstraints c;
@@ -408,7 +408,7 @@ QList<Task *> PFMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
     if (subTask == loadTask) {
         setUseDescriptionFromSubtask(true);
         Document *d = loadTask->getDocument();
-        assert(d != NULL);
+        assert(d != nullptr);
         QList<GObject *> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MultipleSequenceAlignmentObject *mobj = qobject_cast<MultipleSequenceAlignmentObject *>(mobjs.first());
@@ -501,7 +501,7 @@ void PWMatrixBuildTask::run() {
 }
 
 PWMatrixBuildToFileTask::PWMatrixBuildToFileTask(const QString &inFile, const QString &_outFile, const PMBuildSettings &s)
-    : Task(tr("Build Weight Matrix"), TaskFlag_NoRun), loadTask(NULL), buildTask(NULL), outFile(_outFile), settings(s) {
+    : Task(tr("Build Weight Matrix"), TaskFlag_NoRun), loadTask(nullptr), buildTask(nullptr), outFile(_outFile), settings(s) {
     tpm = Task::Progress_SubTasksBased;
 
     DocumentFormatConstraints c;
@@ -535,7 +535,7 @@ QList<Task *> PWMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
     if (subTask == loadTask) {
         setUseDescriptionFromSubtask(true);
         Document *d = loadTask->getDocument();
-        assert(d != NULL);
+        assert(d != nullptr);
         QList<GObject *> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MultipleSequenceAlignmentObject *mobj = qobject_cast<MultipleSequenceAlignmentObject *>(mobjs.first());

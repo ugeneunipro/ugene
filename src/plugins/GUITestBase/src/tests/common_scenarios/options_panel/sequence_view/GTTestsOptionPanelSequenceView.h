@@ -22,7 +22,7 @@
 #ifndef U2_GTTESTS_OPTION_PANEL_SEQUENCE_VIEW_H
 #define U2_GTTESTS_OPTION_PANEL_SEQUENCE_VIEW_H
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

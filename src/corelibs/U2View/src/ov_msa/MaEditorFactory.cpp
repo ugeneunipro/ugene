@@ -32,6 +32,7 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "McaEditor.h"
+#include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
 
 namespace U2 {
 
@@ -103,7 +104,7 @@ Task *MaEditorFactory::createViewTask(const MultiGSelection &multiSelection, boo
     }
 
     if (resTasks.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
     if (resTasks.size() == 1 || single) {
@@ -124,7 +125,7 @@ bool MaEditorFactory::isStateInSelection(const MultiGSelection &multiSelection, 
     }
     GObjectReference ref = state.getMaObjectRef();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+    if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     //check that document is in selection
@@ -135,7 +136,7 @@ bool MaEditorFactory::isStateInSelection(const MultiGSelection &multiSelection, 
     //check that object is in selection
     QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
     GObject *obj = doc->findGObjectByName(ref.objName);
-    bool res = obj != NULL && selectedObjects.contains(obj);
+    bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 
@@ -156,7 +157,7 @@ MsaEditorFactory::MsaEditorFactory()
 
 MaEditor *MsaEditorFactory::getEditor(const QString &viewName, GObject *obj) {
     MultipleSequenceAlignmentObject *msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    SAFE_POINT(msaObj != NULL, "Invalid GObject", NULL);
+    SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
     return new MSAEditor(viewName, msaObj);
 }
 
@@ -172,6 +173,11 @@ OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(Document *doc) {
     return new OpenMsaEditorTask(doc);
 }
 
+void MsaEditorFactory::registerMsaEditorViewFeatures() {
+    auto alignSequencesToAlignmentSupport = new AlignSequencesToAlignmentSupport(this);
+    alignSequencesToAlignmentSupport->init();
+}
+
 /************************************************************************/
 /* McaEditorFactory */
 /************************************************************************/
@@ -181,7 +187,7 @@ McaEditorFactory::McaEditorFactory()
 
 MaEditor *McaEditorFactory::getEditor(const QString &viewName, GObject *obj) {
     MultipleChromatogramAlignmentObject *mcaObj = qobject_cast<MultipleChromatogramAlignmentObject *>(obj);
-    SAFE_POINT(mcaObj != NULL, "Invalid GObject", NULL);
+    SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);
 }
 

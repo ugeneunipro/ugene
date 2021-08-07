@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!vcf_consensus/vcf_base.uwl"
+            in-seq="!common_data_dir!vcf_consensus/leukemia.fa"
+            in-vcf="!common_data_dir!vcf_consensus/leukemia.vcf"
+            out-seq="!tmp_data_dir!vcf_cons_test_0004.fa"
+    />
+
+    <compare-docs
+            doc1="vcf_consensus/out_leukemia.fa"
+            doc2="vcf_cons_test_0004.fa"
+            temp="2"
+    />
+
+</multi-test>

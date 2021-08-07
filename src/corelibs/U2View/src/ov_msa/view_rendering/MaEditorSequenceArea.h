@@ -34,7 +34,6 @@
 #include <U2Gui/SelectionModificationHelper.h>
 
 #include "../MsaEditorUserModStepController.h"
-#include "MaEditorSelection.h"
 
 class QRubberBand;
 
@@ -56,6 +55,7 @@ class SequenceAreaRenderer;
 
 class MaModificationInfo;
 class MsaColorScheme;
+class MaEditorSelection;
 class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
@@ -89,15 +89,25 @@ public:
     bool isPosInRange(int position) const;
     bool isSeqInRange(int rowNumber) const;
     bool isInRange(const QPoint &point) const;
+
+    /** Returns true if the given rectangle within visible [rows x columns] grid range. */
+    bool isInRange(const QRect &rect) const;
+
     QPoint boundWithVisibleRange(const QPoint &point) const;
+
+    /** Returns rectangle bounded with the visible width/height range. */
+    QRect boundWithVisibleRange(const QRect &rect) const;
 
     bool isVisible(const QPoint &p, bool countClipped) const;
     bool isPositionVisible(int pos, bool countClipped) const;
     bool isRowVisible(int rowNumber, bool countClipped) const;
 
-    const MaEditorSelection &getSelection() const;
-
-    virtual void setSelection(const MaEditorSelection &newSelection);
+    /**
+     * Sets new selection from the given rect.
+     * Bounds the rect with the visible area to ensure rect is within view bounds.
+     * This method does not update selection directly but calls 'setSelection()' with a new selection instance.
+     */
+    void setSelectionRect(const QRect &newSelectionRect);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
@@ -146,7 +156,6 @@ public:
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
-    void sl_cancelSelection();
     void sl_changeCopyFormat(const QString &formatId);
 
 protected slots:
@@ -174,6 +183,7 @@ protected slots:
 
 private slots:
     void sl_hScrollBarActionPerformed();
+    void sl_onSelectionChanged(const MaEditorSelection &newSelection, const MaEditorSelection &oldSelection);
 
 private:
     void setBorderCursor(const QPoint &p);
@@ -192,7 +202,6 @@ private:
     void restoreViewSelectionFromMaSelection();
 
 signals:
-    void si_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
     void si_selectionChanged(const QStringList &selectedRows);
     void si_highlightingChanged();
     void si_visibleRangeChanged(QStringList visibleSequences, int reqHeight);
@@ -267,7 +276,6 @@ protected:
     void replaceChar(char newCharacter);
     virtual void insertChar(char) {
     }
-    void exitFromEditCharacterMode();
     virtual bool isCharacterAcceptable(const QString &text) const;
     virtual const QString &getInacceptableCharacterErrorMessage() const;
 
@@ -280,15 +288,18 @@ protected:
      */
     virtual void updateCollapseModel(const MaModificationInfo &maModificationInfo);
 
-protected:
+public:
     enum MaMode {
         ViewMode,
         ReplaceCharMode,
         InsertCharMode
     };
 
-public:
-    MaMode getModInfo();
+    /** Returns current mode of the sequence area: viewing or editing. */
+    MaMode getMode() const;
+
+    /** Swithes sequence area into the ViewMode. */
+    void exitFromEditCharacterMode();
 
 protected:
     MaEditor *const editor;
@@ -323,9 +334,6 @@ protected:
      * May be out of range if clicked out of the view/rows range.
      */
     QPoint mousePressViewPos;
-
-    /** Current selection with view rows/column coordinates. */
-    MaEditorSelection selection;
 
     /** Selected MA row ids within the current view selection. */
     QList<qint64> selectedMaRowIds;

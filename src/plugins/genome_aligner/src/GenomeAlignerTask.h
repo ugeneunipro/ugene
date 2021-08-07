@@ -66,7 +66,6 @@ public:
     static const QString OPTION_INDEX_DIR;
     static const QString OPTION_QUAL_THRESHOLD;
     static const QString OPTION_BEST;
-    static const QString OPTION_DBI_IO;
     static const QString OPTION_READS_MEMORY_SIZE;
     static const QString OPTION_SEQ_PART_SIZE;
     static const int MIN_SHORT_READ_LENGTH = 30;
@@ -89,7 +88,6 @@ private:
     QTemporaryFile temp;
 
     bool justBuildIndex;
-    uint bunchSize;
 
     bool alignReversed;
     bool dbiIO;
@@ -97,17 +95,16 @@ private:
     bool prebuiltIndex;
     GenomeAlignerIndex *index;
     int qualityThreshold;
-    quint64 readMemSize;
+    qint64 readMemSize;
     int seqPartSize;
     SearchQuery *lastQuery;
     bool noDataToAlign;
 
     //statistics
-    quint64 readsCount;
-    quint64 readsAligned;
+    qint64 readsCount;
+    qint64 readsAligned;
     qint64 shortreadLoadTime;
     qint64 resultWriteTime;
-    qint64 searchTime;
     qint64 indexLoadTime;
     qint64 shortreadIOTime;
     float currentProgress;

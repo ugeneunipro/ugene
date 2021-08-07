@@ -49,12 +49,12 @@ static bool alphabetComplexityComparator(const DNAAlphabet *a1, const DNAAlphabe
 }
 
 bool DNAAlphabetRegistryImpl::registerAlphabet(const DNAAlphabet *a) {
-    if (findById(a->getId()) != NULL) {
+    if (findById(a->getId()) != nullptr) {
         return false;
     }
     alphabets.push_back(a);
     //WARN: original order for equal alphabets must not be changed (DNA must be before RNA)
-    qStableSort(alphabets.begin(), alphabets.end(), alphabetComplexityComparator);
+    std::stable_sort(alphabets.begin(), alphabets.end(), alphabetComplexityComparator);
     return true;
 }
 
@@ -70,7 +70,7 @@ const DNAAlphabet *DNAAlphabetRegistryImpl::findById(const QString &id) const {
             return al;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="sitecon-build"
+                 in="!common_data_dir!/Sitecon/Algorithm/test2.aln"
+                 out="!tmp_data_dir!test_actual2.sitecon"
+                 clength="100000"
+                 message="Alignment must have at least 2 sequences"
+    />
+</multi-test>

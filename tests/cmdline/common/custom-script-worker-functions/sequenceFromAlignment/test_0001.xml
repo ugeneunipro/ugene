@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/sequenceFromAlignmentTest.uwl"
+                 in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/result_1.fa"
+                 row="1"
+    />
+
+    <load-document index="actual" url="cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/result_1.fa" io="local_file" format="fasta"/>
+    <load-document index="expected" url="cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/row_2_seq.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

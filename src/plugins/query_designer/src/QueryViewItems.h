@@ -52,7 +52,7 @@ enum {
 class QDElementDescription : public QGraphicsTextItem {
     Q_OBJECT
 public:
-    QDElementDescription(QGraphicsItem *parent = NULL);
+    QDElementDescription(QGraphicsItem *parent = nullptr);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void setHeight(qreal h) {

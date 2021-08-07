@@ -198,9 +198,9 @@ QString HmmerSearchPrompter::composeRichDoc() {
  *******************************/
 HmmerSearchWorker::HmmerSearchWorker(Actor *a)
     : BaseWorker(a, false),
-      hmmPort(NULL),
-      seqPort(NULL),
-      output(NULL) {
+      hmmPort(nullptr),
+      seqPort(nullptr),
+      output(nullptr) {
 }
 
 void HmmerSearchWorker::init() {
@@ -248,19 +248,19 @@ Task *HmmerSearchWorker::tick() {
         hmms << hmmPort->get().getData().toMap().value(BaseSlots::URL_SLOT().getId()).toString();
     }
     if (!hmmPort->isEnded()) {    //  || hmms.isEmpty() || !seqPort->hasMessage()
-        return NULL;
+        return nullptr;
     }
 
     if (seqPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(seqPort);
         if (inputMessage.isEmpty() || hmms.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj) {
-            return NULL;
+        if (nullptr == seqObj) {
+            return nullptr;
         }
 
         if (seqObj->getAlphabet()->getType() != DNAAlphabet_RAW) {
@@ -290,20 +290,20 @@ Task *HmmerSearchWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void HmmerSearchWorker::sl_taskFinished(Task *task) {
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
     }
-    if (NULL != output) {
+    if (nullptr != output) {
         QList<SharedAnnotationData> list;
 
         foreach (const QPointer<Task> &sub, task->getSubtasks()) {
             HmmerSearchTask *searchTask = qobject_cast<HmmerSearchTask *>(sub.data());
-            if (searchTask == NULL) {
+            if (searchTask == nullptr) {
                 continue;
             }
             list << searchTask->getAnnotations();

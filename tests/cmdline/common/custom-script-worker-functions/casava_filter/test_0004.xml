@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/casava_filter/casava_without_script.uwl"
+                 in="!common_data_dir!cmdline/custom-script-worker-functions/casava_filter/small_two.fastq"
+                 out_dir="!tmp_data_dir!"
+                 out_name="casava-filter-res04.fastq"
+    />
+    <load-document index="actual" url="casava-filter-res04.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="expected" url="cmdline/custom-script-worker-functions/casava_filter/small_two_res.fastq" io="local_file" format="fastq"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

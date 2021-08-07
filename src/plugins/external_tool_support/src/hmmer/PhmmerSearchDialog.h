@@ -43,8 +43,8 @@ public:
 class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
-    PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-    PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent = NULL);
+    PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = nullptr);
+    PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent = nullptr);
 
 private slots:
     void accept();

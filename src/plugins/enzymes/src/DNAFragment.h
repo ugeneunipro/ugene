@@ -72,13 +72,13 @@ private:
 
 public:
     DNAFragment()
-        : annotatedFragment(NULL), dnaObj(NULL), reverseCompl(false) {
+        : annotatedFragment(nullptr), dnaObj(nullptr), reverseCompl(false) {
     }
     DNAFragment(const SharedAnnotationData &fragment, U2SequenceObject *sObj, const QList<AnnotationTableObject *> relatedAnns);
     DNAFragment(const DNAFragment &other);
     DNAFragment &operator=(const DNAFragment &other);
     bool isEmpty() const {
-        return annotatedFragment.data() == NULL || dnaObj == NULL;
+        return annotatedFragment.data() == nullptr || dnaObj == nullptr;
     }
     QString getName() const;
     QString getSequenceName() const;

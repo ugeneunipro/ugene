@@ -64,11 +64,11 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     : QDialog(p),
       filter(""),
       pos(1),
-      saveController(NULL),
+      saveController(nullptr),
       config(cfg) {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227794");
+    new HelpButton(this, ui->buttonBox, "65929426");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

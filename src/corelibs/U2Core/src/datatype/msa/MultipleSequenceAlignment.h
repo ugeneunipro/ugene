@@ -37,7 +37,7 @@ class U2Region;
 class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
 public:
     MultipleSequenceAlignment(const QString &name = QString(),
-                              const DNAAlphabet *alphabet = NULL,
+                              const DNAAlphabet *alphabet = nullptr,
                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignment(const MultipleAlignment &ma);
     MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
@@ -73,7 +73,7 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleSequenceAlignmentData(const QString &name = QString(),
-                                  const DNAAlphabet *alphabet = NULL,
+                                  const DNAAlphabet *alphabet = nullptr,
                                   const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msaData);
 
@@ -150,13 +150,11 @@ public:
     /** Converts all rows' sequences to upper case */
     void toUpperCase();
 
-    /**
-     * Modifies the alignment by keeping data from the specified region and rows only.
-     * Assumes that the region start is not negative, but it can be greater than a row length.
-     */
-    bool crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os);
-    bool crop(const U2Region &region, U2OpStatus &os);
-    bool crop(int start, int count, U2OpStatus &os);
+    /** Keep only only column-range of given rows in the alignment. */
+    bool crop(const QList<qint64>& rowIds, const U2Region &columnRange, U2OpStatus &os);
+
+    /** Keeps only 'columnRange' region in the alignment */
+    bool crop(const U2Region &columnRange, U2OpStatus &os);
 
     /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.

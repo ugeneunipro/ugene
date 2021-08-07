@@ -73,6 +73,12 @@ public:
 
     static const GObjectViewFactoryId ID;
 
+    /**
+     * Registers built-in features for MSA editor view implemented.
+     * Such features are usually implemented in plugins, but by historical reasons are built-in into the core of UGENE.
+     */
+    void registerMsaEditorViewFeatures();
+
 private:
     OpenMaEditorTask *getOpenMaEditorTask(MultipleAlignmentObject *obj);
     OpenMaEditorTask *getOpenMaEditorTask(UnloadedObject *obj);

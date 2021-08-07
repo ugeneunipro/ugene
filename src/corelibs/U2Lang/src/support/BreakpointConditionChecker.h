@@ -37,7 +37,7 @@ class BreakpointConditionChecker {
     Q_DISABLE_COPY(BreakpointConditionChecker)
 public:
     BreakpointConditionChecker(const QString &initConditionText,
-                               Workflow::WorkflowContext *context = NULL);
+                               Workflow::WorkflowContext *context = nullptr);
     ~BreakpointConditionChecker();
 
     void setContext(Workflow::WorkflowContext *context);

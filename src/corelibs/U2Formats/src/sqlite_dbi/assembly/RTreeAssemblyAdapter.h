@@ -61,7 +61,7 @@ protected:
 class RTreePackAlgorithmAdapter : public PackAlgorithmAdapter {
 public:
     RTreePackAlgorithmAdapter(DbRef *_db, const QString &_readsTable, const QString &_indexTable)
-        : db(_db), readsTable(_readsTable), indexTable(_indexTable), updateQuery(NULL) {
+        : db(_db), readsTable(_readsTable), indexTable(_indexTable), updateQuery(nullptr) {
     }
     ~RTreePackAlgorithmAdapter();
 

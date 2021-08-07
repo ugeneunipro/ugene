@@ -63,7 +63,7 @@ namespace U2 {
 BioStruct3DSplitter::BioStruct3DSplitter(QAction *_closeAction, AnnotatedDNAView *view)
     : ADVSplitWidget(view),
       glFrameManager(new GLFrameManager),
-      parentSplitter(NULL) {
+      parentSplitter(nullptr) {
     closeAction = _closeAction;
 
     layout = new QVBoxLayout;
@@ -148,7 +148,7 @@ bool BioStruct3DSplitter::eventFilter(QObject *o, QEvent *e) {
         //  ((QGLContext*)glw->context())->create();
     }
 #endif
-    if (e->type() == QEvent::Close && glw != NULL) {
+    if (e->type() == QEvent::Close && glw != nullptr) {
         removeBioStruct3DGLWidget(glw);
         if (biostrucViewMap.isEmpty()) {
             closeAction->trigger();
@@ -177,7 +177,7 @@ bool BioStruct3DSplitter::removeObject(BioStruct3DObject *obj) {
 void BioStruct3DSplitter::dragEnterEvent(QDragEnterEvent *event) {
     const QMimeData *md = event->mimeData();
     const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
-    if (gomd != NULL) {
+    if (gomd != nullptr) {
         GObject *obj = gomd->objPtr.data();
         if (obj->getGObjectType() == GObjectTypes::BIOSTRUCTURE_3D) {
             BioStruct3DObject *bioStrucObj = qobject_cast<BioStruct3DObject *>(gomd->objPtr.data());
@@ -190,7 +190,7 @@ void BioStruct3DSplitter::dragEnterEvent(QDragEnterEvent *event) {
 void BioStruct3DSplitter::dropEvent(QDropEvent *event) {
     const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(event->mimeData());
     BioStruct3DObject *bioStrucObj = qobject_cast<BioStruct3DObject *>(gomd->objPtr.data());
-    Q_ASSERT(bioStrucObj != NULL);
+    Q_ASSERT(bioStrucObj != nullptr);
     addBioStruct3DGLWidget(bioStrucObj);
 }
 
@@ -242,7 +242,7 @@ void BioStruct3DSplitter::updateState(const QVariantMap &m) {
         QVariantMap state = iter.previous().toMap();
         QString objName = state.value(OBJECT_ID_NAME).value<QString>();
         BioStruct3DObject *obj = findBioStruct3DObjByName(objName);
-        if (obj == NULL)
+        if (obj == nullptr)
             continue;
         BioStruct3DGLWidget *glWidget = addBioStruct3DGLWidget(obj);
         if (!dnaView->getObjects().contains(obj)) {
@@ -262,20 +262,20 @@ BioStruct3DObject *BioStruct3DSplitter::findBioStruct3DObjByName(const QString &
         if (!biostructObjs.empty()) {
             Q_ASSERT(biostructObjs.size() == 1);
             BioStruct3DObject *obj = qobject_cast<BioStruct3DObject *>(biostructObjs.first());
-            Q_ASSERT(obj != NULL);
+            Q_ASSERT(obj != nullptr);
             if (obj->getGObjectName() == objName) {
                 return obj;
             }
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 QSplitter *BioStruct3DSplitter::getParentSplitter() {
-    if (parentSplitter == NULL) {
+    if (parentSplitter == nullptr) {
         QWidget *widget = parentWidget();
-        Q_ASSERT(widget != NULL);
+        Q_ASSERT(widget != nullptr);
         parentSplitter = qobject_cast<QSplitter *>(widget);
     }
 
@@ -617,7 +617,7 @@ void SplitterHeaderWidget::updateToolbar() {
 
 void SplitterHeaderWidget::sl_toggleBioStruct3DWidget(bool show) {
     BioStruct3DGLWidget *glWidget = qobject_cast<BioStruct3DGLWidget *>(sender()->parent());
-    Q_ASSERT(glWidget != NULL);
+    Q_ASSERT(glWidget != nullptr);
 
     glWidget->setVisible(show);
 
@@ -686,7 +686,7 @@ void SplitterHeaderWidget::registerWebUrls() {
 
 void SplitterHeaderWidget::sl_openBioStructUrl() {
     QAction *webAction = qobject_cast<QAction *>(QObject::sender());
-    if (webAction == NULL)
+    if (webAction == nullptr)
         return;
     const QString &urlHeader = webActionMap.value(webAction);
     QString pdbId(getActiveWidget()->getBioStruct3D().pdbId.toLower());
@@ -752,7 +752,7 @@ QList<DBLink> DBLinksFile::getLinks() {
 // AddModelToSplitterTask
 
 AddModelToSplitterTask::AddModelToSplitterTask(GObject *o, BioStruct3DSplitter *s)
-    : Task("", TaskFlags_FOSCOE), doc(NULL), obj(o), bObj(NULL), splitter(s) {
+    : Task("", TaskFlags_FOSCOE), doc(nullptr), obj(o), bObj(nullptr), splitter(s) {
     setTaskName(tr("Add 3d model '%1' to BioStruct3DSplitter").arg(o->getGObjectName()));
 }
 
@@ -764,7 +764,7 @@ void AddModelToSplitterTask::prepare() {
 }
 
 void AddModelToSplitterTask::run() {
-    if (doc == NULL) {
+    if (doc == nullptr) {
         bObj = qobject_cast<BioStruct3DObject *>(obj);
     } else {
         Q_ASSERT(doc->isLoaded());
@@ -775,7 +775,7 @@ void AddModelToSplitterTask::run() {
 }
 
 Task::ReportResult AddModelToSplitterTask::report() {
-    if ((bObj == NULL) || (propagateSubtaskError() == true)) {
+    if ((bObj == nullptr) || (propagateSubtaskError() == true)) {
         stateInfo.setError(tr("Model %1 wasn't added").arg(obj->getGObjectName()));
     } else {
         splitter->addModelFromObject(bObj);

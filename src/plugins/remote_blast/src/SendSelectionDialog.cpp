@@ -140,7 +140,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool 
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229078");
+    new HelpButton(this, buttonBox, "65930710");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -294,7 +294,7 @@ void SendSelectionDialog::sl_scriptSelected(int index) {
 void SendSelectionDialog::sl_OK() {
     QString error = ca_c->validate();
     if (!error.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Error"), error);
+        QMessageBox::critical(nullptr, tr("Error"), error);
         return;
     }
     retries = retrySpinBox->value();

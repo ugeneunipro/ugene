@@ -54,11 +54,11 @@ static const QString DIR_HELPER_DOMAIN("ConvertToSQLiteDialog");
 
 ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_bamInfo, bool sam)
     : QDialog(QApplication::activeWindow()),
-      saveController(NULL),
+      saveController(nullptr),
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "60228162");
+    new HelpButton(this, ui.buttonBox, "65929794");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -265,7 +265,7 @@ void ConvertToSQLiteDialog::sl_refUrlButtonClicked() {
     }
     QString dir = currentUrl.dirPath() + "/" + currentUrl.baseFileName();
     QString value;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         value = U2FileDialog::getOpenFileName(this, QObject::tr("Reference File"), dir, "", 0, QFileDialog::DontUseNativeDialog);
     } else
@@ -364,9 +364,9 @@ void ConvertToSQLiteDialog::accept() {
         }
 
         Project *prj = AppContext::getProject();
-        if (prj != NULL) {
+        if (prj != nullptr) {
             Document *destDoc = prj->findDocumentByURL(destinationUrl);
-            if (destDoc != NULL && destDoc->isLoaded() && !GObjectViewUtils::findViewsWithAnyOfObjects(destDoc->getObjects()).isEmpty()) {
+            if (destDoc != nullptr && destDoc->isLoaded() && !GObjectViewUtils::findViewsWithAnyOfObjects(destDoc->getObjects()).isEmpty()) {
                 QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("There is opened view with destination file.\n"
                                                                             "Close it or choose different file"));
                 ui.destinationUrlEdit->setFocus(Qt::OtherFocusReason);

@@ -66,16 +66,16 @@ public:
 };
 
 ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
-    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL) {
+    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229074");
+    new HelpButton(this, buttonBox, "65930706");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
 
     ctx = _ctx;
-    task = NULL;
+    task = nullptr;
 
     initSettings();
 
@@ -172,8 +172,8 @@ void ORFDialog::connectGUI() {
 }
 
 void ORFDialog::updateState() {
-    bool hasActiveTask = task != NULL;
-    bool hasCompl = ctx->getComplementTT() != NULL;
+    bool hasActiveTask = task != nullptr;
+    bool hasCompl = ctx->getComplementTT() != nullptr;
 
     bool hasResults = resultsTree->topLevelItemCount() > 0;
     pbClearList->setEnabled(hasResults);
@@ -193,7 +193,7 @@ void ORFDialog::updateState() {
 
 void ORFDialog::updateStatus() {
     QString message;
-    if (task != NULL) {
+    if (task != nullptr) {
         message = tr("Progress %1%").arg(task->getProgress());
     }
     message += tr("%1 results found.").arg(resultsTree->topLevelItemCount());
@@ -205,7 +205,7 @@ bool ORFDialog::eventFilter(QObject *obj, QEvent *ev) {
         QKeyEvent *ke = (QKeyEvent *)ev;
         if (ke->key() == Qt::Key_Space) {
             ORFListItem *item = static_cast<ORFListItem *>(resultsTree->currentItem());
-            if (item != NULL) {
+            if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
         }
@@ -234,7 +234,7 @@ void ORFDialog::sl_onFindAll() {
 }
 
 void ORFDialog::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -250,7 +250,7 @@ U2Region ORFDialog::getCompleteSearchRegion(bool *ok) const {
 }
 
 void ORFDialog::runTask() {
-    assert(task == NULL);
+    assert(task == nullptr);
 
     ORFAlgorithmSettings s;
     getSettings(s);
@@ -274,7 +274,7 @@ void ORFDialog::runTask() {
 void ORFDialog::sl_onTaskFinished(Task *t) {
     if (t == task && t->getState() == Task::State_Finished) {
         importResults();
-        task = NULL;
+        task = nullptr;
         updateState();
         timer->stop();
     }
@@ -288,7 +288,7 @@ void ORFDialog::sl_onTimer() {
 }
 
 void ORFDialog::importResults() {
-    if (task == NULL) {
+    if (task == nullptr) {
         return;
     }
     updateStatus();
@@ -296,8 +296,8 @@ void ORFDialog::importResults() {
     if (!newResults.empty()) {
         resultsTree->setSortingEnabled(false);
         foreach (const ORFFindResult &r, newResults) {
-            ORFListItem *item = NULL;    //findItem(r, lbResult);
-            if (item == NULL) {
+            ORFListItem *item = nullptr;    //findItem(r, lbResult);
+            if (item == nullptr) {
                 item = new ORFListItem(r);
                 resultsTree->addTopLevelItem(item);
             }
@@ -310,7 +310,7 @@ void ORFDialog::importResults() {
 
 void ORFDialog::sl_onResultActivated(QTreeWidgetItem *i, int col) {
     Q_UNUSED(col);
-    assert(i != NULL);
+    assert(i != nullptr);
     ORFListItem *item = static_cast<ORFListItem *>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
@@ -323,7 +323,7 @@ void ORFDialog::sl_onResultActivated(QTreeWidgetItem *i, int col) {
 }
 
 void ORFDialog::accept() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
 
@@ -403,7 +403,7 @@ void ORFDialog::getSettings(ORFAlgorithmSettings &s) {
     //setup search region
     s.searchRegion = getCompleteSearchRegion(&isRegionOk);
 
-    SAFE_POINT(ctx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
+    SAFE_POINT(ctx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
     s.circularSearch = ctx->getSequenceObject()->isCircular();
 }
 
@@ -436,7 +436,7 @@ void ORFDialog::findStartedAAUpdateTask() {
         QString taskName = t->getTaskName();
         if (taskName == AutoAnnotationsUpdateTask::NAME) {
             AutoAnnotationsUpdateTask *aaTask = qobject_cast<AutoAnnotationsUpdateTask *>(t);
-            SAFE_POINT(aaTask != NULL, "Bad conversion from Task to AutoAnnotationsUpdateTask", );
+            SAFE_POINT(aaTask != nullptr, "Bad conversion from Task to AutoAnnotationsUpdateTask", );
             if (ctx->getSequenceObject()->getEntityRef() == aaTask->getSequenceObject()->getEntityRef()) {
                 aaUpdateTask = aaTask;
                 pbFindAll->setDisabled(true);
@@ -444,7 +444,7 @@ void ORFDialog::findStartedAAUpdateTask() {
             }
         }
     }
-    aaUpdateTask = NULL;
+    aaUpdateTask = nullptr;
     pbFindAll->setEnabled(true);
 }
 

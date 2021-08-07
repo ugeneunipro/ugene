@@ -59,12 +59,12 @@ BioStruct3DObject *BioStruct3DObject::createInstance(const BioStruct3D &bioStruc
 
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     RawDataUdrSchema::createObject(dbiRef, folder, object, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     const U2EntityRef entRef(dbiRef, object.id);
     const QByteArray data = BioStruct3DSerializer::serialize(bioStruct3D);
     RawDataUdrSchema::writeContent(data, entRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new BioStruct3DObject(bioStruct3D, objectName, entRef, hintsMap);
 }
@@ -102,7 +102,7 @@ GObject *BioStruct3DObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, con
 
     U2BioStruct3D dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
     BioStruct3DObject *dst = new BioStruct3DObject(getGObjectName(), dstEntRef, gHints.getMap());

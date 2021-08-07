@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="fastq/eas.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="EAS54_6_R1_2_1_443_348" type="OT_SEQUENCE"/>
+    <check-sequence-quality-scores obj="obj" quality=";;;;;;;;;;;9;7;;.7;393333"/>
+    <check-sequence-quality-value obj="obj" pos="0" value="26"/>
+    <check-sequence-quality-value obj="obj" pos="2" value="26"/>
+    <check-sequence-quality-value obj="obj" pos="24" value="18"/>
+
+</multi-test>

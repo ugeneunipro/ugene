@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!workflow_samples!Scenarios/group_primers_pairs.uwl"
+            in-sequence="!common_data_dir!cmdline/primers/primersOdd.fa"
+            url-out="!tmp_data_dir!primer_grouper_report_2.html"
+    />
+
+    <compare-docs doc1="!common_data_dir!cmdline/primers/patterns/primersOdd.html" doc2="!tmp_data_dir!primer_grouper_report_2.html"/>
+
+</multi-test>

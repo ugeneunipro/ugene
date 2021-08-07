@@ -34,7 +34,7 @@ static QByteArray getUpperCaseMap();
 static QByteArray getLowerCaseMap();
 static QByteArray getSpaceLine();
 static QBitArray getLessThan();
-static QBitArray getGrearThan();
+static QBitArray getGreaterThan();
 static QBitArray getQualNameAllowedSymbols();
 
 const QBitArray TextUtils::ALPHAS = getAlphas();
@@ -47,7 +47,7 @@ const QByteArray TextUtils::UPPER_CASE_MAP = getUpperCaseMap();
 const QByteArray TextUtils::LOWER_CASE_MAP = getLowerCaseMap();
 const QByteArray TextUtils::SPACE_LINE = getSpaceLine();
 const QBitArray TextUtils::LESS_THAN = getLessThan();
-const QBitArray TextUtils::GREATER_THAN = getGrearThan();
+const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
 
 //TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
@@ -107,7 +107,7 @@ QBitArray getLessThan() {
     return res;
 }
 
-QBitArray getGrearThan() {
+QBitArray getGreaterThan() {
     QBitArray res = getEmptyBitMap();
     res['>'] = true;
     return res;
@@ -205,13 +205,59 @@ qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 bu
 
 QStringList TextUtils::split(const QString &text, int chunkSize) {
     if (text.length() < chunkSize) {
-        return QStringList() << text;
+        return {text};
     }
     QStringList result;
     for (int i = 0; i < text.length(); i += chunkSize) {
         result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
     }
     return result;
+}
+
+QList<QByteArray> TextUtils::split(const QByteArray &text, int chunkSize) {
+    if (text.length() < chunkSize) {
+        return {text};
+    }
+    QList<QByteArray> result;
+    for (int i = 0; i < text.length(); i += chunkSize) {
+        result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
+    }
+    return result;
+}
+
+void TextUtils::replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar) {
+    for (int i = 0; i < text.length(); i++) {
+        uchar latin1Char = text.at(i).toLatin1();
+        if (latin1CharCodeMap.at(latin1Char)) {
+            text[i] = replacementChar;
+        }
+    }
+}
+
+QString TextUtils::readFirstLine(const QString &text) {
+    QString textCopy = text;
+    QTextStream stream(&textCopy);
+    return stream.readLine();
+}
+
+bool TextUtils::isLineBreak(const QString &text, int charIndex) {
+    uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
+    return LINE_BREAKS.testBit(bitIndex);
+}
+
+bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
+    uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
+    return WHITES.testBit(bitIndex);
+}
+
+QString TextUtils::skip(const QBitArray &map, const QString &text) {
+    for (int i = 0, n = text.length(); i < n; i++) {
+        uchar c = uchar(text[i].toLatin1());
+        if (!map.testBit(c)) {
+            return i == 0 ? text : text.right(n - i);
+        }
+    }
+    return "";
 }
 
 }    // namespace U2

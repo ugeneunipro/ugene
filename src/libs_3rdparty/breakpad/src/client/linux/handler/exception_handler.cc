@@ -1,3 +1,7 @@
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wdeprecated"
+#endif
+
 // Copyright (c) 2010 Google Inc.
 // All rights reserved.
 //

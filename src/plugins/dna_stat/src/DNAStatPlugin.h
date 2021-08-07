@@ -45,10 +45,14 @@ public:
 
 protected slots:
     void sl_showMSAProfileDialog();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
+
+private:
+    /* Alignment length limint for opening grid report in UGENE */
+    static constexpr int GRID_PROFILE_LENGTH_LIMIT = 20000;
 };
 
 class DistanceMatrixMSAEditorContext : public GObjectViewWindowContext {
@@ -58,10 +62,10 @@ public:
 
 protected slots:
     void sl_showDistanceMatrixDialog();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 };
 
 }    // namespace U2

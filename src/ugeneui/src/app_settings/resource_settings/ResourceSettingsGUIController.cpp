@@ -56,13 +56,13 @@ AppSettingsGUIPageWidget *ResourceSettingsGUIPageController::createWidget(AppSet
     return r;
 }
 
-const QString ResourceSettingsGUIPageController::helpPageId = QString("60227715");
+const QString ResourceSettingsGUIPageController::helpPageId = QString("65929347");
 
 ResourceSettingsGUIPageWidget::ResourceSettingsGUIPageWidget(ResourceSettingsGUIPageController *) {
     setupUi(this);
 
     int maxMem = AppResourcePool::x32MaxMemoryLimitMb;
-#if defined(Q_OS_MAC64) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
+#if defined(Q_OS_DARWIN) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
     maxMem = AppResourcePool::x64MaxMemoryLimitMb;
 #endif
 

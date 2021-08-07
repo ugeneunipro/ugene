@@ -38,12 +38,12 @@ IOAdapter *VFSAdapterFactory::createIOAdapter() {
 }
 
 VFSAdapter::VFSAdapter(VFSAdapterFactory *factory, QObject *o)
-    : IOAdapter(factory, o), url("", GUrl_VFSFile), buffer(NULL) {
+    : IOAdapter(factory, o), url("", GUrl_VFSFile), buffer(nullptr) {
 }
 
 bool VFSAdapter::open(const GUrl &_url, IOAdapterMode m) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
-    SAFE_POINT(buffer == NULL, "Buffers is not null!", false);
+    SAFE_POINT(buffer == nullptr, "Buffers is not null!", false);
 
     QString vfsPrefix = U2_VFS_URL_PREFIX;
     // assume that all membuf adapters work with files in some vfs
@@ -51,14 +51,14 @@ bool VFSAdapter::open(const GUrl &_url, IOAdapterMode m) {
         return false;    // not a file in vfs
     }
     VirtualFileSystemRegistry *vfsReg = AppContext::getVirtualFileSystemRegistry();
-    SAFE_POINT(vfsReg != NULL, "VirtualFileSystemRegistry not found!", false);
+    SAFE_POINT(vfsReg != nullptr, "VirtualFileSystemRegistry not found!", false);
 
     QStringList urlArgs = _url.getURLString().mid(vfsPrefix.size()).split(U2_VFS_FILE_SEPARATOR, QString::SkipEmptyParts);
     if (2 != urlArgs.size()) {    // urlArgs - vfsname and filename
         return false;
     }
     VirtualFileSystem *vfs = vfsReg->getFileSystemById(urlArgs[0]);
-    if (NULL == vfs) {
+    if (nullptr == vfs) {
         return false;    // no such vfs registered
     }
 
@@ -83,7 +83,7 @@ void VFSAdapter::close() {
     SAFE_POINT(isOpen(), "Adapter is not opened!", );
 
     delete buffer;
-    buffer = NULL;
+    buffer = nullptr;
     url = GUrl("", GUrl_VFSFile);
 }
 

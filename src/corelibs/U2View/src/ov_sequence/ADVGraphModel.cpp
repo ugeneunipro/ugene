@@ -36,7 +36,7 @@
 namespace U2 {
 
 GSequenceGraphAlgorithm::GSequenceGraphAlgorithm()
-    : lastSeqObj(NULL) {
+    : lastSeqObj(nullptr) {
 }
 
 GSequenceGraphAlgorithm::~GSequenceGraphAlgorithm() {
@@ -54,7 +54,7 @@ const QByteArray &GSequenceGraphAlgorithm::getSequenceData(U2SequenceObject *seq
 
 GSequenceGraphData::GSequenceGraphData(const QString &_graphName)
     : graphName(_graphName),
-      ga(NULL),
+      ga(nullptr),
       cachedFrom(0),
       cachedLen(0),
       cachedW(0),
@@ -537,7 +537,7 @@ bool GSequenceGraphDrawer::updateStaticLabels(const QSharedPointer<GSequenceGrap
         label->setHintRect(QRect(x, y - label->getSize() - height, width, height));
     }
 
-    if (label->attachedLabel != NULL) {
+    if (label->attachedLabel != nullptr) {
         calculatePositionOfLabel(label, nPoints);
     }
 
@@ -547,7 +547,7 @@ void GSequenceGraphDrawer::calculatePositionOfLabel(GraphLabel *label, int nPoin
     GraphLabel *attachedLabel = label;
 
     int groupWidth = 0;
-    while (NULL != attachedLabel) {
+    while (nullptr != attachedLabel) {
         groupWidth += attachedLabel->getHintRect().width();
         attachedLabel = attachedLabel->attachedLabel;
     }
@@ -559,7 +559,7 @@ void GSequenceGraphDrawer::calculatePositionOfLabel(GraphLabel *label, int nPoin
     }
 
     attachedLabel = label;
-    while (NULL != attachedLabel) {
+    while (nullptr != attachedLabel) {
         QRect hintRect = attachedLabel->getHintRect();
         groupWidth -= 2 * hintRect.width();
         int shift = x + groupWidth / 2 - hintRect.left();
@@ -753,7 +753,7 @@ void GSequenceGraphDrawer::calculatePoints(const QSharedPointer<GSequenceGraphDa
     if (!calculationTaskRunner.isIdle() && winStepNotChanged && d->cachedData.firstPoints.size() == 0) {    //first time calculation condition
         return;
     }
-    CalculatePointsTask *calculationTask = NULL;
+    CalculatePointsTask *calculationTask = nullptr;
     bool useIntervals = nSteps > numPoints;
     if (winStepNotChanged) {
         bool isCacheValid = vr.length == d->cachedLen && vr.startPos == d->cachedFrom;
@@ -782,7 +782,7 @@ void GSequenceGraphDrawer::calculatePoints(const QSharedPointer<GSequenceGraphDa
         }
     }
 
-    if (calculationTask != NULL) {
+    if (calculationTask != nullptr) {
         calculationTaskRunner.run(calculationTask);
         d->cachedData = PairVector();
         return;
@@ -948,13 +948,9 @@ void GraphPointsUpdater::calculateWithExpand() {
     bool hasBeforeStep = alignedFirst + win2 < visibleRange.startPos;
     bool hasAfterStep = alignedLast + win2 >= visibleRange.endPos();
 
-    int firstBaseOffset = hasBeforeStep ?
-                              (step - (visibleRange.startPos - (alignedFirst + win2))) :
-                              (alignedFirst + win2 - visibleRange.startPos);
-    int lastBaseOffset = hasAfterStep ?
-                             (step - (alignedLast + win2 - visibleRange.endPos()))    //extra step on the right is available
-                             :
-                             (visibleRange.endPos() - (alignedLast + win2));    // no extra step available -> end of the sequence
+    int firstBaseOffset = hasBeforeStep ? (step - (visibleRange.startPos - (alignedFirst + win2))) : (alignedFirst + win2 - visibleRange.startPos);
+    int lastBaseOffset = hasAfterStep ? (step - (alignedLast + win2 - visibleRange.endPos()))    //extra step on the right is available
+                                      : (visibleRange.endPos() - (alignedLast + win2));    // no extra step available -> end of the sequence
 
     SAFE_POINT(firstBaseOffset >= 0 && lastBaseOffset >= 0, "Incorrect offset is detected", );
     SAFE_POINT(hasBeforeStep ? (firstBaseOffset < step && firstBaseOffset != 0) : firstBaseOffset <= win2, "Incorrect offset is detected", );

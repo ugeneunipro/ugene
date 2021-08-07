@@ -34,12 +34,12 @@ class U2FORMATS_EXPORT NewickFormat : public TextDocumentFormat {
 public:
     NewickFormat(QObject *p);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
-
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+
+    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
 };
 
 }    // namespace U2

@@ -24,16 +24,14 @@
 
 #include <U2Core/PluginModel.h>
 
-namespace U2
-{
+namespace U2 {
 
-class BallPlugin : public Plugin
-{
+class BallPlugin : public Plugin {
     Q_OBJECT
 public:
     BallPlugin();
 };
 
-} // namespace
+}    // namespace U2
 
-#endif // BALLPLUGIN_H
+#endif    // BALLPLUGIN_H

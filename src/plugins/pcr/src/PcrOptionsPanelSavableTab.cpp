@@ -25,6 +25,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/PrimerLineEdit.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -34,7 +35,6 @@
 #include "InSilicoPcrOptionPanelWidget.h"
 #include "InSilicoPcrProductsTable.h"
 #include "PrimerGroupBox.h"
-#include "PrimerLineEdit.h"
 
 static const QString PCR_PRODUCTS_TABLE_NAME = "productsTable";
 static const QString WIDGET_ID_SEPARATOR = "__";
@@ -47,7 +47,7 @@ namespace U2 {
 
 PcrOptionsPanelSavableTab::PcrOptionsPanelSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
     : U2SavableWidget(wrappedWidget, contextWindow), originalWrappedWidget(qobject_cast<InSilicoPcrOptionPanelWidget *>(wrappedWidget)) {
-    SAFE_POINT(NULL != originalWrappedWidget, "Invalid input widget", );
+    SAFE_POINT(nullptr != originalWrappedWidget, "Invalid input widget", );
 }
 
 PcrOptionsPanelSavableTab::~PcrOptionsPanelSavableTab() {
@@ -58,7 +58,7 @@ PcrOptionsPanelSavableTab::~PcrOptionsPanelSavableTab() {
 QVariant PcrOptionsPanelSavableTab::getChildValue(const QString &childId) const {
     InSilicoPcrProductsTable *productTable = qobject_cast<InSilicoPcrProductsTable *>(getChildWidgetById(childId));
 
-    if (NULL != productTable) {
+    if (nullptr != productTable) {
         const QList<InSilicoPcrProduct> &products = qobject_cast<InSilicoPcrProductsTable *>(productTable)->getAllProducts();
         AdvContextPcrProductPair data(productTable->getCurrentSequenceContext(), products);
         return QVariant::fromValue<AdvContextPcrProductPair>(data);
@@ -70,7 +70,7 @@ QVariant PcrOptionsPanelSavableTab::getChildValue(const QString &childId) const 
 void PcrOptionsPanelSavableTab::setChildValue(const QString &childId, const QVariant &value) {
     InSilicoPcrProductsTable *productTable = qobject_cast<InSilicoPcrProductsTable *>(getChildWidgetById(childId));
 
-    if (NULL != productTable) {
+    if (nullptr != productTable) {
         originalWrappedWidget->setResultTableShown(true);
 
         const AdvContextPcrProductPair data = value.value<AdvContextPcrProductPair>();
@@ -85,7 +85,7 @@ bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString &childId, c
         const AdvContextPcrProductPair data = value.value<AdvContextPcrProductPair>();
 
         AnnotatedDNAView *dnaView = originalWrappedWidget->getDnaView();
-        SAFE_POINT(NULL != dnaView, "Invalid sequence view detected", false);
+        SAFE_POINT(nullptr != dnaView, "Invalid sequence view detected", false);
 
         return dnaView->getSequenceContexts().contains(data.first);
     } else {
@@ -94,7 +94,7 @@ bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString &childId, c
 }
 
 QString PcrOptionsPanelSavableTab::getChildId(QWidget *child) const {
-    if (NULL != qobject_cast<PrimerGroupBox *>(child->parent())) {
+    if (nullptr != qobject_cast<PrimerGroupBox *>(child->parent())) {
         QWidget *parentGroupBox = qobject_cast<QWidget *>(child->parent());
         return U2SavableWidget::getChildId(parentGroupBox) + WIDGET_ID_SEPARATOR + child->objectName();
     } else {
@@ -104,9 +104,9 @@ QString PcrOptionsPanelSavableTab::getChildId(QWidget *child) const {
 
 QWidget *PcrOptionsPanelSavableTab::getPrimerEditWidgetById(const QString &childId) const {
     const QStringList ids = childId.split(WIDGET_ID_SEPARATOR);
-    SAFE_POINT(2 == ids.size(), "Invalid widget ID", NULL);
+    SAFE_POINT(2 == ids.size(), "Invalid widget ID", nullptr);
     QWidget *primerGroup = wrappedWidget->findChild<QWidget *>(ids.first());
-    SAFE_POINT(NULL != primerGroup, "Invalid parent widget", NULL);
+    SAFE_POINT(nullptr != primerGroup, "Invalid parent widget", nullptr);
     return primerGroup->findChild<QWidget *>(ids.last());
 }
 
@@ -120,7 +120,7 @@ QWidget *PcrOptionsPanelSavableTab::getChildWidgetById(const QString &childId) c
 
 bool PcrOptionsPanelSavableTab::childExists(const QString &childId) const {
     if (childId.contains(WIDGET_ID_SEPARATOR)) {
-        return NULL != getPrimerEditWidgetById(childId);
+        return nullptr != getPrimerEditWidgetById(childId);
     } else {
         return U2SavableWidget::childExists(childId);
     }

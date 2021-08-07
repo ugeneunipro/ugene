@@ -40,7 +40,7 @@ class QueryPalette : public QTreeWidget {
     Q_OBJECT
 public:
     static const QString MIME_TYPE;
-    QueryPalette(QWidget *parent = NULL);
+    QueryPalette(QWidget *parent = nullptr);
 
     QVariant saveState() const;
     void restoreState(const QVariant &);

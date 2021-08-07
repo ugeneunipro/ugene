@@ -221,21 +221,21 @@ QMenu *ToolsMenu::getToolsMenu() {
 
 QMenu *ToolsMenu::getMenu(const QString &menuName) {
     QMenu *tools = getToolsMenu();
-    CHECK(NULL != tools, NULL);
+    CHECK(nullptr != tools, nullptr);
 
     if (TOOLS == menuName) {
         return tools;
     }
 
     QMenu *subMenu = tools->findChild<QMenu *>(menuName);
-    if (NULL == subMenu) {
+    if (nullptr == subMenu) {
         subMenu = createMenu(tools, menuName);
     }
     return subMenu;
 }
 
 QMenu *ToolsMenu::createMenu(QMenu *tools, const QString &menuName) {
-    SAFE_POINT(actionText.contains(menuName), "Unknown tool sub menu " + menuName, NULL);
+    SAFE_POINT(actionText.contains(menuName), "Unknown tool sub menu " + menuName, nullptr);
     QMenu *result = new QMenu(actionText[menuName], tools);
     if (actionIcon.contains(menuName)) {
         result->setIcon(QIcon(actionIcon[menuName]));
@@ -255,22 +255,22 @@ QAction *findAction(const QMenu *menu, const QString &actionName) {
             return action;
         }
     }
-    return NULL;
+    return nullptr;
 }
 QAction *getSeparator(const QMenu *menu, QAction *action1, QAction *action2) {
-    bool foundAction1 = (NULL == action1);
+    bool foundAction1 = (nullptr == action1);
     foreach (QAction *action, menu->actions()) {
         if (action1 == action) {
             foundAction1 = true;
         }
         if (action2 == action) {
-            return NULL;
+            return nullptr;
         }
         if (foundAction1 && action->isSeparator()) {
             return action;
         }
     }
-    return NULL;
+    return nullptr;
 }
 }    // namespace
 
@@ -293,31 +293,31 @@ bool ToolsMenu::mustHaveSeparator(const QString &menuName, const QString &action
 QAction *ToolsMenu::getPrevAction(QMenu *menu, const QString &menuName, const QString &actionName) {
     QStringList actionNames = subMenuAction[menuName];
     int pos = actionNames.indexOf(actionName);
-    SAFE_POINT(-1 != pos, "Unknown Tools menu action " + actionName, NULL);
+    SAFE_POINT(-1 != pos, "Unknown Tools menu action " + actionName, nullptr);
 
     for (int i = pos - 1; i >= 0; i--) {
         QAction *action = findAction(menu, actionNames[i]);
-        if (NULL != action) {
+        if (nullptr != action) {
             return action;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 QAction *ToolsMenu::getNextAction(QMenu *menu, const QString &menuName, const QString &actionName) {
     QStringList actionNames = subMenuAction[menuName];
     int pos = actionNames.indexOf(actionName);
-    SAFE_POINT(-1 != pos, "Unknown Tools menu action " + actionName, NULL);
+    SAFE_POINT(-1 != pos, "Unknown Tools menu action " + actionName, nullptr);
 
     for (int i = pos + 1; i < actionNames.size(); i++) {
         QAction *action = findAction(menu, actionNames[i]);
-        if (NULL != action) {
+        if (nullptr != action) {
             return action;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ToolsMenu::insertAction(QMenu *menu, const QString &menuName, QAction *action) {
@@ -325,10 +325,10 @@ void ToolsMenu::insertAction(QMenu *menu, const QString &menuName, QAction *acti
     QAction *next = getNextAction(menu, menuName, action->objectName());
     QAction *sep = getSeparator(menu, prev, next);
 
-    QString prevName = (NULL == prev) ? "" : prev->objectName();
-    QString nextName = (NULL == next) ? "" : next->objectName();
+    QString prevName = (nullptr == prev) ? "" : prev->objectName();
+    QString nextName = (nullptr == next) ? "" : next->objectName();
 
-    if (NULL == sep) {
+    if (nullptr == sep) {
         if (mustHaveSeparator(menuName, action->objectName(), nextName)) {
             QAction *nextSep = menu->insertSeparator(next);
             menu->insertAction(nextSep, action);
@@ -353,7 +353,7 @@ void ToolsMenu::insertAction(QMenu *menu, const QString &menuName, QAction *acti
 
 void ToolsMenu::addAction(const QString &menuName, QAction *action) {
     QMenu *menu = getMenu(menuName);
-    SAFE_POINT(NULL != menu, "Can not find menu " + menuName, );
+    SAFE_POINT(nullptr != menu, "Can not find menu " + menuName, );
     insertAction(menu, menuName, action);
 }
 

@@ -114,7 +114,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       offset(0),
       readShift(0),
       storage(storage),
-      blastTask(NULL),
+      blastTask(nullptr),
       readName(readName),
       complement(false),
       skipped(false) {
@@ -127,7 +127,7 @@ void BlastAndSwReadTask::prepare() {
     CHECK_OP(stateInfo, );
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );
+    SAFE_POINT_EXT(nullptr != blastTask, setError("BLAST subtask is NULL"), );
     addSubTask(blastTask);
 }
 
@@ -138,7 +138,7 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), result);
         setError(tr("A problem occurred while mapping \"%1\" to \"%2\".").arg(readName).arg(refObject->getGObjectName()));
     }
-    CHECK(subTask != NULL, result);
+    CHECK(subTask != nullptr, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
     if (subTask == blastTask) {
@@ -161,7 +161,7 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         settings->setCustomValue("SW_scoringMatrix", "dna");
 
         result << factory->getTaskInstance(settings.take());
-    } else if (qobject_cast<AbstractAlignmentTask *>(subTask) != NULL) {
+    } else if (qobject_cast<AbstractAlignmentTask *>(subTask) != nullptr) {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
         CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), result);
         int rowCount = msaObject->getNumRows();
@@ -177,13 +177,13 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
 
         msaObject->crop(msaObject->getRow(1)->getCoreRegion());
         MSADistanceAlgorithmFactory *factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
-        CHECK_EXT(NULL != factory, setError("MSADistanceAlgorithmFactory is NULL"), result);
+        CHECK_EXT(nullptr != factory, setError("MSADistanceAlgorithmFactory is NULL"), result);
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
 
         MSADistanceAlgorithm *algo = factory->createAlgorithm(msaObject->getMsa());
-        CHECK_EXT(NULL != algo, setError("MSADistanceAlgorithm is NULL"), result);
+        CHECK_EXT(nullptr != algo, setError("MSADistanceAlgorithm is NULL"), result);
         result << algo;
-    } else if (qobject_cast<MSADistanceAlgorithm *>(subTask) != NULL) {
+    } else if (qobject_cast<MSADistanceAlgorithm *>(subTask) != nullptr) {
         MSADistanceAlgorithm *algo = qobject_cast<MSADistanceAlgorithm *>(subTask);
         const MSADistanceMatrix &mtx = algo->getMatrix();
 
@@ -233,7 +233,7 @@ QString BlastAndSwReadTask::getReadName() const {
 
 MultipleSequenceAlignment BlastAndSwReadTask::getMAlignment() {
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(storage, msa));
-    CHECK(msaObj != NULL, MultipleSequenceAlignment());
+    CHECK(msaObj != nullptr, MultipleSequenceAlignment());
 
     return msaObj->getMultipleAlignment();
 }
@@ -262,17 +262,17 @@ BlastNPlusSupportTask *BlastAndSwReadTask::getBlastTask() {
     settings.gapExtendCost = 2;
 
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), NULL);
+    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), nullptr);
 
     if (readName.isEmpty()) {
         readName = readObject->getSequenceName();
     }
 
     settings.querySequence = readObject->getWholeSequenceData(stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     checkRead(settings.querySequence);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     settings.alphabet = readObject->getAlphabet();
     settings.isNucleotideSeq = settings.alphabet->isNucleic();
@@ -374,17 +374,17 @@ void BlastAndSwReadTask::shiftGaps(U2MsaRowGapModel &gaps) const {
 
 AbstractAlignmentTaskFactory *BlastAndSwReadTask::getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os) {
     AlignmentAlgorithm *algo = AppContext::getAlignmentAlgorithmsRegistry()->getAlgorithm(algoId);
-    CHECK_EXT(NULL != algo, os.setError(BlastAndSwReadTask::tr("The %1 algorithm is not found. Add the %1 plugin.").arg(algoId)), NULL);
+    CHECK_EXT(nullptr != algo, os.setError(BlastAndSwReadTask::tr("The %1 algorithm is not found. Add the %1 plugin.").arg(algoId)), nullptr);
 
     AlgorithmRealization *algoImpl = algo->getAlgorithmRealization(implId);
-    CHECK_EXT(NULL != algoImpl, os.setError(BlastAndSwReadTask::tr("The %1 algorithm is not found. Check that the %1 plugin is up to date.").arg(algoId)), NULL);
+    CHECK_EXT(nullptr != algoImpl, os.setError(BlastAndSwReadTask::tr("The %1 algorithm is not found. Check that the %1 plugin is up to date.").arg(algoId)), nullptr);
 
     return algoImpl->getTaskFactory();
 }
 
 PairwiseAlignmentTaskSettings *BlastAndSwReadTask::createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os) {
     QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
-    CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
+    CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), nullptr);
 
     U2DataId referenceId = msaObject->getMsaRow(0)->getRowDbInfo().sequenceId;
     U2DataId readId = msaObject->getMsaRow(1)->getRowDbInfo().sequenceId;

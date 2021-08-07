@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Regression: UGENE-3507 -->
+    <load-broken-document index="doc" url="position_weight_matrix/negative/Alx3_3418.2.pwm" io="local_file" format="PWMatrix" message="The file format is not PWM"/>
+
+</multi-test>

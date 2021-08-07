@@ -52,7 +52,7 @@ const QString HmmerSearchDialog::HMM_FILES_DIR_ID = "uhmmer3_search_dlg_impl_hmm
 const QString HmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME = "hmm_signal";
 
 HmmerSearchDialog::HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
-    : QDialog(parent), seqCtx(NULL) {
+    : QDialog(parent), seqCtx(nullptr) {
     init(seqObj);
 }
 
@@ -63,9 +63,9 @@ HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *
 
 void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
     setupUi(this);
-    SAFE_POINT(NULL != seqObj, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
 
-    new HelpButton(this, buttonBox, "60229191");
+    new HelpButton(this, buttonBox, "65930823");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -89,9 +89,9 @@ void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
     QWidget *firstTab = tabWidget->widget(0);
-    assert(NULL != firstTab);
+    assert(nullptr != firstTab);
     QVBoxLayout *curLayout = qobject_cast<QVBoxLayout *>(firstTab->layout());
-    assert(NULL != curLayout);
+    assert(nullptr != curLayout);
     QWidget *aw = annotationsWidgetController->getWidget();
     curLayout->insertWidget(1, aw);
 
@@ -198,7 +198,7 @@ void HmmerSearchDialog::sl_okButtonClicked() {
         QMessageBox::critical(this, tr("Error: bad arguments!"), err);
         return;
     }
-    if (seqCtx != NULL) {
+    if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 

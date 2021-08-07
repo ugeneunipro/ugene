@@ -99,7 +99,7 @@ qint64 GTimer::currentTimeMicros() {
     res -= WIN_UNIX_EPOCH_DELTA_MSEC;
 #else
     struct timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
     res = qint64(tv.tv_sec) * 1000 * 1000 + tv.tv_usec;
 #endif
     return res;
@@ -107,7 +107,7 @@ qint64 GTimer::currentTimeMicros() {
 
 TimeCounter::TimeCounter(GCounter *c, bool _start)
     : totalCounter(c), startTime(0) {
-    assert(totalCounter != NULL);
+    assert(totalCounter != nullptr);
     started = false;
     if (_start) {
         start();

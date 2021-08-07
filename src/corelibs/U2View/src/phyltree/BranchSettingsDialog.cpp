@@ -34,7 +34,7 @@ BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &se
     updatedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
     updatedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228105");
+    new HelpButton(this, buttonBox, "65929737");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -58,7 +58,7 @@ void BranchSettingsDialog::updateColorButton() {
 
 void BranchSettingsDialog::sl_colorButton() {
     QColorDialog::ColorDialogOptions options;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QColorDialog::DontUseNativeDialog;
     }

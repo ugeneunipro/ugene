@@ -41,7 +41,7 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
-#include "ov_msa/Export/MSAImageExportTask.h"
+#include "ov_msa/export/MSAImageExportTask.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/ScrollController.h"
@@ -51,8 +51,8 @@ namespace U2 {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor *editor)
-    : editor(editor),
+MaEditorWgt::MaEditorWgt(MaEditor *_editor)
+    : editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
       consensusArea(nullptr),
@@ -64,18 +64,18 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(nullptr),
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
-      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       enableCollapsingOfSingleRowGroups(false),
-      scrollController(new ScrollController(editor, this, collapseModel)),
+      scrollController(new ScrollController(editor, this)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(nullptr),
-      drawHelper(new DrawHelper(this)),
+      drawHelper(new DrawHelper(editor)),
       delSelectionAction(nullptr),
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
       pasteAction(nullptr),
       pasteBeforeAction(nullptr),
       cutSelectionAction(nullptr) {
+    SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
     setFocusPolicy(Qt::ClickFocus);
 
@@ -90,6 +90,10 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
+}
+
+MaEditorStatusBar *MaEditorWgt::getStatusBar() const {
+    return statusBar;
 }
 
 QAction *MaEditorWgt::getUndoAction() const {
@@ -225,8 +229,8 @@ void MaEditorWgt::initWidgets() {
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
@@ -236,7 +240,7 @@ void MaEditorWgt::initActions() {
     // SANGER_TODO: check why delAction is not added
     delSelectionAction = new QAction(tr("Remove selection"), this);
     delSelectionAction->setObjectName("Remove selection");
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     // Shortcut was wrapped with ifndef to workaround UGENE-6676.
     // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
     delSelectionAction->setShortcut(QKeySequence::Delete);
@@ -289,6 +293,10 @@ void MaEditorWgt::sl_countUndo() {
 
 void MaEditorWgt::sl_countRedo() {
     GCounter::increment("Redo", editor->getFactoryId());
+}
+
+MaEditor *MaEditorWgt::getEditor() const {
+    return editor;
 }
 
 }    // namespace U2

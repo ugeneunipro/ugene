@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_NIAID_PIPELINES_H_
 #define GTTESTS_NIAID_PIPELINES_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

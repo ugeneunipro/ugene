@@ -39,7 +39,8 @@
 
 namespace U2 {
 
-const QString PhyMlSettingsPreffixes::ModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_model_t");
+const QString PhyMlSettingsPreffixes::AminoAcidModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_amino_acid_model_t");
+const QString PhyMlSettingsPreffixes::DnaModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_dna_model_t");
 const QString PhyMlSettingsPreffixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_eq_freq_flag");
 
 const QString PhyMlSettingsPreffixes::EstimateTtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_trans_ratio");
@@ -110,43 +111,45 @@ void PhyMlWidget::makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType
     makeTTRatioControlsAvailable(true);
 
     switch (ttRatioType) {
-    case ANY_TT_RATIO:
-        if (isTtRationFixed) {
+        case ANY_TT_RATIO:
+            if (isTtRationFixed) {
+                transFixedRb->setChecked(true);
+            } else {
+                transEstimatedRb->setChecked(true);
+            }
+            break;
+        case ONLY_FIXED_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
             transFixedRb->setChecked(true);
-        } else {
+            transEstimatedRb->setEnabled(false);
+            transFixedRb->setEnabled(false);
+            break;
+        case ONLY_ESTIMATED_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
             transEstimatedRb->setChecked(true);
-        }
-        break;
-    case ONLY_FIXED_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transFixedRb->setChecked(true);
-        transEstimatedRb->setEnabled(false);
-        transFixedRb->setEnabled(false);
-        break;
-    case ONLY_ESTIMATED_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transEstimatedRb->setChecked(true);
-        transEstimatedRb->setEnabled(false);
-        transFixedRb->setEnabled(false);
-        break;
-    case WITHOUT_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transFixedRb->setChecked(false);
-        transEstimatedRb->setChecked(false);
-        makeTTRatioControlsAvailable(false);
-        break;
+            transEstimatedRb->setEnabled(false);
+            transFixedRb->setEnabled(false);
+            break;
+        case WITHOUT_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
+            transFixedRb->setChecked(false);
+            transEstimatedRb->setChecked(false);
+            makeTTRatioControlsAvailable(false);
+            break;
     }
 }
 
 void PhyMlWidget::createWidgetsControllers() {
     //Substitutional model
-    widgetControllers.addWidgetController(subModelCombo, PhyMlSettingsPreffixes::ModelType, "-m");
+    const QString subModelSettingsPath = isAminoAcid ? PhyMlSettingsPreffixes::AminoAcidModelType
+                                                     : PhyMlSettingsPreffixes::DnaModelType;
+    widgetControllers.addWidgetController(subModelCombo, subModelSettingsPath, "-m");
 
     //Number of substitution rate categories
     widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");
@@ -297,7 +300,7 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
     //Check that PhyMl and tempory folder path defined
     ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
     ExternalTool *phyml = reg->getById(PhyMLSupport::PHYML_ID);
-    SAFE_POINT(NULL != phyml, "External tool PHyML is not registered", false);
+    SAFE_POINT(nullptr != phyml, "External tool PHyML is not registered", false);
 
     const QString &path = phyml->getPath();
     const QString &name = phyml->getName();
@@ -313,15 +316,15 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            SAFE_POINT(false, "Incorrect state of the message box", false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                SAFE_POINT(false, "Incorrect state of the message box", false);
+                break;
         }
     }
 

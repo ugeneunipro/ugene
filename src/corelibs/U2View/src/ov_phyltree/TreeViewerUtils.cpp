@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-QFont *TreeViewerUtils::font = NULL;
+QFont *TreeViewerUtils::font = nullptr;
 const char *TreeViewerUtils::IMAGE_FILTERS =
     "BMP - Windows Bitmap (*.bmp);;"
     "GIF - Graphic Interchange Format (*.gif);;"
@@ -49,7 +49,7 @@ void TreeViewerUtils::saveImageDialog(const QString &filters, QString &fileName,
         fileName = fileName.left(i);
     }
     QString initialPath = lod.dir + "/" + fileName;
-    fileName = U2FileDialog::getSaveFileName(NULL, QObject::tr("Save As"), initialPath, filters, &format);
+    fileName = U2FileDialog::getSaveFileName(nullptr, QObject::tr("Save As"), initialPath, filters, &format);
     lod.url = fileName;
     if (fileName.isEmpty())
         return;
@@ -67,8 +67,9 @@ void TreeViewerUtils::saveImageDialog(const QString &filters, QString &fileName,
 }
 
 const QFont &TreeViewerUtils::getFont() {
-    if (font == NULL) {
+    if (font == nullptr) {
         font = new QFont();
+        font->setPointSize(8);
     }
     return *font;
 }

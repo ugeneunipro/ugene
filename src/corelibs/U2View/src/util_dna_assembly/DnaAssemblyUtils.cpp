@@ -192,14 +192,14 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
     Result r = isCorrectFormat(url, targetFormats, detectedFormat);
     if (UNKNOWN == r) {
         coreLog.info("Unknown file format: " + url.getURLString());
-        return NULL;
+        return nullptr;
     }
 
     if (INCORRECT == r) {
         QDir dir = QFileInfo(url.getURLString()).absoluteDir();
         return new DefaultConvertFileTask(url, detectedFormat, targetFormats.first(), dir.absolutePath());
     }
-    return NULL;
+    return nullptr;
 }
 }    // namespace
 
@@ -215,7 +215,7 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
 #define PREPARE_FILE(url, targetFormats) \
     if (!toConvert.contains(url.getURLString())) { \
         ConvertFileTask *task = getConvertTask(url, targetFormats); \
-        if (NULL != task) { \
+        if (nullptr != task) { \
             addSubTask(task); \
             conversionTasksCount++; \
             toConvert << url.getURLString(); \
@@ -225,7 +225,7 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
 QMap<QString, QString> DnaAssemblySupport::toConvert(const DnaAssemblyToRefTaskSettings &settings, QList<GUrl> &unknownFormatFiles) {
     QMap<QString, QString> result;
     DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
-    SAFE_POINT(NULL != env, "Unknown algorithm: " + settings.algName, result);
+    SAFE_POINT(nullptr != env, "Unknown algorithm: " + settings.algName, result);
 
     foreach (const GUrl &url, settings.getShortReadUrls()) {
         CHECK_FILE(url, env->getReadsFormats());
@@ -318,7 +318,7 @@ void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &dow
 /************************************************************************/
 DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult, bool justBuildIndex)
     : ExternalToolSupportTask("Dna assembly task", TaskFlags(TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings)), settings(settings), viewResult(viewResult),
-      justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(NULL) {
+      justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(nullptr) {
 }
 
 const DnaAssemblyToRefTaskSettings &DnaAssemblyTaskWithConversions::getSettings() const {
@@ -326,7 +326,7 @@ const DnaAssemblyToRefTaskSettings &DnaAssemblyTaskWithConversions::getSettings(
 }
 void DnaAssemblyTaskWithConversions::prepare() {
     DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
-    if (env == NULL) {
+    if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(settings.algName));
         return;
     }
@@ -355,14 +355,14 @@ void DnaAssemblyTaskWithConversions::prepare() {
 QList<Task *> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
     FilterUnpairedReadsTask *filterTask = qobject_cast<FilterUnpairedReadsTask *>(subTask);
-    if (filterTask != NULL) {
+    if (filterTask != nullptr) {
         settings.shortReadSets = filterTask->getFilteredReadList();
     }
     CHECK(!subTask->hasError(), result);
     CHECK(!hasError(), result);
 
     ConvertFileTask *convertTask = qobject_cast<ConvertFileTask *>(subTask);
-    if (NULL != convertTask) {
+    if (nullptr != convertTask) {
         SAFE_POINT_EXT(conversionTasksCount > 0, setError("Conversions task count error"), result);
         if (convertTask->getSourceURL() == settings.refSeqUrl) {
             settings.refSeqUrl = convertTask->getResult();
@@ -384,7 +384,7 @@ QList<Task *> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
             result << assemblyTask;
         }
     }
-    if (settings.filterUnpaired && filterTask != NULL) {
+    if (settings.filterUnpaired && filterTask != nullptr) {
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
         result << assemblyTask;
     }

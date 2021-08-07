@@ -66,7 +66,7 @@ CloseProjectTask::CloseProjectTask()
 }
 
 void CloseProjectTask::prepare() {
-    if (AppContext::getProject() == NULL) {
+    if (AppContext::getProject() == nullptr) {
         stateInfo.setError(tr("No active project found"));
         return;
     }
@@ -91,7 +91,7 @@ void CloseProjectTask::prepare() {
 //////////////////////////////////////////////////////////////////////////
 /// OpenProjectTask
 OpenProjectTask::OpenProjectTask(const QString &_url, const QString &_name)
-    : Task(tr("Open project/document"), TaskFlags_NR_FOSCOE), url(_url), name(_name), loadProjectTask(NULL) {
+    : Task(tr("Open project/document"), TaskFlags_NR_FOSCOE), url(_url), name(_name), loadProjectTask(nullptr) {
 }
 
 void OpenProjectTask::prepare() {
@@ -100,7 +100,7 @@ void OpenProjectTask::prepare() {
         stateInfo.setError(tr("Not a readable file: %1").arg(url));
         return;
     }
-    if (AppContext::getProject() != NULL) {
+    if (AppContext::getProject() != nullptr) {
         addSubTask(new CloseProjectTask());
     }
 
@@ -133,10 +133,10 @@ SaveProjectTask::~SaveProjectTask() {
 }
 
 void SaveProjectTask::prepare() {
-    if (proj == NULL) {
+    if (proj == nullptr) {
         proj = AppContext::getProject();
     }
-    assert(proj != NULL);
+    assert(proj != nullptr);
     if (url.isEmpty()) {
         url = proj->getProjectURL();
     }
@@ -209,19 +209,19 @@ void SaveProjectTask::prepare() {
 /// SaveOnlyProjectTask
 
 SaveOnlyProjectTask::SaveOnlyProjectTask(Project *p, const QString &_url)
-    : Task(tr("Save project"), TaskFlag_NoRun), sub(NULL), proj(p), url(_url) {
-    lock = NULL;
+    : Task(tr("Save project"), TaskFlag_NoRun), sub(nullptr), proj(p), url(_url) {
+    lock = nullptr;
 }
 
 SaveOnlyProjectTask::~SaveOnlyProjectTask() {
-    assert(lock == NULL);
+    assert(lock == nullptr);
 }
 
 void SaveOnlyProjectTask::prepare() {
-    if (proj == NULL) {
+    if (proj == nullptr) {
         proj = AppContext::getProject();
     }
-    assert(proj != NULL);
+    assert(proj != nullptr);
     if (url.isEmpty()) {
         url = proj->getProjectURL();
     }
@@ -276,14 +276,14 @@ Task::ReportResult SaveOnlyProjectTask::report() {
     }
     proj->unlockState(lock);
     delete lock;
-    lock = NULL;
+    lock = nullptr;
     return Task::ReportResult_Finished;
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// LoadProjectTask
 LoadProjectTask::LoadProjectTask(const QString &_url)
-    : Task(tr("Load project"), TaskFlag_None), proj(NULL), url(_url) {
+    : Task(tr("Load project"), TaskFlag_None), proj(nullptr), url(_url) {
     xmlDoc = new QDomDocument();
 }
 
@@ -301,13 +301,13 @@ Task::ReportResult LoadProjectTask::report() {
     if (!stateInfo.hasError()) {
         ProjectParserRegistry *ppr = ProjectParserRegistry::instance();
         ProjectParser *parser = ppr->getProjectParserByVersion(version);
-        if (parser == NULL) {
+        if (parser == nullptr) {
             coreLog.info(tr("Unable to detect parser for project"));
             setError(tr("failed to parse project file %1").arg(url));
         } else {
             proj = parser->createProjectFromXMLModel(url, *xmlDoc, stateInfo);
         }
-        if (proj != NULL) {
+        if (proj != nullptr) {
             coreLog.info(tr("Project loaded: %1").arg(url));
         }
     }
@@ -337,7 +337,7 @@ void ExportProjectTask::prepare() {
             QString tempDir = AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath();
             pr->setProjectURL(tempDir + QDir::separator() + projectFile);
         } else {
-            addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocuments, pr, QString::null, true));
+            addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocuments, pr, QString(), true));
         }
     }
 }
@@ -409,12 +409,12 @@ void GTest_LoadProject::prepare() {
     int servSize = services.size();
     assert(servSize <= 1);
     if (servSize == 1) {
-        if (previousProject->metaObject() != NULL) {
+        if (previousProject->metaObject() != nullptr) {
             Task *tt = new CloseProjectTask();
             tasks.append(tt);
         }
-    } else if (previousProject != NULL) {
-        AppContextImpl::getApplicationContext()->setProject(NULL);
+    } else if (previousProject != nullptr) {
+        AppContextImpl::getApplicationContext()->setProject(nullptr);
     }
     contextAdded = false;
 
@@ -425,7 +425,7 @@ void GTest_LoadProject::prepare() {
 }
 
 Task::ReportResult GTest_LoadProject::report() {
-    if (loadTask != NULL && loadTask->hasError()) {
+    if (loadTask != nullptr && loadTask->hasError()) {
         stateInfo.setError(loadTask->getError());
     } else if (!projContextName.isEmpty()) {
         addContext(projContextName, loadTask->getProject());
@@ -441,7 +441,7 @@ QList<Task *> GTest_LoadProject::onSubTaskFinished(Task *subTask) {
     }
     if (subTask == mt) {
         Project *p = loadTask->getProject();
-        if (p != NULL) {
+        if (p != nullptr) {
             AppContextImpl::getApplicationContext()->setProject(p);
         }
     }
@@ -449,7 +449,7 @@ QList<Task *> GTest_LoadProject::onSubTaskFinished(Task *subTask) {
 }
 
 void GTest_LoadProject::cleanup() {
-    AppContextImpl::getApplicationContext()->setProject(NULL);
+    AppContextImpl::getApplicationContext()->setProject(nullptr);
     XmlTest::cleanup();
 }
 
@@ -465,7 +465,7 @@ QList<XMLTestFactory *> ProjectTests::createTestFactories() {
 void GTest_ExportProject::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
-    exportTask = NULL;
+    exportTask = nullptr;
     url = env->getVar("TEMP_DATA_DIR") + el.attribute("url");
 }
 
@@ -486,7 +486,7 @@ void GTest_ExportProject::prepare() {
 }
 
 Task::ReportResult GTest_ExportProject::report() {
-    if (exportTask != NULL) {
+    if (exportTask != nullptr) {
         if (exportTask->hasError()) {
             stateInfo.setError(exportTask->getError());
         }
@@ -542,11 +542,11 @@ void GTest_UnloadProject::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_UnloadProject::prepare() {
     Project *p = AppContext::getProject();
-    if (p != NULL) {
+    if (p != nullptr) {
         foreach (QString doc, unloadDocList) {
             removeContext(doc);
         }
-        AppContextImpl::getApplicationContext()->setProject(NULL);
+        AppContextImpl::getApplicationContext()->setProject(nullptr);
     }
 }
 
@@ -559,7 +559,7 @@ void GTest_LoadDocumentFromProject::init(XMLTestFormat *tf, const QDomElement &e
 
 void GTest_LoadDocumentFromProject::prepare() {
     Project *pr = AppContext::getProject();
-    if (pr == NULL) {
+    if (pr == nullptr) {
         stateInfo.setError(tr("No project loaded"));
         return;
     }
@@ -578,7 +578,7 @@ void GTest_LoadDocumentFromProject::prepare() {
             loadedDoc = doc;
         }
     }
-    if (loadedDoc == NULL) {
+    if (loadedDoc == nullptr) {
         stateInfo.setError(tr("File %1 not found in project").arg(documentFileName));
         return;
     }
@@ -586,7 +586,7 @@ void GTest_LoadDocumentFromProject::prepare() {
 
 void GTest_LoadDocumentFromProject::cleanup() {
     QObject *o = getContext(documentFileName);
-    if (contextAdded && o != NULL) {
+    if (contextAdded && o != nullptr) {
         removeContext(documentFileName);
         if (loadedDoc->isLoaded()) {
             AppContext::getTaskScheduler()->registerTopLevelTask(new UnloadDocumentTask(loadedDoc, false));
@@ -597,7 +597,7 @@ void GTest_LoadDocumentFromProject::cleanup() {
 }
 
 Task::ReportResult GTest_LoadDocumentFromProject::report() {
-    if (loadTask != NULL) {
+    if (loadTask != nullptr) {
         if (!loadTask->hasError()) {
             addContext(documentFileName, loadedDoc);
             contextAdded = true;

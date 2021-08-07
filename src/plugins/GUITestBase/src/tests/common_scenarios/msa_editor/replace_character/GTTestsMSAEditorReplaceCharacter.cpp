@@ -21,16 +21,12 @@
 
 #include "GTTestsMSAEditorReplaceCharacter.h"
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 
 #include <QApplication>
-#include <QCheckBox>
 #include <QComboBox>
-#include <QSpinBox>
 #include <QTableWidget>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
@@ -42,7 +38,6 @@
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "system/GTClipboard.h"
-#include "utils/GTKeyboardUtils.h"
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -66,10 +61,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //4. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     //Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -93,10 +86,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     //Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('a');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
@@ -122,10 +113,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     //Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('g');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "G", QString("Incorrect selection content: expected - %1, received - %2").arg("G").arg(selectionContent));
 }
@@ -166,10 +155,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //Here "%1" is one of the values : "Standard DNA", "Extended DNA", "Standard RNA", "Extended RNA", "Standard amino acid", "Extended amino acid", "Raw".
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTKeyboardDriver::keyClick('r');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
@@ -185,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     //3. Press Shift + R keys on the keyboard.
     //Expected result : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
-    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
+    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);    // Enter replacement mode.
 
     //4. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     //Expected result :
@@ -193,23 +180,23 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     //A warning notification appears : Alphabet of the character, inserted into the alignment, differs from the alignment alphabet.The alignment alphabet has been set to
     //"%1".Use "Undo", if you'd like to restore the original alignment.
     //Here "%1" is one of the values : "Standard DNA", "Extended DNA", "Standard RNA", "Extended RNA", "Standard amino acid", "Extended amino acid", "Raw".
+    GTKeyboardDriver::keyClick('r');    // Type 'R' character.
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTKeyboardDriver::keyClick('r');
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 
     //5. Click "Undo".
     //Expected state : There is NO notifications.
     GTUtilsMsaEditor::undo(os);
-    GTGlobals::sleep();
+    GTUtilsNotifications::checkNoVisibleNotifications(os);
 
     //6. Click "Redo".
     //Expected state : The warning notification appears again.
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTUtilsMsaEditor::redo(os);
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
+    GTUtilsDialog::waitAllFinished(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text(os);
+    QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
 
@@ -231,10 +218,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //The original character was replaced by the new one. The alphabet of the alignment has been changed.
     //There is NO notifications.
     GTKeyboardDriver::keyClick('a');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
@@ -257,17 +242,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     //The original character was replaced by the new one. The alphabet of the alignment has been changed.
     //There is NO notifications.
     GTKeyboardDriver::keyClick('a');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 
     //5. Click "Undo".
     //Expected state : There is NO notifications.
     GTUtilsMsaEditor::undo(os);
-    GTGlobals::sleep();
 
     //6. Click "Redo".
     //Expected state : There is NO notifications.
@@ -289,10 +271,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 8), QPoint(9, 8));
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
@@ -310,10 +290,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -330,10 +308,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -350,10 +326,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -368,19 +342,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Up);
-    GTGlobals::sleep(500);
 
     //3. Replace the gap
     //Expected result : the gap is successfully replaced.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -400,10 +369,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -420,10 +387,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -441,10 +406,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -494,10 +457,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 
@@ -509,10 +470,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick('-');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 }
@@ -531,10 +490,8 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment.");
     GTKeyboardDriver::keyClick(']');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
@@ -547,19 +504,17 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //2. Select a character in sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 9), QPoint(0, 9));
 
-    //3. Press 'Escape'
-    //Expected result : edit character mode is ended.
+    //3. Enable edit character mode and press 'Escape'.
+    //Expected result : edit character mode is ended, but the selection remains.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTKeyboardDriver::keyClick('c');
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text(os);
-    CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
+    QString selectionContent = GTClipboard::text(os);
+    CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - 'T', got - '%1'").arg(selectionContent));
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor_replace_character

@@ -82,7 +82,7 @@ const QString FpkmTrackingFormat::LENGTH_COLUMN = "length";
 const QString FpkmTrackingFormat::COVERAGE_COLUMN = "coverage";
 
 FpkmTrackingFormat::FpkmTrackingFormat(QObject *parent)
-    : TextDocumentFormat(parent, BaseDocumentFormats::FPKM_TRACKING_FORMAT, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking")) {
+    : TextDocumentFormatDeprecated(parent, BaseDocumentFormats::FPKM_TRACKING_FORMAT, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking")) {
     formatName = tr("FPKM Tracking Format");
     formatDescription = tr("The FPKM (fragments per kilobase of exon model per million mapped fragments)"
                            " Tracking Format is a native Cufflinks format to output estimated expression values.");
@@ -91,11 +91,11 @@ FpkmTrackingFormat::FpkmTrackingFormat(QObject *parent)
 }
 
 Document *FpkmTrackingFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QList<GObject *> objects;
 
     load(io, objects, dbiRef, hints, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
@@ -245,7 +245,7 @@ void FpkmTrackingFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2
 
     foreach (const SharedAnnotationData &annotData, annotations) {
         QString annotTableName = sequenceName + FEATURES_TAG;
-        AnnotationTableObject *annotTable = NULL;
+        AnnotationTableObject *annotTable = nullptr;
         foreach (GObject *object, objects) {
             if (object->getGObjectName() == annotTableName) {
                 annotTable = dynamic_cast<AnnotationTableObject *>(object);
@@ -512,8 +512,8 @@ QStringList FpkmTrackingFormat::writeHeader(QList<GObject *> annotTables, Docume
 }
 
 void FpkmTrackingFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    SAFE_POINT(NULL != doc, "Internal error: NULL Document during saving a FPKM Tracking Format file!", );
-    SAFE_POINT(NULL != io, "Internal error: NULL IOAdapter during saving a FPKM Tracking Format file!", );
+    SAFE_POINT(nullptr != doc, "Internal error: NULL Document during saving a FPKM Tracking Format file!", );
+    SAFE_POINT(nullptr != io, "Internal error: NULL IOAdapter during saving a FPKM Tracking Format file!", );
 
     bool noErrorsDuringStoring = true;
     QList<GObject *> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);

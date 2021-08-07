@@ -39,7 +39,7 @@ class U2ALGORITHM_EXPORT CreateSArrayIndexTask : public Task {
     Q_OBJECT
 public:
     CreateSArrayIndexTask(const U2SequenceObject *obj, int windowSize, bool useBitMask = false, bool prebuiltIdx = false, const QString &fileName = "", const QString &refFileName = "");
-    CreateSArrayIndexTask(const char *seq, quint32 size, quint32 w, char unknownChar = 0, const quint32 *bitTable = NULL, quint32 bitCharLen = 0, quint32 skipGap = 0, quint32 _gapOffset = 0);
+    CreateSArrayIndexTask(const char *seq, quint32 size, quint32 w, char unknownChar = 0, const quint32 *bitTable = nullptr, quint32 bitCharLen = 0, quint32 skipGap = 0, quint32 _gapOffset = 0);
     ~CreateSArrayIndexTask();
 
     void run();
@@ -81,7 +81,7 @@ public:
     class SAISearchContext {
     public:
         SAISearchContext()
-            : currSample(NULL), currPos(-1), bitValue(0xFFFFFFFF) {};
+            : currSample(nullptr), currPos(-1), bitValue(0xFFFFFFFF) {};
         virtual ~SAISearchContext() {
         }
         const char *currSample;
@@ -91,7 +91,7 @@ public:
 
     //qlt - quick lookup table, size = 0 disable it's usage
     SArrayIndex(const char *serStart, const quint32 *bitTable, int bitCharLen);
-    SArrayIndex(const char *seq, quint32 size, quint32 w, TaskStateInfo &ti, char unknownChar = 0, const quint32 *bitTable = NULL, int bitCharLen = 0, int skipGap = 0, int gapOffset = 0);
+    SArrayIndex(const char *seq, quint32 size, quint32 w, TaskStateInfo &ti, char unknownChar = 0, const quint32 *bitTable = nullptr, int bitCharLen = 0, int skipGap = 0, int gapOffset = 0);
 
     virtual ~SArrayIndex();
 
@@ -211,17 +211,19 @@ int SArrayIndex::vecswapBit(quint32 *x1, quint32 *x2, quint32 n) {
 quint32 SArrayIndex::med3(quint32 *x, quint32 a, quint32 b, quint32 c) {
     int bc = compare(x[b], x[c]);
     int ac = compare(x[a], x[c]);
-    return compare(x[a], x[b]) < 0 ?
-               (bc < 0 ? b : ac < 0 ? c : a) :
-               (bc > 0 ? b : ac > 0 ? c : a);
+    return compare(x[a], x[b]) < 0 ? (bc < 0 ? b : ac < 0 ? c
+                                                          : a)
+                                   : (bc > 0 ? b : ac > 0 ? c
+                                                          : a);
 }
 
 quint32 SArrayIndex::med3Bit(quint32 *x, quint32 a, quint32 b, quint32 c) {
     int bc = compareBit(x + b, x + c);
     int ac = compareBit(x + a, x + c);
-    return compareBit(x + a, x + b) < 0 ?
-               (bc < 0 ? b : ac < 0 ? c : a) :
-               (bc > 0 ? b : ac > 0 ? c : a);
+    return compareBit(x + a, x + b) < 0 ? (bc < 0 ? b : ac < 0 ? c
+                                                               : a)
+                                        : (bc > 0 ? b : ac > 0 ? c
+                                                               : a);
 }
 
 quint32 SArrayIndex::seq2val(const char *seq) const {

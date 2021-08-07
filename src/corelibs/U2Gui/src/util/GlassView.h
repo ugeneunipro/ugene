@@ -46,7 +46,7 @@ class U2GUI_EXPORT GlassView : public QGraphicsView {
     Q_OBJECT
 public:
     GlassView(QGraphicsScene *scene)
-        : QGraphicsView(scene), glass(NULL) {
+        : QGraphicsView(scene), glass(nullptr) {
     }
 
 public slots:

@@ -50,7 +50,7 @@ bool KrakenBuildValidator::validateMinimizerLength(const Actor *actor, Notificat
 
 bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(),
               notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI are not available."), actor->getId()),
               false);
 

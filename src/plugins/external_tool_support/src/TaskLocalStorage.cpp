@@ -35,17 +35,17 @@ QThreadStorage<ETSContextTLSRef *> TaskLocalData::tls;
 
 class ETSContext *TaskLocalData::current() {
     ETSContextTLSRef *ref = tls.localData();
-    if (ref != NULL) {
-        assert(ref->ctx != NULL);
+    if (ref != nullptr) {
+        assert(ref->ctx != nullptr);
         return ref->ctx;
     }
     assert(0);
-    return NULL;
+    return nullptr;
 }
 
 unsigned TaskLocalData::currentWorkerID() {
     ETSContextTLSRef *ref = tls.localData();
-    if (ref != NULL) {
+    if (ref != nullptr) {
         return ref->workerID;
     }
     assert(0);
@@ -53,16 +53,16 @@ unsigned TaskLocalData::currentWorkerID() {
 }
 
 void TaskLocalData::bindToETSTLSContext(ETSContext *ctx, int workerID) {
-    assert(ctx != NULL);
+    assert(ctx != nullptr);
     assert(!tls.hasLocalData());
     tls.setLocalData(new ETSContextTLSRef(ctx, workerID));
 }
 
 void TaskLocalData::detachETSTLSContext() {
     ETSContextTLSRef *ref = tls.localData();
-    assert(ref != NULL && ref->ctx != NULL);
-    ref->ctx = NULL;
-    tls.setLocalData(NULL);
+    assert(ref != nullptr && ref->ctx != nullptr);
+    ref->ctx = nullptr;
+    tls.setLocalData(nullptr);
 }
 
 }    // namespace U2

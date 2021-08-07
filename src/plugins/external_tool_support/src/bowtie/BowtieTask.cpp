@@ -275,7 +275,7 @@ void BowtieAlignTask::prepare() {
     }
     arguments.append(settings.resultFileName.getURLString());
     logParser = new LogParser();
-    auto task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_ID, arguments, logParser, NULL);
+    auto task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_ID, arguments, logParser, nullptr);
     setListenerForTask(task);
     addSubTask(task);
 }
@@ -353,9 +353,9 @@ const QStringList BowtieTask::largeIndexSuffixes = QStringList() << ".1.ebwtl"
 
 BowtieTask::BowtieTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex)
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSCOE, justBuildIndex),
-      buildIndexTask(NULL),
-      alignTask(NULL),
-      unzipTask(NULL) {
+      buildIndexTask(nullptr),
+      alignTask(nullptr),
+      unzipTask(nullptr) {
 }
 
 void BowtieTask::prepare() {

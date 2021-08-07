@@ -1,0 +1,5 @@
+<suite name="Smith Waterman Tests classic 2 big and long test">
+
+    <env-var name="IMPL" value="Classic 2"/>
+    <test-dir path="smith_waterman_big" test-format="XML" test-ext="*.xml"/>
+</suite>

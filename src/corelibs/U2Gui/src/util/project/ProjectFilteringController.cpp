@@ -72,7 +72,7 @@ void ProjectFilteringController::sl_startFiltering() {
 
 void ProjectFilteringController::sl_objectsFiltered(const QString &groupName, const SafeObjList &objs) {
     AbstractProjectFilterTask *filterTask = qobject_cast<AbstractProjectFilterTask *>(sender());
-    SAFE_POINT(NULL != filterTask, L10N::nullPointerError("project filter task"), );
+    SAFE_POINT(nullptr != filterTask, L10N::nullPointerError("project filter task"), );
     SAFE_POINT(!groupName.isEmpty(), "Invalid project filter group name", );
 
     if (!filterTask->isCanceled() && !filterTask->hasError()) {
@@ -82,7 +82,7 @@ void ProjectFilteringController::sl_objectsFiltered(const QString &groupName, co
 
 void ProjectFilteringController::sl_filteringFinished() {
     AbstractProjectFilterTask *task = qobject_cast<AbstractProjectFilterTask *>(sender());
-    SAFE_POINT(NULL != task, L10N::nullPointerError("project filter task"), );
+    SAFE_POINT(nullptr != task, L10N::nullPointerError("project filter task"), );
 
     if (task->isFinished()) {
         activeFilteringTasks.remove(task);
@@ -94,7 +94,7 @@ void ProjectFilteringController::sl_filteringFinished() {
 }
 
 void ProjectFilteringController::addNewActiveTask(AbstractProjectFilterTask *task) {
-    SAFE_POINT(NULL != task, L10N::nullPointerError("Project filtering task"), );
+    SAFE_POINT(nullptr != task, L10N::nullPointerError("Project filtering task"), );
 
     connectNewTask(task);
     SAFE_POINT(!activeFilteringTasks.contains(task), "Unexpected project filter task", );

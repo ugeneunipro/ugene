@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: fib_simple db: titin score tresholds 3 domains here
+	./phmmer -T 60 -domT 5.0 fib_simple.fa titin.fa >  fib_simple_query_titin_db_domT_seqT.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/fib_simple.fa" db="fasta/titin.fa" domT="5.0" seqT="60" outputDir="common/phmmer/score_tresholds/fib_simple/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/fib_simple_query_titin_db_domT_seqT.out" actualOut="common/phmmer/score_tresholds/fib_simple/output.txt"/>
+
+</multi-test>

@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class MarkSequencePrompter : public PrompterBase<MarkSequencePrompter> {
     Q_OBJECT
 public:
-    MarkSequencePrompter(Actor *p = NULL)
+    MarkSequencePrompter(Actor *p = nullptr)
         : PrompterBase<MarkSequencePrompter>(p) {
     }
 

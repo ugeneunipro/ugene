@@ -33,7 +33,7 @@ namespace U2 {
 class FormatSettingsGUIPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    FormatSettingsGUIPageController(QObject *p = NULL);
+    FormatSettingsGUIPageController(QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 

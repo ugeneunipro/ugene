@@ -109,7 +109,7 @@ public:
 PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext *_ctx, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229274");
+    new HelpButton(this, buttonBox, "65930906");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Add to queue"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -122,7 +122,7 @@ PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext *_
     intermediate = PFMatrix();
 
     ctx = _ctx;
-    task = NULL;
+    task = nullptr;
 
     initialSelection = ctx->getSequenceSelection()->isEmpty() ? U2Region() : ctx->getSequenceSelection()->getSelectedRegions().first();
     int seqLen = ctx->getSequenceLength();
@@ -169,8 +169,8 @@ void PWMSearchDialogController::connectGUI() {
 }
 
 void PWMSearchDialogController::updateState() {
-    bool hasActiveTask = task != NULL;
-    bool hasCompl = ctx->getComplementTT() != NULL;
+    bool hasActiveTask = task != nullptr;
+    bool hasCompl = ctx->getComplementTT() != nullptr;
 
     bool hasResults = resultsTree->topLevelItemCount() > 0;
 
@@ -189,7 +189,7 @@ void PWMSearchDialogController::updateState() {
 
 void PWMSearchDialogController::updateStatus() {
     QString message;
-    if (task != NULL) {
+    if (task != nullptr) {
         message = tr("Progress %1% ").arg(qMax(0, task->getProgress()));
     }
     message += tr("Results found: %1.").arg(resultsTree->topLevelItemCount());
@@ -201,7 +201,7 @@ bool PWMSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
         QKeyEvent *ke = (QKeyEvent *)ev;
         if (ke->key() == Qt::Key_Space) {
             WeightMatrixResultItem *item = static_cast<WeightMatrixResultItem *>(resultsTree->currentItem());
-            if (item != NULL) {
+            if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
         }
@@ -293,7 +293,7 @@ void PWMSearchDialogController::addToQueue() {
 }
 
 void PWMSearchDialogController::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -461,7 +461,7 @@ void PWMSearchDialogController::sl_onLoadFolder() {
 }
 
 void PWMSearchDialogController::runTask() {
-    assert(task == NULL);
+    assert(task == nullptr);
     if (model.getLength() != 0) {
         addToQueue();
     }
@@ -481,7 +481,7 @@ void PWMSearchDialogController::runTask() {
         return;
     }
 
-    DNATranslation *complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : NULL;
+    DNATranslation *complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : nullptr;
     bool complOnly = rbComplement->isChecked();
 
     for (int i = 0, n = queue.size(); i < n; i++) {
@@ -493,7 +493,7 @@ void PWMSearchDialogController::runTask() {
 
     U2OpStatusImpl os;
     QByteArray seq = ctx->getSequenceData(reg, os);
-    CHECK_OP_EXT(os, QMessageBox::warning(NULL, L10N::errorTitle(), os.getError()), );
+    CHECK_OP_EXT(os, QMessageBox::warning(nullptr, L10N::errorTitle(), os.getError()), );
 
     task = new WeightMatrixSearchTask(queue, seq, reg.startPos);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinished()));
@@ -509,7 +509,7 @@ void PWMSearchDialogController::sl_onTaskFinished() {
     }
     timer->stop();
     importResults();
-    task = NULL;
+    task = nullptr;
     updateState();
 }
 

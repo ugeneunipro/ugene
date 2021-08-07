@@ -43,7 +43,7 @@ class WormsGLRenderer : public BioStruct3DGLRenderer {
 
     struct Monomer {
         Monomer()
-            : alphaCarbon(NULL), carbonylOxygen(NULL) {
+            : alphaCarbon(nullptr), carbonylOxygen(nullptr) {
         }
         QSharedDataPointer<AtomData> alphaCarbon;
         QSharedDataPointer<AtomData> carbonylOxygen;

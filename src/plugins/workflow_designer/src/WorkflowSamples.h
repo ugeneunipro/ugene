@@ -89,7 +89,7 @@ public:
     virtual void paint(QPainter *);
     virtual bool eventFilter(QObject *, QEvent *e) {
         this->event(e);
-        return item != NULL;
+        return item != nullptr;
     }
 
 public slots:

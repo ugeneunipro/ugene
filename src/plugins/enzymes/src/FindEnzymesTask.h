@@ -58,14 +58,7 @@ public:
 class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
-    FindEnzymesTaskConfig()
-        : maxResults(INT_MAX),
-          minHitCount(1),
-          maxHitCount(INT_MAX),
-          circular(false),
-          isAutoAnnotationUpdateTask(false) {
-    }
-    /** Region to search enzymes. */
+    /** Region to search enzymes. When is empty the whole sequence range is processed. */
     U2Region searchRegion;
 
     /** List of regions to exclude from the search. */
@@ -75,28 +68,28 @@ struct FindEnzymesTaskConfig {
     QString groupName;
 
     /** Maximum result count after search task will be stopped. */
-    int maxResults;
+    int maxResults = INT_MAX;
 
     /** If the results count is less than 'minHitCount' there will be no annotations created. */
-    int minHitCount;
+    int minHitCount = 1;
 
     /** If the results count is greater than 'maxHitCount' there will be no annotations created. */
-    int maxHitCount;
+    int maxHitCount = INT_MAX;
 
     /** If true, the sequence is circular and results must also be searched in start/end overlapped regions. */
-    bool circular;
+    bool circular = false;
 
     /** If task is not Auto-Annotation-Update task and no results is found the target 'annotationObject' will be removed from the project. */
-    bool isAutoAnnotationUpdateTask;
+    bool isAutoAnnotationUpdateTask = false;
 };
 
 class FindEnzymesToAnnotationsTask : public Task {
     Q_OBJECT
 public:
     FindEnzymesToAnnotationsTask(AnnotationTableObject *aobj, const U2EntityRef &seqRef, const QList<SEnzymeData> &enzymes, const FindEnzymesTaskConfig &cfg);
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    ReportResult report() override;
 
 private:
     U2EntityRef dnaSeqRef;
@@ -120,8 +113,6 @@ public:
     void cleanup() override;
 
 private:
-    void registerResult(const FindEnzymesAlgResult &r);
-
     int maxResults;
     QVector<U2Region> excludedRegions;
     bool isCircular;
@@ -138,7 +129,7 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = NULL, bool isCircular = false, int maxResults = 0x7FFFFFFF);
+    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
 
     QList<FindEnzymesAlgResult> getResults() const {
         return resultList;

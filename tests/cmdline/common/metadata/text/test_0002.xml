@@ -1,0 +1,16 @@
+<!-- One string, by files -->
+<multi-test>
+    <remove-temp-dir url="text_metadata_0002"/>
+    <create-temp-dir url="text_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_text_write_text.uws"
+            in="!common_data_dir!cmdline/metadata/single_string.txt"
+            split="true"
+            acc="false"
+            working-dir="text_metadata_0002"
+    />
+
+    <check-temp-file url="text_metadata_0002/Dataset 1.txt" exists="0"/>
+    <check-temp-file url="text_metadata_0002/single_string.txt" exists="1"/>
+</multi-test>

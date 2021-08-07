@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/getNameTest/getNameTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 expected="GXL_141619"
+                 message="TEST PASSED"
+    />
+
+</multi-test>

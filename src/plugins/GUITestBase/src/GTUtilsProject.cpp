@@ -60,14 +60,14 @@ namespace U2 {
 
 void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s, ProjectCheckType checkType) {
     switch (s.openMethod) {
-    case OpenFileSettings::DragDrop:
-        openFilesDrop(os, urls);
-        break;
-    case OpenFileSettings::Dialog:
-        openFilesWithDialog(os, urls);
-        break;
+        case OpenFileSettings::DragDrop:
+            openFilesDrop(os, urls);
+            break;
+        case OpenFileSettings::Dialog:
+            openFilesWithDialog(os, urls);
+            break;
     }
-     checkProject(os, checkType);
+    checkProject(os, checkType);
 }
 
 void GTUtilsProject::openFile(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s, ProjectCheckType checkType) {
@@ -255,7 +255,7 @@ void GTUtilsProject::saveProjectAs(HI::GUITestOpStatus &os, const QString &path)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeProject"
+#define GT_METHOD_NAME "closeProjectDeprecated"
 void GTUtilsProject::closeProject(HI::GUITestOpStatus &os) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AppCloseMessageBoxDialogFiller(os));
@@ -263,12 +263,20 @@ void GTUtilsProject::closeProject(HI::GUITestOpStatus &os) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "closeProject"
+void GTUtilsProject::closeProject(HI::GUITestOpStatus &os, bool isExpectSaveProjectDialog) {
+    if (isExpectSaveProjectDialog) {
+        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    }
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+}
+#undef GT_METHOD_NAME
 
 GTUtilsProject::OpenFileSettings::OpenFileSettings()
     : openMethod(Dialog) {
 }
-
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -42,9 +42,8 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "PosteriorActions.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
-
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "utils/GTUtilsMac.h"
 
 namespace U2 {
@@ -78,21 +77,19 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Clear the clipboard
 
     QWidget *popupWidget = QApplication::activePopupWidget();
-    while (popupWidget != NULL) {
-
-#ifdef Q_OS_MAC
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+    while (popupWidget != nullptr) {
+#ifdef Q_OS_DARWIN
+        GTUtilsMac fakeClock;
+        fakeClock.startWorkaroundForMacCGEvents(1, true);
+        fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
     QWidget *modalWidget = QApplication::activeModalWidget();
-    while (modalWidget != NULL) {
-
-#ifdef Q_OS_MAC
+    while (modalWidget != nullptr) {
+#ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
         fakeClock.startWorkaroundForMacCGEvents(1, true);
         fakeClock.startWorkaroundForMacCGEvents(16000, false);
@@ -110,25 +107,21 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
 
     if (AppContext::getProject() != nullptr) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
 
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
-                                                             nullptr,
-                                                             QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
         // Need to close second dialog on Mac
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os,
-                                                                             nullptr,
-                                                                             QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
 
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
@@ -159,7 +152,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 #endif
     }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock2;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock2.startWorkaroundForMacCGEvents(16000, false);
@@ -198,7 +191,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
         const QStringList entryList = sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden);
-        for (const QString &path: qAsConst(entryList)) {
+        for (const QString &path : qAsConst(entryList)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

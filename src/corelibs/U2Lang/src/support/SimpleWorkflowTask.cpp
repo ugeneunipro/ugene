@@ -145,7 +145,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &task
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!", );
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(msaObjectPointer->getMultipleAlignment());
+    MultipleSequenceAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getMultipleAlignment());
 
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
@@ -188,7 +188,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 
     MultipleSequenceAlignment resultMsa = getResult();
     const MultipleSequenceAlignment &originalMsa = msaObjectPointer->getMultipleAlignment();
-    bool isAllRowsRestored = MSAUtils::restoreRowNames(resultMsa, originalMsa->getRowNames());
+    bool isAllRowsRestored = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, originalMsa->getRowNames());
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
         return ReportResult_Finished;
@@ -208,14 +208,14 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     MultipleSequenceAlignment res;
     CHECK_OP(stateInfo, res);
 
-    SAFE_POINT(runWorkflowTask != NULL, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
+    SAFE_POINT(runWorkflowTask != nullptr, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
 
     Document *d = runWorkflowTask->getDocument();
-    CHECK_EXT(d != NULL, setError(tr("Result document not found!")), res);
+    CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
     MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first());
-    CHECK_EXT(maObj != NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
+    CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getMsaCopy();
 }
 

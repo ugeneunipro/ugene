@@ -88,22 +88,22 @@ void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMet
 #define GT_METHOD_NAME "toggleView"
 void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method) {
     MainWindow *mw = AppContext::getMainWindow();
-    GT_CHECK(mw != NULL, "MainWindow is NULL");
+    GT_CHECK(mw != nullptr, "MainWindow is NULL");
     QMainWindow *qmw = mw->getQMainWindow();
-    GT_CHECK(qmw != NULL, "QMainWindow is NULL");
+    GT_CHECK(qmw != nullptr, "QMainWindow is NULL");
 
     //qmw->setFocus();
 
     switch (method) {
-    case GTGlobals::UseKey:
-    case GTGlobals::UseKeyBoard:
-        GTKeyboardDriver::keyClick('1', Qt::AltModifier);
-        break;
-    case GTGlobals::UseMouse:
-        GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
-        break;
-    default:
-        break;
+        case GTGlobals::UseKey:
+        case GTGlobals::UseKeyBoard:
+            GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+            break;
+        case GTGlobals::UseMouse:
+            GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
+            break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(100);
@@ -123,7 +123,7 @@ QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QMod
 #define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex) {
     GT_CHECK_RESULT(itemIndex.isValid(), "Item index is invalid", QPoint());
-    GT_CHECK_RESULT(treeView != NULL, "treeView is NULL", QPoint());
+    GT_CHECK_RESULT(treeView != nullptr, "treeView is NULL", QPoint());
 
     QRect r = treeView->visualRect(itemIndex);
 
@@ -135,18 +135,18 @@ namespace {
 
 void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
-    case GTGlobals::UseKey:
-        GTMouseDriver::click();
-        GTKeyboardDriver::keyClick(Qt::Key_F2);
-        break;
-    case GTGlobals::UseMouse:
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
-        GTMouseDriver::click(Qt::RightButton);
-        GTGlobals::sleep(300);
-        break;
-    default:
-        os.setError("An unsupported way of a rename procedure invocation");
-        return;
+        case GTGlobals::UseKey:
+            GTMouseDriver::click();
+            GTKeyboardDriver::keyClick(Qt::Key_F2);
+            break;
+        case GTGlobals::UseMouse:
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
+            GTMouseDriver::click(Qt::RightButton);
+            GTGlobals::sleep(300);
+            break;
+        default:
+            os.setError("An unsupported way of a rename procedure invocation");
+            return;
     }
 
     GTKeyboardDriver::keySequence(newItemName);
@@ -291,7 +291,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QSt
 
 #define GT_METHOD_NAME "findIndex2"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
+    GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
@@ -299,7 +299,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
 #define GT_METHOD_NAME "findIndex3"
 QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "Tree view is NULL", QModelIndex());
+    GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, parent, options);
 }
 #undef GT_METHOD_NAME
@@ -372,7 +372,7 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
     CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, foundIndecies);
 
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR_RESULT(model != NULL, "Model is NULL", foundIndecies);
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", foundIndecies);
 
     QSortFilterProxyModel *proxyModel = qobject_cast<QSortFilterProxyModel *>(treeView->model());
 
@@ -417,7 +417,7 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
 #define GT_METHOD_NAME "filterProject"
 void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus &os, const QString &searchField) {
     openView(os);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTGlobals::sleep(3000);
 #endif
     QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
@@ -447,7 +447,7 @@ QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(HI::GUITestOpStatus 
 
     QTreeView *treeView = getTreeView(os);
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR_RESULT(NULL != model, "Model is invalid", result);
+    CHECK_SET_ERR_RESULT(nullptr != model, "Model is invalid", result);
 
     const int rowcount = model->rowCount(parentIndex);
     for (int i = 0; i < rowcount; i++) {
@@ -512,7 +512,7 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
 #define GT_METHOD_NAME "ensureFilteringIsDisabled"
 void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus &os) {
     openView(os);
-    GTLineEdit::checkText(os, "nameFilterEdit", NULL, "");
+    GTLineEdit::checkText(os, "nameFilterEdit", nullptr, "");
 }
 #undef GT_METHOD_NAME
 
@@ -582,7 +582,7 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView
             CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
 
         if (object == nullptr) {
-            checkObjectTypes(os, treeView, acceptableTypes, NULL == proxyModel ? index : proxyModel->mapFromSource(index));
+            checkObjectTypes(os, treeView, acceptableTypes, nullptr == proxyModel ? index : proxyModel->mapFromSource(index));
             CHECK_OP_BREAK(os);
         }
     }
@@ -592,7 +592,7 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView
 #define GT_METHOD_NAME "getSelectedItem"
 QString GTUtilsProjectTreeView::getSelectedItem(HI::GUITestOpStatus &os) {
     QTreeView *treeView = getTreeView(os);
-    GT_CHECK_RESULT(treeView != NULL, "tree view is NULL", NULL);
+    GT_CHECK_RESULT(treeView != nullptr, "tree view is NULL", nullptr);
 
     QModelIndexList list = treeView->selectionModel()->selectedIndexes();
     GT_CHECK_RESULT(list.size() != 0, QString("there are no selected items"), "");
@@ -652,7 +652,7 @@ void GTUtilsProjectTreeView::itemActiveCheck(HI::GUITestOpStatus &os, QModelInde
 bool GTUtilsProjectTreeView::isVisible(HI::GUITestOpStatus &os) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget *documentTreeWidget = GTWidget::findWidget(os, widgetName, NULL, options);
+    QWidget *documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, options);
     if (documentTreeWidget) {
         return true;
     } else {

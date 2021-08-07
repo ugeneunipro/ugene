@@ -97,7 +97,7 @@ namespace LocalWorkflow {
 /************************************************************************/
 
 GenomeAlignerCommunicationChanelReader::GenomeAlignerCommunicationChanelReader(CommunicationChannel *reads) {
-    assert(reads != NULL);
+    assert(reads != nullptr);
     this->reads = reads;
 }
 
@@ -175,10 +175,10 @@ GenomeAlignerDbiReader::GenomeAlignerDbiReader(U2AssemblyDbi *_rDbi, U2Assembly 
 
 SearchQuery *GenomeAlignerDbiReader::read() {
     if (end) {
-        return NULL;
+        return nullptr;
     }
     reads.clear();
-    if (dbiIterator.data() == NULL) {
+    if (dbiIterator.data() == nullptr) {
         dbiIterator.reset(rDbi->getReads(assembly.id, wholeAssembly, status));
     }
     if (dbiIterator->hasNext()) {
@@ -187,7 +187,7 @@ SearchQuery *GenomeAlignerDbiReader::read() {
         return new SearchQuery(read);
     } else {
         end = true;
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -251,6 +251,8 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
 }
 
 void GenomeAlignerDbiWriter::write(SearchQuery *seq, SAType offset) {
+    writtenReadsCount++;
+
     U2AssemblyRead read(new U2AssemblyReadData());
 
     read->name = seq->getName().toLatin1();

@@ -55,13 +55,13 @@ public:
                       InvokedFrom invoSource,
                       const QString &file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget *parent = NULL);
+                      QWidget *parent = nullptr);
 
     ExportImageDialog(ImageExportController *factory,
                       InvokedFrom invoSource,
                       const QString &file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget *parent = NULL);
+                      QWidget *parent = nullptr);
 
     ~ExportImageDialog();
 

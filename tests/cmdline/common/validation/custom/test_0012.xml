@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/ws-script-string.uwl"
+                 format="genbank"
+                 message="Error: genbank"
+    />
+</multi-test>

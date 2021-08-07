@@ -110,7 +110,7 @@ void GTest_SecStructPredictTask::init(XMLTestFormat *tf, const QDomElement &el) 
 
 void GTest_SecStructPredictTask::prepare() {
     U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
@@ -127,7 +127,7 @@ void GTest_SecStructPredictTask::prepare() {
 }
 
 Task::ReportResult GTest_SecStructPredictTask::report() {
-    if (task != NULL && task->hasError()) {
+    if (task != nullptr && task->hasError()) {
         stateInfo.setError(task->getError());
     } else if (!resultsTableContextName.isEmpty()) {
         QList<SharedAnnotationData> results = task->getResults();

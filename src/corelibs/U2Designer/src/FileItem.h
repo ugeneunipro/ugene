@@ -29,7 +29,7 @@ namespace U2 {
 class FileItem : public UrlItem {
     Q_OBJECT
 public:
-    FileItem(const QString &url, QListWidget *parent = NULL);
+    FileItem(const QString &url, QListWidget *parent = nullptr);
     virtual void accept(UrlItemVisitor *visitor);
 };
 

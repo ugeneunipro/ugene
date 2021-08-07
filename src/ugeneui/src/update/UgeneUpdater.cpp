@@ -35,12 +35,12 @@
 
 namespace U2 {
 
-QScopedPointer<UgeneUpdater> UgeneUpdater::instance(NULL);
+QScopedPointer<UgeneUpdater> UgeneUpdater::instance(nullptr);
 QMutex UgeneUpdater::mutex;
 
 UgeneUpdater *UgeneUpdater::getInstance() {
     QMutexLocker lock(&mutex);
-    if (NULL != instance.data()) {
+    if (nullptr != instance.data()) {
         return instance.data();
     }
     instance.reset(new UgeneUpdater());
@@ -101,7 +101,7 @@ void UgeneUpdater::setEnabled(bool value) {
 }
 
 QString UgeneUpdater::getMaintenanceToolPath() const {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QString path = QCoreApplication::applicationDirPath() + "/../../setup.app/Contents/MacOS/setup";
 #else
     QString path = QCoreApplication::applicationDirPath() + "/setup";

@@ -58,7 +58,7 @@ void DNAQualityIOUtils::writeDNAQuality(const QString &seqName, const DNAQuality
 
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(dstFilePath);
     IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
-    CHECK_EXT(ioAdapterFactory != NULL, stateInfo.setError(tr("No IO adapter found for URL: %1").arg(dstFilePath)), );
+    CHECK_EXT(ioAdapterFactory != nullptr, stateInfo.setError(tr("No IO adapter found for URL: %1").arg(dstFilePath)), );
     ioAdapter.reset(ioAdapterFactory->createIOAdapter());
 
     if (!ioAdapter->open(dstFilePath, appendData ? IOAdapterMode_Append : IOAdapterMode_Write)) {

@@ -45,7 +45,7 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject *p)
     QAction *settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     settingsDialogAction->setMenuRole(QAction::ApplicationSpecificRole);
     settingsDialogAction->setShortcut(QKeySequence("Ctrl+,"));
     settingsDialogAction->setShortcutContext(Qt::ApplicationShortcut);
@@ -62,12 +62,12 @@ AppSettingsGUIImpl::~AppSettingsGUIImpl() {
 
 bool AppSettingsGUIImpl::registerPage(AppSettingsGUIPageController *page, const QString &beforePage) {
     AppSettingsGUIPageController *c = findPageById(page->getPageId());
-    if (c != NULL) {
+    if (c != nullptr) {
         return false;
     }
     if (!beforePage.isEmpty()) {
         AppSettingsGUIPageController *before = findPageById(beforePage);
-        if (before != NULL) {
+        if (before != nullptr) {
             int i = pages.indexOf(before);
             pages.insert(i, page);
             return true;
@@ -79,7 +79,7 @@ bool AppSettingsGUIImpl::registerPage(AppSettingsGUIPageController *page, const 
 
 bool AppSettingsGUIImpl::unregisterPage(AppSettingsGUIPageController *page) {
     AppSettingsGUIPageController *c = findPageById(page->getPageId());
-    if (c == NULL) {
+    if (c == nullptr) {
         return false;
     }
     pages.removeOne(page);
@@ -98,7 +98,7 @@ AppSettingsGUIPageController *AppSettingsGUIImpl::findPageById(const QString &pa
             return page;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void AppSettingsGUIImpl::registerBuiltinPages() {

@@ -104,13 +104,13 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus &os, QMap<QString, QVar
         while (iter != map.end()) {
             QString k = iter.key();
             QWidget *w = GTWidget::findWidget(os, iter.key() + " widget", wizard->currentPage(), GTGlobals::FindOptions(false));
-            if (w != NULL) {
+            if (w != nullptr) {
                 QToolButton *showHide = GTWidget::findExactWidget<QToolButton *>(os, "showHideButton", dialog, GTGlobals::FindOptions(false));
-                if (showHide != NULL && showHide->text() == "+") {
+                if (showHide != nullptr && showHide->text() == "+") {
                     GTWidget::click(os, showHide);
                 }
                 QScrollArea *area = wizard->currentPage()->findChild<QScrollArea *>();
-                if (area != NULL) {
+                if (area != nullptr) {
                     area->ensureWidgetVisible(w);
                 }
                 setValue(os, w, iter.value());
@@ -121,10 +121,10 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus &os, QMap<QString, QVar
             }
         }
         nextButton = GTWidget::findButtonByText(os, "&Next >", wizard, GTGlobals::FindOptions(false));
-        if (nextButton != NULL && nextButton->isVisible()) {
+        if (nextButton != nullptr && nextButton->isVisible()) {
             GTWidget::click(os, nextButton);
         }
-    } while (nextButton != NULL && nextButton->isVisible());
+    } while (nextButton != nullptr && nextButton->isVisible());
 }
 #undef GT_METHOD_NAME
 
@@ -136,14 +136,14 @@ void GTUtilsWizard::setParameter(HI::GUITestOpStatus &os, QString parName, QVari
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
     QToolButton *showHide = GTWidget::findExactWidget<QToolButton *>(os, "showHideButton", dialog, GTGlobals::FindOptions(false));
-    if (showHide != NULL && showHide->text() == "+") {
+    if (showHide != nullptr && showHide->text() == "+") {
         GTWidget::click(os, showHide);
     }
 
     QWidget *w = GTWidget::findWidget(os, parName + " widget", dialog);
 
     QScrollArea *area = wizard->currentPage()->findChild<QScrollArea *>();
-    if (area != NULL) {
+    if (area != nullptr) {
         area->ensureWidgetVisible(w);
     }
 
@@ -159,26 +159,26 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus &os, QString parName) {
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", QVariant());
 
     QToolButton *showHide = GTWidget::findExactWidget<QToolButton *>(os, "showHideButton", dialog, GTGlobals::FindOptions(false));
-    if (showHide != NULL && showHide->text() == "+") {
+    if (showHide != nullptr && showHide->text() == "+") {
         GTWidget::click(os, showHide);
     }
 
     QWidget *w = GTWidget::findWidget(os, parName + " widget", dialog);
 
     QComboBox *combo = qobject_cast<QComboBox *>(w);
-    if (combo != NULL) {
+    if (combo != nullptr) {
         return QVariant(combo->currentText());
     }
     QSpinBox *spin = qobject_cast<QSpinBox *>(w);
-    if (spin != NULL) {
+    if (spin != nullptr) {
         return QVariant(spin->value());
     }
     QDoubleSpinBox *doubleSpin = qobject_cast<QDoubleSpinBox *>(w);
-    if (doubleSpin != NULL) {
+    if (doubleSpin != nullptr) {
         return QVariant(doubleSpin->value());
     }
     QLineEdit *line = qobject_cast<QLineEdit *>(w);
-    if (line != NULL) {
+    if (line != nullptr) {
         return QVariant(line->text());
     }
     GT_CHECK_RESULT(false, QString("unsupported widget class: %1").arg(w->metaObject()->className()), QVariant());
@@ -188,12 +188,12 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus &os, QString parName) {
 #define GT_METHOD_NAME "setValue"
 void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value) {
     QComboBox *combo = qobject_cast<QComboBox *>(w);
-    if (combo != NULL) {
+    if (combo != nullptr) {
         GTComboBox::selectItemByText(os, combo, value.toString());
         return;
     }
     QSpinBox *spin = qobject_cast<QSpinBox *>(w);
-    if (spin != NULL) {
+    if (spin != nullptr) {
         bool ok;
         int val = value.toInt(&ok);
         GT_CHECK(ok, "spin box needs int value");
@@ -201,7 +201,7 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value
         return;
     }
     QDoubleSpinBox *doubleSpin = qobject_cast<QDoubleSpinBox *>(w);
-    if (doubleSpin != NULL) {
+    if (doubleSpin != nullptr) {
         bool ok;
         int val = value.toDouble(&ok);
         GT_CHECK(ok, "double spin box needs double value");
@@ -209,7 +209,7 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value
         return;
     }
     QLineEdit *line = qobject_cast<QLineEdit *>(w);
-    if (line != NULL) {
+    if (line != nullptr) {
         GTLineEdit::setText(os, line, value.toString());
         return;
     }
@@ -229,7 +229,7 @@ void GTUtilsWizard::clickButton(HI::GUITestOpStatus &os, WizardButton button) {
 #define GT_METHOD_NAME "getPageTitle"
 QString GTUtilsWizard::getPageTitle(HI::GUITestOpStatus &os) {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog != NULL, "activeModalWidget is NULL", QString());
+    GT_CHECK_RESULT(dialog != nullptr, "activeModalWidget is NULL", QString());
     QWizard *wizard = qobject_cast<QWizard *>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", QString());
 

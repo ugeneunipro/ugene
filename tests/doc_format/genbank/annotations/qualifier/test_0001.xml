@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- checking qualifier string test -->
+
+    <load-document index="doc" url="genbank/buchnera_prefix.gbk" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_002528 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="annot" obj="obj" name="CDS" location="197..2083" complement="false"/>
+
+    <check-annotation-qualifier annotation="annot" qualifier="protein_id" value="NP_239843.1"/>
+
+</multi-test>

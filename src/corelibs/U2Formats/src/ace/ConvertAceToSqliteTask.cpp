@@ -47,7 +47,7 @@ ConvertAceToSqliteTask::ConvertAceToSqliteTask(const GUrl &_sourceUrl, const U2D
     : Task(tr("Convert ACE to UGENE database (%1)").arg(_sourceUrl.fileName()), TaskFlag_None),
       sourceUrl(_sourceUrl),
       dstDbiRef(dstDbiRef),
-      dbi(NULL),
+      dbi(nullptr),
       databaseWasCreated(false),
       countImportedAssembly(0) {
     GCOUNTER(cvar, "ConvertAceToUgenedb");
@@ -177,7 +177,7 @@ qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter &ioAdapter) {
 
         U2AssemblyReadsImportInfo &importInfo = importInfos[countImportedAssembly];
         AssemblyImporter importer(stateInfo);
-        importer.createAssembly(dstDbiRef, U2ObjectDbi::ROOT_FOLDER, NULL, importInfo, assembly);
+        importer.createAssembly(dstDbiRef, U2ObjectDbi::ROOT_FOLDER, nullptr, importInfo, assembly);
         CHECK_OP(stateInfo, totalReadsImported);
 
         importInfo.packed = false;

@@ -76,16 +76,16 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     enableCollapsingOfSingleRowGroups = true;
-    collapseModel->reset(editor->getMaRowIds());
+    editor->getCollapseModel()->reset(editor->getMaRowIds());
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
-    collapseModel->collapseAll(!showChromatograms);
+    editor->getCollapseModel()->collapseAll(!showChromatograms);
     GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
 
     McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consensusArea);
-    SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+    SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
@@ -139,7 +139,11 @@ void McaEditorWgt::initConsensusArea() {
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, getEditorNameList(), refCharController);
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, refCharController);
+}
+
+McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {
+    return refArea;
 }
 
 }    // namespace U2

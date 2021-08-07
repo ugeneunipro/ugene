@@ -33,7 +33,7 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     static const QByteArray FILE_ANNOTATION_ID;

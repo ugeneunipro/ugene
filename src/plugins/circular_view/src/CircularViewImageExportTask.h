@@ -93,7 +93,7 @@ public:
     CircularViewImageExportController(CircularView *cv);
 
     CircularViewImageExportController(const QList<CircularView *> &list,
-                                      CircularView *defaultCV = NULL);
+                                      CircularView *defaultCV = nullptr);
 
     int getImageWidth() const;
     int getImageHeight() const;

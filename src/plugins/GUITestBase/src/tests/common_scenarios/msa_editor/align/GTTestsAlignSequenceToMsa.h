@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
 #define GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
@@ -49,6 +49,7 @@ GUI_TEST_CLASS_DECLARATION(test_0015)
 GUI_TEST_CLASS_DECLARATION(test_0016_1)
 GUI_TEST_CLASS_DECLARATION(test_0016_2)
 GUI_TEST_CLASS_DECLARATION(test_0016_3)
+GUI_TEST_CLASS_DECLARATION(test_0017)
 
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_align_sequences_to_msa

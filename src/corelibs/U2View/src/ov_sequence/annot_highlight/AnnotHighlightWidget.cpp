@@ -161,7 +161,7 @@ bool AnnotHighlightWidget::isFirstAnnotatedRegion(Annotation *annotation, const 
 bool AnnotHighlightWidget::noAnnotatedRegions() const {
     const QList<AnnotationTableObject *> items = annotatedDnaView->getAnnotationObjects(true);
     foreach (AnnotationTableObject *object, items) {
-        SAFE_POINT(object != NULL, "Annotation table object is NULL", true);
+        SAFE_POINT(object != nullptr, "Annotation table object is NULL", true);
         if (object->hasAnnotations()) {
             return false;
         }
@@ -171,7 +171,7 @@ bool AnnotHighlightWidget::noAnnotatedRegions() const {
 
 void AnnotHighlightWidget::selectNextAnnotation(bool isForward) const {
     AnnotationSelection *as = annotatedDnaView->getAnnotationsSelection();
-    CHECK(as != NULL, );
+    CHECK(as != nullptr, );
 
     bool isAnnRegionValid = false;
     AnnotatedRegion annRegion;
@@ -204,7 +204,7 @@ bool AnnotHighlightWidget::findFirstAnnotatedRegionAfterPos(AnnotatedRegion &ann
 
     const QList<AnnotationTableObject *> annObjects = annotatedDnaView->getAnnotationObjects(true);
     foreach (AnnotationTableObject *annObject, annObjects) {
-        SAFE_POINT(annotatedDnaView->getSequenceContext(annObject) != NULL, tr("Sequence context is NULL"), false);
+        SAFE_POINT(annotatedDnaView->getSequenceContext(annObject) != nullptr, tr("Sequence context is NULL"), false);
         qint64 seqLen = annotatedDnaView->getSequenceContext(annObject)->getSequenceLength();
         QList<Annotation *> annots = annObject->getAnnotationsByRegion(U2Region(isForward ? startPos : 0, isForward ? seqLen - startPos : startPos));
         foreach (Annotation *a, annots) {
@@ -234,7 +234,7 @@ bool AnnotHighlightWidget::findFirstAnnotatedRegionAfterPos(AnnotatedRegion &ann
 
 bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion &annRegion, bool fromTheBeginning) const {
     AnnotationSelection *as = annotatedDnaView->getAnnotationsSelection();
-    CHECK(as != NULL, false);
+    CHECK(as != nullptr, false);
     CHECK(!as->isEmpty(), false);
 
     // detect the most right/left start position in selection
@@ -286,7 +286,7 @@ void AnnotHighlightWidget::sl_onPrevAnnotationClick() {
 
 void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
     AnnotationSelection *as = annotatedDnaView->getAnnotationsSelection();
-    CHECK(as != NULL, );
+    CHECK(as != nullptr, );
 
     if (as->isEmpty()) {
         nextAnnotationButton->setDisabled(noAnnotatedRegions());
@@ -364,7 +364,7 @@ void AnnotHighlightWidget::connectSlots() {
     connect(nextAnnotationButton, SIGNAL(clicked()), this, SLOT(sl_onNextAnnotationClick()));
 
     AnnotationSelection *as = annotatedDnaView->getAnnotationsSelection();
-    CHECK(as != NULL, );
+    CHECK(as != nullptr, );
     connect(as, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)), SLOT(sl_onAnnotationSelectionChanged()));
 }
 
@@ -455,7 +455,7 @@ void AnnotHighlightWidget::loadAnnotTypes() {
     updateAnnotationNames();
 
     QList<QString> annotNames = annotNamesWithAminoInfo.keys();
-    qSort(annotNames);
+    std::sort(annotNames.begin(), annotNames.end());
 
     // Get the currently selected annotation name
     QString currentAnnotName = annotTree->getCurrentItemAnnotName();

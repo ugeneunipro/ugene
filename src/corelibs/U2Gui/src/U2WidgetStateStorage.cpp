@@ -91,10 +91,10 @@ void U2WidgetStateStorage::onWindowClose(MWMDIWindow *closedWindow) {
 }
 
 bool U2WidgetStateStorage::windowExists(MWMDIWindow *window) {
-    CHECK(NULL != window, true);
+    CHECK(nullptr != window, true);
 
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-    SAFE_POINT(NULL != mdiManager, "Invalid MDI manager", false);
+    SAFE_POINT(nullptr != mdiManager, "Invalid MDI manager", false);
     return mdiManager->getWindows().contains(window);
 }
 

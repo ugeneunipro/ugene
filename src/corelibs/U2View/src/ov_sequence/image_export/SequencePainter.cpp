@@ -36,10 +36,10 @@
 namespace U2 {
 
 bool checkAnnotationsCountInRegion(SequenceObjectContext *ctx, const U2Region &region) {
-    SAFE_POINT(ctx != NULL, "SequenceContext is NULL", false);
+    SAFE_POINT(ctx != nullptr, "SequenceContext is NULL", false);
     int count = 0;
     foreach (AnnotationTableObject *table, ctx->getAnnotationObjects(true)) {
-        SAFE_POINT(table != NULL, "AnnotationTableObject is NULL", false)
+        SAFE_POINT(table != nullptr, "AnnotationTableObject is NULL", false)
         count += table->getAnnotationsByRegion(region).size();
     }
     return (count < MAX_ANNOTATIONS_ON_SVG_IMAGE);
@@ -92,14 +92,14 @@ ZoomedViewPainter::ZoomedViewPainter(PanView *panView)
 
 void ZoomedViewPainter::paint(QPainter &p, CustomExportSettings *settings) const {
     SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
-    SAFE_POINT(s != NULL, "Cannot cast CustomExportSettings to SequenceExportSettings", );
+    SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     panViewRenderer->drawAll(p, s->getRegion());
 }
 
 QSize ZoomedViewPainter::getImageSize(CustomExportSettings *settings) const {
     SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
-    SAFE_POINT(s != NULL, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
+    SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return panViewRenderer->getBaseCanvasSize(s->getRegion());
 }
@@ -118,14 +118,14 @@ DetailsViewPainter::DetailsViewPainter(DetView *detView)
 }
 void DetailsViewPainter::paint(QPainter &p, CustomExportSettings *settings) const {
     SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
-    SAFE_POINT(s != NULL, "Cannot cast CustomExportSettings to SequenceExportSettings", );
+    SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     detViewRenderer->drawAll(p, detViewRenderer->getBaseCanvasSize(s->getRegion()), s->getRegion());
 }
 
 QSize DetailsViewPainter::getImageSize(CustomExportSettings *settings) const {
     SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
-    SAFE_POINT(s != NULL, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
+    SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return detViewRenderer->getBaseCanvasSize(s->getRegion());
 }
@@ -134,15 +134,15 @@ QSize DetailsViewPainter::getImageSize(CustomExportSettings *settings) const {
 /* SequencePainterFactory */
 /************************************************************************/
 QSharedPointer<ExportImagePainter> SequencePainterFactory::createPainter(ADVSingleSequenceWidget *seqWidget, SequenceExportType exportType) {
-    SAFE_POINT(seqWidget != NULL, "SequenceWidget is NULL", QSharedPointer<ExportImagePainter>());
+    SAFE_POINT(seqWidget != nullptr, "SequenceWidget is NULL", QSharedPointer<ExportImagePainter>());
 
     switch (exportType) {
-    case ExportCurrentView:
-        return QSharedPointer<ExportImagePainter>(new CurrentViewPainter(seqWidget));
-    case ExportZoomedView:
-        return QSharedPointer<ExportImagePainter>(new ZoomedViewPainter(seqWidget->getPanView()));
-    case ExportDetailsView:
-        return QSharedPointer<ExportImagePainter>(new DetailsViewPainter(seqWidget->getDetView()));
+        case ExportCurrentView:
+            return QSharedPointer<ExportImagePainter>(new CurrentViewPainter(seqWidget));
+        case ExportZoomedView:
+            return QSharedPointer<ExportImagePainter>(new ZoomedViewPainter(seqWidget->getPanView()));
+        case ExportDetailsView:
+            return QSharedPointer<ExportImagePainter>(new DetailsViewPainter(seqWidget->getDetView()));
     }
     FAIL("Invalid sequence export type", QSharedPointer<ExportImagePainter>());
 }

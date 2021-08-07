@@ -53,7 +53,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() co
 MultipleSequenceAlignmentObject *MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QScopedPointer<GHintsDefaultImpl> gHints(new GHintsDefaultImpl(getGHintsMap()));
     gHints->setAll(hints);
@@ -61,7 +61,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentObject::clone(const U2
 
     MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     clonedObj->setGHints(gHints.take());
     clonedObj->setIndexInfo(getIndexInfo());
@@ -124,37 +124,17 @@ void MultipleSequenceAlignmentObject::insertGapByRowIndexList(const QList<int> &
     MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, false);
 }
 
-void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
+void MultipleSequenceAlignmentObject::crop(const QList<qint64> &rowIds, const U2Region &columnRange) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleSequenceAlignment &ma = getMultipleAlignment();
-
-    QList<qint64> rowIds;
-    for (int i = 0; i < ma->getNumRows(); ++i) {
-        QString rowName = ma->getRow(i)->getName();
-        if (rowNames.isEmpty() || rowNames.contains(rowName)) {
-            qint64 rowId = ma->getRow(i)->getRowId();
-            rowIds.append(rowId);
-        }
-    }
-
     U2OpStatus2Log os;
-    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
+    MsaDbiUtils::crop(entityRef, rowIds, columnRange, os);
     SAFE_POINT_OP(os, );
 
     updateCachedMultipleAlignment();
 }
 
-void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QList<qint64> &rowIds) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    U2OpStatus2Log os;
-    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
-    SAFE_POINT_OP(os, );
-
-    updateCachedMultipleAlignment();
-}
-
-void MultipleSequenceAlignmentObject::crop(const U2Region &window) {
-    crop(window, QSet<QString>());
+void MultipleSequenceAlignmentObject::crop(const U2Region &columnRange) {
+    crop(getRowIds(), columnRange);
 }
 
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {
@@ -206,7 +186,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
         const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
-        SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
+        SAFE_POINT(nullptr != newAlphabet, "Common alphabet is NULL", );
 
         if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
             MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
@@ -232,7 +212,7 @@ void MultipleSequenceAlignmentObject::replaceAllCharacters(char oldChar, char ne
     U2OpStatus2Log os;
     QList<qint64> modifiedRowIds = MsaDbiUtils::replaceNonGapCharacter(entityRef, oldChar, newChar, os);
     CHECK_OP(os, );
-    if (modifiedRowIds.isEmpty()) {
+    if (modifiedRowIds.isEmpty() && newAlphabet == getAlphabet()) {
         return;
     }
 
@@ -243,6 +223,33 @@ void MultipleSequenceAlignmentObject::replaceAllCharacters(char oldChar, char ne
     mi.modifiedRowIds = modifiedRowIds;
 
     if (newAlphabet != nullptr && newAlphabet != getAlphabet()) {
+        MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+        SAFE_POINT_OP(os, );
+        mi.alphabetChanged = true;
+    }
+    if (!mi.alphabetChanged && mi.modifiedRowIds.isEmpty()) {
+        return;    // Nothing changed.
+    }
+    updateCachedMultipleAlignment(mi);
+}
+
+void MultipleSequenceAlignmentObject::morphAlphabet(const DNAAlphabet *newAlphabet, const QByteArray &replacementMap) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    SAFE_POINT(newAlphabet != nullptr, "newAlphabet is null!", );
+    U2OpStatus2Log os;
+    QList<qint64> modifiedRowIds = MsaDbiUtils::keepOnlyAlphabetChars(entityRef, newAlphabet, replacementMap, os);
+    CHECK_OP(os, );
+    if (modifiedRowIds.isEmpty() && newAlphabet == getAlphabet()) {
+        return;
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds = modifiedRowIds;
+
+    if (newAlphabet != getAlphabet()) {
         MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
         SAFE_POINT_OP(os, );
         mi.alphabetChanged = true;

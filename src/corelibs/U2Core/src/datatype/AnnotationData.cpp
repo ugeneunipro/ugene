@@ -121,7 +121,7 @@ QString AnnotationData::findFirstQualifierValue(const QString &name) const {
             return q.value;
         }
     }
-    return QString::null;
+    return QString();
 }
 
 bool AnnotationData::operator<(const AnnotationData &other) const {
@@ -138,26 +138,26 @@ QDataStream &operator>>(QDataStream &dataStream, TriState &state) {
     int st;
     dataStream >> st;
     switch (st) {
-    case 0:
-        state = TriState_Yes;
-        break;
-    case 1:
-        state = TriState_No;
-        break;
-    default:
-        state = TriState_Unknown;
+        case 0:
+            state = TriState_Yes;
+            break;
+        case 1:
+            state = TriState_No;
+            break;
+        default:
+            state = TriState_Unknown;
     }
     return dataStream;
 }
 
 QDataStream &operator<<(QDataStream &dataStream, const TriState &state) {
     switch (state) {
-    case TriState_Yes:
-        return dataStream << 0;
-    case TriState_No:
-        return dataStream << 1;
-    default:
-        return dataStream << 2;
+        case TriState_Yes:
+            return dataStream << 0;
+        case TriState_No:
+            return dataStream << 1;
+        default:
+            return dataStream << 2;
     }
 }
 

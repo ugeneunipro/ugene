@@ -164,7 +164,7 @@ void GTest_FindSingleSequenceRepeatsTask::prepare() {
         return;
     }
     U2SequenceObject *seq1IObj = getContext<U2SequenceObject>(this, seq);
-    if (seq1IObj == NULL) {
+    if (seq1IObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -254,7 +254,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
     }
     file.close();
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     //check all subtasks
     FindRepeatsTask *sub = qobject_cast<FindRepeatsTask *>(getSubtasks()[0].data());
@@ -266,7 +266,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
                                .arg(getAlgName(sub->getSettings().algo)));
         return;
     }
-    qSort(calcResults);
+    std::sort(calcResults.begin(), calcResults.end());
 
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         RFResult re = expectedResults[i];
@@ -334,7 +334,7 @@ void GTest_FindTandemRepeatsTask::prepare() {
     //    TaskResourceUsage* tru = AppContext::getTaskScheduler()->getTaskResources(NULL).constData();
     const DNAAlphabet *alph = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     seqObj = new DNASequence(QString("sequence"), sequence.toLatin1(), alph);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -394,8 +394,8 @@ void GTest_FindTandemRepeatsTask::run() {
         stateInfo.setError(QString("Results count not matched, num = %1, expected = %2\n%3").arg(calcResults.size()).arg(expectedResults.size()).arg(results));
         return;
     }
-    qSort(expectedResults);
-    qSort(calcResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
+    std::sort(calcResults.begin(), calcResults.end());
 
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         Tandem re = expectedResults[i];
@@ -474,7 +474,7 @@ void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *tf, const QDomElement 
 void GTest_FindRealTandemRepeatsTask::prepare() {
     CHECK_OP(stateInfo, );
     U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, sequence);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError("can't find sequence1");
         return;
     }
@@ -532,7 +532,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
     }
     file.close();
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     //check all subtasks
     TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
@@ -619,14 +619,14 @@ void GTest_SArrayBasedFindTask::prepare() {
     CHECK_OP(stateInfo, );
 
     U2SequenceObject *seqObj = getContext<U2SequenceObject>(this, seqObjName);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError(QString("Can't find index sequence %1").arg(seqObjName));
         return;
     }
     DNAAlphabetType seqType = seqObj->getAlphabet()->getType();
     char unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N' : '\0';
 
-    const quint32 *bitMask = NULL;
+    const quint32 *bitMask = nullptr;
     int bitCharLen = 0;
 
     if (useBitMask) {
@@ -663,7 +663,7 @@ void GTest_SArrayBasedFindTask::run() {
         return;
     }
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     QList<int> calcResults = findTask->getResults();
     if (expectedResults.size() != calcResults.size()) {
@@ -673,7 +673,7 @@ void GTest_SArrayBasedFindTask::run() {
         return;
     }
 
-    qSort(calcResults);
+    std::sort(calcResults.begin(), calcResults.end());
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         int re = expectedResults[i];
         int rc = calcResults[i];

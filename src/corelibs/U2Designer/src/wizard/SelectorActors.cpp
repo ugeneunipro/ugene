@@ -31,20 +31,20 @@
 namespace U2 {
 
 SelectorActors::SelectorActors() {
-    widget = NULL;
-    srcActor = NULL;
+    widget = nullptr;
+    srcActor = nullptr;
 }
 
 SelectorActors::SelectorActors(ElementSelectorWidget *_widget, const QList<Actor *> &allActors, U2OpStatus &os)
     : widget(_widget) {
     srcActor = WorkflowUtils::actorById(allActors, widget->getActorId());
-    if (NULL == srcActor) {
+    if (nullptr == srcActor) {
         os.setError(QObject::tr("Unknown actor id: %1").arg(widget->getActorId()));
         return;
     }
 
     foreach (const SelectorValue &value, widget->getValues()) {
-        Actor *a = NULL;
+        Actor *a = nullptr;
         if (value.getProtoId() == srcActor->getProto()->getId()) {
             a = srcActor;
         } else {
@@ -59,7 +59,7 @@ SelectorActors::~SelectorActors() {
 }
 
 Actor *SelectorActors::getActor(const QString &value) const {
-    return actors.value(value, NULL);
+    return actors.value(value, nullptr);
 }
 
 Actor *SelectorActors::getSourceActor() const {

@@ -38,7 +38,7 @@ const int defaultRadius = 4;
 class U2VIEW_EXPORT TextLabel : public QLabel {
     Q_OBJECT
 public:
-    TextLabel(QWidget *parent = NULL);
+    TextLabel(QWidget *parent = nullptr);
     ~TextLabel();
 
 private:
@@ -49,7 +49,7 @@ private:
 
 class RoundHint : public QWidget {
 public:
-    RoundHint(QWidget *parent = NULL, QColor _borderColor = Qt::white, QColor _fillingColor = Qt::black);
+    RoundHint(QWidget *parent = nullptr, QColor _borderColor = Qt::white, QColor _fillingColor = Qt::black);
     ~RoundHint();
 
     void setBorderColor(QColor color) {
@@ -88,7 +88,7 @@ class GraphLabel : public QObject {
     Q_OBJECT
 public:
     GraphLabel();
-    GraphLabel(float pos, QWidget *parent = NULL, int _radius = defaultRadius);
+    GraphLabel(float pos, QWidget *parent = nullptr, int _radius = defaultRadius);
     ~GraphLabel();
 
     bool select(float _position);

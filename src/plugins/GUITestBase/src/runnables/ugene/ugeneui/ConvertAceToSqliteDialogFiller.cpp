@@ -35,18 +35,18 @@ using namespace HI;
 void ConvertAceToSqliteDialogFiller::commonScenario() {
     QString button;
     switch (action) {
-    case NOT_SET:
-        button = "";
-        break;
-    case REPLACE:
-        button = "Replace";
-        break;
-    case APPEND:
-        button = "Append";
-        break;
-    case CANCEL:
-        button = "Cancel";
-        break;
+        case NOT_SET:
+            button = "";
+            break;
+        case REPLACE:
+            button = "Replace";
+            break;
+        case APPEND:
+            button = "Append";
+            break;
+        case CANCEL:
+            button = "Cancel";
+            break;
     }
     MessageBoxDialogFiller *mbf = new MessageBoxDialogFiller(os, button);
     if (NOT_SET == action) {

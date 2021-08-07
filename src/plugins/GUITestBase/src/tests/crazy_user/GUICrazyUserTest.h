@@ -22,7 +22,7 @@
 #ifndef _U2_GT_TESTS_CRAZY_USER_H_
 #define _U2_GT_TESTS_CRAZY_USER_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 //#include <U2Core/U2OpStatus.h>
 #include "utils/GTUtilsDialog.h"
 
@@ -36,7 +36,7 @@ class GTCrazyUserMonitor : QObject {
     Q_OBJECT
 public:
     GTCrazyUserMonitor()
-        : timer(NULL) {
+        : timer(nullptr) {
         timer = new QTimer();
 
         timer->connect(timer, SIGNAL(timeout()), this, SLOT(checkActiveWidget()));

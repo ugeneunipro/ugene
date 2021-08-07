@@ -168,24 +168,24 @@ void ClassificationReportWorkerFactory::cleanup() {
 /* ClassificationReportWorker */
 /************************************************************************/
 ClassificationReportWorker::ClassificationReportWorker(Actor *a)
-    : BaseWorker(a, false), input(NULL) {
+    : BaseWorker(a, false), input(nullptr) {
 }
 
 const QString ClassificationReportWorker::getProducerClassifyToolName() const {
     Port *port = actor->getPort(input->getPortId());
     IntegralBusPort *inPort = qobject_cast<IntegralBusPort *>(port);
     Actor *ac = inPort->getProducer(TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId());
-    CHECK(ac != NULL, "UNKNOWN_CLASSIFY_TOOL");
+    CHECK(ac != nullptr, "UNKNOWN_CLASSIFY_TOOL");
 
     Attribute *a = ac->getParameter(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID);
-    CHECK(a != NULL, ac->getId());
+    CHECK(a != nullptr, ac->getId());
 
     return a->getAttributeValueWithoutScript<QString>();
 }
 
 void ClassificationReportWorker::init() {
     input = ports.value(INPUT_PORT);
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
 
     producerClassifyToolName = getProducerClassifyToolName();
 }
@@ -242,12 +242,12 @@ Task *ClassificationReportWorker::tick() {
         algoLog.info("Report worker is done as input has ended");
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ClassificationReportWorker::sl_taskFinished(Task *t) {
     ClassificationReportTask *task = qobject_cast<ClassificationReportTask *>(t);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }

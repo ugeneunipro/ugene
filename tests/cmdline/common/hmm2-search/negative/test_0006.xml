@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="hmm2-search"
+                 hmm="!common_data_dir!cmdline/1-cysPrx_C_aligned.hmm"
+                 seq=""
+                 e-val="1"
+                 score="-2000"
+                 out="!tmp_data_dir!hmm2-searchn0006_tmp.gbk"
+                 message="Required parameter has no input urls specified: Input file(s)"/>
+</multi-test>

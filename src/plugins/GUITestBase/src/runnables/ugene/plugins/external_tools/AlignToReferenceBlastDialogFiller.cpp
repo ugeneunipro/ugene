@@ -20,6 +20,7 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
@@ -32,8 +33,6 @@
 #include <QSpinBox>
 
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Test/UGUITest.h>
 
 #include "AlignToReferenceBlastDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"

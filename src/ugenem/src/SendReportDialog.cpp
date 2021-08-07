@@ -22,11 +22,6 @@
 #include <qglobal.h>
 
 #ifdef Q_OS_WIN
-#    include <intrin.h>
-#    include <windows.h>
-#    include <Psapi.h>
-#    include <Winbase.h>    //for IsProcessorFeaturePresent
-
 #    include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
@@ -59,7 +54,7 @@
 //#define HOST_URL "http://127.0.0.1:80"
 #ifdef Q_OS_LINUX
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_mac.html"
 #elif defined(Q_OS_UNIX)
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_unx.html"
@@ -272,7 +267,7 @@ QString SendReportDialog::getUgeneExecutablePath() const {
     isWin = true;
     name = "ugeneui.exe";
 #endif
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     name = "ugeneui";
 #endif
 #ifdef QT_DEBUG
@@ -330,94 +325,94 @@ QString ReportSender::getOSVersion() {
 #if defined(Q_OS_WIN32)
     result = "Windows ";
     switch (QSysInfo::WindowsVersion) {
-    case QSysInfo::WV_32s:
-        result += "3.1 with Win 32s";
-        break;
-    case QSysInfo::WV_95:
-        result += "95";
-        break;
-    case QSysInfo::WV_98:
-        result += "98";
-        break;
-    case QSysInfo::WV_Me:
-        result += "Me";
-        break;
-    case QSysInfo::WV_NT:
-        result += "NT (operating system version 4.0)";
-        break;
-    case QSysInfo::WV_2000:
-        result += "2000 (operating system version 5.0)";
-        break;
-    case QSysInfo::WV_XP:
-        result += "XP (operating system version 5.1)";
-        break;
-    case QSysInfo::WV_2003:
-        result += "Server 2003, Server 2003 R2, Home Server, XP Professional x64 Edition (operating system version 5.2)";
-        break;
-    case QSysInfo::WV_VISTA:
-        result += "Vista, Server 2008 (operating system version 6.0)";
-        break;
-    case QSysInfo::WV_WINDOWS7:
-        result += "7, Server 2008 R2 (operating system version 6.1)";
-        break;
-    case QSysInfo::WV_WINDOWS8:
-        result += "8 (operating system version 6.2)";
-        break;
-    default:
-        if (DetectWindowsVersion::isWindows10()) {
-            result += "10 (operating system version 10)";
-        } else {
-            result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
-        }
-        break;
+        case QSysInfo::WV_32s:
+            result += "3.1 with Win 32s";
+            break;
+        case QSysInfo::WV_95:
+            result += "95";
+            break;
+        case QSysInfo::WV_98:
+            result += "98";
+            break;
+        case QSysInfo::WV_Me:
+            result += "Me";
+            break;
+        case QSysInfo::WV_NT:
+            result += "NT (operating system version 4.0)";
+            break;
+        case QSysInfo::WV_2000:
+            result += "2000 (operating system version 5.0)";
+            break;
+        case QSysInfo::WV_XP:
+            result += "XP (operating system version 5.1)";
+            break;
+        case QSysInfo::WV_2003:
+            result += "Server 2003, Server 2003 R2, Home Server, XP Professional x64 Edition (operating system version 5.2)";
+            break;
+        case QSysInfo::WV_VISTA:
+            result += "Vista, Server 2008 (operating system version 6.0)";
+            break;
+        case QSysInfo::WV_WINDOWS7:
+            result += "7, Server 2008 R2 (operating system version 6.1)";
+            break;
+        case QSysInfo::WV_WINDOWS8:
+            result += "8 (operating system version 6.2)";
+            break;
+        default:
+            if (DetectWindowsVersion::isWindows10()) {
+                result += "10 (operating system version 10)";
+            } else {
+                result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
+            }
+            break;
     }
 
 #elif defined(Q_OS_LINUX)
     result = "Linux";
 #elif defined(Q_OS_FREEBSD)
     result = "FreeBSD";
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     result = "Mac ";
     switch (static_cast<int>(QSysInfo::MacintoshVersion)) {
-    case QSysInfo::MV_9:
-        result += "Mac OS 9 (unsupported)";
-        break;
-    case QSysInfo::MV_10_0:
-        result += "OS X 10.0 (unsupported)";
-        break;
-    case QSysInfo::MV_10_1:
-        result += "OS X 10.1 (unsupported)";
-        break;
-    case QSysInfo::MV_10_2:
-        result += "OS X 10.2 (unsupported)";
-        break;
-    case QSysInfo::MV_10_3:
-        result += "OS X 10.3";
-        break;
-    case QSysInfo::MV_10_4:
-        result += "OS X 10.4";
-        break;
-    case QSysInfo::MV_10_5:
-        result += "OS X 10.5";
-        break;
-    case QSysInfo::MV_10_6:
-        result += "OS X 10.6";
-        break;
-    case QSysInfo::MV_10_7:
-        result += "OS X 10.7";
-        break;
-    case QSysInfo::MV_10_8:
-        result += "OS X 10.8";
-        break;
-    case QSysInfo::MV_10_9:
-        result += "OS X 10.9";
-        break;
-    case 0x000C:
-        result += "OS X 10.10";
-        break;
-    default:
-        result += "unknown";
-        break;
+        case QSysInfo::MV_9:
+            result += "Mac OS 9 (unsupported)";
+            break;
+        case QSysInfo::MV_10_0:
+            result += "OS X 10.0 (unsupported)";
+            break;
+        case QSysInfo::MV_10_1:
+            result += "OS X 10.1 (unsupported)";
+            break;
+        case QSysInfo::MV_10_2:
+            result += "OS X 10.2 (unsupported)";
+            break;
+        case QSysInfo::MV_10_3:
+            result += "OS X 10.3";
+            break;
+        case QSysInfo::MV_10_4:
+            result += "OS X 10.4";
+            break;
+        case QSysInfo::MV_10_5:
+            result += "OS X 10.5";
+            break;
+        case QSysInfo::MV_10_6:
+            result += "OS X 10.6";
+            break;
+        case QSysInfo::MV_10_7:
+            result += "OS X 10.7";
+            break;
+        case QSysInfo::MV_10_8:
+            result += "OS X 10.8";
+            break;
+        case QSysInfo::MV_10_9:
+            result += "OS X 10.9";
+            break;
+        case 0x000C:
+            result += "OS X 10.10";
+            break;
+        default:
+            result += "unknown";
+            break;
     }
 #else
     result = "Unsupported OS";
@@ -430,7 +425,7 @@ int ReportSender::getTotalPhysicalMemory() {
     return (int)(getMemorySize() / (1024 * 1024));
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 void cpuID(unsigned i, unsigned regs[4]) {
 #    ifdef _WIN32
     __cpuid((int *)regs, (int)i);
@@ -458,7 +453,7 @@ void cpuID(unsigned i, unsigned regs[4]) {
 
 QString ReportSender::getCPUInfo() {
     QString result;
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     unsigned regs[4];
 
     // Get vendor

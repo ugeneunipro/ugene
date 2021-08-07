@@ -129,7 +129,7 @@ Task::ReportResult QDLoadSchemeTask::report() {
 //QDLoadDocumentTask
 //////////////////////////////////////////////////////////////////////////
 QDLoadDocumentTask::QDLoadDocumentTask(const QString &url)
-    : Task(tr("Loading document from %1").arg(url), TaskFlag_None), doc(NULL), url(url) {
+    : Task(tr("Loading document from %1").arg(url), TaskFlag_None), doc(nullptr), url(url) {
 }
 
 void QDLoadDocumentTask::run() {
@@ -169,7 +169,7 @@ bool QDSceneSerializer::doc2scene(QueryScene *scene, const QList<QDDocument *> &
     QueryViewAdapter qva(scheme, topLeftCorner);
     foreach (QDElement *uv, qva.getElements()) {
         QDActor *actor = uv->getActor();
-        QDElementStatement *actorStmt = stmt2actor.key(actor, NULL);
+        QDElementStatement *actorStmt = stmt2actor.key(actor, nullptr);
         assert(actorStmt);
         QString unitId;
         if (actor->getSchemeUnits().size() == 1) {
@@ -220,7 +220,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
         groups.append(doc->getElements(Group));
     }
 
-    QDActor *actor = NULL;
+    QDActor *actor = nullptr;
     //map QDElementStatement to QDActor created from it
 
     foreach (QDElementStatement *grpStmt, groups) {
@@ -232,13 +232,13 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
         const QString &definedIn = grpStmt->definedIn();
         QString group;
         if (!definedIn.isEmpty()) {
-            QDElementStatement *actualStmt = NULL;
+            QDElementStatement *actualStmt = nullptr;
             foreach (QDDocument *importedDoc, docs) {
                 if (importedDoc->getName() == definedIn) {
                     actualStmt = importedDoc->getElement(grpStmt->getId());
                 }
             }
-            if (actualStmt == NULL) {
+            if (actualStmt == nullptr) {
                 //   algoLog.error(QObject::tr("{%1} is not found in imported files.").arg(grpStmt->getId()));
                 return false;
             }
@@ -377,16 +377,16 @@ QDActor *QDSchemeSerializer::loadActor(QDElementStatement *actorElement, QString
     assert(actorElement->getType() == Group);
     const QString &algo = actorElement->getAttribute(QDElementStatement::ALGO_ATTR_NAME);
     if (algo.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     QDActorPrototypeRegistry *afr = AppContext::getQDActorProtoRegistry();
     if (!afr->getAllIds().contains(algo)) {
         ioLog.error(QObject::tr("Can not find %1.").arg(algo));
-        return NULL;
+        return nullptr;
     }
     QDActor *actor = afr->getProto(algo)->createInstance();
-    if (actor == NULL) {
-        return NULL;
+    if (actor == nullptr) {
+        return nullptr;
     }
     QString actorName = actorElement->getId();
     actor->getParameters()->setLabel(actorName);
@@ -396,7 +396,7 @@ QDActor *QDSchemeSerializer::loadActor(QDElementStatement *actorElement, QString
     if (!dirAttrVal.isEmpty()) {
         if (!STRAND_MAP.values().contains(dirAttrVal)) {
             coreLog.error(QObject::tr("Error loading file."));
-            return NULL;
+            return nullptr;
         }
         actor->setStrand(STRAND_MAP.key(dirAttrVal));
     }
@@ -426,13 +426,13 @@ QDLinkStatement *QDSchemeSerializer::saveConstraint(QDConstraint *constraint, QD
         link->setAttribute(MAX_ATTR_NAME, QString::number(dc->getMax()));
         return link;
     }
-    return NULL;
+    return nullptr;
 }
 
 QDConstraint *QDSchemeSerializer::loadConstraint(QDLinkStatement *lnk, const QMap<QDElementStatement *, QDActor *> &stmt2unit, const QList<QDDocument *> &docs) {
     const QDConstraintType &typeStr = QDIdMapper::string2constraintType(lnk->getAttribute(QDLinkStatement::TYPE_ATTR_NAME));
     if (typeStr.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     if (QDConstraintTypes::DISTANCE == typeStr) {
         const QString &distanceStr = lnk->getAttribute(DISTANCE_ATTR_NAME);
@@ -440,17 +440,17 @@ QDConstraint *QDSchemeSerializer::loadConstraint(QDLinkStatement *lnk, const QMa
         const QString &maxS = lnk->getAttribute(MAX_ATTR_NAME);
         const QList<QString> &elIds = lnk->getElementIds();
         if (distanceStr.isEmpty() || minS.isEmpty() || maxS.isEmpty() || elIds.size() != 2) {
-            return NULL;
+            return nullptr;
         }
         const QString &srcId = elIds.at(0);
         const QString &dstId = elIds.at(1);
         QDSchemeUnit *src = findSchemeUnit(srcId, lnk->getDocument(), stmt2unit, docs);
         if (!src) {
-            return NULL;
+            return nullptr;
         }
         QDSchemeUnit *dst = findSchemeUnit(dstId, lnk->getDocument(), stmt2unit, docs);
         if (!dst) {
-            return NULL;
+            return nullptr;
         }
         QList<QDSchemeUnit *> units;
         units << src << dst;
@@ -458,13 +458,13 @@ QDConstraint *QDSchemeSerializer::loadConstraint(QDLinkStatement *lnk, const QMa
         int max = maxS.toInt();
         int distTypeInt = QDIdMapper::string2distance(distanceStr);
         if (distTypeInt < 0) {
-            return NULL;
+            return nullptr;
         }
         QDDistanceType distType = QDDistanceType(distTypeInt);
         QDDistanceConstraint *dc = new QDDistanceConstraint(units, distType, min, max);
         return dc;
     }
-    return NULL;
+    return nullptr;
 }
 
 QDSchemeUnit *QDSchemeSerializer::findSchemeUnit(const QString &id, QDDocument *doc, const QMap<QDElementStatement *, QDActor *> stmt2actor, const QList<QDDocument *> &docs) {
@@ -492,7 +492,7 @@ QDSchemeUnit *QDSchemeSerializer::findSchemeUnit(const QString &id, QDDocument *
             return actor->getSchemeUnit(unitId);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void QDSchemeSerializer::saveGroups(QDScheme *scheme, QDDocument *doc) {

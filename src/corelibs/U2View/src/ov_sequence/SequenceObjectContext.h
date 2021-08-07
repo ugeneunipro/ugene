@@ -123,6 +123,7 @@ public:
     StatisticsCache<DNAStatistics> *getCommonStatisticsCache();
     StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache();
     StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache();
+    StatisticsCache<QMap<QByteArray, qint64>> *getCodonsOccurrenceCache();
 
 private slots:
     void sl_setAminoTranslation();
@@ -170,6 +171,7 @@ protected:
     StatisticsCache<DNAStatistics> commonStatisticsCache;
     StatisticsCache<CharactersOccurrence> charactersOccurrenceCache;
     StatisticsCache<DinucleotidesOccurrence> dinucleotidesOccurrenceCache;
+    StatisticsCache<QMap<QByteArray, qint64>> codonsOccurrenceCache;
 
     // SANGER_TODO:
     AnnotationSelection *annSelection;

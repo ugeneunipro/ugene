@@ -1,15 +1,13 @@
 include( src/ugene_globals.pri )
 
-# Check the Qt version. If QT_VERSION is not set, it is probably Qt 3.
 isEmpty(QT_VERSION) {
-    error("QT_VERSION not defined. Unipro UGENE does not work with Qt 3.")
+    error("QT_VERSION is not defined.")
 }
 
 !minQtVersion(5, 3, 2) {
     message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
     error("Use at least Qt 5.3.2.")
 }
-
 
 TEMPLATE = subdirs
 
@@ -21,30 +19,20 @@ use_opencl() {
 
 message("Qt version is $${QT_VERSION}")
 
-GUI_TESTING_ENABLED = 0
-if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
-    message( "GUI testing is enabled" )
-    GUI_TESTING_ENABLED = 1
-}
-
-!equals(GUI_TESTING_ENABLED, 1) {
-    DEFINES += HI_EXCLUDED
-}
-
 # create target build & plugin folders (to copy licenses/descriptors to)
 mkpath($$OUT_PWD/src/_debug/plugins)
 mkpath($$OUT_PWD/src/_release/plugins)
 
 !win32 {
-    system( cp ./installer/_common_data/ugene $$OUT_PWD/src/_release/ugene )
-    system( cp ./installer/_common_data/ugened $$OUT_PWD/src/_debug/ugened )
+    system( cp ./etc/shared/ugene $$OUT_PWD/src/_release/ugene )
+    system( cp ./etc/shared/ugened $$OUT_PWD/src/_debug/ugened )
 }
 
 
 #prepare translations
-UGENE_TRANSL_IDX   = 0          1
-UGENE_TRANSL_FILES = russian.ts english.ts
-UGENE_TRANSL_TAG   = ru         en
+UGENE_TRANSL_IDX   = 0  1
+UGENE_TRANSL_FILES = russian.ts turkish.ts
+UGENE_TRANSL_TAG   = ru tr
 
 UGENE_TRANSL_DIR   = transl
 UGENE_TRANSL_QM_TARGET_DIR = $$OUT_PWD/src/_debug $$OUT_PWD/src/_release
@@ -75,6 +63,7 @@ unix {
 
     transl.files = ./src/_release/transl_en.qm
     transl.files += ./src/_release/transl_ru.qm
+    transl.files += ./src/_release/transl_tr.qm
     transl.path = $$UGENE_INSTALL_DIR
 
     plugins.files = ./src/_release/plugins/*
@@ -86,19 +75,19 @@ unix {
     data.files += data/*
     data.path = $$UGENE_INSTALL_DATA
 
-    desktop.files += installer/_common_data/ugene.desktop
+    desktop.files += etc/share/ugene.desktop
     desktop.path = $$UGENE_INSTALL_DESKTOP
 
-    pixmaps.files += installer/_common_data/ugene.png installer/_common_data/ugene.xpm
+    pixmaps.files += etc/shared/ugene.png etc/shared/ugene.xpm
     pixmaps.path = $$UGENE_INSTALL_PIXMAPS
 
-    manual.files += installer/_common_data/ugene.1.gz
+    manual.files += etc/shared/ugene.1.gz
     manual.path = $$UGENE_INSTALL_MAN
 
-    mime.files += installer/_common_data/application-x-ugene.xml
+    mime.files += etc/shared/application-x-ugene.xml
     mime.path = $$UGENE_INSTALL_MIME
 
-    icons.files += installer/_common_data/application-x-ugene-ext.png
+    icons.files += etc/shared/application-x-ugene-ext.png
     icons.path = $$UGENE_INSTALL_ICONS/hicolor/32x32/mimetypes/
 
 

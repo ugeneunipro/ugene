@@ -44,6 +44,9 @@ public:
     McaEditorSequenceArea *getSequenceArea() const;
     McaReferenceCharController *getRefCharController() const;
 
+    /** Returns reference area component. */
+    McaEditorReferenceArea *getReferenceArea() const;
+
     QAction *getToggleColumnsAction() const;
 
 protected:

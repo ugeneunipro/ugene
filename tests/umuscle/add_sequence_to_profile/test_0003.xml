@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- uMuscle test: 2 sequences, first has gap at pos 5, second is equal to the ali. Result: 1 gap in ali and second sequence -->
+
+    <load-document index="doc1" url="alignment/add_sequence_to_profile/ali01.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="alignment/add_sequence_to_profile/seq03.fa" io="local_file" format="fasta"/>
+
+    <umuscle-add-unaligned-seq-to-profile ali-doc="doc1" seq-doc="doc2" result-ali-len="16" gap-map="|5"/>
+
+</multi-test>

@@ -23,6 +23,7 @@
 #define _U2_REGION_H_
 
 #include <QObject>
+#include <QRect>
 #include <QVector>
 
 #include <U2Core/global.h>
@@ -184,6 +185,12 @@ public:
 
     /** Returns sum of region lengths. */
     static qint64 sumLength(const QVector<U2Region> &regions);
+
+    /** Returns new region constructed from the X range of the rect: U2Region(rect.x(), rect.width()). */
+    static U2Region fromXRange(const QRect &rect);
+
+    /** Returns new region constructed from the Y range of the rect: U2Region(rect.y(), rect.height()). */
+    static U2Region fromYRange(const QRect &rect);
 
 private:
     static bool registerMeta;

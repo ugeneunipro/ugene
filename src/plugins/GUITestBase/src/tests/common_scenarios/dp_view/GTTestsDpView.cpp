@@ -80,8 +80,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::waitAllFinished(os);
 
     //Expected state: Dot plot view has closed.
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == NULL, "Dotplot not deleted");
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //DIFFERENCE: ONE SEQUENCE USED
@@ -98,8 +98,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::waitAllFinished(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == NULL, "Dotplot not deleted");
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {    //commit DotPlotWidget.cpp exitButton
@@ -115,8 +115,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {    //commit DotPlotWidget.cpp exitButto
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::waitAllFinished(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == NULL, "Dotplot not deleted");
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     //DIFFERENCE: EXITBUTTON IS USED
@@ -131,8 +131,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::waitAllFinished(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == NULL, "Dotplot not deleted");
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
@@ -276,38 +276,36 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
         }
         virtual void run() {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QCheckBox *includeAreaCheckbox = dialog->findChild<QCheckBox *>("include_area_selection");
-            CHECK_SET_ERR(includeAreaCheckbox != NULL, "inlclu_area_selection is NULL");
+            CHECK_SET_ERR(includeAreaCheckbox != nullptr, "inlclu_area_selection is NULL");
 
             QCheckBox *includeRepeatCheckbox = dialog->findChild<QCheckBox *>("include_repeat_selection");
-            CHECK_SET_ERR(includeRepeatCheckbox != NULL, "include_repeat_selection is NULL");
+            CHECK_SET_ERR(includeRepeatCheckbox != nullptr, "include_repeat_selection is NULL");
 
             switch (scenario) {
-            case 1:
-                CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
-                CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
-                break;
-            case 2:
-                CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
-                CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
-                break;
-            case 3:
-                CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
-                CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
-                break;
-            case 4:
-                CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
-                CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
-                break;
+                case 1:
+                    CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
+                    CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
+                    break;
+                case 2:
+                    CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
+                    CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
+                    break;
+                case 3:
+                    CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
+                    CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
+                    break;
+                case 4:
+                    CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
+                    CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
+                    break;
             }
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != NULL, "Cancel button is NULL");
+            CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
             GTWidget::click(os, button);
         }
 

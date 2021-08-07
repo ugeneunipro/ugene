@@ -2,6 +2,13 @@ include (GUITestBase.pri)
 
 # Input
 HEADERS +=  src/GUITestBasePlugin.h \
+            src/harness/UGUITestBase.h \
+            src/harness/GUITestLauncher.h \
+            src/harness/GUITestService.h \
+            src/harness/GUITestTeamcityLogger.h \
+            src/harness/GUITestThread.h \
+            src/harness/GUITestWindow.h \
+            src/harness/UGUITest.h \
             src/tests/crazy_user/GTAbstractGUIAction.h \
             src/tests/crazy_user/GTRandomGUIActionFactory.h \
             src/tests/crazy_user/GUICrazyUserTest.h \
@@ -98,6 +105,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h \
             src/runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h \
 #   Runnables / UGENE / plugins / dna_export
+            src/runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h \
             src/runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h \
             src/runnables/ugene/plugins/dna_export/ExportBlastResultDialogFiller.h \
             src/runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h \
@@ -277,6 +285,13 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/test_runner/GUITestRunner.h
 
 SOURCES +=  src/GUITestBasePlugin.cpp \
+            src/harness/UGUITestBase.cpp \
+            src/harness/GUITestLauncher.cpp \
+            src/harness/GUITestService.cpp \
+            src/harness/GUITestTeamcityLogger.cpp \
+            src/harness/GUITestThread.cpp \
+            src/harness/GUITestWindow.cpp \
+            src/harness/UGUITest.cpp \
             src/tests/crazy_user/GTAbstractGUIAction.cpp \
             src/tests/crazy_user/GTRandomGUIActionFactory.cpp \
             src/tests/crazy_user/GUICrazyUserTest.cpp \
@@ -373,6 +388,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.cpp \
             src/runnables/ugene/plugins/dotplot/DotPlotDialogFiller.cpp \
 #   Runnables / UGENE / plugins / dna_export
+            src/runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ExportBlastResultDialogFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.cpp \
@@ -552,7 +568,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/test_runner/GUITestRunner.cpp
 
 FORMS += \
-    src/test_runner/GUITestRunner.ui
+    src/test_runner/GUITestRunner.ui \
+    src/harness/GUITestingWindow.ui
 
 RESOURCES += \
     GUITestBase.qrc

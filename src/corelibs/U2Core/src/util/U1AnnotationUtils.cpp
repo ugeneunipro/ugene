@@ -46,7 +46,7 @@ QString U1AnnotationUtils::lowerCaseAnnotationName("lower_case");
 QString U1AnnotationUtils::upperCaseAnnotationName("upper_case");
 
 AnnotatedRegion::AnnotatedRegion()
-    : annotation(NULL), regionIdx(-1) {
+    : annotation(nullptr), regionIdx(-1) {
 }
 
 AnnotatedRegion::AnnotatedRegion(Annotation *annotation, int regionIdx)
@@ -267,7 +267,7 @@ QList<SharedAnnotationData> U1AnnotationUtils::finalizeUnfinishedRegion(bool isU
 void U1AnnotationUtils::addAnnotations(QList<GObject *> &objects, const QList<SharedAnnotationData> &annList, const GObjectReference &sequenceRef, AnnotationTableObject *annotationsObject, const QVariantMap &hints) {
     U2OpStatusImpl os;
     if (!annList.isEmpty()) {
-        if (NULL == annotationsObject) {
+        if (nullptr == annotationsObject) {
             U2DbiRef dbiRef;
             if (hints.contains(DocumentFormat::DBI_REF_HINT)) {
                 dbiRef = hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
@@ -293,7 +293,7 @@ void U1AnnotationUtils::addAnnotations(QList<GObject *> &objects, const QList<Sh
 QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceObject *so,
                                                               const QList<GObject *> &anns) {
     QList<GObject *> aos;
-    if (NULL != so->getDocument()) {
+    if (nullptr != so->getDocument()) {
         aos = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, anns, UOF_LoadedOnly);
     } else {
         aos = anns;
@@ -317,7 +317,7 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     }
 
     // extract lower case annotations from upper case ones
-    qStableSort(upperCaseRegs.begin(), upperCaseRegs.end());
+    std::stable_sort(upperCaseRegs.begin(), upperCaseRegs.end());
 
     qint64 nextStartPos = 0;
     foreach (const U2Region &reg, upperCaseRegs) {
@@ -390,10 +390,10 @@ char *U1AnnotationUtils::applyLowerCaseRegions(char *seq, qint64 first, qint64 l
 }
 
 QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, const DNAAlphabet *al) {
-    DNATranslation *res = NULL;
+    DNATranslation *res = nullptr;
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
 
-    if (NULL != ao && NULL != al) {
+    if (nullptr != ao && nullptr != al) {
         if (al->isNucleic()) {
             foreach (Annotation *ann, ao->getAnnotationsByName("CDS")) {
                 QList<U2Qualifier> ql;
@@ -401,7 +401,7 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, cons
                 if (!ql.isEmpty()) {
                     const QString guess = "NCBI-GenBank #" + ql.first().value;
                     res = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, guess);
-                    if (NULL != res) {
+                    if (nullptr != res) {
                         return guess;
                     }
                 }
@@ -583,7 +583,7 @@ FixAnnotationsUtils::FixAnnotationsUtils(U2OpStatus *os, U2SequenceObject *seqOb
 
 void FixAnnotationsUtils::fixAnnotations() {
     QList<GObject *> annotationTablesList;
-    if (AppContext::getProject() != NULL) {
+    if (AppContext::getProject() != nullptr) {
         annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
     } else {
         foreach (Document *d, docs) {
@@ -598,7 +598,7 @@ void FixAnnotationsUtils::fixAnnotations() {
 
     foreach (GObject *table, annotationTablesList) {
         AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-        if (NULL != ato) {
+        if (nullptr != ato) {
             QMap<QString, QList<SharedAnnotationData>> group2AnnotationsToAdd;
             QList<Annotation *> annotationToRemove;
             foreach (Annotation *an, ato->getAnnotations()) {
@@ -624,9 +624,9 @@ void FixAnnotationsUtils::fixAnnotations() {
 
 QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(Annotation *an, bool &annIsRemoved) {
     QMap<QString, QList<SharedAnnotationData>> result;
-    SAFE_POINT(NULL != an, L10N::nullPointerError("Annotation"), result);
+    SAFE_POINT(nullptr != an, L10N::nullPointerError("Annotation"), result);
     AnnotationTableObject *ato = an->getGObject();
-    SAFE_POINT(NULL != ato, L10N::nullPointerError("Annotation table object"), result);
+    SAFE_POINT(nullptr != ato, L10N::nullPointerError("Annotation table object"), result);
 
     QList<QVector<U2Region>> newRegions = U1AnnotationUtils::fixLocationsForReplacedRegion(regionToReplace,
                                                                                            sequence2Insert.seq.length(),
@@ -734,7 +734,7 @@ U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnota
     CHECK(!translationQuals.empty(), U2Qualifier());
 
     DNATranslation *aminoTranslation = GObjectUtils::findAminoTT(seqObj, false);
-    SAFE_POINT(NULL != aminoTranslation, L10N::nullPointerError("Amino translation"), U2Qualifier());
+    SAFE_POINT(nullptr != aminoTranslation, L10N::nullPointerError("Amino translation"), U2Qualifier());
 
     QString completeTranslation;
     foreach (const U2Region &r, ad->getRegions()) {

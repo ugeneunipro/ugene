@@ -48,7 +48,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, G
     : GSequenceLineView(p, ctx),
       baseView(_baseView),
       vName(_vName),
-      graphDrawer(NULL) {
+      graphDrawer(nullptr) {
     GCOUNTER(cvar, "GSequenceGraphView");
     assert(baseView);
 
@@ -85,8 +85,8 @@ GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, G
     setFrameView(baseView->getFrameView());
 
     //process double clicks as centering requests
-    ADVSingleSequenceWidget *ssw = baseView == NULL ? NULL : qobject_cast<ADVSingleSequenceWidget *>(baseView->parentWidget());
-    if (ssw != NULL) {
+    ADVSingleSequenceWidget *ssw = baseView == nullptr ? nullptr : qobject_cast<ADVSingleSequenceWidget *>(baseView->parentWidget());
+    if (ssw != nullptr) {
         connect(this, SIGNAL(si_centerPosition(qint64)), ssw, SLOT(sl_onLocalCenteringRequest(qint64)));
     }
 
@@ -125,7 +125,7 @@ void GSequenceGraphView::leaveEvent(QEvent * /*le*/) {
 
 void GSequenceGraphView::addLabel(float xPos) {
     foreach (const QSharedPointer<GSequenceGraphData> graph, graphs) {
-        if (NULL != graph->graphLabels.findLabelByPosition(xPos)) {
+        if (nullptr != graph->graphLabels.findLabelByPosition(xPos)) {
             continue;
         }
         GraphLabel *newLabel = new GraphLabel(xPos, renderArea);
@@ -147,7 +147,7 @@ void GSequenceGraphView::createLabelsOnPositions(const QList<QVariant> &position
     }
 }
 void GSequenceGraphView::moveLabel(float xPos) {
-    GraphLabel *prevLabel = NULL;
+    GraphLabel *prevLabel = nullptr;
     foreach (const QSharedPointer<GSequenceGraphData> graph, graphs) {
         GraphLabel &label = graph->graphLabels.getMovingLabel();
         label.setPosition(xPos);
@@ -302,7 +302,7 @@ void GSequenceGraphView::onVisibleRangeChanged(bool signal) {
 // RA
 GSequenceGraphViewRA::GSequenceGraphViewRA(GSequenceGraphView *g)
     : GSequenceLineViewRenderArea(g),
-      gd(NULL) {
+      gd(nullptr) {
     setObjectName("GSequenceGraphViewRenderArea");
     headerFont = new QFont("Courier", 10);
     headerHeight = 20;
@@ -329,7 +329,7 @@ void GSequenceGraphViewRA::drawAll(QPaintDevice *pd) {
     }
 
     gd = getGraphView()->getGSequenceGraphDrawer();
-    assert(gd != NULL);
+    assert(gd != nullptr);
     connect(gd, SIGNAL(si_graphDataUpdated()), SLOT(sl_graphDataUpdated()), Qt::UniqueConnection);
 
     drawHeader(p);

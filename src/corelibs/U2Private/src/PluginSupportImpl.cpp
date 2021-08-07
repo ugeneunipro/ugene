@@ -28,6 +28,7 @@
 #include <QSet>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BundleInfo.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/L10n.h>
@@ -123,7 +124,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
     }
 
     // now check plugin compatibility
-    bool isUIMode = AppContext::getMainWindow() != NULL || AppContext::isGUIMode();    // isGUIMode - for pluginChecker!
+    bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();    // isGUIMode - for pluginChecker!
     bool modeIsOk = false;
     if (isUIMode) {
         modeIsOk = desc.mode.testFlag(PluginMode_UI);
@@ -176,7 +177,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
         coreLog.trace(QString("Plugin platform is not Windows: %1").arg(desc.id));
         return;
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     if (desc.platform.name != PlatformName_Mac) {
         coreLog.trace(QString("Plugin platform is not Mac: %1").arg(desc.id));
         return;
@@ -228,9 +229,9 @@ static QStringList findAllPluginsInDefaultPluginsDir() {
 }
 
 PluginRef::~PluginRef() {
-    assert(plugin != NULL);
+    assert(plugin != nullptr);
     delete plugin;
-    plugin = NULL;
+    plugin = nullptr;
 }
 
 void PluginSupportImpl::sl_registerServices() {
@@ -253,13 +254,13 @@ QString PluginSupportImpl::getPluginFileURL(Plugin *p) const {
 
     foreach (PluginRef *ref, plugRefs) {
         if (ref->plugin == p) {
-            if (ref->library == NULL) {
+            if (ref->library == nullptr) {
                 return "";
             }
             return ref->library->fileName();
         }
     }
-    return QString::null;
+    return QString();
 }
 
 PluginRef *PluginSupportImpl::findRef(Plugin *p) const {
@@ -268,7 +269,7 @@ PluginRef *PluginSupportImpl::findRef(Plugin *p) const {
             return r;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 PluginRef *PluginSupportImpl::findRefById(const QString &pluginId) const {
@@ -277,17 +278,17 @@ PluginRef *PluginSupportImpl::findRefById(const QString &pluginId) const {
             return r;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void PluginSupportImpl::setLicenseAccepted(Plugin *p) {
     p->acceptLicense();
     PluginRef *r = findRef(p);
-    assert(r != NULL);
+    assert(r != nullptr);
     updateSavedState(r);
 }
 void PluginSupportImpl::updateSavedState(PluginRef *ref) {
-    if (ref->library == NULL) {
+    if (ref->library == nullptr) {
         // skip core plugin
         return;
     }
@@ -321,6 +322,14 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
 }
 
 QDir PluginSupportImpl::getDefaultPluginsDir() {
+#ifdef Q_OS_DARWIN
+    if (!QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
+        QString dir = BundleInfo::getPluginsSearchPath();
+        if (!dir.isEmpty()) {
+            return QDir(dir);
+        }
+    }
+#endif
     return QDir(AppContext::getWorkingDirectoryPath() + "/plugins");
 }
 
@@ -334,19 +343,19 @@ bool PluginSupportImpl::isDefaultPluginsDir(const QString &url) {
 /// Tasks
 AddPluginTask::AddPluginTask(PluginSupportImpl *_ps, const PluginDesc &_desc, bool forceVerification)
     : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
-      lib(NULL),
+      lib(nullptr),
       ps(_ps),
       desc(_desc),
       forceVerification(forceVerification),
       verificationMode(false),
-      verifyTask(NULL) {
+      verifyTask(nullptr) {
     CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
     verificationMode = reg->hasParameter(CMDLineRegistry::VERIFY_ARG);
 }
 
 void AddPluginTask::prepare() {
     PluginRef *ref = ps->findRefById(desc.id);
-    if (ref != NULL) {
+    if (ref != nullptr) {
         stateInfo.setError(tr("Plugin is already loaded: %1").arg(desc.id));
         return;
     }
@@ -354,7 +363,7 @@ void AddPluginTask::prepare() {
     //check that plugin we depends on is already loaded
     foreach (const DependsInfo &di, desc.dependsList) {
         PluginRef *ref = ps->findRefById(di.id);
-        if (ref == NULL) {
+        if (ref == nullptr) {
             stateInfo.setError(tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id));
             return;
         }
@@ -376,11 +385,11 @@ void AddPluginTask::prepare() {
     }
 
     Settings *settings = AppContext::getSettings();
-    SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
+    SAFE_POINT(settings != nullptr, tr("Settings is NULL"), );
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
         verificationIsEnabled = false;
     }
@@ -427,14 +436,14 @@ bool AddPluginTask::verifyPlugin() {
     Settings *settings = AppContext::getSettings();
     QString libUrl = desc.libraryUrl.getURLString();
     PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
-    if (!verificationMode && verifyTask != NULL) {
+    if (!verificationMode && verifyTask != nullptr) {
         settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         if (!verifyTask->isCorrectPlugin()) {
             settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
             QString message = message_func ? *(QScopedPointer<QString>(message_func())) : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
             stateInfo.setError(message);
             MainWindow *mw = AppContext::getMainWindow();
-            CHECK(mw != NULL, ReportResult_Finished);
+            CHECK(mw != nullptr, ReportResult_Finished);
             mw->addNotification(message, Warning_Not);
             return true;
         } else {
@@ -456,7 +465,7 @@ void AddPluginTask::instantiatePlugin() {
     }
 
     Plugin *p = init_fn();
-    if (p == NULL) {
+    if (p == nullptr) {
         stateInfo.setError(tr("Plugin initialization failed: %1").arg(libUrl));
         return;
     }
@@ -484,7 +493,7 @@ void AddPluginTask::instantiatePlugin() {
 }
 
 VerifyPluginTask::VerifyPluginTask(PluginSupportImpl *ps, const PluginDesc &desc)
-    : Task(tr("Verify plugin task: %1").arg(desc.id), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled), ps(ps), desc(desc), timeOut(100000), proc(NULL), pluginIsCorrect(false) {
+    : Task(tr("Verify plugin task: %1").arg(desc.id), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled), ps(ps), desc(desc), timeOut(100000), proc(nullptr), pluginIsCorrect(false) {
 }
 void VerifyPluginTask::run() {
     QString executableDir = AppContext::getWorkingDirectoryPath();

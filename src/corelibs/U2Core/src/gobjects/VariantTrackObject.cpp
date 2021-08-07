@@ -48,10 +48,10 @@ VariantTrackObject::~VariantTrackObject() {
 
 U2DbiIterator<U2Variant> *VariantTrackObject::getVariants(const U2Region &reg, U2OpStatus &os) const {
     DbiConnection con(entityRef.dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2VariantDbi *vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", NULL);
+    SAFE_POINT(vdbi != nullptr, "Variant DBI is NULL", nullptr);
 
     return vdbi->getVariants(entityRef.entityId, reg, os);
 }
@@ -61,7 +61,7 @@ int VariantTrackObject::getVariantCount(U2OpStatus &os) const {
     CHECK_OP(os, 0);
 
     U2VariantDbi *variantDbi = con.dbi->getVariantDbi();
-    SAFE_POINT(variantDbi != NULL, "Variant DBI is NULL", 0);
+    SAFE_POINT(variantDbi != nullptr, "Variant DBI is NULL", 0);
 
     return variantDbi->getVariantCount(entityRef.entityId, os);
 }
@@ -71,7 +71,7 @@ U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus &os) const {
     CHECK_OP(os, U2VariantTrack());
 
     U2VariantDbi *vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", U2VariantTrack());
+    SAFE_POINT(vdbi != nullptr, "Variant DBI is NULL", U2VariantTrack());
 
     return vdbi->getVariantTrack(entityRef.entityId, os);
 }
@@ -79,30 +79,30 @@ U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus &os) const {
 GObject *VariantTrackObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     DbiConnection srcCon(entityRef.dbiRef, true, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     DbiConnection dstCon(dstDbiRef, true, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
     const QString dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2VariantDbi *dstVDbi = dstCon.dbi->getVariantDbi();
-    SAFE_POINT(dstVDbi != NULL, "NULL destination variant DBI", NULL);
+    SAFE_POINT(dstVDbi != nullptr, "NULL destination variant DBI", nullptr);
 
     U2VariantTrack track = this->getVariantTrack(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     U2VariantTrack clonedTrack = track;
     dstVDbi->createVariantTrack(clonedTrack, TrackType_All, dstFolder, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QScopedPointer<U2DbiIterator<U2Variant>> varsIter(this->getVariants(U2_REGION_MAX, os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     dstVDbi->addVariantsToTrack(clonedTrack, varsIter.data(), os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2AttributeUtils::copyObjectAttributes(entityRef.entityId, clonedTrack.id, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
 
@@ -116,7 +116,7 @@ void VariantTrackObject::addVariants(const QList<U2Variant> &variants, U2OpStatu
     CHECK_OP(os, );
 
     U2VariantDbi *vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", );
+    SAFE_POINT(vdbi != nullptr, "Variant DBI is NULL", );
 
     U2VariantTrack track = vdbi->getVariantTrack(entityRef.entityId, os);
     CHECK_OP(os, );

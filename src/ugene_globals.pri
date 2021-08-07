@@ -2,12 +2,16 @@ include (ugene_version.pri)
 
 UGENE_GLOBALS_DEFINED=1
 
-DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
-CONFIG += c++11
+# Use of any Qt API marked as deprecated before 5.7 will cause compile time errors.
+# The goal is to increase this value gradually up to the current version used in UGENE
+# and do not use any deprecated API.
+DEFINES+=QT_DISABLE_DEPRECATED_BEFORE=0x050700
+
+CONFIG += c++14
 
 # Do not use library suffix names for files and ELF-dependency sections on Linux.
 # Reason: we do not support multiple versions of UGENE in the same folder and
@@ -43,10 +47,19 @@ win32 : QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG
 win32 : LIBS += psapi.lib
 win32 : DEFINES += "PSAPI_VERSION=1"
 
-macx {
+clang {
     CONFIG -= warn_on
     #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
-    QMAKE_CXXFLAGS += -Wall -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wall
+    QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override
+    QMAKE_CXXFLAGS += -Wno-unknown-warning-option
+    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
+    QMAKE_CXXFLAGS += -Wno-char-subscripts
+}
+
+macx {
+    LIBS += -framework CoreFoundation
 }
 
 linux-g++ {
@@ -54,26 +67,18 @@ linux-g++ {
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
-    # We have a lot of such warning from QT.
-    # Disable them now and recheck every time we increase the minimal supported version of QT.
-    QMAKE_CXXFLAGS += -Wno-catch-value
-    QMAKE_CXXFLAGS += -Wno-class-memaccess
+    # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
+    # TODO: Fix UGENE code and remove the suppression.
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
-    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    QMAKE_CXXFLAGS += -Wno-ignored-attributes
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
-    QMAKE_CXXFLAGS += -Wno-sign-compare
-    QMAKE_CXXFLAGS += -Wno-unused-variable
+    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
-    # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
-    QMAKE_CXXFLAGS += -Wno-cast-function-type
-
-    # These warnings must be errors:
+    # These warnings must be errors (all entries must be added to disable-warnings.h):
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses
     QMAKE_CXXFLAGS += -Werror=return-type
     QMAKE_CXXFLAGS += -Werror=uninitialized
     QMAKE_CXXFLAGS += -Werror=unused-parameter
+    QMAKE_CXXFLAGS += -Werror=unused-variable
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
@@ -232,13 +237,6 @@ is_debug_build() {
     D=d
 }
 
-#Variable enabling exclude list for ugene modules
-#UGENE_EXCLUDE_LIST_ENABLED = 1
-defineTest( exclude_list_enabled ) {
-    contains( UGENE_EXCLUDE_LIST_ENABLED, 1 ) : return (true)
-    return (false)
-}
-
 #Variable enabling exclude list for ugene non-free modules
 defineTest( without_non_free ) {
     contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
@@ -268,8 +266,4 @@ defineTest(minQtVersion) {
         return(true)
     }
     return(false)
-}
-
-if (exclude_list_enabled()) {
-    DEFINES += HI_EXCLUDED
 }

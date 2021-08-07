@@ -132,7 +132,7 @@ public:
         : Filler(os, "CSVColumnConfigurationDialog"), parameter(_parameter) {
     }
     RoleFiller(HI::GUITestOpStatus &os, CustomScenario *c)
-        : Filler(os, "CSVColumnConfigurationDialog", c), parameter(NULL) {
+        : Filler(os, "CSVColumnConfigurationDialog", c), parameter(nullptr) {
     }
 
     virtual void commonScenario();

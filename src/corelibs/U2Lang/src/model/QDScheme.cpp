@@ -41,7 +41,7 @@ void QDParameters::setParameter(const QString &name, const QVariant &val) {
 const int QDActor::DEFAULT_MAX_RESULT_LENGTH(10000);
 
 QDActor::QDActor(QDActorPrototype const *_proto)
-    : scheme(NULL), proto(_proto), strand(QDStrand_Both), simmetric(false) {
+    : scheme(nullptr), proto(_proto), strand(QDStrand_Both), simmetric(false) {
     cfg = new QDActorParameters;
     foreach (Attribute *a, proto->getParameters()) {
         cfg->addParameter(a->getId(), a->clone());
@@ -219,7 +219,7 @@ QDScheme::~QDScheme() {
 
 void QDScheme::addActor(QDActor *a) {
     assert(!actors.contains(a));
-    assert(a->scheme == NULL);
+    assert(a->scheme == nullptr);
     foreach (QDSchemeUnit *su, a->getSchemeUnits()) {
         assert(su->getConstraints().isEmpty());
         Q_UNUSED(su);
@@ -308,7 +308,7 @@ void QDScheme::clear() {
 
 QList<QDSchemeUnit *> currentRoute;
 QList<QList<QDSchemeUnit *>> routes;
-QDSchemeUnit *routeDst = NULL;
+QDSchemeUnit *routeDst = nullptr;
 
 QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
     assert(currentRoute.isEmpty());
@@ -371,7 +371,7 @@ QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
     }
     currentRoute.clear();
     routes.clear();
-    routeDst = NULL;
+    routeDst = nullptr;
     return res;
 }
 
@@ -393,7 +393,7 @@ void QDScheme::findRoute(QDSchemeUnit *curSu) {
         }
 
         foreach (QDDistanceConstraint *dc, dcList) {
-            QDSchemeUnit *adj = NULL;
+            QDSchemeUnit *adj = nullptr;
             QDSchemeUnit *dcSrc = dc->getSource();
             QDSchemeUnit *dcDst = dc->getDestination();
             if (curSu == dcSrc) {
@@ -464,14 +464,14 @@ bool QDPath::addConstraint(QDDistanceConstraint *dc) {
 
 QDDistanceConstraint *QDPath::toConstraint() {
     if (constraints.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     delete overallConstraint;
     int minDist = 0, maxDist = 0;
     QDSchemeUnit *curSu = pathSrc;
     for (int i = 0, n = constraints.size(); i < n; i++) {
         QDDistanceConstraint *curDc = constraints.at(i);
-        QDDistanceConstraint *nextDc = NULL;
+        QDDistanceConstraint *nextDc = nullptr;
         if (i + 1 < n) {
             nextDc = constraints.at(i + 1);
         }
@@ -557,7 +557,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
     }
 
     if (maxDist < minDist) {
-        return NULL;
+        return nullptr;
     }
 
     QDDistanceConstraint *firstDc = constraints.first();
@@ -685,7 +685,7 @@ QDActor *QDScheme::getActorByLabel(const QString &label) const {
             return a;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void QDScheme::addActorToGroup(QDActor *a, const QString &group) {

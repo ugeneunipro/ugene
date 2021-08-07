@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /* The MIT License
 
    Copyright (c) 2008, 2009, 2011 Attractive Chaos <attractor@live.co.uk>

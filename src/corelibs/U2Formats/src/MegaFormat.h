@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT MegaFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT MegaFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     MegaFormat(QObject *p);

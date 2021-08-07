@@ -12,7 +12,7 @@ namespace HI {
 
 QString getScreenshotDir() {    //TODO:rewrite to use working directory /screenshots
     QString result;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     result = "../../../../../../screenshotFol/";
 #else
     QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");

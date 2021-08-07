@@ -42,9 +42,9 @@ GUrl ConvertAssemblyToSamDialog::dbFileUrl;
 ConvertAssemblyToSamDialog::ConvertAssemblyToSamDialog(QWidget *parent, QString dbPath)
     : QDialog(parent),
       ui(new Ui_AssemblyToSamDialog),
-      saveController(NULL) {
+      saveController(nullptr) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60229263");
+    new HelpButton(this, ui->buttonBox, "65930895");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Convert"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

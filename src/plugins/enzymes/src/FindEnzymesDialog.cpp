@@ -38,9 +38,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 
-#include <U2Formats/GenbankLocationParser.h>
-
-#include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -153,7 +150,7 @@ void EnzymesSelectorWidget::loadFile(const QString &url) {
     }
     if (ti.hasError()) {
         if (isVisible()) {
-            QMessageBox::critical(NULL, tr("Error"), ti.getError());
+            QMessageBox::critical(nullptr, tr("Error"), ti.getError());
         } else {
             ioLog.error(ti.getError());
         }
@@ -191,7 +188,7 @@ void EnzymesSelectorWidget::saveFile(const QString &url) {
 
     if (ti.hasError()) {
         if (isVisible()) {
-            QMessageBox::critical(NULL, tr("Error"), ti.getError());
+            QMessageBox::critical(nullptr, tr("Error"), ti.getError());
         } else {
             uiLog.error(ti.getError());
         }
@@ -256,7 +253,7 @@ EnzymeGroupTreeItem *EnzymesSelectorWidget::findGroupItem(const QString &s, bool
         tree->addTopLevelItem(gi);
         return gi;
     }
-    return NULL;
+    return nullptr;
 }
 
 void EnzymesSelectorWidget::sl_filterTextChanged(const QString &filterText) {
@@ -390,8 +387,8 @@ void EnzymesSelectorWidget::sl_saveSelectionToFile() {
 
 void EnzymesSelectorWidget::sl_openDBPage() {
     QTreeWidgetItem *ci = tree->currentItem();
-    EnzymeTreeItem *item = ci == NULL || ci->parent() == 0 ? NULL : static_cast<EnzymeTreeItem *>(tree->currentItem());
-    if (item == NULL) {
+    EnzymeTreeItem *item = ci == nullptr || ci->parent() == 0 ? nullptr : static_cast<EnzymeTreeItem *>(tree->currentItem());
+    if (item == nullptr) {
         QMessageBox::critical(this, tr("Error!"), tr("No enzyme selected!"));
         return;
     }
@@ -404,7 +401,7 @@ void EnzymesSelectorWidget::sl_openDBPage() {
 }
 
 void EnzymesSelectorWidget::sl_itemChanged(QTreeWidgetItem *item, int col) {
-    if (item->parent() == NULL || col != 0 || ignoreItemChecks) {
+    if (item->parent() == nullptr || col != 0 || ignoreItemChecks) {
         return;
     }
     EnzymeTreeItem *ei = static_cast<EnzymeTreeItem *>(item);
@@ -498,7 +495,7 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContext)
     : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229115");
+    new HelpButton(this, buttonBox, "65930747");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -508,10 +505,10 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContex
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
 
-    regionSelector = new RegionSelectorWithExludedRegion(this,
-                                                         advSequenceContext->getSequenceLength(),
-                                                         advSequenceContext->getSequenceSelection(),
-                                                         advSequenceContext->getSequenceObject()->isCircular());
+    regionSelector = new RegionSelectorWithExcludedRegion(this,
+                                                          advSequenceContext->getSequenceLength(),
+                                                          advSequenceContext->getSequenceSelection(),
+                                                          advSequenceContext->getSequenceObject()->isCircular());
     searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
@@ -623,7 +620,9 @@ void FindEnzymesDialog::saveSettings() {
     }
 
     U2SequenceObject *sequenceObject = advSequenceContext->getSequenceObject();
-    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, regionSelector->getIncludeRegion());
+    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
+    U2Region searchRegion = regionSelector->isWholeSequenceSelected() ? U2Region() : regionSelector->getIncludeRegion();
+    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, searchRegion);
     FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
     enzSel->saveSettings();
 }
@@ -682,7 +681,7 @@ void EnzymeGroupTreeItem::updateVisual() {
 }
 
 bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
-    if (other.parent() != NULL) {
+    if (other.parent() != nullptr) {
         return true;
     }
     int col = treeWidget()->sortColumn();

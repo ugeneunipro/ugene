@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
@@ -45,8 +46,7 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
 
 RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format)
     : Filler(_os, "RemovePartFromSequenceDialog"), removeType(_removeType), format(_format), saveNew(_saveNew), recalculateQuals(false) {
-    QString __saveToFile = QDir::cleanPath(QDir::currentPath() + "/" + _saveToFile);
-    saveToFile = QDir::toNativeSeparators(__saveToFile);
+    saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
 }
@@ -58,20 +58,20 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
 #define GT_METHOD_NAME "commonScenario"
 void RemovePartFromSequenceDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     if (!range.isEmpty()) {
         QLineEdit *removeLocationEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("removeLocationEdit"));
-        GT_CHECK(removeLocationEdit != NULL, "QLineEdit \"removeLocationEdit\" not found");
+        GT_CHECK(removeLocationEdit != nullptr, "QLineEdit \"removeLocationEdit\" not found");
         GTLineEdit::setText(os, removeLocationEdit, range);
     }
     if (removeType == Resize) {
         QRadioButton *resizeRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("resizeRB"));
-        GT_CHECK(resizeRB != NULL, "radio button not found");
+        GT_CHECK(resizeRB != nullptr, "radio button not found");
         GTRadioButton::click(os, resizeRB);
     } else {
         QRadioButton *removeRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("removeRB"));
-        GT_CHECK(removeRB != NULL, "radio button not found");
+        GT_CHECK(removeRB != nullptr, "radio button not found");
         GTRadioButton::click(os, removeRB);
     }
 
@@ -82,13 +82,13 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
         QGroupBox *saveToAnotherBox = dialog->findChild<QGroupBox *>(QString::fromUtf8("saveToAnotherBox"));
         GTGroupBox::setChecked(os, saveToAnotherBox, true);
         QLineEdit *filepathEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("filepathEdit"));
-        GT_CHECK(filepathEdit != NULL, "QLineEdit \"filepathEdit\" not found");
+        GT_CHECK(filepathEdit != nullptr, "QLineEdit \"filepathEdit\" not found");
 
         GTLineEdit::setText(os, filepathEdit, saveToFile);
     }
     if (format != FASTA) {
         QComboBox *formatBox = dialog->findChild<QComboBox *>(QString::fromUtf8("formatBox"));
-        GT_CHECK(formatBox != NULL, "format box not found");
+        GT_CHECK(formatBox != nullptr, "format box not found");
         int index = formatBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 

@@ -45,7 +45,7 @@ RevComplSequenceTask::RevComplSequenceTask(const DNASequence &s, const U2Region 
 
 void RevComplSequenceTask::run() {
     DNATranslation *complT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(sequence.alphabet);
-    if (complT == NULL) {
+    if (complT == nullptr) {
         stateInfo.setError(tr("Can't find complement translation for alphabet: %1").arg(sequence.alphabet->getId()));
         return;
     }
@@ -65,7 +65,7 @@ void RevComplSequenceTask::cleanup() {
 
 FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const DNASequence &seq2)
     : Task(tr("Find repeats in a single sequence"), TaskFlags_FOSCOE), settings(s),
-      seq1(seq), seq2(seq2), tandemTask1(NULL), tandemTask2(NULL) {
+      seq1(seq), seq2(seq2), tandemTask1(nullptr), tandemTask2(nullptr) {
     GCOUNTER(cvar, "FindRepeatsTask");
     if (settings.seqRegion.length == 0) {
         settings.seqRegion = U2Region(0, seq1.length());
@@ -77,8 +77,8 @@ FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequ
         settings.seq2Region = U2Region(0, seq2.length());
     }
 
-    revComplTask = NULL;
-    rfTask = NULL;
+    revComplTask = nullptr;
+    rfTask = nullptr;
     startTime = GTimer::currentTimeMicros();
 }
 
@@ -134,7 +134,7 @@ QList<Task *> FindRepeatsTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
     FindTandemsToAnnotationsTask *t = qobject_cast<FindTandemsToAnnotationsTask *>(subTask);
-    if (NULL != t) {
+    if (nullptr != t) {
         if (t == tandemTask1) {
             filterTandems(t->getResult(), seq1);
         } else {
@@ -153,7 +153,7 @@ RFAlgorithmBase *FindRepeatsTask::createRFTask() {
     stateInfo.setDescription(tr("Searching repeats ..."));
 
     const char *seqX = seq1.constData() + settings.seqRegion.startPos;
-    const char *seqY = revComplTask == NULL ? seqX : revComplTask->complementSequence.constData();
+    const char *seqY = revComplTask == nullptr ? seqX : revComplTask->complementSequence.constData();
     int seqXLen = settings.seqRegion.length;
     int seqYLen = settings.seqRegion.length;
 
@@ -197,7 +197,7 @@ bool CompareResultLen(RFResult r1, RFResult r2) {
 void FindRepeatsTask::filterUniqueRepeats() {
     quint64 t1 = GTimer::currentTimeMicros();
 
-    qSort(results.begin(), results.end(), CompareResultLen);
+    std::sort(results.begin(), results.end(), CompareResultLen);
 
     bool changed = false;
     for (int i = 0, n = results.size(); i < n; i++) {
@@ -235,7 +235,7 @@ void FindRepeatsTask::filterNestedRepeats() {
     //if one repeats fits into another repeat -> filter it
     quint64 t1 = GTimer::currentTimeMicros();
 
-    qSort(results);
+    std::sort(results.begin(), results.end());
 
     bool changed = false;
     int extraLen = settings.mismatches;    //extra len added to repeat region to search for duplicates
@@ -426,7 +426,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
 }
 
 FindRepeatsToAnnotationsTask::FindRepeatsToAnnotationsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const QString &_an, const QString &_gn, const QString &annDescription, const GObjectReference &_aor)
-    : Task(tr("Find repeats to annotations"), TaskFlags_NR_FOSCOE), annName(_an), annGroup(_gn), annDescription(annDescription), annObjRef(_aor), findTask(NULL), settings(s) {
+    : Task(tr("Find repeats to annotations"), TaskFlags_NR_FOSCOE), annName(_an), annGroup(_gn), annDescription(annDescription), annObjRef(_aor), findTask(nullptr), settings(s) {
     setVerboseLogMode(true);
     if (annObjRef.isValid()) {
         LoadUnloadedDocumentTask::addLoadingSubtask(this,

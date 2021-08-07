@@ -208,21 +208,21 @@ void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2
     foreach (const U2DataId &id, attributeIds) {
         U2DataType type = U2DbiUtils::toType(id);
         switch (type) {
-        case U2Type::AttributeInteger:
-            tableName = intergerAttrString;
-            break;
-        case U2Type::AttributeReal:
-            tableName = realAttrString;
-            break;
-        case U2Type::AttributeString:
-            tableName = stringAttrString;
-            break;
-        case U2Type::AttributeByteArray:
-            tableName = bytearrayAttrString;
-            break;
-        default:
-            os.setError(U2DbiL10n::tr("Unsupported attribute type: %1").arg(type));
-            break;
+            case U2Type::AttributeInteger:
+                tableName = intergerAttrString;
+                break;
+            case U2Type::AttributeReal:
+                tableName = realAttrString;
+                break;
+            case U2Type::AttributeString:
+                tableName = stringAttrString;
+                break;
+            case U2Type::AttributeByteArray:
+                tableName = bytearrayAttrString;
+                break;
+            default:
+                os.setError(U2DbiL10n::tr("Unsupported attribute type: %1").arg(type));
+                break;
         }
 
         U2SqlQuery removeAttrDetails(secQueryStr.arg(tableName), db, os);

@@ -170,7 +170,7 @@ void PanViewRenderer::drawAnnotations(QPainter &p, const QSize &canvasSize, cons
         const QRect textRect(LINE_TEXT_OFFSET, lineY + 1, canvasSize.width(), commonMetrics.lineHeight - 2);
         p.drawText(textRect, getText(rData));
 
-        if (NULL != rData) {
+        if (nullptr != rData) {
             AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
             AnnotationSettings *as = asr->getAnnotationSettings(rData->key);
             if (as->visible) {
@@ -412,7 +412,7 @@ void PanViewRenderer::drawCustomRulers(GraphUtils::RulerConfig c, QPainter &p, c
 }
 
 const QString PanViewRenderer::getText(const PVRowData *rData) const {
-    const QString text = (NULL == rData) ? U2::PanView::tr("empty") : rData->key + " (" + QString::number(rData->annotations.size()) + ")";
+    const QString text = (nullptr == rData) ? U2::PanView::tr("empty") : rData->key + " (" + QString::number(rData->annotations.size()) + ")";
     return text;
 }
 

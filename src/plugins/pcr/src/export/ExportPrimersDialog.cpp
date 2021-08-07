@@ -61,7 +61,7 @@ ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers, QWidget *
     : QDialog(parent),
       primers(primers) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229151");
+    new HelpButton(this, buttonBox, "65930783");
 
     init();
     connectSignals();
@@ -75,7 +75,7 @@ void ExportPrimersDialog::sl_updateState() {
 }
 
 void ExportPrimersDialog::sl_connect() {
-    const bool projectExists = (NULL != AppContext::getProject());
+    const bool projectExists = (nullptr != AppContext::getProject());
     QPointer<SharedConnectionsDialog> connectionDialog = new SharedConnectionsDialog(this);
     if (projectExists) {
         connectProjectSignals();
@@ -93,7 +93,7 @@ void ExportPrimersDialog::sl_connect() {
 
 void ExportPrimersDialog::sl_connectionCompleted() {
     QObject *connectionDialog = sender();
-    if (Q_LIKELY(NULL != connectionDialog)) {
+    if (Q_LIKELY(nullptr != connectionDialog)) {
         connectionDialog->deleteLater();
     }
     initDatabases();
@@ -148,7 +148,7 @@ void ExportPrimersDialog::accept() {
         return;
     }
 
-    Task *exportTask = NULL;
+    Task *exportTask = nullptr;
     if (LOCAL_FILE == cbExport->currentText()) {
         exportTask = new ExportPrimersToLocalFileTask(primers, saveController->getFormatIdToSave(), saveController->getSaveFileName());
     } else {
@@ -205,7 +205,7 @@ void ExportPrimersDialog::connectSignals() {
     connect(cbExport, SIGNAL(currentIndexChanged(int)), SLOT(sl_updateState()));
     connect(tbConnect, SIGNAL(clicked()), SLOT(sl_connect()));
     connect(tbFolderBrowse, SIGNAL(clicked()), SLOT(sl_folderBrowse()));
-    if (NULL != AppContext::getProject()) {
+    if (nullptr != AppContext::getProject()) {
         connectProjectSignals();
     }
 }

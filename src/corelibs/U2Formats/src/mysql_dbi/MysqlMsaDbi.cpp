@@ -319,7 +319,6 @@ void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 i
         insertRowIndexes << i + insertStartIndex;
     }
 
-
     QByteArray modDetails;
     if (trackMod == TrackOnUpdate) {
         modDetails = U2DbiPackUtils::packRows(insertRowIndexes, rows);

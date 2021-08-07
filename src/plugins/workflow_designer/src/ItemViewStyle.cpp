@@ -28,7 +28,6 @@
 #include <QFontDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSimpleTextItem>
-#include <QGraphicsTextItem>
 #include <QGraphicsView>
 #include <QPainter>
 #include <QRadialGradient>
@@ -36,7 +35,6 @@
 #include <QTextDocument>
 #include <QtMath>
 
-#include <U2Core/Log.h>
 #include <U2Core/QVariantUtils.h>
 
 #include <U2Lang/ActorModel.h>
@@ -72,7 +70,7 @@ void ItemViewStyle::selectBGColor() {
     if (res.isValid()) {
         bgColor = res;
         WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-        if (sc != NULL) {
+        if (sc != nullptr) {
             sc->setModified(true);
         }
     }
@@ -84,7 +82,7 @@ void ItemViewStyle::selectFont() {
     if (ok) {
         defFont = res;
         WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-        if (sc != NULL) {
+        if (sc != nullptr) {
             sc->setModified(true);
         }
     }
@@ -316,8 +314,10 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
         ret = updateCursor(he->pos());
     } break;
     case QEvent::GraphicsSceneMouseRelease:
-        desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent *>(event));
     case QEvent::GraphicsSceneHoverLeave:
+        if (event->type() == QEvent::GraphicsSceneMouseRelease) {
+            desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent *>(event));
+        }
         if (resizing) {
             owner->unsetCursor();
         }
@@ -391,7 +391,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
                 setFixedBounds(b2);
 
                 WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-                if (sc != NULL) {
+                if (sc != nullptr) {
                     sc->setModified(true);
                 }
             }
@@ -423,7 +423,6 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
 }
 
 bool ExtendedProcStyle::updateCursor(const QPointF &p) {
-    bool ret = false;
     resizing = NoResize;
     qreal dx = qAbs(bounds.right() - p.x());
     qreal dy = qAbs(bounds.bottom() - p.y());
@@ -461,8 +460,7 @@ bool ExtendedProcStyle::updateCursor(const QPointF &p) {
         owner->setCursor(Qt::SizeBDiagCursor);
         break;
     }
-    ret = (resizing != NoResize);
-    return ret;
+    return resizing != NoResize;
 }
 
 void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
@@ -493,7 +491,7 @@ QList<QAction *> ExtendedProcStyle::getContextMenuActions() const {
     return ret;
 }
 
-#define ARM QString("arm")
+//#define ARM QString("arm")
 #define BOUNDS QString("bounds")
 
 void ExtendedProcStyle::saveState(QDomElement &el) const {

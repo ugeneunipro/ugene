@@ -1,0 +1,18 @@
+<multi-test>
+
+    <!-- try to get specified document from gzipped index file created on 2 gzipped files then check sequence part with the original -->
+
+    <generate-file input="indexing_files/stockholm/fn3.sto" amount="3400" outCtxName="tmpOut1" gzipOut="yes"/>
+    <generate-file input="indexing_files/stockholm/gzip_file.sto" amount="1200" outCtxName="tmpOut2" gzipOut="yes"/>
+
+    <create-file-index tmpInput="yes" input="tmpOut1,tmpOut2" output="2bgz_file.uind.gz" delete="yes"/>
+
+    <load-document index="indDoc" dir="temp" url="2bgz_file.uind.gz" io="local_file_gzip" format="index"/>
+
+    <get-doc-from-index indDocName="indDoc" docNum="0" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/stockholm/fn3.sto" io="local_file" format="stockholm"/>
+
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

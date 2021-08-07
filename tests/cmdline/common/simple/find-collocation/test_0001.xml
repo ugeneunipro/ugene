@@ -1,0 +1,22 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/find-collocated/find-collocated.uws"
+            in="!common_data_dir!genbank/murine_sarcoma.gb"
+            out="!tmp_data_dir!find_collocation0001_tmp.gb"
+            result="misc_feature2"
+            group="CDS misc_feature"
+    />
+
+    <load-document index="doc" url="find_collocation0001_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="obj" location="444..1443" complement="false"/>
+    <find-annotation-by-location index="ann2" obj="obj" location="4505..5504" complement="false"/>
+
+</multi-test>
+

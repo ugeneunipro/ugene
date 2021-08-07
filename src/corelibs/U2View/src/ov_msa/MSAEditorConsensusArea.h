@@ -51,8 +51,7 @@ private:
     void buildMenu(QMenu *menu);
 
 private slots:
-    void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
-    void sl_buildContextMenu(GObjectView *view, QMenu *menu);
+    void sl_buildMenu(GObjectView *view, QMenu *menu, const QString &type);
 };
 
 }    // namespace U2

@@ -20,13 +20,12 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QComboBox>
-
-#include <U2Test/UGUITest.h>
 
 #include "BlastAllSupportDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
@@ -36,11 +35,11 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::BlastAllSupportDialogFiller"
 
 BlastAllSupportDialogFiller::BlastAllSupportDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os)
-    : Filler(os, "BlastAllSupportDialog"), parameters(parameters), dialog(NULL) {
+    : Filler(os, "BlastAllSupportDialog"), parameters(parameters), dialog(nullptr) {
 }
 
 BlastAllSupportDialogFiller::BlastAllSupportDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
-    : Filler(os, "BlastAllSupportDialog", scenario), dialog(NULL) {
+    : Filler(os, "BlastAllSupportDialog", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -80,8 +79,8 @@ void BlastAllSupportDialogFiller::commonScenario() {
 
 void BlastAllSupportDialogFiller::test_3211() {
     //Expected state: there is a "Request to Local BLAST Database" dialog without an annotation widget.
-    QWidget *widget = GTWidget::findWidget(os, "rbCreateNewTable", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == widget, "Annotations widget exists");
+    QWidget *widget = GTWidget::findWidget(os, "rbCreateNewTable", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == widget, "Annotations widget exists");
 
     //2. Set any input sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, UGUITest::dataDir + "samples/FASTA/human_T1.fa"));

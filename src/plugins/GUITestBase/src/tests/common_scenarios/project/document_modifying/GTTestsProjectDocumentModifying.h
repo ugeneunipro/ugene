@@ -22,7 +22,7 @@
 #ifndef _U2_GUI_TEST_PROJECT_DOCUMENT_MODIFYING_H_
 #define _U2_GUI_TEST_PROJECT_DOCUMENT_MODIFYING_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

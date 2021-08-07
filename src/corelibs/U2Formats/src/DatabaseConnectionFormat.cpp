@@ -67,12 +67,12 @@ FormatCheckResult DatabaseConnectionFormat::checkRawData(QByteArray const &, GUr
 
 Document *DatabaseConnectionFormat::loadDocument(IOAdapter *io, const U2DbiRef &, const QVariantMap &hints, U2OpStatus &os) {
     DatabaseConnectionAdapter *databaseConnectionAdapter = qobject_cast<DatabaseConnectionAdapter *>(io);
-    SAFE_POINT(NULL != databaseConnectionAdapter, QString("Can't use current IOAdapter: %1").arg(io->getAdapterName()), NULL);
+    SAFE_POINT(nullptr != databaseConnectionAdapter, QString("Can't use current IOAdapter: %1").arg(io->getAdapterName()), nullptr);
 
     U2Dbi *dbi = databaseConnectionAdapter->getConnection().dbi;
-    SAFE_POINT(NULL != dbi, "NULL dbi", NULL);
+    SAFE_POINT(nullptr != dbi, "NULL dbi", nullptr);
     QList<GObject *> objects = getObjects(dbi, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     const QString modLockDesc = dbi->getFeatures().contains(U2DbiFeature_GlobalReadOnly) ? DocumentFormat::tr("You have no permissions to modify the content of this database") : QString();
     Document *resultDocument = new Document(this, io->getFactory(), io->getURL(), dbi->getDbiRef(), objects, hints, modLockDesc);
@@ -91,10 +91,10 @@ void updateProgress(U2OpStatus &os, int current, int size) {
 }    // namespace
 
 #define CHECK_OBJECT(object) \
-    CHECK_OP(os, NULL); \
+    CHECK_OP(os, nullptr); \
     if (object.visualName.isEmpty()) { \
         os.setError(DocumentFormat::tr("Empty object name")); \
-        return NULL; \
+        return nullptr; \
     }
 
 #define UPDATE_STATE() \
@@ -117,7 +117,7 @@ QList<GObject *> DatabaseConnectionFormat::getObjects(U2Dbi *dbi, U2OpStatus &os
     foreach (const U2DataId &id, object2Name.keys()) {
         UPDATE_STATE();
         GObject *obj = GObjectUtils::createObject(dbiRef, id, object2Name.value(id));
-        if (NULL != obj) {
+        if (nullptr != obj) {
             resultList << obj;
         }
     }

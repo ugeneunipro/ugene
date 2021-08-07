@@ -25,11 +25,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -41,8 +39,6 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IncludedProtoFactory.h>
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/IntegralBusType.h>
 #include <U2Lang/ScriptEngineUtils.h>
 #include <U2Lang/ScriptLibrary.h>
 #include <U2Lang/SequencePrototype.h>
@@ -119,9 +115,9 @@ Worker *ScriptWorkerFactory::createWorker(Actor *a) {
 }
 
 ScriptWorker::ScriptWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL), taskFinished(false) {
+    : BaseWorker(a), input(nullptr), output(nullptr), taskFinished(false) {
     script = a->getScript();
-    engine = NULL;
+    engine = nullptr;
 }
 
 void ScriptWorker::init() {
@@ -138,7 +134,7 @@ void ScriptWorker::init() {
 
 void ScriptWorker::bindPortVariables() {
     foreach (IntegralBus *bus, ports.values()) {
-        assert(bus != NULL);
+        assert(bus != nullptr);
         if (actor->getPort(bus->getPortId())->isOutput()) {    // means that it is bus for output port
             continue;
         }
@@ -172,7 +168,7 @@ bool ScriptWorker::isNeedToBeDone() const {
         bool hasNotEnded = false;
         foreach (Port *port, actor->getInputPorts()) {
             IntegralBus *input = ports[port->getId()];
-            SAFE_POINT(NULL != input, "NULL input bus", false);
+            SAFE_POINT(nullptr != input, "NULL input bus", false);
             if (!input->isEnded()) {
                 hasNotEnded = true;
                 break;
@@ -190,7 +186,7 @@ bool ScriptWorker::isNeedToBeRun() const {
     } else {
         foreach (Port *port, actor->getInputPorts()) {
             IntegralBus *input = ports[port->getId()];
-            SAFE_POINT(NULL != input, "NULL input bus", false);
+            SAFE_POINT(nullptr != input, "NULL input bus", false);
             if (!input->hasMessage()) {
                 result = false;
                 break;
@@ -204,7 +200,7 @@ void ScriptWorker::setDone() {
     BaseWorker::setDone();
     foreach (Port *port, actor->getOutputPorts()) {
         IntegralBus *output = ports[port->getId()];
-        SAFE_POINT(NULL != output, "NULL output bus", );
+        SAFE_POINT(nullptr != output, "NULL output bus", );
         output->setEnded();
     }
 }
@@ -229,7 +225,7 @@ Task *ScriptWorker::tick() {
     } else if (isNeedToBeDone()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ScriptWorker::sl_taskFinished() {
@@ -245,7 +241,7 @@ void ScriptWorker::sl_taskFinished() {
     DataTypePtr ptr = dtr->getById(OUTPUT_PORT_TYPE + name);
 
     if (ptr->getAllDescriptors().size() == 1 && ptr->getAllDescriptors().first().getId() == BaseTypes::MULTIPLE_ALIGNMENT_TYPE()->getId()) {
-        if (input != NULL && !input->isEnded()) {
+        if (input != nullptr && !input->isEnded()) {
             return;
         }
     }

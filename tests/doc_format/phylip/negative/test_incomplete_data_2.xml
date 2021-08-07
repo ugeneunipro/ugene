@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with incomplete data -->
+    <load-broken-document index="doc" url="phylip/int_stan_incomplete_2.ph" io="local_file" format="phylip-interleaved"/>
+
+</multi-test>

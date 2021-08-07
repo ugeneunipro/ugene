@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- try to get specified document from index file created on local file and check msa names with the original -->
+
+    <generate-file input="indexing_files/stockholm/fn3.sto" amount="9000" outCtxName="tmpOut" gzipOut=""/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="blocal_file.uind" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="blocal_file.uind" io="local_file" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="8999" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/stockholm/fn3.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test swiss prot -->
+
+    <fd-perfect-match url="swiss_prot/O55726.sw" format="swiss-prot"/>
+
+</multi-test>

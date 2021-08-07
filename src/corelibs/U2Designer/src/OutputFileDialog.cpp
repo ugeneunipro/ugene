@@ -55,7 +55,7 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
         setWindowTitle(tr("Save a folder"));
     } else {
         setWindowTitle(tr("Save a file"));
-        if (NULL != filler) {
+        if (nullptr != filler) {
             new BaseCompleter(filler, nameEdit);
         }
         nameEdit->setValidator(new QRegExpValidator(QRegExp("[^" + BAD_CHARS + "]+"), this));
@@ -91,14 +91,14 @@ void OutputFileDialog::setupSettings() {
 
 FSItem *OutputFileDialog::selectedItem() const {
     QModelIndexList idxs = selectionModel->selectedIndexes();
-    CHECK(!idxs.isEmpty(), NULL);
+    CHECK(!idxs.isEmpty(), nullptr);
 
     return model->toItem(idxs.first());
 }
 
 QString OutputFileDialog::selectedPath() const {
     FSItem *item = selectedItem();
-    SAFE_POINT(NULL != item, "NULL item", "");
+    SAFE_POINT(nullptr != item, "NULL item", "");
 
     if (!saveDir && !item->isDir()) {
         item = item->parent();
@@ -109,7 +109,7 @@ QString OutputFileDialog::selectedPath() const {
 
 void OutputFileDialog::sl_selectionChanged() {
     FSItem *item = selectedItem();
-    SAFE_POINT(NULL != item, "NULL item", );
+    SAFE_POINT(nullptr != item, "NULL item", );
 
     if (!item->isDir()) {
         nameEdit->setText(item->name());
@@ -119,7 +119,7 @@ void OutputFileDialog::sl_selectionChanged() {
 
 void OutputFileDialog::sl_textChanged() {
     FSItem *item = selectedItem();
-    SAFE_POINT(NULL != item, "NULL item", );
+    SAFE_POINT(nullptr != item, "NULL item", );
 
     if (!item->isDir()) {
         QModelIndexList idxs = selectionModel->selectedIndexes();
@@ -141,7 +141,7 @@ void OutputFileDialog::sl_addDir() {
         QModelIndex index = idxs.first();
 
         FSItem *item = model->toItem(index);
-        SAFE_POINT(NULL != item, "NULL item", );
+        SAFE_POINT(nullptr != item, "NULL item", );
         if (!item->isDir()) {
             index = index.parent();
         }
@@ -345,7 +345,7 @@ QString RFSTreeModel::getPath(FSItem *target) const {
 }
 
 FSItem *RFSTreeModel::toItem(const QModelIndex &index) const {
-    CHECK(index.isValid(), NULL);
+    CHECK(index.isValid(), nullptr);
     return static_cast<FSItem *>(index.internalPointer());
 }
 

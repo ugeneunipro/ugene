@@ -23,24 +23,24 @@
 
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
+#include <U2Core/PrimerStatistics.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 
 #include "InSilicoPcrTask.h"
-#include "Primer.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 
 InSilicoPcrProductsTable::InSilicoPcrProductsTable(QWidget *parent)
-    : QTableWidget(parent), sequenceContext(NULL) {
+    : QTableWidget(parent), sequenceContext(nullptr) {
     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
     connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
 }
 
 void InSilicoPcrProductsTable::replaceContext(ADVSequenceObjectContext *newSequenceContext) {
-    if (NULL != sequenceContext) {
+    if (nullptr != sequenceContext) {
         sequenceContext->disconnect(this);
     }
     sequenceContext = newSequenceContext;
@@ -104,7 +104,7 @@ const QList<InSilicoPcrProduct> &InSilicoPcrProductsTable::getAllProducts() cons
 
 QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
     QVector<U2Region> result;
-    CHECK(NULL != sequenceContext, result);
+    CHECK(nullptr != sequenceContext, result);
 
     QList<InSilicoPcrProduct> products = getSelectedProducts();
     CHECK(1 == products.size(), result);
@@ -124,7 +124,7 @@ QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
 }
 
 void InSilicoPcrProductsTable::sl_selectionChanged() {
-    CHECK(NULL != sequenceContext, );
+    CHECK(nullptr != sequenceContext, );
     QVector<U2Region> selection = getSelection();
     CHECK(!selection.isEmpty(), );
 
@@ -136,7 +136,7 @@ void InSilicoPcrProductsTable::sl_selectionChanged() {
 
 bool InSilicoPcrProductsTable::onSequenceChanged(ADVSequenceObjectContext *changedContext) {
     if (sequenceContext == changedContext) {
-        replaceContext(NULL);
+        replaceContext(nullptr);
         setRowCount(0);
         return true;
     }

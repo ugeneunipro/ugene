@@ -9,8 +9,6 @@ use_opencl(){
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2ALGORITHM_DLL
 
-unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
-
 LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D -lsamtools$$D
 LIBS += $$add_z_lib()

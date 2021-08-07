@@ -160,11 +160,11 @@ static void addToggleDashboardAction(QToolBar *toolBar, QAction *action) {
 
     toolBar->addAction(action);
     QToolButton *b = dynamic_cast<QToolButton *>(toolBar->widgetForAction(action));
-    CHECK(NULL != b, );
+    CHECK(nullptr != b, );
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setAutoRaise(false);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     b->setStyleSheet("QToolButton {"
                      "font-size: 13px;"
                      "border: 1px solid gray;"
@@ -245,7 +245,7 @@ void DashboardManagerHelper::sl_dashboardsScanningFinished() {
 ********************************/
 WorkflowView *WorkflowView::createInstance(WorkflowGObject *go) {
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-    SAFE_POINT(NULL != mdiManager, "NULL MDI manager", NULL);
+    SAFE_POINT(nullptr != mdiManager, "NULL MDI manager", nullptr);
 
     WorkflowView *view = new WorkflowView(go);
     view->setWindowIcon(QIcon(":/workflow_designer/images/wd.png"));
@@ -261,20 +261,20 @@ WorkflowView *WorkflowView::openWD(WorkflowGObject *go) {
 
     QObjectScopedPointer<StartupDialog> d = new StartupDialog(AppContext::getMainWindow()->getQMainWindow());
     d->exec();
-    CHECK(!d.isNull(), NULL);
+    CHECK(!d.isNull(), nullptr);
 
     if (QDialog::Accepted == d->result()) {
         return createInstance(go);
     }
-    return NULL;
+    return nullptr;
 }
 
 WorkflowView::WorkflowView(WorkflowGObject *go)
-    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), currentProto(NULL), currentActor(NULL),
+    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go),
+      schema(QSharedPointer<Schema>::create()), currentProto(nullptr), currentActor(nullptr),
       pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions(), loadWorkflowSceneTask(nullptr) {
     scriptingMode = WorkflowSettings::getScriptingMode();
-    elementsMenu = NULL;
-    schema = new Schema();
+    elementsMenu = nullptr;
     schema->setDeepCopyFlag(true);
 
     setupScene();
@@ -313,11 +313,11 @@ WorkflowView::~WorkflowView() {
     WorkflowSettings::setScriptingMode(scriptingMode);
     delete currentActor;
     delete scene;
-    delete schema;
+    delete breakpointView;
 }
 
 void WorkflowView::setupScene() {
-    SceneCreator sc(schema, meta);
+    SceneCreator sc(schema.get(), meta);
     scene = sc.createScene(this);
 
     sceneView = new GlassView(scene);
@@ -382,12 +382,12 @@ void WorkflowView::loadSceneFromObject() {
     go->setView(this);
     QString err;
     if (format == LoadWorkflowTask::HR) {
-        err = HRSchemaSerializer::string2Schema(go->getSceneRawData(), schema, &meta);
+        err = HRSchemaSerializer::string2Schema(go->getSceneRawData(), schema.get(), &meta);
     } else if (format == LoadWorkflowTask::XML) {
         QDomDocument xml;
         QMap<ActorId, ActorId> remapping;
         xml.setContent(go->getSceneRawData().toUtf8());
-        err = SchemaSerializer::xml2schema(xml.documentElement(), schema, remapping);
+        err = SchemaSerializer::xml2schema(xml.documentElement(), schema.get(), remapping);
         SchemaSerializer::readMeta(&meta, xml.documentElement());
         scene->setModified(false);
         if (err.isEmpty()) {
@@ -406,7 +406,7 @@ void WorkflowView::loadSceneFromObject() {
         sl_newScene();
         coreLog.error(err);
     } else {
-        SceneCreator sc(schema, meta);
+        SceneCreator sc(schema.get(), meta);
         sc.recreateScene(scene);
         if (go->getDocument()) {
             meta.url = go->getDocument()->getURLString();
@@ -897,7 +897,7 @@ void WorkflowView::sl_editScript() {
     if (selectedActors.size() == 1) {
         Actor *scriptActor = selectedActors.first();
         AttributeScript *script = scriptActor->getScript();
-        if (script != NULL) {
+        if (script != nullptr) {
             QObjectScopedPointer<ScriptEditorDialog> scriptDlg = new ScriptEditorDialog(this, AttributeScriptDelegate::createScriptHeader(*script), script->getScriptText());
             scriptDlg->exec();
             CHECK(!scriptDlg.isNull(), );
@@ -943,7 +943,7 @@ void WorkflowView::sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *prot
 }
 
 void WorkflowView::sl_protoListModified() {
-    CHECK(NULL != elementsMenu, );
+    CHECK(nullptr != elementsMenu, );
     palette->createMenu(elementsMenu);
 }
 
@@ -957,7 +957,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     scene->setModified();
 
     ConfigurationEditor *editor = proc->getEditor();
-    if (NULL != editor) {
+    if (nullptr != editor) {
         connect(editor, SIGNAL(si_configurationChanged()), scene, SIGNAL(configurationChanged()));
     }
     procItemAdded();
@@ -971,7 +971,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
 }
 
 void WorkflowView::removeProcessItem(WorkflowProcessItem *item) {
-    CHECK(NULL != item, );
+    CHECK(nullptr != item, );
     Actor *actor = item->getProcess();
     scene->removeItem(item);
     delete item;
@@ -1023,7 +1023,7 @@ void WorkflowView::sl_toggleLock(bool b) {
     }
 
     if (!running) {
-        scene->setRunner(NULL);
+        scene->setRunner(nullptr);
     }
 
     newAction->setEnabled(!running);
@@ -1074,7 +1074,7 @@ void WorkflowView::sl_setStyle() {
 
 void WorkflowView::sl_changeScriptMode() {
     QAction *a = qobject_cast<QAction *>(sender());
-    if (a != NULL) {
+    if (a != nullptr) {
         if (a == scriptingActions[0]) {
             scriptingMode = false;
         } else if (a == scriptingActions[1]) {
@@ -1372,7 +1372,7 @@ void WorkflowView::sl_estimate() {
 
 void WorkflowView::sl_estimationTaskFinished() {
     SchemaEstimationTask *t = dynamic_cast<SchemaEstimationTask *>(sender());
-    CHECK(NULL != t, );
+    CHECK(nullptr != t, );
     CHECK(t->isFinished(), );
     estimateAction->setEnabled(true);
     CHECK(!t->hasError(), );
@@ -1399,7 +1399,6 @@ void WorkflowView::localHostLaunch() {
         GCounter::increment(meta.name, "WDSample:run");
     }
 
-    const Schema *s = getSchema();
     foreach (const Actor *actor, schema->getProcesses()) {
         if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
             GCOUNTER(cvar, "Element(s) with command line tool is present in the launched workflow");
@@ -1407,7 +1406,7 @@ void WorkflowView::localHostLaunch() {
         }
     }
     debugInfo->setMessageParser(new WorkflowDebugMessageParserImpl());
-    WorkflowAbstractRunner *t = new WorkflowRunTask(*s, ActorMap(), debugInfo);
+    WorkflowAbstractRunner *t = new WorkflowRunTask(*schema, ActorMap(), debugInfo);
 
     t->setReportingEnabled(true);
     if (WorkflowSettings::monitorRun()) {
@@ -1430,7 +1429,7 @@ void WorkflowView::localHostLaunch() {
 void WorkflowView::sl_launch() {
     if (!debugInfo->isPaused()) {
         localHostLaunch();
-        if (NULL != scene->getRunner()) {
+        if (nullptr != scene->getRunner()) {
             stopAction->setEnabled(true);
             pauseAction->setEnabled(true);
             propertyEditor->setEnabled(false);
@@ -1448,7 +1447,7 @@ void WorkflowView::sl_pause(bool isPause) {
     breakpointView->setEnabled(isPause);
     investigationWidgets->setInvestigationWidgetsVisible(isPause);
     WorkflowAbstractRunner *runningWorkflow = scene->getRunner();
-    if (NULL != runningWorkflow && runningWorkflow->isRunning()) {
+    if (nullptr != runningWorkflow && runningWorkflow->isRunning()) {
         foreach (WorkflowMonitor *m, runningWorkflow->getMonitors()) {
             if (isPause) {
                 m->pause();
@@ -1464,7 +1463,7 @@ void WorkflowView::sl_pause(bool isPause) {
 
 void WorkflowView::sl_stop() {
     Task *runningWorkflow = scene->getRunner();
-    if (NULL != runningWorkflow) {
+    if (nullptr != runningWorkflow) {
         runningWorkflow->cancel();
     }
     investigationWidgets->resetInvestigations();
@@ -1502,7 +1501,7 @@ void WorkflowView::sl_breakpointDisabled(const ActorId &actor) {
 
 void WorkflowView::changeBreakpointState(const ActorId &actor, bool isBreakpointBeingAdded, bool isBreakpointStateBeingChanged) {
     WorkflowProcessItem *processItem = findItemById(actor);
-    Q_ASSERT(NULL != processItem);
+    Q_ASSERT(nullptr != processItem);
 
     if (processItem->isBreakpointInserted()) {
         if (!isBreakpointBeingAdded) {
@@ -1555,17 +1554,17 @@ WorkflowProcessItem *WorkflowView::findItemById(ActorId actor) const {
     foreach (QGraphicsItem *item, scene->items()) {
         if (WorkflowProcessItemType == item->type()) {
             WorkflowProcessItem *processItem = qgraphicsitem_cast<WorkflowProcessItem *>(item);
-            Q_ASSERT(NULL != processItem);
+            Q_ASSERT(nullptr != processItem);
             if (actor == processItem->getProcess()->getId()) {
                 return processItem;
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void WorkflowView::paintEvent(QPaintEvent *event) {
-    const bool isWorkflowRunning = (NULL != scene->getRunner());
+    const bool isWorkflowRunning = (nullptr != scene->getRunner());
     const bool isDebuggerEnabled = WorkflowSettings::isDebuggerEnabled();
     if (isDebuggerEnabled && ABSENT_WIDGET_TAB_NUMBER == bottomTabs->indexOf(breakpointView)) {
         bottomTabs->addTab(breakpointView, QObject::tr("Breakpoints"));
@@ -1607,7 +1606,7 @@ void WorkflowView::sl_configureParameterAliases() {
             foreach (const ActorId &id, model.aliases.keys()) {
                 foreach (const Descriptor &d, model.aliases.value(id).keys()) {
                     Actor *actor = schema->actorById(id);
-                    assert(actor != NULL);
+                    assert(actor != nullptr);
                     QString alias = model.aliases.value(id).value(d);
                     assert(!alias.isEmpty());
                     actor->getParamAliases().insert(d.getId(), alias);
@@ -1676,7 +1675,7 @@ void WorkflowView::sl_configurePortAliases() {
                     }
                 }
 
-                Port *sourcePort = NULL;
+                Port *sourcePort = nullptr;
                 foreach (Port *p, schema->actorById(actorId)->getPorts()) {
                     DataTypePtr dt = p->Port::getType();
                     QList<Descriptor> descs = dt->getAllDescriptors();
@@ -1685,7 +1684,7 @@ void WorkflowView::sl_configurePortAliases() {
                         break;
                     }
                 }
-                assert(NULL != sourcePort);
+                assert(nullptr != sourcePort);
 
                 portAlias.addSlot(sourcePort, slotId, model.aliases.value(port).value(slotDescr));
             }
@@ -1715,7 +1714,7 @@ void WorkflowView::sl_importSchemaToElement() {
             QString typeName = d->getTypeName();
 
             s->setTypeName(typeName);
-            QString text = HRSchemaSerializer::schema2String(*s, NULL);
+            QString text = HRSchemaSerializer::schema2String(*s, nullptr);
 
             QString path = WorkflowSettings::getIncludedElementsDirectory() + typeName + "." + WorkflowUtils::WD_FILE_EXTENSIONS.first();
             QFile file(path);
@@ -1854,7 +1853,7 @@ void WorkflowView::sl_pasteItems(const QString &s, bool updateSchemaInfo) {
         uiLog.error("Paste issues: " + msg);
         return;
     }
-    renamePastedSchemaActors(pastedS, pastedM, schema);
+    renamePastedSchemaActors(pastedS, pastedM, schema.get());
     if (schema->getProcesses().isEmpty()) {
         schema->setWizards(pastedS.takeWizards());
     }
@@ -1873,8 +1872,8 @@ void WorkflowView::sl_pasteItems(const QString &s, bool updateSchemaInfo) {
 
     foreach (QGraphicsItem *it, scene->items()) {
         WorkflowProcessItem *proc = qgraphicsitem_cast<WorkflowProcessItem *>(it);
-        if (NULL != proc) {
-            if (NULL != pastedS.actorById(proc->getProcess()->getId())) {
+        if (nullptr != proc) {
+            if (nullptr != pastedS.actorById(proc->getProcess()->getId())) {
                 it->setSelected(true);
             }
         }
@@ -1888,7 +1887,7 @@ void WorkflowView::sl_pasteItems(const QString &s, bool updateSchemaInfo) {
 
 void WorkflowView::recreateScene() {
     sceneRecreation = true;
-    SceneCreator sc(schema, meta);
+    SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
     sceneRecreation = false;
 }
@@ -1911,7 +1910,7 @@ void WorkflowView::sl_editItem() {
             propertyEditor->editActor(a);
             return;
         }
-        Port *p = NULL;
+        Port *p = nullptr;
 
         if (it->type() == WorkflowBusItemType) {
             WorkflowBusItem *busItem = qgraphicsitem_cast<WorkflowBusItem *>(it);
@@ -1939,12 +1938,12 @@ void WorkflowView::sl_editItem() {
 void WorkflowView::sl_onSelectionChanged() {
     QList<Actor *> actorsSelected = scene->getSelectedActors();
     const int actorsCount = actorsSelected.size();
-    editScriptAction->setEnabled(actorsCount == 1 && actorsSelected.first()->getScript() != NULL);
+    editScriptAction->setEnabled(actorsCount == 1 && actorsSelected.first()->getScript() != nullptr);
     editExternalToolAction->setEnabled(actorsCount == 1 && actorsSelected.first()->getProto()->isExternalTool());
     toggleBreakpointAction->setEnabled(scene->items().size() != 0);
 
     WorkflowAbstractRunner *runner = scene->getRunner();
-    if (NULL != runner && !actorsSelected.isEmpty()) {
+    if (nullptr != runner && !actorsSelected.isEmpty()) {
         QList<Workflow::WorkerState> workerStates = runner->getState(actorsSelected.first());
         tickReadyAction->setEnabled(debugInfo->isPaused() && 1 == actorsCount && workerStates.contains(WorkerReady));
     } else {
@@ -2045,7 +2044,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     schema->reset();
     meta.reset();
     U2OpStatus2Log os;
-    WorkflowUtils::schemaFromFile(url, schema, &meta, os);
+    WorkflowUtils::schemaFromFile(url, schema.get(), &meta, os);
     recreateScene();
     sl_onSceneLoaded();
     if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
@@ -2054,14 +2053,14 @@ void WorkflowView::loadWizardResult(const QString &result) {
 }
 
 void WorkflowView::procItemAdded() {
-    currentActor = NULL;
+    currentActor = nullptr;
     propertyEditor->setEditable(true);
     scene->invalidate(QRectF(), QGraphicsScene::BackgroundLayer);
     if (!currentProto) {
         return;
     }
     palette->resetSelection();
-    currentProto = NULL;
+    currentProto = nullptr;
     assert(scene->views().size() == 1);
     scene->views().at(0)->unsetCursor();
 }
@@ -2151,7 +2150,7 @@ void WorkflowView::sl_loadScene() {
     QString dir = AppContext::getSettings()->getValue(LAST_DIR, QString("")).toString();
     QString filter = DesignerUtils::getSchemaFileFilter(true, true);
     QString url;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         url = U2FileDialog::getOpenFileName(0, tr("Open workflow file"), dir, filter, 0, QFileDialog::DontUseNativeDialog);
     } else
@@ -2178,7 +2177,7 @@ void WorkflowView::sl_loadScene(const QString &url, bool fromDashboard) {
 }
 
 void WorkflowView::sl_xmlSchemaLoaded(Task *t) {
-    assert(t != NULL);
+    assert(t != nullptr);
     if (!t->hasError()) {
         QMessageBox::warning(this, tr("Warning!"), QObject::tr("You opened obsolete workflow in XML format. It is strongly recommended"
                                                                " to clear working space and create workflow from scratch."));
@@ -2220,7 +2219,7 @@ void WorkflowView::sl_onSceneLoaded() {
 
 void WorkflowView::sl_onSceneSaved() {
     Task *t = dynamic_cast<Task *>(sender());
-    CHECK(NULL != t, );
+    CHECK(nullptr != t, );
     if (t->isFinished() && !t->hasError()) {
         scene->setModified(false);
     }
@@ -2249,7 +2248,7 @@ bool WorkflowView::onCloseEvent() {
         return false;
     }
     if (go) {
-        go->setView(NULL);
+        go->setView(nullptr);
     }
     return true;
 }
@@ -2280,11 +2279,11 @@ static QString newActorLabel(ActorPrototype *proto, const QList<Actor *> &procs)
 }
 
 Actor *WorkflowView::createActor(ActorPrototype *proto, const QVariantMap &params) const {
-    assert(NULL != proto);
+    assert(nullptr != proto);
     QString pId = proto->getId().replace(QRegExp("\\s"), "-");
     ActorId id = Schema::uniqueActorId(pId, schema->getProcesses());
-    Actor *actor = proto->createInstance(id, NULL, params);
-    assert(NULL != actor);
+    Actor *actor = proto->createInstance(id, nullptr, params);
+    assert(nullptr != actor);
 
     actor->setLabel(newActorLabel(proto, schema->getProcesses()));
     return actor;
@@ -2295,7 +2294,7 @@ void WorkflowView::onModified() {
 }
 
 WorkflowBusItem *WorkflowView::tryBind(WorkflowPortItem *from, WorkflowPortItem *to) {
-    WorkflowBusItem *dit = NULL;
+    WorkflowBusItem *dit = nullptr;
 
     if (from->getPort()->canBind(to->getPort())) {
         Port *src = from->getPort();
@@ -2305,7 +2304,7 @@ WorkflowBusItem *WorkflowView::tryBind(WorkflowPortItem *from, WorkflowPortItem 
             dest = from->getPort();
         }
         if (WorkflowUtils::isPathExist(src, dest)) {
-            return NULL;
+            return nullptr;
         }
 
         Link *link = new Link(src, dest);
@@ -2320,7 +2319,7 @@ void WorkflowView::sl_updateSchema() {
     schema->update();
 }
 
-Workflow::Schema *WorkflowView::getSchema() const {
+QSharedPointer<Schema> WorkflowView::getSchema() const {
     return schema;
 }
 
@@ -2338,7 +2337,7 @@ const Workflow::Metadata &WorkflowView::updateMeta() {
                 ActorVisualData visual(proc->getProcess()->getId());
                 visual.setPos(proc->pos());
                 ItemViewStyle *style = proc->getStyleById(proc->getStyle());
-                if (NULL != style) {
+                if (nullptr != style) {
                     visual.setStyle(style->getId());
                     if (style->getBgColor() != style->defaultColor()) {
                         visual.setColor(style->getBgColor());
@@ -2409,23 +2408,23 @@ RunFileSystem *WorkflowView::getRFS() {
 
 QVariant WorkflowView::getAttributeValue(const AttributeInfo &info) const {
     Actor *actor = schema->actorById(info.actorId);
-    CHECK(NULL != actor, QVariant());
+    CHECK(nullptr != actor, QVariant());
     Attribute *attr = actor->getParameter(info.attrId);
-    CHECK(NULL != attr, QVariant());
+    CHECK(nullptr != attr, QVariant());
     return attr->getAttributePureValue();
 }
 
 void WorkflowView::setAttributeValue(const AttributeInfo &info, const QVariant &value) {
     Actor *actor = schema->actorById(info.actorId);
-    CHECK(NULL != actor, );
+    CHECK(nullptr != actor, );
     Attribute *attr = actor->getParameter(info.attrId);
-    CHECK(NULL != attr, );
+    CHECK(nullptr != attr, );
     attr->setAttributeValue(value);
 }
 
 bool WorkflowView::isShowSamplesHint() const {
-    SAFE_POINT(NULL != samples, "NULL samples widget", false);
-    SAFE_POINT(NULL != schema, "NULL schema", false);
+    SAFE_POINT(nullptr != samples, "NULL samples widget", false);
+    SAFE_POINT(nullptr != schema, "NULL schema", false);
     const bool emptySchema = (0 == schema->getProcesses().size());
     return samples->isVisible() && emptySchema;
 }
@@ -2453,7 +2452,7 @@ static bool canDrop(const QMimeData *m, QList<ActorPrototype *> &lst) {
 }
 
 WorkflowScene::WorkflowScene(WorkflowView *parent)
-    : QGraphicsScene(parent), controller(parent), modified(false), locked(false), runner(NULL), hint(0) {
+    : QGraphicsScene(parent), controller(parent), modified(false), locked(false), runner(nullptr), hint(0) {
     openDocumentsAction = new QAction(tr("Open document(s)"), this);
     connect(openDocumentsAction, SIGNAL(triggered()), SLOT(sl_openDocuments()));
 }
@@ -2479,7 +2478,7 @@ void WorkflowScene::sl_deleteItem() {
         }
     }
     foreach (WorkflowProcessItem *it, items) {
-        if (it->getProcess() != NULL) {
+        if (it->getProcess() != nullptr) {
             emit si_itemDeleted(it->getProcess()->getId());
         }
         controller->removeProcessItem(it);
@@ -2752,12 +2751,12 @@ void WorkflowScene::connectConfigurationEditors() {
         if (i->type() == WorkflowProcessItemType) {
             Actor *proc = static_cast<WorkflowProcessItem *>(i)->getProcess();
             ConfigurationEditor *editor = proc->getEditor();
-            if (NULL != editor) {
+            if (nullptr != editor) {
                 connect(editor, SIGNAL(si_configurationChanged()), this, SIGNAL(configurationChanged()));
             }
             GrouperEditor *g = dynamic_cast<GrouperEditor *>(editor);
             MarkerEditor *m = dynamic_cast<MarkerEditor *>(editor);
-            if (NULL != g || NULL != m) {
+            if (nullptr != g || nullptr != m) {
                 connect(editor, SIGNAL(si_configurationChanged()), controller, SLOT(sl_updateSchema()));
             }
         }
@@ -2768,7 +2767,7 @@ void WorkflowScene::connectConfigurationEditors() {
 /* SceneCreator */
 /************************************************************************/
 SceneCreator::SceneCreator(Schema *_schema, const Workflow::Metadata &_meta)
-    : schema(_schema), meta(_meta), scene(NULL) {
+    : schema(_schema), meta(_meta), scene(nullptr) {
 }
 
 SceneCreator::~SceneCreator() {
@@ -2804,7 +2803,7 @@ WorkflowScene *SceneCreator::createScene() {
     }
 
     WorkflowScene *result = scene;
-    scene = NULL;
+    scene = nullptr;
     return result;
 }
 

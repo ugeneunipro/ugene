@@ -116,6 +116,13 @@ extern void calculateMatrix_wrap(int blockSize, int threadNum, const char *seqLi
 extern void setConstants(int partSeqSize, int partsNumber, int overlapLength, int seqLibLength, int queryLength, int gapOpen, int gapExtension, int maxScore, int queryPartLength, char upSymbolDirectMatrix, char leftSymbolDirectMatrix, char diagSymbolDirectMatrix, char stopSymbolDirectMatrix);
 
 QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
+    QList<resType> pas;
+    if (seqLibLength < queryLength) {
+        u2log.error(QObject::tr("Pattern length (%1) is longer than search sequence length (%2).").arg(queryLength).
+            arg(seqLibLength));
+        return pas;
+    }
+
     //TODO: calculate maximum alignment length
     const int overlapLength = calcOverlap(queryLength);
 
@@ -149,8 +156,8 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     size_t directionMatrixSize = 0;
     size_t backtraceBeginsSize = 0;
-    int *globalMatrix = NULL;
-    int *backtraceBegins = NULL;
+    int *globalMatrix = nullptr;
+    int *backtraceBegins = nullptr;
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
         directionMatrixSize = seqLibLength * queryLength * sizeof(int);
         backtraceBeginsSize = 2 * sizeRow * sizeof(int);
@@ -180,8 +187,8 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
     ScoreType *g_directionsUp;
     ScoreType *g_directionsMax;
     ScoreType *g_directionsRec;
-    int *g_directionsMatrix = NULL;
-    int *g_backtraceBegins = NULL;
+    int *g_directionsMatrix = nullptr;
+    int *g_backtraceBegins = nullptr;
 
     //************************** allocate global memory on device
 
@@ -258,7 +265,6 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
         cudaMemcpy(backtraceBegins, g_backtraceBegins, backtraceBeginsSize, cudaMemcpyDeviceToHost);
     }
 
-    QList<resType> pas;
     resType res;
     for (int j = 0; j < (sizeRow); j++) {
         if (tempRow[j] >= maxScore) {

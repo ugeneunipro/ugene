@@ -114,7 +114,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(os, sandBoxDir + "op_seqview_test_0001.gb");
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     GTWidget::click(os, GTWidget::findWidget(os, "annotations_tree_widget"));
     GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
 }
@@ -196,14 +195,14 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom region");
 
-    QLineEdit *regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd", NULL, GTGlobals::FindOptions(false)));
-    CHECK_SET_ERR(regLE != NULL, "LineEdit is NULL");
+    QLineEdit *regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd", nullptr, GTGlobals::FindOptions(false)));
+    CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "40000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/12"), "Results string not match");
 
-    regLE = NULL;
-    regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart", NULL, GTGlobals::FindOptions(false)));
-    CHECK_SET_ERR(regLE != NULL, "LineEdit is NULL");
+    regLE = nullptr;
+    regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart", nullptr, GTGlobals::FindOptions(false)));
+    CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "9000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/10"), "Results string not match");
 }

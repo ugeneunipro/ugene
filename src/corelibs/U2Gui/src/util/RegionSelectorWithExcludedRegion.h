@@ -30,17 +30,17 @@ class Ui_RegionSelectorWithExcludedRegion;
 
 namespace U2 {
 
-class U2GUI_EXPORT RegionSelectorWithExludedRegion : public QWidget {
+class U2GUI_EXPORT RegionSelectorWithExcludedRegion : public QWidget {
     Q_OBJECT
 public:
-    RegionSelectorWithExludedRegion(QWidget *parent,
-                                    qint64 maxLen,
-                                    DNASequenceSelection *selection = NULL,
-                                    bool isCircularAvailable = false);
-    ~RegionSelectorWithExludedRegion();
+    RegionSelectorWithExcludedRegion(QWidget *parent,
+                                     qint64 maxLen,
+                                     DNASequenceSelection *selection = nullptr,
+                                     bool isCircularAvailable = false);
+    ~RegionSelectorWithExcludedRegion();
 
-    U2Region getIncludeRegion(bool *ok = NULL) const;
-    U2Region getExcludeRegion(bool *ok = NULL) const;
+    U2Region getIncludeRegion(bool *ok = nullptr) const;
+    U2Region getExcludeRegion(bool *ok = nullptr) const;
 
     void setIncludeRegion(const U2Region &r);
     void setExcludeRegion(const U2Region &r);
@@ -48,6 +48,9 @@ public:
 
     bool hasError() const;
     QString getErrorMessage() const;
+
+    /** Returns true if "Whole Sequence" preset for include regions is selected. */
+    bool isWholeSequenceSelected() const;
 
 private:
     void connectSlots();

@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString FindPatternMsaWidgetFactory::GROUP_ID = "OP_MSA_FIND_PATTERN_WIDGET";
 const QString FindPatternMsaWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
-const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "60228019";
+const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "65929651";
 
 FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

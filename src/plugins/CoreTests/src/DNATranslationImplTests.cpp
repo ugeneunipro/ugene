@@ -78,13 +78,13 @@ void GTest_DNATranslation3to1Test::init(XMLTestFormat *tf, const QDomElement &el
 
 Task::ReportResult GTest_DNATranslation3to1Test::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }

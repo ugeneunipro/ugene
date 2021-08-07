@@ -62,7 +62,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 RemoteBLASTPlugin::RemoteBLASTPlugin()
-    : Plugin(tr("Remote BLAST"), tr("Performs remote database queries: BLAST, CDD, etc...")), ctx(NULL) {
+    : Plugin(tr("Remote BLAST"), tr("Performs remote database queries: BLAST, CDD, etc...")), ctx(nullptr) {
     if (AppContext::getMainWindow()) {
         ctx = new RemoteBLASTViewContext(this);
         ctx->init();
@@ -82,7 +82,7 @@ RemoteBLASTPlugin::RemoteBLASTPlugin()
 
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = RemoteBLASTPluginTests::createTestFactories();
@@ -154,13 +154,13 @@ void RemoteBLASTViewContext::sl_showDialog() {
 
             RemoteBLASTTaskSettings cfg = dlg->cfg;
             cfg.query = query;
-            SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence objects is NULL"), );
+            SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence objects is NULL"), );
             cfg.isCircular = seqCtx->getSequenceObject()->isCircular();
             cfg.aminoT = aminoT;
             cfg.complT = complT;
 
             AnnotationTableObject *aobject = dlg->getAnnotationObject();
-            if (aobject == NULL) {
+            if (aobject == nullptr) {
                 return;
             }
             Task *t = new RemoteBLASTToAnnotationsTask(cfg, r.startPos, aobject, dlg->getUrl(), dlg->getGroupName(), dlg->getAnnotationDescription());

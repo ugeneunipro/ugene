@@ -26,6 +26,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/options_panel/OptionsPanelWidget.h \
            src/options_panel/OPWidgetFactory.h \
            src/options_panel/OPWidgetFactoryRegistry.h \
+           src/options_panel/PrimerLineEdit.h \
            src/options_panel/ShowHideSubgroupWidget.h \
            src/util/AddNewDocumentDialogController.h \
            src/util/AddNewDocumentDialogImpl.h \
@@ -186,6 +187,7 @@ SOURCES += src/MainWindow.cpp \
            src/options_panel/OptionsPanelWidget.cpp \
            src/options_panel/OPWidgetFactory.cpp \
            src/options_panel/OPWidgetFactoryRegistry.cpp \
+           src/options_panel/PrimerLineEdit.cpp \
            src/options_panel/ShowHideSubgroupWidget.cpp \
            src/util/AddNewDocumentDialogImpl.cpp \
            src/util/AuthenticationDialog.cpp \

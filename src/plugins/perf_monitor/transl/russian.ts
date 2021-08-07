@@ -36,7 +36,7 @@
     </message>
     <message>
         <source>Reportable</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 </TS>

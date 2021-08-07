@@ -27,7 +27,7 @@
 
 #include "MaEditor.h"
 #include "MsaEditorWgt.h"
-#include "PhyTrees/MSAEditorTreeManager.h"
+#include "phy_tree/MSAEditorTreeManager.h"
 
 namespace U2 {
 
@@ -39,7 +39,7 @@ public:
     PairwiseAlignmentWidgetsSettings()
         : firstSequenceId(U2MsaRow::INVALID_ROW_ID),
           secondSequenceId(U2MsaRow::INVALID_ROW_ID), inNewWindow(true),
-          pairwiseAlignmentTask(NULL), showSequenceWidget(true), showAlgorithmWidget(false),
+          showSequenceWidget(true), showAlgorithmWidget(false),
           showOutputWidget(false), sequenceSelectionModeOn(false) {
     }
 
@@ -48,13 +48,25 @@ public:
     QString algorithmName;
     bool inNewWindow;
     QString resultFileName;
-    PairwiseAlignmentTask *pairwiseAlignmentTask;
+    QPointer<PairwiseAlignmentTask> pairwiseAlignmentTask;
     bool showSequenceWidget;
     bool showAlgorithmWidget;
     bool showOutputWidget;
     bool sequenceSelectionModeOn;
 
     QVariantMap customSettings;
+};
+
+/** Variants of the group sort modes supported by UGENE. */
+enum class GroupsSortOrder {
+    /** Groups are not sorted at all. This is default behaviour of UGENE. */
+    Original,
+
+    /** Small groups go first in the name list. */
+    Ascending,
+
+    /** Large groups go first in the name list. */
+    Descending,
 };
 
 class U2VIEW_EXPORT MSAEditor : public MaEditor {
@@ -77,14 +89,17 @@ public:
         return qobject_cast<MultipleSequenceAlignmentObject *>(maObject);
     }
 
-    virtual void buildStaticToolbar(QToolBar *tb) override;
+    /** Returns selection controller instance. The instance is always defined and is never null. */
+    MaEditorSelectionController *getSelectionController() const override;
 
-    virtual void buildStaticMenu(QMenu *m) override;
+    void buildStaticToolbar(QToolBar *tb) override;
+
+    void buildMenu(QMenu *m, const QString &type) override;
 
     MsaEditorWgt *getUI() const override;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
+    MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings *getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;
@@ -102,8 +117,22 @@ public:
 
     void sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder);
 
+    /** Forces complete re-computation of the active collapse model based on the current MSA editor state. */
+    void updateCollapseModel();
+
+    void setRowOrderMode(MaEditorRowOrderMode mode) override;
+
+    /** Returns current set of free-mode markers. */
+    const QSet<QObject *> &getFreeModeMasterMarkersSet() const;
+
+    /** Adds new marker object into freeModeMasterMarkersSet. */
+    void addFreeModeMasterMarker(QObject *marker);
+
+    /** Removes the given marker object from the freeModeMasterMarkersSet. */
+    void removeFreeModeMasterMarker(QObject *marker);
+
 protected slots:
-    void sl_onContextMenuRequested(const QPoint &pos);
+    void sl_onContextMenuRequested(const QPoint &pos) override;
 
     void sl_buildTree();
     void sl_align();
@@ -122,7 +151,21 @@ protected slots:
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
     void sl_sortSequencesByLeadingGap();
+
+    /**
+     * Slot for sortByLeadingGap(Ascending/Descending)Action.
+     * Re-sorts group of sequences based on the sender action: using ascending or descending order.
+     */
+    void sl_sortGroupsBySize();
+
+    /** Converts from DNA to RNA alphabet and back. */
     void sl_convertBetweenDnaAndRnaAlphabets();
+
+    /** Converts from RAW to DNA alphabet. Replaces all unknown chars with 'N' and 'U' with 'T'. */
+    void sl_convertRawToDnaAlphabet();
+
+    /** Converts from RAW to Amino alphabet. Replaces all unknown chars with 'X'. */
+    void sl_convertRawToAminoAlphabet();
 
 protected:
     QWidget *createWidget() override;
@@ -146,33 +189,75 @@ protected:
     void updateActions() override;
 
     void initDragAndDropSupport();
-    void alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects);
-    void alignSequencesFromFilesToAlignment();
 
 public:
-    QAction *buildTreeAction;
-    QAction *alignAction;
-    QAction *alignSequencesToAlignmentAction;
-    QAction *realignSomeSequenceAction;
-    QAction *setAsReferenceSequenceAction;
-    QAction *unsetReferenceSequenceAction;
-    QAction *gotoAction;
-    QAction *searchInSequencesAction;
-    QAction *searchInSequenceNamesAction;
-    QAction *openCustomSettingsAction;
-    QAction *sortByNameAscendingAction;
-    QAction *sortByNameDescendingAction;
-    QAction *sortByLengthAscendingAction;
-    QAction *sortByLengthDescendingAction;
-    QAction *sortByLeadingGapAscendingAction;
-    QAction *sortByLeadingGapDescendingAction;
+    QAction *buildTreeAction = nullptr;
+    QAction *alignAction = nullptr;
+    QAction *alignSequencesToAlignmentAction = nullptr;
+    QAction *realignSomeSequenceAction = nullptr;
+    QAction *setAsReferenceSequenceAction = nullptr;
+    QAction *unsetReferenceSequenceAction = nullptr;
+    QAction *gotoAction = nullptr;
+    QAction *searchInSequencesAction = nullptr;
+    QAction *searchInSequenceNamesAction = nullptr;
+    QAction *openCustomSettingsAction = nullptr;
+    QAction *sortByNameAscendingAction = nullptr;
+    QAction *sortByNameDescendingAction = nullptr;
+    QAction *sortByLengthAscendingAction = nullptr;
+    QAction *sortByLengthDescendingAction = nullptr;
+    QAction *sortByLeadingGapAscendingAction = nullptr;
+    QAction *sortByLeadingGapDescendingAction = nullptr;
 
-    QAction *convertDnaToRnaAction;
-    QAction *convertRnaToDnaAction;
+    /**
+     * Sorts collapsing groups by number of sequences in ascending order.
+     * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
+     */
+    QAction *sortGroupsBySizeAscendingAction = nullptr;
+
+    /**
+     * Sorts collapsing groups by number of sequences in descending descending order.
+     * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
+    */
+    QAction *sortGroupsBySizeDescendingAction = nullptr;
+
+    QAction *convertDnaToRnaAction = nullptr;
+    QAction *convertRnaToDnaAction = nullptr;
+    QAction *convertRawToDnaAction = nullptr;
+    QAction *convertRawToAminoAction = nullptr;
 
 private:
-    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
+    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
     MSAEditorTreeManager treeManager;
+
+    /**
+     * Sort order for groups.
+     * Default is 'Descending' - groups with the most sequences are on top.
+     */
+    GroupsSortOrder groupsSortOrder = GroupsSortOrder::Original;
+
+    /**
+     * Set of 'marker' objects from the 'master' components that requested Free ordering mode to be ON are responsible for the 'free' mode ordering.
+    * Free mode can be active only if there is at least one 'marker' in the set.
+    *
+    * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
+    * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
+    *
+    * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
+    */
+    QSet<QObject *> freeModeMasterMarkersSet;
+
+    /** Selection state controller. */
+    MaEditorSelectionController *selectionController;
+};
+
+/** Set of custom menu actions in MSA editor. */
+class U2VIEW_EXPORT MsaEditorMenuType : public GObjectViewMenuType {
+public:
+    /** "Align" button menu identifier. */
+    const static QString ALIGN;
+
+    /** "Align sequence(s) to this alignment" menu identifier. */
+    const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
 };
 
 }    // namespace U2

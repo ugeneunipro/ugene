@@ -70,7 +70,7 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
 class U2GUI_EXPORT EditSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
-    EditSequenceDialogController(const EditSequencDialogConfig &cfg, QWidget *p = NULL);
+    EditSequenceDialogController(const EditSequencDialogConfig &cfg, QWidget *p = nullptr);
     ~EditSequenceDialogController();
 
     void accept();

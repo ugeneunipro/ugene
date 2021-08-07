@@ -41,7 +41,7 @@ namespace U2 {
 ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MultipleSequenceAlignment &_ma, ClustalWSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229209");
+    new HelpButton(this, buttonBox, "65930841");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -114,9 +114,9 @@ void ClustalWSupportRunDialog::accept() {
 ClustalWWithExtFileSpecifySupportRunDialog::ClustalWWithExtFileSpecifySupportRunDialog(ClustalWSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229209");
+    new HelpButton(this, buttonBox, "65930841");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

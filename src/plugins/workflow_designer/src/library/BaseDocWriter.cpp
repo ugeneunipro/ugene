@@ -58,12 +58,12 @@ namespace LocalWorkflow {
 * BaseDocWriter
 **********************************/
 BaseDocWriter::BaseDocWriter(Actor *a, const DocumentFormatId &fid)
-    : BaseWorker(a), format(NULL), dataStorage(LocalFs), ch(NULL), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
+    : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
     format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
 }
 
 BaseDocWriter::BaseDocWriter(Actor *a)
-    : BaseWorker(a), format(NULL), dataStorage(LocalFs), ch(NULL), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
+    : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
 }
 
 void BaseDocWriter::cleanup() {
@@ -79,28 +79,26 @@ void BaseDocWriter::init() {
     ch = ports.values().first();
 }
 
-#define GZIP_SUFFIX ".gz"
-
 void BaseDocWriter::takeParameters(U2OpStatus &os) {
     Attribute *dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
-    const QString storage = (NULL == dataStorageAttr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
+    const QString storage = (nullptr == dataStorageAttr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
     if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storage) {
         dataStorage = LocalFs;
 
         Attribute *formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-        if (NULL != formatAttr) {    // user sets format
+        if (nullptr != formatAttr) {    // user sets format
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         }
-        if (NULL == format) {
+        if (nullptr == format) {
             os.setError(tr("Document format not set"));
             return;
         }
 
         fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
         Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-        if (NULL != a) {
+        if (nullptr != a) {
             append = a->getAttributeValue<bool>(context);
         } else {
             append = true;
@@ -135,7 +133,7 @@ QString BaseDocWriter::getDefaultFileName() const {
 
 bool BaseDocWriter::ifGroupByDatasets() const {
     Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-    if (NULL == a) {
+    if (nullptr == a) {
         return false;
     }
     return a->getAttributeValue<bool>(context);
@@ -143,14 +141,14 @@ bool BaseDocWriter::ifGroupByDatasets() const {
 
 QString BaseDocWriter::getSuffix() const {
     Attribute *a = actor->getParameter(BaseAttributes::URL_SUFFIX().getId());
-    if (NULL == a) {
+    if (nullptr == a) {
         return "";
     }
     return a->getAttributeValue<QString>(context);
 }
 
 QString BaseDocWriter::getExtension() const {
-    CHECK(NULL != format, "");
+    CHECK(nullptr != format, "");
     QStringList exts = format->getSupportedDocumentFileExtensions();
     CHECK(!exts.isEmpty(), "");
     return exts.first();
@@ -272,7 +270,7 @@ IOAdapter *BaseDocWriter::getAdapter(const QString &url, U2OpStatus &os) {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     openAdapter(io.data(), url, SaveDocFlags(fileMode), os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QString resultUrl = io->getURL().getURLString();
     if (!adapters.contains(url)) {
@@ -296,7 +294,7 @@ Document *BaseDocWriter::getDocument(IOAdapter *io, U2OpStatus &os) {
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
     hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
     Document *doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     doc->setDocumentOwnsDbiResources(false);
     docs[io] = doc;
@@ -352,7 +350,7 @@ Task *BaseDocWriter::tick() {
             }
         } else if (SharedDb == dataStorage) {
             Task *result = createWriteToSharedDbTask(data);
-            if (NULL == result) {
+            if (nullptr == result) {
                 continue;
             } else {
                 return result;
@@ -364,7 +362,7 @@ Task *BaseDocWriter::tick() {
 
     bool done = ch->isEnded() && !ch->hasMessage();
     if (append && !done) {
-        return NULL;
+        return nullptr;
     }
     if (done) {
         setDone();
@@ -372,23 +370,23 @@ Task *BaseDocWriter::tick() {
     if (SharedDb == dataStorage && !objectsReceived) {
         reportNoDataReceivedWarning();
     }
-    return LocalFs == dataStorage ? processDocs() : NULL;
+    return LocalFs == dataStorage ? processDocs() : nullptr;
 }
 
 void BaseDocWriter::reportNoDataReceivedWarning() {
     monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
 }
 
-QSet<GObject *> BaseDocWriter::getObjectsToWrite(const QVariantMap &data) const {
+QSet<GObject *> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap &data) const {
     QSet<GObject *> result = getObjectsToWrite(data);
-    result.remove(NULL);    // eliminate invalid objects
+    result.remove(nullptr);    // eliminate invalid objects
     return result;
 }
 
 Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
     QList<Task *> tasks;
-    foreach (GObject *obj, BaseDocWriter::getObjectsToWrite(data)) {
-        if (NULL == obj) {
+    foreach (GObject *obj, getObjectsToWriteBaseImpl(data)) {
+        if (nullptr == obj) {
             reportError(tr("Unable to fetch data from a message"));
             continue;
         }
@@ -397,7 +395,7 @@ Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
         tasks.append(importTask);
     }
     if (tasks.isEmpty()) {
-        return NULL;
+        return nullptr;
     } else {
         objectsReceived = true;
     }
@@ -407,7 +405,7 @@ Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
 
 void BaseDocWriter::sl_objectImported(Task *importTask) {
     ImportObjectToDatabaseTask *realTask = qobject_cast<ImportObjectToDatabaseTask *>(importTask);
-    SAFE_POINT(NULL != realTask, "Invalid task detected", );
+    SAFE_POINT(nullptr != realTask, "Invalid task detected", );
     delete realTask->getSourceObject();
 }
 
@@ -416,7 +414,7 @@ Task *BaseDocWriter::processDocs() {
         reportNoDataReceivedWarning();
     }
     if (docs.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     QList<Task *> tlist;
     foreach (IOAdapter *io, docs.keys()) {
@@ -449,7 +447,7 @@ QString BaseDocWriter::getUniqueObjectName(const Document *doc, const QString &n
     QString result = name;
     int num = 0;
     bool found = false;
-    while (NULL != doc->findGObjectByName(result)) {
+    while (nullptr != doc->findGObjectByName(result)) {
         found = true;
         num++;
         result = name + QString("_%1").arg(num);

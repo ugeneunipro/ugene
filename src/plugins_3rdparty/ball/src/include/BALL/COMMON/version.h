@@ -6,7 +6,14 @@
 #define BALL_COMMON_VERSION_H
 
 #ifndef BALL_COMMON_EXCEPTION_H
-#	include <BALL/COMMON/exception.h>
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated"
+#endif
+#	 include <BALL/COMMON/exception.h>
+#ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#endif
 #endif
 
 #ifndef BALL_COMMON_GLOBAL_H

@@ -33,7 +33,7 @@ class DbFolderOptions;
 class DbFolderItem : public UrlItem {
     Q_OBJECT
 public:
-    DbFolderItem(const QString &url, QListWidget *parent = NULL);
+    DbFolderItem(const QString &url, QListWidget *parent = nullptr);
     ~DbFolderItem();
 
     virtual void accept(UrlItemVisitor *visitor);
@@ -49,7 +49,7 @@ private:
 class DbFolderOptions : public QWidget {
     Q_OBJECT
 public:
-    DbFolderOptions(QWidget *parent = NULL);
+    DbFolderOptions(QWidget *parent = nullptr);
     ~DbFolderOptions();
 
     void setRecursive(bool value);

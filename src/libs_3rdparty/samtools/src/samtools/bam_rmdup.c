@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

@@ -28,8 +28,6 @@
 
 #include "FindPatternMsaWidgetSavableTab.h"
 #include "ov_msa/view_rendering/MaEditorSelection.h"
-#include "ov_sequence/find_pattern/FindPatternTask.h"
-#include "ov_sequence/find_pattern/FindPatternWidget.h"
 #include "ui_FindPatternMsaForm.h"
 
 namespace U2 {
@@ -59,6 +57,18 @@ struct FindPatternWidgetResult {
 class FindPatternMsaWidget : public QWidget, private Ui_FindPatternMsaForm {
     Q_OBJECT
 public:
+    enum MessageFlag {
+        PatternAlphabetDoNotMatch,
+        PatternsWithBadAlphabetInFile,
+        PatternsWithBadRegionInFile,
+        PleaseInputAtLeastOneSearchPatternTip,
+        AnnotationNotValidName,
+        AnnotationNotValidFastaParsedName,
+        NoPatternToSearch,
+        SearchRegionIncorrect,
+        PatternWrongRegExp,
+        SequenceIsTooBig
+    };
     /** Creates a new widget. Activates search-in-name mode if isSearchInNamesMode is yes. Uses the last saved state if isSearchInNamesMode is Unknown. */
     FindPatternMsaWidget(MSAEditor *msaEditor, TriState isSearchInNamesModeTriState = TriState_Unknown);
 
@@ -99,7 +109,6 @@ private:
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
-    bool checkRegion();
     void clearResults();
 
     /** Returns true if the alignment alphabet is Amino. */
@@ -131,14 +140,14 @@ private:
     void showCurrentResultAndStopProgress();
     void startProgressAnimation();
 
+    /** Checks current UI state and update status label. */
+    void checkStateAndUpdateStatus();
+
     /**
-     * Enables or disables the Search button depending on
-     * the Pattern field value (it should be not empty and not too long)
-     * and on the validity of the region.
-     * Return true if the search can be started.
+     * Checks if currently selected region is valid for the given pattern.
+     * Returns error message to display if the region is not correct or an empty string if the region is correct.
      */
-    bool checkStateAndUpdateStatus();
-    bool checkPatternRegion(const QString &pattern);
+    QString checkSearchRegion() const;
 
     /**
      * The "Match" spin is disabled if this is an amino acid sequence or
@@ -146,8 +155,11 @@ private:
      */
     void enableDisableMatchSpin();
 
-    /** Allows showing of several error messages. */
-    void showHideMessage(bool show, MessageFlag messageFlag, const QString &additionalMsg = QString());
+    /** Toggles error message flag and updates additional error message. Does not trigger re-rendering of the error label. */
+    void setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg = QString());
+
+    /** Updates visual error label state based on the curent error flags state. */
+    void updateErrorLabelState();
 
     /** Checks pattern alphabet and sets error message if needed. Returns false on error or true if no error found */
     bool verifyPatternAlphabet();
@@ -161,11 +173,8 @@ private:
     /** Performs in-main thread search in sequence names. */
     void runSearchInSequenceNames(const QStringList &patterns);
 
-    /**
-     * Checks current UI state and returns either valid or empty region.
-     * Sets 'isRegionIsCorrect' if the region is valid.
-     */
-    U2Region getSearchRegionFromUi(bool &isRegionIsCorrect) const;
+    /** Checks current UI state and returns either a valid or an empty (invalid) region. */
+    U2Region getSearchRegion() const;
 
     void startFindPatternInMsaTask(const QStringList &patterns);
 
@@ -185,7 +194,8 @@ private:
     QString patternString;
     QString patternRegExp;
 
-    QList<MessageFlag> messageFlags;
+    /** Keeps flags of visible messages and optional (may be empty) custom messages as values. */
+    QMap<MessageFlag, QString> messageFlagMap;
 
     /** Widgets in the Algorithm group */
     QHBoxLayout *layoutMismatch;

@@ -39,7 +39,7 @@ public:
     }
 
     virtual Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) = 0;
-    virtual CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL) = 0;
+    virtual CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr) = 0;
 };
 
 }    // namespace U2

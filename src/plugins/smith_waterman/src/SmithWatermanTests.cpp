@@ -141,7 +141,7 @@ void GTest_SmithWatermnan::init(XMLTestFormat *, const QDomElement &el) {
 void GTest_SmithWatermnan::prepare() {
     //get search sequence
     U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
-    if (searchSeqObj == NULL) {
+    if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
@@ -150,7 +150,7 @@ void GTest_SmithWatermnan::prepare() {
 
     //get pattern sequence
     U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
-    if (patternSeqObj == NULL) {
+    if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
@@ -160,7 +160,7 @@ void GTest_SmithWatermnan::prepare() {
     //set subst matrix
 
     QString pathToCommonData = getEnv()->getVar("COMMON_DATA_DIR");
-    if (patternSeqObj == NULL) {
+    if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't get path to common_data dir"));
         return;
     }
@@ -181,11 +181,11 @@ void GTest_SmithWatermnan::prepare() {
     s.gapModel.scoreGapOpen = gapOpen;
     s.gapModel.scoreGapExtd = gapExtension;
     s.percentOfScore = percentOfScore;
-    s.aminoTT = NULL;
-    s.complTT = NULL;
+    s.aminoTT = nullptr;
+    s.complTT = nullptr;
     s.strand = StrandOption_DirectOnly;
-    s.resultCallback = NULL;
-    s.resultListener = NULL;
+    s.resultCallback = nullptr;
+    s.resultListener = nullptr;
     s.resultFilter = 0;
 
     if (!machinePath.isEmpty()) { /* run smith-waterman on remote machine */
@@ -325,7 +325,7 @@ void GTest_SmithWatermnanPerf::init(XMLTestFormat *tf, const QDomElement &el) {
 void GTest_SmithWatermnanPerf::prepare() {
     //get search sequence
     U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
-    if (searchSeqObj == NULL) {
+    if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
@@ -334,7 +334,7 @@ void GTest_SmithWatermnanPerf::prepare() {
 
     //get pattern sequence
     U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
-    if (patternSeqObj == NULL) {
+    if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
@@ -346,7 +346,7 @@ void GTest_SmithWatermnanPerf::prepare() {
     //set subst matrix
 
     QString pathToCommonData = getEnv()->getVar("COMMON_DATA_DIR");
-    if (patternSeqObj == NULL) {
+    if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't get path to common_data dir"));
         return;
     }
@@ -367,11 +367,11 @@ void GTest_SmithWatermnanPerf::prepare() {
     s.gapModel.scoreGapOpen = gapOpen;
     s.gapModel.scoreGapExtd = gapExtension;
     s.percentOfScore = percentOfScore;
-    s.aminoTT = NULL;
-    s.complTT = NULL;
+    s.aminoTT = nullptr;
+    s.complTT = nullptr;
     s.strand = StrandOption_DirectOnly;
-    s.resultCallback = NULL;
-    s.resultListener = NULL;
+    s.resultCallback = nullptr;
+    s.resultListener = nullptr;
     s.resultFilter = 0;
     s.resultListener = new SmithWatermanResultListener();
     if (0 != AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)) {

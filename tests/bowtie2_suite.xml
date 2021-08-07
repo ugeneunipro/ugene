@@ -1,0 +1,4 @@
+<suite test-timeout="300" name="Bowtie2 plugin tests">
+
+    <test-dir test-ext="*.xml" path="bowtie2" test-format="XML"/>
+</suite>

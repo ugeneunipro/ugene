@@ -101,7 +101,9 @@ AppSettingsGUIPageWidget *UserApplicationsSettingsPageController::createWidget(A
     return r;
 }
 
-const QString UserApplicationsSettingsPageController::helpPageId = QString("60227712");
+const QString UserApplicationsSettingsPageController::helpPageId = QString("65929344");
+const QMap<QString, QString> UserApplicationsSettingsPageWidget::FIXED_CASE_QSTYLE_KEY_MAP =
+    {{"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"}};
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController *ctrl) {
     setupUi(this);
@@ -111,7 +113,10 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
         it.next();
         langCombo->addItem(it.key(), it.value());
     }
-    styleCombo->addItems(QStyleFactory::keys());
+    auto keys = QStyleFactory::keys();
+    for (const auto &key : qAsConst(keys)) {
+        styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
+    }
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {

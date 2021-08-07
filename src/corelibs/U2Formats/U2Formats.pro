@@ -103,6 +103,7 @@ HEADERS += src/ABIFormat.h \
            src/tasks/ConvertAssemblyToSamTask.h \
            src/tasks/ConvertFileTask.h \
            src/tasks/ConvertSnpeffVariationsToAnnotationsTask.h \
+           src/tasks/ExportTasks.h \
            src/tasks/MergeBamTask.h \
            src/tasks/MysqlUpgradeTask.h \
            src/util/AssemblyAdapter.h \
@@ -211,6 +212,7 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/ConvertAssemblyToSamTask.cpp \
            src/tasks/ConvertFileTask.cpp \
            src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp \
+           src/tasks/ExportTasks.cpp \
            src/tasks/MergeBamTask.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
            src/util/AssemblyPackAlgorithm.cpp \

@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!regression/1293/promoters_full.uwl"
+            id="NC_001497"
+            y="!common_data_dir!regression/1293/y_patch_77.tsv"
+            tata="!common_data_dir!regression/1293/tata_boxes.txt"
+            tss="!common_data_dir!regression/1293/inr.txt"
+            place="!common_data_dir!regression/1293/place.sequenceonly.txt"
+            out="!tmp_data_dir!test_1293.gb"
+    />
+
+    <load-document index="doc" url="test_1293.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="obj" doc="doc" name="NC_001497 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="ann" obj="obj" name="source"/>
+    <check-annotation-location annotation="ann" location="1..8024" complement="0"/>
+</multi-test>

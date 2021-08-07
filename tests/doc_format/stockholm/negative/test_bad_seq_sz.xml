@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with not equal sequences size in block -->
+    <load-broken-document index="doc" url="stockholm/bad_seq_sz.sto" io="local_file" format="stockholm"/>
+
+</multi-test>

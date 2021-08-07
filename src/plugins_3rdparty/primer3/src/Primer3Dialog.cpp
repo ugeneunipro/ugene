@@ -47,7 +47,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequ
         context(context)
 {
     ui.setupUi(this);
-    new HelpButton(this, ui.helpButton, "60229287");
+    new HelpButton(this, ui.helpButton, "65930919");
 
     QPushButton* pbPick = ui.pickPrimersButton;
     QPushButton* pbReset = ui.resetButton;
@@ -209,7 +209,7 @@ void Primer3Dialog::reset()
         if(defaultSettings.getIntProperty(key,&value))
         {
             QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
-            if(NULL != spinBox)
+            if(nullptr != spinBox)
             {
                 spinBox->setValue(value);
             }
@@ -221,7 +221,7 @@ void Primer3Dialog::reset()
         if(defaultSettings.getDoubleProperty(key,&value))
         {
             QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-            if(NULL != spinBox)
+            if(nullptr != spinBox)
             {
                 spinBox->setValue(value);
             }
@@ -233,7 +233,7 @@ void Primer3Dialog::reset()
         if(defaultSettings.getAlignProperty(key,&value))
         {
             QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-            if(NULL != spinBox)
+            if(nullptr != spinBox)
             {
                 spinBox->setValue((double)value/100);
             }
@@ -405,7 +405,7 @@ bool Primer3Dialog::doDataExchange()
     foreach(QString key, settings.getIntPropertyList())
     {
         QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             settings.setIntProperty(key,spinBox->value());
         }
@@ -413,7 +413,7 @@ bool Primer3Dialog::doDataExchange()
     foreach(QString key, settings.getDoublePropertyList())
     {
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             settings.setDoubleProperty(key,spinBox->value());
         }
@@ -421,7 +421,7 @@ bool Primer3Dialog::doDataExchange()
     foreach(QString key, settings.getAlignPropertyList())
     {
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             settings.setAlignProperty(key,(short)(spinBox->value()*100));
         }
@@ -720,7 +720,7 @@ void Primer3Dialog::sl_saveSettings()
     foreach(const QString& key, settings.getIntPropertyList())
     {
         QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             diagSettings.setValue( key, spinBox->value() );
         }
@@ -732,7 +732,7 @@ void Primer3Dialog::sl_saveSettings()
     {
 
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             diagSettings.setValue(key, spinBox->value());
 
@@ -745,7 +745,7 @@ void Primer3Dialog::sl_saveSettings()
     foreach(const QString& key, settings.getAlignPropertyList())
     {
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox)
+        if(nullptr != spinBox)
         {
             diagSettings.setValue(key,  spinBox->value());
         }
@@ -814,7 +814,7 @@ void Primer3Dialog::sl_loadSettings()
     {
 
         QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
-        if(NULL != spinBox && groupKeys.contains(key))
+        if(nullptr != spinBox && groupKeys.contains(key))
         {
             spinBox->setValue( diagSettings.value(key).toInt());
         }
@@ -827,7 +827,7 @@ void Primer3Dialog::sl_loadSettings()
     {
 
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox && groupKeys.contains(key))
+        if(nullptr != spinBox && groupKeys.contains(key))
         {
             spinBox->setValue(diagSettings.value(key).toDouble());
 
@@ -841,7 +841,7 @@ void Primer3Dialog::sl_loadSettings()
     foreach(const QString& key, settings.getAlignPropertyList())
     {
         QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
-        if(NULL != spinBox && groupKeys.contains(key))
+        if(nullptr != spinBox && groupKeys.contains(key))
         {
             spinBox->setValue(diagSettings.value(key).toDouble());
         }

@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/ws-script-int.uwl"
+                 split="100500"
+                 message="Warning: 100500"
+    />
+</multi-test>

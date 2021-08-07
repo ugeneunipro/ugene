@@ -1,0 +1,15 @@
+<multi-test>
+
+    <copy-file from="!common_data_dir!ugenedb/toy.sam.bam.ugenedb" to="!tmp_data_dir!cmdline/assembly-coverage/test_0007.ugenedb"/>
+
+    <run-cmdline task="extract_coverage"
+                 in-assembly="!tmp_data_dir!cmdline/assembly-coverage/test_0007.ugenedb"
+                 url-out="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0007.bedgraph.gz"
+                 format='2'
+    />
+
+    <check-temp-file url="cmdline/assembly-coverage/assembly_coverage_0007.bedgraph.gz" exists="1"/>
+    <check-temp-file url="cmdline/assembly-coverage/assembly_coverage_0007_1.bedgraph.gz" exists="1"/>
+
+
+</multi-test>

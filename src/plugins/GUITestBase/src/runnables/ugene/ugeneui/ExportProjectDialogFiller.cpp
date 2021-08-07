@@ -57,7 +57,7 @@ void ExportProjectDialogFiller::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-    GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
+    GT_CHECK(projectFileLineEdit != nullptr, "LineEdit is NULL");
     if (!projectName.isEmpty()) {
         GTLineEdit::setText(os, projectFileLineEdit, projectName);
     }

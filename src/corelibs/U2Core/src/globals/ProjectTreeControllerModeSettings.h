@@ -58,7 +58,7 @@ public:
 
 class U2CORE_EXPORT PTCObjectRelationFilter : public PTCObjectFilter {
 public:
-    PTCObjectRelationFilter(const GObjectRelation &rel, QObject *p = NULL)
+    PTCObjectRelationFilter(const GObjectRelation &rel, QObject *p = nullptr)
         : PTCObjectFilter(p), rel(rel) {
     }
     bool filter(GObject *o) const;
@@ -70,12 +70,12 @@ public:
     ProjectTreeControllerModeSettings()
         : allowMultipleSelection(true),
           readOnlyFilter(TriState_Unknown),
-          loadTaskProvider(NULL),
+          loadTaskProvider(nullptr),
           groupMode(ProjectTreeGroupMode_ByDocument),
           allowSelectUnloaded(false),
           ignoreRemoteObjects(false),
-          objectFilter(NULL),
-          documentFilter(NULL),
+          objectFilter(nullptr),
+          documentFilter(nullptr),
           markActive(false) {
     }
 

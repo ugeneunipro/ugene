@@ -96,7 +96,7 @@ void CreateAnnotationFullWidget::setAnnotationNameEnabled(bool enable) {
 
 void CreateAnnotationFullWidget::useAminoAnnotationTypes(bool useAmino) {
     QStringList featureTypes = getFeatureTypes(useAmino);
-    qSort(featureTypes.begin(), featureTypes.end(), caseInsensitiveLessThan);
+    std::sort(featureTypes.begin(), featureTypes.end(), caseInsensitiveLessThan);
 
     lwAnnotationType->clear();
     lwAnnotationType->addItems(featureTypes);
@@ -207,7 +207,7 @@ void CreateAnnotationFullWidget::setDescription(const QString &description) {
 
 QString CreateAnnotationFullWidget::getAnnotationTypeString() const {
     QListWidgetItem *currentItem = lwAnnotationType->currentItem();
-    SAFE_POINT(NULL != currentItem, "Annotation type is not selected", "");
+    SAFE_POINT(nullptr != currentItem, "Annotation type is not selected", "");
     return currentItem->text();
 }
 
@@ -284,7 +284,7 @@ void CreateAnnotationFullWidget::sl_regionChanged() {
     isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
 
     U2Location location;
-    if (startPos > endPos) { // split (200..100) to (200..len,1..100)
+    if (startPos > endPos) {    // split (200..100) to (200..len,1..100)
         if (startPos <= seqLen && endPos >= 1) {
             location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
         }
@@ -318,7 +318,7 @@ void CreateAnnotationFullWidget::initOsDependingLayoutSettings() {
     verticalLayout_6->setSpacing(6);
     horizontalLayout_10->setSpacing(2);
     gbSaveAnnotationsInnerWidget->layout()->setContentsMargins(9, 0, 9, 6);
-#elif !defined(Q_OS_OSX)
+#elif !defined(Q_OS_DARWIN)
     verticalLayout_6->setSpacing(6);
     this->layout()->setSpacing(10);
     gbSaveAnnotationsInnerWidget->layout()->setContentsMargins(9, 6, 9, 6);

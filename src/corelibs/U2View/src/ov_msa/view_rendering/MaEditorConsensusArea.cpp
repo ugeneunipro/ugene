@@ -38,14 +38,14 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 
-// SANGER_TODO: remove relative paths
-#include "../General/MSAGeneralTabFactory.h"
-#include "../MSAEditor.h"
-#include "../MSAEditorConsensusArea.h"
-#include "../MSAEditorSequenceArea.h"
-#include "../helpers/BaseWidthController.h"
-#include "../helpers/ScrollController.h"
-#include "../view_rendering/MaConsensusAreaRenderer.h"
+#include "ov_msa/MSAEditor.h"
+#include "ov_msa/MSAEditorConsensusArea.h"
+#include "ov_msa/MSAEditorSequenceArea.h"
+#include "ov_msa/general/MSAGeneralTabFactory.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaConsensusAreaRenderer.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -59,7 +59,9 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     selecting = false;
     cachedView = new QPixmap();
 
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+    connect(editor->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
 
@@ -125,7 +127,7 @@ bool MaEditorConsensusArea::event(QEvent *e) {
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
     GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(nullptr, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
 }
@@ -208,7 +210,7 @@ MSAConsensusAlgorithmFactory *MaEditorConsensusArea::getConsensusAlgorithmFactor
         algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
             QList<MSAConsensusAlgorithmFactory *> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
-            SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", NULL);
+            SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", nullptr);
             algo = algorithms.first();
         }
         AppContext::getSettings()->setValue(lastUsedAlgoKey, algo->getId());
@@ -255,7 +257,9 @@ void MaEditorConsensusArea::sl_completeRedraw() {
 }
 
 void MaEditorConsensusArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev) {
-    if (current.getXRegion() != prev.getXRegion()) {
+    U2Region currentRegion = U2Region::fromXRange(current.toRect());
+    U2Region prevRegion = U2Region::fromXRange(prev.toRect());
+    if (currentRegion != prevRegion) {
         sl_completeRedraw();
     }
 }
@@ -366,8 +370,8 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
         growSelectionUpTo(curPos);
     } else {
         int selectionHeight = ui->getSequenceArea()->getViewRowCount();
-        MaEditorSelection selection(curPos, 0, 1, selectionHeight);
-        ui->getSequenceArea()->setSelection(selection);
+        QRect selection(curPos, 0, 1, selectionHeight);
+        ui->getSequenceArea()->setSelectionRect(selection);
         editor->setCursorPosition(QPoint(curPos, 0));
     }
     QWidget::mousePressEvent(e);
@@ -402,8 +406,8 @@ void MaEditorConsensusArea::growSelectionUpTo(int xPos) {
 
     int cursorX = editor->getCursorPosition().x();
     int selectionHeight = ui->getSequenceArea()->getViewRowCount();
-    MaEditorSelection selection(qMin(cursorX, xPos), 0, abs(xPos - cursorX) + 1, selectionHeight);
-    ui->getSequenceArea()->setSelection(selection);
+    QRect selection(qMin(cursorX, xPos), 0, abs(xPos - cursorX) + 1, selectionHeight);
+    ui->getSequenceArea()->setSelectionRect(selection);
 }
 
 }    // namespace U2

@@ -89,12 +89,12 @@
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="502"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="503"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Невозможно определить алфавит последовательности. Возможно это вызвано тем, что некоторые из последовательностей являются пустыми.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="654"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="655"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Неверное число символов: %1</translation>
     </message>
@@ -612,6 +612,11 @@
 </context>
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
+    <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="43"/>
+        <source>Add sequences to alignment task</source>
+        <translation>Add sequences to alignment task</translation>
+    </message>
     <message>
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="57"/>
         <source>Object is empty.</source>
@@ -1336,27 +1341,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="551"/>
+        <location filename="../src/models/DocumentModel.cpp" line="550"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="564"/>
+        <location filename="../src/models/DocumentModel.cpp" line="563"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="570"/>
+        <location filename="../src/models/DocumentModel.cpp" line="569"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="638"/>
+        <location filename="../src/models/DocumentModel.cpp" line="637"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="662"/>
+        <location filename="../src/models/DocumentModel.cpp" line="661"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1364,8 +1369,8 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DocumentFormat</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="123"/>
-        <location filename="../src/models/DocumentModel.cpp" line="128"/>
+        <location filename="../src/models/DocumentModel.cpp" line="122"/>
+        <location filename="../src/models/DocumentModel.cpp" line="127"/>
         <source>Writing is not supported for this format (%1). Feel free to send a feature request though.</source>
         <translation>Запись в этот формат (%1) сейчас не поддерживается. Пожалуйста, сделайте запрос разработчикам.</translation>
     </message>
@@ -1626,7 +1631,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="314"/>
         <source>Folder is a regular file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанная папка является файлом.</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="321"/>
@@ -2058,6 +2063,11 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Требуемый</translation>
     </message>
     <message>
+        <location filename="../src/globals/L10n.h" line="152"/>
+        <source>ugene-active-translation-language-code</source>
+        <translation>ru</translation>
+    </message>
+    <message>
         <location filename="../src/globals/L10n.h" line="43"/>
         <source>Internal error, bad argument: %1</source>
         <translation>Внутренняя ошибка! Неверный аргумент: %1</translation>
@@ -2213,20 +2223,20 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MSAUtils</name>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="273"/>
-        <location filename="../src/util/MSAUtils.cpp" line="278"/>
+        <location filename="../src/util/MSAUtils.cpp" line="274"/>
+        <location filename="../src/util/MSAUtils.cpp" line="279"/>
         <source>Alignment is empty!</source>
         <translation>Выравнивание пусто!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="284"/>
+        <location filename="../src/util/MSAUtils.cpp" line="285"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Последовательности в выравнивании имеют разный размер!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="392"/>
-        <source>Can&apos;t find a row in an alignment!</source>
-        <translation>Невозможно найти строку в выравнивании!</translation>
+        <location filename="../src/util/MSAUtils.cpp" line="413"/>
+        <source>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</source>
+        <translation>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</translation>
     </message>
 </context>
 <context>
@@ -2299,7 +2309,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1112"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1151"/>
         <source>Failed to crop an alignment!</source>
         <translation>Не удалось обрезать выравнивание!</translation>
     </message>
@@ -2557,7 +2567,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::SequenceDbiWalkerSubtask</name>
     <message>
-        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="138"/>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="139"/>
         <source>Sequence walker subtask</source>
         <translation>Обход части последовательности</translation>
     </message>
@@ -2773,14 +2783,14 @@ UGENE содержит несохраненные изменения.</translati
         <translation>Алфавит не найден!</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="100"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="116"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="101"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="117"/>
         <source>Invalid sequence DBI</source>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="467"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="643"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="468"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="644"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Не удалось распознать алфавит!</translation>
     </message>
@@ -2804,7 +2814,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="393"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="394"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Последовательность не была импортирована. Возможно это произошло из-за того, что последовательность является пустой.</translation>
     </message>

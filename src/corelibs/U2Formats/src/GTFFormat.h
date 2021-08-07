@@ -146,7 +146,7 @@ class IOAdapter;
  * The following GTF specification was used: http://mblab.wustl.edu/GTF22.html
  * Unlike GFF, we assume that there is no embedded sequence in a GTF file, only annotations (not joined)
  */
-class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: ATP-synt_ab, has RF, SS_cons annotation
+	cmd: ./hmmbuild ATP-synt_ab.hmm ATP-synt_ab.sto -->
+
+    <uhmmer3-build inputFile="stockholm/ATP-synt_ab.sto" outputFile="test_ATP-synt_ab.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/ATP-synt_ab.hmm" file2="test_ATP-synt_ab.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="in" url="dna_export/nucleic/in5.aln" io="local_file" format="clustal"/>
+    <load-document index="exp" url="dna_export/nucleic/exp5.aln" io="local_file" format="clustal"/>
+
+    <export-nucleic-alignment nucleic-url="in" exp-url="exp" trans-table="1"/>
+
+
+</multi-test>

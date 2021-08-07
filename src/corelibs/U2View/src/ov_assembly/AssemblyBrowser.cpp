@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QDialogButtonBox>
 #include <QDropEvent>
 #include <QEvent>
 #include <QMenu>
@@ -38,7 +37,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
@@ -50,11 +48,9 @@
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2CrossDatabaseReferenceDbi.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2Type.h>
 #include <U2Core/VariantTrackObject.h>
 
@@ -98,11 +94,11 @@ const double AssemblyBrowser::ZOOM_MULT = 1.25;
 const double AssemblyBrowser::INITIAL_ZOOM_FACTOR = 1.;
 
 AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
-    : GObjectView(AssemblyBrowserFactory::ID, viewName), ui(NULL),
-      gobject(o), model(NULL), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
+    : GObjectView(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
+      gobject(o), model(nullptr), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
-      zoomInAction(NULL), zoomOutAction(NULL), posSelectorAction(NULL), posSelector(NULL), showCoordsOnRulerAction(NULL), saveScreenShotAction(NULL),
-      exportToSamAction(NULL), setReferenceAction(NULL), extractAssemblyRegionAction(NULL), loadReferenceTask(NULL) {
+      zoomInAction(nullptr), zoomOutAction(nullptr), posSelectorAction(nullptr), posSelector(nullptr), showCoordsOnRulerAction(nullptr), saveScreenShotAction(nullptr),
+      exportToSamAction(nullptr), setReferenceAction(nullptr), extractAssemblyRegionAction(nullptr), loadReferenceTask(nullptr) {
     GCOUNTER(cvar, "AssemblyBrowser");
     initFont();
     setupActions();
@@ -133,7 +129,7 @@ void AssemblyBrowser::sl_referenceChanged() {
     removeReferenceSequence();
 
     U2SequenceObject *so = model->getRefObj();
-    if (so != NULL) {
+    if (so != nullptr) {
         addObjectToView(so);
     }
     setReferenceAction->setEnabled(!model->isLoadingReference());
@@ -179,7 +175,7 @@ QWidget *AssemblyBrowser::createWidget() {
 }
 
 QVariantMap AssemblyBrowser::saveState() {
-    if (NULL != ui && ui->isCorrectView()) {
+    if (nullptr != ui && ui->isCorrectView()) {
         return AssemblyBrowserState::buildStateMap(this);
     } else {
         return QVariantMap();
@@ -200,7 +196,7 @@ bool AssemblyBrowser::eventFilter(QObject *o, QEvent *e) {
             QDropEvent *de = (QDropEvent *)e;
             const QMimeData *md = de->mimeData();
             const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
-            if (gomd != NULL) {
+            if (gomd != nullptr) {
                 if (e->type() == QEvent::DragEnter) {
                     de->acceptProposedAction();
                 } else {
@@ -218,14 +214,14 @@ bool AssemblyBrowser::eventFilter(QObject *o, QEvent *e) {
 
 QString AssemblyBrowser::tryAddObject(GObject *obj) {
     Document *objDoc = obj->getDocument();
-    SAFE_POINT(NULL != objDoc, "", tr("Internal error: only object with document can be added to browser"));
+    SAFE_POINT(nullptr != objDoc, "", tr("Internal error: only object with document can be added to browser"));
 
     static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
 
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
-        CHECK(NULL != seqObj, tr("Internal error: broken sequence object"));
-        SAFE_POINT(NULL != objDoc->getDocumentFormat(), "", tr("Internal error: empty document format"));
+        CHECK(nullptr != seqObj, tr("Internal error: broken sequence object"));
+        SAFE_POINT(nullptr != objDoc->getDocumentFormat(), "", tr("Internal error: empty document format"));
 
         bool setRef = !isAssemblyObjectLocked(true) && !model->isLoadingReference();
         setRef &= model->checkPermissions(QFile::WriteUser, setRef);
@@ -271,7 +267,7 @@ QString AssemblyBrowser::tryAddObject(GObject *obj) {
         }
     } else if (GObjectTypes::VARIANT_TRACK == obj->getGObjectType()) {
         VariantTrackObject *trackObj = qobject_cast<VariantTrackObject *>(obj);
-        CHECK(NULL != trackObj, tr("Internal error: broken variant track object"));
+        CHECK(nullptr != trackObj, tr("Internal error: broken variant track object"));
 
         model->addTrackObject(trackObj);
         addObjectToView(obj);
@@ -333,18 +329,22 @@ void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
     setXOffsetInAssembly(normalizeXoffset(pos - 1));
     ui->getReadsArea()->setFocus();
 }
-void AssemblyBrowser::buildStaticMenu(QMenu *staticMenu) {
+void AssemblyBrowser::buildMenu(QMenu *menu, const QString &type) {
+    if (type != GObjectViewMenuType::STATIC) {
+        GObjectView::buildMenu(menu, type);
+        return;
+    }
     U2OpStatusImpl os;
     if (model->hasReads(os)) {
-        staticMenu->addAction(zoomInAction);
-        staticMenu->addAction(zoomOutAction);
-        staticMenu->addAction(saveScreenShotAction);
-        staticMenu->addAction(exportToSamAction);
-        staticMenu->addAction(extractAssemblyRegionAction);
-        staticMenu->addAction(setReferenceAction);
+        menu->addAction(zoomInAction);
+        menu->addAction(zoomOutAction);
+        menu->addAction(saveScreenShotAction);
+        menu->addAction(exportToSamAction);
+        menu->addAction(extractAssemblyRegionAction);
+        menu->addAction(setReferenceAction);
     }
-    GObjectView::buildStaticMenu(staticMenu);
-    GUIUtils::disableEmptySubmenus(staticMenu);
+    GObjectView::buildMenu(menu, type);
+    GUIUtils::disableEmptySubmenus(menu);
 }
 
 void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
@@ -708,19 +708,19 @@ void AssemblyBrowser::sl_exportCoverage() {
     CHECK(!d.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        Task *exportTask = NULL;
+        Task *exportTask = nullptr;
         switch (d->getFormat()) {
-        case ExportCoverageSettings::Histogram:
-            exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::PerBase:
-            exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::Bedgraph:
-            exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        default:
-            FAIL("Unexpected format", );
+            case ExportCoverageSettings::Histogram:
+                exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::PerBase:
+                exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::Bedgraph:
+                exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            default:
+                FAIL("Unexpected format", );
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
     }
@@ -748,7 +748,7 @@ void AssemblyBrowser::sl_onReadHintEnabledChanged(bool checked) {
 
 void AssemblyBrowser::sl_changeOverviewType() {
     QAction *a = qobject_cast<QAction *>(sender());
-    if (a == NULL) {
+    if (a == nullptr) {
         assert(false);
         return;
     }
@@ -767,7 +767,7 @@ void AssemblyBrowser::sl_changeOverviewType() {
 void AssemblyBrowser::updateZoomingActions() {
     bool enableZoomOut = INITIAL_ZOOM_FACTOR != zoomFactor;
     zoomOutAction->setEnabled(enableZoomOut);
-    if (posSelector != NULL) {
+    if (posSelector != nullptr) {
         posSelector->setEnabled(enableZoomOut);
     }
 
@@ -910,7 +910,7 @@ void AssemblyBrowser::onObjectRenamed(GObject *, const QString &) {
 }
 
 bool AssemblyBrowser::onCloseEvent() {
-    if (NULL != loadReferenceTask) {
+    if (nullptr != loadReferenceTask) {
         loadReferenceTask->cancel();
     }
     return true;
@@ -933,7 +933,7 @@ void AssemblyBrowser::assemblyLoaded() {
     GTIMER(c1, t1, "AssemblyBrowser::assemblyLoaded");
     LOG_OP(dbiOpStatus);
     U2Dbi *dbi = model->getDbiConnection().dbi;
-    CHECK(NULL != dbi, );
+    CHECK(nullptr != dbi, );
 
     assert(U2DbiState_Ready == dbi->getState());
 
@@ -999,15 +999,13 @@ QString AssemblyBrowser::chooseReferenceUrl() const {
 }
 
 void AssemblyBrowser::showReferenceLoadingError(const QList<GObject *> &sequenceObjects, const QString &url) const {
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
     QString message;
-
     if (sequenceObjects.isEmpty()) {
         message = tr("An error occurred while setting reference to \"%1\" assembly. The selected file \"%2\" does not contain sequences.").arg(gobject->getGObjectName()).arg(url);
     } else {
         message = tr("An error occurred while setting reference to \"%1\" assembly. There are more than one sequence in file \"%2\". Please select the required sequence object in the Project View and click \"Set reference\" again.").arg(gobject->getGObjectName()).arg(url);
     }
-    notificationStack->addNotification(message, Error_Not);
+    NotificationStack::addNotification(message, Error_Not);
 }
 
 void AssemblyBrowser::loadReferenceFromFile() {
@@ -1022,14 +1020,14 @@ void AssemblyBrowser::loadReferenceFromFile() {
     bool loadInProgress = false;
     if (ProjectUtils::hasUnloadedDocument(url)) {
         loadReferenceTask = ProjectUtils::findLoadTask(url);
-        if (NULL == loadReferenceTask) {
+        if (nullptr == loadReferenceTask) {
             loadReferenceTask = new LoadUnloadedDocumentTask(ProjectUtils::findDocument(url));
         } else {
             loadInProgress = true;
         }
     } else {
         loadReferenceTask = createLoadReferenceTask(url);
-        CHECK(NULL != loadReferenceTask, );
+        CHECK(nullptr != loadReferenceTask, );
     }
 
     prepareLoadReferenceTask(url, loadReferenceTask);
@@ -1043,7 +1041,7 @@ void AssemblyBrowser::loadReferenceFromFile() {
 }
 
 void AssemblyBrowser::setReference(const Document *doc) {
-    CHECK(NULL != doc, );
+    CHECK(nullptr != doc, );
     const QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
     if (1 == objects.size()) {
@@ -1055,7 +1053,7 @@ void AssemblyBrowser::setReference(const Document *doc) {
 
 void AssemblyBrowser::sl_setReference() {
     const ProjectView *projectView = AppContext::getProjectView();
-    SAFE_POINT(NULL != projectView, L10N::nullPointerError("ProjectView"), );
+    SAFE_POINT(nullptr != projectView, L10N::nullPointerError("ProjectView"), );
 
     const GObjectSelection *selection = projectView->getGObjectSelection();
     const QList<GObject *> objects = extractSequenceObjects(selection->getSelectedObjects());
@@ -1087,10 +1085,10 @@ void AssemblyBrowser::sl_extractAssemblyRegion() {
 
 void AssemblyBrowser::sl_onReferenceLoaded() {
     Task *task = loadReferenceTask;
-    CHECK(NULL != task, );
+    CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
 
-    loadReferenceTask = NULL;
+    loadReferenceTask = nullptr;
     setReferenceAction->setEnabled(true);
     model->setLoadingReference(false);
     CHECK_OP(task->getStateInfo(), );
@@ -1099,7 +1097,7 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
     CHECK(!url.isEmpty(), );
 
     const Project *project = AppContext::getProject();
-    CHECK(NULL != project, );
+    CHECK(nullptr != project, );
 
     setReference(project->findDocumentByURL(url));
 }

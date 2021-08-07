@@ -26,6 +26,7 @@
 #include <U2Gui/GraphUtils.h>
 
 #include "McaEditor.h"
+#include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "helpers/RowHeightController.h"
 #include "view_rendering/MaEditorSelection.h"
@@ -46,8 +47,6 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setObjectName("mca_editor_name_list");
 
     editSequenceNameAction->setText(tr("Rename read"));
-    editSequenceNameAction->setShortcut(Qt::Key_F2);
-
     removeSequenceAction->setText(tr("Remove read"));
 
     setMinimumWidth(getMinimumWidgetWidth());
@@ -56,18 +55,6 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
 void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*/, const MaEditorSelection & /*oldSelection*/) {
     sl_updateActions();
     sl_completeRedraw();
-    emit si_selectionChanged();
-}
-
-void McaEditorNameList::sl_updateActions() {
-    MaEditorNameList::sl_updateActions();
-
-    U2Region selection = getSelection();
-    const bool hasSequenceSelection = !selection.isEmpty();
-    const bool hasRowSelection = !selection.isEmpty();
-    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
-
-    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
 void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) {
@@ -77,8 +64,12 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
     drawArrow(painter, isReversed, arrowRect);
 }
 
-void McaEditorNameList::setSelection(int startSeq, int count) {
-    ui->getSequenceArea()->setSelection(MaEditorSelection(0, startSeq, 0, count));
+void McaEditorNameList::setSelection(const MaEditorSelection &selection) {
+    MaEditorNameList::setSelection(selection);
+    bool isWholeReadSelected = selection.getWidth() == editor->getAlignmentLen();
+    if (isWholeReadSelected) {    // Whole sequence selection in the name list should not trigger reference selection.
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
+    }
 }
 
 McaEditor *McaEditorNameList::getEditor() const {

@@ -38,12 +38,12 @@ QMap<int, QList<Workflow::Actor *>> ScriptableScheduler::getTopologicalSortedGra
 }
 
 void ScriptableScheduler::setScheme(Workflow::Schema *newScheme) {
-    Q_ASSERT(NULL != newScheme && newScheme != schema);
+    Q_ASSERT(nullptr != newScheme && newScheme != schema);
     schema = newScheme;
 }
 
 Workflow::Actor *ScriptableScheduler::getActorById(const ActorId &id) const {
-    return (NULL != schema) ? schema->actorById(id) : NULL;
+    return (nullptr != schema) ? schema->actorById(id) : nullptr;
 }
 
 WorkflowDebugStatus *ScriptableScheduler::getDebugStatus() const {

@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline
+            task="join-quality"
+            in="!common_data_dir!reads/eas.fa"
+            out="!tmp_data_dir!join_qual_neg0002_tmp.fastq"
+            quality="!common_data_dir!fasta/broken/broken_qual_02"
+            message=" Failed parse quality value"
+    />
+</multi-test>

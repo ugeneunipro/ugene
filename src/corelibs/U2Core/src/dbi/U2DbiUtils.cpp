@@ -49,7 +49,7 @@ const QString U2DbiUtils::PUBLIC_DATABASE_PASSWORD = "public";
 const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "db.ugene.net", 3306, "public_ugene_1_25");
 
 void U2DbiUtils::logNotSupported(U2DbiFeature f, U2Dbi *dbi, U2OpStatus &os) {
-    QString msg = tr("Feature is not supported: %1, dbi: %2").arg(int(f)).arg(dbi == NULL ? QString("<unknown>") : dbi->getDbiId());
+    QString msg = tr("Feature is not supported: %1, dbi: %2").arg(int(f)).arg(dbi == nullptr ? QString("<unknown>") : dbi->getDbiId());
     coreLog.error(msg);
     if (!os.hasError()) {
         os.setError(msg);
@@ -64,7 +64,7 @@ void U2DbiUtils::logNotSupported(U2DbiFeature f, U2Dbi *dbi, U2OpStatus &os) {
 }
 
 U2DbiRef U2DbiUtils::toRef(U2Dbi *dbi) {
-    if (dbi == NULL) {
+    if (dbi == nullptr) {
         return U2DbiRef();
     }
     return U2DbiRef(dbi->getFactoryId(), dbi->getDbiId());
@@ -125,7 +125,7 @@ QString U2DbiUtils::text(const U2DataId &id) {
 
 QString U2DbiUtils::ref2Url(const U2DbiRef &dbiRef) {
     U2DbiFactory *dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(dbiRef.dbiFactoryId);
-    SAFE_POINT(NULL != dbiFactory, QString("Invalid database type: %1").arg(dbiRef.dbiFactoryId), "");
+    SAFE_POINT(nullptr != dbiFactory, QString("Invalid database type: %1").arg(dbiRef.dbiFactoryId), "");
     return dbiFactory->id2Url(dbiRef.dbiId).getURLString();
 }
 
@@ -199,9 +199,7 @@ QString U2DbiUtils::makeFolderCanonical(const QString &folder) {
         return folder;
     }
 
-    QString result = folder.startsWith(U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP) ?
-                         folder :
-                         U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folder;
+    QString result = folder.startsWith(U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP) ? folder : U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folder;
     result.replace(QRegExp(U2ObjectDbi::PATH_SEP + "+"), U2ObjectDbi::PATH_SEP);
 
     if (U2ObjectDbi::ROOT_FOLDER != result &&
@@ -304,7 +302,7 @@ DbiOperationsBlock::DbiOperationsBlock(const U2DbiRef &_dbiRef, U2OpStatus &os)
 }
 
 DbiOperationsBlock::~DbiOperationsBlock() {
-    if (NULL != connection->dbi) {
+    if (nullptr != connection->dbi) {
         connection->dbi->stopOperationBlock(os);
     }
     delete connection;

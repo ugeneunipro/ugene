@@ -163,12 +163,12 @@ void CircularViewSplitter::sl_moveSlider(int delta) {
 }
 
 void CircularViewSplitter::removeView(CircularView *view, RestrctionMapWidget *rmapWidget) {
-    SAFE_POINT(view != NULL, tr("Circular View is NULL"), );
+    SAFE_POINT(view != nullptr, tr("Circular View is NULL"), );
     QWidget *viewport = view->parentWidget();
-    SAFE_POINT(viewport != NULL, tr("Circular View viewport is NULL"), );
+    SAFE_POINT(viewport != nullptr, tr("Circular View viewport is NULL"), );
     QScrollArea *scrollArea = qobject_cast<QScrollArea *>(viewport->parentWidget());
-    SAFE_POINT(scrollArea != NULL, tr("Scroll area is NULL"), );
-    view->setParent(NULL);
+    SAFE_POINT(scrollArea != nullptr, tr("Scroll area is NULL"), );
+    view->setParent(nullptr);
     delete scrollArea;
 
     circularViewList.removeAll(view);
@@ -211,20 +211,20 @@ void CircularViewSplitter::updateViews() {
 }
 
 void CircularViewSplitter::sl_export() {
-    CircularView *cvInFocus = NULL;
+    CircularView *cvInFocus = nullptr;
     foreach (CircularView *cv, circularViewList) {
         if (cv->hasFocus()) {
             cvInFocus = cv;
             break;
         }
     }
-    if (cvInFocus == NULL) {
+    if (cvInFocus == nullptr) {
         cvInFocus = circularViewList.last();
     }
 
-    SAFE_POINT(cvInFocus->getSequenceContext() != NULL, tr("Sequence context is NULL"), );
+    SAFE_POINT(cvInFocus->getSequenceContext() != nullptr, tr("Sequence context is NULL"), );
     U2SequenceObject *seqObj = cvInFocus->getSequenceContext()->getSequenceObject();
-    SAFE_POINT(seqObj != NULL, tr("Sequence obejct is NULL"), );
+    SAFE_POINT(seqObj != nullptr, tr("Sequence obejct is NULL"), );
 
     CircularViewImageExportController factory(circularViewList, cvInFocus);
 
@@ -244,7 +244,7 @@ void CircularViewSplitter::sl_horSliderMoved(int newVal) {
 void CircularViewSplitter::adaptSize() {
     QWidget *widget = parentWidget();
 
-    Q_ASSERT(widget != NULL);
+    Q_ASSERT(widget != nullptr);
     QSplitter *parentSplitter = qobject_cast<QSplitter *>(widget);
 
     int index = parentSplitter->indexOf(this);

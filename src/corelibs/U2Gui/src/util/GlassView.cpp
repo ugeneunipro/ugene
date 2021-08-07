@@ -56,38 +56,34 @@ void GlassView::scrollContentsBy(int dx, int dy) {
 bool GlassView::viewportEvent(QEvent *e) {
     if (glass) {
         switch (e->type()) {
-        case QEvent::Resize:
-            glass->resize(((QResizeEvent *)e)->size());
-        case QEvent::Paint:
-            return QGraphicsView::viewportEvent(e);
-
-        case QEvent::MouseButtonDblClick:
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonRelease:
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-        case QEvent::FocusIn:
-        case QEvent::FocusOut:
-        case QEvent::Enter:
-        case QEvent::Leave:
-        case QEvent::Wheel:
-        case QEvent::DragEnter:
-        case QEvent::DragMove:
-        case QEvent::DragLeave:
-        case QEvent::Drop:
-        case QEvent::HoverEnter:
-        case QEvent::HoverLeave:
-        case QEvent::HoverMove:
-
-            if (glass->eventFilter(this, e)) {
-                return true;
-            }
-            break;
-        default:
-            break;
+            case QEvent::Resize:
+                glass->resize(static_cast<QResizeEvent *>(e)->size());
+                break;
+            case QEvent::MouseButtonDblClick:
+            case QEvent::MouseButtonPress:
+            case QEvent::MouseButtonRelease:
+            case QEvent::KeyPress:
+            case QEvent::KeyRelease:
+            case QEvent::FocusIn:
+            case QEvent::FocusOut:
+            case QEvent::Enter:
+            case QEvent::Leave:
+            case QEvent::Wheel:
+            case QEvent::DragEnter:
+            case QEvent::DragMove:
+            case QEvent::DragLeave:
+            case QEvent::Drop:
+            case QEvent::HoverEnter:
+            case QEvent::HoverLeave:
+            case QEvent::HoverMove:
+                if (glass->eventFilter(this, e)) {
+                    return true;
+                }
+                break;
+            default:
+                break;
         }
     }
-    // else
     return QGraphicsView::viewportEvent(e);
 }
 

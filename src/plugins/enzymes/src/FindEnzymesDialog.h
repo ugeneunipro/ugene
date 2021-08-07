@@ -37,7 +37,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
-class RegionSelectorWithExludedRegion;
+class RegionSelectorWithExcludedRegion;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -103,7 +103,7 @@ private:
     ADVSequenceObjectContext *advSequenceContext;
 
     EnzymesSelectorWidget *enzSel;
-    RegionSelectorWithExludedRegion *regionSelector;
+    RegionSelectorWithExcludedRegion *regionSelector;
 };
 
 class EnzymeTreeItem;

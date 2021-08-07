@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-GACCA-GACCA-GACCAG-*:TC
+    Tandems
+    Tandem repeat GACCA 3x5 at pos 0
+    Insertions
+    15
+    We expect such results:
+    0,16,5
+    .(end of results)
+    -->
+    <find-tandems sequence="GACCAGACCAGACCAGTC" minSize="5" maxSize="15" repeatCount="3" expected_result="0,16,5;"/>
+</multi-test>

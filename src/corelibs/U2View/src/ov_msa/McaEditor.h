@@ -31,6 +31,7 @@
 namespace U2 {
 
 class McaEditor;
+class McaEditorSelectionController;
 class SequenceObjectContext;
 
 #define MCAE_MENU_ALIGNMENT "MCAE_MENU_ALIGNMENT"
@@ -58,9 +59,12 @@ public:
     MultipleChromatogramAlignmentObject *getMaObject() const override;
     McaEditorWgt *getUI() const override;
 
+    /** Returns current MCA editor selection controller instance. */
+    MaEditorSelectionController *getSelectionController() const override;
+
     void buildStaticToolbar(QToolBar *tb) override;
 
-    void buildStaticMenu(QMenu *menu) override;
+    void buildMenu(QMenu *menu, const QString &type) override;
 
     int getRowContentIndent(int rowId) const override;
 
@@ -108,11 +112,14 @@ protected:
      * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
      * This way the action works the same as annotation selection in the sequence view.
      */
-    QAction *gotoSelectedReadAction;
+    QAction *gotoSelectedReadAction = nullptr;
 
     QMap<qint64, bool> chromVisibility;
 
     SequenceObjectContext *referenceCtx;
+
+    /** Selection state controller. */
+    McaEditorSelectionController *selectionController;
 
     void addEditMenu(QMenu *menu) override;
     void addAlignmentMenu(QMenu *menu);

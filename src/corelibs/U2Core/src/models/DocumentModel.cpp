@@ -24,7 +24,6 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QScopedPointer>
-#include <QScriptEngine>
 #include <QThread>
 
 #include <U2Core/AppContext.h>
@@ -37,7 +36,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/Task.h>
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -63,7 +62,7 @@ DocumentFormat::DocumentFormat(QObject *p, const DocumentFormatId &_id, Document
 
 Document *DocumentFormat::createNewLoadedDocument(IOAdapterFactory *iof, const GUrl &url, U2OpStatus &os, const QVariantMap &hints) {
     U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     Document *doc = new Document(this, iof, url, tmpDbiRef, QList<UnloadedObjectInfo>(), hints, QString());
     doc->setLoaded(true);
@@ -84,21 +83,21 @@ Document *DocumentFormat::loadDocument(IOAdapterFactory *iof, const GUrl &url, c
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         os.setError(L10N::errorOpeningFileRead(url));
-        return NULL;
+        return nullptr;
     }
 
-    Document *res = NULL;
+    Document *res = nullptr;
 
     U2DbiRef dbiRef = fetchDbiRef(hints, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     if (dbiRef.isValid()) {
         DbiConnection con(dbiRef, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
         Q_UNUSED(con);
 
         res = loadDocument(io.data(), dbiRef, hints, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
     } else {
         res = loadDocument(io.data(), U2DbiRef(), hints, os);
     }
@@ -115,7 +114,7 @@ U2DbiRef DocumentFormat::fetchDbiRef(const QVariantMap &hints, U2OpStatus &os) c
 
 DNASequence *DocumentFormat::loadSequence(IOAdapter *, U2OpStatus &os) {
     os.setError("This document format does not support streaming reading mode");
-    return NULL;
+    return nullptr;
 }
 
 void DocumentFormat::storeDocument(Document *, IOAdapter *, U2OpStatus &os) {
@@ -127,8 +126,8 @@ void DocumentFormat::storeDocument(Document *doc, U2OpStatus &os, IOAdapterFacto
     SAFE_POINT_EXT(formatFlags.testFlag(DocumentFormatFlag_SupportWriting),
                    os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(formatName)), );
 
-    assert(doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE) == NULL);
-    if (iof == NULL) {
+    assert(doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE) == nullptr);
+    if (iof == nullptr) {
         iof = doc->getIOAdapterFactory();
     }
 
@@ -223,7 +222,7 @@ Document::Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url,
     ctxState = new GHintsDefaultImpl(hints);
     name = url.fileName();
 
-    qFill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
+    std::fill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)nullptr);
 
     loadStateChangeMode = true;
     addUnloadedObjects(unloadedObjects);
@@ -242,7 +241,7 @@ Document::Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url,
     name = url.fileName();
 
     loadStateChangeMode = true;
-    qFill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
+    std::fill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)nullptr);
     foreach (GObject *o, _objects) {
         _addObject(o);
     }
@@ -265,7 +264,7 @@ Document *Document::getSimpleCopy(DocumentFormat *df, IOAdapterFactory *io, cons
 Document::~Document() {
     for (int i = 0; i < DocumentModLock_NUM_LOCKS; i++) {
         StateLock *sl = modLocks[i];
-        if (sl != NULL) {
+        if (sl != nullptr) {
             unlockState(sl);
             delete sl;
         }
@@ -279,7 +278,7 @@ Document::~Document() {
 }
 
 GObject *Document::getObjectById(const U2DataId &id) const {
-    return id2Object.value(id, NULL);
+    return id2Object.value(id, nullptr);
 }
 
 void Document::setObjectsInUse(const QSet<U2DataId> &objs) {
@@ -287,8 +286,8 @@ void Document::setObjectsInUse(const QSet<U2DataId> &objs) {
 }
 
 void Document::addObject(GObject *obj) {
-    SAFE_POINT(obj != NULL, "Object is NULL", );
-    SAFE_POINT(obj->getDocument() == NULL, "Object already belongs to some document", );
+    SAFE_POINT(obj != nullptr, "Object is NULL", );
+    SAFE_POINT(obj->getDocument() == nullptr, "Object already belongs to some document", );
     SAFE_POINT(df->isObjectOpSupported(this, DocumentFormat::DocObjectOp_Add, obj->getGObjectType()), "Document format doesn't support new objects adding", );
     SAFE_POINT(isLoaded(), "The destination document is not loaded", );
     SAFE_POINT(obj->getGObjectType() != GObjectTypes::UNLOADED, "Object is not loaded", );
@@ -297,7 +296,7 @@ void Document::addObject(GObject *obj) {
 }
 
 void Document::_addObjectToHierarchy(GObject *obj) {
-    SAFE_POINT(obj != NULL, "Object is NULL", );
+    SAFE_POINT(obj != nullptr, "Object is NULL", );
     obj->setParentStateLockItem(this);
     obj->setGHints(new ModTrackHints(this, obj->getGHintsMap(), true));
     obj->setModified(false);
@@ -306,7 +305,7 @@ void Document::_addObjectToHierarchy(GObject *obj) {
 }
 
 void Document::_addObject(GObject *obj) {
-    SAFE_POINT(obj != NULL, "Object is NULL", );
+    SAFE_POINT(obj != nullptr, "Object is NULL", );
     _addObjectToHierarchy(obj);
     assert(objects.size() == getChildItems().size());
     emit si_objectAdded(obj);
@@ -316,13 +315,13 @@ bool Document::removeObject(GObject *obj, DocumentObjectRemovalMode removalMode)
     SAFE_POINT(df->isObjectOpSupported(this, DocumentFormat::DocObjectOp_Remove, obj->getGObjectType()), "Unsupported format operation", false);
 
     switch (removalMode) {
-    case DocumentObjectRemovalMode_Deallocate:
-        return _removeObject(obj, true);
-    case DocumentObjectRemovalMode_OnlyNotify:
-        emit si_objectRemoved(obj);
-        break;
-    case DocumentObjectRemovalMode_Release:
-        return _removeObject(obj, false);
+        case DocumentObjectRemovalMode_Deallocate:
+            return _removeObject(obj, true);
+        case DocumentObjectRemovalMode_OnlyNotify:
+            emit si_objectRemoved(obj);
+            break;
+        case DocumentObjectRemovalMode_Release:
+            return _removeObject(obj, false);
     }
 
     return true;
@@ -337,7 +336,7 @@ bool Document::_removeObject(GObject *obj, bool deleteObjects) {
 
     obj->setModified(false);
 
-    obj->setParentStateLockItem(NULL);
+    obj->setParentStateLockItem(nullptr);
     objects.removeOne(obj);
     id2Object.remove(obj->getEntityRef().entityId);
     obj->setGHints(new GHintsDefaultImpl(obj->getGHintsMap()));
@@ -364,7 +363,7 @@ void Document::makeClean() {
 }
 
 void Document::setModificationTrack(bool track) {
-    if (df != NULL && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
+    if (df != nullptr && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         StateLockableTreeItem::setModificationTrack(false);
     } else {
         StateLockableTreeItem::setModificationTrack(track);
@@ -374,22 +373,22 @@ void Document::setModificationTrack(bool track) {
 GObject *Document::findGObjectByNameInDb(const QString &name) const {
     U2OpStatusImpl os;
     DbiConnection con(dbiRef, os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
 
     U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(NULL != oDbi, "Invalid database connection", NULL);
+    SAFE_POINT(nullptr != oDbi, "Invalid database connection", nullptr);
 
     QScopedPointer<U2DbiIterator<U2DataId>> iter(oDbi->getObjectsByVisualName(name, U2Type::Unknown, os));
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
 
     while (iter->hasNext()) {
         const U2DataId objId = iter->next();
         GObject *obj = getObjectById(objId);
-        if (NULL != obj) {
+        if (nullptr != obj) {
             return obj;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 GObject *Document::findGObjectByNameInMem(const QString &name) const {
@@ -398,7 +397,7 @@ GObject *Document::findGObjectByNameInMem(const QString &name) const {
             return obj;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 GObject *Document::findGObjectByName(const QString &name) const {
@@ -450,13 +449,13 @@ class DocumentChildEventsHelper {
 public:
     DocumentChildEventsHelper(Document *doc)
         : doc(doc) {
-        if (NULL != doc) {
+        if (nullptr != doc) {
             doc->d_ptr->receiveChildEvents = false;
         }
     }
 
     ~DocumentChildEventsHelper() {
-        if (NULL != doc) {
+        if (nullptr != doc) {
             doc->d_ptr->receiveChildEvents = true;
         }
     }
@@ -490,15 +489,15 @@ void Document::loadFrom(Document *sourceDoc) {
     //copy instance mod-locks if any
     StateLock *mLock = modLocks[DocumentModLock_FORMAT_AS_INSTANCE];
     StateLock *dLock = sourceDoc->modLocks[DocumentModLock_FORMAT_AS_INSTANCE];
-    if (mLock != NULL) {
-        if (dLock == NULL) {
+    if (mLock != nullptr) {
+        if (dLock == nullptr) {
             unlockState(mLock);
             delete mLock;
-            modLocks[DocumentModLock_FORMAT_AS_INSTANCE] = NULL;
+            modLocks[DocumentModLock_FORMAT_AS_INSTANCE] = nullptr;
         } else {
             mLock->setUserDesc(dLock->getUserDesc());
         }
-    } else if (dLock != NULL) {
+    } else if (dLock != nullptr) {
         modLocks[DocumentModLock_FORMAT_AS_INSTANCE] = new StateLock(dLock->getUserDesc());
         lockState(modLocks[DocumentModLock_FORMAT_AS_INSTANCE]);
     }
@@ -543,11 +542,11 @@ void Document::setLoaded(bool v) {
     StateLock *l = modLocks[DocumentModLock_UNLOADED_STATE];
     if (v) {
         unlockState(l);
-        modLocks[DocumentModLock_UNLOADED_STATE] = NULL;
+        modLocks[DocumentModLock_UNLOADED_STATE] = nullptr;
         delete l;
         checkLoadedState();
     } else {
-        assert(l == NULL);
+        assert(l == nullptr);
         l = new StateLock(tr("Document is not loaded"));
         modLocks[DocumentModLock_UNLOADED_STATE] = l;
         lockState(l);
@@ -618,7 +617,7 @@ bool Document::checkConstraints(const Document::Constraints &c) const {
     }
 
     foreach (DocumentModLock l, c.notAllowedStateLocks) {
-        if (modLocks[l] != NULL) {
+        if (modLocks[l] != nullptr) {
             return false;
         }
     }
@@ -640,13 +639,13 @@ void Document::setUserModLock(bool v) {
         lockState(sl);
     } else {
         StateLock *sl = modLocks[DocumentModLock_USER];
-        modLocks[DocumentModLock_USER] = NULL;
+        modLocks[DocumentModLock_USER] = nullptr;
         unlockState(sl);
         delete sl;
     }
 
     //hack: readonly settings are stored in project, so if document is in project -> mark project as modified
-    if (getParentStateLockItem() != NULL) {
+    if (getParentStateLockItem() != nullptr) {
         getParentStateLockItem()->setModified(true);
     }
 }
@@ -659,7 +658,7 @@ bool Document::unload(bool deleteObjects) {
     QList<StateLock *> locks = findLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock);
     bool liveLocked = (locks.size() > 1);
     if (locks.size() == 1 && !liveLocked) {
-        SAFE_POINT(locks.first() != NULL, tr("Lock is NULL"), false);
+        SAFE_POINT(locks.first() != nullptr, tr("Lock is NULL"), false);
         liveLocked &= (locks.first()->getUserDesc() == UNLOAD_LOCK_NAME);
     }
     if (liveLocked) {
@@ -688,9 +687,9 @@ bool Document::unload(bool deleteObjects) {
     }
 
     StateLock *fl = modLocks[DocumentModLock_FORMAT_AS_INSTANCE];
-    if (fl != NULL) {
+    if (fl != nullptr) {
         unlockState(fl);
-        modLocks[DocumentModLock_FORMAT_AS_INSTANCE] = NULL;
+        modLocks[DocumentModLock_FORMAT_AS_INSTANCE] = nullptr;
     }
 
     dbiRef = U2DbiRef();
@@ -726,7 +725,7 @@ bool Document::isModificationAllowed(const QString &modType) {
 }
 
 void Document::setGHints(GHints *newHints) {
-    assert(newHints != NULL);
+    assert(newHints != nullptr);
     //gobjects in document keep states in parent document map -> preserve gobject hints
     if (newHints == ctxState) {
         return;
@@ -791,7 +790,7 @@ void Document::removeObjectsDataFromDbi(QList<GObject *> objects) {
 
         foreach (GObject *object, objects) {
             U2OpStatus2Log osLog;
-            SAFE_POINT(object != NULL, "NULL object was provided", );
+            SAFE_POINT(object != nullptr, "NULL object was provided", );
             con.dbi->getObjectDbi()->removeObject(object->getEntityRef().entityId, true, osLog);
         }
     }
@@ -807,7 +806,7 @@ void Document::setLastUpdateTime() {
 void Document::propagateModLocks(Document *doc) const {
     for (int i = 0; i < DocumentModLock_NUM_LOCKS; i++) {
         StateLock *lock = modLocks[i];
-        if (lock != NULL && doc->modLocks[i] != NULL) {
+        if (lock != nullptr && doc->modLocks[i] != nullptr) {
             StateLock *newLock = new StateLock(lock->getUserDesc(), lock->getFlags());
             doc->modLocks[i] = newLock;
             doc->lockState(newLock);

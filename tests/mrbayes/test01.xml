@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- MrBayes Test -->
+    <load-document index="doc1" url="mrbayes/alignment_1.nex" io="local_file" format="nexus"/>
+    <load-document index="doc2" url="mrbayes/tree_1.nwk" io="local_file" format="newick"/>
+    <test-mrbayes in="doc1" sample="doc2" mbSeed="1485"/>
+
+</multi-test>

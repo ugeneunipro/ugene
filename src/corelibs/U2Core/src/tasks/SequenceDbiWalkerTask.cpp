@@ -31,8 +31,8 @@ namespace U2 {
 SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig &c, SequenceDbiWalkerCallback *cb, const QString &name, TaskFlags tf)
     : Task(name, tf), config(c), callback(cb) {
     assert(config.chunkSize > static_cast<uint>(config.overlapSize));    // if chunk == overlap -> infinite loop occurs
-    assert(cb != NULL);
-    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != NULL);
+    assert(cb != nullptr);
+    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
     maxParallelSubtasks = config.nThreads;
     QList<SequenceDbiWalkerSubtask *> subs = prepareSubtasks();
@@ -56,10 +56,10 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
     }
 
     if (config.walkCircular && config.range.length == sequenceObject.getSequenceLength()) {
-        config.range.length += config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3);
+        config.range.length += config.walkCircularDistance * (config.aminoTrans == nullptr ? 1 : 3);
     }
 
-    if (config.aminoTrans == NULL) {
+    if (config.aminoTrans == nullptr) {
         //try walk direct and complement strands
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
@@ -68,14 +68,15 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             res += directTasks;
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
+            assert(config.complTrans != nullptr);
             QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, false);
             res += complTasks;
         }
     } else {
-        // try walk 3 direct and 3 complement translations
+        // try walk up to 3 direct and 3 complement translation frames.
+        int nFrames = config.translateOnlyFirstFrame ? 1 : 3;
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos + i, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
                 QList<SequenceDbiWalkerSubtask *> directTasks = createSubs(chunks, false, true);
@@ -83,8 +84,8 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             }
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
-            for (int i = 0; i < 3; i++) {
+            assert(config.complTrans != nullptr);
+            for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);
                 QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, true);
@@ -101,7 +102,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::createSubs(const QVecto
         const U2Region &chunk = chunks[i];
         bool lo = config.overlapSize > 0 && i > 0;
         bool ro = config.overlapSize > 0 && i + 1 < n;
-        SequenceDbiWalkerSubtask *t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, chunk.length, doCompl, doAmino);
+        SequenceDbiWalkerSubtask *t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, doCompl, doAmino);
         res.append(t);
     }
     return res;
@@ -134,10 +135,10 @@ QVector<U2Region> SequenceDbiWalkerTask::splitRange(const U2Region &range, int c
 
 //////////////////////////////////////////////////////////////////////////
 // subtask
-SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const U2EntityRef &seqRef, int _len, bool _doCompl, bool _doAmino)
+SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const U2EntityRef &seqRef, bool _doCompl, bool _doAmino)
     : Task(tr("Sequence walker subtask"), TaskFlag_None),
-      t(_t), globalRegion(glob), seqRef(seqRef), localSeq(NULL), originalLocalSeq(NULL),
-      localLen(_len), originalLocalLen(_len), doCompl(_doCompl), doAmino(_doAmino),
+      t(_t), globalRegion(glob), seqRef(seqRef),
+      doCompl(_doCompl), doAmino(_doAmino),
       leftOverlap(lo), rightOverlap(ro) {
     tpm = Task::Progress_Manual;
 
@@ -148,40 +149,33 @@ SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, co
     }
 }
 
-const char *SequenceDbiWalkerSubtask::getRegionSequence() {
-    if (needLocalRegionProcessing()) {
-        prepareLocalRegion();
-    }
-    return localSeq;
+const QByteArray &SequenceDbiWalkerSubtask::getRegionSequence() {
+    prepareRegionSequence();
+    return regionSequence;
 }
 
-int SequenceDbiWalkerSubtask::getRegionSequenceLen() {
-    if (needLocalRegionProcessing()) {
-        prepareLocalRegion();
-    }
-    return localLen;
-}
+void SequenceDbiWalkerSubtask::prepareRegionSequence() {
+    CHECK(!isRegionSequencePrepared, )
+    U2SequenceObject sequenceObject("sequence", seqRef);
+    DNASequence dnaSequence = sequenceObject.getSequence(globalRegion, stateInfo);
+    CHECK_OP(stateInfo, );
 
-void SequenceDbiWalkerSubtask::prepareLocalRegion() {
-    assert(doAmino || doCompl);
-
-    QByteArray res(localSeq, localLen);
+    QByteArray res = dnaSequence.seq;
     if (doCompl) {
         //do complement;
-        assert(t->getConfig().complTrans != NULL);
+        SAFE_POINT_EXT(t->getConfig().complTrans != nullptr, stateInfo.setError("No complement translation found!"), );
         const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
         TextUtils::reverse(res.data(), res.length());
     }
     if (doAmino) {
-        assert(t->getConfig().aminoTrans != NULL && t->getConfig().aminoTrans->isThree2One());
+        SAFE_POINT_EXT(t->getConfig().complTrans != nullptr, stateInfo.setError("No amino translation found!"), );
         t->getConfig().aminoTrans->translate(res.data(), res.length(), res.data(), res.length());
         int newLen = res.length() / 3;
         res.resize(newLen);
     }
-    processedSeqImage = res;
-    localLen = processedSeqImage.size();
-    localSeq = processedSeqImage.constData();
+    regionSequence = res;
+    isRegionSequencePrepared = true;
 }
 
 void SequenceDbiWalkerSubtask::run() {
@@ -189,19 +183,12 @@ void SequenceDbiWalkerSubtask::run() {
     t->getCallback()->onRegion(this, stateInfo);
 }
 
-bool SequenceDbiWalkerSubtask::intersectsWithOverlaps(const U2Region &reg) const {
-    int overlap = getGlobalConfig().overlapSize;
-    if (overlap == 0) {
-        return false;
-    }
-    bool intersects = false;
-    if (leftOverlap) {
-        intersects = reg.intersects(U2Region(globalRegion.startPos, overlap));
-    }
-    if (!intersects && rightOverlap) {
-        intersects = reg.intersects(U2Region(globalRegion.endPos() - overlap, overlap));
-    }
-    return intersects;
+const U2Region &SequenceDbiWalkerSubtask::getGlobalRegion() const {
+    return globalRegion;
+}
+
+SequenceDbiWalkerTask *SequenceDbiWalkerSubtask::getSequenceDbiWalkerTask() const {
+    return t;
 }
 
 }    // namespace U2

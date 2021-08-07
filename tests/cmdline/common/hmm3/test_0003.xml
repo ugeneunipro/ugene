@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/hmm3/hmm3-build.uwl"
+                 in-al="!common_data_dir!cmdline/hmm3/COI.aln"
+                 out-hmm="!tmp_data_dir!hmm3-build0001_tmp.hmm"
+                 bseed="42"/>
+
+    <hmm3-compare-files file1="cmdline/hmm3/hmm1.hmm" file2="hmm3-build0001_tmp.hmm" tmp2="yes"/>
+
+</multi-test>

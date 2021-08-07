@@ -65,7 +65,7 @@ ConvertToIndexedBamTask::ConvertToIndexedBamTask(const DocumentFormatId &_format
 
 void ConvertToIndexedBamTask::run() {
     AppFileStorage *fileStorage = AppContext::getAppFileStorage();
-    CHECK_EXT(NULL != fileStorage, stateInfo.setError("NULL file storage"), );
+    CHECK_EXT(nullptr != fileStorage, stateInfo.setError("NULL file storage"), );
 
     QString cashedSortedBam = FileStorageUtils::getSortedBamUrl(url.getURLString(), ctx->getWorkflowProcess());
     if (!cashedSortedBam.isEmpty()) {
@@ -143,7 +143,7 @@ void ConvertToIndexedBamTask::addConvertedFile(const GUrl &url) {
 /************************************************************************/
 ReadAssemblyTask::ReadAssemblyTask(const QString &url, const QString &datasetName, WorkflowContext *_ctx)
     : ReadDocumentTask(url, tr("Read assembly from %1").arg(url), datasetName, TaskFlags_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
-      ctx(_ctx), format(NULL), doc(NULL), convertTask(NULL), importTask(NULL) {
+      ctx(_ctx), format(nullptr), doc(nullptr), convertTask(nullptr), importTask(nullptr) {
 }
 
 static bool isConvertingFormat(const DocumentFormatId &formatId) {
@@ -163,7 +163,7 @@ void ReadAssemblyTask::prepare() {
     QList<FormatDetectionResult> fs = DocumentUtils::detectFormat(url, conf);
 
     foreach (const FormatDetectionResult &f, fs) {
-        if (NULL != f.format) {
+        if (nullptr != f.format) {
             if (isConvertingFormat(f.format->getFormatId())) {
                 convertTask = new ConvertToIndexedBamTask(f.format->getFormatId(), url, ctx);
                 addSubTask(convertTask);
@@ -175,7 +175,7 @@ void ReadAssemblyTask::prepare() {
                 format = f.format;
                 break;
             }
-        } else if (NULL != f.importer) {
+        } else if (nullptr != f.importer) {
             U2OpStatusImpl os;
             U2DbiRef dbiRef = ctx->getDataStorage()->createTmpDbi(os);
             SAFE_POINT_OP(os, );
@@ -188,7 +188,7 @@ void ReadAssemblyTask::prepare() {
         }
     }
 
-    if (format == NULL) {
+    if (format == nullptr) {
         stateInfo.setError(tr("Unsupported document format: %1").arg(getUrl()));
         return;
     }
@@ -196,7 +196,7 @@ void ReadAssemblyTask::prepare() {
 
 QList<Task *> ReadAssemblyTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(NULL != subTask, result);
+    CHECK(nullptr != subTask, result);
     if (subTask->hasError()) {
         if (convertTask == subTask) {
             taskLog.error(subTask->getError());
@@ -216,13 +216,13 @@ QList<Task *> ReadAssemblyTask::onSubTaskFinished(Task *subTask) {
 }
 
 void ReadAssemblyTask::run() {
-    if (NULL == format && NULL == doc) {
+    if (nullptr == format && nullptr == doc) {
         return;
     }
 
-    QScopedPointer<Document> docPtr(NULL);
+    QScopedPointer<Document> docPtr(nullptr);
     bool useGC = true;
-    if (NULL == doc) {
+    if (nullptr == doc) {
         useGC = false;
         ioLog.info(tr("Reading assembly from %1 [%2]").arg(url).arg(format->getFormatName()));
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -233,11 +233,11 @@ void ReadAssemblyTask::run() {
             if (BaseDocumentFormats::UGENEDB == format->getFormatId()) {
                 fId = DEFAULT_DBI_ID;
             } else if (BaseDocumentFormats::BAM == format->getFormatId()) {
-                SAFE_POINT(NULL != convertTask, "Internal error! Converting stage is missed", );
+                SAFE_POINT(nullptr != convertTask, "Internal error! Converting stage is missed", );
                 fId = BAM_DBI_ID;
             }
             U2DbiFactory *dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(fId);
-            SAFE_POINT(NULL != dbiFactory, QString("Unknown dbi factory id: %").arg(fId), );
+            SAFE_POINT(nullptr != dbiFactory, QString("Unknown dbi factory id: %").arg(fId), );
 
             U2OpStatusImpl os;
             U2DbiRef dbiRef(dbiFactory->getId());
@@ -252,7 +252,7 @@ void ReadAssemblyTask::run() {
     } else {
         useGC = true;
         docPtr.reset(doc);
-        doc = NULL;
+        doc = nullptr;
     }
     CHECK(!docPtr.isNull(), );
     docPtr->setDocumentOwnsDbiResources(false);
@@ -264,7 +264,7 @@ void ReadAssemblyTask::run() {
     }
     foreach (GObject *go, assemblies) {
         AssemblyObject *assemblyObj = dynamic_cast<AssemblyObject *>(go);
-        CHECK_EXT(NULL != assemblyObj, taskLog.error(tr("Incorrect assembly object in %1").arg(url)), );
+        CHECK_EXT(nullptr != assemblyObj, taskLog.error(tr("Incorrect assembly object in %1").arg(url)), );
 
         SharedDbiDataHandler handler = ctx->getDataStorage()->getDataHandler(assemblyObj->getEntityRef(), useGC);
         result << handler;

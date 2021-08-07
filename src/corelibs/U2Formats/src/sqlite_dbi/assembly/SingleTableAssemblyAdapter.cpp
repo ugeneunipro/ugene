@@ -145,7 +145,7 @@ U2DbiIterator<U2AssemblyRead> *SingleTableAssemblyAdapter::getReads(const U2Regi
 
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery(qStr, db, os));
     bindRegion(*q, r);
-    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *SingleTableAssemblyAdapter::getReadsByRow(const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
@@ -155,7 +155,7 @@ U2DbiIterator<U2AssemblyRead> *SingleTableAssemblyAdapter::getReadsByRow(const U
     bindRegion(*q, r);
     q->bindInt64(rowFieldPos, minRow);
     q->bindInt64(rowFieldPos + 1, maxRow);
-    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *SingleTableAssemblyAdapter::getReadsByName(const QByteArray &name, U2OpStatus &os) {
@@ -247,7 +247,7 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region &r, U2Assembly
 
 U2DbiIterator<PackAlgorithmData> *SingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus &os) {
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
-    return new SQLiteResultSetIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    return new SQLiteResultSetIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), nullptr, PackAlgorithmData(), os);
 }
 
 SingleTablePackAlgorithmAdapter::~SingleTablePackAlgorithmAdapter() {
@@ -255,7 +255,7 @@ SingleTablePackAlgorithmAdapter::~SingleTablePackAlgorithmAdapter() {
 }
 
 void SingleTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os) {
-    if (updateQuery == NULL) {
+    if (updateQuery == nullptr) {
         updateQuery = new SQLiteWriteQuery("UPDATE " + readsTable + " SET prow = ?1 WHERE id = ?2", db, os);
     }
     updateQuery->setOpStatus(os);
@@ -267,7 +267,7 @@ void SingleTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 
 
 void SingleTablePackAlgorithmAdapter::releaseDbResources() {
     delete updateQuery;
-    updateQuery = NULL;
+    updateQuery = nullptr;
 }
 
 }    // namespace U2

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "PluginViewerController.h"
+
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
@@ -27,8 +29,6 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
-
-#include "PluginViewerController.h"
 
 namespace U2 {
 
@@ -39,7 +39,7 @@ namespace U2 {
 
 PluginViewerController::PluginViewerController() {
     showServices = false;    //'true' mode is not functional anymore after service<->plugin model refactoring
-    mdiWindow = NULL;
+    mdiWindow = nullptr;
     connectStaticActions();
 }
 
@@ -130,7 +130,7 @@ void PluginViewerController::updateActions() {
     PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
 
     bool isService = item != nullptr && item->isServiceItem();
-    Service *s = isService ? (static_cast<PlugViewServiceItem *>(item))->service : NULL;
+    Service *s = isService ? (static_cast<PlugViewServiceItem *>(item))->service : nullptr;
     bool isServiceEnabled = isService && s->isEnabled();
 
     enableServiceAction->setEnabled(isService && !isServiceEnabled);
@@ -141,7 +141,7 @@ void PluginViewerController::buildItems() {
     const QList<Plugin *> &plugins = AppContext::getPluginSupport()->getPlugins();
     foreach (Plugin *p, plugins) {
         QTreeWidget *treeWidget = ui.treeWidget;
-        PlugViewPluginItem *pluginItem = new PlugViewPluginItem(NULL, p, showServices);
+        PlugViewPluginItem *pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
             const QList<Service *> &services = p->getServices();
             //this method is called for default state init also -> look for registered plugin services
@@ -167,7 +167,7 @@ PlugViewPluginItem *PluginViewerController::findPluginItem(Plugin *p) const {
             return item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 PlugViewServiceItem *PluginViewerController::findServiceItem(Service * /*s*/) const {
@@ -182,12 +182,12 @@ PlugViewServiceItem *PluginViewerController::findServiceItem(Service * /*s*/) co
             return item;
         }
     }*/
-    return NULL;
+    return nullptr;
 }
 
 bool PluginViewerController::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::Close && obj == mdiWindow) {
-        mdiWindow = NULL;
+        mdiWindow = nullptr;
         disconnectVisualActions();
     }
     return QObject::eventFilter(obj, event);
@@ -220,7 +220,7 @@ void PluginViewerController::sl_onServiceStateChanged(Service *s, ServiceState o
     Q_UNUSED(oldState);
     assert(showServices);
     PlugViewServiceItem *si = findServiceItem(s);
-    assert(si != NULL);
+    assert(si != nullptr);
     si->updateVisual();
     updateState();
 }
@@ -228,12 +228,12 @@ void PluginViewerController::sl_onServiceStateChanged(Service *s, ServiceState o
 void PluginViewerController::sl_onServiceUnregistered(Service *s) {
     assert(showServices);
     PlugViewServiceItem *item = findServiceItem(s);
-    assert(item != NULL);
+    assert(item != nullptr);
     delete item;
 }
 
 void PluginViewerController::sl_show() {
-    if (mdiWindow == NULL) {
+    if (mdiWindow == nullptr) {
         createWindow();
     } else {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(mdiWindow);
@@ -242,14 +242,14 @@ void PluginViewerController::sl_show() {
 
 PlugViewServiceItem *PluginViewerController::getCurrentServiceItem() const {
     PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
-    assert(item != NULL && item->isServiceItem());
+    assert(item != nullptr && item->isServiceItem());
     PlugViewServiceItem *si = static_cast<PlugViewServiceItem *>(item);
     return si;
 }
 
 PlugViewPluginItem *PluginViewerController::getCurrentPluginItem() const {
     PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
-    assert(item != NULL && item->isPluginItem());
+    assert(item != nullptr && item->isPluginItem());
     PlugViewPluginItem *pi = static_cast<PlugViewPluginItem *>(item);
     return pi;
 }
@@ -257,7 +257,7 @@ PlugViewPluginItem *PluginViewerController::getCurrentPluginItem() const {
 void PluginViewerController::sl_enableService() {
     assert(showServices);
     PlugViewServiceItem *si = getCurrentServiceItem();
-    if (si == NULL || si->service->isEnabled()) {
+    if (si == nullptr || si->service->isEnabled()) {
         return;
     }
     Task *task = AppContext::getServiceRegistry()->enableServiceTask(si->service);
@@ -266,7 +266,7 @@ void PluginViewerController::sl_enableService() {
 
 void PluginViewerController::sl_disableService() {
     PlugViewServiceItem *si = getCurrentServiceItem();
-    if (si == NULL || si->service->isDisabled()) {
+    if (si == nullptr || si->service->isDisabled()) {
         return;
     }
     Task *task = AppContext::getServiceRegistry()->disableServiceTask(si->service);
@@ -277,7 +277,7 @@ void PluginViewerController::updateState() {
     updateActions();
     ui.infoView->clear();
     PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
-    if (item == NULL) {
+    if (item == nullptr) {
         ui.infoView->setText(tr("Select a plugin to view more information about it."));
         return;
     }

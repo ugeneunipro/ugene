@@ -124,6 +124,15 @@ public:
     static QString errorDocumentNotFound(const GUrl &url) {
         return tr("Document not found: %1").arg(url.getURLString());
     }
+
+    static QString errorObjectNotFound(const QString &objectName) {
+        return tr("Object not found: %1").arg(objectName);
+    }
+
+    static QString errorObjectIsReadOnly(const QString &objectName) {
+        return tr("Object is read only: %1").arg(objectName);
+    }
+
     static QString suffixBp() {
         return tr(" bp");
     }
@@ -141,6 +150,16 @@ public:
 
     static QString required() {
         return tr("Required");
+    }
+
+    /**
+     * Returns active language code: 'en', 'ru', 'tr'.
+     * The string 'ugene-active-translation-language-code' must be correctly translated in the .ts file.
+     * If the string is not translated, 'en' is returned as the default.
+     */
+    static QString getActiveLanguageCode() {
+        QString code = tr("ugene-active-translation-language-code");
+        return code.isEmpty() || code == "ugene-active-translation-language-code" ? "en" : code;
     }
 };
 

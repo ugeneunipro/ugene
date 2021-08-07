@@ -22,24 +22,21 @@
 #include "ExportSequences2MSADialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
 namespace U2 {
 
 ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget *p, const QString &defaultUrl)
-    : QDialog(p),
-      saveController(NULL) {
+    : QDialog(p), Ui_ExportSequences2MSADialog(),
+      saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227677");
+    new HelpButton(this, buttonBox, "65929308");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     okButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -68,7 +65,6 @@ void ExportSequences2MSADialog::initSaveController(const QString &defaultUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultUrl;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
-    ;
     config.fileDialogButton = fileButton;
     config.fileNameEdit = fileNameEdit;
     config.formatCombo = formatCombo;

@@ -29,7 +29,7 @@
 namespace U2 {
 
 ExtractAnnotatedRegionTask::ExtractAnnotatedRegionTask(const DNASequence &sequence_, const SharedAnnotationData &sd_, const ExtractAnnotatedRegionTaskSettings &cfg_)
-    : Task(tr("Extract annotated regions"), TaskFlag_None), inputSeq(sequence_), inputAnn(sd_), cfg(cfg_), complT(NULL), aminoT(NULL) {
+    : Task(tr("Extract annotated regions"), TaskFlag_None), inputSeq(sequence_), inputAnn(sd_), cfg(cfg_), complT(nullptr), aminoT(nullptr) {
 }
 
 void ExtractAnnotatedRegionTask::prepare() {
@@ -44,7 +44,7 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
     }
     if (cfg.complement && inputAnn->getStrand().isCompementary()) {
         DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(inputSeq.alphabet);
-        if (compTT != NULL) {
+        if (compTT != nullptr) {
             complT = compTT;
         }
     }
@@ -61,8 +61,8 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
 void ExtractAnnotatedRegionTask::run() {
     QVector<U2Region> safeLocation = inputAnn->getRegions();
     U2Region::bound(0, inputSeq.length(), safeLocation);
-    QList<QByteArray> resParts = U1SequenceUtils::extractRegions(inputSeq.seq, safeLocation, complT, NULL, inputSeq.circular);
-    if (aminoT == NULL) {    // extension does not work for translated annotations
+    QList<QByteArray> resParts = U1SequenceUtils::extractRegions(inputSeq.seq, safeLocation, complT, nullptr, inputSeq.circular);
+    if (aminoT == nullptr) {    // extension does not work for translated annotations
         if (cfg.extLeft > 0) {
             int annStart = safeLocation.first().startPos;
             int preStart = qMax(0, annStart - cfg.extLeft);
@@ -100,10 +100,11 @@ void ExtractAnnotatedRegionTask::run() {
         } else {
             s.seq = seq;
         }
-        s.alphabet = aminoT ? aminoT->getDstAlphabet() : complT ? complT->getDstAlphabet() : inputSeq.alphabet;
-        if (aminoT != NULL) {
+        s.alphabet = aminoT ? aminoT->getDstAlphabet() : complT ? complT->getDstAlphabet()
+                                                                : inputSeq.alphabet;
+        if (aminoT != nullptr) {
             s.alphabet = aminoT->getDstAlphabet();
-        } else if (complT != NULL) {
+        } else if (complT != nullptr) {
             s.alphabet = complT->getDstAlphabet();
         } else {
             s.alphabet = inputSeq.alphabet;

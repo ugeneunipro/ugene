@@ -29,7 +29,7 @@ namespace U2 {
 template<class T>
 class GAutoDeleteList : public QObject {
 public:
-    GAutoDeleteList(QObject *p = NULL)
+    GAutoDeleteList(QObject *p = nullptr)
         : QObject(p) {
     }
     virtual ~GAutoDeleteList() {
@@ -42,7 +42,7 @@ public:
 template<class T>
 class gauto_array {
 public:
-    gauto_array(T *p = NULL)
+    gauto_array(T *p = nullptr)
         : data(p) {
     }
     ~gauto_array() {

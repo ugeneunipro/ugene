@@ -31,7 +31,7 @@
 namespace U2 {
 
 QMutex StdResidueDictionary::standardDictionaryLock;
-QScopedPointer<StdResidueDictionary> StdResidueDictionary::standardDictionary(NULL);
+QScopedPointer<StdResidueDictionary> StdResidueDictionary::standardDictionary(nullptr);
 
 bool StdResidueDictionary::load(const QString &fileName) {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -64,11 +64,11 @@ bool StdResidueDictionary::load(const QString &fileName) {
 StdResidueDictionary *StdResidueDictionary::createStandardDictionary() {
     StdResidueDictionary *stdDictionary = new StdResidueDictionary();
     if (!stdDictionary->load(STD_DICT_FILE_NAME)) {
-        return NULL;
+        return nullptr;
     }
 
     if (!stdDictionary->validate()) {
-        return NULL;
+        return nullptr;
     }
 
     return stdDictionary;
@@ -227,8 +227,8 @@ const StdResidue StdResidueDictionary::getResidueById(int id) const {
 
 StdResidueDictionary *StdResidueDictionary::createFromAsnTree(AsnNode *rootElem) {
     AsnNode *resGraphsNode = ASNFormat::findFirstNodeByName(rootElem, "residue-graphs");
-    if (resGraphsNode == NULL) {
-        return NULL;
+    if (resGraphsNode == nullptr) {
+        return nullptr;
     }
 
     StdResidueDictionary *localDictionary = new StdResidueDictionary();

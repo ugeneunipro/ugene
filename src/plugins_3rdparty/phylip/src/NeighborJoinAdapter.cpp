@@ -19,6 +19,8 @@
 * MA 02110-1301, USA.
 */
 
+#include "NeighborJoinAdapter.h"
+
 #include <QString>
 #include <QTemporaryFile>
 #include <QVector>
@@ -28,40 +30,44 @@
 #include <U2Core/Task.h>
 
 #include "DistanceMatrix.h"
-#include "NeighborJoinAdapter.h"
 #include "NeighborJoinWidget.h"
 #include "PhylipCmdlineTask.h"
 #include "SeqBootAdapter.h"
 
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 #include "dnadist.h"
 #include "neighbor.h"
-#include "protdist.h"
+#ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#endif
 
 namespace U2 {
 
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
-void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
-{
-    PhyNode* current = NULL;
+void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode *root, int bootstrap_repl) {
+    PhyNode *current = nullptr;
 
     if (p == start) {
         current = root;
     } else {
         current = new PhyNode;
     }
-    if(p){
+    if (p) {
         static int counter = 0;
         if (p->tip) {
-            if(bootstrap_repl != 0){
+            if (bootstrap_repl != 0) {
                 current->setName(QString::fromLatin1(p->nayme));
-            }else{
+            } else {
                 assert(p->index - 1 < ma->getNumRows());
                 current->setName(QString(ma->getMsaRow(p->index - 1)->getName()));
             }
         } else {
             current->setName(QString("node %1").arg(counter++));
-            createPhyTreeFromPhylipTree(ma, p->next->back,  m, njoin, start, current, bootstrap_repl);
+            createPhyTreeFromPhylipTree(ma, p->next->back, m, njoin, start, current, bootstrap_repl);
             createPhyTreeFromPhylipTree(ma, p->next->next->back, m, njoin, start, current, bootstrap_repl);
             if (p == start && njoin) {
                 createPhyTreeFromPhylipTree(ma, p->back, m, njoin, start, current, bootstrap_repl);
@@ -71,48 +77,46 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
         if (p == start) {
             counter = 0;
         } else {
-            if(bootstrap_repl != 0){
-                if(p->deltav == 0){
+            if (bootstrap_repl != 0) {
+                if (p->deltav == 0) {
                     PhyTreeData::addBranch(root, current, bootstrap_repl);
-                }else{
-                    PhyTreeData::addBranch(root, current, p->deltav );
+                } else {
+                    PhyTreeData::addBranch(root, current, p->deltav);
                 }
-            }else{
+            } else {
                 PhyTreeData::addBranch(root, current, p->v);
             }
-            
         }
     }
-}  
+}
 
-void replacePhylipRestrictedSymbols(QByteArray& name) {
-    static const char badSymbols[] = {',',':','[',']','(',')',';' };
-    static int sz = sizeof (badSymbols) / sizeof(char);
+void replacePhylipRestrictedSymbols(QByteArray &name) {
+    static const char badSymbols[] = {',', ':', '[', ']', '(', ')', ';'};
+    static int sz = sizeof(badSymbols) / sizeof(char);
     for (int i = 0; i < sz; ++i) {
         name.replace(badSymbols[i], ' ');
     }
 }
 
-Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s){
+Task *NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
     return new PhylipCmdlineTask(ma, s);
 }
 
-CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget *NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
     return new NeighborJoinWidget(ma, parent);
 }
 
-NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
-:PhyTreeGeneratorTask(ma, s), memLocker(stateInfo){
+NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s)
+    : PhyTreeGeneratorTask(ma, s), memLocker(stateInfo) {
     setTaskName("NeighborJoin algorithm");
 }
 
-void NeighborJoinCalculateTreeTask::run(){
-    QMutexLocker runLocker( &runLock );
+void NeighborJoinCalculateTreeTask::run() {
+    QMutexLocker runLocker(&runLock);
 
-    GCOUNTER(cvar, "PhylipNeigborJoin" );
+    GCOUNTER(cvar, "PhylipNeigborJoin");
 
-
-    PhyTree phyTree(NULL);
+    PhyTree phyTree(nullptr);
 
     if (inputMA->getNumRows() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");
@@ -121,7 +125,7 @@ void NeighborJoinCalculateTreeTask::run(){
     }
 
     try {
-        if(settings.bootstrap){ //bootstrapping and creating a consensus tree
+        if (settings.bootstrap) {    //bootstrapping and creating a consensus tree
             setTaskInfo(&stateInfo);
             setBootstr(true);
             stateInfo.setDescription("Generating sequences");
@@ -130,27 +134,27 @@ void NeighborJoinCalculateTreeTask::run(){
 
             QTemporaryFile tmpFile;
             QString path = seqBoot->getTmpFileTemplate();
-            if(!path.isEmpty()){
+            if (!path.isEmpty()) {
                 tmpFile.setFileTemplate(path);
             }
-            if(!tmpFile.open()){
+            if (!tmpFile.open()) {
                 setError("Can't create temporary file");
                 result = phyTree;
                 return;
             }
 
-            seqBoot->generateSequencesFromAlignment(inputMA,settings);
+            seqBoot->generateSequencesFromAlignment(inputMA, settings);
 
             stateInfo.setDescription("Calculating trees");
 
-            for (int i = 0; i < settings.replicates; i++){
-                stateInfo.progress = (int)(i/(float)settings.replicates * 100);
+            for (int i = 0; i < settings.replicates; i++) {
+                stateInfo.progress = (int)(i / (float)settings.replicates * 100);
 
-                const MultipleSequenceAlignment& curMSA = seqBoot->getMSA(i);
+                const MultipleSequenceAlignment &curMSA = seqBoot->getMSA(i);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
-                distanceMatrix->calculateOutOfAlignment(curMSA,settings);
+                distanceMatrix->calculateOutOfAlignment(curMSA, settings);
 
-                if(!distanceMatrix->getErrorMessage().isEmpty()) {
+                if (!distanceMatrix->getErrorMessage().isEmpty()) {
                     stateInfo.setError(distanceMatrix->getErrorMessage());
                     result = phyTree;
                     return;
@@ -165,72 +169,71 @@ void NeighborJoinCalculateTreeTask::run(){
 
                 // Allocate memory resources
                 neighbour_init(sz, memLocker, tmpFile.fileName());
-                if(memLocker.hasError()) {
+                if (memLocker.hasError()) {
                     stateInfo.setError(memLocker.getError());
                     return;
                 }
 
                 // Fill data
-                vector* m = getMtx();
+                vector *m = getMtx();
                 for (int i = 0; i < sz; ++i) {
                     for (int j = 0; j < sz; ++j) {
                         m[i][j] = distanceMatrix->rawMatrix[i][j];
                     }
                 }
 
-                naym* nayme = getNayme();
+                naym *nayme = getNayme();
                 for (int i = 0; i < sz; ++i) {
                     const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
                     QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
                     qstrncpy(nayme[i], name.constData(), sizeof(naym));
 
-                    for(int j = name.length(); j < nmlngth; j++){
+                    for (int j = name.length(); j < nmlngth; j++) {
                         nayme[i][j] = ' ';
                     }
                 }
 
                 // Calculate tree
-                const tree* curTree = neighbour_calc_tree(); 
+                neighbour_calc_tree();
 
                 neighbour_free_resources();
             }
             progress = 99;
             stateInfo.setDescription("Calculating consensus tree");
 
-            if(settings.consensusID == ConsensusModelTypes::Strict){
+            if (settings.consensusID == ConsensusModelTypes::Strict) {
                 consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, true, false, false, false);
-            }else if(settings.consensusID == ConsensusModelTypes::MajorityRuleExt){
+            } else if (settings.consensusID == ConsensusModelTypes::MajorityRuleExt) {
                 consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, true, false, false);
-            }else if(settings.consensusID == ConsensusModelTypes::MajorityRule){
+            } else if (settings.consensusID == ConsensusModelTypes::MajorityRule) {
                 consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, false, true, false);
-            }else if(settings.consensusID == ConsensusModelTypes::M1){
+            } else if (settings.consensusID == ConsensusModelTypes::M1) {
                 consens_starter(tmpFile.fileName().toStdString().c_str(), settings.fraction, false, false, false, true);
-            }else{
+            } else {
                 assert(0);
             }
 
-            PhyNode* rootPhy = new PhyNode();
+            PhyNode *rootPhy = new PhyNode();
             bool njoin = true;
 
             createPhyTreeFromPhylipTree(inputMA, root, 0.43429448222, njoin, root, rootPhy, settings.replicates);
 
             consens_free_res();
 
-            PhyTreeData* data = new PhyTreeData();
+            PhyTreeData *data = new PhyTreeData();
             data->setRootNode(rootPhy);
 
             phyTree = data;
-        }else{
-
-        // Exceptions are used to avoid phylip exit(-1) error handling and canceling task 
+        } else {
+            // Exceptions are used to avoid phylip exit(-1) error handling and canceling task
             setTaskInfo(&stateInfo);
             setBootstr(false);
 
             QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
-            distanceMatrix->calculateOutOfAlignment(inputMA,settings);
+            distanceMatrix->calculateOutOfAlignment(inputMA, settings);
 
-            if(!distanceMatrix->getErrorMessage().isEmpty()) {
+            if (!distanceMatrix->getErrorMessage().isEmpty()) {
                 stateInfo.setError(distanceMatrix->getErrorMessage());
                 result = phyTree;
                 return;
@@ -245,20 +248,20 @@ void NeighborJoinCalculateTreeTask::run(){
 
             // Allocate memory resources
             neighbour_init(sz, memLocker);
-            if(memLocker.hasError()) {
+            if (memLocker.hasError()) {
                 stateInfo.setError(memLocker.getError());
                 return;
             }
 
             // Fill data
-            vector* m = getMtx();
+            vector *m = getMtx();
             for (int i = 0; i < sz; ++i) {
                 for (int j = 0; j < sz; ++j) {
                     m[i][j] = distanceMatrix->rawMatrix[i][j];
                 }
             }
 
-            naym* nayme = getNayme();
+            naym *nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
                 const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
                 QByteArray name = row->getName().toLatin1();
@@ -267,10 +270,9 @@ void NeighborJoinCalculateTreeTask::run(){
             }
 
             // Calculate tree
-            const tree* curTree = neighbour_calc_tree();
+            const tree *curTree = neighbour_calc_tree();
 
-
-            PhyNode* root = new PhyNode();
+            PhyNode *root = new PhyNode();
             bool njoin = true;
 
             stateInfo.progress = 99;
@@ -278,20 +280,18 @@ void NeighborJoinCalculateTreeTask::run(){
 
             neighbour_free_resources();
 
-            PhyTreeData* data = new PhyTreeData();
+            PhyTreeData *data = new PhyTreeData();
             data->setRootNode(root);
 
             phyTree = data;
         }
-    }
-    catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc &) {
         setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA->getName()));
-    }
-    catch (const char* message) {
+    } catch (const char *message) {
         stateInfo.setError(QString("Phylip error %1").arg(message));
     }
 
     result = phyTree;
 }
 
-} 
+}    // namespace U2

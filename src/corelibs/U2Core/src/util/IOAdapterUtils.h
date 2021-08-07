@@ -33,12 +33,12 @@ class U2CORE_EXPORT IOAdapterUtils {
 public:
     static IOAdapterId url2io(const GUrl &url);
 
-    static QByteArray readFileHeader(const GUrl &url, int size = 65536);
+    static QByteArray readFileHeader(const GUrl &url, int size = 524228);
 
     // io - opened IO adapter. before and after the call pos in file the same
-    static QByteArray readFileHeader(IOAdapter *io, int size = 65536);
+    static QByteArray readFileHeader(IOAdapter *io, int size = 524228);
 
-    static IOAdapter *open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode = IOAdapterMode_Read, IOAdapterFactory *iof = NULL);
+    static IOAdapter *open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode = IOAdapterMode_Read, IOAdapterFactory *iof = nullptr);
 
     static IOAdapterFactory *get(const IOAdapterId &);
 

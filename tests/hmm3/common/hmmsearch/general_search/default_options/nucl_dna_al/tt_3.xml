@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- tt.hmm, 3.fa dna default alphabet
+	./hmmsearch tt.hmm 3.fa > g_tt_hmm_3_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/3.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/tt.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/nucl_dna_al/tt_3/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_tt_hmm_3_fa.out" actualOut="common/hmmsearch/general_search/default_options/nucl_dna_al/tt_3/output.txt"/>
+
+</multi-test>

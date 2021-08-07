@@ -3,5 +3,3 @@ PLUGIN_NAME=Weight matrix
 PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
-
-unix: QMAKE_CXXFLAGS += -Wno-char-subscripts

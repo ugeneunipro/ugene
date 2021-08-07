@@ -37,7 +37,7 @@ class LoadUnloadedDocumentTask;
 class QDRunSettings {
 public:
     QDRunSettings()
-        : annotationsObj(NULL), scheme(NULL),
+        : annotationsObj(nullptr), scheme(nullptr),
           offset(0), outputType(Group) {
     }
 

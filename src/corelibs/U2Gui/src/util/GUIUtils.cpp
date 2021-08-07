@@ -50,7 +50,7 @@ QAction *GUIUtils::getCheckedAction(QList<QAction *> actions) {
             return action;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QAction *GUIUtils::findActionByData(QList<QAction *> actions, const QString &data) {
@@ -59,7 +59,7 @@ QAction *GUIUtils::findActionByData(QList<QAction *> actions, const QString &dat
             return action;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QAction *GUIUtils::findAction(const QList<QAction *> &actions, const QString &name) {
@@ -69,7 +69,7 @@ QAction *GUIUtils::findAction(const QList<QAction *> &actions, const QString &na
             return a;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QAction *GUIUtils::findActionAfter(const QList<QAction *> &actions, const QString &name) {
@@ -84,15 +84,15 @@ QAction *GUIUtils::findActionAfter(const QList<QAction *> &actions, const QStrin
         }
     }
     if (found) {
-        return NULL;
+        return nullptr;
     }
     return actions.first();
 }
 
 QMenu *GUIUtils::findSubMenu(QMenu *m, const QString &name) {
     QAction *action = findAction(m->actions(), name);
-    if (action == NULL) {
-        return NULL;
+    if (action == nullptr) {
+        return nullptr;
     }
     return action->menu();
 }
@@ -112,7 +112,7 @@ void GUIUtils::updateButtonToolTip(QAbstractButton *button, const QKeySequence &
 void GUIUtils::disableEmptySubmenus(QMenu *m) {
     foreach (QAction *action, m->actions()) {
         QMenu *am = action->menu();
-        if (am != NULL && am->actions().isEmpty()) {
+        if (am != nullptr && am->actions().isEmpty()) {
             action->setEnabled(false);
         }
     }
@@ -151,7 +151,7 @@ QIcon GUIUtils::createRoundIcon(const QColor &c, int size) {
 bool GUIUtils::runWebBrowser(const QString &url) {
     bool useDefaultWebBrowser = AppContext::getAppSettings()->getUserAppsSettings()->useDefaultWebBrowser();
     if (url.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Error!"), tr("Document URL is empty!"));
+        QMessageBox::critical(nullptr, tr("Error!"), tr("Document URL is empty!"));
         return false;
     }
 
@@ -161,7 +161,7 @@ bool GUIUtils::runWebBrowser(const QString &url) {
     if (useDefaultWebBrowser) {
         bool launched = QDesktopServices::openUrl(QUrl(url));
         if (!launched) {
-            QMessageBox::critical(NULL, tr("Error!"), tr("Unable to launch default web browser."));
+            QMessageBox::critical(nullptr, tr("Error!"), tr("Unable to launch default web browser."));
             AppContext::getAppSettings()->getUserAppsSettings()->setUseDefaultWebBrowser(false);
             AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_USER_APPS);
             program = AppContext::getAppSettings()->getUserAppsSettings()->getWebBrowserURL();
@@ -179,7 +179,7 @@ bool GUIUtils::runWebBrowser(const QString &url) {
         }
     } else {
         if (!ok) {
-            QMessageBox::critical(NULL, tr("Error!"), tr("Please specify the browser executable"));
+            QMessageBox::critical(nullptr, tr("Error!"), tr("Please specify the browser executable"));
             AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_USER_APPS);
             program = AppContext::getAppSettings()->getUserAppsSettings()->getWebBrowserURL();
 

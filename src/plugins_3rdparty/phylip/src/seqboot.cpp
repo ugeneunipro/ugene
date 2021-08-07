@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /* version 3.696.
 Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
 

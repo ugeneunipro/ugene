@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- asp.hmm, pepsin.fa amino alphabet -E, no hits here
+	./hmmsearch -seed 100 -E 1.34e-139 Asp.hmm pepsin.fa > e_asp_hmm_pepsin_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/pepsin.fa" io="local_file" format="fasta"/>
+
+    <hmm3-search hmm="hmmer3/build/Asp.hmm" seqE="1.34e-139" seed="100" seqDoc="seq" outputDir="common/hmmsearch/general_search/eval_tresholds/amino_al/asp_pepsin/"/>
+
+    <hmm3-search-compare trueOut="hmmer3/search/e_asp_hmm_pepsin_fa.out" actualOut="common/hmmsearch/general_search/eval_tresholds/amino_al/asp_pepsin/output.txt"/>
+
+</multi-test>

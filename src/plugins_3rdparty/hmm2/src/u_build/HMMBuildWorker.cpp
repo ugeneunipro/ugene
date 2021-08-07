@@ -250,7 +250,7 @@ Task *HMMBuildWorker::tick() {
 
     if (nextTick) {    // calibrate task
         Task *t = nextTick;
-        nextTick = NULL;
+        nextTick = nullptr;
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else {    // hmm build task
@@ -258,7 +258,7 @@ Task *HMMBuildWorker::tick() {
             Message inputMessage = getMessageAndSetupScriptValues(input);
             if (inputMessage.isEmpty()) {
                 output->transit();
-                return NULL;
+                return nullptr;
             }
             cfg.name = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
             if (cfg.name.isEmpty()) {
@@ -277,7 +277,7 @@ Task *HMMBuildWorker::tick() {
             QVariantMap qm = inputMessage.getData().toMap();
             SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
             QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-            SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+            SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
             const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
             Task *t = new HMMBuildTask(cfg, msa);
@@ -287,13 +287,13 @@ Task *HMMBuildWorker::tick() {
             setDone();
             output->setEnded();
         }
-        return NULL;
+        return nullptr;
     }
 }
 
 void HMMBuildWorker::sl_taskFinished() {
     Task *t = qobject_cast<Task *>(sender());
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
@@ -305,11 +305,11 @@ void HMMBuildWorker::sl_taskFinished() {
 
 void HMMBuildWorker::sl_taskFinished(Task *t) {
     HMMBuildTask *build = qobject_cast<HMMBuildTask *>(t);
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
-    plan7_s *hmm = NULL;
+    plan7_s *hmm = nullptr;
     if (build) {
         assert(!nextTick);
         hmm = build->getHMM();

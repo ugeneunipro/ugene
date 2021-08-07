@@ -103,9 +103,7 @@ QNetworkProxy NetworkConfiguration::getProxyByUrl(const QUrl &url) const {
     if (pc.proxyz.contains(prtype)) {
         assert(pc.proxyz_usage.contains(prtype));
         if (pc.proxyz_usage[prtype]) {
-            return (pc.excepted_addr_enabled && pc.excepted_addr.contains(url.toString()) ?
-                        QNetworkProxy() :
-                        pc.proxyz[prtype]);
+            return (pc.excepted_addr_enabled && pc.excepted_addr.contains(url.toString()) ? QNetworkProxy() : pc.proxyz[prtype]);
         }
     }
     return QNetworkProxy();

@@ -430,17 +430,17 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMADVContext</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="250"/>
+        <location filename="../src/uHMMPlugin.cpp" line="248"/>
         <source>Find HMM signals with HMMER2...</source>
         <translation>Поиск с помощью скрытой марковской модели (HMMER2)...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="267"/>
+        <location filename="../src/uHMMPlugin.cpp" line="265"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="267"/>
+        <location filename="../src/uHMMPlugin.cpp" line="265"/>
         <source>No sequences found</source>
         <translation>Не выбрана последовательность</translation>
     </message>
@@ -726,7 +726,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="184"/>
         <source>HMMReadTask didn&apos;t generate &quot;hmm&quot; object, stop.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="204"/>
@@ -785,85 +785,85 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMIO</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="214"/>
-        <location filename="../src/HMMIO.cpp" line="234"/>
-        <location filename="../src/HMMIO.cpp" line="394"/>
-        <location filename="../src/HMMIO.cpp" line="400"/>
-        <location filename="../src/HMMIO.cpp" line="426"/>
-        <location filename="../src/HMMIO.cpp" line="457"/>
-        <location filename="../src/HMMIO.cpp" line="482"/>
+        <location filename="../src/HMMIO.cpp" line="222"/>
+        <location filename="../src/HMMIO.cpp" line="242"/>
+        <location filename="../src/HMMIO.cpp" line="411"/>
+        <location filename="../src/HMMIO.cpp" line="417"/>
+        <location filename="../src/HMMIO.cpp" line="443"/>
+        <location filename="../src/HMMIO.cpp" line="474"/>
+        <location filename="../src/HMMIO.cpp" line="499"/>
         <source>Illegal line</source>
         <translation>Ошибка формата</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="221"/>
+        <location filename="../src/HMMIO.cpp" line="229"/>
         <source>File format is not supported</source>
         <translation>Формат не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="280"/>
-        <location filename="../src/HMMIO.cpp" line="285"/>
-        <location filename="../src/HMMIO.cpp" line="292"/>
         <location filename="../src/HMMIO.cpp" line="297"/>
-        <location filename="../src/HMMIO.cpp" line="304"/>
+        <location filename="../src/HMMIO.cpp" line="302"/>
         <location filename="../src/HMMIO.cpp" line="309"/>
-        <location filename="../src/HMMIO.cpp" line="316"/>
-        <location filename="../src/HMMIO.cpp" line="322"/>
-        <location filename="../src/HMMIO.cpp" line="331"/>
-        <location filename="../src/HMMIO.cpp" line="336"/>
+        <location filename="../src/HMMIO.cpp" line="314"/>
+        <location filename="../src/HMMIO.cpp" line="321"/>
+        <location filename="../src/HMMIO.cpp" line="326"/>
+        <location filename="../src/HMMIO.cpp" line="333"/>
+        <location filename="../src/HMMIO.cpp" line="339"/>
         <location filename="../src/HMMIO.cpp" line="348"/>
-        <location filename="../src/HMMIO.cpp" line="357"/>
-        <location filename="../src/HMMIO.cpp" line="362"/>
-        <location filename="../src/HMMIO.cpp" line="406"/>
-        <location filename="../src/HMMIO.cpp" line="411"/>
-        <location filename="../src/HMMIO.cpp" line="415"/>
+        <location filename="../src/HMMIO.cpp" line="353"/>
+        <location filename="../src/HMMIO.cpp" line="365"/>
+        <location filename="../src/HMMIO.cpp" line="374"/>
+        <location filename="../src/HMMIO.cpp" line="379"/>
+        <location filename="../src/HMMIO.cpp" line="423"/>
+        <location filename="../src/HMMIO.cpp" line="428"/>
         <location filename="../src/HMMIO.cpp" line="432"/>
-        <location filename="../src/HMMIO.cpp" line="436"/>
-        <location filename="../src/HMMIO.cpp" line="441"/>
-        <location filename="../src/HMMIO.cpp" line="448"/>
-        <location filename="../src/HMMIO.cpp" line="463"/>
-        <location filename="../src/HMMIO.cpp" line="472"/>
-        <location filename="../src/HMMIO.cpp" line="488"/>
-        <location filename="../src/HMMIO.cpp" line="496"/>
-        <location filename="../src/HMMIO.cpp" line="502"/>
-        <location filename="../src/HMMIO.cpp" line="507"/>
+        <location filename="../src/HMMIO.cpp" line="449"/>
+        <location filename="../src/HMMIO.cpp" line="453"/>
+        <location filename="../src/HMMIO.cpp" line="458"/>
+        <location filename="../src/HMMIO.cpp" line="465"/>
+        <location filename="../src/HMMIO.cpp" line="480"/>
+        <location filename="../src/HMMIO.cpp" line="489"/>
+        <location filename="../src/HMMIO.cpp" line="505"/>
+        <location filename="../src/HMMIO.cpp" line="513"/>
+        <location filename="../src/HMMIO.cpp" line="520"/>
+        <location filename="../src/HMMIO.cpp" line="525"/>
         <source>Invalid file structure near %1</source>
         <translation>Некорректная структура файла вблизи &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="342"/>
+        <location filename="../src/HMMIO.cpp" line="359"/>
         <source>ALPH must precede NULE in HMM save files</source>
         <translation>ALPH must precede NULE in HMM save files</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="251"/>
-        <location filename="../src/HMMIO.cpp" line="377"/>
-        <location filename="../src/HMMIO.cpp" line="381"/>
+        <location filename="../src/HMMIO.cpp" line="266"/>
+        <location filename="../src/HMMIO.cpp" line="394"/>
+        <location filename="../src/HMMIO.cpp" line="398"/>
         <source>Value is illegal: %1</source>
         <translation>Некорректное значение: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="71"/>
+        <location filename="../src/HMMIO.cpp" line="72"/>
         <source>Alphabet is not set</source>
         <translation>Не установлен алфавит</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="219"/>
+        <location filename="../src/HMMIO.cpp" line="227"/>
         <source>Model &quot;%1&quot; is a HMMER3 model, it can&apos;t be used with HMMER2.</source>
         <translation>Модель &quot;%1&quot; это HMMER3 модель, она не может быть использована с HMMER2.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="385"/>
+        <location filename="../src/HMMIO.cpp" line="402"/>
         <source>Value is not set for &apos;%1&apos;</source>
         <translation>Не установлено значение для &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="521"/>
+        <location filename="../src/HMMIO.cpp" line="539"/>
         <source>No &apos;//&apos; symbol found</source>
         <translation>Не найден маркер конца структуры: &apos;//&apos;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="639"/>
+        <location filename="../src/HMMIO.cpp" line="657"/>
         <source>HMM models</source>
         <translation>Профайлы HMM</translation>
     </message>
@@ -871,7 +871,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMMSAEditorContext</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="209"/>
+        <location filename="../src/uHMMPlugin.cpp" line="208"/>
         <source>Build HMMER2 profile</source>
         <translation>Построить профиль с помощью HMMER2</translation>
     </message>
@@ -879,7 +879,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMReadTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="654"/>
+        <location filename="../src/HMMIO.cpp" line="671"/>
         <source>Read HMM profile &apos;%1&apos;.</source>
         <translation>Чтение HMM профайла &apos;%1&apos;.</translation>
     </message>
@@ -1044,7 +1044,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMWriteTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="674"/>
+        <location filename="../src/HMMIO.cpp" line="690"/>
         <source>Write HMM profile &apos;%1&apos;</source>
         <translation>Запись HMM профайла &apos;%1&apos;</translation>
     </message>
@@ -1431,7 +1431,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::UHMMBuild</name>
     <message>
-        <location filename="../src/u_build/uhmmbuild.cpp" line="184"/>
+        <location filename="../src/u_build/uhmmbuild.cpp" line="196"/>
         <source>bogus configuration choice</source>
         <translation>некорректный выбор конфигурации</translation>
     </message>
@@ -1439,29 +1439,29 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::uHMMPlugin</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="73"/>
+        <location filename="../src/uHMMPlugin.cpp" line="75"/>
         <source>HMM2</source>
         <translation>HMM2</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="73"/>
+        <location filename="../src/uHMMPlugin.cpp" line="75"/>
         <source>Based on HMMER 2.3.2 package. Biological sequence analysis using profile hidden Markov models</source>
         <translation>Основан на пакете HMMER 2.3.2: анализ биологических последовательностей при помощи скрытых марковских моделей (HMM).
 Домашняя страница проекта: http://hmmer.janelia.org/.
 Включает в себя оригинальные оптимизированные версии алгоритмов</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="76"/>
+        <location filename="../src/uHMMPlugin.cpp" line="77"/>
         <source>Build HMM2 profile...</source>
         <translation>Построение профиля с помощью HMMER2...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="81"/>
+        <location filename="../src/uHMMPlugin.cpp" line="82"/>
         <source>Calibrate profile with HMMER2...</source>
         <translation>Калибровка профиля с помощью HMMER2...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="86"/>
+        <location filename="../src/uHMMPlugin.cpp" line="87"/>
         <source>Search with HMMER2...</source>
         <translation>Поиск с помощью HMMER2...</translation>
     </message>

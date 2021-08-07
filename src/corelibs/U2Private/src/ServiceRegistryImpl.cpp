@@ -93,7 +93,7 @@ void ServiceRegistryImpl::timerEvent(QTimerEvent *event) {
     killTimer(event->timerId());
     timerIsActive = false;
     Service *s = findServiceReadyToEnable();
-    if (s != NULL) {
+    if (s != nullptr) {
         AppContext::getTaskScheduler()->registerTopLevelTask(new EnableServiceTask(this, s, true));
     }
 }
@@ -125,7 +125,7 @@ Service *ServiceRegistryImpl::findServiceReadyToEnable() const {
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -307,7 +307,7 @@ void DisableServiceTask::prepare() {
         }
     }
     Task *disablingTask = sr->createServiceDisablingTask(s);
-    if (disablingTask != NULL) {
+    if (disablingTask != nullptr) {
         addSubTask(disablingTask);
     }
 }

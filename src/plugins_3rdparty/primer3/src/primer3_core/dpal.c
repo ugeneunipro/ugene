@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /*
 Copyright (c) 1996,1997,1998,1999,2000,2001,2004,2006
 Whitehead Institute for Biomedical Research, Steve Rozen

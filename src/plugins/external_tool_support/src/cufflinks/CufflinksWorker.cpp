@@ -295,8 +295,8 @@ QString CufflinksPrompter::composeRichDoc() {
  *****************************/
 CufflinksWorker::CufflinksWorker(Actor *actor)
     : BaseWorker(actor),
-      input(NULL),
-      output(NULL),
+      input(nullptr),
+      output(nullptr),
       settingsAreCorrect(false) {
 }
 
@@ -344,12 +344,12 @@ void CufflinksWorker::init() {
 
 Task *CufflinksWorker::tick() {
     if (false == settingsAreCorrect) {
-        return NULL;
+        return nullptr;
     }
 
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
-        SAFE_POINT(!inputMessage.isEmpty(), "Internal error: message can't be NULL!", NULL);
+        SAFE_POINT(!inputMessage.isEmpty(), "Internal error: message can't be NULL!", nullptr);
         QVariantMap data = inputMessage.getData().toMap();
 
         if (settings.fromFile) {
@@ -369,14 +369,14 @@ Task *CufflinksWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void CufflinksWorker::sl_cufflinksTaskFinished() {
     CufflinksSupportTask *cufflinksSupportTask = qobject_cast<CufflinksSupportTask *>(sender());
     CHECK(cufflinksSupportTask->isFinished(), );
 
-    if (NULL != output) {
+    if (nullptr != output) {
         DataTypePtr outputMapDataType = WorkflowEnv::getDataTypeRegistry()->getById(CufflinksWorkerFactory::OUT_MAP_DESCR_ID);
         SAFE_POINT(0 != outputMapDataType, "Internal error: can't get DataTypePtr for output map!", );
 

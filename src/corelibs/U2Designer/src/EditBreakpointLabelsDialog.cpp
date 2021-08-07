@@ -43,7 +43,7 @@ EditBreakpointLabelsDialog::EditBreakpointLabelsDialog(const QStringList &existi
       newLabelsAdded(),
       ui(new Ui_EditBreakpointLabelsDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60228407");
+    new HelpButton(this, ui->buttonBox, "65930039");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -75,17 +75,17 @@ void EditBreakpointLabelsDialog::initExistingLabelsList(const QStringList &exist
 void EditBreakpointLabelsDialog::sl_labelApplianceStateChanged(int state) {
     QObject *activator = sender();
     QCheckBox *labelApplianceController = qobject_cast<QCheckBox *>(activator);
-    Q_ASSERT(NULL != labelApplianceController);
+    Q_ASSERT(nullptr != labelApplianceController);
 
     switch (state) {
-    case Qt::Checked:
-        callingBreakpointLabels.append(applienceControlsForLabels[labelApplianceController]);
-        break;
-    case Qt::Unchecked:
-        callingBreakpointLabels.removeAll(applienceControlsForLabels[labelApplianceController]);
-        break;
-    default:
-        Q_ASSERT(false);
+        case Qt::Checked:
+            callingBreakpointLabels.append(applienceControlsForLabels[labelApplianceController]);
+            break;
+        case Qt::Unchecked:
+            callingBreakpointLabels.removeAll(applienceControlsForLabels[labelApplianceController]);
+            break;
+        default:
+            Q_ASSERT(false);
     }
 }
 

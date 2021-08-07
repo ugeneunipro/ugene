@@ -38,7 +38,7 @@ OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenar
 #define GT_METHOD_NAME "commonScenario"
 void OrfDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(NULL != dialog, "Active modal widget is NULL");
+    GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

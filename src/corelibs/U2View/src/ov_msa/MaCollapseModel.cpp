@@ -142,6 +142,14 @@ QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region &view
     return maRows;
 }
 
+QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const QList<int> &viewRowIndexes, bool includeChildRowsForCollapsedGroups) {
+    QList<int> maRowIndexes;
+    for (int viewRowIndex : qAsConst(viewRowIndexes)) {
+        maRowIndexes << getMaRowIndexesByViewRowIndexes(U2Region(viewRowIndex, 1), includeChildRowsForCollapsedGroups);
+    }
+    return maRowIndexes;
+}
+
 QList<int> MaCollapseModel::getMaRowsIndexesWithViewRowIndexes() const {
     QList<int> maRows;
     for (int viewRow = 0, n = getViewRowCount(); viewRow < n; viewRow++) {
@@ -178,7 +186,7 @@ bool MaCollapseModel::isGroupWithMaRowIndexCollapsed(int maRowIndex) const {
     int viewRowIndex = getViewRowIndexByMaRowIndex(maRowIndex);
     int groupIndex = getCollapsibleGroupIndexByViewRowIndex(viewRowIndex);
     const MaCollapsibleGroup *group = getCollapsibleGroup(groupIndex);
-    return group != NULL && group->isCollapsed;
+    return group != nullptr && group->isCollapsed;
 }
 
 int MaCollapseModel::getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const {
@@ -188,7 +196,7 @@ int MaCollapseModel::getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) co
 
 const MaCollapsibleGroup *MaCollapseModel::getCollapsibleGroup(int collapsibleGroupIndex) const {
     if (collapsibleGroupIndex < 0 || collapsibleGroupIndex >= groups.length()) {
-        return NULL;
+        return nullptr;
     }
     return &groups.constData()[collapsibleGroupIndex];
 }

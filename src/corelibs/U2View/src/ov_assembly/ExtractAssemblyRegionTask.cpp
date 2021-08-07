@@ -42,7 +42,7 @@
 namespace U2 {
 
 ExtractAssemblyRegionAndOpenViewTask::ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings &settings)
-    : Task(tr("Extract Assembly Region And Open View Task"), TaskFlags_NR_FOSE_COSC), settings(settings), extractTask(NULL) {
+    : Task(tr("Extract Assembly Region And Open View Task"), TaskFlags_NR_FOSE_COSC), settings(settings), extractTask(nullptr) {
 }
 
 void ExtractAssemblyRegionAndOpenViewTask::prepare() {
@@ -58,7 +58,7 @@ void ExtractAssemblyRegionAndOpenViewTask::prepare() {
 
 QList<Task *> ExtractAssemblyRegionAndOpenViewTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(NULL != subTask, result);
+    CHECK(nullptr != subTask, result);
 
     if (subTask->hasError() || subTask->isCanceled()) {
         return result;
@@ -66,7 +66,7 @@ QList<Task *> ExtractAssemblyRegionAndOpenViewTask::onSubTaskFinished(Task *subT
 
     if (extractTask == subTask && settings.addToProject) {
         Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.fileUrl);
-        CHECK(openTask != NULL, result);
+        CHECK(openTask != nullptr, result);
         result.append(openTask);
     }
     return result;

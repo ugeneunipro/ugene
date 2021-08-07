@@ -103,6 +103,9 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 /*Contains length of sequence that was read from header of sequence file. Used in merge files option*/
 #define RawDataCheckResult_HeaderSequenceLength "header-sequence-length"
 
+/** Text decoded from the binary input data. Present only for text document formats. */
+#define RawDataCheckResult_RawTextData "raw-text-data"
+
 /** Set of hints that can be processed during document loading */
 #define DocumentReadingMode_SequenceMergeGapSize "merge-gap"
 #define DocumentReadingMode_SequenceMergingFinalSizeHint "merge-size"
@@ -186,7 +189,7 @@ public:
     */
     virtual DNASequence *loadSequence(IOAdapter *io, U2OpStatus &ti);
 
-    virtual void storeDocument(Document *d, U2OpStatus &os, IOAdapterFactory *io = NULL, const GUrl &newDocURL = GUrl());
+    virtual void storeDocument(Document *d, U2OpStatus &os, IOAdapterFactory *io = nullptr, const GUrl &newDocURL = GUrl());
 
     /* io - opened IOAdapter
      * so you can store many documents to this file
@@ -295,7 +298,7 @@ class DocumentImportersRegistry;
 class U2CORE_EXPORT DocumentFormatRegistry : public QObject {
     Q_OBJECT
 public:
-    DocumentFormatRegistry(QObject *p = NULL)
+    DocumentFormatRegistry(QObject *p = nullptr)
         : QObject(p) {
     }
 
@@ -448,7 +451,7 @@ public:
     void propagateModLocks(Document *doc) const;
 
     bool hasUserModLock() const {
-        return modLocks[DocumentModLock_USER] != NULL;
+        return modLocks[DocumentModLock_USER] != nullptr;
     }
 
     void setUserModLock(bool v);

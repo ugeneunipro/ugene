@@ -70,7 +70,7 @@ public:
 
     void buildStaticToolbar(QToolBar *tb) override;
 
-    void buildStaticMenu(QMenu *n) override;
+    void buildMenu(QMenu *menu, const QString &type) override;
 
     Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
 
@@ -241,7 +241,7 @@ private:
     void addRelatedAnnotations(ADVSequenceObjectContext *seqCtx);
     void addAutoAnnotations(ADVSequenceObjectContext *seqCtx);
     void removeAutoAnnotations(ADVSequenceObjectContext *seqCtx);
-    void cancelAutoAnnotationUpdates(AutoAnnotationObject *aaObj, bool *existsRemovedTasks = NULL);
+    void cancelAutoAnnotationUpdates(AutoAnnotationObject *aaObj, bool *existsRemovedTasks = nullptr);
     void addGraphs(ADVSequenceObjectContext *seqCtx);
     void importDocAnnotations(Document *doc);
     void seqWidgetMove(const QPoint &pos);

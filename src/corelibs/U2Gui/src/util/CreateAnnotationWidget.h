@@ -42,7 +42,7 @@ class CreateAnnotationWidget : public QWidget {
     friend class CreateAnnotationWidgetController;
 
 public:
-    CreateAnnotationWidget(QWidget *parent = NULL);
+    CreateAnnotationWidget(QWidget *parent = nullptr);
 
     virtual void setGroupNameVisible(bool visible) = 0;
     virtual void setLocationVisible(bool visible) = 0;

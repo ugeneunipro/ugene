@@ -71,7 +71,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus &os) const {
 
 void SqliteUpgraderFrom_0_To_1_13::upgradeObjectRelationsDbi(U2OpStatus &os) const {
     SQLiteObjectRelationsDbi *objectRelationsDbi = dbi->getSQLiteObjectRelationsDbi();
-    SAFE_POINT_EXT(NULL != objectRelationsDbi, os.setError(L10N::nullPointerError("SQLite object relation dbi")), );
+    SAFE_POINT_EXT(nullptr != objectRelationsDbi, os.setError(L10N::nullPointerError("SQLite object relation dbi")), );
     objectRelationsDbi->initSqlSchema(os);
 }
 

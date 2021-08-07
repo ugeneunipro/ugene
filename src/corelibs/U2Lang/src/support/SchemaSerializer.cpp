@@ -258,10 +258,10 @@ static Port *findPort(const QList<Actor *> &procs, const ActorId &actorId, const
                     return p;
                 }
             }
-            return NULL;
+            return nullptr;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void SchemaSerializer::updatePortBindings(const QList<Actor *> &procs) {
@@ -280,13 +280,13 @@ void SchemaSerializer::updatePortBindings(const QList<Actor *> &procs) {
                     if (!inP) {
                         continue;
                     }
-                    if (inP == NULL) {
+                    if (inP == nullptr) {
                         return;
                     }
 
                     DataTypePtr inPType = inP->Port::getType();
                     QMap<Descriptor, DataTypePtr> inPTypeMap = inPType->getDatatypesMap();
-                    if (inP != NULL && inPType->isMap() && inPTypeMap.keys().size() == 1) {
+                    if (inP != nullptr && inPType->isMap() && inPTypeMap.keys().size() == 1) {
                         Descriptor d = inPTypeMap.keys().at(0);
                         QString newVal = actorId + ":" + d.getId();
                         coreLog.details(QString("remapping old xml workflow for key %1: old value: %2, new value: %3").arg(key).arg(val).arg(newVal));
@@ -333,7 +333,7 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
         AttributeScript *script;
         const QString scriptText = procElement.attribute(SCRIPT_TEXT);
         if (scriptText.isEmpty()) {
-            script = NULL;
+            script = nullptr;
         } else {
             script = new AttributeScript();
             script->setScriptText(scriptText);
@@ -414,9 +414,9 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
 
     foreach (Actor *proc, procMap) {
         ActorPrototype *proto = proc->getProto();
-        if (NULL != proto->getEditor()) {
+        if (nullptr != proto->getEditor()) {
             ActorConfigurationEditor *actorEd = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor());
-            if (NULL != actorEd) {
+            if (nullptr != actorEd) {
                 ActorConfigurationEditor *editor = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);

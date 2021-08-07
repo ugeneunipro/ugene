@@ -94,7 +94,6 @@ public:
         swar = nullptr;
         swmarntr = nullptr;
         swrfr = nullptr;
-        tb = nullptr;
         tf = nullptr;
         treeGeneratorRegistry = nullptr;
         ts = nullptr;
@@ -463,11 +462,6 @@ public:
         workingDirectoryPath = path;
     }
 
-    void setGUITestBase(UGUITestBase *_tb) {
-        assert(tb == nullptr || _tb == nullptr);
-        tb = _tb;
-    }
-
     static AppContextImpl *getApplicationContext();
 
 protected:
@@ -632,9 +626,6 @@ protected:
     virtual UdrSchemaRegistry *_getUdrSchemaRegistry() const {
         return udrSchemaRegistry;
     }
-    virtual UGUITestBase *_getGUITestBase() const {
-        return tb;
-    }
     virtual SplicedAlignmentTaskRegistry *_getSplicedAlignmentTaskRegistry() const {
         return splicedAlignmentTaskRegistry;
     }
@@ -760,7 +751,6 @@ private:
     TestFramework *tf;
     U2DataPathRegistry *dpr;
     U2DbiRegistry *dbiRegistry;
-    UGUITestBase *tb;
     UdrSchemaRegistry *udrSchemaRegistry;
     VirtualFileSystemRegistry *virtualFileSystemRegistry;
     WorkflowScriptRegistry *workflowScriptRegistry;

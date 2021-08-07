@@ -20,7 +20,7 @@
  */
 
 #include "GTMenuPrivate.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "GTMenuPrivateMac.h"
 #endif
 #include <QMainWindow>
@@ -53,7 +53,7 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus &os, const QStringList &it
 void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus &os, const QStringList &itemPath, PopupChecker::CheckOption expectedState) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTMenuPrivateMac::checkMainMenuItemState(os, itemPath, expectedState);
 #else
     QStringList cuttedItemPath = itemPath;
@@ -70,7 +70,7 @@ void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus &os, const QStringLi
     GT_CHECK(menuPath.count() > 0, QString("Menu path is too short: { %1 }").arg(menuPath.join(" -> ")));
     GT_CHECK(itemsNames.count() > 0, QString("There are no menu items to check: %1").arg(itemsNames.join(", ")));
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTMenuPrivateMac::checkMainMenuItemsState(os, menuPath, itemsNames, expectedState);
 #else
     QStringList cutMenuPath = menuPath;
@@ -111,7 +111,7 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
     int key = 0;
     int key_pos = 0;
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // TODO: workaround for MacOS
     //      menubar's submenu can't be opened by keyboard in non-native mode
     m = GTGlobals::UseMouse;

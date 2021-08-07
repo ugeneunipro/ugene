@@ -67,12 +67,12 @@ static const int UNBREAKABLE_SEQUENCE_LENGTH_LIMIT = 50;
 MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings)
     : AbstractAlignmentTask(tr("Align sequences to alignment task"), TaskFlag_None),
       settings(settings),
-      logParser(NULL),
-      saveSequencesDocumentTask(NULL),
-      saveAlignmentDocumentTask(NULL),
-      mafftTask(NULL),
-      loadTmpDocumentTask(NULL),
-      modStep(NULL) {
+      logParser(nullptr),
+      saveSequencesDocumentTask(nullptr),
+      saveAlignmentDocumentTask(nullptr),
+      mafftTask(nullptr),
+      loadTmpDocumentTask(nullptr),
+      modStep(nullptr) {
     GCOUNTER(cvar, "MafftAddToAlignmentTask");
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
@@ -99,7 +99,7 @@ static QString generateTmpFileUrl(const QString &filePathAndPattern) {
 }
 
 void MafftAddToAlignmentTask::prepare() {
-    algoLog.info(tr("Align sequences to an existing alignment by MAFFT started"));
+    algoLog.info(tr("Align sequences to alignment with MAFFT started"));
 
     MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
@@ -151,7 +151,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
         }
         arguments << saveSequencesDocumentTask->getURL().getURLString();
         const DNAAlphabet *alphabet = U2AlphabetUtils::getById(settings.alphabet);
-        SAFE_POINT_EXT(alphabet != NULL, setError("Albhabet is invalid."), subTasks);
+        SAFE_POINT_EXT(alphabet != nullptr, setError("Albhabet is invalid."), subTasks);
         if (alphabet->isRaw()) {
             arguments << "--anysymbol";
         }
@@ -170,7 +170,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
         mafftTask->setSubtaskProgressWeight(65);
         subTasks.append(mafftTask);
     } else if (subTask == mafftTask) {
-        SAFE_POINT(logParser != NULL, "logParser is null", subTasks);
+        SAFE_POINT(logParser != nullptr, "logParser is null", subTasks);
         logParser->cleanup();
         if (!QFileInfo(resultFilePath).exists()) {
             if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid()) {
@@ -198,9 +198,9 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
 void MafftAddToAlignmentTask::run() {
     CHECK_OP(stateInfo, );
     tpm = Progress_Manual;
-    SAFE_POINT(loadTmpDocumentTask != NULL, QString("Load task is NULL"), );
+    SAFE_POINT(loadTmpDocumentTask != nullptr, QString("Load task is NULL"), );
     tmpDoc = QSharedPointer<Document>(loadTmpDocumentTask->takeDocument(false));
-    SAFE_POINT(tmpDoc != NULL, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), );
+    SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), );
     SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), );
 
     U2MsaDbi *dbi = modStep->getDbi()->getMsaDbi();
@@ -236,7 +236,7 @@ void MafftAddToAlignmentTask::run() {
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             //inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
-            SAFE_POINT(sequenceObject != NULL, "U2SequenceObject is null", );
+            SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
@@ -319,17 +319,20 @@ bool MafftAddToAlignmentTask::useMemsaveOption() const {
 
 AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
     AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
-    SAFE_POINT(addSettings != NULL,
+    SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
-               NULL);
+               nullptr);
     return new MafftAddToAlignmentTask(*addSettings);
 }
 
-MafftAddToAligmnentAlgorithm::MafftAddToAligmnentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT, new MafftAddToAlignmentTaskFactory(), NULL) {
+MafftAddToAlignmentAlgorithm::MafftAddToAlignmentAlgorithm()
+    : AlignmentAlgorithm(AddToAlignment,
+                         BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT,
+                         AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with MAFFT…"),
+                         new MafftAddToAlignmentTaskFactory()) {
 }
 
-bool MafftAddToAligmnentAlgorithm::isAlgorithmAvailable() const {
+bool MafftAddToAlignmentAlgorithm::isAlgorithmAvailable() const {
     return AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid();
 }
 

@@ -90,7 +90,7 @@ static Task *createOpenViewTask(const MultiGSelection &ms) {
         Task *t = f->createViewTask(ms, true);
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 Document *LoadUnloadedDocumentAndOpenViewTask::getDocument() {
@@ -116,7 +116,7 @@ QList<Task *> LoadUnloadedDocumentAndOpenViewTask::onSubTaskFinished(Task *subTa
 
 OpenViewTask::OpenViewTask(Document *d)
     : Task("Open view", TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText), doc(d) {
-    assert(doc != NULL);
+    assert(doc != nullptr);
     assert(doc->isLoaded());
 }
 
@@ -144,7 +144,7 @@ void OpenViewTask::prepare() {
         res.append(f->createViewTask(state->getViewName(), state->getStateData()));
     } else {
         Task *openViewTask = createOpenViewTask(ms);
-        if (openViewTask != NULL) {
+        if (openViewTask != nullptr) {
             openViewTask->setSubtaskProgressWeight(0);
             res.append(openViewTask);
         }
@@ -160,16 +160,16 @@ void OpenViewTask::prepare() {
             }
             const GObjectRelation &rel = rels.first();
             Document *seqDoc = AppContext::getProject()->findDocumentByURL(rel.ref.docUrl);
-            if (seqDoc != NULL) {
+            if (seqDoc != nullptr) {
                 if (seqDoc->isLoaded()) {    //try open sequence view
                     GObject *seqObj = seqDoc->findGObjectByName(rel.ref.objName);
-                    if (seqObj != NULL && seqObj->getGObjectType() == GObjectTypes::SEQUENCE) {
+                    if (seqObj != nullptr && seqObj->getGObjectType() == GObjectTypes::SEQUENCE) {
                         GObjectSelection os2;
                         os2.addToSelection(seqObj);
                         MultiGSelection ms2;
                         ms2.addSelection(&os2);
                         Task *openViewTask = createOpenViewTask(ms2);
-                        if (openViewTask != NULL) {
+                        if (openViewTask != nullptr) {
                             openViewTask->setSubtaskProgressWeight(0);
                             res.append(openViewTask);
                         }
@@ -202,7 +202,7 @@ void OpenViewTask::prepare() {
                 ms2.addSelection(&os2);
 
                 Task *openViewTask = createOpenViewTask(ms2);
-                if (openViewTask != NULL) {
+                if (openViewTask != nullptr) {
                     openViewTask->setSubtaskProgressWeight(0);
                     res.append(openViewTask);
                 }
@@ -219,20 +219,20 @@ void OpenViewTask::prepare() {
 
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString &accId, const QString &dbName)
     : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(NULL) {
+      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(nullptr) {
     accNumber = accId;
     databaseName = dbName;
 }
 
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const GUrl &url)
     : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(NULL) {
+      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(nullptr) {
     docUrl = url;
 }
 
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString &accId, const QString &dbName, const QString &fp, const QString &format, const QVariantMap &hints, LoadRemoteDocumentMode mode)
     : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      accNumber(accId), databaseName(dbName), fileFormat(format), fullpath(fp), hints(hints), mode(mode), loadRemoteDocTask(NULL) {
+      accNumber(accId), databaseName(dbName), fileFormat(format), fullpath(fp), hints(hints), mode(mode), loadRemoteDocTask(nullptr) {
     if (mode == LoadRemoteDocumentMode_LoadOnly) {
         setReportingSupported(true);
         setReportingEnabled(true);
@@ -260,7 +260,7 @@ Task *createLoadedDocTask(Document *loadedDoc, bool openView) {
     if (!loadedDoc->isLoaded() && !openView) {
         return new LoadUnloadedDocumentTask(loadedDoc);
     }
-    return NULL;
+    return nullptr;
 }
 }    // namespace
 
@@ -286,7 +286,7 @@ QList<Task *> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task *sub
             QFile::remove(d->getURLString());
             // and remove it from downloaded cache
             RecentlyDownloadedCache *cache = AppContext::getRecentlyDownloadedCache();
-            if (cache != NULL) {
+            if (cache != nullptr) {
                 cache->remove(d->getURLString());
             }
             return subTasks;
@@ -294,27 +294,27 @@ QList<Task *> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task *sub
 
         QString fullPath = loadRemoteDocTask->getLocalUrl();
         Project *proj = AppContext::getProject();
-        if (proj == NULL) {
+        if (proj == nullptr) {
             QVariantMap hints;
             hints[ProjectLoaderHint_LoadWithoutView] = mode != LoadRemoteDocumentMode_OpenView;
             Task *openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(fullPath, hints);
-            if (openWithProjectTask != NULL) {
+            if (openWithProjectTask != nullptr) {
                 subTasks.append(openWithProjectTask);
             }
         } else {
             Document *doc = loadRemoteDocTask->getDocument();
-            SAFE_POINT(doc != NULL, "loadRemoteDocTask->takeDocument() returns NULL!", subTasks);
+            SAFE_POINT(doc != nullptr, "loadRemoteDocTask->takeDocument() returns NULL!", subTasks);
             QString url = doc->getURLString();
             Document *loadedDoc = proj->findDocumentByURL(url);
-            if (loadedDoc != NULL) {
+            if (loadedDoc != nullptr) {
                 Task *task = createLoadedDocTask(loadedDoc, mode == LoadRemoteDocumentMode_OpenView);
-                if (NULL != task) {
+                if (nullptr != task) {
                     subTasks.append(task);
                 }
             } else {
                 // Add document to project
                 doc = loadRemoteDocTask->takeDocument();
-                SAFE_POINT(doc != NULL, "loadRemoteDocTask->takeDocument() returns NULL!", subTasks);
+                SAFE_POINT(doc != nullptr, "loadRemoteDocTask->takeDocument() returns NULL!", subTasks);
                 subTasks.append(new AddDocumentTask(doc));
                 if (mode == LoadRemoteDocumentMode_OpenView) {
                     subTasks.append(new LoadUnloadedDocumentAndOpenViewTask(doc));
@@ -346,7 +346,7 @@ QString LoadRemoteDocumentAndAddToProjectTask::generateReport() const {
 
 AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(Document *doc, const AddDocumentTaskConfig &conf)
     : Task(tr("Opening view for document: 'NONAME'"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings) {
-    if (doc != NULL) {
+    if (doc != nullptr) {
         GUrl url = doc->getURL();
         setTaskName(tr("Opening view for document: %1").arg(url.fileName()));
     } else {
@@ -359,7 +359,7 @@ AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(Document *doc, const AddD
 
 AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(DocumentProviderTask *dp, const AddDocumentTaskConfig &conf)
     : Task(tr("Opening view for document: 'NONAME'"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings) {
-    if (dp != NULL) {
+    if (dp != nullptr) {
         setTaskName(tr("Opening view for document: %1").arg(dp->getDocumentDescription()));
     } else {
         setError(tr("Document provider is NULL"));
@@ -372,9 +372,9 @@ AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(DocumentProviderTask *dp,
 QList<Task *> AddDocumentAndOpenViewTask::onSubTaskFinished(Task *t) {
     QList<Task *> res;
     AddDocumentTask *addTask = qobject_cast<AddDocumentTask *>(t);
-    if (addTask != NULL && !addTask->getStateInfo().isCoR()) {
+    if (addTask != nullptr && !addTask->getStateInfo().isCoR()) {
         Document *doc = addTask->getDocument();
-        assert(doc != NULL);
+        assert(doc != nullptr);
         res << new LoadUnloadedDocumentAndOpenViewTask(doc);
     }
     return res;

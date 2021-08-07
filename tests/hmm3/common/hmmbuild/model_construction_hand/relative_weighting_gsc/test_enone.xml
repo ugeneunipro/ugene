@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wgsc hand enone, model: Asp, has SS_cons, RF annotations
+	cmd: ./hmmbuild -seed 10000 -hand -wgsc -enone Asp_gsc_hand_enone.hmm Asp.sto -->
+
+    <uhmmer3-build inputFile="stockholm/Asp.sto" outputFile="test_Asp_gsc_hand_enone.hmm"
+                   seed="10000" mc="hand" rw="wgsc" ew="enone" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/Asp_gsc_hand_enone.hmm" file2="test_Asp_gsc_hand_enone.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

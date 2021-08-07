@@ -200,20 +200,20 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                     popup.addAction(icon, text);
                 }
                 QAction *a = popup.exec(QCursor::pos());
-                if (NULL == a) {
-                    annotation = NULL;
+                if (nullptr == a) {
+                    annotation = nullptr;
                 } else {
                     int idx = popup.actions().indexOf(a);
                     annotation = annotations[idx];
                 }
             }
-            if (NULL != annotation) {
+            if (nullptr != annotation) {
                 QVector<U2Region> annotationRegions = annotation->getRegions();
                 bool processAllRegions = U1AnnotationUtils::isAnnotationContainsJunctionPoint(annotation, seqLen);
                 if (processAllRegions) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
-                    int mousePressPos = renderArea->coordToPos(renderAreaPoint);
+                    qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
                     for (int i = 0; i < annotationRegions.size(); i++) {
                         const U2Region &region = annotationRegions[i];
                         if (region.contains(mousePressPos)) {

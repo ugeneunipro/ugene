@@ -26,7 +26,7 @@
 #    include <windows.h>
 #endif    // Q_OS_WIN
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "app_settings/ResetSettingsMac.h"
 #endif
 
@@ -120,10 +120,6 @@
 #include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
-#ifndef HI_EXCLUDED
-#    include <U2Test/GUITestService.h>
-#    include <U2Test/UGUITestBase.h>
-#endif    //HI_EXCLUDED
 #include <U2Test/XMLTestFormat.h>
 
 #include <U2View/AnnotHighlightWidgetFactory.h>
@@ -138,6 +134,7 @@
 #include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
+#include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
@@ -154,6 +151,8 @@
 #include <SettingsImpl.h>
 #include <TaskSchedulerImpl.h>
 #include <crash_handler/CrashHandler.h>
+
+#include <U2Core/BundleInfo.h>
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
@@ -187,7 +186,7 @@ BOOL IsWow64() {
     fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
         GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
 
-    if (NULL != fnIsWow64Process) {
+    if (nullptr != fnIsWow64Process) {
         if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
             //handle error
         }
@@ -203,11 +202,6 @@ static void registerCoreServices() {
     ts->registerTopLevelTask(sr->registerServiceTask(new ProjectViewImpl()));
 }
 
-static void updateStaticTranslations() {
-    GObjectTypes::initTypeTranslations();
-    GObjectTypes::initTypeIcons();
-}
-
 static void setDataSearchPaths() {
     //set search paths for data files
     QStringList dataSearchPaths;
@@ -219,6 +213,13 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
+#ifdef Q_OS_DARWIN
+    } else {
+        QString dataDir = BundleInfo::getDataSearchPath();
+        if (!dataDir.isEmpty()) {
+            dataSearchPaths.push_back(dataDir);
+        }
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
@@ -335,6 +336,7 @@ static void initOptionsPanels() {
     //MCA groups
     opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
     opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
+    opWidgetFactoryRegistry->registerFactory(new McaReadsTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {
@@ -420,9 +422,7 @@ int main(int argc, char **argv) {
 
 #ifdef Q_OS_DARWIN
     fixMacFonts();
-#endif
 
-#ifdef Q_OS_MACOS
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
@@ -496,42 +496,40 @@ int main(int argc, char **argv) {
         userAppSettings->setFileStorageDir(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR)));
     }
 
-    bool trOK = false;
+    // Set translations if needed: use value in the settings or environment variables to override.
+    // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList envList = QProcess::systemEnvironment();
-    QString envTranslation = findKey(envList, "UGENE_TRANSLATION");
-    if (!envTranslation.isEmpty()) {
-        trOK = translator.load(QString("transl_") + envTranslation, AppContext::getWorkingDirectoryPath());
-        settings->setValue("UGENE_CURR_TRANSL", envTranslation);
-    }
-    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
-    if (!envTranslationFile.isEmpty()) {
-        trOK = translator.load(envTranslationFile);
-        settings->setValue("UGENE_CURR_TRANSL", QFileInfo(envTranslationFile).fileName().right(2));
-    }
+    QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
 
-    if (!trOK) {
-        // set translations
-        QString transFile[] = {
+    // The file specified by user has the highest priority in the translations lookup order.
+    QStringList envList = QProcess::systemEnvironment();
+    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
+    if (envTranslationFile.isEmpty() || !translator.load(envTranslationFile)) {
+        if (!envTranslationFile.isEmpty()) {
+            failedToLoadTranslatorFiles << envTranslationFile;
+        }
+        QStringList translationFileList = {
+            "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
-            "transl_en"};
-        for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {
-            if (!translator.load(transFile[i], AppContext::getWorkingDirectoryPath())) {
-                fprintf(stderr, "Translation not found: %s\n", transFile[i].toLatin1().constData());
-            } else {
-                settings->setValue("UGENE_CURR_TRANSL", transFile[i].right(2));
-                trOK = true;
+            "transl_" + QLocale::system().name().left(2).toLower(),
+            BundleInfo::getExtraTranslationSearchPath(cmdLineRegistry)};
+        // Keep only valid entries.
+        translationFileList.removeAll("");
+        translationFileList.removeAll("transl_");
+        translationFileList.removeDuplicates();
+        // Use the first translation from the list that works.
+        for (const QString &translationFile : qAsConst(translationFileList)) {
+            if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
                 break;
             }
-        }
-        if (!trOK) {
-            fprintf(stderr, "No translations found, exiting\n");
-            return 1;
+            failedToLoadTranslatorFiles << translationFile;
         }
     }
-
-    app.installTranslator(&translator);
-    updateStaticTranslations();
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        GObjectTypes::initTypeTranslations();
+    }
+    GObjectTypes::initTypeIcons();
 
     ToolsMenu::init();
 
@@ -541,6 +539,9 @@ int main(int argc, char **argv) {
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
+    for (const QString &fileName : failedToLoadTranslatorFiles) {
+        coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
+    }
 
     int ugeneArch = getUgeneBinaryArch();
     QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
@@ -559,7 +560,7 @@ int main(int argc, char **argv) {
     } else {
         osArchCounterSuffix += " 32-bit";
     }
-#elif defined Q_OS_MAC
+#elif defined Q_OS_DARWIN
     osArchCounterSuffix += " 64-bit";
 #else
     QString currentCpuArchitecture = QSysInfo::currentCpuArchitecture();
@@ -622,7 +623,7 @@ int main(int argc, char **argv) {
     MainWindowImpl *mw = new MainWindowImpl();
     appContext->setMainWindow(mw);
     mw->prepare();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // TODO: need to check for other OS and remove #ifdef
     if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST) || cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
         mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
@@ -816,10 +817,6 @@ int main(int argc, char **argv) {
 
     AutoAnnotationsSupport *aaSupport = new AutoAnnotationsSupport();
     appContext->setAutoAnnotationsSupport(aaSupport);
-#ifndef HI_EXCLUDED
-    UGUITestBase *tb = new UGUITestBase();
-    appContext->setGUITestBase(tb);
-#endif    //HI_EXCLUDED
 
     AppFileStorage *appFileStorage = new AppFileStorage();
     U2OpStatusImpl os;
@@ -850,12 +847,6 @@ int main(int argc, char **argv) {
 
     registerCoreServices();
 
-#ifndef HI_EXCLUDED
-    if (GUITestService::isGuiTestServiceNeeded()) {
-        new GUITestService();
-    }
-#endif    //HI_EXCLUDED
-
     GCOUNTER(cvar, "ugeneui launch");
 
     //3 run QT GUI
@@ -865,7 +856,6 @@ int main(int argc, char **argv) {
     Version v = Version::appVersion();
     coreLog.info(QObject::tr("UGENE started"));
     coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(v.text).arg(Version::appArchitecture));
-    coreLog.info(QObject::tr("UGENE distribution: %1").arg(v.distributionInfo));
 
     QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), splashScreen, SLOT(sl_close()));
     QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), mw, SLOT(sl_show()));
@@ -904,202 +894,197 @@ int main(int argc, char **argv) {
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
 
-    appContext->setPasteFactory(NULL);
+    appContext->setPasteFactory(nullptr);
     delete pasteFactory;
 
-    appContext->setProjectFilterTaskRegistry(NULL);
+    appContext->setProjectFilterTaskRegistry(nullptr);
     delete projectFilterTaskRegistry;
 
-#ifndef HI_EXCLUDED
-    appContext->setGUITestBase(NULL);
-    delete tb;
-#endif    //HI_EXCLUDED
-
-    appContext->setRecentlyDownloadedCache(NULL);
+    appContext->setRecentlyDownloadedCache(nullptr);
     delete rdc;
 
-    appContext->setProjectLoader(NULL);
+    appContext->setProjectLoader(nullptr);
     delete pli;
 
-    appContext->setPluginSupport(NULL);
+    appContext->setPluginSupport(nullptr);
     delete psp;
 
-    appContext->setServiceRegistry(NULL);
+    appContext->setServiceRegistry(nullptr);
     delete sreg;
 
     Workflow::WorkflowEnv::shutdown();
 
-    appContext->setCredentialsAsker(NULL);
+    appContext->setCredentialsAsker(nullptr);
     delete credentialsAsker;
 
-    appContext->setPasswordStorage(NULL);
+    appContext->setPasswordStorage(nullptr);
     delete passwordStorage;
 
-    appContext->setDataPathRegistry(NULL);
+    appContext->setDataPathRegistry(nullptr);
     delete dpr;
 
-    appContext->setAlignmentAlgorithmsRegistry(NULL);
+    appContext->setAlignmentAlgorithmsRegistry(nullptr);
     delete alignmentAlgorithmsRegistry;
 
-    appContext->setWorkflowScriptRegistry(NULL);
+    appContext->setWorkflowScriptRegistry(nullptr);
     delete workflowScriptRegistry;
 
-    appContext->setOPCommonWidgetFactoryRegistry(NULL);
+    appContext->setOPCommonWidgetFactoryRegistry(nullptr);
     delete opCommonWidgetFactoryRegistry;
 
-    appContext->setOPWidgetFactoryRegistry(NULL);
+    appContext->setOPWidgetFactoryRegistry(nullptr);
     delete opWidgetFactoryRegistry;
 
-    appContext->setSplicedAlignmentTaskRegistry(NULL);
+    appContext->setSplicedAlignmentTaskRegistry(nullptr);
     delete splicedAlignmentTaskRegistiry;
 
-    appContext->setDataBaseRegistry(NULL);
+    appContext->setDataBaseRegistry(nullptr);
     delete dbr;
 
-    appContext->setDnaAssemblyAlgRegistry(NULL);
+    appContext->setDnaAssemblyAlgRegistry(nullptr);
     delete assemblyReg;
 
-    appContext->setVirtualFileSystemRegistry(NULL);
+    appContext->setVirtualFileSystemRegistry(nullptr);
     delete vfsReg;
 
 #ifdef OPENCL_SUPPORT
-    appContext->setOpenCLGpuRegistry(NULL);
+    appContext->setOpenCLGpuRegistry(nullptr);
     delete oclgr;
 #endif
 
-    appContext->setCudaGpuRegistry(NULL);
+    appContext->setCudaGpuRegistry(nullptr);
     delete cgr;
 
-    appContext->setSecStructPedictAlgRegistry(NULL);
+    appContext->setSecStructPedictAlgRegistry(nullptr);
     delete sspar;
 
-    appContext->setWelcomePageActionRegistry(NULL);
+    appContext->setWelcomePageActionRegistry(nullptr);
     delete welcomePageActions;
 
-    appContext->setConvertFactoryRegistry(NULL);
+    appContext->setConvertFactoryRegistry(nullptr);
     delete convertFactoryRegistry;
 
-    appContext->setSWResultFilterRegistry(NULL);
+    appContext->setSWResultFilterRegistry(nullptr);
     delete swrfr;
 
-    appContext->setMolecularSurfaceFactoryRegistry(NULL);
+    appContext->setMolecularSurfaceFactoryRegistry(nullptr);
     delete msfr;
 
-    appContext->setPhyTreeGeneratorRegistry(NULL);
+    appContext->setPhyTreeGeneratorRegistry(nullptr);
     delete genRegistry;
 
-    appContext->setStructuralAlignmentAlgorithmRegistry(NULL);
+    appContext->setStructuralAlignmentAlgorithmRegistry(nullptr);
     delete saar;
 
-    appContext->setCDSearchFactoryRegistry(NULL);
+    appContext->setCDSearchFactoryRegistry(nullptr);
     delete cdsfr;
 
-    appContext->setQDActorFactoryRegistry(NULL);
+    appContext->setQDActorFactoryRegistry(nullptr);
     delete qpr;
 
-    appContext->setExternalToolRegistry(NULL);
+    appContext->setExternalToolRegistry(nullptr);
     delete etr;
 
-    appContext->setScriptingToolRegistry(NULL);
+    appContext->setScriptingToolRegistry(nullptr);
     delete str;
 
-    appContext->setRepeatFinderTaskFactoryRegistry(NULL);
+    appContext->setRepeatFinderTaskFactoryRegistry(nullptr);
     delete rfr;
 
-    appContext->setSWMulAlignResultNamesTagsRegistry(NULL);
+    appContext->setSWMulAlignResultNamesTagsRegistry(nullptr);
     delete swmarntr;
 
-    appContext->setSmithWatermanTaskFactoryRegistry(NULL);
+    appContext->setSmithWatermanTaskFactoryRegistry(nullptr);
     delete swar;
 
-    appContext->setSubstMatrixRegistry(NULL);
+    appContext->setSubstMatrixRegistry(nullptr);
     delete smr;
 
-    appContext->setPWMConversionAlgorithmRegistry(NULL);
+    appContext->setPWMConversionAlgorithmRegistry(nullptr);
     delete pwmConvReg;
 
-    appContext->setMSADistanceAlgorithmRegistry(NULL);
+    appContext->setMSADistanceAlgorithmRegistry(nullptr);
     delete msaDistReg;
 
-    appContext->setAssemblyConsensusAlgorithmRegistry(NULL);
+    appContext->setAssemblyConsensusAlgorithmRegistry(nullptr);
     delete assemblyConsReg;
 
-    appContext->setMSAConsensusAlgorithmRegistry(NULL);
+    appContext->setMSAConsensusAlgorithmRegistry(nullptr);
     delete msaConsReg;
 
-    appContext->setMsaHighlightingSchemeRegistry(NULL);
+    appContext->setMsaHighlightingSchemeRegistry(nullptr);
     delete mhsr;
 
-    appContext->setMsaColorSchemeRegistry(NULL);
+    appContext->setMsaColorSchemeRegistry(nullptr);
     delete mcsr;
 
-    appContext->setDBXRefRegistry(NULL);
+    appContext->setDBXRefRegistry(nullptr);
     delete dbxr;
 
-    appContext->setDNAAlphabetRegistry(NULL);
+    appContext->setDNAAlphabetRegistry(nullptr);
     delete dal;
 
-    appContext->setDNATranslationRegistry(NULL);
+    appContext->setDNATranslationRegistry(nullptr);
     delete dtr;
 
-    appContext->setIOAdapterRegistry(NULL);
+    appContext->setIOAdapterRegistry(nullptr);
     delete io;
 
-    appContext->setDocumentFormatRegistry(NULL);
+    appContext->setDocumentFormatRegistry(nullptr);
     delete dfr;
 
     delete dbiRegistry;
-    appContext->setDbiRegistry(NULL);
+    appContext->setDbiRegistry(nullptr);
 
-    appContext->setUdrSchemaRegistry(NULL);
+    appContext->setUdrSchemaRegistry(nullptr);
     delete schemaRegistry;
 
-    appContext->setObjectViewFactoryRegistry(NULL);
+    appContext->setObjectViewFactoryRegistry(nullptr);
     delete ovfr;
 
-    appContext->setAnnotationSettingsRegistry(NULL);
+    appContext->setAnnotationSettingsRegistry(nullptr);
     delete asr;
 
-    appContext->setCMDLineRegistry(NULL);
+    appContext->setCMDLineRegistry(nullptr);
     delete cmdLineRegistry;
 
-    appContext->setMainWindow(NULL);
+    appContext->setMainWindow(nullptr);
     delete mw;
 
-    appContext->setTestFramework(NULL);
+    appContext->setTestFramework(nullptr);
     delete tf;
 
-    appContext->setTaskScheduler(NULL);
+    appContext->setTaskScheduler(nullptr);
     delete ts;
 
-    appContext->setResourceTracker(NULL);
+    appContext->setResourceTracker(nullptr);
     delete resTrack;
 
-    appContext->setAutoAnnotationsSupport(NULL);
+    appContext->setAutoAnnotationsSupport(nullptr);
     delete aaSupport;
 
     bool deleteSettingsFile = userAppSettings->resetSettings();
     QString iniFile = AppContext::getSettings()->fileName();
 
-    appContext->setAppSettingsGUI(NULL);
+    appContext->setAppSettingsGUI(nullptr);
     delete appSettingsGUI;
 
-    appContext->setAppSettings(NULL);
+    appContext->setAppSettings(nullptr);
     delete appSettings;
 
-    appContext->setSettings(NULL);
+    appContext->setSettings(nullptr);
     delete settings;
 
-    appContext->setGlobalSettings(NULL);
+    appContext->setGlobalSettings(nullptr);
     delete globalSettings;
 
     if (deleteSettingsFile) {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QFile ff;
         ff.remove(iniFile);
 #else
         ResetSettingsMac::reset();
-#endif    // !Q_OS_MAC
+#endif    // !Q_OS_DARWIN
     }
 
     UgeneUpdater::onClose();

@@ -53,7 +53,7 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return plug;
 }
 
-Primer3Plugin::Primer3Plugin() : Plugin(tr("Primer3"), tr("Integrated tool for PCR primers design.")), viewCtx(NULL)
+Primer3Plugin::Primer3Plugin() : Plugin(tr("Primer3"), tr("Integrated tool for PCR primers design.")), viewCtx(nullptr)
 {
     if (AppContext::getMainWindow()) {
         viewCtx = new Primer3ADVContext(this);
@@ -67,7 +67,7 @@ Primer3Plugin::Primer3Plugin() : Plugin(tr("Primer3"), tr("Integrated tool for P
     //tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=NULL);
+    assert(xmlTestFormat!=nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Primer3Tests::createTestFactories();

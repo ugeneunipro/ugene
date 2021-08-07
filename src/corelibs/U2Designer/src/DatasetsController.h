@@ -40,7 +40,7 @@ class UrlItem;
 class U2DESIGNER_EXPORT DatasetsController : public QObject {
     Q_OBJECT
 public:
-    DatasetsController(const QSet<GObjectType> &compatibleObjTypes = QSet<GObjectType>(), QObject *parent = NULL);
+    DatasetsController(const QSet<GObjectType> &compatibleObjTypes = QSet<GObjectType>(), QObject *parent = nullptr);
     virtual ~DatasetsController();
 
     virtual void update();

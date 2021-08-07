@@ -52,7 +52,7 @@ QHash<QByteArray, int> PDBFormat::atomNumMap = createAtomNumMap();
 QHash<QByteArray, char> PDBFormat::acronymNameMap;
 
 PDBFormat::PDBFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_PDB, DocumentFormatFlag(0), QStringList("pdb")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::PLAIN_PDB, DocumentFormatFlag(0), QStringList("pdb")) {
     formatName = tr("PDB");
     formatDescription = tr("The Protein Data Bank (PDB) format provides a standard representation for macromolecular structure data derived from X-ray diffraction and NMR studies.");
 
@@ -109,7 +109,7 @@ Document *PDBFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
     clock_t t2 = clock();
     perfLog.trace("PDB file parsing time: " + QString::number((float)(t2 - t1) / CLOCKS_PER_SEC));
 
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     io->close();
     os.setProgress(80);
 
@@ -177,7 +177,8 @@ PDBFormat::PDBParser::PDBParser(IOAdapter *_io)
       currentPDBLine(""),
       currentChainIndex(1),
       currentMoleculeIndex(0),
-      residueOrder(0) {
+      residueOrder(0),
+      readingMoleculeName(false) {
     currentModelIndex = 0;
     currentChainIndentifier = ' ';
     flagMultipleModels = false;
@@ -280,12 +281,12 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
     list
     Details
     */
+
     if (!firstCompndLine) {
         QString specification = currentPDBLine.mid(10, currentPDBLine.size() - 11).trimmed().toLatin1();
         if (specification.startsWith(MOLECULE_TAG)) {
-            QRegExp end(";\\s*$");
-            int index = end.indexIn(specification);
-            index = (index > 0) ? index : specification.size();
+            readingMoleculeName = true;
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
             currentMoleculeName = specification.mid(MOLECULE_TAG.size() + 1, index - MOLECULE_TAG.size() - 1).trimmed();
         } else if (specification.startsWith(CHAIN_TAG)) {
             QStringList idetifiers = specification.split(QRegExp(",|:|;"));
@@ -295,6 +296,9 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
                     chainToMoleculeMap[identifier] = currentMoleculeName;
                 }
             }
+        } else if (readingMoleculeName) {
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
+            currentMoleculeName += specification.left(index).trimmed();
         }
     }
 }
@@ -606,6 +610,16 @@ void PDBFormat::PDBParser::createMolecule(char chainIdentifier, BioStruct3D &bio
 void PDBFormat::PDBParser::updateResidueIndexes(BioStruct3D & /*biostruc*/) {
 }
 
+int PDBFormat::PDBParser::returnEndOfNameIndexAndUpdateParserState(const QString &specification) {
+    static const QRegExp end(";\\s*$");
+    int index = end.indexIn(specification);
+    if (index < 0) {
+        return specification.size();
+    }
+    readingMoleculeName = false;    // Molecule name has ended.
+    return index;
+};
+
 char PDBFormat::getAcronymByName(const QByteArray &name) {
     if (acronymNameMap.contains(name))
         return acronymNameMap.value(name);
@@ -782,7 +796,7 @@ QHash<QByteArray, int> PDBFormat::createAtomNumMap() {
 
 Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioStruct3D &bioStruct, DocumentFormat *format, IOAdapterFactory *iof, const GUrl &url, U2OpStatus &os, const QVariantMap &fs) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     QList<GObject *> objects;
@@ -794,7 +808,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
     QVariantMap hints;
     hints.insert(DBI_FOLDER_HINT, folder);
     BioStruct3DObject *biostrucObj = BioStruct3DObject::createInstance(bioStruct, objectName, dbiRef, os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     QMap<int, QList<SharedAnnotationData>> anns = bioStruct.generateAnnotations();
     TmpDbiObjects dbiObjects(dbiRef, os);
     foreach (int key, bioStruct.moleculeMap.keys()) {
@@ -820,7 +834,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
         dnaSeq.info.insert(DNAInfo::CHAIN_ID, key);
         U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dnaSeq, dnaSeq.alphabet->getId());
         U2SequenceObject *seqObj = new U2SequenceObject(dnaSeq.getName(), ref);
-        SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), NULL);
+        SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), nullptr);
         objects.append(seqObj);
         dbiObjects.objects << seqObj->getSequenceRef().entityId;
         if (os.isCoR()) {
@@ -840,7 +854,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
         objects.append(aObj);
         relationsMap.insert(aObj, seqObj);
     }
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     objects.append(biostrucObj);
     Document *doc = new Document(format, iof, url, dbiRef, objects, fs);

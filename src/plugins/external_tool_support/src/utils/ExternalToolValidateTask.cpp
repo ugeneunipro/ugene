@@ -31,7 +31,7 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include <U2Core/AppResources.h>
 #endif
 
@@ -120,9 +120,9 @@ void ExternalToolJustValidateTask::run() {
     CHECK(!hasError(), );
 
     for (const ExternalToolValidation &validation : qAsConst(validations)) {
-        if (externalToolProcess != NULL) {
+        if (externalToolProcess != nullptr) {
             delete externalToolProcess;
-            externalToolProcess = NULL;
+            externalToolProcess = nullptr;
         }
 
         checkArchitecture(validation.executableFile);
@@ -195,7 +195,7 @@ void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     QStringList additionalPaths;
     for (const QString &toolId : qAsConst(externalTool->getDependencies())) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
-        if (NULL != masterTool) {
+        if (nullptr != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
         }
     }
@@ -277,7 +277,7 @@ void ExternalToolJustValidateTask::checkVersion(const QString &partOfLog) {
 
 void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
     Q_UNUSED(toolPath);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QProcess archProcess;
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     archProcess.setProcessEnvironment(env);
@@ -322,8 +322,8 @@ void ExternalToolJustValidateTask::performAdditionalChecks() {
 ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString &_toolId, const QString &_toolName)
     : ExternalToolValidateTask(_toolId, _toolName, TaskFlags(TaskFlag_CancelOnSubtaskCancel | TaskFlag_NoRun)),
       toolIsFound(false),
-      searchTask(NULL),
-      validateTask(NULL) {
+      searchTask(nullptr),
+      validateTask(nullptr) {
 }
 
 void ExternalToolSearchAndValidateTask::prepare() {

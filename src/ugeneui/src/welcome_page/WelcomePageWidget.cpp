@@ -298,13 +298,9 @@ void WelcomePageWidget::sl_openQuickStart() {
 
 void WelcomePageWidget::sl_openRecentFile() {
     HoverQLabel *label = qobject_cast<HoverQLabel *>(sender());
-    QString path = label == nullptr ? QString() : label->property(PATH_PROPERTY).toString();
-    if (!path.isEmpty()) {
-        Task *openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << path);
-        if (openWithProjectTask != nullptr) {    // The task may be null if another open project task is in progress.
-            AppContext::getTaskScheduler()->registerTopLevelTask(openWithProjectTask);
-        }
-    }
+    SAFE_POINT(label != nullptr, "sl_openRecentFile sender is not HoverQLabel", );
+    QString url = label->property(PATH_PROPERTY).toString();
+    AppContext::getProjectLoader()->runOpenRecentFileOrProjectTask(url);
 }
 
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
@@ -336,7 +332,7 @@ void WelcomePageWidget::runAction(const QString &actionId) {
     } else if (actionId == BaseWelcomePageActions::CREATE_WORKFLOW) {
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), tr("The Workflow Designer plugin is not loaded. You can add it using the menu Settings -> Plugins. Then you need to restart UGENE."));
     } else if (actionId == BaseWelcomePageActions::QUICK_START) {
-        QDesktopServices::openUrl(QUrl("https://ugene.net/wiki/display/QSG/Quick+Start+Guide"));
+        QDesktopServices::openUrl(QUrl("https://doc.ugene.net/wiki/display/QSG/Quick+Start+Guide"));
     }
 }
 

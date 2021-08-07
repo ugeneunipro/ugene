@@ -52,7 +52,7 @@ MuscleParamsHelper::~MuscleParamsHelper() {
     ctx->cancelFlag = &ctx->cancelStub;
     ctx->progressPercent = &ctx->progressStub;
     ctx->progress.pr_printf = fprintf;
-    ctx->progress.g_fProgress = NULL;
+    ctx->progress.g_fProgress = nullptr;
 }
 
 int ugene_printf(FILE *f, const char *format, ...) {

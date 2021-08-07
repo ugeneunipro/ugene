@@ -26,7 +26,6 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
-#include <QLineEdit>
 #include <QStyle>
 
 #include "drivers/GTMouseDriver.h"
@@ -41,7 +40,7 @@ namespace HI {
 void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
@@ -49,7 +48,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
     if (p.isNull()) {
         QRect rect = widget->rect();
         p = rect.center();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
         if (qobject_cast<QLineEdit *>(widget) != nullptr) {
@@ -69,9 +68,9 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
-    GT_CHECK(w != NULL, "widget is NULL");
+    GT_CHECK(w != nullptr, "widget is NULL");
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
 #endif
@@ -79,7 +78,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
 
-#ifdef Q_OS_MAC    // TODO: workaround for MacOS gui tests
+#ifdef Q_OS_DARWIN    // TODO: workaround for MacOS gui tests
     if (!qobject_cast<QComboBox *>(w) &&
         !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
@@ -93,7 +92,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findWidget"
-QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QWidget const *const parentWidget, const GTGlobals::FindOptions &options) {
+QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     QWidget *widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -119,11 +118,33 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidgetCenter"
+QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
+}
+
+QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
+}
+
+QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
+}
+
+QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
+}
+
+QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+}
+
+QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
+}
+
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findButtonByText"
 QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
@@ -476,7 +497,7 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkEnabled"
-void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, QWidget const *const parent) {
+void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, const QWidget *parent) {
     checkEnabled(os, GTWidget::findWidget(os, widgetName, parent), expectedEnabledState);
 }
 #undef GT_METHOD_NAME

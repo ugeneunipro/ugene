@@ -46,10 +46,10 @@ namespace U2 {
 ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool allowTranslation, bool allowBackTranslation, const QString &defaultFileName, const QString &sourceFileBaseName, const DocumentFormatId &defaultFormatId, QWidget *p)
     : QDialog(p),
       sequenceName(sourceFileBaseName),
-      saveController(NULL),
+      saveController(nullptr),
       defaultFileName(defaultFileName) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227674");
+    new HelpButton(this, buttonBox, "65929305");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -164,7 +164,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
 
 void ExportSequencesDialog::sl_formatChanged(const QString &newFormatId) {
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(NULL != dfr, "Invalid document format registry", );
+    SAFE_POINT(nullptr != dfr, "Invalid document format registry", );
     if (dfr->getFormatById(newFormatId)->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)) {
         withAnnotationsBox->setEnabled(true);
         withAnnotationsBox->setChecked(true);

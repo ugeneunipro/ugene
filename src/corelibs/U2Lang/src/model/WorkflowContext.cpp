@@ -53,14 +53,14 @@ static QString getWorkflowId(WorkflowContext *ctx) {
 }
 
 WorkflowContext::WorkflowContext(const QList<Actor *> &procs, WorkflowMonitor *_monitor)
-    : monitor(_monitor), storage(NULL), process("") {
+    : monitor(_monitor), storage(nullptr), process("") {
     foreach (Actor *p, procs) {
         procMap.insert(p->getId(), p);
     }
 
     {    // register WD process
         AppFileStorage *fileStorage = AppContext::getAppFileStorage();
-        CHECK(NULL != fileStorage, );
+        CHECK(nullptr != fileStorage, );
 
         U2OpStatusImpl os;
         process = WorkflowProcess(getWorkflowId(this));
@@ -78,7 +78,7 @@ WorkflowContext::~WorkflowContext() {
     // unregister WD process
     if (!process.getId().isEmpty()) {
         AppFileStorage *fileStorage = AppContext::getAppFileStorage();
-        CHECK(NULL != fileStorage, );
+        CHECK(nullptr != fileStorage, );
 
         U2OpStatusImpl os;
         fileStorage->unregisterWorkflowProcess(process, os);
@@ -110,8 +110,8 @@ DataTypePtr WorkflowContext::getOutSlotType(const QString &slotStr) {
     tokens = tokens[0].split(".");
     assert(2 == tokens.size());
 
-    Actor *proc = procMap.value(tokens[0], NULL);
-    if (NULL == proc) {
+    Actor *proc = procMap.value(tokens[0], nullptr);
+    if (nullptr == proc) {
         return DataTypePtr();
     }
 

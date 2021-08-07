@@ -19,28 +19,56 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTTextEdit.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
+#include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
 #include <QFileInfo>
+#include <QPlainTextEdit>
+#include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsDocument.h"
+#include "GTUtilsLog.h"
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsProject.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
+#include "api/GTMSAEditorStatusWidget.h"
+#include "api/GTRegionSelector.h"
+#include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -117,7 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
 
     // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
@@ -197,7 +225,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // Export -> Save subalignment.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
@@ -206,9 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
 
     // Expected state: the saved sub-alignment is opened. Check the content.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QStringList expectedNameList = QStringList() << "seqB"
-                                                 << "seqA_1"
-                                                 << "seqA";
+    QStringList expectedNameList = {"seqB", "seqA_1", "seqA"};
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 }
 
@@ -283,6 +309,481 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 
     QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7125) {
+    // Open data/samples/CLUSTALW/ty3.aln.gz
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Select CpREV substitution model.
+    // Press "Save Settings".
+    // Cancel the dialog.
+    // Open data/samples/CLUSTALW/COI.aln
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Press "Build".
+    //    Expected state: no crash.
+
+    class SaveSettingsScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            auto currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
+
+            currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "subModelCombo", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "CpREV");
+
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Save Settings", dialog));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new SaveSettingsScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7127) {
+    // Make an alignment ordered by tree and check that the row order shown in the status bar is correct.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7127");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    for (int i = 0; i < 18; i++) {
+        GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, i));
+        QString rowNumber = GTMSAEditorStatusWidget::getRowNumberString(os);
+        QString expectedRowNumber = QString::number(i + 1);
+        CHECK_SET_ERR(rowNumber == expectedRowNumber, "Unexpected row number! Expected:  " + expectedRowNumber + ", got: " + rowNumber);
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7151) {
+    // Open data/samples/ACE/BL060C3.ace as MSA.
+    // Close project, don't save. These steps are required for BL060C3.ace to appear in the Recent Files.
+    // Click Tools->Sanger data analysis->Map reads to reference...
+    // Set _common_data/sanger/reference.gb as reference.
+    // Add sanger_01.ab1-sanger_20.ab1 as reads.
+    // Click Map.
+    // While running Sanger, click BL060C3.ace from Recent Files on Start Page.
+    // Wait for the Sanger Reads Editor to appears.
+    // In Select Document Format dialog click OK.
+    //     Expected: no crash.
+
+    class WaitInSelectFormatDialog : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsProject::closeProject(os);
+
+    const QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
+    CHECK_SET_ERR(labels.size() > 0, "Expected recent files BL060C3.ace on Start Page")
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    for (int i = 1; i <= 20; i++) {
+        settings.readUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+    }
+    settings.outAlignment = QFileInfo(sandBoxDir + "test_7151").absoluteFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, new WaitInSelectFormatDialog));
+    GTWidget::click(os, labels.first());
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7152) {
+    // Check that corner characters of an alignment has valid info shown in the status bar.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, 0));
+    QString topLeft = GTMSAEditorStatusWidget::getRowNumberString(os) + "/" +
+                      GTMSAEditorStatusWidget::getColumnNumberString(os) + "/" +
+                      GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    GTMSAEditorStatusWidget::getColumnNumberString(os);
+    CHECK_SET_ERR(topLeft == "1/1/1", "Top left position is wrong: " + topLeft);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(39, 10));
+    QString bottomRight = GTMSAEditorStatusWidget::getRowNumberString(os) + "/" +
+                          GTMSAEditorStatusWidget::getColumnNumberString(os) + "/" +
+                          GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    GTMSAEditorStatusWidget::getColumnNumberString(os);
+    CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7183) {
+    class ExportSequencesScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "bothStrandsButton", dialog));
+            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "translateButton", dialog), true);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open file _common_data/fasta/reads.fa as separate sequences.
+    QString filePath = testDir + "_common_data/fasta/reads.fa";
+    QString fileName = "reads.fa";
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
+    GTUtilsProject::openFile(os, sandBoxDir + "/" + fileName);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    for (int i = 0; i < 8; i++) {
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+        GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
+        GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    }
+    //2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
+    //3. Check the "Save both strands" radiobutton
+    //4. Check the "Translate to amino" checkbox
+    //5. Push Export button in the dialog.
+    //6. Repeat steps 2-5 8 times
+    //Expected state: UGENE is not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7212) {
+    // Open _common_data/clustal/shortened_big.aln.
+    // Click the Pairwise Alignment tab of the Options Panel.
+    // Select two sequence from the original alignment and click on the Align button.
+    // Until the task completes, click the Pairwise Alignment tab again.
+    // Wait for task finish. A new document "PairwiseAlignmentResult.aln" has been added to the project.
+    //
+    // Remove PairwiseAlignmentResult.aln from project.
+    // Return to shortened_big.aln and click the Pairwise Alignment tab of the Options Panel.
+    // Click Align.
+    //     Expected state: no crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/shortened_big.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq1");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq2");
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::removeDocument(os, "PairwiseAlignmentResult.aln");
+    GTUtilsProjectTreeView::doubleClickItem(os, "shortened_big.aln");
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7325) {
+    // Open _common_data/fasta/alphabet.fa.
+    // Click the PCR Primer Design tab of the Options Panel.
+    // Select Amino sequence.
+    //    Expected: all settings on the tab are disabled, a warning is displayed.
+    // Select Nucl sequence.
+    //    Expected: all settings on the tab are enabled, no warning.
+    QList<ADVSingleSequenceWidget*> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
+        testDir + "_common_data/fasta/",
+        "alphabet.fa",
+        { "Amino", "Nucl" });
+    GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
+    auto mainWidget = GTWidget::findWidget(os, "runPcrPrimerDesignWidget");
+    auto warnLabel =
+        GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").first();
+
+    GTWidget::click(os, seqWidgets.first());
+    GTWidget::checkEnabled(os, mainWidget, false);
+    CHECK_SET_ERR(warnLabel->isVisible(), "Expected: warning label visible")
+
+        GTWidget::click(os, seqWidgets.last());
+    GTWidget::checkEnabled(os, mainWidget);
+    CHECK_SET_ERR(!warnLabel->isVisible(), "Expected: warning label doesn't displayed")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7325_1) {
+    using Op = GTUtilsOptionPanelSequenceView;
+    auto checkExpectedTabs = [&os](const QSet<Op::Tabs>& tabs) {
+        // Tabs that should be.
+        for (const auto tab : qAsConst(tabs)) {
+            GTWidget::findWidget(os, Op::tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os));
+        }
+        // Tabs that shouldn't be.
+        for (const auto tab : Op::tabsNames.keys().toSet() - tabs) {
+            auto opWidget = GTWidget::findWidget(os, Op::tabsNames[tab],
+                GTUtilsSequenceView::getActiveSequenceViewWindow(os), GTGlobals::FindOptions(false));
+            CHECK_SET_ERR(opWidget == nullptr, QString("Expected: there is no %1 tab").arg(Op::tabsNames[tab]))
+        }
+    };
+    // DNA: _common_data/fasta/fa1.fa.
+    //    Expected: all option panel tabs (6) are present.
+    // RNA: _common_data/fasta/RNA_1_seq.fa.
+    //    Expected: all option panel tabs without PCR Primer Design are present.
+    // Amino: _common_data/fasta/AMINO.fa.
+    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+    // All alphabets: _common_data/fasta/all_and_raw_alphabets.fa.
+    //    Expected: all option panel tabs.
+    // 2 RNA: _common_data/fasta/RNA.fa.
+    //    Expected: all option panel tabs without PCR Primer Design.
+    // Aminos: _common_data/fasta/amino_multy_ext.fa.
+    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+
+    const QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
+    const QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
+    const QSet<Op::Tabs> three = { Op::Search, Op::AnnotationsHighlighting, Op::Statistics };
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
+    checkExpectedTabs(all);
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/RNA_1_seq.fa", "AB000263");
+    checkExpectedTabs(withoutPcr);
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/AMINO.fa", "AMINO263");
+    checkExpectedTabs(three);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/all_and_raw_alphabets.fa");
+    checkExpectedTabs(all);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/RNA.fa");
+    checkExpectedTabs(withoutPcr);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
+    checkExpectedTabs(three);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7246) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/RAW.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Check that alphabet is RAW.
+    QWidget *tabWidget = GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    QString alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/1: " + alphabet);
+
+    // Click convert to Amino button and check the the alphabet is 'Amino'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Amino", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("amino"), "Alphabet is not Amino: " + alphabet);
+    QString sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UTTSQDLQWLVXPTLIXSMAQSQGQPLASQPPAVDPYDMPGTSYSTPGLSAYSTGGASGS", "Not an Amino sequence: " + sequence);
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
+
+    // Click convert to DNA button and check the the alphabet is 'DNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("DNA"), "Alphabet is not DNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "TTTNNNNNNNNNNTNNNNNANNNGNNNANNNNANNNNNNNGTNNNTNGNNANNTGGANGN", "Not a DNA sequence: " + sequence);
+
+    // Click convert to RNA button and check the the alphabet is 'RNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7247) {
+    // Open WD.
+    // Load scenario sample "Remote BLASTing".
+    // Add any fasta file as input.
+    // Click Next, Next, Apply.
+    // Close WD tab.
+    // Question appears: "The workflow has been modified. Do you want to save changes?". Click Save.
+    // In "Workflow properties" dialog add location. Click OK.
+    //    Expected: UGENE doesn't crash.
+    class RemoteBlastWizardScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
+    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
+    GTUtilsMdi::click(os, GTGlobals::Close);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7293) {
+    // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
+    // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).
+
+    class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new CheckDocumentReadingModeSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
+    GTUtilsDialog::waitAllFinished(os);
+
+    // Now check preview text for the second dialog.
+    class CheckDocumentFormatSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CheckDocumentFormatSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
+}
+
+#ifdef SW2_BUILD_WITH_CUDA
+GUI_TEST_CLASS_DEFINITION(test_7360) {
+    // Open _common_data/fasta/fa1.fa.
+    // Call Smith-Waterman dialog:
+    //     Pattern: A,
+    //     Search in: Translation,
+    //     Region: 1-1,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
+
+    // Call Smith-Waterman dialog:
+    //     Pattern: AA,
+    //     Search in: Translation,
+    //     Region: Whole sequence,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
+    class SwCudaScenario : public CustomScenario {
+    public:
+        SwCudaScenario(const QString &pattern, bool isWholeSequence)
+            : pattern(pattern), region() {
+            if (!isWholeSequence) {
+                region = GTRegionSelector::RegionSelectorSettings(1, 1);
+            }
+        }
+
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), pattern);
+            GTRadioButton::click(os, "radioTranslation", dialog);
+            GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector *>(os, "range_selector", dialog), region);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "comboRealization", dialog), "CUDA");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+    private:
+        QString pattern;
+        GTRegionSelector::RegionSelectorSettings region;
+    };
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    const GTLogTracer logA;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("A", false)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logA, "Pattern length (1) is longer than search sequence length (0).");
+
+    const GTLogTracer logAa;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
+}
+#endif    //SW2_BUILD_WITH_CUDA
+
+GUI_TEST_CLASS_DEFINITION(test_7367) {
+    // Generate a large sequence.
+    // Check that test does not time-outs and the generated sequence contains expected base distribution.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7367.fa");
+    model.percentA = 10;
+    model.percentC = 20;
+    model.percentG = 30;
+    model.percentT = 40;
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    qint64 a = 0, c = 0, g = 0, t = 0;
+    for (const QChar &ch : qAsConst(sequence)) {
+        switch (ch.toLatin1()) {
+            case 'A':
+                a++;
+                break;
+            case 'C':
+                c++;
+                break;
+            case 'G':
+                g++;
+                break;
+            case 'T':
+                t++;
+                break;
+            default:
+                CHECK_SET_ERR(false, QString("Got invalid character: ") + ch);
+        }
+    }
+    qint64 percentA = a * 100 / sequence.length();
+    qint64 percentC = c * 100 / sequence.length();
+    qint64 percentG = g * 100 / sequence.length();
+    qint64 percentT = t * 100 / sequence.length();
+
+    int diff = 2;    // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
+    CHECK_SET_ERR(percentA >= model.percentA - diff && percentA <= model.percentA + diff, "Invalid percent of A: " + QString::number(percentA));
+    CHECK_SET_ERR(percentC >= model.percentC - diff && percentC <= model.percentC + diff, "Invalid percent of C: " + QString::number(percentC));
+    CHECK_SET_ERR(percentG >= model.percentG - diff && percentG <= model.percentG + diff, "Invalid percent of G: " + QString::number(percentG));
+    CHECK_SET_ERR(percentT >= model.percentT - diff && percentT <= model.percentT + diff, "Invalid percent of T: " + QString::number(percentT));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7368) {
+    // Generate a large sequence (>=100mb).
+    // Check that error dialog is shown when such a big sequence is exported as an alignment.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7368.fa");
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
+    GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
 }
 
 }    // namespace GUITest_regression_scenarios

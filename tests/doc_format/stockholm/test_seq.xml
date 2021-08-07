@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in first of sequence in msa -->
+
+    <load-document index="doc" url="stockholm/seq.sto" io="local_file" format="stockholm"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_0" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="NIRRVIAQRL" seqstart="10" seqname="ODP2_HUMAN/384-614"/>
+
+</multi-test>

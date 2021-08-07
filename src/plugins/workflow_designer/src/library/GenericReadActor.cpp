@@ -178,7 +178,7 @@ bool GenericMAActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *par
     QString url = WorkflowUtils::getDropUrl(fs, md);
     foreach (DocumentFormat *f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            if (params != NULL) {
+            if (params != nullptr) {
                 params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), url);
             }
             return true;

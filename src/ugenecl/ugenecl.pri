@@ -8,21 +8,14 @@ QT += xml network script widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
 macx : CONFIG -= app_bundle
-unix:!macx: QMAKE_LFLAGS += -no-pie
+unix:!macx:!clang:g++: QMAKE_LFLAGS += --no-pie
+unix:!macx:clang: QMAKE_LFLAGS += -fno-pie
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
 LIBS += -L../$$out_dir()
-LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Designer$$D -lU2Formats$$D -lU2Gui$$D -lU2Test$$D -lU2Lang$$D -lU2Private$$D -lbreakpad$$D -lQSpec$$D
+LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Designer$$D -lU2Formats$$D -lU2Gui$$D -lU2Test$$D -lU2Lang$$D -lU2Private$$D -lbreakpad$$D
 LIBS += $$add_sqlite_lib()
-
-if (exclude_list_enabled()) {
-    DEFINES += HI_EXCLUDED
-}
-
-contains(DEFINES, HI_EXCLUDED) {
-    LIBS -= -lQSpec$$D
-}
 
 DESTDIR = ../$$out_dir()
 TARGET = ugenecl$$D

@@ -207,7 +207,7 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
 
     if (!io->open(url, IOAdapterMode_Read)) {
         setError(L10N::errorOpeningFileRead(url));
-        return NULL;
+        return nullptr;
     }
 
     QByteArray block(BUFF_SIZE, '\0');
@@ -227,14 +227,14 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     QList<QStringList> parsedLines = parseLinesIntoTokens(text);
     CHECK_EXT(parsedLines.size() > 0,
               setError(tr("Unexpected error while parsing input data")),
-              NULL);
+              nullptr);
 
     // header
     QStringList header = parsedLines[0];
     int indexFpkm = header.indexOf(columnName);
     CHECK_EXT(indexFpkm != -1,
               setError(tr("Bad file format, there is no %2 column: \"%1\"").arg(tsvFile).arg(columnName)),
-              NULL);
+              nullptr);
     QString fileFpkm = runDir + "/" + columnName + "/" + url.baseFileName() + ".fpkm";
     fileFpkm = GUrlUtils::rollFileName(fileFpkm, "_");
     FileAndDirectoryUtils::createWorkingDir(fileFpkm,
@@ -252,13 +252,13 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     QFile file(fileFpkm);
     if (!file.open(QIODevice::Append)) {
         setError(tr("Cannot open a file: %1\nError is :").arg(fileFpkm).arg(L10N::errorOpeningFileWrite(fileFpkm)));
-        return NULL;
+        return nullptr;
     }
     QTextStream out(&file);
     foreach (const QStringList line, parsedLines) {
         CHECK_EXT(line.size() >= indexFpkm,
                   setError(tr("Bad line format of input: \"%1\"").arg(line.join("\t"))),
-                  NULL);
+                  nullptr);
 
         out << line[0] << inputDelimiter << line[1] << inputDelimiter << line[indexFpkm] << "\n";
     }

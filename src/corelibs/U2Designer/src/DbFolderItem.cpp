@@ -49,7 +49,7 @@ DbFolderItem::DbFolderItem(const QString &url, QListWidget *parent)
 }
 
 DbFolderItem::~DbFolderItem() {
-    options->setParent(NULL);
+    options->setParent(nullptr);
     delete options;
 }
 

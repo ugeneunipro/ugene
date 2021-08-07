@@ -43,8 +43,8 @@ namespace U2 {
 
 Annotation::Annotation(const U2DataId &featureId, const SharedAnnotationData &data, AnnotationGroup *parentGroup, AnnotationTableObject *parentObject)
     : U2Entity(featureId), parentObject(parentObject), data(data), group(parentGroup) {
-    SAFE_POINT(NULL != parentGroup, L10N::nullPointerError("Annotation group"), );
-    SAFE_POINT(NULL != parentObject, L10N::nullPointerError("Annotation table object"), );
+    SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("Annotation group"), );
+    SAFE_POINT(nullptr != parentObject, L10N::nullPointerError("Annotation table object"), );
     SAFE_POINT(hasValidId(), "Invalid DB reference", );
 }
 
@@ -165,7 +165,7 @@ void Annotation::setLocation(const U2Location &location) {
     parentObject->emit_onAnnotationsModified(md);
 }
 
-const QVector<U2Region>& Annotation::getRegions() const {
+const QVector<U2Region> &Annotation::getRegions() const {
     return data->getRegions();
 }
 
@@ -274,7 +274,7 @@ AnnotationGroup *Annotation::getGroup() const {
 
 void Annotation::setGroup(AnnotationGroup *newGroup) {
     CHECK(newGroup != group, );
-    SAFE_POINT(NULL != newGroup, L10N::nullPointerError("annotation group"), );
+    SAFE_POINT(nullptr != newGroup, L10N::nullPointerError("annotation group"), );
     SAFE_POINT(parentObject == newGroup->getGObject(), "Illegal object!", );
 
     U2OpStatusImpl os;
@@ -295,29 +295,29 @@ void Annotation::findQualifiers(const QString &name, QList<U2Qualifier> &res) co
 }
 
 QString Annotation::findFirstQualifierValue(const QString &name) const {
-    SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", QString::null);
+    SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", QString());
 
     foreach (const U2Qualifier &qual, data->qualifiers) {
         if (name == qual.name) {
             return qual.value;
         }
     }
-    return QString::null;
+    return QString();
 }
 
 bool Annotation::annotationLessThan(Annotation *first, Annotation *second) {
-    SAFE_POINT(NULL != first && NULL != second, "Invalid annotation detected", false);
+    SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
 
     AnnotationGroup *firstGroup = first->getGroup();
-    SAFE_POINT(NULL != firstGroup, L10N::nullPointerError("annotation group"), false);
+    SAFE_POINT(nullptr != firstGroup, L10N::nullPointerError("annotation group"), false);
     AnnotationGroup *secondGroup = second->getGroup();
-    SAFE_POINT(NULL != secondGroup, L10N::nullPointerError("annotation group"), false);
+    SAFE_POINT(nullptr != secondGroup, L10N::nullPointerError("annotation group"), false);
 
     return firstGroup->getName() < secondGroup->getName();
 }
 
 bool Annotation::annotationLessThanByRegion(Annotation *first, Annotation *second) {
-    SAFE_POINT(NULL != first && NULL != second, "Invalid annotation detected", false);
+    SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
 
     const U2Location firstLocation = first->getLocation();
     const U2Location secondLocation = second->getLocation();
@@ -539,14 +539,14 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
     }
 
     bool canShowSeq = true;
-    const int seqLen = (NULL != seqObj) ? seqObj->getSequenceLength() : 0;
+    const int seqLen = (nullptr != seqObj) ? seqObj->getSequenceLength() : 0;
     foreach (const U2Region &r, data->location->regions) {
         if (r.endPos() > seqLen) {
             canShowSeq = false;
         }
     }
 
-    if (NULL != seqObj && rows <= maxRows && (data->location->strand.isCompementary() || complTT != nullptr) && canShowSeq) {
+    if (nullptr != seqObj && rows <= maxRows && (data->location->strand.isCompementary() || complTT != nullptr) && canShowSeq) {
         QVector<U2Region> loc = data->location->regions;
         QString seqVal;
         QString aminoVal;
@@ -638,7 +638,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
         tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped() + "</nobr>";
         rows++;
 
-        if (rows <= maxRows && NULL != aminoTT) {
+        if (rows <= maxRows && nullptr != aminoTT) {
             tip += "<br>";
             tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + aminoVal.toHtmlEscaped() + "</nobr>";
         }

@@ -65,7 +65,7 @@ MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlpha
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(NULL == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );    // TODO: check the condition, it is strange
+    SAFE_POINT(nullptr == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );    // TODO: check the condition, it is strange
 
     setName(name);
     for (int i = 0, n = rows.size(); i < n; i++) {
@@ -210,8 +210,8 @@ MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
 const MultipleAlignmentRow &MultipleAlignmentData::getRow(int rowIndex) const {
     static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowsCount = rows.count();
-    SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
-    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
+    SAFE_POINT(rowsCount != 0, "No rows", emptyRow);
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowsCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
@@ -284,7 +284,7 @@ int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) cons
         }
     }
     os.setError("Invalid row id");
-    return U2MsaRow::INVALID_ROW_ID;
+    return -1;
 }
 
 void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {

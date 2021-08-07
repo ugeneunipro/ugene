@@ -23,7 +23,7 @@
 #define _U2_CRASH_HANDLER_PRIVATE_MAC_H_
 
 #include <qglobal.h>
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 
 #    include "CrashHandlerPrivate.h"
 

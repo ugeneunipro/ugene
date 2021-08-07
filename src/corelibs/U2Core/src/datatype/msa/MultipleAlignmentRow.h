@@ -69,7 +69,7 @@ Derived MultipleAlignmentRow::dynamicCast() const {
 template<class Derived>
 Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
     Derived derived(*this);
-    if (NULL == derived.maRowData) {
+    if (nullptr == derived.maRowData) {
         assert(false);
         os.setError("Can't cast MultipleAlignmentRow to a derived class");
     }
@@ -87,6 +87,7 @@ class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
     MultipleAlignmentRowData();
     MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+    virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
     inline int getUngappedLength() const;
@@ -103,8 +104,6 @@ public:
     U2Region getCoreRegion() const;
     U2Region getUngappedRegion(const U2Region &gappedRegion) const;
     DNASequence getUngappedSequence() const;
-
-    virtual ~MultipleAlignmentRowData();
 
     /** Returns the list of gaps for the row */
     virtual const U2MsaRowGapModel &getGapModel() const = 0;
@@ -136,6 +135,15 @@ public:
 
     virtual bool operator!=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator==(const MultipleAlignmentRowData &other) const = 0;
+
+    /* Compares sequences of 2 rows ignoring gaps. */
+    static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
+
+    /** Joins sequence chars and gaps into one byte array. */
+    QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
+
+    /** Returns whole alignment data. */
+    virtual MultipleAlignmentData *getMultipleAlignmentData() const = 0;
 
 protected:
     /** The sequence of the row without gaps (cached) */

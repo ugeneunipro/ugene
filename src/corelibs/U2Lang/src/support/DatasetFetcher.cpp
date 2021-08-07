@@ -28,7 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 DatasetFetcher::DatasetFetcher()
-    : worker(NULL), port(NULL), context(NULL), datasetInitialized(false), fullDataset(false) {
+    : worker(nullptr), port(nullptr), context(nullptr), datasetInitialized(false), fullDataset(false) {
 }
 
 DatasetFetcher::DatasetFetcher(BaseWorker *worker, IntegralBus *port, WorkflowContext *context)

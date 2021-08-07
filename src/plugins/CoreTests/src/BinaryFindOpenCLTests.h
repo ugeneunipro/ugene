@@ -41,11 +41,11 @@ public:
     Task::ReportResult report();
 
 private:
-    QVector<NumberType> numbers;
-    QVector<NumberType> findNumbers;
+    QVector<int64_t> numbers;
+    QVector<int64_t> findNumbers;
     QVector<int> windowSizes;
-    QVector<NumberType> expectedResults;
-    NumberType *results;
+    QVector<int64_t> expectedResults;
+    int64_t *results;
 };
 
 class BinaryFindOpenCLTests {

@@ -62,6 +62,7 @@ SUBDIRS += \
           src/plugins/metaphlan2_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
+          src/plugins/pcr_primer_design_for_dna_assembly \
           src/plugins/perf_monitor \
           src/plugins/query_designer \
           src/plugins/remote_blast \
@@ -80,20 +81,6 @@ use_opencl() {
     SUBDIRS += src/plugins/opencl_support
 }
 
-exclude_list_enabled() {
-    SUBDIRS -= src/plugins/CoreTests
-    SUBDIRS -= src/plugins/test_runner
-    SUBDIRS -= src/plugins/perf_monitor
-    SUBDIRS -= src/plugins/GUITestBase
-    SUBDIRS -= src/plugins/api_tests
-    SUBDIRS -= src/libs_3rdparty/QSpec
-}
-
-!equals(GUI_TESTING_ENABLED, 1) {
-    SUBDIRS -= src/plugins/GUITestBase
-    SUBDIRS -= src/libs_3rdparty/QSpec
-}
-
 without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/psipred
 }
@@ -108,7 +95,7 @@ for( i, UGENE_TRANSL_IDX ) {
     #foreach project folder
     for( prj_dir, SUBDIRS ) {
         #look for file and add it to translation list if it exists
-        translFile = $$prj_dir/$$UGENE_TRANSL_DIR/$$curTranslFile   # 'project/transl/english.ts' etc.
+        translFile = $$prj_dir/$$UGENE_TRANSL_DIR/$$curTranslFile   # 'project/transl/russian.ts' etc.
         exists( $$translFile ) {
             UGENE_TRANSLATIONS += $$translFile
 #            system( $$UGENE_LUPDATE $$translFile ) FIXME
@@ -116,7 +103,7 @@ for( i, UGENE_TRANSL_IDX ) {
     }
     !isEmpty(UGENE_LRELEASE) {
         for( targetDir, UGENE_TRANSL_QM_TARGET_DIR ) {
-            targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_en.qm' etc.
+            targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_ru.qm' etc.
             targetQmFile = $$join( targetQmFile, , , .qm )              # special workaround for adding suffix started with '.'
             message( Generating translations: $$curTranslTag )
             system( $$UGENE_LRELEASE $$UGENE_TRANSLATIONS -qm $$targetQmFile > $$UGENE_DEV_NULL )

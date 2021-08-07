@@ -171,10 +171,8 @@ bool AutoAnnotationObject::cancelRunningUpdateTasks(AutoAnnotationsUpdater *upda
 }
 
 void AutoAnnotationObject::handleUpdate(const QList<AutoAnnotationsUpdater *> &updaters) {
-    QList<Task *> subTasks;
-    QStringList groupNames;
-
     foreach (AutoAnnotationsUpdater *updater, updaters) {
+        QList<Task *> subTasks;
         // check constraints
         AutoAnnotationConstraints cns;
         cns.alphabet = sequenceObject->getAlphabet();
@@ -210,19 +208,16 @@ void AutoAnnotationObject::handleUpdate(const QList<AutoAnnotationsUpdater *> &u
                 }
             }
         }
-        groupNames.append(updater->getGroupName());
-
         // envelope to unlock annotation object
         if (!subTasks.isEmpty()) {
             AppContext::getTaskScheduler()->registerTopLevelTask(new AutoAnnotationsUpdateTask(this, subTasks));
-            subTasks.clear();
         }
     }
 }
 
 void AutoAnnotationObject::sl_updateTaskFinished() {
     Task *task = qobject_cast<Task *>(sender());
-    SAFE_POINT(task != NULL, L10N::nullPointerError("Auto-annotation update task"), );
+    SAFE_POINT(task != nullptr, L10N::nullPointerError("Auto-annotation update task"), );
 
     CHECK(task->isFinished(), );
 

@@ -545,7 +545,7 @@ void BamReader::readHeader() {
                     }
                 }
             } else if ("SQ" == recordTag) {
-                Header::Reference *reference = NULL;
+                Header::Reference *reference = nullptr;
                 if (fields.contains("SN")) {
                     QByteArray value = fields["SN"];
                     if (referencesMap.contains(value)) {

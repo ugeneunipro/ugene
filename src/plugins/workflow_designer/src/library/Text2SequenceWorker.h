@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class Text2SequencePrompter : public PrompterBase<Text2SequencePrompter> {
     Q_OBJECT
 public:
-    Text2SequencePrompter(Actor *p = NULL)
+    Text2SequencePrompter(Actor *p = nullptr)
         : PrompterBase<Text2SequencePrompter>(p) {
     }
 
@@ -47,7 +47,7 @@ public:
 
 public:
     Text2SequenceWorker(Actor *p)
-        : BaseWorker(p), txtPort(NULL), outSeqPort(NULL), tickedNum(0) {
+        : BaseWorker(p), txtPort(nullptr), outSeqPort(nullptr), tickedNum(0) {
     }
 
     virtual void init();

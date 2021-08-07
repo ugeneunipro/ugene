@@ -13,8 +13,6 @@ LIBS += -L../../$$out_dir()
 
 DESTDIR = ../../$$out_dir()
 
-unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
-
 # Special compiler flags for windows configuration
 win32 {
     LIBS += User32.lib

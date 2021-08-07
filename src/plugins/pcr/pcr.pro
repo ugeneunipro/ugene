@@ -11,17 +11,12 @@ HEADERS += src/EditPrimerDialog.h \
            src/InSilicoPcrWorkflowTask.h \
            src/PcrOptionsPanelSavableTab.h \
            src/PcrPlugin.h \
-           src/Primer.h \
-           src/PrimerDimersFinder.h \
            src/PrimerGroupBox.h \
-           src/PrimerLibrary.h \
            src/PrimerLibraryMdiWindow.h \
            src/PrimerLibrarySelector.h \
            src/PrimerLibraryTable.h \
            src/PrimerLibraryTableController.h \
            src/PrimerLibraryWidget.h \
-           src/PrimerLineEdit.h \
-           src/PrimerStatistics.h \
            src/PrimersDetailsDialog.h \
            src/PrimersGrouperWorker.h \
            src/export/ExportPrimersDialog.h \
@@ -53,17 +48,12 @@ SOURCES += src/EditPrimerDialog.cpp \
            src/InSilicoPcrWorkflowTask.cpp \
            src/PcrOptionsPanelSavableTab.cpp \
            src/PcrPlugin.cpp \
-           src/Primer.cpp \
-           src/PrimerDimersFinder.cpp \
            src/PrimerGroupBox.cpp \
-           src/PrimerLibrary.cpp \
            src/PrimerLibraryMdiWindow.cpp \
            src/PrimerLibrarySelector.cpp \
            src/PrimerLibraryTable.cpp \
            src/PrimerLibraryTableController.cpp \
            src/PrimerLibraryWidget.cpp \
-           src/PrimerLineEdit.cpp \
-           src/PrimerStatistics.cpp \
            src/PrimersDetailsDialog.cpp \
            src/PrimersGrouperWorker.cpp \
            src/export/ExportPrimersDialog.cpp \

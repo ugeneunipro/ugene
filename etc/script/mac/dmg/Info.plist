@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>net.ugene.ugene</string>
+
+    <key>CFBundleVersion</key>
+    <string>40.0</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>40.0</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Unipro UGENE</string>
+
+    <key>CFBundleName</key>
+    <string>Unipro UGENE</string>
+
+    <key>CFBundleIconFile</key>
+    <string>ugeneui.icns</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleGetInfoString</key>
+    <string>Unipro UGENE</string>
+    
+    <key>CFBundleSignature</key>
+    <string>Unipro, Russia</string>
+
+    <key>CFBundleExecutable</key>
+    <string>ugeneui</string>
+
+    <key>NSHighResolutionCapable</key>
+    <string>True</string>
+
+    <key>BuildMachineOSBuild</key>
+    <string>16G29</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.business</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.education</string>
+
+    <key>LSMinimumSystemVersion</key>
+    <string>10.12</string>
+    
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <!-- Project -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>uprj</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Unipro UGENE project file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- ABIF -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>ab1</string>
+                <string>abi</string>
+                <string>abif</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Applied Biosystmes ABIF file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <!-- CLUSTAL -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>aln</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Clustal sequence alignment file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- EMBL -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>em</string>
+                <string>emb</string>
+                <string>embl</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>European Molecular Biology Laboratory EMBL file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <!-- FASTA -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>fa</string>
+                <string>mpfa</string>
+                <string>fna</string>
+                <string>fsa</string>
+                <string>fas</string>
+                <string>fasta</string>
+                <string>seq</string>
+                <string>seqs</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>FASTA sequence file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- Swiss-Prot -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>sw</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Swiss-Prot file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <!-- FASTQ -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>fastq</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>FASTQ sequence file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- Genbank -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>gb</string>
+                <string>gbk</string>
+                <string>gen</string>
+                <string>genbank</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Genbank plain text file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- GFF -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>gff</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>General Feature Format file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- MSF -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>msf</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Multiple Sequence File</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- NEWICK -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>newick</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>NEWICK tree file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- PDB -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>pdb</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Protein Data Bank file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- SAM -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>sam</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Sequence Assembly/Map</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- BAM -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>bam</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Binary Sequence Assembly/Map</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- SCF -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>scf</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Standard Chromatogram Format file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <!-- Short Reads Fasta -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>srfa</string>
+                <string>srfasta</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Short Reads FASTA file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <!-- STOCKHOLM  -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>sto</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>Stockholm alignment file</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- ugenedb -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>ugenedb</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>UGENE Database</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- UGENE Query -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>uql</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>UGENE Query Language</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+        <!-- UGENE Workflow -->
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>uwl</string>
+            </array>
+
+            <key>CFBundleTypeName</key>
+            <string>UGENE Workflow Language</string>
+
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+
+            <key>CFBundleTypeIconFile</key>
+            <string>ugene-doc.icns</string>
+
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+    </array>
+    
+</dict>
+</plist>

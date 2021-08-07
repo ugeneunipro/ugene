@@ -56,7 +56,7 @@ const QString CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR = "dont-use-native-men
 
 void CMDLineCoreOptions::initHelp() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *helpSection = new CMDLineHelpProvider(
         HELP,

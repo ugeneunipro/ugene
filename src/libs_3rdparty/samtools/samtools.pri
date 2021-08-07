@@ -58,13 +58,3 @@ unix: {
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
 }
-
-linux-g++ {
-    # Original samtools package has multiple warnings like this.
-    QMAKE_CXXFLAGS += -Wno-sign-compare
-}
-
-#unix {
-#    target.path = $$UGENE_INSTALL_DIR/
-#    INSTALLS += target
-#}

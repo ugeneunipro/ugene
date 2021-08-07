@@ -89,7 +89,7 @@ bool CoreTests::registerFactory(XMLTestFormat *xmlTestFormat) {
 void CoreTests::registerFactories() {
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     registerFactory<SMatrixTests>(xmlTestFormat);
 

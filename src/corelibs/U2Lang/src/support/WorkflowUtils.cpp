@@ -249,14 +249,14 @@ bool hasSchemeCycles(const Schema &scheme) {
 }
 
 bool validateScript(Actor *a, NotificationsList &infoList) {
-    SAFE_POINT(NULL != a, "NULL actor", false);
-    SAFE_POINT(NULL != a->getScript(), "NULL script", false);
+    SAFE_POINT(nullptr != a, "NULL actor", false);
+    SAFE_POINT(nullptr != a->getScript(), "NULL script", false);
     const QString scriptText = a->getScript()->getScriptText();
     if (scriptText.simplified().isEmpty()) {
         infoList << WorkflowNotification(QObject::tr("Empty script text"), a->getId());
         return false;
     }
-    QScopedPointer<WorkflowScriptEngine> engine(new WorkflowScriptEngine(NULL));
+    QScopedPointer<WorkflowScriptEngine> engine(new WorkflowScriptEngine(nullptr));
     QScriptSyntaxCheckResult syntaxResult = engine->checkSyntax(scriptText);
 
     if (syntaxResult.state() != QScriptSyntaxCheckResult::Valid) {
@@ -412,7 +412,7 @@ Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &
 }
 
 DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
-    assert(p != NULL);
+    assert(p != nullptr);
     DataTypePtr to;
     DataTypePtr t = to = p->getType();
     if (!t->isMap()) {
@@ -426,7 +426,7 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
 }
 
 DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort *p, DataTypePtr to) {
-    assert(p != NULL);
+    assert(p != nullptr);
 
     DataTypePtr from;
     if (p->isOutput() || p->getWidth() == 0) {
@@ -460,7 +460,7 @@ QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
 
     // if no such file found -> search name in settings. user saved schemas
     Settings *settings = AppContext::getSettings();
-    assert(settings != NULL);
+    assert(settings != nullptr);
 
     // FIXME: same as WorkflowSceneIOTasks::SCHEMA_PATHS_SETTINGS_TAG
     QVariantMap pathsMap = settings->getValue("workflow_settings/schema_paths").toMap();
@@ -553,14 +553,14 @@ QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant &value) {
 Actor *WorkflowUtils::findActorByParamAlias(const QList<Actor *> &procs, const QString &alias, QString &attrName, bool writeLog) {
     QList<Actor *> actors;
     foreach (Actor *actor, procs) {
-        assert(actor != NULL);
+        assert(actor != nullptr);
         if (actor->getParamAliases().values().contains(alias)) {
             actors << actor;
         }
     }
 
     if (actors.isEmpty()) {
-        return NULL;
+        return nullptr;
     } else if (actors.size() > 1) {
         if (writeLog) {
             coreLog.error(WorkflowUtils::tr("%1 actors in workflow have '%2' alias").arg(actors.size()).arg(alias));
@@ -621,11 +621,11 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
         text += data.toString();
     } else if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         QScopedPointer<U2SequenceObject> obj(StorageUtils::getSequenceObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(NULL != obj.data(), );
+        CHECK(nullptr != obj.data(), );
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
         QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(NULL != obj.data(), );
+        CHECK(nullptr != obj.data(), );
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {
         QList<SharedAnnotationData> annotationList = StorageUtils::getAnnotationTable(storage, data);
@@ -785,7 +785,7 @@ Actor *WorkflowUtils::actorById(const QList<Actor *> &actors, const ActorId &id)
             return a;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
@@ -794,7 +794,7 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
         Port *src = links.keys().first();
         assert(src->isOutput());
         IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
-        assert(NULL != bus);
+        assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
     }
@@ -872,9 +872,9 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
 
 QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &path) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(NULL != registry, "NULL external tool registry", "");
+    SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
     ExternalTool *tool = registry->getById(id);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(id), "");
+    SAFE_POINT(nullptr != tool, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
         tool->setPath(path);
@@ -884,10 +884,10 @@ QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &
 
 QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(NULL != registry, "NULL external tool registry", "");
+    SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
 
     ExternalTool *tool = registry->getById(toolId);
-    SAFE_POINT(NULL != tool, QString("Unknown tool (id): %1").arg(toolId), "");
+    SAFE_POINT(nullptr != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
 }
@@ -927,21 +927,21 @@ void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata 
 
 static bool isDatasetsAttr(Attribute *attr) {
     URLAttribute *dsa = dynamic_cast<URLAttribute *>(attr);
-    return (NULL != dsa);
+    return (nullptr != dsa);
 }
 
 UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute *attr, const Actor *actor) {
-    SAFE_POINT(NULL != attr, "NULL attribute!", NotAnUrl);
-    SAFE_POINT(NULL != actor, "NULL actor!", NotAnUrl);
+    SAFE_POINT(nullptr != attr, "NULL attribute!", NotAnUrl);
+    SAFE_POINT(nullptr != actor, "NULL actor!", NotAnUrl);
 
     if (isDatasetsAttr(attr)) {
         return DatasetAttr;
     }
 
     ConfigurationEditor *editor = actor->getEditor();
-    CHECK(NULL != editor, NotAnUrl);
+    CHECK(nullptr != editor, NotAnUrl);
     PropertyDelegate *delegate = editor->getDelegate(attr->getId());
-    CHECK(NULL != delegate, NotAnUrl);
+    CHECK(nullptr != delegate, NotAnUrl);
 
     if (PropertyDelegate::INPUT_FILE == delegate->type()) {
         return InputFile;
@@ -1052,10 +1052,10 @@ bool checkObjectInDb(const QString &url) {
 
     DbiConnection connection(dbRef, os);
     CHECK_OP(os, false);
-    CHECK(NULL != connection.dbi, false);
+    CHECK(nullptr != connection.dbi, false);
 
     U2ObjectDbi *oDbi = connection.dbi->getObjectDbi();
-    CHECK(NULL != oDbi, false);
+    CHECK(nullptr != oDbi, false);
     U2Object testObject;
     oDbi->getObject(testObject, realId, os);
     CHECK_OP(os, false);
@@ -1072,10 +1072,10 @@ bool checkFolderInDb(const QString &dbUrl, const QString &folderPath) {
 
     DbiConnection connection(dbRef, os);
     CHECK_OP(os, false);
-    CHECK(NULL != connection.dbi, false);
+    CHECK(nullptr != connection.dbi, false);
 
     U2ObjectDbi *oDbi = connection.dbi->getObjectDbi();
-    CHECK(NULL != oDbi, false);
+    CHECK(nullptr != oDbi, false);
     const qint64 folderVersion = oDbi->getFolderLocalVersion(folderPath, os);
     CHECK_OP(os, false);
 
@@ -1203,13 +1203,13 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
 }
 
 bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute *attr, const Actor *actor) {
-    SAFE_POINT(NULL != attr, "Invalid attribute supplied", false);
-    SAFE_POINT(NULL != actor, "Invalid actor supplied", false);
+    SAFE_POINT(nullptr != attr, "Invalid attribute supplied", false);
+    SAFE_POINT(nullptr != actor, "Invalid actor supplied", false);
 
     ConfigurationEditor *editor = actor->getEditor();
-    CHECK(NULL != editor, false);
+    CHECK(nullptr != editor, false);
     PropertyDelegate *delegate = editor->getDelegate(attr->getId());
-    CHECK(NULL != delegate, false);
+    CHECK(nullptr != delegate, false);
 
     return PropertyDelegate::SHARED_DB_URL == delegate->type();
 }
@@ -1239,7 +1239,7 @@ bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, NotificationsLi
     bool res = true;
     foreach (const Dataset &set, sets) {
         foreach (URLContainer *urlContainer, set.getUrls()) {
-            SAFE_POINT(NULL != urlContainer, "NULL URLContainer!", false);
+            SAFE_POINT(nullptr != urlContainer, "NULL URLContainer!", false);
             bool urlIsValid = urlContainer->validateUrl(notificationList);
             res = res && urlIsValid;
         }
@@ -1324,7 +1324,7 @@ QString PrompterBaseImpl::getURL(const QString &id, bool *empty, const QString &
     } else {
         url = getParameter(id).toString();
     }
-    if (empty != NULL) {
+    if (empty != nullptr) {
         *empty = false;
     }
     if (!target->getParameter(id)->getAttributeScript().isEmpty()) {
@@ -1338,7 +1338,7 @@ QString PrompterBaseImpl::getURL(const QString &id, bool *empty, const QString &
         } else {
             url = "<font color='red'>" + tr("unset") + "</font>";
         }
-        if (empty != NULL) {
+        if (empty != nullptr) {
             *empty = true;
         }
     } else if (url.indexOf(";") != -1) {
@@ -1373,7 +1373,7 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort *input, const QString &
 
     Actor *origin = input->getProducer(slot);
     QString slotUrl;
-    if (origin != NULL) {
+    if (origin != nullptr) {
         slotUrl = tr("file(s) alongside of input sources of <u>%1</u>").arg(origin->getLabel());
         return slotUrl;
     }
@@ -1384,7 +1384,7 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort *input, const QString &
 
 QString PrompterBaseImpl::getProducers(const QString &port, const QString &slot) {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(port));
-    CHECK(NULL != input, "");
+    CHECK(nullptr != input, "");
     QList<Actor *> producers = input->getProducers(slot);
 
     QStringList labels;

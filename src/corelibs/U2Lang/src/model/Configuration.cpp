@@ -33,7 +33,7 @@
 namespace U2 {
 
 Configuration::Configuration()
-    : editor(NULL), validator(NULL) {
+    : editor(nullptr), validator(nullptr) {
 }
 
 Configuration::~Configuration() {
@@ -45,7 +45,7 @@ QMap<QString, Attribute *> Configuration::getParameters() const {
 }
 
 Attribute *Configuration::getParameter(const QString &name) const {
-    return params.value(name, NULL);
+    return params.value(name, nullptr);
 }
 
 Attribute *Configuration::removeParameter(const QString &name) {
@@ -55,7 +55,7 @@ Attribute *Configuration::removeParameter(const QString &name) {
 }
 
 void Configuration::addParameter(const QString &name, Attribute *attr) {
-    assert(attr != NULL);
+    assert(attr != nullptr);
     params[name] = attr;
     attrs << attr;
 }
@@ -91,7 +91,7 @@ ConfigurationEditor *Configuration::getEditor() const {
 }
 
 void Configuration::setEditor(ConfigurationEditor *ed) {
-    assert(ed != NULL);
+    assert(ed != nullptr);
     delete editor;
     editor = ed;
 }
@@ -101,7 +101,7 @@ ConfigurationValidator *Configuration::getValidator() {
 }
 
 void Configuration::setValidator(ConfigurationValidator *v) {
-    assert(v != NULL);
+    assert(v != nullptr);
     validator = v;
 }
 
@@ -128,14 +128,14 @@ bool Configuration::isAttributeVisible(Attribute *attribute) const {
     if (attribute->getFlags().testFlag(Attribute::Hidden)) {
         return false;
     }
-    SAFE_POINT(NULL != attribute, "NULL attribute", false);
+    SAFE_POINT(nullptr != attribute, "NULL attribute", false);
     foreach (const AttributeRelation *relation, attribute->getRelations()) {
         if (VISIBILITY != relation->getType()) {
             continue;
         }
 
         Attribute *masterAttribute = getParameter(relation->getRelatedAttrId());
-        SAFE_POINT(NULL != masterAttribute, QString("Invalid attribute relation: can't get master attribute '%1'").arg(relation->getRelatedAttrId()), false);
+        SAFE_POINT(nullptr != masterAttribute, QString("Invalid attribute relation: can't get master attribute '%1'").arg(relation->getRelatedAttrId()), false);
 
         isVisible &= isAttributeVisible(masterAttribute);
         isVisible &= relation->getAffectResult(masterAttribute->getAttributePureValue(), attribute->getAttributePureValue()).toBool();

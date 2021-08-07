@@ -38,7 +38,7 @@ class SaveDocumentController;
 class LogSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    LogSettingsPageController(LogSettingsHolder *target, QObject *p = NULL);
+    LogSettingsPageController(LogSettingsHolder *target, QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 
@@ -89,7 +89,7 @@ class LogSettingsTopLineWidget : public QWidget {
     Q_OBJECT
 public:
     LogSettingsTopLineWidget(QWidget *parent, const QString &_color, LogLevel _level)
-        : QWidget(parent), color(_color), level(_level), cb(NULL) {
+        : QWidget(parent), color(_color), level(_level), cb(nullptr) {
     }
     QString color;
     LogLevel level;

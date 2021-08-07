@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wblosum hand eclust, model: ATP-synt_ab, has SS_cons, RF annotations
+	cmd: ./hmmbuild -hand -wblosum -eclust -eid 0.44 ATP-synt_ab_wblosum_hand_eclust.hmm ATP-synt_ab.sto -->
+
+    <uhmmer3-build inputFile="stockholm/ATP-synt_ab.sto" outputFile="test_ATP-synt_ab_wblosum_hand_eclust.hmm"
+                   mc="hand" rw="wblosum" ew="eclust 0.44" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/ATP-synt_ab_wblosum_hand_eclust.hmm" file2="test_ATP-synt_ab_wblosum_hand_eclust.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

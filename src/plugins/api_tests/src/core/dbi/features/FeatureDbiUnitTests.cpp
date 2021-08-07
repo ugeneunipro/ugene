@@ -35,68 +35,68 @@ TestDbiProvider FeatureTestData::dbiProvider = TestDbiProvider();
 TestDbiProvider FeatureTestData::subgroupsDbiProvider = TestDbiProvider();
 const QString FeatureTestData::featureDbiUrl("features-dbi.ugenedb");
 const QString FeatureTestData::subgroupDbiUrl("featureSubgroupsSorting.ugenedb");
-U2FeatureDbi *FeatureTestData::featureDbi = NULL;
-U2FeatureDbi *FeatureTestData::subgroupDbi = NULL;
-U2SequenceDbi *FeatureTestData::sequenceDbi = NULL;
+U2FeatureDbi *FeatureTestData::featureDbi = nullptr;
+U2FeatureDbi *FeatureTestData::subgroupDbi = nullptr;
+U2SequenceDbi *FeatureTestData::sequenceDbi = nullptr;
 
 void FeatureTestData::init() {
-    SAFE_POINT(NULL == featureDbi, "featuresDbi has been already initialized!", );
+    SAFE_POINT(nullptr == featureDbi, "featuresDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(featureDbiUrl, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in FeaturesTestData::init()!", );
 
     U2Dbi *dbi = dbiProvider.getDbi();
     featureDbi = dbi->getFeatureDbi();
-    SAFE_POINT(NULL != featureDbi, "Failed to get featureDbi!", );
+    SAFE_POINT(nullptr != featureDbi, "Failed to get featureDbi!", );
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(NULL != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
 
-    SAFE_POINT(NULL == subgroupDbi, "subgroupDbi has been already initialized!", );
+    SAFE_POINT(nullptr == subgroupDbi, "subgroupDbi has been already initialized!", );
 
     ok = subgroupsDbiProvider.init(subgroupDbiUrl, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in FeaturesTestData::init()!", );
 
     dbi = subgroupsDbiProvider.getDbi();
     subgroupDbi = dbi->getFeatureDbi();
-    SAFE_POINT(NULL != featureDbi, "Failed to get subgroupDbi!", );
+    SAFE_POINT(nullptr != featureDbi, "Failed to get subgroupDbi!", );
 }
 
 void FeatureTestData::shutdown() {
     U2OpStatusImpl os;
-    if (NULL != featureDbi) {
-        SAFE_POINT(NULL != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
+    if (nullptr != featureDbi) {
+        SAFE_POINT(nullptr != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
 
         dbiProvider.close();
-        featureDbi = NULL;
-        sequenceDbi = NULL;
+        featureDbi = nullptr;
+        sequenceDbi = nullptr;
         SAFE_POINT_OP(os, );
     }
-    if (NULL != subgroupDbi) {
-        SAFE_POINT(NULL != subgroupDbi, "subgroupDbi must also be not NULL on this step!", );
+    if (nullptr != subgroupDbi) {
+        SAFE_POINT(nullptr != subgroupDbi, "subgroupDbi must also be not NULL on this step!", );
 
         subgroupsDbiProvider.close();
-        subgroupDbi = NULL;
+        subgroupDbi = nullptr;
         SAFE_POINT_OP(os, );
     }
 }
 
 U2FeatureDbi *FeatureTestData::getFeatureDbi() {
-    if (NULL == featureDbi) {
+    if (nullptr == featureDbi) {
         init();
     }
     return featureDbi;
 }
 
 U2FeatureDbi *FeatureTestData::getSubgroupDbi() {
-    if (NULL == subgroupDbi) {
+    if (nullptr == subgroupDbi) {
         init();
     }
     return subgroupDbi;
 }
 
 U2SequenceDbi *FeatureTestData::getSequenceDbi() {
-    if (NULL == sequenceDbi) {
+    if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;

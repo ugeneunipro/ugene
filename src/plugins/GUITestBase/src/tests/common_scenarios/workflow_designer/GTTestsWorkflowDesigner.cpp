@@ -84,7 +84,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     //1. Start UGENE. Open workflow schema file from data\cmdline\pfm-build.uws
     GTFileDialog::openFile(os, dataDir + "cmdline/", "pwm-build.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     //  Expected state: workflow schema opened in Workflow designer
     //    2. Change item style (Minimal - Extended - Minimal - Extended)
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
@@ -99,7 +98,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
     GTMouseDriver::doubleClick();
 
-    GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
     GTMouseDriver::doubleClick();
 
@@ -232,7 +230,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    2. Clear dashboard (select all + del button)
-    GTGlobals::sleep(500);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
     CHECK_SET_ERR(sceneView, "scene not found");
     QList<QGraphicsItem *> items = sceneView->items();
@@ -250,7 +247,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    Expected state: items and links between them painted correctly
-    GTGlobals::sleep(500);
     QList<QGraphicsItem *> items1 = sceneView->items();
     QList<QPointF> posList1;
 
@@ -272,7 +268,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     WorkflowProcessItem *read = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
     WorkflowProcessItem *write = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
     GTUtilsWorkflowDesigner::connect(os, read, write);
-    GTGlobals::sleep();
     /*GTUtilsWorkflowDesigner::addAlgorithm(os,"hmm build");
 
     GTUtilsWorkflowDesigner::addAlgorithm(os,"hmm build");
@@ -305,7 +300,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
             QPoint globalBottomRightPos = sceneView->viewport()->mapToGlobal(viewP);
             GTMouseDriver::moveTo(globalBottomRightPos);
             GTMouseDriver::click();
-            GTGlobals::sleep(2000);
         }
     }
     QTextEdit *doc = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "doc"));
@@ -334,7 +328,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Call Variants"));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
     CHECK_SET_ERR(GTWidget::findWidget(os, "table"), "parameters table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "doc"), "element documentation widget not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "inputScrollArea"), "input data table not found");
@@ -348,11 +341,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {    //DIFFERENCE:file is loaded
     //    1. open WD.
     GTFileDialog::openFile(os, dataDir + "cmdline/", "pwm-build.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     //    2. Select any worker on palette.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Weight Matrix"));
     GTMouseDriver::click();
-    GTGlobals::sleep(500);
     CHECK_SET_ERR(GTWidget::findWidget(os, "table"), "parameters table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "doc"), "element documentation widget not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "table2"), "input data table not found");
@@ -437,12 +428,10 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, sandBoxDir + "wd_test_0059.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 1..29751 source"), "Sequence not found");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 27638..27772 gene"), "Sequence not found");
@@ -460,19 +449,15 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Intersect annotations");
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations A");
-    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed");
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations B");
-    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/mutation.gff");
 
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
-    GTGlobals::sleep();
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "BED", GTUtilsWorkflowDesigner::comboValue);
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox").absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QVariant(s + "/wd_test_0060"), GTUtilsWorkflowDesigner::textValue);
@@ -503,11 +488,11 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem *item = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
-    CHECK_SET_ERR(item != NULL, "Failed to add Call variants element");
+    CHECK_SET_ERR(item != nullptr, "Failed to add Call variants element");
     GTUtilsWorkflowDesigner::click(os, "Call Variants with SAMtools");
 
     WorkflowPortItem *port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
-    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 1");
+    CHECK_SET_ERR(port != nullptr, "Cannot get in-sequence port 1");
     CHECK_SET_ERR(!port->isVisible(), "In-sequence port is unexpectedly visible");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is not visible");
 
@@ -516,9 +501,9 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is unexpectedly visible");
     item = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
-    CHECK_SET_ERR(item != NULL, "Cannot find Call variants with SAMtools element");
+    CHECK_SET_ERR(item != nullptr, "Cannot find Call variants with SAMtools element");
     port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
-    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 2");
+    CHECK_SET_ERR(port != nullptr, "Cannot get in-sequence port 2");
     CHECK_SET_ERR(port->isVisible(), "In-sequence port is enexpectedly not visible");
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
@@ -546,15 +531,13 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem *snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
-    CHECK_SET_ERR(snpEffItem != NULL, "Failed to add SnpEff Annotation and Filtration element");
+    CHECK_SET_ERR(snpEffItem != nullptr, "Failed to add SnpEff Annotation and Filtration element");
 
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "fake_snpeff_genome123", false));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_common_scenarios_workflow_designer

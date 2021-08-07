@@ -93,7 +93,7 @@ class IOAdapter;
  * Track lines (see http://genome.ucsc.edu/goldenPath/help/customTrack.html#TRACK)
  * are partially supported: only a name and a description of a track.
  */
-class U2FORMATS_EXPORT BedFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT BedFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:

@@ -209,7 +209,7 @@ QString RepeatPrompter::composeRichDoc() {
  * RepeatWorker
  ******************************/
 RepeatWorker::RepeatWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void RepeatWorker::init() {
@@ -222,7 +222,7 @@ Task *RepeatWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.algo = RFAlgorithm(actor->getParameter(ALGO_ATTR)->getAttributeValue<int>(context));
         cfg.minLen = actor->getParameter(LEN_ATTR)->getAttributeValue<int>(context);
@@ -255,7 +255,7 @@ Task *RepeatWorker::tick() {
         SharedDbiDataHandler seqId = map.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -277,7 +277,7 @@ Task *RepeatWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void RepeatWorker::sl_taskFinished() {
@@ -285,7 +285,7 @@ void RepeatWorker::sl_taskFinished() {
     if (t->getState() != Task::State_Finished || t->hasError() || t->isCanceled()) {
         return;
     }
-    if (NULL != output) {
+    if (nullptr != output) {
         const QList<SharedAnnotationData> res = t->importAnnotations();
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
         const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);

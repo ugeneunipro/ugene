@@ -62,6 +62,11 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/msa/MultipleChromatogramAlignmentRow.h \
            src/datatype/msa/MultipleSequenceAlignment.h \
            src/datatype/msa/MultipleSequenceAlignmentRow.h \
+           src/datatype/primers/Primer.h \
+           src/datatype/primers/PrimerDimersFinder.h \
+           src/datatype/primers/PrimerLibrary.h \
+           src/datatype/primers/PrimerStatistics.h \
+           src/datatype/primers/PrimerValidator.h \
            src/dbi/DbiConnection.h \
            src/dbi/DbiDocumentFormat.h \
            src/dbi/U2AbstractDbi.h \
@@ -90,6 +95,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/AppSettings.h \
            src/globals/AutoAnnotationsSupport.h \
            src/globals/BaseDocumentFormats.h \
+           src/globals/BundleInfo.h \
            src/globals/ClipboardController.h \
            src/globals/Counter.h \
            src/globals/CredentialsAsker.h \
@@ -99,6 +105,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/DBXRefRegistry.h \
            src/globals/ExternalToolRegistry.h \
            src/globals/FormatSettings.h \
+           src/globals/ScriptEngine.h \
            src/globals/Theme.h \
            src/globals/global.h \
            src/globals/GUrl.h \
@@ -146,6 +153,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/io/HttpFileAdapter.h \
            src/io/InputStream.h \
            src/io/IOAdapter.h \
+           src/io/IOAdapterTextStream.h \
            src/io/LocalFileAdapter.h \
            src/io/OutputStream.h \
            src/io/RingBuffer.h \
@@ -313,6 +321,11 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/msa/MultipleChromatogramAlignment.cpp \
            src/datatype/msa/MultipleSequenceAlignment.cpp \
            src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
+           src/datatype/primers/Primer.cpp \
+           src/datatype/primers/PrimerDimersFinder.cpp \
+           src/datatype/primers/PrimerLibrary.cpp \
+           src/datatype/primers/PrimerStatistics.cpp \
+           src/datatype/primers/PrimerValidator.cpp \
            src/datatype/udr/RawDataUdrSchema.cpp \
            src/dbi/DbiConnection.cpp \
            src/dbi/DbiDocumentFormat.cpp \
@@ -331,6 +344,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/globals/AppResources.cpp \
            src/globals/AutoAnnotationsSupport.cpp \
            src/globals/BaseDocumentFormats.cpp \
+           src/globals/BundleInfo.cpp \
            src/globals/ClipboardController.cpp \
            src/globals/Counter.cpp \
            src/globals/CredentialsAsker.cpp \
@@ -377,6 +391,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/io/DatabaseConnectionAdapter.cpp \
            src/io/HttpFileAdapter.cpp \
            src/io/IOAdapter.cpp \
+           src/io/IOAdapterTextStream.cpp \
            src/io/LocalFileAdapter.cpp \
            src/io/StringAdapter.cpp \
            src/io/VFSAdapter.cpp \

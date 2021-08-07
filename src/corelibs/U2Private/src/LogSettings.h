@@ -32,7 +32,7 @@ namespace U2 {
 
 struct U2PRIVATE_EXPORT LoggerSettings {
     LoggerSettings() {
-        qFill(activeLevelFlag, activeLevelFlag + LogLevel_NumLevels, 0);
+        std::fill(activeLevelFlag, activeLevelFlag + LogLevel_NumLevels, 0);
     }
 
     bool operator==(const LoggerSettings &other) const {

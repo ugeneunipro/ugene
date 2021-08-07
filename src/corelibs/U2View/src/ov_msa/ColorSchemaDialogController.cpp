@@ -43,14 +43,14 @@ namespace U2 {
 
 ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor> &colors)
     : QDialog(),
-      alphabetColorsView(NULL),
+      alphabetColorsView(nullptr),
       newColors(colors),
       storedColors(colors) {
 }
 
 int ColorSchemaDialogController::adjustAlphabetColors() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227991");
+    new HelpButton(this, buttonBox, "65929623");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
@@ -162,7 +162,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
         it.next();
         if (it.value().contains(event->pos().x() - alphabetColorsFrame->geometry().x(), event->pos().y() - alphabetColorsFrame->geometry().y())) {
             QObjectScopedPointer<QColorDialog> d = new QColorDialog(this);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             // A workaround because of UGENE-2263
             // Another way should be found.
             // I suppose, that it is bug in the Qt libraries (Qt-4.8.5 for mac)
@@ -186,7 +186,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
 CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData *_newSchema, QStringList _usedNames)
     : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227991");
+    new HelpButton(this, buttonBox, "65929623");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -425,7 +425,7 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
     QMap<char, QColor> alpColors;
 
     QListWidgetItem *item = colorSchemas->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
 
@@ -454,7 +454,7 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
 
 void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema() {
     QListWidgetItem *item = colorSchemas->currentItem();
-    SAFE_POINT(item != NULL, "current item for deletion is NULL", );
+    SAFE_POINT(item != nullptr, "current item for deletion is NULL", );
 
     QString schemaName = item->text();
     for (int i = 0; i < customSchemas.size(); ++i) {

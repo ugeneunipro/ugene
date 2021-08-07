@@ -216,7 +216,7 @@ public:
         PROGRAM_WITH_ARGUMENTS = 2
     };
 
-    ExternalToolListener(ExternalToolLogProcessor *logProcessor = NULL);
+    ExternalToolListener(ExternalToolLogProcessor *logProcessor = nullptr);
     virtual ~ExternalToolListener();
 
     virtual void addNewLogMessage(const QString &message, int messageType) = 0;

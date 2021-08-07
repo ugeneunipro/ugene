@@ -60,13 +60,13 @@ QMap<char, qreal> DNASequenceGeneratorDialog::content = initContent();
 
 DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget *p)
     : QDialog(p),
-      saveController(NULL),
-      generateButton(NULL),
-      cancelButton(NULL),
+      saveController(nullptr),
+      generateButton(nullptr),
+      cancelButton(nullptr),
       percentMap(content),
       gcSkew(0) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229072");
+    new HelpButton(this, buttonBox, "65930704");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -145,7 +145,7 @@ void DNASequenceGeneratorDialog::sl_generate() {
     cfg.sequenceName = "Sequence ";
     cfg.formatId = saveController->getFormatIdToSave();
     cfg.window = windowSpinBox->value();
-    cfg.alphabet = cfg.useRef ? NULL : AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    cfg.alphabet = cfg.useRef ? nullptr : AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     cfg.seed = seedCheckBox->isChecked() ? seedSpinBox->value() : -1;
 
     if (cfg.window > cfg.length) {

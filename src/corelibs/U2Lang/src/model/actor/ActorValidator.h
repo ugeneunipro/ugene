@@ -58,7 +58,7 @@ private:
 template<class T>
 T ActorValidator::getValue(const Actor *actor, const QString &attrId) const {
     Attribute *attr = actor->getParameter(attrId);
-    if (NULL == attr) {
+    if (nullptr == attr) {
         return T();
     }
     return attr->getAttributePureValue().value<T>();

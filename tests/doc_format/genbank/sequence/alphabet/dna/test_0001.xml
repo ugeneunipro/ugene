@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--in  sequence must be NUCL DNA EXTENDED ALPHABET( ACGNT MRWSYKVHDBX simbols) -->
+
+    <load-document index="doc" url="genbank/DNA.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="GXP_170358" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

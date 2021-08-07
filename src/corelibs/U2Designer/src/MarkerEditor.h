@@ -42,7 +42,7 @@ class U2DESIGNER_EXPORT MarkerEditor : public ActorConfigurationEditor {
 public:
     MarkerEditor();
     MarkerEditor(const MarkerEditor &)
-        : ActorConfigurationEditor(), markerModel(NULL) {
+        : ActorConfigurationEditor(), markerModel(nullptr) {
     }
     virtual ~MarkerEditor();
     virtual QWidget *getWidget();

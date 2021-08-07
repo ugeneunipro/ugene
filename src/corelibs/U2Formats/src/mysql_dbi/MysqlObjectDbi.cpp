@@ -151,7 +151,7 @@ U2DbiIterator<U2DataId> *MysqlObjectDbi::getObjectsByVisualName(const QString &v
         q->bindType(":type", type);
     }
 
-    return new MysqlRSIterator<U2DataId>(q, new MysqlDataIdRSLoaderEx(), NULL, U2DataId(), os);
+    return new MysqlRSIterator<U2DataId>(q, new MysqlDataIdRSLoaderEx(), nullptr, U2DataId(), os);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1051,27 +1051,27 @@ void MysqlObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpStat
     }
 
     switch (type) {
-    case U2Type::Sequence:
-    case U2Type::VariantTrack:
-        // nothing has to be done for objects of these types
-        break;
-    case U2Type::Mca:
-    case U2Type::Msa:
-        dbi->getMysqlMsaDbi()->deleteRowsData(objectId, os);
-        break;
-    case U2Type::AnnotationTable:
-        dbi->getMysqlFeatureDbi()->removeAnnotationTableData(objectId, os);
-        break;
-    case U2Type::Assembly:
-        dbi->getAssemblyDbi()->removeAssemblyData(objectId, os);
-        break;
-    case U2Type::CrossDatabaseReference:
-        dbi->getCrossDatabaseReferenceDbi()->removeCrossReferenceData(objectId, os);
-        break;
-    default:
-        if (!U2Type::isUdrObjectType(type)) {
-            os.setError(U2DbiL10n::tr("Unknown object type! Id: %1, type: %2").arg(U2DbiUtils::text(objectId)).arg(type));
-        }
+        case U2Type::Sequence:
+        case U2Type::VariantTrack:
+            // nothing has to be done for objects of these types
+            break;
+        case U2Type::Mca:
+        case U2Type::Msa:
+            dbi->getMysqlMsaDbi()->deleteRowsData(objectId, os);
+            break;
+        case U2Type::AnnotationTable:
+            dbi->getMysqlFeatureDbi()->removeAnnotationTableData(objectId, os);
+            break;
+        case U2Type::Assembly:
+            dbi->getAssemblyDbi()->removeAssemblyData(objectId, os);
+            break;
+        case U2Type::CrossDatabaseReference:
+            dbi->getCrossDatabaseReferenceDbi()->removeCrossReferenceData(objectId, os);
+            break;
+        default:
+            if (!U2Type::isUdrObjectType(type)) {
+                os.setError(U2DbiL10n::tr("Unknown object type! Id: %1, type: %2").arg(U2DbiUtils::text(objectId)).arg(type));
+            }
     }
 }
 

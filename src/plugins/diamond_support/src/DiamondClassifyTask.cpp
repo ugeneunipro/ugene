@@ -119,7 +119,7 @@ void DiamondClassifyTask::checkSettings() {
     SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError(tr("DIAMOND classification URL is empty")), );
     QString id = DNATranslationID(%1);
     auto code = AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode));
-    SAFE_POINT_EXT(code != NULL,
+    SAFE_POINT_EXT(code != nullptr,
                    setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
     // TODO validate matrix value??
 }

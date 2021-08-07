@@ -73,7 +73,7 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *e) {
     bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
     bool leftButton = e->button() == Qt::LeftButton;
     GraphicsBranchItem *p = dynamic_cast<GraphicsBranchItem *>(parentItem());
-    if (leftButton && p != NULL) {
+    if (leftButton && p != nullptr) {
         bool newSelection = true;
         if (shiftPressed) {
             newSelection = !isSelected;
@@ -118,10 +118,10 @@ void GraphicsButtonItem::setHighlighting(bool isOn) {
 
 void GraphicsButtonItem::collapse() {
     GraphicsBranchItem *branch = dynamic_cast<GraphicsBranchItem *>(parentItem());
-    SAFE_POINT(NULL != branch, "Collapsing is impossible because button has not parent branch", );
+    SAFE_POINT(nullptr != branch, "Collapsing is impossible because button has not parent branch", );
 
     GraphicsBranchItem *parentBranch = dynamic_cast<GraphicsBranchItem *>(branch->parentItem());
-    if (NULL != parentBranch) {
+    if (nullptr != parentBranch) {
         branch->collapse();
     }
 }
@@ -192,8 +192,12 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject *treeObject) {
 }
 
 void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
-    CHECK(NULL != nodeLabel, );
-    QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT]);
+    CHECK(nullptr != nodeLabel, );
+    QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
+    newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
+    newFont.setBold(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
+    newFont.setItalic(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
+    newFont.setUnderline(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
     nodeLabel->setFont(newFont);
     QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
     nodeLabel->setBrush(labelsColor);

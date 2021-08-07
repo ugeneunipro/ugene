@@ -55,7 +55,7 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema 
         while (paramsIter.hasNext()) {
             paramsIter.next();
             Attribute *attr = paramsIter.value();
-            SAFE_POINT(NULL != attr, "NULL attribute in params!", );
+            SAFE_POINT(nullptr != attr, "NULL attribute in params!", );
 
             info.parameters << attr;
         }
@@ -252,8 +252,8 @@ void WorkflowMonitor::sl_taskStateChanged() {
 }
 
 void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {
-    Actor *actor = taskMap.value(workerTask, NULL);
-    SAFE_POINT(NULL != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
+    Actor *actor = taskMap.value(workerTask, nullptr);
+    SAFE_POINT(nullptr != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
     CHECK(workerTask->isReportingEnabled(), );
     workersReports[actor->getId()].insert(workerTask->getTaskName(), workerTask->generateReport());
 }
@@ -466,7 +466,7 @@ WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorId, const
 }
 
 void WDListener::addNewLogMessage(const QString &message, int messageType) {
-    if (NULL != logProcessor) {
+    if (nullptr != logProcessor) {
         logProcessor->processLogMessage(message);
     }
     writeToFile(messageType, message);

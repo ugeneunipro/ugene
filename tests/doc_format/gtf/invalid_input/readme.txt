@@ -1,0 +1,1 @@
+These tests verify such GTF files that are invalid, but can be opened (with a warning).

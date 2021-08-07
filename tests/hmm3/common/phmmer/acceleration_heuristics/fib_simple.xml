@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: fib_simple db: titin score tresholds
+	./phmmer -max fib_simple.fa titin.fa >  fib_simple_query_titin_db_ah_max.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/fib_simple.fa" db="fasta/titin.fa" max="yes" outputDir="common/phmmer/acceleration_heuristics/fib_simple/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/fib_simple_query_titin_db_ah_max.out" actualOut="common/phmmer/acceleration_heuristics/fib_simple/output.txt"/>
+
+</multi-test>

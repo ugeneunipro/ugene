@@ -35,7 +35,7 @@ class PositionSelector;
 class AssemblyNavigationWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblyNavigationWidget(AssemblyBrowser *browser, QWidget *p = NULL);
+    AssemblyNavigationWidget(AssemblyBrowser *browser, QWidget *p = nullptr);
 
 public slots:
     void sl_updateZoomingState();
@@ -49,7 +49,7 @@ private:
 class U2VIEW_EXPORT CoveredRegionsLabel : public QLabel {
     Q_OBJECT
 public:
-    CoveredRegionsLabel(AssemblyBrowser *browser, QWidget *p = NULL);
+    CoveredRegionsLabel(AssemblyBrowser *browser, QWidget *p = nullptr);
 
     void setAdditionalText(QString prefix, QString postfix);
 

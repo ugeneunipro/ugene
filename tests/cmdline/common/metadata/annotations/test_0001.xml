@@ -1,0 +1,16 @@
+<!-- One file -->
+<multi-test>
+    <remove-temp-dir url="annotations_metadata_0001"/>
+    <create-temp-dir url="annotations_metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_anns_write_anns.uwl"
+            in="!common_data_dir!genbank/1anot.gen"
+            format="genbank"
+            working-dir="annotations_metadata_0001"
+    />
+
+    <load-document index="doc" url="annotations_metadata_0001/1anot.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="1"/>
+    <find-object-by-name index="obj" doc="doc" name="UGB:UGB1112162028 features" type="OT_ANNOTATIONS"/>
+</multi-test>

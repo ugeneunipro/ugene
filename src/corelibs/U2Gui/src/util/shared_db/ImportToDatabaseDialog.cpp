@@ -61,7 +61,7 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     FILES_AND_FOLDERS = tr("Files and folders");
     OBJECTS_AND_DOCUMENTS = tr("Documents and objects");
 
-    new HelpButton(this, ui->buttonBox, "60229313");
+    new HelpButton(this, ui->buttonBox, "65930945");
     init();
     connectSignals();
     updateState();
@@ -88,7 +88,7 @@ void ImportToDatabaseDialog::sl_itemChanged(QTreeWidgetItem *item, int column) {
 
 void ImportToDatabaseDialog::sl_customContextMenuRequested(const QPoint &position) {
     QTreeWidgetItem *item = ui->twOrders->currentItem();
-    CHECK(NULL != item, );
+    CHECK(nullptr != item, );
     CHECK(isEssential(item), );
 
     ui->twOrders->setCurrentItem(item);
@@ -107,7 +107,7 @@ void ImportToDatabaseDialog::sl_customContextMenuRequested(const QPoint &positio
 
 void ImportToDatabaseDialog::sl_resetOptions() {
     QTreeWidgetItem *item = ui->twOrders->currentItem();
-    CHECK(NULL != item, );
+    CHECK(nullptr != item, );
 
     const ImportToDatabaseOptions oldOptions = privateOptions.take(item);
     updateItemsState(oldOptions, commonOptions);
@@ -155,7 +155,7 @@ void ImportToDatabaseDialog::sl_optionsClicked() {
 
 void ImportToDatabaseDialog::sl_editOptions() {
     QTreeWidgetItem *item = ui->twOrders->currentItem();
-    CHECK(NULL != item, );
+    CHECK(nullptr != item, );
 
     ImportToDatabaseOptions currentOptions = privateOptions.value(item, commonOptions);
     QObjectScopedPointer<ItemToImportEditDialog> editDialog = new ItemToImportEditDialog(item->text(COLUMN_ITEM_TEXT), item->text(COLUMN_FOLDER), currentOptions, this);
@@ -181,7 +181,7 @@ void ImportToDatabaseDialog::sl_removeClicked() {
 
 void ImportToDatabaseDialog::sl_taskFinished() {
     Task *task = qobject_cast<Task *>(sender());
-    CHECK(NULL != task, );
+    CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
 }
 
@@ -258,7 +258,7 @@ void ImportToDatabaseDialog::updateItemState(QTreeWidgetItem *item, const Import
 }
 
 void ImportToDatabaseDialog::markItem(QTreeWidgetItem *item, bool mark) {
-    CHECK(NULL != item, );
+    CHECK(nullptr != item, );
 
     QFont fontItemText = item->font(COLUMN_ITEM_TEXT);
     fontItemText.setBold(mark);
@@ -291,7 +291,7 @@ QStringList ImportToDatabaseDialog::getFilesToImport() {
                                                                 tr("Select files to import"),
                                                                 dirHelper.dir,
                                                                 "",
-                                                                NULL,
+                                                                nullptr,
                                                                 QFileDialog::DontConfirmOverwrite | QFileDialog::ReadOnly | additionalOptions);
     CHECK(!fileList.isEmpty(), fileList);
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
@@ -304,7 +304,7 @@ QString ImportToDatabaseDialog::getFolderToImport() {
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         additionalOptions = QFileDialog::DontUseNativeDialog;
     }
@@ -370,12 +370,12 @@ void ImportToDatabaseDialog::addObjectsAndDocuments(const QList<Document *> &doc
     }
 
     foreach (GObject *object, objsToImport) {
-        addObject(object, NULL);
+        addObject(object, nullptr);
     }
 }
 
 void ImportToDatabaseDialog::addDocument(Document *document) {
-    CHECK(NULL != document, );
+    CHECK(nullptr != document, );
 
     QTreeWidgetItem *newItem = new QTreeWidgetItem(QStringList() << document->getName() << baseFolder);
     newItem->setIcon(COLUMN_ITEM_TEXT, QIcon(":/core/images/document.png"));
@@ -391,14 +391,14 @@ void ImportToDatabaseDialog::addDocument(Document *document) {
 }
 
 void ImportToDatabaseDialog::addObject(GObject *object, QTreeWidgetItem *parent) {
-    CHECK(NULL != object, );
-    CHECK(NULL != object->getDocument(), );
+    CHECK(nullptr != object, );
+    CHECK(nullptr != object->getDocument(), );
 
     const QString objectText = "[" + GObjectTypes::getTypeInfo(object->getGObjectType()).treeSign + "] " + object->getGObjectName();
 
     QString dstFolder = baseFolder;
-    if (NULL != parent &&
-        NULL != treeItem2Document.value(parent, NULL) &&
+    if (nullptr != parent &&
+        nullptr != treeItem2Document.value(parent, nullptr) &&
         commonOptions.createSubfolderForEachDocument) {
         dstFolder = baseFolder + U2ObjectDbi::PATH_SEP + treeItem2Document[parent]->getName();
         dstFolder = U2DbiUtils::makeFolderCanonical(dstFolder);
@@ -406,7 +406,7 @@ void ImportToDatabaseDialog::addObject(GObject *object, QTreeWidgetItem *parent)
 
     QTreeWidgetItem *newItem = new QTreeWidgetItem(QStringList() << objectText << dstFolder);
 
-    if (NULL == parent) {
+    if (nullptr == parent) {
         treeItem2Object[newItem] = object;
         setObjectTooltip(newItem);
         parent = getHeaderItem(OBJECT_AND_DOCUMENT);
@@ -432,7 +432,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem *> itemList) {
     QSet<QTreeWidgetItem *> parents;
     QSet<QTreeWidgetItem *> removedItems;
     foreach (QTreeWidgetItem *item, itemList) {
-        if (NULL != item->parent()) {
+        if (nullptr != item->parent()) {
             parents << item->parent();
         }
 
@@ -453,7 +453,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem *> itemList) {
 
 QList<QTreeWidgetItem *> ImportToDatabaseDialog::removeRecursively(QTreeWidgetItem *item) {
     QList<QTreeWidgetItem *> removedItems;
-    CHECK(NULL != item, removedItems);
+    CHECK(nullptr != item, removedItems);
 
     for (int i = 0; i < item->childCount(); i++) {
         removedItems << removeRecursively(item->child(i));
@@ -564,16 +564,16 @@ void ImportToDatabaseDialog::setFileTooltip(QTreeWidgetItem *item) {
     }
 
     switch (currentOptions.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
-                   "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
+                       "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
+            break;
     }
 
     item->setToolTip(COLUMN_ITEM_TEXT, tooltip);
@@ -608,16 +608,16 @@ void ImportToDatabaseDialog::setFolderTooltip(QTreeWidgetItem *item) {
     }
 
     switch (currentOptions.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
-                   "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
+                       "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
+            break;
     }
 
     item->setToolTip(COLUMN_ITEM_TEXT, tooltip);

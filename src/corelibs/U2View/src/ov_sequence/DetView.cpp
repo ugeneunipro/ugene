@@ -107,13 +107,13 @@ DetView::DetView(QWidget *p, SequenceObjectContext *ctx)
     wrapSequenceAction->setCheckable(true);
     wrapSequenceAction->setChecked(true);
 
-    bool hasComplement = ctx->getComplementTT() != NULL;
+    bool hasComplement = ctx->getComplementTT() != nullptr;
     showComplementAction->setChecked(hasComplement);
 
-    bool hasAmino = ctx->getAminoTT() != NULL;
+    bool hasAmino = ctx->getAminoTT() != nullptr;
     showTranslationAction->setChecked(hasAmino);
 
-    assert(ctx->getSequenceObject() != NULL);
+    assert(ctx->getSequenceObject() != nullptr);
     featureFlags &= ~GSLV_FF_SupportsCustomRange;    // DetView does not support zooming.
     renderArea = new DetViewRenderArea(this);
     renderArea->setObjectName("render_area_" + ctx->getSequenceObject()->getSequenceName());
@@ -159,11 +159,11 @@ DetViewRenderArea *DetView::getDetViewRenderArea() const {
 }
 
 bool DetView::hasTranslations() const {
-    return getAminoTT() != NULL;
+    return getAminoTT() != nullptr;
 }
 
 bool DetView::hasComplementaryStrand() const {
-    return getComplementTT() != NULL;
+    return getComplementTT() != nullptr;
 }
 
 bool DetView::isWrapMode() const {
@@ -203,11 +203,11 @@ void DetView::setCenterPos(qint64 pos) {
 }
 
 DNATranslation *DetView::getComplementTT() const {
-    return showComplementAction->isChecked() ? ctx->getComplementTT() : NULL;
+    return showComplementAction->isChecked() ? ctx->getComplementTT() : nullptr;
 }
 
 DNATranslation *DetView::getAminoTT() const {
-    return !doNotTranslateAction->isChecked() ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() ? ctx->getAminoTT() : nullptr;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -626,22 +626,22 @@ void DetView::updateVisibleRange() {
             visibleLinesCount++;
         }
 
-        int visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
+        qint64 visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
 
-        int lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
+        qint64 lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
         if (detArea->height() - detArea->getLinesCount() * detArea->getShiftsCount() * detArea->getShiftHeight() > 0 && lastLine > 0) {
             lastLine--;
         }
-        int lastStartPos = lastLine * detArea->getSymbolsPerLine();
+        qint64 lastStartPos = lastLine * detArea->getSymbolsPerLine();
 
         bool posAtTheEnd = visibleRange.startPos > lastStartPos;
-        visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+        visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
         bool emptyLineDetected = (visibleRangeLen - visibleRange.length) > detArea->getSymbolsPerLine();
 
         if (posAtTheEnd || (emptyLineDetected && visibleRange.startPos + visibleRangeLen >= seqLen)) {
             // scroll to the end
             visibleRange.startPos = qMax(0, (verticalScrollBar->maximum() / numShiftsInOneLine) * detArea->getSymbolsPerLine());
-            visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+            visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
             currentShiftsCounter = qMax(0, verticalScrollBar->maximum() % numShiftsInOneLine);
         }
     } else {
@@ -656,10 +656,10 @@ void DetView::updateVisibleRange() {
 }
 
 void DetView::updateActions() {
-    bool hasComplement = ctx->getComplementTT() != NULL;
+    bool hasComplement = ctx->getComplementTT() != nullptr;
     showComplementAction->setEnabled(hasComplement);
 
-    bool hasAmino = ctx->getAminoTT() != NULL;
+    bool hasAmino = ctx->getAminoTT() != nullptr;
     showTranslationAction->setEnabled(hasAmino);
 }
 
@@ -690,7 +690,7 @@ void DetView::updateVerticalScrollBar() {
     int maximum;
     if (isWrapMode()) {
         DetViewRenderArea *detArea = getDetViewRenderArea();
-        int linesCount = seqLen / detArea->getSymbolsPerLine();
+        qint64 linesCount = seqLen / detArea->getSymbolsPerLine();
         if (seqLen % detArea->getSymbolsPerLine() != 0) {
             linesCount++;
         }
@@ -732,7 +732,7 @@ void DetView::updateVerticalScrollBarPosition() {
 
 void DetView::setupTranslationsMenu() {
     QMenu *translationsMenu = ctx->createTranslationFramesMenu(QList<QAction *>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
-    CHECK(NULL != translationsMenu, );
+    CHECK(nullptr != translationsMenu, );
     QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
@@ -740,7 +740,7 @@ void DetView::setupTranslationsMenu() {
 
 void DetView::setupGeneticCodeMenu() {
     QMenu *ttMenu = ctx->createGeneticCodeMenu();
-    CHECK(NULL != ttMenu, );
+    CHECK(nullptr != ttMenu, );
     QToolButton *button = addActionToLocalToolbar(ttMenu->menuAction());
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
     button->setPopupMode(QToolButton::InstantPopup);

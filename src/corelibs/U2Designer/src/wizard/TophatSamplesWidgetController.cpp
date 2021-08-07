@@ -265,7 +265,7 @@ private:
 /* TophatSamples */
 /************************************************************************/
 TophatSamples::TophatSamples(const QList<TophatSample> &samples, TophatSamplesWidgetController *ctrl, QWidget *parent)
-    : QWidget(parent), ctrl(ctrl), scrollArea(NULL), listLayout(NULL), upButton(NULL), downButton(NULL) {
+    : QWidget(parent), ctrl(ctrl), scrollArea(nullptr), listLayout(nullptr), upButton(nullptr), downButton(nullptr) {
     init(samples);
 }
 
@@ -364,9 +364,9 @@ bool TophatSamples::rename(QLineEdit *nameEdit) {
 
 void TophatSamples::sl_remove() {
     QToolButton *toolButton = dynamic_cast<QToolButton *>(sender());
-    SAFE_POINT(NULL != toolButton, "NULL button", );
+    SAFE_POINT(nullptr != toolButton, "NULL button", );
     QWidget *sampleWidget = toolButton->parentWidget();
-    CHECK(NULL != sampleWidget, );
+    CHECK(nullptr != sampleWidget, );
     CHECK(order.contains(sampleWidget), );
 
     // remove
@@ -383,7 +383,7 @@ void TophatSamples::sl_remove() {
     }
 
     QListWidget *list = getListWidget(0);
-    CHECK(NULL != list, );
+    CHECK(nullptr != list, );
     list->addItems(insertToFirst);
 
     updateArrows();
@@ -400,11 +400,11 @@ void TophatSamples::sl_add() {
 
 void TophatSamples::sl_selectionChanged() {
     QListWidget *selectedList = dynamic_cast<QListWidget *>(sender());
-    CHECK(NULL != selectedList, );
+    CHECK(nullptr != selectedList, );
     CHECK(selectedList->selectedItems().size() > 0, );
 
     QWidget *sampleWidget = selectedList->parentWidget();
-    CHECK(NULL != sampleWidget, );
+    CHECK(nullptr != sampleWidget, );
     CHECK(order.contains(sampleWidget), );
 
     selectSample(order.indexOf(sampleWidget));
@@ -414,7 +414,7 @@ void TophatSamples::sl_selectionChanged() {
 void TophatSamples::selectSample(int selectedPos) {
     for (int pos = 0; pos < order.size(); pos++) {
         QListWidget *list = getListWidget(pos);
-        SAFE_POINT(NULL != list, "NULL list widget", );
+        SAFE_POINT(nullptr != list, "NULL list widget", );
         if (pos != selectedPos) {
             list->clearSelection();
             list->setCurrentRow(-1);
@@ -424,12 +424,12 @@ void TophatSamples::selectSample(int selectedPos) {
 
 bool TophatSamples::isBorderCase(QListWidget *list, int datasetPos, Direction direction) const {
     switch (direction) {
-    case UP:
-        return (0 == datasetPos);
-    case DOWN:
-        return (list->count() - 1 == datasetPos);
-    default:
-        return false;
+        case UP:
+            return (0 == datasetPos);
+        case DOWN:
+            return (list->count() - 1 == datasetPos);
+        default:
+            return false;
     }
 }
 
@@ -441,7 +441,7 @@ void TophatSamples::getNewPositions(QListWidget *oldList, int oldSamplePos, int 
     if (isBorderCase(oldList, oldDatasetPos, direction)) {
         newSamplePos = (UP == direction) ? oldSamplePos - 1 : oldSamplePos + 1;
         newList = getListWidget(newSamplePos);
-        SAFE_POINT(NULL != newList, "NULL prev list widget", );
+        SAFE_POINT(nullptr != newList, "NULL prev list widget", );
         newDatasetPos = (UP == direction) ? (newList)->count() : 0;
     }
 }
@@ -449,7 +449,7 @@ void TophatSamples::getNewPositions(QListWidget *oldList, int oldSamplePos, int 
 void TophatSamples::findSelectedDataset(int &samplePos, int &datasetPos) const {
     for (int pos = 0; pos < order.size(); pos++) {
         QListWidget *list = getListWidget(pos);
-        SAFE_POINT(NULL != list, "NULL list widget", );
+        SAFE_POINT(nullptr != list, "NULL list widget", );
 
         int currentRow = list->currentRow();
         if (-1 != currentRow) {
@@ -467,14 +467,14 @@ void TophatSamples::move(Direction direction) {
     findSelectedDataset(oldSamplePos, oldDatasetPos);
     CHECK(-1 != oldSamplePos, );
     QListWidget *oldList = getListWidget(oldSamplePos);
-    SAFE_POINT(NULL != oldList, "NULL old list widget", );
+    SAFE_POINT(nullptr != oldList, "NULL old list widget", );
 
     // find target position
     int newSamplePos = -1;
     int newDatasetPos = -1;
-    QListWidget *newList = NULL;
+    QListWidget *newList = nullptr;
     getNewPositions(oldList, oldSamplePos, oldDatasetPos, direction, newSamplePos, newDatasetPos, newList);
-    SAFE_POINT(NULL != newList, "NULL new list widget", );
+    SAFE_POINT(nullptr != newList, "NULL new list widget", );
 
     // move selected dataset
     U2OpStatusImpl os;
@@ -502,7 +502,7 @@ void TophatSamples::sl_down() {
 }
 
 QListWidget *TophatSamples::getListWidget(int pos) const {
-    CHECK((pos > -1) && (pos < order.size()), NULL);
+    CHECK((pos > -1) && (pos < order.size()), nullptr);
     QWidget *first = order[pos];
     return first->findChild<QListWidget *>();
 }

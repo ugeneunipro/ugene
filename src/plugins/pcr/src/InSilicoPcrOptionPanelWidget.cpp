@@ -29,6 +29,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -41,9 +42,8 @@
 
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
-#include "PrimerGroupBox.h"
-#include "PrimerStatistics.h"
 #include "PrimersDetailsDialog.h"
+#include "PrimerGroupBox.h"
 
 namespace U2 {
 
@@ -57,7 +57,7 @@ const QString SETTINGS_SUBGROUP_ID = "settings";
 InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *annotatedDnaView)
     : QWidget(),
       annotatedDnaView(annotatedDnaView),
-      pcrTask(NULL),
+      pcrTask(nullptr),
       resultTableShown(false),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
     GCOUNTER(cvar, "PCR options panel");
@@ -98,7 +98,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
 }
 
 InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
-    if (NULL != pcrTask) {
+    if (nullptr != pcrTask) {
         pcrTask->cancel();
     }
 }
@@ -146,9 +146,9 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     int perfectMatch = perfectSpinBox->value();
     SAFE_POINT(perfectMatch >= 0, "Negative perfect match", );
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
     InSilicoPcrTaskSettings settings;
     settings.forwardPrimer = forwardPrimerBox->getPrimer();
@@ -172,22 +172,22 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
 
 void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
     CHECK(sender() == pcrTask, );
-    SAFE_POINT(NULL != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
+    SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
     if (pcrTask->isCanceled() || pcrTask->hasError()) {
         disconnect(pcrTask, SIGNAL(si_stateChanged()));
-        pcrTask = NULL;
+        pcrTask = nullptr;
         setEnabled(true);
         return;
     }
     CHECK(pcrTask->isFinished(), );
     showResults(pcrTask);
-    pcrTask = NULL;
+    pcrTask = nullptr;
     setEnabled(true);
 }
 
 void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask *task) {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings().sequenceObject);
-    CHECK(NULL != sequenceContext, );
+    CHECK(nullptr != sequenceContext, );
 
     productsTable->showProducts(task->getResults(), sequenceContext);
     setResultTableShown(true);
@@ -195,9 +195,9 @@ void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask *task) {
 
 void InSilicoPcrOptionPanelWidget::sl_extractProduct() {
     ADVSequenceObjectContext *sequenceContext = productsTable->productsContext();
-    SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
     ExtractProductSettings settings;
     settings.sequenceRef = sequenceContext->getSequenceRef();
     settings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(annsComboBox->itemData(annsComboBox->currentIndex()).toInt());
@@ -222,7 +222,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
     if (tableChanged) {
         setResultTableShown(false);
     }
-    CHECK(NULL != pcrTask, );
+    CHECK(nullptr != pcrTask, );
     bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings().sequenceObject;
     if (taskChanged) {
         pcrTask->cancel();
@@ -230,9 +230,9 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
 }
 
 bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext *sequenceContext) {
-    CHECK(NULL != sequenceContext, false);
+    CHECK(nullptr != sequenceContext, false);
     const DNAAlphabet *alphabet = sequenceContext->getAlphabet();
-    SAFE_POINT(alphabet != NULL, L10N::nullPointerError("Alphabet"), false);
+    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), false);
     return alphabet->isDNA();
 }
 

@@ -138,7 +138,7 @@ void SpinBoxWidget::setValue(const QVariant &value) {
 }
 
 void SpinBoxWidget::processDelegateTags() {
-    CHECK(_tags != NULL, );
+    CHECK(_tags != nullptr, );
 
     if (_tags->get("minimum") != QVariant()) {
         spinBox->setMinimum(_tags->get("minimum").toInt());
@@ -295,7 +295,7 @@ ComboBoxWithUrlWidget::ComboBoxWithUrlWidget(const QVariantMap &items, bool _isP
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_browse()));
     layout()->addWidget(toolButton);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     toolButton->setMinimumHeight(18);
     QString style = "QComboBox {"
                     "min-height: 19px;"
@@ -340,12 +340,12 @@ void ComboBoxWithUrlWidget::sl_browse() {
 
     QString name;
     if (isPath) {
-        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
+        lod.dir = name = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lastDir);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }
@@ -410,13 +410,12 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
 ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), items(_items) {
+    : PropertyWidget(parent), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
-    cm = NULL;
     addMainWidget(comboBox);
+    initModelView();
 
-    setValue(value());
-
+    connect(cm, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(sl_itemChanged(QStandardItem *)));
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
@@ -433,42 +432,15 @@ QVariant ComboBoxWithChecksWidget::value() {
 }
 
 void ComboBoxWithChecksWidget::setValue(const QVariant &value) {
-    disconnect(cm, SIGNAL(itemChanged(const QModelIndex &)), this, SLOT(sl_itemChanged(const QModelIndex &)));
-    QStringList curList = value.toString().split(",");
-    if (cm == NULL) {
-        cm = new QStandardItemModel(items.size(), 1, comboBox);
-    } else {
-        cm->clear();
-        delete cm;
-        cm = new QStandardItemModel(items.size(), 1, comboBox);
-    }
-
-    const QList<QString> &keys = items.keys();
-    int i = 0;
-
-    QStandardItem *ghostItem = new QStandardItem();
-    cm->setItem(i++, ghostItem);
-
-    foreach (const QString &key, keys) {
+    QStringList curList = value.toString().split(',', QString::SkipEmptyParts);
+    // 0-item is a `ghostItem` with the result of all currently checked checkboxes. That's why we start with 1.
+    for (int i = 1; i < cm->rowCount(); i++) {
+        QStandardItem *item = cm->item(i);
+        QString key = item->data().toString();
         bool checked = curList.contains(key, Qt::CaseInsensitive);
         items[key] = checked;
-        QStandardItem *item = new QStandardItem(key);
-        item->setCheckable(true);
-        item->setEditable(false);
-        item->setSelectable(false);
         item->setCheckState((checked) ? Qt::Checked : Qt::Unchecked);
-        item->setData(key);
-        cm->setItem(i++, item);
     }
-    comboBox->setModel(cm);
-
-    QListView *vw = new QListView(comboBox);
-    vw->setModel(cm);
-    vw->setRowHidden(0, true);
-
-    comboBox->setView(vw);
-    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
-    connect(cm, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(sl_itemChanged(QStandardItem *)));
 }
 
 void ComboBoxWithChecksWidget::sl_valueChanged(int) {
@@ -481,16 +453,41 @@ void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
     QString key = standardItem->data().toString();
 
     if (items.contains(key)) {
-        Qt::CheckState checkState = standardItem->checkState();
-        if (checkState == Qt::Checked) {
-            items[key] = true;
-        } else if (checkState == Qt::Unchecked) {
-            items[key] = false;
+        bool newCheckState = standardItem->checkState() == Qt::Checked;
+        if (items.value(key).toBool() != newCheckState) {
+            items[key] = newCheckState;
+            sl_valueChanged(0);
         }
-        sl_valueChanged(0);
     }
 
     comboBox->setItemText(0, value().toString());
+}
+
+void ComboBoxWithChecksWidget::initModelView() {
+    cm = new QStandardItemModel(items.size(), 1, comboBox);
+
+    int i = 0;
+    auto ghostItem = new QStandardItem();
+    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
+    cm->setItem(i++, ghostItem);
+
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        QStandardItem *item = new QStandardItem(it.key());
+        item->setCheckable(true);
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setCheckState(it.value().toBool() ? Qt::Checked : Qt::Unchecked);
+        item->setData(it.key());
+        cm->setItem(i++, item);
+    }
+
+    comboBox->setModel(cm);
+
+    auto vw = new QListView(comboBox);
+    vw->setModel(cm);
+    vw->setRowHidden(0, true);
+
+    comboBox->setView(vw);
 }
 
 /************************************************************************/
@@ -571,7 +568,7 @@ void URLWidget::sl_browse() {
         return;
     }
     RunFileSystem *rfs = getRFS();
-    if (NULL == rfs) {
+    if (nullptr == rfs) {
         urlLine->sl_onBrowse();
     } else {
         QObjectScopedPointer<OutputFileDialog> d = new OutputFileDialog(rfs, urlLine->isPath, urlLine->getCompletionFillerInstance(), this);
@@ -589,7 +586,7 @@ void URLWidget::sl_browse() {
 
 void URLWidget::sl_finished() {
     RunFileSystem *rfs = getRFS();
-    if (NULL != rfs) {
+    if (nullptr != rfs) {
         QString result = urlLine->text();
         if ((result != initialValue) && RFSUtils::isCorrectUrl(result)) {
             if (rfs->canAdd(result, urlLine->isPath)) {
@@ -606,7 +603,7 @@ void URLWidget::sl_finished() {
 }
 
 RunFileSystem *URLWidget::getRFS() {
-    CHECK(NULL != schemaConfig, NULL);
+    CHECK(nullptr != schemaConfig, nullptr);
     return schemaConfig->getRFS();
 }
 
@@ -626,13 +623,13 @@ static const QString FILE_TAG("file");
 QString NoFileURLWidget::finalyze(const QString &url, DelegateTags *tags) {
     QFileInfo info(url);
     if (url.isEmpty() || info.isDir() || info.isRelative() || !info.exists()) {
-        if (NULL != tags) {
+        if (nullptr != tags) {
             tags->set(FILE_TAG, "");
         }
         return url;
     }
 
-    if (NULL != tags) {
+    if (nullptr != tags) {
         tags->set(FILE_TAG, info.fileName());
     }
     return info.dir().absolutePath();

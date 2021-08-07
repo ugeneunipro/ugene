@@ -73,7 +73,7 @@ static Service *findServiceToDisable(ServiceRegistry *sr) {
         }
     }
     assert(nEnabled == 0);
-    return NULL;
+    return nullptr;
 }
 
 class CancelAllTask : public Task {
@@ -116,7 +116,7 @@ QList<Task *> ConsoleShutdownTask::onSubTaskFinished(Task *subTask) {
 
     ServiceRegistry *sr = AppContext::getServiceRegistry();
     Service *s = findServiceToDisable(sr);
-    if (s != NULL) {
+    if (s != nullptr) {
         res.append(sr->disableServiceTask(s));
     }
     return res;

@@ -102,8 +102,8 @@ SpideySupportContext::SpideySupportContext(QObject *p)
 
 void SpideySupportContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(view);
-    assert(dnaView != NULL);
-    if (dnaView->getActiveSequenceContext() == NULL) {
+    assert(dnaView != nullptr);
+    if (dnaView->getActiveSequenceContext() == nullptr) {
         return;
     }
 
@@ -116,10 +116,10 @@ void SpideySupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_Spidey()));
 }
 
-void SpideySupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void SpideySupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
-    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
@@ -167,7 +167,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
     U2SequenceObject *rnaObj = qobject_cast<U2SequenceObject *>(objects.first());
 
     ADVGlobalAction *action = qobject_cast<ADVGlobalAction *>(sender());
-    assert(action != NULL);
+    assert(action != nullptr);
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     U2SequenceObject *dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
 
