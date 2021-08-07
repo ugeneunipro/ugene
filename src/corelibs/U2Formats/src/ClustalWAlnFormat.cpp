@@ -52,7 +52,7 @@ namespace U2 {
 
 const QString ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
 const int ClustalWAlnFormat::MAX_LINE_LEN = 190;
-//The sequence name's length maximum is defined in the "clustalw.h" file of the "CLUSTALW" source code
+// The sequence name's length maximum is defined in the "clustalw.h" file of the "CLUSTALW" source code
 const int ClustalWAlnFormat::MAX_NAME_LEN = 150;
 const int ClustalWAlnFormat::MAX_SEQ_LEN = 70;
 const int ClustalWAlnFormat::SEQ_ALIGNMENT = 5;
@@ -91,7 +91,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
     // Read names and sequences.
     while (reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk) > 0 && !os.isCoR()) {
         if (buf.startsWith(CLUSTAL_HEADER)) {
-            reader.undo(os);    // Start of the next document in the stream.
+            reader.undo(os);  // Start of the next document in the stream.
             CHECK_OP(os, )
             break;
         }
@@ -106,7 +106,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
         }
         if (len == 0) {
             if (al->getNumRows() == 0) {
-                continue;    //initial empty lines
+                continue;  // initial empty lines
             }
             os.setError(ClustalWAlnFormat::tr("Error parsing file"));
             break;
@@ -125,25 +125,25 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
             valStartPos = valIdx;
         }
 
-        valEndPos = valStartPos + 1;    //not inclusive
+        valEndPos = valStartPos + 1;  // not inclusive
         while (valEndPos < len && !TextUtils::isWhiteSpace(buf, valEndPos)) {
             valEndPos++;
         }
-        if (valEndPos != len) {    //there were numbers trimmed -> trim spaces now
+        if (valEndPos != len) {  // there were numbers trimmed -> trim spaces now
             while (valEndPos > valStartPos && (buf[valEndPos] == ' ' || buf[valEndPos] == '\t')) {
                 valEndPos--;
             }
-            valEndPos++;    //leave non-inclusive
+            valEndPos++;  // leave non-inclusive
         }
 
         QString name = buf.left(valStartPos).trimmed();
-        QByteArray value = buf.mid(valStartPos, valEndPos - valStartPos).toLatin1();    // DNA sequences use 1-byte chars.
+        QByteArray value = buf.mid(valStartPos, valEndPos - valStartPos).toLatin1();  // DNA sequences use 1-byte chars.
 
         int seqsInModel = al->getNumRows();
         bool lastBlockLine = (!firstBlock && sequenceIdx == seqsInModel) || numNs >= 2 || name.isEmpty() || value.contains(' ') || value.contains(':') || value.contains('.');
 
         if (firstBlock) {
-            if (lastBlockLine && name.isEmpty()) {    //if name is not empty -> this is a sequence but consensus (for Clustal files without consensus)
+            if (lastBlockLine && name.isEmpty()) {  // if name is not empty -> this is a sequence but consensus (for Clustal files without consensus)
                 // this is consensus line - skip it
             } else {
                 assert(al->getNumRows() == sequenceIdx);
@@ -233,7 +233,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObje
 
     int maxNumLength = 1 + (aliLen < 10 ? 1 : (int)log10((double)aliLen));
 
-    int seqStart = maxNameLength + 2;    //+1 for space separator
+    int seqStart = maxNameLength + 2;  //+1 for space separator
     if (seqStart % SEQ_ALIGNMENT != 0) {
         seqStart = seqStart + SEQ_ALIGNMENT - (seqStart % SEQ_ALIGNMENT);
     }
@@ -313,4 +313,4 @@ FormatCheckResult ClustalWAlnFormat::checkRawTextData(const QString &dataPrefix,
                : FormatDetection_AverageSimilarity;
 }
 
-}    // namespace U2
+}  // namespace U2

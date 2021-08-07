@@ -56,7 +56,7 @@ DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
       num_threads(1) {
 }
 
-const QString DiamondClassifyTask::TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT = "102";    // from the DIAMOND manual
+const QString DiamondClassifyTask::TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT = "102";  // from the DIAMOND manual
 
 DiamondClassifyTask::DiamondClassifyTask(const DiamondClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify sequences with DIAMOND"), TaskFlags_FOSE_COSC),
@@ -117,7 +117,7 @@ void DiamondClassifyTask::checkSettings() {
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError(tr("Reads URL is empty")), );
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError(tr("DIAMOND database URL is empty")), );
     SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError(tr("DIAMOND classification URL is empty")), );
-    QString id = DNATranslationID(%1);
+    QString id = DNATranslationID(% 1);
     auto code = AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode));
     SAFE_POINT_EXT(code != nullptr,
                    setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
@@ -163,4 +163,4 @@ QStringList DiamondClassifyTask::getArguments() const {
     return arguments;
 }
 
-}    // namespace U2
+}  // namespace U2

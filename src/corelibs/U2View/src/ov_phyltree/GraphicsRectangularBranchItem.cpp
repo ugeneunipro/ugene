@@ -310,4 +310,4 @@ GraphicsRectangularBranchItem *GraphicsRectangularBranchItem::getChildItemByPhyB
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

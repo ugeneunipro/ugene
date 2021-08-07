@@ -48,4 +48,4 @@ public:
 
 #    endif
 
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA

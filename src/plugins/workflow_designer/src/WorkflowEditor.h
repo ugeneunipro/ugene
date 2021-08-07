@@ -121,14 +121,14 @@ private slots:
 
 private:
     WorkflowEditor *editor;
-    QMap<QString, AttributeDatasetsController *> controllers;    // attrId <-> controller
-    QMap<QString, QList<Dataset>> sets;    // attrId <-> datasets
+    QMap<QString, AttributeDatasetsController *> controllers;  // attrId <-> controller
+    QMap<QString, QList<Dataset>> sets;  // attrId <-> datasets
 
 private:
     void addWidget(AttributeDatasetsController *controller);
     void removeWidget(AttributeDatasetsController *controller);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

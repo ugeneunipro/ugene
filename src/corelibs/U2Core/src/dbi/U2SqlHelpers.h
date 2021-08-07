@@ -54,7 +54,7 @@ public:
     bool useTransaction;
     bool useCache;
     QVector<SQLiteTransaction *> transactionStack;
-    QHash<QString, QSharedPointer<SQLiteQuery>> preparedQueries;    //shared pointer because a query can be deleted elsewhere
+    QHash<QString, QSharedPointer<SQLiteQuery>> preparedQueries;  // shared pointer because a query can be deleted elsewhere
 };
 
 class U2CORE_EXPORT SQLiteUtils {
@@ -69,7 +69,7 @@ public:
     static bool isTableExists(const QString &tableName, DbRef *db, U2OpStatus &os);
 
     /** returns 1 if the database is read-only, 0 if it is read/write, or -1 if dbName is not the name of a database on connection */
-    static int isDatabaseReadOnly(const DbRef *db, QString dbName);    //dbName is usualy "main"
+    static int isDatabaseReadOnly(const DbRef *db, QString dbName);  // dbName is usualy "main"
 
     /** Writes Memory counters */
     static bool getMemoryHint(int &currentMemory, int &maxMemory, int resetMax);
@@ -420,6 +420,6 @@ protected:
         } \
     }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SQL_HELPERS_H_
+#endif  // _U2_SQL_HELPERS_H_

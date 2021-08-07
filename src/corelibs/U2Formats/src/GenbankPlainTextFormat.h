@@ -68,10 +68,10 @@ protected:
 
     static constexpr int VAL_OFF = 12;
 
-    static const QMap<U2FeatureType, GBFeatureKey> additionalFeatureTypes;    // some feature types might be converted to the GBFeatureKey
+    static const QMap<U2FeatureType, GBFeatureKey> additionalFeatureTypes;  // some feature types might be converted to the GBFeatureKey
     static QMap<U2FeatureType, GBFeatureKey> initAdditionalFeatureTypes();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

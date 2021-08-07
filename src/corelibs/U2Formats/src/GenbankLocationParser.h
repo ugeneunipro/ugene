@@ -48,8 +48,8 @@ public:
     static ParsingResult parseLocation(const char *str, int len, U2Location &location, QStringList &messages, qint64 seqlenForCircular = -1);
 };
 
-}    // namespace Genbank
+}  // namespace Genbank
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

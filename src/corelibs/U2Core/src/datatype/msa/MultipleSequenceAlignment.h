@@ -151,7 +151,7 @@ public:
     void toUpperCase();
 
     /** Keep only only column-range of given rows in the alignment. */
-    bool crop(const QList<qint64>& rowIds, const U2Region &columnRange, U2OpStatus &os);
+    bool crop(const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os);
 
     /** Keeps only 'columnRange' region in the alignment */
     bool crop(const U2Region &columnRange, U2OpStatus &os);
@@ -268,6 +268,6 @@ inline bool operator==(const MultipleSequenceAlignmentData *ptr1, const Multiple
     return *ptr1 == *ptr2;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

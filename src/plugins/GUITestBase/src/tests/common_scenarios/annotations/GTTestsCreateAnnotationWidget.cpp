@@ -224,7 +224,7 @@ private:
     const QString groupToSelect;
 };
 
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    Test annotation type for a full widget and nucleotide sequence.
@@ -3052,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
     //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
-    //GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
+    // GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable"));
 
     //    Expected state:
@@ -3256,9 +3256,9 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
 GUI_TEST_CLASS_DEFINITION(test_0044) {
     /* 1. Open "_common_data/genbank/1seq.gen".
- * 2. Try to add annotation to opened file
- * Expected state: option is avaliable and no errors showed
-*/
+     * 2. Try to add annotation to opened file
+     * Expected state: option is avaliable and no errors showed
+     */
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
@@ -3294,9 +3294,9 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 
 GUI_TEST_CLASS_DEFINITION(test_0045) {
     /* 1. Open "_common_data/genbank/70Bp2.gen".
- * 2. Try to add annotation to both sequences
- * Expected state: option is avaliable and no errors showed
-*/
+     * 2. Try to add annotation to both sequences
+     * Expected state: option is avaliable and no errors showed
+     */
     class Scenario : public CustomScenario {
         QString annotationName;
 
@@ -3338,15 +3338,15 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: there is an annotation with type "Misc. Feature".
+    // Expected state: there is an annotation with type "Misc. Feature".
     QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_1");
     CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Misc. Feature").arg(type));
 
-    //Expected state: there is an annotation with type "Misc. Feature".
+    // Expected state: there is an annotation with type "Misc. Feature".
     type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_2");
     CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Misc. Feature").arg(type));
 }
 
-}    // namespace GUITest_common_scenarios_create_annotation_widget
+}  // namespace GUITest_common_scenarios_create_annotation_widget
 
-}    // namespace U2
+}  // namespace U2

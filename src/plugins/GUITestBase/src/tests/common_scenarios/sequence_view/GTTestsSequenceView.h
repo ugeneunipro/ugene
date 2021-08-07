@@ -112,8 +112,8 @@ GUI_TEST_CLASS_DECLARATION(test_0077)
 GUI_TEST_CLASS_DECLARATION(test_0078)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_sequence_view
+}  // namespace GUITest_common_scenarios_sequence_view
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

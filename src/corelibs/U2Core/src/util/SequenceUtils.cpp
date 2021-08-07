@@ -113,7 +113,7 @@ QVector<U2Region> U1SequenceUtils::getJoinedMapping(const QList<QByteArray> &seq
 }
 
 static void reorderingObjects(QList<GObject *> &objs) {
-    if (objs.size() >= 2) {    // ordering the object. Ahead of objects is sequence and annotations are behind.
+    if (objs.size() >= 2) {  // ordering the object. Ahead of objects is sequence and annotations are behind.
         for (int i = 0; i < objs.size(); ++i) {
             if (objs.at(i)->getGObjectType() == GObjectTypes::SEQUENCE) {
                 objs.push_front(objs.at(i));
@@ -167,7 +167,7 @@ static U2SequenceObject *storeSequenceUseGenbankHeader(const QVariantMap &hints,
     return new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
 }
 
-//TODO move to AnnotationUtils ?
+// TODO move to AnnotationUtils ?
 static void shiftAnnotations(AnnotationTableObject *newAnnObj, QList<AnnotationTableObject *> annObjects, const U2Region &contigReg) {
     SharedAnnotationData ad(new AnnotationData);
     ad->name = "contig";
@@ -350,4 +350,4 @@ QByteArray U1SequenceUtils::joinRegions(const QList<QByteArray> &parts, int gapS
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

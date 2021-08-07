@@ -37,4 +37,4 @@ void RemoveDashboardsTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

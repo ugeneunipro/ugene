@@ -63,6 +63,6 @@ private:
     QMap<Annotation *, QList<QPair<QString, QString>>> annotationForReport;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

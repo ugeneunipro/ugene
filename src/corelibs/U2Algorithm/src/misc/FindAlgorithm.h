@@ -127,14 +127,14 @@ public:
 
     static void find(
         FindAlgorithmResultsListener *rl,
-        DNATranslation *aminoTT,    // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
-        DNATranslation *complTT,    // if complTT!=NULL -> sequence is complemented before comparison with pattern
-        FindAlgorithmStrand strand,    // if not direct there complTT must not be NULL
+        DNATranslation *aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
+        DNATranslation *complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
+        FindAlgorithmStrand strand,  // if not direct there complTT must not be NULL
         FindAlgorithmPatternSettings patternSettings,
         bool supportAmbigiousBases,
         const char *sequence,
         int seqLen,
-        const DNAAlphabet *sequenceAlphabet,    // Sequence alphabet. May be NULL if not known.
+        const DNAAlphabet *sequenceAlphabet,  // Sequence alphabet. May be NULL if not known.
         bool searchIsCircular,
         const U2Region &range,
         const char *pattern,
@@ -179,6 +179,6 @@ public:
     static bool cmpAmbiguous(char a, char b);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

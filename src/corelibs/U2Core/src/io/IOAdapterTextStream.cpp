@@ -136,7 +136,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
                 *terminatorFound = true;
             }
             if (terminatorMode == IOAdapter::Term_Exclude) {
-                unreadChar(os);    // Push back the current terminator char and break.
+                unreadChar(os);  // Push back the current terminator char and break.
                 CHECK_OP(os, result.length());
                 break;
             } else if (terminatorMode == IOAdapter::Term_Skip) {
@@ -144,7 +144,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
             }
             // The terminator char will be included below as a normal one.
         } else if (isReadingTerminatorSequence) {
-            unreadChar(os);    // Push back the current non-terminator char and break.
+            unreadChar(os);  // Push back the current non-terminator char and break.
             CHECK_OP(os, result.length());
             break;
         }
@@ -221,8 +221,8 @@ void IOAdapterReader::unreadChar(U2OpStatus &os) {
 void IOAdapterReader::undo(U2OpStatus &os) {
     // Undo is allowed to be called only when the last read()/readLine() op returned some result.
     SAFE_POINT_EXT(!textForUndo.isEmpty(), os.setError(L10N::internalError()), );
-    unreadCharsBufferPos = -textForUndo.length();    // Step back in the unread buffer.
-    if (unreadCharsBufferPos < 0) {    // If some data is missed in the buffer add if from the textForUndo.
+    unreadCharsBufferPos = -textForUndo.length();  // Step back in the unread buffer.
+    if (unreadCharsBufferPos < 0) {  // If some data is missed in the buffer add if from the textForUndo.
         int nCharsToPrepend = -unreadCharsBufferPos;
         unreadCharsBuffer.prepend(textForUndo.constData(), nCharsToPrepend);
         unreadCharsBufferPos = 0;
@@ -253,4 +253,4 @@ void IOAdapterWriter::write(U2OpStatus &os, const QString &text) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

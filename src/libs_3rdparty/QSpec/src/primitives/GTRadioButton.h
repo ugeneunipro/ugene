@@ -40,5 +40,5 @@ public:
     static QList<QRadioButton *> getAllButtonsByText(GUITestOpStatus &os, QString text, QWidget *parent = NULL);
 };
 
-}    // namespace HI
-#endif    // _HI_GT_RADIOBUTTON_H_
+}  // namespace HI
+#endif  // _HI_GT_RADIOBUTTON_H_

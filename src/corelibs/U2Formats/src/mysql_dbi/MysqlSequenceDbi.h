@@ -86,6 +86,6 @@ private:
     void redoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_SEQUENCE_DBI_H_
+#endif  // _U2_MYSQL_SEQUENCE_DBI_H_

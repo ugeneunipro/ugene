@@ -574,4 +574,4 @@ bool MysqlModDbi::canRedo(const U2DataId &objectId, U2OpStatus &os) {
     return q.step();
 }
 
-}    // namespace U2
+}  // namespace U2

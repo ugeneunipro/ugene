@@ -136,7 +136,7 @@ public:
 
 void TandemFinder::prepare() {
     Q_ASSERT(settings.minRepeatCount >= 2);
-    int chunkSize = 32 * 1024 * 1024;    // optimized for 32Mb mem-chunk
+    int chunkSize = 32 * 1024 * 1024;  // optimized for 32Mb mem-chunk
     addSubTask(new SequenceWalkerTask(TF_WalkerConfig(sequence, settings.seqRegion.length, chunkSize), this, tr("Find tandems"), TaskFlags_NR_FOSCOE));
 }
 
@@ -176,7 +176,7 @@ void TandemFinder::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
         return;
     }
     quint64 offs = t->getRegionSequence() - t->getGlobalConfig().seq;
-    QMutexLocker lock(&subtasksQueue);    //TODO: fix me
+    QMutexLocker lock(&subtasksQueue);  // TODO: fix me
     regionTasks.append(new TandemFinder_Region(regionCount++, t->getRegionSequence(), t->getRegionSequenceLen(), offs, settings));
 }
 
@@ -225,18 +225,18 @@ ConcreteTandemFinder::ConcreteTandemFinder(QString taskName, const char *_sequen
     } else {
         suffArrMemory = seqSize * sizeof(quint32) * 2;
     }
-    suffArrMemory = qMax(suffArrMemory / (1024 * 1024), 1);    //in Mb
+    suffArrMemory = qMax(suffArrMemory / (1024 * 1024), 1);  // in Mb
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, suffArrMemory, true));
 }
 
 void ConcreteTandemFinder::prepare() {
     const quint32 *nuclTable = bitsTable.getBitMaskCharBits(DNAAlphabet_NUCL);
     const quint32 bitMaskCharBitsNum = bitsTable.getBitMaskCharBitsNum(DNAAlphabet_NUCL);
-    //single thread approximation (re-estimated in some algorithms)
-    int arrayPercent = int((seqSize / double(seqSize + prefixLength)) * 100 / 5);    //array creation time ~5 times faster than search
+    // single thread approximation (re-estimated in some algorithms)
+    int arrayPercent = int((seqSize / double(seqSize + prefixLength)) * 100 / 5);  // array creation time ~5 times faster than search
 
     if (settings.algo == TSConstants::AlgoSuffix) {
-        //index with double sized match
+        // index with double sized match
         CreateSArrayIndexTask *indexTask = new CreateSArrayIndexTask(sequence, seqSize, prefixLength, 'N', nuclTable, bitMaskCharBitsNum);
         indexTask->setSubtaskProgressWeight(arrayPercent / 100.0F);
         // TODO fix algorithm selection
@@ -295,7 +295,7 @@ void ExactSizedTandemFinder::run() {
         const quint32 *sArrayLast = sArray + suffArrSize - 1;
         while (currentDiffPos < sArrayLast) {
             int diff = currentDiffPos[1] - currentDiffPos[0];
-            if (diff >= minPeriod && diff <= maxPeriod) {    //only our exact size
+            if (diff >= minPeriod && diff <= maxPeriod) {  // only our exact size
                 quint32 suffixOffset = qMax(1, (settings.minTandemSize - prefixLength) / diff);
                 if (currentDiffPos + suffixOffset <= sArrayLast && currentDiffPos[suffixOffset] - currentDiffPos[0] == suffixOffset * diff) {
                     if (bitMask[currentDiffPos[0]] == bitMask[currentDiffPos[suffixOffset]]) {
@@ -306,7 +306,7 @@ void ExactSizedTandemFinder::run() {
             }
             currentDiffPos++;
         }
-        delete suffixArray;    //TODO: remove all deletes
+        delete suffixArray;  // TODO: remove all deletes
     } else {
         const quint32 *sArray = index->getSArray();
         const quint32 *sArrayLast = const_cast<quint32 *>(sArray + index->getSArraySize() - 1);
@@ -314,12 +314,12 @@ void ExactSizedTandemFinder::run() {
 
         while (currentDiffPos < sArrayLast) {
             const qint32 diff = currentDiffPos[1] - currentDiffPos[0];
-            if (diff >= minPeriod && diff <= maxPeriod) {    //only our exact size
+            if (diff >= minPeriod && diff <= maxPeriod) {  // only our exact size
                 unsigned suffixOffset = qMax(1, signed(settings.minTandemSize - prefixLength) / diff);
                 if (currentDiffPos + suffixOffset > sArrayLast || currentDiffPos[suffixOffset] - currentDiffPos[0] != suffixOffset * diff) {
                 } else {
-                    const char *seq0 = index->sarr2seq(currentDiffPos);    //seqCast(currentDiffPos,0);
-                    const char *seq1 = index->sarr2seq(currentDiffPos + suffixOffset);    //seqCast(currentDiffPos,suffixOffset);
+                    const char *seq0 = index->sarr2seq(currentDiffPos);  // seqCast(currentDiffPos,0);
+                    const char *seq1 = index->sarr2seq(currentDiffPos + suffixOffset);  // seqCast(currentDiffPos,suffixOffset);
                     if (seq0 == nullptr || seq1 == nullptr) {
                         continue;
                     }
@@ -341,7 +341,7 @@ bool ExactSizedTandemFinder::comparePrefixChars(const char *first, const char *s
     return strncmp(first, second, prefixLength) == 0;
 }
 quint32 *ExactSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStartIndex, const quint32 *tandemLastIndex, quint32 repeatLen) {
-    const char *tandemStart = index->sarr2seq(tandemStartIndex);    //seqCast(tandemStartIndex,0);
+    const char *tandemStart = index->sarr2seq(tandemStartIndex);  // seqCast(tandemStartIndex,0);
     quint32 *arrRunner = (quint32 *)tandemLastIndex - 1;
     {
         const quint32 *sArrayLast = const_cast<quint32 *>(index->getSArray() + index->getSArraySize() - 1);
@@ -358,8 +358,8 @@ quint32 *ExactSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStart
     if (false) {
     } else {
         // in this case seqCast(tandemStartIndex,1)==seqCast(tandemStartIndex,0)+repeatLen
-        const char *seqRunner = index->sarr2seq(arrRunner);    //seqCast(arrRunner,0);
-        //move forward by 0.5-1.0 repeatlen to find exact lower bound
+        const char *seqRunner = index->sarr2seq(arrRunner);  // seqCast(arrRunner,0);
+        // move forward by 0.5-1.0 repeatlen to find exact lower bound
         const char *seqEnd = sequence + seqSize;
         while (seqRunner <= seqEnd - repeatLen && strncmp(tandemStart, seqRunner, repeatLen) == 0) {
             seqRunner += repeatLen;
@@ -367,9 +367,9 @@ quint32 *ExactSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStart
 
         const quint32 size = seqRunner - tandemStart;
         const Tandem tandem(tandemStart - sequence, repeatLen, size);
-        //check if there is already marked area
+        // check if there is already marked area
         QMap<Tandem, Tandem>::iterator it = rawTandems.find(tandem);
-        if (it == rawTandems.end()) {    // there are no close tandems
+        if (it == rawTandems.end()) {  // there are no close tandems
             int tandemMinSize = qMax(settings.minTandemSize, settings.minRepeatCount * tandem.repeatLen);
             if (tandem.size >= tandemMinSize) {
                 rawTandems.insert(tandem, tandem);
@@ -406,7 +406,7 @@ quint32 *ExactSizedTandemFinder::checkAndSpreadTandem_bv(const quint32 *tandemSt
     } else {
         // in this case seqCast(tandemStartIndex,1)==seqCast(tandemStartIndex,0)+repeatLen
         quint32 seqRunner = arrRunner[0];
-        //move forward by 0.5-1.0 repeatlen to find exact lower bound
+        // move forward by 0.5-1.0 repeatlen to find exact lower bound
         const quint32 &seqEnd = seqSize;
         const quint64 periodMask = ~(~0ull >> (2 * repeatLen));
         while (seqRunner <= seqEnd - repeatLen && ((matchRepeat ^ bitMask[seqRunner]) & periodMask) == 0) {
@@ -415,9 +415,9 @@ quint32 *ExactSizedTandemFinder::checkAndSpreadTandem_bv(const quint32 *tandemSt
 
         const quint32 size = seqRunner - tandemStart;
         const Tandem tandem(tandemStart, repeatLen, size);
-        //check if there is already marked area
+        // check if there is already marked area
         QMap<Tandem, Tandem>::iterator it = rawTandems.find(tandem);
-        if (it == rawTandems.end()) {    // there are no close tandems
+        if (it == rawTandems.end()) {  // there are no close tandems
             int tandemMinSize = qMax(settings.minTandemSize, settings.minRepeatCount * tandem.repeatLen);
             if (tandem.size >= tandemMinSize) {
                 rawTandems.insert(tandem, tandem);
@@ -486,13 +486,13 @@ void LargeSizedTandemFinder::run() {
         // TODO: rewrite this code
         while (currentDiffPos < sArrayLast) {
             const qint32 diff = currentDiffPos[1] - currentDiffPos[0];
-            if (diff >= minPeriod && diff <= maxPeriod) {    //skip already found tandems
+            if (diff >= minPeriod && diff <= maxPeriod) {  // skip already found tandems
                 unsigned suffixOffset = static_cast<unsigned>(qMax(1, signed(settings.minTandemSize - prefixLength) / diff));
                 if (currentDiffPos + suffixOffset > sArrayLast || currentDiffPos[suffixOffset] - currentDiffPos[0] != suffixOffset * diff) {
                     //                    currentDiffPos += suffixOffset;continue;
                 } else {
-                    const char *seq0 = index->sarr2seq(currentDiffPos);    //seqCast(currentDiffPos,0);
-                    const char *seq1 = index->sarr2seq(currentDiffPos + suffixOffset);    //seqCast(currentDiffPos,suffixOffset);
+                    const char *seq0 = index->sarr2seq(currentDiffPos);  // seqCast(currentDiffPos,0);
+                    const char *seq1 = index->sarr2seq(currentDiffPos + suffixOffset);  // seqCast(currentDiffPos,suffixOffset);
                     // in the other words  prefix currentDiffPos[0]==currentDiffPos[1]
                     if (comparePrefixChars(seq0, seq1)) {
                         currentDiffPos = checkAndSpreadTandem(currentDiffPos, currentDiffPos + suffixOffset, diff);
@@ -510,7 +510,7 @@ bool LargeSizedTandemFinder::comparePrefixChars(const char *first, const char *s
     return strncmp(first, second, prefixLength) == 0;
 }
 quint32 *LargeSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStartIndex, const quint32 *tandemLastIndex, const unsigned repeatLen) {
-    const char *tandemStart = index->sarr2seq(tandemStartIndex);    //seqCast(tandemStartIndex,0);
+    const char *tandemStart = index->sarr2seq(tandemStartIndex);  // seqCast(tandemStartIndex,0);
 
     quint32 *arrRunner = (quint32 *)tandemLastIndex - 1;
     {
@@ -525,8 +525,8 @@ quint32 *LargeSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStart
     }
 
     // in this case seqCast(tandemStartIndex,1)==seqCast(tandemStartIndex,0)+repeatLen
-    const char *seqRunner = index->sarr2seq(arrRunner);    //seqCast(arrRunner,0);
-    //move forward by 0.5-1.0 of repeat len to find exact lower bound
+    const char *seqRunner = index->sarr2seq(arrRunner);  // seqCast(arrRunner,0);
+    // move forward by 0.5-1.0 of repeat len to find exact lower bound
     const char *seqEnd = sequence + seqSize;
     while (seqRunner <= seqEnd - repeatLen && strncmp(tandemStart, seqRunner, repeatLen) == 0) {
         seqRunner += repeatLen;
@@ -534,9 +534,9 @@ quint32 *LargeSizedTandemFinder::checkAndSpreadTandem(const quint32 *tandemStart
 
     const quint32 size = seqRunner - tandemStart;
     const Tandem tandem(tandemStart - sequence, repeatLen, size);
-    //check if there is already marked area
+    // check if there is already marked area
     QMap<Tandem, Tandem>::iterator it = rawTandems.find(tandem);
-    if (it == rawTandems.end()) {    // there are no close tandems
+    if (it == rawTandems.end()) {  // there are no close tandems
         rawTandems.insert(tandem, tandem);
     } else {
         Tandem t = *it;
@@ -560,9 +560,9 @@ quint32 *LargeSizedTandemFinder::checkAndSpreadTandem_bv(const quint32 *tandemSt
 
     const quint32 size = tandemLast - tandemStart;
     const Tandem tandem(tandemStart, repeatLen, size);
-    //check if there is already marked area
+    // check if there is already marked area
     QMap<Tandem, Tandem>::iterator it = rawTandems.find(tandem);
-    if (it == rawTandems.end()) {    // there are no close tandems
+    if (it == rawTandems.end()) {  // there are no close tandems
         int tandemMinSize = qMax(settings.minTandemSize, 2 * tandem.repeatLen);
         if (tandem.size >= tandemMinSize) {
             rawTandems.insert(tandem, tandem);
@@ -576,4 +576,4 @@ quint32 *LargeSizedTandemFinder::checkAndSpreadTandem_bv(const quint32 *tandemSt
     return const_cast<quint32 *>(tandemStartIndex + size / repeatLen);
 }
 
-}    // namespace U2
+}  // namespace U2

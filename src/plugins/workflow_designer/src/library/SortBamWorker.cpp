@@ -199,7 +199,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void SortBamWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -266,5 +266,5 @@ void SamtoolsSortTask::run() {
     BAMUtils::createBamIndex(resultUrl, stateInfo);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

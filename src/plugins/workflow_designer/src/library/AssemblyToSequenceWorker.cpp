@@ -186,5 +186,5 @@ QString AssemblyToSequencesPrompter::composeRichDoc() {
     return res;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -80,4 +80,4 @@ void GetSequenceByIdDialog::accept() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

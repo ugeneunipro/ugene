@@ -77,15 +77,15 @@ namespace U2 {
  */
 enum U2CigarOp {
     U2CigarOp_Invalid = 0,
-    U2CigarOp_D = 1,    // deleted
-    U2CigarOp_I = 2,    // inserted
-    U2CigarOp_H = 3,    // hard-clipped
-    U2CigarOp_M = 4,    // alignment match
-    U2CigarOp_N = 5,    // skipped
-    U2CigarOp_P = 6,    // padded
-    U2CigarOp_S = 7,    // soft-clipped
-    U2CigarOp_EQ = 8,    // sequence match
-    U2CigarOp_X = 9    // sequence mismatch
+    U2CigarOp_D = 1,  // deleted
+    U2CigarOp_I = 2,  // inserted
+    U2CigarOp_H = 3,  // hard-clipped
+    U2CigarOp_M = 4,  // alignment match
+    U2CigarOp_N = 5,  // skipped
+    U2CigarOp_P = 6,  // padded
+    U2CigarOp_S = 7,  // soft-clipped
+    U2CigarOp_EQ = 8,  // sequence match
+    U2CigarOp_X = 9  // sequence mismatch
 };
 
 /**
@@ -146,8 +146,8 @@ public:
 };
 
 /**
-  * Auxiliary data from BAM/SAM.
-  */
+ * Auxiliary data from BAM/SAM.
+ */
 class U2CORE_EXPORT U2AuxData {
 public:
     U2AuxData()
@@ -254,6 +254,6 @@ public:
 /** Statistics information collected during the reads packing algorithm */
 typedef QVector<qint32> U2AssemblyCoverageStat;
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

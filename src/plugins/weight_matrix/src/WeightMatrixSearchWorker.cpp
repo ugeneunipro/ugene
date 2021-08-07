@@ -135,15 +135,15 @@ QString PWMatrixSearchPrompter::composeRichDoc() {
 
     QString strandName;
     switch (getStrand(getParameter(BaseAttributes::STRAND_ATTRIBUTE().getId()).value<QString>())) {
-    case 0:
-        strandName = PWMatrixSearchWorker::tr("both strands");
-        break;
-    case 1:
-        strandName = PWMatrixSearchWorker::tr("direct strand");
-        break;
-    case -1:
-        strandName = PWMatrixSearchWorker::tr("complement strand");
-        break;
+        case 0:
+            strandName = PWMatrixSearchWorker::tr("both strands");
+            break;
+        case 1:
+            strandName = PWMatrixSearchWorker::tr("direct strand");
+            break;
+        case -1:
+            strandName = PWMatrixSearchWorker::tr("complement strand");
+            break;
     }
     strandName = getHyperlink(BaseAttributes::STRAND_ATTRIBUTE().getId(), strandName);
 
@@ -249,8 +249,8 @@ void PWMatrixSearchWorker::sl_taskFinished(Task *t) {
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
     const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
     output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));
-    algoLog.info(tr("Found %1 TFBS").arg(res.size()));    //TODO set task description for report
+    algoLog.info(tr("Found %1 TFBS").arg(res.size()));  // TODO set task description for report
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

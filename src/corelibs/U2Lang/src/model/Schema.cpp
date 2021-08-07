@@ -493,7 +493,7 @@ QStringList removeAliasesDupliucates(const QList<Actor *> &actors, Actor *newAct
     }
     return removed;
 }
-}    // namespace
+}  // namespace
 
 void Schema::merge(Schema &other) {
     foreach (Actor *newActor, other.procs) {
@@ -900,7 +900,7 @@ QMap<int, QList<Actor *>> ActorBindingsGraph::getTopologicalSortedGraph(QList<Ac
         QList<Actor *> endVertexes;
         {
             foreach (Actor *a, actors) {
-                if (!graph.keys().contains(a)) {    // so, there is no arcs from this actor
+                if (!graph.keys().contains(a)) {  // so, there is no arcs from this actor
                     endVertexes.append(a);
                 }
             }
@@ -952,6 +952,6 @@ QList<Link *> ActorBindingsGraph::getFlows() const {
     return result;
 }
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

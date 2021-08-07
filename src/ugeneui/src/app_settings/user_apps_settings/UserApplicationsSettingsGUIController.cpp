@@ -84,7 +84,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState *
     st->setOpenLastProjectAtStartup(state->openLastProjectFlag);
     st->setAskToSaveProject(state->askToSaveProject);
     st->setEnableCollectingStatistics(state->enableStatistics);
-    //st->setTabbedWindowLayout(state->tabbedWindowLayout);
+    // st->setTabbedWindowLayout(state->tabbedWindowLayout);
     st->setResetSettings(state->resetSettings);
     st->setUpdatesEnabled(state->updatesEnabled);
 
@@ -130,7 +130,7 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
     langCombo->setCurrentIndex(idx);
 
-    int styleIdx = styleCombo->findText(state->style, Qt::MatchFixedString);    //case insensitive
+    int styleIdx = styleCombo->findText(state->style, Qt::MatchFixedString);  // case insensitive
     if (styleIdx != -1) {
         styleCombo->setCurrentIndex(styleIdx);
     }
@@ -177,4 +177,4 @@ void UserApplicationsSettingsPageWidget::sl_transFileClicked() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

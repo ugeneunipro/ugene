@@ -46,6 +46,6 @@ private:
     const DNASequence sequence;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_
+#endif  // _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_

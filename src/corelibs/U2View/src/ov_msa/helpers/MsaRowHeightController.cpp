@@ -36,4 +36,4 @@ int MsaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
     return isVisible ? getSingleRowHeight() : 0;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -93,7 +93,7 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
         widget->closeOptionsPanel();
         closeOptionsGroup(groupId);
         return;
-    } else {    // Another group has been selected
+    } else {  // Another group has been selected
         closeOptionsGroup(activeGroupId);
         openOptionsGroup(groupId);
     }
@@ -165,4 +165,4 @@ OPWidgetFactory *OptionsPanel::findFactoryByGroupId(const QString &groupId) {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

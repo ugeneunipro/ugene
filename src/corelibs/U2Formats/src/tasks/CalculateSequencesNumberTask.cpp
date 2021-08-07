@@ -40,4 +40,4 @@ void CalculateSequencesNumberTask::run() {
     sequencesNumber = StreamSequenceReader::getNumberOfSequences(sequenceUrl, stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

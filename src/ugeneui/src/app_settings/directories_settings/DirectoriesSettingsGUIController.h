@@ -86,6 +86,6 @@ private slots:
     void sl_onIndexDirButton();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

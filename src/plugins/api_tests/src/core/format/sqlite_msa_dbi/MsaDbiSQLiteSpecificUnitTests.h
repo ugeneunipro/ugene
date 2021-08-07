@@ -153,7 +153,7 @@ DECLARE_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_noModTrack);
 DECLARE_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo);
 DECLARE_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, updateMsaName_noModTrack);
 DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, updateMsaName_undo);

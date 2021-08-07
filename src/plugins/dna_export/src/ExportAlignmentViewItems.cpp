@@ -140,4 +140,4 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-}    // namespace U2
+}  // namespace U2

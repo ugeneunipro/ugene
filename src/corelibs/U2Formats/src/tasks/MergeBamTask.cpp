@@ -40,7 +40,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//MergeBamTask
+// MergeBamTask
 MergeBamTask::MergeBamTask(const QStringList &urls, const QString &dir, const QString &outName, bool sortInputBams)
     : Task(DocumentFormatUtils::tr("Merge BAM files with SAMTools merge"), TaskFlags_FOSCOE), outputName(outName), workingDir(dir), targetUrl(""), bamUrls(urls), sortInputBams(sortInputBams) {
     if (!workingDir.endsWith("/") && !workingDir.endsWith("\\")) {
@@ -97,4 +97,4 @@ void MergeBamTask::run() {
     BAMUtils::createBamIndex(targetUrl, stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

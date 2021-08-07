@@ -55,4 +55,4 @@ void GTSplitter::moveHandle(GUITestOpStatus &os, QSplitter *splitter, int pixels
 }
 #undef GT_METHOD_NAME
 
-}    // namespace HI
+}  // namespace HI

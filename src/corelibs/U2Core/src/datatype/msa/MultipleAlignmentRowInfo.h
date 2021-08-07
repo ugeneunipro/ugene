@@ -40,6 +40,6 @@ public:
     static const QString COMPLEMENTED;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_ALIGNMENT_ROW_INFO_H_
+#endif  // _U2_MULTIPLE_ALIGNMENT_ROW_INFO_H_

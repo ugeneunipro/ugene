@@ -120,15 +120,15 @@ protected:
         if (match && v == d + scores.match) {
             return 1 + getLen(x - 1, y - 1);
         }
-        if (v == u + scores.del) {    //prefer deletion in X sequence to minimize result len
+        if (v == u + scores.del) {  // prefer deletion in X sequence to minimize result len
             return getLen(x, y - 1);
         }
-        if (!match && v == d + scores.mismatch) {    // prefer mismatch instead of insertion into X sequence
+        if (!match && v == d + scores.mismatch) {  // prefer mismatch instead of insertion into X sequence
             return 1 + getLen(x - 1, y - 1);
         }
         assert(v == l + scores.ins);
         Q_UNUSED(l);
-        return 1 + getLen(x - 1, y);    // this is insertion into X sequence
+        return 1 + getLen(x - 1, y);  // this is insertion into X sequence
     }
 
 private:
@@ -179,6 +179,6 @@ private:
     FillStrategy strategy;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

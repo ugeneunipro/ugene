@@ -87,12 +87,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Single-end
-    //2. Set "samples/FASTQ/eas.fastq" as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Single-end
+    // 2. Set "samples/FASTQ/eas.fastq" as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Parallel reads classification"
                                                                                                                                     << "Single-end"));
@@ -142,12 +142,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Paired-end
-    //2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Paired-end
+    // 2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Parallel reads classification"
                                                                                                                                     << "Paired-end"));
@@ -195,12 +195,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
-    //2. Set "samples/FASTQ/eas.fastq" as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
+    // 2. Set "samples/FASTQ/eas.fastq" as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Serial reads classification"
                                                                                                                                     << "Single-end"));
@@ -248,12 +248,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Paired-end
-    //2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Paired-end
+    // 2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Serial reads classification"
                                                                                                                                     << "Paired-end"));
@@ -300,12 +300,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
-    //2. Set "samples/FASTQ/eas.fastq" as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
+    // 2. Set "samples/FASTQ/eas.fastq" as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Reads de novo assembly and contigs classification"
                                                                                                                                     << "Single-end"));
@@ -353,12 +353,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
-    //2. Set "samples/FASTQ/eas.fastq" as input
-    //3. Add "ILLUMINACLIP" step
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
+    // 2. Set "samples/FASTQ/eas.fastq" as input
+    // 3. Add "ILLUMINACLIP" step
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Reads de novo assembly and contigs classification"
                                                                                                                                     << "Paired-end"));
@@ -372,6 +372,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
-}    // namespace GUITest_common_scenarios_ngs_workflow_desingner
+}  // namespace GUITest_common_scenarios_ngs_workflow_desingner
 
-}    // namespace U2
+}  // namespace U2

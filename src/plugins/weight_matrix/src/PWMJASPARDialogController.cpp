@@ -167,4 +167,4 @@ bool JasparGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
     return text(col) < other.text(col);
 }
 
-}    // namespace U2
+}  // namespace U2

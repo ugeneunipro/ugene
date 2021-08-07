@@ -47,4 +47,4 @@ void FolderSelection::setSelection(const QList<Folder> &folders) {
     sl_selectionChanged();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -65,4 +65,4 @@ bool ImportToDatabaseOptions::operator!=(const ImportToDatabaseOptions &other) c
     return !operator==(other);
 }
 
-}    // namespace U2
+}  // namespace U2

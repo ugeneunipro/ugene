@@ -120,4 +120,4 @@ void WeightMatrixADVContext::sl_search() {
     d->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

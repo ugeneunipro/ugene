@@ -244,7 +244,7 @@ QString getQuotedString(const QString &string) {
     return string;
 }
 
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
@@ -4783,6 +4783,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(actualTabName));
 }
 
-}    // namespace GUITest_common_scenarios_workflow_dashboard
+}  // namespace GUITest_common_scenarios_workflow_dashboard
 
-}    // namespace U2
+}  // namespace U2

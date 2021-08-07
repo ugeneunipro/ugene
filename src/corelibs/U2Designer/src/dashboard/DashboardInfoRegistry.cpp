@@ -165,4 +165,4 @@ bool DashboardInfoRegistry::updateInfo(const DashboardInfo &newDashboardInfo) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

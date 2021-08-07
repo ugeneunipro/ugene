@@ -53,6 +53,6 @@ private:
     void commitTextToDB(const QString &newText);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

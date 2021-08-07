@@ -37,9 +37,9 @@ public:
 
     static void selectDashboards(HI::GUITestOpStatus &os, QStringList names);
     static bool isDashboardPresent(HI::GUITestOpStatus &os, QString name);
-    static QList<QPair<QString, bool>> getDashboardsState(HI::GUITestOpStatus &os);    // returns map dashboard_name->is_checked
+    static QList<QPair<QString, bool>> getDashboardsState(HI::GUITestOpStatus &os);  // returns map dashboard_name->is_checked
 };
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // DASHBOARDSMANAGERDIALOGFILLER_H
+#endif  // DASHBOARDSMANAGERDIALOGFILLER_H

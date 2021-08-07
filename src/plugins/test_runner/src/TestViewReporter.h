@@ -35,5 +35,5 @@ public:
     static void saveReport(const QString &url, const QString &data);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

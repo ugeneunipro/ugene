@@ -43,6 +43,6 @@ public:
     static Task *saveAnnotationsTask(const QString &filepath, const DocumentFormatId &format, const QList<Annotation *> &annList, bool addToProject);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_OBJECT_UTILS_H_
+#endif  // _U2_EXPORT_OBJECT_UTILS_H_

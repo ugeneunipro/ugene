@@ -154,4 +154,4 @@ QString EditConnectionDialog::getFullDbiUrl() const {
     return U2DbiUtils::createFullDbiUrl(ui->authenticationWidget->getLogin(), getShortDbiUrl());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -54,6 +54,6 @@ private:
     AbstractScriptEditorDelegate *scriptEdit;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCRIPT_EDITOR_WIDGET_H_
+#endif  // _U2_SCRIPT_EDITOR_WIDGET_H_

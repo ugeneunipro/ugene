@@ -63,6 +63,6 @@ public:
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

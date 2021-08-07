@@ -50,5 +50,5 @@ public:
     static void closeTab(GUITestOpStatus &os, QTabWidget *tabWidget, QString tabName);
 };
 
-}    // namespace HI
-#endif    // _HI_GT_TABWIDGET_H_
+}  // namespace HI
+#endif  // _HI_GT_TABWIDGET_H_

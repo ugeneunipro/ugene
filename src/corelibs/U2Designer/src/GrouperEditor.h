@@ -56,9 +56,9 @@ private:
     GrouperSlotsCfgModel *grouperModel;
 
     QWidget *createGUI();
-};    // GrouperEditor
+};  // GrouperEditor
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _GROUPER_EDITOR_H_
+#endif  // _GROUPER_EDITOR_H_

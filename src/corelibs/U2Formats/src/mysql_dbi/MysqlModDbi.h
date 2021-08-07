@@ -152,6 +152,6 @@ private:
     static QMap<U2DataId, MysqlModStepsDescriptor> modStepsByObject;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_MOD_DBI_H_
+#endif  // _U2_MYSQL_MOD_DBI_H_

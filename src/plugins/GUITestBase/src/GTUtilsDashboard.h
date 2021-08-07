@@ -42,11 +42,11 @@ public:
     // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
     // element to which the notification relates and the notification message
     struct Notification {
-        Notification() = delete;    // No default dashboard notification
+        Notification() = delete;  // No default dashboard notification
 
-        QString type;    // The type of dashboard notification (info/warning/error)
-        QString element;    // The name of workflow element to which the dashboard notification relates
-        QString message;    // The dashboard notification message
+        QString type;  // The type of dashboard notification (info/warning/error)
+        QString element;  // The name of workflow element to which the dashboard notification relates
+        QString message;  // The dashboard notification message
 
         // Returns the notification as a string
         QString toString() const;
@@ -94,7 +94,7 @@ public:
 
     static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childIndex);
     static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childIndexes);
-    static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);    // childrens has to have unique texts
+    static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);  // childrens has to have unique texts
 
     static bool hasLimitationMessage(HI::GUITestOpStatus &os, const QString &nodeId);
     static QString getLimitationMessage(HI::GUITestOpStatus &os, const QString &nodeId);
@@ -135,6 +135,6 @@ private:
     static const QMap<QString, Tabs> tabMap;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_DASHBOARD_H_
+#endif  // _U2_GT_UTILS_DASHBOARD_H_

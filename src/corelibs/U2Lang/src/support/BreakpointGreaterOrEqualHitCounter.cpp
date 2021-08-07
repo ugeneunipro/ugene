@@ -33,4 +33,4 @@ bool BreakpointGreaterOrEqualHitCounter::hit() {
     return (++hitCount >= targetHitCount);
 }
 
-}    // namespace U2
+}  // namespace U2

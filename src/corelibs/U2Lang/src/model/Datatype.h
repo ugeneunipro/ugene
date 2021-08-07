@@ -51,7 +51,7 @@ public:
         List,
         // Map<Descriptor, DatatypePtr>
         Map
-    };    // Kind
+    };  // Kind
 
     DataType(const QString &id, const QString &name, const QString &desc);
     DataType(const Descriptor &d);
@@ -90,7 +90,7 @@ public:
 
     static const QString EMPTY_TYPESET_ID;
 
-};    // DataType
+};  // DataType
 
 /**
  * represents complex type.
@@ -111,7 +111,7 @@ protected:
     // types map
     QMap<Descriptor, DataTypePtr> map;
 
-};    // MapDataType
+};  // MapDataType
 
 /**
  * represents complex type
@@ -129,7 +129,7 @@ protected:
     //
     DataTypePtr listElementDatatype;
 
-};    // ListDataType
+};  // ListDataType
 
 /**
  * standard registry for datatypes
@@ -152,7 +152,7 @@ protected:
     // standard map
     QMap<QString, DataTypePtr> registry;
 
-};    // DataTypeRegistry
+};  // DataTypeRegistry
 
 /**
  * abstract factory for creating values from String
@@ -169,13 +169,13 @@ public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const = 0;
     virtual QString getId() const = 0;
 
-};    // DataTypeValueFactory
+};  // DataTypeValueFactory
 
 /**
  * Standard registry for DatatypeValueFactories
  */
 typedef IdRegistry<DataTypeValueFactory> DataTypeValueFactoryRegistry;
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_DATATYPE_H_
+#endif  // _U2_WORKFLOW_DATATYPE_H_

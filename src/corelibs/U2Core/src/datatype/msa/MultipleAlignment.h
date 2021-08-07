@@ -246,6 +246,6 @@ inline bool operator==(const MultipleAlignmentData *ptr1, const MultipleAlignmen
     return *ptr1 == *ptr2;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_ALIGNMENT_H_
+#endif  // _U2_MULTIPLE_ALIGNMENT_H_

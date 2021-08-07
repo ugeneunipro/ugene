@@ -79,6 +79,6 @@ public:
     static void scrollToStart(HI::GUITestOpStatus &os, Qt::Orientation orientation);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_ASSEMBLY_BROWSER_H_
+#endif  // _U2_GT_UTILS_ASSEMBLY_BROWSER_H_

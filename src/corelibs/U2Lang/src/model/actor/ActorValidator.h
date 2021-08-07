@@ -64,7 +64,7 @@ T ActorValidator::getValue(const Actor *actor, const QString &attrId) const {
     return attr->getAttributePureValue().value<T>();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_ACTORVALIDATOR_H_
+#endif  // _U2_ACTORVALIDATOR_H_

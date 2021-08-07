@@ -87,7 +87,7 @@ void GUITestRunner::sl_runSelected() {
     GUITestService::setEnvVariablesForGuiTesting();
     QList<QTreeWidgetItem *> selectedItems = tree->selectedItems();
     foreach (QTreeWidgetItem *item, selectedItems) {
-        if (item->childCount() == 0) {    // single test, not suite
+        if (item->childCount() == 0) {  // single test, not suite
             QString suite = item->parent()->text(0);
             QString name = item->text(0);
             GUITest *test = guiTestBase->getTest(suite, name);
@@ -109,7 +109,7 @@ void GUITestRunner::sl_runAllGUITests() {
 
 void GUITestRunner::sl_testFinished() {
     GUITestThread *testThread = qobject_cast<GUITestThread *>(sender());
-    //SAFE_POINT(NULL != testThread, "TestThread is null", );
+    // SAFE_POINT(NULL != testThread, "TestThread is null", );
     GUITest *test = testThread->getTest();
     QString result = testThread->getTestResult();
     for (int suiteIdx = 0; suiteIdx < tree->topLevelItemCount(); suiteIdx++) {
@@ -148,7 +148,7 @@ bool filterMatched(const QString &nameFilter, const QString &name) {
     }
     return true;
 }
-}    // namespace
+}  // namespace
 void GUITestRunner::revisible(const QString &nameFilter) {
     setMouseTracking(false);
     for (int catIdx = 0; catIdx < tree->topLevelItemCount(); catIdx++) {
@@ -172,4 +172,4 @@ void GUITestRunner::revisible(const QString &nameFilter) {
     setMouseTracking(true);
 }
 
-}    // namespace U2
+}  // namespace U2

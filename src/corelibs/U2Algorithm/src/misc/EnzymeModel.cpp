@@ -38,4 +38,4 @@ EnzymeData::EnzymeData() {
     alphabet = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

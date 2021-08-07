@@ -55,6 +55,6 @@ private:
     static const int SEQ_ALIGNMENT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

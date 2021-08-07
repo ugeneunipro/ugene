@@ -47,7 +47,7 @@ public:
     enum ItemValueRole {
         ItemValueRole = Qt::UserRole + 2,
         ItemListValueRole
-    };    // ItemValueRole
+    };  // ItemValueRole
 
 public:
     ConfigurationEditor() {
@@ -93,7 +93,7 @@ public:
 signals:
     void si_configurationChanged();
 
-};    // ConfigurationEditor
+};  // ConfigurationEditor
 
 /**
  * Abstract class for property widgets: spin box, url line...
@@ -166,7 +166,7 @@ public:
 protected:
     DelegateTags *_tags;
     SchemaConfig *schemaConfig;
-};    // PropertyDelegate
+};  // PropertyDelegate
 
 class U2LANG_EXPORT DelegateTags : public QObject {
 public:
@@ -183,14 +183,14 @@ public:
 
     DelegateTags &operator=(const DelegateTags &other);
 
-    static const QString PLACEHOLDER_TEXT;    // placeholder (like in QLineEdit)
-    static const QString FILTER;    // file filter (like in QFileDialog)
-    static const QString FORMAT;    // document format ID
+    static const QString PLACEHOLDER_TEXT;  // placeholder (like in QLineEdit)
+    static const QString FILTER;  // file filter (like in QFileDialog)
+    static const QString FORMAT;  // document format ID
 
 private:
     QVariantMap tags;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

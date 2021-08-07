@@ -149,7 +149,7 @@ IMPLEMENT_TEST(MsaUnitTests, length_isEmptyTrue) {
 
 IMPLEMENT_TEST(MsaUnitTests, length_get) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    int expectedLength = 9;    // the length of the longest row
+    int expectedLength = 9;  // the length of the longest row
     CHECK_EQUAL(expectedLength, almnt->getLength(), "alignment length");
 }
 
@@ -911,4 +911,4 @@ IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
     CHECK_TRUE(res, "Method hasEmptyGapModel() returned 'False' unexpectedly");
 }
 
-}    // namespace U2
+}  // namespace U2

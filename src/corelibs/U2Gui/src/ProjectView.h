@@ -55,5 +55,5 @@ signals:
     void si_onDocTreePopupMenuRequested(QMenu &m);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

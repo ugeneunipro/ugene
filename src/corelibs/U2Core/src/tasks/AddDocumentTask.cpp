@@ -73,7 +73,7 @@ QList<Task *> AddDocumentTask::onSubTaskFinished(Task *subTask) {
 
 Task::ReportResult AddDocumentTask::report() {
     Project *p = AppContext::getProject();
-    if (p == nullptr) {    // no project is opened
+    if (p == nullptr) {  // no project is opened
         if (!hasError()) {
             setError(tr("No project is opened"));
         }
@@ -95,4 +95,4 @@ Task::ReportResult AddDocumentTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

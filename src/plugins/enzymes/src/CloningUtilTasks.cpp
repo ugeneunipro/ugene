@@ -267,8 +267,7 @@ void DigestSequenceTask::run() {
     int fcComplementStrandCut = fcStrandDirect ? fcLen - firstCutter->cutComplement : firstCutter->cutComplement;
     int firstCutPos = correctPos(first.key().coord + qMin(fcDirectStrandCut, fcComplementStrandCut));
     int rightOverhangStart = correctPos(first.key().coord + qMax(fcDirectStrandCut, fcComplementStrandCut));
-    bool rightOverhangIsDirect = fcStrandDirect ? fcDirectStrandCut > fcComplementStrandCut :
-                                                  fcDirectStrandCut < fcComplementStrandCut;
+    bool rightOverhangIsDirect = fcStrandDirect ? fcDirectStrandCut > fcComplementStrandCut : fcDirectStrandCut < fcComplementStrandCut;
     QByteArray firstRightOverhang = getOverhang(U2Region(firstCutPos, rightOverhangStart - firstCutPos));
 
     const SEnzymeData &lastCutter = prev.value();
@@ -278,8 +277,7 @@ void DigestSequenceTask::run() {
     int lcComplementStrandCut = lcStrandDirect ? lcLen - lastCutter->cutComplement : lastCutter->cutComplement;
     int lastCutPos = correctPos(prev.key().coord + qMax(lcDirectStrandCut, lcComplementStrandCut));
     int leftOverhangStart = correctPos(prev.key().coord + qMin(lcDirectStrandCut, lcComplementStrandCut));
-    bool leftOverhangIsDirect = lcStrandDirect ? lcDirectStrandCut < lcComplementStrandCut :
-                                                 lcDirectStrandCut > lcComplementStrandCut;
+    bool leftOverhangIsDirect = lcStrandDirect ? lcDirectStrandCut < lcComplementStrandCut : lcDirectStrandCut > lcComplementStrandCut;
 
     if (lastCutPos > seqLen) {
         // last restriction site is situated between sequence start and end
@@ -700,4 +698,4 @@ void LigateFragmentsTask::createDocument(const QByteArray &seq, const QList<Shar
     aObj->addObjectRelation(dnaObj, ObjectRole_Sequence);
 }
 
-}    // namespace U2
+}  // namespace U2

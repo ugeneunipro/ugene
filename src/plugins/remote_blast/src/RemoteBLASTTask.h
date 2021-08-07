@@ -128,7 +128,7 @@ public:
         QByteArray seq;
         bool amino;
         bool complement;
-        int offs;    //translation frame offset
+        int offs;  // translation frame offset
     };
     struct HttpBlastRequestTaskResult {
         HttpBlastRequestTaskResult(HttpRequest *r,
@@ -214,7 +214,7 @@ private:
     QVector<QPair<SharedAnnotationData, SharedAnnotationData>> mergeCandidates;
 };
 
-//used by CDSearchWorker
+// used by CDSearchWorker
 class RemoteCDSearch : public CDSearchResultListener {
 public:
     RemoteCDSearch(const CDSearchSettings &settings);
@@ -251,6 +251,6 @@ public:
     static U2Qualifier eValueQualifier(int seqLen, const SharedAnnotationData &first, const SharedAnnotationData &second);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

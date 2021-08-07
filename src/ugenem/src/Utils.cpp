@@ -33,7 +33,7 @@ const QString SESSION_DB_FILE_ARG = "-d";
 const QString DUMP_FILE_ARG = "-dump";
 const QString SILENT_SEND_FILE_ARG = "--silent-sending";
 const QString FAILED_TEST_FILE_ARG = "--failed-test";
-const int MAX_FILE_SIZE = 512000;    // 500 Kb
+const int MAX_FILE_SIZE = 512000;  // 500 Kb
 
 bool Utils::hasReportUrl() {
     return hasArgument(REPORT_FILE_ARG);
@@ -84,7 +84,7 @@ bool Utils::hasArgument(const QString &key) {
     if (-1 == idx) {
         return false;
     }
-    if ((args.size() - 1) == idx) {    // last item
+    if ((args.size() - 1) == idx) {  // last item
         return false;
     }
     return true;

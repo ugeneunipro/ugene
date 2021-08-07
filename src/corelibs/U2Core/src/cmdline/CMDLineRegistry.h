@@ -64,11 +64,11 @@ public:
     }
 
 private:
-    QList<StrStrPair> params;    // pairs (paramName, paramValue) ordered as in the cmdline
-    QList<CMDLineHelpProvider *> helpProviders;    // sorted by section name
+    QList<StrStrPair> params;  // pairs (paramName, paramValue) ordered as in the cmdline
+    QList<CMDLineHelpProvider *> helpProviders;  // sorted by section name
 
-};    // CMDLineRegistry
+};  // CMDLineRegistry
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMD_LINE_REGISTRY_
+#endif  // _U2_CMD_LINE_REGISTRY_

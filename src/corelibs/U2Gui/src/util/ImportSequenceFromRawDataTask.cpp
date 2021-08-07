@@ -47,4 +47,4 @@ void ImportSequenceFromRawDataTask::run() {
     sequenceRef = U2SequenceUtils::import(stateInfo, dbiRef, folder, sequence);
 }
 
-}    // namespace U2
+}  // namespace U2

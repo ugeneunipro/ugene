@@ -45,7 +45,7 @@
 
 #include "ExportUtils.h"
 
-static const qint64 MAX_CHUNK_LENGTH = 4194305;    // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
+static const qint64 MAX_CHUNK_LENGTH = 4194305;  // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
 
 static QMutex seqRefGuard(QMutex::NonRecursive);
 
@@ -186,7 +186,7 @@ ExportSequenceTaskSettings::ExportSequenceTaskSettings()
 }
 
 //////////////////////////////////////////////////////////////////////////
-//ExportSequenceTask
+// ExportSequenceTask
 
 ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
     : DocumentProviderTask(tr("Export sequence to %1").arg(s.fileName), TaskFlag_None), config(s) {
@@ -292,7 +292,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
         const U2Sequence frameSeq = frameImporters[frameNumber].finalizeSequence(os);
         CHECK_OP(os, res);
 
-        if (0 == frameSeq.length) {    // no translation was produced
+        if (0 == frameSeq.length) {  // no translation was produced
             coreLog.info(ExportSequenceTask::tr("The \"%1\" translation is empty due to small source sequence length").arg(frameSeq.visualName));
             continue;
         }
@@ -442,7 +442,7 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 void ExportSequenceTask::run() {
     GTIMER(cvar, tvar, "ExportSequenceTask");
@@ -477,7 +477,7 @@ void ExportSequenceTask::run() {
         CHECK_OP(stateInfo, );
         notMergedItems.append(r2Items);
 
-        //TODO: if we do not need to merge items, here we can use streaming & save the doc!
+        // TODO: if we do not need to merge items, here we can use streaming & save the doc!
     }
     CHECK_EXT(!notMergedItems.isEmpty(), stateInfo.setError(tr("No sequences have been produced.")), );
 
@@ -494,7 +494,7 @@ void ExportSequenceTask::run() {
     CHECK_OP(stateInfo, );
     // Store the document.
     format->storeDocument(exportedDocument.get(), stateInfo);
-    exportedDocument.reset(); // Release resources.
+    exportedDocument.reset();  // Release resources.
 
     // Now reload the document.
     // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
@@ -546,7 +546,7 @@ int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings &config) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData &ad, const ExportSequenceAItem &ei, const U2DbiRef &resultDbiRef, QVector<U2Region> &resultRegions, U2OpStatus &os) {
     U2SequenceImporter importer(QVariantMap(), true);
@@ -621,4 +621,4 @@ void ExportAnnotationSequenceSubTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

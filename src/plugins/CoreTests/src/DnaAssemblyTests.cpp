@@ -217,4 +217,4 @@ QList<XMLTestFactory *> DnaAssemblyTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

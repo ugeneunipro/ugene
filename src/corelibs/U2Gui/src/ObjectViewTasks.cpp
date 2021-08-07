@@ -95,7 +95,7 @@ Task::ReportResult ObjectViewTask::report() {
     }
 
     if (stateIsIllegal) {
-        //todo: ask to remove illegal state
+        // todo: ask to remove illegal state
     }
 
     return ReportResult_Finished;
@@ -169,4 +169,4 @@ Task::ReportResult AddToViewTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

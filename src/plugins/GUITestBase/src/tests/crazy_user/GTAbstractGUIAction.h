@@ -72,8 +72,8 @@ private:
 
 typedef QMap<QString, const GTAbstractGUIAction *> GTAbstractGUIActionMap;
 
-}    // namespace GUITest_crazy_user
+}  // namespace GUITest_crazy_user
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

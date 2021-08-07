@@ -132,22 +132,22 @@ void FindTandemsDialog::presetSelected(int preset) {
     const unsigned maxMicro = 6;
     const unsigned maxMini = 30;
     switch (preset) {
-    case TSConstants::PresetAll:
-        break;
-    case TSConstants::PresetMicro:
-        maxPeriod = maxMicro;
-        break;
-    case TSConstants::PresetMini:
-        minPeriod = maxMicro + 1;
-        maxPeriod = maxMini;
-        break;
-    case TSConstants::PresetBigPeriod:
-        minPeriod = maxMini + 1;
-        break;
-    case TSConstants::PresetCustom:
-        return;
-    default:
-        break;
+        case TSConstants::PresetAll:
+            break;
+        case TSConstants::PresetMicro:
+            maxPeriod = maxMicro;
+            break;
+        case TSConstants::PresetMini:
+            minPeriod = maxMicro + 1;
+            maxPeriod = maxMini;
+            break;
+        case TSConstants::PresetBigPeriod:
+            minPeriod = maxMini + 1;
+            break;
+        case TSConstants::PresetCustom:
+            return;
+        default:
+            break;
     }
     minPeriodBox->setValue(minPeriod);
     maxPeriodBox->setValue(maxPeriod);
@@ -177,7 +177,7 @@ bool FindTandemsDialog::getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Regio
 }
 
 U2Region FindTandemsDialog::getActiveRange(bool *ok) const {
-    U2Region region = rs->getRegion(ok);    //todo add check on wrong region
+    U2Region region = rs->getRegion(ok);  // todo add check on wrong region
     return region;
 }
 
@@ -257,7 +257,7 @@ quint64 FindTandemsDialog::areaSize() const {
 int FindTandemsDialog::estimateResultsCount() const {
     int len = 1;
 
-    quint64 nVariations = areaSize();    //max possible results
+    quint64 nVariations = areaSize();  // max possible results
     double variationsPerLen = pow(double(4), double(len));
     quint64 res = quint64(nVariations / variationsPerLen);
     res = (res > 20) ? (res / 10) * 10 : res;
@@ -266,4 +266,4 @@ int FindTandemsDialog::estimateResultsCount() const {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

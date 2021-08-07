@@ -52,7 +52,7 @@ QList<Task *> FindPatternTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(task, "Failed to cast FindAlgorithTask!", QList<Task *>());
 
         QList<FindAlgorithmResult> resultz = task->popResults();
-        if (settings.patternSettings == FindAlgorithmPatternSettings_RegExp) {    //Other algos always return sorted results
+        if (settings.patternSettings == FindAlgorithmPatternSettings_RegExp) {  // Other algos always return sorted results
             std::sort(resultz.begin(), resultz.end(), FindAlgorithmResult::lessByRegionStartPos);
         }
         if (removeOverlaps && !resultz.isEmpty()) {
@@ -165,4 +165,4 @@ void FindPatternListTask::prepare() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

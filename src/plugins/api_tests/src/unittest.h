@@ -87,6 +87,6 @@ QString toString(const T &t) {
     return QString("%1").arg(t);
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

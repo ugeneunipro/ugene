@@ -46,8 +46,8 @@ GUI_TEST_CLASS_DECLARATION(test_0003)
 GUI_TEST_CLASS_DECLARATION(test_0003_1)
 GUI_TEST_CLASS_DECLARATION(test_0004)
 GUI_TEST_CLASS_DECLARATION(test_0005)
-GUI_TEST_CLASS_DECLARATION(test_0006)    //outdated
-GUI_TEST_CLASS_DECLARATION(test_0006_1)    //outdated
+GUI_TEST_CLASS_DECLARATION(test_0006)  // outdated
+GUI_TEST_CLASS_DECLARATION(test_0006_1)  // outdated
 GUI_TEST_CLASS_DECLARATION(test_0007)
 GUI_TEST_CLASS_DECLARATION(test_0008)
 GUI_TEST_CLASS_DECLARATION(test_0009)
@@ -68,8 +68,8 @@ GUI_TEST_CLASS_DECLARATION(test_0021)
 GUI_TEST_CLASS_DECLARATION(test_0022)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_options_panel
+}  // namespace GUITest_common_scenarios_options_panel
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_TESTS_OPTION_PANEL_H_
+#endif  // _U2_GT_TESTS_OPTION_PANEL_H_

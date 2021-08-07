@@ -39,11 +39,13 @@ public:
 
     /* Chromatogram trace and the corresponding peak height */
     struct ChromatogramTraceAndValue {
-        ChromatogramTraceAndValue(Trace t, int v) : trace(t), value(v) {}
+        ChromatogramTraceAndValue(Trace t, int v)
+            : trace(t), value(v) {
+        }
 
         // Chromatogram trace
         Trace trace = Trace::Trace_A;
-        //Height of the @trace peak
+        // Height of the @trace peak
         int value = 0;
     };
 
@@ -73,6 +75,6 @@ public:
     static const QMap<Trace, char> TRACE_CHARACTER;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

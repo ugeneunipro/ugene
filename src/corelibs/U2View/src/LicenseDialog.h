@@ -44,5 +44,5 @@ private:
     Ui_LicenseDialog *ui;
     Plugin *plugin;
 };
-}    // namespace U2
-#endif    // LICENSEDIALOG_H
+}  // namespace U2
+#endif  // LICENSEDIALOG_H

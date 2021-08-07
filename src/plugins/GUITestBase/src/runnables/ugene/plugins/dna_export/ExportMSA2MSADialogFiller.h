@@ -39,6 +39,6 @@ private:
     bool unknownAsGaps = false;
     int frame = 1;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

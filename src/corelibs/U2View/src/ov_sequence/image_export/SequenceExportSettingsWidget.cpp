@@ -65,4 +65,4 @@ void SequenceExportSettingsWidget::sl_regionChanged(const U2Region &r) {
     settings->setRegion(r);
 }
 
-}    // namespace U2
+}  // namespace U2

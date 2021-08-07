@@ -94,4 +94,4 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize & /*canvasS
     }
 }
 
-}    // namespace U2
+}  // namespace U2

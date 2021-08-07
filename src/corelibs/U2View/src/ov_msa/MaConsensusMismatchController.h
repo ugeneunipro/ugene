@@ -66,6 +66,6 @@ private:
     QAction *prevMismatch;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
+#endif  // _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_

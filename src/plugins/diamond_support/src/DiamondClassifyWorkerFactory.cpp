@@ -161,8 +161,8 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(matrix, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::BLOSUM62);
         attributes << new Attribute(gapopen, BaseTypes::NUM_TYPE(), Attribute::None, -1);
         attributes << new Attribute(gapextend, BaseTypes::NUM_TYPE(), Attribute::None, -1);
-        attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 0.5);    //NB: unless --very-sensitive supported
-        attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4);    //NB: unless --very-sensitive supported
+        attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 0.5);  // NB: unless --very-sensitive supported
+        attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4);  // NB: unless --very-sensitive supported
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
 
@@ -301,5 +301,5 @@ void DiamondClassifyWorkerFactory::cleanup() {
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

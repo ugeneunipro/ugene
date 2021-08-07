@@ -60,7 +60,7 @@ static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &d
         if (tr.isNull()) {
             tr = table.firstChildElement("tbody").firstChildElement("tr");
             if (tr.isNull()) {
-                tr = table.firstChildElement("thead").firstChildElement("tr");    // UGENE <= v35 has all <tr>s within <thead>.
+                tr = table.firstChildElement("thead").firstChildElement("tr");  // UGENE <= v35 has all <tr>s within <thead>.
             }
         }
         int rowSpan = 0;
@@ -75,7 +75,7 @@ static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &d
             bool isUrl = DomUtils::hasClass(td2, URL_MARKER_CLASS);
             bool isDir = DomUtils::hasClass(td2, DIR_MARKER_CLASS);
             bool isDataset = DomUtils::hasClass(td2, DATASET_MARKER_CLASS);
-            if (!isUrl) {    // Check if it is old-style URL (UGENE <= v35).
+            if (!isUrl) {  // Check if it is old-style URL (UGENE <= v35).
                 QDomElement button = td2.firstChildElement("div").firstChildElement("div").firstChildElement("button");
                 if (!button.isNull()) {
                     isDir = button.hasAttribute("disabled");
@@ -292,7 +292,7 @@ QString ParametersDashboardWidget::toHtml() const {
         html += "</table>\n";
         html += "</div>\n";
     }
-    html += "</div>\n";    // param tables.
+    html += "</div>\n";  // param tables.
 
     html += "</div>\n";
     return html;
@@ -306,4 +306,4 @@ WorkerParameterInfo::WorkerParameterInfo(const QString &name, const QString &val
     : name(name), value(value), isUrl(isUrl), isDir(isDir), isDataset(isDataset) {
 }
 
-}    // namespace U2
+}  // namespace U2

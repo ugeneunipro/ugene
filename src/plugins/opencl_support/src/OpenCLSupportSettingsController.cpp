@@ -49,7 +49,7 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
         return;
     }
 
-    //saving state of enabled/disabled GPUs into registry
+    // saving state of enabled/disabled GPUs into registry
     const QString enabledGpu = s->getEnabledGpuName();
     bool enabledGpuWasFound = false;
     foreach (OpenCLGpuModel *gpu, registeredGpus) {
@@ -64,11 +64,11 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
         registeredGpus.first()->setEnabled(true);
     }
 
-    //increasing/decreasing maxuse of according resource
+    // increasing/decreasing maxuse of according resource
     AppResourceSemaphore *gpuResource = dynamic_cast<AppResourceSemaphore *>(AppResourcePool::instance()->getResource(RESOURCE_OPENCL_GPU));
     if (gpuResource) {
-        gpuResource->setMaxUse(1);    //Only one GPU is in use at each very moment
-    }    //else - resource was not registered, nothing to do.
+        gpuResource->setMaxUse(1);  // Only one GPU is in use at each very moment
+    }  // else - resource was not registered, nothing to do.
 }
 
 AppSettingsGUIPageWidget *OpenCLSupportSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
@@ -96,7 +96,7 @@ const static char *noGpusDiscoveredText = "No OpenCL-enabled GPU detected.";
 OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &_msg, OpenCLSupportSettingsPageController * /*ctrl*/)
     : onlyMsg(_msg) {
     if (!onlyMsg.isEmpty()) {
-        //just display the centered warning message
+        // just display the centered warning message
         QHBoxLayout *hLayout = new QHBoxLayout(this);
         QLabel *msgLabel = new QLabel(onlyMsg, this);
         msgLabel->setAlignment(Qt::AlignLeft);
@@ -106,7 +106,7 @@ OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &
         hLayout->addStretch();
         setLayout(hLayout);
     } else {
-        //everything is OK - adding info about all available GPUs
+        // everything is OK - adding info about all available GPUs
         QVBoxLayout *vLayout = new QVBoxLayout(this);
         QList<OpenCLGpuModel *> gpus = AppContext::getOpenCLGpuRegistry()->getRegisteredGpus();
         const QString &actualText = gpus.empty() ? tr(noGpusDiscoveredText) : tr(gpusDiscoveredText);
@@ -162,4 +162,4 @@ AppSettingsGUIPageState *OpenCLSupportSettingsPageWidget::getState(QString & /*e
     return new OpenCLSupportSettingsPageState(enabledGpuName);
 }
 
-}    // namespace U2
+}  // namespace U2

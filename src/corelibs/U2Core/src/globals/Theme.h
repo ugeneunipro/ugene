@@ -39,7 +39,7 @@ public:
     }
     static QString errorColorLabelHtmlStr() {
         return "#A6392E";
-    }    // the same as errorColorLabelStr()
+    }  // the same as errorColorLabelStr()
 
     static QString warningColorLabelHtmlStr() {
         return "#FF8B19";
@@ -78,6 +78,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

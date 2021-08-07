@@ -63,6 +63,6 @@ private:
     qint64 redoStepsAvailable;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

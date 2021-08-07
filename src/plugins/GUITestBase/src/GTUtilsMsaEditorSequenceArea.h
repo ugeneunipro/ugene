@@ -33,7 +33,7 @@ namespace U2 {
 class GTUtilsMSAEditorSequenceArea {
 public:
     static MSAEditorSequenceArea *getSequenceArea(GUITestOpStatus &os);
-    static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());    // zero-based position
+    static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());  // zero-based position
 
     static void checkSelectedRect(GUITestOpStatus &os, const QRect &expectedRect);
 
@@ -126,8 +126,8 @@ public:
     static bool isAlignmentLocked(GUITestOpStatus &os);
 
     /*
-    *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
-    */
+     *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
+     */
     static void expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand);
 
     static void zoomIn(GUITestOpStatus &os);
@@ -138,5 +138,5 @@ public:
     static const QString highlightingColor;
 };
 
-}    // namespace U2
-#endif    // GTUTILSMSAEDITORSEQUENCEAREA_H
+}  // namespace U2
+#endif  // GTUTILSMSAEDITORSEQUENCEAREA_H

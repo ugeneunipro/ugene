@@ -51,6 +51,6 @@ private:
     const DbiConnection *handle;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_CONVERT_ASSEMBLY_TO_SAM_TASK_H_
+#endif  //_U2_CONVERT_ASSEMBLY_TO_SAM_TASK_H_

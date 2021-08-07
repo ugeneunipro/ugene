@@ -331,7 +331,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     bool isUnknownChange = mi.type == MaModificationType_Undo || mi.type == MaModificationType_Redo || (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty());
     U2OpStatus2Log os;
     if (isUnknownChange) {
-        loadAlignment(os);    // Reload 'cachedMa'.
+        loadAlignment(os);  // Reload 'cachedMa'.
         SAFE_POINT_OP(os, );
     } else {
         if (mi.alignmentLengthChanged) {
@@ -477,13 +477,13 @@ QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment &ma, const QList
     }
     const int lastDeletedRowIndex = ma->getRowIndexByRowId(removedRowIds.last(), os);
     SAFE_POINT_OP(os, QList<qint64>());
-    if (lastDeletedRowIndex < maRows.size() - 1) {    // if the last removed row was not in the bottom of the msa
+    if (lastDeletedRowIndex < maRows.size() - 1) {  // if the last removed row was not in the bottom of the msa
         rowIdsAffectedByDeletion += maRows.mid(lastDeletedRowIndex + 1);
     }
     return rowIdsAffectedByDeletion;
 }
 
-}    // namespace
+}  // namespace
 
 void MultipleAlignmentObject::removeRegion(const QList<int> &rowIndexes, int x, int width, bool removeEmptyRows) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
@@ -501,7 +501,7 @@ void MultipleAlignmentObject::removeRegion(const QList<int> &rowIndexes, int x, 
         if (!removedRowIds.isEmpty()) {
             // suppose that if at least one row in msa was removed then all the rows below it were changed
             QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRowIds);
-            foreach (qint64 removedRowId, removedRowIds) {    // removed rows ain't need to be update
+            foreach (qint64 removedRowId, removedRowIds) {  // removed rows ain't need to be update
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
@@ -538,10 +538,10 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
     if (removeEmptyRows) {
         removedRows = MsaDbiUtils::removeEmptyRows(entityRef, modifiedRowIds, os);
         SAFE_POINT_OP(os, );
-        if (!removedRows.isEmpty()) {    // suppose that if at least one row in msa was removed then
+        if (!removedRows.isEmpty()) {  // suppose that if at least one row in msa was removed then
             // all the rows below it were changed
             const QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRows);
-            foreach (qint64 removedRowId, removedRows) {    // removed rows ain't need to be update
+            foreach (qint64 removedRowId, removedRows) {  // removed rows ain't need to be update
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
@@ -783,4 +783,4 @@ QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qi
     return indexes;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,4 +41,4 @@ protected:
     bool eventFilter(QObject *, QEvent *);
 };
 
-#endif    // EVENTFILTER_H
+#endif  // EVENTFILTER_H

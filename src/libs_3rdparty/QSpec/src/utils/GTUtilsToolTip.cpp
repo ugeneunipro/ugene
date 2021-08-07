@@ -39,4 +39,4 @@ QString GTUtilsToolTip::getToolTip() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

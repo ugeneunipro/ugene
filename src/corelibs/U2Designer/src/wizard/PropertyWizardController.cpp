@@ -177,4 +177,4 @@ void DefaultPropertyController::setNoDelegate(bool value) {
     noDelegate = value;
 }
 
-}    // namespace U2
+}  // namespace U2

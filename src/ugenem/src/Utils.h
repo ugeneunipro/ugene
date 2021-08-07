@@ -45,4 +45,4 @@ private:
     static QString getArgumentValue(const QString &key);
 };
 
-#endif    // _UGENEM_UTILS_H_
+#endif  // _UGENEM_UTILS_H_

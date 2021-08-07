@@ -58,7 +58,7 @@ public:
 
     static GUrl mergeBam(const QStringList &bamUrl, const QString &mergetBamTargetUrl, U2OpStatus &os);
 
-    //deprecated because hangs up on big files
+    // deprecated because hangs up on big files
     static GUrl rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl, U2OpStatus &os, bool removeSingleEnd = false, bool treatReads = false);
 
     static bool hasValidBamIndex(const GUrl &bamUrl);
@@ -86,7 +86,7 @@ public:
     static void createFai(const GUrl &faiUrl, const QStringList &references, U2OpStatus &os);
 };
 
-//iterates over a FASTQ file (including zipped) with kseq from samtools
+// iterates over a FASTQ file (including zipped) with kseq from samtools
 class U2FORMATS_EXPORT FASTQIterator {
 public:
     FASTQIterator(const QString &fileUrl, U2OpStatus &os);
@@ -102,6 +102,6 @@ private:
     void *seq;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BAM_UTILS_H_
+#endif  // _U2_BAM_UTILS_H_

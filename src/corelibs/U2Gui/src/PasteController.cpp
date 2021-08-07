@@ -72,7 +72,7 @@ static QString generateClipboardUrl(const QStringList &extensions) {
 }
 
 ////////////////////
-///PasteTaskImpl
+/// PasteTaskImpl
 PasteTaskImpl::PasteTaskImpl(bool addToProject)
     : PasteTask(TaskFlags_NR_FOSCOE), addToProject(addToProject) {
 }
@@ -95,7 +95,7 @@ QList<Task *> PasteTaskImpl::onSubTaskFinished(Task *task) {
 }
 
 ///////////////////
-///PasteFactoryImpl
+/// PasteFactoryImpl
 PasteFactoryImpl::PasteFactoryImpl(QObject *parent)
     : PasteFactory(parent) {
 }
@@ -122,7 +122,7 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
 }
 
 ///////////////////////
-///PasteTextTask
+/// PasteTextTask
 PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     QStringList dirs;
@@ -149,7 +149,7 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject
 }
 
 ///////////////////////
-///PasteTextTask
+/// PasteTextTask
 PasteTextTask::PasteTextTask(const QString &clipboardText, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     StringAdapterFactoryWithStringData ioAdapterFactory(clipboardText);
@@ -191,4 +191,4 @@ Task::ReportResult PasteTextTask::report() {
     return PasteTaskImpl::report();
 }
 
-}    // namespace U2
+}  // namespace U2

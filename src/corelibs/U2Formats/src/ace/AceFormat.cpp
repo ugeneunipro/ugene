@@ -210,7 +210,7 @@ static inline void skipBreaks(U2::IOAdapter *io, U2OpStatus &ti, char *buff, qin
     bool lineOk = true;
     *len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
     CHECK_EXT(!io->hasError(), ti.setError(io->errorString()), );
-    CHECK_EXT(*len != 0, ti.setError(ACEFormat::tr("Unexpected end of file")), );    //end if stream
+    CHECK_EXT(*len != 0, ti.setError(ACEFormat::tr("Unexpected end of file")), );  // end if stream
     CHECK_EXT(lineOk, ti.setError(ACEFormat::tr("Line is too long")), );
 }
 
@@ -380,7 +380,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     QSet<QString> names;
     QMap<QString, bool> complMap;
 
-    //skip leading whites if present
+    // skip leading whites if present
     bool lineOk = true;
     skipBreaks(io, os, buff, &len);
     CHECK_OP(os, );
@@ -397,7 +397,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
             io->readUntil(buff, READ_BUFF_SIZE, nonWhites, IOAdapter::Term_Exclude, &lineOk);
             CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
 
-            //read header
+            // read header
             skipBreaks(io, os, buff, &len);
             CHECK_OP(os, );
 
@@ -414,7 +414,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
         int count = readsCount(headerLine);
         CHECK_EXT(count != -1, os.setError(ACEFormat::tr("There is no note about reads count")), );
 
-        //consensus
+        // consensus
         QString name;
         QByteArray consensus;
         QString consName;
@@ -425,7 +425,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
         MultipleSequenceAlignment al(consName);
         al->addRow(consName, consensus);
 
-        //AF
+        // AF
         QMap<QString, int> posMap;
         parseAFTag(io, os, buff, count, posMap, complMap, names);
         CHECK_OP(os, );
@@ -436,7 +436,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
             CHECK_OP(os, );
         }
 
-        //RD and QA
+        // RD and QA
         while (!os.isCoR() && count > 0) {
             parseRDandQATag(io, os, buff, names, name, sequence);
             CHECK_OP(os, );
@@ -494,4 +494,4 @@ Document *ACEFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
     return doc;
 }
 
-}    // namespace U2
+}  // namespace U2

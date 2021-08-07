@@ -168,9 +168,9 @@ private slots:
 
 private:
     int usageCounter;
-};    // ActorPrototype
+};  // ActorPrototype
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_ACTORPROTOTYPE_H_
+#endif  // _U2_ACTORPROTOTYPE_H_

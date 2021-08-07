@@ -66,6 +66,6 @@ private:
     Ui_EditBreakpointLabelsDialog *ui;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _EDIT_BREAKPOINT_LABELS_DIALOG_H_
+#endif  // _EDIT_BREAKPOINT_LABELS_DIALOG_H_

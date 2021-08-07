@@ -45,12 +45,12 @@ protected:
 
 protected:
     virtual Task *createReadTask(const QString &url, const QString &datasetName);
-};    // ReadAssemblyWorker
+};  // ReadAssemblyWorker
 
 class ReadAssemblyProto : public GenericReadDocProto {
 public:
     ReadAssemblyProto();
-};    // ReadAssemblyProto
+};  // ReadAssemblyProto
 
 class ReadAssemblyWorkerFactory : public DomainFactory {
 public:
@@ -62,9 +62,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // ReadAssemblyWorkerFactory
+};  // ReadAssemblyWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _READ_ASSEMBLY_WORKER_
+#endif  // _READ_ASSEMBLY_WORKER_

@@ -141,8 +141,8 @@ private:
 
     void addToolToGalaxy();
 
-};    // GalaxyConfigTask
+};  // GalaxyConfigTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GALAXY_CONFIG_TASK_H_
+#endif  // _U2_GALAXY_CONFIG_TASK_H_

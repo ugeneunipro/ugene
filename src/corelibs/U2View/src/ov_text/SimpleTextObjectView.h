@@ -94,6 +94,6 @@ private:
     bool firstShow;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

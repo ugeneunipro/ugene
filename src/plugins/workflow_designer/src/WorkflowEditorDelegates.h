@@ -59,15 +59,15 @@ public:
 
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
-};    // ProxyDelegate
+};  // ProxyDelegate
 
 class SuperDelegate : public ProxyDelegate {
 public:
     SuperDelegate(WorkflowEditor *parent);
 
     virtual bool handlePropertyValueList(const QString &name, QVariant list) const;
-};    // SuperDelegate
+};  // SuperDelegate
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_WORKFLOW_DESIGNER_EDITOR_DELEGATES_H_
+#endif  //_U2_WORKFLOW_DESIGNER_EDITOR_DELEGATES_H_

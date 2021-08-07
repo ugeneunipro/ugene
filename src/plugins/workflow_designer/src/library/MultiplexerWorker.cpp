@@ -184,7 +184,7 @@ void MultiplexerWorker::multiplexManyMode() {
             Message m = inChannel1->look();
             m1 = m.getData().toMap();
             metadataId = m.getMetadataId();
-            inChannel1->get();    // pop last message
+            inChannel1->get();  // pop last message
         } else {
             shutDown();
         }
@@ -207,7 +207,7 @@ void MultiplexerWorker::multiplexManyMode() {
     } else {
         while (inChannel2->hasMessage()) {
             QVariantMap m2 = inChannel2->look().getData().toMap();
-            inChannel2->get();    // pop last message
+            inChannel2->get();  // pop last message
             messages << m2;
 
             sendUnitedMessage(m1, m2, metadataId);
@@ -222,7 +222,7 @@ void MultiplexerWorker::multiplexManyMode() {
             multiMetadataId = -1;
         }
     }
-    if (!hasMultiData && inChannel1->isEnded()) {    // nothing else to multiplex
+    if (!hasMultiData && inChannel1->isEnded()) {  // nothing else to multiplex
         outChannel->setEnded();
         setDone();
     }
@@ -354,5 +354,5 @@ QString MultiplexerPrompter::composeRichDoc() {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

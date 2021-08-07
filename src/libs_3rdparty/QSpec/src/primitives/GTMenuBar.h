@@ -35,6 +35,6 @@ public:
     static void clickCornerMenu(GUITestOpStatus &os, QMenuBar *mBar, GTGlobals::WindowAction action);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

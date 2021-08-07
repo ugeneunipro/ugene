@@ -140,6 +140,6 @@ private:
     QLabel *addTreeHint;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

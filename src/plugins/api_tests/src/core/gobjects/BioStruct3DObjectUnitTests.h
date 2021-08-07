@@ -24,8 +24,9 @@
 
 #include <unittest.h>
 
-#include "core/dbi/DbiTest.h"
 #include <U2Core/BioStruct3D.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 
@@ -72,7 +73,7 @@ DECLARE_TEST(BioStruct3DObjectUnitTests, clone_NullObj);
 /* remove */
 DECLARE_TEST(BioStruct3DObjectUnitTests, remove);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, createInstance);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, createInstance_WrongDbi);
@@ -83,4 +84,4 @@ DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, remove);
 
-#endif    // _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
+#endif  // _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_

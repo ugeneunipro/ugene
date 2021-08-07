@@ -96,7 +96,7 @@ int ARGC = 0;
 namespace U2 {
 
 static void setDataSearchPaths() {
-    //set search paths for data files
+    // set search paths for data files
     QStringList dataSearchPaths;
     const char *relativeDataDir = "/data";
     const char *relativeDevDataDir = "/../../data";
@@ -116,7 +116,7 @@ static void setDataSearchPaths() {
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
-    //using folder which is set during installation process on Linux
+    // using folder which is set during installation process on Linux
     const QString ugene_data_dir(UGENE_DATA_DIR);
     if (QDir(ugene_data_dir).exists()) {
         dataSearchPaths.push_back(QString(UGENE_DATA_DIR));
@@ -128,7 +128,7 @@ static void setDataSearchPaths() {
     }
 
     QDir::setSearchPaths(PATH_PREFIX_DATA, dataSearchPaths);
-    //now data files may be opened using QFile( "data:some_data_file" )
+    // now data files may be opened using QFile( "data:some_data_file" )
 }
 
 static void setSearchPaths() {
@@ -435,4 +435,4 @@ bool UgeneContextWrapper::isAppContextInitialized() {
     return AppContextImpl::getApplicationContext()->getWorkingDirectoryPath().isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

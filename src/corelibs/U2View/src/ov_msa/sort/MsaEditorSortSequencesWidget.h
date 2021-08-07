@@ -47,6 +47,6 @@ private:
     QPushButton *sortButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

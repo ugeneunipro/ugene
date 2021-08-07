@@ -178,7 +178,7 @@ void BioStruct3DSettingsDialog::setRenderDetailLevel(float renderDetailLevel_) {
     renderDetailLevelSlider->setSliderPosition(renderDetailLevel);
 }
 
-static const QString COLOR_STYLE("QPushButton { background-color : %1;}");    // color : %2;
+static const QString COLOR_STYLE("QPushButton { background-color : %1;}");  // color : %2;
 
 void BioStruct3DSettingsDialog::setLeftEyeColor(QColor leftEyecolor) {
     anaglyphSettings.leftEyeColor = leftEyecolor;
@@ -254,4 +254,4 @@ GlassesColorScheme::GlassesColorScheme(QString name, QColor leftEyeColor, QColor
     this->rightEyeColor = rightEyeColor;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -49,7 +49,7 @@ public:
     static void commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg);
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_CUSTOM_WORKER_UTILS_H_
+#endif  // _U2_CUSTOM_WORKER_UTILS_H_

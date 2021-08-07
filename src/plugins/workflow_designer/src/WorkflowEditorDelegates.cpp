@@ -29,7 +29,7 @@ namespace U2 {
  * ProxyDelegate
  ********************************/
 QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    //if (owner->custom)
+    // if (owner->custom)
     QWidget *editor;
     {
         PropertyDelegate *itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate *>();
@@ -44,7 +44,7 @@ QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
 }
 
 void ProxyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
-    //if (owner->custom)
+    // if (owner->custom)
     {
         PropertyDelegate *itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate *>();
         if (itemDelegate) {
@@ -97,4 +97,4 @@ bool SuperDelegate::handlePropertyValueList(const QString & /*name*/, QVariant /
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

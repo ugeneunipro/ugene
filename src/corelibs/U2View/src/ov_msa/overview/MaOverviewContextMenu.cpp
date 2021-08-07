@@ -244,4 +244,4 @@ QAction *MaOverviewContextMenu::createCheckableAction(const QString &text, QActi
     return a;
 }
 
-}    // namespace U2
+}  // namespace U2

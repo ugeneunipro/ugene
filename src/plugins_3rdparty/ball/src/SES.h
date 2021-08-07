@@ -41,6 +41,6 @@ public:
     bool hasConstraints(const BioStruct3D &biostruc) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // SOLVENTEXCLUDEDSURFACE_H
+#endif  // SOLVENTEXCLUDEDSURFACE_H

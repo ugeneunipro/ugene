@@ -121,6 +121,6 @@ public:
     static QSharedPointer<ExportImagePainter> createPainter(ADVSingleSequenceWidget *seqWidget, SequenceExportType exportType);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_PAINTER_H_
+#endif  // _U2_SEQUENCE_PAINTER_H_

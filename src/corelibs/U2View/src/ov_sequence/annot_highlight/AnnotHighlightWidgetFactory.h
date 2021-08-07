@@ -41,6 +41,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ANNOT_HIGHLIGHT_WIDGET_FACTORY_H_
+#endif  // _U2_ANNOT_HIGHLIGHT_WIDGET_FACTORY_H_

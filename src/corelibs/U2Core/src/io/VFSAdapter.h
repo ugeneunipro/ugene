@@ -46,7 +46,7 @@ public:
     virtual bool isIOModeSupported(IOAdapterMode m) const {
         Q_UNUSED(m);
         return true;
-    }    //files can be read and be written
+    }  // files can be read and be written
 
     virtual TriState isResourceAvailable(const GUrl &url) const {
         assert(url.isVFSFile());
@@ -98,6 +98,6 @@ private:
     QBuffer *buffer;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MEM_BUF_ADAPTER_H_
+#endif  // _U2_MEM_BUF_ADAPTER_H_

@@ -78,4 +78,4 @@ GSequenceGraphDrawer *DNAFlexGraphFactory::getDrawer(GSequenceGraphView *view) {
     return new GSequenceGraphDrawer(view, wd);
 }
 
-}    // namespace U2
+}  // namespace U2

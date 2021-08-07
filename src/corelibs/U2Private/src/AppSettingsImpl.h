@@ -34,6 +34,6 @@ public:
     static void addPublicDbCredentials2Settings();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

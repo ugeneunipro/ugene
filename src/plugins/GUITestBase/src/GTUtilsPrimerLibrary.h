@@ -56,6 +56,6 @@ private:
     static QTableView *table(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GTUTILS_PRIMER_LIBRARY_H_
+#endif  // _GTUTILS_PRIMER_LIBRARY_H_

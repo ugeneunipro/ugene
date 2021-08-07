@@ -327,7 +327,7 @@ QString createDeleteObjectQueryStr(int objectCount) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 bool MysqlObjectDbi::removeObjects(const QList<U2DataId> &dataIds, bool force, U2OpStatus &os) {
     Q_UNUSED(force)
@@ -1192,4 +1192,4 @@ void MysqlObjectDbi::onFolderUpdated(const QString &) {
     // Do nothing.
 }
 
-}    // namespace U2
+}  // namespace U2

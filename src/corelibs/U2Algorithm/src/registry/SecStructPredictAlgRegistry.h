@@ -53,6 +53,6 @@ private:
     SecStructPredictAlgRegistry &operator=(const SecStructPredictAlgRegistry &m);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -22,10 +22,10 @@
 #ifndef _U2_MCA_ALTERNATIVE_MUTATIONS_WIDGET_H_
 #define _U2_MCA_ALTERNATIVE_MUTATIONS_WIDGET_H_
 
-#include "ui_McaAlternativeMutationsWidget.h"
-
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2Type.h>
+
+#include "ui_McaAlternativeMutationsWidget.h"
 
 namespace U2 {
 
@@ -36,7 +36,6 @@ class McaEditorStatusBar;
 class MultipleAlignmentObject;
 class MultipleChromatogramAlignmentObject;
 
-
 /*
  * Widget to set up alternative mutations. Relates to UGENE-7105.
  * When the "Alternative mutations" feature is enabled,
@@ -46,13 +45,13 @@ class MultipleChromatogramAlignmentObject;
 class McaAlternativeMutationsWidget : public QWidget, private Ui_McaAlternativeMutationsWidget {
     Q_OBJECT
 public:
-    McaAlternativeMutationsWidget(QWidget* parent = nullptr);
+    McaAlternativeMutationsWidget(QWidget *parent = nullptr);
 
     /*
      * Initialize object.
      * Call this function right after instance creation.
      */
-    void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
+    void init(MultipleAlignmentObject *maObject, MaEditorSequenceArea *seqArea, MaEditorStatusBar *statusBar);
 
     static const QString getAlternativeMutationsCheckedId();
 
@@ -67,7 +66,7 @@ private slots:
     void sl_updateLockState();
 
 private:
-    void showEvent(QShowEvent* e) override;
+    void showEvent(QShowEvent *e) override;
     /*
      * Updates GUI with values from the database
      **/
@@ -75,11 +74,11 @@ private:
     /*
      * Update the database with values from GUI
      **/
-    void updateDb(U2OpStatus& os);
+    void updateDb(U2OpStatus &os);
 
-    McaEditorSequenceArea* seqArea = nullptr;
-    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
-    McaEditorStatusBar* statusBar = nullptr;
+    McaEditorSequenceArea *seqArea = nullptr;
+    MultipleChromatogramAlignmentObject *mcaObject = nullptr;
+    McaEditorStatusBar *statusBar = nullptr;
     U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;
     U2Object mcaDbiObj;
@@ -88,6 +87,6 @@ private:
     static const QString ALTERNATIVE_MUTATIONS_THRESHOLD;
 };
 
-}
+}  // namespace U2
 
 #endif

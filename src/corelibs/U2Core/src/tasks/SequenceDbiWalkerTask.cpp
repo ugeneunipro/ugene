@@ -30,7 +30,7 @@ namespace U2 {
 
 SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig &c, SequenceDbiWalkerCallback *cb, const QString &name, TaskFlags tf)
     : Task(name, tf), config(c), callback(cb) {
-    assert(config.chunkSize > static_cast<uint>(config.overlapSize));    // if chunk == overlap -> infinite loop occurs
+    assert(config.chunkSize > static_cast<uint>(config.overlapSize));  // if chunk == overlap -> infinite loop occurs
     assert(cb != nullptr);
     assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
@@ -60,7 +60,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
     }
 
     if (config.aminoTrans == nullptr) {
-        //try walk direct and complement strands
+        // try walk direct and complement strands
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
@@ -162,7 +162,7 @@ void SequenceDbiWalkerSubtask::prepareRegionSequence() {
 
     QByteArray res = dnaSequence.seq;
     if (doCompl) {
-        //do complement;
+        // do complement;
         SAFE_POINT_EXT(t->getConfig().complTrans != nullptr, stateInfo.setError("No complement translation found!"), );
         const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
@@ -191,4 +191,4 @@ SequenceDbiWalkerTask *SequenceDbiWalkerSubtask::getSequenceDbiWalkerTask() cons
     return t;
 }
 
-}    // namespace U2
+}  // namespace U2

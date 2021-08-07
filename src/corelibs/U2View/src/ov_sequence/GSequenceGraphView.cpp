@@ -84,7 +84,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, G
     setCoherentRangeView(baseView);
     setFrameView(baseView->getFrameView());
 
-    //process double clicks as centering requests
+    // process double clicks as centering requests
     ADVSingleSequenceWidget *ssw = baseView == nullptr ? nullptr : qobject_cast<ADVSingleSequenceWidget *>(baseView->parentWidget());
     if (ssw != nullptr) {
         connect(this, SIGNAL(si_centerPosition(qint64)), ssw, SLOT(sl_onLocalCenteringRequest(qint64)));
@@ -189,7 +189,7 @@ void GSequenceGraphView::pack() {
 
     setContentLayout(hLayout);
 
-    scrollBar->setHidden(true);    //todo: support mode without scrollbar at all??
+    scrollBar->setHidden(true);  // todo: support mode without scrollbar at all??
 
     setMinimumHeight(140);
 }
@@ -288,7 +288,7 @@ void GSequenceGraphView::onVisibleRangeChanged(bool signal) {
         foreach (const QSharedPointer<GSequenceGraphData> graph, graphs) {
             emit si_frameRangeChanged(graph, static_cast<GSequenceGraphViewRA *>(renderArea)->getGraphRect());
             GraphLabel &cursorLabel = graph->graphLabels.getMovingLabel();
-            if (!cursorLabel.isHidden()) {    // do not move cursor label if it was hidden for some reason (widget is not focused, etc...)
+            if (!cursorLabel.isHidden()) {  // do not move cursor label if it was hidden for some reason (widget is not focused, etc...)
                 float pos = static_cast<double>(cursorLabel.getCoord().x()) / renderArea->getCurrentScale() + getVisibleRange().startPos;
                 cursorLabel.setPosition(pos);
                 emit si_labelMoved(graph, &cursorLabel, static_cast<GSequenceGraphViewRA *>(renderArea)->getGraphRect());
@@ -313,7 +313,7 @@ GSequenceGraphViewRA::~GSequenceGraphViewRA() {
 }
 
 void GSequenceGraphViewRA::drawAll(QPaintDevice *pd) {
-    //todo: use cached view here!!
+    // todo: use cached view here!!
 
     QPainter p(pd);
     p.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
@@ -389,4 +389,4 @@ GSequenceGraphView::~GSequenceGraphView() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

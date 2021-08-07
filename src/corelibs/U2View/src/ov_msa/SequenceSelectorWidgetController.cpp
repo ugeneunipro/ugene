@@ -112,14 +112,14 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
         if (completer == QObject::sender() && -1 != sequenceIndex) {
             const QStringList rowNames = ma->getRowNames();
             SAFE_POINT(rowNames.contains(selectedSeqName), "Unexpected sequence name is selected", );
-            if (1 < rowNames.count(selectedSeqName)) {    // case when there are sequences with identical names
+            if (1 < rowNames.count(selectedSeqName)) {  // case when there are sequences with identical names
                 int selectedRowIndex = -1;
                 // search for chosen row in the msa
                 for (int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter) {
                     selectedRowIndex = rowNames.indexOf(selectedSeqName, selectedRowIndex + 1);
                 }
                 seqId = ma->getMsaRow(selectedRowIndex)->getRowId();
-            } else {    // case when chosen name is unique in the msa
+            } else {  // case when chosen name is unique in the msa
                 seqId = ma->getMsaRow(selectedSeqName)->getRowId();
             }
         }
@@ -149,4 +149,4 @@ void SequenceSelectorWidgetController::sl_setDefaultLineEditValue() {
     seqLineEdit->clearFocus();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -114,7 +114,7 @@ void CircularViewContext::initViewContext(GObjectView *v) {
     connect(av, SIGNAL(si_sequenceWidgetRemoved(ADVSequenceWidget *)), SLOT(sl_sequenceWidgetRemoved(ADVSequenceWidget *)));
     connect(av, SIGNAL(si_onClose(AnnotatedDNAView *)), SLOT(sl_onDNAViewClosed(AnnotatedDNAView *)));
 
-    ADVGlobalAction *globalToggleViewAction = new ADVGlobalAction(av, QIcon(":circular_view/images/circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);    // big enough to be the last one?
+    ADVGlobalAction *globalToggleViewAction = new ADVGlobalAction(av, QIcon(":circular_view/images/circular.png"), tr("Toggle circular views"), std::numeric_limits<int>::max(), ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_SingleSequenceOnly);  // big enough to be the last one?
 
     globalToggleViewAction->addAlphabetFilter(DNAAlphabet_NUCL);
     globalToggleViewAction->setObjectName("globalToggleViewAction");
@@ -247,7 +247,7 @@ void CircularViewContext::toggleViews(AnnotatedDNAView *av) {
         SAFE_POINT(sw != nullptr, "ADVSequenceWidget is NULL", );
         CircularViewAction *a = qobject_cast<CircularViewAction *>(sw->getADVSequenceWidgetAction(CIRCULAR_ACTION_NAME));
         CHECK_OPERATION(a != nullptr, continue);
-        //if there is at least one opened CV, close them all
+        // if there is at least one opened CV, close them all
         if (a->isChecked()) {
             openAll = false;
             a->trigger();
@@ -358,4 +358,4 @@ void CircularViewAction::sl_circularStateChanged() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

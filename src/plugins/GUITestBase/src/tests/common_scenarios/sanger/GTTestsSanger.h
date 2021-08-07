@@ -45,7 +45,7 @@ GUI_TEST_CLASS_DECLARATION(test_0008)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_common_scenarios_sanger
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_sanger
+}  // namespace U2
 
-#endif    // _U2_GUI_TEST_SANGER_H_
+#endif  // _U2_GUI_TEST_SANGER_H_

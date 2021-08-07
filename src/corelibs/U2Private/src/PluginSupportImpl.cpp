@@ -124,7 +124,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
     }
 
     // now check plugin compatibility
-    bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();    // isGUIMode - for pluginChecker!
+    bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();  // isGUIMode - for pluginChecker!
     bool modeIsOk = false;
     if (isUIMode) {
         modeIsOk = desc.mode.testFlag(PluginMode_UI);
@@ -152,7 +152,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
         return;
     }
 
-    //check platform
+    // check platform
 
     if (desc.platform.arch == PlatformArch_Unknown) {
         coreLog.trace(QString("Plugin platform arch is unknown: %1").arg(desc.id));
@@ -207,7 +207,7 @@ QStringList getCmdlinePlugins() {
     }
     return QStringList();
 }
-}    // namespace
+}  // namespace
 
 static QStringList findAllPluginsInDefaultPluginsDir() {
     QDir d = PluginSupportImpl::getDefaultPluginsDir();
@@ -298,7 +298,7 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
     QString descUrl = ref->pluginDesc.descriptorUrl.getURLString();
     QString pluginId = ref->pluginDesc.id;
     if (ref->removeFlag) {
-        //add to skip-list if auto-loaded
+        // add to skip-list if auto-loaded
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
             if (!skipFiles.contains(descUrl)) {
@@ -307,7 +307,7 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
             }
         }
     } else {
-        //remove from skip-list if present
+        // remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
             if (skipFiles.removeOne(descUrl)) {
@@ -360,7 +360,7 @@ void AddPluginTask::prepare() {
         return;
     }
 
-    //check that plugin we depends on is already loaded
+    // check that plugin we depends on is already loaded
     foreach (const DependsInfo &di, desc.dependsList) {
         PluginRef *ref = ps->findRefById(di.id);
         if (ref == nullptr) {
@@ -373,7 +373,7 @@ void AddPluginTask::prepare() {
         }
     }
 
-    //load library
+    // load library
     QString libUrl = desc.libraryUrl.getURLString();
     lib.reset(new QLibrary(libUrl));
     bool loadOk = lib->load();
@@ -533,4 +533,4 @@ void VerifyPluginTask::run() {
         pluginIsCorrect = true;
     }
 }
-}    // namespace U2
+}  // namespace U2

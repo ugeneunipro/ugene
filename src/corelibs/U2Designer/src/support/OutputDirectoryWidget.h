@@ -58,6 +58,6 @@ private:
     QToolButton *browseButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_OUTPUTDIRECTORYWIDGET_H_
+#endif  // _U2_OUTPUTDIRECTORYWIDGET_H_

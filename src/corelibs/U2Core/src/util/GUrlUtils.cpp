@@ -199,7 +199,7 @@ QString GUrlUtils::insertSuffix(const QString &originalUrl, const QString &suffi
 }
 
 QStringList GUrlUtils::getRolledFilesList(const QString &originalUrl, const QString &rolledSuffix) {
-    QString pre, post;    //pre and post url parts. A number will be placed between
+    QString pre, post;  // pre and post url parts. A number will be placed between
     int i = 0;
     getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
@@ -213,7 +213,7 @@ QStringList GUrlUtils::getRolledFilesList(const QString &originalUrl, const QStr
 }
 
 QString GUrlUtils::rollFileName(const QString &originalUrl, const QString &rolledSuffix, const QSet<QString> &excludeList) {
-    QString pre, post;    //pre and post url parts. A number will be placed between
+    QString pre, post;  // pre and post url parts. A number will be placed between
     int i = 0;
     getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
@@ -321,7 +321,7 @@ QString GUrlUtils::prepareDirLocation(const QString &dirPath, U2OpStatus &os) {
             os.setError(tr("Folder can't be created: %1").arg(absPath));
             return QString();
         }
-        targetDir = QDir(absPath);    //It looks like QT caches results for QDir? Create new QDir instance in this case!
+        targetDir = QDir(absPath);  // It looks like QT caches results for QDir? Create new QDir instance in this case!
         if (!targetDir.isReadable()) {
             os.setError(tr("Folder can't be read: %1").arg(absPath));
             return QString();
@@ -378,7 +378,7 @@ void GUrlUtils::removeFile(const QString &filePath, U2OpStatus &os) {
 bool GUrlUtils::canWriteFile(const QString &path) {
     bool res = false;
 
-#ifdef Q_OS_WIN    // a workaround of that files with a colon in names can be created but are not accessible on Windows
+#ifdef Q_OS_WIN  // a workaround of that files with a colon in names can be created but are not accessible on Windows
     if (QFileInfo(path).fileName().contains(':')) {
         return false;
     }
@@ -443,7 +443,7 @@ QString getDotExtension(const DocumentFormatId &formatId) {
 
     return "." + results.first();
 }
-}    // namespace
+}  // namespace
 
 void GUrlUtils::getLocalPathFromUrl(const GUrl &url, const QString &defaultBaseFileName, QString &dirPath, QString &baseFileName) {
     if (url.isLocalFile()) {
@@ -529,4 +529,4 @@ QString GUrlUtils::getSlashEndedPath(const QString &dirPath) {
     return dirPath.endsWith("/") ? dirPath : dirPath + "/";
 }
 
-}    // namespace U2
+}  // namespace U2

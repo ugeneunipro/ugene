@@ -130,6 +130,6 @@ public:
     static const QMap<QDStrandOption, QString> STRAND_MAP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

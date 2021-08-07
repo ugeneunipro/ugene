@@ -41,6 +41,6 @@ public:
     static void maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -35,6 +35,6 @@ private:
     QDialogButtonBox::StandardButton b;
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_DEFAULT_DIALOG_FILLER_H_
+#endif  // _HI_DEFAULT_DIALOG_FILLER_H_

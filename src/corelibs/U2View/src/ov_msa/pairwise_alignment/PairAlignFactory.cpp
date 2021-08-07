@@ -52,4 +52,4 @@ OPGroupParameters PairAlignFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Pairwise Alignment"), GROUP_DOC_PAGE);
 }
 
-}    // namespace U2
+}  // namespace U2

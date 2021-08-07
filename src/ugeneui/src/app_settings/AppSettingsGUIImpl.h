@@ -56,6 +56,6 @@ private:
     QList<AppSettingsGUIPageController *> pages;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

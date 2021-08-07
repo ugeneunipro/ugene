@@ -146,9 +146,9 @@ public:
     }
 
 protected:
-    QList<QString> groupIds;    // groups where the common widget is placed
+    QList<QString> groupIds;  // groups where the common widget is placed
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

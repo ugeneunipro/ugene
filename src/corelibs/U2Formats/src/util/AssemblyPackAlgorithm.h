@@ -69,6 +69,6 @@ public:
     static int packRead(const U2Region &reg, PackAlgorithmContext &ctx, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

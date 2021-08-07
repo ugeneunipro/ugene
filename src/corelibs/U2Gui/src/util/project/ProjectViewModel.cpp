@@ -180,7 +180,7 @@ QModelIndex ProjectViewModel::parent(const QModelIndex &index) const {
 
     switch (itemType(index)) {
         case DOCUMENT: {
-            return QModelIndex();    //  Documents are top level items
+            return QModelIndex();  //  Documents are top level items
         }
         case FOLDER: {
             Folder *folder = toFolder(index);
@@ -387,10 +387,10 @@ void ProjectViewModel::findFoldersDiff(QStringList oldFolders, QStringList newFo
     QStringList::ConstIterator newI = newFolders.constBegin();
 
     while (oldI != oldFolders.constEnd() || newI != newFolders.constEnd()) {
-        if (oldI == oldFolders.constEnd()) {    // There are no more old folders. Remaining new folders are added
+        if (oldI == oldFolders.constEnd()) {  // There are no more old folders. Remaining new folders are added
             added << *newI;
             newI++;
-        } else if (newI == newFolders.constEnd()) {    // There are no more new folders. Remaining old folders are deleted
+        } else if (newI == newFolders.constEnd()) {  // There are no more new folders. Remaining old folders are deleted
             deleted << *oldI;
             oldI++;
         } else if (*oldI == *newI) {
@@ -430,7 +430,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     }
 
     // objects
-    QSet<U2DataId> deletedObjectIds = lastUpdate.objectIdFolders.keys().toSet();    // use QSet to speed up the further search within it
+    QSet<U2DataId> deletedObjectIds = lastUpdate.objectIdFolders.keys().toSet();  // use QSet to speed up the further search within it
     QHash<U2Object, QString>::ConstIterator it = update.u2objectFolders.constBegin();
     for (; it != update.u2objectFolders.constEnd(); it++) {
         const U2Object &entity = it.key();
@@ -444,7 +444,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
         // current object is not removed from DB
         deletedObjectIds.remove(id);
 
-        if (!lastUpdate.objectIdFolders.contains(id)) {    // new object -> add it
+        if (!lastUpdate.objectIdFolders.contains(id)) {  // new object -> add it
             if (doc->isStateLocked()) {
                 coreLog.error("Document is locked");
                 continue;
@@ -454,12 +454,12 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
                 doc->addObject(obj);
                 insertObject(doc, obj, path);
             }
-        } else if (docFolders->hasObject(id)) {    // existing object
+        } else if (docFolders->hasObject(id)) {  // existing object
             GObject *obj = docFolders->getObject(id);
             SAFE_POINT(nullptr != obj, "NULL object", );
 
             QString oldFolder = docFolders->getObjectFolder(obj);
-            if (oldFolder != path) {    // new object folder -> move it
+            if (oldFolder != path) {  // new object folder -> move it
                 removeObject(doc, obj);
                 insertObject(doc, obj, path);
             }
@@ -600,7 +600,7 @@ bool ProjectViewModel::restoreFolderItemFromRecycleBin(Document *doc, const QStr
 
     const QString originPath = con.oDbi->getFolderPreviousPath(oldPath, os);
     CHECK_OP(os, false);
-    CHECK(!originPath.isEmpty(), false);    // the folder doesn't have a previous path
+    CHECK(!originPath.isEmpty(), false);  // the folder doesn't have a previous path
 
     if (!folders[doc]->hasFolder(Folder::getFolderParentPath(originPath))) {
         return false;
@@ -641,7 +641,7 @@ void rollNewFolderPath(QString &originalPath, U2ObjectDbi *oDbi, U2OpStatus &os)
     originalPath = resultPath;
 }
 
-}    // namespace
+}  // namespace
 
 void ProjectViewModel::createFolder(Document *doc, QString &path) {
     CHECK(nullptr != doc && folders.contains(doc), );
@@ -719,7 +719,7 @@ int ProjectViewModel::beforeInsertPath(Document *doc, const QString &path) {
 
 int ProjectViewModel::beforeInsertObject(Document *doc, GObject *obj, const QString &path) {
     QString parentPath = DocumentFolders::getParentFolder(path);
-    if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != parentPath) {    // the object is visible
+    if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != parentPath) {  // the object is visible
         int newRow = folders[doc]->getNewObjectRowInParent(obj, path);
         CHECK(-1 != newRow, -1);
         beginInsertRows(getIndexForPath(doc, path), newRow, newRow);
@@ -758,7 +758,7 @@ int ProjectViewModel::beforeRemoveObject(Document *doc, GObject *obj) {
     QString path = folders[doc]->getObjectFolder(obj);
     QString parentPath = DocumentFolders::getParentFolder(path);
 
-    if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != parentPath) {    // the object is visible
+    if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != parentPath) {  // the object is visible
         int row = objectRow(obj);
         CHECK(-1 != row, -1);
 
@@ -790,7 +790,7 @@ bool ProjectViewModel::renameFolder(Document *doc, const QString &oldPath, const
 
     // 2.1 copy folder tree
     int newRow = beforeInsertPath(doc, resultNewPath);
-    QStringList newFolderNames;    // cache new subfolder paths
+    QStringList newFolderNames;  // cache new subfolder paths
     foreach (const QString &folderPrevPath, foldersToRename) {
         QString folderNewPath = folderPrevPath;
         folderNewPath.replace(0, oldPath.length(), resultNewPath);
@@ -899,7 +899,7 @@ void ProjectViewModel::insertFolder(Document *doc, const QString &path) {
     }
 
     QString absentPath;
-    {    // Find the path to the folder which is not in the model. It some parent of @path or @path itself
+    {  // Find the path to the folder which is not in the model. It some parent of @path or @path itself
         const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
         QString fullPath;
         foreach (const QString &folder, pathList) {
@@ -1146,7 +1146,7 @@ QVariant ProjectViewModel::getDocumentToolTipData(Document *doc) const {
         }
         foreach (StateLock *lock, doc->getStateLocks()) {
             if (!doc->isLoaded() && lock == doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE)) {
-                continue;    //do not visualize some locks for unloaded document
+                continue;  // do not visualize some locks for unloaded document
             }
             tooltip.append("<br>&nbsp;*&nbsp;").append(lock->getUserDesc());
         }
@@ -1240,7 +1240,7 @@ QVariant ProjectViewModel::getObjectFontData(GObject *obj, bool itemIsEnabled) c
 
 QVariant ProjectViewModel::getObjectToolTipData(GObject * /*obj*/, Document *parentDoc) const {
     QString tooltip;
-    //todo: make tooltip for object items
+    // todo: make tooltip for object items
     if (ProjectTreeGroupMode_Flat == settings.groupMode) {
         tooltip.append(parentDoc->getURLString());
     }
@@ -1376,10 +1376,10 @@ QString changeDropPathIfInRecycleBin(const QString &path) {
     return ProjectUtils::isFolderInRecycleBin(path) ? ProjectUtils::RECYCLE_BIN_FOLDER_PATH : path;
 }
 
-}    // namespace
+}  // namespace
 
 void ProjectViewModel::dropObject(GObject *obj, Document *targetDoc, const QString &targetFolderPath) {
-    const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);    // we can drop only to the 'Recycle Bin' folder but not to its subfolder
+    const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);  // we can drop only to the 'Recycle Bin' folder but not to its subfolder
 
     if (obj->getDocument() == targetDoc) {
         moveObject(targetDoc, obj, actualDstPath);
@@ -1392,7 +1392,7 @@ void ProjectViewModel::dropObject(GObject *obj, Document *targetDoc, const QStri
 }
 
 void ProjectViewModel::dropFolder(const Folder &folder, Document *targetDoc, const QString &targetFolderPath) {
-    const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);    // we can drop only to the 'Recycle Bin' folder but not to its subfolder
+    const QString actualDstPath = changeDropPathIfInRecycleBin(targetFolderPath);  // we can drop only to the 'Recycle Bin' folder but not to its subfolder
     CHECK(isAcceptableFolder(targetDoc, actualDstPath, folder), );
 
     QString newPath = Folder::createPath(actualDstPath, folder.getFolderName());
@@ -1426,7 +1426,7 @@ void ProjectViewModel::sl_documentImported() {
         if (nullptr == doc->getObjectById(importedObj->getEntityRef().entityId)) {
             doc->addObject(importedObj);
             insertObject(doc, importedObj, resultPath);
-        } else {    // object has been already detected on a previous merging phase
+        } else {  // object has been already detected on a previous merging phase
             delete importedObj;
         }
     }
@@ -1497,7 +1497,7 @@ void ProjectViewModel::sl_documentLoadedStateChanged() {
         if (!justAddedDocs.contains(doc)) {
             connectDocument(doc);
         } else {
-            justAddedDocs.remove(doc);    // this document has already been connected
+            justAddedDocs.remove(doc);  // this document has already been connected
         }
     } else {
         disconnectDocument(doc);
@@ -1546,4 +1546,4 @@ void ProjectViewModel::sl_objectModifiedStateChanged() {
     emit si_modelChanged();
 }
 
-}    // namespace U2
+}  // namespace U2

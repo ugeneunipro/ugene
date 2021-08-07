@@ -263,4 +263,4 @@ QString HeteroDimersFinder::getDimersOverlapping(int dimerFormationPos) {
     return drimerInfo;
 }
 
-}    // namespace U2
+}  // namespace U2

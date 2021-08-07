@@ -104,7 +104,7 @@ U2DataId SQLiteMsaDbi::createMsaObject(const QString &folder, const QString &nam
     q.bindDataId(1, msa.id);
     q.bindInt64(2, msa.length);
     q.bindString(3, msa.alphabet.id);
-    q.bindInt64(4, 0);    // no rows
+    q.bindInt64(4, 0);  // no rows
     q.insert();
 
     return msa.id;
@@ -777,7 +777,7 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString &folder, const QString &nam
     q.bindDataId(1, mca.id);
     q.bindInt64(2, mca.length);
     q.bindString(3, mca.alphabet.id);
-    q.bindInt64(4, 0);    // no rows
+    q.bindInt64(4, 0);  // no rows
     q.insert();
 
     return mca.id;
@@ -786,7 +786,7 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString &folder, const QString &nam
 qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QList<U2MsaGap> &gaps) {
     qint64 res = seqLength;
     foreach (const U2MsaGap &gap, gaps) {
-        if (gap.offset < res) {    // ignore trailing gaps
+        if (gap.offset < res) {  // ignore trailing gaps
             res += gap.gap;
         }
     }
@@ -1336,4 +1336,4 @@ void SQLiteMsaDbi::redoMsaLengthChange(const U2DataId &msaId, const QByteArray &
     updateMsaLengthCore(msaId, newLen, os);
 }
 
-}    // namespace U2
+}  // namespace U2

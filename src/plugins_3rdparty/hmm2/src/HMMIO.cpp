@@ -44,7 +44,7 @@ namespace U2 {
 
 static const char *prob2ascii(float p, float null) {
     HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-    //static char buffer[8];
+    // static char buffer[8];
     char *buffer = tld->buffer;
     if (p == 0.0) {
         return "*";
@@ -72,16 +72,16 @@ void HMMIO::writeHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &
         si.setError(tr("Alphabet is not set"));
         return;
     }
-    //get HMMERTaskLocalData
+    // get HMMERTaskLocalData
     HMMERTaskLocalData *tld = getHMMERTaskLocalData();
     alphabet_s &al = tld->al;
 
     SetAlphabet(hmm->atype);
 
     QString res;
-    res += QString().sprintf("HMMER2.0  [%s]\n", PACKAGE_VERSION);    // magic header
+    res += QString().sprintf("HMMER2.0  [%s]\n", PACKAGE_VERSION);  // magic header
 
-    //write header information
+    // write header information
     res += QString().sprintf("NAME  %s\n", hmm->name);
     if (hmm->flags & PLAN7_ACC) {
         res += QString().sprintf("ACC   %s\n", hmm->acc);
@@ -118,9 +118,9 @@ void HMMIO::writeHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &
     res += "\n";
 
     /* Save the null model first, so HMM readers can decode
-    * log odds scores on the fly. Save as log odds probabilities
-    * relative to 1/Alphabet_size (flat distribution)
-    */
+     * log odds scores on the fly. Save as log odds probabilities
+     * relative to 1/Alphabet_size (flat distribution)
+     */
     res += QString().sprintf("NULT  ");
     res += QString().sprintf("%6s ", prob2ascii(hmm->p1, 1.0)); /* p1 */
     res += QString().sprintf("%6s\n", prob2ascii(1.0 - hmm->p1, 1.0)); /* p2 */
@@ -152,7 +152,7 @@ void HMMIO::writeHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &
                              "b->m",
                              "m->e");
 
-    //Print HMM parameters (main section of the save file)
+    // Print HMM parameters (main section of the save file)
     res += QString().sprintf("       %6s %6s ", prob2ascii(1 - hmm->tbd1, 1.0), "*");
     res += QString().sprintf("%6s\n", prob2ascii(hmm->tbd1, 1.0));
     for (int k = 1; k <= hmm->M; k++) {
@@ -203,7 +203,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
     float p;
     int k, x;
 
-    //get HMMERTaskLocalData
+    // get HMMERTaskLocalData
     HMMERTaskLocalData *tld = getHMMERTaskLocalData();
     alphabet_s &al = tld->al;
 
@@ -215,7 +215,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
     }
     const QByteArray &upper = TextUtils::UPPER_CASE_MAP;
     const QBitArray &lineBreaks = TextUtils::LINE_BREAKS;
-    do {    //use loop to be able to use 'break' out of it
+    do {  // use loop to be able to use 'break' out of it
         bool lineOk = true;
         int len = io->readUntil(buffer, BUFF_SIZE, lineBreaks, IOAdapter::Term_Include, &lineOk);
         if (!lineOk) {
@@ -231,8 +231,8 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
             break;
         }
 
-        //Get the header information: tag/value pairs in any order,
-        //ignore unknown tags, stop when "HMM" is reached (signaling start of main model)
+        // Get the header information: tag/value pairs in any order,
+        // ignore unknown tags, stop when "HMM" is reached (signaling start of main model)
 
         hmm = AllocPlan7Shell();
         M = -1;
@@ -255,7 +255,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                 M = atoi(buffer + 6);
             else if (strncmp(buffer, "NSEQ ", 5) == 0)
                 hmm->nseq = atoi(buffer + 6);
-            else if (strncmp(buffer, "ALPH ", 5) == 0) {    // Alphabet type
+            else if (strncmp(buffer, "ALPH ", 5) == 0) {  // Alphabet type
                 TextUtils::translate(upper, buffer + 6, 7);
                 int atype = hmmNOTSETYET;
                 if (strncmp(buffer + 6, "AMINO", 5) == 0)
@@ -268,17 +268,17 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                 };
                 SetAlphabet(atype);
                 hmm->atype = atype;
-            } else if (strncmp(buffer, "RF   ", 5) == 0) {    // Reference annotation present?
+            } else if (strncmp(buffer, "RF   ", 5) == 0) {  // Reference annotation present?
                 if (upper.at(*(buffer + 6)) == 'Y') {
                     hmm->flags |= PLAN7_RF;
                 }
-            } else if (strncmp(buffer, "CS   ", 5) == 0) {    // Consensus annotation present?
+            } else if (strncmp(buffer, "CS   ", 5) == 0) {  // Consensus annotation present?
                 if (upper.at(*(buffer + 6)) == 'Y')
                     hmm->flags |= PLAN7_CS;
-            } else if (strncmp(buffer, "MAP  ", 5) == 0) {    // Map annotation present?
+            } else if (strncmp(buffer, "MAP  ", 5) == 0) {  // Map annotation present?
                 if (upper.at(*(buffer + 6)) == 'Y')
                     hmm->flags |= PLAN7_MAP;
-            } else if (strncmp(buffer, "COM  ", 5) == 0) {    // Command line log
+            } else if (strncmp(buffer, "COM  ", 5) == 0) {  // Command line log
                 StringChop(buffer + 6);
                 if (hmm->comlog == NULL) {
                     hmm->comlog = Strdup(buffer + 6);
@@ -289,7 +289,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                     sre_strlcat(hmm->comlog, "\n", newSize);
                     sre_strlcat(hmm->comlog, buffer + 6, newSize);
                 }
-            } else if (strncmp(buffer, "DATE ", 5) == 0) {    // Date file created
+            } else if (strncmp(buffer, "DATE ", 5) == 0) {  // Date file created
                 StringChop(buffer + 6);
                 hmm->ctime = Strdup(buffer + 6);
             } else if (strncmp(buffer, "GA   ", 5) == 0) {
@@ -328,7 +328,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                 }
                 hmm->nc2 = atof(s);
                 hmm->flags |= PLAN7_NC;
-            } else if (strncmp(buffer, "XT   ", 5) == 0) {    // Special transition section
+            } else if (strncmp(buffer, "XT   ", 5) == 0) {  // Special transition section
                 if ((s = strtok_r(buffer + 6, " \t\n", &next)) == NULL) {
                     si.setError(tr("Invalid file structure near %1").arg("XT"));
                     break;
@@ -343,7 +343,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                         s = strtok_r(NULL, " \t\n", &next);
                     }
                 }
-            } else if (strncmp(buffer, "NULT ", 5) == 0) {    // Null model transitions
+            } else if (strncmp(buffer, "NULT ", 5) == 0) {  // Null model transitions
                 if ((s = strtok_r(buffer + 6, " \t\n", &next)) == NULL) {
                     si.setError(tr("Invalid file structure near %1").arg("NULT"));
                     break;
@@ -354,7 +354,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                     break;
                 }
                 hmm->p1 = hmm->p1 / (hmm->p1 + ascii2prob(s, 1.0));
-            } else if (strncmp(buffer, "NULE ", 5) == 0) {    //Null model emissions
+            } else if (strncmp(buffer, "NULE ", 5) == 0) {  // Null model emissions
                 if (al.Alphabet_type == hmmNOTSETYET) {
                     si.setError(tr("ALPH must precede NULE in HMM save files"));
                     break;
@@ -368,7 +368,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                     hmm->null[x] = ascii2prob(s, 1. / (float)al.Alphabet_size);
                     s = strtok_r(NULL, " \t\n", &next);
                 }
-            } else if (strncmp(buffer, "EVD  ", 5) == 0) {    // EVD parameters
+            } else if (strncmp(buffer, "EVD  ", 5) == 0) {  // EVD parameters
                 hmm->flags |= PLAN7_STATS;
                 if ((s = strtok_r(buffer + 6, " \t\n", &next)) == NULL) {
                     si.setError(tr("Invalid file structure near %1").arg("EVD - mu"));
@@ -527,7 +527,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
             }
             hmm->end[k] = ascii2prob(s, 1.0);
 
-        }    // end loop over main model
+        }  // end loop over main model
         if (si.hasError()) {
             break;
         }
@@ -570,8 +570,8 @@ plan7_s *HMMIO::cloneHMM(plan7_s *src) {
     assert(M > 0);
     plan7_s *dst = AllocPlan7(M);
 
-    //copying model annotations
-    assert(src->name);    //name is mandatory
+    // copying model annotations
+    assert(src->name);  // name is mandatory
     Plan7SetName(dst, src->name);
 
     if (src->acc) {
@@ -602,7 +602,7 @@ plan7_s *HMMIO::cloneHMM(plan7_s *src) {
     dst->nseq = src->nseq;
     dst->checksum = src->checksum;
 
-    //Pfam-specific cutoffs:
+    // Pfam-specific cutoffs:
     dst->ga1 = src->ga1;
     dst->ga2 = src->ga2;
     dst->tc1 = src->tc1;
@@ -610,9 +610,9 @@ plan7_s *HMMIO::cloneHMM(plan7_s *src) {
     dst->nc1 = src->nc1;
     dst->nc2 = src->nc2;
 
-    //probabilities
+    // probabilities
     dst->M = src->M;
-    //hack!
+    // hack!
     std::copy(src->t[0], src->t[0] + M * 7, dst->t[0]);
     std::copy(src->mat[0], src->mat[0] + (M + 1) * MAXABET, dst->mat[0]);
     std::copy(src->ins[0], src->ins[0] + M * MAXABET, dst->ins[0]);
@@ -639,7 +639,7 @@ plan7_s *HMMIO::cloneHMM(plan7_s *src) {
     std::copy(src->esc_mem, src->esc_mem + esc_s, &dst->esc_mem[0]);
     std::copy(&src->xsc[0][0], &src->xsc[0][0] + xsc_s, &dst->xsc[0][0]);
 
-    //scoring parameters
+    // scoring parameters
 
     assert(!src->dnai && !src->dnam);
 
@@ -701,4 +701,4 @@ void HMMWriteTask::run() {
     TaskLocalData::freeHMMContext(getTaskId());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -40,7 +40,7 @@ LastUsedDirHelper::~LastUsedDirHelper() {
 void LastUsedDirHelper::saveLastUsedDir() {
     if (!url.isEmpty()) {
         QFileInfo fi(url);
-        if (fi.isDir()) {    // sometimes 'url' points to a dir, not a file.
+        if (fi.isDir()) {  // sometimes 'url' points to a dir, not a file.
             dir = fi.absoluteFilePath();
         } else {
             dir = fi.absoluteDir().absolutePath();
@@ -71,4 +71,4 @@ void LastUsedDirHelper::setLastUsedDir(const QString &ld, const QString &toolTyp
     AppContext::getSettings()->setValue(key, ld);
 }
 
-}    // namespace U2
+}  // namespace U2

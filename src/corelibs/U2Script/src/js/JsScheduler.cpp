@@ -57,6 +57,6 @@ Task *JsScheduler::tick() {
     return result;
 }
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2

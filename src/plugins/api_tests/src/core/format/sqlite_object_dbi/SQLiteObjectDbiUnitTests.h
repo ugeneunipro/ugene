@@ -114,7 +114,7 @@ DECLARE_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3);
 DECLARE_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4);
 DECLARE_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(SQLiteObjectDbiUnitTests, removeMsaObject);
 DECLARE_METATYPE(SQLiteObjectDbiUnitTests, setTrackModType);

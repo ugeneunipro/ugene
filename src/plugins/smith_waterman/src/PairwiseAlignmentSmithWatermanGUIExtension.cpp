@@ -128,4 +128,4 @@ AlignmentAlgorithmMainWidget *PairwiseAlignmentSmithWatermanGUIExtensionFactory:
     return newMainWidget;
 }
 
-}    // namespace U2
+}  // namespace U2

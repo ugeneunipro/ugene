@@ -51,17 +51,17 @@ namespace U2 {
 namespace GUITest_Common_scenarios_dp_view {
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
-    //1. Use menu {Tools->Build Dot plot}.
-    //Expected state: dialog "Build dotplot from sequences" has appear.
-    //2. Fill the next fields in dialog:
-    //    {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
-    //    {File with second sequence} _common_data/scenarios/dp_view/dp2.fa
-    //3. Click Next button
-    //Expected state: dialog "Dotplot" has appear.
-    //4. Fill the next fields in dialog:
-    //    {Minimum repeat length} 8bp
-    //    {repeats identity} 80%
-    //5. Click OK button
+    // 1. Use menu {Tools->Build Dot plot}.
+    // Expected state: dialog "Build dotplot from sequences" has appear.
+    // 2. Fill the next fields in dialog:
+    //     {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
+    //     {File with second sequence} _common_data/scenarios/dp_view/dp2.fa
+    // 3. Click Next button
+    // Expected state: dialog "Dotplot" has appear.
+    // 4. Fill the next fields in dialog:
+    //     {Minimum repeat length} 8bp
+    //     {repeats identity} 80%
+    // 5. Click OK button
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", testDir + "_common_data/scenarios/dp_view/dp2.fa"));
 
@@ -69,22 +69,22 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                 << "Build dotplot...");
     GTUtilsDialog::waitAllFinished(os);
 
-    //Expected state: Dot plot view has appear. There is 1 line at view.
-    //6. Use context menu on dot plot view {Dotplot->Remove}
-    //Expected state: save "Dotplot" has appear.
-    //7. Click No button
+    // Expected state: Dot plot view has appear. There is 1 line at view.
+    // 6. Use context menu on dot plot view {Dotplot->Remove}
+    // Expected state: save "Dotplot" has appear.
+    // 7. Click No button
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot"
                                                                         << "Remove"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::waitAllFinished(os);
 
-    //Expected state: Dot plot view has closed.
+    // Expected state: Dot plot view has closed.
     QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
-    //DIFFERENCE: ONE SEQUENCE USED
+    // DIFFERENCE: ONE SEQUENCE USED
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -102,8 +102,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0011_2) {    //commit DotPlotWidget.cpp exitButton
-    //DIFFERENCE: EXITBUTTON IS USED
+GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
+    // DIFFERENCE: EXITBUTTON IS USED
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -119,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {    //commit DotPlotWidget.cpp exitButto
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
-    //DIFFERENCE: EXITBUTTON IS USED
+    // DIFFERENCE: EXITBUTTON IS USED
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "dp1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
@@ -145,19 +145,19 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
-    //1. Use menu {Tools->Build Dot plot}.
-    //Expected state: dialog "Build dotplot from sequences" has appeared.
+    // 1. Use menu {Tools->Build Dot plot}.
+    // Expected state: dialog "Build dotplot from sequences" has appeared.
 
-    //2. Fill the following fields in the dialog:
-    //    {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
-    //    {Compare sequence againist itself} set checked
-    //3. Click Next button
-    //Expected state: dialog "Dotplot" has appeared.
+    // 2. Fill the following fields in the dialog:
+    //     {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
+    //     {Compare sequence againist itself} set checked
+    // 3. Click Next button
+    // Expected state: dialog "Dotplot" has appeared.
 
-    //4. Fill the following fields in the dialog:
-    //    {Minimum repeat length} 4bp
+    // 4. Fill the following fields in the dialog:
+    //     {Minimum repeat length} 4bp
 
-    //5. Click OK button
+    // 5. Click OK button
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 4));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -167,13 +167,13 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTUtilsProjectTreeView::openView(os);
 
-    //6. Call dotplot context menu
-    //7. Alt-Tab or activate another view
+    // 6. Call dotplot context menu
+    // 7. Alt-Tab or activate another view
 
-    //8. Return to dotplot view and call context menu again
+    // 8. Return to dotplot view and call context menu again
 
-    //9. Repeat operation 3-4 times
-    //Expected state: menu repaints correctly, UGENE not crashed
+    // 9. Repeat operation 3-4 times
+    // Expected state: menu repaints correctly, UGENE not crashed
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName));
@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014_1) {
-    //DIFFERENCE: ANNOTATION TREE WIDGET IS USED
+    // DIFFERENCE: ANNOTATION TREE WIDGET IS USED
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 4));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014_2) {
-    //DIFFERENCE: ANNOTATION TREE WIDGET IS USED
+    // DIFFERENCE: ANNOTATION TREE WIDGET IS USED
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 4));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -224,17 +224,17 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
-    //1. Use menu {Tools->Build Dot plot}.
-    //Expected state: dialog "Build dotplot from sequences" has appeared.
-    //2. Fill the following fields in the dialog:
-    //    {File with first sequence} trunk\data\samples\PDB\1CF7.PDB
-    //    {Compare sequence against itself} checked
-    //3. Click Next button
-    //Expected state: dialog "Dotplot" has appeared.
-    //4. Press the "1k" button
-    //Expected state: minimum repeat length changed to 2bp
-    //5. Click OK button
-    //Expected state: Dotplot view has appeared.
+    // 1. Use menu {Tools->Build Dot plot}.
+    // Expected state: dialog "Build dotplot from sequences" has appeared.
+    // 2. Fill the following fields in the dialog:
+    //     {File with first sequence} trunk\data\samples\PDB\1CF7.PDB
+    //     {Compare sequence against itself} checked
+    // 3. Click Next button
+    // Expected state: dialog "Dotplot" has appeared.
+    // 4. Press the "1k" button
+    // Expected state: minimum repeat length changed to 2bp
+    // 5. Click OK button
+    // Expected state: Dotplot view has appeared.
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 0, false, true));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/PDB/1CF7.PDB", "", false, true));
 
@@ -244,10 +244,10 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 
     GTUtilsProjectTreeView::openView(os);
 
-    //6. Click on the Dotplot view
+    // 6. Click on the Dotplot view
     GTWidget::click(os, GTWidget::findWidget(os, "dotplot widget"));
 
-    //Expected state: Dotplot view has been selected, UGENE didn't crash
+    // Expected state: Dotplot view has been selected, UGENE didn't crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -341,5 +341,5 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     DotPlotExportImageFiller::runScenario(os, 4);
 }
 
-}    // namespace GUITest_Common_scenarios_dp_view
-}    // namespace U2
+}  // namespace GUITest_Common_scenarios_dp_view
+}  // namespace U2

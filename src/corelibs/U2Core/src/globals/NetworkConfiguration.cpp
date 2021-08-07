@@ -94,7 +94,7 @@ NetworkConfiguration::~NetworkConfiguration() {
 int NetworkConfiguration::addProxy(const QNetworkProxy &p) {
     int ret = !pc.proxyz.contains(p.type());
     pc.proxyz.insert(p.type(), p);
-    pc.proxyz_usage.insert(p.type(), false);    //needs explicit enabling
+    pc.proxyz_usage.insert(p.type(), false);  // needs explicit enabling
     return ret;
 }
 
@@ -184,4 +184,4 @@ void NetworkConfiguration::setRequestTimeout(const int timeout) {
     rrConfig.remoteRequestTimeout = timeout;
 }
 
-}    // namespace U2
+}  // namespace U2

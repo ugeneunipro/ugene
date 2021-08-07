@@ -33,4 +33,4 @@ void SlotMapping::validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2O
     }
 }
 
-}    // namespace U2
+}  // namespace U2

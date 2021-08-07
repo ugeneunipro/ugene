@@ -46,6 +46,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _MSA_OBJECT_TESTS_H_
+#endif  // _MSA_OBJECT_TESTS_H_

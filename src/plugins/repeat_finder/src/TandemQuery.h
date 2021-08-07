@@ -59,6 +59,6 @@ public:
     virtual QDActor *createInstance() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TANDEM_QUERY_H_
+#endif  // _U2_TANDEM_QUERY_H_

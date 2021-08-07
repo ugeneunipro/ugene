@@ -29,4 +29,4 @@ Primer::Primer()
     : U2Entity(), gc(0.0), tm(0.0) {
 }
 
-}    // namespace U2
+}  // namespace U2

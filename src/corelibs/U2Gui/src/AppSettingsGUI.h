@@ -64,11 +64,11 @@ public:
         : QWidget(w) {
     }
 
-    //reads data from 'state' and initializes the widget state
+    // reads data from 'state' and initializes the widget state
     virtual void setState(AppSettingsGUIPageState *state) = 0;
 
-    //returns 'state' of the widget or error if state is not complete
-    // the result structure is automatically deleted by controller
+    // returns 'state' of the widget or error if state is not complete
+    //  the result structure is automatically deleted by controller
     virtual AppSettingsGUIPageState *getState(QString &errMsg) const = 0;
 
 signals:
@@ -91,14 +91,14 @@ public:
         return id;
     }
 
-    //should be pure virtual, because every page should have own help page index
+    // should be pure virtual, because every page should have own help page index
     virtual const QString &getHelpPageId() const = 0;
 
     virtual AppSettingsGUIPageState *getSavedState() = 0;
 
     virtual void saveState(AppSettingsGUIPageState *s) = 0;
 
-    //creates widget and initializes its values with 'data' content
+    // creates widget and initializes its values with 'data' content
     virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data) = 0;
 
 private:
@@ -114,6 +114,6 @@ private:
 #define APP_SETTINGS_EXTERNAL_TOOLS "ets"
 #define APP_SETTINGS_FORMAT "format"
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -49,7 +49,7 @@ DockWrapWidget::DockWrapWidget(QWidget *_w)
 }
 
 DockWrapWidget::~DockWrapWidget() {
-    w = nullptr;    //for breakpoint
+    w = nullptr;  // for breakpoint
 }
 
 MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl *_mw)
@@ -61,7 +61,7 @@ MWDockManagerImpl::MWDockManagerImpl(MainWindowImpl *_mw)
 
     mw->setDockOptions(QMainWindow::AnimatedDocks);
 
-    //prepare dock-toolbars
+    // prepare dock-toolbars
     dockLeft = new QToolBar("left_dock_bar", mw);
     dockLeft->setObjectName("left_dock_bar");
     dockLeft->setMovable(false);
@@ -203,7 +203,7 @@ void MWDockManagerImpl::sl_toggleDock() {
 
 void MWDockManagerImpl::updateTB(MWDockArea a) {
     if (a == MWDockArea_Bottom) {
-        return;    //bottom TB is always on;
+        return;  // bottom TB is always on;
     }
 
     int nChilds = 0;
@@ -247,20 +247,20 @@ QWidget *MWDockManagerImpl::activateDock(const QString &widgetObjName) {
 }
 
 void MWDockManagerImpl::openDock(DockData *d) {
-    //check if already opened
+    // check if already opened
     if (getActiveDock(d->area) == d) {
         return;
     }
     assert(d->wrapWidget->isHidden());
 
-    //hide active dock if exists
+    // hide active dock if exists
     DockData *activeDock = getActiveDock(d->area);
     if (activeDock != nullptr) {
         closeDock(activeDock);
     }
     assert(getActiveDock(d->area) == nullptr);
 
-    //open new dock
+    // open new dock
     assert(d->wrapWidget != nullptr);
     DockWidgetPainter::updateLabel(d, true);
     restoreDockGeometry(d);
@@ -284,14 +284,14 @@ void MWDockManagerImpl::openDock(DockData *d) {
 
 void MWDockManagerImpl::closeDock(DockData *d) {
     activeDocks[d->area] = nullptr;
-    if (d->wrapWidget != nullptr) {    //widget is closed manually by user ->detach it from its parent to avoid deletion on d->dock->close();
+    if (d->wrapWidget != nullptr) {  // widget is closed manually by user ->detach it from its parent to avoid deletion on d->dock->close();
         DockWidgetPainter::updateLabel(d, false);
         saveDockGeometry(d);
         lastActiveDocksState[d->area].clear();
         d->wrapWidget->setParent(nullptr);
         d->wrapWidget->setVisible(false);
     }
-    d->dock->close();    // will delete dock widget because of Qt::WA_DeleteOnClose
+    d->dock->close();  // will delete dock widget because of Qt::WA_DeleteOnClose
     d->dock = nullptr;
 }
 
@@ -435,4 +435,4 @@ void MWDockManagerImpl::sl_toggleDocks() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

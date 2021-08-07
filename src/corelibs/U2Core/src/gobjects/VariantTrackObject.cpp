@@ -36,7 +36,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//VariantTrackObject
+// VariantTrackObject
 
 VariantTrackObject::VariantTrackObject(const QString &objectName, const U2EntityRef &trackRef, const QVariantMap &hintsMap)
     : GObject(GObjectTypes::VARIANT_TRACK, objectName, hintsMap) {
@@ -125,4 +125,4 @@ void VariantTrackObject::addVariants(const QList<U2Variant> &variants, U2OpStatu
     vdbi->addVariantsToTrack(track, &bufIter, os);
 }
 
-}    // namespace U2
+}  // namespace U2

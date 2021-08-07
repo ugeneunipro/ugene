@@ -71,4 +71,4 @@ QRect DrawHelper::getScreenRect(const QRect &columnsAndRowsRect) const {
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -82,4 +82,4 @@ void ExportMSA2SequencesDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-}    // namespace U2
+}  // namespace U2

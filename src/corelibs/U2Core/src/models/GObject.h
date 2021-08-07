@@ -54,7 +54,7 @@ class U2DbiRef;
 class U2OpStatus;
 
 enum GObjectModLock {
-    GObjectModLock_IO    // locked by IO reasons, e.g. object is stored in a remote database
+    GObjectModLock_IO  // locked by IO reasons, e.g. object is stored in a remote database
 };
 
 class U2CORE_EXPORT GObject : public StateLockableTreeItem {
@@ -195,6 +195,6 @@ public:
     static const QString MIME_TYPE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

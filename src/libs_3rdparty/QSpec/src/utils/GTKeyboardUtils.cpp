@@ -41,4 +41,4 @@ void GTKeyboardUtils::cut() {
     GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
 }
 
-}    // namespace HI
+}  // namespace HI

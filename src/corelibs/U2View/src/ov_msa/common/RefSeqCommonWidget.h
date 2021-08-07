@@ -54,6 +54,6 @@ public:
     virtual QWidget *createWidget(GObjectView *objView, const QVariantMap &options);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_REF_SEQ_COMMON_WIDGET_H_
+#endif  // _U2_MSA_REF_SEQ_COMMON_WIDGET_H_

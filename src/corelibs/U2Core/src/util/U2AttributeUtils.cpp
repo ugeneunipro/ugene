@@ -151,4 +151,4 @@ void U2AttributeUtils::copyObjectAttributes(const U2EntityRef &srcObjRef, const 
     copyObjectAttributes(srcObjRef.entityId, dstObjRef.entityId, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
 }
 
-}    // namespace U2
+}  // namespace U2

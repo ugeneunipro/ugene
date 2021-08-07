@@ -64,5 +64,5 @@ QString ReadDocumentTaskFactory::getId() const {
     return id;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

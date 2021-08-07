@@ -526,7 +526,7 @@ void MultipleChromatogramAlignmentRowData::replaceChars(char origChar, char resu
         }
 
         if (gapsIndexes.isEmpty()) {
-            return;    // There is nothing to replace
+            return;  // There is nothing to replace
         }
 
         // Remove all 'origChar' characters from the row sequence
@@ -683,7 +683,7 @@ void MultipleChromatogramAlignmentRowData::getStartAndEndSequencePositions(int p
     }
 
     // Calculate end position in the sequence
-    int endRegionPos = pos + count;    // non-inclusive
+    int endRegionPos = pos + count;  // non-inclusive
 
     if (endRegionPos > rowLengthWithoutTrailingGap) {
         endRegionPos = rowLengthWithoutTrailingGap;
@@ -727,4 +727,4 @@ MultipleAlignmentData *MultipleChromatogramAlignmentRowData::getMultipleAlignmen
     return alignment;
 }
 
-}    // namespace U2
+}  // namespace U2

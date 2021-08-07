@@ -59,6 +59,6 @@ private:
     static QMultiMap<MWMDIWindow *, WidgetParamSnapshot> window2widgetSnapshots;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIDGET_STATE_STORAGE_H_
+#endif  // _U2_WIDGET_STATE_STORAGE_H_

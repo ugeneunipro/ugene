@@ -57,7 +57,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef
 }
 
 void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
-    //get assembly ids
+    // get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );
     CHECK(!assemblyIds.isEmpty(), );
@@ -66,14 +66,14 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
     CHECK_EXT(attributeDbi != nullptr, os.setError("Attribute dbi is NULL"), );
 
     foreach (const U2DataId &id, assemblyIds) {
-        //find and remove coverage attribute from ByteArrayAttribute table
+        // find and remove coverage attribute from ByteArrayAttribute table
         U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, id, U2BaseAttributeName::coverage_statistics, os);
 
-        if (!attr.value.isEmpty()) {    //if empty, then nothing to remove
+        if (!attr.value.isEmpty()) {  // if empty, then nothing to remove
             U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
         }
 
-        //calculate new coverage
+        // calculate new coverage
         U2AssemblyDbi *assemblyDbi = dbi->getAssemblyDbi();
         CHECK_EXT(attributeDbi != nullptr, os.setError("Assembly dbi is NULL"), );
         U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
@@ -81,7 +81,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
 
         U2IntegerAttribute lengthAttr = U2AttributeUtils::findIntegerAttribute(attributeDbi, id, U2BaseAttributeName::reference_length, os);
         CHECK_OP(os, );
-        if (lengthAttr.value == 0) {    //Nothing to calculate
+        if (lengthAttr.value == 0) {  // Nothing to calculate
             continue;
         }
         static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000 * 1000;
@@ -92,7 +92,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
         assemblyDbi->calculateCoverage(id, U2Region(0, lengthAttr.value), coverageStat, os);
         CHECK_OP(os, );
 
-        //write new coverage attribute to ByteArrayAttribute table
+        // write new coverage attribute to ByteArrayAttribute table
         U2ByteArrayAttribute attribute;
         attribute.objectId = id;
         attribute.name = U2BaseAttributeName::coverage_statistics;
@@ -103,4 +103,4 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -165,7 +165,7 @@ void RegionLineEdit::focusOutEvent(QFocusEvent *event) {
     text().toInt(&ok);
     if (!ok) {
         QPalette p = palette();
-        p.setColor(QPalette::Base, QColor(255, 200, 200));    //pink color
+        p.setColor(QPalette::Base, QColor(255, 200, 200));  // pink color
         setPalette(p);
     }
     QLineEdit::focusOutEvent(event);
@@ -184,4 +184,4 @@ void RegionLineEdit::sl_onSetMinMaxValue() {
     emit textEdited(QString::number(defaultValue));
 }
 
-}    // namespace U2
+}  // namespace U2

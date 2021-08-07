@@ -61,4 +61,4 @@ GUrl ConnectSharedDatabaseTask::getUrlFromRef(const U2DbiRef &dbiRef) {
     return GUrl(dbiRef.dbiId, GUrl_Network);
 }
 
-}    // namespace U2
+}  // namespace U2

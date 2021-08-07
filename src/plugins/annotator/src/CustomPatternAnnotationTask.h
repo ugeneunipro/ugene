@@ -117,6 +117,6 @@ public:
     bool checkConstraints(const AutoAnnotationConstraints &constraints);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_
+#endif  // _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_

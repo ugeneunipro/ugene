@@ -47,4 +47,4 @@ QString SWMulAlignSubseqPropTag::expandTag(const QVariant &argument) const {
     return QString::number(tagExpansion);
 }
 
-}    // namespace U2
+}  // namespace U2

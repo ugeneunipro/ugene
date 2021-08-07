@@ -57,7 +57,7 @@ EMBLPlainTextFormat::EMBLPlainTextFormat(QObject *p)
 }
 
 FormatCheckResult EMBLPlainTextFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    //TODO: improve format checking
+    // TODO: improve format checking
 
     const char *data = rawData.constData();
     int size = rawData.size();
@@ -108,13 +108,13 @@ bool EMBLPlainTextFormat::readIdLine(ParserState *s) {
     if (tokens.size() == 7) {
         // seems to be canonical header
         // http://www.ebi.ac.uk/embl/Documentation/User_manual/printable.html
-        //1. Primary accession number
-        //2. Sequence version number
-        //3. Topology: 'circular' or 'linear'
-        //4. Molecule type (see note 1 below)
-        //5. Data class (methodological approach)
-        //6. Taxonomic division (see section 3.2)
-        //7. Sequence length (see note 2 below)
+        // 1. Primary accession number
+        // 2. Sequence version number
+        // 3. Topology: 'circular' or 'linear'
+        // 4. Molecule type (see note 1 below)
+        // 5. Data class (methodological approach)
+        // 6. Taxonomic division (see section 3.2)
+        // 7. Sequence length (see note 2 below)
         loi.topology = tokens[2];
         loi.molecule = tokens[3];
         loi.division = tokens[5];
@@ -183,7 +183,7 @@ bool EMBLPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqImpo
         }
         if (st->hasKey("RF") || st->hasKey("RN")) {
             while (st->readNextLine() && st->buff[0] == 'R') {
-                //TODO
+                // TODO
             }
             hasLine = true;
             continue;
@@ -194,12 +194,12 @@ bool EMBLPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqImpo
             hasLine = true;
             continue;
         }
-        //read simple tag;
+        // read simple tag;
         if (st->hasKey("//", 2)) {
             // end of entry
             return true;
         } else if (st->hasKey("SQ", 2)) {
-            //reading sequence
+            // reading sequence
             if (merge && gapSize) {
                 seqImporter.addDefaultSymbolsBlock(gapSize, os);
                 CHECK_OP(os, false);
@@ -231,4 +231,4 @@ bool EMBLPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqImpo
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

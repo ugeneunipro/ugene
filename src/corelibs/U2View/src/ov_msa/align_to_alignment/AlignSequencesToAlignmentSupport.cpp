@@ -55,7 +55,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
     for (const QString &algorithmId : qAsConst(addToAlignmentAlgorithmIds)) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 100);
-        alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));    //TODO: add a dedicated icon per algorithm.
+        alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
         alignAction->setObjectName(algorithmId);
         alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
         alignAction->sl_updateState();
@@ -142,4 +142,4 @@ void AlignSequencesToAlignmentAction::sl_updateState() {
     setEnabled(true);
 }
 
-}    // namespace U2
+}  // namespace U2

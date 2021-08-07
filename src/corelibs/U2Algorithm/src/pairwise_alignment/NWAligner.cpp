@@ -191,4 +191,4 @@ inline float FMatrix::getFValue(int i, int j) {
     return f[i * w + j];
 }
 
-}    // namespace U2
+}  // namespace U2

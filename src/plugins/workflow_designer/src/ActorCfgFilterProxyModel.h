@@ -36,6 +36,6 @@ protected:
     virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ACTOR_CFG_FILTER_PROXY_H_
+#endif  // _U2_ACTOR_CFG_FILTER_PROXY_H_

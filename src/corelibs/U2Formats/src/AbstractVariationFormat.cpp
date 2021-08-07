@@ -66,7 +66,7 @@ AbstractVariationFormat::AbstractVariationFormat(QObject *p, const DocumentForma
 }
 
 namespace {
-const int LOCAL_READ_BUFF_SIZE = 10 * 1024;    // 10 Kb
+const int LOCAL_READ_BUFF_SIZE = 10 * 1024;  // 10 Kb
 
 inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize, U2OpStatus &os) {
     QByteArray result;
@@ -89,7 +89,7 @@ void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &varian
     dbi->getAttributeDbi()->createStringAttribute(attribute, os);
 }
 
-}    // namespace
+}  // namespace
 
 #define CHR_PREFIX "chr"
 
@@ -107,7 +107,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
 
     SplitAlleles splitting = fs.contains(DocumentReadingMode_SplitVariationAlleles) ? AbstractVariationFormat::Split : AbstractVariationFormat::NoSplit;
 
-    //TODO: load snps with chunks of fixed size to avoid memory consumption
+    // TODO: load snps with chunks of fixed size to avoid memory consumption
     QMap<QString, QList<U2Variant>> snpsMap;
 
     QString metaInfo;
@@ -217,7 +217,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
     QSet<QString> names;
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    //create empty track
+    // create empty track
     if (snpsMap.isEmpty()) {
         U2VariantTrack track;
         track.sequenceName = "unknown";
@@ -479,4 +479,4 @@ QStringList AbstractVariationFormat::getHeader(const VariantTrackObject *variant
     return StrPackUtils::unpackStringList(packedHeader);
 }
 
-}    // namespace U2
+}  // namespace U2

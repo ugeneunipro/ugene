@@ -56,7 +56,7 @@ DECLARE_TEST(MsaObjectUnitTests, deleteGap_trailingGaps);
 DECLARE_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols);
 DECLARE_TEST(MsaObjectUnitTests, deleteGap_gapRegion);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaObjectUnitTests, getMAlignment);
 DECLARE_METATYPE(MsaObjectUnitTests, setMAlignment);

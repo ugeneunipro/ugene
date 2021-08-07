@@ -35,7 +35,7 @@ namespace U2 {
 void ChromatogramUtils::append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram) {
     chromatogram.traceLength += appendedChromatogram.traceLength;
     chromatogram.seqLength += appendedChromatogram.seqLength;
-    chromatogram.baseCalls += appendedChromatogram.baseCalls;    // TODO: recalculte appended positions
+    chromatogram.baseCalls += appendedChromatogram.baseCalls;  // TODO: recalculte appended positions
     chromatogram.A += appendedChromatogram.A;
     chromatogram.C += appendedChromatogram.C;
     chromatogram.G += appendedChromatogram.G;
@@ -127,7 +127,7 @@ void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
     }
 }
 
-}    // namespace
+}  // namespace
 
 void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
     const U2Region traceRegion = sequenceRegion2TraceRegion(chromatogram, U2Region(startPos, length));
@@ -242,7 +242,7 @@ DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram &chromatogram) 
     reversedChromatogram.baseCalls << chromatogram.traceLength - chromatogram.baseCalls[chromatogram.baseCalls.size() - 1];
     std::reverse(reversedChromatogram.baseCalls.begin(), reversedChromatogram.baseCalls.end());
     if (zeroEnding) {
-        reversedChromatogram.baseCalls << 0;    // zero-ending vector
+        reversedChromatogram.baseCalls << 0;  // zero-ending vector
     }
 
     std::reverse(reversedChromatogram.A.begin(), reversedChromatogram.A.end());
@@ -294,9 +294,9 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
                                                                            : 0;
     DNAChromatogram gappedChrom = getGappedChromatogram(chromatogram, gapModel);
 
-    //when you try to insert a character before the first symbol of the row,
-    //because of features of the gap model, leading gap will accept an incorrect value.
-    //To aviod an error in this case, the following check is purposed
+    // when you try to insert a character before the first symbol of the row,
+    // because of features of the gap model, leading gap will accept an incorrect value.
+    // To aviod an error in this case, the following check is purposed
     if (posWithGaps - leadingGap == -1) {
         leadingGap--;
     }
@@ -343,4 +343,4 @@ DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram &
     return gappedChromatogram;
 }
 
-}    // namespace U2
+}  // namespace U2

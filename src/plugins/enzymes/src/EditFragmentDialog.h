@@ -51,6 +51,6 @@ private slots:
     void sl_customOverhangSet(const QString &text);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

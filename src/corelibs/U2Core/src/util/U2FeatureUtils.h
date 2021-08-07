@@ -150,6 +150,6 @@ private:
     static U2FeatureKey createFeatureKeyLocationOperator(U2LocationOperator value);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_FEATURE_UTILS_H_
+#endif  //_U2_FEATURE_UTILS_H_

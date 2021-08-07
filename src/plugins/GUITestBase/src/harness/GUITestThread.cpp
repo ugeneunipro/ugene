@@ -95,7 +95,7 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
         }
     } catch (HI::GUITestOpStatus *) {
     }
-    //Run post checks if has error
+    // Run post checks if has error
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
@@ -199,4 +199,4 @@ void GUITestThread::writeTestResult() {
     fflush(stdout);
 }
 
-}    // namespace U2
+}  // namespace U2

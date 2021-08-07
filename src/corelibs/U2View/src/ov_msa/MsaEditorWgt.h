@@ -37,7 +37,7 @@ class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     Q_OBJECT
-    //todo: make public accessors:
+    // todo: make public accessors:
     friend class MSAEditorTreeViewer;
     friend class MsaEditorSimilarityColumn;
 
@@ -85,6 +85,6 @@ private:
     MSAEditorTreeViewer *treeViewer;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_EDITOR_WGT_H_
+#endif  // _U2_MSA_EDITOR_WGT_H_

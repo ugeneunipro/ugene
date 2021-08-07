@@ -344,5 +344,5 @@ void PFMatrixConvertWorker::sl_taskFinished() {
     output->put(Message(mtype, v));
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

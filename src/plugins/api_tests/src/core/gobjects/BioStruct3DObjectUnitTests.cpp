@@ -208,4 +208,4 @@ IMPLEMENT_TEST(BioStruct3DObjectUnitTests, remove) {
     CHECK_TRUE(records.isEmpty(), "records");
 }
 
-}    // namespace U2
+}  // namespace U2

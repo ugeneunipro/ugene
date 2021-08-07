@@ -51,7 +51,7 @@ QMap<QString, QStringList> convertProjectItemsMap(const QMap<QString, QVariant> 
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportToDatabaseDialogFiller"
 
@@ -315,4 +315,4 @@ QTreeWidgetItem *ImportToDatabaseDialogFiller::findItem(const QString &text) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

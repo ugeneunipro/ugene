@@ -77,6 +77,6 @@ protected:
                                                      const QList<QPointer<Document>> &docs) const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ABSTRACT_PROJECT_FILTER_TASK_H_
+#endif  // _U2_ABSTRACT_PROJECT_FILTER_TASK_H_

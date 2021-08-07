@@ -761,4 +761,4 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, sortingSubgroups) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

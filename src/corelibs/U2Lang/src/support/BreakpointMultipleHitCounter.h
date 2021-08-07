@@ -38,6 +38,6 @@ protected:
     quint32 multiple;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BREAKPOINT_MULTIPLE_HIT_COUNTER_H_
+#endif  // _U2_BREAKPOINT_MULTIPLE_HIT_COUNTER_H_

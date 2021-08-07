@@ -32,7 +32,7 @@ namespace U2 {
 const QString TubeGLRenderer::ID(QObject::tr("Tubes"));
 
 void TubeGLRenderer::drawTubes(const BioStruct3DColorScheme *colorScheme) {
-    GLUquadricObj *pObj;    // Quadric Object
+    GLUquadricObj *pObj;  // Quadric Object
 
     pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
@@ -121,4 +121,4 @@ void TubeGLRenderer::create() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

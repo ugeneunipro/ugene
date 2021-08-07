@@ -57,4 +57,4 @@ QStringList PhyTreeGeneratorRegistry::getNameList() {
     return genMap.keys();
 }
 
-}    // namespace U2
+}  // namespace U2

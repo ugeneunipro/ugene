@@ -68,7 +68,7 @@ void OpenAssemblyBrowserTask::open() {
         Document *doc = documentsToLoad.first();
         QList<GObject *> objects;
         if (unloadedObjRef.isValid()) {
-            //To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
+            // To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
             QList<GObject *> objs = doc->findGObjectByType(unloadedObjRef.objType);
             GObject *obj = nullptr;
             foreach (GObject *curObj, objs) {
@@ -158,7 +158,7 @@ void OpenSavedAssemblyBrowserTask::open() {
     if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
         obj = doc->getObjectById(ref.entityRef.entityId);
     } else {
-        //To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
+        // To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
         QList<GObject *> objs = doc->findGObjectByType(ref.objType);
         foreach (GObject *curObj, objs) {
             if (curObj->getGObjectName() == ref.objName) {
@@ -186,7 +186,7 @@ void OpenSavedAssemblyBrowserTask::open() {
 
 void UpdateAssemblyBrowserTask::update() {
     if (view.isNull() || view->getFactoryId() != AssemblyBrowserFactory::ID) {
-        return;    //view was closed;
+        return;  // view was closed;
     }
 
     AssemblyBrowser *ab = qobject_cast<AssemblyBrowser *>(view.data());
@@ -195,4 +195,4 @@ void UpdateAssemblyBrowserTask::update() {
     AssemblyBrowserState(stateData).restoreState(ab);
 }
 
-}    // namespace U2
+}  // namespace U2

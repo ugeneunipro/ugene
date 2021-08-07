@@ -172,7 +172,7 @@ void ImportAnnotationsWorkerFactory::init() {
                          ImportAnnotationsWorker::tr("Read input annotation table and merge it with supplied annotation tables."));
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
-    //proto delegates
+    // proto delegates
     QMap<QString, PropertyDelegate *> delegates;
     {
         delegates[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(
@@ -188,5 +188,5 @@ Worker *ImportAnnotationsWorkerFactory::createWorker(Actor *a) {
     return new ImportAnnotationsWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

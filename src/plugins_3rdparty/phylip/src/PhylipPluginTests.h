@@ -21,44 +21,45 @@
 
 #ifndef _NEIGHBORJOINTESTS_H
 #define _NEIGHBORJOINTESTS_H
-#include <U2Test/XMLTestUtils.h>
-#include <U2Core/GObject.h>
-#include <U2Algorithm/PhyTreeGeneratorTask.h>
-
 #include <QDomElement>
 #include <QFileInfo>
 #include <QList>
 
-namespace U2{
+#include <U2Algorithm/PhyTreeGeneratorTask.h>
+
+#include <U2Core/GObject.h>
+
+#include <U2Test/XMLTestUtils.h>
+
+namespace U2 {
 
 class PhyTreeObject;
 class MultipleSequenceAlignmentObject;
 
 class GTest_NeighborJoin : public XmlTest {
-	Q_OBJECT
+    Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_NeighborJoin, "test-neighbor-join");
 
     void prepare();
     Task::ReportResult report();
 
-private:    
+private:
     QString inputDocCtxName;
     QString resultCtxName;
     int bootStrapSeed;
-    Document* maDoc;
-    Document* treeDoc;
-    PhyTreeGeneratorLauncherTask* task;
-    MultipleSequenceAlignmentObject* input;
-    PhyTreeObject* treeObjFromDoc;
+    Document *maDoc;
+    Document *treeDoc;
+    PhyTreeGeneratorLauncherTask *task;
+    MultipleSequenceAlignmentObject *input;
+    PhyTreeObject *treeObjFromDoc;
 };
 
-
-class  PhylipPluginTests {
+class PhylipPluginTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-}
+}  // namespace U2
 
 #endif

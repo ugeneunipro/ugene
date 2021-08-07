@@ -36,18 +36,18 @@ class BEDLineValidateFlags {
 public:
     BEDLineValidateFlags();
 
-    bool incorrectNumberOfFields;    // There must be at least 3 fields, all lines must have the same number of fields
-    bool emptyFields;    // Each field shouldn't be empty or shouldn't consist of white spaces
-    bool incorrectCoordinates;    // Start and end should be integer (the first base in a chromosome is numbered 0), start should be < end, end is not included
-    bool incorrectScore;    // A score between 0 and 1000
-    bool incorrectStrand;    // Either '+' or '-'
-    bool incorrectThickCoordinates;    // start <= thickStart <= end
-        // start <= thickEnd <= end
-        // thickStart < thickEnd
-    bool incorrectItemRgb;    // Must be an RGB value of the form R, G, B
-    bool incorrectBlocks;    // There are 1) Block numbers - the number of blocks (exons) in the BED line, i.e. must be an integer
-        // Block sizes is a comma-separated list of the block sizes
-        // Block starts is a comma-separated list of block starts
+    bool incorrectNumberOfFields;  // There must be at least 3 fields, all lines must have the same number of fields
+    bool emptyFields;  // Each field shouldn't be empty or shouldn't consist of white spaces
+    bool incorrectCoordinates;  // Start and end should be integer (the first base in a chromosome is numbered 0), start should be < end, end is not included
+    bool incorrectScore;  // A score between 0 and 1000
+    bool incorrectStrand;  // Either '+' or '-'
+    bool incorrectThickCoordinates;  // start <= thickStart <= end
+                                     // start <= thickEnd <= end
+                                     // thickStart < thickEnd
+    bool incorrectItemRgb;  // Must be an RGB value of the form R, G, B
+    bool incorrectBlocks;  // There are 1) Block numbers - the number of blocks (exons) in the BED line, i.e. must be an integer
+                           // Block sizes is a comma-separated list of the block sizes
+                           // Block starts is a comma-separated list of block starts
 
     bool hasTrackLine;
 
@@ -82,7 +82,7 @@ enum BedLineFieldsIndeces { BED_CHROM_NAME_INDEX = 0,
 struct BedLineData {
     QString seqName;
     U2Region region;
-    QColor annotColor;    // Used only if the "itemRgb" value was read
+    QColor annotColor;  // Used only if the "itemRgb" value was read
     QMap<QString, QString> additionalFields;
 };
 
@@ -109,9 +109,9 @@ protected:
     virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
 
     /**
-    * A common method for parsing and validating an input file.
-    * It is used during loading the file or just getting the annotations data from it.
-    */
+     * A common method for parsing and validating an input file.
+     * It is used during loading the file or just getting the annotations data from it.
+     */
 
 private:
     void load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &fs = QVariantMap());
@@ -148,6 +148,6 @@ private:
     bool noHeader;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

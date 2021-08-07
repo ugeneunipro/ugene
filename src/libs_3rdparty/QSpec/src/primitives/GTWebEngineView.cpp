@@ -155,4 +155,4 @@ HIWebElement GTWebEngineView::toHiWebElement(const QMap<QString, QVariant> &map)
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

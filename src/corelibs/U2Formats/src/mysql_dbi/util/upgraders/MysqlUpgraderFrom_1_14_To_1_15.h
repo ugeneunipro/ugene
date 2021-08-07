@@ -40,6 +40,6 @@ private:
     static void rollNewFolderPath(QString &originalPath, const QStringList &allFolders);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADER_FROM_1_14_TO_1_15_H_
+#endif  // _U2_MYSQL_UPGRADER_FROM_1_14_TO_1_15_H_

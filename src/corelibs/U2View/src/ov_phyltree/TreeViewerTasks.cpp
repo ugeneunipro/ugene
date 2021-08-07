@@ -187,7 +187,7 @@ UpdateTreeViewerTask::UpdateTreeViewerTask(GObjectView *v, const QString &stateN
 
 void UpdateTreeViewerTask::update() {
     if (view.isNull() || view->getFactoryId() != TreeViewerFactory::ID) {
-        return;    //view was closed;
+        return;  // view was closed;
     }
 
     TreeViewer *phyView = qobject_cast<TreeViewer *>(view.data());
@@ -285,4 +285,4 @@ void MSAEditorOpenTreeViewerTask::createTreeViewer() {
     scheduler->registerTopLevelTask(createTask);
 }
 
-}    // namespace U2
+}  // namespace U2

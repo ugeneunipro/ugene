@@ -40,6 +40,6 @@ private:
     bool onlyPressOk;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_PREDICT_SECONDARY_STRUCTURE_DIALOG_FILLER_H_
+#endif  // _U2_GT_PREDICT_SECONDARY_STRUCTURE_DIALOG_FILLER_H_

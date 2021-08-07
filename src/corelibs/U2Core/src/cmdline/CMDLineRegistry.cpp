@@ -149,4 +149,4 @@ void CMDLineRegistry::unregisterCMDLineHelpProvider(CMDLineHelpProvider *provide
     helpProviders.removeOne(provider);
 }
 
-}    // namespace U2
+}  // namespace U2

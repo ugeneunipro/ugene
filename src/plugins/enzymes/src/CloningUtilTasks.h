@@ -134,6 +134,6 @@ private:
     QMap<AnnotationData, int> offsetMap;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLONING_UTIL_TASKS_H_
+#endif  // _U2_CLONING_UTIL_TASKS_H_

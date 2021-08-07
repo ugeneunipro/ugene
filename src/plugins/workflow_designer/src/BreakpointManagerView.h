@@ -44,8 +44,7 @@ class WorkflowDebugStatus;
 class BreakpointManagerView : public QWidget {
     Q_OBJECT
 public:
-    BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, const QSharedPointer<Schema> &initScheme,
-        QGraphicsScene *scene, QWidget *parent = nullptr);
+    BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, const QSharedPointer<Schema> &initScheme, QGraphicsScene *scene, QWidget *parent = nullptr);
 
     void onBreakpointReached(ActorId actor);
 
@@ -124,6 +123,6 @@ private:
     static QMap<BreakpointConditionParameter, HitCondition> conditionParametertranslations;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BREAKPOINT_MANAGER_VIEW_H_
+#endif  // _U2_BREAKPOINT_MANAGER_VIEW_H_

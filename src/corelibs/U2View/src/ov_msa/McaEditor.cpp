@@ -134,7 +134,7 @@ SequenceObjectContext *McaEditor::getReferenceContext() const {
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu menu;
-    buildMenu(&menu, MsaEditorMenuType::STATIC);    // TODO: this call triggers extra signal for static menu.
+    buildMenu(&menu, MsaEditorMenuType::STATIC);  // TODO: this call triggers extra signal for static menu.
     emit si_buildMenu(this, &menu, MsaEditorMenuType::CONTEXT);
     menu.exec(QCursor::pos());
 }
@@ -241,7 +241,7 @@ void McaEditor::initActions() {
 
     gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
     gotoSelectedReadAction->setObjectName("centerReadStartAction");
-    gotoSelectedReadAction->setEnabled(false);    // Action state is managed by updateActions().
+    gotoSelectedReadAction->setEnabled(false);  // Action state is managed by updateActions().
     connect(gotoSelectedReadAction, SIGNAL(triggered()), SLOT(sl_gotoSelectedRead()));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -366,4 +366,4 @@ void McaEditor::sl_gotoSelectedRead() {
 MaEditorSelectionController *McaEditor::getSelectionController() const {
     return selectionController;
 }
-}    // namespace U2
+}  // namespace U2

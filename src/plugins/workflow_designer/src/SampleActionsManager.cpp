@@ -82,7 +82,7 @@ QStringList SampleActionsManager::getAbsentPlugins(const QStringList &requiredPl
     for (int i = 0; i < result.size(); i++) {
         result[i] += "d";
     }
-#endif    // _DEBUG
+#endif  // _DEBUG
     foreach (Plugin *plugin, AppContext::getPluginSupport()->getPlugins()) {
         result.removeAll(plugin->getId());
     }
@@ -108,4 +108,4 @@ void SampleActionsManager::sl_clicked() {
     emit si_clicked(clickedAction);
 }
 
-}    // namespace U2
+}  // namespace U2

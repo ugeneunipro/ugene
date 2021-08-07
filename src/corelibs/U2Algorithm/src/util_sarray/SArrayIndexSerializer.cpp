@@ -137,7 +137,7 @@ void SArrayIndexSerializer::readArray(QFile &file, char *buff, int *len, int *po
     quint32 number = 0;
     int numberLength = 0;
     bool newLine = true;
-    Q_UNUSED(newLine);    //used only in assertions
+    Q_UNUSED(newLine);  // used only in assertions
     for (int i = 0; i < arrLen; i++) {
         number = 0;
         numberLength = 0;
@@ -255,4 +255,4 @@ void SArrayIndexSerializer::deserialize(SArrayIndex *index, const QString &index
     file.close();
 }
 
-}    // namespace U2
+}  // namespace U2

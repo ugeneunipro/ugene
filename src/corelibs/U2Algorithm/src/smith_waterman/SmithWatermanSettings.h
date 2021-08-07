@@ -88,9 +88,9 @@ struct SmithWatermanSettings {
     SmithWatermanReportCallback *resultCallback;
 
     SWResultView resultView;
-    bool includePatternContent;    // specifies whether the pattern subsequences appropriate
-        // to reference subsequences are to be included to algorithm
-        // results in case of annotation result view
+    bool includePatternContent;  // specifies whether the pattern subsequences appropriate
+                                 // to reference subsequences are to be included to algorithm
+                                 // results in case of annotation result view
 
     bool operator==(const SmithWatermanSettings &op) const {
         return ptrn == op.ptrn &&
@@ -124,6 +124,6 @@ struct SmithWatermanSettings {
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

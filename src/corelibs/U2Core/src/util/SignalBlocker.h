@@ -36,6 +36,6 @@ private:
     bool previousState;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SIGNAL_BLOCKER_H_
+#endif  // _U2_SIGNAL_BLOCKER_H_

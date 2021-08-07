@@ -27,4 +27,4 @@ namespace GUITest_crazy_user {
 
 }
 
-}    // namespace U2
+}  // namespace U2

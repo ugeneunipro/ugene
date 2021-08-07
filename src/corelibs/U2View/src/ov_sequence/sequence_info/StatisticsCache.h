@@ -77,6 +77,6 @@ void StatisticsCache<T>::sl_invalidate() {
     valid = false;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_STATISTICS_CACHE_H_
+#endif  // _U2_STATISTICS_CACHE_H_

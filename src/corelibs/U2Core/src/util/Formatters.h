@@ -44,6 +44,6 @@ public:
     QString format(const QString &documentFormatId) const override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FORMATTERS_H_
+#endif  // _U2_FORMATTERS_H_

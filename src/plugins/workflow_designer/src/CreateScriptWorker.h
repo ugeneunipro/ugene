@@ -42,7 +42,7 @@ using namespace Workflow;
 class CreateScriptElementDialog : public QDialog, public Ui_CreateScriptBlockDialog {
     Q_OBJECT
 public:
-    //CreateScriptElementDialog(QWidget* p = NULL);
+    // CreateScriptElementDialog(QWidget* p = NULL);
     CreateScriptElementDialog(QWidget *p = nullptr, ActorPrototype *proto = nullptr);
     QList<DataTypePtr> getInput() const;
     QList<DataTypePtr> getOutput() const;
@@ -77,6 +77,6 @@ private:
     QString actorFilePath;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

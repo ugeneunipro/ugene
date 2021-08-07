@@ -96,4 +96,4 @@ AbstractProjectFilterTask *FeatureKeyFilterTaskFactory::createNewTask(const Proj
     return new FeatureKeyFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

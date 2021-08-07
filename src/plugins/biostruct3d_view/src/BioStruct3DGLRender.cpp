@@ -117,4 +117,4 @@ bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D &) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

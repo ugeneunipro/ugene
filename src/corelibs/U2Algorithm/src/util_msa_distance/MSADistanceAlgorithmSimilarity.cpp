@@ -77,4 +77,4 @@ void MSADistanceAlgorithmSimilarity::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

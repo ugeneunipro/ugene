@@ -41,4 +41,4 @@ bool CreatePhyTreeWidget::checkMemoryEstimation(QString &, const MultipleSequenc
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

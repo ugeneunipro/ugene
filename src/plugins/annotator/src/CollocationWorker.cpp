@@ -153,7 +153,7 @@ QString CollocationPrompter::composeRichDoc() {
 
     QString data;
     if (seqName.isEmpty() && annName.isEmpty()) {
-        //return "<font color='red'>"+tr("unset")+"</font>";
+        // return "<font color='red'>"+tr("unset")+"</font>";
     } else if (!seqName.isEmpty() && !annName.isEmpty()) {
         data = tr("For each %1 and %2,").arg(seqName).arg(annName);
     } else {
@@ -179,7 +179,7 @@ QString CollocationPrompter::composeRichDoc() {
     QString resultName = getHyperlink(NAME_ATTR, getRequiredParam(NAME_ATTR));
     QString doc = tr("%1 look if <u>%2</u> annotations appear collocated within same region of length <u>%3</u>.%4"
                      "<br>Output the list of found regions annotated as <u>%5</u>.")
-                      .arg(data)    //sequence from Read Fasta 1
+                      .arg(data)  // sequence from Read Fasta 1
                       .arg(annotations)
                       .arg(getHyperlink(LEN_ATTR, distance))
                       .arg(extra)
@@ -201,9 +201,7 @@ Task *CollocationWorker::tick() {
             return nullptr;
         }
         cfg.distance = actor->getParameter(LEN_ATTR)->getAttributeValue<int>(context);
-        cfg.st = actor->getParameter(FIT_ATTR)->getAttributeValue<bool>(context) ?
-                     CollocationsAlgorithm::NormalSearch :
-                     CollocationsAlgorithm::PartialSearch;
+        cfg.st = actor->getParameter(FIT_ATTR)->getAttributeValue<bool>(context) ? CollocationsAlgorithm::NormalSearch : CollocationsAlgorithm::PartialSearch;
         cfg.resultAnnotationsName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
         QString annotations = actor->getParameter(ANN_ATTR)->getAttributeValue<QString>(context);
         QSet<QString> names = QSet<QString>::fromList(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
@@ -252,6 +250,6 @@ void CollocationWorker::sl_taskFinished() {
     }
 }
 
-}    //namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    //namespace U2
+}  // namespace U2

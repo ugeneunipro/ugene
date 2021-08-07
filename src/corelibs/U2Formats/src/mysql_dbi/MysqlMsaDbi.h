@@ -262,6 +262,6 @@ private:
     void updateMsaLength(MysqlModificationAction &updateAction, const U2DataId &msaId, qint64 length, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_MSA_DBI_H_
+#endif  // _U2_MYSQL_MSA_DBI_H_

@@ -62,7 +62,7 @@ StockholmFormat::ReadError::ReadError(const GUrl &url)
 StockholmFormat::WriteError::WriteError(const GUrl &url)
     : StockholmBaseException(L10N::errorWritingFile(url)) {
 }
-}    // namespace U2
+}  // namespace U2
 
 const int BUF_SZ = 1024;
 const int SMALL_BUF_SZ = 128;
@@ -82,7 +82,7 @@ const int WRITE_BLOCK_LENGTH = 50;
 
 using namespace U2;
 
-//other not supported
+// other not supported
 enum AnnotationTag {
     NO_TAG = -1,
     ID,
@@ -94,7 +94,7 @@ enum AnnotationTag {
     NC,
     TC
 };
-//other types not supported
+// other types not supported
 enum AnnotationType {
     FILE_ANNOTATION,
     COLUMN_ANNOTATION,
@@ -118,7 +118,7 @@ struct FileAnnotation : public Annotation {
         : Annotation(FILE_ANNOTATION, t, v) {
     }
 };
-//unipro ugene annotations
+// unipro ugene annotations
 struct UniAnnotation : public Annotation {
     UniAnnotation(AnnotationTag t, QString v)
         : Annotation(UNI_ANNOTATION, t, v) {
@@ -133,7 +133,7 @@ struct ColumnAnnotation : public Annotation {
 
 static Annotation *findAnnotation(const QList<Annotation *> &annList, AnnotationType t, AnnotationTag tag);
 
-//you should put annotations here after creation
+// you should put annotations here after creation
 struct AnnotationBank {
     QList<Annotation *> ann_list;
 
@@ -155,7 +155,7 @@ struct AnnotationBank {
     ~AnnotationBank() {
         qDeleteAll(ann_list);
     }
-};    // AnnotationBank
+};  // AnnotationBank
 
 static Annotation *findAnnotation(const QList<Annotation *> &annList, AnnotationType t, AnnotationTag tag) {
     Annotation *ret = nullptr;
@@ -293,7 +293,7 @@ static bool checkHeader(const char *data, int sz) {
     return QByteArray(data, sz).startsWith(HEADER_MIN);
 }
 
-//returns true if the line was skipped
+// returns true if the line was skipped
 static bool skipCommentOrMarkup(IOAdapter *io, U2OpStatus &os, AnnotationBank &ann_bank) {
     assert(nullptr != io);
 
@@ -348,7 +348,7 @@ static void skipBlankLines(IOAdapter *io, U2OpStatus &os, QByteArray *lines = nu
     }
 }
 
-//skips all that it can
+// skips all that it can
 static void skipMany(IOAdapter *io, U2OpStatus &os, AnnotationBank &ann_bank) {
     assert(nullptr != io);
 
@@ -406,7 +406,7 @@ static void readEofMsa(IOAdapter *io, U2OpStatus &os) {
     checkValThrowException(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
 }
 
-//returns end of sequence name in line
+// returns end of sequence name in line
 static int getLine(IOAdapter *io, U2OpStatus &os, QByteArray &to) {
     assert(nullptr != io);
 
@@ -483,7 +483,7 @@ static bool loadOneMsa(IOAdapter *io, U2OpStatus &tsi, MultipleSequenceAlignment
     QByteArray buf(BUF_SZ, TERM_SYM);
     int ret = 0;
 
-    //skip header
+    // skip header
     skipBlankLines(io, tsi);
     CHECK_OP(tsi, false);
 
@@ -495,7 +495,7 @@ static bool loadOneMsa(IOAdapter *io, U2OpStatus &tsi, MultipleSequenceAlignment
         throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: bad header line"));
     }
     int currentLen = 0;
-    //read blocks
+    // read blocks
     bool firstBlock = true;
     while (1) {
         CHECK_OP(tsi, false);
@@ -561,7 +561,7 @@ static bool loadOneMsa(IOAdapter *io, U2OpStatus &tsi, MultipleSequenceAlignment
         }
         firstBlock = false;
         currentLen += blockSize;
-    }    // while( 1 )
+    }  // while( 1 )
     readEofMsa(io, tsi);
     CHECK_OP(tsi, false);
 
@@ -660,7 +660,7 @@ static int getMaxNameLen(const MultipleSequenceAlignment &msa) {
     }
     return max_len;
 }
-//returns a gap between name and sequence in block
+// returns a gap between name and sequence in block
 static QByteArray getNameSeqGap(int diff) {
     assert(0 <= diff);
     QByteArray ret = "    ";
@@ -685,7 +685,7 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
     ret = io->writeBlock(idAnn);
     checkValThrowException<int>(true, idAnn.size(), ret, StockholmFormat::WriteError(io->getURL()));
 
-    //write sequences
+    // write sequences
     int name_max_len = getMaxNameLen(msa);
     int seq_len = msa->getLength();
     int cur_seq_pos = 0;
@@ -696,7 +696,7 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
         QList<QByteArray> seqs = walker.nextData(block_len, os);
         CHECK_OP(os, );
 
-        //write block
+        // write block
         U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
         const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
@@ -717,7 +717,7 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
         seq_len -= block_len;
         cur_seq_pos += block_len;
     }
-    //write eof
+    // write eof
     ret = io->writeBlock(QByteArray("//\n"));
     checkValThrowException<int>(true, 3, ret, StockholmFormat::WriteError(io->getURL()));
 }
@@ -784,4 +784,4 @@ bool StockholmFormat::isObjectOpSupported(const Document *doc, DocObjectOp op, G
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

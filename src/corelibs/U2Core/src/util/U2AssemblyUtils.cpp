@@ -32,23 +32,23 @@ U2CigarOp U2AssemblyUtils::char2Cigar(char c, QString &err) {
     char cu = TextUtils::UPPER_CASE_MAP[c];
     switch (cu) {
         case 'D':
-            return U2CigarOp_D;    // deleted
+            return U2CigarOp_D;  // deleted
         case 'I':
-            return U2CigarOp_I;    // inserted
+            return U2CigarOp_I;  // inserted
         case 'H':
-            return U2CigarOp_H;    // hard-clipped
+            return U2CigarOp_H;  // hard-clipped
         case 'M':
-            return U2CigarOp_M;    // matched
+            return U2CigarOp_M;  // matched
         case 'N':
-            return U2CigarOp_N;    // skipped
+            return U2CigarOp_N;  // skipped
         case 'P':
-            return U2CigarOp_P;    // padded
+            return U2CigarOp_P;  // padded
         case 'S':
-            return U2CigarOp_S;    // soft-clipped
+            return U2CigarOp_S;  // soft-clipped
         case '=':
-            return U2CigarOp_EQ;    // sequence match
+            return U2CigarOp_EQ;  // sequence match
         case 'X':
-            return U2CigarOp_X;    // sequence mismatch
+            return U2CigarOp_X;  // sequence mismatch
     }
     err = tr("Invalid CIGAR op: '%1'!").arg(c);
     return U2CigarOp_Invalid;
@@ -171,4 +171,4 @@ void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverag
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -35,7 +35,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//GTest_AnnotatorSearch
+// GTest_AnnotatorSearch
 
 #define GROUPS_ATTR "groups"
 #define REGION_SIZE_ATTR "region_size"
@@ -66,11 +66,11 @@ void GTest_AnnotatorSearch::init(XMLTestFormat *tf, const QDomElement &el) {
         failMissingValue(GROUPS_ATTR);
         return;
     }
-    groupsToSearch = (groups.split(QRegExp("\\,"))).toSet();    //may be QRegExp("\\,")
+    groupsToSearch = (groups.split(QRegExp("\\,"))).toSet();  // may be QRegExp("\\,")
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));    //may be QRegExp("\\,")
+        QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
         foreach (QString region, expectedList) {
             QStringList bounds = region.split(QRegExp("\\.."));
             if (bounds.size() != 2) {
@@ -174,7 +174,7 @@ Task::ReportResult GTest_AnnotatorSearch::report() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//GTest_PlasmidAutoAnnotation
+// GTest_PlasmidAutoAnnotation
 
 void GTest_CustomAutoAnnotation::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -271,7 +271,7 @@ Task::ReportResult GTest_CustomAutoAnnotation::report() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//GTest_GeneByGeneApproach
+// GTest_GeneByGeneApproach
 
 #define IDENTITY_ATTR "identity"
 #define ANN_NAME_ATTR "ann_name"
@@ -370,4 +370,4 @@ Task::ReportResult GTest_GeneByGeneApproach::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

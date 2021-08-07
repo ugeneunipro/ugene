@@ -176,6 +176,6 @@ public:
     QAction *cutSelectionAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_WGT_H_
+#endif  // _U2_MA_EDITOR_WGT_H_

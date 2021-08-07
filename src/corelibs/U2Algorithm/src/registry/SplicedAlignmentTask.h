@@ -69,6 +69,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPLICED_ALIGNMENT_TASK_H
+#endif  // _U2_SPLICED_ALIGNMENT_TASK_H

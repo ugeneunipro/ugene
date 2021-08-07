@@ -203,7 +203,7 @@ bool checkNamesAndIds(const QStringList &names, const QStringList &ids) {
     return res;
 }
 
-}    // namespace
+}  // namespace
 
 void CreateCmdlineBasedWorkerWizard::accept() {
     QScopedPointer<ExternalProcessConfig> actualConfig(createActualConfig());
@@ -1032,4 +1032,4 @@ void ExternalToolSelectComboBox::setDefaultMenuValue(const QString &defaultValue
     }
 }
 
-}    // namespace U2
+}  // namespace U2

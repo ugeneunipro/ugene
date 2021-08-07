@@ -162,4 +162,4 @@ void DatasetFilesIterator::tryEmitDatasetEnded() {
     hasNext();
 }
 
-}    // namespace U2
+}  // namespace U2

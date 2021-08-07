@@ -48,7 +48,7 @@ Task *SWTaskFactory::getTaskInstance(const SmithWatermanSettings &config, const 
 bool SWTaskFactory::isValidParameters(const SmithWatermanSettings &sWatermanConfig, SequenceWalkerSubtask *t) const {
     Q_UNUSED(sWatermanConfig);
     Q_UNUSED(t);
-    return true;    //not realized
+    return true;  // not realized
 }
 
 PairwiseAlignmentSmithWatermanTaskFactory::PairwiseAlignmentSmithWatermanTaskFactory(SW_AlgType _algType)
@@ -92,4 +92,4 @@ AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

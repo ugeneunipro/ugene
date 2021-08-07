@@ -81,7 +81,7 @@ public:
     int minPSUM;
     QString modelName;
     DNATranslation *complTT;
-    bool complOnly;    //FIXME use strand instead
+    bool complOnly;  // FIXME use strand instead
     QString algo;
 
     bool operator==(const WeightMatrixSearchCfg &c1) const {
@@ -127,6 +127,6 @@ private:
     QByteArray seq;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

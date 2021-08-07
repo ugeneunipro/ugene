@@ -182,5 +182,5 @@ void SiteconBuildWorker::sl_taskFinished() {
     algoLog.info(tr("Built SITECON model from: %1").arg(model.aliURL));
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -537,7 +537,7 @@ qint64 ObjectDbi::getFolderGlobalVersion(const QString &folder, U2OpStatus &os) 
 }
 
 U2DbiIterator<U2DataId> *ObjectDbi::getObjectsByVisualName(const QString &, U2DataType, U2OpStatus &) {
-    //todo:
+    // todo:
     return nullptr;
 }
 
@@ -880,5 +880,5 @@ QList<U2AssemblyRead> AssemblyDbi::getReadsByIds(QList<U2DataId> rowIds, QList<q
     }
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

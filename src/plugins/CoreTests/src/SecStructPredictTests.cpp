@@ -159,4 +159,4 @@ QList<XMLTestFactory *> SecStructPredictTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

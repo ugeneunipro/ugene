@@ -162,7 +162,7 @@ void DotPlotSplitter::checkLockButtonState() {
 
     if (syncLockAction) {
         syncLockAction->setEnabled(enableLockButton);
-        if (!enableLockButton) {    // disabled button should not be checked
+        if (!enableLockButton) {  // disabled button should not be checked
             syncLockAction->setChecked(false);
         }
     }
@@ -189,7 +189,7 @@ void DotPlotSplitter::sl_toggleFilter() {
     foreach (DotPlotWidget *w, dotPlotList) {
         SAFE_POINT(w, "w is NULL", );
         w->sl_filter();
-        break;    //todo: support several widgets
+        break;  // todo: support several widgets
     }
 }
 
@@ -327,4 +327,4 @@ void DotPlotSplitter::updateButtonState() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

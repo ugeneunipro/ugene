@@ -52,7 +52,7 @@ public:
 
     virtual bool isIOModeSupported(IOAdapterMode m) const {
         return m == IOAdapterMode_Read;
-    }    //read-only
+    }  // read-only
 
     QNetworkProxy getProxyByUrl(const QUrl &url) const;
 
@@ -133,8 +133,8 @@ private:
     QList<QByteArray> chunk_list;
     QByteArray cache;
     bool is_cached;
-    int begin_ptr;    //pointer to the first byte of data in first chunk
-    int end_ptr;    //pointer to the first free byte in last chunk
+    int begin_ptr;  // pointer to the first byte of data in first chunk
+    int end_ptr;  // pointer to the first free byte in last chunk
 
     QNetworkAccessManager *netManager;
     QNetworkReply *reply;
@@ -154,6 +154,6 @@ private slots:
     void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

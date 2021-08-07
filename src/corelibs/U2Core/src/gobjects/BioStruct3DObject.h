@@ -54,6 +54,6 @@ private:
     BioStruct3D bioStruct3D;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_BIOSTRUCT3D_OBJECT_H_
+#endif  //_U2_BIOSTRUCT3D_OBJECT_H_

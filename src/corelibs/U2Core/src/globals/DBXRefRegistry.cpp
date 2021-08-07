@@ -85,4 +85,4 @@ void DBXRefInfo::setupToEngine(QScriptEngine *engine) {
     qScriptRegisterMetaType(engine, toScriptValue, fromScriptValue);
 }
 
-}    // namespace U2
+}  // namespace U2

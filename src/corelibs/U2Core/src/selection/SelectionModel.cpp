@@ -46,4 +46,4 @@ void GSelection::sl_selectionChanged() {
     emit si_onSelectionChanged(this);
 }
 
-}    // namespace U2
+}  // namespace U2

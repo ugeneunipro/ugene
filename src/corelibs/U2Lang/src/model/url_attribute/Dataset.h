@@ -82,8 +82,8 @@ private:
     QString lastDatasetName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(QList<U2::Dataset>);
 
-#endif    // _U2_DATASET_H_
+#endif  // _U2_DATASET_H_

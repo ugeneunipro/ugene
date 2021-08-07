@@ -114,7 +114,7 @@ QString formatPairList(const QList<QStrStrPair> &pairList, bool useFirst) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 QString ModifySequenceContentTask::generateReport() const {
     CHECK(!annotationForReport.isEmpty(), QString());
@@ -205,4 +205,4 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
     docs.append(newDoc);
 }
 
-}    // namespace U2
+}  // namespace U2

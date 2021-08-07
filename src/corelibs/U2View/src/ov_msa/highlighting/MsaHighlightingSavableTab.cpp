@@ -51,4 +51,4 @@ void MsaHighlightingSavableTab::disableSavingForWidgets(const QStringList &s) {
     widgetsNotToSave.append(s);
 }
 
-}    // namespace U2
+}  // namespace U2

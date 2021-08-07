@@ -97,4 +97,4 @@ MsaHighlightingScheme *MsaHighlightingSchemeConservationFactory::create(QObject 
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

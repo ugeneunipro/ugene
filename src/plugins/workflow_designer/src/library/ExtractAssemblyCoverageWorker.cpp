@@ -54,7 +54,7 @@ namespace {
 const QString FORMAT_ATTR_ID("format");
 const QString EXPORT_TYPE_ATTR_ID("export-type");
 const QString THRESHOLD_ATTR_ID("threshold");
-}    // namespace
+}  // namespace
 
 ExtractAssemblyCoverageWorker::ExtractAssemblyCoverageWorker(Actor *actor)
     : BaseWorker(actor) {
@@ -125,15 +125,15 @@ Task *ExtractAssemblyCoverageWorker::createTask(const U2EntityRef &assembly) {
     const ExportCoverageSettings::Format format = static_cast<ExportCoverageSettings::Format>(getValue<int>(FORMAT_ATTR_ID));
     Task *task = nullptr;
     switch (format) {
-    case ExportCoverageSettings::Histogram:
-        task = new ExportCoverageHistogramTask(assembly.dbiRef, assembly.entityId, getSettings());
-        break;
-    case ExportCoverageSettings::PerBase:
-        task = new ExportCoveragePerBaseTask(assembly.dbiRef, assembly.entityId, getSettings());
-        break;
-    case ExportCoverageSettings::Bedgraph:
-        task = new ExportCoverageBedgraphTask(assembly.dbiRef, assembly.entityId, getSettings());
-        break;
+        case ExportCoverageSettings::Histogram:
+            task = new ExportCoverageHistogramTask(assembly.dbiRef, assembly.entityId, getSettings());
+            break;
+        case ExportCoverageSettings::PerBase:
+            task = new ExportCoveragePerBaseTask(assembly.dbiRef, assembly.entityId, getSettings());
+            break;
+        case ExportCoverageSettings::Bedgraph:
+            task = new ExportCoverageBedgraphTask(assembly.dbiRef, assembly.entityId, getSettings());
+            break;
     }
 
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -240,22 +240,22 @@ ExtractAssemblyCoverageWorkerPrompter::ExtractAssemblyCoverageWorkerPrompter(Act
 QString ExtractAssemblyCoverageWorkerPrompter::composeRichDoc() {
     QString exportString;
     switch (getParameter(FORMAT_ATTR_ID).toInt()) {
-    case ExportCoverageSettings::Histogram:
-        exportString = tr("coverage in \"%1\" format").arg(getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::HISTOGRAM));
-        break;
-    case ExportCoverageSettings::PerBase: {
-        QString exportTypeValue = getParameter(EXPORT_TYPE_ATTR_ID).toString();
-        if (exportTypeValue.isEmpty()) {
-            exportString = getHyperlink(EXPORT_TYPE_ATTR_ID, tr("nothing"));
-        } else {
-            exportTypeValue.replace(",", ", ");
-            exportString = exportTypeValue + " " + getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::PER_BASE.toLower());
+        case ExportCoverageSettings::Histogram:
+            exportString = tr("coverage in \"%1\" format").arg(getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::HISTOGRAM));
+            break;
+        case ExportCoverageSettings::PerBase: {
+            QString exportTypeValue = getParameter(EXPORT_TYPE_ATTR_ID).toString();
+            if (exportTypeValue.isEmpty()) {
+                exportString = getHyperlink(EXPORT_TYPE_ATTR_ID, tr("nothing"));
+            } else {
+                exportTypeValue.replace(",", ", ");
+                exportString = exportTypeValue + " " + getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::PER_BASE.toLower());
+            }
+            break;
         }
-        break;
-    }
-    case ExportCoverageSettings::Bedgraph:
-        exportString = tr("coverage in \"%1\" format").arg(getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::BEDGRAPH));
-        break;
+        case ExportCoverageSettings::Bedgraph:
+            exportString = tr("coverage in \"%1\" format").arg(getHyperlink(FORMAT_ATTR_ID, ExportCoverageSettings::BEDGRAPH));
+            break;
     }
 
     const QString threshold = getParameter(THRESHOLD_ATTR_ID).toString();
@@ -313,5 +313,5 @@ ExtractAssemblyCoverageFileExtensionRelation *ExtractAssemblyCoverageFileExtensi
     return new ExtractAssemblyCoverageFileExtensionRelation(*this);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

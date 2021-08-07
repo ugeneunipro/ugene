@@ -127,7 +127,7 @@ U2ErrorType SchemeWrapper::setElementAttribute(const QString &elementName,
     if (Workflow::BaseAttributes::URL_IN_ATTRIBUTE() == attributesHierarchy[0]) {
         if (Constants::DATASET_NAME == attributesHierarchy.last()) {
             result = getBoundariesOfUrlInAttribute(attributeValue, false, &elementDescStartPosition, &elementDescEndPosition);
-            CHECK(U2_OK != result, U2_INVALID_STRING);    // dataset with the given name already exists
+            CHECK(U2_OK != result, U2_INVALID_STRING);  // dataset with the given name already exists
         }
         result = getUrlInAttributePositionByName(attributesHierarchy, true, &elementDescStartPosition, &elementDescEndPosition, deepestAttributeName, replaceIfExists);
         CHECK(U2_OK == result, result);
@@ -167,7 +167,7 @@ U2ErrorType SchemeWrapper::getElementAttribute(const QString &elementName,
     CHECK(attributeExists, U2_INVALID_NAME);
     QString deepestAttributeName;
     if (Workflow::BaseAttributes::URL_IN_ATTRIBUTE() == attributesHierarchy[0]) {
-        bool replaceIfExists = false;    // unused
+        bool replaceIfExists = false;  // unused
         result = getUrlInAttributePositionByName(attributesHierarchy, false, &elementDescStartPosition, &elementDescEndPosition, deepestAttributeName, replaceIfExists);
         CHECK(U2_OK == result, result);
     } else {
@@ -1011,4 +1011,4 @@ QRegExp SchemeWrapper::getBlockStartPattern(const QString &blockName) {
     return QRegExp("\\s" + QRegExp::escape(blockName) + "\\s*" + QRegExp::escape(Constants::BLOCK_START));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -69,4 +69,4 @@ U2SCRIPT_EXPORT U2ErrorType releaseContext();
 }
 #endif
 
-#endif    // _U2_SCRIPT_H_
+#endif  // _U2_SCRIPT_H_

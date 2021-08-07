@@ -73,4 +73,4 @@ void WorkflowDebugMessageParser::setContext(Workflow::WorkflowContext *initConte
     context = initContext;
 }
 
-}    // namespace U2
+}  // namespace U2

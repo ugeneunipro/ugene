@@ -51,5 +51,5 @@ private:
     int b;
 };
 
-}    // namespace U2
-#endif    // GRAPHSETTINGSDIALOGFILLER_H
+}  // namespace U2
+#endif  // GRAPHSETTINGSDIALOGFILLER_H

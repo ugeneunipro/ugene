@@ -127,7 +127,7 @@ FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString &dataPref
     if (QRegExp("[a-zA-Z\r\n\\*-]*").exactMatch(dataPrefix)) {
         return FormatDetection_VeryHighSimilarity;
     }
-    //returning 'very low chance' here just because it's impossible to have 100% detection for this format.
+    // returning 'very low chance' here just because it's impossible to have 100% detection for this format.
     return FormatDetection_VeryLowSimilarity;
 }
 
@@ -138,7 +138,7 @@ void RawDNASequenceFormat::storeTextDocument(IOAdapterWriter &writer, Document *
     SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), );
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
-    writer.write(os, QString::fromLatin1(seqData));    // Note: we limit DNA sequence alphabet to Latin1.
+    writer.write(os, QString::fromLatin1(seqData));  // Note: we limit DNA sequence alphabet to Latin1.
 }
 
 void RawDNASequenceFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
@@ -151,7 +151,7 @@ void RawDNASequenceFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GO
 
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
-    writer.write(os, QString::fromLatin1(seqData));    // Note: we limit DNA sequence alphabet to Latin1.
+    writer.write(os, QString::fromLatin1(seqData));  // Note: we limit DNA sequence alphabet to Latin1.
     CHECK_OP(os, );
     writer.write(os, "\n");
 }
@@ -160,4 +160,4 @@ bool RawDNASequenceFormat::isStreamingSupport() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

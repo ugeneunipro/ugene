@@ -58,7 +58,7 @@ TestRunnerTask::TestRunnerTask(const QList<GTestState *> &tests, const GTestEnvi
 }
 
 QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
-    //update progress info: progress is a % of finished tests
+    // update progress info: progress is a % of finished tests
 
     stateInfo.progress = 100 * finishedTests / totalTests;
 
@@ -206,4 +206,4 @@ void LoadTestTask::run() {
     f.close();
 }
 
-}    // namespace U2
+}  // namespace U2

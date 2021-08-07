@@ -88,6 +88,6 @@ private:
     QStringList files;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FILES_ITERATOR_
+#endif  // _U2_FILES_ITERATOR_

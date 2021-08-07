@@ -134,7 +134,7 @@ void ProjectUpdater::fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os) {
 
 void ProjectUpdater::updateAccessedObjects() {
     const QList<GObjectViewWindow *> activeViews = GObjectViewUtils::getAllActiveViews();
-    QMap<U2DbiRef, DbiConnection *> dbiRef2Connections;    // when changing the code below, beware mem leaks
+    QMap<U2DbiRef, DbiConnection *> dbiRef2Connections;  // when changing the code below, beware mem leaks
     U2OpStatus2Log os;
     foreach (GObjectViewWindow *view, activeViews) {
         foreach (GObject *object, view->getObjects()) {
@@ -155,4 +155,4 @@ void ProjectUpdater::updateAccessedObjects() {
     qDeleteAll(dbiRef2Connections.values());
 }
 
-}    // namespace U2
+}  // namespace U2

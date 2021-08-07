@@ -66,7 +66,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 
 SWAlgorithmPlugin::SWAlgorithmPlugin()
     : Plugin(tr("Optimized Smith-Waterman "), tr("Various implementations of Smith-Waterman algorithm")) {
-    //initializing ADV context
+    // initializing ADV context
     if (AppContext::getMainWindow()) {
         ctxADV = new SWAlgorithmADVContext(this);
         ctxADV->init();
@@ -77,7 +77,7 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new SWQDActorFactory());
 
-    //Smith-Waterman algorithm tests
+    // Smith-Waterman algorithm tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -95,7 +95,7 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     SmithWatermanTaskFactoryRegistry *swar = AppContext::getSmithWatermanTaskFactoryRegistry();
 
     coreLog.trace("Registering classic SW implementation");
-    swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));    //ADV search register
+    swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));  // ADV search register
     par->registerAlgorithm(new SWPairwiseAlignmentAlgorithm());
     regDependedIMPLFromOtherPlugins();
 
@@ -113,7 +113,7 @@ QList<XMLTestFactory *> SWAlgorithmTests::createTestFactories() {
     return res;
 }
 
-//SLOT
+// SLOT
 void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
     SmithWatermanTaskFactoryRegistry *swar = AppContext::getSmithWatermanTaskFactoryRegistry();
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
@@ -182,4 +182,4 @@ bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet *alphabet) co
     return !matrixList.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

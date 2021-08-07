@@ -126,7 +126,7 @@ GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
 }
 
 void GenomeAlignerMsaWriter::close() {
-    //TODO: add some heuristic alphabet selection.
+    // TODO: add some heuristic alphabet selection.
     result->setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
@@ -148,7 +148,7 @@ void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
     result->setName(refName);
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 /************************************************************************/
 /* GenomeAlignerDbiReader                                               */
@@ -217,7 +217,7 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
                                                const QString &referenceObjectName,
                                                const QString &referenceUrlForCrossLink)
     : importer(status) {
-    //TODO: support several assemblies.
+    // TODO: support several assemblies.
     dbiHandle = QSharedPointer<DbiConnection>(new DbiConnection(U2DbiRef(SQLITE_DBI_ID, dbiFilePath), true, status));
     checkOperationStatus(status);
     sqliteDbi = dbiHandle->dbi;
@@ -286,4 +286,4 @@ void GenomeAlignerDbiWriter::close() {
     sqliteDbi->flush(status);
 }
 
-}    // namespace U2
+}  // namespace U2

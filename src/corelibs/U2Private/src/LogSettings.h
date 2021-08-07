@@ -87,7 +87,7 @@ public:
     bool toFile;
     QString outputFile;
 
-    //private:
+    // private:
     QHash<QString, LoggerSettings> categories;
 };
 
@@ -103,6 +103,6 @@ protected:
     mutable LogSettings settings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

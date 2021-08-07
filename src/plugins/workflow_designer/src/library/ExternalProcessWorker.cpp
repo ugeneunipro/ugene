@@ -218,7 +218,7 @@ static void addObjects(Document *d, WorkflowContext *context, const DataConfig &
         d->addObject(textObj);
     }
 }
-}    // namespace
+}  // namespace
 
 ExternalProcessWorker::ExternalProcessWorker(Actor *a)
     : BaseWorker(a, false),
@@ -341,7 +341,7 @@ Task *ExternalProcessWorker::tick() {
     QString execString = commandLine;
 
     int i = 0;
-    foreach (const DataConfig &dataCfg, cfg->inputs) {    //write all input data to files
+    foreach (const DataConfig &dataCfg, cfg->inputs) {  // write all input data to files
         Message inputMessage = getMessageAndSetupScriptValues(inputs[i]);
         i++;
         QVariantMap data = inputMessage.getData().toMap();
@@ -388,25 +388,25 @@ bool ExternalProcessWorker::finishWorkIfInputEnded(QString &error) {
     error.clear();
     const InputsCheckResult checkResult = checkInputBusState();
     switch (checkResult) {
-    case ALL_INPUTS_FINISH:
-        finish();
-        return true;
-    case SOME_INPUTS_FINISH:
-        error = tr("Some inputs are finished while other still have not processed messages");
-        finish();
-        return true;
-    case ALL_INPUTS_HAVE_MESSAGE:
-        return false;
-    case INTERNAL_ERROR:
-        error = tr("An internal error has been spotted");
-        finish();
-        return true;
-    case NOT_ALL_INPUTS_HAVE_MESSAGE:
-        return false;
-    default:
-        error = tr("Unexpected result");
-        finish();
-        return true;
+        case ALL_INPUTS_FINISH:
+            finish();
+            return true;
+        case SOME_INPUTS_FINISH:
+            error = tr("Some inputs are finished while other still have not processed messages");
+            finish();
+            return true;
+        case ALL_INPUTS_HAVE_MESSAGE:
+            return false;
+        case INTERNAL_ERROR:
+            error = tr("An internal error has been spotted");
+            finish();
+            return true;
+        case NOT_ALL_INPUTS_HAVE_MESSAGE:
+            return false;
+        default:
+            error = tr("Unexpected result");
+            finish();
+            return true;
     }
 }
 
@@ -451,7 +451,7 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
     return context->getDataStorage()->getDataHandler(annsObj->getEntityRef());
 }
 
-}    // namespace
+}  // namespace
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
     LaunchExternalToolTask *t = qobject_cast<LaunchExternalToolTask *>(sender());
@@ -646,13 +646,13 @@ bool ExternalProcessWorker::isReady() const {
     } else {
         const InputsCheckResult checkResult = checkInputBusState();
         switch (checkResult) {
-        case ALL_INPUTS_FINISH:
-        case SOME_INPUTS_FINISH:
-        case ALL_INPUTS_HAVE_MESSAGE:
-        case INTERNAL_ERROR:
-            return true;    // the worker will be marked as 'done' in the 'tick' method
-        case NOT_ALL_INPUTS_HAVE_MESSAGE:
-            return false;
+            case ALL_INPUTS_FINISH:
+            case SOME_INPUTS_FINISH:
+            case ALL_INPUTS_HAVE_MESSAGE:
+            case INTERNAL_ERROR:
+                return true;  // the worker will be marked as 'done' in the 'tick' method
+            case NOT_ALL_INPUTS_HAVE_MESSAGE:
+                return false;
         }
     }
     return false;
@@ -788,7 +788,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             if (destinations.isEmpty()) {
                 destinations = tr("<u>%1</u>").arg(unsetStr);
             } else {
-                destinations.resize(destinations.size() - 1);    //remove last semicolon
+                destinations.resize(destinations.size() - 1);  // remove last semicolon
             }
             doc.replace("$" + dataCfg.attributeId, destinations);
         }
@@ -805,5 +805,5 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     return doc;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -73,4 +73,4 @@ private:
     QString password;
 };
 
-}    // namespace U2
+}  // namespace U2

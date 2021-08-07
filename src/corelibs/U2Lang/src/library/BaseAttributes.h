@@ -53,9 +53,9 @@ public:
     static const QString SHARED_DB_DATA_STORAGE();
     static const QVariantMap DATA_STORAGE_ATTRIBUTE_VALUES_MAP();
 
-};    // BaseAttributes
+};  // BaseAttributes
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // __U2_WORKFLOW_BASE_ATTRIBUTES_H_
+#endif  // __U2_WORKFLOW_BASE_ATTRIBUTES_H_

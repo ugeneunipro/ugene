@@ -71,6 +71,6 @@ private:
     QList<Action> actions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _SHARED_CONNECTIONS_DIALOG_FILLER_H_
+#endif  // _SHARED_CONNECTIONS_DIALOG_FILLER_H_

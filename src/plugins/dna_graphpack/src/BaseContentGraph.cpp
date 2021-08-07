@@ -99,4 +99,4 @@ void BaseContentGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject 
     windowStrategyWithoutMemorize(res, seq, startPos, d, nSteps, os);
 }
 
-}    // namespace U2
+}  // namespace U2

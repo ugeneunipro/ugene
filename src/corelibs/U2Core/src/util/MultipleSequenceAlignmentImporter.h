@@ -52,6 +52,6 @@ private:
     static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &rows, const U2MsaListGapModel &msaGapModel, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
+#endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_

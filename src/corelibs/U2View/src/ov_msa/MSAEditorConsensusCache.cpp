@@ -135,4 +135,4 @@ void MSAEditorConsensusCache::sl_invalidateAlignmentObject() {
     aliObj = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

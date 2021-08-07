@@ -67,4 +67,4 @@ Task::ReportResult AddReadsToDocumentTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -26,8 +26,8 @@
 
 namespace U2 {
 
-#define SEQUENCE_TAG " sequence"    //common tag for sequence object
-#define FEATURES_TAG " features"    //common tag for annotation table
+#define SEQUENCE_TAG " sequence"  // common tag for sequence object
+#define FEATURES_TAG " features"  // common tag for annotation table
 
 class DocumentFormat;
 
@@ -71,11 +71,11 @@ public:
     static const DocumentFormatId VECTOR_NTI_SEQUENCE;
 
     static DocumentFormat *get(const DocumentFormatId &formatId);
-    static bool equal(const DocumentFormatId &first, const DocumentFormatId &second);    // a workaround for UGENE-5521, use this method to compare format IDs
+    static bool equal(const DocumentFormatId &first, const DocumentFormatId &second);  // a workaround for UGENE-5521, use this method to compare format IDs
     static bool isInvalidId(const DocumentFormatId &formatId);
     static DocumentFormatId toValidId(const DocumentFormatId &invalidFormatId);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

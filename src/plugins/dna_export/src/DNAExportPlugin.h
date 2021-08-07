@@ -55,6 +55,6 @@ protected:
     McaEditorContext *mcaEditorContext;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_EXPORT_PLUGIN_H_
+#endif  // _U2_DNA_EXPORT_PLUGIN_H_

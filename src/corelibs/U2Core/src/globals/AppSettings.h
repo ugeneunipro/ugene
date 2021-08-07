@@ -71,5 +71,5 @@ protected:
     FormatAppsSettings *formatSettings;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

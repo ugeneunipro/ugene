@@ -51,6 +51,6 @@ private:
     static QTableView *table(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GTUTILS_PCR_H_
+#endif  // _GTUTILS_PCR_H_

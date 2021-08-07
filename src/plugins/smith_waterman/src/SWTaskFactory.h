@@ -37,18 +37,18 @@ namespace U2 {
 
 class PairwiseAlignmentTask;
 
-class SWTaskFactory : public SmithWatermanTaskFactory {    //for ADV search only
+class SWTaskFactory : public SmithWatermanTaskFactory {  // for ADV search only
 public:
     SWTaskFactory(SW_AlgType _algType);
     virtual ~SWTaskFactory();
     virtual Task *getTaskInstance(const SmithWatermanSettings &config, const QString &taskName) const;
 
 private:
-    bool isValidParameters(const SmithWatermanSettings &sWatermanConfig, SequenceWalkerSubtask *t) const;    //not realized
+    bool isValidParameters(const SmithWatermanSettings &sWatermanConfig, SequenceWalkerSubtask *t) const;  // not realized
     SW_AlgType algType;
 };
 
-class PairwiseAlignmentSmithWatermanTaskFactory : public AbstractAlignmentTaskFactory {    //for pairwise alignment only
+class PairwiseAlignmentSmithWatermanTaskFactory : public AbstractAlignmentTaskFactory {  // for pairwise alignment only
 public:
     PairwiseAlignmentSmithWatermanTaskFactory(SW_AlgType _algType);
     virtual ~PairwiseAlignmentSmithWatermanTaskFactory();
@@ -59,6 +59,6 @@ private:
     SW_AlgType algType;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SMITH_WATERMAN_ALG_IMPL_H_
+#endif  // _U2_SMITH_WATERMAN_ALG_IMPL_H_

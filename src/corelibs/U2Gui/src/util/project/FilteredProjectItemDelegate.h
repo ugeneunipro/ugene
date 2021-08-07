@@ -35,6 +35,6 @@ protected:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FILTERED_PROJECT_ITEM_DELEGATE_H_
+#endif  // _U2_FILTERED_PROJECT_ITEM_DELEGATE_H_

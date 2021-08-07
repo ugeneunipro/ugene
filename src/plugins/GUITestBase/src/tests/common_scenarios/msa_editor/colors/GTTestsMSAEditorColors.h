@@ -41,8 +41,8 @@ GUI_TEST_CLASS_DECLARATION(test_0006)
 GUI_TEST_CLASS_DECLARATION(test_0007)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_msa_editor_colors
+}  // namespace GUITest_common_scenarios_msa_editor_colors
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //GTTESTS_MSA_EDITOR_COLORS_H_
+#endif  // GTTESTS_MSA_EDITOR_COLORS_H_

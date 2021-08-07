@@ -50,8 +50,8 @@ public:
 private:
     SaveDocumentController *saveController;
 
-};    // ExportReadsDialog
+};  // ExportReadsDialog
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_READS_DIALOG_H__
+#endif  // _U2_EXPORT_READS_DIALOG_H__

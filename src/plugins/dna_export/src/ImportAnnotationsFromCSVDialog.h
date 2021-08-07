@@ -91,6 +91,6 @@ private:
     static const int SEPARATOR_EDIT_MAX_LENGTH = 20;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

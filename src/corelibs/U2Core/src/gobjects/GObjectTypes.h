@@ -62,14 +62,14 @@ public:
 
     static GObjectType registerTypeInfo(const GObjectTypeInfo &ti);
 
-    //Returns reference to the type by type.
-    //WARN: Caching return value by reference is not safe -> it can be relocated if new type is registered
+    // Returns reference to the type by type.
+    // WARN: Caching return value by reference is not safe -> it can be relocated if new type is registered
     static const GObjectTypeInfo &getTypeInfo(const GObjectType &type);
 
-    static void initTypeTranslations();    //must be called only once after all translations are loaded
+    static void initTypeTranslations();  // must be called only once after all translations are loaded
     static void initTypeIcons();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -72,6 +72,6 @@ private:
     QQueue<U2Region> consensusRegions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_EXPORT_CONSENSUS_VARIATIONS_TASK_H_
+#endif  //_U2_EXPORT_CONSENSUS_VARIATIONS_TASK_H_

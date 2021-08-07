@@ -59,7 +59,7 @@ public:
     bool isFolders() const;
 
     QVariantMap getDataItemsVariantMap() const;
-    QString getPathByName(const QString &name) const;    //first name found is returned. if your items have similar names use getDataItems()
+    QString getPathByName(const QString &name) const;  // first name found is returned. if your items have similar names use getDataItems()
 
     bool operator==(const U2DataPath &other) const;
     bool operator!=(const U2DataPath &other) const;
@@ -72,7 +72,7 @@ private:
     QString name;
     QString path;
     QString description;
-    QMap<QString, QString> dataItems;    //data_file_name -> data_full_path
+    QMap<QString, QString> dataItems;  // data_file_name -> data_full_path
     Options options;
     bool valid;
 };
@@ -93,8 +93,8 @@ private:
     QMap<QString, U2DataPath *> registry;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::U2DataPath::Options)
 
-#endif    // _U2_DATA_PATH_REGISTRY_H
+#endif  // _U2_DATA_PATH_REGISTRY_H

@@ -50,7 +50,7 @@ const QBitArray TextUtils::LESS_THAN = getLessThan();
 const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
 
-//TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
+// TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
 
 static QBitArray getEmptyBitMap() {
     return QBitArray(256);
@@ -260,4 +260,4 @@ QString TextUtils::skip(const QBitArray &map, const QString &text) {
     return "";
 }
 
-}    // namespace U2
+}  // namespace U2

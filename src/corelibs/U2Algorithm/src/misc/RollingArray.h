@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-//todo: not tested!
+// todo: not tested!
 
 template<class T>
 class RollingArray {
@@ -184,6 +184,6 @@ int RollingArray<T>::toPos(int rollPos) const {
     return pos;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

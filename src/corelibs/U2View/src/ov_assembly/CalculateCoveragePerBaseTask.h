@@ -107,6 +107,6 @@ private:
     GetAssemblyLengthTask *getLengthTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CALCULATE_COVERAGE_PER_BASE_TASK_H_
+#endif  // _U2_CALCULATE_COVERAGE_PER_BASE_TASK_H_

@@ -291,7 +291,7 @@ void addExportItemsToSettings(ExportSequencesDialog *d, const QList<GObject *> s
     }
 }
 
-}    // namespace
+}  // namespace
 
 void ExportProjectViewItemsContoller::sl_saveSequencesToSequenceFormat() {
     ProjectView *pv = AppContext::getProjectView();
@@ -663,4 +663,4 @@ void ExportProjectViewItemsContoller::sl_exportObject() {
     ExportObjectUtils::exportObject2Document(copied, savePath);
 }
 
-}    // namespace U2
+}  // namespace U2

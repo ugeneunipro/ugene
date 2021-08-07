@@ -84,4 +84,4 @@ QByteArray AssemblyConsensusAlgorithmDefault::getConsensusRegion(const U2Region 
     return s.getConsensusFragment();
 }
 
-}    // namespace U2
+}  // namespace U2

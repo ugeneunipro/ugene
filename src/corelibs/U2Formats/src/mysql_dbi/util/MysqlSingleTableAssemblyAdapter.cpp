@@ -133,7 +133,7 @@ qint64 MysqlSingleTableAssemblyAdapter::countReadsPrecise(const U2Region &r, U2O
         return countReads(r, os);
     }
 
-    //here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
+    // here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
     static const QString qStr = "SELECT COUNT(*) FROM %1 WHERE %2";
     U2SqlQuery q(qStr.arg(readsTable).arg(rangeConditionCheck), db, os);
     bindRegion(q, r, false);
@@ -191,7 +191,7 @@ void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it
         U2SqlQuery insertQ(q.arg(readsTable), db, os);
 
         U2AssemblyRead read = it->next();
-        bool dnaExt = false;    //TODO:
+        bool dnaExt = false;  // TODO:
         qint64 flags = read->flags;
         flags = flags | (dnaExt ? DnaExtAlphabet : 0);
 
@@ -227,9 +227,9 @@ void MysqlSingleTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    //TODO: add transaction per pack or reads
-    //TODO: remove multiple reads in 1 SQL at once
-    //SQLiteObjectDbi* objDbi = dbi->getSQLiteObjectDbi();
+    // TODO: add transaction per pack or reads
+    // TODO: remove multiple reads in 1 SQL at once
+    // SQLiteObjectDbi* objDbi = dbi->getSQLiteObjectDbi();
     foreach (U2DataId readId, readIds) {
         MysqlUtils::remove(readsTable, "id", readId, 1, db, os);
         CHECK_OP_BREAK(os);
@@ -351,4 +351,4 @@ void MysqlSingleTablePackAlgorithmAdapter::releaseDbResources() {
     updateQuery = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

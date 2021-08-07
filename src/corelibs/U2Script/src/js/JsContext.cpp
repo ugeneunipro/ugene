@@ -152,6 +152,6 @@ Handle<Value> debugStatus(const Arguments &args) {
     return scope.Close(wrappedDebugInfo);
 }
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2

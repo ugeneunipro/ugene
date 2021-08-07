@@ -85,4 +85,4 @@ void ExportSequences2MSADialog::setFileLabelText(const QString &text) const {
     fileLabel->setText(text);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -42,4 +42,4 @@ void Plugin::setId(const QString &value) {
     id = value;
 }
 
-}    // namespace U2
+}  // namespace U2

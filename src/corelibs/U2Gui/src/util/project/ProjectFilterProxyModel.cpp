@@ -101,4 +101,4 @@ bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder *folder) const {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

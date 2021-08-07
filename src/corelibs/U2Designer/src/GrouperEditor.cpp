@@ -114,5 +114,5 @@ void GrouperEditor::sl_onSlotRemoved(const QString &outSlotName) {
     outPort->setNewType(newType);
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

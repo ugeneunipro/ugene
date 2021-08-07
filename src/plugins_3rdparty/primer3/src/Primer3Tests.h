@@ -22,16 +22,19 @@
 #ifndef _U2_PRIMER3_TESTS_H_
 #define _U2_PRIMER3_TESTS_H_
 
-#include <U2Core/global.h>
-#include <U2Test/XMLTestUtils.h>
-#include <U2Core/GObject.h>
 #include <QDomElement>
+
+#include <U2Core/GObject.h>
+#include <U2Core/global.h>
+
+#include <U2Test/XMLTestUtils.h>
+
 #include "Primer3Task.h"
 
 namespace U2 {
 
 class GTest_Primer3 : public XmlTest {
-Q_OBJECT
+    Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Primer3, "plugin_primer_3", TaskFlags(TaskFlag_FailOnSubtaskCancel) | TaskFlag_NoRun);
 
@@ -52,5 +55,5 @@ private:
     QList<PrimerPair> expectedBestPairs;
 };
 
-}//ns
+}  // namespace U2
 #endif

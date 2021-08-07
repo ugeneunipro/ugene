@@ -51,6 +51,6 @@ public:
     virtual PWMatrix convert(const PFMatrix &matrix);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -262,4 +262,4 @@ void EnzymesADVContext::sl_createPCRProduct() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

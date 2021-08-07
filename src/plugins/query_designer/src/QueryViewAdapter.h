@@ -43,11 +43,11 @@ public:
     void placeElement(QDElement *uv);
     void sortVertically();
 
-    //void scheme2graph();
+    // void scheme2graph();
 
 private:
     void moveElement(QDElement *uv, int dx);
-    //returns false if recursive
+    // returns false if recursive
     bool needToMove(QDElement *current, int dx, QList<QDElement *> &res);
 
     QList<Footnote *> getSharedFootnotes(QDElement *uv1, QDElement *uv2) const;
@@ -59,6 +59,6 @@ private:
     QList<QDElement *> currentPath;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

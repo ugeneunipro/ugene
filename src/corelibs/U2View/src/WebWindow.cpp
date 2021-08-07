@@ -38,4 +38,4 @@ WebWindow::WebWindow(const QString &title, const QString &htmlContent)
     layout->addWidget(textBrowser);
 }
 
-}    // namespace U2
+}  // namespace U2

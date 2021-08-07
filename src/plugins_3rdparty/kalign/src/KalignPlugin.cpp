@@ -86,9 +86,9 @@ KalignPlugin::KalignPlugin()
         connect(kalignAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));
     }
 
-    LocalWorkflow::KalignWorkerFactory::init();    //TODO
-    //TODO:
-    //Kalign Test
+    LocalWorkflow::KalignWorkerFactory::init();  // TODO
+    // TODO:
+    // Kalign Test
 
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
@@ -107,7 +107,7 @@ KalignPlugin::KalignPlugin()
 }
 
 void KalignPlugin::sl_runWithExtFileSpecify() {
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
 
     KalignTaskSettings settings;
     QObjectScopedPointer<KalignAlignWithExtFileSpecifyDialogController> kalignRunDialog = new KalignAlignWithExtFileSpecifyDialogController(AppContext::getMainWindow()->getQMainWindow(), settings);
@@ -122,7 +122,7 @@ void KalignPlugin::sl_runWithExtFileSpecify() {
 }
 
 KalignPlugin::~KalignPlugin() {
-    //nothing to do
+    // nothing to do
 }
 
 MSAEditor *KalignAction::getMSAEditor() const {
@@ -222,4 +222,4 @@ bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) cons
     return KalignTask::isAlphabetSupported(al->getId());
 }
 
-}    // namespace U2
+}  // namespace U2

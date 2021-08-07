@@ -48,6 +48,6 @@ private:
     GraphicsRectangularBranchItem *root1;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

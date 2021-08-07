@@ -86,4 +86,4 @@ QString PasswordStorage::deserialize(const QByteArray &data) {
     return QByteArray::fromBase64(data);
 }
 
-}    // namespace U2
+}  // namespace U2

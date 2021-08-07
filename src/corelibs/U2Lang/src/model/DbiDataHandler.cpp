@@ -37,7 +37,7 @@ DbiDataHandler::~DbiDataHandler() {
     if (useGC) {
         U2OpStatusImpl os;
         // TODO: removing is forbidden because of performance problems
-        //dbi->removeObject(id, os);
+        // dbi->removeObject(id, os);
         // TODO: how do you want to check @os???
     }
 }
@@ -70,5 +70,5 @@ bool DbiDataHandler::isValid() const {
     return entRef.isValid();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

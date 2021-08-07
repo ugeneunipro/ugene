@@ -117,7 +117,7 @@ void MultiTableAssemblyAdapter::rereadTables(const QByteArray &idata, U2OpStatus
     // format: N, N, N, N | N, N |.....
     // elements are separated by | sign. First element encodes ranges, second prow step and max prow, others are for future extension
     if (idata.isEmpty()) {
-        //assembly is empty - no index data was created
+        // assembly is empty - no index data was created
         return;
     }
     QList<QByteArray> elements = idata.split('|');
@@ -288,7 +288,7 @@ qint64 MultiTableAssemblyAdapter::getMaxPackedRow(const U2Region &r, U2OpStatus 
 }
 
 qint64 MultiTableAssemblyAdapter::getMaxEndPos(U2OpStatus &os) {
-    //TODO: optimize by using gstart + maxReadLen for first n-1 tables
+    // TODO: optimize by using gstart + maxReadLen for first n-1 tables
     qint64 max = 0;
     foreach (MTASingleTableAdapter *a, adapters) {
         qint64 n = a->singleTableAdapter->getMaxEndPos(os);
@@ -420,7 +420,7 @@ void MultiTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2As
     qint64 prevLeftmostPos = -1;
     PackAlgorithmContext packContext;
 
-    QVector<QVector<QList<U2AssemblyRead>>> readsGrid;    //reads sorted by range
+    QVector<QVector<QList<U2AssemblyRead>>> readsGrid;  // reads sorted by range
     bool lastIteration = false;
     qint64 readsInGrid = 0;
     while (!os.isCoR()) {
@@ -523,7 +523,7 @@ void MultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds, U2Op
     foreach (MTASingleTableAdapter *a, readsByAdapter.keys()) {
         QList<U2DataId> &rangeReadIds = readsByAdapter[a];
         a->singleTableAdapter->removeReads(rangeReadIds, os);
-        //TODO: remove adapters for empty tables. And tables as well
+        // TODO: remove adapters for empty tables. And tables as well
     }
 }
 
@@ -627,7 +627,7 @@ void MultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 p
 
     QVector<SQLiteReadTableMigrationData> &newTableData = migrations[newA];
     newTableData.append(SQLiteReadTableMigrationData(U2DbiUtils::toDbiId(readId), oldA, prow));
-    //TODO: add mem check here!
+    // TODO: add mem check here!
 }
 
 void MultiTablePackAlgorithmAdapter::releaseDbResources() {
@@ -638,7 +638,7 @@ void MultiTablePackAlgorithmAdapter::releaseDbResources() {
 
 void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter *newA, const QVector<SQLiteReadTableMigrationData> &data, qint64 migratedBefore, qint64 totalMigrationCount, U2OpStatus &os) {
     SAFE_POINT_OP(os, );
-    //delete reads from old tables, and insert into new one
+    // delete reads from old tables, and insert into new one
     QHash<MTASingleTableAdapter *, QVector<SQLiteReadTableMigrationData>> readsByOldTable;
     foreach (const SQLiteReadTableMigrationData &d, data) {
         readsByOldTable[d.oldTable].append(d);
@@ -651,7 +651,7 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter *newA, const 
         }
         QString oldTable = oldA->singleTableAdapter->getReadsTableName();
         QString newTable = newA->singleTableAdapter->getReadsTableName();
-        QString idsTable = "tmp_mig_" + oldTable;    //TODO
+        QString idsTable = "tmp_mig_" + oldTable;  // TODO
 
 #ifdef _DEBUG
         qint64 nOldReads1 = SQLiteReadQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
@@ -664,7 +664,7 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter *newA, const 
         perfLog.trace(QString("Assembly: running reads migration from %1 to %2 number of reads: %3").arg(oldTable).arg(newTable).arg(migData.size()));
         quint64 t0 = GTimer::currentTimeMicros();
 
-        {    //nested block is needed to ensure all queries are finalized
+        {  // nested block is needed to ensure all queries are finalized
 
             SQLiteWriteQuery(QString("CREATE TEMPORARY TABLE %1(id INTEGER PRIMARY KEY, prow INTEGER NOT NULL)").arg(idsTable), db, os).execute();
             SQLiteWriteQuery insertIds(QString("INSERT INTO %1(id, prow) VALUES(?1, ?2)").arg(idsTable), db, os);
@@ -692,7 +692,7 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter *newA, const 
 
             SQLiteWriteQuery(QString("DELETE FROM %1 WHERE id IN (SELECT id FROM %2)").arg(oldTable).arg(idsTable), db, os).execute();
         }
-        U2OpStatusImpl osStub;    // using stub here -> this operation must be performed even if any of internal queries failed
+        U2OpStatusImpl osStub;  // using stub here -> this operation must be performed even if any of internal queries failed
         SQLiteWriteQuery(QString("DROP TABLE IF EXISTS %1").arg(idsTable), db, osStub).execute();
 
         qint64 nMigrated = migratedBefore + migData.size();
@@ -925,4 +925,4 @@ void MTAPackAlgorithmDataIterator::fetchNextData() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

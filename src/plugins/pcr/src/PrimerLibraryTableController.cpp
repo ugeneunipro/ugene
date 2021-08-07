@@ -62,4 +62,4 @@ void PrimerLibraryTableController::sl_primerRemoved(const U2DataId &primerId) {
     table->removePrimer(primerId, os);
 }
 
-}    // namespace U2
+}  // namespace U2

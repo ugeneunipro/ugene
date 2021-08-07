@@ -51,16 +51,16 @@ public:
     ExportSequenceItem &operator=(const ExportSequenceItem &other);
     bool operator==(const ExportSequenceItem &other) const;
 
-    U2EntityRef seqRef;    // sequence to copy
+    U2EntityRef seqRef;  // sequence to copy
     QString name;
     bool circular;
     const DNAAlphabet *alphabet;
     qint64 length;
 
-    QList<SharedAnnotationData> annotations;    // annotations to copy
-    const DNATranslation *complTT;    // complement translations for a sequence. Used only if 'strand' is 'compl' or 'both'
-    const DNATranslation *aminoTT;    // amino translation for a sequence. If not NULL -> sequence is translated
-    const DNATranslation *backTT;    // nucleic translation for a sequence. If not NULL -> sequence is back translated
+    QList<SharedAnnotationData> annotations;  // annotations to copy
+    const DNATranslation *complTT;  // complement translations for a sequence. Used only if 'strand' is 'compl' or 'both'
+    const DNATranslation *aminoTT;  // amino translation for a sequence. If not NULL -> sequence is translated
+    const DNATranslation *backTT;  // nucleic translation for a sequence. If not NULL -> sequence is back translated
 
 private:
     void startSeqOwnership();
@@ -77,24 +77,24 @@ class ExportSequenceTaskSettings {
 public:
     ExportSequenceTaskSettings();
 
-    QList<ExportSequenceItem> items;    // sequences to export
+    QList<ExportSequenceItem> items;  // sequences to export
 
-    QString fileName;    // result file name
-    bool merge;    // if true -> multiple sequences are merged
-    int mergeGap;    // the gap between sequences if merged
+    QString fileName;  // result file name
+    bool merge;  // if true -> multiple sequences are merged
+    int mergeGap;  // the gap between sequences if merged
 
-    TriState strand;    // Yes -> direct, No -> complement, Unknown -> Both
-    bool allAminoFrames;    // for every sequence and (every complement if needed) generates 3-frame amino translations
+    TriState strand;  // Yes -> direct, No -> complement, Unknown -> Both
+    bool allAminoFrames;  // for every sequence and (every complement if needed) generates 3-frame amino translations
 
-    bool mostProbable;    // True - use most probable codon, False - use distribution according to frequency
+    bool mostProbable;  // True - use most probable codon, False - use distribution according to frequency
 
-    bool saveAnnotations;    // Store available annotations for sequences into result file too
+    bool saveAnnotations;  // Store available annotations for sequences into result file too
 
     DocumentFormatId formatId;
 
-    QString sequenceName;    // custom sequence name
+    QString sequenceName;  // custom sequence name
 
-    qint64 sequenceLength;    // length of the sequence if there is the only source sequence
+    qint64 sequenceLength;  // length of the sequence if there is the only source sequence
 };
 
 /** Exports sequences a file */
@@ -120,16 +120,16 @@ class ExportSequenceAItem {
 public:
     ExportSequenceAItem();
 
-    QPointer<U2SequenceObject> sequence;    // sequence
-    QList<SharedAnnotationData> annotations;    // annotated regions to be exported
-    const DNATranslation *aminoTT;    // if not null -> sequence regions will be translated (0-frame only)
-    const DNATranslation *complTT;    // if not null & annotation location is on complement strand - it will be rev-complemented
+    QPointer<U2SequenceObject> sequence;  // sequence
+    QList<SharedAnnotationData> annotations;  // annotated regions to be exported
+    const DNATranslation *aminoTT;  // if not null -> sequence regions will be translated (0-frame only)
+    const DNATranslation *complTT;  // if not null & annotation location is on complement strand - it will be rev-complemented
 };
 
 class ExportAnnotationSequenceTaskSettings {
 public:
-    QList<ExportSequenceAItem> items;    // data to export
-    ExportSequenceTaskSettings exportSequenceSettings;    // extra configuration for ExportSequenceTask
+    QList<ExportSequenceAItem> items;  // data to export
+    ExportSequenceTaskSettings exportSequenceSettings;  // extra configuration for ExportSequenceTask
 };
 
 class ExportAnnotationSequenceSubTask : public Task {
@@ -157,6 +157,6 @@ private:
     ExportSequenceTask *exportSubTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_SEQUENCE_PLUGIN_TASKS_H_
+#endif  // _U2_EXPORT_SEQUENCE_PLUGIN_TASKS_H_

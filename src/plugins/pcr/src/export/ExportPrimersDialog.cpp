@@ -219,4 +219,4 @@ bool ExportPrimersDialog::isFileMode() const {
     return LOCAL_FILE == cbExport->currentText();
 }
 
-}    // namespace U2
+}  // namespace U2

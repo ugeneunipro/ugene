@@ -41,7 +41,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // GetFileListPrompter
+};  // GetFileListPrompter
 
 class GetFileListWorker : public BaseWorker {
     Q_OBJECT
@@ -58,7 +58,7 @@ private:
 
 private:
     QString getNextUrl();
-};    // GetFileListWorker
+};  // GetFileListWorker
 
 class GetFileListWorkerFactory : public DomainFactory {
 public:
@@ -70,9 +70,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // GetFileListWorkerFactory
+};  // GetFileListWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _GET_FILE_LIST_WORKER_
+#endif  // _GET_FILE_LIST_WORKER_

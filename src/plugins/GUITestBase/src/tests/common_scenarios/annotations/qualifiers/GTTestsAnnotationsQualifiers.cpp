@@ -619,5 +619,5 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-}    // namespace GUITest_common_scenarios_annotations_qualifiers
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_annotations_qualifiers
+}  // namespace U2

@@ -994,18 +994,18 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
         CHECK_NO_ERROR(os);
         Q_UNUSED(userStep);
 
-        SQLiteObjectDbiTestData::addTestRow(msaId, os);    // multi/single step 1
+        SQLiteObjectDbiTestData::addTestRow(msaId, os);  // multi/single step 1
         CHECK_NO_ERROR(os);
 
-        SQLiteObjectDbiTestData::addTestRow(msaId, os);    // multi/single step 2
+        SQLiteObjectDbiTestData::addTestRow(msaId, os);  // multi/single step 2
         CHECK_NO_ERROR(os);
     }
 
     // User step 2
-    SQLiteObjectDbiTestData::addTestRow(msaId, os);    // multi/single step 3
+    SQLiteObjectDbiTestData::addTestRow(msaId, os);  // multi/single step 3
 
     // Verify version
-    qint64 msaVersionAfterUser1 = msaVersion + 2;    // verified in another test
+    qint64 msaVersionAfterUser1 = msaVersion + 2;  // verified in another test
     qint64 msaVersionAfterUser2 = objDbi->getObjectVersion(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(msaVersionAfterUser1 + 1, msaVersionAfterUser2, "msa version after user step 2");
@@ -1038,10 +1038,10 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
         CHECK_NO_ERROR(os);
         Q_UNUSED(userStep);
 
-        sqliteDbi->getMsaDbi()->addRow(msaId, -1, row, os);    // multi/single step 4
+        sqliteDbi->getMsaDbi()->addRow(msaId, -1, row, os);  // multi/single step 4
         CHECK_NO_ERROR(os);
 
-        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QList<U2MsaGap>(), os);    // multi step 5, single steps 5-6
+        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QList<U2MsaGap>(), os);  // multi step 5, single steps 5-6
         CHECK_NO_ERROR(os);
     }
 
@@ -1161,4 +1161,4 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
     CHECK_FALSE(redoState, "redo state after redo 3");
 }
 
-}    // namespace U2
+}  // namespace U2

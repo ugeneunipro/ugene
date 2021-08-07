@@ -80,6 +80,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::click();
 }
 
-}    // namespace GUITest_common_scenarios_repeat_finder
+}  // namespace GUITest_common_scenarios_repeat_finder
 
-}    // namespace U2
+}  // namespace U2

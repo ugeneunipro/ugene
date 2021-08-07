@@ -165,5 +165,5 @@ Worker *WriteVariationWorkerFactory::createWorker(Actor *a) {
     return new WriteVariationWorker(a, fid);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

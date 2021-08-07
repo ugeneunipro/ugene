@@ -46,6 +46,6 @@ private:
     mutable DbiConnection connection;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_EXPORTER_H_
+#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_EXPORTER_H_

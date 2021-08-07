@@ -50,7 +50,7 @@ void MysqlAttributeDbi::initSqlSchema(U2OpStatus &os) {
                os)
         .execute();
 
-    //TODO: check if index is efficient for getting attribute for specific object
+    // TODO: check if index is efficient for getting attribute for specific object
     U2SqlQuery("CREATE INDEX Attribute_object on Attribute(object)", db, os).execute();
 
     U2SqlQuery("CREATE TABLE IntegerAttribute (attribute BIGINT, value BIGINT NOT NULL, "
@@ -320,7 +320,7 @@ void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpSt
     static const QString queryString("INSERT INTO ByteArrayAttribute(attribute, value) VALUES(:attribute, :value)");
     U2SqlQuery q(queryString, db, os);
     q.bindInt64(":attribute", id);
-    q.bindBlob(":value", a.value.isNull() ? "" : a.value);    // not null field
+    q.bindBlob(":value", a.value.isNull() ? "" : a.value);  // not null field
     q.execute();
 }
 
@@ -366,4 +366,4 @@ void MysqlAttributeDbi::readAttribute(U2SqlQuery &q, U2Attribute &attr) {
     attr.name = q.getString(11);
 }
 
-}    // namespace U2
+}  // namespace U2

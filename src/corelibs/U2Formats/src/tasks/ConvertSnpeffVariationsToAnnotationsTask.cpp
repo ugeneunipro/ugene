@@ -230,4 +230,4 @@ void LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepareSaveTask() {
     saveTask = new SaveDocumentTask(annotationsDocument);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -98,4 +98,4 @@ StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
     return skippedFiles;
 }
 
-}    // namespace U2
+}  // namespace U2

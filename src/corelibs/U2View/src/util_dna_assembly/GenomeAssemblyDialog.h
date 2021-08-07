@@ -84,6 +84,6 @@ private:
     static QString library;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GENOMEASSEMBLYDIALOG_H
+#endif  // GENOMEASSEMBLYDIALOG_H

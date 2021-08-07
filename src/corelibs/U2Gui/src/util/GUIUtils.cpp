@@ -139,7 +139,7 @@ QIcon GUIUtils::createRoundIcon(const QColor &c, int size) {
 
     QPainter p(&pix);
     QPainterPath ep;
-    //ep.addEllipse(1, 1, w-2, h-2);
+    // ep.addEllipse(1, 1, w-2, h-2);
     ep.addEllipse(0, 0, w - 1, h - 1);
     p.fillPath(ep, c);
     p.setPen(Qt::black);
@@ -236,4 +236,4 @@ void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter &painter, const QS
     return;
 }
 
-}    // namespace U2
+}  // namespace U2

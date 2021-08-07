@@ -75,7 +75,7 @@ protected:
     QTableWidget *table;
     QTextEdit *doc;
 
-};    // MapDatatypeEditor
+};  // MapDatatypeEditor
 
 namespace Workflow {
 class IntegralBusPort;
@@ -102,7 +102,7 @@ protected:
 
 private slots:
     void handleDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-};    // BusPortEditor
+};  // BusPortEditor
 
 class U2LANG_EXPORT DescriptorListEditorDelegate : public QItemDelegate {
     Q_OBJECT
@@ -119,7 +119,7 @@ public:
 
 private slots:
     void sl_commitData();
-};    // DescriptorListEditorDelegate
+};  // DescriptorListEditorDelegate
 
 class ItemDelegateForHeaders : public QItemDelegate {
 public:
@@ -127,6 +127,6 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-}    //namespace U2
+}  // namespace U2
 
 #endif

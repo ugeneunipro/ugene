@@ -51,4 +51,4 @@ AbstractProjectFilterTask *TextContentFilterTaskFactory::createNewTask(const Pro
     return new TextContentFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

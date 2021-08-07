@@ -95,13 +95,13 @@ private:
     QMap<QListWidgetItem *, Task *> connectionTasks;
     QMap<QListWidgetItem *, Task *> upgradeTasks;
 
-    static const QString SETTINGS_RECENT;    // TODO: move this identifier to another class, since it is to be used
-        // not only within the dialog. After that search through the code,
-        // where its literal value is used and replace it with the identifier.
+    static const QString SETTINGS_RECENT;  // TODO: move this identifier to another class, since it is to be used
+                                           // not only within the dialog. After that search through the code,
+                                           // where its literal value is used and replace it with the identifier.
     static const int UrlRole = Qt::UserRole;
     static const int LoginRole = UrlRole + 1;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SHARED_CONNECTIONS_DIALOG_H_
+#endif  // _U2_SHARED_CONNECTIONS_DIALOG_H_

@@ -93,6 +93,6 @@ public:
     virtual ModificationAction *getModificationAction(const U2DataId &id) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_UDRDBI_H_
+#endif  // _U2_UDRDBI_H_

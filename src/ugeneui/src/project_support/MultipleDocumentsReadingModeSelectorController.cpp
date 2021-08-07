@@ -73,7 +73,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
             }
             QString line = QString(QByteArray(buff));
             QStringList words = line.split(QRegExp("\\s"), QString::SkipEmptyParts);
-            if (words.size() < 3) {    // origin len not defined
+            if (words.size() < 3) {  // origin len not defined
                 return false;
             }
             bool isLenDefined = false;
@@ -297,7 +297,7 @@ void MultipleDocumentsReadingModeDialog::changeNumPrefix() {
 }
 
 QString MultipleDocumentsReadingModeDialog::deleteNumPrefix(QString prefixString) {
-    QString toDelete = prefixString.split(" ")[0];    // number with space
+    QString toDelete = prefixString.split(" ")[0];  // number with space
     prefixString.remove(0, toDelete.size() + 1);
     return prefixString;
 }
@@ -308,4 +308,4 @@ void MultipleDocumentsReadingModeDialog::deleteAllNumPrefix() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

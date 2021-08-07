@@ -20,12 +20,13 @@
  */
 
 #include "TaskLocalStorage.h"
-#include "muscle/muscle.h"
-#include "muscle/objscore.h"
-#include "muscle/profile.h"
+
 #include "muscle/enumopts.h"
-#include "muscle/params.h"
+#include "muscle/muscle.h"
 #include "muscle/muscle_context.h"
+#include "muscle/objscore.h"
+#include "muscle/params.h"
+#include "muscle/profile.h"
 
 class MuscleContext *getMuscleContext() {
     return U2::TaskLocalData::current();
@@ -36,12 +37,12 @@ int getMuscleWorkerID() {
 
 namespace U2 {
 
-QThreadStorage<MuscleContextTLSRef*> TaskLocalData::tls;
+QThreadStorage<MuscleContextTLSRef *> TaskLocalData::tls;
 
-class MuscleContext* TaskLocalData::current(){
-    MuscleContextTLSRef* ref = tls.localData();
-    if (ref!=nullptr) {
-        assert(ref->ctx!=nullptr);
+class MuscleContext *TaskLocalData::current() {
+    MuscleContextTLSRef *ref = tls.localData();
+    if (ref != nullptr) {
+        assert(ref->ctx != nullptr);
         return ref->ctx;
     }
     assert(0);
@@ -49,28 +50,25 @@ class MuscleContext* TaskLocalData::current(){
 }
 
 unsigned TaskLocalData::currentWorkerID() {
-    MuscleContextTLSRef* ref = tls.localData();
-    if (ref!=nullptr) {
+    MuscleContextTLSRef *ref = tls.localData();
+    if (ref != nullptr) {
         return ref->workerID;
     }
     assert(0);
     return -1;
-
 }
 
 void TaskLocalData::bindToMuscleTLSContext(MuscleContext *ctx, int workerID) {
-    assert(ctx!=nullptr);
+    assert(ctx != nullptr);
     assert(!tls.hasLocalData());
     tls.setLocalData(new MuscleContextTLSRef(ctx, workerID));
 }
 
 void TaskLocalData::detachMuscleTLSContext() {
-    MuscleContextTLSRef* ref = tls.localData();
-    assert(ref!=nullptr && ref->ctx!=nullptr);
+    MuscleContextTLSRef *ref = tls.localData();
+    assert(ref != nullptr && ref->ctx != nullptr);
     ref->ctx = nullptr;
     tls.setLocalData(nullptr);
 }
 
-
-}//namespace
-
+}  // namespace U2

@@ -70,7 +70,7 @@ QStringList AnnotationSettingsRegistry::getAllSettings() const {
 
 AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const SharedAnnotationData &a) {
     AnnotationSettings *s = getAnnotationSettings(a->name);
-    //don't show non-positional features that span the whole sequence
+    // don't show non-positional features that span the whole sequence
     if (a->findFirstQualifierValue("non-positional") != QString()) {
         s->visible = false;
     }
@@ -78,13 +78,13 @@ AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const Shar
 }
 
 AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const QString &name) {
-    //Search in persistent settings:
+    // Search in persistent settings:
     AnnotationSettings *s = persistentMap.value(name);
     if (s != nullptr) {
         return s;
     }
 
-    //search in transient cache:
+    // search in transient cache:
     s = transientMap.value(name);
     if (s != nullptr) {
         return s;
@@ -94,7 +94,7 @@ AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const QStr
     s->color = FeatureColors::genLightColor(name);
     s->visible = true;
     if (transientMap.size() == MAX_CACHE_SIZE) {
-        //todo: mutex!?
+        // todo: mutex!?
         transientMap.erase(transientMap.begin());
     }
     transientMap[name] = s;
@@ -116,7 +116,7 @@ void AnnotationSettingsRegistry::read() {
         if (!as->color.isValid()) {
             // previously color was stored as QColor, not by name
             as->color = color.value<QColor>();
-            if (!as->color.isValid()) {    // if still invalid - get the default value
+            if (!as->color.isValid()) {  // if still invalid - get the default value
                 as->color = FeatureColors::genLightColor(as->name);
             }
         }
@@ -164,4 +164,4 @@ bool AnnotationSettings::equals(const AnnotationSettings *as) const {
     return name == as->name && amino == as->amino && color == as->color && visible == as->visible && showNameQuals == as->showNameQuals && nameQuals == as->nameQuals;
 }
 
-}    // namespace U2
+}  // namespace U2

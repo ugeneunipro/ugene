@@ -277,4 +277,4 @@ void URLLineEdit::sl_completionFinished() {
     emit si_finished();
 }
 
-}    // namespace U2
+}  // namespace U2

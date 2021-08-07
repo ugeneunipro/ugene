@@ -57,6 +57,6 @@ public:
     virtual void run();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_MSA_DISTANCE_ALGORITHM_SIMILARITY_H_
+#endif  //_U2_MSA_DISTANCE_ALGORITHM_SIMILARITY_H_

@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0004_1) {    // CHANGES: keyboard used instead mouse
+GUI_TEST_CLASS_DEFINITION(test_0004_1) {  // CHANGES: keyboard used instead mouse
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2081,7 +2081,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "annotated_DNA_splitter"));
     CHECK_SET_ERR(splitter != nullptr, "Cannot find annotated_DNA_splitter");
-    QWidget *bottomSplitterHandle = splitter->handle(splitter->count() - 1);    // GTWidget::findWidget(os, "qt_splithandle_", GTWidget::findWidget(os, "annotated_DNA_splitter"));
+    QWidget *bottomSplitterHandle = splitter->handle(splitter->count() - 1);  // GTWidget::findWidget(os, "qt_splithandle_", GTWidget::findWidget(os, "annotated_DNA_splitter"));
     CHECK_SET_ERR(bottomSplitterHandle != nullptr, "Cannot find bottom splitter handle");
     GTWidget::click(os, bottomSplitterHandle);
     QPoint p1 = GTMouseDriver::getMousePosition();
@@ -2416,6 +2416,6 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
-}    // namespace GUITest_common_scenarios_sequence_view
+}  // namespace GUITest_common_scenarios_sequence_view
 
-}    // namespace U2
+}  // namespace U2

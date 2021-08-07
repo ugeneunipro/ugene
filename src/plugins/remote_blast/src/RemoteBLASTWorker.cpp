@@ -216,8 +216,8 @@ Task *RemoteBLASTWorker::tick() {
             output->transit();
             return nullptr;
         }
-        //cfg.minrl = 0;
-        //cfg.maxrl = 3000;
+        // cfg.minrl = 0;
+        // cfg.maxrl = 3000;
         cfg.dbChoosen = getValue<QString>(ALG_ATTR).split("-").last();
         cfg.aminoT = nullptr;
 
@@ -346,5 +346,5 @@ void RemoteBLASTWorker::sl_taskFinished() {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

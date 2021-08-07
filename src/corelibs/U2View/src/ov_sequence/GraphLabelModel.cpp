@@ -240,4 +240,4 @@ GraphLabel &MultiLabel::getMovingLabel() {
     return *movingLabel;
 }
 
-}    // namespace U2
+}  // namespace U2

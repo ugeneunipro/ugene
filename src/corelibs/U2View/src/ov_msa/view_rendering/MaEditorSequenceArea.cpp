@@ -219,7 +219,7 @@ QFont MaEditorSequenceArea::getFont() const {
 
 void MaEditorSequenceArea::setSelectionRect(const QRect &newSelectionRect) {
     QRect safeRect = boundWithVisibleRange(newSelectionRect);
-    if (!safeRect.isValid()) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
+    if (!safeRect.isValid()) {  // 'newSelectionRect' is out of bounds - reset selection to empty.
         editor->getSelectionController()->clearSelection();
         return;
     }
@@ -239,7 +239,7 @@ void MaEditorSequenceArea::sl_onSelectionChanged(const MaEditorSelection &select
     emit si_selectionChanged(selectedRowNames);
     update();
 
-    //TODO: the code below can be moved to the sl_updateActions().
+    // TODO: the code below can be moved to the sl_updateActions().
     bool isReadOnly = editor->getMaObject()->isStateLocked();
     bool hasSelection = !selection.isEmpty();
     ui->copySelectionAction->setEnabled(hasSelection);
@@ -308,7 +308,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     QRect selectionRect = selection.toRect();
     bool isWholeRowRemoved = selectionRect.width() == numColumns;
 
-    if (isWholeRowRemoved) {    // Reuse code of the name list.
+    if (isWholeRowRemoved) {  // Reuse code of the name list.
         ui->getEditorNameList()->sl_removeSelectedRows();
         return;
     }
@@ -1062,10 +1062,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(-1, 0);
             } else {
                 bool isMoveRightSide = cursorPosition.x() == selectionRect.x() && selectionRect.width() > 1;
-                if (isMoveRightSide) {    // Move the right side (shrink).
+                if (isMoveRightSide) {  // Move the right side (shrink).
                     setSelectionRect(QRect(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(-1, 0)));
                     editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
-                } else {    // Move the left side (grow).
+                } else {  // Move the left side (grow).
                     setSelectionRect(QRect(selectionRect.topLeft() + QPoint(-1, 0), selectionRect.bottomRight()));
                     editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
                 }
@@ -1076,10 +1076,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(1, 0);
             } else {
                 bool isMoveLeftSide = cursorPosition.x() == selectionRect.right() && selectionRect.width() > 1;
-                if (isMoveLeftSide) {    // Move the left side (shrink).
+                if (isMoveLeftSide) {  // Move the left side (shrink).
                     setSelectionRect(QRect(selectionRect.topLeft() + QPoint(1, 0), selectionRect.bottomRight()));
                     editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
-                } else {    // Move the right side (grow).
+                } else {  // Move the right side (grow).
                     setSelectionRect(QRect(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(1, 0)));
                     editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
                 }
@@ -1090,10 +1090,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0, -1);
             } else {
                 bool isMoveBottomSide = cursorPosition.y() == selectionRect.y() && selectionRect.height() > 1;
-                if (isMoveBottomSide) {    // Move the bottom side (shrink).
+                if (isMoveBottomSide) {  // Move the bottom side (shrink).
                     setSelectionRect(QRect(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, -1)));
                     editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
-                } else {    // Move the top side (grow).
+                } else {  // Move the top side (grow).
                     setSelectionRect(QRect(selectionRect.topLeft() + QPoint(0, -1), selectionRect.bottomRight()));
                     editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
                 }
@@ -1104,10 +1104,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0, 1);
             } else {
                 bool isMoveTopSide = cursorPosition.y() == selectionRect.bottom() && selectionRect.height() > 1;
-                if (isMoveTopSide) {    // Move the top side (shrink).
+                if (isMoveTopSide) {  // Move the top side (shrink).
                     setSelectionRect(QRect(selectionRect.topLeft() + QPoint(0, 1), selectionRect.bottomRight()));
                     editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
-                } else {    // Move the bottom side (grow).
+                } else {  // Move the bottom side (grow).
                     setSelectionRect(QRect(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, 1)));
                     editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
                 }
@@ -1421,7 +1421,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    if (qobject_cast<MSAEditor *>(getEditor()) != nullptr) {    // to avoid setting of sanger scheme
+    if (qobject_cast<MSAEditor *>(getEditor()) != nullptr) {  // to avoid setting of sanger scheme
         switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
             case DNAAlphabet_RAW:
                 AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
@@ -1543,4 +1543,4 @@ MaEditorSequenceArea::MaMode MaEditorSequenceArea::getMode() const {
     return maMode;
 }
 
-}    // namespace U2
+}  // namespace U2

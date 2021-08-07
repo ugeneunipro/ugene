@@ -122,4 +122,4 @@ void UgeneUpdater::startMaintenanceTool() const {
     QProcess::startDetached(getMaintenanceToolPath(), arguments);
 }
 
-}    // namespace U2
+}  // namespace U2

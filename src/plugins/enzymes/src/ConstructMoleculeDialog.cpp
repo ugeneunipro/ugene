@@ -369,4 +369,4 @@ void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

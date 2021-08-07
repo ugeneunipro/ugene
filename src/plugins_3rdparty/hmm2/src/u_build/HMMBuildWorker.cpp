@@ -224,8 +224,8 @@ QString HMMBuildPrompter::composeRichDoc() {
 }
 
 /******************************
-* HMMBuildWorker
-******************************/
+ * HMMBuildWorker
+ ******************************/
 HMMBuildWorker::HMMBuildWorker(Actor *a)
     : BaseWorker(a), input(nullptr), output(nullptr), calibrate(false), nextTick(nullptr) {
 }
@@ -248,12 +248,12 @@ Task *HMMBuildWorker::tick() {
         return new FailTask(tr("Incorrect value for seed parameter"));
     }
 
-    if (nextTick) {    // calibrate task
+    if (nextTick) {  // calibrate task
         Task *t = nextTick;
         nextTick = nullptr;
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
-    } else {    // hmm build task
+    } else {  // hmm build task
         if (input->hasMessage()) {
             Message inputMessage = getMessageAndSetupScriptValues(input);
             if (inputMessage.isEmpty()) {
@@ -321,7 +321,7 @@ void HMMBuildWorker::sl_taskFinished(Task *t) {
             } else {
                 nextTick = new HMMCalibrateParallelTask(hmm, calSettings);
             }
-        } else {    // do not calibrate -> put hmm to output
+        } else {  // do not calibrate -> put hmm to output
             output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s *>(hmm)));
         }
         algoLog.info(tr("Built HMM profile"));
@@ -341,5 +341,5 @@ bool HMMBuildWorker::isDone() const {
 void HMMBuildWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

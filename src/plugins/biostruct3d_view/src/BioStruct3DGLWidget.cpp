@@ -249,7 +249,7 @@ void BioStruct3DGLWidget::initializeGL() {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glEnable(GL_BLEND);    // Enable Blending
+    glEnable(GL_BLEND);  // Enable Blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     updateAllRenderers();
@@ -751,7 +751,7 @@ void BioStruct3DGLWidget::createActions() {
     QAction *action = nullptr;
 
     animationTimer = new QTimer(this);
-    animationTimer->setInterval(20);    // fixed interval
+    animationTimer->setInterval(20);  // fixed interval
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(sl_updateAnnimation()));
 
     rendererActions = new QActionGroup(this);
@@ -1134,4 +1134,4 @@ void BioStruct3DGLWidget::sl_onAlignmentDone(Task *task) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

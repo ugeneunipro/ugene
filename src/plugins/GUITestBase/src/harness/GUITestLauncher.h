@@ -94,6 +94,6 @@ private:
     static QString getVideoPath(const QString &testName);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -48,6 +48,6 @@ private:
     ProjectTreeControllerModeSettings settings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECT_FILTER_PROXY_MODEL_H_
+#endif  // _U2_PROJECT_FILTER_PROXY_MODEL_H_

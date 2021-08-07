@@ -113,4 +113,4 @@ void FindEnzymesDialogFiller::selectEnzymes(HI::GUITestOpStatus &os, const QStri
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

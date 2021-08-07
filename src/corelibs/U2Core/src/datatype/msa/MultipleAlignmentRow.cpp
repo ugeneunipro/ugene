@@ -125,7 +125,7 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
         gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
         bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
     }
-    MultipleAlignmentData* alignment = getMultipleAlignmentData();
+    MultipleAlignmentData *alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;
@@ -136,4 +136,4 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
     return bytes;
 }
 
-}    // namespace U2
+}  // namespace U2

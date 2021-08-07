@@ -65,6 +65,6 @@ private:
     QMap<QByteArray, qint64> countPerCodon;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

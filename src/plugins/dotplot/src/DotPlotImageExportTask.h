@@ -77,6 +77,6 @@ private:
     QCheckBox *includeRepeatSelection;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOTPLOT_IMAGE_EXPORT_TASK_H_
+#endif  // _U2_DOTPLOT_IMAGE_EXPORT_TASK_H_

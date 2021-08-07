@@ -296,4 +296,4 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

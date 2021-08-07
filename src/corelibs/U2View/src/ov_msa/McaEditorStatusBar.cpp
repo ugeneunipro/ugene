@@ -149,4 +149,4 @@ void McaEditorStatusBar::updateMutationsLabel() {
     setMutationStatus(alternativeMutationsEnabled);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -145,7 +145,7 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
         result += fullPath + ";";
     }
 
-    path = result.mid(0, result.size() - 1);    // without the last ';'
+    path = result.mid(0, result.size() - 1);  // without the last ';'
 }
 
 bool XMLTestUtils::parentTasksHaveError(Task *t) {
@@ -271,4 +271,4 @@ Task::ReportResult GTest_CreateTmpFolder::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

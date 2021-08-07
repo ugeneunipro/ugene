@@ -59,5 +59,5 @@ bool WevoteValidator::validateTaxonomy(const Actor *actor, NotificationsList &no
     return isValid;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-//Warn: works only for pointer type
+// Warn: works only for pointer type
 template<class T>
 static void removeDuplicatesPointersFromList(QList<T *> &list) {
     QSet<const T *> tracked;
@@ -64,7 +64,7 @@ QList<GObject *> SelectionUtils::findObjectsKeepOrder(GObjectType t, const Multi
         res += tmp;
     }
 
-    //now remove duplicates from list
+    // now remove duplicates from list
     removeDuplicatesPointersFromList<GObject>(res);
 
     return res;
@@ -115,7 +115,7 @@ QSet<Document *> SelectionUtils::findDocumentsWithObjects(GObjectType t, const G
                 if (!objs.isEmpty()) {
                     res += d;
                 }
-            } else if (f == UOF_LoadedAndUnloaded && !d->isLoaded()) {    //document is unloaded
+            } else if (f == UOF_LoadedAndUnloaded && !d->isLoaded()) {  // document is unloaded
                 DocumentFormat *df = d->getDocumentFormat();
                 if (df->checkConstraints(c)) {
                     res += d;
@@ -137,7 +137,7 @@ bool SelectionUtils::isDocumentInSelection(const Document *doc, const MultiGSele
         if (st == GSelectionTypes::DOCUMENTS) {
             const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(s);
             const QList<Document *> &docs = ds->getSelectedDocuments();
-            if (docs.contains((Document *const &)doc)) {    //TODO? why cast
+            if (docs.contains((Document *const &)doc)) {  // TODO? why cast
                 return true;
             }
         } else if (st == GSelectionTypes::GOBJECTS && deriveDocsFromObjectSelection) {
@@ -200,4 +200,4 @@ U2Region SelectionUtils::normalizeRegionBy3(U2Region reg, int seqLen, bool direc
     return reg;
 }
 
-}    // namespace U2
+}  // namespace U2

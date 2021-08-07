@@ -49,7 +49,7 @@ public:
     }
 
     RFResult(int _x, int _y, int _len, int _c = 0)
-        : x(_x), y(_y), l(_len) {    //if not specified, repeats have no mismatches
+        : x(_x), y(_y), l(_len) {  // if not specified, repeats have no mismatches
         if (_c == 0)
             c = l;
         else
@@ -79,7 +79,7 @@ public:
     int x;
     int y;
     int l;
-    int c;    //matches
+    int c;  // matches
 };
 
 class RFResultsListener {
@@ -141,6 +141,6 @@ struct RepeatFinderSettings {
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

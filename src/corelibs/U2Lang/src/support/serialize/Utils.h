@@ -35,7 +35,7 @@ struct ReadFailed {
         : what(msg) {
     }
     QString what;
-};    // ReadFailed
+};  // ReadFailed
 
 class WorkflowSchemaReaderData {
 public:
@@ -65,7 +65,7 @@ public:
 
 private:
     bool graphDefined;
-};    // WorkflowSchemaReaderData
+};  // WorkflowSchemaReaderData
 
 class FlowGraph {
 public:
@@ -77,9 +77,9 @@ public:
     QMap<Port *, QList<Port *>> graph;
     QList<QPair<Port *, Port *>> dataflowLinks;
     int findRecursion;
-};    // FlowGraph
+};  // FlowGraph
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_SERIALIZE_UTILS_H_
+#endif  // _U2_WORKFLOW_SERIALIZE_UTILS_H_

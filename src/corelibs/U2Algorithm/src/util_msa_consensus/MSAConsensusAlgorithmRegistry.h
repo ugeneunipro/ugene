@@ -54,6 +54,6 @@ private:
     QMap<QString, MSAConsensusAlgorithmFactory *> algorithms;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

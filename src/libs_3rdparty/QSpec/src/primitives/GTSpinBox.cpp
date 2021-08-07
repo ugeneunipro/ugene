@@ -61,46 +61,46 @@ void GTSpinBox::setValue(GUITestOpStatus &os, QSpinBox *spinBox, int v, GTGlobal
 
     if (spinBox->value() != v) {
         switch (useMethod) {
-        case GTGlobals::UseMouse:
-            spinBoxRect = spinBox->rect();
-            if (v > spinBox->value()) {
-                arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);    // -5 it's needed that area under cursor was clickable
-            } else {
-                arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
-            }
+            case GTGlobals::UseMouse:
+                spinBoxRect = spinBox->rect();
+                if (v > spinBox->value()) {
+                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);  // -5 it's needed that area under cursor was clickable
+                } else {
+                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
+                }
 
-            GTMouseDriver::moveTo(spinBox->mapToGlobal(arrowPos));
-            while (spinBox->value() != v) {
-                GTMouseDriver::click();
+                GTMouseDriver::moveTo(spinBox->mapToGlobal(arrowPos));
+                while (spinBox->value() != v) {
+                    GTMouseDriver::click();
+                    GTGlobals::sleep(100);
+                }
+                break;
+
+            case GTGlobals::UseKey: {
+                Qt::Key key;
+                if (v > spinBox->value()) {
+                    key = Qt::Key_Up;
+                } else {
+                    key = Qt::Key_Down;
+                }
+
+                GTWidget::setFocus(os, spinBox);
+                while (spinBox->value() != v) {
+                    GTKeyboardDriver::keyClick(key);
+                    GTGlobals::sleep(100);
+                }
+                break;
+            }
+            case GTGlobals::UseKeyBoard:
+                QString s = QString::number(v);
+                GTWidget::setFocus(os, spinBox);
                 GTGlobals::sleep(100);
-            }
-            break;
-
-        case GTGlobals::UseKey: {
-            Qt::Key key;
-            if (v > spinBox->value()) {
-                key = Qt::Key_Up;
-            } else {
-                key = Qt::Key_Down;
-            }
-
-            GTWidget::setFocus(os, spinBox);
-            while (spinBox->value() != v) {
-                GTKeyboardDriver::keyClick(key);
+                GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
                 GTGlobals::sleep(100);
-            }
-            break;
-        }
-        case GTGlobals::UseKeyBoard:
-            QString s = QString::number(v);
-            GTWidget::setFocus(os, spinBox);
-            GTGlobals::sleep(100);
-            GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-            GTGlobals::sleep(100);
-            GTKeyboardDriver::keyClick(Qt::Key_Delete);
-            GTGlobals::sleep(100);
-            GTKeyboardDriver::keySequence(s);
-            GTGlobals::sleep(100);
+                GTKeyboardDriver::keyClick(Qt::Key_Delete);
+                GTGlobals::sleep(100);
+                GTKeyboardDriver::keySequence(s);
+                GTGlobals::sleep(100);
         }
     }
     GTThread::waitForMainThread();
@@ -140,4 +140,4 @@ void GTSpinBox::checkLimits(GUITestOpStatus &os, const QString &spinBoxName, int
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

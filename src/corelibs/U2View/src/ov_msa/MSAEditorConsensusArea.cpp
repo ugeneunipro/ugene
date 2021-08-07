@@ -70,4 +70,4 @@ void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
     menu->addAction(configureConsensusAction);
 }
 
-}    // namespace U2
+}  // namespace U2

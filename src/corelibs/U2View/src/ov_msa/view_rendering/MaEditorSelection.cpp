@@ -38,7 +38,7 @@ MaEditorSelection::MaEditorSelection(const QList<QRect> &rects)
 }
 
 QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rectList) {
-    if (rectList.size() <= 1) {    // 0 or 1 result: no need to merge, validate only.
+    if (rectList.size() <= 1) {  // 0 or 1 result: no need to merge, validate only.
         return rectList.isEmpty() || rectList.first().isEmpty() ? QList<QRect>() : rectList;
     }
     int unifiedLeft = INT_MAX;
@@ -47,7 +47,7 @@ QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rect
         unifiedLeft = qMin(unifiedLeft, rect.left());
         unifiedRight = qMax(unifiedRight, rect.right());
     }
-    if (unifiedRight < unifiedLeft) {    // All rects are empty.
+    if (unifiedRight < unifiedLeft) {  // All rects are empty.
         return {};
     }
     // Sort & merge rects if needed. Assign unified left & right.
@@ -218,4 +218,4 @@ void McaEditorSelectionController::setSelection(const MaEditorSelection &newSele
     MaEditorSelectionController::setSelection(newSelection);
 }
 
-}    // namespace U2
+}  // namespace U2

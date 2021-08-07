@@ -180,7 +180,7 @@ private:
     QColor dotPlotNearestRepeatColor;
 
     bool clearedByRepitSel;
-    QByteArray seqXCache, seqYCache;    //cached sequence, used only during DP computation
+    QByteArray seqXCache, seqYCache;  // cached sequence, used only during DP computation
 
     void pixMapUpdate();
 
@@ -204,7 +204,7 @@ private:
     void clearRepeatSelection();
 
     void selectNearestRepeat(const QPointF &);
-    const DotPlotResults *findNearestRepeat(const QPoint &);    // sets nearestInverted
+    const DotPlotResults *findNearestRepeat(const QPoint &);  // sets nearestInverted
 
     void calcZooming(const QPointF &oldzoom, const QPointF &newzoom, const QPoint &p, bool emitSignal = true);
     void multZooming(float multzoom);
@@ -236,6 +236,6 @@ private:
     void cancelRepeatFinderTask();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOT_PLOT_WIDGET_H_
+#endif  // _U2_DOT_PLOT_WIDGET_H_

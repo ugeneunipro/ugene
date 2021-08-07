@@ -76,10 +76,10 @@ protected:
     QString readsTable;
     QString rangeConditionCheck;
     QString rangeConditionCheckForCount;
-    int minReadLength;    // used in range mode
-    int maxReadLength;    // used in range mode
-    bool rangeMode;    // flag to show that range mode is in use
-    bool inited;    // is database table already created
+    int minReadLength;  // used in range mode
+    int maxReadLength;  // used in range mode
+    bool rangeMode;  // flag to show that range mode is in use
+    bool inited;  // is database table already created
 
     static const QString DEFAULT_RANGE_CONDITION_CHECK;
     static const QString RTM_RANGE_CONDITION_CHECK;
@@ -104,6 +104,6 @@ private:
     U2SqlQuery *updateQuery;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_MYSQL_ASSEMBLY_SINGLE_TABLE_DBI_H_
+#endif  //_U2_MYSQL_ASSEMBLY_SINGLE_TABLE_DBI_H_

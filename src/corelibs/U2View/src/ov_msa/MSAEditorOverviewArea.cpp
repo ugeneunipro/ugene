@@ -81,4 +81,4 @@ void MSAEditorOverviewArea::sl_show() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -78,7 +78,7 @@ private:
     CandidatesSplitterRegistry();
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_INTEGRAL_BUS_UTILS_H_
+#endif  // _U2_INTEGRAL_BUS_UTILS_H_

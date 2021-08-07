@@ -69,7 +69,7 @@ void GTest_AddPartToSequenceTask::init(XMLTestFormat *tf, const QDomElement &el)
         foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
             expectedRegions.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt() - str.split(',')[0].toInt()));
         }
-        //expectedRegions=buf;
+        // expectedRegions=buf;
     } else {
         expectedRegions.clear();
     }
@@ -111,7 +111,7 @@ Task::ReportResult GTest_AddPartToSequenceTask::report() {
                                .arg(expectedSequence.length()));
         return ReportResult_Finished;
     }
-    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)    //may be refactor this place
+    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)  // may be refactor this place
     {
         CHECK_OP(stateInfo, ReportResult_Finished);
         stateInfo.setError(GTest::tr("Sequence is incorrect. Expected:%1, but Actual:%2")
@@ -208,7 +208,7 @@ void GTest_RemovePartFromSequenceTask::init(XMLTestFormat *tf, const QDomElement
         foreach (QString str, buf.split(' ', QString::SkipEmptyParts)) {
             expectedRegions.append(U2Region(str.split(',')[0].toInt(), str.split(',')[1].toInt() - str.split(',')[0].toInt()));
         }
-        //expectedRegions=buf;
+        // expectedRegions=buf;
     } else {
         expectedRegions.clear();
     }
@@ -244,7 +244,7 @@ Task::ReportResult GTest_RemovePartFromSequenceTask::report() {
                                .arg(expectedSequence.length()));
         return ReportResult_Finished;
     }
-    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)    //may be refactor this place
+    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)  // may be refactor this place
     {
         CHECK_OP(stateInfo, ReportResult_Finished);
         stateInfo.setError(GTest::tr("Sequence is incorrect. Expected:%1, but Actual:%2")
@@ -373,7 +373,7 @@ Task::ReportResult GTest_ReplacePartOfSequenceTask::report() {
                                .arg(expectedSequence.length()));
         return ReportResult_Finished;
     }
-    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)    //may be refactor this place
+    if (QString::compare(dnaso->getWholeSequenceData(stateInfo), expectedSequence, Qt::CaseInsensitive) != 0)  // may be refactor this place
     {
         CHECK_OP(stateInfo, ReportResult_Finished);
         stateInfo.setError(GTest::tr("Sequence is incorrect. Actual:%1, but expected:%2")
@@ -425,4 +425,4 @@ QList<XMLTestFactory *> EditSequenceTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

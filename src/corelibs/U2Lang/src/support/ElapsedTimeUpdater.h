@@ -44,8 +44,8 @@ private slots:
     void sl_taskFinished(Task *);
 };
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _ELAPSED_TIME_UPDATER_H_
+#endif  // _ELAPSED_TIME_UPDATER_H_

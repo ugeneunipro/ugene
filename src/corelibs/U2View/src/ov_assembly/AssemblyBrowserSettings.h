@@ -45,8 +45,8 @@ public:
     static bool getOptimizeRenderOnScroll();
     static void setOptimizeRenderOnScroll(bool what);
 
-};    // AssemblyBrowserSettings
+};  // AssemblyBrowserSettings
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // __ASSEMBLY_BROWSER_SETTINGS_H__
+#endif  // __ASSEMBLY_BROWSER_SETTINGS_H__

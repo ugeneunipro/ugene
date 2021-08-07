@@ -48,10 +48,10 @@ bool isBamConversion(const QString &srcFormat, const QString &dstFormat) {
     return (isSrcSam && isDstBam) || (isSrcBam && isDstSam);
 }
 
-}    // namespace
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////
-//ConvertFileTask
+// ConvertFileTask
 ConvertFileTask::ConvertFileTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &workingDir)
     : Task(DocumentFormatUtils::tr("Conversion file from %1 to %2").arg(detectedFormat).arg(targetFormat), TaskFlags_FOSE_COSC),
       sourceURL(sourceURL), detectedFormat(detectedFormat), targetFormat(targetFormat), workingDir(workingDir) {
@@ -72,7 +72,7 @@ void ConvertFileTask::run() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//DefaultConvertFileTask
+// DefaultConvertFileTask
 DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
     : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
       loadTask(nullptr),
@@ -150,7 +150,7 @@ QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BamSamConversionTask
+// BamSamConversionTask
 BamSamConversionTask::BamSamConversionTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
     : ConvertFileTask(sourceURL, detectedFormat, targetFormat, dir), samToBam(true) {
 }
@@ -178,18 +178,18 @@ void BamSamConversionTask::run() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//Factories and registries
+// Factories and registries
 
 bool BAMConvertFactory::isCustomFormatTask(const QString &detectedFormat, const QString &targetFormat) {
     return isBamConversion(detectedFormat, targetFormat);
 }
 
 //////////////////////////////////////////////////////////////////////////
-//ConvertFactoryRegistry
+// ConvertFactoryRegistry
 ConvertFactoryRegistry::ConvertFactoryRegistry(QObject *o)
     : QObject(o) {
-    //init factories
-    //default factory always goes last
+    // init factories
+    // default factory always goes last
     factories.append(new BAMConvertFactory());
     factories.append(new ConvertFileFactory());
 }
@@ -232,4 +232,4 @@ bool ConvertFileFactory::isCustomFormatTask(const QString & /*detectedFormat*/, 
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -91,7 +91,7 @@ private:
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
     MSADistanceAlgorithm *distanceCalcTask;
 
-    AlignmentAlgorithmMainWidget *settingsWidget;    //created by factories on demand
+    AlignmentAlgorithmMainWidget *settingsWidget;  // created by factories on demand
 
     ShowHideSubgroupWidget *showHideSequenceWidget;
     ShowHideSubgroupWidget *showHideSettingsWidget;
@@ -112,10 +112,10 @@ private:
 
     bool sequencesChanged;
     bool sequenceNamesIsOk;
-    bool alphabetIsOk;    //no RNA alphabet allowed
+    bool alphabetIsOk;  // no RNA alphabet allowed
     bool canDoAlign;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // PAIR_ALIGN_H
+#endif  // PAIR_ALIGN_H

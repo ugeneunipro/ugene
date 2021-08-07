@@ -131,4 +131,4 @@ void GDocumentObjectSelection::sl_onObjectRemoved(GObject* o) {
 
 */
 
-}    // namespace U2
+}  // namespace U2

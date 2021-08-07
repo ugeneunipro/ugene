@@ -548,7 +548,7 @@ QVariant URLDelegate::getDisplayValue(const QVariant &v) const {
 URLWidget *URLDelegate::createWidget(QWidget *parent) const {
     URLWidget *result;
     if (options.testFlag(SelectParentDirInsteadSelectedFile)) {
-        bool isPath = false;    // noFilesMode: choose a file but its dir will be committed
+        bool isPath = false;  // noFilesMode: choose a file but its dir will be committed
         result = new NoFileURLWidget(lastDirType,
                                      options.testFlag(AllowSelectSeveralFiles),
                                      isPath,
@@ -874,7 +874,7 @@ QWidget *StringSelectorDelegate::createEditor(QWidget *parent, const QStyleOptio
     QWidget *editor = new QWidget(parent);
     valueEdit = new QLineEdit(editor);
     valueEdit->setObjectName("valueEdit");
-    //valueEdit->setReadOnly(true);
+    // valueEdit->setReadOnly(true);
     valueEdit->setFrame(false);
     valueEdit->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     editor->setFocusProxy(valueEdit);
@@ -998,4 +998,4 @@ void LineEditWithValidatorDelegate::sl_valueChanged() {
     lineEdit->setCursorPosition(cursorPos);
 }
 
-}    // namespace U2
+}  // namespace U2

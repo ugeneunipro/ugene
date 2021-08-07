@@ -261,6 +261,6 @@ inline bool operator==(const MultipleChromatogramAlignmentData *ptr1, const Mult
     return *ptr1 == *ptr2;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
+#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_

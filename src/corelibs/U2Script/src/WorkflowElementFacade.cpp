@@ -119,7 +119,7 @@ U2ErrorType WorkflowElementFacade::doesElementHaveOutputSlot(const QString &elem
     QList<Workflow::PortDescriptor *> ports;
     CHECK(U2_OK == (result = getElementPorts(elementType, ports)), result);
     foreach (Workflow::PortDescriptor *port, ports) {
-        if (port->isOutput()) {    // considering all WD elements to have only one output port
+        if (port->isOutput()) {  // considering all WD elements to have only one output port
             *has = port->getOwnTypeMap().contains(slotId);
             break;
         }
@@ -260,4 +260,4 @@ U2ErrorType WorkflowElementFacade::getOutputPortIdForSlot(const QString &element
     return getConvenientPortIdForSlot(elementId, slotId, portId, isInput);
 }
 
-}    // namespace U2
+}  // namespace U2

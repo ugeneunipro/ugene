@@ -118,4 +118,4 @@ void CumulativeSkewGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObje
     }
 }
 
-}    // namespace U2
+}  // namespace U2

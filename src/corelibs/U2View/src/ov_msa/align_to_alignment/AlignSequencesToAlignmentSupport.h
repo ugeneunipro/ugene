@@ -61,5 +61,5 @@ private:
     QString algorithmId;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

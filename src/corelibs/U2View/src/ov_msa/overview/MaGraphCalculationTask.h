@@ -131,6 +131,6 @@ private:
     QString schemeId;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_GRAPH_CALCULATION_TASK_H_
+#endif  // _U2_MSA_GRAPH_CALCULATION_TASK_H_

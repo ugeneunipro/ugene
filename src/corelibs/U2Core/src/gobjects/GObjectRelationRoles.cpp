@@ -30,7 +30,7 @@ const QString SEQUENCE("sequence");
 const QString ANNOTATION_TABLE("annotation_table");
 const QString PHYLOGENETIC_TREE("phylogenetic_tree");
 const QString REFERENCE_SEQUENCE("reference_sequence");
-}    // namespace
+}  // namespace
 
 QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
     switch (role) {
@@ -61,4 +61,4 @@ GObjectRelationRole GObjectRelationRoleCompatibility::fromString(const QString &
     }
 }
 
-}    // namespace U2
+}  // namespace U2

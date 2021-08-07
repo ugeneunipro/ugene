@@ -79,4 +79,4 @@ void RadioController::sl_buttonClicked(QAbstractButton *button) {
     wc->setVariableValue(rw->var(), id);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,7 +41,7 @@ GUI_TEST_CLASS_DECLARATION(general_avail_8)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_common_scenarios_circular_view
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_circular_view
+}  // namespace U2
 
-#endif    // _GT_TESTS_CV_GENERAL_H_
+#endif  // _GT_TESTS_CV_GENERAL_H_

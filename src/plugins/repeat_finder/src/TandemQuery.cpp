@@ -41,7 +41,7 @@ const QString N_THREADS_ATTRIBUTE = "n-threads";
 
 const QString ALGORITHM_SUFFIX = "suffix";
 const QString ALGORITHM_SUFFIX_BINARY = "suffix-binary";
-}    // namespace
+}  // namespace
 
 // QDTandemActor
 
@@ -123,14 +123,14 @@ QList<QPair<QString, QString>> QDTandemActor::saveConfiguration() const {
         if (algorithmAttribute->getId() == attribute.first) {
             TSConstants::TSAlgo algorithm = (TSConstants::TSAlgo)algorithmAttribute->getAttributeValueWithoutScript<int>();
             switch (algorithm) {
-            case TSConstants::AlgoSuffix:
-                attribute.second = ALGORITHM_SUFFIX;
-                break;
-            case TSConstants::AlgoSuffixBinary:
-                attribute.second = ALGORITHM_SUFFIX_BINARY;
-                break;
-            default:
-                break;
+                case TSConstants::AlgoSuffix:
+                    attribute.second = ALGORITHM_SUFFIX;
+                    break;
+                case TSConstants::AlgoSuffixBinary:
+                    attribute.second = ALGORITHM_SUFFIX_BINARY;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -179,8 +179,8 @@ QDTandemActorPrototype::QDTandemActorPrototype() {
         Descriptor nThreadsDescriptor(N_THREADS_ATTRIBUTE, QDTandemActor::tr("Parallel threads"), QDTandemActor::tr("Number of parallel threads used for the task."));
 
         FindTandemsTaskSettings defaultSettings;
-        defaultSettings.minRepeatCount = 3;    // the default constructor initializes it to an invalid value
-        defaultSettings.maxPeriod = 1000000;    // the default constructor initializes it to an invalid value
+        defaultSettings.minRepeatCount = 3;  // the default constructor initializes it to an invalid value
+        defaultSettings.maxPeriod = 1000000;  // the default constructor initializes it to an invalid value
 
         attributes.append(new Attribute(minPeriodDescriptor, BaseTypes::NUM_TYPE(), true, defaultSettings.minPeriod));
         attributes.append(new Attribute(maxPeriodDescriptor, BaseTypes::NUM_TYPE(), true, defaultSettings.maxPeriod));
@@ -242,4 +242,4 @@ QDActor *QDTandemActorPrototype::createInstance() const {
     return new QDTandemActor(this);
 }
 
-}    // namespace U2
+}  // namespace U2

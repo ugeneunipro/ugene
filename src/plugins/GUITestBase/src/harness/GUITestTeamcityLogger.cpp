@@ -59,4 +59,4 @@ bool GUITestTeamcityLogger::isTestFailed(const QString &testOutput) {
     return !testOutput.contains(successResult);
 }
 
-}    // namespace U2
+}  // namespace U2

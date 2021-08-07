@@ -155,7 +155,7 @@ QList<Task *> ShutdownTask::onSubTaskFinished(Task *subTask) {
         docsToRemoveAreFetched = true;
     }
 
-    if (res.isEmpty()) {    // all services has stopped
+    if (res.isEmpty()) {  // all services has stopped
         qDeleteAll(docsToRemove);
     }
 
@@ -174,7 +174,7 @@ Task::ReportResult ShutdownTask::report() {
         return Task::ReportResult_Finished;
     }
 
-    if (AppContext::getTaskScheduler()->getTopLevelTasks().size() > 1) {    // some documents are being deleted
+    if (AppContext::getTaskScheduler()->getTopLevelTasks().size() > 1) {  // some documents are being deleted
         return Task::ReportResult_CallMeAgain;
     }
 
@@ -248,4 +248,4 @@ Task::ReportResult CancelAllTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

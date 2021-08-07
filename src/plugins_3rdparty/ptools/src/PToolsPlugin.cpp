@@ -20,20 +20,23 @@
  */
 
 #include "PToolsPlugin.h"
+
+#include <U2Algorithm/StructuralAlignmentAlgorithmFactory.h>
+#include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/GAutoDeleteList.h>
+
+#include <U2Test/GTest.h>
+#include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
+
 #include "PToolsAligner.h"
 #include "PToolsTests.h"
 
-#include <U2Core/AppContext.h>
-#include <U2Algorithm/StructuralAlignmentAlgorithmFactory.h>
-#include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
-#include <U2Test/XMLTestFormat.h>
-#include <U2Test/GTest.h>
-#include <U2Test/GTestFrameworkComponents.h>
-#include <U2Core/GAutoDeleteList.h>
-
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     PToolsPlugin *plug = new PToolsPlugin();
     return plug;
 }
@@ -42,37 +45,35 @@ static const QString PTOOLS_ID("PTools");
 
 /* class PToolsPlugin : public Plugin */
 
-PToolsPlugin::PToolsPlugin() : Plugin(tr("PTools"), tr("Structural alignment algorithm (Sippl MJ, Stegbuchner H) from PTools library"))
-{
+PToolsPlugin::PToolsPlugin()
+    : Plugin(tr("PTools"), tr("Structural alignment algorithm (Sippl MJ, Stegbuchner H) from PTools library")) {
     StructuralAlignmentAlgorithmFactory *ptools = new PToolsAlignerFactory();
     AppContext::getStructuralAlignmentAlgorithmRegistry()->registerAlgorithmFactory(ptools, PTOOLS_ID);
 
     // PToolsAligner tests
-    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=nullptr);
+    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = StructualAlignerTests::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) {
+    foreach (XMLTestFactory *f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
     }
 }
 
-PToolsPlugin::~PToolsPlugin()
-{
+PToolsPlugin::~PToolsPlugin() {
 }
 
 /* class StructualAlignerTests */
 
-QList<XMLTestFactory*> StructualAlignerTests ::createTestFactories() {
-    QList<XMLTestFactory*> res;
+QList<XMLTestFactory *> StructualAlignerTests ::createTestFactories() {
+    QList<XMLTestFactory *> res;
     res.append(Gtest_PToolsAlignerTask::createFactory());
     return res;
 }
 
-}   // namespace U2
-
+}  // namespace U2

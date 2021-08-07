@@ -36,7 +36,7 @@
 #    include <QFileInfo>
 #    include <QProcess>
 #    include <QTemporaryFile>
-#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
+#endif  // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -127,9 +127,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
     }
-#endif    // Q_OS_WIN
+#endif  // Q_OS_WIN
 }
 
-}    // namespace GUITest_common_scenarios_create_shortcut
+}  // namespace GUITest_common_scenarios_create_shortcut
 
-}    // namespace U2
+}  // namespace U2

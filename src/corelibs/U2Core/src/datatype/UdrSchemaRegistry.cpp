@@ -60,4 +60,4 @@ bool UdrSchemaRegistry::isCorrectName(const QByteArray &name) {
     return regExp.exactMatch(name);
 }
 
-}    // namespace U2
+}  // namespace U2

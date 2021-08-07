@@ -125,7 +125,7 @@ protected:
 
     WorkflowMonitor *monitor() const;
     void reportError(const QString &message);
-};    // BaseWorker
+};  // BaseWorker
 
 /**
  * simple realization of Communnication channel
@@ -159,7 +159,7 @@ protected:
     //
     int takenMsgs;
 
-};    // SimpleQueue
+};  // SimpleQueue
 
 /**
  * runtime domain for SimplestSequentialScheduler and SimpleQueue
@@ -180,7 +180,7 @@ public:
     virtual Scheduler *createScheduler(Schema *);
     virtual void destroy(Scheduler *, Schema *);
 
-};    // LocalDomainFactory
+};  // LocalDomainFactory
 
 /************************************************************************/
 /* Template definitions */
@@ -208,8 +208,8 @@ inline QString BaseWorker::getValue(const QString &paramId) const {
     return value;
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_LOCAL_DOMAIN_H_
+#endif  // _U2_WORKFLOW_LOCAL_DOMAIN_H_

@@ -139,4 +139,4 @@ McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {
     return refArea;
 }
 
-}    // namespace U2
+}  // namespace U2

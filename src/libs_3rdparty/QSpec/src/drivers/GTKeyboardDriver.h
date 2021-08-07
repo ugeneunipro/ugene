@@ -76,6 +76,6 @@ public:
     static QList<Qt::Key> modifiersToKeys(Qt::KeyboardModifiers m);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

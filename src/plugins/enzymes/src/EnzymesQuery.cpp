@@ -165,4 +165,4 @@ QString EnzymesSelectorDialog::getSelectedString() const {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

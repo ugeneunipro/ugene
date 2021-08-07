@@ -259,7 +259,7 @@ void McaEditorSequenceArea::sl_showAllTraces() {
 }
 
 void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
-    //k = chromaMax
+    // k = chromaMax
     SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
     int currentAreaHeight = r->getAreaHeight();
     if (currentAreaHeight != k) {
@@ -322,7 +322,7 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 void McaEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
-    const MaEditorSelection& selection = editor->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
 
     const bool readOnly = maObj->isStateLocked();
@@ -353,7 +353,7 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    const MaEditorSelection& selection = editor->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     SAFE_POINT(!selection.isEmpty(), "selection is empty", );
     int currentPos = selection.toRect().x();
 
@@ -410,7 +410,7 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != nullptr, );
-    const MaEditorSelection& selection = editor->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );
@@ -476,4 +476,4 @@ void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
     collapseModel->reset(getEditor()->getMaRowIds(), expandedGroupIndexes);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -34,4 +34,4 @@ MsaColorScheme *MsaColorSchemePercentageIdententityColoredFactory::create(QObjec
     return new MsaColorSchemePercentageIdententityColored(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -43,7 +43,7 @@ public:
 protected:
     BackgroundTask(const QString &_name, TaskFlags f)
         : Task(_name, f) {
-        setVerboseOnTaskCancel(false);    // do not add messages about the task canceling into the log
+        setVerboseOnTaskCancel(false);  // do not add messages about the task canceling into the log
     }
     Result result;
 };
@@ -146,6 +146,6 @@ private:
     BackgroundTaskRunner operator=(const BackgroundTaskRunner &);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -52,7 +52,7 @@ const QString DETAILS_LINK = "details";
 const QString FORWARD_SUBGROUP_ID = "forward";
 const QString REVERSE_SUBGROUP_ID = "reverse";
 const QString SETTINGS_SUBGROUP_ID = "settings";
-}    // namespace
+}  // namespace
 
 InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *annotatedDnaView)
     : QWidget(),
@@ -262,4 +262,4 @@ void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString &link) {
     dlg->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

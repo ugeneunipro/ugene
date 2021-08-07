@@ -61,6 +61,6 @@ U2CORE_EXPORT Vector3D operator*(const Vector3D &v, double f);
 U2CORE_EXPORT Vector3D operator*(double f, const Vector3D &v);
 U2CORE_EXPORT Vector3D operator/(const Vector3D &v, double f);
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_VECTOR_MATH_H_
+#endif  //_U2_VECTOR_MATH_H_

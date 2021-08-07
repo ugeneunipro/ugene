@@ -114,4 +114,4 @@ QString ExportAnnotationsDialog::fileFormat() const {
     return saveController->getFormatIdToSave();
 }
 
-}    // namespace U2
+}  // namespace U2

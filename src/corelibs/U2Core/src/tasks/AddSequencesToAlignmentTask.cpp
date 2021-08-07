@@ -63,7 +63,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
         return;
     }
 
-    {    // Start of MA-object state lock.
+    {  // Start of MA-object state lock.
         StateLocker stateLocker(maObj, new StateLock("add_sequences_to_alignment"));
         QList<DNASequence> resultSequenceList = prepareResultSequenceList();
 
@@ -71,7 +71,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
             return;
         }
 
-        {    // Start of U2UseCommonUserModStep scope.
+        {  // Start of U2UseCommonUserModStep scope.
             U2UseCommonUserModStep modStep(maObj->getEntityRef(), stateInfo);
             U2MsaDbi *msaDbi = modStep.getDbi()->getMsaDbi();
 
@@ -85,8 +85,8 @@ void AddSequenceObjectsToAlignmentTask::run() {
             CHECK_OP(stateInfo, );
             updateAlphabet(msaDbi);
 
-        }    // End of U2UseCommonUserModStep scope.
-    }    // End of MA-object state lock.
+        }  // End of U2UseCommonUserModStep scope.
+    }  // End of MA-object state lock.
     CHECK_OP(stateInfo, );
 
     maObj->updateCachedMultipleAlignment(mi);
@@ -198,7 +198,7 @@ void AddSequencesFromFilesToAlignmentTask::prepare() {
 }
 
 QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    const QList<Task *> emptySubTasks;    // Helper constant. This method never returns any subtasks.
+    const QList<Task *> emptySubTasks;  // Helper constant. This method never returns any subtasks.
 
     propagateSubtaskError();
     if (isCanceled() || hasError()) {
@@ -246,4 +246,4 @@ void AddSequencesFromFilesToAlignmentTask::sl_onCancel() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

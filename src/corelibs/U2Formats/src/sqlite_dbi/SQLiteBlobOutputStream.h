@@ -40,6 +40,6 @@ private:
     void update(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SQLITEBLOBOUTPUTSTREAM_H_
+#endif  // _U2_SQLITEBLOBOUTPUTSTREAM_H_

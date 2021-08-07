@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-//additional tool validations. Even with other executables
+// additional tool validations. Even with other executables
 class U2CORE_EXPORT ExternalToolValidation {
 public:
     ExternalToolValidation(const QString &_toolRunnerProgram, const QString &_executableFile, const QStringList &_arguments, const QString &_expectedMsg, const StrStrMap &_possibleErrorsDescr = StrStrMap())
@@ -113,35 +113,35 @@ protected:
     QString dirName;
     /** Visual name of the tool. */
     QString name;
-    QString path;    // tool path
-    QIcon icon;    // valid tool icon
-    QIcon grayIcon;    // not set tool icon
-    QIcon warnIcon;    // invalid tool icon
-    QString description;    // tool description
-    QString toolRunnerProgram;    // starter program (e.g. python for scripts)
-    QString executableFileName;    // executable file name (without path)
-    QStringList validationArguments;    // arguments to validation run (such as --version)
-    QString validMessage;    // expected message in the validation run output
-    QString version;    // tool version
-    QString predefinedVersion;    // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
-    QRegExp versionRegExp;    // RegExp to get the version from the validation run output
-    bool isValidTool;    // tool state
+    QString path;  // tool path
+    QIcon icon;  // valid tool icon
+    QIcon grayIcon;  // not set tool icon
+    QIcon warnIcon;  // invalid tool icon
+    QString description;  // tool description
+    QString toolRunnerProgram;  // starter program (e.g. python for scripts)
+    QString executableFileName;  // executable file name (without path)
+    QStringList validationArguments;  // arguments to validation run (such as --version)
+    QString validMessage;  // expected message in the validation run output
+    QString version;  // tool version
+    QString predefinedVersion;  // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
+    QRegExp versionRegExp;  // RegExp to get the version from the validation run output
+    bool isValidTool;  // tool state
 
     /** If true the tool was already checked/validated by UGENE. */
     bool isCheckedTool;
 
-    QString toolKitName;    // toolkit which includes the tool
-    StrStrMap errorDescriptions;    // error messages for the tool's standard errors
-    StrStrMap additionalInfo;    // any additional info, it is specific for the extenal tool
-    QList<ExternalToolValidation> additionalValidators;    // validators for the environment state (e.g. some external program should be installed)
-    QStringList dependencies;    // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
-    QString additionalErrorMesage;    // a string, which contains an error message, specific for each tool
-    bool muted;    // a muted tool doesn't write its validation error to the log
-    bool isModuleTool;    // a module tool is a part of another external tool
-    bool isCustomTool;    // the tool is described in a user-written config file and imported to UGENE
-    bool isRunnerTool;    // the tool could be used as script-runner
+    QString toolKitName;  // toolkit which includes the tool
+    StrStrMap errorDescriptions;  // error messages for the tool's standard errors
+    StrStrMap additionalInfo;  // any additional info, it is specific for the extenal tool
+    QList<ExternalToolValidation> additionalValidators;  // validators for the environment state (e.g. some external program should be installed)
+    QStringList dependencies;  // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
+    QString additionalErrorMesage;  // a string, which contains an error message, specific for each tool
+    bool muted;  // a muted tool doesn't write its validation error to the log
+    bool isModuleTool;  // a module tool is a part of another external tool
+    bool isCustomTool;  // the tool is described in a user-written config file and imported to UGENE
+    bool isRunnerTool;  // the tool could be used as script-runner
 
-};    // ExternalTool
+};  // ExternalTool
 
 class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
@@ -221,8 +221,8 @@ signals:
     void si_startupValidationFinished();
 };
 
-//this register keeps order of items added
-//entries are given in the same order as they are added
+// this register keeps order of items added
+// entries are given in the same order as they are added
 class U2CORE_EXPORT ExternalToolRegistry : public QObject {
     Q_OBJECT
 public:
@@ -258,7 +258,7 @@ protected:
     QMap<QString, QString> toolkits;
     ExternalToolManager *manager;
 
-};    // ExternalToolRegistry
+};  // ExternalToolRegistry
 
-}    // namespace U2
-#endif    // U2_EXTERNAL_TOOL_REGISTRY_H
+}  // namespace U2
+#endif  // U2_EXTERNAL_TOOL_REGISTRY_H

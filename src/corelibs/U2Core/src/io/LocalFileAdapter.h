@@ -46,7 +46,7 @@ public:
     virtual bool isIOModeSupported(IOAdapterMode m) const {
         Q_UNUSED(m);
         return true;
-    }    //files can be read and be written
+    }  // files can be read and be written
 
     virtual TriState isResourceAvailable(const GUrl &url) const {
         return QFileInfo(url.getURLString()).exists() ? TriState_Yes : TriState_No;
@@ -108,6 +108,6 @@ private:
     static const quint64 BUF_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

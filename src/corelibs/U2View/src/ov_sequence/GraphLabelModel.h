@@ -185,5 +185,5 @@ private slots:
     void sl_deleteLabel(GraphLabel *label);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

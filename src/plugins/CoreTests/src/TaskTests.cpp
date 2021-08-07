@@ -364,7 +364,7 @@ void GTest_TaskCheckState::init(XMLTestFormat *tf, const QDomElement &el) {
         }
         checkCancelFlag = true;
     }
-    //TODO: stateDesc, error
+    // TODO: stateDesc, error
 }
 
 Task::ReportResult GTest_TaskCheckState::report() {
@@ -589,7 +589,7 @@ void GTest_Wait::init(U2::XMLTestFormat *tf, const QDomElement &el) {
                 return;
             }
         } else {
-            //do nothing;
+            // do nothing;
         }
     }
 }
@@ -661,4 +661,4 @@ QList<XMLTestFactory *> TaskTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -48,150 +48,150 @@ namespace GUITest_common_scenarios_in_silico_pcr {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsPcr::clearPcrDir(os);
-    //The PCR options panel is available only for nucleic sequences
+    // The PCR options panel is available only for nucleic sequences
 
-    //1. Open "_common_data/fasta/alphabet.fa".
+    // 1. Open "_common_data/fasta/alphabet.fa".
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/alphabet.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Activate the "Amino" sequence in the sequence view (set the focus for it).
+    // 2. Activate the "Amino" sequence in the sequence view (set the focus for it).
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 0));
 
-    //3. Open the PCR OP.
+    // 3. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //Expected: The panel is unavailable, the info message about alphabets is shown.
+    // Expected: The panel is unavailable, the info message about alphabets is shown.
     QWidget *params = GTWidget::findWidget(os, "runPcrWidget");
     QWidget *warning = GTWidget::findWidget(os, "algoWarningLabel");
     CHECK_SET_ERR(!params->isEnabled(), "The panel is enabled for a wrong alphabet");
     CHECK_SET_ERR(warning->isVisible(), "No alphabet warning");
 
-    //4. Activate the "Nucl" sequence.
+    // 4. Activate the "Nucl" sequence.
     GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 1));
 
-    //Expected: The panel is available, the info message is hidden.
+    // Expected: The panel is available, the info message is hidden.
     CHECK_SET_ERR(params->isEnabled(), "The panel is disabled for the right alphabet");
     CHECK_SET_ERR(!warning->isVisible(), "The alphabet warning is shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcr::clearPcrDir(os);
-    //Primer group box
+    // Primer group box
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
-    // TODO: wrap into api
+    // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
+    //  TODO: wrap into api
     QWidget *forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
     QLineEdit *forwardPrimerLine = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
     GTLineEdit::setText(os, forwardPrimerLine, "Q%1", true);
 
-    //Expected: the line edit is empty, the statistics label is empty.
+    // Expected: the line edit is empty, the statistics label is empty.
     CHECK_SET_ERR(forwardPrimerLine->text().isEmpty(), "Wrong input");
 
-    //4. Write "atcg".
+    // 4. Write "atcg".
     GTLineEdit::setText(os, forwardPrimerLine, "atcg", true);
 
-    //Expected: the line edit content is "ATCG", the statistics label shows the temperature and "4-mer".
+    // Expected: the line edit content is "ATCG", the statistics label shows the temperature and "4-mer".
     QLabel *statsLabel = dynamic_cast<QLabel *>(GTWidget::findWidget(os, "characteristicsLabel", forwardPrimerBox));
     CHECK_SET_ERR(forwardPrimerLine->text() == "ATCG", "No upper-case");
     CHECK_SET_ERR(statsLabel->text().endsWith("4-mer"), "Wrong statistics label");
 
-    //5. Click the reverse complement button.
+    // 5. Click the reverse complement button.
     GTWidget::click(os, GTWidget::findWidget(os, "reverseComplementButton", forwardPrimerBox));
 
-    //Expected: the line edit content is "CGAT".
+    // Expected: the line edit content is "CGAT".
     CHECK_SET_ERR(forwardPrimerLine->text() == "CGAT", "Incorrect reverse-complement");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsPcr::clearPcrDir(os);
-    //Availability of the PCR OP find button
+    // Availability of the PCR OP find button
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //Expected: the find buttom is disabled.
+    // Expected: the find buttom is disabled.
     QWidget *findButton = GTWidget::findWidget(os, "findProductButton");
     CHECK_SET_ERR(!findButton->isEnabled(), "Find button is enabled 1");
 
-    //3. Enter the forward primer "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT".
+    // 3. Enter the forward primer "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT");
 
-    //Expected: the find buttom is disabled.
+    // Expected: the find buttom is disabled.
     CHECK_SET_ERR(!findButton->isEnabled(), "Find button is enabled 2");
 
-    //4. Enter the reverse primer "GTGACCTTGGATGACAATAGGTTCCAAGGCTC".
+    // 4. Enter the reverse primer "GTGACCTTGGATGACAATAGGTTCCAAGGCTC".
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "GTGACCTTGGATGACAATAGGTTCCAAGGCTC");
 
-    //Expected: the find buttom is enabled.
+    // Expected: the find buttom is enabled.
     CHECK_SET_ERR(findButton->isEnabled(), "Find button is disabled");
 
-    //5. Clear the forward primer.
+    // 5. Clear the forward primer.
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "");
 
-    //Expected: the find buttom is disabled.
+    // Expected: the find buttom is disabled.
     CHECK_SET_ERR(!findButton->isEnabled(), "Find button is enabled 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsPcr::clearPcrDir(os);
-    //Products table:
-    //    Availability of the extract button
-    //    Extract product result
-    //    Double click
+    // Products table:
+    //     Availability of the extract button
+    //     Extract product result
+    //     Double click
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT" and "GTGACCTTGGATGACAATAGGTTCCAAGGCTC".
+    // 3. Enter the primers: "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT" and "GTGACCTTGGATGACAATAGGTTCCAAGGCTC".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "GTGACCTTGGATGACAATAGGTTCCAAGGCTC");
 
-    //4. Click the find button.
+    // 4. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: the product table is shown with one result [9..1196].
+    // Expected: the product table is shown with one result [9..1196].
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
     CHECK_SET_ERR("9 - 1196" == GTUtilsPcr::getResultRegion(os, 0), "Wrong result");
 
-    //5. Click the result.
+    // 5. Click the result.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));
     GTMouseDriver::click();
 
-    //Expected: the extract button is enabled.
+    // Expected: the extract button is enabled.
     QWidget *extractButton = GTWidget::findWidget(os, "extractProductButton");
     CHECK_SET_ERR(extractButton->isEnabled(), "Extract button is disabled");
 
-    //6. Click the empty place of the table.
+    // 6. Click the empty place of the table.
     QPoint emptyPoint = QPoint(GTUtilsPcr::getResultPoint(os, 0));
     emptyPoint.setY(emptyPoint.y() + 30);
     GTMouseDriver::moveTo(emptyPoint);
     GTMouseDriver::click();
 
-    //Expected: the extract button is disabled.
+    // Expected: the extract button is disabled.
     CHECK_SET_ERR(!extractButton->isEnabled(), "Extract button is enabled");
 
-    //7. Double click the result.
+    // 7. Double click the result.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));
     GTMouseDriver::doubleClick();
 
-    //Expected: the new file is opened "pIB2-SEC13_9-1196.gb".
+    // Expected: the new file is opened "pIB2-SEC13_9-1196.gb".
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_9-1196.gb");
 
@@ -201,50 +201,50 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsPcr::clearPcrDir(os);
-    //Products table:
-    //    Sequence view selection
-    //    Extract several products result
+    // Products table:
+    //     Sequence view selection
+    //     Extract several products result
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "CGCGCGTTTCGGTGA" with 0 mismatched and "CGGCATCCGCTTACAGAC" with 6.
+    // 3. Enter the primers: "CGCGCGTTTCGGTGA" with 0 mismatched and "CGGCATCCGCTTACAGAC" with 6.
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "CGCGCGTTTCGGTGA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGGCATCCGCTTACAGAC");
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 6);
     GTUtilsPcr::setPerfectMatch(os, 0);
 
-    //4. Click the find button.
+    // 4. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: the product table is shown with three results.
+    // Expected: the product table is shown with three results.
     CHECK_SET_ERR(3 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
-    //5. Click the 3rd result.
+    // 5. Click the 3rd result.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 2));
     GTMouseDriver::click();
 
-    //Expected: the sequence selection is [2..3775].
-    // TODO
+    // Expected: the sequence selection is [2..3775].
+    //  TODO
 
-    //6. Click the 2nd result with CTRL pressed.
+    // 6. Click the 2nd result with CTRL pressed.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 1));
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //Expected: the sequence selection is not changed, two results are selected in the table.
-    // TODO
+    // Expected: the sequence selection is not changed, two results are selected in the table.
+    //  TODO
 
-    //7. Click the extract button.
+    // 7. Click the extract button.
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
 
-    //Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
+    // Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_2-133.gb");
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_2-3775.gb");
@@ -257,221 +257,221 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsPcr::clearPcrDir(os);
-    //Primers pair warning and details dialog
+    // Primers pair warning and details dialog
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the forward primer "AGACTCTTTCGTCTCACGCACTTCGCTGATA".
+    // 3. Enter the forward primer "AGACTCTTTCGTCTCACGCACTTCGCTGATA".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGACTCTTTCGTCTCACGCACTTCGCTGATA");
 
-    //Expected: primer warning is hidden.
+    // Expected: primer warning is hidden.
     QWidget *warning = GTWidget::findWidget(os, "warningLabel");
     CHECK_SET_ERR(!warning->isVisible(), "Primer warning is visible");
 
-    //4. Enter the reverse primer  and "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT".
+    // 4. Enter the reverse primer  and "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT".
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT");
 
-    //Expected: primer warning is shown, the find button text is "Find product(s) anyway".
+    // Expected: primer warning is shown, the find button text is "Find product(s) anyway".
     QAbstractButton *findButton = dynamic_cast<QAbstractButton *>(GTWidget::findWidget(os, "findProductButton"));
     CHECK_SET_ERR(warning->isVisible(), "Primer warning is not visible");
     CHECK_SET_ERR(findButton->text() == "Find product(s) anyway", "Wrong find button text 1");
 
-    //5. Click "Show details".
-    //Expected: the details dialog is shown, the GC note of the forward primer is red.
+    // 5. Click "Show details".
+    // Expected: the details dialog is shown, the GC note of the forward primer is red.
     GTUtilsDialog::waitForDialog(os, new PrimersDetailsDialogFiller(os));
     GTMouseDriver::moveTo(GTUtilsPcr::getDetailsPoint(os));
     GTMouseDriver::click();
 
-    //6. Remove the last character of the forward primer.
+    // 6. Remove the last character of the forward primer.
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGACTCTTTCGTCTCACGCACTTCGCTGAT");
-    //Expected: the warning is hidden, the find button text is "Find product(s)".
+    // Expected: the warning is hidden, the find button text is "Find product(s)".
     CHECK_SET_ERR(!warning->isVisible(), "Primer warning is visible");
     CHECK_SET_ERR(findButton->text() == "Find product(s)", "Wrong find button text 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsPcr::clearPcrDir(os);
-    //Algorithm parameters:
-    //    Mismatches
-    //    Product size
+    // Algorithm parameters:
+    //     Mismatches
+    //     Product size
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "CGCGCGTTTCGGTGA" and "CGGCATCCGCTTACAGAC".
+    // 3. Enter the primers: "CGCGCGTTTCGGTGA" and "CGGCATCCGCTTACAGAC".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "CGCGCGTTTCGGTGA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGGCATCCGCTTACAGAC");
 
-    //4. Click the find button.
+    // 4. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: the product table is shown with one result.
+    // Expected: the product table is shown with one result.
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
-    //5. Set the reverse mismatches: 6. Click the find button.
+    // 5. Set the reverse mismatches: 6. Click the find button.
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 6);
     GTUtilsPcr::setPerfectMatch(os, 0);
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are 3 results in the table.
+    // Expected: there are 3 results in the table.
     CHECK_SET_ERR(3 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
-    //6. Set the maximum product size: 3773. Click the find button.
+    // 6. Set the maximum product size: 3773. Click the find button.
     GTUtilsPcr::setMaxProductSize(os, 3773);
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are 2 results in the table.
+    // Expected: there are 2 results in the table.
     CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPcr::clearPcrDir(os);
-    //Circular sequences
+    // Circular sequences
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "AGGCCCTTTCGTCTCGCGCGTTTCGGTGATG" and "TGACCGTCTCCGGGAGCTGCATGTGTCAGAGGTTTT".
+    // 3. Enter the primers: "AGGCCCTTTCGTCTCGCGCGTTTCGGTGATG" and "TGACCGTCTCCGGGAGCTGCATGTGTCAGAGGTTTT".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGGCCCTTTCGTCTCGCGCGTTTCGGTGATG");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TGACCGTCTCCGGGAGCTGCATGTGTCAGAGGTTTT");
 
-    //4. Click the find button.
+    // 4. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: no results found.
+    // Expected: no results found.
     CHECK_SET_ERR(0 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
 
-    //5. Right click on the sequence object in the project view -> Mark as circular.
+    // 5. Right click on the sequence object in the project view -> Mark as circular.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "pIB2-SEC13"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
     GTMouseDriver::click(Qt::RightButton);
 
-    //6. Click the find button.
+    // 6. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: one result found that goes through the 0 position [7223-60].
+    // Expected: one result found that goes through the 0 position [7223-60].
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 2");
     CHECK_SET_ERR("7223 - 60" == GTUtilsPcr::getResultRegion(os, 0), "Wrong result");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsPcr::clearPcrDir(os);
-    //Algorithm parameters:
-    //    3' perfect match
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // Algorithm parameters:
+    //     3' perfect match
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "CGCGCGTTTCGGTGA" and "CGACATCCGCTTACAGAC".
+    // 3. Enter the primers: "CGCGCGTTTCGGTGA" and "CGACATCCGCTTACAGAC".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "CGCGCGTTTCGGTGA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGACATCCGCTTACAGAC");
 
-    //4. Set the reverse mismatches: 1.
+    // 4. Set the reverse mismatches: 1.
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 1);
 
-    //5. Click the find button.
+    // 5. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: the product table is shown with one result.
+    // Expected: the product table is shown with one result.
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
 
-    //6. Set the 3' perfect match: 16.
+    // 6. Set the 3' perfect match: 16.
     QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox *>(GTWidget::findWidget(os, "perfectSpinBox"));
     GTSpinBox::setValue(os, perfectSpinBox, 16, GTGlobals::UseKeyBoard);
 
-    //7. Click the find button.
+    // 7. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are no results in the table.
+    // Expected: there are no results in the table.
     CHECK_SET_ERR(0 == GTUtilsPcr::productsCount(os), "Wrong results count 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    //Export annotations
-    //1. Open "_common_data/cmdline/pcr/begin-end.gb".
+    // Export annotations
+    // 1. Open "_common_data/cmdline/pcr/begin-end.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/pcr/begin-end.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the forward primer "GGGCCAAACAGGATATCTGTGGTAAGCAGT".
+    // 3. Enter the forward primer "GGGCCAAACAGGATATCTGTGGTAAGCAGT".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "GGGCCAAACAGGATATCTGTGGTAAGCAGT");
 
-    //4. Enter the reverse primer  and "AAGCGCGCGAACAGAAGCGAGAAGCGAACT".
+    // 4. Enter the reverse primer  and "AAGCGCGCGAACAGAAGCGAGAAGCGAACT".
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "AAGCGCGCGAACAGAAGCGAGAAGCGAACT");
 
-    //5. Click "Find product(s) anyway".
+    // 5. Click "Find product(s) anyway".
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: one product is found.
+    // Expected: one product is found.
     CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
 
-    //6. Choose "Inner" annotation extraction.
+    // 6. Choose "Inner" annotation extraction.
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
-    //7. Click "Export product(s)".
+    // 7. Click "Export product(s)".
     QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
+    // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 1");
     CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
 
-    //8. Choose "All annotations" annotation extraction.
+    // 8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
     GTComboBox::selectItemByIndex(os, annsComboBox, 0);
 
-    //9. Click "Export product(s)".
+    // 9. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
+    // Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "middle") == "1..200", "Wrong region 2");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center") == "complement(51..150)", "Wrong region 3");
 
-    //10. Choose "None" annotation extraction.
+    // 10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
     GTComboBox::selectItemByIndex(os, annsComboBox, 2);
 
-    //11. Click "Export product(s)".
+    // 11. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: there are only 2 primers annotations in the exported document.
+    // Expected: there are only 2 primers annotations in the exported document.
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 2");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 3");
 }
@@ -668,5 +668,5 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     CHECK_SET_ERR(primerEdit->text() == "ACCCTGGAGAGCATCGAT", "Incorrect whitespaces removing");
 }
 
-}    // namespace GUITest_common_scenarios_in_silico_pcr
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_in_silico_pcr
+}  // namespace U2

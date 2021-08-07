@@ -185,3 +185,4 @@ U2Region DNASequenceUtils::reverseComplementRegion(const U2Region& directRegion,
 }
 
 }    // namespace U2
+

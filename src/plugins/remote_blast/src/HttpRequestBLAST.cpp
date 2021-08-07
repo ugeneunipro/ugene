@@ -109,7 +109,7 @@ void HttpRequestBLAST::sendRequest(const QString &params, const QString &query) 
     RemoteBlastHttpRequestTask *rTask = qobject_cast<RemoteBlastHttpRequestTask *>(task);
     int progr, timeout;
     progr = 50;
-    timeout = (rtoe + 5) * 20;    // REAL timeout = 50*(rtoe + 5) * 20 = 1000*(rtoe + 5) msec
+    timeout = (rtoe + 5) * 20;  // REAL timeout = 50*(rtoe + 5) * 20 = 1000*(rtoe + 5) msec
     int slowdown = 1;
     rTask->resetProgress();
 
@@ -132,7 +132,7 @@ void HttpRequestBLAST::sendRequest(const QString &params, const QString &query) 
             response = runHttpRequest(req2);
         }
         if (slowdown < 32) {
-            slowdown *= 2;    //If attempt was unsuccessful, progress bar slows down
+            slowdown *= 2;  // If attempt was unsuccessful, progress bar slows down
         }
     } while (response.indexOf("Status=WAITING") != -1 && rTask->isTimeOut());
 
@@ -277,10 +277,10 @@ void HttpRequestBLAST::parseHsp(const QDomNode &xml, const QString &id, const QS
     }
 
     if (from != -1 && to != -1) {
-        if (to > from) {    //direct
+        if (to > from) {  // direct
             ad->location->regions << U2Region(from - 1, to - from + 1);
             ad->setStrand(U2Strand::Direct);
-        } else {    //complement
+        } else {  // complement
             ad->location->regions << U2Region(to - 1, from - to + 1);
             ad->setStrand(U2Strand::Complementary);
         }
@@ -310,4 +310,4 @@ void HttpRequestBLAST::parseHsp(const QDomNode &xml, const QString &id, const QS
     result.append(ad);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -243,12 +243,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Fails to grab OpenGL widget image on Windows");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5360, "UGENE-5371");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5371, "UGENE-5371");
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);    // There is no "Shift + Insert" hotkey on mac
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0002);    //, "qt dialog can't be shown");
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_0889);    //"Spidey tool is not avaluable on mac"
+    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on mac
+    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
+    REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_0889);  //"Spidey tool is not avaluable on mac"
     REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_2140);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0001);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0002);    //"Restore when this tool becomes available");
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0002);  //"Restore when this tool becomes available");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0003);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0004);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0005);
@@ -257,7 +257,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0005);    //, "Test should run not under admin user on WIN");
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0005);  //, "Test should run not under admin user on WIN");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_dna_assembly_conversions::test_0001);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1640);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1662);
@@ -266,19 +266,19 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_1);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_2);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_3);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1693);    //no tuxedo for windows
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1693);  // no tuxedo for windows
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1735);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2266_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2268);    // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log. This path can't be overriden via environment.
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2268);  // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log. This path can't be overriden via environment.
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2282);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2638);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2640);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2721);    // no cistrome data on windows servers
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2721);  // no cistrome data on windows servers
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2866);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_3950);    //too long for windows test server
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_3950);  // too long for windows test server
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6301);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6378);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581);    //old MAFFT version  v7.212 for Windows32
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581);  // old MAFFT version  v7.212 for Windows32
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0025);
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0028_linux);
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
@@ -289,12 +289,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_6238);
     REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_2089);    //, "no forbidden folder characters on linux and mac");
+    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_2089);  //, "no forbidden folder characters on linux and mac");
 
-    //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
-    //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
-    //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
-    //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
+    // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
+    // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
+    // REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
+    // REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_0339);
 
     if (QSysInfo::WordSize == 32) {
@@ -310,8 +310,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     }
 
 #ifdef SW2_BUILD_WITH_CUDA
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_7360);    // Smith--Waterman CUDA
-#endif    //SW2_BUILD_WITH_CUDA
+    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_7360);  // Smith--Waterman CUDA
+#endif  // SW2_BUILD_WITH_CUDA
 
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
@@ -680,7 +680,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_1700);
     REGISTER_TEST(GUITest_regression_scenarios::test_1701);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1703);    //, "UGENE-3693"
+    REGISTER_TEST(GUITest_regression_scenarios::test_1703);  //, "UGENE-3693"
     REGISTER_TEST(GUITest_regression_scenarios::test_1704);
     REGISTER_TEST(GUITest_regression_scenarios::test_1708);
     REGISTER_TEST(GUITest_regression_scenarios::test_1710_1);
@@ -721,7 +721,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1919);
     REGISTER_TEST(GUITest_regression_scenarios::test_1921);
     REGISTER_TEST(GUITest_regression_scenarios::test_1924);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);    // TopHat
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);  // TopHat
     REGISTER_TEST(GUITest_regression_scenarios::test_1984);
     REGISTER_TEST(GUITest_regression_scenarios::test_1986);
 
@@ -3120,7 +3120,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0004);
 
-    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, labels({Metagenomics, Linux}));    // Needs full taxonomy data (Not available in Nightly).
+    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, labels({Metagenomics, Linux}));  // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0004);
@@ -3137,7 +3137,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0011);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0012);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0013);
-    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, labels({Metagenomics, Linux}));    // Needs full taxonomy data (Not available in Nightly).
+    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, labels({Metagenomics, Linux}));  // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);
@@ -3465,7 +3465,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 }
 
 void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
-    //TODO: add custom timeouts for actions.
+    // TODO: add custom timeouts for actions.
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0000, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0001, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0002, UGUITestBase::PreAdditional);
@@ -3483,4 +3483,4 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
     guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0004, UGUITestBase::PostAdditionalActions);
 }
 
-}    // namespace U2
+}  // namespace U2

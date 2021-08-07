@@ -314,7 +314,7 @@ bool clipRegion(U2Region &region, const U2Region &clippingRegion) {
     region.length = end - start;
     return true;
 }
-}    // namespace
+}  // namespace
 
 Primer3Task::Primer3Task(const Primer3TaskSettings &settingsArg)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
@@ -394,7 +394,7 @@ void Primer3Task::run() {
     bool spanExonsEnabled = settings.getSpanIntronExonBoundarySettings().enabled;
     int toReturn = settings.getPrimerArgs()->num_return;
     if (spanExonsEnabled) {
-        settings.getPrimerArgs()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;    // not an optimal algorithm
+        settings.getPrimerArgs()->num_return = settings.getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
     primers_t primers = runPrimer3(settings.getPrimerArgs(), settings.getSeqArgs(), &stateInfo.cancelFlag, &stateInfo.progress);
 
@@ -915,7 +915,7 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString &
     annotationData->qualifiers.append(U2Qualifier("3'", QString::number(0.01 * primer.getSelfEnd())));
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
 
-    //recalculate gc content
+    // recalculate gc content
     QByteArray primerSequence;
     foreach (const U2Region &region, annotationData->getRegions()) {
         primerSequence.append(seqObj->getSequence(region, stateInfo).seq);
@@ -933,4 +933,4 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString &
     return annotationData;
 }
 
-}    // namespace U2
+}  // namespace U2

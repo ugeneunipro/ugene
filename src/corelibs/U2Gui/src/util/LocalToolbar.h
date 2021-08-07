@@ -37,6 +37,6 @@ public:
     virtual void addAction(QAction *a);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LOCAL_TOOLBAR_H_
+#endif  // _U2_LOCAL_TOOLBAR_H_

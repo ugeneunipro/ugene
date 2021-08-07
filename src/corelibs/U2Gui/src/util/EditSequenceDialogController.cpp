@@ -42,7 +42,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//SeqPasterEventFilter
+// SeqPasterEventFilter
 bool SeqPasterEventFilter::eventFilter(QObject *obj, QEvent *event) {
     if (QEvent::KeyPress == event->type()) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -59,7 +59,7 @@ SeqPasterEventFilter::SeqPasterEventFilter(QObject *parent)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//EditSequenceDialogController
+// EditSequenceDialogController
 EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig &cfg, QWidget *p)
     : QDialog(p),
       filter(""),
@@ -76,7 +76,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     w->disableCustomSettings();
     w->setPreferredAlphabet(cfg.alphabet);
 
-    //selection
+    // selection
     ui->selectionGroupBox->setEnabled(false);
     if (!cfg.selectionRegions.isEmpty()) {
         ui->selectionLineEdit->setText(U1AnnotationUtils::buildLocationString(cfg.selectionRegions));
@@ -113,7 +113,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     connect(ui->startPosToolButton, SIGNAL(clicked()), this, SLOT(sl_startPositionliClicked()));
     connect(ui->endPosToolButton, SIGNAL(clicked()), this, SLOT(sl_endPositionliClicked()));
 
-    //event filter
+    // event filter
     SeqPasterEventFilter *evFilter = new SeqPasterEventFilter(this);
     w->setEventFilter(evFilter);
     connect(evFilter, SIGNAL(si_enterPressed()), this, SLOT(sl_enterPressed()));
@@ -258,4 +258,4 @@ void EditSequenceDialogController::sl_enterPressed() {
     accept();
 }
 
-}    // namespace U2
+}  // namespace U2

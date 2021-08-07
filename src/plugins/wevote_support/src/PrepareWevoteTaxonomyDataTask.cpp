@@ -137,4 +137,4 @@ void PrepareWevoteTaxonomyDataTask::prepareNodesFile() {
     FileStorageUtils::addFileToFileInfo(fileInfo, workflowProcess);
 }
 
-}    // namespace U2
+}  // namespace U2

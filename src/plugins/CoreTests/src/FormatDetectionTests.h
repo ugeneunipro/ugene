@@ -71,6 +71,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_FORMAT_DETECTION_TESTS_H_
+#endif  // #ifndef _U2_FORMAT_DETECTION_TESTS_H_

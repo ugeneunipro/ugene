@@ -43,90 +43,90 @@ class OrderedToolbar;
 class WidgetWithLocalToolbar;
 
 /*!
-* @class BioStruct3DSplitter BioStruct3DSplitter.h
-* @brief Class for multiple BioStruct3DWidget layout.
-*
-* This widget provides insertion of BioStruct3DGLWidgets into active UGENE view. There
-* could be one or more glWidgets controlled by the splitter. One can add new glWidgets using
-* the splitter.
-*/
+ * @class BioStruct3DSplitter BioStruct3DSplitter.h
+ * @brief Class for multiple BioStruct3DWidget layout.
+ *
+ * This widget provides insertion of BioStruct3DGLWidgets into active UGENE view. There
+ * could be one or more glWidgets controlled by the splitter. One can add new glWidgets using
+ * the splitter.
+ */
 class BioStruct3DSplitter : public ADVSplitWidget {
     Q_OBJECT
 
 public:
     /*!
-    * Constructor.
-    * @param closeAction QAction provided for correct widget closing
-    * @param view DnaView context for connecting structure 3D representation and sequence view
-    */
+     * Constructor.
+     * @param closeAction QAction provided for correct widget closing
+     * @param view DnaView context for connecting structure 3D representation and sequence view
+     */
     BioStruct3DSplitter(QAction *closeAction, AnnotatedDNAView *view);
     /*!
-    * Destructor.
-    */
+     * Destructor.
+     */
     ~BioStruct3DSplitter();
     /*!
-    * @return True, if GObject has type BioStruct3D and could be added to splitter.
-    */
+     * @return True, if GObject has type BioStruct3D and could be added to splitter.
+     */
     virtual bool acceptsGObject(GObject *obj);
     /*!
-    * Creates BioStruct3DWidget for object visualization and adds it to the splitter.
-    */
+     * Creates BioStruct3DWidget for object visualization and adds it to the splitter.
+     */
     BioStruct3DGLWidget *addBioStruct3DGLWidget(BioStruct3DObject *obj);
     /*!
-    * @return First found BioStruct3DObject with corresponding name, NULL if nothing is found.
-    */
+     * @return First found BioStruct3DObject with corresponding name, NULL if nothing is found.
+     */
     BioStruct3DObject *findBioStruct3DObjByName(const QString &objName);
     virtual void saveState(QVariantMap &m);
     virtual void updateState(const QVariantMap &m);
     /*!
-    * @return List of splitter children widgets.
-    */
+     * @return List of splitter children widgets.
+     */
     QList<BioStruct3DGLWidget *> getChildWidgets() const;
     /*!
-    * @return Current active view.
-    */
+     * @return Current active view.
+     */
     const QList<QAction *> getSettingsMenuActions() const;
     /*!
-    * @return ADVDNAView splitter, parent widget for BioStruct3DSplitter.
-    */
+     * @return ADVDNAView splitter, parent widget for BioStruct3DSplitter.
+     */
     int getNumVisibleWidgets();
     /*!
-    * @return If number of visible children is null, sets splitter view collapsed, else restores it.
-    */
+     * @return If number of visible children is null, sets splitter view collapsed, else restores it.
+     */
     void adaptSize(int numVisibleWidgets);
     /*!
-    * @return GLFrameManager for splitter child widgets.
-    */
+     * @return GLFrameManager for splitter child widgets.
+     */
     GLFrameManager *getGLFrameManager();
     /*!
-    *Removes widgets, updates context
-    */
+     *Removes widgets, updates context
+     */
     void removeBioStruct3DGLWidget(BioStruct3DGLWidget *widget);
     /*!
-    * This is used to close 3D split widget from toolbar
-    */
+     * This is used to close 3D split widget from toolbar
+     */
     QAction *getCloseSplitterAction();
     /*!
-    * QWidget virtual function, returns preferred widget size.
-    */
+     * QWidget virtual function, returns preferred widget size.
+     */
     virtual QSize sizeHint() const {
         return QSize(0, 400);
     }
     /*!
-    * Adds object and its new view.
-    */
+     * Adds object and its new view.
+     */
     void addObject(BioStruct3DObject *obj);
     /*!
-    * AddModelTask helper function.
-    */
+     * AddModelTask helper function.
+     */
     void addModelFromObject(BioStruct3DObject *obj);
     /*!
-    * Removes object and its views.
-    */
+     * Removes object and its views.
+     */
     bool removeObject(BioStruct3DObject *obj);
     /*!
-    * Adds action button to the toolbar on the left
-    */
+     * Adds action button to the toolbar on the left
+     */
     void addActionToLocalToolBar(QAction *action);
 
 signals:
@@ -237,4 +237,4 @@ private:
     void setActiveView(BioStruct3DGLWidget *glWidget);
 };
 
-}    // namespace U2
+}  // namespace U2

@@ -90,7 +90,7 @@ public:
 
 protected:
     virtual DataTypePtr getBusType() const;
-    //bool getNearestData(const Descriptor & key, QStringList candidates);
+    // bool getNearestData(const Descriptor & key, QStringList candidates);
     //
     mutable bool recursing;
 
@@ -102,7 +102,7 @@ private:
 
     // links with invisible slots
     StrStrMap removedBusMap;
-};    // IntegralBusPort
+};  // IntegralBusPort
 
 /**
  * as if ActorPrototype creates ports for actor
@@ -120,7 +120,7 @@ public:
         return new IntegralBusPort(d, p);
     }
 
-};    // IntegralBusActorPrototype
+};  // IntegralBusActorPrototype
 
 /**
  * validates if binding in busmap to some actor's data is correct
@@ -139,7 +139,7 @@ public:
 protected:
     QStringList screenedSlots;
 
-};    // ScreenedSlotValidator
+};  // ScreenedSlotValidator
 
 /**
  * When attribute can be set by user or can be chosen from integral bus
@@ -169,7 +169,7 @@ protected:
     QString port;
     QString slot;
 
-};    // ScreenedParamValidator
+};  // ScreenedParamValidator
 
 class U2LANG_EXPORT IntegralBusSlot {
 public:
@@ -211,8 +211,8 @@ public:
     static bool isBinded(const StrStrMap &busMap, const QString &slotId);
 };
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
 typedef QMap<QString, QString> StrStrMap;
 Q_DECLARE_METATYPE(StrStrMap)

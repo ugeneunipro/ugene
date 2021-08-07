@@ -77,6 +77,6 @@ private:
     QVarLengthArray<int> globalFreqs;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

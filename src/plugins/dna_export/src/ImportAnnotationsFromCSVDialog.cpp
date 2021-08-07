@@ -46,9 +46,9 @@
 #include "CSVColumnConfigurationDialog.h"
 #include "ImportAnnotationsFromCSVTask.h"
 
-//TODO: add complement token configuration
-//TODO: autodetect numeric columns, propose using them as start/end/length positions
-//TODO: option for negative len -> complement
+// TODO: add complement token configuration
+// TODO: autodetect numeric columns, propose using them as start/end/length positions
+// TODO: option for negative len -> complement
 
 namespace U2 {
 
@@ -83,7 +83,7 @@ ImportAnnotationsFromCSVDialog::ImportAnnotationsFromCSVDialog(QWidget *w)
     sl_separatorChanged(separatorEdit->text());
     sl_prefixToSkipChanged(prefixToSkipEdit->text());
 
-    //restore last settings
+    // restore last settings
     QString lastName = AppContext::getSettings()->getValue(SETTINGS_ROOT + A_NAME).toString();
     if (!lastName.isEmpty()) {
         defaultNameEdit->setText(lastName);
@@ -130,30 +130,30 @@ void ImportAnnotationsFromCSVDialog::accept() {
         return;
     }
 
-    //check that position is OK
+    // check that position is OK
     int endPos = 0;
     int startPos = 0;
     int length = 0;
     int names = 0;
     foreach (const ColumnConfig &conf, columnsConfig) {
         switch (conf.role) {
-        case ColumnRole_EndPos:
-            endPos++;
-            break;
-        case ColumnRole_StartPos:
-            startPos++;
-            break;
-        case ColumnRole_Length:
-            length++;
-            break;
-        case ColumnRole_Name:
-            names++;
-            break;
-        case ColumnRole_Ignore:
-            break;
-        case ColumnRole_Qualifier:
-            break;
-        default:;
+            case ColumnRole_EndPos:
+                endPos++;
+                break;
+            case ColumnRole_StartPos:
+                startPos++;
+                break;
+            case ColumnRole_Length:
+                length++;
+                break;
+            case ColumnRole_Name:
+                names++;
+                break;
+            case ColumnRole_Ignore:
+                break;
+            case ColumnRole_Qualifier:
+                break;
+            default:;
         }
     }
     if (endPos + startPos + length < 2 || endPos > 1 || startPos > 1 || length > 1) {
@@ -170,7 +170,7 @@ void ImportAnnotationsFromCSVDialog::accept() {
         return;
     }
 
-    //store last settings
+    // store last settings
     AppContext::getSettings()->setValue(SETTINGS_ROOT + A_NAME, defaultNameEdit->text());
     AppContext::getSettings()->setValue(SETTINGS_ROOT + T_SEPARATOR, separatorEdit->text());
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SKIP_LINES_COUNT, linesToSkipBox->value());
@@ -271,7 +271,7 @@ void ImportAnnotationsFromCSVDialog::sl_scriptSeparatorClicked() {
     QObjectScopedPointer<ScriptEditorDialog> d = new ScriptEditorDialog(this, scriptHeader);
     if (!parsingScript.isEmpty()) {
         d->setScriptText(parsingScript);
-    } else {    //set sample script
+    } else {  // set sample script
         QString l1 = "var firstColumn = [" + ReadCSVAsAnnotationsTask::LINE_NUM_VAR + "];\n";
         QString l2 = "var otherColumns = " + ReadCSVAsAnnotationsTask::LINE_VAR + ".split(\" \");\n";
         QString l3 = "result =firstColumn.concat(otherColumns);";
@@ -484,41 +484,41 @@ QString ImportAnnotationsFromCSVDialog::getHeaderItemText(int column) const {
     const ColumnConfig &config = columnsConfig.at(column);
     QString text = tr("[ignored]");
     switch (config.role) {
-    case ColumnRole_Qualifier:
-        text = tr("[qualifier %1]").arg(config.qualifierName);
-        break;
-    case ColumnRole_Name:
-        text = tr("[name]");
-        break;
-    case ColumnRole_StartPos:
-        if (config.startPositionOffset != 0) {
-            text = tr("[start position with offset %1]").arg(config.startPositionOffset);
-        } else {
-            text = tr("[start position]");
-        }
-        break;
-    case ColumnRole_EndPos:
-        if (config.endPositionIsInclusive) {
-            text = tr("[end position (inclusive)]");
-        } else {
-            text = tr("[end position]");
-        }
-        break;
-    case ColumnRole_Length:
-        text = tr("[length]");
-        break;
-    case ColumnRole_ComplMark:
-        if (config.complementMark.isEmpty()) {
-            text = tr("[complement]");
-        } else {
-            text = tr("[complement if '%1']").arg(config.complementMark);
-        }
-        break;
-    case ColumnRole_Group:
-        text = tr("[group]");
-        break;
-    default:
-        assert(config.role == ColumnRole_Ignore);
+        case ColumnRole_Qualifier:
+            text = tr("[qualifier %1]").arg(config.qualifierName);
+            break;
+        case ColumnRole_Name:
+            text = tr("[name]");
+            break;
+        case ColumnRole_StartPos:
+            if (config.startPositionOffset != 0) {
+                text = tr("[start position with offset %1]").arg(config.startPositionOffset);
+            } else {
+                text = tr("[start position]");
+            }
+            break;
+        case ColumnRole_EndPos:
+            if (config.endPositionIsInclusive) {
+                text = tr("[end position (inclusive)]");
+            } else {
+                text = tr("[end position]");
+            }
+            break;
+        case ColumnRole_Length:
+            text = tr("[length]");
+            break;
+        case ColumnRole_ComplMark:
+            if (config.complementMark.isEmpty()) {
+                text = tr("[complement]");
+            } else {
+                text = tr("[complement if '%1']").arg(config.complementMark);
+            }
+            break;
+        case ColumnRole_Group:
+            text = tr("[group]");
+            break;
+        default:
+            assert(config.role == ColumnRole_Ignore);
     }
     return text;
 }
@@ -549,7 +549,7 @@ void ImportAnnotationsFromCSVDialog::configureColumn(int column) {
 
     const ColumnConfig &config = columnsConfig.at(column);
     QObjectScopedPointer<CSVColumnConfigurationDialog> d = new CSVColumnConfigurationDialog(this, config);
-    int rc = d->exec();    // TODO: set dialog position close to the header item
+    int rc = d->exec();  // TODO: set dialog position close to the header item
     CHECK(!d.isNull(), );
     if (rc == QDialog::Accepted) {
         columnsConfig[column] = d->config;
@@ -557,4 +557,4 @@ void ImportAnnotationsFromCSVDialog::configureColumn(int column) {
     previewTable->horizontalHeaderItem(column)->setText(getHeaderItemText(column));
 }
 
-}    // namespace U2
+}  // namespace U2

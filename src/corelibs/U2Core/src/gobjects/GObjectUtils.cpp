@@ -162,7 +162,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
         Document *doc = object->getDocument();
         SAFE_POINT(nullptr != doc, "Invalid parent document detected", res);
         if (!doc->isDatabaseConnection()) {
-            if (object->hasObjectRelation(objRelation)) {    // this 'if' branch has to be distinctive from the enclosing one
+            if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
                 res.append(object);
             }
         } else {
@@ -200,7 +200,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
     return res;
 }
 
-}    // namespace
+}  // namespace
 
 QList<GObject *> GObjectUtils::findObjectsRelatedToObjectByRole(const GObject *obj, GObjectType resultObjType, GObjectRelationRole role, const QList<GObject *> &fromObjects, UnloadedObjectFilter f) {
     return findObjectsRelatedToObjectByRole(GObjectReference(obj), resultObjType, role, fromObjects, f);
@@ -289,7 +289,7 @@ GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, const 
             }
         }
         if (r.entityRef.isValid() && r.entityRef == o->getEntityRef()) {
-            return o;    // matched by entityRef
+            return o;  // matched by entityRef
         } else if (firstMatchedByName == nullptr) {
             firstMatchedByName = o;
         }
@@ -432,4 +432,4 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

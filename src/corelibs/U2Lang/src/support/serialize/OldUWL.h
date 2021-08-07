@@ -41,7 +41,7 @@ public:
     static const QString MARKER_START;
 };
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2
 
-#endif    // _U2_OLDUWL_H_
+#endif  // _U2_OLDUWL_H_

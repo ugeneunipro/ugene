@@ -36,4 +36,4 @@ void SecStructPredictTask::prepare() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

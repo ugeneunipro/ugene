@@ -65,7 +65,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//ClarkBuild
+// ClarkBuild
 const QString ClarkBuildWorkerFactory::ACTOR_ID("clark-build");
 
 static const QString OUTPUT_PORT("out");
@@ -333,5 +333,5 @@ QStringList ClarkBuildTask::getArguments() {
     return arguments;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

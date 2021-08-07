@@ -94,7 +94,7 @@ bool compare(const QString &s1, const QString &s2, bool exactMatch) {
     }
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_CLASS_NAME "GTWebView"
 
@@ -196,4 +196,4 @@ void GTWebView::traceAllWebElements(GUITestOpStatus &os, WebView *view) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

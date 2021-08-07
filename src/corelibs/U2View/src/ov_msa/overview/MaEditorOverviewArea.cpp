@@ -57,4 +57,4 @@ void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
     layout->addWidget(overviewWgt);
 }
 
-}    // namespace U2
+}  // namespace U2

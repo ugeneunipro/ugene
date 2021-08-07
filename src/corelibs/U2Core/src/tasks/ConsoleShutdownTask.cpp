@@ -111,7 +111,7 @@ QList<Task *> ConsoleShutdownTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
 
     if (isCanceled() || subTask->hasError()) {
-        return res;    //stop shutdown process
+        return res;  // stop shutdown process
     }
 
     ServiceRegistry *sr = AppContext::getServiceRegistry();
@@ -142,4 +142,4 @@ Task::ReportResult ConsoleShutdownTask::report() {
     return Task::ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -51,7 +51,7 @@ const QString DocumentFormat::DEEP_COPY_OBJECT("deep_copy_object");
 const QString DocumentFormat::STRONG_FORMAT_ACCORDANCE("strong_format_accordance");
 const QString DocumentMimeData::MIME_TYPE("application/x-ugene-document-mime");
 
-const int DocumentFormat::READ_BUFF_SIZE = 4194304;    //4Mb optimal buffer size for reading from network drives
+const int DocumentFormat::READ_BUFF_SIZE = 4194304;  // 4Mb optimal buffer size for reading from network drives
 
 DocumentFormat::DocumentFormat(QObject *p, const DocumentFormatId &_id, DocumentFormatFlags _flags, const QStringList &fileExts)
     : QObject(p),
@@ -131,14 +131,14 @@ void DocumentFormat::storeDocument(Document *doc, U2OpStatus &os, IOAdapterFacto
         iof = doc->getIOAdapterFactory();
     }
 
-    //prepare URL
+    // prepare URL
     GUrl url = newDocURL.isEmpty() ? doc->getURL() : newDocURL;
     if (url.isLocalFile()) {
         QString error;
         QString res = GUrlUtils::prepareFileLocation(url.getURLString(), os);
         CHECK_OP(os, );
         Q_UNUSED(res);
-        assert(res == url.getURLString());    //ensure that GUrls are always canonical
+        assert(res == url.getURLString());  // ensure that GUrls are always canonical
     }
 
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
@@ -151,30 +151,30 @@ void DocumentFormat::storeDocument(Document *doc, U2OpStatus &os, IOAdapterFacto
 }
 
 bool DocumentFormat::checkConstraints(const DocumentFormatConstraints &c) const {
-    assert(!supportedObjectTypes.isEmpty());    //extra check for DF state validation
+    assert(!supportedObjectTypes.isEmpty());  // extra check for DF state validation
 
     if (!checkFlags(c.flagsToSupport)) {
-        return false;    //requested to support writing or streaming but doesn't
+        return false;  // requested to support writing or streaming but doesn't
     }
 
     if ((int(c.flagsToExclude) & int(formatFlags)) != 0) {
-        return false;    // filtered by exclude flags
+        return false;  // filtered by exclude flags
     }
 
     if (c.formatsToExclude.contains(id)) {
-        return false;    // format is explicetely excluded
+        return false;  // format is explicetely excluded
     }
 
     if (c.checkRawData && checkRawData(c.rawData).score < c.minDataCheckResult) {
-        return false;    //raw data is not matched
+        return false;  // raw data is not matched
     }
 
     bool areTypesSatisfied = !c.allowPartialTypeMapping;
     foreach (const GObjectType &objType, c.supportedObjectTypes) {
-        if (c.allowPartialTypeMapping && supportedObjectTypes.contains(objType)) {    // at least one type is supported
+        if (c.allowPartialTypeMapping && supportedObjectTypes.contains(objType)) {  // at least one type is supported
             areTypesSatisfied = true;
             break;
-        } else if (!c.allowPartialTypeMapping && !supportedObjectTypes.contains(objType)) {    // the object type is not in the supported list
+        } else if (!c.allowPartialTypeMapping && !supportedObjectTypes.contains(objType)) {  // the object type is not in the supported list
             areTypesSatisfied = false;
             break;
         }
@@ -212,7 +212,7 @@ bool DocumentFormat::isObjectOpSupported(const Document *d, DocObjectOp op, GObj
 }
 
 //////////////////////////////////////////////////////////////////////////
-///Document
+/// Document
 const QString Document::UNLOAD_LOCK_NAME = "unload_document_lock";
 
 Document::Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url, const U2DbiRef &_dbiRef, const QList<UnloadedObjectInfo> &unloadedObjects, const QVariantMap &hints, const QString &instanceModLockDesc)
@@ -477,7 +477,7 @@ void Document::loadFrom(Document *sourceDoc) {
 
     QMap<QString, UnloadedObjectInfo> unloadedInfo;
 
-    foreach (GObject *obj, objects) {    //remove all unloaded objects but save hints
+    foreach (GObject *obj, objects) {  // remove all unloaded objects but save hints
         unloadedInfo.insert(obj->getGObjectName(), UnloadedObjectInfo(obj));
         _removeObject(obj, documentOwnsDbiResources);
     }
@@ -486,7 +486,7 @@ void Document::loadFrom(Document *sourceDoc) {
 
     lastUpdateTime = sourceDoc->getLastUpdateTime();
 
-    //copy instance mod-locks if any
+    // copy instance mod-locks if any
     StateLock *mLock = modLocks[DocumentModLock_FORMAT_AS_INSTANCE];
     StateLock *dLock = sourceDoc->modLocks[DocumentModLock_FORMAT_AS_INSTANCE];
     if (mLock != nullptr) {
@@ -511,7 +511,7 @@ void Document::loadFrom(Document *sourceDoc) {
     QList<GObject *> sourceObjects = sourceDoc->getObjects();
     sourceDoc->unload(false);
     foreach (GObject *obj, sourceObjects) {
-        //TODO: add constrains to ObjectRelations!!
+        // TODO: add constrains to ObjectRelations!!
         UnloadedObjectInfo info = unloadedInfo.value(obj->getGObjectName());
         if (info.type == obj->getGObjectType()) {
             QVariantMap mergedHints = obj->getGHintsMap();
@@ -528,7 +528,7 @@ void Document::loadFrom(Document *sourceDoc) {
     }
     setLoaded(true);
 
-    //TODO: rebind local objects relations if url!=d.url
+    // TODO: rebind local objects relations if url!=d.url
 
     loadStateChangeMode = false;
 
@@ -644,7 +644,7 @@ void Document::setUserModLock(bool v) {
         delete sl;
     }
 
-    //hack: readonly settings are stored in project, so if document is in project -> mark project as modified
+    // hack: readonly settings are stored in project, so if document is in project -> mark project as modified
     if (getParentStateLockItem() != nullptr) {
         getParentStateLockItem()->setModified(true);
     }
@@ -712,7 +712,7 @@ bool Document::isDatabaseConnection() const {
 
 void Document::setModified(bool modified, const QString &modType) {
     CHECK(!df->checkFlags(DocumentFormatFlag_DirectWriteOperations), );
-    if (loadStateChangeMode && modified && modType == StateLockModType_AddChild) {    //ignore modification events during loading/unloading
+    if (loadStateChangeMode && modified && modType == StateLockModType_AddChild) {  // ignore modification events during loading/unloading
         return;
     }
     StateLockableTreeItem::setModified(modified, modType);
@@ -726,7 +726,7 @@ bool Document::isModificationAllowed(const QString &modType) {
 
 void Document::setGHints(GHints *newHints) {
     assert(newHints != nullptr);
-    //gobjects in document keep states in parent document map -> preserve gobject hints
+    // gobjects in document keep states in parent document map -> preserve gobject hints
     if (newHints == ctxState) {
         return;
     }
@@ -823,4 +823,4 @@ DocumentMimeData::DocumentMimeData(Document *obj)
     setUrls(QList<QUrl>() << QUrl(GUrlUtils::gUrl2qUrl(obj->getURL())));
 }
 
-}    // namespace U2
+}  // namespace U2

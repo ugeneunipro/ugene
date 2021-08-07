@@ -38,6 +38,6 @@ protected:
     QList<SharedAnnotationData> annTable;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ANNOTATIONS_MESSAGE_TRANSLATOR_H_
+#endif  // _U2_ANNOTATIONS_MESSAGE_TRANSLATOR_H_

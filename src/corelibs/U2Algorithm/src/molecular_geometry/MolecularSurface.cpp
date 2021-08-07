@@ -88,7 +88,7 @@ QList<SharedAtom> MolecularSurface::findAtomNeighbors(const SharedAtom &a, const
 U2::GeodesicSphere MolecularSurface::getAtomSurfaceDots(const SharedAtom &a, int detaillevel) {
     QVector<Vector3D> surfaceDots;
     float radius = TOLERANCE + AtomConstants::getAtomCovalentRadius(a->atomicNumber);
-    //Calculate sphere surface dots
+    // Calculate sphere surface dots
     GeodesicSphere sphere(a->coord3d, radius, detaillevel);
     return sphere;
 }
@@ -96,8 +96,8 @@ U2::GeodesicSphere MolecularSurface::getAtomSurfaceDots(const SharedAtom &a, int
 bool MolecularSurface::vertexNeighboursOneOf(const Vector3D &v, const QList<SharedAtom> &atoms) {
     foreach (const SharedAtom &a, atoms) {
         float r = AtomConstants::getAtomCovalentRadius(a->atomicNumber) + TOLERANCE;
-        //Vector3D v2 = a->coord3d;
-        //qDebug("testing if vertex (%f,%f,%f) neighbors atom (%f,%f,%f) of radius %f", v.x, v.y, v.z, v2.x, v2.y, v2.z, radius);
+        // Vector3D v2 = a->coord3d;
+        // qDebug("testing if vertex (%f,%f,%f) neighbors atom (%f,%f,%f) of radius %f", v.x, v.y, v.z, v2.x, v2.y, v2.z, radius);
         if (sqr(v.x - a->coord3d.x) + sqr(v.y - a->coord3d.y) + sqr(v.z - a->coord3d.z) <= r * r) {
             return true;
         }
@@ -154,4 +154,4 @@ Task::ReportResult MolecularSurfaceCalcTask::report() {
 MolecularSurfaceFactory::~MolecularSurfaceFactory() {
 }
 
-}    // namespace U2
+}  // namespace U2

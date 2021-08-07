@@ -45,7 +45,7 @@ Document *PlainTextFormat::loadTextDocument(IOAdapterReader &reader, const U2Dbi
     reader.read(os, text, -1);
     CHECK_OP(os, nullptr);
 
-    //todo: check file-readonly status?
+    // todo: check file-readonly status?
 
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
@@ -72,4 +72,4 @@ FormatCheckResult PlainTextFormat::checkRawTextData(const QString &, const GUrl 
     return FormatDetection_LowSimilarity;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -50,6 +50,6 @@ protected:
     void initViewContext(GObjectView *view) override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

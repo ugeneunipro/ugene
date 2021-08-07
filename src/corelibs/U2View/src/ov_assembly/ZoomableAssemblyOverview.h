@@ -110,7 +110,7 @@ private:
     QMenu *contextMenu;
     QPoint contextMenuPos;
 
-    //context menu actions
+    // context menu actions
     QAction *zoomInAction;
     QAction *zoomOutAction;
     QAction *zoomIn100xActon;
@@ -150,6 +150,6 @@ private:
     const static double ZOOM_MULT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

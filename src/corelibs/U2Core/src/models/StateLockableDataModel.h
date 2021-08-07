@@ -128,7 +128,7 @@ public:
 
     virtual bool isMainThreadObject() const;
 
-    //returns number of modifications done to this item
+    // returns number of modifications done to this item
     virtual int getModificationVersion() const {
         return modificationVersion;
     }
@@ -223,6 +223,6 @@ private:
     int numModifiedChildren;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

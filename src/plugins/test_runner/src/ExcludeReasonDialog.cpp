@@ -39,4 +39,4 @@ QString ExcludeReasonDialog::getReason() {
     return ui->lineEdit->text();
 }
 
-}    // namespace U2
+}  // namespace U2

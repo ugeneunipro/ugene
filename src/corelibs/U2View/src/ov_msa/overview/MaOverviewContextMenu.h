@@ -94,6 +94,6 @@ private:
     QAction *highlightingMethodAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_OVERVIEW_CONTEXT_MENU_H_
+#endif  // _U2_MSA_OVERVIEW_CONTEXT_MENU_H_

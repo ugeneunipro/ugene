@@ -67,4 +67,4 @@ qint64 SequenceViewRenderer::getRowLineHeight() const {
     return commonMetrics.lineHeight;
 }
 
-}    // namespace U2
+}  // namespace U2

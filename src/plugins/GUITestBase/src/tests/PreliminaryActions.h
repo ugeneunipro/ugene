@@ -43,7 +43,7 @@ GUI_TEST_CLASS_DECLARATION(pre_action_0005)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_preliminary_actions
-}    // namespace U2
+}  // namespace GUITest_preliminary_actions
+}  // namespace U2
 
-#endif    // _U2_PRELIMINARY_ACTIONS_H_
+#endif  // _U2_PRELIMINARY_ACTIONS_H_

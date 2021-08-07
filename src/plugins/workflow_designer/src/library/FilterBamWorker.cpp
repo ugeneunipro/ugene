@@ -109,7 +109,7 @@ QString getHexValueByFilterString(const QString &filterString, const QMap<QStrin
     }
     return QString::number(val, 16);
 }
-}    // namespace
+}  // namespace
 
 void FilterBamWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, FilterBamWorker::tr("Filter BAM/SAM files"), FilterBamWorker::tr("Filters BAM/SAM files using SAMTools view."));
@@ -197,8 +197,8 @@ void FilterBamWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FilterBamPrompter());
-    //no way to include tool support files, so ids passed to functions manually
-    proto->addExternalTool("USUPP_SAMTOOLS");    //SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
+    // no way to include tool support files, so ids passed to functions manually
+    proto->addExternalTool("USUPP_SAMTOOLS");  // SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -268,7 +268,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void FilterBamWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -312,7 +312,7 @@ QString FilterBamWorker::getTargetName(const QString &fileUrl, const QString &ou
 }
 
 ////////////////////////////////////////////////////////
-//BamFilterSetting
+// BamFilterSetting
 QStringList BamFilterSetting::getSamtoolsArguments() const {
     QStringList result;
 
@@ -348,7 +348,7 @@ QStringList BamFilterSetting::getSamtoolsArguments() const {
 }
 
 ////////////////////////////////////////////////////////
-//SamtoolsViewFilterTask
+// SamtoolsViewFilterTask
 const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting &settings)
@@ -412,5 +412,5 @@ void SamtoolsViewFilterTask::checkExitCode(QProcess *process, const QString &too
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

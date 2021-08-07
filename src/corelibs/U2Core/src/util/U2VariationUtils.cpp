@@ -121,4 +121,4 @@ QList<U2Variant> U2VariationUtils::getSNPFromSequences(const QByteArray &refSeq,
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

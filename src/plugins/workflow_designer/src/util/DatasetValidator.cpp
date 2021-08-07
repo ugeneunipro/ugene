@@ -52,5 +52,5 @@ bool DatasetValidator::validate(const Actor *actor, NotificationsList &notificat
     return true;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

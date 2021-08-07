@@ -143,4 +143,4 @@ bool Configuration::isAttributeVisible(Attribute *attribute) const {
     return isVisible;
 }
 
-}    // namespace U2
+}  // namespace U2

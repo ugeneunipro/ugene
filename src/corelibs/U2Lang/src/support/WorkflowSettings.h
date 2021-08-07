@@ -91,6 +91,6 @@ public:
     static Watcher *const watcher;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

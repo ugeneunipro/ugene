@@ -165,7 +165,7 @@ int MaSangerOverview::getReadsHeight() const {
 int MaSangerOverview::getReferenceHeight() const {
     if (-1 == cachedReferenceHeight) {
         QFontMetrics fontMetrics(editor->getFont());
-        return fontMetrics.height() + 2 * 2 + 4;    // Some magic. These values were taken from GraphUtils::drawRuler()
+        return fontMetrics.height() + 2 * 2 + 4;  // Some magic. These values were taken from GraphUtils::drawRuler()
     }
     return cachedReferenceHeight;
 }
@@ -309,4 +309,4 @@ void MaSangerOverview::moveVisibleRange(QPoint pos) {
     ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
-}    // namespace U2
+}  // namespace U2

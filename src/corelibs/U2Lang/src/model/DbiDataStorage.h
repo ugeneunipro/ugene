@@ -96,8 +96,8 @@ public:
     static QString getText(DbiDataStorage *storage, const QVariant &data);
 };
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _WORKFLOW_DBI_DATA_STORAGE_H_
+#endif  // _WORKFLOW_DBI_DATA_STORAGE_H_

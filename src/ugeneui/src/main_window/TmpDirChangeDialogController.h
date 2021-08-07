@@ -49,6 +49,6 @@ private:
     TmpDirChecker *tmpDirChecker;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_
+#endif  // _U2_TMP_DIR_CHANGE_DIALOG_CONTROLLER_

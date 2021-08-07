@@ -22,22 +22,18 @@
 #ifndef _U2_SEC_STRUCT_PREDICT_PLUGIN_H_
 #define _U2_SEC_STRUCT_PREDICT_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
 #include <U2Core/AnnotationData.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
 class SecStructPredictPlugin : public Plugin {
-	Q_OBJECT
+    Q_OBJECT
 public:
     SecStructPredictPlugin();
-	~SecStructPredictPlugin();
-
+    ~SecStructPredictPlugin();
 };
 
+}  // namespace U2
 
-} //namespace
-
-#endif // _U2_SEC_STRUCT_PREDICT_PLUGIN_H_
-
-
+#endif  // _U2_SEC_STRUCT_PREDICT_PLUGIN_H_

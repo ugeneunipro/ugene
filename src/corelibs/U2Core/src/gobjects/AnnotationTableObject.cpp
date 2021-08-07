@@ -184,7 +184,7 @@ bool annotationIntersectsRange(const Annotation *a, const U2Region &range, bool 
     }
 }
 
-}    // namespace
+}  // namespace
 
 QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region &region, bool contains) const {
     QList<Annotation *> result;
@@ -287,4 +287,4 @@ void AnnotationTableObject::loadDataCore(U2OpStatus &os) {
     rootGroup = U2FeatureUtils::loadAnnotationTable(table.rootFeature, entityRef.dbiRef, this, os);
 }
 
-}    // namespace U2
+}  // namespace U2

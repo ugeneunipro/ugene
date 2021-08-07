@@ -116,7 +116,7 @@ AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
 }
 
 void AssemblyBrowser::removeReferenceSequence() {
-    //Only one sequence object can be in assembly browser, it is a reference
+    // Only one sequence object can be in assembly browser, it is a reference
     foreach (GObject *o, objects) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
             removeObjectFromView(o);
@@ -200,7 +200,7 @@ bool AssemblyBrowser::eventFilter(QObject *o, QEvent *e) {
                 if (e->type() == QEvent::DragEnter) {
                     de->acceptProposedAction();
                 } else {
-                    QApplication::changeOverrideCursor(Qt::ArrowCursor);    //setting arrow cursor on Linux
+                    QApplication::changeOverrideCursor(Qt::ArrowCursor);  // setting arrow cursor on Linux
                     QString err = tryAddObject(gomd->objPtr.data());
                     if (!err.isEmpty()) {
                         QMessageBox::critical(ui, tr("Error!"), err);
@@ -299,7 +299,7 @@ void AssemblyBrowser::buildStaticToolbar(QToolBar *staticToolBar) {
             connect(posSelector, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
             staticToolBar->addSeparator();
             staticToolBar->addWidget(posSelector);
-            posSelector->getPosEdit()->setMinimumWidth(160);    // For big numbers we need bigger text box
+            posSelector->getPosEdit()->setMinimumWidth(160);  // For big numbers we need bigger text box
         }
         staticToolBar->addSeparator();
         updateZoomingActions();
@@ -354,7 +354,7 @@ void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
     if (newInfo.coverageInfo.size() <= coveredRegionsManager.getSize()) {
         return;
     }
-    if (newInfo.isEmpty()) {    //wait when coverage will be calculated
+    if (newInfo.isEmpty()) {  // wait when coverage will be calculated
         return;
     }
     // prefer model's coverage stat
@@ -524,7 +524,7 @@ qint64 AssemblyBrowser::rowsVisible() const {
 }
 
 bool AssemblyBrowser::areReadsVisible() const {
-    int readWidthPix = calcPixelCoord(1);    // TODO: average read length ?
+    int readWidthPix = calcPixelCoord(1);  // TODO: average read length ?
     return readWidthPix >= 1;
 }
 
@@ -574,7 +574,7 @@ void AssemblyBrowser::setXOffsetInAssembly(qint64 x) {
     U2OpStatusImpl st;
     qint64 len = model->getModelLength(st);
     Q_UNUSED(len);
-    assert(x >= 0 && (x < len || len == 0));    // len == 0 in case of empty model
+    assert(x >= 0 && (x < len || len == 0));  // len == 0 in case of empty model
     xOffsetInAssembly = x;
     emit si_offsetsChanged();
 }
@@ -603,9 +603,9 @@ void AssemblyBrowser::setOffsetsInAssembly(qint64 x, qint64 y) {
 }
 
 void AssemblyBrowser::adjustOffsets(qint64 dx, qint64 dy) {
-    //U2OpStatusImpl status;
-    //qint64 modelLen = model->getModelLength(status);
-    //qint64 modelHeight = model->getModelHeight(status);
+    // U2OpStatusImpl status;
+    // qint64 modelLen = model->getModelLength(status);
+    // qint64 modelHeight = model->getModelHeight(status);
 
     xOffsetInAssembly = normalizeXoffset(xOffsetInAssembly + dx);
     yOffsetInAssembly = normalizeYoffset(yOffsetInAssembly + dy);
@@ -620,14 +620,14 @@ void AssemblyBrowser::navigateToRegion(const U2Region &region) {
     int requiredCellSize = qMax(1, qRound((double)ui->getReadsArea()->width() / region.length));
     zoomToSize(requiredCellSize);
 
-    //if cells are not visible -> make them visible
+    // if cells are not visible -> make them visible
     if (!areCellsVisible()) {
         while (!areCellsVisible()) {
             sl_zoomIn();
         }
     }
 
-    //if visible area does not contain reads area -> shift reads area
+    // if visible area does not contain reads area -> shift reads area
     if (!getVisibleBasesRegion().contains(region)) {
         setXOffsetInAssembly(region.startPos);
     }
@@ -793,7 +793,7 @@ void AssemblyBrowser::sl_zoomIn(const QPoint &pos) {
 
     qint64 oldWidth = basesCanBeVisible();
     qint64 posXAsmCoord = calcAsmPosX(pos.x());
-    //qint64 posYAsmCoord = calcAsmPosY(pos.y());
+    // qint64 posYAsmCoord = calcAsmPosY(pos.y());
 
     // zoom in
     {
@@ -813,7 +813,7 @@ void AssemblyBrowser::sl_zoomIn(const QPoint &pos) {
     if (!pos.isNull() && cellWidth != 0) {
         newXOff = posXAsmCoord - pos.x() / cellWidth;
     } else {
-        //zooming to the center of the screen
+        // zooming to the center of the screen
         newXOff = xOffsetInAssembly + (oldWidth - basesCanBeVisible()) / 2;
     }
     setXOffsetInAssembly(normalizeXoffset(newXOff));
@@ -829,12 +829,12 @@ void AssemblyBrowser::sl_zoomOut(const QPoint &pos) {
 
     qint64 oldWidth = basesVisible();
     qint64 posXAsmCoord = calcAsmPosX(pos.x());
-    //qint64 posYAsmCoord = calcAsmPosY(pos.y());
+    // qint64 posYAsmCoord = calcAsmPosY(pos.y());
 
     // zoom out
     {
         int oldCellSize = getCellWidth();
-        if (zoomFactor * ZOOM_MULT > INITIAL_ZOOM_FACTOR) {    // next zoom to far
+        if (zoomFactor * ZOOM_MULT > INITIAL_ZOOM_FACTOR) {  // next zoom to far
             zoomFactor = INITIAL_ZOOM_FACTOR;
         } else if (!oldCellSize) {
             zoomFactor *= ZOOM_MULT;
@@ -850,7 +850,7 @@ void AssemblyBrowser::sl_zoomOut(const QPoint &pos) {
     if (!pos.isNull() && cellWidth != 0) {
         newXOff = posXAsmCoord - pos.x() / cellWidth;
     } else {
-        //zooming out of the center
+        // zooming out of the center
         newXOff = xOffsetInAssembly + (oldWidth - basesCanBeVisible()) / 2;
     }
     setXOffsetInAssembly(normalizeXoffset(newXOff));
@@ -870,8 +870,8 @@ void AssemblyBrowser::sl_zoomToReads() {
 int AssemblyBrowser::zoomInFromSize(int oldCellSize) {
     SAFE_POINT(oldCellSize >= 0, "oldCellSize < 0, zooming will not work correctly!", oldCellSize);
 
-    //single decreasing of the zoomFactor not always changes the cell size
-    //so we have to do it in the cycle, until cells grow
+    // single decreasing of the zoomFactor not always changes the cell size
+    // so we have to do it in the cycle, until cells grow
     int cellWidth = 0;
     do {
         zoomFactor /= ZOOM_MULT;
@@ -883,8 +883,8 @@ int AssemblyBrowser::zoomInFromSize(int oldCellSize) {
 int AssemblyBrowser::zoomOutFromSize(int oldCellSize) {
     SAFE_POINT(oldCellSize >= 0, "oldCellSize < 0, zooming will not work correctly!", oldCellSize);
 
-    //single increasing of the zoomFactor not always changes the cell size
-    //so we have to do it in the cycle
+    // single increasing of the zoomFactor not always changes the cell size
+    // so we have to do it in the cycle
     int cellWidth = 0;
     do {
         zoomFactor *= ZOOM_MULT;
@@ -987,7 +987,7 @@ Task *createLoadReferenceTask(const QString &url) {
     hints[ProjectLoaderHint_LoadWithoutView] = true;
     return AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << url, hints);
 }
-}    // namespace
+}  // namespace
 
 QString AssemblyBrowser::chooseReferenceUrl() const {
     const QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
@@ -1110,13 +1110,13 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
     : browser(browser_), zoomableOverview(0),
       referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
     U2OpStatusImpl os;
-    if (browser->getModel()->hasReads(os)) {    // has mapped reads -> show rich visualization
+    if (browser->getModel()->hasReads(os)) {  // has mapped reads -> show rich visualization
         setMinimumSize(300, 200);
 
         QScrollBar *readsHBar = new QScrollBar(Qt::Horizontal);
         QScrollBar *readsVBar = new QScrollBar(Qt::Vertical);
 
-        zoomableOverview = new ZoomableAssemblyOverview(this, true);    //zooming temporarily disabled -iefremov
+        zoomableOverview = new ZoomableAssemblyOverview(this, true);  // zooming temporarily disabled -iefremov
         referenceArea = new AssemblyReferenceArea(this);
         consensusArea = new AssemblyConsensusArea(this);
         coverageGraph = new AssemblyCoverageGraph(this);
@@ -1194,4 +1194,4 @@ QColor AssemblyBrowserUi::getCoverageColor(double grayCoeff) {
     return QColor(80 - 60 * grayCoeff, 160 - 100 * grayCoeff, 200 - 130 * grayCoeff);
 }
 
-}    // namespace U2
+}  // namespace U2

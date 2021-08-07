@@ -126,8 +126,8 @@ void DNAStatMSAProfileDialog::accept() {
 
 void DNAStatMSAProfileDialog::showAlignmentIsTooBigWarning() {
     warningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>")
-        .arg(Theme::errorColorLabelHtmlStr())
-        .arg(tr("Warning: report is too big to be shown in UGENE.")));
+                              .arg(Theme::errorColorLabelHtmlStr())
+                              .arg(tr("Warning: report is too big to be shown in UGENE.")));
     saveBox->setChecked(true);
     saveBox->setCheckable(false);
 }
@@ -169,7 +169,7 @@ void DNAStatMSAProfileTask::run() {
         try {
             resultText = "<!DOCTYPE html>\n<html>\n<head>\n";
 
-            //setup style
+            // setup style
             resultText += "<style>\n";
             resultText += ".tbl {border-width: 1px; border-style: solid; border-color: #777777;}\n";
             resultText += ".tbl td {text-align: center; padding: 0 10px; white-space: nowrap;}\n";
@@ -181,7 +181,7 @@ void DNAStatMSAProfileTask::run() {
 
             resultText += "</head>\n<body>\n";
 
-            //header
+            // header
             resultText += "<h2>" + tr("Multiple Sequence Alignment Grid Profile") + "</h2><br>\n";
 
             resultText += "<table>\n";
@@ -200,7 +200,7 @@ void DNAStatMSAProfileTask::run() {
                 resultText += "<table class=tbl>";
             }
 
-            //consensus numbers line
+            // consensus numbers line
             resultText += "<tr><td></td>";
             int pos = 1;
             for (int i = 0; i < columns.size(); i++) {
@@ -256,7 +256,7 @@ void DNAStatMSAProfileTask::run() {
             }
             resultText += "</table>\n";
 
-            //legend:
+            // legend:
             resultText += "<br><br>\n";
             resultText += "<table cellspacing=7 cellpadding=2><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
             resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
@@ -288,7 +288,7 @@ void DNAStatMSAProfileTask::run() {
             setError(tr("Can't open file for write: %1").arg(s.outURL));
             return;
         }
-        //out char freqs
+        // out char freqs
         QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
         for (int i = 0; i < aChars.size(); i++) {
             char c = aChars[i];
@@ -351,7 +351,7 @@ Task::ReportResult DNAStatMSAProfileTask::report() {
 }
 
 void DNAStatMSAProfileTask::computeStats() {
-    //fill names
+    // fill names
     QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
     for (int i = 0; i < aChars.size(); i++) {
         char c = aChars[i];
@@ -360,7 +360,7 @@ void DNAStatMSAProfileTask::computeStats() {
         unusedChars.insert(c);
     }
 
-    //fill values
+    // fill values
     columns.resize(s.ma->getLength());
     consenusChars.resize(s.ma->getLength());
     for (int pos = 0; pos < s.ma->getLength(); pos++) {
@@ -395,4 +395,4 @@ void DNAStatMSAProfileTask::computeStats() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -76,7 +76,7 @@ public:
 };
 
 /////////////////////////////////////////////////////////////
-//Task
+// Task
 
 class U2ALGORITHM_EXPORT AssemblyReads {
 public:
@@ -156,7 +156,7 @@ public: \
     };
 
 ///////////////////////////////////////////////////////////////
-//Registry
+// Registry
 class U2ALGORITHM_EXPORT GenomeAssemblyAlgorithmEnv {
 public:
     GenomeAssemblyAlgorithmEnv(const QString &id,
@@ -208,6 +208,6 @@ private:
     Q_DISABLE_COPY(GenomeAssemblyAlgRegistry)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GENOMEASSEMBLYREGISTRY_H
+#endif  // GENOMEASSEMBLYREGISTRY_H

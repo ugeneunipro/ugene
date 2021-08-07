@@ -71,7 +71,7 @@ private:
     QList<ReferenceIndex> referenceIndices;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_INDEX_H_
+#endif  // _U2_BAM_INDEX_H_

@@ -51,8 +51,7 @@ private:
 class LoadWorkflowSceneTask : public Task {
     Q_OBJECT
 public:
-    LoadWorkflowSceneTask(const QSharedPointer<Schema> &schema, Metadata *meta, WorkflowScene *scene,
-        const QString &url, bool noUrl = false, bool disableWizardAutorun = false);
+    LoadWorkflowSceneTask(const QSharedPointer<Schema> &schema, Metadata *meta, WorkflowScene *scene, const QString &url, bool noUrl = false, bool disableWizardAutorun = false);
     virtual void run();
     virtual Task::ReportResult report();
 
@@ -69,5 +68,5 @@ private:
     bool disableWizardAutorun;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

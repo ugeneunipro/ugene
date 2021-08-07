@@ -132,6 +132,6 @@ private:
     QAction *trimRightEndAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MCA_EDITOR_SEQUENCE_AREA_
+#endif  // _U2_MCA_EDITOR_SEQUENCE_AREA_

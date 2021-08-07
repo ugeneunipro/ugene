@@ -72,8 +72,8 @@ public:
         int textOffset;
         int extraAxisLenBefore;
         int extraAxisLenAfter;
-        int textBorderStart;    //offset in pixels for the first text label at the start pos
-        int textBorderEnd;    //offset in pixels for the last text label at the end pos
+        int textBorderStart;  // offset in pixels for the first text label at the start pos
+        int textBorderEnd;  // offset in pixels for the last text label at the end pos
         int predefinedChunk;
         int correction;
         bool drawNumbers;
@@ -115,6 +115,6 @@ public:
     static void drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GRAPH_UTILS_H_
+#endif  // _U2_GRAPH_UTILS_H_

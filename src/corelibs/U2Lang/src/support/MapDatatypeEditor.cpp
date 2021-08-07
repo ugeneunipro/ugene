@@ -73,7 +73,7 @@ QWidget *MapDatatypeEditor::getWidget() {
 namespace {
 
 int getMinimumHeight(QTableWidget *table) {
-    int totalHeight = 2;    // a magic number to make vertical scrollbar not visible on Linux
+    int totalHeight = 2;  // a magic number to make vertical scrollbar not visible on Linux
 
     // Rows height
     int count = table->verticalHeader()->count();
@@ -96,7 +96,7 @@ int getMinimumHeight(QTableWidget *table) {
     return totalHeight;
 }
 
-}    // namespace
+}  // namespace
 
 QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     if (!from || !to || !from->isMap() || !to->isMap()) {
@@ -191,8 +191,8 @@ QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     }
 
     verticalLayout->addWidget(table);
-    //verticalLayout->addWidget(doc = new QTextEdit(widget));
-    //doc->setEnabled(false);
+    // verticalLayout->addWidget(doc = new QTextEdit(widget));
+    // doc->setEnabled(false);
     connect(table, SIGNAL(itemSelectionChanged()), SLOT(sl_showDoc()));
 
     return mainWidget;
@@ -218,17 +218,17 @@ void MapDatatypeEditor::sl_showDoc() {
     QString text = "";
     if (list.size() == 1) {
         if (isInfoMode()) {
-            //doc->setText(DesignerUtils::getRichDoc(list.at(0)->data(Qt::UserRole).value<Descriptor>()));
+            // doc->setText(DesignerUtils::getRichDoc(list.at(0)->data(Qt::UserRole).value<Descriptor>()));
             text = WorkflowUtils::getRichDoc(list.at(0)->data(Qt::UserRole).value<Descriptor>());
         } else {
             int row = list.at(0)->row();
             Descriptor d = table->item(row, KEY_COLUMN)->data(Qt::UserRole).value<Descriptor>();
             Descriptor s = table->item(row, VALUE_COLUMN)->data(Qt::UserRole).value<Descriptor>();
-            //doc->setText(formatDoc(d, s));
+            // doc->setText(formatDoc(d, s));
             text = formatDoc(d, s);
         }
     } else {
-        //doc->setText("");
+        // doc->setText("");
     }
 
     emit si_showDoc(text);
@@ -253,8 +253,8 @@ void MapDatatypeEditor::commit() {
 }
 
 /*******************************
-* BusPortEditor
-*******************************/
+ * BusPortEditor
+ *******************************/
 BusPortEditor::BusPortEditor(IntegralBusPort *p)
     : MapDatatypeEditor(p, IntegralBusPort::BUS_MAP_ATTR_ID, DataTypePtr(), DataTypePtr()), port(p) {
     to = WorkflowUtils::getToDatatypeForBusport(p);
@@ -334,8 +334,8 @@ bool BusPortEditor::isEmpty() const {
 }
 
 /*******************************
-* DescriptorListEditorDelegate
-*******************************/
+ * DescriptorListEditorDelegate
+ *******************************/
 QWidget *DescriptorListEditorDelegate::createEditor(QWidget *parent,
                                                     const QStyleOptionViewItem & /* option */,
                                                     const QModelIndex & /* index */) const {
@@ -387,7 +387,7 @@ static void addSeparator(QStandardItemModel *cm) {
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     cm->appendRow(item);
 }
-}    // namespace
+}  // namespace
 
 void DescriptorListEditorDelegate::setEditorData(QWidget *editor,
                                                  const QModelIndex &index) const {
@@ -467,4 +467,4 @@ void ItemDelegateForHeaders::paint(QPainter *painter, const QStyleOptionViewItem
     painter->drawText(option.rect, Qt::AlignLeft | Qt::TextSingleLine, getAddionalLabel());
 }
 
-}    //namespace U2
+}  // namespace U2

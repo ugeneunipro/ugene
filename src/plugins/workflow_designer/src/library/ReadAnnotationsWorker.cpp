@@ -56,7 +56,7 @@ namespace {
 const QString MODE_ATTR("mode");
 const QString ANN_TABLE_NAME_ATTR("ann-table-name");
 const QString ANN_TABLE_DEFAULT_NAME("Unknown features");
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* Worker */
@@ -81,7 +81,7 @@ Task *ReadAnnotationsWorker::createReadTask(const QString &url, const QString &d
 QString ReadAnnotationsWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    //return getObjectName(handler, U2Type::AnnotationTable);
+    // return getObjectName(handler, U2Type::AnnotationTable);
     return getObjectName(handler, 10);
 }
 
@@ -133,7 +133,7 @@ ReadAnnotationsProto::ReadAnnotationsProto()
     setDisplayName(ReadAnnotationsWorker::tr("Read Annotations"));
     setDocumentation(ReadAnnotationsWorker::tr("Input one or several files with annotations: a file may also contain a sequence (e.g. GenBank format)"
                                                " or contain annotations only (e.g. GTF format). The element outputs message(s) with the annotations data."));
-    {    // ports description
+    {  // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;
         outTypeMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
         outTypeMap[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -208,7 +208,7 @@ void ReadAnnotationsTask::prepare() {
     if (BaseIOAdapters::GZIPPED_LOCAL_FILE == iof->getAdapterId()) {
         memUseMB = ZlibAdapter::getUncompressedFileSizeInBytes(url) / (1024 * 1024) + 1;
     } else if (BaseIOAdapters::GZIPPED_HTTP_FILE == iof->getAdapterId()) {
-        memUseMB *= 2.5;    //Need to calculate compress level
+        memUseMB *= 2.5;  // Need to calculate compress level
     }
     coreLog.trace(QString("Load annotations: Memory resource %1").arg(memUseMB));
 
@@ -281,5 +281,5 @@ void ReadAnnotationsTask::cleanup() {
     results.clear();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

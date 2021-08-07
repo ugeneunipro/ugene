@@ -56,7 +56,7 @@ private:
     // attribute names
     static const QString DOC_NAME_ATTR;
     static const QString SEQ_NAME_ATTR;
-    static const QString REGIONS_ATTR;    // 0-based, GenBank-like format without 'join' word: 1..20,40..60
+    static const QString REGIONS_ATTR;  // 0-based, GenBank-like format without 'join' word: 1..20,40..60
 
     static const QString EXPECTED_LENGTH;
     static const QString EXPECTED_GC_CONTENT;
@@ -64,13 +64,13 @@ private:
 
     static const QString EXPECTED_SS_MOLECULAR_WEIGHT;
     static const QString EXPECTED_SS_EXTINCTION_COEFFICIENT;
-    static const QString EXPECTED_SS_OD260_AMOUNT_OF_SUBSTANCE;    // in nanomoles
-    static const QString EXPECTED_SS_OD260_MASS;    // in micrograms
+    static const QString EXPECTED_SS_OD260_AMOUNT_OF_SUBSTANCE;  // in nanomoles
+    static const QString EXPECTED_SS_OD260_MASS;  // in micrograms
 
     static const QString EXPECTED_DS_MOLECULAR_WEIGHT;
     static const QString EXPECTED_DS_EXTINCTION_COEFFICIENT;
-    static const QString EXPECTED_DS_OD260_AMOUNT_OF_SUBSTANCE;    // in nanomoles
-    static const QString EXPECTED_DS_OD260_MASS;    // in micrograms
+    static const QString EXPECTED_DS_OD260_AMOUNT_OF_SUBSTANCE;  // in nanomoles
+    static const QString EXPECTED_DS_OD260_MASS;  // in micrograms
 
     static const QString EXPECTED_ISOELECTRIC_POINT;
 };
@@ -80,6 +80,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_STATISTICS_TESTS_H_
+#endif  // _U2_DNA_STATISTICS_TESTS_H_

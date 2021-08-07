@@ -37,7 +37,7 @@ public:
     void wait();
 
 private:
-    //GUITestOpStatus &os;
+    // GUITestOpStatus &os;
     qint64 startValue;
     qint64 endValue;
 };
@@ -48,6 +48,6 @@ public:
     static void runInMainThread(GUITestOpStatus &os, CustomScenario *scenario);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_THREAD_H_
+#endif  // _HI_GT_THREAD_H_

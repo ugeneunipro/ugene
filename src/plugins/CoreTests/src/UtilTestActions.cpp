@@ -125,8 +125,8 @@ Task::ReportResult GTest_AddSharedDbUrl::report() {
 }
 
 /*******************************
-* GUrlTests
-*******************************/
+ * GUrlTests
+ *******************************/
 QList<XMLTestFactory *> UtilTestActions::createTestFactories() {
     QList<XMLTestFactory *> res;
     res.append(GTest_CopyFile::createFactory());
@@ -134,4 +134,4 @@ QList<XMLTestFactory *> UtilTestActions::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

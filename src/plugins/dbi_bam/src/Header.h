@@ -140,7 +140,7 @@ private:
     QString text;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_HEADER_H_
+#endif  // _U2_BAM_HEADER_H_

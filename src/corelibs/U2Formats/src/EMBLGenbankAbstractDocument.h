@@ -71,7 +71,7 @@ protected:
         Q_UNUSED(tags);
         Q_UNUSED(con);
         Q_UNUSED(so);
-    }    // does nothing if not overloaded
+    }  // does nothing if not overloaded
 
     virtual bool isNcbiLikeFormat() const;
     virtual void createCommentAnnotation(const QStringList &comments, int sequenceLength, AnnotationTableObject *annTable) const;
@@ -82,7 +82,7 @@ protected:
     QByteArray fPrefix;
     QByteArray sequenceStartPrefix;
     int maxAnnotationLineLen;
-    bool savedInUgene;    // saveInUgene marker is a hack for opening genbank files that were saved incorrectly(!) in UGENE version <1.14.1
+    bool savedInUgene;  // saveInUgene marker is a hack for opening genbank files that were saved incorrectly(!) in UGENE version <1.14.1
 
 private:
     SharedAnnotationData readAnnotation(IOAdapter *io, char *cbuff, int contentLen, int bufSize, U2OpStatus &si, int offset, int seqLen = -1);
@@ -146,6 +146,6 @@ public:
     static const int LOCAL_READ_BUFFER_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

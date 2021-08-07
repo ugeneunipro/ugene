@@ -68,6 +68,6 @@ inline bool operator==(const QObjectScopedPointer<T> &p, const T *o) {
     return p.operator->() == o;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_QOBJECT_SCOPED_POINTER_H_
+#endif  // _U2_QOBJECT_SCOPED_POINTER_H_

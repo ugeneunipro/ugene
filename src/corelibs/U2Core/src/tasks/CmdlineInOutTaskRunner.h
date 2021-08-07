@@ -66,6 +66,6 @@ private:
     QList<U2DataId> outputObjects;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
+#endif  // _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_

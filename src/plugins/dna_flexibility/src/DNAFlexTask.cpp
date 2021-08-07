@@ -101,4 +101,4 @@ QList<SharedAnnotationData> DNAFlexTask::getAnnotationsFromResults(const QList<H
     return annotResults;
 }
 
-}    // namespace U2
+}  // namespace U2

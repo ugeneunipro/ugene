@@ -72,14 +72,14 @@ public:
         const WeightMatrixResultItem *o = (const WeightMatrixResultItem *)&other;
         int n = treeWidget()->sortColumn();
         switch (n) {
-        case 0:
-            return res.region.startPos < o->res.region.startPos;
-        case 1:
-            return res.modelInfo < o->res.modelInfo;
-        case 2:
-            return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
-        case 3:
-            return res.score < o->res.score;
+            case 0:
+                return res.region.startPos < o->res.region.startPos;
+            case 1:
+                return res.modelInfo < o->res.modelInfo;
+            case 2:
+                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+            case 3:
+                return res.score < o->res.score;
         }
         return false;
     }
@@ -93,12 +93,12 @@ public:
         const WeightMatrixQueueItem *o = (const WeightMatrixQueueItem *)&other;
         int n = treeWidget()->sortColumn();
         switch (n) {
-        case 0:
-            return res.modelName.split("/").last() < o->res.modelName.split("/").last();
-        case 1:
-            return res.minPSUM < o->res.minPSUM;
-        case 2:
-            return res.algo < o->res.algo;
+            case 0:
+                return res.modelName.split("/").last() < o->res.modelName.split("/").last();
+            case 1:
+                return res.minPSUM < o->res.minPSUM;
+            case 2:
+                return res.algo < o->res.algo;
         }
         return false;
     }
@@ -144,7 +144,7 @@ PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext *_
 }
 
 void PWMSearchDialogController::connectGUI() {
-    //buttons
+    // buttons
     connect(pbSelectModelFile, SIGNAL(clicked()), SLOT(sl_selectModelFile()));
     connect(pbSaveAnnotations, SIGNAL(clicked()), SLOT(sl_onSaveAnnotations()));
     connect(pbClear, SIGNAL(clicked()), SLOT(sl_onClearList()));
@@ -162,7 +162,7 @@ void PWMSearchDialogController::connectGUI() {
     connect(loadFolderButton, SIGNAL(clicked()), SLOT(sl_onLoadFolder()));
     connect(clearListButton, SIGNAL(clicked()), SLOT(sl_onClearQueue()));
 
-    //results list
+    // results list
     connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
 
     resultsTree->installEventFilter(this);
@@ -595,4 +595,4 @@ WeightMatrixQueueItem::WeightMatrixQueueItem(const WeightMatrixSearchCfg &r)
     setText(2, r.algo);
 }
 
-}    // namespace U2
+}  // namespace U2

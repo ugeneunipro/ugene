@@ -71,7 +71,7 @@ DECLARE_TEST(DNAChromatogramObjectUnitTests, clone_NullObj);
 /* remove */
 DECLARE_TEST(DNAChromatogramObjectUnitTests, remove);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, createInstance);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, createInstance_WrongDbi);
@@ -82,4 +82,4 @@ DECLARE_METATYPE(DNAChromatogramObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, remove);
 
-#endif    // _U2_DNA_CHROMATOGRAM_OBJECT_UNIT_TESTS_H_
+#endif  // _U2_DNA_CHROMATOGRAM_OBJECT_UNIT_TESTS_H_

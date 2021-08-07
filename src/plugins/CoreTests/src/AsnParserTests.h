@@ -102,6 +102,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ASN_PARSER_TESTS_H_
+#endif  // _U2_ASN_PARSER_TESTS_H_

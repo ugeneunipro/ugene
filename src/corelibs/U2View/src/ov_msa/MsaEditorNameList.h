@@ -44,6 +44,6 @@ private:
     MSAEditor *getEditor() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_EDITOR_NAME_LIST_H_
+#endif  // _U2_MSA_EDITOR_NAME_LIST_H_

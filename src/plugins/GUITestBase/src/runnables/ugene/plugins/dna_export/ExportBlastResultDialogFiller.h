@@ -38,6 +38,6 @@ private:
     bool addRefBoxChecked;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_BLAST_RESULT_DIALOG_FILLER_H_
+#endif  // _U2_EXPORT_BLAST_RESULT_DIALOG_FILLER_H_

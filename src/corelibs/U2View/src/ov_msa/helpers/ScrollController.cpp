@@ -460,4 +460,4 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint &point, bool repor
     return QPoint(-1, -1);
 }
 
-}    // namespace U2
+}  // namespace U2

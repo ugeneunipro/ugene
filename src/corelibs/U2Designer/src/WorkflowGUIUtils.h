@@ -40,6 +40,6 @@ public:
     static void setupSamplesDocument(const Descriptor &d, const QIcon &ico, QTextDocument *res);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

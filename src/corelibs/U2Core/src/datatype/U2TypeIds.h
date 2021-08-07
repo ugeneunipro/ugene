@@ -28,16 +28,16 @@
 
 namespace U2 {
 
-//internal types:
+// internal types:
 INT32_ID(ServiceType);
 STRING_ID(GObjectViewFactoryId);
 
-//TODO:
+// TODO:
 typedef QString DocumentFormatId;
 typedef QString GObjectType;
 typedef QString IOAdapterId;
 typedef QString GTestFormatId;
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -133,4 +133,4 @@ QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus &os, QString itemNam
 }
 
 #undef GT_CLASS_NAME
-}    // namespace U2
+}  // namespace U2

@@ -58,8 +58,8 @@ class U2LANG_EXPORT AttributeConfig {
 public:
     enum Flag {
         None,
-        AddToDashboard,    // only for output URLs
-        OpenWithUgene    // only for file URLs that are added to a dashboard
+        AddToDashboard,  // only for output URLs
+        OpenWithUgene  // only for file URLs that are added to a dashboard
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
@@ -127,10 +127,10 @@ private:
     QMap<QString, ExternalProcessConfig *> configs;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::AttributeConfig)
 Q_DECLARE_METATYPE(U2::DataConfig)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::AttributeConfig::Flags)
 
-#endif    // _U2_EXTERNAL_TOOL_CONFIG_H_
+#endif  // _U2_EXTERNAL_TOOL_CONFIG_H_

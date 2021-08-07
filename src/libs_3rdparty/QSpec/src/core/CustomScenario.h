@@ -33,6 +33,6 @@ public:
     virtual void run(HI::GUITestOpStatus &os) = 0;
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_CUSTOM_SCENARIO_H_
+#endif  // _HI_CUSTOM_SCENARIO_H_

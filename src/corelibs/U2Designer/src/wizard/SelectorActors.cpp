@@ -75,4 +75,4 @@ QList<PortMapping> SelectorActors::getMappings(const QString &value) const {
     return QList<PortMapping>();
 }
 
-}    // namespace U2
+}  // namespace U2

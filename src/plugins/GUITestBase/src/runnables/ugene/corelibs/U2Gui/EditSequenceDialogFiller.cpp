@@ -82,7 +82,7 @@ void InsertSequenceFiller::commonScenario() {
 
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
 
-    QRadioButton *regionResolvingMode = dialog->findChild<QRadioButton *>(radioButtonName);    //"regionResolvingMode");
+    QRadioButton *regionResolvingMode = dialog->findChild<QRadioButton *>(radioButtonName);  //"regionResolvingMode");
     GT_CHECK(regionResolvingMode != nullptr, "regionResolvingMode not found");
     GTRadioButton::click(os, regionResolvingMode);
 
@@ -138,4 +138,4 @@ void InsertSequenceFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

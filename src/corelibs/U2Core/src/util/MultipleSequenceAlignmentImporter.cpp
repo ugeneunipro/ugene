@@ -49,7 +49,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
     SAFE_POINT_OP(os, nullptr);
     SAFE_POINT_EXT(nullptr != con.dbi, os.setError(L10N::nullPointerError("Destination database")), nullptr);
 
-    TmpDbiObjects objs(dbiRef, os);    // remove the MSA object if opStatus is incorrect
+    TmpDbiObjects objs(dbiRef, os);  // remove the MSA object if opStatus is incorrect
 
     // MSA object and info
     U2DataId msaId = createEmptyMsaObject(con, folder, al->getName(), al->getAlphabet(), os);
@@ -135,7 +135,7 @@ void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection &con, 
     SAFE_POINT(nullptr != attrDbi, "NULL Attribute Dbi during importing an alignment!", );
 
     foreach (QString key, alInfo.keys()) {
-        if (key != MultipleAlignmentInfo::NAME) {    // name is stored in the object
+        if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
             QString val = alInfo.value(key).value<QString>();
             U2StringAttribute attr(msaId, key, val);
 
@@ -245,4 +245,4 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
     return rows;
 }
 
-}    // namespace U2
+}  // namespace U2

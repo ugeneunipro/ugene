@@ -131,4 +131,4 @@ QColor GTUtilsAnnotHighlightingTreeView::getItemColor(HI::GUITestOpStatus &os, c
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

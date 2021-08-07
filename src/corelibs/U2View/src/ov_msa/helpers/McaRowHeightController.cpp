@@ -42,4 +42,4 @@ int McaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
     return rowHeigth;
 }
 
-}    // namespace U2
+}  // namespace U2

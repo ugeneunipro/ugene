@@ -82,10 +82,10 @@ protected:
 private:
     // named attributes
     QMap<QString, Attribute *> params;
-    QList<Attribute *> attrs;    //For sorting attributes by order of creation
+    QList<Attribute *> attrs;  // For sorting attributes by order of creation
 
-};    // Configuration
+};  // Configuration
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_CONFIGURATION_H_
+#endif  // _U2_WORKFLOW_CONFIGURATION_H_

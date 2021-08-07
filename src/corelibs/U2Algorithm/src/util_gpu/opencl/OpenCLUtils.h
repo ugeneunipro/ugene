@@ -45,11 +45,11 @@ public:
         cl_kernel kernel,
         cl_device_id deviceId,
         const OpenCLHelper &openCLHelper,
-        cl_int &err);    // performance hint, returnes 32 if error, ignoring err
+        cl_int &err);  // performance hint, returnes 32 if error, ignoring err
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/
 
-#endif    //__OPENCL_UTILS_H__
+#endif  //__OPENCL_UTILS_H__

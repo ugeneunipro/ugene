@@ -49,11 +49,11 @@ public:
 private:
     DnaAssemblyToRefTaskSettings settings;
     DnaAssemblyToReferenceTask *assemblyToRefTask;
-    //Document* doc;
+    // Document* doc;
     QList<ShortReadSet> shortReadSets;
     bool openView;
     bool justBuildIndex;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

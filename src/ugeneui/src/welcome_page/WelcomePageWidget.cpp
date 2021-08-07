@@ -63,7 +63,7 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent)
     layout->addWidget(createFooterWidget());
 
     setWidget(widget);
-    setWidgetResizable(true);    // make the widget to fill whole available space
+    setWidgetResizable(true);  // make the widget to fill whole available space
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
@@ -336,4 +336,4 @@ void WelcomePageWidget::runAction(const QString &actionId) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

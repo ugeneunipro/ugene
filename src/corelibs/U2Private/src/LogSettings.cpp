@@ -46,7 +46,7 @@ LogSettings::LogSettings()
       showCategory(false),
       enableColor(false),
       toFile(false) {
-    //created in not inited state
+    // created in not inited state
     memset(activeLevelGlobalFlag, 0, sizeof(bool) * LogLevel_NumLevels);
 }
 
@@ -154,4 +154,4 @@ void LogSettingsHolder::setSettings(const LogSettings &s) {
     settings = s;
     settings.save();
 }
-}    // namespace U2
+}  // namespace U2

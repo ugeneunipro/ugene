@@ -49,6 +49,6 @@ public:
     static const GObjectViewFactoryId ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

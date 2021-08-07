@@ -52,6 +52,6 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

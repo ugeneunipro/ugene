@@ -138,7 +138,7 @@ private:
     qint64 offset;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _GROUPER_ACTION_UTILS_
+#endif  // _GROUPER_ACTION_UTILS_

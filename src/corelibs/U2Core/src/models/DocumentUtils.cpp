@@ -297,4 +297,4 @@ QString FormatDetectionResult::getRawDataPreviewText() const {
     return QString::fromUtf8(safeData);
 }
 
-}    // namespace U2
+}  // namespace U2

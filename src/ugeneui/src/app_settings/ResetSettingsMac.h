@@ -29,6 +29,6 @@ public:
     static void reset();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_RESET_SETTINGS_MAC_H_
+#endif  //_U2_RESET_SETTINGS_MAC_H_

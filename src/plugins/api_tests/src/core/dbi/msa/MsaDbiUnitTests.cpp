@@ -252,4 +252,4 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     CHECK_EQUAL(2, actualRowGap.gap, "row gap length");
 }
 
-}    // namespace U2
+}  // namespace U2

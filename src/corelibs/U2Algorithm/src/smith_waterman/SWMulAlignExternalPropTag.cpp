@@ -48,4 +48,4 @@ QString SWMulAlignExternalPropTag::expandTag(const QVariant & /*argument*/) cons
     return tagExpansion;
 }
 
-}    // namespace U2
+}  // namespace U2

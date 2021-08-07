@@ -114,6 +114,6 @@ private:
     QMap<AnnotatedDNAView *, CircularViewSettings *> viewSettings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

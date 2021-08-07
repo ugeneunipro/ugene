@@ -9,4 +9,4 @@
 #    define HI_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif    // GLOBAL_H
+#endif  // GLOBAL_H

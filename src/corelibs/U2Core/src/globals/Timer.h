@@ -39,10 +39,10 @@ namespace U2 {
 class U2CORE_EXPORT GTimer : public QObject {
     Q_OBJECT
 public:
-    //Returns microseconds since the Unix Epoch (Jan. 1, 1970), UTC
+    // Returns microseconds since the Unix Epoch (Jan. 1, 1970), UTC
     inline static qint64 currentTimeMicros();
 
-    //suitable for values returned by GTimer::currentTimeMicros() call
+    // suitable for values returned by GTimer::currentTimeMicros() call
     static QDateTime createDateTime(qint64 micros, Qt::TimeSpec spec = Qt::LocalTime);
 
     static int secsBetween(qint64 startTime, qint64 endTime) {
@@ -143,6 +143,6 @@ inline qint64 TimeCounter::getCounter() {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

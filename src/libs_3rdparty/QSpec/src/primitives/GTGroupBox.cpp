@@ -98,4 +98,4 @@ QRect GTGroupBox::getCheckBoxRect(QGroupBox *groupBox) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

@@ -38,7 +38,7 @@ public:
     static void cleanup();
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
 #endif

@@ -47,6 +47,6 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_MCA_2_MSA_DIALOG_H_
+#endif  // _U2_EXPORT_MCA_2_MSA_DIALOG_H_

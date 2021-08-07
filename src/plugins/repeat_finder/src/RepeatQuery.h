@@ -54,7 +54,7 @@ private slots:
     void sl_onAlgorithmTaskFinished();
 
 private:
-    //void addResults( const SharedAnnotationData& ad, bool complement );
+    // void addResults( const SharedAnnotationData& ad, bool complement );
 
     FindRepeatsTaskSettings settings;
     QList<FindRepeatsToAnnotationsTask *> repTasks;
@@ -71,6 +71,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

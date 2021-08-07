@@ -247,12 +247,12 @@ QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::E
             exceptionText = "Program has been aborted";
             break;
 
-        default:;    // Do nothing
+        default:;  // Do nothing
     }
 
     return "C++ exception|" + exceptionText;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

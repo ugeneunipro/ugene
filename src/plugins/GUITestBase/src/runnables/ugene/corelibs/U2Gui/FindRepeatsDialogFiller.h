@@ -48,6 +48,6 @@ private:
     int minDistance;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_RUNNABLES_FIND_REPEATS_DIALOG_FILLER_H_
+#endif  // _U2_GT_RUNNABLES_FIND_REPEATS_DIALOG_FILLER_H_

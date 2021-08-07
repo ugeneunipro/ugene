@@ -137,6 +137,6 @@ private:
     QHash<qint64, MysqlAssemblyAdapter *> adaptersById;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_ASSEMBLY_DBI_H_
+#endif  // _U2_MYSQL_ASSEMBLY_DBI_H_

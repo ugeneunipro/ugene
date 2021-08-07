@@ -34,7 +34,7 @@ public:
     bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const override;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    //_CMDLINE_BASED_WORKER_VALIDATOR_
+#endif  //_CMDLINE_BASED_WORKER_VALIDATOR_

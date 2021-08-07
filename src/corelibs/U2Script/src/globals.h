@@ -110,4 +110,4 @@ U2SCRIPT_EXPORT U2ErrorType getLastFailedStringValue(int maxExpectedLength,
 };
 #endif
 
-#endif    // _U2_SCRIPT_GLOBALS_H_
+#endif  // _U2_SCRIPT_GLOBALS_H_

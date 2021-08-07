@@ -51,4 +51,4 @@ void GTMenuBar::clickCornerMenu(GUITestOpStatus &os, QMenuBar *mBar, GTGlobals::
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

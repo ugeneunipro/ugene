@@ -96,7 +96,7 @@ private:
     QString text;
     NotificationType type;
     int timeCounter = 0;
-    //counter for duplicate notifications
+    // counter for duplicate notifications
     int counter = 0;
 };
 
@@ -127,7 +127,7 @@ signals:
     void si_changed();
 
 private:
-    static QPoint getBottomRightOfMainWindow();    // because of Mac's strange behavior
+    static QPoint getBottomRightOfMainWindow();  // because of Mac's strange behavior
 
     // Adds notification as a child to notification widget
     void addToNotificationWidget(Notification *n);
@@ -161,6 +161,6 @@ private:
     NotificationType notificationType;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

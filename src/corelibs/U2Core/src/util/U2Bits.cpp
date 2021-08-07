@@ -25,9 +25,9 @@
 
 namespace U2 {
 
-//static int getLenBits(int len) {
-//    return len == 0 ? 3 : len < 0XFF ? 0 : len < 0xFFFF ? 1 : 2;
-//}
+// static int getLenBits(int len) {
+//     return len == 0 ? 3 : len < 0XFF ? 0 : len < 0xFFFF ? 1 : 2;
+// }
 static int getLenBitsSize(int len) {
     return len == 0 ? 0 : len < 0XFF ? 8
                       : len < 0xFFFF ? 16
@@ -35,16 +35,16 @@ static int getLenBitsSize(int len) {
 }
 
 static void writeLength(uchar *bits, int len, int lenBitsLen) {
-    if (lenBitsLen == 8) {    // 00
+    if (lenBitsLen == 8) {  // 00
         U2Bits::writeInt8(bits, 2, (qint8)len);
-    } else if (lenBitsLen == 16) {    // 01
+    } else if (lenBitsLen == 16) {  // 01
         U2Bits::setBit(bits, 0);
         U2Bits::writeInt16(bits, 2, (qint16)len);
-    } else if (lenBitsLen == 32) {    // 10
+    } else if (lenBitsLen == 32) {  // 10
         U2Bits::setBit(bits, 1);
         U2Bits::writeInt16(bits, 2, (qint32)len);
     } else {
-        U2Bits::setBit(bits, 0);    // empty length => both bits set: 11
+        U2Bits::setBit(bits, 0);  // empty length => both bits set: 11
         U2Bits::setBit(bits, 1);
     }
 }
@@ -80,7 +80,7 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
     //  [used alpha bits] bit is set if alpha char is used in the text.
     //  [compressed text] the data in compressed form
 
-    assert(alphabetSize <= 32);    //avoid this check in runtime -> use this method correctly
+    assert(alphabetSize <= 32);  // avoid this check in runtime -> use this method correctly
 
     // find all used chars in text
     QVector<bool> visitVector(alphabetSize, false);
@@ -192,11 +192,11 @@ QVector<int> U2BitCompression::prepareCharNumsMask(const QByteArray &alphabetCha
 
 #define K_FACTOR 1.5
 /** Compression is eligible if compressed text < original text length with a compression factor of K */
-//static bool isCompressionNeeded(int textLen, int alphabetSize) {
-//    int nBits = alphabetSize + U2Bits::getNumberOfBitsPerChar(alphabetSize) * textLen;
-//    int compressedBytes = U2Bits::getNumberOfBytes(nBits);
-//    return compressedBytes * K_FACTOR < textLen;
-//}
+// static bool isCompressionNeeded(int textLen, int alphabetSize) {
+//     int nBits = alphabetSize + U2Bits::getNumberOfBitsPerChar(alphabetSize) * textLen;
+//     int compressedBytes = U2Bits::getNumberOfBytes(nBits);
+//     return compressedBytes * K_FACTOR < textLen;
+// }
 
 //////////////////////////////////////////////////////////////////////////
 // bits helper
@@ -226,7 +226,7 @@ void U2Bits::setBits(uchar *dstBits, int pos, const uchar *srcBits, int nBits) {
     }
 }
 int U2Bits::bitsRange2Int32(const uchar *bits, int pos, int len) {
-    //TODO: optimize
+    // TODO: optimize
     assert(len <= 32);
     int res = 0;
     for (int i = 0; i < len; i++) {
@@ -282,4 +282,4 @@ void U2Bits::writeInt32(uchar *bits, int pos, qint32 val) {
     writeInt8(bits, pos, qint8(val >> 24));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -331,4 +331,4 @@ void WidgetControllersContainer::addParametersToCmdLine(QStringList &cmdLineSett
         curController->addParameterToCmdLineSettings(cmdLineSettings);
     }
 }
-}    // namespace U2
+}  // namespace U2

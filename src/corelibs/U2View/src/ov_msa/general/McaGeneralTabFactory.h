@@ -44,6 +44,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MCA_GENERAL_TAB_FACTORY_H_
+#endif  // _U2_MCA_GENERAL_TAB_FACTORY_H_

@@ -98,4 +98,4 @@ void ExportProjectDialogController::sl_onFileSelectButton() {
     projectFilePathEdit->setText(path);
 }
 
-}    // namespace U2
+}  // namespace U2

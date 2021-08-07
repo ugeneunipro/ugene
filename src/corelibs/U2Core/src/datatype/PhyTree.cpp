@@ -182,18 +182,18 @@ void PhyNode::setParentNode(PhyNode *newParent, double distance) {
         if (currentBrunch->node1 == newParent) {
             return;
         } else if (currentBrunch->node2 == newParent) {
-            //Invert branch nodes if newParent currently is a child
+            // Invert branch nodes if newParent currently is a child
             currentBrunch->node1 = newParent;
             currentBrunch->node2 = this;
             currentBrunch->distance = distance;
             return;
         } else if (currentBrunch->node2 == this) {
-            //Remove link between the node and previous parent
+            // Remove link between the node and previous parent
             PhyNode *parentNode = currentBrunch->node1;
             if (nullptr != parentNode) {
                 parentNode->branches.removeOne(currentBrunch);
             }
-            //Link the node to the new parent
+            // Link the node to the new parent
             if (nullptr != newParent) {
                 currentBrunch->node1 = newParent;
                 currentBrunch->distance = distance;
@@ -395,4 +395,4 @@ void PhyTreeUtils::rerootPhyTree(PhyTree &phyTree, PhyNode *node) {
     phyTree->setRootNode(newRoot);
 }
 
-}    // namespace U2
+}  // namespace U2

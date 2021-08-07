@@ -73,7 +73,7 @@ public:
     static bool openclEnabled;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // GENOME_ALIGNER_WORKER
+#endif  // GENOME_ALIGNER_WORKER

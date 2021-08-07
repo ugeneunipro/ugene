@@ -133,7 +133,7 @@ void LogViewWidget::popupMenu(const QPoint &pos) {
     popup.addAction(addSeparatorAction);
     popup.addAction(clearAction);
 
-    if (cache == LogCache::getAppGlobalInstance()) {    //customization is allowed only for global cache today
+    if (cache == LogCache::getAppGlobalInstance()) {  // customization is allowed only for global cache today
         popup.addAction(showSettingsAction);
     }
 
@@ -367,4 +367,4 @@ void LogViewWidget::setSearchBoxMode(LogViewSearchBoxMode mode) {
         searchEdit->setVisible(false);
     }
 }
-}    // namespace U2
+}  // namespace U2

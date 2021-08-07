@@ -140,4 +140,4 @@ void ExportHighligtingDialogController::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-}    // namespace U2
+}  // namespace U2

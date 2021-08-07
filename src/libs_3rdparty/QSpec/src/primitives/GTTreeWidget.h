@@ -52,7 +52,7 @@ public:
 
     static QList<QTreeWidgetItem *> findItems(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
-    static void click(GUITestOpStatus &os, QTreeWidgetItem *item, int column = -1);    //  column == -1 - item center
+    static void click(GUITestOpStatus &os, QTreeWidgetItem *item, int column = -1);  //  column == -1 - item center
 
     // Returns item level, 0 - top level item
     static int getItemLevel(GUITestOpStatus &os, QTreeWidgetItem *item);
@@ -61,6 +61,6 @@ private:
     static QTreeWidgetItem *findItemPrivate(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

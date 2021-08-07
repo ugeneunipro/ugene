@@ -119,4 +119,4 @@ bool MultipleAlignmentInfo::hasCutoff(const QVariantMap &map, Cutoffs coff) {
     return ok;
 }
 
-}    // namespace U2
+}  // namespace U2

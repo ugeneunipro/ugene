@@ -57,6 +57,6 @@ public:
     virtual qint64 skip(qint64 n, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_INPUTSTREAM_H_
+#endif  // _U2_INPUTSTREAM_H_

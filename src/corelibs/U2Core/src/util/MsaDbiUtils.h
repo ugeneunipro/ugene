@@ -34,23 +34,23 @@ public:
     static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);
 
     /**
-    * Get the length of the alignment in the database.
-    */
+     * Get the length of the alignment in the database.
+     */
     static qint64 getMaLength(const U2EntityRef &maRef, U2OpStatus &os);
 
     /**
-    * Update the length of the alignment in the database.
-    */
+     * Update the length of the alignment in the database.
+     */
     static void updateMaLength(const U2EntityRef &maRef, qint64 newLen, U2OpStatus &os);
 
     /**
-    * Get the alphabet of the alignment in the database.
-    */
+     * Get the alphabet of the alignment in the database.
+     */
     static U2AlphabetId getMaAlphabet(const U2EntityRef &maRef, U2OpStatus &os);
 
     /**
-    * Update the alphabet of the alignment in the database.
-    */
+     * Update the alphabet of the alignment in the database.
+     */
     static void updateMaAlphabet(const U2EntityRef &maRef, const U2AlphabetId &alphabet, U2OpStatus &os);
 
     /**
@@ -135,10 +135,10 @@ public:
     static void removeRegion(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os);
 
     /**
-    * Replace a character in an alignment.
-    * Parameter 'rowId' must be valid ID of the alignment row in the database!
-    * Parameter 'pos' must be >= 0.
-    */
+     * Replace a character in an alignment.
+     * Parameter 'rowId' must be valid ID of the alignment row in the database!
+     * Parameter 'pos' must be >= 0.
+     */
     static void replaceCharacterInRow(const U2EntityRef &msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus &os);
 
     /**
@@ -161,7 +161,7 @@ public:
      * Parameter 'rowIds' must contain valid IDs of the alignment rows in the database!
      * Parameter 'columnRange' must be a valid non-empty column range.
      */
-    static void crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, const U2Region& columnRange, U2OpStatus &os);
+    static void crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os);
 
     /**
      * Removes leading and trailing gaps, if required.
@@ -250,6 +250,6 @@ private:
     static bool gapInPosition(const QList<U2MsaGap> &gapModel, qint64 pos);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -77,4 +77,4 @@ void BranchSettingsDialog::accept() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

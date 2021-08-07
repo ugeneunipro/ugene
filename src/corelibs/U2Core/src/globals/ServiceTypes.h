@@ -44,6 +44,6 @@ const ServiceType Service_QueryDesigner = 111;
 const ServiceType Service_MinCoreServiceId = 500;
 const ServiceType Service_MaxCoreServiceId = 1000;
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

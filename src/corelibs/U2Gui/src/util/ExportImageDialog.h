@@ -107,8 +107,8 @@ private:
 
     Ui_ImageExportForm *ui;
     InvokedFrom source;
-};    // class ExportImageDialog
+};  // class ExportImageDialog
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

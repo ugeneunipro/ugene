@@ -109,20 +109,20 @@ static QString makeArgumentPair(const QString &argName, const QString &value) {
     return argName + "=" + value + "&";
 }
 
-//static QString getSchemaGraphInSimpleDotNotation(Schema * schema, const Metadata & meta) {
-//    assert(schema != NULL);
-//    QString graph = "digraph{";
-//    graph += QString("label=\"Schema %1\"").arg(meta.name);
-//    foreach(Link * link, schema->getFlows()) {
-//        assert(link != NULL);
-//        Actor * source = link->source()->owner();
-//        Actor * destination = link->destination()->owner();
-//        assert(source != NULL && destination != NULL);
-//        graph += QString("%1->%2;").arg("\"" + source->getLabel() + "\"").arg("\"" + destination->getLabel() + "\"");
-//    }
-//    graph = graph.mid(0, graph.size() - 1);
-//    return graph + "}";
-//}
+// static QString getSchemaGraphInSimpleDotNotation(Schema * schema, const Metadata & meta) {
+//     assert(schema != NULL);
+//     QString graph = "digraph{";
+//     graph += QString("label=\"Schema %1\"").arg(meta.name);
+//     foreach(Link * link, schema->getFlows()) {
+//         assert(link != NULL);
+//         Actor * source = link->source()->owner();
+//         Actor * destination = link->destination()->owner();
+//         assert(source != NULL && destination != NULL);
+//         graph += QString("%1->%2;").arg("\"" + source->getLabel() + "\"").arg("\"" + destination->getLabel() + "\"");
+//     }
+//     graph = graph.mid(0, graph.size() - 1);
+//     return graph + "}";
+// }
 
 static QString getSchemaGraphInExtendedDotNotation(Schema *schema, const Metadata &meta) {
     assert(schema != nullptr);
@@ -149,15 +149,15 @@ static QString getSchemaGraphInExtendedDotNotation(Schema *schema, const Metadat
     return graph + "}";
 }
 
-//static QString getSizeStr(const QSize & sz) {
-//    return QString("%1x%2").arg(sz.width()).arg(sz.height());
-//}
+// static QString getSizeStr(const QSize & sz) {
+//     return QString("%1x%2").arg(sz.width()).arg(sz.height());
+// }
 
 QString GoogleChartImage::getUrlArguments() const {
     QString res;
     res += makeArgumentPair(CHART_TYPE_OPTION, GRAPH_VIZ_CHART_TYPE);
     res += makeArgumentPair(GRAPH_OPTION, getSchemaGraphInExtendedDotNotation(schema, meta));
-    //res += makeArgumentPair(CHART_SIZE_OPTION, getSizeStr(chartSize));
+    // res += makeArgumentPair(CHART_SIZE_OPTION, getSizeStr(chartSize));
     return res.mid(0, res.size() - 1);
 }
 
@@ -200,4 +200,4 @@ QString SaveSchemaImageUtils::saveSchemaImageToFile(const QString &schemaPath, c
     return QString();
 }
 
-}    // namespace U2
+}  // namespace U2

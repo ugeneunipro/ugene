@@ -82,7 +82,7 @@ void SiteconBuildDialogController::sl_inFileButtonClicked() {
 
 void SiteconBuildDialogController::sl_okButtonClicked() {
     if (task != nullptr) {
-        accept();    //go to background
+        accept();  // go to background
         return;
     }
 
@@ -113,7 +113,7 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
         QMessageBox::critical(this, tr("Error"), errMsg);
         return;
     }
-    //save settings
+    // save settings
     AppContext::getSettings()->setValue(SETTINGS_ROOT + CALIBRATION_LEN, idx);
     AppContext::getSettings()->setValue(SETTINGS_ROOT + WEIGHT_ALG, weightAlgCombo->currentIndex());
 
@@ -124,7 +124,7 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     statusLabel->setText(tr("Starting calibration process"));
 
-    //update buttons
+    // update buttons
     okButton->setText(tr("Hide"));
     cancelButton->setText(tr("Cancel"));
 }
@@ -297,4 +297,4 @@ QList<Task *> SiteconBuildToFileTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

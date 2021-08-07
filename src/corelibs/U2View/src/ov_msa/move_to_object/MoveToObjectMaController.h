@@ -77,6 +77,6 @@ private:
     const QList<qint64> rowIds;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MOVETOOBJECTMAMENUCONTROLLER_H_
+#endif  // _U2_MOVETOOBJECTMAMENUCONTROLLER_H_

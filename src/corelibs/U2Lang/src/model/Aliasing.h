@@ -69,7 +69,7 @@ private:
     QList<SlotAlias> slotAliases;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_ALIASING_H_
+#endif  // _U2_WORKFLOW_ALIASING_H_

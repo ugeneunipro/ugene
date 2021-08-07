@@ -74,6 +74,6 @@ private:
     QList<CoveredRegion> allRegions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

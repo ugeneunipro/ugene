@@ -45,7 +45,7 @@ private:
     quint64 packedOffset;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _VIRTUAL_OFFSET_H_
+#endif  // _VIRTUAL_OFFSET_H_

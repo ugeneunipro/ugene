@@ -72,4 +72,4 @@ QString McaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     return editor->getSettingsRoot() + MCAE_SETTINGS_CONSENSUS_TYPE;
 }
 
-}    // namespace U2
+}  // namespace U2

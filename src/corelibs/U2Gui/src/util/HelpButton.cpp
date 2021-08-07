@@ -57,4 +57,4 @@ void ComboboxDependentHelpButton::sl_buttonClicked() {
     GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
 }
 
-}    // namespace U2
+}  // namespace U2

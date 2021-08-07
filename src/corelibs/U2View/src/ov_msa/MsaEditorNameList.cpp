@@ -65,4 +65,4 @@ void MsaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
     QWidget::mouseDoubleClickEvent(e);
 }
 
-}    // namespace U2
+}  // namespace U2

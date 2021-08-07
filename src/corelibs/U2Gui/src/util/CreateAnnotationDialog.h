@@ -37,7 +37,7 @@ class HelpButton;
 class U2GUI_EXPORT CreateAnnotationDialog : public QDialog {
     Q_OBJECT
 public:
-    //saves the results to the provided model
+    // saves the results to the provided model
     CreateAnnotationDialog(QWidget *p, CreateAnnotationModel &m);
     ~CreateAnnotationDialog();
 
@@ -52,6 +52,6 @@ private:
     HelpButton *helpButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

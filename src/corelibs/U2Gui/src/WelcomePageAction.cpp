@@ -39,4 +39,4 @@ const QString &WelcomePageAction::getId() const {
     return id;
 }
 
-}    // namespace U2
+}  // namespace U2

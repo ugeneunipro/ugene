@@ -83,6 +83,6 @@ private:
     static const qreal TRACE_OR_BC_LINES_DIVIDER;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_WITH_CHROMATOGRAM_AREA_RENDERER_H_
+#endif  // _U2_SEQUENCE_WITH_CHROMATOGRAM_AREA_RENDERER_H_

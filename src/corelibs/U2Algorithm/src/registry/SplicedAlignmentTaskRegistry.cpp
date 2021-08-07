@@ -68,4 +68,4 @@ QStringList SplicedAlignmentTaskRegistry::getAlgNameList() {
     return algMap.keys();
 }
 
-}    // namespace U2
+}  // namespace U2

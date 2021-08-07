@@ -39,7 +39,7 @@ public:
     QColor getFontColor(int seq, int pos, char c) const override;
 
 private:
-    //QPair<font, background>
+    // QPair<font, background>
     static const QList<QPair<QColor, QColor>> colorPairsByFrequence;
     static const QPair<QColor, QColor> gapColorPair;
 
@@ -54,6 +54,6 @@ public:
     MsaColorScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_COLOR_SCHEME_WEAK_SIMILARITIES_H_
+#endif  // _U2_MSA_COLOR_SCHEME_WEAK_SIMILARITIES_H_

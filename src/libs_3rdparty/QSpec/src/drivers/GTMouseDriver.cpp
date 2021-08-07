@@ -31,7 +31,7 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
     GTThread::waitForMainThread();
-    GTGlobals::sleep(100);    // Adding extra sleep to avoid occasional doubleclicks
+    GTGlobals::sleep(100);  // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
 
@@ -41,7 +41,7 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
     GTThread::waitForMainThread();
-    GTGlobals::sleep(100);    // Adding extra sleep to avoid occasional doubleclicks
+    GTGlobals::sleep(100);  // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
 #endif
@@ -54,7 +54,7 @@ bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
 }
 #endif
 
-}    // namespace
+}  // namespace
 
 bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
@@ -73,7 +73,7 @@ bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     GTThread::waitForMainThread();
     DRIVER_CHECK(moveTo(end), QString("Mouse was not moved to the end point (%1, %2)").arg(end.x()).arg(end.y()));
     GTThread::waitForMainThread();
-    GTGlobals::sleep(500);    // Do extra wait before the release. Otherwise the method is not stable on Linux.
+    GTGlobals::sleep(500);  // Do extra wait before the release. Otherwise the method is not stable on Linux.
 #endif
     DRIVER_CHECK(release(), "Mouse button was not released");
     GTThread::waitForMainThread();
@@ -102,4 +102,4 @@ QPoint GTMouseDriver::getMousePosition() {
     return QCursor::pos();
 }
 
-}    // namespace HI
+}  // namespace HI

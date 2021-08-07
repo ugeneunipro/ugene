@@ -114,4 +114,4 @@ void ScriptHighlighter::highlightBlock(const QString &text) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

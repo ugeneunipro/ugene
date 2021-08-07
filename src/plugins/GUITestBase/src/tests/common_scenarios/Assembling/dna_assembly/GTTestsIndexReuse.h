@@ -42,7 +42,7 @@ GUI_TEST_CLASS_DECLARATION(test_0009)
 GUI_TEST_CLASS_DECLARATION(test_0010)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_index_reuse
-}    // namespace U2
+}  // namespace GUITest_index_reuse
+}  // namespace U2
 
-#endif    // INDEXREUSE_H
+#endif  // INDEXREUSE_H

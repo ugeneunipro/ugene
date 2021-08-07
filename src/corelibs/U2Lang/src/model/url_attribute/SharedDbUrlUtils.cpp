@@ -82,7 +82,7 @@ QString objId2Str(const U2DataId &objId, const QString &objName) {
     return QString::number(idNumber) + SharedDbUrlUtils::DB_OBJ_ID_SEP + QString::number(objType) + SharedDbUrlUtils::DB_OBJ_ID_SEP + objName;
 }
 
-}    // namespace
+}  // namespace
 
 QString SharedDbUrlUtils::createDbUrl(const U2DbiRef &dbiRef) {
     SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference", QString());
@@ -169,7 +169,7 @@ bool getSeparatorIndices(const QString &entityUrl, int &dbProviderSepPos, int &d
     return true;
 }
 
-}    // namespace
+}  // namespace
 
 bool SharedDbUrlUtils::isDbObjectUrl(const QString &url) {
     int dbProviderSepPos = -1;
@@ -307,7 +307,7 @@ QString getDbFolderDataTypeStr(const QString &url) {
     return typeStr;
 }
 
-}    // namespace
+}  // namespace
 
 U2DataType SharedDbUrlUtils::getDbFolderDataTypeByUrl(const QString &url) {
     bool ok = false;
@@ -320,4 +320,4 @@ QString SharedDbUrlUtils::getDbFolderSerializedDataTypeByUrl(const QString &url)
     return BaseTypes::toTypeId(getDbFolderDataTypeByUrl(url));
 }
 
-}    // namespace U2
+}  // namespace U2

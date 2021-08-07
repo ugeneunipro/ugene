@@ -50,6 +50,6 @@ private:
     QMap<QString, QVariant> map;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

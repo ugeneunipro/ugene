@@ -195,4 +195,4 @@ QMap<QString, QString> PFMatrix::getProperties() const {
     return info.getProperties();
 }
 
-}    // namespace U2
+}  // namespace U2

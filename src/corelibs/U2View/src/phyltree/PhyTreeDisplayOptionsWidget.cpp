@@ -67,4 +67,4 @@ void PhyTreeDisplayOptionsWidget::restoreDefault() {
     ui->syncCheckBox->setChecked(true);
 }
 
-}    // namespace U2
+}  // namespace U2

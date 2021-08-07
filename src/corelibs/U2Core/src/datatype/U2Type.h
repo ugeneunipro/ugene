@@ -298,7 +298,7 @@ private:
     int value;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(QList<U2::U2DataId>)
 Q_DECLARE_METATYPE(U2::U2DbiRef)

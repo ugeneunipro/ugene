@@ -351,7 +351,7 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
     }
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
-    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
+    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));  // fast fix, clicking first result
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != nullptr, "buttonBox is NULL");
@@ -384,4 +384,4 @@ int NCBISearchDialogSimpleFiller::getResultNumber() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

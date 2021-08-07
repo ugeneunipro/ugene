@@ -194,9 +194,9 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
-    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");    // avoid white background of scrollbar set 1 line above.
+    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
-    nameAreaContainer->setMinimumWidth(15);    // splitter uses min-size to collapse a widget
+    nameAreaContainer->setMinimumWidth(15);  // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
@@ -299,4 +299,4 @@ MaEditor *MaEditorWgt::getEditor() const {
     return editor;
 }
 
-}    // namespace U2
+}  // namespace U2

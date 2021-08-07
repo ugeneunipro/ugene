@@ -178,4 +178,4 @@ bool DashboardsManagerDialog::confirmDashboardsRemoving() const {
     return (dynamic_cast<const QAbstractButton *>(cancelButton) != questionBox->clickedButton());
 }
 
-}    // namespace U2
+}  // namespace U2

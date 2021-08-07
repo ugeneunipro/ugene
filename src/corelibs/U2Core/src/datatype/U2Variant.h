@@ -82,6 +82,6 @@ public:
     static const QString VCF4_INFO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VARIANT_H_
+#endif  // _U2_VARIANT_H_

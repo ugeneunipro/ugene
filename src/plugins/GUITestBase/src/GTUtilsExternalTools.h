@@ -35,6 +35,6 @@ public:
     static void setToolUrl(HI::GUITestOpStatus &os, const QString &toolName, const QString &url);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GTUTILS_EXTERNAL_TOOLS_H_
+#endif  // _GTUTILS_EXTERNAL_TOOLS_H_

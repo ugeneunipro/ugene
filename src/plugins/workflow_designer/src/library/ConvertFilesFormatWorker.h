@@ -42,7 +42,7 @@ public:
 
 protected:
     QString composeRichDoc();
-};    //ConvertFilesFormatPrompter
+};  // ConvertFilesFormatPrompter
 
 class ConvertFilesFormatWorker : public BaseWorker {
     Q_OBJECT
@@ -69,7 +69,7 @@ private:
     QString createWorkingDir(const QString &fileUrl);
     void sendResult(const QString &url);
     Task *getConvertTask(const QString &detectedFormat, const QString &url);
-};    //ConvertFilesFormatWorker
+};  // ConvertFilesFormatWorker
 
 class ConvertFilesFormatWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -82,9 +82,9 @@ public:
     Worker *createWorker(Actor *a) {
         return new ConvertFilesFormatWorker(a);
     }
-};    //ConvertFilesFormatWorkerFactory
+};  // ConvertFilesFormatWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

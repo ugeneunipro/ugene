@@ -63,6 +63,6 @@ private:
     const static char *RESOURCE_OPENCL_GPU_NAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //__OPENCL_SUPPORT_PLUGIN_H__
+#endif  //__OPENCL_SUPPORT_PLUGIN_H__

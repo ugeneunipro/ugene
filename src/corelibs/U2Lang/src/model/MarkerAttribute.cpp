@@ -70,4 +70,4 @@ bool MarkerAttribute::contains(const QString &markerId) const {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

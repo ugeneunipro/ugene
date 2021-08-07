@@ -390,4 +390,4 @@ U2SCRIPT_EXPORT U2ErrorType launchSas(const wchar_t *algorithmType,
 }
 #endif
 
-#endif    // _SCHEME_HANDLE_H_
+#endif  // _SCHEME_HANDLE_H_

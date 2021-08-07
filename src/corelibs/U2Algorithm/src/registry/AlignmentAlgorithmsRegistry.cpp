@@ -143,4 +143,4 @@ AlignmentAlgorithmGUIExtensionFactory *AlgorithmRealization::getGUIExtFactory() 
     return alignmentAlgorithmGUIExtensionsFactory;
 }
 
-}    // namespace U2
+}  // namespace U2

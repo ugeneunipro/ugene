@@ -38,6 +38,6 @@ private slots:
     void sl_closeWindow();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_LIBRARY_MDI_WINDOW_H_
+#endif  // _U2_PRIMER_LIBRARY_MDI_WINDOW_H_

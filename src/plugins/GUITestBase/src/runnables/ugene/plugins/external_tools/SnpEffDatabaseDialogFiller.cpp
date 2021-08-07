@@ -80,4 +80,4 @@ void SnpEffDatabaseDialogFiller::commonScenario() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

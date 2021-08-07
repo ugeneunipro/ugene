@@ -186,6 +186,6 @@ Handle<Value> DebugStatusWrap::isPaused(const Arguments &args) {
     return scope.Close(Boolean::New(obj->debugStatus->isPaused()));
 }
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2

@@ -38,7 +38,7 @@ class U2Region;
 
 class U2CORE_EXPORT ResidueIndex {
     int resId;
-    int order;    // to keep order of residues in the chain
+    int order;  // to keep order of residues in the chain
     char insCode;
 
 public:
@@ -291,7 +291,7 @@ public:
     // can be optimized on assumption that residue ids are continual
     QMultiMap<int, int> selection;
 
-};    // class BioStruct3DChainSelectionData
+};  // class BioStruct3DChainSelectionData
 
 //! Represents residue chain selection on BioStruct3D.
 class U2CORE_EXPORT BioStruct3DChainSelection {
@@ -320,8 +320,8 @@ public:
 private:
     const BioStruct3D &biostruct;
     QSharedDataPointer<BioStruct3DChainSelectionData> data;
-};    // class U2CORE_EXPORT BioStruct3DChainSelection
+};  // class U2CORE_EXPORT BioStruct3DChainSelection
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BIOSTRUCT3D_H_
+#endif  // _U2_BIOSTRUCT3D_H_

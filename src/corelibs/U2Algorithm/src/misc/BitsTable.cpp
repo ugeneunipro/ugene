@@ -59,12 +59,12 @@ BitsTable::BitsTable() {
     PROTEIN_BITS['+'] = pBits;
     PROTEIN_BITS['#'] = pBits;
 
-    NUCL_BITS['A'] = 0x0;    //00
-    NUCL_BITS['C'] = 0x1;    //01
-    NUCL_BITS['T'] = 0x2;    //10
-    NUCL_BITS['G'] = 0x3;    //11
+    NUCL_BITS['A'] = 0x0;  // 00
+    NUCL_BITS['C'] = 0x1;  // 01
+    NUCL_BITS['T'] = 0x2;  // 10
+    NUCL_BITS['G'] = 0x3;  // 11
 
-    //todo: RNA?
+    // todo: RNA?
 }
 
 quint32 BitsTable::getBitMaskCharBitsNum(DNAAlphabetType al) const {
@@ -77,4 +77,4 @@ const quint32 *BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
                                                                         : RAW_BITS;
 }
 
-}    // namespace U2
+}  // namespace U2

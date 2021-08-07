@@ -66,7 +66,7 @@ public:
 
     virtual void buildPopupMenu(QMenu &m);
 
-    //TODO: replace with GObjectViewObjectHandler
+    // TODO: replace with GObjectViewObjectHandler
     virtual bool isWidgetOnlyObject(GObject *o) const {
         Q_UNUSED(o);
         return false;
@@ -114,6 +114,6 @@ public:
     ADVSequenceWidget *seqWidget;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

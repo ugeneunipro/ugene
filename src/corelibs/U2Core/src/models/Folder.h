@@ -69,6 +69,6 @@ public:
     static const QString MIME_TYPE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FOLDER_H_
+#endif  // _U2_FOLDER_H_

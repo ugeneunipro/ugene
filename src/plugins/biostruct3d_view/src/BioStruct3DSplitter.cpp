@@ -137,13 +137,13 @@ bool BioStruct3DSplitter::eventFilter(QObject *o, QEvent *e) {
     Q_UNUSED(e);
     BioStruct3DGLWidget *glw = qobject_cast<BioStruct3DGLWidget *>(o);
 #ifdef Q_WS_X11
-    //first variant of fix of QT4 bug: GL widget is frozen after minimize/maximize
+    // first variant of fix of QT4 bug: GL widget is frozen after minimize/maximize
     if (e->type() == QEvent::Hide) {
-        glw->makeCurrent();    //these 2 lines can be removed
+        glw->makeCurrent();  // these 2 lines can be removed
         glFinish();
         return true;
     }
-    //second variant of fix of QT4 bug: GL widget is frozen after minimize/maximize
+    // second variant of fix of QT4 bug: GL widget is frozen after minimize/maximize
     if (e->type() == QEvent::WindowActivate) {
         //  ((QGLContext*)glw->context())->create();
     }
@@ -431,8 +431,8 @@ SplitterHeaderWidget::SplitterHeaderWidget(BioStruct3DSplitter *sp)
 
     // TODO: add settings functionality
     // Note: do not use widgets on the toolbar, use actions instead
-    //settingsMenuButton = new QToolButton(this);
-    //settingsMenuButton->setText(tr("settings"));
+    // settingsMenuButton = new QToolButton(this);
+    // settingsMenuButton->setText(tr("settings"));
     // toolbar->addWidget(settingsMenuButton);
 
     widgetStateMenuAction = new QAction(this);
@@ -461,7 +461,7 @@ void SplitterHeaderWidget::sl_showStateMenu() {
     m.addAction(splitter->getCloseSplitterAction());
     m.exec(QCursor::pos());
 
-    if (!widgetStateMenuButtonPtr.isNull()) {    //if not self closed
+    if (!widgetStateMenuButtonPtr.isNull()) {  // if not self closed
         widgetStateMenuButtonPtr->setDown(false);
     }
 }
@@ -474,7 +474,7 @@ void SplitterHeaderWidget::sl_showDisplayMenu() {
     QMenu *displayMenu = activeWidget->getDisplayMenu();
     displayMenu->exec(QCursor::pos());
 
-    if (!displayMenuButtonPtr.isNull()) {    //if not self closed
+    if (!displayMenuButtonPtr.isNull()) {  // if not self closed
         displayMenuButtonPtr->setDown(false);
     }
 }
@@ -492,7 +492,7 @@ void SplitterHeaderWidget::sl_zoomOut() {
 }
 
 // TODO: add settings functionality
-//void SplitterHeaderWidget::sl_showSettingsMenu()
+// void SplitterHeaderWidget::sl_showSettingsMenu()
 //{
 //    QPointer<QToolButton> settingsMenuButtonPtr(settingsMenuButton);
 
@@ -634,7 +634,7 @@ void SplitterHeaderWidget::sl_toggleBioStruct3DWidget(bool show) {
 void SplitterHeaderWidget::sl_addModel() {
     QPointer<QAbstractButton> addModelButtonPtr(qobject_cast<QAbstractButton *>(toolbar->widgetForAction(addModelAction)));
 
-    if (!addModelButtonPtr.isNull()) {    //if not self closed
+    if (!addModelButtonPtr.isNull()) {  // if not self closed
         addModelButtonPtr->setDown(false);
     }
 
@@ -665,7 +665,7 @@ void SplitterHeaderWidget::sl_showWebMenu() {
     }
     m.exec(QCursor::pos());
 
-    if (!webMenuButtonPtr.isNull()) {    //if not self closed
+    if (!webMenuButtonPtr.isNull()) {  // if not self closed
         webMenuButtonPtr->setDown(false);
     }
 }
@@ -784,4 +784,4 @@ Task::ReportResult AddModelToSplitterTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

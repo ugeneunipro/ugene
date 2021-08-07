@@ -122,19 +122,19 @@ QString QDLinkStatement::toString() const {
     return res;
 }
 
-//QDDocument
+// QDDocument
 //////////////////////////////////////////////////////////////////////////
 static const QString COMMENT_PATTERN = "\\\\\\\\|#([^\n]*)\n";
 static const QString SINGLE_ID_PATTERN = "(?:[a-zA-Z]+)(?:[a-zA-Z0-9]|_|(?:-(?!-)))*";
 const QString QDDocument::ID_PATTERN = "(" + SINGLE_ID_PATTERN + "(?:\\." + SINGLE_ID_PATTERN + ")*)";
-//static const QString VAL_PATTERN = "((?:\"[^\"]+\")|[^\\s\"]+)";
+// static const QString VAL_PATTERN = "((?:\"[^\"]+\")|[^\\s\"]+)";
 static const QString VAL_PATTERN = "((?:\"[^\"]+\")|[^\\s;]+)";
 static const QString IMPORT_PATTERN = IMPORT_KEYWORD + "\\s+" + VAL_PATTERN;
-static const QString DOC_NAME_PATTERN = GRAPH_KEYWORD + "\\s*" + QDDocument::ID_PATTERN;    // + "\\s*\\{{1,1}" + "[^\\{]*(?:\\{{1,1}[^\\{\\}]\\}{1,1})*" + "}{1,1}";
+static const QString DOC_NAME_PATTERN = GRAPH_KEYWORD + "\\s*" + QDDocument::ID_PATTERN;  // + "\\s*\\{{1,1}" + "[^\\{]*(?:\\{{1,1}[^\\{\\}]\\}{1,1})*" + "}{1,1}";
 static const QString ELEMENT_ATTRS_PATTERN = "\\" + BLOCK_START + "{1,1}([^\\" + BLOCK_START + "\\" + BLOCK_END + "]*)\\" + BLOCK_END + "{1,1}";
-//static const QString GROUP_ATTRS_PATTERN = "\\{{1,1}([^\\{\\}]*)\\}{1,1}";
+// static const QString GROUP_ATTRS_PATTERN = "\\{{1,1}([^\\{\\}]*)\\}{1,1}";
 static const QString ELEMENT_STATEMENT_PATTERN = "[^--](?:\n|\\s)+" + QDDocument::ID_PATTERN + "\\s*" + ELEMENT_ATTRS_PATTERN;
-//static const QString GROUP_STATEMENT_PATTERN ="[^--]" + ID_PATTERN + "\\s*" + GROUP_ATTRS_PATTERN;
+// static const QString GROUP_STATEMENT_PATTERN ="[^--]" + ID_PATTERN + "\\s*" + GROUP_ATTRS_PATTERN;
 static const QString LINK_STATEMENT_PATTERN = "(" + QDDocument::ID_PATTERN + "(?:\\s*--\\s*" + QDDocument::ID_PATTERN + ")+)\\s*" + ELEMENT_ATTRS_PATTERN;
 
 static const QString ORDER_KEYWORD = "order";
@@ -404,20 +404,20 @@ bool QDDocument::isHeaderLine(const QString &line) {
             line.startsWith(DEPRECATED_HEADER_LINE));
 }
 
-//Mapper
+// Mapper
 //////////////////////////////////////////////////////////////////////////
 QString QDIdMapper::distance2string(QDDistanceType type) {
     switch (type) {
-    case E2S:
-        return "end-to-start";
-    case E2E:
-        return "end-to-end";
-    case S2S:
-        return "start-to-start";
-    case S2E:
-        return "start-to-end";
-    default:
-        return QString();
+        case E2S:
+            return "end-to-start";
+        case E2E:
+            return "end-to-end";
+        case S2S:
+            return "start-to-start";
+        case S2E:
+            return "start-to-end";
+        default:
+            return QString();
     }
 }
 
@@ -451,4 +451,4 @@ QString QDIdMapper::constraintType2string(const QDConstraintType &type) {
     return QString();
 }
 
-}    // namespace U2
+}  // namespace U2

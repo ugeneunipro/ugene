@@ -49,4 +49,4 @@ void AssemblyConsensusAlgorithmRegistry::addAlgorithmFactory(AssemblyConsensusAl
     algorithms[id] = algo;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -309,4 +309,4 @@ QList<XMLTestFactory *> DNAExportPluginTests::createTestFactories() {
     return factories;
 }
 
-}    // namespace U2
+}  // namespace U2

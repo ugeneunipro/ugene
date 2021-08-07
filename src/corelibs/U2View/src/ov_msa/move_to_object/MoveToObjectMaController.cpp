@@ -51,7 +51,8 @@
 
 namespace U2 {
 
-MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor) : QObject(maEditor), MaEditorContext(maEditor) {
+MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor)
+    : QObject(maEditor), MaEditorContext(maEditor) {
     moveSelectionToAnotherObjectAction = new QAction(tr("Move selected rows to another alignment"));
     moveSelectionToAnotherObjectAction->setObjectName("move_selection_to_another_object");
     connect(moveSelectionToAnotherObjectAction, &QAction::triggered, this, &MoveToObjectMaController::showMoveSelectedRowsToAnotherObjectMenu);
@@ -110,7 +111,7 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
             auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
             AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Move rows to another alignment"), {addRowsTask, removeRowsTask}));
         });
-        action->setObjectName(fileName);    // For UI testing.
+        action->setObjectName(fileName);  // For UI testing.
     }
     return menu;
 }
@@ -189,7 +190,7 @@ RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor *_maEditor, cons
 }
 
 void RemoveRowsFromMaObjectTask::run() {
-    CHECK(!maEditor.isNull(), );    // The editor may be closed while the task in the queue.
+    CHECK(!maEditor.isNull(), );  // The editor may be closed while the task in the queue.
 
     MultipleAlignmentObject *maObject = maEditor->getMaObject();
     CHECK_EXT(rowIds.size() < maObject->getNumRows(), setError(tr("Can't remove all rows from the alignment")), );
@@ -201,4 +202,4 @@ void RemoveRowsFromMaObjectTask::run() {
     maEditor->getSelectionController()->clearSelection();
 }
 
-}    // namespace U2
+}  // namespace U2

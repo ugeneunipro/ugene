@@ -78,22 +78,22 @@ private:
 
     static const QByteArray SAM_SECTION_START;
 
-    static const QByteArray SECTION_HEADER;    //Header
-    static const QByteArray SECTION_SEQUENCE;    //Sequence dictionary
-    static const QByteArray SECTION_READ_GROUP;    //read group
-    static const QByteArray SECTION_PROGRAM;    //Program
-    static const QByteArray SECTION_COMMENT;    //comment
+    static const QByteArray SECTION_HEADER;  // Header
+    static const QByteArray SECTION_SEQUENCE;  // Sequence dictionary
+    static const QByteArray SECTION_READ_GROUP;  // read group
+    static const QByteArray SECTION_PROGRAM;  // Program
+    static const QByteArray SECTION_COMMENT;  // comment
 
-    static const QByteArray TAG_VERSION;    //File format version.
-    static const QByteArray TAG_SORT_ORDER;    //Sort order. Valid values are: unsorted, queryname or coordinate.
-    static const QByteArray TAG_GROUP_ORDER;    //Group order (full sorting is not imposed in a group). Valid values are: none, query or reference.
+    static const QByteArray TAG_VERSION;  // File format version.
+    static const QByteArray TAG_SORT_ORDER;  // Sort order. Valid values are: unsorted, queryname or coordinate.
+    static const QByteArray TAG_GROUP_ORDER;  // Group order (full sorting is not imposed in a group). Valid values are: none, query or reference.
 
-    static const QByteArray TAG_SEQUENCE_NAME;    //Sequence name. Unique among all sequence records in the file. The value of this field is used in alignment records.
-    static const QByteArray TAG_SEQUENCE_LENGTH;    //Sequence length.
-    static const QByteArray TAG_GENOME_ASSEMBLY_ID;    //Genome assembly identifier. Refers to the reference genome assembly in an unambiguous    form. Example: HG18.
-    static const QByteArray TAG_SEQUENCE_MD5_SUM;    //MD5 checksum of the sequence in the uppercase (gaps and space are removed)
-    static const QByteArray TAG_SEQUENCE_URI;    //URI of the sequence
-    static const QByteArray TAG_SEQUENCE_SPECIES;    //Species.
+    static const QByteArray TAG_SEQUENCE_NAME;  // Sequence name. Unique among all sequence records in the file. The value of this field is used in alignment records.
+    static const QByteArray TAG_SEQUENCE_LENGTH;  // Sequence length.
+    static const QByteArray TAG_GENOME_ASSEMBLY_ID;  // Genome assembly identifier. Refers to the reference genome assembly in an unambiguous    form. Example: HG18.
+    static const QByteArray TAG_SEQUENCE_MD5_SUM;  // MD5 checksum of the sequence in the uppercase (gaps and space are removed)
+    static const QByteArray TAG_SEQUENCE_URI;  // URI of the sequence
+    static const QByteArray TAG_SEQUENCE_SPECIES;  // Species.
 
     static const char SPACE = '\t';
 
@@ -109,6 +109,6 @@ private:
     bool skipDetection;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_SAM_FORMAT_H
+#endif  //_SAM_FORMAT_H

@@ -71,7 +71,7 @@ public:
         return doc;
     }
 
-    //used in file-name rolling mode
+    // used in file-name rolling mode
     void setExcludeFileNames(const QSet<QString> &_excludeFileNames) {
         excludeFileNames = _excludeFileNames;
     }
@@ -138,7 +138,7 @@ public:
     GUrl toURL;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::SaveDocFlags)
 

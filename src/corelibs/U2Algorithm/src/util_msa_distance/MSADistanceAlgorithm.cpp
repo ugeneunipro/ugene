@@ -143,4 +143,4 @@ int MSADistanceMatrix::getSimilarity(int refRow, int row, bool _usePercents) con
     }
 }
 
-}    // namespace U2
+}  // namespace U2

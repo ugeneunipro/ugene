@@ -83,6 +83,6 @@ public:
     virtual CDSearchResultListener *createCDSearch(const CDSearchSettings &settings) const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

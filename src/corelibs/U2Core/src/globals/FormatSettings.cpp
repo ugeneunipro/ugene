@@ -64,4 +64,4 @@ void FormatAppsSettings::setCaseAnnotationsMode(CaseAnnotationsMode mode) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + CASE_ANNS_MODE, modeStr);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -47,4 +47,4 @@ void AnnotHighlightTreeItem::setColor(const QColor &_annotColor) {
     drawColorCell();
 }
 
-}    // namespace U2
+}  // namespace U2

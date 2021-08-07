@@ -85,7 +85,7 @@ public:
     void setAngle(int angle);
     void updateMinSize();
 
-    //used by export to file function
+    // used by export to file function
     void paint(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
 
     CircularViewSettings *getSettings() {
@@ -224,7 +224,7 @@ private:
     int arrowHeightDelta;
     int maxDisplayingLabels;
     int verticalOffset;
-    int currentScale;    // > 0 -- zoomed IN; < 0 -- zoomed OUT; == 0 -- fits in view
+    int currentScale;  // > 0 -- zoomed IN; < 0 -- zoomed OUT; == 0 -- fits in view
 
     CircularViewSettings *settings;
     bool settingsWereChanged;
@@ -244,6 +244,6 @@ private:
     int oldYlevel;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

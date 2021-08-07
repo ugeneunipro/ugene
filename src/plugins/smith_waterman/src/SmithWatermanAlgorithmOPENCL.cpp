@@ -76,7 +76,7 @@ quint64 SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(const SMatrix &sm,
     const quint64 memToAlloc = sizeof(char) * (_searchSeq.length() + 1) + profLen * sizeof(cl_int) + sizeof(ScoreType) * sizeRow * 7 +
                                sharedArraysSize;
 
-    return memToAlloc;    //factor 8/5 is used because OpenCL won't allocate all or almost all available GPU memory
+    return memToAlloc;  // factor 8/5 is used because OpenCL won't allocate all or almost all available GPU memory
 }
 
 quint64 SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(const SMatrix &sm, const QByteArray &_patternSeq, const QByteArray &_searchSeq, const SmithWatermanSettings::SWResultView resultView) {
@@ -104,12 +104,12 @@ quint64 SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(const SMatrix &sm,
     return memToAlloc / B_TO_MB_FACTOR;
 }
 
-//TODO: calculate maximum alignment length
+// TODO: calculate maximum alignment length
 int SmithWatermanAlgorithmOPENCL::calcOverlap(int queryLength) {
     return queryLength * 2;
 }
 
-//number of parts of the sequence which we divide
+// number of parts of the sequence which we divide
 int SmithWatermanAlgorithmOPENCL::calcPartsNumber(int searchLen, int overlapLength) {
     if (0 == MAX_BLOCKS_NUMBER) {
         MAX_BLOCKS_NUMBER = AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getMaxComputeUnits();
@@ -123,12 +123,12 @@ int SmithWatermanAlgorithmOPENCL::calcPartsNumber(int searchLen, int overlapLeng
     return partsNumber;
 }
 
-//size of sequence's part
+// size of sequence's part
 int SmithWatermanAlgorithmOPENCL::calcPartSeqSize(int searchLen, int overlapLength, int partsNumber) {
     return (searchLen + (partsNumber - 1) * (overlapLength + 1)) / partsNumber;
 }
 
-//size of vector that contain all results
+// size of vector that contain all results
 int SmithWatermanAlgorithmOPENCL::calcSizeRow(int partsNumber, int partSeqSize) {
     return (partSeqSize + 1) * partsNumber;
 }
@@ -150,19 +150,19 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     int searchLen = searchSeq.size();
     int subLen = sm.getAlphabet()->getNumAlphabetChars();
 
-    //alphChars is sorted
+    // alphChars is sorted
     const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
     qint64 profLen = subLen * (queryLength + 1) * (alphChars[alphChars.size() - 1] + 1);
     ScoreType *queryProfile = nullptr;
     queryProfile = new ScoreType[profLen];
 
-    gauto_array<ScoreType> qpm(queryProfile);    // to ensure the data is deallocated correctly
+    gauto_array<ScoreType> qpm(queryProfile);  // to ensure the data is deallocated correctly
 
     for (int i = 0; i < profLen; i++) {
         queryProfile[i] = 0;
     }
 
-    //calculate query profile
+    // calculate query profile
     for (int i = 0; i < subLen; i++) {
         for (int j = 0; j < queryLength; j++) {
             char ch = alphChars[i];
@@ -189,7 +189,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         return;
 
     //*******************************
-    //calculate lengths
+    // calculate lengths
     const int overlapLength = queryLength * 3;
 
     int partsNumber = calcPartsNumber(searchLen, overlapLength);
@@ -288,7 +288,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     algoLog.trace(QString("seqLen: %1 partSeqSize: %2 overlapSize: %3").arg(searchLen).arg(partSeqSize).arg(overlapLength));
     algoLog.trace(QString("queryLen %1 partQuerySize: %2 sizeRow: %3").arg(queryLength).arg(partQuerySize).arg(sizeRow));
 
-    //open and read file contains OPENCL code
+    // open and read file contains OPENCL code
     clProgram = OpenCLUtils::createProgramByResource(clContext, deviceId, ":src/sw_opencl.cl", *openCLHelper, err);
     if (hasOPENCLError(err, "createProgramByResource() failed"))
         return;
@@ -301,141 +301,141 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
 
     int n = 0;
 
-    //0: seqLib
+    // 0: seqLib
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)&seqLibProfBuf);
 
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //1: queryProfile
+    // 1: queryProfile
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)&queryProfBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //2: g_HdataUp
+    // 2: g_HdataUp
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)hDataUpBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //3: g_HdataRec
+    // 3: g_HdataRec
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)hDataRecBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //4: g_HdataMax
+    // 4: g_HdataMax
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)&hDataMaxBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //5: g_FdataUp
+    // 5: g_FdataUp
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)&fDataUpBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //6: g_directionsUp
+    // 6: g_directionsUp
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)directionsUpBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //7: g_directionsRec
+    // 7: g_directionsRec
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)directionsRecBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //8: g_directionsMax
+    // 8: g_directionsMax
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (void *)&directionsMaxBuf);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //9: g_directionsMatrix
+    // 9: g_directionsMatrix
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (nullptr != directionsMatrix) ? static_cast<void *>(&directionsMatrix) : nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //10: g_patternSubseqs
+    // 10: g_patternSubseqs
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (nullptr != backtraceBegins) ? static_cast<void *>(&backtraceBegins) : nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //11: queryStartPos
+    // 11: queryStartPos
     cl_int queryStartPos = 0;
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&queryStartPos);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //12: partSeqSize
+    // 12: partSeqSize
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&partSeqSize);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //13: partsNumber
+    // 13: partsNumber
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&partsNumber);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //14: overlapLength
+    // 14: overlapLength
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&overlapLength);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //15: searchLen
+    // 15: searchLen
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&searchLen);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //16: queryLength
+    // 16: queryLength
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&queryLength);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //17: gapOpen
+    // 17: gapOpen
     cl_int clGapOpen = -1 * gapOpen;
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&clGapOpen);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //18: gapExtension
+    // 18: gapExtension
     cl_int clGapExtension = -1 * gapExtension;
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&clGapExtension);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //19: queryPartLength
+    // 19: queryPartLength
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int), (void *)&partQuerySize);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //20: LEFT symbol in directionsMatrix
+    // 20: LEFT symbol in directionsMatrix
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_char), (void *)&LEFT);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //21: DIAG symbol in directionsMatrix
+    // 21: DIAG symbol in directionsMatrix
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_char), (void *)&DIAG);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //22: UP symbol in directionsMatrix
+    // 22: UP symbol in directionsMatrix
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_char), (void *)&UP);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //23: STOP symbol in directionMatrix
+    // 23: STOP symbol in directionMatrix
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_char), (void *)&STOP);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //24: shared_E
+    // 24: shared_E
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //25: shared_direction
+    // 25: shared_direction
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
-    //26: shared_direction
+    // 26: shared_direction
     err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
@@ -443,7 +443,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     //************end: set arguments****************
 
     clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
-    if (CL_INVALID_QUEUE_PROPERTIES == err) {    //device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
+    if (CL_INVALID_QUEUE_PROPERTIES == err) {  // device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
         clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, 0, &err);
     }
     if (hasOPENCLError(err, "cl::CommandQueue() failed "))
@@ -451,7 +451,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
 
     coreLog.details(QObject::tr("OPENCL: Running CL program"));
 
-    //run kernel
+    // run kernel
     const size_t szGlobalWorkSize = partsNumber * partQuerySize;
     const size_t szLocalWorkSize = partQuerySize;
 
@@ -479,7 +479,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
                 return;
         }
 
-        //revert arrays
+        // revert arrays
         hDataTmpBuf = hDataRecBuf;
         hDataRecBuf = hDataUpBuf;
         hDataUpBuf = hDataTmpBuf;
@@ -488,34 +488,34 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         directionsRecBuf = directionsUpBuf;
         directionsUpBuf = hDataTmpBuf;
 
-        //g_HdataUp
+        // g_HdataUp
         err = openCLHelper->clSetKernelArg_p(clKernel, 2, sizeof(cl_mem), (void *)hDataUpBuf);
         if (hasOPENCLError(err, "Kernel::setArg(2) failed"))
             return;
 
-        //g_HdataRec
+        // g_HdataRec
         err = openCLHelper->clSetKernelArg_p(clKernel, 3, sizeof(cl_mem), (void *)hDataRecBuf);
         if (hasOPENCLError(err, "Kernel::setArg(3) failed"))
             return;
 
-        //g_directionsUp
+        // g_directionsUp
         err = openCLHelper->clSetKernelArg_p(clKernel, 6, sizeof(cl_mem), (void *)directionsUpBuf);
         if (hasOPENCLError(err, "Kernel::setArg(6) failed"))
             return;
 
-        //g_directionsRec
+        // g_directionsRec
         err = openCLHelper->clSetKernelArg_p(clKernel, 7, sizeof(cl_mem), (void *)directionsRecBuf);
         if (hasOPENCLError(err, "Kernel::setArg(7) failed"))
             return;
 
-        //queryStartPos
+        // queryStartPos
         queryStartPos = (i + 1) * partQuerySize;
         err = openCLHelper->clSetKernelArg_p(clKernel, 11, sizeof(cl_int), (void *)&queryStartPos);
         if (hasOPENCLError(err, "Kernel::setArg(9) failed"))
             return;
     }
 
-    //copy from platform to host
+    // copy from platform to host
     err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, hDataMaxBuf, CL_FALSE, 0, sizeof(cl_int) * (sizeRow), g_HdataTmp, 0, nullptr, &clEvent);
     if (hasOPENCLError(err, "clEnqueueReadBuffer failed"))
         return;
@@ -578,23 +578,23 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     if (hasOPENCLError(err, "clFinish failed"))
         return;
 
-    //using namespace std;
-    //cout <<"after: " <<endl;
-    //for (int i = 0; i < sizeRow; i++) {
-    //    cout <<g_HdataTmp[i] <<" ";
-    //}
-    //cout <<endl;
-    //cout <<"directions: " <<endl;
-    //for (int i = 0; i < sizeRow; i++) {
-    //    cout <<g_directionsRec[i] <<" ";
-    //}
-    //cout <<endl;
-    //if(SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
-    //    cout << "Directions Matrix:" << endl << " ";
-    //    for(int i = 0; i < searchLen; ++i) {
-    //        cout << " " << searchSeq[i];
-    //    }
-    //    cout << endl;
+    // using namespace std;
+    // cout <<"after: " <<endl;
+    // for (int i = 0; i < sizeRow; i++) {
+    //     cout <<g_HdataTmp[i] <<" ";
+    // }
+    // cout <<endl;
+    // cout <<"directions: " <<endl;
+    // for (int i = 0; i < sizeRow; i++) {
+    //     cout <<g_directionsRec[i] <<" ";
+    // }
+    // cout <<endl;
+    // if(SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
+    //     cout << "Directions Matrix:" << endl << " ";
+    //     for(int i = 0; i < searchLen; ++i) {
+    //         cout << " " << searchSeq[i];
+    //     }
+    //     cout << endl;
 
     //    for(int i = 0; i < searchLen * queryLength; ++i) {
     //        if(0 == i % searchLen) {
@@ -611,7 +611,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     //    cout << endl;
     //}
 
-    //collect results
+    // collect results
     PairAlignSequences tmp;
     for (int j = 0; j < (sizeRow); j++) {
         if (g_HdataTmp[j] >= minScore) {
@@ -724,6 +724,6 @@ SmithWatermanAlgorithmOPENCL::~SmithWatermanAlgorithmOPENCL() {
     algoLog.details(QObject::tr("Finish cleanup OpenCL resources"));
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //SW2_BUILD_WITH_OPENCL
+#endif  // SW2_BUILD_WITH_OPENCL

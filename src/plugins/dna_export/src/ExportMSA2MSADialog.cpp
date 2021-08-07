@@ -125,4 +125,4 @@ void ExportMSA2MSADialog::initSaveController(const QString &defaultFileName, con
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -34,6 +34,6 @@ public:
     static Workflow::ActorPrototype *string2actor(const QString data, const QString actorName, QString &error, const QString actorFilePath);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _SCRIPT_WORKER_SERIALIZER_H_
+#endif  // _SCRIPT_WORKER_SERIALIZER_H_

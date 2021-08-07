@@ -179,4 +179,4 @@ void SplashScreenWidget::drawInfo() {
         p.drawText(18, 290 + VERSION_HEIGHT_PX, activeTaskName);
     }
 }
-}    // namespace U2
+}  // namespace U2

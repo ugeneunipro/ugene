@@ -37,6 +37,6 @@ public:
     static void setValue(GUITestOpStatus &os, QSlider *slider, int value);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_SLIDER_H
+#endif  // _HI_GT_SLIDER_H

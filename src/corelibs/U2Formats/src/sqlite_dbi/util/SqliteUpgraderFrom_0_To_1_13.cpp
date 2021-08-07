@@ -129,4 +129,4 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus &os) const {
     SQLiteWriteQuery(QString("ALTER TABLE %1 RENAME TO Assembly").arg(newTableName), db, os).execute();
 }
 
-}    // namespace U2
+}  // namespace U2

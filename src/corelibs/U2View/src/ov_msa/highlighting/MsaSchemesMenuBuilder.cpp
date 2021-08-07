@@ -152,4 +152,4 @@ void MsaSchemesMenuBuilder::fillHighlightingMenuSectionForCurrentAlphabet(QList<
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -44,8 +44,8 @@ enum ServiceState {
 };
 
 enum ServiceFlag {
-    ServiceFlag_None = 0,    //no flags
-    ServiceFlag_Singleton = 1,    //only one service with this id can be registered
+    ServiceFlag_None = 0,  // no flags
+    ServiceFlag_Singleton = 1,  // only one service with this id can be registered
 };
 
 typedef QFlags<ServiceFlag> ServiceFlags;
@@ -152,6 +152,6 @@ signals:
     void si_serviceStateChanged(Service *s, ServiceState oldState);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

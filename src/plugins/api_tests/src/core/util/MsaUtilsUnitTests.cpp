@@ -97,4 +97,4 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, all_names_with_spaces) {
     CHECK_NO_ERROR(os);
 }
 
-}    // namespace U2
+}  // namespace U2

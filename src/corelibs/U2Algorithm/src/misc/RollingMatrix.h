@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-//TODO: rename n,m to rows, columns
+// TODO: rename n,m to rows, columns
 
 class U2ALGORITHM_EXPORT RollingMatrix {
 public:
@@ -96,6 +96,6 @@ protected:
     int column0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

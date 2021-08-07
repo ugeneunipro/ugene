@@ -206,4 +206,4 @@ void AssemblyReadsAreaHint::mouseMoveEvent(QMouseEvent *e) {
     QFrame::mouseMoveEvent(e);
 }
 
-}    // namespace U2
+}  // namespace U2

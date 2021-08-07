@@ -113,8 +113,8 @@ private:
     int minProductSize;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::InSilicoPcrProduct)
 
-#endif    // _U2_IN_SILICO_PCR_TASK_H_
+#endif  // _U2_IN_SILICO_PCR_TASK_H_

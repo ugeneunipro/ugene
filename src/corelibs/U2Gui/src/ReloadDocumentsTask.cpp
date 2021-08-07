@@ -87,4 +87,4 @@ QList<Task *> ReloadDocumentsTask::onSubTaskFinished(Task *subTask) {
     return QList<Task *>();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -44,8 +44,8 @@ GUI_TEST_CLASS_DECLARATION(with_anns_test_0007)
 GUI_TEST_CLASS_DECLARATION(with_anns_test_0008)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_sequence_edit_mode
+}  // namespace GUITest_common_scenarios_sequence_edit_mode
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

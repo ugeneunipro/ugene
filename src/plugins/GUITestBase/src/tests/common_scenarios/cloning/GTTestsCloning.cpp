@@ -93,6 +93,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsAnnotationsTreeView::findItem(os, "right_end_type", fr2);
 }
 
-}    // namespace GUITest_common_scenarios_cloning
+}  // namespace GUITest_common_scenarios_cloning
 
-}    //namespace U2
+}  // namespace U2

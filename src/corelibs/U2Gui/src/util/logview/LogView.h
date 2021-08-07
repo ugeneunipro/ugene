@@ -50,14 +50,14 @@ public:
 
 enum LogViewSearchBoxMode {
     LogViewSearchBox_Visible,
-    LogViewSearchBox_Auto,    //TODO: not supported today
+    LogViewSearchBox_Auto,  // TODO: not supported today
     LogViewSearchBox_Hidden
 };
 
 class U2GUI_EXPORT LogViewWidget : public QWidget, public LogListener, public LogSettingsHolder {
     Q_OBJECT
 public:
-    /** If categoriesFilter is not-empty LogViewWidget shows log messages 
+    /** If categoriesFilter is not-empty LogViewWidget shows log messages
         only from categories listed in categoriesFilter
         LogSettings are ignored in this case
      */
@@ -118,6 +118,6 @@ private:
     bool connected;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

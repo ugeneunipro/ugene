@@ -117,7 +117,7 @@ void WorkflowUtils::setQObjectProperties(QObject &o, const QVariantMap &params) 
     QMapIterator<QString, QVariant> i(params);
     while (i.hasNext()) {
         i.next();
-        //log.debug("set param " + i.key() + "="+i.value().toString());
+        // log.debug("set param " + i.key() + "="+i.value().toString());
         o.setProperty(i.key().toLatin1(), i.value());
     }
 }
@@ -140,7 +140,7 @@ QStringList WorkflowUtils::expandToUrls(const QString &s) {
                 result << fi.absoluteFilePath();
             }
         } else {
-            //if (QFile::exists(url))
+            // if (QFile::exists(url))
             {
                 result << url;
             }
@@ -272,7 +272,7 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
     return true;
 }
 
-}    // namespace
+}  // namespace
 
 bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
     bool isValid = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
@@ -419,8 +419,8 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
         QMap<Descriptor, DataTypePtr> map;
         map.insert(*p, t);
         to = new MapDataType(Descriptor(), map);
-        //IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
-        //bt->addOutput(t, p);
+        // IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        // bt->addOutput(t, p);
     }
     return to;
 }
@@ -430,10 +430,10 @@ DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort *p, DataTyp
 
     DataTypePtr from;
     if (p->isOutput() || p->getWidth() == 0) {
-        //nothing to edit, go info mode
+        // nothing to edit, go info mode
         from = to;
     } else {
-        //port is input and has links, go editing mode
+        // port is input and has links, go editing mode
         IntegralBusType *bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         bt->addInputs(p, false);
         from = bt;
@@ -1108,7 +1108,7 @@ bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &no
     }
 }
 
-}    // namespace
+}  // namespace
 
 bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
     U2OpStatusImpl os;
@@ -1418,4 +1418,4 @@ void PrompterBaseImpl::sl_actorModified() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

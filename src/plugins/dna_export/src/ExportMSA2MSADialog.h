@@ -74,6 +74,6 @@ private:
     QList<QString> tableID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

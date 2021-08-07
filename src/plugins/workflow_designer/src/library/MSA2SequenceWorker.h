@@ -38,7 +38,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // Text2SequencePrompter
+};  // Text2SequencePrompter
 
 class Alignment2SequenceWorker : public BaseWorker {
     Q_OBJECT
@@ -58,7 +58,7 @@ private:
     IntegralBus *input;
     IntegralBus *output;
 
-};    // Text2SequenceWorker
+};  // Text2SequenceWorker
 
 class Alignment2SequenceWorkerFactory : public DomainFactory {
 public:
@@ -70,9 +70,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // Text2SequenceWorkerFactory
+};  // Text2SequenceWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

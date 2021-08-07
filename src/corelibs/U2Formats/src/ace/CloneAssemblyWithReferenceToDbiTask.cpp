@@ -92,4 +92,4 @@ void CloneAssemblyWithReferenceToDbiTask::run() {
     con.dbi->getAssemblyDbi()->updateAssemblyObject(clonedAssembly, stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

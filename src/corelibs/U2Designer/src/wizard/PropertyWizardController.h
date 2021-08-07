@@ -106,6 +106,6 @@ private:
     PropertyWidget *createPropertyWidget(U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROPERTYWIZARDCONTROLLER_H_
+#endif  // _U2_PROPERTYWIZARDCONTROLLER_H_

@@ -50,6 +50,6 @@ private:
     LocalToolbar *toolBar;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIDGET_WITH_LOCAL_TOOLBAR_H_
+#endif  // _U2_WIDGET_WITH_LOCAL_TOOLBAR_H_

@@ -49,4 +49,4 @@ QString FolderNameDialog::getResult() const {
     return nameEdit->text();
 }
 
-}    // namespace U2
+}  // namespace U2

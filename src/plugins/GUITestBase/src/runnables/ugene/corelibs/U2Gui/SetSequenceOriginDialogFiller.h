@@ -38,5 +38,5 @@ private:
     int start;
 };
 
-}    // namespace U2
-#endif    // SETSEQUENCEORIGINDIALOGFILLER_H
+}  // namespace U2
+#endif  // SETSEQUENCEORIGINDIALOGFILLER_H

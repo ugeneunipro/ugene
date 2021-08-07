@@ -42,7 +42,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // GroupPrompter
+};  // GroupPrompter
 
 class GroupWorker : public BaseWorker {
     Q_OBJECT
@@ -68,7 +68,7 @@ private:
     QMap<int, PerformersMap> groupedData;
     QMap<int, QVariant> uniqueData;
     QMap<int, int> groupSize;
-};    // GroupWorker
+};  // GroupWorker
 
 class GroupWorkerFactory : public DomainFactory {
 public:
@@ -80,9 +80,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // GroupWorkerFactory
+};  // GroupWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _GROUP_WORKER_H_
+#endif  // _GROUP_WORKER_H_

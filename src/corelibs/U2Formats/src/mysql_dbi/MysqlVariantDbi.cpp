@@ -353,4 +353,4 @@ void MysqlVariantDbi::updateTrackIDofVariant(const U2DataId &variant, const U2Da
     qv.execute();
 }
 
-}    // namespace U2
+}  // namespace U2

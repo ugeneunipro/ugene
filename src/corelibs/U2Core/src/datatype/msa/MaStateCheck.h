@@ -35,6 +35,6 @@ private:
     const MultipleAlignmentData *maData;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_STATE_CHECK_H_
+#endif  // _U2_MA_STATE_CHECK_H_

@@ -57,8 +57,8 @@ GUI_TEST_CLASS_DECLARATION(test_0012)
 
 #undef GUI_TEST_SUITE
 
-}    //namespace GUITest_common_scenarios_undo_redo
+}  // namespace GUITest_common_scenarios_undo_redo
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSUNDOREDO_H
+#endif  // GTTESTSUNDOREDO_H

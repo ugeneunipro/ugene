@@ -105,4 +105,4 @@ void ClarkSupport::unregisterTools(ExternalToolRegistry *etRegistry) {
     etRegistry->unregisterEntry(ET_CLARK_BUILD_SCRIPT_ID);
 }
 
-}    // namespace U2
+}  // namespace U2

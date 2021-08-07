@@ -87,4 +87,4 @@ QPoint GTTreeView::getItemCenter(GUITestOpStatus &, QTreeView *treeView, const Q
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
-}    // namespace HI
+}  // namespace HI

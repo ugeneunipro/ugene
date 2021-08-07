@@ -37,4 +37,4 @@ McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
     addOverview(sangerOverview);
 }
 
-}    // namespace U2
+}  // namespace U2

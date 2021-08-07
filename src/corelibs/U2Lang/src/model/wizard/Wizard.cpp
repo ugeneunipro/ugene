@@ -121,4 +121,4 @@ const QString Wizard::getHelpPageId() const {
     return helpPageId;
 }
 
-}    // namespace U2
+}  // namespace U2

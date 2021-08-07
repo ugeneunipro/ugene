@@ -28,7 +28,7 @@
 namespace U2 {
 
 const GLfloat GLFrame::DEFAULT_ZOOM = 45.0f;
-//const Vector3D GLFrame::DEFAULT_CAMERA = Vector3D(0, 0, 0);
+// const Vector3D GLFrame::DEFAULT_CAMERA = Vector3D(0, 0, 0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 /// GLFrame
@@ -205,4 +205,4 @@ void GLFrameManager::clear() {
     widgetFrameMap.clear();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -65,11 +65,11 @@ MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlpha
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(nullptr == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );    // TODO: check the condition, it is strange
+    SAFE_POINT(nullptr == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
 
     setName(name);
     for (int i = 0, n = rows.size(); i < n; i++) {
-        length = qMax(length, rows[i]->getRowLengthWithoutTrailing());    // TODO: implement or replace the method for row length
+        length = qMax(length, rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
     }
 }
 
@@ -429,4 +429,4 @@ void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow &row, qint6
     rows.insert(idx, row);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -116,4 +116,4 @@ bool XMLTestFormat::unregisterTestFactory(XMLTestFactory *tf) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

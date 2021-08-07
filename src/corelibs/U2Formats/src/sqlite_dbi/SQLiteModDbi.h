@@ -152,6 +152,6 @@ private:
     static QMap<U2DataId, ModStepsDescriptor> modStepsByObject;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

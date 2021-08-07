@@ -83,6 +83,6 @@ private:
     static bool rectangularBranchLessThan(GraphicsRectangularBranchItem *first, GraphicsRectangularBranchItem *second);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_PHY_TREE_H_
+#endif  // _U2_GT_UTILS_PHY_TREE_H_

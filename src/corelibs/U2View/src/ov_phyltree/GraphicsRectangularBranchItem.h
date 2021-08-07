@@ -92,6 +92,6 @@ private:
     Direction direction;
     PhyBranch *phyBranch;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

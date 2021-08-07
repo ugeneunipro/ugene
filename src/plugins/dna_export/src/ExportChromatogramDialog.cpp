@@ -84,4 +84,4 @@ void ExportChromatogramDialog::accept() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

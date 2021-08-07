@@ -31,4 +31,4 @@ SplicedAlignmentTask::SplicedAlignmentTask(const QString &taskName, TaskFlags fl
     : Task(taskName, flags), config(cfg) {
 }
 
-}    // namespace U2
+}  // namespace U2

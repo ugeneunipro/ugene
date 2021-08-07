@@ -52,10 +52,10 @@ private:
 protected:
     static const qint64 SW_MIN_GAP_OPEN = 1;
     static const qint64 SW_MAX_GAP_OPEN = 65535;
-    static const qint64 SW_DEFAULT_GAP_OPEN = 10;    //http://www.ebi.ac.uk - default value is 10
+    static const qint64 SW_DEFAULT_GAP_OPEN = 10;  // http://www.ebi.ac.uk - default value is 10
     static const qint64 SW_MIN_GAP_EXTD = 1;
-    static const qint64 SW_MAX_GAP_EXTD = 65535;    //it isn`t the maximum, it may be larger
-    static const qint64 SW_DEFAULT_GAP_EXTD = 1;    //http://www.ebi.ac.uk - default value is 0.5
+    static const qint64 SW_MAX_GAP_EXTD = 65535;  // it isn`t the maximum, it may be larger
+    static const qint64 SW_DEFAULT_GAP_EXTD = 1;  // http://www.ebi.ac.uk - default value is 0.5
 };
 
 class PairwiseAlignmentSmithWatermanGUIExtensionFactory : public AlignmentAlgorithmGUIExtensionFactory {
@@ -69,6 +69,6 @@ private:
     SW_AlgType algType;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PAIRWISE_ALIGNMENT_SMITH_WATERMAN_GUI_EXTENSION_H_
+#endif  // _U2_PAIRWISE_ALIGNMENT_SMITH_WATERMAN_GUI_EXTENSION_H_

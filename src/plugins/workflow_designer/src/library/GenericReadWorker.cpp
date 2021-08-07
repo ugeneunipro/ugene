@@ -129,7 +129,7 @@ SharedDbiDataHandler GenericDocReader::getDbObjectHandlerByUrl(const QString &ur
     const U2DataId objDbId = SharedDbUrlUtils::getObjectIdByUrl(url);
     SAFE_POINT(!objDbId.isEmpty(), "Unexpected object ID supplied", SharedDbiDataHandler());
     const U2DataType objDbType = U2DbiUtils::toType(objDbId);
-    //SAFE_POINT(U2Type::Unknown != objDbType, "Unexpected object type supplied", SharedDbiDataHandler());
+    // SAFE_POINT(U2Type::Unknown != objDbType, "Unexpected object type supplied", SharedDbiDataHandler());
     SAFE_POINT(0 != objDbType, "Unexpected object type supplied", SharedDbiDataHandler());
 
     const U2EntityRef objRef = SharedDbUrlUtils::getObjEntityRefByUrl(url);
@@ -186,7 +186,7 @@ void GenericMSAReader::onTaskFinished(Task *task) {
 QString GenericMSAReader::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    //return getObjectName(handler, U2Type::Msa);
+    // return getObjectName(handler, U2Type::Msa);
     return getObjectName(handler, 2);
 }
 
@@ -206,7 +206,7 @@ void LoadMSATask::prepare() {
     memUseMB = file.size() / (1024 * 1024);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE || iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
-        memUseMB *= 2.5;    //Need to calculate compress level
+        memUseMB *= 2.5;  // Need to calculate compress level
     }
     coreLog.trace(QString("load document:Memory resource %1").arg(memUseMB));
 
@@ -280,7 +280,7 @@ void GenericSeqReader::init() {
     if (GenericSeqActorProto::MERGE == mode) {
         QString mergeToken = DocumentReadingMode_SequenceMergeGapSize;
         cfg[mergeToken] = actor->getParameter(GenericSeqActorProto::GAP_ATTR)->getAttributeValue<int>(context);
-        cfg[GenericSeqActorProto::LIMIT_ATTR] = 0;    // no limit in merge mode
+        cfg[GenericSeqActorProto::LIMIT_ATTR] = 0;  // no limit in merge mode
     } else {
         cfg[GenericSeqActorProto::LIMIT_ATTR] = actor->getParameter(GenericSeqActorProto::LIMIT_ATTR)->getAttributeValue<int>(context);
     }
@@ -313,7 +313,7 @@ void GenericSeqReader::onTaskFinished(Task *task) {
 QString GenericSeqReader::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    //return getObjectName(handler, U2Type::Sequence);
+    // return getObjectName(handler, U2Type::Sequence);
     return getObjectName(handler, 1);
 }
 
@@ -401,10 +401,10 @@ void LoadSeqTask::run() {
             }
         }
     } else {
-        //TODO merge seqs from alignment
-        //             QString mergeToken = MERGE_MULTI_DOC_GAP_SIZE_SETTINGS;
-        //             bool merge = cfg.contains(mergeToken);
-        //             int gaps = cfg.value(mergeToken).toInt();
+        // TODO merge seqs from alignment
+        //              QString mergeToken = MERGE_MULTI_DOC_GAP_SIZE_SETTINGS;
+        //              bool merge = cfg.contains(mergeToken);
+        //              int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach (GObject *go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             foreach (const DNASequence &s, MSAUtils::ma2seq((qobject_cast<MultipleSequenceAlignmentObject *>(go))->getMsa(), false)) {
@@ -448,5 +448,5 @@ bool DNASelector::objectMatches(const U2SequenceObject *dna) {
     return dna->getSequenceName().contains(QRegExp(accExpr));
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

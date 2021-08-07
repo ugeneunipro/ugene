@@ -116,7 +116,7 @@ U2Feature U2FeatureUtils::exportAnnotationGroupToFeature(const QString &name, co
     SAFE_POINT(dbi != nullptr, "Feature DBI is not initialized!", result);
 
     result.featureClass = U2Feature::Group;
-    //store to db to get ID
+    // store to db to get ID
     result.name = name;
     result.parentFeatureId = parentFeatureId;
     result.rootFeatureId = rootFeatureId;
@@ -147,7 +147,7 @@ void addFeatureKeyToAnnotation(const U2FeatureKey &key, SharedAnnotationData &aD
     }
 }
 
-}    // namespace
+}  // namespace
 
 void U2FeatureUtils::removeFeature(const U2DataId &featureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
     SAFE_POINT(!featureId.isEmpty(), "Invalid feature detected!", );
@@ -403,7 +403,7 @@ SharedAnnotationData U2FeatureUtils::getAnnotationDataFromFeature(const U2DataId
         }
     }
 
-    //copy data
+    // copy data
     result->location->strand = annotatingFeature.location.strand;
 
     result->location->regions = regions;
@@ -503,7 +503,7 @@ U2Feature U2FeatureUtils::getFeatureById(const U2DataId &id, const U2DbiRef &dbi
 
 void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotationData &annotation, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, U2Feature &resFeature, QList<U2FeatureKey> &resFeatureKeys) {
     resFeature.featureClass = U2Feature::Annotation;
-    //copy data
+    // copy data
     resFeature.name = annotation->name;
     resFeature.featureType = annotation->type;
     resFeature.parentFeatureId = parentFeatureId;
@@ -513,12 +513,12 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
         resFeature.location.region = annotation->location->regions.first();
     }
 
-    //add qualifiers
+    // add qualifiers
     for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
         resFeatureKeys.append(U2FeatureKey(qualifier.name, qualifier.value));
     }
 
-    //add operation
+    // add operation
     const U2FeatureKey locationOpKey = createFeatureKeyLocationOperator(annotation->location->op);
     if (locationOpKey.isValid()) {
         resFeatureKeys.append(locationOpKey);
@@ -547,4 +547,4 @@ U2FeatureKey U2FeatureUtils::createFeatureKeyLocationOperator(U2LocationOperator
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

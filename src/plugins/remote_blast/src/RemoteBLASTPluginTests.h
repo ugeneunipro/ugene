@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_RemoteBLAST : public XmlTest {
     Q_OBJECT
 public:
@@ -51,6 +51,6 @@ private:
     bool simple;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

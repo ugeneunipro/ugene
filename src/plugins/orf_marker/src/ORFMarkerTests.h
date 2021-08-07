@@ -54,12 +54,12 @@ private:
     ORFFindTask *task;
 };
 
-//FIXME! this class is a partial copy of DetView
+// FIXME! this class is a partial copy of DetView
 class Translator {
 public:
     Translator(const U2SequenceObject *s, const QString &tid);
 
-    //void setAminoTranslation(const QString& id);
+    // void setAminoTranslation(const QString& id);
     DNATranslation *getComplTranslation() const {
         return complTransl;
     }
@@ -68,11 +68,11 @@ public:
     }
 
 private:
-    //QStringList translations;
+    // QStringList translations;
     const U2SequenceObject *seq;
     DNATranslation *complTransl;
     DNATranslation *aminoTransl;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

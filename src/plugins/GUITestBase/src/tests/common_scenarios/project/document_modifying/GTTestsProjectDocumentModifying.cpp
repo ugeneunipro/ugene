@@ -68,7 +68,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProjectTreeView::itemModificationCheck(os, d, true);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
+GUI_TEST_CLASS_DEFINITION(test_0001_1) {  // CHANGES another annotation created
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2-1.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2-1.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -160,6 +160,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 }
 
-}    // namespace GUITest_common_scenarios_project_document_modifying
+}  // namespace GUITest_common_scenarios_project_document_modifying
 
-}    // namespace U2
+}  // namespace U2

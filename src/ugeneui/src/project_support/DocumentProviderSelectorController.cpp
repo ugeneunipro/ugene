@@ -225,4 +225,4 @@ void DocumentProviderSelectorController::fillTitle(const FormatDetectionResult &
     }
 }
 
-}    // namespace U2
+}  // namespace U2

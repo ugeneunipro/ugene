@@ -73,14 +73,14 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
     centerWidgetLayout->addLayout(rightColumnLayout);
 
     setWidget(mainWidget);
-    setWidgetResizable(true);    // make the widget to fill whole available space
+    setWidgetResizable(true);  // make the widget to fill whole available space
 }
 
 DashboardWidget *DashboardTabPage::addDashboardWidget(const QString &title, QWidget *contentWidget) {
     auto layout = leftColumnLayout->count() <= rightColumnLayout->count() ? leftColumnLayout : rightColumnLayout;
     auto dashboardWidget = new DashboardWidget(title, contentWidget);
-    layout->insertWidget(layout->count() - 1, dashboardWidget);    // the last is stretch.
+    layout->insertWidget(layout->count() - 1, dashboardWidget);  // the last is stretch.
     return dashboardWidget;
 }
 
-}    // namespace U2
+}  // namespace U2

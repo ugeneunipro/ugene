@@ -137,4 +137,4 @@ bool FileList::hasNext() {
     return !files.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

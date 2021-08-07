@@ -79,4 +79,4 @@ QList<MSAConsensusAlgorithmFactory *> MSAConsensusAlgorithmRegistry::getAlgorith
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

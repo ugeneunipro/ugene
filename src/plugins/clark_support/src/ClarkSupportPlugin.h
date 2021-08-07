@@ -42,6 +42,6 @@ private:
     GAutoDeleteList<XMLTestFactory> *testFactories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLARK_SUPPORT_PLUGIN_H_
+#endif  // _U2_CLARK_SUPPORT_PLUGIN_H_

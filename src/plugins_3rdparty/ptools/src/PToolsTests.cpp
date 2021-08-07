@@ -37,7 +37,7 @@ const QString Gtest_PToolsAlignerTask::RMSD_ATTR("rmsd");
 const QString Gtest_PToolsAlignerTask::ACCURACY_ATTR("accuracy");
 const QString Gtest_PToolsAlignerTask::TRANSFORM_ATTR("transform");
 
-void Gtest_PToolsAlignerTask::init(XMLTestFormat*, const QDomElement& el) {
+void Gtest_PToolsAlignerTask::init(XMLTestFormat *, const QDomElement &el) {
     {
         refName = el.attribute(REFO_ATTR);
         if (refName.isEmpty()) {
@@ -90,8 +90,7 @@ void Gtest_PToolsAlignerTask::init(XMLTestFormat*, const QDomElement& el) {
         if (str_telements.size() != 16) {
             setError(QString("Error: bad transform matrix value %1").arg(str_expectedTransform));
             return;
-        }
-        else {
+        } else {
             int i = 0;
             foreach (const QString &str_elem, str_telements) {
                 bool ok;
@@ -106,8 +105,8 @@ void Gtest_PToolsAlignerTask::init(XMLTestFormat*, const QDomElement& el) {
 }
 
 void Gtest_PToolsAlignerTask::run() {
-    BioStruct3DObject   *refo = getContext<BioStruct3DObject>(this, refName),
-                        *mobo = getContext<BioStruct3DObject>(this, mobName);
+    BioStruct3DObject *refo = getContext<BioStruct3DObject>(this, refName),
+                      *mobo = getContext<BioStruct3DObject>(this, mobName);
 
     if (refo == 0 || mobo == 0) {
         if (refo == 0) {
@@ -120,8 +119,8 @@ void Gtest_PToolsAlignerTask::run() {
         return;
     }
 
-    StructuralAlignmentTaskSettings settings( BioStruct3DReference(refo, refo->getBioStruct3D().moleculeMap.keys(), refo->getBioStruct3D().modelMap.keys().first()),
-                                              BioStruct3DReference(mobo, mobo->getBioStruct3D().moleculeMap.keys(), mobo->getBioStruct3D().modelMap.keys().first()) );
+    StructuralAlignmentTaskSettings settings(BioStruct3DReference(refo, refo->getBioStruct3D().moleculeMap.keys(), refo->getBioStruct3D().modelMap.keys().first()),
+                                             BioStruct3DReference(mobo, mobo->getBioStruct3D().moleculeMap.keys(), mobo->getBioStruct3D().modelMap.keys().first()));
 
     result = PToolsAligner().align(settings, stateInfo);
 }
@@ -142,12 +141,12 @@ static bool isEqual(const StructuralAlignment &first, const StructuralAlignment 
 }
 
 /** Pretty print the alignment result with given accuracy
-  * so you can see the missmatches
-  */
+ * so you can see the missmatches
+ */
 static QString alignmentToStr(const StructuralAlignment &al, double acc = 0) {
     int prec = 6;
     if (acc != 0.0) {
-        prec = (int) log10(1.0/acc);
+        prec = (int)log10(1.0 / acc);
     }
     prec = (prec < 1) ? 1 : prec;
 
@@ -174,4 +173,4 @@ Task::ReportResult Gtest_PToolsAlignerTask::report() {
     return ReportResult_Finished;
 }
 
-}   // namespace U2
+}  // namespace U2

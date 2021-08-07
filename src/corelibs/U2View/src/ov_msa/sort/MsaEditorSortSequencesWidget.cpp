@@ -81,4 +81,4 @@ void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {
     sortButton->setEnabled(!msaObject->isStateLocked());
 }
 
-}    // namespace U2
+}  // namespace U2

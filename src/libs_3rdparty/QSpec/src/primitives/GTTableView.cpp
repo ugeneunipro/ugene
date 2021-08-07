@@ -85,4 +85,4 @@ QString GTTableView::data(GUITestOpStatus &os, QTableView *table, int row, int c
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

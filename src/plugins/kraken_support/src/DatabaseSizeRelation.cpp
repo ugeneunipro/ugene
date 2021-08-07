@@ -49,5 +49,5 @@ DatabaseSizeRelation *DatabaseSizeRelation::clone() const {
     return new DatabaseSizeRelation(*this);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

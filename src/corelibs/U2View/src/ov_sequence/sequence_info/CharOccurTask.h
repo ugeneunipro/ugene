@@ -73,6 +73,6 @@ private:
     static const qint64 REGION_TO_ANALAYZE = 1000000;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

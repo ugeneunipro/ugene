@@ -106,7 +106,7 @@ public:
     virtual int peekReferenceId() = 0;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_CONVERT_TO_SQLITE_TASK_H_
+#endif  // _U2_BAM_CONVERT_TO_SQLITE_TASK_H_

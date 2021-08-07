@@ -73,4 +73,4 @@ DashboardInfo ScanDashboardsDirTask::readDashboardInfo(const QString &dirPath) {
     return info;
 }
 
-}    // namespace U2
+}  // namespace U2

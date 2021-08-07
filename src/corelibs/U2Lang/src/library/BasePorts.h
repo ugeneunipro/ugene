@@ -44,9 +44,9 @@ public:
     static const QString OUT_ASSEMBLY_PORT_ID();
     static const QString IN_ASSEMBLY_PORT_ID();
 
-};    // BasePorts
+};  // BasePorts
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // __U2_WORKFLOW_BASE_PORTS_H_
+#endif  // __U2_WORKFLOW_BASE_PORTS_H_

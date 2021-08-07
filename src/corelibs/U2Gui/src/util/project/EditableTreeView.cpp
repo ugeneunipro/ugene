@@ -31,4 +31,4 @@ bool EditableTreeView::isEditingActive() {
     return state() == QAbstractItemView::EditingState;
 }
 
-}    // namespace U2
+}  // namespace U2

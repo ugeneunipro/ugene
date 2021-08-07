@@ -100,7 +100,7 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
         int notchDX2 = c.notchSize;
         QFontMetrics fm(font);
         int fontHeight = fm.height();
-        qint64 fontCenteringOffset = fontHeight / 2 - 2;    // -2 is for baseline offset
+        qint64 fontCenteringOffset = fontHeight / 2 - 2;  // -2 is for baseline offset
         if (c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore, pos.x(), pos.y() + len + c.extraAxisLenAfter);
         }
@@ -174,7 +174,7 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
             p.drawLine(pos.x() + len, pos.y() - notchDY1, pos.x() + len, pos.y() + notchDY2);
         }
 
-        //text properties
+        // text properties
         int yt1 = c.textPosition == LEFT ? pos.y() - c.textOffset - ch : pos.y() + c.textOffset;
         int yt2 = c.textPosition == LEFT ? pos.y() - c.textOffset : pos.y() + c.textOffset + ch;
         int stX1 = pos.x() + c.textBorderStart;
@@ -249,7 +249,7 @@ int GraphUtils::findChunk(qint64 len, qint64 span, int N) {
     int dN = 0;
     int chunk = 1;
     while (span > 2 * chunk) {
-        //dN = chunk > (1000 * 1000)? cw * 2 : (chunk > 1000 ?  cw * 2 : 0);
+        // dN = chunk > (1000 * 1000)? cw * 2 : (chunk > 1000 ?  cw * 2 : 0);
         qint64 reqLen = qint64((double(span) / chunk) * (N - dN));
         assert(reqLen > 0);
         if (reqLen < len) {
@@ -257,7 +257,7 @@ int GraphUtils::findChunk(qint64 len, qint64 span, int N) {
         }
         if (reqLen / 2 < len) {
             int cchunk = chunk * 2;
-            //dN = cchunk > (1000 * 1000)? cw * 2 :cchunk > 1000 ? cw * 2 : 0;
+            // dN = cchunk > (1000 * 1000)? cw * 2 :cchunk > 1000 ? cw * 2 : 0;
             qint64 reqLen2 = qint64((double(span) / cchunk) * (N - dN));
             if (reqLen2 < len) {
                 chunk = cchunk;
@@ -267,7 +267,7 @@ int GraphUtils::findChunk(qint64 len, qint64 span, int N) {
 
         if (reqLen / 5 < len) {
             int cchunk = chunk * 5;
-            //dN = cchunk > (1000 * 1000)? cw * 2 :cchunk > 1000 ? cw * 2 : 0;
+            // dN = cchunk > (1000 * 1000)? cw * 2 :cchunk > 1000 ? cw * 2 : 0;
             qint64 reqLen5 = qint64((double(span) / cchunk) * (N - dN));
             if (reqLen5 < len) {
                 chunk = cchunk;
@@ -285,7 +285,7 @@ int GraphUtils::findChunk(qint64 len, qint64 span, int N) {
 
 static QVector<QColor> prepareColors() {
     QVector<QColor> colors(6 * 6 * 6);
-    //00 = 0, 1 = 33, 2 = 66, 3 = 99, 4 = CC, 5 = FF
+    // 00 = 0, 1 = 33, 2 = 66, 3 = 99, 4 = CC, 5 = FF
     int nLightColors = 0;
     for (int i = 0; i < colors.count(); i++) {
         int color = i;
@@ -301,7 +301,7 @@ static QVector<QColor> prepareColors() {
 }
 
 QColor GraphUtils::proposeLightColorByKey(const QString &key) {
-    //TODO: make thread safe!
+    // TODO: make thread safe!
     static QVector<QColor> colors = prepareColors();
 
     int hash = 0;
@@ -315,7 +315,7 @@ QColor GraphUtils::proposeLightColorByKey(const QString &key) {
 int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p) {
     QFontMetrics fm = p.fontMetrics();
     int cw = fm.size(Qt::TextSingleLine, "0").width();
-    //the width of the bigger number
+    // the width of the bigger number
     int N = cw * qMax(QString::number(start).length(), QString::number(end).length()) * 4 / 3;
     qint64 span = qMax(start, end) - qMin(start, end);
     int chunk = 1;
@@ -356,7 +356,7 @@ qint64 GraphUtils::pickRoundedNumberBelow(qint64 maxVal) {
     if (maxVal <= 0) {
         return maxVal;
     }
-    //current implementation: starts with seed 1, multiplies sequentially by 2, 5 and steps to 10
+    // current implementation: starts with seed 1, multiplies sequentially by 2, 5 and steps to 10
     qint64 i = 1, res = 1;
     do {
         res = i;
@@ -411,4 +411,4 @@ void GraphUtils::drawArrow(QPainter &painter, const QRectF &rect, const ArrowCon
     painter.restore();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -48,7 +48,7 @@ void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
     FindAlgorithmTaskSettings findPatternSettings;
     findPatternSettings.searchIsCircular = false;
     findPatternSettings.strand = FindAlgorithmStrand_Direct;
-    //TODO: UGENE-6675
+    // TODO: UGENE-6675
     findPatternSettings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
     findPatternSettings.useAmbiguousBases = false;
     findPatternSettings.maxRegExpResultLength = settings.findSettings.maxRegExpResultLength;
@@ -110,4 +110,4 @@ FindPatternInMsaResult::FindPatternInMsaResult(qint64 rowId, const QList<U2Regio
     : rowId(rowId), regions(regions) {
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -124,7 +124,7 @@ int BinaryFindOpenCL::initOpenCL() {
     if (hasOPENCLError(err, "clCommandQueue() failed "))
         return err;
 
-    //open and read file contains OPENCL code
+    // open and read file contains OPENCL code
     clProgram = OpenCLUtils::createProgramByResource(clContext, deviceId, ":src/util_gpu/opencl/BinaryFind.cl", *openCLHelper, err);
     if (hasOPENCLError(err, "createProgramByResource() failed"))
         return err;
@@ -308,6 +308,6 @@ void BinaryFindOpenCL::logProfilingInfo(const cl_event &event, const QString &ms
     }
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/

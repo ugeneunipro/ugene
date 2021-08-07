@@ -142,7 +142,7 @@ static QString readHeader(IOAdapterReader &reader, U2OpStatus &os) {
     QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).trimmed();
     CHECK_OP(os, "");
     CHECK_EXT(isHeaderLine(line), os.setError(FastaFormat::tr("First line is not a FASTA header")), "");
-    return line.mid(1);    // Return a part with no '>' prefix.
+    return line.mid(1);  // Return a part with no '>' prefix.
 }
 
 /** Loads sequence objects into 'objects' list from the text data in FASTA format available via 'reader'. */
@@ -211,7 +211,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
             reader.readLine(os, buf, DocumentFormat::READ_BUFF_SIZE);
             CHECK_OP(os, );
             if (isCommentLine(buf)) {
-                continue;    // Skip comments.
+                continue;  // Skip comments.
             }
             if (isHeaderLine(buf)) {
                 reader.undo(os);
@@ -254,7 +254,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
             }
             sequenceRef.entityRef = U2EntityRef(dbiRef, seq.id);
 
-            //TODO parse header
+            // TODO parse header
             U2StringAttribute attr(seq.id, DNAInfo::FASTA_HDR, header);
             con.dbi->getAttributeDbi()->createStringAttribute(attr, os);
             CHECK_OP_BREAK(os);
@@ -401,7 +401,7 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
             reader.readLine(os, buf, DocumentFormat::READ_BUFF_SIZE);
             CHECK_OP(os, nullptr);
             if (isCommentLine(buf)) {
-                continue;    // Skip comment line.
+                continue;  // Skip comment line.
             }
             if (isHeaderLine(buf)) {
                 reader.undo(os);
@@ -472,7 +472,7 @@ static QString skipComments(const QString &userInput, U2OpStatus &os) {
 }
 
 QList<QPair<QString, QString>> FastaFormat::getSequencesAndNamesFromUserInput(const QString &userInput, U2OpStatus &os) {
-    //TODO: rework to use common FASTA parsing algorithm.
+    // TODO: rework to use common FASTA parsing algorithm.
     QList<QPair<QString, QString>> result;
     if (userInput.contains(FASTA_HEADER_START_SYMBOL)) {
         QString patterns = skipComments(userInput, os);
@@ -496,4 +496,4 @@ QList<QPair<QString, QString>> FastaFormat::getSequencesAndNamesFromUserInput(co
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

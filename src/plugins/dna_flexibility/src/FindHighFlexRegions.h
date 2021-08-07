@@ -33,10 +33,10 @@
 namespace U2 {
 
 /**
-* A listener used to provide data from the high flex algorithm
-* task (FindHighFlexRegionsAlgorithm) to the task that launches
-* the algorithm task (FindHighFlexRegions).
-*/
+ * A listener used to provide data from the high flex algorithm
+ * task (FindHighFlexRegionsAlgorithm) to the task that launches
+ * the algorithm task (FindHighFlexRegions).
+ */
 class FindHighFlexRegionsListener {
 public:
     virtual ~FindHighFlexRegionsListener() {
@@ -45,9 +45,9 @@ public:
 };
 
 /**
-* The task processes the data selected / input by a user and
-* launches the algorithm task (FindHighFlexRegionsAlgorithm).
-*/
+ * The task processes the data selected / input by a user and
+ * launches the algorithm task (FindHighFlexRegionsAlgorithm).
+ */
 class FindHighFlexRegions : public Task, public FindHighFlexRegionsListener {
     Q_OBJECT
 
@@ -66,6 +66,6 @@ private:
     QList<HighFlexResult> results;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

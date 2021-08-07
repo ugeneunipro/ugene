@@ -28,4 +28,4 @@ MysqlUpgrader::MysqlUpgrader(const Version &versionFrom, const Version &versionT
       dbi(dbi) {
 }
 
-}    // namespace U2
+}  // namespace U2

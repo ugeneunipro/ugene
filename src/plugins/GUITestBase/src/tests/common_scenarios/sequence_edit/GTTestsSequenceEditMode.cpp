@@ -58,11 +58,11 @@ namespace GUITest_common_scenarios_sequence_edit_mode {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
-    //1. Open human_T1.fa
+    // 1. Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Uncheck "Wrap sequence" and "Show compliment strans" button
+    // 2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
@@ -75,14 +75,14 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
 
-    //3. Check "Edit sequence" button
+    // 3. Check "Edit sequence" button
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //Expected state : Blinked cursor at the sequence  beggining
+    // Expected state : Blinked cursor at the sequence  beggining
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 0, QString("Unexpected cursor pos, expected: 0, current %1").arg(pos));
 
-    //4. Print "A, C, G, T, N, gap" symbols
+    // 4. Print "A, C, G, T, N, gap" symbols
     GTKeyboardDriver::keyClick('A');
     GTKeyboardDriver::keyClick('C');
     GTKeyboardDriver::keyClick('G');
@@ -90,11 +90,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
     GTKeyboardDriver::keyClick('N');
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state: Sequence starts with "A,C, G,T,N,gap"
+    // Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the begginning of the sequence, expected: ACGTN-, current: %1").arg(string));
 
-    //5. Put cursor in "199 939" position and press "A,C, G,T,N,gap"
+    // 5. Put cursor in "199 939" position and press "A,C, G,T,N,gap"
     GTUtilsSequenceView::setCursor(os, 199939);
 
     GTKeyboardDriver::keyClick('A');
@@ -104,17 +104,17 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
     GTKeyboardDriver::keyClick('N');
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state : Sequence ends with "A,C, G,T,N,gap"
+    // Expected state : Sequence ends with "A,C, G,T,N,gap"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the ending of the sequence, expected: ACGTN-, current: %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
-    //1. Open human_T1.fa
+    // 1. Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Uncheck "Wrap sequence" and "Show compliment strans" button
+    // 2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
@@ -127,31 +127,31 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
 
-    //3. Check "Edit sequence" button
+    // 3. Check "Edit sequence" button
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //Expected state : Blinked cursor at the sequence  beggining
+    // Expected state : Blinked cursor at the sequence  beggining
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 0, QString("Unexpected cursor pos, expected: 0, current %1").arg(pos));
 
-    //4. Print "QWER" symbols
+    // 4. Print "QWER" symbols
     GTKeyboardDriver::keyClick('Q');
     GTKeyboardDriver::keyClick('W');
     GTKeyboardDriver::keyClick('E');
     GTKeyboardDriver::keyClick('R');
 
-    //Expected state: Sequence starts with "A,C, G,T,N,gap"
+    // Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     bool hasUnexpectedSymbols = string.contains("Q") || string.contains("W") || string.contains("E") || string.contains("R");
     CHECK_SET_ERR(!hasUnexpectedSymbols, "Some unexpected symbols was inserted");
 }
 
 GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
-    //1. Open human_T1.fa
+    // 1. Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Uncheck "Wrap sequence" and "Show compliment strans" button
+    // 2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
@@ -164,36 +164,36 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
 
-    //3. Check "Edit sequence" button
+    // 3. Check "Edit sequence" button
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //Expected state : Blinked cursor at the sequence  beggining
+    // Expected state : Blinked cursor at the sequence  beggining
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 0, QString("Unexpected cursor pos, expected: 0, current %1").arg(pos));
 
-    //4. Print "-AAA" symbols
+    // 4. Print "-AAA" symbols
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick('A');
     GTKeyboardDriver::keyClick('A');
     GTKeyboardDriver::keyClick('A');
 
-    //Expected state: Sequence starts with "-AAA"
+    // Expected state: Sequence starts with "-AAA"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     CHECK_SET_ERR(string == "-AAA", QString("Unexpected string, expected: -AAA, current: %1").arg(string));
 
-    //5. Put cursor after "AAA" and push B�ckspa�� 3 times
+    // 5. Put cursor after "AAA" and push B�ckspa�� 3 times
     GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    //Expected state : Sequence ends with "-"
+    // Expected state : Sequence ends with "-"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     CHECK_SET_ERR(string[0] == '-', QString("Unexpected symbol at the beginning, expected: -, current: %1").arg(string[0]));
     CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
 
-    //6. Print "---" symbols at the beggining and put cursor before gap
+    // 6. Print "---" symbols at the beggining and put cursor before gap
     GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -201,33 +201,33 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTUtilsSequenceView::setCursor(os, 0);
 
-    //7. Push B�ckspa�� 3 times
+    // 7. Push B�ckspa�� 3 times
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
-    //Expected state : Nothing happens
+    // Expected state : Nothing happens
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     CHECK_SET_ERR(string == "----", QString("Unexpected string, expected: ----, current: %1").arg(string));
 
-    //8. Push Detete 3 times
+    // 8. Push Detete 3 times
     GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    //Expected state : 3 gaps are deleted
+    // Expected state : 3 gaps are deleted
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
     CHECK_SET_ERR(string[0] == '-', QString("Unexpected symbol at the beginning, expected: -, current: %1").arg(string[0]));
     CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
-    //1. Open human_T1.fa
+    // 1. Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Uncheck "Wrap sequence" and "Show compliment strans" button
+    // 2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
@@ -240,14 +240,14 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
 
-    //3. Check "Edit sequence" button
+    // 3. Check "Edit sequence" button
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //Expected state : Blinked cursor at the sequence  beggining
+    // Expected state : Blinked cursor at the sequence  beggining
     const qint64 pos = GTUtilsSequenceView::getCursor(os);
     CHECK_SET_ERR(pos == 0, QString("Unexpected cursor pos, expected: 0, current %1").arg(pos));
 
-    //4. Print "A, C, G, T, N, gap" symbols
+    // 4. Print "A, C, G, T, N, gap" symbols
     GTKeyboardDriver::keyClick('A');
     GTKeyboardDriver::keyClick('C');
     GTKeyboardDriver::keyClick('G');
@@ -255,52 +255,52 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     GTKeyboardDriver::keyClick('N');
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state: Sequence starts with "A,C, G,T,N,gap"
+    // Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the begginning of the sequence, expected: ACGTN-, current: %1").arg(string));
 
-    //5. Select these 6 symbols and do �TRL+C
+    // 5. Select these 6 symbols and do �TRL+C
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 6);
     GTKeyboardUtils::copy();
 
-    //6. Put cursor in "199 939" position and do �TRL + V
+    // 6. Put cursor in "199 939" position and do �TRL + V
     GTUtilsSequenceView::setCursor(os, 199939);
     GTKeyboardUtils::paste();
 
-    //Expected state : Sequence ends with "A,C, G,T,N,gap"
+    // Expected state : Sequence ends with "A,C, G,T,N,gap"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the ending of the sequence, expected: ACGTN-, current: %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Expand or crop affected annotations" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS with join (2970..3413,3412..3873) and do double click on it
+    // 4. Select CDS with join (2970..3413,3412..3873) and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
     const QList<U2Region> regionsBeforeInsert = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
     CHECK_SET_ERR(regionsBeforeInsert.size() == 2, QString("Unexpected annotation selection before insert, expected: 2, current %1").arg(regionsBeforeInsert.size()));
 
-    //5. Vertical scroll sequence until position 3874
+    // 5. Vertical scroll sequence until position 3874
     GTUtilsSequenceView::goToPosition(os, 3874);
 
-    //6. Do mouse click in position before last "A" symbol in sequence (in position 3873)
+    // 6. Do mouse click in position before last "A" symbol in sequence (in position 3873)
     GTUtilsSequenceView::setCursor(os, 3872);
     const U2Region visibleAreaBeforeInsert = GTUtilsSequenceView::getVisibleRange(os);
     GTKeyboardDriver::keyClick('A');
 
-    //Expected state : Visible area was not changed
+    // Expected state : Visible area was not changed
     const U2Region visibleAreaAfterInsert = GTUtilsSequenceView::getVisibleRange(os);
     CHECK_SET_ERR(visibleAreaBeforeInsert == visibleAreaAfterInsert,
                   QString("Visible area was changed, area before insert - start: %1, length: %2, after insert - start: %3, length: %4")
@@ -308,7 +308,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
                       .arg(visibleAreaBeforeInsert.length)
                       .arg(visibleAreaAfterInsert.startPos)
                       .arg(visibleAreaAfterInsert.length));
-    //Expected state : Annotation was expanded
+    // Expected state : Annotation was expanded
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
     const QList<U2Region> regionsAfterInsert = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
     CHECK_SET_ERR(regionsAfterInsert.size() == 2, QString("Unexpected annotation selection after insert, expected: 2, current %1").arg(regionsAfterInsert.size()));
@@ -329,27 +329,27 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Expand or crop affected annotations" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS (1042, 2674)  and do double click on it
+    // 4. Select CDS (1042, 2674)  and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
-    //5. Put cursor in position before "A" in position 1043
+    // 5. Put cursor in position before "A" in position 1043
     GTUtilsSequenceView::setCursor(os, 1042);
 
-    //6. Type "ACGTN-"
+    // 6. Type "ACGTN-"
     GTKeyboardDriver::keyClick('A');
     GTKeyboardDriver::keyClick('C');
     GTKeyboardDriver::keyClick('G');
@@ -357,7 +357,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     GTKeyboardDriver::keyClick('N');
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state : annotation starts with "AACGTN-"
+    // Expected state : annotation starts with "AACGTN-"
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
     const QList<U2Region> selectedAnnotationRegions = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
     CHECK_SET_ERR(selectedAnnotationRegions.size() == 1, QString("Unexpected annotation size, expected: 1, current: %1").arg(selectedAnnotationRegions.size()));
@@ -365,87 +365,87 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     CHECK_SET_ERR(string == "AACGTN-",
                   QString("Unexpected string at the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
 
-    //7. Put cursor in position before "A" in position 1043
+    // 7. Put cursor in position before "A" in position 1043
     GTUtilsSequenceView::setCursor(os, 1043);
 
-    //8. Type some forbiden symbols "QWER"
+    // 8. Type some forbiden symbols "QWER"
     GTUtilsSequenceView::setCursor(os, 1042);
     GTKeyboardDriver::keyClick('Q');
     GTKeyboardDriver::keyClick('W');
     GTKeyboardDriver::keyClick('E');
     GTKeyboardDriver::keyClick('R');
 
-    //Expected state: annotation starts with "AACGTN-"
+    // Expected state: annotation starts with "AACGTN-"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
     CHECK_SET_ERR(string == "AACGTN-",
                   QString("Unexpected string at the end of the first annotation, expected: AACGTN-, current: %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Remove affected annotation" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Remove affected annotation" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS (1042, 2674)  and do double click on it
+    // 4. Select CDS (1042, 2674)  and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
-    //5. Put cursor in position before "A" in position 1043 (annotation must be selected)
+    // 5. Put cursor in position before "A" in position 1043 (annotation must be selected)
     GTUtilsSequenceView::setCursor(os, 1043, true);
 
     QList<U2Region> annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was removed"));
 
-    //6. Push "A" sympols
+    // 6. Push "A" sympols
     GTKeyboardDriver::keyClick('A');
 
-    //Expected state: Annotation CDS (1043, 2674) was removed
+    // Expected state: Annotation CDS (1043, 2674) was removed
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Remove affected annotation" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Remove affected annotation" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS (1042, 2674)  and do double click on it
+    // 4. Select CDS (1042, 2674)  and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
-    //5. Select 5 symbols at the annotation begin: "ATGGG"
+    // 5. Select 5 symbols at the annotation begin: "ATGGG"
     GTUtilsSequenceView::selectSequenceRegion(os, 1042, 1047);
 
     QList<U2Region> annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was removed"));
 
-    //6. Push "gap" sympol
+    // 6. Push "gap" sympol
     GTUtilsSequenceView::setCursor(os, 1047);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state : Annotation CDS(1043, 2674) was removed
+    // Expected state : Annotation CDS(1043, 2674) was removed
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 
-    //Symbol gap "-" in position 1042, "-CAGA" is placed in segment 1042 : 1045
+    // Symbol gap "-" in position 1042, "-CAGA" is placed in segment 1042 : 1045
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1048, 5));
     CHECK_SET_ERR(string.size() == 5,
                   QString("Unexpected size of the selection, exprcted: 5, current: %1").arg(string.size()));
@@ -454,30 +454,30 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Split (join annitations parts)" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Split (join annitations parts)" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS (1042, 2674)  and do double click on it
+    // 4. Select CDS (1042, 2674)  and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
-    //5. Select 1200 position
+    // 5. Select 1200 position
     GTUtilsSequenceView::setCursor(os, 1199);
 
-    //6. Push "gap" sympol
+    // 6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state : Annotation CDS(1042..1199, 1201..2661 appeared
+    // Expected state : Annotation CDS(1042..1199, 1201..2661 appeared
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
     const QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
     CHECK_SET_ERR(annotatedRegions.size() == 2, QString("Unexpected annotation size, expected: 2, current: %1").arg(annotatedRegions.size()));
@@ -490,36 +490,36 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
                       .arg(annotatedRegions.last().startPos)
                       .arg(annotatedRegions.last().length));
 
-    //Symbol gap "-" in position 1200, "GA-CG" is placed in segment 1198:1202
+    // Symbol gap "-" in position 1200, "GA-CG" is placed in segment 1198:1202
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1198, 5));
     CHECK_SET_ERR(string == "GA-CG", QString("Unexpected string, expected: GA-CG, current %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Split (join annitations parts)" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Split (join annitations parts)" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Push "Edit sequence" button, sequence in the edit mode
+    // 3. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //4. Select CDS (1042, 2674)  and do double click on it
+    // 4. Select CDS (1042, 2674)  and do double click on it
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
-    //5. Select 1200 position
+    // 5. Select 1200 position
     GTUtilsSequenceView::setCursor(os, 1199);
 
-    //6. Push "gap" sympol
+    // 6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Expected state: Two annotation CDS (1042..1199, 1201..2661) appeared
+    // Expected state: Two annotation CDS (1042..1199, 1201..2661) appeared
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
     QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
     CHECK_SET_ERR(annotatedRegions.size() == 1, QString("Unexpected annotation size, expected: 1, current: %1").arg(annotatedRegions.size()));
@@ -536,29 +536,29 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
                       .arg(annotatedRegions.first().startPos)
                       .arg(annotatedRegions.first().length));
 
-    //Symbol gap "-" in position 1200, "GA-CG" is placed in segment 1198:1202
+    // Symbol gap "-" in position 1200, "GA-CG" is placed in segment 1198:1202
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1198, 5));
     CHECK_SET_ERR(string == "GA-CG", QString("Unexpected string, expected: GA-CG, current %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Recalculate values of qualifiers" option is unchecked.
-    //   Be sure that "Expand or crop affected annotations" option is unselected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Recalculate values of qualifiers" option is unchecked.
+    //    Be sure that "Expand or crop affected annotations" option is unselected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Select CDS (1042, 2674)  and do double click on it
+    // 3. Select CDS (1042, 2674)  and do double click on it
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
-    //4. Select Add->Qualifier from context menu
-    //5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
+    // 4. Select Add->Qualifier from context menu
+    // 5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
     GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
 
     //   Be sure thar new qualifier "Test" appears
@@ -569,22 +569,22 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
     CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifire value, expected: 1500..2000, current: %1").arg(qualValue));
 
-    //6. Push "Edit sequence" button, sequence in the edit mode
+    // 6. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //7. Select 1505 position
+    // 7. Select 1505 position
     GTUtilsSequenceView::setCursor(os, 1504);
 
-    //8. Add 3 gaps
+    // 8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Symbol gap "-" in position 1505 - 1507
+    // Symbol gap "-" in position 1505 - 1507
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
     CHECK_SET_ERR(string == "---", QString("Unexpected selection, expected: ---, current: %1").arg(string));
 
-    //Expected state : Values for qualifier "Test" is not changed, "1500..2000"
+    // Expected state : Values for qualifier "Test" is not changed, "1500..2000"
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
     selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
     CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
@@ -594,23 +594,23 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
-    //1. Open murine.gb
+    // 1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
-    //   Be sure that "Recalculate values of qualifiers" option is unchecked.
-    //   Be sure that "Expand or crop affected annotations" option is selected.
+    // 2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //    Be sure that "Recalculate values of qualifiers" option is unchecked.
+    //    Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Annotation settings on editing..."));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, true));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    //3. Select CDS (1042, 2674)  and do double click on it
+    // 3. Select CDS (1042, 2674)  and do double click on it
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
-    //4. Select Add->Qualifier from context menu
-    //5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
+    // 4. Select Add->Qualifier from context menu
+    // 5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
     GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
 
     //   Be sure thar new qualifier "Test" appears
@@ -621,22 +621,22 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
     CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifire value, expected: 1500..2000, current: %1").arg(qualValue));
 
-    //6. Push "Edit sequence" button, sequence in the edit mode
+    // 6. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
 
-    //7. Select 1505 position
+    // 7. Select 1505 position
     GTUtilsSequenceView::setCursor(os, 1504);
 
-    //8. Add 3 gaps
+    // 8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    //Symbol gap "-" in position 1505 - 1507
+    // Symbol gap "-" in position 1505 - 1507
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
     CHECK_SET_ERR(string == "---", QString("Unexpected selection, expected: ---, current: %1").arg(string));
 
-    //Expected state : Values for qualifier "Test" is changed, "1500..2003"
+    // Expected state : Values for qualifier "Test" is changed, "1500..2003"
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
     selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
     CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
@@ -645,6 +645,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     CHECK_SET_ERR(qualValue == "1500..2003", QString("Unexpected qualifire value, expected: 1500..2003, current: %1").arg(qualValue));
 }
 
-}    // namespace GUITest_common_scenarios_sequence_edit_mode
+}  // namespace GUITest_common_scenarios_sequence_edit_mode
 
-}    // namespace U2
+}  // namespace U2

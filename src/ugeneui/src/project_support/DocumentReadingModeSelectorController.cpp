@@ -85,7 +85,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     bool canBeShortReads = minSequenceSize > 0 && maxSequenceSize < 2000;
     bool haveReadAligners = !AppContext::getDnaAssemblyAlgRegistry()->getRegisteredAlgorithmIds().isEmpty();
     ui.refalignmentRB->setEnabled(canBeShortReads && haveReadAligners);
-    bool mostProbableAreShortReads = canBeShortReads && (dr.format != nullptr && dr.format->getFormatId() == BaseDocumentFormats::FASTQ);    //TODO: move to separate function
+    bool mostProbableAreShortReads = canBeShortReads && (dr.format != nullptr && dr.format->getFormatId() == BaseDocumentFormats::FASTQ);  // TODO: move to separate function
     ui.refalignmentRB->setChecked(ui.refalignmentRB->isEnabled() && mostProbableAreShortReads);
 
     bool canBeMsa = forceOptions || (multipleSequences && maxSequenceSize / (minSequenceSize + 1) < 20);
@@ -121,4 +121,4 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

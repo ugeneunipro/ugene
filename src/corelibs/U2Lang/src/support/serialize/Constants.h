@@ -119,7 +119,7 @@ public:
     static const QString OPEN_WITH_UGENE;
 };
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2
 
-#endif    // _U2_HR_CONTANTS_H_
+#endif  // _U2_HR_CONTANTS_H_

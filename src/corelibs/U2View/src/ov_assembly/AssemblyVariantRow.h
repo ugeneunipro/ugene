@@ -112,6 +112,6 @@ private slots:
     void sl_removeRow();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _ASSEMBLY_VARIANT_ROW_
+#endif  // _ASSEMBLY_VARIANT_ROW_

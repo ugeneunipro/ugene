@@ -67,6 +67,6 @@ private:
     Parameters parameters;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EDIT_FRAGMENT_DIALOG_FILLER_H_
+#endif  // _U2_EDIT_FRAGMENT_DIALOG_FILLER_H_

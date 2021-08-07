@@ -68,6 +68,6 @@ private:
     QMap<QString, XMLTestFactory *> testFactories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -94,7 +94,7 @@ private:
     bool titleable;
     QString name;
     QString title;
-    int labelSize;    // px
+    int labelSize;  // px
     QList<WizardWidget *> widgets;
 };
 
@@ -301,6 +301,6 @@ public:
     QString backgroundColor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDWIDGET_H_
+#endif  // _U2_WIZARDWIDGET_H_

@@ -180,6 +180,6 @@ inline bool operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlign
     return !(ptr1 == ptr2);
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_ALIGNMENT_ROW_H_
+#endif  // _U2_MULTIPLE_ALIGNMENT_ROW_H_

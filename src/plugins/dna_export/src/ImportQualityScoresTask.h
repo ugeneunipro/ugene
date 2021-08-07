@@ -81,6 +81,6 @@ private:
     QList<U2SequenceObject *> seqList;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_QUALITY_SCORES_TASK_H_
+#endif  // _U2_IMPORT_QUALITY_SCORES_TASK_H_

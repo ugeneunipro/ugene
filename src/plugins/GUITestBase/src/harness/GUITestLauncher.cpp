@@ -152,7 +152,7 @@ QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const
         for (int i = 0; i < suiteIndex; i++) {
             offset += testsPerSuite[i];
         }
-        int testCount = testsPerSuite[suiteIndex];    // last index is -1 => list.mid(x, -1) returns a tail.
+        int testCount = testsPerSuite[suiteIndex];  // last index is -1 => list.mid(x, -1) returns a tail.
         tests << allTests.mid(offset, testCount);
     }
     return tests;
@@ -210,7 +210,7 @@ bool GUITestLauncher::initTestList() {
         while (suite.readLine(buf, sizeof(buf)) != -1) {
             QString testName = QString(buf).remove('\n').remove('\r').remove('\t').remove(' ');
             if (testName.startsWith("#") || testName.isEmpty()) {
-                continue;    // comment line or empty line.
+                continue;  // comment line or empty line.
             }
             bool added = false;
             for (GUITest *test : qAsConst(allTestList)) {
@@ -289,7 +289,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
     QProcess process;
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
-    process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
+    process.setWorkingDirectory(restoreProcessWorkDir);  // Parent dir of the test dir.
 //    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
 //                 ", tests dir: " + testsDir.dirName() +
 //                 ", data dir: " + dataDir.dirName() +
@@ -394,7 +394,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     }
 
 #ifdef Q_OS_WIN
-    QProcess::execute("closeErrorReport.exe");    //this exe file, compiled Autoit script
+    QProcess::execute("closeErrorReport.exe");  // this exe file, compiled Autoit script
 #endif
 
     QString testResult = readTestResult(process.readAllStandardOutput());
@@ -416,7 +416,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     }
 #ifdef Q_OS_WIN
     CmdlineTaskRunner::killProcessTree(process.processId());
-    process.kill();    // to avoid QProcess: Destroyed while process is still running.
+    process.kill();  // to avoid QProcess: Destroyed while process is still running.
     process.waitForFinished(2000);
 #endif
     QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) : QString("Test fails because of timeout.");
@@ -493,4 +493,4 @@ QString GUITestLauncher::getVideoPath(const QString &testName) {
     return dirPath + "/" + QString(testName).replace(":", "_") + ".avi";
 }
 
-}    // namespace U2
+}  // namespace U2

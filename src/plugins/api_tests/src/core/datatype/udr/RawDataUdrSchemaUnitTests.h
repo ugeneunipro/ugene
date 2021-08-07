@@ -60,7 +60,7 @@ DECLARE_TEST(RawDataUdrSchemaUnitTests, writeContent);
 /* writeContent 2 */
 DECLARE_TEST(RawDataUdrSchemaUnitTests, writeContent_Null);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, getObject);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, getObject_Null);
@@ -70,4 +70,4 @@ DECLARE_METATYPE(RawDataUdrSchemaUnitTests, createObject);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, writeContent);
 DECLARE_METATYPE(RawDataUdrSchemaUnitTests, writeContent_Null);
 
-#endif    // _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
+#endif  // _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_

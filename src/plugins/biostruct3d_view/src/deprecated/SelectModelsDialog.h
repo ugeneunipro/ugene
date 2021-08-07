@@ -49,6 +49,6 @@ private:
     QList<int> selectedModelsIndexes;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef U2_SELECTMODELSDIALOG_H
+#endif  // #ifndef U2_SELECTMODELSDIALOG_H

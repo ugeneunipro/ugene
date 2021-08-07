@@ -33,4 +33,4 @@ WevoteSupport::WevoteSupport()
                      "based on an ensemble of other classification methods. In UGENE one can use the following methods: Kraken, CLARK, DIAMOND.");
 }
 
-}    // namespace U2
+}  // namespace U2

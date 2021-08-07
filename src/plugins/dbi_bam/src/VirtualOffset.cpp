@@ -73,5 +73,5 @@ bool VirtualOffset::operator>=(VirtualOffset right) const {
     return packedOffset >= right.packedOffset;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

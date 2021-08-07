@@ -55,13 +55,13 @@ void DNAStatWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
     QList<Attribute *> attribs;
 
-    //accept sequence and annotated regions as input
+    // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
     QMap<Descriptor, DataTypePtr> outputMap;
     inputMap[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
     outputMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
 
-    {    //Create input port descriptors
+    {  // Create input port descriptors
         Descriptor inDesc(BasePorts::IN_SEQ_PORT_ID(), DNAStatWorker::tr("Input sequence"), DNAStatWorker::tr("Sequence for which GC-content and GC3-content will be evaluated."));
         Descriptor outDesc(BasePorts::OUT_ANNOTATIONS_PORT_ID(), DNAStatWorker::tr("Result annotation"), DNAStatWorker::tr("Resulted annotations, with GC-content and GC3-content."));
 
@@ -214,5 +214,5 @@ float DNAStatWorker::calcGC3Content(const QByteArray &seq) {
     return gc3Content;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

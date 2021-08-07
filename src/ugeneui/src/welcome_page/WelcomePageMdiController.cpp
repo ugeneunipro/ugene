@@ -55,7 +55,7 @@ void WelcomePageMdiController::sl_showPage() {
         if (mdiManager->getWindows().contains(welcomePage)) {
             uiLog.trace("Activating WelcomePage window");
             mdiManager->activateWindow(welcomePage);
-        }    // else: it means that the page has already been called but it is loading now
+        }  // else: it means that the page has already been called but it is loading now
         return;
     }
 
@@ -78,4 +78,4 @@ void WelcomePageMdiController::sl_onRecentChanged() {
     welcomePage->updateRecent(recentProjects, recentFiles);
 }
 
-}    // namespace U2
+}  // namespace U2

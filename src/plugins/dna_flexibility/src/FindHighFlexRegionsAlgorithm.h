@@ -48,6 +48,6 @@ private:
     static void addToResults(FindHighFlexRegionsListener *listener, const HighFlexResult &result);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

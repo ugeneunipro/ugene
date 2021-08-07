@@ -67,8 +67,8 @@ protected:
     virtual void run(HI::GUITestOpStatus &os);
 };
 
-}    // namespace GUITest_crazy_user
+}  // namespace GUITest_crazy_user
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

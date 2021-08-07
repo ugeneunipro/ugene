@@ -64,7 +64,7 @@ void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement &el) 
     }
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
-    QStringList expectedList = expected.split(QRegExp("\\,"));    //may be QRegExp("\\,")
+    QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
     if (expectedList.size() != 4) {
         stateInfo.setError(QString("here must be 4 items in %1").arg(EXPECTED_RESULTS_ATTR));
         return;
@@ -306,8 +306,8 @@ Task::ReportResult GTest_CalculateFirstTypeError::report() {
     int i = offset + 1;
     foreach (int exp, expectedResult) {
         int act = qRound(result[i] * 10000);
-        //printf("Expected: %i", exp);
-        //printf(" Actual: %i \r\n", act);
+        // printf("Expected: %i", exp);
+        // printf(" Actual: %i \r\n", act);
         if (act != exp) {
             stateInfo.setError(QString("Expected and Actual values are different: %1 %2").arg(exp).arg(act));
             return ReportResult_Finished;
@@ -568,8 +568,8 @@ void GTest_CompareSiteconModels::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_CompareSiteconModels::report() {
-    //SiteconModel model1 = getContext<SiteconModel>(doc1ContextName);
-    //SiteconModel model2 = getContext<SiteconModel>(doc2ContextName);
+    // SiteconModel model1 = getContext<SiteconModel>(doc1ContextName);
+    // SiteconModel model2 = getContext<SiteconModel>(doc2ContextName);
     Document *doc1 = getContext<Document>(this, doc1ContextName);
     if (doc1 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(doc1ContextName));
@@ -588,4 +588,4 @@ Task::ReportResult GTest_CompareSiteconModels::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

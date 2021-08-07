@@ -45,4 +45,4 @@ AnnotationGroup *AnnotationGroupModification::getGroup() const {
     return additionalData.value<AnnotationGroup *>();
 }
 
-}    // namespace U2
+}  // namespace U2

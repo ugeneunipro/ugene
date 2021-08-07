@@ -38,4 +38,4 @@ MsaColorScheme *MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObj
     return new MsaColorSchemePercentageIdententityGrayscale(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

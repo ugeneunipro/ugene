@@ -88,7 +88,7 @@ void PDWFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &f
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     while (!os.isCoR()) {
-        //read header
+        // read header
         len = io->readUntil(buff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
         CHECK_BREAK(len != 0);
@@ -181,7 +181,7 @@ QByteArray PDWFormat::parseSequence(IOAdapter *io, U2OpStatus &ti) {
         bool lineOk = false;
         qint64 len = io->readUntil(readBuff.data(), READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
         CHECK_EXT(!io->hasError(), ti.setError(io->errorString()), QByteArray());
-        CHECK_BREAK(len != 0);    //end if stream
+        CHECK_BREAK(len != 0);  // end if stream
 
         if (!lineOk) {
             ti.setError(PDWFormat::tr("Line is too long"));
@@ -253,4 +253,4 @@ SharedAnnotationData PDWFormat::parseAnnotation(IOAdapter *io, U2OpStatus &ti) {
     return sd;
 }
 
-}    // namespace U2
+}  // namespace U2

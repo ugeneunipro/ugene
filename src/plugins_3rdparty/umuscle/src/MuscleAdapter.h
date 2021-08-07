@@ -31,27 +31,27 @@ namespace U2 {
 class TaskStateInfo;
 
 class MuscleAdapter : public QObject {
-Q_OBJECT
+    Q_OBJECT
 public:
-    static void align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack = true);
+    static void align(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti, bool mhack = true);
 
-    static void refine(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
+    static void refine(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti);
 
-    static void align2Profiles(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti);
-    
-    static void addUnalignedSequencesToProfile( const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti);
+    static void align2Profiles(const MultipleSequenceAlignment &ma1, const MultipleSequenceAlignment &ma2, MultipleSequenceAlignment &res, TaskStateInfo &ti);
+
+    static void addUnalignedSequencesToProfile(const MultipleSequenceAlignment &ma, const MultipleSequenceAlignment &unalignedSeqs, MultipleSequenceAlignment &res, TaskStateInfo &ti);
     static QString getBadAllocError();
 
 private:
-    static void alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack);
-    
-    static void refineUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
+    static void alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti, bool mhack);
 
-    static void align2ProfilesUnsafe(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti);
+    static void refineUnsafe(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti);
 
-    static void addUnalignedSequencesToProfileUnsafe(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti);
+    static void align2ProfilesUnsafe(const MultipleSequenceAlignment &ma1, const MultipleSequenceAlignment &ma2, MultipleSequenceAlignment &res, TaskStateInfo &ti);
+
+    static void addUnalignedSequencesToProfileUnsafe(const MultipleSequenceAlignment &ma, const MultipleSequenceAlignment &unalignedSeqs, MultipleSequenceAlignment &res, TaskStateInfo &ti);
 };
 
-}//namespace
+}  // namespace U2
 
 #endif

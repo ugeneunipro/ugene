@@ -195,6 +195,6 @@ private:
     GenomeAlignerWriteTask *writeTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_FIND_TASK_H_
+#endif  // _U2_GENOME_ALIGNER_FIND_TASK_H_

@@ -146,15 +146,15 @@ void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat *tf, const QDomElem
 static QString getAlgName(RFAlgorithm alg) {
     QString res;
     switch (alg) {
-    case RFAlgorithm_Diagonal:
-        res = "diagonal";
-        break;
-    case RFAlgorithm_Suffix:
-        res = "suffix";
-        break;
-    default:
-        res = "UNKNOWN";
-        break;
+        case RFAlgorithm_Diagonal:
+            res = "diagonal";
+            break;
+        case RFAlgorithm_Suffix:
+            res = "suffix";
+            break;
+        default:
+            res = "UNKNOWN";
+            break;
     }
     return res;
 }
@@ -197,7 +197,7 @@ void GTest_FindSingleSequenceRepeatsTask::prepare() {
     s.seqRegion = region;
     s.seq2Region = region;
     s.reportReflected = reflect;
-    s.nThreads = 1;    //todo: add to settings
+    s.nThreads = 1;  // todo: add to settings
 
     if (filterNested == true) {
         s.filter = DisjointRepeats;
@@ -256,7 +256,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
 
     std::sort(expectedResults.begin(), expectedResults.end());
 
-    //check all subtasks
+    // check all subtasks
     FindRepeatsTask *sub = qobject_cast<FindRepeatsTask *>(getSubtasks()[0].data());
     QVector<RFResult> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
@@ -329,9 +329,9 @@ void GTest_FindTandemRepeatsTask::prepare() {
     if (hasError() || isCanceled()) {
         return;
     }
-    //this->getContext(this,"")
-    //new DNAAlphabetRegistryImpl(
-    //    TaskResourceUsage* tru = AppContext::getTaskScheduler()->getTaskResources(NULL).constData();
+    // this->getContext(this,"")
+    // new DNAAlphabetRegistryImpl(
+    //     TaskResourceUsage* tru = AppContext::getTaskScheduler()->getTaskResources(NULL).constData();
     const DNAAlphabet *alph = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     seqObj = new DNASequence(QString("sequence"), sequence.toLatin1(), alph);
     if (seqObj == nullptr) {
@@ -355,7 +355,7 @@ void GTest_FindTandemRepeatsTask::prepare() {
     s.minPeriod = minSize;
     s.minRepeatCount = repeatCount;
     s.seqRegion = region;
-    s.nThreads = 1;    //todo: add to settings
+    s.nThreads = 1;  // todo: add to settings
 
     addSubTask(new TandemFinder(s, *seqObj));
 }
@@ -382,7 +382,7 @@ void GTest_FindTandemRepeatsTask::run() {
         expectedResults.append(tnd);
     }
 
-    //check all subtasks
+    // check all subtasks
     TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
@@ -494,7 +494,7 @@ void GTest_FindRealTandemRepeatsTask::prepare() {
     s.minPeriod = minSize;
     s.minRepeatCount = repeatCount;
     s.seqRegion = region;
-    s.nThreads = 1;    //todo: add to settings
+    s.nThreads = 1;  // todo: add to settings
 
     U2OpStatusImpl os;
     DNASequence dna = seqObj->getWholeSequence(os);
@@ -534,7 +534,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
 
     std::sort(expectedResults.begin(), expectedResults.end());
 
-    //check all subtasks
+    // check all subtasks
     TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     QMutableListIterator<Tandem> cIt(calcResults);
@@ -624,7 +624,8 @@ void GTest_SArrayBasedFindTask::prepare() {
         return;
     }
     DNAAlphabetType seqType = seqObj->getAlphabet()->getType();
-    char unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N' : '\0';
+    char unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N'
+                                                                                        : '\0';
 
     const quint32 *bitMask = nullptr;
     int bitCharLen = 0;
@@ -698,4 +699,4 @@ QList<XMLTestFactory *> RepeatFinderTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

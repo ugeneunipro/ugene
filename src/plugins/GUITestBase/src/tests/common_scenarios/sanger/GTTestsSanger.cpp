@@ -546,5 +546,5 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(l.checkMessage("trimming was skipped"), "Could not find the message about skipped trimming");
 }
 
-}    // namespace GUITest_common_scenarios_sanger
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_sanger
+}  // namespace U2

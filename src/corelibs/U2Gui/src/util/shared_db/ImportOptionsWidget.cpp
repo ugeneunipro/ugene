@@ -104,4 +104,4 @@ ImportToDatabaseOptions ImportOptionsWidget::getOptions() const {
     return options;
 }
 
-}    // namespace U2
+}  // namespace U2

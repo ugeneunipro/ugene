@@ -51,4 +51,4 @@ QStringList KrakenClassifyLogParser::initWellKnownErrors() {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -60,10 +60,10 @@ static void renameObjectsIfNamesEqual(QList<GObject *> &objs) {
 }
 
 Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    //1. open db
-    //2. read all objects
-    //3. if there is a DEEP_COPY_OBJECT hint, all objects are cloned to the db defined by dstDbiRef
-    //3. close db
+    // 1. open db
+    // 2. read all objects
+    // 3. if there is a DEEP_COPY_OBJECT hint, all objects are cloned to the db defined by dstDbiRef
+    // 3. close db
     QString url = io->getURL().getURLString();
     U2DbiRef srcDbiRef(id, url);
     DbiConnection handle(srcDbiRef, true, os);
@@ -218,4 +218,4 @@ FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray &rawData, con
     return FormatDetection_NotMatched;
 }
 
-}    // namespace U2
+}  // namespace U2

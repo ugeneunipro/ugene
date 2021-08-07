@@ -64,8 +64,8 @@ public:
     // initialize help for core cmdline options
     static void initHelp();
 
-};    // CMDLineCoreOptions
+};  // CMDLineCoreOptions
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMDLINE_OPTIONS_H_
+#endif  // _U2_CMDLINE_OPTIONS_H_

@@ -56,4 +56,4 @@ OPGroupParameters SeqStatisticsWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Statistics"), GROUP_DOC_PAGE);
 }
 
-}    // namespace U2
+}  // namespace U2

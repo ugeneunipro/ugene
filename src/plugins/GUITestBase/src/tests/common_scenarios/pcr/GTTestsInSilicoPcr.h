@@ -48,7 +48,7 @@ GUI_TEST_CLASS_DECLARATION(test_0015)
 GUI_TEST_CLASS_DECLARATION(test_0016)
 GUI_TEST_CLASS_DECLARATION(test_0017)
 
-}    // namespace GUITest_common_scenarios_in_silico_pcr
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_in_silico_pcr
+}  // namespace U2
 
-#endif    // _GTTESTS_IN_SILICO_PCR_H_
+#endif  // _GTTESTS_IN_SILICO_PCR_H_

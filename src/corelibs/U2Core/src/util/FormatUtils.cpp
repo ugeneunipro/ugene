@@ -216,4 +216,4 @@ QString FormatUtils::prepareDocumentsFileFilterByObjType(const GObjectType &t, b
     return prepareDocumentsFileFilter(c, any);
 }
 
-}    // namespace U2
+}  // namespace U2

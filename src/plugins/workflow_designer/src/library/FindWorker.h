@@ -77,7 +77,7 @@ public:
     }
 };
 
-class FindAllRegionsTask : public Task {    //FIXME this is temporary solution until FindAlgorithmTask moved to SequenceWalker
+class FindAllRegionsTask : public Task {  // FIXME this is temporary solution until FindAlgorithmTask moved to SequenceWalker
     Q_OBJECT
 public:
     FindAllRegionsTask(const FindAlgorithmTaskSettings &s, const QList<AnnotationData> &);
@@ -89,7 +89,7 @@ private:
     QList<AnnotationData> regions;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

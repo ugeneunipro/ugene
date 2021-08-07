@@ -47,8 +47,8 @@ GUI_TEST_CLASS_DECLARATION(test_0020)
 GUI_TEST_CLASS_DECLARATION(test_0025)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_Common_scenarios_dp_view
+}  // namespace GUITest_Common_scenarios_dp_view
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTS_DP_VIEW_H_
+#endif  // GTTESTS_DP_VIEW_H_

@@ -64,6 +64,6 @@ private:
     static const QPoint INVALID_POINT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
+#endif  // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_

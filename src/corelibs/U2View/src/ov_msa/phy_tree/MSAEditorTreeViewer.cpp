@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "MSAEditorTreeViewer.h"
 
@@ -115,7 +115,7 @@ void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     bool isEnabled = editor != nullptr && checkTreeAndMsaCanBeSynchronized();
     syncModeAction->setEnabled(isEnabled);
 
-    bool isChecked = isEnabled && isSyncModeOn;    // Override 'isSyncModeOn' with a safer option.
+    bool isChecked = isEnabled && isSyncModeOn;  // Override 'isSyncModeOn' with a safer option.
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
     syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
@@ -188,7 +188,7 @@ void MSAEditorTreeViewer::disableSyncModeIfTreeAndMsaContentIsNotInSync() {
 
 bool MSAEditorTreeViewer::checkTreeAndMsaNameListsAreSynchronized() const {
     QList<QStringList> groupStateGuidedByTree = msaTreeViewerUi->getGroupingStateForMsa();
-    QStringList treeNameList;    // The list of sequences names to compare with MSA state.
+    QStringList treeNameList;  // The list of sequences names to compare with MSA state.
     for (const QStringList &namesInGroup : qAsConst(groupStateGuidedByTree)) {
         SAFE_POINT(!namesInGroup.isEmpty(), "Group must have at least 1 sequence!", false);
         treeNameList << namesInGroup[0];
@@ -211,15 +211,15 @@ bool MSAEditorTreeViewer::checkTreeAndMsaNameListsAreSynchronized() const {
 }
 
 bool MSAEditorTreeViewer::checkTreeAndMsaCanBeSynchronized() const {
-    CHECK(msaTreeViewerUi->isRectangularLayoutMode(), false);    // Only 'rect' mode can be synchronized.
+    CHECK(msaTreeViewerUi->isRectangularLayoutMode(), false);  // Only 'rect' mode can be synchronized.
 
-    QStringList treeNameList;    // The list of sequences names in the tree.
+    QStringList treeNameList;  // The list of sequences names in the tree.
     QList<QStringList> groupStateGuidedByTree = msaTreeViewerUi->getGroupingStateForMsa();
     for (const QStringList &namesInGroup : qAsConst(groupStateGuidedByTree)) {
         treeNameList.append(namesInGroup);
     }
 
-    QStringList msaSequenceNameList = editor->getMaObject()->getMsa()->getRowNames();    // The list of sequences names in the MSA.
+    QStringList msaSequenceNameList = editor->getMaObject()->getMsa()->getRowNames();  // The list of sequences names in the MSA.
 
     // Check that 2 name lists are identical.
     treeNameList.sort();
@@ -350,7 +350,7 @@ void MSAEditorTreeViewerUI::sl_onReferenceSeqChanged(qint64) {
         if (nameItem == nullptr) {
             continue;
         }
-        //TODO: heh?
+        // TODO: heh?
         QPen brush(Qt::white);
     }
     scene()->update();
@@ -470,7 +470,7 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(const QStringList &visibleS
             continue;
         }
         QGraphicsItem *parentItem = nodeItem->getParentItem();
-        //Check that node is not collapsed
+        // Check that node is not collapsed
         if (parentItem == nullptr || !parentItem->isVisible()) {
             continue;
         }
@@ -566,4 +566,4 @@ QStringList MSAEditorTreeViewerUtils::getSeqsNamesInBranch(const GraphicsBranchI
     return seqNames;
 }
 
-}    // namespace U2
+}  // namespace U2

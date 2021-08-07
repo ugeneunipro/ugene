@@ -144,7 +144,7 @@ void AppSettingsDialogController::accept() {
         return;
     }
 
-    turnPage(nullptr);    //make current state saved in item
+    turnPage(nullptr);  // make current state saved in item
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         AppSettingsTreeItem *item = static_cast<AppSettingsTreeItem *>(tree->topLevelItem(i));
         if (item->pageState != nullptr) {
@@ -187,4 +187,4 @@ AppSettingsTreeItem::AppSettingsTreeItem(AppSettingsGUIPageController *p)
     setText(0, "  " + p->getPageName());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -101,6 +101,6 @@ private:
     MsaEditorTreeTab *treeTabWidget;
     QLayout *currentLayout;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

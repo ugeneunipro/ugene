@@ -37,9 +37,9 @@ class BioStruct3DSubsetEditor : public QWidget, public Ui_BioStruct3DSubsetEdito
 
 public:
     /** @param biostructs List of biostruct objects in which user can select
-      * @param selected Pre selected biostruct
-      * @param selectedModel Pre selected model
-      */
+     * @param selected Pre selected biostruct
+     * @param selectedModel Pre selected model
+     */
     BioStruct3DSubsetEditor(const QList<BioStruct3DObject *> &biostructs, const BioStruct3DObject *selected = 0, int selectedModel = -1, QWidget *parent = 0);
 
     /** Fill model ComboBox respectively with current biostruct */
@@ -52,8 +52,8 @@ public:
     void fillRegionEdit();
 
     /** Validate the subset.
-      * @returns "" on 0k, error message on fail
-      */
+     * @returns "" on 0k, error message on fail
+     */
     QString validate() const;
 
     /** Fill and @return choosen subset */
@@ -74,6 +74,6 @@ private slots:
     void sl_onChainChanged(int);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_BIOSTRUCT3D_SUBSET_EDITOR_H_
+#endif  // #ifndef _U2_BIOSTRUCT3D_SUBSET_EDITOR_H_

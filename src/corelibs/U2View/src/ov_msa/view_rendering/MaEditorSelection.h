@@ -149,6 +149,6 @@ private:
     McaEditor *const mcaEditor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_SELECTION_
+#endif  // _U2_MA_EDITOR_SELECTION_

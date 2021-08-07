@@ -48,7 +48,7 @@ private:
     IntegralBus *output;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_KRAKEN_BUILD_WORKER_H_
+#endif  // _U2_KRAKEN_BUILD_WORKER_H_

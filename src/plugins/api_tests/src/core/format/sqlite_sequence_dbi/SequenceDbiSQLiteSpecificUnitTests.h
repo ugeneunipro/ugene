@@ -58,18 +58,18 @@ private:
 ///////////////////////////////////////////////////////////////
 
 /**
-  * Update a sequence data:
-  *     ^ noModTrack      - update the sequence with disabled modification tracking,
-  *                         there are no modSteps.
-  *     ^ empty           - the sequence is empty.
-  *     ^ clearHint       - the sequence is not empty, all data is removed, an appropriate hint is used.
-  *     ^ clearNoHint     - the sequence is not empty, all data is removed, there are no hints.
-  *     ^ begin           - the part at the beginning of the sequence is updated.
-  *     ^ middle          - the part in the middle of the sequence is updated.
-  *     ^ middleNoLength  - the part in the middle of the sequence is updated,
-  *                         length is not changed, an appropriate hint is used.
-  *     ^ end             - the part at the end of the sequence is updated.
-  */
+ * Update a sequence data:
+ *     ^ noModTrack      - update the sequence with disabled modification tracking,
+ *                         there are no modSteps.
+ *     ^ empty           - the sequence is empty.
+ *     ^ clearHint       - the sequence is not empty, all data is removed, an appropriate hint is used.
+ *     ^ clearNoHint     - the sequence is not empty, all data is removed, there are no hints.
+ *     ^ begin           - the part at the beginning of the sequence is updated.
+ *     ^ middle          - the part in the middle of the sequence is updated.
+ *     ^ middleNoLength  - the part in the middle of the sequence is updated,
+ *                         length is not changed, an appropriate hint is used.
+ *     ^ end             - the part at the end of the sequence is updated.
+ */
 DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_noModTrack);
 DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint);
 DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint);
@@ -97,7 +97,7 @@ DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo);
 DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength_redo);
 DECLARE_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_noModTrack);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint);
@@ -126,4 +126,4 @@ DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength_redo);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo);
 
-#endif    // _U2_SEQUENCE_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
+#endif  // _U2_SEQUENCE_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_

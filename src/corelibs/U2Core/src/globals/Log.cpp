@@ -152,4 +152,4 @@ void Logger::log(LogLevel level, const QString &message, const QStringList &cate
     LogServer::getInstance()->message(m);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,6 +41,6 @@ private:
     QStringList radioNames;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // CONFIGURATIONWIZARDFILLER_H
+#endif  // CONFIGURATIONWIZARDFILLER_H

@@ -28,9 +28,9 @@ namespace U2 {
 
 class U2GUI_EXPORT LastUsedDirHelper {
 public:
-    LastUsedDirHelper(const QString &domain = QString(), const QString &defaultVal = QString());    //reads dir
+    LastUsedDirHelper(const QString &domain = QString(), const QString &defaultVal = QString());  // reads dir
 
-    virtual ~LastUsedDirHelper();    //if url is not empty -> derives dir from url and stores it
+    virtual ~LastUsedDirHelper();  // if url is not empty -> derives dir from url and stores it
 
     static QString getLastUsedDir(const QString &toolType = QString(), const QString &defaultVal = QString());
 
@@ -44,13 +44,13 @@ public:
 
     QString domain;
 
-    //last used dir
+    // last used dir
     QString dir;
 
     // value returned by file dialog
     QString url;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -331,4 +331,4 @@ bool LoadSequencesAndAlignToAlignmentTask::propagateSubtaskError() {
     return stateInfo.hasError();
 }
 
-}    // namespace U2
+}  // namespace U2

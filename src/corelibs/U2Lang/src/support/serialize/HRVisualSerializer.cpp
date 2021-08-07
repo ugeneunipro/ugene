@@ -346,4 +346,4 @@ QString HRVisualSerializer::rect2String(const QRectF &rect) {
     return QString("%1 %2").arg(point2String(rect.topLeft())).arg(point2String(rect.bottomRight()));
 }
 
-}    // namespace U2
+}  // namespace U2

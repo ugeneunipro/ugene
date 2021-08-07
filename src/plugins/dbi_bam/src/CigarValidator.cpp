@@ -35,7 +35,7 @@ void CigarValidator::validate(int *totalLength) {
     const static Alignment::CigarOperation::Operation CIGAR_H = Alignment::CigarOperation::HardClip;
     const static Alignment::CigarOperation::Operation CIGAR_S = Alignment::CigarOperation::SoftClip;
 
-    //bool hasRealOperation = false;
+    // bool hasRealOperation = false;
     int myTotalLength = 0;
 
     for (int i = 0; i < cigar.size(); ++i) {
@@ -43,14 +43,14 @@ void CigarValidator::validate(int *totalLength) {
         Alignment::CigarOperation::Operation op = cigarOperation.getOperation();
 
         if (isClippingOperation(op)) {
-            //1. Check sentence "H can only be present as the first and/or last operation"
+            // 1. Check sentence "H can only be present as the first and/or last operation"
             if (CIGAR_H == op) {
                 if (0 != i && (cigar.size() - 1) != i) {
                     throw InvalidFormatException(BAMDbiPlugin::tr("Hard clip in the middle of cigar"));
                 }
 
             }
-            //2. Check sentence "S may only have H operations between them and the ends of the CIGAR string"
+            // 2. Check sentence "S may only have H operations between them and the ends of the CIGAR string"
             else if (CIGAR_S == op && (0 != i && cigar.size() - 1 != i)) {
                 if (1 == i) {
                     if (3 == cigar.size() && CIGAR_H == cigar.at(2).getOperation()) {
@@ -97,19 +97,19 @@ void CigarValidator::validate(int *totalLength) {
             }
         }
 #endif
-        //adjust totalLength
+        // adjust totalLength
         switch (op) {
-        case Alignment::CigarOperation::AlignmentMatch:
-        case Alignment::CigarOperation::SequenceMatch:
-        case Alignment::CigarOperation::SequenceMismatch:
-        case Alignment::CigarOperation::Insertion:
-        case Alignment::CigarOperation::SoftClip:
-            myTotalLength += cigarOperation.getLength();
-            break;
-        default:
-            break;
+            case Alignment::CigarOperation::AlignmentMatch:
+            case Alignment::CigarOperation::SequenceMatch:
+            case Alignment::CigarOperation::SequenceMismatch:
+            case Alignment::CigarOperation::Insertion:
+            case Alignment::CigarOperation::SoftClip:
+                myTotalLength += cigarOperation.getLength();
+                break;
+            default:
+                break;
         }
-    }    //foreach CIGAR operation
+    }  // foreach CIGAR operation
 #if 0
     if (!hasRealOperation) {
         throw InvalidFormatException(BAMDbiPlugin::tr("CIGAR must contain at least one real operation (ins/del/match/skip)"));
@@ -149,5 +149,5 @@ bool CigarValidator::isPaddingOperation(Alignment::CigarOperation::Operation op)
 }
 #endif
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

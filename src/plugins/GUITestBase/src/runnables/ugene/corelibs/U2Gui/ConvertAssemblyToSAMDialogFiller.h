@@ -44,6 +44,6 @@ private:
     const QString databasePath;
     const QString databaseFileName;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_CONVERT_ASSEMBLY_TO_SAM_DIALOG_FILLER_H
+#endif  // _U2_GT_CONVERT_ASSEMBLY_TO_SAM_DIALOG_FILLER_H

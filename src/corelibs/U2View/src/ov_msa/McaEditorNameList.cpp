@@ -39,8 +39,8 @@ const qreal McaEditorNameList::ARROW_LINE_WIDTH = 2;
 const qreal McaEditorNameList::ARROW_LENGTH = 25;
 const qreal McaEditorNameList::ARROW_HEAD_WIDTH = 6;
 const qreal McaEditorNameList::ARROW_HEAD_LENGTH = 7;
-const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue";    // another possible color: "#4EADE1";
-const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green";    // another possible color: "#03c03c";
+const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue";  // another possible color: "#4EADE1";
+const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green";  // another possible color: "#03c03c";
 
 McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar) {
@@ -67,7 +67,7 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
 void McaEditorNameList::setSelection(const MaEditorSelection &selection) {
     MaEditorNameList::setSelection(selection);
     bool isWholeReadSelected = selection.getWidth() == editor->getAlignmentLen();
-    if (isWholeReadSelected) {    // Whole sequence selection in the name list should not trigger reference selection.
+    if (isWholeReadSelected) {  // Whole sequence selection in the name list should not trigger reference selection.
         getEditor()->getUI()->getReferenceArea()->clearSelection();
     }
 }
@@ -143,4 +143,4 @@ void McaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
     MaEditorNameList::mouseDoubleClickEvent(e);
 }
 
-}    // namespace U2
+}  // namespace U2

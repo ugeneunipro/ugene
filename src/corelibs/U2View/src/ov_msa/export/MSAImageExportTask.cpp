@@ -355,11 +355,11 @@ void MSAImageExportController::checkRegionToExport() {
 }
 
 namespace {
-//400000 characters convert to 200 mb file in SVG format
+// 400000 characters convert to 200 mb file in SVG format
 const qint64 MaxSvgCharacters = 400000;
-//SVG renderer can crash on regions large than 40000000
+// SVG renderer can crash on regions large than 40000000
 const qint64 MaxSvgImageSize = 40000000;
-}    // namespace
+}  // namespace
 
 bool MSAImageExportController::fitsInLimits() const {
     MaEditor *editor = ui->getEditor();
@@ -393,4 +393,4 @@ void MSAImageExportController::updateSeqIdx() const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

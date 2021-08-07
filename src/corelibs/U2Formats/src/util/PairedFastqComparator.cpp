@@ -122,7 +122,7 @@ void PairedFastqComparator::dropUntilItem(U2OpStatus & /*os*/, QList<FastqSequen
         item = list.takeFirst();
         droppedCounter++;
     } while (item != untilItem && !list.isEmpty());
-    droppedCounter--;    // the sequence that is in the pair was count
+    droppedCounter--;  // the sequence that is in the pair was count
 }
 
 const FastqSequenceInfo PairedFastqComparator::tryToFindPair(U2OpStatus &os, QList<FastqSequenceInfo> &initializer, const FastqSequenceInfo &info, QList<FastqSequenceInfo> &searchIn) {
@@ -173,4 +173,4 @@ void PairedFastqComparator::writePair(U2OpStatus &os, const FastqSequenceInfo &s
     pairsCounter++;
 }
 
-}    // namespace U2
+}  // namespace U2

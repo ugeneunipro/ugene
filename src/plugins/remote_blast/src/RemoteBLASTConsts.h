@@ -101,6 +101,6 @@ void addParametr(QString &str, const QString &paramName, const QString &param);
 void addParametr(QString &str, const QString &paramName, const double param);
 void addParametr(QString &str, const QString &paramName, const int param);
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

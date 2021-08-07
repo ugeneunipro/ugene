@@ -244,8 +244,8 @@ GUI_TEST_CLASS_DECLARATION(test_2998)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_regression_scenarios
+}  // namespace GUITest_regression_scenarios
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_
+#endif  // _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_

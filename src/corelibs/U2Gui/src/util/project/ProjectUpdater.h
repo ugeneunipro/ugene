@@ -60,6 +60,6 @@ private:
     QHash<U2DbiId, bool> valid;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECTUPDATER_H_
+#endif  // _U2_PROJECTUPDATER_H_

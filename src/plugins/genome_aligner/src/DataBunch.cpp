@@ -77,4 +77,4 @@ void DataBunch::squeeze() {
     windowSizes.squeeze();
 }
 
-}    // namespace U2
+}  // namespace U2

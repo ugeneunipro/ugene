@@ -207,4 +207,4 @@ QStringList KrakenBuildTask::getShrinkArguments() const {
     return arguments;
 }
 
-}    // namespace U2
+}  // namespace U2

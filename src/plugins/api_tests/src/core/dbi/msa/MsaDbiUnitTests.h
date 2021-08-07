@@ -55,7 +55,7 @@ DECLARE_TEST(MsaDbiUnitTests, addRows);
 /** Remove rows from a MSA */
 DECLARE_TEST(MsaDbiUnitTests, removeRows);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaDbiUnitTests, createMsaObject);
 DECLARE_METATYPE(MsaDbiUnitTests, addRows);

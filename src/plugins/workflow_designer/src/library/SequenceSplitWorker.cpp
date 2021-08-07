@@ -67,7 +67,7 @@ QString SequenceSplitPromter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString seqProducerText = tr("from <u>%1</u>").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
 
-    //translate or not?
+    // translate or not?
     bool translate = getParameter(TRANSLATE_ATTR).toBool();
     QString translateText;
     if (translate) {
@@ -75,7 +75,7 @@ QString SequenceSplitPromter::composeRichDoc() {
                             .arg(getHyperlink(TRANSLATE_ATTR, tr("translate")));
     }
 
-    //complement or not?
+    // complement or not?
     bool complement = getParameter(COMPLEMENT_ATTR).toBool();
     QString complementText;
     if (complement) {
@@ -83,7 +83,7 @@ QString SequenceSplitPromter::composeRichDoc() {
                              .arg(getHyperlink(COMPLEMENT_ATTR, "reverse-complement"));
     }
 
-    //expand
+    // expand
     QString expandText;
     int expandLeft = getParameter(EXTEND_LEFT_ATTR).toInt();
     int expandRight = getParameter(EXTEND_RIGHT_ATTR).toInt();
@@ -97,14 +97,14 @@ QString SequenceSplitPromter::composeRichDoc() {
         expandText.remove(expandText.size() - 1, 2);
     }
 
-    //merge result
+    // merge result
     QString doc = tr("Extract each annotated sequence region %5 %2 %3%4")
                       //.arg(filterText)
                       .arg(complementText)
                       .arg(translateText)
                       .arg(expandText)
                       .arg(seqProducerText);
-    doc.remove(QRegExp("[\\,\\s]*$"));    //remove all commas and spaces from the end;
+    doc.remove(QRegExp("[\\,\\s]*$"));  // remove all commas and spaces from the end;
     doc.append(".");
     return doc;
 }
@@ -128,7 +128,7 @@ Task *SequenceSplitWorker::tick() {
         cfg.extRight = actor->getParameter(EXTEND_RIGHT_ATTR)->getAttributeValue<int>(context);
         cfg.gapLength = actor->getParameter(GAP_LENGTH_ATTR)->getAttributeValue<int>(context);
         cfg.splitJoined = actor->getParameter(SPLIT_ATTR)->getAttributeValue<bool>(context);
-        cfg.gapSym = '-';    //FIXME
+        cfg.gapSym = '-';  // FIXME
         QVariantMap qm = inputMessage.getData().toMap();
 
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
@@ -215,7 +215,7 @@ void SequenceSplitWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
     QList<Attribute *> attribs;
 
-    //accept sequence and annotated regions as input
+    // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
     inputMap[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
     inputMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
@@ -231,7 +231,7 @@ void SequenceSplitWorkerFactory::init() {
     DataTypePtr outSet(new MapDataType(Descriptor(REGIONED_SEQ_TYPE), outMap));
     dr->registerEntry(outSet);
 
-    {    //Create input port descriptors
+    {  // Create input port descriptors
         Descriptor seqDesc(BasePorts::IN_SEQ_PORT_ID(), SequenceSplitWorker::tr("Input sequence"), SequenceSplitWorker::tr("A sequence which will be split into annotated regions."));
         Descriptor outDesc(BasePorts::OUT_SEQ_PORT_ID(), SequenceSplitWorker::tr("Annotated regions"), SequenceSplitWorker::tr("Resulted subsequences, translated and complemented according to corresponding annotations."));
 
@@ -239,7 +239,7 @@ void SequenceSplitWorkerFactory::init() {
         portDescs << new PortDescriptor(outDesc, outSet, /*input*/ false, /*multi*/ true);
     }
 
-    {    //Create attributes descriptors
+    {  // Create attributes descriptors
         Descriptor translateDesc(TRANSLATE_ATTR,
                                  SequenceSplitWorker::tr("Translate"),
                                  SequenceSplitWorker::tr("Translate the annotated regions."));
@@ -272,7 +272,7 @@ void SequenceSplitWorkerFactory::init() {
                     SequenceSplitWorker::tr("Creates sequences from annotated regions of input sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
-    //create delegates for attribute editing
+    // create delegates for attribute editing
     QMap<QString, PropertyDelegate *> delegates;
     {
         QVariantMap eMap;
@@ -297,5 +297,5 @@ Worker *SequenceSplitWorkerFactory::createWorker(Actor *a) {
     return new SequenceSplitWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

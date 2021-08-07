@@ -55,6 +55,6 @@ private:
     GenomesPreparationTask *genomesPreparationTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DIAMOND_BUILD_TASK_H_
+#endif  // _U2_DIAMOND_BUILD_TASK_H_

@@ -43,6 +43,6 @@ private:
     static void readArray(QFile &file, char *buff, int *len, int *pos, int *bytes, int *lineIdx, quint32 *array, int arrLen, TaskStateInfo &ti);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -36,17 +36,17 @@ public:
     class Action {
     public:
         enum Type {
-            ADD_FILES,    // add files with the "Add files" button
-            ADD_DIRS,    // add dirs with the "Add folder" button
-            ADD_PROJECT_ITEMS,    // add project items with the "Add objects" button
-            SELECT_ITEMS,    // select items in the tree view
-            EDIT_DESTINATION_FOLDER,    // edit the item's destination folder by double click to the folder column
-            EDIT_GENERAL_OPTIONS,    // edit general options with the "General options" button
-            EDIT_PRIVATE_OPTIONS,    // edit the item's private options with a "Override options" context menu item
-            RESET_PRIVATE_OPTIONS,    // reset the item's options to global with a "Reset to general options" context menu item
-            REMOVE,    // remove the item with the "Remove" button
-            IMPORT,    // close the dialog and start the import task with the "Import" button
-            CANCEL    // close the dialog the "Cancel" button
+            ADD_FILES,  // add files with the "Add files" button
+            ADD_DIRS,  // add dirs with the "Add folder" button
+            ADD_PROJECT_ITEMS,  // add project items with the "Add objects" button
+            SELECT_ITEMS,  // select items in the tree view
+            EDIT_DESTINATION_FOLDER,  // edit the item's destination folder by double click to the folder column
+            EDIT_GENERAL_OPTIONS,  // edit general options with the "General options" button
+            EDIT_PRIVATE_OPTIONS,  // edit the item's private options with a "Override options" context menu item
+            RESET_PRIVATE_OPTIONS,  // reset the item's options to global with a "Reset to general options" context menu item
+            REMOVE,  // remove the item with the "Remove" button
+            IMPORT,  // close the dialog and start the import task with the "Import" button
+            CANCEL  // close the dialog the "Cancel" button
         };
 
         Action(Type type, const QVariantMap &data);
@@ -88,6 +88,6 @@ private:
     QList<Action> actions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_TO_DATABASE_DIALOG_FILLER_H_
+#endif  // _U2_IMPORT_TO_DATABASE_DIALOG_FILLER_H_

@@ -47,7 +47,7 @@ class MWMenuManagerImpl;
 class MWToolBarManagerImpl;
 class TmpDirChecker;
 
-//workaround for QMdiArea issues
+// workaround for QMdiArea issues
 class FixedMdiArea : public QMdiArea {
     Q_OBJECT
 public:
@@ -59,7 +59,7 @@ public slots:
     void tileSubWindows();
 
 private slots:
-    //Workaround for QTBUG-17428
+    // Workaround for QTBUG-17428
     void sysContextMenuAction(QAction *);
     void closeSubWindow(int);
 };
@@ -157,6 +157,6 @@ public:
     static void dragMoveEvent(QDragMoveEvent *event);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

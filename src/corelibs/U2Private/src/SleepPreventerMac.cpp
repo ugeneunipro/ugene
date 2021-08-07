@@ -76,4 +76,4 @@ void SleepPreventerMac::release() {
 
 #endif
 
-}    // namespace U2
+}  // namespace U2

@@ -132,6 +132,6 @@ private:
     static Marker *parseMarker(const QString &def);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
+#endif  // _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_

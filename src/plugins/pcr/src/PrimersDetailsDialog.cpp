@@ -35,4 +35,4 @@ PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &detai
     textEdit->setText(details);
 }
 
-}    // namespace U2
+}  // namespace U2

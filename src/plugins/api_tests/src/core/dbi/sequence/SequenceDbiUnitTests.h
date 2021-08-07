@@ -125,7 +125,7 @@ public:
     void Test();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U2Sequence);
 Q_DECLARE_METATYPE(U2::UpdateSequenceArgs);
@@ -142,4 +142,4 @@ Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequenceData);
 Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequenceObject);
 Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequencesData);
 
-#endif    //_U2_SEQUENCE_DBI_UNITTESTS_H_
+#endif  //_U2_SEQUENCE_DBI_UNITTESTS_H_

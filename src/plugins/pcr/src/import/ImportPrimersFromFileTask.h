@@ -42,6 +42,6 @@ private:
     DocumentProviderTask *loadTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_PRIMERS_FROM_FILE_TASK_H_
+#endif  // _U2_IMPORT_PRIMERS_FROM_FILE_TASK_H_

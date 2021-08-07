@@ -97,6 +97,6 @@ private:
     QList<AssemblyCellRendererFactory *> factories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

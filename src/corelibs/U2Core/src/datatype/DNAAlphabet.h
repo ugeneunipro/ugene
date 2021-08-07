@@ -132,6 +132,6 @@ public:
     virtual QList<const DNAAlphabet *> getRegisteredAlphabets() const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

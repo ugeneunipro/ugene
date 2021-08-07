@@ -63,6 +63,6 @@ private:
     QMap<int, MessageMetadata> data;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MESSAGE_METADATA_H_
+#endif  // _U2_MESSAGE_METADATA_H_

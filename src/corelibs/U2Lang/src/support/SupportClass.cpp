@@ -42,4 +42,4 @@ bool WorkflowNotification::operator==(const WorkflowNotification &other) const {
            (type == other.type);
 }
 
-}    // namespace U2
+}  // namespace U2

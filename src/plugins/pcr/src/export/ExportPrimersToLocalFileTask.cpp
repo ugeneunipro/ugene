@@ -102,4 +102,4 @@ void ExportPrimersToLocalFileTask::addObjects(Document *document, ExportPrimersT
     }
 }
 
-}    // namespace U2
+}  // namespace U2

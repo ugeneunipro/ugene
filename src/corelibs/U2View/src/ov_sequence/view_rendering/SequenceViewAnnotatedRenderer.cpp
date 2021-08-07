@@ -49,7 +49,7 @@ SequenceViewAnnotatedRenderer::AnnotationViewMetrics::AnnotationViewMetrics()
     afNormalCharWidth = afmNormal.width('w');
     afSmallCharWidth = afmSmall.width('w');
 
-    QLinearGradient gradient(0, 0, 0, 1);    //vertical
+    QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setColorAt(0.00, QColor(255, 255, 255, 120));
     gradient.setColorAt(0.50, QColor(0, 0, 0, 0));
@@ -169,7 +169,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &can
             const bool drawArrow = aData->getStrand().isCompementary() ? !leftTrim : !rightTrim;
             if (displaySettings.displayAnnotationArrows && drawArrow) {
                 bool isLeft = false;
-                if (1 == ri && aData->findFirstQualifierValue("rpt_type") == "inverted") {    //temporary solution for drawing inverted repeats correct
+                if (1 == ri && aData->findFirstQualifierValue("rpt_type") == "inverted") {  // temporary solution for drawing inverted repeats correct
                     isLeft = true;
                 } else {
                     isLeft = aData->getStrand().isCompementary();
@@ -270,7 +270,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
                     x2 = posToXCoord(visibleRange.endPos() - 1, canvasSize, visibleRange) + dx2;
                 }
                 if (qAbs(x2 - x1) > 1) {
-                    x1 = qBound(-MAX_VIRTUAL_RANGE, x1, MAX_VIRTUAL_RANGE);    //qt4.4 crashes in line clipping alg for extremely large X values
+                    x1 = qBound(-MAX_VIRTUAL_RANGE, x1, MAX_VIRTUAL_RANGE);  // qt4.4 crashes in line clipping alg for extremely large X values
                     x2 = qBound(-MAX_VIRTUAL_RANGE, x2, MAX_VIRTUAL_RANGE);
                     const int midX = (x1 + x2) / 2;
                     const U2Region pyr = getAnnotationYRange(a, ri - 1, as, availableHeight);
@@ -404,4 +404,4 @@ qint64 SequenceViewAnnotatedRenderer::correctCutPos(const qint64 pos) const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

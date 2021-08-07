@@ -63,6 +63,6 @@ struct U2LANG_EXPORT BreakpointConditionDump {
     bool isEnabled;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
+#endif  // _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_

@@ -47,7 +47,7 @@ public:
     bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WRITESEQUENCEVALIDATOR_H_
+#endif  // _U2_WRITESEQUENCEVALIDATOR_H_

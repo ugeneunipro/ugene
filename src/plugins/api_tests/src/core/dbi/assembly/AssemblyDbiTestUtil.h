@@ -42,7 +42,7 @@ public:
     static const char *ERR_INVALID_ASSEMBLY_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U2AssemblyRead);
 

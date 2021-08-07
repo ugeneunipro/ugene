@@ -103,4 +103,4 @@ void GTUtilsPcr::clearPcrDir(HI::GUITestOpStatus &os) {
     GTFile::removeDir(path);
 }
 
-}    // namespace U2
+}  // namespace U2

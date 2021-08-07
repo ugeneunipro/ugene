@@ -57,16 +57,16 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
         return res;
     }
     switch (f) {
-    case EnzymeFileFormat_Bairoch:
-        res = readBairochFile(url, iof, ti);
-        break;
-    default:
-        ti.setError(tr("Unsupported enzymes file format"));
-        break;
+        case EnzymeFileFormat_Bairoch:
+            res = readBairochFile(url, iof, ti);
+            break;
+        default:
+            ti.setError(tr("Unsupported enzymes file format"));
+            break;
     }
 
     QList<SEnzymeData> resToDelete;
-    //assign alphabet if needed.
+    // assign alphabet if needed.
     for (int i = 0, n = res.count(); i < n; i++) {
         SEnzymeData &d = res[i];
         if (d->seq == QByteArray("?")) {
@@ -89,7 +89,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
             }
         }
     }
-    //Remove not needed elements
+    // Remove not needed elements
     foreach (SEnzymeData d, resToDelete) {
         res.removeAll(d);
     }
@@ -117,12 +117,12 @@ void EnzymesIO::writeEnzymes(const QString &url, const QString &source, const QS
         return;
     }
     switch (f) {
-    case EnzymeFileFormat_Bairoch:
-        writeBairochFile(url, iof, source, srciof, enzymes, ti);
-        break;
-    default:
-        ti.setError(tr("Unsupported enzymes file format"));
-        break;
+        case EnzymeFileFormat_Bairoch:
+            writeBairochFile(url, iof, source, srciof, enzymes, ti);
+            break;
+        default:
+            ti.setError(tr("Unsupported enzymes file format"));
+            break;
     }
 }
 
@@ -321,4 +321,4 @@ void SaveEnzymeFileTask::run() {
     EnzymesIO::writeEnzymes(url, source, enzymes, stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

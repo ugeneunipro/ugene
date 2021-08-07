@@ -348,4 +348,4 @@ void MaGraphOverview::moveVisibleRange(QPoint _pos) {
     update();
 }
 
-}    // namespace U2
+}  // namespace U2

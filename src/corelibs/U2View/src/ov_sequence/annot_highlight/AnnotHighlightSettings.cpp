@@ -104,4 +104,4 @@ void AnnotHighlightSettingsWidget::setCorrectState() {
     editQualifiers->setStyleSheet("background-color: white;");
 }
 
-}    // namespace U2
+}  // namespace U2

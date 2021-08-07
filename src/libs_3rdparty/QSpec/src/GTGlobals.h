@@ -147,6 +147,6 @@ public:
         return false; \
     }
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

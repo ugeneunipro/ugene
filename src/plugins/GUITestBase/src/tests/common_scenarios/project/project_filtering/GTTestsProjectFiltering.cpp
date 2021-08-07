@@ -338,7 +338,7 @@ void makeRightClick(HI::GUITestOpStatus &os, const QString &groupName) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // 1. Connect to the "ugene_gui_test" database
@@ -524,6 +524,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 }
 
-}    // namespace GUITest_common_scenarios_project_filtering
+}  // namespace GUITest_common_scenarios_project_filtering
 
-}    // namespace U2
+}  // namespace U2

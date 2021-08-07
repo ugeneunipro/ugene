@@ -69,6 +69,6 @@ public:
     static QList<DNASequence> getSequences(const QList<Document *> &docs, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLIPBOARD_CONTROLLER_H_
+#endif  // _U2_CLIPBOARD_CONTROLLER_H_

@@ -52,5 +52,5 @@ public:
     static void setRegion(HI::GUITestOpStatus &os, RegionSelector *regionSelector, const RegionSelectorSettings &s);
 };
 
-}    // namespace U2
-#endif    // _U2_GT_REGIONSELECTOR_H_
+}  // namespace U2
+#endif  // _U2_GT_REGIONSELECTOR_H_

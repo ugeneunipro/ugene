@@ -47,5 +47,5 @@ public:
     void calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &r, const GSequenceGraphWindowData *d, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

@@ -56,6 +56,6 @@ private:
     U2SavableWidget savableWidget;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_H_
+#endif  // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_H_

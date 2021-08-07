@@ -71,7 +71,7 @@ public:
     }
 };
 
-//BOWTIE TESTS
+// BOWTIE TESTS
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    File will be copied to the sandbox
@@ -171,8 +171,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //BROKEN INDEX TEST
-    //    1. {Tools -> Align to reference -> Align short reads}
+    // BROKEN INDEX TEST
+    //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
@@ -201,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "Map reads to reference...");
 }
 
-//BOWTIE2 TESTS
+// BOWTIE2 TESTS
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    File will be copied to the sandbox
@@ -293,8 +293,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //BROKEN INDEX TEST
-    //    1. {Tools -> Align to reference -> Align short reads}
+    // BROKEN INDEX TEST
+    //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                 << "Map reads to reference...");
 }
 
-//BWA TESTS
+// BWA TESTS
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    File will be copied to the sandbox
     //    1. {Tools -> Align to reference -> Align short reads}
@@ -423,8 +423,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    //BROKEN INDEX TEST
-    //    1. {Tools -> Align to reference -> Align short reads}
+    // BROKEN INDEX TEST
+    //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
     GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
@@ -529,5 +529,5 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(fListIndex.size() == 19, QString("3: unexpected files number: %1").arg(fListIndex.size()));
 }
 
-}    // namespace GUITest_index_reuse
-}    // namespace U2
+}  // namespace GUITest_index_reuse
+}  // namespace U2

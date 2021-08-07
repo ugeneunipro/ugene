@@ -45,5 +45,5 @@ private:
     QString commonTempDirPath;
 };
 
-}    // namespace U2
-#endif    // TMPDIRCHECKER_H
+}  // namespace U2
+#endif  // TMPDIRCHECKER_H

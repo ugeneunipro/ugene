@@ -53,7 +53,7 @@ private:
     static const QString WEVOTE_DIR;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_WEVOTE_WORKER_H_
+#endif  // _U2_WEVOTE_WORKER_H_

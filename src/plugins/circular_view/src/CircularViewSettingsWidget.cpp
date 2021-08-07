@@ -95,7 +95,7 @@ void CircularViewSettingsWidget::sl_openCvButton() {
 
 void CircularViewSettingsWidget::initLayout() {
     QFontDatabase fontDatabase;
-    fontComboBox->addItems(fontDatabase.families(QFontDatabase::Latin));    //! ckeck latin baundary
+    fontComboBox->addItems(fontDatabase.families(QFontDatabase::Latin));  //! ckeck latin baundary
     fontComboBox->setCurrentIndex(fontComboBox->findText(settings->titleFont));
     fontSizeSpinBox->setValue(settings->titleFontSize);
     rulerFontSizeSpinBox->setValue(settings->rulerFontSize);
@@ -108,17 +108,17 @@ void CircularViewSettingsWidget::initLayout() {
     boldButton->setChecked(settings->titleBold);
 
     switch (settings->labelMode) {
-    case CircularViewSettings::Inside:
-        labelPositionComboBox->setCurrentText(tr("Inside"));
-        break;
-    case CircularViewSettings::Outside:
-        labelPositionComboBox->setCurrentText(tr("Outside"));
-        break;
-    case CircularViewSettings::None:
-        labelPositionComboBox->setCurrentText(tr("None"));
-        break;
-    default:
-        labelPositionComboBox->setCurrentText(tr("Inside/Outside"));
+        case CircularViewSettings::Inside:
+            labelPositionComboBox->setCurrentText(tr("Inside"));
+            break;
+        case CircularViewSettings::Outside:
+            labelPositionComboBox->setCurrentText(tr("Outside"));
+            break;
+        case CircularViewSettings::None:
+            labelPositionComboBox->setCurrentText(tr("None"));
+            break;
+        default:
+            labelPositionComboBox->setCurrentText(tr("Inside/Outside"));
     }
 
     settingsWidget = new QWidget(this);
@@ -158,4 +158,4 @@ void CircularViewSettingsWidget::connectSlots() {
     connect(openCvButton, SIGNAL(clicked()), SLOT(sl_openCvButton()));
 }
 
-}    // namespace U2
+}  // namespace U2

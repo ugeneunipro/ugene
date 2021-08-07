@@ -74,7 +74,7 @@ Task *SimpleTextObjectViewFactory::createViewTask(const MultiGSelection &multiSe
     if (result == nullptr) {
         return t;
     } else {
-        //todo: limit number of views?
+        // todo: limit number of views?
         result->addSubTask(t);
     }
 
@@ -151,7 +151,7 @@ void SimpleTextObjectView::updateView(const QVariantMap &data) {
     int vScrollPos = data.value(VBAR_POS_KEY, 0).toInt();
 
     QTextCursor c = textEdit->textCursor();
-    c.setPosition(cursPos);    //, QTextCursor::KeepAnchor
+    c.setPosition(cursPos);  //, QTextCursor::KeepAnchor
     textEdit->setTextCursor(c);
     textEdit->verticalScrollBar()->setSliderPosition(vScrollPos);
     textEdit->horizontalScrollBar()->setSliderPosition(hScrollPos);
@@ -159,12 +159,12 @@ void SimpleTextObjectView::updateView(const QVariantMap &data) {
 
 QVariantMap SimpleTextObjectView::saveState() {
     QVariantMap data;
-    //Content:
-    //file url
+    // Content:
+    // file url
     data[URL_KEY] = textObject->getDocument()->getURLString();
     data[OBJ_KEY] = textObject->getGObjectName();
-    //GUI:
-    //start vis pos
+    // GUI:
+    // start vis pos
     data[CURS_POS_KEY] = textEdit->textCursor().position();
     data[HBAR_POS_KEY] = textEdit->horizontalScrollBar()->sliderPosition();
     data[VBAR_POS_KEY] = textEdit->verticalScrollBar()->sliderPosition();
@@ -183,4 +183,4 @@ QString SimpleTextObjectView::getObjectName(const QVariantMap &savedState) {
     return savedState.value(OBJ_KEY).toString();
 }
 
-}    // namespace U2
+}  // namespace U2

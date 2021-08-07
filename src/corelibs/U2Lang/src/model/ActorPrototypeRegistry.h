@@ -52,10 +52,10 @@ signals:
 private:
     QMap<Descriptor, QList<ActorPrototype *>> groups;
 
-};    // ActorPrototypeRegistry
+};  // ActorPrototypeRegistry
 
-}    //namespace Workflow
+}  // namespace Workflow
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_REG_H_
+#endif  // _U2_WORKFLOW_REG_H_

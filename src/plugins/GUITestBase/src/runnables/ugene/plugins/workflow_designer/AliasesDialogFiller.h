@@ -38,5 +38,5 @@ public:
 private:
     QMap<QPoint *, QString> map;
 };
-}    // namespace U2
-#endif    // ALIASESDIALOGFILLER_H
+}  // namespace U2
+#endif  // ALIASESDIALOGFILLER_H

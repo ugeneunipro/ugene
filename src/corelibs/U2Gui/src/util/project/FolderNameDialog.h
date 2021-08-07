@@ -44,6 +44,6 @@ private:
     QPushButton *okButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FOLDER_NANE_DIALOG_H_
+#endif  // _U2_FOLDER_NANE_DIALOG_H_
