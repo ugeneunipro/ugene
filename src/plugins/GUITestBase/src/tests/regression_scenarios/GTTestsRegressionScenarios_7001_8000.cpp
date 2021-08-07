@@ -786,6 +786,21 @@ GUI_TEST_CLASS_DEFINITION(test_7368) {
     GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7371) {
+    // Check that vertical scrollbar changes on expanding/collapsing all rows in MCA editor.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    QScrollBar *scrollBar = GTUtilsMcaEditor::getVerticalScrollBar(os);
+    CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (default)");
+
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    CHECK_SET_ERR(!scrollBar->isVisible(), "Vertical scrollbar must not be visible in collapsed mode");
+
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (restored)");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
