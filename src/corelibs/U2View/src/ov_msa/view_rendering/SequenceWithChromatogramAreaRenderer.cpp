@@ -81,11 +81,12 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
 }
 
 void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
-    QRect selectionRect = getSeqArea()->getEditor()->getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), );
-    U2Region selectedRowsRegion = U2Region::fromYRange(selectionRect);
-    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
-    painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
+    const QList<QRect>& selectedRects = getSeqArea()->getEditor()->getSelection().getRectList();
+    for (const QRect& selectedRect: qAsConst(selectedRects)) {
+        U2Region selectedRowsRegion = U2Region::fromYRange(selectedRect);
+        U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
+        painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
+    }
 }
 
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {

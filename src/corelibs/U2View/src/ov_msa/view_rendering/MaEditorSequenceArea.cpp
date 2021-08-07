@@ -796,20 +796,15 @@ void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
 
     // Select the longest continuous region for the new selection
     QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
-    QSet<int> selectedViewIndexesSet;
     MaCollapseModel *collapseModel = editor->getCollapseModel();
+    QList<QRect> newSelectedRects;
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
-        selectedViewIndexesSet << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+        int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+        if (viewRowIndex >= 0) {
+            newSelectedRects << QRect(columnsRegions.startPos, viewRowIndex, columnsRegions.length, 1);
+        }
     }
-    QList<int> selectedViewIndexes = selectedViewIndexesSet.values();
-    std::sort(selectedViewIndexes.begin(), selectedViewIndexes.end());
-    U2Region selectedViewRegion = findLongestRegion(selectedViewIndexes);
-    if (selectedViewRegion.length == 0) {
-        editor->getSelectionController()->clearSelection();
-    } else {
-        QRect newSelectionRect(columnsRegions.startPos, selectedViewRegion.startPos, columnsRegions.length, selectedViewRegion.length);
-        setSelectionRect(newSelectionRect);
-    }
+    editor->getSelectionController()->setSelection(MaEditorSelection(newSelectedRects));
 
     ui->getScrollController()->updateVerticalScrollBar();
 }
