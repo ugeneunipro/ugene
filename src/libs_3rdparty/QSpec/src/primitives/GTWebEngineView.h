@@ -63,6 +63,6 @@ private:
 
 typedef class GTWebEngineView GTWebViewPrivate;
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // GTWEBENGINEVIEW_H
+#endif  // GTWEBENGINEVIEW_H

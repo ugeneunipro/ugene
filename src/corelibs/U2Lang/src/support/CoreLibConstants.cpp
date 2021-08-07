@@ -48,6 +48,6 @@ const QString CoreLibConstants::GROUPER_SLOT_ATTR("group-slot");
 const QString CoreLibConstants::GROUPER_OUT_SLOTS_ATTR("out-slot");
 const QString CoreLibConstants::GROUPER_OPER_ATTR("group-op");
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

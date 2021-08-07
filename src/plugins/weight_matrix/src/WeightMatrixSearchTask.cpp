@@ -24,7 +24,7 @@
 #include <U2Core/Counter.h>
 
 namespace U2 {
-//Weight matrix multiple search
+// Weight matrix multiple search
 WeightMatrixSearchTask::WeightMatrixSearchTask(const QList<QPair<PWMatrix, WeightMatrixSearchCfg>> &m, const QByteArray &seq, int ro)
     : Task(tr("Weight matrix multiple search"), TaskFlags_NR_FOSCOE), models(m), resultsOffset(ro) {
     for (int i = 0, n = m.size(); i < n; i++) {
@@ -49,7 +49,7 @@ QList<WeightMatrixSearchResult> WeightMatrixSearchTask::takeResults() {
     return res;
 }
 
-//Weight matrix single search
+// Weight matrix single search
 WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, const QByteArray &_seq, const WeightMatrixSearchCfg &cfg, int ro)
     : Task(tr("Weight matrix search"), TaskFlags_NR_FOSCOE), model(m), cfg(cfg), resultsOffset(ro), seq(_seq) {
     GCOUNTER(cvar, "WeightMatrixSingleSearchTask");
@@ -69,7 +69,7 @@ WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, co
 }
 
 void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
-    //TODO: process border case as if there are 'N' chars before 0 and after seqlen
+    // TODO: process border case as if there are 'N' chars before 0 and after seqlen
     if (cfg.complOnly && !t->isDNAComplemented()) {
         return;
     }
@@ -89,7 +89,7 @@ void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateI
         }
         WeightMatrixSearchResult r;
         r.score = 100 * psum;
-        if (r.score >= cfg.minPSUM) {    //report result
+        if (r.score >= cfg.minPSUM) {  // report result
             r.region.startPos = globalRegion.startPos + i + resultsOffset;
             if (t->isDNAComplemented()) {
                 r.strand = U2Strand::Complementary;
@@ -123,4 +123,4 @@ QList<WeightMatrixSearchResult> WeightMatrixSingleSearchTask::takeResults() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

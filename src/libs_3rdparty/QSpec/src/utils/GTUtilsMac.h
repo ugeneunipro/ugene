@@ -29,7 +29,6 @@
 namespace HI {
 
 class HI_EXPORT GTUtilsMac {
-
 public:
     GTUtilsMac();
     ~GTUtilsMac();
@@ -38,9 +37,8 @@ public:
 
 private:
     QProcess *process = nullptr;
-
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif // _HI_GT_UTILS_MAC_H_
+#endif  // _HI_GT_UTILS_MAC_H_

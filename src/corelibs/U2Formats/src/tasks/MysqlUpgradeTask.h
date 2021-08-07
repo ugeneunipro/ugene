@@ -40,6 +40,6 @@ private:
     const U2DbiRef dbiRef;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADE_TASK_H_
+#endif  // _U2_MYSQL_UPGRADE_TASK_H_

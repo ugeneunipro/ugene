@@ -125,6 +125,6 @@ private:
     const PhyTree tempTree;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

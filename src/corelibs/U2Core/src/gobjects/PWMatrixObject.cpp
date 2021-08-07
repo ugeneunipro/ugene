@@ -33,7 +33,7 @@ namespace U2 {
 
 const GObjectType PWMatrixObject::TYPE("pwm-obj");
 
-//PWMatrixObject
+// PWMatrixObject
 //////////////////////////////////////////////////////////////////////////
 
 U2PWMatrix::U2PWMatrix()
@@ -48,7 +48,7 @@ U2DataType U2PWMatrix::getType() const {
     return U2Type::PWMatrix;
 }
 
-//PWMatrixObject
+// PWMatrixObject
 //////////////////////////////////////////////////////////////////////////
 PWMatrixObject *PWMatrixObject::createInstance(const PWMatrix &matrix, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap) {
     U2PWMatrix object(dbiRef);
@@ -101,4 +101,4 @@ GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
     return dst;
 }
 
-}    // namespace U2
+}  // namespace U2

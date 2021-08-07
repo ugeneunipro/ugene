@@ -43,6 +43,6 @@ private:
     qint64 newSequenceStartPosition;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

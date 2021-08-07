@@ -90,4 +90,4 @@ void TabulatedFormatReader::storeLine(const QString &line) {
     currentLine++;
 }
 
-}    // namespace U2
+}  // namespace U2

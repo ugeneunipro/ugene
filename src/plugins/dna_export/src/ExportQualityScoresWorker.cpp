@@ -47,7 +47,7 @@ namespace LocalWorkflow {
  * ExportPhredQualityWorkerFactory
  *************************************/
 const QString ExportPhredQualityWorkerFactory::ACTOR_ID("export-phred-qualities");
-//const QString QUALITY_TYPE_ATTR("quality-format");
+// const QString QUALITY_TYPE_ATTR("quality-format");
 
 void ExportPhredQualityWorkerFactory::init() {
     QList<PortDescriptor *> portDescriptors;
@@ -148,5 +148,5 @@ void ExportPhredQualityWorker::cleanup() {
     qDeleteAll(seqObjList);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

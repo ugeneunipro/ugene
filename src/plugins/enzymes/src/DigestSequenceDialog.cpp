@@ -379,4 +379,4 @@ void DigestSequenceDialog::sl_removeAllAnnsBtnClicked() {
     conservedAnnsWidget->clear();
 }
 
-}    // namespace U2
+}  // namespace U2

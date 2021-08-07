@@ -79,4 +79,4 @@ QSize FilteredProjectItemDelegate::sizeHint(const QStyleOptionViewItem &option, 
     return QSize(doc.idealWidth(), doc.size().height());
 }
 
-}    // namespace U2
+}  // namespace U2

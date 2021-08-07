@@ -48,12 +48,12 @@ public:
 
     static U2DataType toDataType(const QString &typeId);
     static QString toTypeId(const U2DataType &dataType);
-};    // BaseTypes
+};  // BaseTypes
 
 // value factories for core datatypes
 /**
-* DatatypeValueFactory realization for string type
-*/
+ * DatatypeValueFactory realization for string type
+ */
 class StringTypeValueFactory : public DataTypeValueFactory {
 public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
@@ -61,11 +61,11 @@ public:
         return BaseTypes::STRING_TYPE()->getId();
     }
 
-};    // StringTypeValueFactory
+};  // StringTypeValueFactory
 
 /**
-* DatatypeValueFactory realization for string list type
-*/
+ * DatatypeValueFactory realization for string list type
+ */
 class StringListTypeValueFactory : public DataTypeValueFactory {
 public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
@@ -73,11 +73,11 @@ public:
         return BaseTypes::STRING_LIST_TYPE()->getId();
     }
 
-};    // StringListTypeValueFactory
+};  // StringListTypeValueFactory
 
 /**
-* DatatypeValueFactory realization for map type
-*/
+ * DatatypeValueFactory realization for map type
+ */
 class MapTypeValueFactory : public DataTypeValueFactory {
 public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
@@ -85,11 +85,11 @@ public:
         return BaseTypes::MAP_TYPE()->getId();
     }
 
-};    // StringListTypeValueFactory
+};  // StringListTypeValueFactory
 
 /**
-* DatatypeValueFactory realization for bool type
-*/
+ * DatatypeValueFactory realization for bool type
+ */
 class BoolTypeValueFactory : public DataTypeValueFactory {
 public:
     static const QString TRUE_STR;
@@ -105,11 +105,11 @@ public:
         return BaseTypes::BOOL_TYPE()->getId();
     }
 
-};    // BoolTypeValueFactory
+};  // BoolTypeValueFactory
 
 /**
-* DatatypeValueFactory realization for num type
-*/
+ * DatatypeValueFactory realization for num type
+ */
 class NumTypeValueFactory : public DataTypeValueFactory {
 public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
@@ -117,17 +117,17 @@ public:
         return BaseTypes::NUM_TYPE()->getId();
     }
 
-};    // NumTypeValueFactory
+};  // NumTypeValueFactory
 
 /**
-* Factory for datasets based url values
-*/
+ * Factory for datasets based url values
+ */
 class UrlTypeValueFactory : public DataTypeValueFactory {
 public:
     virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const;
-};    // UrlTypeValueFactory
+};  // UrlTypeValueFactory
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // __U2_BASE_TYPES_H_
+#endif  // __U2_BASE_TYPES_H_

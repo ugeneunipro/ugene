@@ -79,6 +79,6 @@ public:
     static const QString DB_OBJ_ID_SEP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SHARED_DB_URL_UTILS_H_
+#endif  // _U2_SHARED_DB_URL_UTILS_H_

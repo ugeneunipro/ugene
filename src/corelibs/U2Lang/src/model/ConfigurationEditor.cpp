@@ -146,4 +146,4 @@ DelegateTags &DelegateTags::operator=(const DelegateTags &other) {
     return *this;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -22,8 +22,8 @@
 #ifndef _U2_PREPARE_TO_IMPORT_TASK_H
 #define _U2_PREPARE_TO_IMPORT_TASK_H
 
-#include <U2Core/Task.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
@@ -54,7 +54,7 @@ private:
     bool needToCopyFasta() const;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
 #endif

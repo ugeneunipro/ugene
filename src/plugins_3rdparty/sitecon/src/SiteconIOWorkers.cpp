@@ -255,7 +255,7 @@ Task *SiteconWriter::tick() {
         }
         if (anUrl.isEmpty()) {
             QString err = tr("Unspecified URL for writing Sitecon");
-            //if (failFast) {
+            // if (failFast) {
             return new FailTask(err);
             /*} else {
                 algoLog.error(err);
@@ -278,5 +278,5 @@ Task *SiteconWriter::tick() {
     return nullptr;
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

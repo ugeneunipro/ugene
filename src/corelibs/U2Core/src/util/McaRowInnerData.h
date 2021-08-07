@@ -51,6 +51,6 @@ public:
     QVariantMap additionalInfo;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MCA_ROW_INNER_DATA_H_
+#endif  // _U2_MCA_ROW_INNER_DATA_H_

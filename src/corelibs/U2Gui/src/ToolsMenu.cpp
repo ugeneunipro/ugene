@@ -272,7 +272,7 @@ QAction *getSeparator(const QMenu *menu, QAction *action1, QAction *action2) {
     }
     return nullptr;
 }
-}    // namespace
+}  // namespace
 
 bool ToolsMenu::mustHaveSeparator(const QString &menuName, const QString &actionName1, const QString &actionName2) {
     bool foundAction1 = ("" == actionName1);
@@ -357,4 +357,4 @@ void ToolsMenu::addAction(const QString &menuName, QAction *action) {
     insertAction(menu, menuName, action);
 }
 
-}    // namespace U2
+}  // namespace U2

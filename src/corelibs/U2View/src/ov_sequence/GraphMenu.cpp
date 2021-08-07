@@ -180,4 +180,4 @@ void GraphMenuAction::sl_closeAllGraphs() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

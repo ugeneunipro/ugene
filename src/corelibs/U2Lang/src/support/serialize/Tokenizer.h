@@ -49,11 +49,11 @@ public:
 
     enum States {
         START_WORD
-    };    // States
+    };  // States
 
     QStringList tokens;
     int depth;
-};    // Tokenizer
+};  // Tokenizer
 
 class ParsedPairs {
 public:
@@ -72,9 +72,9 @@ public:
 
 private:
     void init(Tokenizer &tokenizer, bool bigBlocks);
-};    // ParsedPairs
+};  // ParsedPairs
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2
 
-#endif    // _U2_TOKENIZER_H_
+#endif  // _U2_TOKENIZER_H_

@@ -67,6 +67,6 @@ protected:
     static const qint64 INVALID_POSITION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _MA_ITERATOR_H_
+#endif  // _MA_ITERATOR_H_

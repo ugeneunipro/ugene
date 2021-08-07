@@ -38,5 +38,5 @@ public:
 private:
     QString profile, newFilePath;
 };
-}    // namespace U2
-#endif    // _U2_UHMM3_SEARCH_DIALOG_FILLER_H_
+}  // namespace U2
+#endif  // _U2_UHMM3_SEARCH_DIALOG_FILLER_H_

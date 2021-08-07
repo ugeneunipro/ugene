@@ -39,6 +39,6 @@ private:
     void upgradeCoverageAttribute(U2OpStatus &os) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_
+#endif  // _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_

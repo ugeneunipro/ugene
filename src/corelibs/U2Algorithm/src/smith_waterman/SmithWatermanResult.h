@@ -58,6 +58,6 @@ private:
     QList<SmithWatermanResult> result;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -43,6 +43,6 @@ private:
     static QRect getCheckBoxRect(QGroupBox *groupBox);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

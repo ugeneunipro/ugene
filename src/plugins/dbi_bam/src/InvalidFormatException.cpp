@@ -28,5 +28,5 @@ InvalidFormatException::InvalidFormatException(const QString &message)
     : Exception(message) {
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

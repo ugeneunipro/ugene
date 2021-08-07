@@ -65,6 +65,6 @@ private:
     static const QString SELECTION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_H_
+#endif  // _U2_DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_H_

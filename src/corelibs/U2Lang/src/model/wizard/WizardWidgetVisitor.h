@@ -43,6 +43,6 @@ public:
     virtual void visit(LabelWidget *) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDWIDGETVISITOR_H_
+#endif  // _U2_WIZARDWIDGETVISITOR_H_

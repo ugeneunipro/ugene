@@ -124,19 +124,19 @@ void GenomeAssemblyDialog::updateProperties() {
     //        numberOfReads = qMax(leftReadsTable->topLevelItemCount(), rightReadsTable->topLevelItemCount());
     //    }
     if (numProperties > numberOfReads) {
-        //remove items
+        // remove items
         for (int i = numProperties - 1; i >= numberOfReads; --i) {
             propertiesReadsTable->takeTopLevelItem(i);
         }
     } else if (numProperties < numberOfReads) {
-        //add items
+        // add items
         for (int i = numProperties; i < numberOfReads; i++) {
             ReadPropertiesItem *item = new ReadPropertiesItem(propertiesReadsTable);
             item->setLibraryType(libraryComboBox->currentText());
             ReadPropertiesItem::addItemToTable(item, propertiesReadsTable);
         }
     }
-    //update numbers
+    // update numbers
     numProperties = propertiesReadsTable->topLevelItemCount();
     for (int i = 0; i < numProperties; ++i) {
         QTreeWidgetItem *item = propertiesReadsTable->topLevelItem(i);
@@ -225,7 +225,7 @@ void GenomeAssemblyDialog::accept() {
             library = libraryComboBox->currentText();
             library = libraryComboBox->currentText();
 
-            //check formats
+            // check formats
             QStringList reads;
             int numItems = leftReadsTable->topLevelItemCount();
             for (int i = 0; i < numItems; ++i) {
@@ -449,4 +449,4 @@ void ReadPropertiesItem::addItemToTable(ReadPropertiesItem *item, QTreeWidget *t
     treeWidget->setItemWidget(item, 2, item->orientationBox);
 }
 
-}    // namespace U2
+}  // namespace U2

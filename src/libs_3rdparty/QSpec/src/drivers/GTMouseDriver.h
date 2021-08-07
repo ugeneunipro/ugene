@@ -38,20 +38,20 @@ public:
 
     // fails if press or release fails
     // Linux: fails if there is an opening X display error
-    static bool click(Qt::MouseButton = Qt::LeftButton);    //all click methods work with the current position of the cursor
-    static bool click(const QPoint &p, Qt::MouseButton = Qt::LeftButton); // move and click
+    static bool click(Qt::MouseButton = Qt::LeftButton);  // all click methods work with the current position of the cursor
+    static bool click(const QPoint &p, Qt::MouseButton = Qt::LeftButton);  // move and click
     static bool doubleClick();
 
     // fails if the given button is not Qt::LeftButton, Qt::RightButton or Qt::MiddleButton
     // Linux: fails if there is an opening X display error
     static bool press(Qt::MouseButton = Qt::LeftButton);
-    static bool release(Qt::MouseButton = Qt::LeftButton);    //release method should check if this key has been already pressed. Do nothing otherwise
+    static bool release(Qt::MouseButton = Qt::LeftButton);  // release method should check if this key has been already pressed. Do nothing otherwise
 
     static bool dragAndDrop(const QPoint &start, const QPoint &end);
     static bool selectArea(const QPoint &start, const QPoint &end);
 
     // Linux: fails if there is an opening X display error
-    static bool scroll(int value);    //positive values for scrolling up, negative for scrolling down
+    static bool scroll(int value);  // positive values for scrolling up, negative for scrolling down
 
     static QPoint getMousePosition();
 
@@ -60,6 +60,6 @@ private:
     static Qt::MouseButtons bp;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

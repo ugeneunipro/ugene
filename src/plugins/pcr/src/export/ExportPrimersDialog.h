@@ -59,6 +59,6 @@ private:
     static const QString SHARED_DB;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_PRIMERS_DIALOG_H_
+#endif  // _U2_EXPORT_PRIMERS_DIALOG_H_

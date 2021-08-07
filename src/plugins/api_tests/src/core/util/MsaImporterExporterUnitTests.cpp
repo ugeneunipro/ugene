@@ -84,4 +84,4 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     CHECK_EQUAL(alignmentName, alActual->getName(), "alignment name");
 }
 
-}    // namespace U2
+}  // namespace U2

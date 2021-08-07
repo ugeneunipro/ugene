@@ -60,6 +60,6 @@ public:
     virtual void addWarnings(const QStringList &wList) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

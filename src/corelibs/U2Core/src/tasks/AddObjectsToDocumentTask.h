@@ -42,6 +42,6 @@ private:
     QList<GObject *> clones;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

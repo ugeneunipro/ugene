@@ -43,6 +43,6 @@ signals:
     void si_registryModified();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

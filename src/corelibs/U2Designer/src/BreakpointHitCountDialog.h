@@ -60,6 +60,6 @@ private:
     Ui_BreakpointHitCountDialog *ui;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _BREAKPOINT_HIT_COUNT_DIALOG_H_
+#endif  // _BREAKPOINT_HIT_COUNT_DIALOG_H_

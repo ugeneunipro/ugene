@@ -130,4 +130,4 @@ void ConvexMapRenderer::drawSurface(MolecularSurface &surface) {
     CHECK_GL_ERROR;
 }
 
-}    // namespace U2
+}  // namespace U2

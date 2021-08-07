@@ -297,7 +297,7 @@ bool NotificationStack::hasError() const {
 
 void NotificationStack::addNotification(Notification *t) {
     foreach (Notification *nt, notificationsOnScreen) {
-        if (nt->getText().split("]")[1] == t->getText().split("]")[1]) {    //there is always minimum one ']' symbol
+        if (nt->getText().split("]")[1] == t->getText().split("]")[1]) {  // there is always minimum one ']' symbol
             nt->incrementCounter();
             delete t;
             return;
@@ -358,7 +358,7 @@ void NotificationStack::sl_delete() {
     notificationWidget->removeNotification(notification);
     notifications.takeAt(i);
     emit si_changed();
-    //t->deleteLater();
+    // t->deleteLater();
 }
 
 int NotificationStack::count() const {
@@ -398,8 +398,8 @@ QPoint NotificationStack::getBottomRightOfMainWindow() {
         // Widget's rect doesn't know its real position on the screen. Lets calculate it manually.
         QPoint topLeft = AppContext::getMainWindow()->getQMainWindow()->mapToGlobal(QPoint(0, 0));
         QSize mainWindowSize = AppContext::getMainWindow()->getQMainWindow()->geometry().size();
-        pos = QPoint(topLeft.x() + mainWindowSize.width(), topLeft.y() + mainWindowSize.height());    // bottom right
-        pos -= QPoint(4, 27);    // Some space for the statusbar and window's edge.
+        pos = QPoint(topLeft.x() + mainWindowSize.width(), topLeft.y() + mainWindowSize.height());  // bottom right
+        pos -= QPoint(4, 27);  // Some space for the statusbar and window's edge.
     } else {
         // This behavior is correct.
         pos = AppContext::getMainWindow()->getQMainWindow()->geometry().bottomRight();
@@ -407,4 +407,4 @@ QPoint NotificationStack::getBottomRightOfMainWindow() {
     return pos;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -75,6 +75,6 @@ public:
     static void clickTab(HI::GUITestOpStatus &os, int tabIndex);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

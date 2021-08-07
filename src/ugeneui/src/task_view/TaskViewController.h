@@ -97,7 +97,7 @@ private:
     TVTreeItem *findItem(Task *t, bool topLevelOnly) const;
     TVTreeItem *findChildItem(TVTreeItem *i, Task *t) const;
 
-    //actual widget
+    // actual widget
     QTreeWidget *tree;
     QAction *viewReportAction;
     QAction *cancelTaskAction;
@@ -158,6 +158,6 @@ public:
     TVTreeItem *ti;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

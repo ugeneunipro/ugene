@@ -297,4 +297,4 @@ void DifferentialFormat::storeTextDocument(IOAdapterWriter &writer, Document *do
     }
 }
 
-}    // namespace U2
+}  // namespace U2

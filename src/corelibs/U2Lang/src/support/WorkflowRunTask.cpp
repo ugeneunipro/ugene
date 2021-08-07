@@ -150,8 +150,8 @@ QString WorkflowRunTask::getTaskError() const {
 }
 
 /*******************************************
-* WorkflowIterationRunTask
-*******************************************/
+ * WorkflowIterationRunTask
+ *******************************************/
 namespace {
 const int UPDATE_PROGRESS_INTERVAL = 500;
 }
@@ -219,7 +219,7 @@ void WorkflowIterationRunTask::prepare() {
         return;
     }
     DomainFactory *df = WorkflowEnv::getDomainRegistry()->getById(schema->getDomain());
-    assert(df != nullptr);    // checked in constructor
+    assert(df != nullptr);  // checked in constructor
     foreach (Actor *a, schema->getProcesses()) {
         Worker *w = df->createWorker(a);
         if (!w) {
@@ -233,7 +233,7 @@ void WorkflowIterationRunTask::prepare() {
     foreach (Link *l, schema->getFlows()) {
         CommunicationChannel *cc = df->createConnection(l);
         if (!cc) {
-            stateInfo.setError(tr("Failed to create connection %1 %2 in domain %3"));    //fixme
+            stateInfo.setError(tr("Failed to create connection %1 %2 in domain %3"));  // fixme
             return;
         }
         QStringList lst;
@@ -453,4 +453,4 @@ void WorkflowIterationRunTask::sl_convertMessages2Documents(const Workflow::Link
     }
 }
 
-}    // namespace U2
+}  // namespace U2

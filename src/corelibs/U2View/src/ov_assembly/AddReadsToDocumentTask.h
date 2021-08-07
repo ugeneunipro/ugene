@@ -43,6 +43,6 @@ private:
     QMap<U2DataId, QString> seqNameById;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -46,7 +46,7 @@ bool GCFramePlotFactory::isEnabled(const U2SequenceObject *o) const {
 QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequenceGraphView *v) {
     Q_UNUSED(v);
 
-    //TODO: All points should be calculated during one loop over the window.
+    // TODO: All points should be calculated during one loop over the window.
 
     QList<QSharedPointer<GSequenceGraphData>> res;
     assert(isEnabled(v->getSequenceObject()));
@@ -116,4 +116,4 @@ void GCFramePlotAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
     windowStrategyWithoutMemorize(res, seq, startPos, d, nSteps, os);
 }
 
-}    // namespace U2
+}  // namespace U2

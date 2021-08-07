@@ -173,4 +173,4 @@ DocumentProviderTask *AceImporter::createImportTask(const FormatDetectionResult 
     return new AceImporterTask(res.url, settings);
 }
 
-}    // namespace U2
+}  // namespace U2

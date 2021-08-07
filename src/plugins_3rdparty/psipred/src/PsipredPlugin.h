@@ -22,20 +22,20 @@
 #ifndef _U2_PSIPRED_PLUGIN_H_
 #define _U2_PSIPRED_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Gui/ObjectViewModel.h>
 #include <U2Core/AnnotationData.h>
+#include <U2Core/PluginModel.h>
 
+#include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
 
 class PsipredPlugin : public Plugin {
-	Q_OBJECT
+    Q_OBJECT
 public:
     PsipredPlugin();
-	~PsipredPlugin();
+    ~PsipredPlugin();
 };
 
-} //namespace
+}  // namespace U2
 
-#endif // _U2_PSIPRED_PLUGIN_H_
+#endif  // _U2_PSIPRED_PLUGIN_H_

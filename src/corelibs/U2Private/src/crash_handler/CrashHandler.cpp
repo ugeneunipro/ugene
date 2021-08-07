@@ -252,4 +252,4 @@ void CrashHandler::getSubTasks(Task *t, QString &list, int lvl) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

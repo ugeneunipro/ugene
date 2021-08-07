@@ -37,4 +37,4 @@ QValidator::State DeprecatedWorkerNameValidator::validate(QString &input, int & 
     return Acceptable;
 }
 
-}    // namespace U2
+}  // namespace U2

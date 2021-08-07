@@ -200,6 +200,6 @@ inline void U2LocationData::reset() {
     regionType = U2LocationRegionType_Default;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

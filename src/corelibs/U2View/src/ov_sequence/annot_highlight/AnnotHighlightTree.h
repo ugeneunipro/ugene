@@ -48,9 +48,9 @@ public:
     QString getFirstItemAnnotName();
 
     /**
-      * Returns the annotation name of the currently selected tree item,
-      * or an empty string.
-      */
+     * Returns the annotation name of the currently selected tree item,
+     * or an empty string.
+     */
     QString getCurrentItemAnnotName();
 
     /**
@@ -95,6 +95,6 @@ private:
     int annotTreeHeight;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

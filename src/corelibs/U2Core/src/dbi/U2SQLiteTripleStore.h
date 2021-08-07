@@ -97,6 +97,6 @@ class TripleStoreL10N : public QObject {
     Q_OBJECT
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_QSLITE_TRIPLESTORE_
+#endif  // _U2_QSLITE_TRIPLESTORE_

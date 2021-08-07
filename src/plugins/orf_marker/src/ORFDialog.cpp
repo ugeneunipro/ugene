@@ -161,11 +161,11 @@ void ORFDialog::sl_translationChanged() {
 }
 
 void ORFDialog::connectGUI() {
-    //buttons
+    // buttons
     connect(pbClearList, SIGNAL(clicked()), SLOT(sl_onClearList()));
     connect(pbFindAll, SIGNAL(clicked()), SLOT(sl_onFindAll()));
 
-    //results list
+    // results list
     connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
 
     resultsTree->installEventFilter(this);
@@ -209,7 +209,7 @@ bool ORFDialog::eventFilter(QObject *obj, QEvent *ev) {
                 sl_onResultActivated(item, 0);
             }
         }
-        //TODO add advanced context menu (delete, sort, save etc)??
+        // TODO add advanced context menu (delete, sort, save etc)??
     }
     return false;
 }
@@ -244,7 +244,7 @@ U2Region ORFDialog::getCompleteSearchRegion(bool *ok) const {
     if (rs->isWholeSequenceSelected()) {
         return U2_REGION_MAX;
     } else {
-        //todo add check on wrong region
+        // todo add check on wrong region
         return rs->getRegion(ok);
     }
 }
@@ -296,7 +296,7 @@ void ORFDialog::importResults() {
     if (!newResults.empty()) {
         resultsTree->setSortingEnabled(false);
         foreach (const ORFFindResult &r, newResults) {
-            ORFListItem *item = nullptr;    //findItem(r, lbResult);
+            ORFListItem *item = nullptr;  // findItem(r, lbResult);
             if (item == nullptr) {
                 item = new ORFListItem(r);
                 resultsTree->addTopLevelItem(item);
@@ -400,7 +400,7 @@ void ORFDialog::getSettings(ORFAlgorithmSettings &s) {
     s.maxResult2Search = maxResultField->value();
     s.isResultsLimited = maxResult->isChecked();
 
-    //setup search region
+    // setup search region
     s.searchRegion = getCompleteSearchRegion(&isRegionOk);
 
     SAFE_POINT(ctx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
@@ -408,8 +408,7 @@ void ORFDialog::getSettings(ORFAlgorithmSettings &s) {
 }
 
 U2::ORFAlgorithmStrand ORFDialog::getAlgStrand() const {
-    return rbBoth->isChecked() ? ORFAlgorithmStrand_Both :
-                                 (rbDirect->isChecked() ? ORFAlgorithmStrand_Direct : ORFAlgorithmStrand_Complement);
+    return rbBoth->isChecked() ? ORFAlgorithmStrand_Both : (rbDirect->isChecked() ? ORFAlgorithmStrand_Direct : ORFAlgorithmStrand_Complement);
 }
 
 void ORFDialog::createAnnotationWidget() {
@@ -464,12 +463,12 @@ ORFListItem::ORFListItem(const ORFFindResult &r)
 
 bool ORFListItem::operator<(const QTreeWidgetItem &other) const {
     int sortCol = treeWidget()->sortColumn();
-    if (sortCol == 1) {    //compl/direct
+    if (sortCol == 1) {  // compl/direct
         return text(sortCol) < other.text(sortCol);
     }
 
     const ORFListItem &o = (const ORFListItem &)other;
-    if (sortCol == 0) {    //pos
+    if (sortCol == 0) {  // pos
         if (o.res.region.startPos == res.region.startPos) {
             if (o.res.region.endPos() == res.region.endPos()) {
                 return this > &other;
@@ -478,8 +477,8 @@ bool ORFListItem::operator<(const QTreeWidgetItem &other) const {
         }
         return o.res.region.startPos > res.region.startPos;
     }
-    assert(sortCol == 2);    //len
+    assert(sortCol == 2);  // len
     return res.region.length > o.res.region.length;
 }
 
-}    // namespace U2
+}  // namespace U2

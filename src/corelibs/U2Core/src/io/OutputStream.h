@@ -46,6 +46,6 @@ public:
     virtual void write(const char *buffer, int length, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_OUTPUTSTREAM_H_
+#endif  // _U2_OUTPUTSTREAM_H_

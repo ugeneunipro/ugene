@@ -49,6 +49,6 @@ public:
     static bool writeTextFile(const QString &path, const QString &content, const char *codecName = "UTF-8");
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -49,7 +49,7 @@ private:
 
 class DiPropertySitecon : public DiProperty {
 public:
-    //todo: default val;
+    // todo: default val;
 
     QMap<QString, QString> keys;
     float original[16];
@@ -65,6 +65,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

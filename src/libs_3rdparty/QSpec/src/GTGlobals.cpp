@@ -22,7 +22,7 @@
 #include <QtCore/QEventLoop>
 #include <QtTest/QSpontaneKeyEvent>
 #include <QtTest>
-#if (QT_VERSION < 0x050000)    //Qt 5
+#if (QT_VERSION < 0x050000)  // Qt 5
 #    include <QtGui/QApplication>
 #    include <QtGui/QDesktopWidget>
 #    include <QtGui/QPixmap>
@@ -49,7 +49,7 @@ void sysSleep(int sec) {
     sleep(sec);
 #endif
 }
-}    // namespace
+}  // namespace
 
 void GTGlobals::sleep(int msec) {
     if (msec > 0) {
@@ -81,4 +81,4 @@ void GTGlobals::GUITestFail() {
     qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
 }
 
-}    // namespace HI
+}  // namespace HI

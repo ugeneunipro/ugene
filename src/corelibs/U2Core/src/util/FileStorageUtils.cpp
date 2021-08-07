@@ -103,4 +103,4 @@ void FileStorageUtils::addSamToBamConvertInfo(const QString &samUrl, const QStri
     addFileToFileInfo(fToFInfo, process);
 }
 
-}    // namespace U2
+}  // namespace U2

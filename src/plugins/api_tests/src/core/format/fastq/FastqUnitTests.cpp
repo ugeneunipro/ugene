@@ -46,9 +46,9 @@ void FastqFormatTestData::init() {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     ioAdapter = iof->createIOAdapter();
     /*bool open = */ ioAdapter->open(tmpFile, IOAdapterMode_Append);
-    //CHECK_EQUAL(true, open, "ioAdapter is not opened");
+    // CHECK_EQUAL(true, open, "ioAdapter is not opened");
     format = qobject_cast<FastqFormat *>(AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTQ));
-    //CHECK_NOT_EQUAL(NULL, format, "Format is NULL");
+    // CHECK_NOT_EQUAL(NULL, format, "Format is NULL");
 }
 
 IMPLEMENT_TEST(FasqUnitTests, checkRawData) {
@@ -103,4 +103,4 @@ IMPLEMENT_TEST(FasqUnitTests, checkRawDataInvalidQualityHeaderStartWith) {
     CHECK_EQUAL(FormatDetection_NotMatched, res.score, "format is not matched");
 }
 
-}    // namespace U2
+}  // namespace U2

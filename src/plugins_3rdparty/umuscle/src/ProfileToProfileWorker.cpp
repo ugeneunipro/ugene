@@ -19,9 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include "ProfileToProfileWorker.h"
+
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -37,8 +39,6 @@
 
 #include "MuscleTask.h"
 
-#include "ProfileToProfileWorker.h"
-
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -53,9 +53,7 @@ static const QString SECOND_PROFILE_SLOT_ID("second-msa");
 /* Worker */
 /************************************************************************/
 ProfileToProfileWorker::ProfileToProfileWorker(Actor *a)
-: BaseWorker(a), inPort(nullptr), outPort(nullptr)
-{
-
+    : BaseWorker(a), inPort(nullptr), outPort(nullptr) {
 }
 
 void ProfileToProfileWorker::init() {
@@ -63,7 +61,7 @@ void ProfileToProfileWorker::init() {
     outPort = ports[BasePorts::OUT_MSA_PORT_ID()];
 }
 
-Task * ProfileToProfileWorker::tick() {
+Task *ProfileToProfileWorker::tick() {
     if (inPort->hasMessage()) {
         Message m = getMessageAndSetupScriptValues(inPort);
 
@@ -96,8 +94,8 @@ void ProfileToProfileWorker::cleanup() {
 }
 
 void ProfileToProfileWorker::sl_taskFinished() {
-    ProfileToProfileTask *t = dynamic_cast<ProfileToProfileTask*>(sender());
-    if ( t->isCanceled( ) ) {
+    ProfileToProfileTask *t = dynamic_cast<ProfileToProfileTask *>(sender());
+    if (t->isCanceled()) {
         return;
     }
     if (!t->isFinished() || t->hasError()) {
@@ -123,17 +121,14 @@ ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &mast
       masterMsa(masterMsa->getExplicitCopy()),
       secondMsa(secondMsa->getExplicitCopy()),
       seqIdx(0),
-      subtaskCount(0)
-{
-
+      subtaskCount(0) {
 }
 
 ProfileToProfileTask::~ProfileToProfileTask() {
-
 }
 
 void ProfileToProfileTask::prepare() {
-    int maxThreads = 1;//AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
+    int maxThreads = 1;  // AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     setMaxParallelSubtasks(maxThreads);
 
     foreach (const MultipleSequenceAlignmentRow &row, masterMsa->getMsaRows()) {
@@ -141,19 +136,19 @@ void ProfileToProfileTask::prepare() {
         CHECK_OP(stateInfo, );
     }
 
-    QList<Task*> tasks = createAlignTasks();
+    QList<Task *> tasks = createAlignTasks();
     foreach (Task *t, tasks) {
         addSubTask(t);
     }
 }
 
-QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> tasks;
+QList<Task *> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> tasks;
     if (subTask->hasError()) {
         return tasks;
     }
 
-    if(subTask->isCanceled()) {
+    if (subTask->isCanceled()) {
         return tasks;
     }
 
@@ -163,15 +158,15 @@ QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
     return tasks;
 }
 
-const MultipleSequenceAlignment & ProfileToProfileTask::getResult() {
+const MultipleSequenceAlignment &ProfileToProfileTask::getResult() {
     U2AlphabetUtils::assignAlphabet(result);
     return result;
 }
 
 void ProfileToProfileTask::appendResult(Task *task) {
     subtaskCount--;
-    MuscleTask *t = dynamic_cast<MuscleTask*>(task);
-    SAFE_POINT(nullptr != t, "NULL Muscle task!",);
+    MuscleTask *t = dynamic_cast<MuscleTask *>(task);
+    SAFE_POINT(nullptr != t, "NULL Muscle task!", );
 
     const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
     if (newRows.size() == masterMsa->getMsaRows().size() + 1) {
@@ -180,8 +175,8 @@ void ProfileToProfileTask::appendResult(Task *task) {
     }
 }
 
-QList<Task*> ProfileToProfileTask::createAlignTasks() {
-    QList<Task*> tasks;
+QList<Task *> ProfileToProfileTask::createAlignTasks() {
+    QList<Task *> tasks;
     while (canCreateTask()) {
         U2OpStatus2Log os;
         MuscleTaskSettings cfg;
@@ -199,22 +194,21 @@ QList<Task*> ProfileToProfileTask::createAlignTasks() {
 }
 
 bool ProfileToProfileTask::canCreateTask() const {
-    return (seqIdx < secondMsa->getMsaRows().size())
-        && (subtaskCount < getMaxParallelSubtasks());
+    return (seqIdx < secondMsa->getMsaRows().size()) && (subtaskCount < getMaxParallelSubtasks());
 }
 
 /************************************************************************/
 /* Factory */
 /************************************************************************/
 void ProfileToProfileWorkerFactory::init() {
-    QList<PortDescriptor*> portDescs;
+    QList<PortDescriptor *> portDescs;
     {
         Descriptor masterProfileD(MASTER_PROFILE_SLOT_ID,
-            ProfileToProfileWorker::tr("Master profile"),
-            ProfileToProfileWorker::tr("The main alignment which will be aligned on."));
+                                  ProfileToProfileWorker::tr("Master profile"),
+                                  ProfileToProfileWorker::tr("The main alignment which will be aligned on."));
         Descriptor secondProfileD(SECOND_PROFILE_SLOT_ID,
-            ProfileToProfileWorker::tr("Second profile"),
-            ProfileToProfileWorker::tr("Alignment which will be aligned to the master alignment."));
+                                  ProfileToProfileWorker::tr("Second profile"),
+                                  ProfileToProfileWorker::tr("Alignment which will be aligned to the master alignment."));
 
         QMap<Descriptor, DataTypePtr> inMap;
         inMap[masterProfileD] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
@@ -227,11 +221,11 @@ void ProfileToProfileWorkerFactory::init() {
     }
 
     Descriptor protoD(ACTOR_ID,
-        ProfileToProfileWorker::tr("Align Profile to Profile With MUSCLE"),
-        ProfileToProfileWorker::tr("Aligns second profile to master profile with MUSCLE aligner."));
+                      ProfileToProfileWorker::tr("Align Profile to Profile With MUSCLE"),
+                      ProfileToProfileWorker::tr("Aligns second profile to master profile with MUSCLE aligner."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoD, portDescs, QList<Attribute*>());
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
+    ActorPrototype *proto = new IntegralBusActorPrototype(protoD, portDescs, QList<Attribute *>());
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
     proto->setPrompter(new ProfileToProfilePrompter());
     proto->setIconPath(":umuscle/images/muscle_16.png");
 
@@ -240,7 +234,7 @@ void ProfileToProfileWorkerFactory::init() {
     localDomain->registerEntry(new ProfileToProfileWorkerFactory());
 }
 
-Worker * ProfileToProfileWorkerFactory::createWorker(Actor *a) {
+Worker *ProfileToProfileWorkerFactory::createWorker(Actor *a) {
     return new ProfileToProfileWorker(a);
 }
 
@@ -251,5 +245,5 @@ QString ProfileToProfilePrompter::composeRichDoc() {
     return "Aligns second profile to master profile with MUSCLE aligner.";
 }
 
-} // LocalWorkflow
-} // U2
+}  // namespace LocalWorkflow
+}  // namespace U2

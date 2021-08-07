@@ -233,7 +233,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void ConvertFilesFormatWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -295,7 +295,7 @@ QString getFormatId(const FormatDetectionResult &r) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 QString ConvertFilesFormatWorker::takeUrl() {
     const Message inputMessage = getMessageAndSetupScriptValues(inputUrlPort);
@@ -339,5 +339,5 @@ Task *ConvertFilesFormatWorker::getConvertTask(const QString &detectedFormat, co
     return f->getTask(url, detectedFormat, targetFormat, workingDir);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

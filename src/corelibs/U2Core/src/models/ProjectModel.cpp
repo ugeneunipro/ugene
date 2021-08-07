@@ -41,4 +41,4 @@ void Project::fromScriptValue(const QScriptValue &object, Project *&out) {
     out = qobject_cast<Project *>(object.toQObject());
 }
 
-}    // namespace U2
+}  // namespace U2

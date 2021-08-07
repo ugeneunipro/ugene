@@ -63,7 +63,7 @@ const QByteArray SAMFormat::TAG_SEQUENCE_MD5_SUM = "M5";
 const QByteArray SAMFormat::TAG_SEQUENCE_URI = "UR";
 const QByteArray SAMFormat::TAG_SEQUENCE_SPECIES = "SP";
 
-const SAMFormat::Field SAMFormat::samFields[] = {    //alignment section fields excluding optional tags
+const SAMFormat::Field SAMFormat::samFields[] = {  // alignment section fields excluding optional tags
     Field("QNAME", "[ !-?A-~]+"),
     Field("FLAG", "[0-9]+"),
     Field("RNAME", "\\*|[!-()+-<>-~][ !-~]*"),
@@ -101,7 +101,7 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray &rawData, const G
         return FormatDetection_NotMatched;
     }
     QRegExp rx("^@[A-Za-z][A-Za-z](\\t[A-Za-z][A-Za-z]:[ -~]+)");
-    //try to find SAM header
+    // try to find SAM header
     if (rx.indexIn(rawData) != 0) {
         // if no header try to parse first alignment line
         QList<QByteArray> fieldValues = rawData.split('\n')[0].split(SPACE);
@@ -119,76 +119,76 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray &rawData, const G
     return FormatDetection_Matched;
 }
 
-//static void prepareRead(const QByteArray& core, const QByteArray& quality, QByteArray& seq, QByteArray& qual, QByteArray& cigar) {
-//    bool gap = true;
-//    int lastCigarPos = 0;
+// static void prepareRead(const QByteArray& core, const QByteArray& quality, QByteArray& seq, QByteArray& qual, QByteArray& cigar) {
+//     bool gap = true;
+//     int lastCigarPos = 0;
 //
-//    QList<U2CigarToken> cigarTokens;
+//     QList<U2CigarToken> cigarTokens;
 //
-//    for(int i = 0, coreLen = core.length(); i < coreLen; i++) {
-//        char c = core[i];
-//        if(c == MultipleAlignment::GapChar) {
-//            if(!gap) {
-//                if(i != lastCigarPos) {
-//                    cigarTokens.append(U2CigarToken(U2CigarOp_M, i - lastCigarPos));
-//                }
-//                gap = true;
-//                lastCigarPos = i;
-//            }
-//        } else {
-//            seq.push_back(c);
-//            if(!quality.isEmpty()) {
-//                qual.push_back(DNAQuality::encode(quality[i], DNAQualityType_Sanger));
-//            }
-//            if(gap) {
-//                if(i != lastCigarPos) {
-//                    cigarTokens.append(U2CigarToken(U2CigarOp_N, i - lastCigarPos));
-//                }
-//                gap = false;
-//                lastCigarPos = i;
-//            }
-//        }
-//    }
-//    if(lastCigarPos != core.length() - 1) {
-//        cigarTokens.append(U2CigarToken(gap ? U2CigarOp_N : U2CigarOp_M, core.length() - 1 - lastCigarPos));
-//    }
-//    if(cigarTokens.isEmpty()) {
-//        cigar = QByteArray("*");
-//    } else {
-//        foreach(U2CigarToken token, cigarTokens) {
-//            assert(token.count != 0);
-//            cigar.append(QString::number(token.count));
-//            switch(token.op) {
-//                case U2CigarOp_M: cigar.append("M"); break;
-//                case U2CigarOp_N: cigar.append("N"); break;
-//                default:;
-//            }
-//        }
-//    }
-//}
+//     for(int i = 0, coreLen = core.length(); i < coreLen; i++) {
+//         char c = core[i];
+//         if(c == MultipleAlignment::GapChar) {
+//             if(!gap) {
+//                 if(i != lastCigarPos) {
+//                     cigarTokens.append(U2CigarToken(U2CigarOp_M, i - lastCigarPos));
+//                 }
+//                 gap = true;
+//                 lastCigarPos = i;
+//             }
+//         } else {
+//             seq.push_back(c);
+//             if(!quality.isEmpty()) {
+//                 qual.push_back(DNAQuality::encode(quality[i], DNAQualityType_Sanger));
+//             }
+//             if(gap) {
+//                 if(i != lastCigarPos) {
+//                     cigarTokens.append(U2CigarToken(U2CigarOp_N, i - lastCigarPos));
+//                 }
+//                 gap = false;
+//                 lastCigarPos = i;
+//             }
+//         }
+//     }
+//     if(lastCigarPos != core.length() - 1) {
+//         cigarTokens.append(U2CigarToken(gap ? U2CigarOp_N : U2CigarOp_M, core.length() - 1 - lastCigarPos));
+//     }
+//     if(cigarTokens.isEmpty()) {
+//         cigar = QByteArray("*");
+//     } else {
+//         foreach(U2CigarToken token, cigarTokens) {
+//             assert(token.count != 0);
+//             cigar.append(QString::number(token.count));
+//             switch(token.op) {
+//                 case U2CigarOp_M: cigar.append("M"); break;
+//                 case U2CigarOp_N: cigar.append("N"); break;
+//                 default:;
+//             }
+//         }
+//     }
+// }
 
 Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* dbiRef */, const QVariantMap & /* _fs */, U2OpStatus & /* os */) {
     FAIL("Not implemented", nullptr);
 
-    //CHECK_EXT(io != NULL   && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    // CHECK_EXT(io != NULL   && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     //
-    //QList<GObject*> objects;
-    //QVariantMap fs = _fs;
+    // QList<GObject*> objects;
+    // QVariantMap fs = _fs;
 
-    //QString lockReason;
+    // QString lockReason;
 
-    //QMap<QString, MultipleSequenceAlignment> maMap; //file may contain multiple MA objects
-    //MultipleSequenceAlignment defaultMA("Alignment " + io->getURL().baseFileName());
+    // QMap<QString, MultipleSequenceAlignment> maMap; //file may contain multiple MA objects
+    // MultipleSequenceAlignment defaultMA("Alignment " + io->getURL().baseFileName());
 
-    //QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    //char* buff  = readBuffer.data();
-    //bool lineOk = false;
+    // QByteArray readBuffer(READ_BUFF_SIZE, '\0');
+    // char* buff  = readBuffer.data();
+    // bool lineOk = false;
 
-    //QByteArray fields[11];
+    // QByteArray fields[11];
 
-    //int len = 0;
-    //while(!os.isCoR() && (len = io->readLine(buff, READ_BUFF_SIZE, &lineOk)) > 0) {
-    //    QByteArray line = QByteArray( buff, len );
+    // int len = 0;
+    // while(!os.isCoR() && (len = io->readLine(buff, READ_BUFF_SIZE, &lineOk)) > 0) {
+    //     QByteArray line = QByteArray( buff, len );
 
     //    if(line.startsWith(SAM_SECTION_START)) { //Parse sections
 
@@ -305,23 +305,23 @@ Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* 
     //    os.setProgress(io->getProgress());
     //}
 
-    //foreach(MultipleSequenceAlignment ma, maMap.values()) {
-    //    U2AlphabetUtils::assignAlphabet(ma);
-    //    CHECK_EXT(ma.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
-    //    objects.append(new MultipleSequenceAlignmentObject(ma));
-    //}
+    // foreach(MultipleSequenceAlignment ma, maMap.values()) {
+    //     U2AlphabetUtils::assignAlphabet(ma);
+    //     CHECK_EXT(ma.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
+    //     objects.append(new MultipleSequenceAlignmentObject(ma));
+    // }
 
-    //if (defaultMA.getRows().count() != 0) {
-    //    U2AlphabetUtils::assignAlphabet(defaultMA);
-    //    CHECK_EXT(defaultMA.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
-    //    objects.append(new MultipleSequenceAlignmentObject(defaultMA));
-    //}
+    // if (defaultMA.getRows().count() != 0) {
+    //     U2AlphabetUtils::assignAlphabet(defaultMA);
+    //     CHECK_EXT(defaultMA.getAlphabet() != NULL, os.setError( SAMFormat::tr("Alphabet is unknown")), NULL);
+    //     objects.append(new MultipleSequenceAlignmentObject(defaultMA));
+    // }
 
-    //CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    // CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
     //
-    //DocumentFormatUtils::updateFormatHints(objects, fs);
-    //Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
-    //return doc;
+    // DocumentFormatUtils::updateFormatHints(objects, fs);
+    // Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
+    // return doc;
 }
 
 void SAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
@@ -341,54 +341,54 @@ void SAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 
 void SAMFormat::storeEntry(IOAdapter * /* io */, const QMap<GObjectType, QList<GObject *>> & /* objectsMap */, U2OpStatus & /*os*/) {
     FAIL("Not implemented", );
-    //SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
-    //const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
-    //SAFE_POINT(als.size() > 0, "Clustal entry storing: alignment objects count error", );
+    // SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
+    // const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
+    // SAFE_POINT(als.size() > 0, "Clustal entry storing: alignment objects count error", );
 
-    //QList<const MultipleSequenceAlignmentObject*> maList;
-    //foreach(GObject *obj, als) {
-    //    const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
-    //    assert(maObj != NULL);
-    //    maList.append(maObj);
-    //}
+    // QList<const MultipleSequenceAlignmentObject*> maList;
+    // foreach(GObject *obj, als) {
+    //     const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    //     assert(maObj != NULL);
+    //     maList.append(maObj);
+    // }
 
-    //QByteArray tab = "\t";
-    //QByteArray block;
+    // QByteArray tab = "\t";
+    // QByteArray block;
 
     ////Writing header
-    //block.append(SECTION_HEADER).append("\t").append("VN:").append(VERSION).append("\n");
-    //if (io->writeBlock( block ) != block.length()) {
-    //    throw 0;
-    //}
+    // block.append(SECTION_HEADER).append("\t").append("VN:").append(VERSION).append("\n");
+    // if (io->writeBlock( block ) != block.length()) {
+    //     throw 0;
+    // }
 
     ////Writing sequence section
-    //foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
-    //    const MultipleSequenceAlignment &ma = maObj->getMAlignment();
-    //    block.clear();
-    //    block.append(SECTION_SEQUENCE).append(tab).append(TAG_SEQUENCE_NAME).append(":").append(ma.getName().replace(QRegExp("\\s|\\t"), "_"))
-    //        .append(tab).append(TAG_SEQUENCE_LENGTH).append(":").append(QByteArray::number(ma.getLength())).append("\n");
-    //    if (io->writeBlock( block ) != block.length()) {
-    //        throw 0;
-    //    }
-    //}
+    // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
+    //     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
+    //     block.clear();
+    //     block.append(SECTION_SEQUENCE).append(tab).append(TAG_SEQUENCE_NAME).append(":").append(ma.getName().replace(QRegExp("\\s|\\t"), "_"))
+    //         .append(tab).append(TAG_SEQUENCE_LENGTH).append(":").append(QByteArray::number(ma.getLength())).append("\n");
+    //     if (io->writeBlock( block ) != block.length()) {
+    //         throw 0;
+    //     }
+    // }
 
     ////Writing alignment section
-    //foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
-    //    const MultipleSequenceAlignment &ma = maObj->getMAlignment();
-    //    QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
-    //    foreach(MultipleSequenceAlignmentRow row, ma.getRows()) {
-    //        block.clear();
-    //        //const QByteArray &core = row.getCore();
-    //        QByteArray qname = QString(row.getName()).replace(QRegExp("\\s|\\t"), "_").toLatin1();
-    //        QByteArray flag("0"); // can contains strand, mapped/unmapped, etc.
-    //        QByteArray pos = QByteArray::number(row.getCoreStart()+1);
-    //        QByteArray mapq("255"); //255 indicating the mapping quality is not available
-    //        QByteArray mrnm("*");
-    //        QByteArray mpos("0");
-    //        QByteArray isize("0");
-    //        QByteArray seq;
-    //        QByteArray qual;
-    //        QByteArray cigar;
+    // foreach(const MultipleSequenceAlignmentObject* maObj, maList) {
+    //     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
+    //     QByteArray rname(ma.getName().replace(QRegExp("\\s|\\t"), "_").toLatin1());
+    //     foreach(MultipleSequenceAlignmentRow row, ma.getRows()) {
+    //         block.clear();
+    //         //const QByteArray &core = row.getCore();
+    //         QByteArray qname = QString(row.getName()).replace(QRegExp("\\s|\\t"), "_").toLatin1();
+    //         QByteArray flag("0"); // can contains strand, mapped/unmapped, etc.
+    //         QByteArray pos = QByteArray::number(row.getCoreStart()+1);
+    //         QByteArray mapq("255"); //255 indicating the mapping quality is not available
+    //         QByteArray mrnm("*");
+    //         QByteArray mpos("0");
+    //         QByteArray isize("0");
+    //         QByteArray seq;
+    //         QByteArray qual;
+    //         QByteArray cigar;
 
     //        prepareRead(row.getCore(), row.getCoreQuality().qualCodes, seq, qual, cigar);
     //        if (row.hasQuality()) {
@@ -442,8 +442,8 @@ bool SAMFormat::storeHeader(IOAdapter *io, const QVector<QByteArray> &names, con
 
 bool SAMFormat::storeAlignedRead(int offset, const DNASequence &read, IOAdapter *io, const QByteArray &refName, int refLength, bool first, bool useCigar, const QByteArray &cigar) {
     static const QByteArray TAB = "\t";
-    static const QByteArray flag("0");    // can contains strand, mapped/unmapped, etc.
-    static const QByteArray mapq("255");    //255 indicating the mapping quality is not available
+    static const QByteArray flag("0");  // can contains strand, mapped/unmapped, etc.
+    static const QByteArray mapq("255");  // 255 indicating the mapping quality is not available
     static const QByteArray mrnm("*");
     static const QByteArray mpos("0");
     static const QByteArray isize("0");
@@ -502,4 +502,4 @@ bool SAMFormat::storeAlignedRead(int offset, const DNASequence &read, IOAdapter 
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

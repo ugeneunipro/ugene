@@ -110,5 +110,5 @@ void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd, Extern
     }
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

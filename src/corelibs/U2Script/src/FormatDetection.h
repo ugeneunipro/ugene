@@ -66,4 +66,4 @@ U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t *pathToFile,
 }
 #endif
 
-#endif    // _FORMAT_DETECTION_H_
+#endif  // _FORMAT_DETECTION_H_

@@ -34,6 +34,6 @@ public:
     static void crop(DNAChromatogram &chromatogram, int startPos, int length);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_CHROMATOGRAM_UTILS_H_
+#endif  // _U2_DNA_CHROMATOGRAM_UTILS_H_

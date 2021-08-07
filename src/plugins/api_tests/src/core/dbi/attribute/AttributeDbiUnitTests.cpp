@@ -176,7 +176,7 @@ void AttributeTestData::testAttributesMatch(QList<U2IntegerAttribute> &expectedI
             U2StringAttribute attr = getAttributeDbi()->getStringAttribute(attrId, os);
             SAFE_POINT_OP(os, );
             SAFE_POINT(removeOne(expectedString, attr, compareAttributes<U2StringAttribute>), "String attribute is not removed", );
-        } else {    // AttributeByteArray
+        } else {  // AttributeByteArray
             U2ByteArrayAttribute attr = getAttributeDbi()->getByteArrayAttribute(attrId, os);
             SAFE_POINT_OP(os, );
             SAFE_POINT(removeOne(expectedArray, attr, compareAttributes<U2ByteArrayAttribute>), "ByteArray attribute is not removed", );
@@ -446,4 +446,4 @@ void AttributeDbiUnitTests_ByteArrayAttribute::Test() {
     CHECK_TRUE(compareAttributes(actual, attr), "incorrect byte array attribute");
 }
 
-}    // namespace U2
+}  // namespace U2

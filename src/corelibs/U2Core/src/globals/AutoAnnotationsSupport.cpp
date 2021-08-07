@@ -318,4 +318,4 @@ void AutoAnnotationsUpdateTask::sl_onSequenceDeleted() {
     }
 }
 
-}    //namespace U2
+}  // namespace U2

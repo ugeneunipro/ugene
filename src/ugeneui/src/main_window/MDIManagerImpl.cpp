@@ -57,7 +57,7 @@ void MWMDIManagerImpl::prepareGUI() {
     windowMapper = new QSignalMapper(this);
     connect(windowMapper, SIGNAL(mapped(QWidget *)), this, SLOT(sl_setActiveSubWindow(QWidget *)));
 
-    //prepare Window menu
+    // prepare Window menu
     closeAct = new QAction(tr("Close active view"), this);
     closeAct->setObjectName("Close active view");
     closeAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
@@ -147,7 +147,7 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
         if (item != nullptr) {
             uiLog.trace(QString("Processing close window request for '%1'").arg(getWindowName(item)));
 
-            //check if user really wants to close the window, ignore event if not
+            // check if user really wants to close the window, ignore event if not
             if (!onCloseEvent(item->w)) {
                 uiLog.trace(QString("Ignoring close window request for '%1'").arg(getWindowName(item)));
                 event->ignore();
@@ -157,7 +157,7 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
             // here we sure that window will be closed
             emit si_windowClosing(item->w);
 
-            if (item == mdiContentOwner) {    // if 'current' window is closed -> clear MDI
+            if (item == mdiContentOwner) {  // if 'current' window is closed -> clear MDI
                 clearMDIContent(true);
             }
             items.removeAll(item);
@@ -192,7 +192,7 @@ void MWMDIManagerImpl::updateActions() {
 
 void MWMDIManagerImpl::sl_updateWindowMenu() {
     QMenu *windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
-    windowMenu->clear();    //TODO: avoid cleaning 3rd party actions
+    windowMenu->clear();  // TODO: avoid cleaning 3rd party actions
     windowMenu->addMenu(windowLayout);
     windowLayout->addAction(multipleDocsAct);
     windowLayout->addAction(tabbedDocsAct);
@@ -239,7 +239,7 @@ MDIItem *MWMDIManagerImpl::getCurrentMDIItem() const {
 void MWMDIManagerImpl::addMDIWindow(MWMDIWindow *w) {
     bool contains = getWindowById(w->getId()) != nullptr;
     if (contains) {
-        assert(0);    //must never happen
+        assert(0);  // must never happen
         return;
     }
     w->setParent(mdiArea);
@@ -250,7 +250,7 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow *w) {
         icon = QIcon(":/ugene/images/ugene_16.png");
     }
     qw->setWindowIcon(icon);
-    //qw->setAttribute(Qt::WA_NativeWindow);
+    // qw->setAttribute(Qt::WA_NativeWindow);
     MDIItem *i = new MDIItem(w, qw);
     items.append(i);
     qw->installEventFilter(this);
@@ -334,14 +334,14 @@ void MWMDIManagerImpl::sl_setActiveSubWindow(QWidget *w) {
 }
 
 void MWMDIManagerImpl::clearMDIContent(bool addCloseAction) {
-    //clear toolbar
+    // clear toolbar
     mdiContentOwner = nullptr;
 
     QToolBar *tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
     QMenu *m = mw->getTopLevelMenu(MWMENU_ACTIONS);
 
-    //delete submenus inserted to toolbar and menu
-    //todo: provide a flag to enable/disable this behavior for MDI window
+    // delete submenus inserted to toolbar and menu
+    // todo: provide a flag to enable/disable this behavior for MDI window
     QList<QAction *> allMDIActions = tb->actions() + m->actions();
     QSet<QMenu *> toDel;
     foreach (QAction *ma, allMDIActions) {
@@ -372,26 +372,26 @@ void MWMDIManagerImpl::onWindowsSwitched(QMdiSubWindow *deactivated, MWMDIWindow
 }
 
 void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
-    //Details: sub-window is activated and deactivated
-    // 1) every time user switches MDI windows
-    // 2) every time user switches applications
-    // Here we update mdi content only for 1 case and trying to avoid 2 case
+    // Details: sub-window is activated and deactivated
+    //  1) every time user switches MDI windows
+    //  2) every time user switches applications
+    //  Here we update mdi content only for 1 case and trying to avoid 2 case
 
     QMdiSubWindow *currentWindow = mdiArea->currentSubWindow();
-    if (w == nullptr && currentWindow != nullptr) {    //simple deactivation, current window is not changed
+    if (w == nullptr && currentWindow != nullptr) {  // simple deactivation, current window is not changed
         uiLog.trace(QString("Window deactivation, no MDI context switch, window: '%1'").arg(getWindowName(mdiContentOwner)));
         assert(getMDIItem(currentWindow) == mdiContentOwner);
         emit si_windowActivated(nullptr);
         return;
     }
-    if (mdiContentOwner != nullptr && mdiContentOwner->qw == w) {    // simple activation, current window is not changed
+    if (mdiContentOwner != nullptr && mdiContentOwner->qw == w) {  // simple activation, current window is not changed
         uiLog.trace(QString("Window activation, no MDI context switch, window: '%1'").arg(getWindowName(mdiContentOwner)));
         emit si_windowActivated(mdiContentOwner->w);
         return;
     }
-    if (w == nullptr) {    // currentWindow is NULL here, mdiContentOwner & it's content cleaned in eventFilter(CloseEvent)
+    if (w == nullptr) {  // currentWindow is NULL here, mdiContentOwner & it's content cleaned in eventFilter(CloseEvent)
         uiLog.trace(QString("Closing active window"));
-        clearMDIContent(true);    //UGENE-4987 workaround. It must be 'false' here
+        clearMDIContent(true);  // UGENE-4987 workaround. It must be 'false' here
         emit si_windowActivated(nullptr);
         return;
     }
@@ -458,4 +458,4 @@ void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
     sl_updateWindowLayout();
 }
 
-}    // namespace U2
+}  // namespace U2

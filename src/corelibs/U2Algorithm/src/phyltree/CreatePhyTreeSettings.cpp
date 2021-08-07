@@ -40,4 +40,4 @@ CreatePhyTreeSettings::CreatePhyTreeSettings()
       mrBayesSettingsScript("") {
 }
 
-}    // namespace U2
+}  // namespace U2

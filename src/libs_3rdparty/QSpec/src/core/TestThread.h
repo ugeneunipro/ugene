@@ -22,6 +22,6 @@ private:
     GUITestOpStatus os;
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // TESTTHREAD_H
+#endif  // TESTTHREAD_H

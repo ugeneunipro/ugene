@@ -175,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
             colors << image1.pixel(i, j);
         }
     }
-    bool isPicture = colors.size() > 100;    // Usually 875 colors are drawn for 1CF7.pdb
+    bool isPicture = colors.size() > 100;  // Usually 875 colors are drawn for 1CF7.pdb
 
     auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
     bool isError = errorLbl.size() > 0;
@@ -439,7 +439,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    //1. Open file _common_data/fasta/reads.fa as separate sequences.
+    // 1. Open file _common_data/fasta/reads.fa as separate sequences.
     QString filePath = testDir + "_common_data/fasta/reads.fa";
     QString fileName = "reads.fa";
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
@@ -453,12 +453,12 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
         GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
-    //2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
-    //3. Check the "Save both strands" radiobutton
-    //4. Check the "Translate to amino" checkbox
-    //5. Push Export button in the dialog.
-    //6. Repeat steps 2-5 8 times
-    //Expected state: UGENE is not crash
+    // 2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
+    // 3. Check the "Save both strands" radiobutton
+    // 4. Check the "Translate to amino" checkbox
+    // 5. Push Export button in the dialog.
+    // 6. Repeat steps 2-5 8 times
+    // Expected state: UGENE is not crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7212) {
@@ -641,7 +641,7 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
 }
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA
 
 GUI_TEST_CLASS_DEFINITION(test_7367) {
     // Generate a large sequence.
@@ -685,7 +685,7 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
     qint64 percentG = g * 100 / sequence.length();
     qint64 percentT = t * 100 / sequence.length();
 
-    int diff = 2;    // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
+    int diff = 2;  // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
     CHECK_SET_ERR(percentA >= model.percentA - diff && percentA <= model.percentA + diff, "Invalid percent of A: " + QString::number(percentA));
     CHECK_SET_ERR(percentC >= model.percentC - diff && percentC <= model.percentC + diff, "Invalid percent of C: " + QString::number(percentC));
     CHECK_SET_ERR(percentG >= model.percentG - diff && percentG <= model.percentG + diff, "Invalid percent of G: " + QString::number(percentG));
@@ -723,6 +723,6 @@ GUI_TEST_CLASS_DEFINITION(test_7371) {
     CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (restored)");
 }
 
-}    // namespace GUITest_regression_scenarios
+}  // namespace GUITest_regression_scenarios
 
-}    // namespace U2
+}  // namespace U2

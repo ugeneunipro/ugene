@@ -288,8 +288,8 @@ void SiteconSearchWorker::sl_taskFinished(Task *t) {
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
     output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
 
-    algoLog.info(tr("Found %1 TFBS").arg(res.size()));    //TODO set task description for report
+    algoLog.info(tr("Found %1 TFBS").arg(res.size()));  // TODO set task description for report
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

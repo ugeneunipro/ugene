@@ -89,6 +89,6 @@ public:
     QByteArray value;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

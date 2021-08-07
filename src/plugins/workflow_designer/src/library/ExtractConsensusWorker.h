@@ -92,7 +92,7 @@ protected:
     QString composeRichDoc();
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_EXTRACTCONSENSUSWORKER_H_
+#endif  // _U2_EXTRACTCONSENSUSWORKER_H_

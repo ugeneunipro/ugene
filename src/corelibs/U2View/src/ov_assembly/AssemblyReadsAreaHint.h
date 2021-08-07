@@ -48,8 +48,8 @@ protected:
 
     QLabel *label;
 
-};    // AssemblyReadsAreaHint
+};  // AssemblyReadsAreaHint
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // __U2_ASSEMBLY_READS_AREA_HINT_H__
+#endif  // __U2_ASSEMBLY_READS_AREA_HINT_H__

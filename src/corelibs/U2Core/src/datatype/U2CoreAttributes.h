@@ -36,27 +36,27 @@ public:
     This attribute can be artificial and derived directly from structure values
     If structure length is updated, system is responsible to update the attribute too
     */
-    static const QString length;    //          = "length";
+    static const QString length;  //          = "length";
 
     /**
     Reserved to represent alphabet: sequence or alignment
     This attribute can be artificial and derived directly from structure values
     If structure alphabet is updated, system is responsible to update the attribute too
     */
-    static const QString alphabet;    //        = "alphabet";
+    static const QString alphabet;  //        = "alphabet";
 
     /**
     Reserved to represent GC-content: sequence or alignment
     This attribute can be artificial and derived directly from structure values
     If structure gc-content is updated, system is responsible to update the attribute too
     */
-    static const QString gc_content;    //      = "GC-content";
+    static const QString gc_content;  //      = "GC-content";
 
     /** Structure modification date */
-    static const QString update_time;    //     = "update-time";
+    static const QString update_time;  //     = "update-time";
 
     /** Structure creation date */
-    static const QString create_date;    //    = "creation-time";
+    static const QString create_date;  //    = "creation-time";
 
     /************************************************************************/
     /* Assembly attributes */
@@ -85,6 +85,6 @@ public:
     static const QStringList getReadsRelatedAttributes();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

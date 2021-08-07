@@ -123,11 +123,11 @@ private:
     AppResource *resourceTracker;
     QMap<QString, qint64> resourceUsage;
 
-    //Every implementation of Project Parser must be added as friend, to get access to addState
+    // Every implementation of Project Parser must be added as friend, to get access to addState
     friend class ProjectParser00;
     friend class ProjectParser10;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

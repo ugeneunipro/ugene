@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "TreeViewer.h"
 
@@ -442,7 +442,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer *treeViewer)
 
     buttonPopup = new QMenu(this);
 
-    //chrootAction->setEnabled(false); //not implemented yet
+    // chrootAction->setEnabled(false); //not implemented yet
 
     buttonPopup->addAction(zoomToAction);
     buttonPopup->addAction(zoomOutAction);
@@ -493,7 +493,7 @@ void TreeViewerUI::setOptionValue(TreeViewOption option, QVariant value) {
     }
 }
 
-void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
+void TreeViewerUI::setTreeLayout(const TreeLayout &newLayout) {
     switch (newLayout) {
         case RECTANGULAR_LAYOUT:
             curTreeViewer->getRectangularLayoutAction()->setChecked(true);
@@ -982,7 +982,7 @@ void TreeViewerUI::mousePressEvent(QMouseEvent *e) {
     }
 
     if (leftButton && !shiftPressed) {
-        root->setSelectedRecurs(false, true);    // clear selection
+        root->setSelectedRecurs(false, true);  // clear selection
     }
 
     if (e->button() == Qt::RightButton) {
@@ -1173,7 +1173,7 @@ void TreeViewerUI::sl_exportTriggered() {
     paint(painter);
     painter.end();
 
-    qbuffer.seek(0);    // move pointer to the buffer's start
+    qbuffer.seek(0);  // move pointer to the buffer's start
     QString svgText(qbuffer.readAll());
 
     if (svgText.isEmpty()) {
@@ -1208,7 +1208,7 @@ void TreeViewerUI::changeLabelsAlignment() {
             fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
             break;
         case RECTANGULAR_LAYOUT:
-            //Do nothing
+            // Do nothing
             show();
             break;
     }
@@ -1227,7 +1227,7 @@ void TreeViewerUI::sl_unrootedLayoutTriggered() {
 }
 
 void TreeViewerUI::changeLayout(TreeLayout newLayout) {
-    root->setSelectedRecurs(false, true);    // clear selection
+    root->setSelectedRecurs(false, true);  // clear selection
     setOptionValue(TREE_LAYOUT, newLayout);
 
     switch (newLayout) {
@@ -1575,7 +1575,7 @@ void TreeViewerUI::updateLayout() {
             changeLayout(UNROOTED_LAYOUT);
             break;
         case RECTANGULAR_LAYOUT:
-            //here to please compiler
+            // here to please compiler
             break;
     }
 }
@@ -1645,4 +1645,4 @@ GraphicsBranchItem *TreeViewerUI::getRoot() const {
     return root;
 }
 
-}    // namespace U2
+}  // namespace U2

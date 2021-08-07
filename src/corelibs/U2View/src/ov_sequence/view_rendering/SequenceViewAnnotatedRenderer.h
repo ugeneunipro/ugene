@@ -138,6 +138,6 @@ protected:
     static const int MAX_VIRTUAL_RANGE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_VIEW_ANNOTATED_RENDERER_H_
+#endif  // _U2_SEQUENCE_VIEW_ANNOTATED_RENDERER_H_

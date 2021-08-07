@@ -78,4 +78,4 @@ PWMConversionAlgorithmMCH::PWMConversionAlgorithmMCH(PWMConversionAlgorithmFacto
     : PWMConversionAlgorithm(factory, p) {
 }
 
-}    // namespace U2
+}  // namespace U2

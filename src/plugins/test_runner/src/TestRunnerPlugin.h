@@ -98,6 +98,6 @@ private:
 {
     virtual void setup(QScriptEngine *engine) const;
 };*/
-}    // namespace U2
+}  // namespace U2
 
 #endif

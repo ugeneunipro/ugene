@@ -48,6 +48,6 @@ private slots:
     void sl_valueChanged(const QVariant &newValue);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ELEMENTSELECTORCONTROLLER_H_
+#endif  // _U2_ELEMENTSELECTORCONTROLLER_H_

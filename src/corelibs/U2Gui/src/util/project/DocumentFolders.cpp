@@ -112,7 +112,7 @@ Folder *DocumentFolders::getFolder(const QString &path) const {
 void DocumentFolders::addFolder(const QString &path) {
     SAFE_POINT(!hasFolder(path), "The folder already exists", );
 
-    if (!ProjectUtils::isFolderInRecycleBinSubtree(path)) {    // add all folders from @path if they don't exist
+    if (!ProjectUtils::isFolderInRecycleBinSubtree(path)) {  // add all folders from @path if they don't exist
         const QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
         QString fullPath;
         foreach (const QString &folder, pathList) {
@@ -125,7 +125,7 @@ void DocumentFolders::addFolder(const QString &path) {
             // There is a new folder in the model -> update caches
             onFolderAdded(fullPath);
         }
-    } else {    // if some folder is being removed to Recycle Bin, then all its parent folders do not have to be created,
+    } else {  // if some folder is being removed to Recycle Bin, then all its parent folders do not have to be created,
         // since actual parent folders exist and they can produce name conflicts if they are removed.
         foldersMap[path] = new Folder(doc, path);
         onFolderAdded(path);
@@ -190,7 +190,7 @@ void DocumentFolders::removeFolder(const QString &path) {
         // update caches
         onFolderRemoved(folder);
 
-        delete foldersMap[folderPath];    // now @folder is bad pointer
+        delete foldersMap[folderPath];  // now @folder is bad pointer
         foldersMap.remove(folderPath);
         removeFolderFromStorage(folderPath);
     }
@@ -359,7 +359,7 @@ void insertObjectToSortedList(QList<GObject *> &list, GObject *obj) {
     list.insert(insertPos, obj);
 }
 
-}    // namespace
+}  // namespace
 
 void FolderObjectTreeStorage::addObject(GObject *obj, const QString &path) {
     objectsIds[obj->getEntityRef().entityId] = obj;
@@ -504,4 +504,4 @@ int FolderObjectTreeStorage::insertSorted(const QString &value, QStringList &lis
     }
 }
 
-}    // namespace U2
+}  // namespace U2

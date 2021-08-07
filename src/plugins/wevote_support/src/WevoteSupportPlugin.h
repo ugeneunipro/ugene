@@ -36,6 +36,6 @@ public:
     static const QString PLUGIN_DESCRIPRION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WEVOTE_SUPPORT_PLUGIN_H_
+#endif  // _U2_WEVOTE_SUPPORT_PLUGIN_H_

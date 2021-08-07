@@ -33,12 +33,12 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//controller
+// controller
 
 /* TRANSLATOR U2::PluginViewerController */
 
 PluginViewerController::PluginViewerController() {
-    showServices = false;    //'true' mode is not functional anymore after service<->plugin model refactoring
+    showServices = false;  //'true' mode is not functional anymore after service<->plugin model refactoring
     mdiWindow = nullptr;
     connectStaticActions();
 }
@@ -47,7 +47,7 @@ PluginViewerController::~PluginViewerController() {
     AppContext::getPluginSupport()->disconnect(this);
     if (mdiWindow) {
         AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(mdiWindow);
-        assert(mdiWindow == nullptr);    // must set to nullptr on close event
+        assert(mdiWindow == nullptr);  // must set to nullptr on close event
     }
 }
 
@@ -56,7 +56,7 @@ void PluginViewerController::createWindow() {
 
     mdiWindow = new MWMDIWindow(tr("Plugin Viewer"));
     ui.setupUi(mdiWindow);
-    ui.treeWidget->setColumnWidth(1, 200);    //todo: save geom
+    ui.treeWidget->setColumnWidth(1, 200);  // todo: save geom
 
     if (!showServices) {
         ui.treeWidget->hideColumn(0);
@@ -64,7 +64,7 @@ void PluginViewerController::createWindow() {
 
     QList<int> sizes;
     sizes << 200 << 500;
-    //ui.splitter->setSizes(sizes);
+    // ui.splitter->setSizes(sizes);
     ui.licenseLabel->hide();
     ui.licenseView->hide();
     ui.acceptLicenseButton->hide();
@@ -90,7 +90,7 @@ void PluginViewerController::createWindow() {
 }
 
 void PluginViewerController::connectStaticActions() {
-    //add actions to menu and toolbar
+    // add actions to menu and toolbar
     MainWindow *mw = AppContext::getMainWindow();
     QMenu *pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
 
@@ -107,7 +107,7 @@ void PluginViewerController::connectStaticActions() {
 }
 
 void PluginViewerController::connectVisualActions() {
-    //connect to plugin support signals
+    // connect to plugin support signals
     if (showServices) {
         ServiceRegistry *sr = AppContext::getServiceRegistry();
         connect(sr, SIGNAL(si_serviceStateChanged(Service *, ServiceState)), SLOT(sl_onServiceStateChanged(Service *, ServiceState)));
@@ -123,7 +123,7 @@ void PluginViewerController::disconnectVisualActions() {
     AppContext::getPluginSupport()->disconnect(this);
     AppContext::getServiceRegistry()->disconnect(this);
 
-    //ui.treeWidget and all button/menus are disconnected automatically -> widget is deleted
+    // ui.treeWidget and all button/menus are disconnected automatically -> widget is deleted
 }
 
 void PluginViewerController::updateActions() {
@@ -144,7 +144,7 @@ void PluginViewerController::buildItems() {
         PlugViewPluginItem *pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
             const QList<Service *> &services = p->getServices();
-            //this method is called for default state init also -> look for registered plugin services
+            // this method is called for default state init also -> look for registered plugin services
             ServiceRegistry *sr = AppContext::getServiceRegistry();
             QList<Service *> registered = sr->getServices();
             foreach (Service *s, services) {
@@ -196,7 +196,7 @@ bool PluginViewerController::eventFilter(QObject *obj, QEvent *event) {
 /*
 void PluginViewerController::sl_onPluginAdded(Plugin* p) {
     assert(findPluginItem(p)==NULL);
-    
+
     QTreeWidget* treeWidget = ui.treeWidget;
     PlugViewPluginItem* pluginItem = new PlugViewPluginItem(NULL, p, showServices);
     if (showServices) {
@@ -342,7 +342,7 @@ void PluginViewerController::showLicense() {
         ui.acceptLicenseButton->hide();
     }
 
-    //Opening license file
+    // Opening license file
     QFile licenseFile(curentItem->plugin->getLicensePath().getURLString());
     if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         ui.licenseView->setText(tr("License file not found."));
@@ -407,4 +407,4 @@ void PlugViewServiceItem::updateVisual() {
     setIcon(0, QIcon(":ugene/images/service.png"));
 }
 
-}    // namespace U2
+}  // namespace U2

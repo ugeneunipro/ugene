@@ -118,4 +118,4 @@ const QString BioStruct3DGLRendererFactory::getName() const {
     return name;
 }
 
-}    // namespace U2
+}  // namespace U2

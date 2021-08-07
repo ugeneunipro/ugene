@@ -821,7 +821,7 @@ void MSAEditor::sl_sortGroupsBySize() {
 /* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
 static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow> &msaRows) {
     QList<QList<int>> rowGroups;
-    QSet<int> mappedRows;    // contains indexes of the already processed rows.
+    QSet<int> mappedRows;  // contains indexes of the already processed rows.
     for (int i = 0; i < msaRows.size(); i++) {
         if (mappedRows.contains(i)) {
             continue;
@@ -913,4 +913,4 @@ MaEditorSelectionController *MSAEditor::getSelectionController() const {
     return selectionController;
 }
 
-}    // namespace U2
+}  // namespace U2

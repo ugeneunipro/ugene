@@ -116,7 +116,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUr
             QString error;
             customGUI->buildIndexUrl(lastRefSeqUrl, prebuiltIndex, error);
             customGUI->validateReferenceSequence(activeRefSeqUrl);
-            //todo: process error!
+            // todo: process error!
         }
     }
 
@@ -486,4 +486,4 @@ void ShortReadsTableItem::setLibraryType(const QString &libraryType) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

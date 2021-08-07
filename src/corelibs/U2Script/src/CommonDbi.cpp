@@ -110,7 +110,7 @@ U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *_url, UgeneDbHandle *res
 
 U2SCRIPT_EXPORT void releaseObject(UgeneDbHandle resultObject) {
     U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(resultObject);
-    delete unwrappedObject;    // TODO: make sure about db resources deallocation
+    delete unwrappedObject;  // TODO: make sure about db resources deallocation
 }
 
 U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
@@ -132,7 +132,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, 
     DocumentFormat *docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(
         toDocumentFormatId(format));
     CHECK_EXT(nullptr != docFormat, coreLog.error(QObject::tr("The unsupported format"
-                                                           " was provided")), );
+                                                              " was provided")), );
     const QString url = QString::fromWCharArray(_url);
     QFileInfo fileInfo(url);
     GUrl adoptedUrl = fileInfo.isAbsolute() ? GUrl(url) : GUrl(QCoreApplication::applicationDirPath() + "/" + QString(url));

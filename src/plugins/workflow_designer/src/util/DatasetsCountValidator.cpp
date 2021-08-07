@@ -61,7 +61,7 @@ QString attributeId(const QMap<QString, QString> &options) {
     }
     return BaseAttributes::URL_IN_ATTRIBUTE().getId();
 }
-}    // namespace
+}  // namespace
 
 bool DatasetsCountValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
     int min = minimum(options);
@@ -81,5 +81,5 @@ bool DatasetsCountValidator::validate(const Actor *actor, NotificationsList &not
     return result;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

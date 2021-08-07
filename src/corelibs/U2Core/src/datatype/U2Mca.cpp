@@ -50,4 +50,4 @@ U2DataType U2Mca::getType() const {
     return U2Type::Mca;
 }
 
-}    // namespace U2
+}  // namespace U2

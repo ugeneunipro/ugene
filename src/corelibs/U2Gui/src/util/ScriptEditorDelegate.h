@@ -85,6 +85,6 @@ private:
     QTextEdit *edit;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCRIPT_EDITOR_DELEGATE_H_
+#endif  // _U2_SCRIPT_EDITOR_DELEGATE_H_

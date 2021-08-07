@@ -67,4 +67,4 @@ DbiConnection Database::createEmptyDbi(const QString &url, U2OpStatus &os) {
     return databaseDbi;
 }
 
-}    // namespace U2
+}  // namespace U2

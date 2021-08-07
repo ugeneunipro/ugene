@@ -64,4 +64,4 @@ AttributeInfo AttributeInfo::fromString(const QString &value, U2OpStatus &os) {
     return AttributeInfo(tokens[0], tokens[1]);
 }
 
-}    // namespace U2
+}  // namespace U2

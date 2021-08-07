@@ -39,7 +39,7 @@ private:
     bool validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_KRAKEN_BUILD_VALIDATOR_H_
+#endif  // _U2_KRAKEN_BUILD_VALIDATOR_H_

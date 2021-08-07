@@ -129,6 +129,6 @@ public:
 #define GUI_TEST_CLASS_DEFINITION(className) \
     void className::run(HI::GUITestOpStatus &os)
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

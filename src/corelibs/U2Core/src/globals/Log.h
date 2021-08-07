@@ -46,7 +46,7 @@ public:
     QStringList categories;
     LogLevel level;
     QString text;
-    qint64 time;    //time in microseconds from Unix Epoch (UTC). See Timer.h
+    qint64 time;  // time in microseconds from Unix Epoch (UTC). See Timer.h
 };
 
 class U2CORE_EXPORT Logger {
@@ -124,7 +124,7 @@ private:
     QMutex listenerMutex;
 };
 
-//TODO: support log category translation + use log category ids instead of the names in code
+// TODO: support log category translation + use log category ids instead of the names in code
 
 // Log category for algorithms and computing details
 #define ULOG_CAT_ALGORITHM "Algorithms"
@@ -155,7 +155,7 @@ static Logger taskLog(ULOG_CAT_TASKS);
 static Logger uiLog(ULOG_CAT_USER_INTERFACE);
 static Logger userActLog(ULOG_CAT_USER_ACTIONS);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::LogMessage)
 

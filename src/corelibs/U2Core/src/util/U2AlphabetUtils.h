@@ -46,7 +46,7 @@ public:
     const DNAAlphabet *al2;
 };
 
-//NOTE: use comparators as template params to optimize comparison with virtual call
+// NOTE: use comparators as template params to optimize comparison with virtual call
 
 // compares symbols exactly, 'N' does not match any symbol ('N'!='N')
 class ExactDNAAlphabetComparatorN0 : public DNAAlphabetComparator {
@@ -171,6 +171,6 @@ public:
     static const DNAAlphabet *getExtendedAlphabet(const DNAAlphabet *al);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

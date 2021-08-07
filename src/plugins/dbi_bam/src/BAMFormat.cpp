@@ -98,5 +98,5 @@ FormatCheckResult BAMFormatUtils::checkRawData(const QByteArray &rawData, const 
     return result;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

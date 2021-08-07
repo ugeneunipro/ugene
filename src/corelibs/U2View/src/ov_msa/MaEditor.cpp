@@ -203,7 +203,7 @@ void MaEditor::setReference(qint64 sequenceId) {
         snp.seqId = sequenceId;
         emit si_referenceSeqChanged(sequenceId);
     }
-    //REDRAW OTHER WIDGETS
+    // REDRAW OTHER WIDGETS
 }
 
 void MaEditor::updateReference() {
@@ -460,10 +460,10 @@ void MaEditor::updateFontMetrics() {
     // meaningful shape regardless of the current device settings.
     // TODO: this logic should be refactored and centralized for all sequence views in UGENE with zooming support.
     const int minimumCellWidthToShowText = 7;
-    const int minimumFontCharWidthInsideCell = minimumCellWidthToShowText - 2;    // Keep 1px left & right padding inside the cell.
-    const int minimumSafeFontPointSize = 8;    // This value was historically used in UGENE as minimum with no known issues.
+    const int minimumFontCharWidthInsideCell = minimumCellWidthToShowText - 2;  // Keep 1px left & right padding inside the cell.
+    const int minimumSafeFontPointSize = 8;  // This value was historically used in UGENE as minimum with no known issues.
     QFont fontToEstimate = font;
-    int estimatedMinimumFontPointSize = minimumSafeFontPointSize;    // Start with a safe value and estimate smaller values.
+    int estimatedMinimumFontPointSize = minimumSafeFontPointSize;  // Start with a safe value and estimate smaller values.
     while (fontToEstimate.pointSize() > 0) {
         int charWidth = getUnifiedSequenceFontCharRect(fontToEstimate).width();
         if (charWidth < minimumFontCharWidthInsideCell) {
@@ -544,4 +544,4 @@ void MaEditor::sl_onClearActionTriggered() {
 MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
 }
-}    // namespace U2
+}  // namespace U2

@@ -49,6 +49,6 @@ public:
     virtual bool canPaintSvg(CustomExportSettings *settings, U2OpStatus &os) const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_IMAGE_PAINTER_H_
+#endif  // _U2_EXPORT_IMAGE_PAINTER_H_

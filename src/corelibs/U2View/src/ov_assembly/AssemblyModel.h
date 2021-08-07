@@ -40,7 +40,7 @@ class VariantTrackObject;
 class U2VIEW_EXPORT AssemblyModel : public QObject {
     Q_OBJECT
 public:
-    //TODO refactor
+    // TODO refactor
     AssemblyModel(const DbiConnection &dbiConnection);
     ~AssemblyModel();
 
@@ -136,7 +136,7 @@ private slots:
 private:
     const static qint64 NO_VAL = -1;
     const static QByteArray COVERAGE_STAT_ATTRIBUTE_NAME;
-    //TODO: track model changes and invalidate caches accordingly
+    // TODO: track model changes and invalidate caches accordingly
     qint64 cachedModelLength;
     qint64 cachedModelHeight;
 
@@ -162,8 +162,8 @@ private:
     U2AssemblyCoverageStat cachedCoverageStat;
 
     QMutex mutex;
-};    // AssemblyModel
+};  // AssemblyModel
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // __U2_ASSEMBLY_BROWSER_MODEL_H__
+#endif  // __U2_ASSEMBLY_BROWSER_MODEL_H__

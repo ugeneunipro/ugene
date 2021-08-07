@@ -60,6 +60,6 @@ private:
     Ui_ExportHighlightedDialog *ui;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

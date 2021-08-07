@@ -49,6 +49,6 @@ public:
 
     static void setQTest(QScriptEngine *curEng);
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

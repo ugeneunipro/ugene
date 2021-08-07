@@ -38,17 +38,17 @@
 // In case of a directory, rights to delete files/subfolders are not affected.
 // NB: Only works for NTFS, has no effect on FAT objects.
 static DWORD SetFileWriteACL(
-    LPTSTR pszObjName,    // name of object
-    BOOL allowWrite    // zero to deny file modification
+    LPTSTR pszObjName,  // name of object
+    BOOL allowWrite  // zero to deny file modification
 ) {
     DWORD dwRes = 0;
     PACL pNewDACL = NULL;
     EXPLICIT_ACCESS ea[2];
-    SE_OBJECT_TYPE ObjectType = SE_FILE_OBJECT;    // type of object
-    TRUSTEE_FORM TrusteeForm = TRUSTEE_IS_NAME;    // format of trustee structure
+    SE_OBJECT_TYPE ObjectType = SE_FILE_OBJECT;  // type of object
+    TRUSTEE_FORM TrusteeForm = TRUSTEE_IS_NAME;  // format of trustee structure
 
 #    ifdef UNICODE
-    LPWSTR pszTrustee = const_cast<LPWSTR>(L"CURRENT_USER");    // trustee for new ACE
+    LPWSTR pszTrustee = const_cast<LPWSTR>(L"CURRENT_USER");  // trustee for new ACE
 #    else
     LPSTR pszTrustee = const_cast<LPSTR>("CURRENT_USER");
 #    endif
@@ -395,4 +395,4 @@ QByteArray GTFile::readAll(GUITestOpStatus &os, const QString &filePath) {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

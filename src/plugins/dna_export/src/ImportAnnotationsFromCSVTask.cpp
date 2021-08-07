@@ -61,7 +61,7 @@ ImportAnnotationsFromCSVTask::ImportAnnotationsFromCSVTask(ImportAnnotationsFrom
 
 static void adjustRelations(AnnotationTableObject *ao) {
     if (!ao->findRelatedObjectsByType(GObjectTypes::SEQUENCE).isEmpty()) {
-        return;    //nothing to adjust -> already has relation
+        return;  // nothing to adjust -> already has relation
     }
 
     // try automatically associate annotations doc with active sequence view
@@ -107,15 +107,15 @@ QList<Task *> ImportAnnotationsFromCSVTask::onSubTaskFinished(Task *subTask) {
     if (doc.isNull() && projDoc != nullptr) {
         doc = projDoc;
     }
-    if (doc.isNull()) {    //document is null -> save it and add to the project
+    if (doc.isNull()) {  // document is null -> save it and add to the project
         assert(subTask == readTask);
         doc = prepareNewDocument(prepareAnnotations());
         writeTask = new SaveDocumentTask(doc);
         result.append(writeTask);
-    } else if (writeTask != nullptr && !inProject) {    // document was saved -> add to the project
+    } else if (writeTask != nullptr && !inProject) {  // document was saved -> add to the project
         addTask = new AddDocumentTask(doc);
         result.append(addTask);
-    } else {    //document already in the project -> check loaded state and add annotations to it
+    } else {  // document already in the project -> check loaded state and add annotations to it
         assert(inProject);
         if (!doc->isLoaded()) {
             result.append(new LoadUnloadedDocumentTask(doc));
@@ -234,57 +234,57 @@ void ReadCSVAsAnnotationsTask::run() {
             const ColumnConfig &columnConf = config.columns.at(column);
             const QString &token = lineTokens.at(column);
             switch (columnConf.role) {
-            case ColumnRole_Qualifier:
-                assert(!columnConf.qualifierName.isEmpty());
-                a->qualifiers.append(U2Qualifier(columnConf.qualifierName, token));
-                break;
-            case ColumnRole_Name:
-                a->name = token.isEmpty() ? config.defaultAnnotationName : token;
-                ok = Annotation::isValidAnnotationName(a->name);
-                if (!ok) {
-                    error = tr("Invalid annotation name: '%1'").arg(a->name);
-                }
-                break;
-            case ColumnRole_StartPos:
-                assert(startPos == -1);
-                startPos = token.toInt(&ok) - 1;
-                startPosOffset = columnConf.startPositionOffset;
-                if (!ok) {
-                    error = tr("Start offset is not numeric: '%1'").arg(token);
-                }
-                break;
-            case ColumnRole_EndPos:
-                assert(endPos == -1);
-                endPos = token.toInt(&ok) + (columnConf.endPositionIsInclusive ? 1 : 0) - 1;
-                if (!ok) {
-                    error = tr("End offset is not numeric: '%1'").arg(token);
-                }
-                break;
-            case ColumnRole_Length:
-                assert(len == -1);
-                len = token.toInt(&ok);
-                if (!ok) {
-                    error = tr("Length is not numeric: '%1'").arg(token);
-                }
-                break;
-            case ColumnRole_ComplMark:
-                a->location->strand = (columnConf.complementMark.isEmpty() || token == columnConf.complementMark) ? U2Strand::Complementary : U2Strand::Direct;
-                break;
-            case ColumnRole_Group:
-                groupName = token;
-                break;
-            default:
-                assert(columnConf.role == ColumnRole_Ignore);
+                case ColumnRole_Qualifier:
+                    assert(!columnConf.qualifierName.isEmpty());
+                    a->qualifiers.append(U2Qualifier(columnConf.qualifierName, token));
+                    break;
+                case ColumnRole_Name:
+                    a->name = token.isEmpty() ? config.defaultAnnotationName : token;
+                    ok = Annotation::isValidAnnotationName(a->name);
+                    if (!ok) {
+                        error = tr("Invalid annotation name: '%1'").arg(a->name);
+                    }
+                    break;
+                case ColumnRole_StartPos:
+                    assert(startPos == -1);
+                    startPos = token.toInt(&ok) - 1;
+                    startPosOffset = columnConf.startPositionOffset;
+                    if (!ok) {
+                        error = tr("Start offset is not numeric: '%1'").arg(token);
+                    }
+                    break;
+                case ColumnRole_EndPos:
+                    assert(endPos == -1);
+                    endPos = token.toInt(&ok) + (columnConf.endPositionIsInclusive ? 1 : 0) - 1;
+                    if (!ok) {
+                        error = tr("End offset is not numeric: '%1'").arg(token);
+                    }
+                    break;
+                case ColumnRole_Length:
+                    assert(len == -1);
+                    len = token.toInt(&ok);
+                    if (!ok) {
+                        error = tr("Length is not numeric: '%1'").arg(token);
+                    }
+                    break;
+                case ColumnRole_ComplMark:
+                    a->location->strand = (columnConf.complementMark.isEmpty() || token == columnConf.complementMark) ? U2Strand::Complementary : U2Strand::Direct;
+                    break;
+                case ColumnRole_Group:
+                    groupName = token;
+                    break;
+                default:
+                    assert(columnConf.role == ColumnRole_Ignore);
             }
         }
 
-        //add annotation
+        // add annotation
         if (ok) {
-            //set up default name
+            // set up default name
             if (a->name.isEmpty()) {
                 a->name = config.defaultAnnotationName;
             }
-            //set up location
+            // set up location
             U2Region location;
             if (startPos != -1) {
                 location.startPos = startPos + startPosOffset;
@@ -311,7 +311,7 @@ void ReadCSVAsAnnotationsTask::run() {
                 result[groupName] << a;
             }
         } else {
-            //TODO: make configurable to allow stop parsing on any error!
+            // TODO: make configurable to allow stop parsing on any error!
             algoLog.details(tr("Can't parse line: '%1', error = %2, ignoring").arg(lineTokens.join(config.splitToken)).arg(error));
         }
     }
@@ -371,7 +371,7 @@ QStringList ReadCSVAsAnnotationsTask::parseLineIntoTokens(const QString &line, c
         result = line.split(config.splitToken, config.keepEmptyParts ? QString::KeepEmptyParts : QString::SkipEmptyParts);
         return result;
     }
-    //run script
+    // run script
     QMap<QString, QScriptValue> vars;
     QScriptEngine engine;
     vars[LINE_VAR] = QScriptValue(&engine, line);
@@ -415,7 +415,7 @@ static QVector<CharStat> countFreqs(const QString &line) {
     for (int i = 0, n = ba.length(); i < n; i++) {
         char c = data[i];
 
-        if (c == prevChar && (c == ' ' || c == '\t')) {    //do not count repeating ws
+        if (c == prevChar && (c == ' ' || c == '\t')) {  // do not count repeating ws
             continue;
         }
         result[uchar(c)].ch = c;
@@ -454,8 +454,8 @@ QString ReadCSVAsAnnotationsTask::guessSeparatorString(const QString &text, cons
     }
     CharStat max;
     float maxWeight = 0;
-    static QString doubleWeightChars = ",;: \t";    // chars that are often used as separators
-    static QString lowWeightChars = "\'\"";    // quotes and other frequent chars that rare used as separators
+    static QString doubleWeightChars = ",;: \t";  // chars that are often used as separators
+    static QString lowWeightChars = "\'\"";  // quotes and other frequent chars that rare used as separators
     for (int i = 0; i < globalFreqs.size(); i++) {
         const CharStat &cs = globalFreqs.at(i);
         float csWeight = cs.count;
@@ -475,4 +475,4 @@ QString ReadCSVAsAnnotationsTask::guessSeparatorString(const QString &text, cons
     return QString(QChar(max.ch));
 }
 
-}    // namespace U2
+}  // namespace U2

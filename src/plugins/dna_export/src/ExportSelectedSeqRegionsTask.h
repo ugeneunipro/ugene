@@ -76,6 +76,6 @@ private:
     const DNATranslation *complTrans;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_SELECTED_SEQ_REGIONS_TASK_H_
+#endif  // _U2_EXPORT_SELECTED_SEQ_REGIONS_TASK_H_

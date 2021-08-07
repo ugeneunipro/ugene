@@ -124,7 +124,7 @@ void ScriptWorker::init() {
     input = ports.value(IN_PORT_ID);
     output = ports.value(OUT_PORT_ID);
     engine = new WorkflowScriptEngine(context);
-    if (AppContext::isGUIMode()) {    // add script debugger
+    if (AppContext::isGUIMode()) {  // add script debugger
         engine->setProcessEventsInterval(50);
         QScriptEngineDebugger *scriptDebugger = new QScriptEngineDebugger(engine);
         scriptDebugger->setAutoShowStandardWindow(true);
@@ -135,7 +135,7 @@ void ScriptWorker::init() {
 void ScriptWorker::bindPortVariables() {
     foreach (IntegralBus *bus, ports.values()) {
         assert(bus != nullptr);
-        if (actor->getPort(bus->getPortId())->isOutput()) {    // means that it is bus for output port
+        if (actor->getPort(bus->getPortId())->isOutput()) {  // means that it is bus for output port
             continue;
         }
 
@@ -212,8 +212,8 @@ Task *ScriptWorker::tick() {
     }
 
     if (isNeedToBeRun()) {
-        //WorkflowScriptLibrary::initEngine(engine);
-        //engine->globalObject().setProperty("ctx", ActorContext::createContext(this, engine), QScriptValue::ReadOnly);
+        // WorkflowScriptLibrary::initEngine(engine);
+        // engine->globalObject().setProperty("ctx", ActorContext::createContext(this, engine), QScriptValue::ReadOnly);
         bindPortVariables();
         bindAttributeVariables();
         foreach (Port *port, actor->getInputPorts()) {
@@ -289,5 +289,5 @@ void ScriptWorker::cleanup() {
     delete engine;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

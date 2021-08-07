@@ -53,7 +53,7 @@ CrashHandlerPrivateMac::~CrashHandlerPrivateMac() {
 }
 
 void CrashHandlerPrivateMac::setupHandler() {
-#    ifndef _DEBUG    // debugger fails to launch if exception handler is installed
+#    ifndef _DEBUG  // debugger fails to launch if exception handler is installed
     if (QFile::exists(LEGACY_STACKTRACE_FILE_PATH)) {
         legacyStacktraceFileWasSucessfullyRemoved = QFile(LEGACY_STACKTRACE_FILE_PATH).remove();
     }
@@ -137,6 +137,6 @@ bool CrashHandlerPrivateMac::breakpadCallback(const char *dump_dir, const char *
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

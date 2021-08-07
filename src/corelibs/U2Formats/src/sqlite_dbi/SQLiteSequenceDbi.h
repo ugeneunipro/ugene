@@ -87,6 +87,6 @@ private:
     void redoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

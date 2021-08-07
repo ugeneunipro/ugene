@@ -53,15 +53,15 @@ GUI_TEST_CLASS_DECLARATION(test_7293)
 
 #ifdef SW2_BUILD_WITH_CUDA
 GUI_TEST_CLASS_DECLARATION(test_7360)
-#endif    // SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA
 GUI_TEST_CLASS_DECLARATION(test_7367)
 GUI_TEST_CLASS_DECLARATION(test_7368)
 GUI_TEST_CLASS_DECLARATION(test_7371)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_regression_scenarios
+}  // namespace GUITest_regression_scenarios
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#endif  // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_

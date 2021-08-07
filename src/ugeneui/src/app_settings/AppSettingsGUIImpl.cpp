@@ -109,4 +109,4 @@ void AppSettingsGUIImpl::registerBuiltinPages() {
     registerPage(new DirectoriesSettingsPageController());
 }
 
-}    // namespace U2
+}  // namespace U2

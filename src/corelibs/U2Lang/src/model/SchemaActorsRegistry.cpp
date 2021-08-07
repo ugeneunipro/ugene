@@ -61,5 +61,5 @@ Schema *SchemaActorsRegistry::getSchema(const QString &protoId) {
     return copy;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

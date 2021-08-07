@@ -411,4 +411,4 @@ void GUITestService::sl_testThreadFinish() {
     AppContext::getMainWindow()->getQMainWindow()->close();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -51,7 +51,7 @@ public:
 
 signals:
     void si_countChanged();
-    void si_hideLoadBtnHint();    // should be common for all dashboards
+    void si_hideLoadBtnHint();  // should be common for all dashboards
 
 private slots:
     void sl_closeTab();
@@ -85,6 +85,6 @@ private:
     static int count;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOWTABVIEW_H_
+#endif  // _U2_WORKFLOWTABVIEW_H_

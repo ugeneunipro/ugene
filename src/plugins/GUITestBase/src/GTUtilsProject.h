@@ -120,6 +120,6 @@ protected:
     static void openFilesWithDialog(HI::GUITestOpStatus &os, const QList<QUrl> &filePaths);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

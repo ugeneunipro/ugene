@@ -71,7 +71,7 @@ class U2CORE_EXPORT TLSTask : public Task {
     Q_OBJECT
 public:
     TLSTask(const QString &_name, TaskFlags _flags = TaskFlags_FOSCOE, bool deleteContext = true);
-    ~TLSTask();    // tls context removed here
+    ~TLSTask();  // tls context removed here
     void run();
     void prepare();
 
@@ -87,6 +87,6 @@ protected:
     bool deleteContext;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _TLS_TASK_H_
+#endif  // _TLS_TASK_H_

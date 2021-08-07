@@ -43,4 +43,4 @@ const GSelectionType GSelectionTypes::ANNOTATION_GROUPS("selection_annotation_gr
 
 const GSelectionType GSelectionTypes::FOLDERS("selection_folders");
 
-}    // namespace U2
+}  // namespace U2

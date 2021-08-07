@@ -71,7 +71,7 @@ private:
 
     QMap<QString, DBXRefInfo> refsByKey;
 };
-}    // namespace U2
+}  // namespace U2
 Q_DECLARE_METATYPE(U2::DBXRefRegistry *)
 Q_DECLARE_METATYPE(U2::DBXRefInfo)
 

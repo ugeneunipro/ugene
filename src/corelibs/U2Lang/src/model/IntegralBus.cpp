@@ -227,7 +227,7 @@ IntegralBus::IntegralBus(Port *p)
         SlotPathMap pathMap = busPort->getPaths();
         QMap<QString, QStringList> listMap = getListMappings(map, pathMap, p);
         busMap = new BusMap(map, listMap, pathMap);
-    } else {    // p is output
+    } else {  // p is output
         StrStrMap map;
         IntegralBusPort *bp = qobject_cast<IntegralBusPort *>(p);
         DataTypePtr t = bp ? bp->getOwnType() : p->getType();
@@ -485,5 +485,5 @@ int IntegralBus::getContextMetadataId() const {
     return contextMetadataId;
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

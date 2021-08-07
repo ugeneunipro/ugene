@@ -30,9 +30,9 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
-//TODO:
-// track factory registry and show only the states with factories available
-// delete view state if factory refuses create view
+// TODO:
+//  track factory registry and show only the states with factories available
+//  delete view state if factory refuses create view
 
 namespace U2 {
 
@@ -324,7 +324,7 @@ void ObjectViewTreeController::sl_onContextMenuRequested(const QPoint &pos) {
     popup.addAction(renameStateAction);
     popup.addAction(removeStateAction);
 
-    //TODO: emit si_onPopupMenuRequested(*popup);
+    // TODO: emit si_onPopupMenuRequested(*popup);
     if (!popup.isEmpty()) {
         popup.exec(QCursor::pos());
     }
@@ -339,11 +339,11 @@ void ObjectViewTreeController::sl_onTreeCurrentChanged(QTreeWidgetItem *current,
 void ObjectViewTreeController::sl_activateView() {
     GCOUNTER(cvar, "Bookmarks::Bookmark Activated");
     OVTViewItem *vi = currentViewItem();
-    if (vi != nullptr && vi->viewWindow != nullptr) {    //raise existing view, no state change
+    if (vi != nullptr && vi->viewWindow != nullptr) {  // raise existing view, no state change
         AppContext::getMainWindow()->getMDIManager()->activateWindow(vi->viewWindow);
         return;
     }
-    //open closed view by state or update state of the active view
+    // open closed view by state or update state of the active view
     GObjectViewState *state = findStateToOpen();
     if (state == nullptr) {
         return;
@@ -352,7 +352,7 @@ void ObjectViewTreeController::sl_activateView() {
     if (view != nullptr) {
         assert(view->isPersistent());
         AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
-        if (state != nullptr) {    // state was selected -> apply state
+        if (state != nullptr) {  // state was selected -> apply state
             AppContext::getTaskScheduler()->registerTopLevelTask(view->getObjectView()->updateViewTask(state->getStateName(), state->getStateData()));
         }
     } else {
@@ -383,7 +383,7 @@ void ObjectViewTreeController::sl_addState() {
     }
     assert(vi->viewWindow->isPersistent());
 
-    QString stateName = GObjectViewUtils::genUniqueStateName(tr("New bookmark"));    //todo: avoid localization here?
+    QString stateName = GObjectViewUtils::genUniqueStateName(tr("New bookmark"));  // todo: avoid localization here?
     QVariantMap state = vi->viewWindow->getObjectView()->saveState();
     GObjectViewState *s = new GObjectViewState(vi->viewWindow->getViewFactoryId(), vi->viewWindow->getViewName(), stateName, state);
     AppContext::getProject()->addGObjectViewState(s);
@@ -422,7 +422,7 @@ void ObjectViewTreeController::sl_renameState() {
 
     si->setFlags(si->flags() | Qt::ItemIsEditable);
     tree->editItem(si);
-    //tree->disconnect(this, SLOT(sl_onItemChanged(QTreeWidgetItem*, int)));
+    // tree->disconnect(this, SLOT(sl_onItemChanged(QTreeWidgetItem*, int)));
     si->setFlags(si->flags() ^ Qt::ItemIsEditable);
 }
 
@@ -444,11 +444,11 @@ void ObjectViewTreeController::sl_onItemChanged(QTreeWidgetItem *i, int c) {
         return;
     }
     if (state != nullptr) {
-        //todo: show error!
+        // todo: show error!
         return;
     }
     if (newName.isEmpty()) {
-        //todo: show error
+        // todo: show error
         return;
     }
     si->state->setStateName(newName);
@@ -504,4 +504,4 @@ void OVTStateItem::updateVisual() {
     setText(0, state->getStateName());
 }
 
-}    // namespace U2
+}  // namespace U2

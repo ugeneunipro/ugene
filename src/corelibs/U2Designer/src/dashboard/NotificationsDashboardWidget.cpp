@@ -144,4 +144,4 @@ NotificationsDashboardInfo::NotificationsDashboardInfo(const QString &actorId, c
     : actorId(actorId), actorName(actorName), type(type), message(message), count(count) {
 }
 
-}    // namespace U2
+}  // namespace U2

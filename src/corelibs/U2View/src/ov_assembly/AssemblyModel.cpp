@@ -300,7 +300,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi *dbi, const U2Assembly &assm) {
 
                 Document *refDoc = prj->findDocumentByURL(crossRef.dataRef.dbiRef.dbiId);
                 Task *t = nullptr;
-                if (refDoc != nullptr) {    // document already in project, load if it is not loaded
+                if (refDoc != nullptr) {  // document already in project, load if it is not loaded
                     if (refDoc->isLoaded()) {
                         sl_referenceLoaded();
                     } else {
@@ -308,7 +308,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi *dbi, const U2Assembly &assm) {
                     }
 
                     connect(refDoc, SIGNAL(si_loadedStateChanged()), SLOT(sl_referenceDocLoadedStateChanged()));
-                } else {    // no document at project -> create doc, add it to project and load it
+                } else {  // no document at project -> create doc, add it to project and load it
                     t = createLoadReferenceAndAddToProjectTask(crossRef);
                     if (nullptr == t) {
                         QString refUrl = crossRef.dataRef.dbiRef.dbiId;
@@ -363,7 +363,7 @@ void AssemblyModel::startLoadReferenceTask(Task *t) {
 
 void AssemblyModel::sl_referenceLoadingFailed() {
     loadingReference = false;
-    emit si_referenceChanged();    // to update reference area
+    emit si_referenceChanged();  // to update reference area
 }
 
 void AssemblyModel::onReferenceRemoved() {
@@ -400,7 +400,7 @@ bool isAssemblyDoc(const Document *doc, const U2Assembly &assembly) {
     }
     return false;
 }
-}    // namespace
+}  // namespace
 
 // when reference doc removed from project
 void AssemblyModel::sl_docRemoved(Document *d) {
@@ -451,7 +451,7 @@ void AssemblyModel::sl_referenceDocLoadedStateChanged() {
         if (!loadingReference) {
             sl_referenceLoaded();
         }
-    } else {    // refDoc unloaded
+    } else {  // refDoc unloaded
         unsetReference();
         emit si_referenceChanged();
     }
@@ -526,7 +526,7 @@ void AssemblyModel::setLoadingReference(bool value) {
 qint64 AssemblyModel::getReadsNumber(U2OpStatus &os) {
     if (cachedReadsNumber == NO_VAL) {
         U2AttributeDbi *attributeDbi = dbiHandle.dbi->getAttributeDbi();
-        //U2OpStatusImpl os;
+        // U2OpStatusImpl os;
         if (attributeDbi != nullptr) {
             U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, assembly.id, U2BaseAttributeName::count_reads, os);
             LOG_OP(os);
@@ -674,4 +674,4 @@ bool AssemblyModel::isDbLocked(int timeout) {
     }
     return true;
 }
-}    // namespace U2
+}  // namespace U2

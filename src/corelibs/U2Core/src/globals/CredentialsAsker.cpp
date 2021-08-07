@@ -37,4 +37,4 @@ void CredentialsAsker::saveCredentials(const QString &resourceUrl, const QString
     storage->addEntry(resourceUrl, password, remember);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -131,6 +131,6 @@ private:
     GSequenceGraphDrawer *gd;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

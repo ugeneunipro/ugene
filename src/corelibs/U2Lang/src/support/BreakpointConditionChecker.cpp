@@ -121,4 +121,4 @@ void BreakpointConditionChecker::setConditionText(const QString &text) {
     conditionText = text;
 }
 
-}    // namespace U2
+}  // namespace U2

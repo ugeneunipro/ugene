@@ -57,4 +57,4 @@ QList<Task *> ResourceTracker::getResourceUsers(const QString &resourceName) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

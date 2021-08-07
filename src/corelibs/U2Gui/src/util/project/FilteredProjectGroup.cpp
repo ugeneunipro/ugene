@@ -144,4 +144,4 @@ bool FilteredProjectGroup::groupLessThan(FilteredProjectGroup *first, FilteredPr
     }
 }
 
-}    // namespace U2
+}  // namespace U2

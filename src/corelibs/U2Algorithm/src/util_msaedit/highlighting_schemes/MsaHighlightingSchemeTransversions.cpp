@@ -66,4 +66,4 @@ MsaHighlightingScheme *MsaHighlightingSchemeTransversionsFactory::create(QObject
     return new MsaHighlightingSchemeTransversions(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

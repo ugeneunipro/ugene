@@ -141,14 +141,13 @@ private slots:
 
 class ComboBoxWidgetBase : public PropertyWidget {
 public:
-    ComboBoxWidgetBase( QWidget *parent = nullptr, const QSharedPointer<StringFormatter>& formatter = nullptr);
+    ComboBoxWidgetBase(QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
 
     /** Returns formatted value for the item with the given name. */
     QString getFormattedItemText(const QString &itemKey) const;
 
 protected:
     QSharedPointer<StringFormatter> formatter;
-
 };
 
 /************************************************************************/
@@ -157,7 +156,7 @@ protected:
 class ComboBoxWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter>& formatter = nullptr);
+    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -320,6 +319,6 @@ protected:
     virtual QString finalyze(const QString &url);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROPERTYWIDGET_H_
+#endif  // _U2_PROPERTYWIDGET_H_

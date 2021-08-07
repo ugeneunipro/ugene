@@ -46,4 +46,4 @@ void MainThreadTimer::sl_timerTick() {
     counter++;
 }
 
-}    // namespace HI
+}  // namespace HI

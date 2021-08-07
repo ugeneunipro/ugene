@@ -43,7 +43,7 @@ public:
     static QByteArray joinRegions(const QList<QByteArray> &parts, int gapSize = 0);
 
     /** Translates sequence parts, if  join == true -> joins parts before translation is started
-    */
+     */
     static QList<QByteArray> translateRegions(const QList<QByteArray> &origParts, const DNATranslation *aminoTT, bool join);
 
     /** Returns regions locations as if they were joined */
@@ -53,6 +53,6 @@ public:
     static QList<GObject *> mergeSequences(Document *doc, const U2DbiRef &ref, QVariantMap &hints, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

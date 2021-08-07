@@ -42,38 +42,38 @@ CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget *w, const Col
     connect(startRB, SIGNAL(toggled(bool)), SLOT(sl_startToggle(bool)));
 
     switch (config.role) {
-    case ColumnRole_Ignore:
-        ignoreRB->setChecked(true);
-        break;
-    case ColumnRole_Name:
-        nameRB->setChecked(true);
-        break;
-    case ColumnRole_Qualifier:
-        qualifierRB->setChecked(true);
-        qualifierNameEdit->setText(config.qualifierName);
-        break;
-    case ColumnRole_StartPos:
-        startRB->setChecked(true);
-        startOffsetCheck->setChecked(config.startPositionOffset != 0);
-        startOffsetValue->setValue(config.startPositionOffset);
-        break;
-    case ColumnRole_EndPos:
-        endRB->setChecked(true);
-        endInclusiveCheck->setChecked(config.endPositionIsInclusive);
-        break;
-    case ColumnRole_Length:
-        lengthRB->setChecked(true);
-        break;
-    case ColumnRole_ComplMark:
-        complMarkRB->setChecked(true);
-        complValueEdit->setText(config.complementMark);
-        complValueCheck->setChecked(!config.complementMark.isEmpty());
-        break;
-    case ColumnRole_Group:
-        groupRB->setChecked(true);
-        break;
-    default:
-        assert(0);
+        case ColumnRole_Ignore:
+            ignoreRB->setChecked(true);
+            break;
+        case ColumnRole_Name:
+            nameRB->setChecked(true);
+            break;
+        case ColumnRole_Qualifier:
+            qualifierRB->setChecked(true);
+            qualifierNameEdit->setText(config.qualifierName);
+            break;
+        case ColumnRole_StartPos:
+            startRB->setChecked(true);
+            startOffsetCheck->setChecked(config.startPositionOffset != 0);
+            startOffsetValue->setValue(config.startPositionOffset);
+            break;
+        case ColumnRole_EndPos:
+            endRB->setChecked(true);
+            endInclusiveCheck->setChecked(config.endPositionIsInclusive);
+            break;
+        case ColumnRole_Length:
+            lengthRB->setChecked(true);
+            break;
+        case ColumnRole_ComplMark:
+            complMarkRB->setChecked(true);
+            complValueEdit->setText(config.complementMark);
+            complValueCheck->setChecked(!config.complementMark.isEmpty());
+            break;
+        case ColumnRole_Group:
+            groupRB->setChecked(true);
+            break;
+        default:
+            assert(0);
     }
 }
 
@@ -118,4 +118,4 @@ void CSVColumnConfigurationDialog::sl_startToggle(bool checked) {
     startOffsetValue->setEnabled(checked && startOffsetCheck->isChecked());
 }
 
-}    // namespace U2
+}  // namespace U2

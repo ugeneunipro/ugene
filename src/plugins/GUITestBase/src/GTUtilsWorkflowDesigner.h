@@ -51,13 +51,13 @@ public:
         customDialogSelector
     };
 
-    //returns algorithms or samples
+    // returns algorithms or samples
     static tab currentTab(HI::GUITestOpStatus &os);
 
-    //activates the tab t
+    // activates the tab t
     static void setCurrentTab(HI::GUITestOpStatus &os, tab t);
 
-    //opens WorkflowDesigner
+    // opens WorkflowDesigner
     static void openWorkflowDesigner(HI::GUITestOpStatus &os);
 
     /** Returns active WD window or fails if no active WD window is found. */
@@ -75,13 +75,13 @@ public:
     static void stopWorkflow(HI::GUITestOpStatus &os);
     static void returnToWorkflow(HI::GUITestOpStatus &os);
 
-    //returns item from samples or algorithms tab
+    // returns item from samples or algorithms tab
     static QTreeWidgetItem *findTreeItem(HI::GUITestOpStatus &os, const QString &itemName, tab t, bool exactMatch = false, bool failIfNULL = true);
 
-    //returns item from samples or algorithms tab
+    // returns item from samples or algorithms tab
     static QList<QTreeWidgetItem *> getVisibleSamples(HI::GUITestOpStatus &os);
 
-    //expands samples/Elements tabwidget if collapsed
+    // expands samples/Elements tabwidget if collapsed
     static void expandTabs(HI::GUITestOpStatus &os, QWidget *parentWidget = nullptr);
 
     static void findByNameFilter(HI::GUITestOpStatus &os, const QString &elementName);
@@ -97,13 +97,13 @@ public:
     static QList<QTreeWidgetItem *> getPaletteGroupEntries(HI::GUITestOpStatus &os, const QString &groupName);
     static QStringList getPaletteGroupEntriesNames(HI::GUITestOpStatus &os, const QString &groupName);
 
-    //add to scene
+    // add to scene
     static void addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget *parentWidget = nullptr);
     static void addAlgorithm(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch = false, bool useDragAndDrop = false);
     static WorkflowProcessItem *addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch = false);
     static WorkflowProcessItem *addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch = false);
 
-    //returns center of worker on workflow scene in global coordinates
+    // returns center of worker on workflow scene in global coordinates
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
     static void removeItem(HI::GUITestOpStatus &os, const QString &itemName);
@@ -111,7 +111,7 @@ public:
     static void click(HI::GUITestOpStatus &os, const QString &itemName, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
     static void click(HI::GUITestOpStatus &os, QGraphicsItem *item, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
 
-    //returs worker placed on workflow scene which contains item name
+    // returs worker placed on workflow scene which contains item name
     static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
@@ -120,12 +120,12 @@ public:
 
     static bool isWorkerExtended(HI::GUITestOpStatus &os, const QString &itemName);
 
-    //returns WorkflowPortItem of worker which with ID "id"
+    // returns WorkflowPortItem of worker which with ID "id"
     static WorkflowPortItem *getPortById(HI::GUITestOpStatus &os, WorkflowProcessItem *worker, QString id);
 
     static QList<WorkflowPortItem *> getPorts(HI::GUITestOpStatus &os, WorkflowProcessItem *worker);
 
-    //connects worker "from" with worker "to"
+    // connects worker "from" with worker "to"
     static void connect(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to);
     static void disconect(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to);
 
@@ -134,7 +134,7 @@ public:
     static WorkflowBusItem *getConnectionArrow(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to);
     static QGraphicsTextItem *getArrowHint(HI::GUITestOpStatus &os, WorkflowBusItem *arrow);
 
-    //returns all workers placed on workflow scene
+    // returns all workers placed on workflow scene
     static QList<WorkflowProcessItem *> getWorkers(HI::GUITestOpStatus &os);
 
     static QWidget *getDatasetsListWidget(HI::GUITestOpStatus &os);
@@ -171,7 +171,7 @@ public:
      */
     static void setDatasetInputFolders(HI::GUITestOpStatus &os, const QStringList &dirPaths, QWidget *datasetWidget = nullptr);
 
-    //sets oneparameter worker parameter
+    // sets oneparameter worker parameter
     static void setParameter(HI::GUITestOpStatus &os, QString parameter, QVariant value, valueType type, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     static void setTableValue(HI::GUITestOpStatus &os, QString parameter, QVariant value, valueType type, QTableWidget *table, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     static QString getCellValue(HI::GUITestOpStatus &os, QString parameter, QTableWidget *table);
@@ -185,7 +185,7 @@ public:
 
     static void scrollInputPortsWidgetToTableRow(HI::GUITestOpStatus &os, int tableIndex, const QString &slotName);
 
-    //gets oneparameter worker parameter
+    // gets oneparameter worker parameter
     static QString getParameter(HI::GUITestOpStatus &os, QString parameter, bool exactMatch = false);
     static bool isParameterEnabled(HI::GUITestOpStatus &os, QString parameter);
     static bool isParameterRequired(HI::GUITestOpStatus &os, const QString &parameter);
@@ -195,7 +195,7 @@ public:
 
     static void setParameterScripting(HI::GUITestOpStatus &os, QString parameter, QString scriptMode, bool exactMatch = false);
 
-    //returns number of items in error list which contain "error"
+    // returns number of items in error list which contain "error"
     static int checkErrorList(HI::GUITestOpStatus &os, QString error);
     static QStringList getErrors(HI::GUITestOpStatus &os);
 
@@ -226,6 +226,6 @@ private:
     static const int verticalShift;
 };
 
-}    // namespace U2
+}  // namespace U2
 Q_DECLARE_METATYPE(QAction *)
-#endif    // _U2_GT_UTILS_WORKFLOW_DESIGNER_H_
+#endif  // _U2_GT_UTILS_WORKFLOW_DESIGNER_H_

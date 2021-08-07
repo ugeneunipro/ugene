@@ -173,7 +173,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates
     tabButtonGroup->addButton(externalToolsTabButton, EXTERNAL_TOOLS_TAB_INDEX);
     connect(tabButtonGroup, SIGNAL(buttonToggled(int, bool)), SLOT(sl_onTabButtonToggled(int, bool)));
 
-    tabButtonsLayout->addStretch(INT_MAX);    // Push the last button to the end.
+    tabButtonsLayout->addStretch(INT_MAX);  // Push the last button to the end.
 
     auto loadSchemaButton = new QToolButton(tabButtonsRow);
     loadSchemaButton->setIcon(QIcon(":U2Designer/images/load_schema.png"));
@@ -429,7 +429,7 @@ static void fixImages(QString &html) {
 }
 
 static void removeExtraDiv(QString &html) {
-    //UGENE 34 and below may have unbalanced divs count.
+    // UGENE 34 and below may have unbalanced divs count.
     int openingDivCount = html.count("<div");
     int closingDivCount = html.count("</div>");
     if (openingDivCount + 1 == closingDivCount) {
@@ -516,4 +516,4 @@ QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htm
     return map;
 }
 
-}    // namespace U2
+}  // namespace U2

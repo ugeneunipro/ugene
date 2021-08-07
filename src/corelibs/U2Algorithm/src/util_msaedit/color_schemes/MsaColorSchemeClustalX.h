@@ -76,6 +76,6 @@ public:
     MsaColorScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_COLOR_SCHEME_CLUSTAL_X_H_
+#endif  // _U2_MSA_COLOR_SCHEME_CLUSTAL_X_H_

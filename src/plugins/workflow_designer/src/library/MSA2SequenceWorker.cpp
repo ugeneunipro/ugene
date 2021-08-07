@@ -139,5 +139,5 @@ QString Alignment2SequencePrompter::composeRichDoc() {
     return tr("Split alignment%1 into sequences.").arg(source);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

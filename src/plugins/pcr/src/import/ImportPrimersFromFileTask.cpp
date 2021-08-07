@@ -96,4 +96,4 @@ QString ImportPrimersFromFileTask::generateReport() const {
            (tasksWithError > 0 ? "; sequences were not converted: " + QString::number(tasksWithError) : "") + ")";
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -29,4 +29,4 @@ OptionsPanelGroup::OptionsPanelGroup(GroupHeaderImageWidget *_headerImageWidget,
       optionsWidget(_optionsWidget) {
 }
 
-}    // namespace U2
+}  // namespace U2

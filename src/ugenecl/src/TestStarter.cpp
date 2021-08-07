@@ -76,16 +76,16 @@ void TestStarter::prepare() {
 }
 
 void TestStarter::cleanup() {
-    //saveSuites();
-    //saveEnv();
+    // saveSuites();
+    // saveEnv();
     deallocateSuites();
     delete env;
     env = nullptr;
-    //Task::cleanup();
+    // Task::cleanup();
 }
 
 void TestStarter::addTestSuite(GTestSuite *ts) {
-    //TO DO: check bug when test suites duplicated
+    // TO DO: check bug when test suites duplicated
     assert(!findTestSuiteByURL(ts->getURL()));
     assert(!suites.contains(ts));
     suites.append(ts);
@@ -93,7 +93,7 @@ void TestStarter::addTestSuite(GTestSuite *ts) {
     GTestEnvironment *tsEnv = ts->getEnv();
     const QStringList &tsEnvKeys = tsEnv->getVars().keys();
     QStringList tsEnvResultedKeys;
-    //skipping non-empty variables
+    // skipping non-empty variables
     foreach (const QString &key, tsEnvKeys) {
         if (tsEnv->getVar(key).isEmpty()) {
             tsEnvResultedKeys.push_back(key);
@@ -122,7 +122,7 @@ void TestStarter::removeTestSuite(GTestSuite *ts) {
     assert(suites.contains(ts));
     suites.removeOne(ts);
 
-    //todo: cleanup vars, but leave built-in
+    // todo: cleanup vars, but leave built-in
     saveEnv();
 
     emit si_testSuiteRemoved(ts);
@@ -152,7 +152,7 @@ void TestStarter::readBuiltInVars() {
 }
 
 void TestStarter::readSavedSuites() {
-    //TODO: do it in in service startup task!!!
+    // TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
     QString err;
@@ -250,15 +250,15 @@ Task::ReportResult TestStarter::report() {
             } else {
                 numFailed++;
             }
-            //printf("%s\n",tr("------------------Test %1 %2").arg(t->getTestRef()->getShortName()).arg(t->isPassed() ? "OK" : t->getErrorMessage()).toLocal8Bit());
+            // printf("%s\n",tr("------------------Test %1 %2").arg(t->getTestRef()->getShortName()).arg(t->isPassed() ? "OK" : t->getErrorMessage()).toLocal8Bit());
         }
         uiLog.info(tr("---------------"));
         uiLog.info(tr("Summary - Number of tests: %1 | Tests passed: %2 | Tests failed: %3").arg(QString::number(numPassed + numFailed)).arg(QString::number(numPassed)).arg(QString::number(numFailed)));
     } else {
         uiLog.error("Test run problem: " + ttask->getError());
-        //printf("%s\n",QString("--------- Test run problem: " + ttask->getError()).toLocal8Bit());
+        // printf("%s\n",QString("--------- Test run problem: " + ttask->getError()).toLocal8Bit());
     }
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

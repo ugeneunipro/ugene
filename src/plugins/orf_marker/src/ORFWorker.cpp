@@ -194,15 +194,15 @@ QString ORFPrompter::composeRichDoc() {
 
     QString strandName;
     switch (cfg.strand) {
-    case ORFAlgorithmStrand_Both:
-        strandName = ORFWorker::tr("both strands");
-        break;
-    case ORFAlgorithmStrand_Direct:
-        strandName = ORFWorker::tr("direct strand");
-        break;
-    case ORFAlgorithmStrand_Complement:
-        strandName = ORFWorker::tr("complement strand");
-        break;
+        case ORFAlgorithmStrand_Both:
+            strandName = ORFWorker::tr("both strands");
+            break;
+        case ORFAlgorithmStrand_Direct:
+            strandName = ORFWorker::tr("direct strand");
+            break;
+        case ORFAlgorithmStrand_Complement:
+            strandName = ORFWorker::tr("complement strand");
+            break;
     }
     strandName = getHyperlink(BaseAttributes::STRAND_ATTRIBUTE().getId(), strandName);
 
@@ -215,11 +215,11 @@ QString ORFPrompter::composeRichDoc() {
     QString doc = tr("For each nucleotide sequence%1, find ORFs in <u>%2</u> using the <u>%3</u>."
                      "<br>Detect only ORFs <u>not shorter than %4 bps</u>%5."
                      "<br>Output the list of found regions annotated as <u>%6</u>.")
-                      .arg(producerName)    //sequence from Read Fasta 1
-                      .arg(strandName)    //both strands
-                      .arg(ttName)    //Standard Genetic Code
-                      .arg(getHyperlink(LEN_ATTR, cfg.minLen))    //100
-                      .arg(extra)    //  take into account alternative start codons.
+                      .arg(producerName)  // sequence from Read Fasta 1
+                      .arg(strandName)  // both strands
+                      .arg(ttName)  // Standard Genetic Code
+                      .arg(getHyperlink(LEN_ATTR, cfg.minLen))  // 100
+                      .arg(extra)  //  take into account alternative start codons.
                       .arg(resultName);
 
     return doc;
@@ -315,5 +315,5 @@ void ORFWorker::sl_taskFinished() {
 void ORFWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -65,4 +65,4 @@ QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<ch
     return colorsPerChar;
 }
 
-}    // namespace U2
+}  // namespace U2

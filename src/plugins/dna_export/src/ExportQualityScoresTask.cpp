@@ -36,4 +36,4 @@ void ExportPhredQualityScoresTask::run() {
     DNAQualityIOUtils::writeDNAQuality(seqObj, config.dstFilePath, config.appendData, false, stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

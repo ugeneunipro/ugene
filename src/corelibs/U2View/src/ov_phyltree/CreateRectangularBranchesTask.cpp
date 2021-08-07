@@ -45,7 +45,7 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
         return getBranch(node->getSecondNodeOfBranch(0));
     }
     if (branches > 1) {
-        stateInfo.progress = 100 * ++size / 100;    // <- number of sequences
+        stateInfo.progress = 100 * ++size / 100;  // <- number of sequences
         QList<GraphicsRectangularBranchItem *> items;
         int ind = -1;
         for (int i = 0; i < branches; ++i) {
@@ -135,7 +135,7 @@ void CreateRectangularBranchesTask::run() {
     }
     minDistance = -2;
     maxDistance = 0;
-    GraphicsRectangularBranchItem *item = getBranch(node);    // modifies minDistance and maxDistance
+    GraphicsRectangularBranchItem *item = getBranch(node);  // modifies minDistance and maxDistance
     CHECK(item != nullptr, );
     item->setWidthW(0);
     item->setDist(0);
@@ -167,4 +167,4 @@ void CreateRectangularBranchesTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

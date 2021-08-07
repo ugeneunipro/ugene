@@ -614,4 +614,4 @@ IMPLEMENT_TEST(CInterfaceSasTests, extract_consensus_sas) {
     releaseScheme(scheme);
 }
 
-}    // namespace U2
+}  // namespace U2

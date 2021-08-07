@@ -237,6 +237,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     d = GTUtilsDocument::getDocument(os, "sars.gb");
     CHECK_SET_ERR(d->isModificationAllowed(StateLockModType_AddChild), QString("Enable to perform locking/unlocking for : %1").arg(d->getName()));
 }
-}    // namespace GUITest_common_scenarios_project_user_locking
+}  // namespace GUITest_common_scenarios_project_user_locking
 
-}    // namespace U2
+}  // namespace U2

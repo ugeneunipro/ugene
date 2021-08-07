@@ -124,5 +124,5 @@ int KrakenBuildWorker::getListenersCount(const KrakenBuildTaskSettings &settings
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

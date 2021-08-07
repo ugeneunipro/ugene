@@ -120,7 +120,7 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
         if (!_index->find(t, dataS + s)) {
             continue;
         }
-        //here we have iterator set to the first match in A, guaranteed match length for all values returned by iterator = Q
+        // here we have iterator set to the first match in A, guaranteed match length for all values returned by iterator = Q
         int a;
         while ((a = _index->nextArrSeqPos(t)) != -1) {
             if (reflective && s >= a) {
@@ -128,7 +128,7 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             }
             int diag = a > s0diag ? aSize + s0diag - a : s0diag - a;
             assert(diag >= 0 && diag < diagOffsets.size());
-            if (!IS_THREAD_DIAG(diag)) {    //this diagonal is assigned to another thread -> skip it
+            if (!IS_THREAD_DIAG(diag)) {  // this diagonal is assigned to another thread -> skip it
                 continue;
             }
             int checkedS = diags[diag];
@@ -136,7 +136,7 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
                 continue;
             }
 
-            assert(s == 0 || a == 0 || !PCHAR_MATCHES(dataS + s - 1, dataA + a - 1));    //this result must be processed on prev s step!
+            assert(s == 0 || a == 0 || !PCHAR_MATCHES(dataS + s - 1, dataA + a - 1));  // this result must be processed on prev s step!
 
             // construct initial window, startS/startA - start positions for potential hit
             const char *startS = dataS + s;
@@ -145,16 +145,16 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             const char *posA = startA + q;
             assert(PCHAR_MATCHES(startS, startA));
             const char *endS = startS + W;
-            //find first mismatch -> need it to update diags
+            // find first mismatch -> need it to update diags
             for (; PCHAR_MATCHES(posS, posA) && posS < endS; posS++, posA++) {
             }
             int c = 0;
-            if (posS != endS) {    //there was mismatch on W range -> save its pos and find all other mismatches on W range
+            if (posS != endS) {  // there was mismatch on W range -> save its pos and find all other mismatches on W range
                 const char *firstMismatchPosS = posS;
                 for (c = 1; (c += PCHAR_MATCHES(posS, posA) ? 0 : 1) <= CMAX && posS < endS; posS++, posA++) {
                 }
                 assert(posS - startS <= W);
-                if (c > CMAX) {    // to many mismatches on forward strand
+                if (c > CMAX) {  // to many mismatches on forward strand
                     assert(!PCHAR_MATCHES(firstMismatchPosS, posA - (posS - firstMismatchPosS)));
                     diags[diag] = firstMismatchPosS - dataS;
                     continue;
@@ -167,20 +167,20 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             for (; c <= CMAX && posA < dataAEnd && posS < dataSEnd; posA++, posS++) {
                 int popVal = PCHAR_MATCHES(posA - W, posS - W) ? 0 : 1;
                 int pushVal = PCHAR_MATCHES(posA, posS) ? 0 : 1;
-                //allMismatches += pushVal - popVal;
+                // allMismatches += pushVal - popVal;
                 assert(c >= 0);
                 c += pushVal - popVal;
             }
 
             int len = posS - startS;
-            int lastCheckedS = s + len - (W - q + 1);    // the first point of the last window checked
+            int lastCheckedS = s + len - (W - q + 1);  // the first point of the last window checked
 
             const char *posAA = startA, *posSS = startS;
             for (int ppppos = 0; ppppos < len; posAA++, posSS++, ppppos++) {
                 allMismatches += PCHAR_MATCHES(posAA, posSS) ? 0 : 1;
             }
 
-            //now shift to the first mismatch pos and save value in diags
+            // now shift to the first mismatch pos and save value in diags
             const char *firstMismatchPosS = dataS + lastCheckedS - 1;
             const char *firstMismatchPosA = dataA + a + (lastCheckedS - 1 - s);
             while (++firstMismatchPosS < dataSEnd && ++firstMismatchPosA < dataAEnd && PCHAR_MATCHES(firstMismatchPosS, firstMismatchPosA)) {
@@ -188,15 +188,15 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             assert(firstMismatchPosS <= posS);
             diags[diag] = firstMismatchPosS - dataS;
 
-            //ensure that match with len > W ends with hit
+            // ensure that match with len > W ends with hit
             while (len > W && !PCHAR_MATCHES(startS + len - 1, startA + len - 1)) {
                 len--;
                 allMismatches--;
             }
 
-            //save result
+            // save result
             addResult(a, s, len, len - allMismatches);
-            assert(len >= W);    //a place for a break-point
+            assert(len >= W);  // a place for a break-point
         }
     }
 }
@@ -217,4 +217,4 @@ void RFSArrayWKSubtask::run() {
     owner->calculate(this);
 }
 
-}    // namespace U2
+}  // namespace U2

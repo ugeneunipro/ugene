@@ -53,6 +53,6 @@ private:
     QList<ImportFileToDatabaseTask *> importSubfilesTasks;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_DIR_TO_DATABASE_TASK_H_
+#endif  // _U2_IMPORT_DIR_TO_DATABASE_TASK_H_

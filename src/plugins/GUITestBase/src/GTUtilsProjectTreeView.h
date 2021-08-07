@@ -141,6 +141,6 @@ private:
     static void sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, QWidget *dropWidget);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

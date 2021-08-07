@@ -46,8 +46,8 @@ private:
     bool onlyBuildIndex;
     QList<GUrl> shortReadUrls;
 
-};    // GenomeAlignerCMDLineTask
+};  // GenomeAlignerCMDLineTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_CMDLINE_TASK_H_
+#endif  // _U2_GENOME_ALIGNER_CMDLINE_TASK_H_

@@ -245,6 +245,6 @@ protected:
     static const QString PREV_OBJ_PATH_ATTR_NAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

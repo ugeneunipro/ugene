@@ -46,25 +46,25 @@ AnnotatedDNAViewFactory::AnnotatedDNAViewFactory()
 }
 
 bool AnnotatedDNAViewFactory::canCreateView(const MultiGSelection &multiSelection) {
-    //return true if
-    //1. selection has loaded of unloaded DNA sequence object
-    //2. selection has any object with SEQUENCE relation to DNA sequence object that is in the project
-    //3. selection has document that have sequence object or object assosiated with sequence
+    // return true if
+    // 1. selection has loaded of unloaded DNA sequence object
+    // 2. selection has any object with SEQUENCE relation to DNA sequence object that is in the project
+    // 3. selection has document that have sequence object or object assosiated with sequence
 
-    //1.
+    // 1.
     QList<GObject *> selectedObjects = SelectionUtils::findObjects("", &multiSelection, UOF_LoadedAndUnloaded);
     QList<GObject *> selectedSequences = GObjectUtils::select(selectedObjects, GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
     if (!selectedSequences.isEmpty()) {
         return true;
     }
 
-    //2.
+    // 2.
     QList<GObject *> objectsWithSeqRelation = GObjectUtils::selectObjectsWithRelation(selectedObjects, GObjectTypes::SEQUENCE, ObjectRole_Sequence, UOF_LoadedAndUnloaded, true);
     if (!objectsWithSeqRelation.isEmpty()) {
         return true;
     }
 
-    //3.
+    // 3.
     const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
     if (ds == nullptr) {
         return false;
@@ -133,19 +133,19 @@ bool AnnotatedDNAViewFactory::isStateInSelection(const MultiGSelection &multiSel
     assert(!refs.isEmpty());
     foreach (const GObjectReference &ref, refs) {
         Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-        if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+        if (doc == nullptr) {  // todo: accept to use invalid state removal routines of ObjectViewTask ???
             return false;
         }
-        //check that document is in selection
+        // check that document is in selection
         QList<Document *> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
         bool docIsSelected = selectedDocs.contains(doc);
 
-        //check that object is in selection
+        // check that object is in selection
         QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
         GObject *obj = doc->findGObjectByName(ref.objName);
         bool objIsSelected = obj != nullptr && selectedObjects.contains(obj);
 
-        //check that object associated with sequence object is in selection
+        // check that object associated with sequence object is in selection
         bool refIsSelected = false;
         foreach (const GObject *selObject, selectedObjects) {
             GObjectReference selRef(selObject);
@@ -166,4 +166,4 @@ Task *AnnotatedDNAViewFactory::createViewTask(const QString &viewName, const QVa
     return new OpenSavedAnnotatedDNAViewTask(viewName, stateData);
 }
 
-}    // namespace U2
+}  // namespace U2

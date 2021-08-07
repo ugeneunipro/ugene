@@ -72,4 +72,4 @@ int ScriptEditorWidget::scriptEditCursorLineNumber() const {
     return scriptEdit->cursorLineNumber();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -107,4 +107,4 @@ void RegionSelectorWithExcludedRegion::connectSlots() {
     connect(ui->excludeCheckBox, SIGNAL(toggled(bool)), ui->excludeWidget, SLOT(setEnabled(bool)));
 }
 
-}    // namespace U2
+}  // namespace U2

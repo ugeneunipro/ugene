@@ -363,11 +363,11 @@ void SQLiteDbi::init(const QHash<QString, QString> &props, const QVariantMap &, 
         SQLiteWriteQuery("PRAGMA cache_size = 50000", db, os).execute();
         SQLiteWriteQuery("PRAGMA recursive_triggers = ON", db, os).execute();
         SQLiteWriteQuery("PRAGMA foreign_keys = ON", db, os).execute();
-        //SQLiteQuery("PRAGMA page_size = 4096", db, os).execute();
-        //TODO: int sqlite3_enable_shared_cache(int);
-        //TODO: read_uncommitted
-        //TODO: incremental_vacuum
-        //TODO: temp_store_directory
+        // SQLiteQuery("PRAGMA page_size = 4096", db, os).execute();
+        // TODO: int sqlite3_enable_shared_cache(int);
+        // TODO: read_uncommitted
+        // TODO: incremental_vacuum
+        // TODO: temp_store_directory
 
         // check if the opened database is valid sqlite dbi
         initProperties = props;
@@ -491,4 +491,4 @@ bool SQLiteDbiFactory::isDbiExists(const U2DbiId &id) const {
 
 const U2DbiFactoryId SQLiteDbiFactory::ID = SQLITE_DBI_ID;
 
-}    // namespace U2
+}  // namespace U2

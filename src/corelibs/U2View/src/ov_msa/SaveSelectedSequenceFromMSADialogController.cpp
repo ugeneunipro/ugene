@@ -206,4 +206,4 @@ QString SaveDocumentInFolderController::getSaveDirName() const {
     return filePath;
 }
 
-}    // namespace U2
+}  // namespace U2

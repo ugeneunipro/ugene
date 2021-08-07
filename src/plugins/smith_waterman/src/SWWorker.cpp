@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "SWWorker.h"
 
@@ -287,17 +287,17 @@ QString SWPrompter::composeRichDoc() {
 
     QString strandName;
     switch (cfg.strand) {
-    case StrandOption_Both:
-        strandName = SWWorker::tr("both strands");
-        break;
-    case StrandOption_DirectOnly:
-        strandName = SWWorker::tr("direct strand");
-        break;
-    case StrandOption_ComplementOnly:
-        strandName = SWWorker::tr("complementary strand");
-        break;
-    default:
-        assert(false);
+        case StrandOption_Both:
+            strandName = SWWorker::tr("both strands");
+            break;
+        case StrandOption_DirectOnly:
+            strandName = SWWorker::tr("direct strand");
+            break;
+        case StrandOption_ComplementOnly:
+            strandName = SWWorker::tr("complementary strand");
+            break;
+        default:
+            assert(false);
     }
 
     QString searchInTranslationSelected = "";
@@ -441,14 +441,14 @@ Task *SWWorker::tick() {
         QString filter = actor->getParameter(FILTER_ATTR)->getAttributeValue<QString>(context);
         cfg.resultFilter = AppContext::getSWResultFilterRegistry()->getFilter(filter);
         if (cfg.resultFilter == nullptr) {
-            algoLog.error(tr("Incorrect value:  filter name incorrect, default value used"));    //details level won't work
+            algoLog.error(tr("Incorrect value:  filter name incorrect, default value used"));  // details level won't work
             cfg.resultFilter = AppContext::getSWResultFilterRegistry()->getFilter("none");
         }
 
         // annotation name
         QString defaultName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
         if (defaultName.isEmpty()) {
-            algoLog.error(tr("Incorrect value: result name is empty, default value used"));    //details level won't work
+            algoLog.error(tr("Incorrect value: result name is empty, default value used"));  // details level won't work
             defaultName = "misc_feature";
         }
 
@@ -469,7 +469,7 @@ Task *SWWorker::tick() {
         if (actor->getParameter(AMINO_ATTR)->getAttributeValue<bool>(context)) {
             DNATranslationType tt = seq.alphabet->getType() == DNAAlphabet_NUCL ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
             QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(seq.alphabet, tt);
-            if (!TTs.isEmpty()) {    //FIXME let user choose or use hints ?
+            if (!TTs.isEmpty()) {  // FIXME let user choose or use hints ?
                 cfg.aminoTT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(seq.alphabet);
             }
         }
@@ -498,9 +498,9 @@ Task *SWWorker::tick() {
             config.ptrn = p;
 
             QString resultName = actor->getParameter(USE_PATTERN_NAME_ATTR)
-                                         ->getAttributeValue<bool>(context) ?
-                                     patternNames.value(p, defaultName) :
-                                     defaultName;
+                                         ->getAttributeValue<bool>(context)
+                                     ? patternNames.value(p, defaultName)
+                                     : defaultName;
             SmithWatermanReportCallbackAnnotImpl *rcb = new SmithWatermanReportCallbackAnnotImpl(
                 nullptr, U2FeatureTypes::MiscFeature, resultName, QString(), "", false);
             config.resultCallback = rcb;
@@ -563,5 +563,5 @@ void SWWorker::sl_taskFinished(Task *t) {
 void SWWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

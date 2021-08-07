@@ -271,6 +271,6 @@ private:
     void removeObjectSpecificData(const U2DataId &id, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_OBJECT_DBI_H_
+#endif  // _U2_MYSQL_OBJECT_DBI_H_

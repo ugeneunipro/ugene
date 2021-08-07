@@ -1485,4 +1485,4 @@ IMPLEMENT_TEST(CInterfaceManualTests, consensus) {
     releaseScheme(scheme);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -129,7 +129,7 @@ private:
     QStringList warnings;
 
 private:
-    mutable QReadWriteLock lock;    //the lock is used because error & stateDesc can be assigned from any thread
+    mutable QReadWriteLock lock;  // the lock is used because error & stateDesc can be assigned from any thread
 };
 
 class U2CORE_EXPORT TaskTimeInfo {
@@ -138,11 +138,11 @@ public:
         : startTime(0), finishTime(0), timeOut(-1) {
     }
 
-    //time in microseconds from Unix Epoch (UTC). See Timer.h
-    qint64 startTime;    //the time task is promoted to 'running' state
-    qint64 finishTime;    //the time task is promoted to 'finished' state
+    // time in microseconds from Unix Epoch (UTC). See Timer.h
+    qint64 startTime;  // the time task is promoted to 'running' state
+    qint64 finishTime;  // the time task is promoted to 'finished' state
 
-    int timeOut;    //number of seconds to be passed before tasks is timed out, -1 -> timeout function is disabled
+    int timeOut;  // number of seconds to be passed before tasks is timed out, -1 -> timeout function is disabled
 };
 
 #define MAX_PARALLEL_SUBTASKS_AUTO 0
@@ -266,13 +266,13 @@ public:
         ReportResult_CallMeAgain
     };
 
-    //Creates new task with State_New state
+    // Creates new task with State_New state
     Task(const QString &_name, TaskFlags f);
 
-    //Prepares Task to run
-    //Task must request/prepare all resources it needs, create subtasks and define progress management type
-    //This method called after Task is added to Scheduler from the main thread
-    //After calling this method task gets State_Prepared state
+    // Prepares Task to run
+    // Task must request/prepare all resources it needs, create subtasks and define progress management type
+    // This method called after Task is added to Scheduler from the main thread
+    // After calling this method task gets State_Prepared state
     virtual void prepare() {
     }
 
@@ -280,7 +280,7 @@ public:
     // Task gets State_Running state when its first of its subtasks is run
     virtual void run() {
         assert(0);
-    }    // assertion is added to find all tasks with RUN declared in flags but not implemented
+    }  // assertion is added to find all tasks with RUN declared in flags but not implemented
 
     // Called from the main thread after run() is finished
     // Task must report all of it results if needed.
@@ -486,7 +486,7 @@ public:
         return taskResources;
     }
 
-    //WARN: if set to MAX_PARALLEL_SUBTASKS_AUTO, returns unprocessed value (MAX_PARALLEL_SUBTASKS_AUTO = 0)
+    // WARN: if set to MAX_PARALLEL_SUBTASKS_AUTO, returns unprocessed value (MAX_PARALLEL_SUBTASKS_AUTO = 0)
     int getMaxParallelSubtasks() const {
         return maxParallelSubtasks;
     }
@@ -632,7 +632,7 @@ signals:
     void si_stateChanged(Task *task);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::TaskFlags)
 

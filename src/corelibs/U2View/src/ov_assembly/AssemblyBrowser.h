@@ -156,7 +156,7 @@ public:
         return setReferenceAction;
     }
 
-    //public utility functions for zooming
+    // public utility functions for zooming
     bool canPerformZoomIn() const {
         return zoomInAction->isEnabled();
     }
@@ -323,6 +323,6 @@ private:
     bool nothingToVisualize;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

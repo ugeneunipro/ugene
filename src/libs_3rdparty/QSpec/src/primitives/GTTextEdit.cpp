@@ -78,4 +78,4 @@ void GTTextEdit::clear(GUITestOpStatus &os, QTextEdit *textEdit) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

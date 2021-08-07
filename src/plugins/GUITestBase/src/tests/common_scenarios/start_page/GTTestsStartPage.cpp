@@ -138,6 +138,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 }
 
-}    // namespace GUITest_common_scenarios_start_page
+}  // namespace GUITest_common_scenarios_start_page
 
-}    // namespace U2
+}  // namespace U2

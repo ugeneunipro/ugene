@@ -83,4 +83,4 @@ void BreakpointConditionEditDialog::sl_dialogAccepted() {
     emit si_conditionTextChanged(scriptEdit->scriptText());
 }
 
-}    // namespace U2
+}  // namespace U2

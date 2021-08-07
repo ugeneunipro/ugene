@@ -49,9 +49,9 @@ public:
     static const Descriptor CATEGORY_SNP_ANNOTATION();
     static const Descriptor CATEGORY_CHIP_SEQ();
 
-};    // BaseActorCategories
+};  // BaseActorCategories
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
 #endif

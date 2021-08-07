@@ -38,5 +38,5 @@ private:
     int startPos;
 };
 
-}    // namespace U2
-#endif    // CREATERULERDIALOGFILLER_H
+}  // namespace U2
+#endif  // CREATERULERDIALOGFILLER_H

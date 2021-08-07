@@ -36,6 +36,6 @@ protected:
     MysqlDbi *dbi;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADER_H_
+#endif  // _U2_MYSQL_UPGRADER_H_

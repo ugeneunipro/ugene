@@ -46,8 +46,8 @@ GUI_TEST_CLASS_DECLARATION(test_0013)
 GUI_TEST_CLASS_DECLARATION(test_0014)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_project_filtering
+}  // namespace GUITest_common_scenarios_project_filtering
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_TEST_PROJECT_FILTERING_H_
+#endif  // _U2_GUI_TEST_PROJECT_FILTERING_H_

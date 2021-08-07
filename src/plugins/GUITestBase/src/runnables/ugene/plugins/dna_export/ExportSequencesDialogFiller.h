@@ -69,6 +69,6 @@ private:
     QMap<MergeOptions, QString> mergeRadioButtons;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -139,7 +139,7 @@ void PairAlign::initParameters() {
 
     QString outputFileName = pairwiseAlignmentWidgetsSettings->resultFileName;
     if (outputFileName.isEmpty()) {
-        saveController->setPath(getDefaultFilePath());    // controller will roll file name here
+        saveController->setPath(getDefaultFilePath());  // controller will roll file name here
     } else {
         outputFileLineEdit->setText(outputFileName);
     }
@@ -200,7 +200,7 @@ void PairAlign::initSaveController() {
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::CLUSTAL_ALN;
 
     saveController = new SaveDocumentController(config, formats, this);
-    saveController->setPath(getDefaultFilePath());    // controller will roll file name here
+    saveController->setPath(getDefaultFilePath());  // controller will roll file name here
 }
 
 QString PairAlign::getDefaultFilePath() {
@@ -464,4 +464,4 @@ void PairAlign::sl_selectorTextChanged() {
     checkState();
 }
 
-}    // namespace U2
+}  // namespace U2

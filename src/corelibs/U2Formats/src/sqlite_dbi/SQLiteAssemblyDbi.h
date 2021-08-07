@@ -189,6 +189,6 @@ public:
     virtual PackAlgorithmData load(SQLiteQuery *q);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

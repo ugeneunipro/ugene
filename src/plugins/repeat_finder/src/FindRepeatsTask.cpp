@@ -232,25 +232,25 @@ void FindRepeatsTask::filterUniqueRepeats() {
 }
 
 void FindRepeatsTask::filterNestedRepeats() {
-    //if one repeats fits into another repeat -> filter it
+    // if one repeats fits into another repeat -> filter it
     quint64 t1 = GTimer::currentTimeMicros();
 
     std::sort(results.begin(), results.end());
 
     bool changed = false;
-    int extraLen = settings.mismatches;    //extra len added to repeat region to search for duplicates
+    int extraLen = settings.mismatches;  // extra len added to repeat region to search for duplicates
     for (int i = 0, n = results.size(); i < n; i++) {
         RFResult &ri = results[i];
-        if (ri.l == -1) {    //this result was filtered
+        if (ri.l == -1) {  // this result was filtered
             continue;
         }
         for (int j = i + 1; j < n; j++) {
             RFResult &rj = results[j];
             assert(rj.x >= ri.x);
-            if (rj.l == -1) {    //was filtered
+            if (rj.l == -1) {  // was filtered
                 continue;
             }
-            if (rj.x > ri.x + ri.l) {    //no more intersection will found with later repeats in first region
+            if (rj.x > ri.x + ri.l) {  // no more intersection will found with later repeats in first region
                 break;
             }
 
@@ -386,7 +386,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     int x2 = x1 + r.l;
     int y2 = y1 + r.l;
 
-    //check mid range includes
+    // check mid range includes
     if (!settings.midRegionsToInclude.isEmpty()) {
         bool checkOk = false;
         foreach (const U2Region &r, settings.midRegionsToInclude) {
@@ -400,7 +400,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
         }
     }
 
-    //check mid range excludes
+    // check mid range excludes
     if (!settings.midRegionsToExclude.isEmpty()) {
         foreach (const U2Region &r, settings.midRegionsToExclude) {
             if (r.intersects(U2Region(x1, y2 - x1))) {
@@ -409,7 +409,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
         }
     }
 
-    //check allowed regions
+    // check allowed regions
     if (!settings.allowedRegions.isEmpty()) {
         bool checkOk = false;
         foreach (const U2Region &r, settings.allowedRegions) {
@@ -481,4 +481,4 @@ QList<SharedAnnotationData> FindRepeatsToAnnotationsTask::importAnnotations() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -51,7 +51,7 @@ DECLARE_TEST(CInterfaceManualTests, gene_by_gene_report);
 DECLARE_TEST(CInterfaceManualTests, merge_sequence_annotation);
 DECLARE_TEST(CInterfaceManualTests, consensus);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(CInterfaceManualTests, basic_align);
 DECLARE_METATYPE(CInterfaceManualTests, faqual2fastq);
@@ -76,4 +76,4 @@ DECLARE_METATYPE(CInterfaceManualTests, gene_by_gene_report);
 DECLARE_METATYPE(CInterfaceManualTests, merge_sequence_annotation);
 DECLARE_METATYPE(CInterfaceManualTests, consensus);
 
-#endif    // _U2_C_INTERFACE_MANUAL_TESTS_H_
+#endif  // _U2_C_INTERFACE_MANUAL_TESTS_H_

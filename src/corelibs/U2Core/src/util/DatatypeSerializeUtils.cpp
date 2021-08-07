@@ -142,7 +142,7 @@ inline bool unpackBool(const uchar *data, int length, int &offset, U2OpStatus &o
     offset++;
     return c != 0;
 }
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* DNAChromatogramSerializer */
@@ -241,7 +241,7 @@ void packTreeNode(QString &resultText, const PhyNode *node, U2OpStatus &os) {
         resultText.append(QString(nodeName));
     }
 }
-}    // namespace
+}  // namespace
 
 #define BUFF_SIZE 1024
 /* TODO:
@@ -284,7 +284,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
                 continue;
             }
             done = false;
-            if (!ops[latin1CharCode]) {    // Not ops -> cache.
+            if (!ops[latin1CharCode]) {  // Not ops -> cache.
                 lastStr.append(ch);
                 continue;
             }
@@ -317,7 +317,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
                     nodeStack.top()->setName(lastStr);
                 } else {
                     CHECK_EXT_BREAK(state == RS_WEIGHT, si.setError(DatatypeSerializers::tr("Incorrect tree parsing state")));
-                    if (!branchStack.isEmpty()) {    // Ignore root node weight if present.
+                    if (!branchStack.isEmpty()) {  // Ignore root node weight if present.
                         if (nodeStack.size() < 2) {
                             si.setError(DatatypeSerializers::tr("Unexpected weight: %1").arg(lastStr));
                         }
@@ -329,16 +329,16 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
             }
 
             // Advance in state.
-            if (ch == '(') {    // A new child.
+            if (ch == '(') {  // A new child.
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 PhyNode *pn = new PhyNode();
                 PhyBranch *bd = PhyTreeData::addBranch(nodeStack.top(), pn, 0);
                 nodeStack.push(pn);
                 branchStack.push(bd);
                 state = RS_NAME;
-            } else if (ch == ':') {    // Weight start.
+            } else if (ch == ':') {  // Weight start.
                 if (state == RS_WEIGHT && !lastStr.isEmpty()) {
-                    if (!branchStack.isEmpty()) {    // Ignore root node weight if present.
+                    if (!branchStack.isEmpty()) {  // Ignore root node weight if present.
                         bool ok = false;
                         branchStack.top()->nodeValue = lastStr.toDouble(&ok);
                         if (!ok) {
@@ -350,7 +350,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
                     }
                 }
                 state = RS_WEIGHT;
-            } else if (ch == ',') {    // New sibling.
+            } else if (ch == ',') {  // New sibling.
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Branch node stack is empty")));
                 if (nodeStack.isEmpty() || branchStack.isEmpty()) {
@@ -364,7 +364,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
                 nodeStack.push(node);
                 branchStack.push(branch);
                 state = RS_NAME;
-            } else if (ch == ')') {    // End of the branch, go up.
+            } else if (ch == ')') {  // End of the branch, go up.
                 nodeStack.pop();
                 if (nodeStack.isEmpty()) {
                     si.setError(DatatypeSerializers::tr("Unexpected closing bracket :%1").arg(lastStr));
@@ -790,7 +790,7 @@ inline AtomCoordSet unpack(const uchar *data, int length, int &offset, U2OpStatu
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 QByteArray BioStruct3DSerializer::serialize(const BioStruct3D &bioStruct) {
     PackContext ctx;
@@ -880,7 +880,7 @@ inline QMap<QString, QString> unpackMap(const uchar *data, int length, int &offs
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 QByteArray WMatrixSerializer::serialize(const PWMatrix &matrix) {
     QByteArray result;
@@ -937,4 +937,4 @@ PFMatrix FMatrixSerializer::deserialize(const QByteArray &binary, U2OpStatus &os
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

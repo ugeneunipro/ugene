@@ -118,4 +118,4 @@ QMap<QString, QString> PWMatrix::getProperties() const {
     return info.getProperties();
 }
 
-}    // namespace U2
+}  // namespace U2

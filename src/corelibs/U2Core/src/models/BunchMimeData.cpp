@@ -39,4 +39,4 @@ QStringList BunchMimeData::formats() const {
     return QStringList(MIME_TYPE);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -100,6 +100,6 @@ private:
     static const qint64 MAX_COPY_SIZE_FOR_X86;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

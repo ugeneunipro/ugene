@@ -147,7 +147,7 @@ void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
 }
 
 void MaConsensusModeWidget::sl_thresholdChanged(int value) {
-    thresholdSpinBox->setValue(value);    // Slider updates automatically
+    thresholdSpinBox->setValue(value);  // Slider updates automatically
 }
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
@@ -171,4 +171,4 @@ void MaConsensusModeWidget::initConsensusTypeCombo() {
     updateState();
 }
 
-}    // namespace U2
+}  // namespace U2

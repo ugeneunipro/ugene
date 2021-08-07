@@ -53,8 +53,8 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/
 
-#endif    // __BINARY_FIND_OPENCL_TESTS_H__
+#endif  // __BINARY_FIND_OPENCL_TESTS_H__

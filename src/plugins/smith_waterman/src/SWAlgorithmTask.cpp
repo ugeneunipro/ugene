@@ -80,7 +80,7 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings &s,
     if ((maxScore * (int)s.percentOfScore) % 100 != 0)
         minScore += 1;
 
-    //acquiring resources for GPU computations
+    // acquiring resources for GPU computations
     if (SW_cuda == algType) {
         addTaskResource(TaskResourceUsage(RESOURCE_CUDA_GPU, 1, true /*prepareStage*/));
     } else if (SW_opencl == algType) {
@@ -120,21 +120,21 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     double computationMatrixSquare = 0.0;
 
     switch (algType) {
-    case SW_sse2:
-        computationMatrixSquare = 1619582300.0;    //this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
-        c.nThreads = idealThreadCount * 2.5;
-        break;
-    case SW_classic:
-        computationMatrixSquare = 751948900.29;    //the same as previous
-        c.nThreads = idealThreadCount;
-        break;
-    case SW_cuda:
-    case SW_opencl:
-        computationMatrixSquare = 58484916.67;    //the same as previous
-        c.nThreads = 1;
-        break;
-    default:
-        assert(0);
+        case SW_sse2:
+            computationMatrixSquare = 1619582300.0;  // this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
+            c.nThreads = idealThreadCount * 2.5;
+            break;
+        case SW_classic:
+            computationMatrixSquare = 751948900.29;  // the same as previous
+            c.nThreads = idealThreadCount;
+            break;
+        case SW_cuda:
+        case SW_opencl:
+            computationMatrixSquare = 58484916.67;  // the same as previous
+            c.nThreads = 1;
+            break;
+        default:
+            assert(0);
     }
 
     c.walkCircular = sWatermanConfig.searchCircular;
@@ -157,46 +157,46 @@ void SWAlgorithmTask::setupTask(int maxScore) {
 
     c.lastChunkExtraLen = partsNumber - 1;
 
-    //acquiring memory resources for computations
+    // acquiring memory resources for computations
     switch (algType) {
-    case SW_cuda:
+        case SW_cuda:
 #ifdef SW2_BUILD_WITH_CUDA
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
-                                          true));
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
+                                              true));
 #endif
-        break;
-    case SW_opencl:
+            break;
+        case SW_opencl:
 #ifdef SW2_BUILD_WITH_OPENCL
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
-                                          true));
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
+                                              true));
 #endif
-        break;
-    case SW_classic:
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
-                                                                                          sWatermanConfig.gapModel.scoreGapExtd,
-                                                                                          minScore,
-                                                                                          maxScore,
-                                                                                          sWatermanConfig.ptrn,
-                                                                                          sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
-                                                                                          sWatermanConfig.resultView),
-                                          true));
-        break;
-    case SW_sse2:
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
-                                                                                              sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
-                                                                                              sWatermanConfig.gapModel.scoreGapOpen,
+            break;
+        case SW_classic:
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
                                                                                               sWatermanConfig.gapModel.scoreGapExtd,
                                                                                               minScore,
                                                                                               maxScore,
+                                                                                              sWatermanConfig.ptrn,
+                                                                                              sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
                                                                                               sWatermanConfig.resultView),
-                                          true));
-        break;
-    default:
-        assert(0);
+                                              true));
+            break;
+        case SW_sse2:
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
+                                                                                                  sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
+                                                                                                  sWatermanConfig.gapModel.scoreGapOpen,
+                                                                                                  sWatermanConfig.gapModel.scoreGapExtd,
+                                                                                                  minScore,
+                                                                                                  maxScore,
+                                                                                                  sWatermanConfig.resultView),
+                                              true));
+            break;
+        default:
+            assert(0);
     }
 
     t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
@@ -275,14 +275,14 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
 #else
         coreLog.error("CUDA was not enabled in this build");
         return;
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA
     } else if (algType == SW_opencl) {
 #ifdef SW2_BUILD_WITH_OPENCL
         sw = new SmithWatermanAlgorithmOPENCL;
 #else
         coreLog.error("OPENCL was not enabled in this build");
         return;
-#endif    //SW2_BUILD_WITH_OPENCL
+#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -385,7 +385,7 @@ int SWAlgorithmTask::calculateMaxScore(const QByteArray &seq, const SMatrix &sub
     for (int i = 0; i < seq.length(); i++) {
         max = 0;
         for (int j = 0; j < alphaChars.size(); j++) {
-            //TODO: use raw pointers!
+            // TODO: use raw pointers!
             char c1 = seq.at(i);
             char c2 = alphaChars.at(j);
             substValue = substitutionMatrix.getScore(c1, c2);
@@ -486,7 +486,7 @@ PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSe
 }
 
 PairwiseAlignmentSmithWatermanTaskSettings::~PairwiseAlignmentSmithWatermanTaskSettings() {
-    //all dynamic objects in the world will be destroyed by the task
+    // all dynamic objects in the world will be destroyed by the task
 }
 
 bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
@@ -554,7 +554,7 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
         minScore += 1;
     }
 
-    //acquiring resources for GPU computations
+    // acquiring resources for GPU computations
     if (SW_cuda == algType) {
         addTaskResource(TaskResourceUsage(RESOURCE_CUDA_GPU, 1, true /*prepareStage*/));
     } else if (SW_opencl == algType) {
@@ -567,7 +567,7 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
 PairwiseAlignmentSmithWatermanTask::~PairwiseAlignmentSmithWatermanTask() {
     delete settings->reportCallback;
     delete settings->resultListener;
-    //result filter stored in registry, don`t delete it here
+    // result filter stored in registry, don`t delete it here
     delete settings;
 }
 
@@ -586,14 +586,14 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask *t, Task
 #else
         coreLog.error("CUDA was not enabled in this build");
         return;
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA
     } else if (algType == SW_opencl) {
 #ifdef SW2_BUILD_WITH_OPENCL
         sw = new SmithWatermanAlgorithmOPENCL;
 #else
         coreLog.error("OPENCL was not enabled in this build");
         return;
-#endif    //SW2_BUILD_WITH_OPENCL
+#endif  // SW2_BUILD_WITH_OPENCL
     } else {
         assert(algType == SW_classic);
         sw = new SmithWatermanAlgorithm;
@@ -652,7 +652,7 @@ int PairwiseAlignmentSmithWatermanTask::calculateMaxScore(const QByteArray &seq,
     for (int i = 0; i < seq.length(); i++) {
         max = 0;
         for (int j = 0; j < alphaChars.size(); j++) {
-            //TODO: use raw pointers!
+            // TODO: use raw pointers!
             char c1 = seq.at(i);
             char c2 = alphaChars.at(j);
             substValue = substitutionMatrix.getScore(c1, c2);
@@ -682,21 +682,21 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     double computationMatrixSquare = 0.0;
 
     switch (algType) {
-    case SW_sse2:
-        computationMatrixSquare = 16195823.0;    //this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
-        c.nThreads = idealThreadCount * 2.5;
-        break;
-    case SW_classic:
-        computationMatrixSquare = 7519489.29;    //the same as previous
-        c.nThreads = idealThreadCount;
-        break;
-    case SW_cuda:
-    case SW_opencl:
-        computationMatrixSquare = 58484916.67;    //the same as previous
-        c.nThreads = 1;
-        break;
-    default:
-        assert(0);
+        case SW_sse2:
+            computationMatrixSquare = 16195823.0;  // this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
+            c.nThreads = idealThreadCount * 2.5;
+            break;
+        case SW_classic:
+            computationMatrixSquare = 7519489.29;  // the same as previous
+            c.nThreads = idealThreadCount;
+            break;
+        case SW_cuda:
+        case SW_opencl:
+            computationMatrixSquare = 58484916.67;  // the same as previous
+            c.nThreads = 1;
+            break;
+        default:
+            assert(0);
     }
 
     partsNumber = static_cast<qint64>(sqnc->size() / (computationMatrixSquare / ptrn->size()) + 1.0);
@@ -712,40 +712,40 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
 
     c.lastChunkExtraLen = partsNumber - 1;
 
-    //acquiring memory resources for computations
+    // acquiring memory resources for computations
     switch (algType) {
-    case SW_cuda:
+        case SW_cuda:
 #ifdef SW2_BUILD_WITH_CUDA
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                          true));
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
+                                              true));
 #endif
-        break;
-    case SW_opencl:
+            break;
+        case SW_opencl:
 #ifdef SW2_BUILD_WITH_OPENCL
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                          true));
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
+                                              true));
 #endif
-        break;
-    case SW_classic:
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen, settings->gapExtd, minScore, maxScore, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                          true));
-        break;
-    case SW_sse2:
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                          SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
-                                                                                              sqnc->left(c.chunkSize * c.nThreads),
-                                                                                              settings->gapOpen,
-                                                                                              settings->gapExtd,
-                                                                                              minScore,
-                                                                                              maxScore,
-                                                                                              SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                          true));
-        break;
-    default:
-        assert(0);
+            break;
+        case SW_classic:
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen, settings->gapExtd, minScore, maxScore, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
+                                              true));
+            break;
+        case SW_sse2:
+            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
+                                              SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
+                                                                                                  sqnc->left(c.chunkSize * c.nThreads),
+                                                                                                  settings->gapOpen,
+                                                                                                  settings->gapExtd,
+                                                                                                  minScore,
+                                                                                                  maxScore,
+                                                                                                  SmithWatermanSettings::MULTIPLE_ALIGNMENT),
+                                              true));
+            break;
+        default:
+            assert(0);
     }
 
     t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
@@ -972,4 +972,4 @@ void PairwiseAlignmentSWResultsPostprocessingTask::run() {
 void PairwiseAlignmentSWResultsPostprocessingTask::prepare() {
 }
 
-}    // namespace U2
+}  // namespace U2

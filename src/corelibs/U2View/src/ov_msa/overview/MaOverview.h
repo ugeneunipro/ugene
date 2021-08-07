@@ -90,6 +90,6 @@ protected:
     double stepY;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_OVERVIEW_H_
+#endif  // _U2_MSA_OVERVIEW_H_

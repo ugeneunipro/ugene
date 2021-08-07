@@ -52,7 +52,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 #ifdef Q_OS_WIN
-    QProcess::execute("closeAllErrors.exe");    //this exe file, compiled Autoit script
+    QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
 #endif
 
     GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
@@ -88,7 +88,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
-    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {  // Restored by the parent process
         qDebug("Skipping backup: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
@@ -126,5 +126,5 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
 #endif
 }
 
-}    // namespace GUITest_preliminary_actions
-}    // namespace U2
+}  // namespace GUITest_preliminary_actions
+}  // namespace U2

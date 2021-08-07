@@ -76,5 +76,5 @@ ActorPrototypeRegistry::~ActorPrototypeRegistry() {
     }
     groups.clear();
 }
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

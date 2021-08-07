@@ -81,7 +81,7 @@ void FindGcRegionsTask::find(const char *seq,
 
     result.append(lastFound);
 
-    //remove (0,0) region located in the beginning of the array
+    // remove (0,0) region located in the beginning of the array
     if (!result.isEmpty() && result.first().isEmpty()) {
         result.remove(0);
     }
@@ -94,7 +94,7 @@ void FindGcRegionsTask::run() {
 
     if (settings_.strand == QDStrand_ComplementOnly || settings_.strand == QDStrand_Both) {
         assert(settings_.complTT);
-        //TextUtils::translate(settings_.complTT->getOne2OneMapper(), &ch, 1);
+        // TextUtils::translate(settings_.complTT->getOne2OneMapper(), &ch, 1);
         find(sequence_.seq.constData(), sequence_.seq.length(), settings_.gcRangeInPercents, settings_.minLen, compResults);
     }
 }
@@ -269,4 +269,4 @@ QDFindGcActorPrototype::QDFindGcActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

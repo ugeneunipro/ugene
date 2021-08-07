@@ -143,4 +143,4 @@ void PrimerLibraryWidget::sl_selectionChanged() {
     exportPrimersButton->setDisabled(selection.isEmpty());
 }
 
-}    // namespace U2
+}  // namespace U2

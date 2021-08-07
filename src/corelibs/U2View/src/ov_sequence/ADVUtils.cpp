@@ -71,4 +71,4 @@ QString ADVSelectionUtils::getSequenceIdsFromSelection(const QList<Annotation *>
     return genbankID.join(",");
 }
 
-}    // namespace U2
+}  // namespace U2

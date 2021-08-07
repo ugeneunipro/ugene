@@ -50,4 +50,4 @@ void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStri
     widget->updateRecent(recentProjects, recentFiles);
 }
 
-}    // namespace U2
+}  // namespace U2

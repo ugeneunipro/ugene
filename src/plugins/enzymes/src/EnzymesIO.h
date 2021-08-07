@@ -80,6 +80,6 @@ public:
 
 #define DEFAULT_ENZYMES_FILE QString("2013_08_01.bairoch.gz")
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

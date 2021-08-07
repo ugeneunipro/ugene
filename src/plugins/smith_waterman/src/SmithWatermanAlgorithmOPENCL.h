@@ -73,7 +73,7 @@ private:
     cl_mem backtraceBegins;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #    endif
-#endif    //SW2_BUILD_WITH_OPENCL
+#endif  // SW2_BUILD_WITH_OPENCL

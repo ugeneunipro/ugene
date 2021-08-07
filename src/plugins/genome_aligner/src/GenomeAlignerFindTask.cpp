@@ -365,4 +365,4 @@ void ShortReadAlignerOpenCL::run() {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2

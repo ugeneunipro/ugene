@@ -49,6 +49,6 @@ private:
     QHash<UdrSchemaId, const UdrSchema *> schemas;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_UDRSCHEMAREGISTRY_H_
+#endif  // _U2_UDRSCHEMAREGISTRY_H_

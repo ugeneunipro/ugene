@@ -76,6 +76,6 @@ private slots:
     void sl_cpuCountChanged(int n);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

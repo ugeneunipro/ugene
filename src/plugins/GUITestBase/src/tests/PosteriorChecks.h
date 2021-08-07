@@ -38,7 +38,7 @@ POSTERIOR_CHECK_DECLARATION(post_check_0001)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_posterior_checks
-}    // namespace U2
+}  // namespace GUITest_posterior_checks
+}  // namespace U2
 
-#endif    // _U2_POSTERIOR_CHECKS_H_
+#endif  // _U2_POSTERIOR_CHECKS_H_

@@ -61,14 +61,14 @@ QList<QSharedPointer<GSequenceGraphData>> KarlinGraphFactory::createGraphs(GSequ
 
 static int getIndex(char nucl) {
     switch (nucl) {
-    case 'A':
-        return 0;
-    case 'C':
-        return 1;
-    case 'T':
-        return 2;
-    case 'G':
-        return 3;
+        case 'A':
+            return 0;
+        case 'C':
+            return 1;
+        case 'T':
+            return 2;
+        case 'G':
+            return 3;
     }
     return -1;
 }
@@ -76,7 +76,7 @@ static int getIndex(char nucl) {
 #define IDX(x, y) ((x)*4 + (y))
 #define IDX_NUCL(x, y) IDX(getIndex(x), getIndex(y))
 
-//todo:: use limits
+// todo:: use limits
 static const float FLOAT_MIN = 0.000000001f;
 
 KarlinGraphAlgorithm::KarlinGraphAlgorithm()
@@ -111,7 +111,7 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
         calculateRelativeAbundance(seqc, seqLen, global_relative_abundance_values, os);
         CHECK_OP(os, );
     }
-    //check!!
+    // check!!
     for (int i = 0; i < nSteps; i++) {
         int start = vr.startPos + i * d->step;
         int end = start + d->window;
@@ -209,4 +209,4 @@ void KarlinGraphAlgorithm::calculateRelativeAbundance(const char *seq, int lengt
     }
 }
 
-}    // namespace U2
+}  // namespace U2

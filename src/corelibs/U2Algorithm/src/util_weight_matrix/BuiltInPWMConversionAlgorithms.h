@@ -36,6 +36,6 @@ public:
     static const QString NLG_ALGO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

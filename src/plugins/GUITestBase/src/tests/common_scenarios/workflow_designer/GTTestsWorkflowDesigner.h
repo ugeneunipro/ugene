@@ -52,8 +52,8 @@ GUI_TEST_CLASS_DECLARATION(test_0061)
 GUI_TEST_CLASS_DECLARATION(test_0062)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_workflow_designer
+}  // namespace GUITest_common_scenarios_workflow_designer
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTS_WORKFLOW_DESIGNER_H_
+#endif  // GTTESTS_WORKFLOW_DESIGNER_H_

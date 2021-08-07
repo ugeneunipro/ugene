@@ -42,7 +42,7 @@ public:
 
 protected:
     QString composeRichDoc();
-};    //SortBamPrompter
+};  // SortBamPrompter
 
 class SortBamWorker : public BaseWorker {
     Q_OBJECT
@@ -63,7 +63,7 @@ private:
     QString takeUrl();
     QString getTargetName(const QString &fileUrl, const QString &outDir);
     void sendResult(const QString &url);
-};    //SortBamWorker
+};  // SortBamWorker
 
 class SortBamWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -76,7 +76,7 @@ public:
     Worker *createWorker(Actor *a) {
         return new SortBamWorker(a);
     }
-};    //SortBamWorkerFactory
+};  // SortBamWorkerFactory
 
 class BamSortSetting {
 public:
@@ -107,7 +107,7 @@ private:
     QString resultUrl;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_SORT_BAM_WORKER_H_
+#endif  //_U2_SORT_BAM_WORKER_H_

@@ -29,11 +29,11 @@ namespace U2 {
 class U2CORE_EXPORT CMDLineHelpProvider {
 public:
     CMDLineHelpProvider(
-        const QString &_fullName,    // Name of the option (e.g. "version")
-        const QString &_shortDescription,    // Description shown in the options list
-        const QString &_fullDescription = QString(),    // Description shown in the option's help
-        const QString &_argsDescription = QString(),    // Description of the option arguments
-        const QString &_shortName = QString())    // Short name of the option (e.g. "v")
+        const QString &_fullName,  // Name of the option (e.g. "version")
+        const QString &_shortDescription,  // Description shown in the options list
+        const QString &_fullDescription = QString(),  // Description shown in the option's help
+        const QString &_argsDescription = QString(),  // Description of the option arguments
+        const QString &_shortName = QString())  // Short name of the option (e.g. "v")
         : fullName(_fullName),
           shortDescription(_shortDescription),
           fullDescription(_fullDescription),
@@ -76,8 +76,8 @@ private:
     QString argsDescription;
     QString shortName;
 
-};    // CMDLineHelpProvider
+};  // CMDLineHelpProvider
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

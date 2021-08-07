@@ -183,6 +183,6 @@ private:
     InputWidgetController *addWidget(InputWidgetController *inputWidget);
     QList<InputWidgetController *> widgetControllers;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_INPUT_WIDGETS_CONTROLLERS_H
+#endif  // _U2_INPUT_WIDGETS_CONTROLLERS_H

@@ -176,4 +176,4 @@ U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThres
     return U2Region(beginPosition, endPosition - beginPosition + 1);
 }
 
-}    // namespace U2
+}  // namespace U2

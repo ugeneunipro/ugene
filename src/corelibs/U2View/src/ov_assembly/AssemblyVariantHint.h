@@ -39,6 +39,6 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _ASSEMBLY_VARIANT_HINT_
+#endif  // _ASSEMBLY_VARIANT_HINT_

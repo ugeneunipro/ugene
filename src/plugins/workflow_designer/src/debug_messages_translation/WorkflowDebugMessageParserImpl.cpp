@@ -183,4 +183,4 @@ GObject *WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString &m
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

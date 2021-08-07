@@ -63,7 +63,7 @@ static QVariantMap string2Map(const QString &string, bool emptyMapIfError) {
 static QList<GObjectRelation> toAbsoluteRelations(const QList<GObjectRelation> &relList, const QDir &projDir) {
     QList<GObjectRelation> absoluteRelations;
     foreach (GObjectRelation rel, relList) {
-        if (GUrl::getURLType(rel.ref.docUrl) == GUrl_File) {    //make URL absolute
+        if (GUrl::getURLType(rel.ref.docUrl) == GUrl_File) {  // make URL absolute
             QFileInfo ff(rel.ref.docUrl);
             if (!ff.isAbsolute()) {
                 QFileInfo tmpFi(projDir.path() + "/" + rel.ref.docUrl);
@@ -96,9 +96,9 @@ static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, 
     foreach (const GObjectRelation &absRel, absRelations) {
         GObjectRelation relRel = absRel;
         relRel.ref.docUrl = urlRemap.value(absRel.getDocURL(), absRel.getDocURL());
-        if (GUrl::getURLType(relRel.getDocURL()) == GUrl_File) {    //make URL absolute
+        if (GUrl::getURLType(relRel.getDocURL()) == GUrl_File) {  // make URL absolute
 
-#ifdef _DEBUG    //ensure URLs used for relations are always absolute
+#ifdef _DEBUG  // ensure URLs used for relations are always absolute
             QString relDocUrl = relRel.getDocURL();
             QFileInfo fi(relDocUrl);
             QString absolutePath = fi.absoluteFilePath();
@@ -129,7 +129,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
     QFileInfo projectFile(projectUrl);
     QDir projectDir = projectFile.absoluteDir();
 
-    //save documents
+    // save documents
     foreach (Document *gbDoc, project->getDocuments()) {
         if (ProjectUtils::isDatabaseDoc(gbDoc)) {
             continue;
@@ -145,7 +145,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
         QDomElement docElement = xmlDoc.createElement("document");
         docElement.setAttribute("io-adapter", adapterId);
 
-        //for local file save relative path
+        // for local file save relative path
         if (adapterId == BaseIOAdapters::LOCAL_FILE || adapterId == BaseIOAdapters::GZIPPED_LOCAL_FILE) {
             QString relativeUrl = projectDir.relativeFilePath(docUrl);
             docElement.setAttribute("url", relativeUrl);
@@ -153,7 +153,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
             docElement.setAttribute("url", docUrl);
         }
 
-        //store lock info for documents
+        // store lock info for documents
         DocumentFormat *f = gbDoc->getDocumentFormat();
         QString formatId = f->getFormatId();
         docElement.setAttribute("format", formatId);
@@ -163,14 +163,14 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
             docElement.setAttribute("format-lock", 1);
         }
 
-        //store doc-level hints
+        // store doc-level hints
         if (!gbDoc->getGHintsMap().isEmpty()) {
             QString hintsStr = map2String(gbDoc->getGHintsMap());
             QDomText hintsNode = xmlDoc.createCDATASection(hintsStr);
             docElement.appendChild(hintsNode);
         }
 
-        //now save unloaded objects info for all document objects
+        // now save unloaded objects info for all document objects
         foreach (GObject *obj, gbDoc->getObjects()) {
             QDomElement objElement = xmlDoc.createElement("object");
             UnloadedObjectInfo info(obj);
@@ -178,7 +178,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
             objElement.setAttribute("type", info.type);
 
             if (!info.hints.isEmpty()) {
-                //for all object relations make path relative
+                // for all object relations make path relative
                 info.hints[GObjectHint_RelatedObjects] = toRelativeRelations(obj->getObjectRelations(), projectDir, docUrlRemap);
                 QString hintsStr = map2String(info.hints);
                 QDomText hintsNode = xmlDoc.createCDATASection(hintsStr);
@@ -190,9 +190,9 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
         projectElement.appendChild(docElement);
     }
 
-    //save views states
+    // save views states
     foreach (GObjectViewState *view, project->getGObjectViewStates()) {
-        //save document info
+        // save document info
         QDomElement viewElement = xmlDoc.createElement("view");
         viewElement.setAttribute("factory", view->getViewFactoryId());
         viewElement.setAttribute("viewName", view->getViewName());
@@ -209,13 +209,13 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
     QByteArray rawData = xmlDoc.toByteArray();
     //  printf(">>%s", xmlDoc.toString().toStdString().c_str());
 
-    //check that project folder exists
+    // check that project folder exists
     if (!projectDir.exists()) {
         QDir root;
         root.mkpath(projectDir.absolutePath());
     }
 
-    //save project file text to file
+    // save project file text to file
     QFile f(projectUrl);
     if (f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         qint64 s = f.write(rawData);
@@ -301,7 +301,7 @@ GUrl getUrl(const QString &docUrl, const DocumentFormatId &format) {
         return docUrl;
     }
 }
-}    // namespace
+}  // namespace
 
 Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const QDomDocument &xmlDoc, U2OpStatus &os) {
     GCOUNTER(cvar, "ProjectParser10: createProjectFromXMLModel");
@@ -313,7 +313,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
     QList<Document *> documents;
     QList<GObjectViewState *> states;
 
-    //read all documents
+    // read all documents
     QSet<QString> docUrls;
     QDomNodeList documentList = projectElement.elementsByTagName("document");
 
@@ -327,7 +327,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
         QDomElement docElement = dn.toElement();
         QString ioAdapterId = docElement.attribute("io-adapter");
         QFileInfo proj(pURL);
-        //QString docURL = proj.absoluteDir().path() + "/" + docElement.attribute("url");
+        // QString docURL = proj.absoluteDir().path() + "/" + docElement.attribute("url");
         QString fURL(docElement.attribute("url"));
         QFileInfo fi(docElement.attribute("url"));
         QString xmlDocUrl = docElement.attribute("url");
@@ -369,7 +369,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
         bool instanceLock = docElement.attribute("format-lock").toInt() != 0;
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
         DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-        if (df == nullptr) {    // this can happen when close ugene on startup
+        if (df == nullptr) {  // this can happen when close ugene on startup
             continue;
         }
         QVariantMap fs = string2Map(docElement.text(), true);
@@ -437,4 +437,4 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
     return project;
 }
 
-}    // namespace U2
+}  // namespace U2

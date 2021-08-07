@@ -38,7 +38,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // PassFilterPrompter
+};  // PassFilterPrompter
 
 class PassFilterWorker : public BaseWorker {
     Q_OBJECT
@@ -55,7 +55,7 @@ private:
     DataTypePtr mtype;
     QStringList passedValues;
 
-};    // PassFilterWorker
+};  // PassFilterWorker
 
 class PassFilterWorkerFactory : public DomainFactory {
 public:
@@ -67,9 +67,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // PassFilterWorkerFactory
+};  // PassFilterWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _FILTER_SEQUENCE_WORKER_H_
+#endif  // _FILTER_SEQUENCE_WORKER_H_

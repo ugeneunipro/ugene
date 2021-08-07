@@ -102,11 +102,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Options panel. Information tab. Dinucleotides
-    //1. Open file (samples/FASTA/human_T1.fa)
+    // Options panel. Information tab. Dinucleotides
+    // 1. Open file (samples/FASTA/human_T1.fa)
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
+    // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
     QWidget *w = GTWidget::findWidget(os, "Dinucleotides");
@@ -150,11 +150,11 @@ TT:  19 964*/
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
-    //Options panel. Information tab. Dinucleotides
-    //    1. Open file (_common_data/scenarios/_regression/1093/refrence.fa)
+    // Options panel. Information tab. Dinucleotides
+    //     1. Open file (_common_data/scenarios/_regression/1093/refrence.fa)
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1093/", "refrence.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
+    // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
     QWidget *w = GTWidget::findWidget(os, "Dinucleotides");
@@ -218,20 +218,20 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
                   "Sequence length is wrong");
 }
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //1. Open file (samples/FASTA/human_T1.fa)
+    // 1. Open file (samples/FASTA/human_T1.fa)
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Activate Information tab on Options panel at the right edge of UGENE window.
+    // 2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
     QWidget *w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
 
     QPoint point = GTMouseDriver::getMousePosition();
 
-    GTMouseDriver::moveTo(point - QPoint(15, 0));    //move 15 pix left
+    GTMouseDriver::moveTo(point - QPoint(15, 0));  // move 15 pix left
     GTMouseDriver::press();
 
-    GTMouseDriver::moveTo(point + QPoint(80, 0));    //move 80 pix right
+    GTMouseDriver::moveTo(point + QPoint(80, 0));  // move 80 pix right
     GTMouseDriver::release();
 
     GTThread::waitForMainThread();
@@ -252,8 +252,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                            "29.7%  ");
     CHECK_SET_ERR(clipboardText.contains(text), "\nExpected:\n" + text + "\nFound: " + clipboardText);
 
-    //3. Use context menu to select and copy information from "Character Occurrence". Paste copied information into test editor
-    //Expected state: copied and pasted information are identical
+    // 3. Use context menu to select and copy information from "Character Occurrence". Paste copied information into test editor
+    // Expected state: copied and pasted information are identical
 }
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    Options panel. Copying
@@ -270,9 +270,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QString s = l->text();
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
-    //w=GTWidget::findWidget(os,"Characters Occurrence");
+    // w=GTWidget::findWidget(os,"Characters Occurrence");
     GTWidget::click(os, w);
-    //l=w->findChild<QLabel*>();
+    // l=w->findChild<QLabel*>();
 
     CHECK_SET_ERR(s != l->text(), l->text());
     //    3. Activate another opened sequence.
@@ -746,7 +746,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
-    //Check Options panel -> Information tab -> Codons.
+    // Check Options panel -> Information tab -> Codons.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -808,7 +808,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022) {
-    //Check Options panel -> Information tab -> Amino acids.
+    // Check Options panel -> Information tab -> Amino acids.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -869,5 +869,5 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report/2");
 }
 
-}    // namespace GUITest_common_scenarios_options_panel
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_options_panel
+}  // namespace U2

@@ -44,4 +44,4 @@ void BreakpointMultipleHitCounter::setHitCountParameter(quint32 newParameter) {
     multiple = newParameter;
 }
 
-}    // namespace U2
+}  // namespace U2

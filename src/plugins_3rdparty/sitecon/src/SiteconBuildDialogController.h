@@ -91,6 +91,6 @@ private:
     SiteconBuildSettings settings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

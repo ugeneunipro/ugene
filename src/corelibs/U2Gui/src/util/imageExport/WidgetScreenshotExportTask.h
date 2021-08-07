@@ -86,6 +86,6 @@ private:
     QWidget *widget;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIDGET_SCREENSHOT_EXPORT_TASK_H_
+#endif  // _U2_WIDGET_SCREENSHOT_EXPORT_TASK_H_

@@ -132,7 +132,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView *v)
     toggleViewButtonMenu = new QMenu(tr("Toggle views"));
     toggleViewButtonMenu->setIcon(QIcon(":core/images/adv_widget_menu.png"));
 
-    toggleViewButtonMenu->addAction(toggleAllAction);    //-> behavior can be not clear to user
+    toggleViewButtonMenu->addAction(toggleAllAction);  //-> behavior can be not clear to user
     toggleViewButtonMenu->addAction(toggleOveAction);
     toggleViewButtonMenu->addAction(togglePanAction);
     toggleViewButtonMenu->addAction(toggleDetAction);
@@ -317,8 +317,8 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
     QList<ADVSingleSequenceWidget *> seqs = getViewsFromADV();
     QVector<int> offsets(seqs.size());
 
-    //offset here ==> new panview start pos
-    //dOffset is used to keep focused sequence unchanged
+    // offset here ==> new panview start pos
+    // dOffset is used to keep focused sequence unchanged
     U2Region focusedRange;
     int dOffset = 0;
     for (int i = 0; i < seqs.size(); i++) {
@@ -395,7 +395,7 @@ ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
     assert(focusedW != nullptr);
     QList<ADVSingleSequenceWidget *> seqs = getViewsFromADV();
 
-    //if current sequence + any other sequence have annotation selection -> sync by annotation
+    // if current sequence + any other sequence have annotation selection -> sync by annotation
     if (findSelectedAnnotationPos(focusedW) != -1) {
         foreach (ADVSingleSequenceWidget *sw, seqs) {
             if (sw != focusedW && findSelectedAnnotationPos(sw) != -1) {
@@ -404,7 +404,7 @@ ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
         }
     }
 
-    //if current sequence + any other sequence have sequence selection -> sync by annotation
+    // if current sequence + any other sequence have sequence selection -> sync by annotation
     if (!focusedW->getSequenceContext()->getSequenceSelection()->isEmpty()) {
         foreach (ADVSingleSequenceWidget *sw, seqs) {
             if (sw != focusedW && !sw->getSequenceContext()->getSequenceSelection()->isEmpty()) {
@@ -417,7 +417,7 @@ ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
 }
 
 void ADVSyncViewManager::sl_updateVisualMode() {
-    //if have at least 1 visible -> hide all
+    // if have at least 1 visible -> hide all
     bool haveVisiblePan = false;
     bool haveVisibleDet = false;
     bool haveVisibleView = false;
@@ -435,7 +435,7 @@ void ADVSyncViewManager::sl_updateVisualMode() {
 }
 
 void ADVSyncViewManager::sl_toggleVisualMode() {
-    //if have at least 1 visible -> hide all
+    // if have at least 1 visible -> hide all
     bool haveVisibleNav = false;
     bool haveVisiblePan = false;
     bool haveVisibleDet = false;
@@ -574,7 +574,7 @@ void ADVSyncViewManager::sl_updateAutoAnnotationsMenu() {
     foreach (QAction *menuAction, menuActions) {
         QString aName = menuAction->objectName();
         bool haveEnabledAutoAnnotations = false;
-        //if have at least 1 checked  -> uncheck all
+        // if have at least 1 checked  -> uncheck all
         QList<QAction *> aaActions = aaActionMap.values(aName);
         foreach (QAction *aaAction, aaActions) {
             if (aaAction->isChecked()) {
@@ -592,4 +592,4 @@ void ADVSyncViewManager::sl_updateAutoAnnotationsMenu() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -97,6 +97,6 @@ private:
     const QMap<QString, GUITest *> &getConstMap(TestType testType) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -52,6 +52,6 @@ public:
     static const QString RECYCLE_BIN_FOLDER_PATH;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECTUTILS_H_
+#endif  // _U2_PROJECTUTILS_H_

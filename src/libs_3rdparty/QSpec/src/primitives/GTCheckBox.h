@@ -43,5 +43,5 @@ public:
     static void checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget const *const parent = NULL);
 };
 
-}    // namespace HI
+}  // namespace HI
 #endif

@@ -48,4 +48,4 @@ PairwiseAlignmentTask::PairwiseAlignmentTask(TaskFlags flags)
     : AbstractAlignmentTask(tr("Pairwise alignment task"), flags) {
 }
 
-}    // namespace U2
+}  // namespace U2

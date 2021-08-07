@@ -238,11 +238,11 @@ private:
 
     static const QString vntiCreationDateKey;
     static const QString vntiModificationDateKey;
-    static const StrStrMap vntiMetaKeys;    // keys in the comment section
-    static const QMap<U2FeatureType, VntiDnaFeatureTypes> dnaFeatureTypesMap;    // UGENE feature type - vntifkey qualifier value for DNA sequences
-    static const QMap<U2FeatureType, VntiProteinFeatureTypes> proteinFeatureTypesMap;    // UGENE feature type - vntifkey qualifier value for protein sequences
-    static const QMap<VntiDnaFeatureTypes, QString> dnaFeatureType2StringMap;    // vntifkey qualifier value - feature type name in vnti file for DNA files
-    static const QMap<VntiProteinFeatureTypes, QString> proteinFeatureType2StringMap;    // vntifkey qualifier value - feature type name in vnti file for protein files
+    static const StrStrMap vntiMetaKeys;  // keys in the comment section
+    static const QMap<U2FeatureType, VntiDnaFeatureTypes> dnaFeatureTypesMap;  // UGENE feature type - vntifkey qualifier value for DNA sequences
+    static const QMap<U2FeatureType, VntiProteinFeatureTypes> proteinFeatureTypesMap;  // UGENE feature type - vntifkey qualifier value for protein sequences
+    static const QMap<VntiDnaFeatureTypes, QString> dnaFeatureType2StringMap;  // vntifkey qualifier value - feature type name in vnti file for DNA files
+    static const QMap<VntiProteinFeatureTypes, QString> proteinFeatureType2StringMap;  // vntifkey qualifier value - feature type name in vnti file for protein files
     static const QString DEFAULT_FEATURE_TYPE_NAME;
     static const QString QUALIFIER_LABEL;
     static const QString VNTIFKEY_QUALIFIER_NAME;
@@ -254,6 +254,6 @@ private:
     static QMap<VntiProteinFeatureTypes, QString> initProteinFeatureType2StringMap();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VECTOR_NTI_SEQUENCE_FORMAT_H_
+#endif  // _U2_VECTOR_NTI_SEQUENCE_FORMAT_H_

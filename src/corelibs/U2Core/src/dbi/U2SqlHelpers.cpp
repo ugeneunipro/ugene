@@ -33,7 +33,7 @@ static QByteArray emptyBlob;
 static QString emptyString;
 
 qint64 SQLiteUtils::remove(const QString &table, const QString &field, const U2DataId &id, qint64 expectedRows, DbRef *db, U2OpStatus &os) {
-    QMutexLocker m(&db->lock);    // lock db in order to retrieve valid row id for insert
+    QMutexLocker m(&db->lock);  // lock db in order to retrieve valid row id for insert
 
     SQLiteWriteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
     q.bindDataId(1, id);
@@ -463,7 +463,7 @@ qint64 SQLiteQuery::getLastRowId() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-///SQLiteReadQuery
+/// SQLiteReadQuery
 SQLiteReadQuery::SQLiteReadQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
     : SQLiteQuery(_sql, d, _os) {
 }
@@ -478,7 +478,7 @@ bool SQLiteReadQuery::step() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-///SQLiteWriteQuery
+/// SQLiteWriteQuery
 SQLiteWriteQuery::SQLiteWriteQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
     : SQLiteQuery(_sql, d, _os) {
 }
@@ -592,4 +592,4 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

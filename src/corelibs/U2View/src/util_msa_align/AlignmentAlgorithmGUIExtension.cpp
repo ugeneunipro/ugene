@@ -59,4 +59,4 @@ void AlignmentAlgorithmGUIExtensionFactory::sl_widgetDestroyed(QObject *obj) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

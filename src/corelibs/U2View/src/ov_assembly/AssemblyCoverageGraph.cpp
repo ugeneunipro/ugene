@@ -88,7 +88,7 @@ void AssemblyCoverageGraph::drawGraph(QPainter &p, const CoverageInfo &ci, int a
     SAFE_POINT(visibleBases == coverageInfo.size(), "in AssemblyCoverageGraph::drawGraph: incorrect coverageInfo size", )
     CHECK(maxCoverage > 0, );
 
-    //draw coverage for each visible column
+    // draw coverage for each visible column
     double readsPerYPixel = double(maxCoverage) / height();
     for (int ibase = 0; ibase < visibleBases; ++ibase) {
         int columnPixels = qint64(double(coverageInfo[ibase]) / readsPerYPixel + 0.5);
@@ -157,4 +157,4 @@ void AssemblyCoverageGraph::sl_onOffsetsChanged() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

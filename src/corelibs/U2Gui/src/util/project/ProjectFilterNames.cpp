@@ -41,6 +41,6 @@ const QString MCA_REFERENCE_CONTENT_FILTER_NAME = QApplication::translate("Abstr
 const QString SEQUENCE_ACC_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sequence accession number");
 const QString TEXT_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Text content");
 
-}    // namespace ProjectFilterNames
+}  // namespace ProjectFilterNames
 
-}    // namespace U2
+}  // namespace U2

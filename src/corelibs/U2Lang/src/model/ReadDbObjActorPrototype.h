@@ -36,8 +36,8 @@ public:
     virtual void setCompatibleDbObjectTypes(const QSet<GObjectType> &types);
 };
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_READ_DB_OBJ_ACTOR_PROTOTYPE_H_
+#endif  // _U2_READ_DB_OBJ_ACTOR_PROTOTYPE_H_

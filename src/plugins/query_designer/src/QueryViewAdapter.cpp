@@ -51,7 +51,7 @@ QueryViewAdapter::QueryViewAdapter(QDScheme *scheme, const QPointF &topLeftCorne
 }
 
 void QueryViewAdapter::placeElement(QDElement *uv) {
-    //rearrange other adjacent units positions if necessary
+    // rearrange other adjacent units positions if necessary
     foreach (Footnote *fn, uv->getFootnotes()) {
         const QPointF &srcPt = fn->getSrcPoint();
         const QPointF &dstPt = fn->getDstPoint();
@@ -79,7 +79,7 @@ void QueryViewAdapter::moveElement(QDElement *uv, int dx) {
 }
 
 bool QueryViewAdapter::needToMove(QDElement *current, int dx, QList<QDElement *> &res) {
-    //check recursion
+    // check recursion
     if (currentPath.contains(current)) {
         currentPath.clear();
         return false;
@@ -147,45 +147,45 @@ QList<Footnote *> QueryViewAdapter::getSharedFootnotes(QDElement *uv1, QDElement
     return uv1Fns;
 }
 
-//enum Border{Left,Right};
+// enum Border{Left,Right};
 //
-//class QDEdge;
-//class QDVertex {
-//public:
-//    QDVertex(QDElement* _parent, Border _border, int _xPos=0)
-//        : parent(_parent), border(_border), xPos(_xPos) {}
-//    void setXPos(int x) { xPos=x; }
-//    int getXPos() const { return xPos; }
-//private:
-//    QDElement* parent;
-//    Border border;
-//    QList<QDEdge*> in, out;
-//    int xPos;
-//    friend class QDEdge;
-//};
+// class QDEdge;
+// class QDVertex {
+// public:
+//     QDVertex(QDElement* _parent, Border _border, int _xPos=0)
+//         : parent(_parent), border(_border), xPos(_xPos) {}
+//     void setXPos(int x) { xPos=x; }
+//     int getXPos() const { return xPos; }
+// private:
+//     QDElement* parent;
+//     Border border;
+//     QList<QDEdge*> in, out;
+//     int xPos;
+//     friend class QDEdge;
+// };
 //
-//class QDEdge {
-//public:
-//    QDEdge(QDVertex* _src, QDVertex* _dst) : src(_src), dst(_dst) {
-//        src->out.append(this);
-//        dst->in.append(this);
-//    }
-//    QDVertex* getSrc() const { return src; }
-//    QDVertex* getDst() const { return dst; }
-//private:
-//    QDVertex* src;
-//    QDVertex* dst;
-//};
+// class QDEdge {
+// public:
+//     QDEdge(QDVertex* _src, QDVertex* _dst) : src(_src), dst(_dst) {
+//         src->out.append(this);
+//         dst->in.append(this);
+//     }
+//     QDVertex* getSrc() const { return src; }
+//     QDVertex* getDst() const { return dst; }
+// private:
+//     QDVertex* src;
+//     QDVertex* dst;
+// };
 //
-//void QueryViewAdapter::scheme2graph() {
-//    QList<QDVertex> graph;
-//    foreach(QDElement* el, createdElements) {
-//        graph << QDVertex(el, Left) << QDVertex(el, Right);
-//    }
-//    foreach(Footnote* fn, createdFootnotes) {
-//        QDElement* srcEl = fn->getSrc();
-//        QDElement* dstEl = fn->getDst();
-//    }
-//}
+// void QueryViewAdapter::scheme2graph() {
+//     QList<QDVertex> graph;
+//     foreach(QDElement* el, createdElements) {
+//         graph << QDVertex(el, Left) << QDVertex(el, Right);
+//     }
+//     foreach(Footnote* fn, createdFootnotes) {
+//         QDElement* srcEl = fn->getSrc();
+//         QDElement* dstEl = fn->getDst();
+//     }
+// }
 
-}    // namespace U2
+}  // namespace U2

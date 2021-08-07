@@ -25,7 +25,7 @@
 
 #include <U2Lang/WorkflowUtils.h>
 
-//TODO FIX translator
+// TODO FIX translator
 namespace U2 {
 
 QString DesignerUtils::getSchemaFileFilter(bool any, bool addOldExt) {
@@ -36,4 +36,4 @@ QString DesignerUtils::getSchemaFileFilter(bool any, bool addOldExt) {
     return DialogUtils::prepareFileFilter(WorkflowUtils::tr("UGENE workflow documents"), exts, any);
 }
 
-}    // namespace U2
+}  // namespace U2

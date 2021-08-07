@@ -37,27 +37,27 @@ using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, 
 using TrimmomaticMoveSettings = QPair<QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int>, TrimmomaticDialogFiller::TrimmomaticDirection>;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Open WD
+    // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Add "Improve Reads with Trimmomatic" to the scene
+    // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
     WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
 
-    //3. Click on the element, open the "Trimmomatic steps" dialog
-    //4. Add the "AVGQUAL" step and set "Quality Threshold" to 25
-    //5. Add the "CROP" step and set "Length" to 10
-    //6. Add the "HEADCROP" step and set "Length" to 15
-    //7. Add the "ILLUMINACLIP" step and set "AdapterSequence" to "adapters/illumina/TruSeq3-SE.fa",
-    //   "Seed Mismatches" to 5, "Palindrome Clip Threshold" to 25, "Simple Clip Threshold" to 8,
-    //   check "Provide Optional Settings", "Min Adapter Length" to 6 and "Keep Both Reads" to True
-    //8. Add the "LEADING" step and set "Strictness" to 0.60 and "Target Length" to 35.
-    //9. Add the "MAXINFO" step and set "Length" to 10
-    //10. Add the "MINLEN" step and set "Window Size" to 5 and "Quality Threshold" to 25
-    //11. Add the "TOPHRED33" step
-    //12. Add the "TOPHRED64" step
-    //13. Add the "TRAILING" step and set "Quality Threshold" to 25
-    //14. Accept the dialog
+    // 3. Click on the element, open the "Trimmomatic steps" dialog
+    // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 25
+    // 5. Add the "CROP" step and set "Length" to 10
+    // 6. Add the "HEADCROP" step and set "Length" to 15
+    // 7. Add the "ILLUMINACLIP" step and set "AdapterSequence" to "adapters/illumina/TruSeq3-SE.fa",
+    //    "Seed Mismatches" to 5, "Palindrome Clip Threshold" to 25, "Simple Clip Threshold" to 8,
+    //    check "Provide Optional Settings", "Min Adapter Length" to 6 and "Keep Both Reads" to True
+    // 8. Add the "LEADING" step and set "Strictness" to 0.60 and "Target Length" to 35.
+    // 9. Add the "MAXINFO" step and set "Length" to 10
+    // 10. Add the "MINLEN" step and set "Window Size" to 5 and "Quality Threshold" to 25
+    // 11. Add the "TOPHRED33" step
+    // 12. Add the "TOPHRED64" step
+    // 13. Add the "TRAILING" step and set "Quality Threshold" to 25
+    // 14. Accept the dialog
 
     QList<TrimmomaticAddSettings> steps;
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "25"}};
@@ -97,18 +97,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //1. Open WD
+    // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Add "Improve Reads with Trimmomatic" to the scene
+    // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
     WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
 
-    //3. Click on the element, open the "Trimmomatic steps" dialog
-    //4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
-    //5. Add the "AVGQUAL" step and set "Quality Threshold" to 2
-    //6. Add the "AVGQUAL" step and set "Quality Threshold" to 3
-    //7. Accept the dialog
+    // 3. Click on the element, open the "Trimmomatic steps" dialog
+    // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
+    // 5. Add the "AVGQUAL" step and set "Quality Threshold" to 2
+    // 6. Add the "AVGQUAL" step and set "Quality Threshold" to 3
+    // 7. Accept the dialog
     QList<TrimmomaticAddSettings> steps;
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual1 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "1"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual1));
@@ -121,11 +121,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, addFiller);
     TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
 
-    //8. Click on the element, open the "Trimmomatic steps" dialog
-    //9. Click on the "AVGQUAL" step 1 and move it down
-    //10. Click on  the "AVGQUAL" step 2 and move it down
-    //11. Click on  the "AVGQUAL" step 2 and move it up
-    //12. Accept the dialog
+    // 8. Click on the element, open the "Trimmomatic steps" dialog
+    // 9. Click on the "AVGQUAL" step 1 and move it down
+    // 10. Click on  the "AVGQUAL" step 2 and move it down
+    // 11. Click on  the "AVGQUAL" step 2 and move it up
+    // 12. Accept the dialog
     QList<TrimmomaticMoveSettings> moveSteps;
     TrimmomaticMoveSettings step1(QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int>(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 0), TrimmomaticDialogFiller::TrimmomaticDirection::Down);
     moveSteps.append(step1);
@@ -140,18 +140,18 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //1. Open WD
+    // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //2. Add "Improve Reads with Trimmomatic" to the scene
+    // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
     WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
 
-    //3. Click on the element, open the "Trimmomatic steps" dialog
-    //4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
-    //5. Add the "AVGQUAL" step and set "Quality Threshold" to 2
-    //6. Add the "AVGQUAL" step and set "Quality Threshold" to 3
-    //7. Accept the dialog
+    // 3. Click on the element, open the "Trimmomatic steps" dialog
+    // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
+    // 5. Add the "AVGQUAL" step and set "Quality Threshold" to 2
+    // 6. Add the "AVGQUAL" step and set "Quality Threshold" to 3
+    // 7. Accept the dialog
     QList<TrimmomaticAddSettings> steps;
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual1 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "1"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual1));
@@ -163,10 +163,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, addFiller);
     TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
-    //8. Click on the element, open the "Trimmomatic steps" dialog
-    //9. Click on the "AVGQUAL" step 2 and remove it
-    //10. Click on  the "AVGQUAL" step 1 and remove it
-    //11. Accept the dialog
+    // 8. Click on the element, open the "Trimmomatic steps" dialog
+    // 9. Click on the "AVGQUAL" step 2 and remove it
+    // 10. Click on  the "AVGQUAL" step 1 and remove it
+    // 11. Accept the dialog
     QList<QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int>> removeValues;
     QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int> step1(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 2);
     removeValues.append(step1);
@@ -178,6 +178,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
 }
 
-}    // namespace GUITest_common_scenarios_trimmomatic_element
+}  // namespace GUITest_common_scenarios_trimmomatic_element
 
-}    // namespace U2
+}  // namespace U2

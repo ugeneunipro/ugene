@@ -762,5 +762,5 @@ bool SamtoolsBasedDbiFactory::isDbiExists(const U2DbiId &id) const {
     return QFile::exists(id);
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

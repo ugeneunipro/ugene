@@ -23,23 +23,21 @@
 #define _U2_PSIPRED_ALG_TASK_H_
 
 #include <QMutex>
-#include <U2Algorithm/SecStructPredictTask.h>
 
+#include <U2Algorithm/SecStructPredictTask.h>
 
 namespace U2 {
 
 class PsipredAlgTask : public SecStructPredictTask {
     Q_OBJECT
 public:
-    PsipredAlgTask(const QByteArray& sequence);
+    PsipredAlgTask(const QByteArray &sequence);
     virtual void run();
     SEC_STRUCT_PREDICT_TASK_FACTORY(PsipredAlgTask)
 private:
     static QMutex runLock;
 };
 
-} //namespace
+}  // namespace U2
 
-#endif // _U2_PSIPRED_ALG_TASK_H_
-
-
+#endif  // _U2_PSIPRED_ALG_TASK_H_

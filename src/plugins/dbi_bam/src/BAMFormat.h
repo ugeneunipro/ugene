@@ -55,7 +55,7 @@ private:
     QStringList fileExtensions;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_FORMAT_H_
+#endif  // _U2_BAM_FORMAT_H_

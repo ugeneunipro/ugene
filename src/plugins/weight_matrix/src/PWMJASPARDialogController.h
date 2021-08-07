@@ -65,6 +65,6 @@ public:
     bool operator<(const QTreeWidgetItem &other) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

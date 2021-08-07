@@ -139,7 +139,7 @@ private:
 //////////////////////////////////////////////////////////////////////////
 /// Dialogs
 
-//TODO: merge project dir & project name fields
+// TODO: merge project dir & project name fields
 
 class SaveProjectDialogController : public QDialog, public Ui_SaveProjectDialog {
     Q_OBJECT
@@ -226,5 +226,5 @@ private:
     QList<GUrl> urls;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

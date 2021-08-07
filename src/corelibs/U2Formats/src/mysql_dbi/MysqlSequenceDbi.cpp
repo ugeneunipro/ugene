@@ -208,7 +208,7 @@ static QList<QByteArray> quantify(const QList<QByteArray> &input) {
     return res;
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 void MysqlSequenceDbi::updateSequenceData(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
     updateSequenceData(sequenceId, sequenceId, regionToReplace, dataToInsert, hints, os);
@@ -273,10 +273,10 @@ void MysqlSequenceDbi::updateSequenceDataCore(const U2DataId &sequenceId, const 
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    //algorithm:
-    // find all regions affected -> remove them
-    // construct new regions from cuts from old regions and new dataToInsert
-    // remove affected annotations or adjust their locations if possible
+    // algorithm:
+    //  find all regions affected -> remove them
+    //  construct new regions from cuts from old regions and new dataToInsert
+    //  remove affected annotations or adjust their locations if possible
 
     // find cropped parts
     QByteArray leftCrop;
@@ -413,4 +413,4 @@ void MysqlSequenceDbi::redoUpdateSequenceData(const U2DataId &sequenceId, const 
     updateSequenceDataCore(sequenceId, replacedRegion, newData, hints, os);
 }
 
-}    // namespace U2
+}  // namespace U2

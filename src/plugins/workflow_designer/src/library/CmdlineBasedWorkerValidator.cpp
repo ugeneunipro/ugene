@@ -47,5 +47,5 @@ bool CmdlineBasedWorkerValidator::validate(const Actor *actor, NotificationsList
     return true;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -33,8 +33,8 @@ namespace GUITest_common_scenarios_create_shortcut {
 GUI_TEST_CLASS_DECLARATION(test_0001)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_create_shortcut
+}  // namespace GUITest_common_scenarios_create_shortcut
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSCREATESHORTCUT_H
+#endif  // GTTESTSCREATESHORTCUT_H

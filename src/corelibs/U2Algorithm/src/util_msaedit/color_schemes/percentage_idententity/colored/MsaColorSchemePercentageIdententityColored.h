@@ -45,7 +45,7 @@ protected:
     void updateCache(const int columnNum) const;
     virtual int getColorIndex(const int columnNum, const char c) const;
 
-    mutable QMap<qint64, ColumnCharsCounter> cachedData;    //first value - column number
+    mutable QMap<qint64, ColumnCharsCounter> cachedData;  // first value - column number
 
 private slots:
     void sl_alignmentChanged();
@@ -58,6 +58,6 @@ private:
     double threshold;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_
+#endif  // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_COLORED_H_

@@ -76,4 +76,4 @@ QStringList DiamondBuildTask::getArguments(const QString &preparedGenomesFileUrl
     return arguments;
 }
 
-}    // namespace U2
+}  // namespace U2

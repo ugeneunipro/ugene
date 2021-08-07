@@ -133,4 +133,4 @@ void GTTabWidget::closeTab(GUITestOpStatus &os, QTabWidget *tabWidget, QString t
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

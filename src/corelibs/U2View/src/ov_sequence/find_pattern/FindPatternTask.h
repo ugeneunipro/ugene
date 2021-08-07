@@ -82,6 +82,6 @@ private:
     int getMaxError(const QString &pattern) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

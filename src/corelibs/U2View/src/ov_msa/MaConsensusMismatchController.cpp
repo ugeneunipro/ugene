@@ -138,4 +138,4 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     NotificationStack::addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
 }
 
-}    // namespace U2
+}  // namespace U2

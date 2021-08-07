@@ -76,9 +76,9 @@ void ModTrackHints::setModified() {
     while (modItem->getParentStateLockItem() != nullptr && topParentMode) {
         modItem = modItem->getParentStateLockItem();
     }
-    if (!modItem->isStateLocked()) {    //TODO: use isModificationAllowed here!
+    if (!modItem->isStateLocked()) {  // TODO: use isModificationAllowed here!
         modItem->setModified(true);
     }
 }
 
-}    // namespace U2
+}  // namespace U2

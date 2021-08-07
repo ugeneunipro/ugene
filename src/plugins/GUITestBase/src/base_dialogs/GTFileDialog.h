@@ -107,6 +107,6 @@ public:
     static QString toAbsoluteNativePath(const QString &path, bool appendSlash = false);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // GTFILE_DIALOG_H
+#endif  // GTFILE_DIALOG_H

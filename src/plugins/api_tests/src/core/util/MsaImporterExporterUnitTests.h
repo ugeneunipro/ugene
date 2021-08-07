@@ -44,7 +44,7 @@ private:
 
 DECLARE_TEST(MsaImporterExporterUnitTests, importExportAlignment);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaImporterExporterUnitTests, importExportAlignment);
 

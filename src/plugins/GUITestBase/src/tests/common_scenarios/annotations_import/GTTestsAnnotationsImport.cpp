@@ -508,5 +508,5 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
     GTUtilsProjectTreeView::findIndex(os, "result.gb");
     GTUtilsAnnotationsTreeView::findItem(os, "MISC");
 }
-}    // namespace GUITest_common_scenarios_annotations_import
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_annotations_import
+}  // namespace U2

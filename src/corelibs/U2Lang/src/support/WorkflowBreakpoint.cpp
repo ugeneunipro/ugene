@@ -107,4 +107,4 @@ void WorkflowBreakpoint::setContext(Workflow::WorkflowContext *context) {
     conditionChecker.setContext(context);
 }
 
-}    // namespace U2
+}  // namespace U2

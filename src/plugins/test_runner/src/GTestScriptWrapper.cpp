@@ -28,8 +28,8 @@
 namespace U2 {
 
 QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEngine *eng) {
-    //mouseClick( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
-    //bool result=false;
+    // mouseClick( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
@@ -39,26 +39,26 @@ QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEn
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
-                //result=true;
-                result = "correctly";
-                break;
-            case 5:
-                QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 5:
+                    QTest::mouseClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -71,8 +71,8 @@ QScriptValue GTestScriptWrapper::qtestMouseClickE(QScriptContext *ctx, QScriptEn
 }
 
 QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void mouseDClick ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
-    //bool result=false;
+    // void mouseDClick ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
@@ -82,26 +82,26 @@ QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptE
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
-                //result=true;
-                result = "correctly";
-                break;
-            case 5:
-                QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 5:
+                    QTest::mouseDClick(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -114,8 +114,8 @@ QScriptValue GTestScriptWrapper::qtestMouseDClickE(QScriptContext *ctx, QScriptE
 }
 
 QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void mouseMove ( QWidget * widget, QPoint pos = QPoint(), int delay = -1 )
-    //bool result=false;
+    // void mouseMove ( QWidget * widget, QPoint pos = QPoint(), int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 0 && argsCount < 4) {
@@ -125,21 +125,21 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 1:
-                QTest::mouseMove(widget);
-                //result=true;
-                result = "correctly";
-                break;
-            case 2:
-                QTest::mouseMove(widget, ctx->argument(1).toVariant().toPoint());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::mouseMove(widget, ctx->argument(1).toVariant().toPoint(), ctx->argument(2).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 1:
+                    QTest::mouseMove(widget);
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 2:
+                    QTest::mouseMove(widget, ctx->argument(1).toVariant().toPoint());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::mouseMove(widget, ctx->argument(1).toVariant().toPoint(), ctx->argument(2).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -151,8 +151,8 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
     return QScriptValue(eng, result);
 }
 QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void mousePress ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
-    //bool result=false;
+    // void mousePress ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
@@ -162,26 +162,26 @@ QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEn
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
-                //result=true;
-                result = "correctly";
-                break;
-            case 5:
-                QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 5:
+                    QTest::mousePress(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -194,8 +194,8 @@ QScriptValue GTestScriptWrapper::qtestMousePressE(QScriptContext *ctx, QScriptEn
 }
 
 QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void mouseRelease ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
-    //bool result=false;
+    // void mouseRelease ( QWidget * widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 6) {
@@ -205,26 +205,26 @@ QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScript
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
-                //result=true;
-                result = "correctly";
-                break;
-            case 5:
-                QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 5:
+                    QTest::mouseRelease(widget, (Qt::MouseButton)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toVariant().toPoint(), ctx->argument(4).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -237,8 +237,8 @@ QScriptValue GTestScriptWrapper::qtestMouseReleaseE(QScriptContext *ctx, QScript
 }
 
 QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void keyClick ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
-    //bool result=false;
+    // void keyClick ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
@@ -248,21 +248,21 @@ QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngi
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::keyClick(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -275,8 +275,8 @@ QScriptValue GTestScriptWrapper::qtestKeyClickE(QScriptContext *ctx, QScriptEngi
 }
 
 QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void keyClicks ( QWidget * widget, const QString & sequence, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
-    //bool result=false;
+    // void keyClicks ( QWidget * widget, const QString & sequence, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
@@ -286,21 +286,21 @@ QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEng
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::keyClicks(widget, ctx->argument(1).toString());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::keyClicks(widget, ctx->argument(1).toString(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::keyClicks(widget, ctx->argument(1).toString(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::keyClicks(widget, ctx->argument(1).toString());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::keyClicks(widget, ctx->argument(1).toString(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::keyClicks(widget, ctx->argument(1).toString(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -313,8 +313,8 @@ QScriptValue GTestScriptWrapper::qtestKeyClicksE(QScriptContext *ctx, QScriptEng
 }
 
 QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void keyEvent ( KeyAction action, QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
-    //bool result=false;
+    // void keyEvent ( KeyAction action, QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 2 && argsCount < 6) {
@@ -324,21 +324,21 @@ QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngi
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 3:
-                QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32(), (Qt::KeyboardModifiers)ctx->argument(3).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 5:
-                QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32(), (Qt::KeyboardModifiers)ctx->argument(3).toInt32(), ctx->argument(4).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 3:
+                    QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32(), (Qt::KeyboardModifiers)ctx->argument(3).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 5:
+                    QTest::keyEvent((QTest::KeyAction)ctx->argument(0).toInt32(), widget, (Qt::Key)ctx->argument(2).toInt32(), (Qt::KeyboardModifiers)ctx->argument(3).toInt32(), ctx->argument(4).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -351,8 +351,8 @@ QScriptValue GTestScriptWrapper::qtestKeyEventE(QScriptContext *ctx, QScriptEngi
 }
 
 QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void keyPress ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
-    //bool result=false;
+    // void keyPress ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
@@ -362,21 +362,21 @@ QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngi
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::keyPress(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -389,8 +389,8 @@ QScriptValue GTestScriptWrapper::qtestKeyPressE(QScriptContext *ctx, QScriptEngi
 }
 
 QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void keyRelease ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
-    //bool result=false;
+    // void keyRelease ( QWidget * widget, Qt::Key key, Qt::KeyboardModifiers modifier = Qt::NoModifier, int delay = -1 )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount > 1 && argsCount < 5) {
@@ -400,21 +400,21 @@ QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEn
             ctx->throwError(" can't find widget ");
         } else {
             switch (argsCount) {
-            case 2:
-                QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 3:
-                QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
-                //result=true;
-                result = "correctly";
-                break;
-            case 4:
-                QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
-                //result=true;
-                result = "correctly";
-                break;
+                case 2:
+                    QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 3:
+                    QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32());
+                    // result=true;
+                    result = "correctly";
+                    break;
+                case 4:
+                    QTest::keyRelease(widget, (Qt::Key)ctx->argument(1).toInt32(), (Qt::KeyboardModifiers)ctx->argument(2).toInt32(), ctx->argument(3).toInteger());
+                    // result=true;
+                    result = "correctly";
+                    break;
             }
         }
     } else {
@@ -427,17 +427,17 @@ QScriptValue GTestScriptWrapper::qtestKeyReleaseE(QScriptContext *ctx, QScriptEn
 }
 
 QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void qSleep ( int ms )
-    //bool result=false;
+    // void qSleep ( int ms )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount == 1) {
         switch (argsCount) {
-        case 1:
-            QTest::qSleep(ctx->argument(0).toInteger());
-            //result=true;
-            result = "correctly";
-            break;
+            case 1:
+                QTest::qSleep(ctx->argument(0).toInteger());
+                // result=true;
+                result = "correctly";
+                break;
         }
     } else {
         result.append("qSleep no overloaded function takes ");
@@ -448,17 +448,17 @@ QScriptValue GTestScriptWrapper::qtestSleepE(QScriptContext *ctx, QScriptEngine 
     return QScriptValue(eng, result);
 }
 QScriptValue GTestScriptWrapper::qtestWaitE(QScriptContext *ctx, QScriptEngine *eng) {
-    //void qWait ( int ms )
-    //bool result=false;
+    // void qWait ( int ms )
+    // bool result=false;
     QString result = "bad result";
     int argsCount = ctx->argumentCount();
     if (argsCount == 1) {
         switch (argsCount) {
-        case 1:
-            QTest::qWait(ctx->argument(0).toInteger());
-            //result=true;
-            result = "correctly";
-            break;
+            case 1:
+                QTest::qWait(ctx->argument(0).toInteger());
+                // result=true;
+                result = "correctly";
+                break;
         }
     } else {
         result.append("qWait no overloaded function takes ");
@@ -509,4 +509,4 @@ void GTestScriptWrapper::setQTest(QScriptEngine *curEng) {
 
     curEng->globalObject().setProperty("QTest", qTestSV);
 }
-}    // namespace U2
+}  // namespace U2

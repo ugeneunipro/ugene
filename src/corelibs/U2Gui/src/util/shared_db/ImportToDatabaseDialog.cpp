@@ -661,4 +661,4 @@ void ImportToDatabaseDialog::setDocumentTooltip(QTreeWidgetItem *item) {
     item->setToolTip(COLUMN_FOLDER, tooltip);
 }
 
-}    // namespace U2
+}  // namespace U2

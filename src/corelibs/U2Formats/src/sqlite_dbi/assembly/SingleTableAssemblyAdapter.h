@@ -78,9 +78,9 @@ protected:
     QString readsTable;
     QString rangeConditionCheck;
     QString rangeConditionCheckForCount;
-    int minReadLength;    // used in range mode
-    int maxReadLength;    // used in range mode
-    bool rangeMode;    // flag to show that range mode is in use
+    int minReadLength;  // used in range mode
+    int maxReadLength;  // used in range mode
+    bool rangeMode;  // flag to show that range mode is in use
 };
 
 class SingleTablePackAlgorithmAdapter : public PackAlgorithmAdapter {
@@ -101,6 +101,6 @@ private:
     SQLiteWriteQuery *updateQuery;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

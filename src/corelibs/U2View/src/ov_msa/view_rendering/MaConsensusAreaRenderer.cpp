@@ -85,7 +85,7 @@ QFont getRulerFont(const QFont &font) {
     return rulerFont;
 }
 
-}    // namespace
+}  // namespace
 
 void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     CHECK(!editor->isAlignmentEmpty(), );
@@ -284,7 +284,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRe
     // TODO: move calculations to getYRange method
     U2Region yRange = settings.yRangeToDrawIn[MSAEditorConsElement_HISTOGRAM];
     yRange.startPos++;
-    yRange.length -= 2;    //keep borders
+    yRange.length -= 2;  // keep borders
 
     QBrush brush(color, Qt::Dense4Pattern);
     painter.setBrush(brush);
@@ -361,4 +361,4 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

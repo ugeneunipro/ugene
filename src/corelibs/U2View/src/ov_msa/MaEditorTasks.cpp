@@ -241,7 +241,7 @@ UpdateMaEditorTask::UpdateMaEditorTask(GObjectView *v, const QString &stateName,
 
 void UpdateMaEditorTask::update() {
     if (view.isNull() || (view->getFactoryId() != MsaEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
-        return;    //view was closed;
+        return;  // view was closed;
     }
 
     MaEditor *maView = qobject_cast<MaEditor *>(view.data());
@@ -365,4 +365,4 @@ ExportMaConsensusTaskSettings::ExportMaConsensusTaskSettings()
       algorithm(nullptr) {
 }
 
-}    // namespace U2
+}  // namespace U2

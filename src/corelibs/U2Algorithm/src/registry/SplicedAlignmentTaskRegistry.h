@@ -51,6 +51,6 @@ private:
     Q_DISABLE_COPY(SplicedAlignmentTaskRegistry)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_
+#endif  // _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_

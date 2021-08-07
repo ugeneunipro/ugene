@@ -70,29 +70,29 @@ public:
     }
 
     /**
-    * Increases the "number of users"-counter for the dbi, if it exists.
-    * Otherwise, allocates the dbi and sets the counter to 1.
-    */
+     * Increases the "number of users"-counter for the dbi, if it exists.
+     * Otherwise, allocates the dbi and sets the counter to 1.
+     */
     U2DbiRef attachTmpDbi(const QString &alias, U2OpStatus &os, const U2DbiFactoryId &factoryId);
 
     /**
-    * Decreases the "number of users"-counter.
-    * Deallocates the dbi, if it becomes equal to 0.
-    */
+     * Decreases the "number of users"-counter.
+     * Deallocates the dbi, if it becomes equal to 0.
+     */
     void detachTmpDbi(const QString &alias, U2OpStatus &os);
 
     QList<U2DbiRef> listTmpDbis() const;
 
     /**
-    * Returns the reference to the tmp session dbi.
-    * If the last is not created yet then it would be created.
-    */
+     * Returns the reference to the tmp session dbi.
+     * If the last is not created yet then it would be created.
+     */
     U2DbiRef getSessionTmpDbiRef(U2OpStatus &os);
 
     /**
-    * WARNING: must be used only in crash handler.
-    * Closes the session database connection and returns the path to the database file
-    */
+     * WARNING: must be used only in crash handler.
+     * Closes the session database connection and returns the path to the database file
+     */
     QString shutdownSessionDbi(U2OpStatus &os);
 
 private:
@@ -159,6 +159,6 @@ private:
     QMutex lock;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DBI_REGISTRY_H_
+#endif  // _U2_DBI_REGISTRY_H_

@@ -41,5 +41,5 @@ public:
     static void scrollTo(GUITestOpStatus &os, QTableView *table, const QModelIndex &index);
 };
 
-}    // namespace HI
-#endif    // GTTABLEVIEW_H
+}  // namespace HI
+#endif  // GTTABLEVIEW_H

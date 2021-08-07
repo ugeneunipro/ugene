@@ -58,8 +58,8 @@ private:
     static const QString LEGACY_STACKTRACE_FILE_PATH;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif
 
-#endif    // _U2_CRASH_HANDLER_PRIVATE_MAC_H_
+#endif  // _U2_CRASH_HANDLER_PRIVATE_MAC_H_

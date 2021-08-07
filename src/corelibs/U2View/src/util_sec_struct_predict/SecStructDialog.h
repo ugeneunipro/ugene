@@ -61,6 +61,6 @@ private:
     void showResults();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //  _U2_EXPORT_SEC_STRUCT_DIALOG_H_
+#endif  //  _U2_EXPORT_SEC_STRUCT_DIALOG_H_

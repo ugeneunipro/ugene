@@ -193,7 +193,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent *me) {
     setFocus();
 
     if (!ignoreMouseSelectionEvents) {
-        //click with 'alt' selects a single base
+        // click with 'alt' selects a single base
         Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
         bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier) || singleBaseSelection;
         if (me->button() == Qt::LeftButton && singleBaseSelectionMode) {
@@ -445,7 +445,7 @@ void GSequenceLineView::sl_onFrameRangeChanged() {
         }
         frameView->setVisibleRange(newRangeNC);
     }
-    //TODO: optimize and do not redraw frame if visual coords of the frame are not changed!
+    // TODO: optimize and do not redraw frame if visual coords of the frame are not changed!
 #ifdef _DEBUG
     const U2Region &newRange = frameView->getVisibleRange();
     assert(newRange.startPos >= 0 && newRange.endPos() <= ctx->getSequenceLength() && newRange.length >= 0);
@@ -699,4 +699,4 @@ int GSequenceLineViewRenderArea::posToCoord(qint64 pos, bool useVirtualSpace) co
     return coord;
 }
 
-}    // namespace U2
+}  // namespace U2

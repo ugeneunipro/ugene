@@ -268,5 +268,5 @@ QString GroupPrompter::composeRichDoc() {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

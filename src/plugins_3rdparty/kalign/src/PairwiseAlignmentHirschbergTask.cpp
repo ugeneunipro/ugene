@@ -41,7 +41,7 @@ PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings
 }
 
 PairwiseAlignmentHirschbergTaskSettings::~PairwiseAlignmentHirschbergTaskSettings() {
-    //all dynamic objects will be destroyed by the task
+    // all dynamic objects will be destroyed by the task
 }
 
 bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
@@ -134,7 +134,7 @@ QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) 
             SaveDocFlags flags = SaveDoc_Overwrite;
             flags |= SaveDoc_OpenAfter;
             res << new SaveDocumentTask(alignmentDoc, flags);
-        } else {    //in current window
+        } else {  // in current window
             U2OpStatus2Log os;
             DbiConnection con(settings->msaRef.dbiRef, os);
             CHECK_OP(os, res);
@@ -179,4 +179,4 @@ void PairwiseAlignmentHirschbergTask::changeGivenUrlIfDocumentExists(QString &gi
     }
 }
 
-}    // namespace U2
+}  // namespace U2

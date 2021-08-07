@@ -68,6 +68,6 @@ private:
     PcrOptionsPanelSavableTab savableWidget;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_
+#endif  // _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_

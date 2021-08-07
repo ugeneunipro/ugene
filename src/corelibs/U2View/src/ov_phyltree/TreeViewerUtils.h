@@ -35,6 +35,6 @@ public:
     static const QFont &getFont();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _TREE_VIEWER_UTILS_H_
+#endif  // _TREE_VIEWER_UTILS_H_

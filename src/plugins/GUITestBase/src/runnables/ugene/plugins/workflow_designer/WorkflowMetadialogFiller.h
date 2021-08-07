@@ -39,5 +39,5 @@ public:
 private:
     QString url, name;
 };
-}    // namespace U2
-#endif    // WORKFLOWMETADIALOGFILLER_H
+}  // namespace U2
+#endif  // WORKFLOWMETADIALOGFILLER_H

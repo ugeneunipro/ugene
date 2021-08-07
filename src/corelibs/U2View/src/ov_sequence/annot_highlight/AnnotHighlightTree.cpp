@@ -143,4 +143,4 @@ void AnnotHighlightTree::sl_onItemClicked(QTreeWidgetItem *item, int column) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

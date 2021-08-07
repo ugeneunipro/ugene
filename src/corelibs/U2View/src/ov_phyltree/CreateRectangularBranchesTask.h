@@ -52,6 +52,6 @@ private:
     GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

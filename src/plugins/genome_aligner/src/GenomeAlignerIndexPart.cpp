@@ -227,4 +227,4 @@ BMType IndexPart::getBitValue(uchar *seq, SAType idx) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -46,4 +46,4 @@ U2ErrorType TextConversionUtils::repeatLastConversion(int maxExpectedLength, wch
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

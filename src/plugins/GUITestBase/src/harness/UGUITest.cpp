@@ -65,7 +65,7 @@ static QString getTestDirImpl() {
 
 static QString getTestDir() {
     QString result = getTestDirImpl();
-    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+    if (qgetenv("UGENE_GUI_TEST") == "1") {  // In gui test mode dump test & data dir.
         qDebug("Test dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
     }
     return result;
@@ -115,7 +115,7 @@ static QString getDataDirImpl() {
 
 static QString getDataDir() {
     QString result = getDataDirImpl();
-    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+    if (qgetenv("UGENE_GUI_TEST") == "1") {  // In gui test mode dump test & data dir.
         qDebug("Data dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
     }
     return result;
@@ -174,4 +174,4 @@ const QString UGUITestLabels::IgnoredOnLinux = "IgnoredOnLinux";
 const QString UGUITestLabels::IgnoredOnMacOS = "IgnoredOnMacOS";
 const QString UGUITestLabels::IgnoredOnWindows = "IgnoredOnWindows";
 
-}    // namespace U2
+}  // namespace U2

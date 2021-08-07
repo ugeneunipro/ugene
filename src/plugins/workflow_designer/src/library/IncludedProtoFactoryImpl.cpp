@@ -311,5 +311,5 @@ Descriptor IncludedProtoFactoryImpl::generateUniqueSlotDescriptor(
     return slotDesc;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

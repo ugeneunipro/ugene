@@ -65,5 +65,5 @@ private:
     const QComboBox *cb;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

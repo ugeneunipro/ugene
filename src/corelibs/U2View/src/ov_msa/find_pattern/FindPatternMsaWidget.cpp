@@ -145,7 +145,7 @@ FindPatternMsaWidget::FindPatternMsaWidget(MSAEditor *msaEditor, TriState isSear
       otherSettingsSubgroup(nullptr) {
     setupUi(this);
     setObjectName("FindPatternMsaWidget");
-    if (isSearchInNamesModeTriState == TriState_Unknown) {    // Re-use the last state
+    if (isSearchInNamesModeTriState == TriState_Unknown) {  // Re-use the last state
         isSearchInNamesMode = isSearchInNamesModeByDefault;
     } else {
         isSearchInNamesMode = isSearchInNamesModeTriState == TriState_Yes;
@@ -187,7 +187,7 @@ int FindPatternMsaWidget::getTargetMsaLength() const {
 void FindPatternMsaWidget::setSearchInNamesMode(bool flag) {
     CHECK(isSearchInNamesMode != flag, )
     int indexToActivate = flag ? SEARCH_MODE_NAMES_INDEX : SEARCH_MODE_SEQUENCES_INDEX;
-    searchContextComboBox->setCurrentIndex(indexToActivate);    // triggers a signal.
+    searchContextComboBox->setCurrentIndex(indexToActivate);  // triggers a signal.
 }
 
 void FindPatternMsaWidget::showCurrentResultAndStopProgress() {
@@ -242,7 +242,7 @@ void FindPatternMsaWidget::initAlgorithmLayout() {
     lblMatch = new QLabel(tr("Should match"));
 
     spinMatch = new QSpinBox(this);
-    spinMatch->setSuffix("%");    // Percentage value
+    spinMatch->setSuffix("%");  // Percentage value
     spinMatch->setMinimum(30);
     spinMatch->setMaximum(100);
     spinMatch->setSingleStep(1);
@@ -385,7 +385,7 @@ void FindPatternMsaWidget::updateLayout() {
     algorithmSubgroup->setVisible(!isSearchInNamesMode);
     searchInSubgroup->setVisible(!isSearchInNamesMode);
     otherSettingsSubgroup->setVisible(!isSearchInNamesMode);
-    if (isSearchInNamesMode) {    // search in names
+    if (isSearchInNamesMode) {  // search in names
         return;
     }
     // Algorithm group
@@ -503,7 +503,7 @@ void FindPatternMsaWidget::updateErrorLabelState() {
                 break;
             }
             case SequenceIsTooBig: {
-                text.clear();    // the search is blocked at all -- any other messages are meaningless
+                text.clear();  // the search is blocked at all -- any other messages are meaningless
                 QString message = tr("Warning: current sequence is too long to search in.");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                 break;
@@ -722,7 +722,7 @@ void FindPatternMsaWidget::startFindPatternInMsaTask(const QStringList &patterns
 
     settings.msaObj = msaEditor->getMaObject();
     U2OpStatusImpl os;
-    CHECK_OP_EXT(os, showTooLongSequenceError(), );    // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
+    CHECK_OP_EXT(os, showTooLongSequenceError(), );  // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
 
     // Limit results number to the specified value
     settings.findSettings.maxResult2Find = boxMaxResult->value();
@@ -1124,4 +1124,4 @@ FindPatternWidgetResult::FindPatternWidgetResult(qint64 rowId, int viewRowIndex,
     : rowId(rowId), viewRowIndex(viewRowIndex), region(region) {
 }
 
-}    // namespace U2
+}  // namespace U2

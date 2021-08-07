@@ -58,13 +58,13 @@ private:
 
 private:
     QMap<QString, MolecularSurfaceRendererFactory *> factories;
-};    // class MolecularSurfaceRendererRegistry
+};  // class MolecularSurfaceRendererRegistry
 
 //! MolecularSurfaceRenderer abstract factory
 class MolecularSurfaceRendererFactory {
 public:
     virtual MolecularSurfaceRenderer *createInstance() const = 0;
-};    // class MolecularSurfaceRendererFactory
+};  // class MolecularSurfaceRendererFactory
 
 #define SURF_RENDERER_FACTORY(c) \
 public: \
@@ -105,6 +105,6 @@ public:
     SURF_RENDERER_FACTORY(ConvexMapRenderer)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_MOLECULAR_SURFACE_RENDERER_H_
+#endif  //_U2_MOLECULAR_SURFACE_RENDERER_H_

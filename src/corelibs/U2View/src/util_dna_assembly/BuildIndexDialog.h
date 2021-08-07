@@ -58,6 +58,6 @@ private slots:
     void sl_onAlgorithmChanged(const QString &text);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //  _U2_BUILD_INDEX_DIALOG_H_
+#endif  //  _U2_BUILD_INDEX_DIALOG_H_

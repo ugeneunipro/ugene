@@ -436,4 +436,4 @@ U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(U2FeatureType featureType, 
       alphabets(alphabets) {
 }
 
-}    // namespace U2
+}  // namespace U2

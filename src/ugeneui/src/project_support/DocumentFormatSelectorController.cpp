@@ -117,7 +117,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
         vbox->addLayout(hbox);
         d->radioButtons << rb;
     }
-    //additional option: user selecting format
+    // additional option: user selecting format
     {
         QString text(tr("Choose format manually"));
         QHBoxLayout *hbox = new QHBoxLayout();
@@ -215,4 +215,4 @@ int DocumentFormatSelectorController::getSelectedFormatIdx() const {
     return idx;
 }
 
-}    // namespace U2
+}  // namespace U2

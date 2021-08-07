@@ -35,7 +35,7 @@
 
 #include <U2Lang/LocalDomain.h>
 
-//U2Private
+// U2Private
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
 #include <DocumentFormatRegistryImpl.h>
@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
     CMDLineRegistry *cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
-    //1 create settings
+    // 1 create settings
     SettingsImpl *globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
@@ -151,13 +151,13 @@ int main(int argc, char **argv) {
 
     registerCoreServices();
 
-    //3 run QT
+    // 3 run QT
     t1.stop();
     ConsoleShutdownTask watchQuit(&app);
     int rc = app.exec();
-    //int rc = 0;
-    //4 deallocate resources
-    //Workflow::WorkflowEnv::shutdown();
+    // int rc = 0;
+    // 4 deallocate resources
+    // Workflow::WorkflowEnv::shutdown();
 
     delete psp;
     appContext->setPluginSupport(NULL);

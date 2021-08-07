@@ -59,6 +59,6 @@ private:
     static const QString ANNOTATION_QUALIFIERS_REGEXP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

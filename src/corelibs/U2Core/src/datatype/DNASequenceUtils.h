@@ -81,6 +81,6 @@ public:
     static U2Region trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

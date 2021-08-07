@@ -50,10 +50,10 @@ PackAlgorithmContext::PackAlgorithmContext() {
 #define PACK_TRACE_CHECKPOINT 100000
 
 void AssemblyPackAlgorithm::pack(PackAlgorithmAdapter &adapter, U2AssemblyPackStat &stat, U2OpStatus &os) {
-    //Algorithm idea:
-    //  select * reads ordered by start position
-    //  keep tack (tail) of used rows to assign packed row for reads (N elements)
-    //  if all elements are used -> assign -1 to read and postprocess it later
+    // Algorithm idea:
+    //   select * reads ordered by start position
+    //   keep tack (tail) of used rows to assign packed row for reads (N elements)
+    //   if all elements are used -> assign -1 to read and postprocess it later
 
     GTIMER(c1, t1, "AssemblyPackAlgorithm::pack");
     quint64 t0 = GTimer::currentTimeMicros();
@@ -95,4 +95,4 @@ int AssemblyPackAlgorithm::packRead(const U2Region &reg, PackAlgorithmContext &c
     return prow;
 }
 
-}    // namespace U2
+}  // namespace U2

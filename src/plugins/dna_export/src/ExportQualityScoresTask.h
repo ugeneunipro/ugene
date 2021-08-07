@@ -51,6 +51,6 @@ private:
     ExportQualityScoresConfig config;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_QUALITY_SCORES_TASK_H_
+#endif  // _U2_EXPORT_QUALITY_SCORES_TASK_H_

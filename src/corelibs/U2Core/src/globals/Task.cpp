@@ -46,7 +46,7 @@ void TaskStateInfo::insertWarnings(const QStringList &wList) {
 }
 
 static qint64 genTaskId() {
-    //todo: add main-thread model check
+    // todo: add main-thread model check
     static qint64 id = 0;
     qint64 res = ++id;
     return res;
@@ -219,4 +219,4 @@ void TaskScheduler::setTaskInsidePrepare(Task *t, bool val) {
     t->insidePrepare = val;
 }
 
-}    // namespace U2
+}  // namespace U2

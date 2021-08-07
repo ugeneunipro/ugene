@@ -85,7 +85,7 @@
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/TestRunnerTask.h>
 
-//U2Private
+// U2Private
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
 #include <ConsoleLogDriver.h>
@@ -153,16 +153,16 @@ static void setScriptsSearchPath() {
 }
 
 static void setDataSearchPaths() {
-    //set search paths for data files
+    // set search paths for data files
     QStringList dataSearchPaths;
     const static char *RELATIVE_DATA_DIR = "/data";
     const static char *RELATIVE_DEV_DATA_DIR = "/../../data";
-    //on windows data is normally located in the application folder
+    // on windows data is normally located in the application folder
     QString appDirPath = AppContext::getWorkingDirectoryPath();
 
     if (QDir(appDirPath + RELATIVE_DATA_DIR).exists()) {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
-    } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
+    } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {  // data location for developers
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_DARWIN
     } else {
@@ -174,7 +174,7 @@ static void setDataSearchPaths() {
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
-    //using folder which is set during installation process on linux
+    // using folder which is set during installation process on linux
     QString ugene_data_dir(UGENE_DATA_DIR);
     if (QDir(ugene_data_dir).exists()) {
         dataSearchPaths.push_back(QString(UGENE_DATA_DIR));
@@ -186,7 +186,7 @@ static void setDataSearchPaths() {
     }
 
     QDir::setSearchPaths(PATH_PREFIX_DATA, dataSearchPaths);
-    //now data files may be opened using QFile( "data:some_data_file" )
+    // now data files may be opened using QFile( "data:some_data_file" )
 }
 
 static void setSearchPaths() {
@@ -236,7 +236,7 @@ int main(int argc, char **argv) {
     CMDLineRegistry *cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
-    //1 create settings
+    // 1 create settings
     SettingsImpl *globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
@@ -251,7 +251,7 @@ int main(int argc, char **argv) {
     // Set translations if needed: use value in the settings or cmd-line parameter override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
+    QStringList failedToLoadTranslatorFiles;  // List of translators file names tried but failed to load/not found.
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
@@ -483,14 +483,14 @@ int main(int argc, char **argv) {
 
     GCOUNTER(cvar, "ugenecl launch");
 
-    //3 run QT
+    // 3 run QT
     t1.stop();
     coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
     ConsoleShutdownTask watchQuit(&app);
     Q_UNUSED(watchQuit);
     int rc = app.exec();
 
-    //4 deallocate resources
+    // 4 deallocate resources
     Workflow::WorkflowEnv::shutdown();
 
     delete tsbc;

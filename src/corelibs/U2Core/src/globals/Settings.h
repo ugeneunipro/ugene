@@ -39,8 +39,8 @@ public:
     virtual bool contains(const QString &key) const = 0;
     virtual void remove(const QString &key) = 0;
 
-    //for versioned default value is returned if versions don't match
-    //all version-specific values must use versioneedValue = true
+    // for versioned default value is returned if versions don't match
+    // all version-specific values must use versioneedValue = true
     virtual QVariant getValue(const QString &key, const QVariant &defaultValue = QVariant(), bool versionedValue = false) const = 0;
     virtual void setValue(const QString &key, const QVariant &value, bool versionedValue = false) = 0;
 
@@ -51,5 +51,5 @@ public:
     virtual QString fileName() const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

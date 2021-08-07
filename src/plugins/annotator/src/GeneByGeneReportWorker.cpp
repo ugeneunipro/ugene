@@ -139,7 +139,7 @@ QStringList GeneByGeneReportWorker::getOutputFiles() {
 void GeneByGeneReportWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
 
-    //in port
+    // in port
     QMap<Descriptor, DataTypePtr> inTypeMap;
     Descriptor annDesc(ANNOT_SLOT_ID,
                        GeneByGeneReportWorker::tr("Input annotations"),
@@ -238,5 +238,5 @@ QString GeneByGeneReportPrompter::composeRichDoc() {
     return res;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

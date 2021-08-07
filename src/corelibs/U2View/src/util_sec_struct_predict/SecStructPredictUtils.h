@@ -46,6 +46,6 @@ public:
     static QList<SharedAnnotationData> saveAlgorithmResultsAsAnnotations(const QByteArray &predicted, const QString &annotationName);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEC_STRUCT_PREDICT_UTILS_H_
+#endif  // _U2_SEC_STRUCT_PREDICT_UTILS_H_

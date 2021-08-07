@@ -40,6 +40,6 @@ private:
     void registerFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

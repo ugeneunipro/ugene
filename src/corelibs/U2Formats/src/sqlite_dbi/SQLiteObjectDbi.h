@@ -312,6 +312,6 @@ public:
     static void renameObject(SQLiteModificationAction &updateAction, SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

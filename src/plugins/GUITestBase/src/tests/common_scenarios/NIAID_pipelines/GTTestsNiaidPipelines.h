@@ -46,8 +46,8 @@ GUI_TEST_CLASS_DECLARATION(test_0012)
 GUI_TEST_CLASS_DECLARATION(test_0013)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_NIAID_pipelines
+}  // namespace GUITest_common_scenarios_NIAID_pipelines
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTS_NIAID_PIPELINES_H_
+#endif  // GTTESTS_NIAID_PIPELINES_H_

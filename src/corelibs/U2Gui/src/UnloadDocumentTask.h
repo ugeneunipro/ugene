@@ -75,6 +75,6 @@ private:
     QMultiMap<QString, GObjectRelation> savedObjectRelations;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

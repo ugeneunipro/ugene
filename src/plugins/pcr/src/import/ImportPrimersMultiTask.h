@@ -36,6 +36,6 @@ public:
     QString generateReport() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_PRIMERS_MULTI_TASK_H_
+#endif  // _U2_IMPORT_PRIMERS_MULTI_TASK_H_

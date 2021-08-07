@@ -49,6 +49,6 @@ private:
     QScopedPointer<StateLocker> locker;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CONVERT_MCA_2_MSA_TASK_H_
+#endif  // _U2_CONVERT_MCA_2_MSA_TASK_H_

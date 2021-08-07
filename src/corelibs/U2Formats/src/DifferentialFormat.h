@@ -66,6 +66,6 @@ private:
     static constexpr int MAX_LINE_LENGTH = 100000;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DIFFERENTIALFORMAT_H_
+#endif  // _U2_DIFFERENTIALFORMAT_H_

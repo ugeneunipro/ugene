@@ -57,6 +57,6 @@ protected:
     virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

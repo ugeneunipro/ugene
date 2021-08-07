@@ -61,4 +61,4 @@ U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t *newName)
 }
 #endif
 
-#endif    // _COMMON_DBI_H_
+#endif  // _COMMON_DBI_H_

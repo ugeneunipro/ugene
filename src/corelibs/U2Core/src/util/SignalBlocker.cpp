@@ -33,4 +33,4 @@ SignalBlocker::~SignalBlocker() {
     object->blockSignals(previousState);
 }
 
-}    // namespace U2
+}  // namespace U2

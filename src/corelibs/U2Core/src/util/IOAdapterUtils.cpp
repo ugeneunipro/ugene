@@ -55,7 +55,7 @@ QByteArray IOAdapterUtils::readFileHeader(const GUrl &url, int size) {
     QScopedPointer<IOAdapter> adapter(iof->createIOAdapter());
     bool res = adapter->open(url, IOAdapterMode_Read);
     if (!res) {
-        return data;    //BUG:420: report error
+        return data;  // BUG:420: report error
     }
 
     data.resize(size);
@@ -63,7 +63,7 @@ QByteArray IOAdapterUtils::readFileHeader(const GUrl &url, int size) {
     int s = adapter->readBlock(data.data(), data.size());
     if (s == -1) {
         data.resize(0);
-        return data;    //BUG:420: report error
+        return data;  // BUG:420: report error
     }
 
     if (s != data.size()) {
@@ -139,4 +139,4 @@ bool IOAdapterUtils::writeTextFile(const QString &path, const QString &content, 
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,7 +41,7 @@ private:
     static QScriptValue createOutBus(Port *port, QScriptEngine *engine);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_ACTORCONTEXT_H_
+#endif  // _U2_ACTORCONTEXT_H_

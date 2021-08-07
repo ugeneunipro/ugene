@@ -52,7 +52,7 @@ bool AnnotationGroup::isValidGroupName(const QString &name, bool pathMode) {
     if (name.isEmpty()) {
         return false;
     }
-    //todo: optimize
+    // todo: optimize
     QBitArray validChars = TextUtils::ALPHA_NUMS;
     validChars['_'] = true;
     validChars['-'] = true;
@@ -363,8 +363,8 @@ bool registerAnnotationGroupMeta() {
     return true;
 }
 
-}    // namespace
+}  // namespace
 
 const bool AnnotationGroup::annotationGroupMetaRegistered = registerAnnotationGroupMeta();
 
-}    // namespace U2
+}  // namespace U2

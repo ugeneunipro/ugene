@@ -67,6 +67,6 @@ protected:
     void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

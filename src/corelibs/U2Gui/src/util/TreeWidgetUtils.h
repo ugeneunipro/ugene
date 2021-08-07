@@ -47,6 +47,6 @@ public:
     static void visitDFS(QTreeWidget *tree, TreeWidgetVisitor *visitor);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

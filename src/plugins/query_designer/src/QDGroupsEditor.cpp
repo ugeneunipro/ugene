@@ -85,7 +85,7 @@ void QDGroupsEditor::rebuild() {
 
 void QDGroupsEditor::mousePressEvent(QMouseEvent *event) {
     if (event->buttons() & Qt::RightButton) {
-        QTreeWidgetItem *item = currentItem();    // = itemAt(event->pos());
+        QTreeWidgetItem *item = currentItem();  // = itemAt(event->pos());
         QMenu m;
         if (!item) {
             m.addAction(addGroupAction);
@@ -158,7 +158,7 @@ void QDGroupsEditor::sl_addActor() {
         return;
     }
     scheme->addActorToGroup(sel, group);
-    //item->setExpanded(true);
+    // item->setExpanded(true);
 }
 
 void QDGroupsEditor::sl_removeActor() {
@@ -190,4 +190,4 @@ void QDGroupsEditor::sl_setReqNum() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

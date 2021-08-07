@@ -35,8 +35,8 @@ class Actor;
 class Link;
 
 /**
-* identity data of a port
-*/
+ * identity data of a port
+ */
 class U2LANG_EXPORT PortDescriptor : public Descriptor {
 public:
     PortDescriptor(const Descriptor &desc, DataTypePtr type, bool input, bool multi = false, uint f = 0);
@@ -69,17 +69,17 @@ protected:
 private:
     DataTypePtr defaultType;
 
-};    // PortDescriptor
+};  // PortDescriptor
 
 /**
-* Port is a place where communication channels meet actors
-* actually, Port itself does not need to be a configuration
-* nowadays, BusPort uses 1 attribute BUS_MAP to store StrStr map of values that come to port
-* see BusPort for details
-* Configuration is chosen for extensibility
-*
-* Peer needs in realizations to store CommunicationChannel that goes throw a port. see BaseWorker::BaseWorker
-*/
+ * Port is a place where communication channels meet actors
+ * actually, Port itself does not need to be a configuration
+ * nowadays, BusPort uses 1 attribute BUS_MAP to store StrStr map of values that come to port
+ * see BusPort for details
+ * Configuration is chosen for extensibility
+ *
+ * Peer needs in realizations to store CommunicationChannel that goes throw a port. see BaseWorker::BaseWorker
+ */
 class U2LANG_EXPORT Port : public QObject, public PortDescriptor, public Configuration, public Peer {
     Q_OBJECT
 public:
@@ -125,14 +125,14 @@ protected:
     // links with other ports
     QMap<Port *, Link *> bindings;
     bool enabled;
-};    // Port
+};  // Port
 
 /**
-* represents connection between 2 ports
-* as if ports are binded to actors, link represents connection between 2 actors
-*
-* Peer needs to store CommunicationChannel. See LocalDomainFactory::createConnection as example
-*/
+ * represents connection between 2 ports
+ * as if ports are binded to actors, link represents connection between 2 actors
+ *
+ * Peer needs to store CommunicationChannel. See LocalDomainFactory::createConnection as example
+ */
 class U2LANG_EXPORT Link : public Peer {
 public:
     Link();
@@ -153,7 +153,7 @@ private:
     // input port of some actor
     Port *dest;
 
-};    // Link
+};  // Link
 
 class U2LANG_EXPORT ActorPortsAliases {
 public:
@@ -167,8 +167,8 @@ private:
     QMap<QPair<QString, QString>, QPair<Port *, QString>> outPortAliases;
 };
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_PORT_H_
+#endif  // _U2_WORKFLOW_PORT_H_

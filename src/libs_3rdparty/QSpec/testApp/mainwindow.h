@@ -25,4 +25,4 @@ private:
     EventRecorderWidget *eventRecorderWidget;
 };
 
-#endif    // MAINWINDOW_H
+#endif  // MAINWINDOW_H

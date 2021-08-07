@@ -46,6 +46,6 @@ private:
     U2DataType typeFilter;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DB_FOLDER_SCANNER_
+#endif  // _U2_DB_FOLDER_SCANNER_

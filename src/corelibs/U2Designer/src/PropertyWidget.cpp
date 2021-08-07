@@ -197,11 +197,11 @@ QString ComboBoxWidgetBase::getFormattedItemText(const QString &itemKey) const {
 /* ComboBoxWidget */
 /************************************************************************/
 ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
-: ComboBoxWidgetBase(parent, formatter) {
+    : ComboBoxWidgetBase(parent, formatter) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
-    for (const ComboItem& item: qAsConst(items)) {
+    for (const ComboItem &item : qAsConst(items)) {
         comboBox->addItem(getFormattedItemText(item.first), item.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
@@ -255,7 +255,7 @@ QVariant ComboBoxEditableWidget::value() {
 void ComboBoxEditableWidget::setValue(const QVariant &value) {
     int idx = comboBox->findData(value);
     if (idx == -1) {
-        //try by text
+        // try by text
         idx = comboBox->findText(value.toString());
         if (idx == -1) {
             if (customIdx == -1) {
@@ -380,7 +380,7 @@ void ComboBoxWithDbUrlWidget::sl_browse() {
 
     if (QDialog::Accepted == dialogResult) {
         const QString dbUrlWithoutProvider = editDialog->getFullDbiUrl();
-        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);    // TODO: fix this hardcoded value when other shared DB providers appear
+        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);  // TODO: fix this hardcoded value when other shared DB providers appear
         const QString dbUrl = SharedDbUrlUtils::createDbUrl(dbiRef);
         SharedDbUrlUtils::saveNewDbConnection(editDialog->getName(), dbUrlWithoutProvider);
         updateComboValues();
@@ -419,7 +419,7 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter>& formatter)
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
     : ComboBoxWidgetBase(parent, formatter), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
@@ -658,4 +658,4 @@ QString NoFileURLWidget::finalyze(const QString &url) {
     return finalyze(url, const_cast<DelegateTags *>(tags()));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -33,7 +33,7 @@ namespace U2 {
 /// SequenceConentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-const qint64 SequenceContentFilterTask::SEQUENCE_CHUNK_SIZE = 4194304;    // 4 MB
+const qint64 SequenceContentFilterTask::SEQUENCE_CHUNK_SIZE = 4194304;  // 4 MB
 
 SequenceContentFilterTask::SequenceContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
     : AbstractProjectFilterTask(settings, tr("Sequence content"), docs), searchStopFlag(0) {
@@ -89,9 +89,9 @@ bool SequenceContentFilterTask::sequenceContainsPattern(U2SequenceObject *seqObj
         } else if (0 == searchStopFlag && seqObject->isCircular()) {
             overlap = U2Region(seqLength - patternLength + 1, patternLength * 2 - 2);
         } else {
-            continue;    // we have a non-circular sequence and by this moment it has been searched completely
+            continue;  // we have a non-circular sequence and by this moment it has been searched completely
         }
-        if (!overlap.isEmpty()) {    // `overlap` can be empty, it's a degenerative case
+        if (!overlap.isEmpty()) {  // `overlap` can be empty, it's a degenerative case
             searchThroughRegion(seqObject, overlap, pattern, findSettings);
         }
     }
@@ -101,7 +101,7 @@ bool SequenceContentFilterTask::sequenceContainsPattern(U2SequenceObject *seqObj
 
 void SequenceContentFilterTask::searchThroughRegion(U2SequenceObject *seqObject, const U2Region &searchRegion, const QString &pattern, const FindAlgorithmSettings &findSettings) {
     SAFE_POINT(nullptr != seqObject, L10N::nullPointerError("Sequence object"), );
-    int searchProgressStub = 0;    // it's unused in fact
+    int searchProgressStub = 0;  // it's unused in fact
 
     QByteArray regionContent;
     const qint64 seqLength = seqObject->getSequenceLength();
@@ -157,4 +157,4 @@ AbstractProjectFilterTask *SequenceContentFilterTaskFactory::createNewTask(const
     return new SequenceContentFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

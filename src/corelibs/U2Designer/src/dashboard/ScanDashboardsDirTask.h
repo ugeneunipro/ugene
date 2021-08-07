@@ -44,6 +44,6 @@ private:
     QList<DashboardInfo> dashboardInfos;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCAN_DASHBOARDS_DIR_TASK_H_
+#endif  // _U2_SCAN_DASHBOARDS_DIR_TASK_H_

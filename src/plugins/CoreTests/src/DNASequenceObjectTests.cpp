@@ -700,13 +700,13 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
     foreach (const MultipleSequenceAlignmentRow &myItem, myMSequence->getMsa()->getMsaRows()) {
         if (myItem->getName() == seqName) {
             ok_flag = true;
-            //QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
-            //if (qualityCodes != expectedQuality){
-            //    stateInfo.setError(
-            //        QString("Quality scores are not valid! The score is %1, expected %2").arg(qualityCodes.constData()).arg(expectedQuality.constData())
-            //        );
-            //    return ReportResult_Finished;
-            //}
+            // QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
+            // if (qualityCodes != expectedQuality){
+            //     stateInfo.setError(
+            //         QString("Quality scores are not valid! The score is %1, expected %2").arg(qualityCodes.constData()).arg(expectedQuality.constData())
+            //         );
+            //     return ReportResult_Finished;
+            // }
         }
     }
     if (!ok_flag) {
@@ -1199,4 +1199,4 @@ QList<XMLTestFactory *> DNASequenceObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

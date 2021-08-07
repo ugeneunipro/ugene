@@ -136,10 +136,10 @@ void Index3To1::init(const QList<Triplet> &ts) {
     int prevPow = 1 << (bitsPerChar - 1);
     int nextPow = 1 << bitsPerChar;
     assert(nChars < nextPow && nChars >= prevPow);
-    assert(bitsPerChar <= 8);    //validity check
-    assert(bitsPerChar <= 6);    //TODO: optimize large tables!!
+    assert(bitsPerChar <= 8);  // validity check
+    assert(bitsPerChar <= 6);  // TODO: optimize large tables!!
 #endif
-    bitsPerCharX2 = bitsPerChar * 2;    //cache this value -> used for optimization
+    bitsPerCharX2 = bitsPerChar * 2;  // cache this value -> used for optimization
 
     // assign bit mask for every char
     char mask = 1;
@@ -151,7 +151,7 @@ void Index3To1::init(const QList<Triplet> &ts) {
             maskByChar[i] = 0;
         }
     }
-    mask--;    //last value was not used
+    mask--;  // last value was not used
 
     indexSize = 1 + (mask << bitsPerCharX2) + (mask << bitsPerChar) + mask;
 
@@ -255,4 +255,4 @@ int DNATranslation1to3Impl::translate(char *src_and_dst, int len) const {
     return translate(src_and_dst, len, src_and_dst, len, USE_MOST_PROBABLE_CODONS);
 }
 
-}    // namespace U2
+}  // namespace U2

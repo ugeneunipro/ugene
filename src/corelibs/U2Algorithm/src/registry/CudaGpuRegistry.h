@@ -31,7 +31,7 @@ namespace U2 {
 typedef int CudaGpuId;
 
 #define CUDA_GPU_REGISTRY_SETTINGS "/cuda_gpu_registry"
-//stores settings for concrete GPU. The key for appending - textual representation of CudaGpuId
+// stores settings for concrete GPU. The key for appending - textual representation of CudaGpuId
 #define CUDA_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC "/cuda_gpu_registry/gpu_specific"
 #define CUDA_GPU_SETTINGS_ENABLED "/enabled"
 
@@ -69,7 +69,7 @@ public:
     }
 
 private:
-    //TODO: add another cuda device properties from cudaDeviceProp
+    // TODO: add another cuda device properties from cudaDeviceProp
     QString name;
     CudaGpuId id;
     quint64 globalMemorySizeBytes;
@@ -98,6 +98,6 @@ private:
     QHash<CudaGpuId, CudaGpuModel *> gpus;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //__CUDA_GPU_REGISTRY_H__
+#endif  //__CUDA_GPU_REGISTRY_H__

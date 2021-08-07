@@ -29,9 +29,9 @@ namespace U2 {
 namespace Workflow {
 
 /**
-* wrapper throw 'void*'
-* use as a base class to store any pointer in your class
-*/
+ * wrapper throw 'void*'
+ * use as a base class to store any pointer in your class
+ */
 class U2LANG_EXPORT Peer {
 public:
     Peer()
@@ -57,10 +57,10 @@ protected:
     // any pointer
     void *peer;
 
-};    // Peer
+};  // Peer
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_PEER_H_
+#endif  // _U2_WORKFLOW_PEER_H_

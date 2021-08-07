@@ -77,6 +77,6 @@ public:
     virtual char getConsensusCharAndScore(const MultipleAlignment &ma, int column, int &score, QVector<int> seqIdx = QVector<int>()) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

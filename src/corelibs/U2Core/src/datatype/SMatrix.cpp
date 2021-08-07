@@ -46,17 +46,17 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
         maxScore = qMax(maxScore, s.score);
     }
 
-    //try to fix amino alphabet for extended symbols if needed: U(Selenocysteine) & O(Pyrrolysine)
+    // try to fix amino alphabet for extended symbols if needed: U(Selenocysteine) & O(Pyrrolysine)
     if (alphabet->isAmino()) {
-        if (getScore('U', 'U') == DEFAULT_FILL_VALUE) {    // no score for 'U' symbol, use score value for 'C' (Cysteine)
+        if (getScore('U', 'U') == DEFAULT_FILL_VALUE) {  // no score for 'U' symbol, use score value for 'C' (Cysteine)
             copyCharValues('C', 'U');
         }
-        if (getScore('O', 'O') == DEFAULT_FILL_VALUE) {    // no score for 'U' symbol, use score value for 'K' (Lysine)
+        if (getScore('O', 'O') == DEFAULT_FILL_VALUE) {  // no score for 'U' symbol, use score value for 'K' (Lysine)
             copyCharValues('K', 'O');
         }
     }
 
-    //now for all symbols in alphabet without score set the minimal score
+    // now for all symbols in alphabet without score set the minimal score
     foreach (char c1, validCharacters) {
         foreach (char c2, validCharacters) {
             float score = getScore(c1, c2);
@@ -126,4 +126,4 @@ SMatrix SMatrix::fromQVariant(const QVariant &v) {
     return m;
 }
 
-}    // namespace U2
+}  // namespace U2

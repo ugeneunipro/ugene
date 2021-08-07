@@ -341,4 +341,4 @@ void GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation 
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

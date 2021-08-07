@@ -26,8 +26,8 @@
 namespace U2 {
 
 /**********************************
-* WizardPage
-*********************************/
+ * WizardPage
+ *********************************/
 WizardPage::WizardPage(const QString &_id, const QString &_title)
     : id(_id), title(_title) {
 }
@@ -101,8 +101,8 @@ const QString &WizardPage::plainNextId() const {
 }
 
 /**********************************
-* TemplatedPage
-*********************************/
+ * TemplatedPage
+ *********************************/
 TemplatedPageContent::TemplatedPageContent(const QString &_templateId)
     : templateId(_templateId) {
 }
@@ -123,8 +123,8 @@ TemplatedPageContent *PageContentFactory::createContent(const QString &id, U2OpS
 }
 
 /**********************************
-* DefaultTemplatePage
-*********************************/
+ * DefaultTemplatePage
+ *********************************/
 const QString DefaultPageContent::ID("default");
 const QString DefaultPageContent::PARAMETERS("parameters-area");
 const int DefaultPageContent::HEIGHT = 400;
@@ -185,4 +185,4 @@ int DefaultPageContent::getPageWidth() const {
     return WIDTH;
 }
 
-}    // namespace U2
+}  // namespace U2

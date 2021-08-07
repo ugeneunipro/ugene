@@ -41,36 +41,36 @@ int BamReader::AlignmentReader::getId() {
 
 bool BamReader::AlignmentReader::readNumber(char type, QVariant &value, int &bytesRead) {
     switch (type) {
-    case 'c':
-        value = (int)r->readInt8();
-        bytesRead += 1;
-        break;
-    case 'C':
-        value = (int)r->readUint8();
-        bytesRead += 1;
-        break;
-    case 's':
-        value = (int)r->readInt16();
-        bytesRead += 2;
-        break;
-    case 'S':
-        value = (int)r->readUint16();
-        bytesRead += 2;
-        break;
-    case 'i':
-        value = (int)r->readInt32();
-        bytesRead += 4;
-        break;
-    case 'I':
-        value = (uint)r->readUint32();
-        bytesRead += 4;
-        break;
-    case 'f':
-        value = r->readFloat32();
-        bytesRead += 4;
-        break;
-    default:
-        return false;
+        case 'c':
+            value = (int)r->readInt8();
+            bytesRead += 1;
+            break;
+        case 'C':
+            value = (int)r->readUint8();
+            bytesRead += 1;
+            break;
+        case 's':
+            value = (int)r->readInt16();
+            bytesRead += 2;
+            break;
+        case 'S':
+            value = (int)r->readUint16();
+            bytesRead += 2;
+            break;
+        case 'i':
+            value = (int)r->readInt32();
+            bytesRead += 4;
+            break;
+        case 'I':
+            value = (uint)r->readUint32();
+            bytesRead += 4;
+            break;
+        case 'f':
+            value = r->readFloat32();
+            bytesRead += 4;
+            break;
+        default:
+            return false;
     }
     return true;
 }
@@ -171,35 +171,35 @@ Alignment BamReader::AlignmentReader::read() {
             quint32 value = r->readUint32();
             Alignment::CigarOperation::Operation operation;
             switch (value & 0xf) {
-            case 0:
-                operation = Alignment::CigarOperation::AlignmentMatch;
-                break;
-            case 1:
-                operation = Alignment::CigarOperation::Insertion;
-                break;
-            case 2:
-                operation = Alignment::CigarOperation::Deletion;
-                break;
-            case 3:
-                operation = Alignment::CigarOperation::Skipped;
-                break;
-            case 4:
-                operation = Alignment::CigarOperation::SoftClip;
-                break;
-            case 5:
-                operation = Alignment::CigarOperation::HardClip;
-                break;
-            case 6:
-                operation = Alignment::CigarOperation::Padding;
-                break;
-            case 7:
-                operation = Alignment::CigarOperation::SequenceMatch;
-                break;
-            case 8:
-                operation = Alignment::CigarOperation::SequenceMismatch;
-                break;
-            default:
-                throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(value & 0xf));
+                case 0:
+                    operation = Alignment::CigarOperation::AlignmentMatch;
+                    break;
+                case 1:
+                    operation = Alignment::CigarOperation::Insertion;
+                    break;
+                case 2:
+                    operation = Alignment::CigarOperation::Deletion;
+                    break;
+                case 3:
+                    operation = Alignment::CigarOperation::Skipped;
+                    break;
+                case 4:
+                    operation = Alignment::CigarOperation::SoftClip;
+                    break;
+                case 5:
+                    operation = Alignment::CigarOperation::HardClip;
+                    break;
+                case 6:
+                    operation = Alignment::CigarOperation::Padding;
+                    break;
+                case 7:
+                    operation = Alignment::CigarOperation::SequenceMatch;
+                    break;
+                case 8:
+                    operation = Alignment::CigarOperation::SequenceMismatch;
+                    break;
+                default:
+                    throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(value & 0xf));
             }
             int operatonLength = value >> 4;
             cigar.append(Alignment::CigarOperation(operatonLength, operation));
@@ -210,8 +210,8 @@ Alignment BamReader::AlignmentReader::read() {
             CigarValidator validator(cigar);
             validator.validate(&totalLength);
             if (!cigar.isEmpty() && length != totalLength) {
-                cigar.clear();    //Ignore invalid cigar
-                //throw InvalidFormatException(BAMDbiPlugin::tr("Cigar length mismatch"));
+                cigar.clear();  // Ignore invalid cigar
+                // throw InvalidFormatException(BAMDbiPlugin::tr("Cigar length mismatch"));
             }
         }
         alignment.setCigar(cigar);
@@ -227,56 +227,56 @@ Alignment BamReader::AlignmentReader::read() {
                 value = packedSequence[index / 2] & 0xf;
             }
             switch (value) {
-            case 0:
-                sequence[index] = '=';
-                break;
-            case 1:
-                sequence[index] = 'A';
-                break;
-            case 2:
-                sequence[index] = 'C';
-                break;
-            case 3:
-                sequence[index] = 'M';
-                break;
-            case 4:
-                sequence[index] = 'G';
-                break;
-            case 5:
-                sequence[index] = 'R';
-                break;
-            case 6:
-                sequence[index] = 'S';
-                break;
-            case 7:
-                sequence[index] = 'V';
-                break;
-            case 8:
-                sequence[index] = 'T';
-                break;
-            case 9:
-                sequence[index] = 'W';
-                break;
-            case 10:
-                sequence[index] = 'Y';
-                break;
-            case 11:
-                sequence[index] = 'H';
-                break;
-            case 12:
-                sequence[index] = 'K';
-                break;
-            case 13:
-                sequence[index] = 'D';
-                break;
-            case 14:
-                sequence[index] = 'B';
-                break;
-            case 15:
-                sequence[index] = 'N';
-                break;
-            default:
-                assert(false);
+                case 0:
+                    sequence[index] = '=';
+                    break;
+                case 1:
+                    sequence[index] = 'A';
+                    break;
+                case 2:
+                    sequence[index] = 'C';
+                    break;
+                case 3:
+                    sequence[index] = 'M';
+                    break;
+                case 4:
+                    sequence[index] = 'G';
+                    break;
+                case 5:
+                    sequence[index] = 'R';
+                    break;
+                case 6:
+                    sequence[index] = 'S';
+                    break;
+                case 7:
+                    sequence[index] = 'V';
+                    break;
+                case 8:
+                    sequence[index] = 'T';
+                    break;
+                case 9:
+                    sequence[index] = 'W';
+                    break;
+                case 10:
+                    sequence[index] = 'Y';
+                    break;
+                case 11:
+                    sequence[index] = 'H';
+                    break;
+                case 12:
+                    sequence[index] = 'K';
+                    break;
+                case 13:
+                    sequence[index] = 'D';
+                    break;
+                case 14:
+                    sequence[index] = 'B';
+                    break;
+                case 15:
+                    sequence[index] = 'N';
+                    break;
+                default:
+                    assert(false);
             }
         }
         alignment.setSequence(sequence);
@@ -497,7 +497,7 @@ void BamReader::readHeader() {
                         if (-1 != colonIndex) {
                             fieldTag = tokens[index].mid(0, colonIndex);
                             fieldValue = tokens[index].mid(colonIndex + 1);
-                        } else if ("PG" == recordTag) {    // workaround for invalid headers produced by some programs
+                        } else if ("PG" == recordTag) {  // workaround for invalid headers produced by some programs
                             continue;
                         } else {
                             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid header field: %1").arg(QString(tokens[index])));
@@ -521,8 +521,8 @@ void BamReader::readHeader() {
                 if (fields.contains("VN")) {
                     QByteArray value = fields["VN"];
                     if (!QRegExp("[0-9]+\\.[0-9]+").exactMatch(value)) {
-                        //Do nothing to suppord malformed BAMs
-                        //throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-VN value: %1").arg(QString(value)));
+                        // Do nothing to suppord malformed BAMs
+                        // throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-VN value: %1").arg(QString(value)));
                     }
                     header.setFormatVersion(Version::parseVersion(value));
                 } else {
@@ -538,7 +538,7 @@ void BamReader::readHeader() {
                         header.setSortingOrder(Header::QueryName);
                     } else if ("coordinate" == value) {
                         header.setSortingOrder(Header::Coordinate);
-                    } else if ("sorted" == value) {    // workaround for invalid headers produced by some programs
+                    } else if ("sorted" == value) {  // workaround for invalid headers produced by some programs
                         header.setSortingOrder(Header::Coordinate);
                     } else {
                         throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-SO value: %1").arg(QString(value)));
@@ -611,8 +611,8 @@ void BamReader::readHeader() {
                         if (date.isValid()) {
                             readGroup.setDate(date);
                         } else {
-                            //Allow anything.
-                            //throw InvalidFormatException(BAMDbiPlugin::tr("Invalid RG-DT field value: %1").arg(QString(value)));
+                            // Allow anything.
+                            // throw InvalidFormatException(BAMDbiPlugin::tr("Invalid RG-DT field value: %1").arg(QString(value)));
                         }
                     }
                 }
@@ -682,5 +682,5 @@ void BamReader::readHeader() {
     }
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

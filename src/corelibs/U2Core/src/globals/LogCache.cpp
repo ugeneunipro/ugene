@@ -171,4 +171,4 @@ void LogCacheExt::setFileOutputDisabled() {
     fileEnabled = false;
 }
 
-}    // namespace U2
+}  // namespace U2

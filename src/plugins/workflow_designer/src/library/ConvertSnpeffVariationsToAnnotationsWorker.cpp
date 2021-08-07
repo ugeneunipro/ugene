@@ -115,7 +115,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(tags, "", "");
 
         QVariantMap map;
-        for (const DocumentFormatId &formatId: qAsConst(supportedFormats)) {
+        for (const DocumentFormatId &formatId : qAsConst(supportedFormats)) {
             map[formatId] = formatId;
         }
         auto formatDelegate = new ComboBoxDelegate(map);
@@ -171,5 +171,5 @@ Task *ConvertSnpeffVariationsToAnnotationsWorker::createTask(const Message &mess
     return task;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

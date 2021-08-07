@@ -179,7 +179,7 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus &os, i
 
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
-    GTGlobals::sleep(1000);    // don't touch
+    GTGlobals::sleep(1000);  // don't touch
 
     QString sequence;
     Runnable *chooser = new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey);
@@ -246,7 +246,7 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSeveralRegionsByDialog"
-void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString) {
+void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString &multipleRangeString) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
     clickMouseOnTheSafeSequenceViewArea(os);
     GTKeyboardUtils::selectAll();
@@ -413,7 +413,7 @@ QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus &os, ADVSingleSequen
     GT_CHECK_RESULT(nullptr != nameLabel, "Name label is NULL!", "");
 
     QString labelText = nameLabel->text();
-    QString result = labelText.left(labelText.indexOf("[") - 1);    //detachment of name from label text
+    QString result = labelText.left(labelText.indexOf("[") - 1);  // detachment of name from label text
     return result;
 }
 #undef GT_METHOD_NAME
@@ -474,7 +474,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
     U2Region annotationVisibleRegion = annotationRegion.intersect(visibleRegion);
     int x1 = renderArea->posToCoord(annotationVisibleRegion.startPos, true);
     int x2 = renderArea->posToCoord(annotationVisibleRegion.endPos() - 1, true) + renderArea->getCharWidth();
-    if (x2 <= x1) {    // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
+    if (x2 <= x1) {  // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
         x2 = renderArea->width();
     }
 
@@ -637,7 +637,7 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
 
     const bool wrapMode = detView->isWrapMode();
     if (!wrapMode) {
-        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));  // TODO: replace the hardcoded value with method in renderer
     } else {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
@@ -656,7 +656,7 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
         SAFE_POINT_EXT(linesBeforePos != -1, os.setError("Position not found"), );
 
         const int shiftsCount = renderArea->getShiftsCount();
-        int middleShift = (int)(shiftsCount / 2) + 1;    //TODO: this calculation might consider the case then complementary is turned off or translations are drawn
+        int middleShift = (int)(shiftsCount / 2) + 1;  // TODO: this calculation might consider the case then complementary is turned off or translations are drawn
         if (clickOnDirectLine) {
             middleShift--;
         }
@@ -732,4 +732,4 @@ void GTUtilsSequenceView::makeDetViewVisible(HI::GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -53,4 +53,4 @@ void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serv
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

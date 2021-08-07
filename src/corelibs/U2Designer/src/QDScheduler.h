@@ -112,7 +112,7 @@ private:
     void cleanupCandidates();
     bool canAdd(QDResultGroup *actorResult, QDResultGroup *candidate, bool complement) const;
     QDStrandOption findResultStrand(QDResultGroup *actorRes);
-    //inverts repeat pair if any for complement search
+    // inverts repeat pair if any for complement search
     QList<QDResultUnit> prepareComplResults(QDResultGroup *src) const;
     static QString prepareAnnotationName(const QDResultUnit &res);
 
@@ -229,6 +229,6 @@ private:
     int progressDelta;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

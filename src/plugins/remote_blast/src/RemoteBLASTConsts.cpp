@@ -136,4 +136,4 @@ void addParametr(QString &requestParameters, const QString &paramName, const int
     requestParameters.append(QString::number(param));
 }
 
-}    // namespace U2
+}  // namespace U2

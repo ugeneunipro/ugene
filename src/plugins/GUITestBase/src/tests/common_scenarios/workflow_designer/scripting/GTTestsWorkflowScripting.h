@@ -38,7 +38,7 @@ GUI_TEST_CLASS_DECLARATION(test_0004)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_common_scenarios_workflow_scripting
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_workflow_scripting
+}  // namespace U2
 
-#endif    // _GTTESTS_WORKFLOW_SCRIPTING_H_
+#endif  // _GTTESTS_WORKFLOW_SCRIPTING_H_

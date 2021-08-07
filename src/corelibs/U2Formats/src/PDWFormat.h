@@ -56,6 +56,6 @@ private:
     void load(IOAdapter *io, const U2DbiRef &ref, const QVariantMap &fs, const GUrl &docUrl, QList<GObject *> &objects, U2OpStatus &ti, U2SequenceObject *&dnaObj, AnnotationTableObject *&aObj);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

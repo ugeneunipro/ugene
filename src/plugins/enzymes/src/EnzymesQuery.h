@@ -98,6 +98,6 @@ public:
     virtual QString getSelectedString(QDialog *dlg);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

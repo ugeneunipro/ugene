@@ -62,4 +62,4 @@ void PrimerLibrarySelector::sl_selectionChanged() {
     okButton->setDisabled(selection.isEmpty());
 }
 
-}    // namespace U2
+}  // namespace U2

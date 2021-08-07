@@ -125,15 +125,15 @@ bool MaEditorFactory::isStateInSelection(const MultiGSelection &multiSelection, 
     }
     GObjectReference ref = state.getMaObjectRef();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+    if (doc == nullptr) {  // todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
-    //check that document is in selection
+    // check that document is in selection
     QList<Document *> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
     if (selectedDocs.contains(doc)) {
         return true;
     }
-    //check that object is in selection
+    // check that object is in selection
     QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
     GObject *obj = doc->findGObjectByName(ref.objName);
     bool res = obj != nullptr && selectedObjects.contains(obj);
@@ -203,4 +203,4 @@ OpenMaEditorTask *McaEditorFactory::getOpenMaEditorTask(Document *doc) {
     return new OpenMcaEditorTask(doc);
 }
 
-}    // namespace U2
+}  // namespace U2

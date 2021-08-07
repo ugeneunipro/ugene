@@ -101,7 +101,7 @@ QList<FindAlgorithmResult> FindAlgorithmTask::popResults() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//LoadPatternsFileTask
+// LoadPatternsFileTask
 LoadPatternsFileTask::LoadPatternsFileTask(const QString &_filePath, const QString &_annotationName)
     : Task(tr("Load pattern from file"), TaskFlag_None), filePath(_filePath), isRawSequence(false), annotationName(_annotationName) {
 }
@@ -183,4 +183,4 @@ void LoadPatternsFileTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

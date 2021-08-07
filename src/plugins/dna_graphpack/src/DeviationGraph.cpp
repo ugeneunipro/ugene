@@ -157,4 +157,4 @@ void DeviationGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o
     }
 }
 
-}    // namespace U2
+}  // namespace U2

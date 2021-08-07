@@ -41,6 +41,6 @@ private:
     QList<Folder> selection;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FOLDER_SELECTION_H_
+#endif  // _U2_FOLDER_SELECTION_H_

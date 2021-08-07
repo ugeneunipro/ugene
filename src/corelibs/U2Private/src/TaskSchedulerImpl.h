@@ -93,19 +93,19 @@ public:
 
     virtual ~TaskInfo();
 
-    //true if task state >= RUN && thread is finished or not used at all
+    // true if task state >= RUN && thread is finished or not used at all
 
     Task *task;
     TaskInfo *parentTaskInfo;
     QList<Task *> newSubtasks;
 
-    bool wasPrepared;    // 'true' if prepare() was called for the task
-    bool subtasksWereCanceled;    // 'true' if canceled task has called cancel() on its subtasks
-    bool selfRunFinished;    // indicates that the 'run' method of this task was finished
-    bool hasLockedPrepareResources;    //true if there were resource locks for 'prepare' stage
-    bool hasLockedRunResources;    //true if there were resource locks for 'run' stage
+    bool wasPrepared;  // 'true' if prepare() was called for the task
+    bool subtasksWereCanceled;  // 'true' if canceled task has called cancel() on its subtasks
+    bool selfRunFinished;  // indicates that the 'run' method of this task was finished
+    bool hasLockedPrepareResources;  // true if there were resource locks for 'prepare' stage
+    bool hasLockedRunResources;  // true if there were resource locks for 'run' stage
 
-    int prevProgress;    //used for TaskProgress_Manual
+    int prevProgress;  // used for TaskProgress_Manual
     QString prevDesc;
 
     int numPreparedSubtasks;
@@ -171,7 +171,7 @@ private:
     void runReady();
 
     bool readyToFinish(TaskInfo *ti);
-    bool addToPriorityQueue(Task *t, TaskInfo *parentInfo);    //return true if added. Failure can be caused if a task requires resources
+    bool addToPriorityQueue(Task *t, TaskInfo *parentInfo);  // return true if added. Failure can be caused if a task requires resources
     void runThread(TaskInfo *pi);
     void stopTask(Task *t);
     void updateTaskProgressAndDesc(TaskInfo *ti);
@@ -179,7 +179,7 @@ private:
     void deleteTask(Task *t);
     void finishSubtasks(TaskInfo *pti);
 
-    QString tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall);    //returns error message
+    QString tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall);  // returns error message
     void releaseResources(TaskInfo *ti, bool prepareStage);
 
     void propagateStateToParent(Task *t);
@@ -204,5 +204,5 @@ private:
     SleepPreventer *sleepPreventer;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

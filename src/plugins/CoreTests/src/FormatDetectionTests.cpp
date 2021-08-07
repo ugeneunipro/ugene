@@ -26,13 +26,13 @@
 namespace U2 {
 
 /* attributes */
-static const QString URL("url");    // file to check
-static const QString FORMAT("format");    // check detection score for this format
+static const QString URL("url");  // file to check
+static const QString FORMAT("format");  // check detection score for this format
 
 // GTest_CheckScore specific
-static const QString EQUAL_TO("equal-to");    // score should be equal to
-static const QString LESS_THAN("less-than");    // score should be less than
-static const QString MORE_THAN("more-than");    // score should be more than
+static const QString EQUAL_TO("equal-to");  // score should be equal to
+static const QString LESS_THAN("less-than");  // score should be less than
+static const QString MORE_THAN("more-than");  // score should be more than
 
 /* class GTest_CheckScore : public XmlTest */
 
@@ -201,4 +201,4 @@ QList<XMLTestFactory *> FormatDetectionTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

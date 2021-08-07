@@ -30,21 +30,21 @@ namespace U2 {
 
 class Shtirlitz;
 
-//The main responsibility of Shtirlitz is to collect and send reports about
-//the system where UGENE is installed and about UGENE usage.
+// The main responsibility of Shtirlitz is to collect and send reports about
+// the system where UGENE is installed and about UGENE usage.
 class Shtirlitz {
 public:
-    //Sends all of the reports, if needed.
+    // Sends all of the reports, if needed.
     static QList<Task *> wakeup();
-    //Sends custom reports, created by somebody other than Shtirlitz.
+    // Sends custom reports, created by somebody other than Shtirlitz.
     static Task *sendCustomReport(const QString &customReport);
-    //Saves to settings gathered during the current launch info
+    // Saves to settings gathered during the current launch info
     static void saveGatheredInfo();
 
 private:
-    //Creates and sends counters info (statistics about UGENE main tasks usage)
+    // Creates and sends counters info (statistics about UGENE main tasks usage)
     static Task *sendCountersReport();
-    //Creates and sends system info: OS, hardware platform, etc.
+    // Creates and sends system info: OS, hardware platform, etc.
     static Task *sendSystemReport();
 
     static QString formCountersReport();
@@ -62,18 +62,18 @@ private:
     static void getFirstLaunchInfo(bool &allVersions, bool &majorVersions);
     static bool enabled();
 
-    //ugly stub for convenience - calls ShtirlitzPlugin::tr
+    // ugly stub for convenience - calls ShtirlitzPlugin::tr
     static QString tr(const char *str);
 
 private:
-    //loads uuid from settings if necessary
-    //creates the new one if nothing was found
+    // loads uuid from settings if necessary
+    // creates the new one if nothing was found
     static QUuid getUniqueUgeneId();
 
     static const QString SEPARATOR;
 };
 
-//Task which performs sending of data
+// Task which performs sending of data
 class ShtirlitzTask : public Task {
     Q_OBJECT
 public:
@@ -91,6 +91,6 @@ public:
     void prepare() override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

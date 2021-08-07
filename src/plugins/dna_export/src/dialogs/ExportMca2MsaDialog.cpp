@@ -77,4 +77,4 @@ void ExportMca2MsaDialog::initSaveController(const QString &defaultFilePath) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-}    // namespace U2
+}  // namespace U2

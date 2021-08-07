@@ -63,18 +63,18 @@ QVariant PrimerLibraryModel::headerData(int section, Qt::Orientation /*orientati
     CHECK(Qt::DisplayRole == role, QVariant());
 
     switch (section) {
-    case 0:
-        return tr("Name");
-    case 1:
-        return tr("GC-content (%)");
-    case 2:
-        return PrimersPairStatistics::TmString;
-    case 3:
-        return tr("Length (bp)");
-    case 4:
-        return tr("Sequence");
-    default:
-        return QVariant();
+        case 0:
+            return tr("Name");
+        case 1:
+            return tr("GC-content (%)");
+        case 2:
+            return PrimersPairStatistics::TmString;
+        case 3:
+            return tr("Length (bp)");
+        case 4:
+            return tr("Sequence");
+        default:
+            return QVariant();
     }
 }
 
@@ -127,18 +127,18 @@ void PrimerLibraryModel::removePrimer(const U2DataId &primerId, U2OpStatus &os) 
 QVariant PrimerLibraryModel::displayData(const QModelIndex &index) const {
     Primer primer = primers[index.row()];
     switch (index.column()) {
-    case 0:
-        return primer.name;
-    case 1:
-        return primer.gc != Primer::INVALID_GC ? PrimerStatistics::getDoubleStringValue(primer.gc) : tr("N/A");
-    case 2:
-        return primer.tm != Primer::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
-    case 3:
-        return primer.sequence.length();
-    case 4:
-        return primer.sequence;
-    default:
-        return QVariant();
+        case 0:
+            return primer.name;
+        case 1:
+            return primer.gc != Primer::INVALID_GC ? PrimerStatistics::getDoubleStringValue(primer.gc) : tr("N/A");
+        case 2:
+            return primer.tm != Primer::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
+        case 3:
+            return primer.sequence.length();
+        case 4:
+            return primer.sequence;
+        default:
+            return QVariant();
     }
 }
 
@@ -219,4 +219,4 @@ void PrimerLibraryTable::setMode(Mode value) {
     mode = value;
 }
 
-}    // namespace U2
+}  // namespace U2

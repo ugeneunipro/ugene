@@ -110,24 +110,24 @@ QVariant InvestigationDataModel::headerData(int section, Qt::Orientation orienta
     QVariant result;
     if (Qt::DisplayRole == role) {
         switch (orientation) {
-        case Qt::Horizontal:
-            if (section < hiddenColumns.count(false) && !cachedData.isEmpty()) {
-                const int absNumberOfVisibleColumn = getAbsoluteNumberOfVisibleColumn(section);
-                const QList<QString> headerLabelList = cachedData.keys();
-                if (headerLabelList.size() > absNumberOfVisibleColumn) {
-                    result.setValue<QString>(cachedData.keys()[absNumberOfVisibleColumn]);
-                } else {
-                    emit si_investigationRequested(investigatedLink, 0);
+            case Qt::Horizontal:
+                if (section < hiddenColumns.count(false) && !cachedData.isEmpty()) {
+                    const int absNumberOfVisibleColumn = getAbsoluteNumberOfVisibleColumn(section);
+                    const QList<QString> headerLabelList = cachedData.keys();
+                    if (headerLabelList.size() > absNumberOfVisibleColumn) {
+                        result.setValue<QString>(cachedData.keys()[absNumberOfVisibleColumn]);
+                    } else {
+                        emit si_investigationRequested(investigatedLink, 0);
+                    }
                 }
-            }
-            break;
-        case Qt::Vertical:
-            if (section < countOfRows) {
-                result.setValue<QString>(QString::number(section + 1));
-            }
-            break;
-        default:
-            Q_ASSERT(false);
+                break;
+            case Qt::Vertical:
+                if (section < countOfRows) {
+                    result.setValue<QString>(QString::number(section + 1));
+                }
+                break;
+            default:
+                Q_ASSERT(false);
         }
     }
     return result;
@@ -243,4 +243,4 @@ int InvestigationDataModel::getVisibleNumberOfAbsoluteColumn(int column) const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

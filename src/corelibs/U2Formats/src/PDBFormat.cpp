@@ -268,7 +268,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D &biostruct, U2OpStatus &
 namespace {
 const QString MOLECULE_TAG = "MOLECULE";
 const QString CHAIN_TAG = "CHAIN";
-}    // namespace
+}  // namespace
 
 void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2OpStatus &) {
     /*
@@ -579,7 +579,7 @@ void PDBFormat::PDBParser::parseModel(BioStruct3D &biostruct, U2OpStatus &ti) {
     11 - 14        Integer       serial         Model serial number.
     */
 
-    //TODO: int modelIndex = currentPDBLine.mid(10,4).toInt();
+    // TODO: int modelIndex = currentPDBLine.mid(10,4).toInt();
     Q_UNUSED(biostruct);
     Q_UNUSED(ti);
 }
@@ -616,7 +616,7 @@ int PDBFormat::PDBParser::returnEndOfNameIndexAndUpdateParserState(const QString
     if (index < 0) {
         return specification.size();
     }
-    readingMoleculeName = false;    // Molecule name has ended.
+    readingMoleculeName = false;  // Molecule name has ended.
     return index;
 };
 
@@ -642,7 +642,7 @@ void PDBFormat::calculateBonds(BioStruct3D &bioStruct) {
     static const double maxRadius = 2.0;
     static const double maxDistance = 2 * maxRadius + 0.45;
 
-    //quint64 num_comps = 0, firstFilter = 0, secondFilter = 0;
+    // quint64 num_comps = 0, firstFilter = 0, secondFilter = 0;
     clock_t t1 = clock();
     QMap<int, SharedMolecule>::iterator molIter;
     QMap<int, Molecule3DModel>::iterator modelIter;
@@ -872,4 +872,4 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
     return doc;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -39,7 +39,7 @@
 #include <U2Lang/QDConstraint.h>
 
 namespace U2 {
-//QDScheduler
+// QDScheduler
 //////////////////////////////////////////////////////////////////////////
 static int PROCESSING_PROGRESS_WEIGHT(80);
 
@@ -143,7 +143,7 @@ Task::ReportResult QDScheduler::report() {
     return ReportResult_Finished;
 }
 
-//QDResultLinker
+// QDResultLinker
 //////////////////////////////////////////////////////////////////////////
 QDResultLinker::QDResultLinker(QDScheduler *_sched)
     : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(nullptr),
@@ -366,22 +366,22 @@ void QDResultLinker::processNewResults(int &progress) {
     }
 }
 
-//void QDResultLinker::filterActorResults(QList<QDResultGroup*>&) {
-//    foreach(QDResultGroup* actorResult, currentResults) {
-//        for(int i=0, n=actorResult.size(); i<n-1; i++) {
-//            for(int j=1; j<n; j++) {
-//                const QDResultUnit& res1 = actorResult.at(i);
-//                const QDResultUnit& res2 = actorResult.at(j);
-//                const QList<QDConstraint*>& sharedConstraints = constraintsMap.value(qMakePair(res1->owner, res2->owner));
-//                foreach(QDConstraint* c, sharedConstraints) {
-//                    if (!QDConstraintController::match(c, res1, res2)) {
-//                        currentResults.removeOne(actorResult);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+// void QDResultLinker::filterActorResults(QList<QDResultGroup*>&) {
+//     foreach(QDResultGroup* actorResult, currentResults) {
+//         for(int i=0, n=actorResult.size(); i<n-1; i++) {
+//             for(int j=1; j<n; j++) {
+//                 const QDResultUnit& res1 = actorResult.at(i);
+//                 const QDResultUnit& res2 = actorResult.at(j);
+//                 const QList<QDConstraint*>& sharedConstraints = constraintsMap.value(qMakePair(res1->owner, res2->owner));
+//                 foreach(QDConstraint* c, sharedConstraints) {
+//                     if (!QDConstraintController::match(c, res1, res2)) {
+//                         currentResults.removeOne(actorResult);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
 void QDResultLinker::initCandidates(int &progress) {
     int i = 0;
@@ -427,7 +427,7 @@ void QDResultLinker::updateCandidates(int &progress) {
             }
 
             bool matches = false;
-            //define for what schema strand result is
+            // define for what schema strand result is
             QDStrandOption resStrand = findResultStrand(actorRes);
             if (resStrand != QDStrand_Both && candidate->strand != QDStrand_Both && resStrand != candidate->strand) {
                 continue;
@@ -469,12 +469,12 @@ void QDResultLinker::updateCandidates(int &progress) {
                     assert(complement);
                 }
 #endif
-                //if strand was not defined
+                // if strand was not defined
                 if (newCandidate->strand == QDStrand_Both) {
                     newCandidate->strand = complement ? QDStrand_ComplementOnly : QDStrand_DirectOnly;
                 }
                 newCandidates.append(newCandidate);
-                if (maxMemorySizeInMB <= (candidates.size() + newCandidates.size()) * 0.00025) {    //0.0002 is empirically calculated coefficient
+                if (maxMemorySizeInMB <= (candidates.size() + newCandidates.size()) * 0.00025) {  // 0.0002 is empirically calculated coefficient
                     cancelMeassage = QDScheduler::tr("Too many results have been found for this scheme. Try to set stricter search conditions.").arg(newCandidates.size());
                     taskLog.error(cancelMeassage);
                     qDeleteAll(newCandidates);
@@ -645,7 +645,7 @@ void QDResultLinker::pushToTable() {
     }
 }
 
-//QDStep
+// QDStep
 //////////////////////////////////////////////////////////////////////////
 QDStep::QDStep(QDScheme *_scheme)
     : scheme(_scheme) {
@@ -664,12 +664,12 @@ void QDStep::initTotalMap() {
             QDSchemeUnit *srcSu = units.at(srcIdx);
             QDSchemeUnit *dstSu = units.at(dstIdx);
             QList<QDConstraint *> sharedConstraints = scheme->getConstraints(srcSu, dstSu);
-            //build rough constraint if there is no direct constraints
+            // build rough constraint if there is no direct constraints
             if (sharedConstraints.isEmpty()) {
                 const QList<QDPath *> &paths = scheme->findPaths(srcSu, dstSu);
-                //use only paths containing no linked units except source(destination)
+                // use only paths containing no linked units except source(destination)
                 QList<QDPath *> allowedPaths = paths;
-                //remove paths containing optional items
+                // remove paths containing optional items
                 QMutableListIterator<QDPath *> i(allowedPaths);
                 while (i.hasNext()) {
                     QDPath *p = i.next();
@@ -683,7 +683,7 @@ void QDStep::initTotalMap() {
                         }
                     }
                 }
-                //create overall constraint from list of paths between srcSu and dstSu
+                // create overall constraint from list of paths between srcSu and dstSu
                 if (!allowedPaths.isEmpty()) {
                     QDDistanceConstraint *overallConstraint = allowedPaths.first()->toConstraint();
                     int min = overallConstraint->getMin();
@@ -743,7 +743,7 @@ bool QDStep::hasPrev() const {
     return false;
 }
 
-//QDTask
+// QDTask
 //////////////////////////////////////////////////////////////////////////
 QDTask::QDTask(QDStep *_step, QDResultLinker *_linker)
     : Task(tr("Query task: %1").arg(_step->getActor()->getParameters()->getLabel()), TaskFlag_NoRun), step(_step), linker(_linker), runTask(nullptr) {
@@ -797,12 +797,12 @@ void QDTask::sl_updateProgress() {
     if (sub == findLocationTask) {
     } else if (sub == runTask) {
         stateInfo.progress = RUN_START + sub->getProgress() * RUN_TASK_PROGRESS_WEIGHT;
-    } else {    //linkTask
+    } else {  // linkTask
         stateInfo.progress = LINK_START + sub->getProgress() * LINK_TASK_PROGRESS_WEIGHT;
     }
 }
 
-//QDFindLocationtask
+// QDFindLocationtask
 //////////////////////////////////////////////////////////////////////////
 const int QDFindLocationTask::REGION_DELTA(10);
 
@@ -823,4 +823,4 @@ void QDFindLocationTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

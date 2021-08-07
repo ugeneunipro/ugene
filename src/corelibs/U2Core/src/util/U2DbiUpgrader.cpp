@@ -45,4 +45,4 @@ bool U2DbiUpgrader::operator<(const U2DbiUpgrader &other) const {
     return versionFrom < other.versionFrom && versionTo < other.versionTo;
 }
 
-}    // namespace U2
+}  // namespace U2

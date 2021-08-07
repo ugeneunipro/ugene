@@ -378,7 +378,7 @@ QBitArray getValidAnnotationChars() {
     return validChars;
 }
 
-}    // namespace
+}  // namespace
 
 bool Annotation::isValidAnnotationName(const QString &n) {
     if (n.isEmpty() || ANNOTATION_NAME_MAX_LENGTH < n.length()) {
@@ -646,4 +646,4 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
     return tip;
 }
 
-}    // namespace U2
+}  // namespace U2

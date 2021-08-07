@@ -48,7 +48,7 @@ namespace U2 {
 
 NEXUSFormat::NEXUSFormat(QObject *p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
-                                                                                                                                                                           << "nxs")    // disable streaming for now
+                                                                                                                                                                           << "nxs")  // disable streaming for now
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
@@ -117,7 +117,7 @@ QString Tokenizer::get() {
             // read quoted string
             buffStream >> quote;
 
-            //check and put back in case of reading the next chunk here
+            // check and put back in case of reading the next chunk here
             if (quote != '"' && quote != '\'') {
                 buffStream.seek(buffStream.pos() - 1);
             }
@@ -306,7 +306,7 @@ bool NEXUSParser::skipCommand() {
 }
 
 bool NEXUSParser::readSimpleCommand(Context &ctx) {
-    tz.skip();    // command name
+    tz.skip();  // command name
     QStringList wl = tz.getUntil(";");
 
     while (!wl.isEmpty()) {
@@ -395,13 +395,13 @@ bool NEXUSParser::readTaxaContents(Context &) {
 
 bool NEXUSParser::readDataContents(Context &ctx) {
     while (true) {
-        QString cmd = tz.look().toLower();    // cmd name
+        QString cmd = tz.look().toLower();  // cmd name
         if (cmd == CMD_FORMAT || cmd == CMD_DIMENSIONS) {
             if (!readSimpleCommand(ctx)) {
                 return false;
             }
         } else if (cmd == CMD_MATRIX) {
-            tz.get();    // cmd name == CMD_MATRIX
+            tz.get();  // cmd name == CMD_MATRIX
             // From format spec: "Taxa in each section must occur in the same order."
             QList<QString> names;
             QList<QByteArray> values;
@@ -503,11 +503,11 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
     QMap<QString, QString> namesTranslation;
 
     while (true) {
-        QString cmd = tz.look().toLower();    // cmd name
+        QString cmd = tz.look().toLower();  // cmd name
         bool weightDefault = false, weightValue = false;
 
         if (cmd == CMD_TRANSLATE) {
-            tz.skip();    //cmd name == CMD_TRANSLATE
+            tz.skip();  // cmd name == CMD_TRANSLATE
 
             QString name;
             QString translation;
@@ -533,10 +533,10 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
 
                 namesTranslation.insert(name, translation);
 
-                //break;
+                // break;
             }
         } else if (cmd == CMD_TREE || cmd == CMD_UTREE) {
-            tz.skip();    // cmd name == CMD_TREE
+            tz.skip();  // cmd name == CMD_TREE
 
             QString treeName = "Tree";
             // "tree_name =" or "="
@@ -544,7 +544,7 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
                 warnings.append("Empty tree");
                 continue;
             } else if (tz.look() == "=") {
-                tz.skip();    // "="
+                tz.skip();  // "="
             } else {
                 treeName = tz.get();
                 if (tz.get() != "=") {
@@ -595,7 +595,7 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
                         break;
                     }
 
-                    double weight = 1;    // default value
+                    double weight = 1;  // default value
 
                     if (state == WEIGHT) {
                         if (!acc.isEmpty()) {
@@ -677,7 +677,7 @@ bool NEXUSParser::readTreesContents(Context &, const U2DbiRef &dbiRef) {
             if (hasError()) {
                 // clean up
                 PhyNode *n = nodeStack.pop();
-                delete n;    // PhyNode::~PhyNode() is recursive
+                delete n;  // PhyNode::~PhyNode() is recursive
 
                 warnings.push_back(QString("Tree '%1' ignored due following errors: %2").arg(treeName, errors.takeLast()));
                 continue;
@@ -776,7 +776,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     io->writeBlock(line);
     line.clear();
 
-    //datatype for MrBayes files
+    // datatype for MrBayes files
     QString dataType;
     const QString &alphabetId = ma->getAlphabet()->getId();
     if (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()) {
@@ -808,7 +808,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
             nameMaxLen = row->getName().size();
         }
     }
-    nameMaxLen += 2;    // quotes may appear
+    nameMaxLen += 2;  // quotes may appear
 
     foreach (const MultipleSequenceAlignmentRow &row, rows) {
         QString name = row->getName();
@@ -950,4 +950,4 @@ FormatCheckResult NEXUSFormat::checkRawTextData(const QByteArray &rawData, const
     return FormatDetection_NotMatched;
 }
 
-}    // namespace U2
+}  // namespace U2

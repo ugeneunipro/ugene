@@ -39,7 +39,7 @@ public:
 private:
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #    endif
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA

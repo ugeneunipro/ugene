@@ -57,7 +57,7 @@ public:
     void runTest(HI::GUITests testsToRun);
     //    qint64 getMainThreadTimerValue() const;
 
-    static GUITestService *getGuiTestService();    // the service should be already created and registered
+    static GUITestService *getGuiTestService();  // the service should be already created and registered
 
     static void setEnvVariablesForGuiTesting();
     static LaunchOptions getLaunchOptions(CMDLineRegistry *cmdLine);
@@ -101,6 +101,6 @@ private:
     //    MainThreadTimer timer;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_TEST_SERVICE_H_
+#endif  // _U2_GUI_TEST_SERVICE_H_

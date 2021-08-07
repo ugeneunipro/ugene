@@ -59,4 +59,4 @@ QValidator::State U2LongLongValidator::validate(QString &input, int & /*pos*/) c
     return QValidator::Acceptable;
 }
 
-}    // namespace U2
+}  // namespace U2

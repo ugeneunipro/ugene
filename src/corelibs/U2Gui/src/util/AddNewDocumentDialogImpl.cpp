@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-//BUG:419: add label to dialog with state description!
+// BUG:419: add label to dialog with state description!
 
 #define SETTINGS_LASTFORMAT "add_new_document/last_format"
 #define SETTINGS_LASTDIR "add_new_document/last_dir"
@@ -106,4 +106,4 @@ void AddNewDocumentDialogController::run(QWidget *p, AddNewDocumentDialogModel &
     assert(proj->findDocumentByURL(m.url) == nullptr);
 }
 
-}    // namespace U2
+}  // namespace U2

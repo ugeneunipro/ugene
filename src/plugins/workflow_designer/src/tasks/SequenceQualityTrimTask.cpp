@@ -135,4 +135,4 @@ void SequenceQualityTrimTask::trimChromatogram(const U2Region &regionToCrop) {
     CHECK_OP(stateInfo, );
 }
 
-}    // namespace U2
+}  // namespace U2

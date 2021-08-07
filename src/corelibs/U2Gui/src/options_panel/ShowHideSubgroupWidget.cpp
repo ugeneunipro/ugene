@@ -174,4 +174,4 @@ void ArrowHeaderWidget::mousePressEvent(QMouseEvent * /* event */) {
     setOpened(!isOpened);
 }
 
-}    // namespace U2
+}  // namespace U2

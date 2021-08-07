@@ -224,7 +224,7 @@ void BioStruct3DGLWidget::initializeGL() {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glEnable(GL_BLEND);    // Enable Blending
+    glEnable(GL_BLEND);  // Enable Blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     updateAllRenderers();
@@ -669,7 +669,7 @@ void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
     bool canRender = error == GL_NO_ERROR;
     if (!canRender) {
         coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
-            QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
+                     QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
         lblGlError = new QLabel("Failed to initialize OpenGL", this);
         lblGlError->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
         lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
@@ -728,7 +728,7 @@ void BioStruct3DGLWidget::createActions() {
     QAction *action = nullptr;
 
     animationTimer = new QTimer(this);
-    animationTimer->setInterval(20);    // fixed interval
+    animationTimer->setInterval(20);  // fixed interval
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(sl_updateAnnimation()));
 
     rendererActions = new QActionGroup(this);
@@ -1112,4 +1112,4 @@ void BioStruct3DGLWidget::sl_onAlignmentDone(Task *task) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

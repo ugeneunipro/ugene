@@ -142,12 +142,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
-    //UGENE can hang up here
+    // UGENE can hang up here
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
-}    // namespace GUITest_dna_assembly_conversions
-}    // namespace U2
+}  // namespace GUITest_dna_assembly_conversions
+}  // namespace U2

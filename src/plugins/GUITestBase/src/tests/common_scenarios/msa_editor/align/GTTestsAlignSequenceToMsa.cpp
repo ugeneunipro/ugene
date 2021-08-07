@@ -64,8 +64,8 @@ static void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRe
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //Try to delete the MSA object during aligning
-    //Expected state: the sequences are locked and and can not be deleted
+    // Try to delete the MSA object during aligning
+    // Expected state: the sequences are locked and and can not be deleted
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -90,8 +90,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Try to delete the MSA object during aligning
-    //Expected state: the MSA object is locked and and can not be deleted
+    // Try to delete the MSA object during aligning
+    // Expected state: the MSA object is locked and and can not be deleted
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -228,8 +228,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    //Do not select anything in the project. Click the button. Add a sequence in GenBank format.
-    //Expected state: The sequence was added to the alignment and aligned.
+    // Do not select anything in the project. Click the button. Add a sequence in GenBank format.
+    // Expected state: The sequence was added to the alignment and aligned.
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -243,8 +243,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //Do not select anything in the project. Click the button. Add several ABI files.
-    //Expected state: The sequences were added to the alignment and aligned
+    // Do not select anything in the project. Click the button. Add several ABI files.
+    // Expected state: The sequences were added to the alignment and aligned
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -259,8 +259,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    //Do not select anything in the project. Click the button. Add sequences in ClustalW format. Uncheck several sequences in the appeared dialog.
-    //Expected state: Only checked sequences were added to the alignment.
+    // Do not select anything in the project. Click the button. Add sequences in ClustalW format. Uncheck several sequences in the appeared dialog.
+    // Expected state: Only checked sequences were added to the alignment.
     GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", "TUB.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -274,19 +274,19 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    //1. Open "_common_data/fasta/empty.fa" as msa.
-    //2. Ensure that MAFFT tool is set.
+    // 1. Open "_common_data/fasta/empty.fa" as msa.
+    // 2. Ensure that MAFFT tool is set.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click "Align sequence(s) to this alignment" button on the toolbar.
-    //4. Select "data/samples/FASTQ/eas.fastq".
+    // 3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    // 4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: three sequences are added to the msa.
+    // Expected state: three sequences are added to the msa.
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Incorrect sequences count");
 }
 
@@ -540,5 +540,5 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     CHECK_SET_ERR(alignedSequence == expectedSequence, "Wrong aligned sequence: " + alignedSequence);
 }
 
-}    // namespace GUITest_common_scenarios_align_sequences_to_msa
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_align_sequences_to_msa
+}  // namespace U2

@@ -236,4 +236,4 @@ void DocumentFormatRegistryImpl::init() {
     registerFormat(sdbi);
 }
 
-}    // namespace U2
+}  // namespace U2

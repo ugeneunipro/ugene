@@ -58,7 +58,7 @@ const QString RemoteDBRegistry::UNIPROTKB_SWISS_PROT("UniProtKB/Swiss-Prot");
 const QString RemoteDBRegistry::UNIPROTKB_TREMBL("UniProtKB/TrEMBL");
 
 ////////////////////////////////////////////////////////////////////////////
-//BaseLoadRemoteDocumentTask
+// BaseLoadRemoteDocumentTask
 BaseLoadRemoteDocumentTask::BaseLoadRemoteDocumentTask(const QString &_downloadPath, const QVariantMap &hints, TaskFlags flags)
     : DocumentProviderTask(tr("Load remote document"), flags), hints(hints) {
     downloadPath = _downloadPath;
@@ -151,7 +151,7 @@ bool BaseLoadRemoteDocumentTask::isCached() {
                 addSubTask(loadDocumentTask);
             }
             return true;
-        }    // else: user wants to save doc to new file -> download it from db
+        }  // else: user wants to save doc to new file -> download it from db
     }
 
     return false;
@@ -170,7 +170,7 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//LoadRemoteDocumentTask
+// LoadRemoteDocumentTask
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl &url)
     : BaseLoadRemoteDocumentTask(),
       loadDataFromEntrezTask(nullptr) {
@@ -316,7 +316,7 @@ QString RecentlyDownloadedCache::getFullPath(const QString &fileName) {
 }
 
 RecentlyDownloadedCache::~RecentlyDownloadedCache() {
-    //TODO: cache depends on AppSettings! get rid of this dependency!
+    // TODO: cache depends on AppSettings! get rid of this dependency!
     QStringList fileNames = urlMap.values();
     AppSettings *settings = AppContext::getAppSettings();
     UserAppsSettings *us = settings->getUserAppsSettings();
@@ -695,4 +695,4 @@ bool RemoteDBRegistry::hasDbId(const QString &dbId) {
     return queryDBs.contains(dbId) || httpDBs.contains(dbId);
 }
 
-}    // namespace U2
+}  // namespace U2

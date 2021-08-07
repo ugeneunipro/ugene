@@ -209,7 +209,7 @@ QDSiteconActorPrototype::QDSiteconActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-//Task
+// Task
 //////////////////////////////////////////////////////////////////////////
 QDSiteconTask::QDSiteconTask(const QStringList &urls, const SiteconSearchCfg &_cfg, const DNASequence &_dna, const QVector<U2Region> &_searchRegion)
     : Task(tr("Sitecon Query"), TaskFlag_NoRun),
@@ -251,4 +251,4 @@ QList<Task *> SiteconReadMultiTask::onSubTaskFinished(Task *subTask) {
     return stub;
 }
 
-}    // namespace U2
+}  // namespace U2

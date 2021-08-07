@@ -42,4 +42,4 @@ bool MultipleAlignmentRowInfo::getComplemented(const QVariantMap &info) {
     return info.value(COMPLEMENTED, false).toBool();
 }
 
-}    // namespace U2
+}  // namespace U2

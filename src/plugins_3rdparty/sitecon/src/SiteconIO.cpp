@@ -210,12 +210,12 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
             case SDEV_S:
             case WEIGHT_S: {
                 QStringList l = line.split(MATRIX_VAL_SEPARATOR);
-                if (l.size() - 2 != model.settings.windowSize - 1) {    //num values == size-2, modelLen = w-1
+                if (l.size() - 2 != model.settings.windowSize - 1) {  // num values == size-2, modelLen = w-1
                     si.setError(tr("Model size not matched: %1, expected: %2").arg(l.size() - 2).arg(model.settings.windowSize - 1));
                     break;
                 }
                 QString propNum = l.first();
-                //compute property idx
+                // compute property idx
                 int idx = -1;
                 for (int i = 0; i < props.size(); i++) {
                     const DiPropertySitecon *p = props[i];
@@ -247,7 +247,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
                     si.setError(tr("Property not recognized: %1").arg(line));
                     break;
                 }
-                //setup position specific value for property
+                // setup position specific value for property
                 bool ok = true;
                 for (int i = 2; i < l.size(); i++) {
                     const QString &valStr = l[i];
@@ -328,7 +328,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
         return model;
     }
 
-    //make error list complete -> add default values
+    // make error list complete -> add default values
     for (int i = 100; --i >= 0 && model.err1[i] == defaultVal;) {
         model.err1[i] = 1;
     }
@@ -480,4 +480,4 @@ void SiteconWriteTask::run() {
     SiteconIO::writeModel(iof, url, stateInfo, model);
 }
 
-}    // namespace U2
+}  // namespace U2

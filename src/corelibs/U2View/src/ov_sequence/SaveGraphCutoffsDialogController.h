@@ -59,5 +59,5 @@ public:
     bool isBetween;
 };
 
-}    // namespace U2
-#endif    //_U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_
+}  // namespace U2
+#endif  //_U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_

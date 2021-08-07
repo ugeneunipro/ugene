@@ -44,6 +44,6 @@ private:
     U2SequenceObject *obj;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

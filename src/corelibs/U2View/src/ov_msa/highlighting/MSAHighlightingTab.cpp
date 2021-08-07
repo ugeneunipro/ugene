@@ -129,7 +129,7 @@ QWidget *MSAHighlightingTab::createHighlightingGroup() {
     QWidget *buttonAndSpacer = new QWidget(this);
     QHBoxLayout *layout2 = initHBoxLayout(buttonAndSpacer);
     layout2->addWidget(exportHighlightning);
-    //layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    // layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     lessMoreLabel = new QLabel(tr("Highlight characters with conservation level:"));
     lessMoreLabel->setWordWrap(true);
@@ -354,4 +354,4 @@ void MSAHighlightingTab::sl_refreshSchemes() {
     sl_sync();
 }
 
-}    // namespace U2
+}  // namespace U2

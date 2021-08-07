@@ -74,7 +74,7 @@ void AnnotationSelection::removeObjectAnnotations(const AnnotationTableObject *o
 
 void AnnotationSelection::add(Annotation *a) {
     if (selection.contains(a)) {
-        return;    //nothing changed
+        return;  // nothing changed
     }
     selection.append(a);
     emit si_selectionChanged(this, QList<Annotation *>() << a, emptyAnnotations);
@@ -107,7 +107,7 @@ void AnnotationSelection::getSequenceInRegions(QByteArray &res, const QVector<U2
     for (const QByteArray &part : qAsConst(parts)) {
         resLen += part.length();
     }
-    resLen += parts.size() - 1;    // gaps between parts.
+    resLen += parts.size() - 1;  // gaps between parts.
     res.reserve(resLen);
     for (int i = 0; i < parts.size(); i++) {
         if (i > 0) {
@@ -170,4 +170,4 @@ void AnnotationGroupSelection::removeFromSelection(AnnotationGroup *g) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

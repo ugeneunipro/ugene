@@ -43,9 +43,9 @@ public:
 
 protected:
     Actor *cfg;
-};    // ActorConfigurationEditor
+};  // ActorConfigurationEditor
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_ACTORCONFIGURATIONEDITOR_H_
+#endif  // _U2_ACTORCONFIGURATIONEDITOR_H_

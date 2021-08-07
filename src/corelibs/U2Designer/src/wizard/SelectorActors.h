@@ -42,10 +42,10 @@ public:
 
 private:
     ElementSelectorWidget *widget;
-    QMap<QString, Actor *> actors;    // selectorValue <-> actor
+    QMap<QString, Actor *> actors;  // selectorValue <-> actor
     Actor *srcActor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SELECTORACTORS_H_
+#endif  // _U2_SELECTORACTORS_H_

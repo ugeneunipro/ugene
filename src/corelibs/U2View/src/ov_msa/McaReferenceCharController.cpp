@@ -158,4 +158,4 @@ void McaReferenceCharController::initRegions() {
     emit si_cacheUpdated();
 }
 
-}    // namespace U2
+}  // namespace U2

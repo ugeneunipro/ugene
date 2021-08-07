@@ -101,4 +101,4 @@ QList<GObject *> ImportPrimersFromFolderTask::getSubobjects() {
     return subobjects;
 }
 
-}    // namespace U2
+}  // namespace U2

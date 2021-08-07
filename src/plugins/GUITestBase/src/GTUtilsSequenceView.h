@@ -56,7 +56,7 @@ public:
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString &multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -115,9 +115,9 @@ public:
     static void clickOnDetView(HI::GUITestOpStatus &os);
 
     /** Enables det-view widget if it is not visible. */
-    static void makeDetViewVisible(HI::GUITestOpStatus& os);
+    static void makeDetViewVisible(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_SEQUENCE_VIEW_H
+#endif  // _U2_GT_UTILS_SEQUENCE_VIEW_H

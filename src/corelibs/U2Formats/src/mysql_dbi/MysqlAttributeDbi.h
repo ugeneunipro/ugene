@@ -127,6 +127,6 @@ private:
     static void readAttribute(U2SqlQuery &q, U2Attribute &attr);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_ATTRIBUTE_DBI_H_
+#endif  // _U2_MYSQL_ATTRIBUTE_DBI_H_

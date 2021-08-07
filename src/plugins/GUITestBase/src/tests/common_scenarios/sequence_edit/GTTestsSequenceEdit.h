@@ -58,8 +58,8 @@ GUI_TEST_CLASS_DECLARATION(test_0016_1)
 GUI_TEST_CLASS_DECLARATION(test_0016_2)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_sequence_edit
+}  // namespace GUITest_common_scenarios_sequence_edit
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

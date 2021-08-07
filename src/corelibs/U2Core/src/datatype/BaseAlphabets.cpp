@@ -56,14 +56,14 @@ static void fill(QBitArray &map, const char *s, Qt::CaseSensitivity caseMode) {
     }
 
 void DNAAlphabetRegistryImpl::initBaseAlphabets() {
-    //raw text
+    // raw text
     {
         QBitArray map(256, true);
         const DNAAlphabet *a = new DNAAlphabet(BaseDNAAlphabetIds::RAW(), tr("Raw"), DNAAlphabet_RAW, map, Qt::CaseSensitive, '\0');
         registerAlphabet(a);
     }
 
-    //default DNA nucl
+    // default DNA nucl
     {
         QBitArray map(256, false);
         fill(map, "ACGTN-", Qt::CaseInsensitive);
@@ -71,7 +71,7 @@ void DNAAlphabetRegistryImpl::initBaseAlphabets() {
         registerAlphabet(a);
     }
 
-    //default RNA nucl
+    // default RNA nucl
     {
         QBitArray map(256, false);
         fill(map, "ACGUN-", Qt::CaseInsensitive);
@@ -79,48 +79,48 @@ void DNAAlphabetRegistryImpl::initBaseAlphabets() {
         registerAlphabet(a);
     }
 
-    //extended NUCL DNA
+    // extended NUCL DNA
     {
         QBitArray map(256, false);
-        fill(map, "ACGTMRWSYKVHDBNX-", Qt::CaseInsensitive);    //X == N
+        fill(map, "ACGTMRWSYKVHDBNX-", Qt::CaseInsensitive);  // X == N
         const DNAAlphabet *a = new DNAAlphabet(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED(), tr("Extended DNA"), DNAAlphabet_NUCL, map, Qt::CaseInsensitive, 'N');
         registerAlphabet(a);
     }
 
-    //extended NUCL RNA
+    // extended NUCL RNA
     {
         QBitArray map(256, false);
-        fill(map, "ACGUMRWSYKVHDBNX-", Qt::CaseInsensitive);    //X == N
+        fill(map, "ACGUMRWSYKVHDBNX-", Qt::CaseInsensitive);  // X == N
         const DNAAlphabet *a = new DNAAlphabet(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED(), tr("Extended RNA"), DNAAlphabet_NUCL, map, Qt::CaseInsensitive, 'N');
         registerAlphabet(a);
     }
 
-    //default amino
+    // default amino
     {
         QBitArray map(256, false);
         //
         // http://www.jbc.org/cgi/reprint/243/13/3557.pdf IUPAC-IUB Commission on Biochemical Nomenclature
         fillBitArray(map, "ABCDEFGHIKLMNPQRSTVWXYZ*X-", Qt::CaseInsensitive);
         // http://en.wikipedia.org/wiki/Genetic_code#Variations_to_the_standard_genetic_code
-        //O = pyrrolysine, U = selenocysteine
+        // O = pyrrolysine, U = selenocysteine
         fillBitArray(map, "OU", Qt::CaseInsensitive);
 
         const DNAAlphabet *a = new DNAAlphabet(BaseDNAAlphabetIds::AMINO_DEFAULT(), tr("Standard amino acid"), DNAAlphabet_AMINO, map, Qt::CaseInsensitive, 'X');
         registerAlphabet(a);
     }
 
-    //extended amino
+    // extended amino
     {
         QBitArray map(256, false);
         //
         // http://www.jbc.org/cgi/reprint/243/13/3557.pdf IUPAC-IUB Commission on Biochemical Nomenclature
         fillBitArray(map, "ABCDEFGHIKLMNPQRSTVWXYZ*X-", Qt::CaseInsensitive);
         // http://en.wikipedia.org/wiki/Genetic_code#Variations_to_the_standard_genetic_code
-        //O = pyrrolysine, U = selenocysteine
+        // O = pyrrolysine, U = selenocysteine
         fillBitArray(map, "OU", Qt::CaseInsensitive);
-        //http://en.wikipedia.org/wiki/Amino_acid
-        //J = Leucine or Isoleucine
-        //Not recognized by some algorithms, some functions are turned off.
+        // http://en.wikipedia.org/wiki/Amino_acid
+        // J = Leucine or Isoleucine
+        // Not recognized by some algorithms, some functions are turned off.
         fillBitArray(map, "J", Qt::CaseInsensitive);
 
         const DNAAlphabet *a = new DNAAlphabet(BaseDNAAlphabetIds::AMINO_EXTENDED(), tr("Extended amino acid"), DNAAlphabet_AMINO, map, Qt::CaseInsensitive, 'X');
@@ -128,4 +128,4 @@ void DNAAlphabetRegistryImpl::initBaseAlphabets() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

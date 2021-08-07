@@ -54,13 +54,13 @@ CudaSupportPlugin::CudaSupportPlugin()
         coreLog.details(err_str);
     }
 
-    //adding settings page
+    // adding settings page
     if (AppContext::getMainWindow()) {
         QString settingsPageMsg = getSettingsErrorString(err);
         AppContext::getAppSettingsGUI()->registerPage(new CudaSupportSettingsPageController(settingsPageMsg));
     }
 
-    //registering gpu resource
+    // registering gpu resource
     if (!gpus.empty()) {
         AppResource *gpuResource = new AppResourceSemaphore(RESOURCE_CUDA_GPU, gpus.size(), RESOURCE_CUDA_GPU_NAME);
         AppResourcePool::instance()->registerResource(gpuResource);
@@ -69,41 +69,41 @@ CudaSupportPlugin::CudaSupportPlugin()
 
 QString CudaSupportPlugin::getCudaErrorString(CUresult code) {
     switch (code) {
-    case CUDA_SUCCESS:
-        return QString();
-    case CUDA_ERROR_INVALID_DEVICE:
-        return tr("Invalid device");
-    case CUDA_ERROR_NO_DEVICE:
-        return tr("No cuda-enabled devices found");
-    default:
-        return tr("Unknown error");    //TODO
+        case CUDA_SUCCESS:
+            return QString();
+        case CUDA_ERROR_INVALID_DEVICE:
+            return tr("Invalid device");
+        case CUDA_ERROR_NO_DEVICE:
+            return tr("No cuda-enabled devices found");
+        default:
+            return tr("Unknown error");  // TODO
     }
 }
 
 QString CudaSupportPlugin::getSettingsErrorString(Error err) {
     switch (err) {
-    case Error_NoError:
-        return QString("");
+        case Error_NoError:
+            return QString("");
 
-    case Error_NoDriverLib:
-        return tr("\
+        case Error_NoDriverLib:
+            return tr("\
 Cannot load CUDA driver dynamic library.<p>\
 It is necessary to install latest Nvidia GPU driver for running<br>\
 GPU-accelerated algorithms on Nvidia hardware.");
 
-    case Error_BadDriverLib:
-        return tr("\
+        case Error_BadDriverLib:
+            return tr("\
 Cannot obtain needed info about Nvidia GPU.<p>\
 Consider reinstallation of GPU driver.<br>\
 See CUDA Support plugin log for details.");
 
-    case Error_CudaError:
-        return tr("\
+        case Error_CudaError:
+            return tr("\
 An error occurred while obtaining information about installed Nvidia GPUs.<br>\
 See CUDA Support plugin log for details");
-    default:
-        assert(false);
-        return QString();
+        default:
+            assert(false);
+            return QString();
     }
 }
 
@@ -138,7 +138,7 @@ typedef CUresult(CALLING_CONVENTION *cu_device_get_properties_f)(CUdevprop *prop
 const static char *cu_device_get_properties_n = "cuDeviceGetProperties";
 
 CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
-    //load driver library
+    // load driver library
     coreLog.details(tr("Loading CUDA driver library"));
     QLibrary cudaLib(CUDA_DRIVER_LIB);
     cudaLib.load();
@@ -150,20 +150,20 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
 
     CUresult cudaRetCode = CUDA_SUCCESS;
 
-    //call cuInit()
+    // call cuInit()
     coreLog.details(tr("Initializing CUDA"));
     cuinit_f c_i = cuinit_f(cudaLib.resolve(cuinit_n));
     if (!c_i) {
         err = tr("Cannot resolve symbol ") + cuinit_n;
         return Error_BadDriverLib;
     }
-    cudaRetCode = c_i(0);    // 0 is required by reference manual
+    cudaRetCode = c_i(0);  // 0 is required by reference manual
     if (CUDA_SUCCESS != cudaRetCode) {
         err = getCudaErrorString(cudaRetCode);
         return Error_CudaError;
     }
 
-    //call cuDeviceGetCount()
+    // call cuDeviceGetCount()
     coreLog.details(tr("Obtaining number of CUDA-enabled devices"));
     cu_device_get_count_f c_dgc = cu_device_get_count_f(cudaLib.resolve(cu_device_get_count_n));
     if (!c_dgc) {
@@ -177,10 +177,10 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
         return Error_CudaError;
     }
 
-    //for each device - get it's parameters
+    // for each device - get it's parameters
     for (int i = 0; i < num_devices; ++i) {
         CUdevice cuDevice;
-        //call cuDeviceGet()
+        // call cuDeviceGet()
         cu_device_get_f c_dg = cu_device_get_f(cudaLib.resolve(cu_device_get_n));
         if (!c_dg) {
             err = tr("Cannot resolve symbol ") + cu_device_get_n;
@@ -192,7 +192,7 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
             return Error_CudaError;
         }
 
-        //obtain device name
+        // obtain device name
         const int maxname = 256;
         QByteArray name(maxname, 0);
 
@@ -207,7 +207,7 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
             return Error_CudaError;
         }
 
-        //obtain device global memory size
+        // obtain device global memory size
         unsigned int mem = 0;
         cu_device_total_mem_f c_dtm = cu_device_total_mem_f(cudaLib.resolve(cu_device_total_mem_n));
         if (!c_dtm) {
@@ -220,7 +220,7 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
             return Error_CudaError;
         }
 
-        //obtain device shared memory size
+        // obtain device shared memory size
         cu_device_get_properties_f c_dgp = cu_device_get_properties_f(cudaLib.resolve(cu_device_get_properties_n));
         if (!c_dgp) {
             err = tr("Cannot resolve symbol") + cu_device_get_properties_n;
@@ -271,4 +271,4 @@ void CudaSupportPlugin::loadGpusSettings() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

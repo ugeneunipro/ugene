@@ -70,4 +70,4 @@ void WidgetWithLocalToolbar::setLocalToolbarVisible(bool visible) {
     update();
 }
 
-}    // namespace U2
+}  // namespace U2

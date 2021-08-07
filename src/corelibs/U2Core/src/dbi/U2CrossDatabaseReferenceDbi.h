@@ -59,6 +59,6 @@ public:
     virtual void updateCrossReference(const U2CrossDatabaseReference &reference, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

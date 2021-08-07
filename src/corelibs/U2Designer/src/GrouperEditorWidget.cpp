@@ -108,7 +108,7 @@ GrouperEditorWidget::GrouperEditorWidget(GrouperSlotsCfgModel *grouperModel, Act
 void GrouperEditorWidget::setupGroupOpBox(int slotIdx, const QString &groupOp, const QMap<Descriptor, DataTypePtr> &busMap) {
     operationBox->model()->removeRows(0, operationBox->count());
 
-    operationBox->addItem(tr("By value"), "by-value");    // for all types
+    operationBox->addItem(tr("By value"), "by-value");  // for all types
 
     QString slotId = slotBox->itemData(slotIdx).toString();
     operationBox->setDisabled(slotId.isEmpty());
@@ -371,4 +371,4 @@ void GrouperSlotsCfgModel::setNewAction(const QString &outSlotName, const Groupe
     }
 }
 
-}    // namespace U2
+}  // namespace U2

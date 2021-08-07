@@ -36,4 +36,4 @@ DiamondSupport::DiamondSupport(const QString &id, const QString &name)
                      "In UGENE it is integrated as one of the taxonomic classification tool.");
 }
 
-}    // namespace U2
+}  // namespace U2

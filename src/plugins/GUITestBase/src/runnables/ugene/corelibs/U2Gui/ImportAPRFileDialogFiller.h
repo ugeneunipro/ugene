@@ -44,6 +44,6 @@ private:
     const QString format;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_
+#endif  // _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_

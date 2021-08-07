@@ -152,4 +152,4 @@ int MaIterator::getColumnNumber(qint64 position) const {
     return static_cast<int>(position % ma->getLength());
 }
 
-}    // namespace U2
+}  // namespace U2

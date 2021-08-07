@@ -71,6 +71,6 @@ private:
     GSequenceGraphFactory *factory;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -45,6 +45,6 @@ public:
     const quint32 *getBitMaskCharBits(DNAAlphabetType alType) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

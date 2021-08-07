@@ -53,5 +53,5 @@ public:
 private:
     QString error;
 };
-}    // namespace HI
-#endif    // GUITESTOPSTATUS_H
+}  // namespace HI
+#endif  // GUITESTOPSTATUS_H

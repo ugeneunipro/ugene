@@ -99,6 +99,6 @@ private:
     static int readName2readNumber(HI::GUITestOpStatus &os, const QString &readName);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_MCA_EDITOR_H_
+#endif  // _U2_GT_UTILS_MCA_EDITOR_H_

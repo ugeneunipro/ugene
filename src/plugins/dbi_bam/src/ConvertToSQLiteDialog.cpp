@@ -173,18 +173,18 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         QList<QPair<QString, QString>> list;
         QString sort;
         switch (header.getSortingOrder()) {
-        case Header::Unsorted:
-            sort = BAMDbiPlugin::tr("Unsorted");
-            break;
-        case Header::Unknown:
-            sort = BAMDbiPlugin::tr("Unknown");
-            break;
-        case Header::Coordinate:
-            sort = BAMDbiPlugin::tr("Coordinate");
-            break;
-        case Header::QueryName:
-            sort = BAMDbiPlugin::tr("Query name");
-            break;
+            case Header::Unsorted:
+                sort = BAMDbiPlugin::tr("Unsorted");
+                break;
+            case Header::Unknown:
+                sort = BAMDbiPlugin::tr("Unknown");
+                break;
+            case Header::Coordinate:
+                sort = BAMDbiPlugin::tr("Coordinate");
+                break;
+            case Header::QueryName:
+                sort = BAMDbiPlugin::tr("Query name");
+                break;
         }
 
         list << QPair<QString, QString>(BAMDbiPlugin::tr("URL"), sourceUrl.getURLString())
@@ -344,7 +344,7 @@ bool checkWritePermissions(const QString &fileUrl) {
     }
     return FileAndDirectoryUtils::isDirectoryWritable(dir.absolutePath());
 }
-}    // namespace
+}  // namespace
 
 void ConvertToSQLiteDialog::accept() {
     destinationUrl = GUrl(saveController->getSaveFileName());
@@ -389,18 +389,18 @@ void ConvertToSQLiteDialog::accept() {
                                                BAMDbiPlugin::tr("Cancel"),
                                                2);
             switch (result) {
-            case 0: {
-                bool ok = QFile::remove(destinationUrl.getURLString());
-                if (!ok) {
-                    QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination file '%1' cannot be removed").arg(destinationUrl.getURLString()));
-                    return;
+                case 0: {
+                    bool ok = QFile::remove(destinationUrl.getURLString());
+                    if (!ok) {
+                        QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination file '%1' cannot be removed").arg(destinationUrl.getURLString()));
+                        return;
+                    }
                 }
-            }
-                QDialog::accept();
-                break;
-            case 1:
-                QDialog::accept();
-                break;
+                    QDialog::accept();
+                    break;
+                case 1:
+                    QDialog::accept();
+                    break;
             }
         } else {
             QDialog::accept();
@@ -408,5 +408,5 @@ void ConvertToSQLiteDialog::accept() {
     }
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

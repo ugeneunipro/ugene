@@ -94,4 +94,4 @@ void GraphicsUnrootedBranchItem::paint(QPainter *painter, const QStyleOptionGrap
     painter->drawLine(0, 0, -width, 0);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -87,7 +87,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
                 errorMessage = memoryLocker.getError();
                 return;
             }
-            //ttratio = ttratio0;
+            // ttratio = ttratio0;
             inputoptions();
 
             for (int k = 0; k < spp; k++) {
@@ -415,7 +415,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
 
     treedata->removeBranch(rootnode1, oldnode1);
 
-    //printPhyTree();
+    // printPhyTree();
 
     QString name2 = getTaxaName(location->second);
     if (unprocessed_taxa.contains(name2)) {
@@ -427,7 +427,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     if (oldnode1 == oldnode2) {
         return;
     }
-    //printPhyTree();
+    // printPhyTree();
 
     float distance1 = calculateRootDistance(location->first, location->second);
     float distance2 = calculateAdjacentDistance(location->first, location->second, distance1);
@@ -442,13 +442,13 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     if (!rootnode1->isConnected(new_node)) {
         treedata->addBranch(rootnode1, new_node, 1);
     }
-    //printPhyTree();
+    // printPhyTree();
 
     for (int j = 0; j < this->size; j++) {
         middlematrix.append(rawMatrix[j]);
     }
-    //dumpRawData();
-    //        dumpRawData(middlematrix);
+    // dumpRawData();
+    //         dumpRawData(middlematrix);
 
     for (int j = 0; j < size; j++) {
         rawMatrix[j].remove(location->first);
@@ -478,7 +478,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     //        int new_index = index_map.size();
 
     index_map.insert(new_name, index_map.size());
-    //printIndex();
+    // printIndex();
 
     for (int j = 0; j < size; j++) {
         QString name = getTaxaName(j);
@@ -499,8 +499,8 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     rawMatrix.append(row);
     middlematrix.clear();
 
-    //dumpRawData();
-    //treedata->rootNode->dumpBranches();
+    // dumpRawData();
+    // treedata->rootNode->dumpBranches();
 }
 
 PhyNode *DistanceMatrix::getNodeByName(QString name) {
@@ -528,7 +528,7 @@ PhyNode *DistanceMatrix::findNode(PhyNode *startnode, QString name) {
 }
 
 float DistanceMatrix::calculateRootDistance(int i, int j) {
-    //S(AU) =d(AB) / 2 + [r(A)-r(B)] / 2(N-2) = 1
+    // S(AU) =d(AB) / 2 + [r(A)-r(B)] / 2(N-2) = 1
     float distance = rawMatrix[i][j] / 2;
 
     float num1 = calculateRawDivergence(i);
@@ -611,7 +611,7 @@ bool DistanceMatrix::areTreesEqual(PhyTree *tree1, PhyTree *tree2) {
 
     for (int i = 0; i < keys1.size(); i++) {
         QString name = keys1[i];
-        //int d1 = nodes1[name];
+        // int d1 = nodes1[name];
         if (!nodes2.contains(name)) {
             return false;
         }
@@ -722,4 +722,4 @@ bool DistanceMatrix::isValid() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

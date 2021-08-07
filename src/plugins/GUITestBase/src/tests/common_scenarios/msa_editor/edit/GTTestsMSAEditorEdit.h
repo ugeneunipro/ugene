@@ -78,8 +78,8 @@ GUI_TEST_CLASS_DECLARATION(test_0014)
 GUI_TEST_CLASS_DECLARATION(test_0015)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_msa_editor_edit
+}  // namespace GUITest_common_scenarios_msa_editor_edit
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //GTTESTS_MSA_EDITOR_EDIT_H_
+#endif  // GTTESTS_MSA_EDITOR_EDIT_H_

@@ -21,28 +21,27 @@
 
 /// various helper methods and structures
 #include "MuscleUtils.h"
+#include <algorithm>
+
+#include <QVector>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include "MuscleAdapter.h"
 
-#include <algorithm>
-#include <QVector>
-
 namespace U2 {
 
-MuscleParamsHelper::MuscleParamsHelper(TaskStateInfo& ti, MuscleContext *_ctx)
-: ctx(_ctx), ugeneFileStub(ti)
-{
+MuscleParamsHelper::MuscleParamsHelper(TaskStateInfo &ti, MuscleContext *_ctx)
+    : ctx(_ctx), ugeneFileStub(ti) {
     SetParams();
 
-    //override some params. TODO: recheck possible conflict with SetPPScore() !
+    // override some params. TODO: recheck possible conflict with SetPPScore() !
     ctx->progressPercent = &ti.progress;
     ctx->cancelFlag = &ti.cancelFlag;
-    ctx->progress.g_fProgress = &ugeneFileStub; //log context
-    ctx->progress.pr_printf = ugene_printf; //overriding logging
-    ctx->params.g_uMaxMB = 0; //unlimited memory
+    ctx->progress.g_fProgress = &ugeneFileStub;  // log context
+    ctx->progress.pr_printf = ugene_printf;  // overriding logging
+    ctx->params.g_uMaxMB = 0;  // unlimited memory
 
     SetMaxIters(ctx->params.g_uMaxIters);
     SetStartTime();
@@ -63,20 +62,20 @@ int ugene_printf(FILE *f, const char *format, ...) {
     va_list ArgList;
     va_start(ArgList, format);
     int n = vsprintf(str, format, ArgList);
-    assert(n>=0 && n < 1024);
+    assert(n >= 0 && n < 1024);
     Q_UNUSED(n);
     va_end(ArgList);
 
-    FILEStub* s = static_cast<FILEStub*>(f);
+    FILEStub *s = static_cast<FILEStub *>(f);
     s->tsi.setDescription(QString::fromLatin1(str));
     return 0;
 }
 
-ALPHA convertAlpha(const DNAAlphabet* al) {
+ALPHA convertAlpha(const DNAAlphabet *al) {
     if (al->isAmino()) {
         return ALPHA_Amino;
     }
-    const QString& id = al->getId();
+    const QString &id = al->getId();
     if (id == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() || id == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()) {
         return ALPHA_DNA;
     }
@@ -86,10 +85,10 @@ ALPHA convertAlpha(const DNAAlphabet* al) {
     return ALPHA_Undefined;
 }
 
-void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
+void setupAlphaAndScore(const DNAAlphabet *al, TaskStateInfo &ti) {
     ALPHA Alpha = convertAlpha(al);
     if (Alpha == ALPHA_Undefined) {
-        ti.setError(  U2::MuscleAdapter::tr("Unsupported alphabet: %1").arg(al->getName()) );
+        ti.setError(U2::MuscleAdapter::tr("Unsupported alphabet: %1").arg(al->getName()));
         return;
     }
     SetAlpha(Alpha);
@@ -99,23 +98,23 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
     }
 }
 
-void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha) {    
+void convertMAlignment2MSA(MSA &muscleMSA, const MultipleSequenceAlignment &ma, bool fixAlpha) {
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getNumRows());
-    for (int i=0, n = ma->getNumRows(); i<n; i++) {
+    for (int i = 0, n = ma->getNumRows(); i < n; i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
-        
+
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();
-        char* seq  = new char[maLen + 1];
+        char *seq = new char[maLen + 1];
         memcpy(seq, row->getCore().constData(), coreLen);
         memset(seq + coreLen, '-', maLen - coreLen + 1);
         seq[maLen] = 0;
 
-        char* name = new char[row->getName().length() + 1];
+        char *name = new char[row->getName().length() + 1];
         memcpy(name, row->getName().toLocal8Bit().constData(), row->getName().length());
         name[row->getName().length()] = '\0';
-        
+
         muscleMSA.AppendSeq(seq, maLen, name);
         ctx->tmp_uIds[i] = ctx->input_uIds[i];
     }
@@ -124,25 +123,25 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     }
 }
 
-void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha) {
+void convertMAlignment2SecVect(SeqVect &sv, const MultipleSequenceAlignment &ma, bool fixAlpha) {
     sv.Clear();
 
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getNumRows());
 
-    unsigned i=0;
+    unsigned i = 0;
     unsigned seq_count = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
         Seq *ptrSeq = new Seq();
-        QByteArray name =  row->getName().toLocal8Bit();
+        QByteArray name = row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
-        //stripping gaps, original Seq::StripGaps fails on MSVC9
+        // stripping gaps, original Seq::StripGaps fails on MSVC9
         Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), U2Msa::GAP_CHAR);
         ptrSeq->erase(newEnd, ptrSeq->end());
-        if (ptrSeq->Length()!=0) {
+        if (ptrSeq->Length() != 0) {
             ctx->tmp_uIds[seq_count] = ctx->input_uIds[i];
             sv.push_back(ptrSeq);
-            seq_count++; 
+            seq_count++;
         }
         i++;
     }
@@ -151,17 +150,17 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
     }
 }
 
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res) {
+void convertMSA2MAlignment(MSA &msa, const DNAAlphabet *al, MultipleSequenceAlignment &res) {
     assert(res->isEmpty());
     MuscleContext *ctx = getMuscleContext();
     res->setAlphabet(al);
     ctx->output_uIds.clear();
 
-    for(int i=0, n = msa.GetSeqCount(); i < n; i++) {
+    for (int i = 0, n = msa.GetSeqCount(); i < n; i++) {
         QString name = msa.GetSeqName(i);
         QByteArray seq;
         seq.reserve(msa.GetColCount());
-        for (int j = 0, m = msa.GetColCount(); j < m ; j++) {
+        for (int j = 0, m = msa.GetColCount(); j < m; j++) {
             char c = msa.GetChar(i, j);
             seq.append(c);
         }
@@ -170,11 +169,11 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlig
     }
 }
 
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack) {
+void prepareAlignResults(MSA &msa, const DNAAlphabet *al, MultipleSequenceAlignment &ma, bool mhack) {
     if (mhack) {
         MHackEnd(msa);
     }
-    MuscleContext* ctx = getMuscleContext();
+    MuscleContext *ctx = getMuscleContext();
     if (ctx->params.g_bStable) {
         MSA msaStable;
         Stabilize(msa, msaStable);
@@ -185,4 +184,4 @@ void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignm
     }
 }
 
-} //namespace
+}  // namespace U2

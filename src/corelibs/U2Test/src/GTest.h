@@ -269,7 +269,7 @@ private:
     void onMessage(const LogMessage &logMessage);
 
     QMap<QString, bool> expectedMessages;
-    QMap<QString, bool> unexpectedMessages;    // Messages that mustn't be present in the log
+    QMap<QString, bool> unexpectedMessages;  // Messages that mustn't be present in the log
 
     qint64 logHelperStartTime;
     qint64 logHelperEndTime;
@@ -277,6 +277,6 @@ private:
     bool statusWasVerified;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

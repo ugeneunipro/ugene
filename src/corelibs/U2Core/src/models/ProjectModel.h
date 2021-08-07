@@ -41,7 +41,7 @@ class U2OpStatus;
 #define PROJECTFILE_EXT QString("." + PROJECT_FILE_PURE_EXT)
 #define DIALOG_FILTER_PROJECT_EXT QString(" (*" + PROJECTFILE_EXT + ")")
 
-//data loader hints
+// data loader hints
 #define ProjectLoaderHint_CloseActiveProject "close-active-project"
 #define ProjectLoaderHint_ForceFormatOptions "force-format-options"
 #define ProjectLoaderHint_LoadWithoutView "load-without-view"
@@ -165,7 +165,7 @@ signals:
     void si_objectViewStateRemoved(GObjectViewState *);
 };
 
-}    // namespace U2
+}  // namespace U2
 Q_DECLARE_METATYPE(U2::Project *)
 Q_DECLARE_METATYPE(QList<U2::Document *>)
 

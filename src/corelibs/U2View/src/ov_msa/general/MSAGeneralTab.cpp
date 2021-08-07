@@ -109,7 +109,7 @@ void MSAGeneralTab::initializeParameters() {
     // Consensus type combobox
     consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getUI()->getConsensusArea());
 
-    //Copy formatted
+    // Copy formatted
     copyButton->setToolTip(msaEditor->getUI()->copyFormattedSelectionAction->toolTip());
 
     DocumentFormatConstraints constr;
@@ -164,4 +164,4 @@ void MSAGeneralTab::updateConvertAlphabetButtonState() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -203,5 +203,5 @@ public:
     static QStringList getSeqsNamesInBranch(const GraphicsBranchItem *branch);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

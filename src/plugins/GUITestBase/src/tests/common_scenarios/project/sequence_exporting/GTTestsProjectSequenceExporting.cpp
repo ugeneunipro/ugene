@@ -211,7 +211,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
 
     // 2. Double click on "[a] Annotations" sequence object, in project view tree
@@ -514,6 +514,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-}    // namespace GUITest_common_scenarios_project_sequence_exporting
+}  // namespace GUITest_common_scenarios_project_sequence_exporting
 
-}    // namespace U2
+}  // namespace U2

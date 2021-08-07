@@ -60,7 +60,7 @@ void GObjectComboBoxController::updateCombo() {
     }
 
     QList<GObject *> allObjs = GObjectUtils::findAllObjects(UOF_LoadedAndUnloaded);
-    for (int i = 0, n = combo->count(); i < n; i++) {    //prefocus on loaded object if possible
+    for (int i = 0, n = combo->count(); i < n; i++) {  // prefocus on loaded object if possible
         GObjectReference ref = combo->itemData(i).value<GObjectReference>();
         GObject *obj = GObjectUtils::selectObjectByReference(ref, allObjs, UOF_LoadedAndUnloaded);
         if (!obj->isUnloaded()) {
@@ -82,7 +82,7 @@ void GObjectComboBoxController::addDocumentObjects(Document *d) {
     if (d->isDatabaseConnection()) {
         return;
     }
-    //checks whether you need to add a new annotations table
+    // checks whether you need to add a new annotations table
     QString docUrl = settings.relationFilter.ref.docUrl;
     if (d->getURLString() == docUrl) {
         connect(d->getObjectById(settings.relationFilter.ref.entityRef.entityId), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
@@ -157,7 +157,7 @@ void GObjectComboBoxController::addObject(GObject *obj) {
         int dlocksCount = obj->getDocument()->getStateLocks().count();
         if (!obj->isUnloaded() || olocksCount != 0 || dlocksCount != 1) {
             return;
-        }    //else this is unloaded object state lock
+        }  // else this is unloaded object state lock
     }
 
 #ifdef _DEBUG
@@ -254,4 +254,4 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

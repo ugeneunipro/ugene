@@ -53,6 +53,6 @@ private:
     QVBoxLayout *layout;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_OVERVIEW_AREA_H_
+#endif  // _U2_MA_EDITOR_OVERVIEW_AREA_H_

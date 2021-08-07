@@ -348,7 +348,7 @@ void FindPatternWidget::initAlgorithmLayout() {
     lblMatch = new QLabel(tr("Should match"));
 
     spinMatch = new QSpinBox(this);
-    spinMatch->setSuffix("%");    // Percentage value
+    spinMatch->setSuffix("%");  // Percentage value
     spinMatch->setMinimum(30);
     spinMatch->setMaximum(100);
     spinMatch->setSingleStep(1);
@@ -888,7 +888,7 @@ void FindPatternWidget::sl_onSequenceModified() {
 }
 
 void FindPatternWidget::checkState() {
-    //validate annotation name
+    // validate annotation name
     QString v = createAnnotationController->validate();
     if (!v.isEmpty()) {
         setMessageFlag(AnnotationNotValidName, true, v);
@@ -1008,7 +1008,7 @@ void FindPatternWidget::sl_onFileSelectorClicked() {
 void FindPatternWidget::sl_onFileSelectorToggled(bool on) {
     updatePatternSourceControlsUiState();
     checkState();
-    if (!on) {    // if returning to input-pattern mode -> recheck it's content
+    if (!on) {  // if returning to input-pattern mode -> recheck it's content
         verifyPatternAlphabet();
     }
     sl_activateNewSearch(true);
@@ -1027,7 +1027,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     FindAlgorithmTaskSettings settings;
     U2OpStatusImpl os;
     settings.sequence = activeContext->getSequenceObject()->getWholeSequenceData(os);
-    CHECK_OP_EXT(os, setMessageFlag(SequenceIsTooBig, true), );    // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
+    CHECK_OP_EXT(os, setMessageFlag(SequenceIsTooBig, true), );  // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
     settings.sequenceAlphabet = activeContext->getSequenceObject()->getAlphabet();
     settings.searchIsCircular = activeContext->getSequenceObject()->isCircular();
 
@@ -1208,7 +1208,7 @@ void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {
     SAFE_POINT(trackedSelection != nullptr, "No tracked selection is found!", );
     const QVector<U2Region> &selectedRegions = trackedSelection->getSelectedRegions();
     if (isSearchInSelectionMode() && isRegionListInSearchResults(selectedRegions)) {
-        return;    // User browses selection results (clicks Prev/Next) -> do not update the search selection range.
+        return;  // User browses selection results (clicks Prev/Next) -> do not update the search selection range.
     }
     if (!selectedRegions.isEmpty()) {
         U2Region firstReg = selectedRegions.first();
@@ -1504,4 +1504,4 @@ bool FindPatternWidget::isSearchInSelectionMode() const {
     return boxRegion->currentData().toInt() == RegionSelectionIndex_CurrentSelectedRegion;
 }
 
-}    // namespace U2
+}  // namespace U2

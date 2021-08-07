@@ -95,5 +95,5 @@ void BaiWriter::writeUint32(quint32 value) {
     writeBytes(buffer, sizeof(buffer));
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

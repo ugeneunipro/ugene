@@ -57,6 +57,6 @@ private:
     bool addToProject;
     QMap<FormatToUse, QString> comboBoxItems;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -302,7 +302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     // Expected state: project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
     GTUtilsProjectTreeView::click(os, doc1);
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, doc1), "Documents is not unloaded: " + doc1);
     CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, doc2), "Documents is not unloaded: " + doc2);
@@ -356,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
         os.setError("Documents is not unload");
@@ -424,7 +424,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
         os.setError("Documents is not unload");
@@ -491,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
         os.setError("Documents is not unload");
@@ -566,5 +566,5 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }
 
-}    // namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view
+}  // namespace U2

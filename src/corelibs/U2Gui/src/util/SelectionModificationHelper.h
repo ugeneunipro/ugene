@@ -63,11 +63,11 @@ private:
     static const int PIXEL_OFFSET_FOR_BORDER_POINTING;
     static const double PIXEL_OFFSET_FOR_CIRCULAR_VIEW;
     /**
-    *Must be equal to the similar named value in CircularView class
-    */
+     *Must be equal to the similar named value in CircularView class
+     */
     static const int GRADUATION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SELECTION_MODIFICATION_HELPER_
+#endif  // _U2_SELECTION_MODIFICATION_HELPER_

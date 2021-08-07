@@ -88,6 +88,6 @@ public:
     virtual void updateTrackIDofVariant(const U2DataId &variant, const U2DataId &newTrackId, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_VARIANT_DBI_H_
+#endif  // _U2_MYSQL_VARIANT_DBI_H_

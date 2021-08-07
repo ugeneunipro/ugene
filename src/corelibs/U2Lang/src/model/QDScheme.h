@@ -226,10 +226,10 @@ public:
     virtual bool hasStrand() const {
         return true;
     }
-    //implement in subclass to provide configuration representation in serialized scheme
+    // implement in subclass to provide configuration representation in serialized scheme
     virtual QList<QPair<QString, QString>> saveConfiguration() const;
     virtual void loadConfiguration(const QList<QPair<QString, QString>> &strMap);
-    //implement in subclass to customize the color of the visual actor representation
+    // implement in subclass to customize the color of the visual actor representation
     virtual QColor defaultColor() const {
         return QColor(0x98, 0xff, 0xc5);
     }
@@ -297,7 +297,7 @@ public:
     const QList<QDDistanceConstraint *> &getConstraints() const {
         return constraints;
     }
-    //returns unsorted list of involved scheme units
+    // returns unsorted list of involved scheme units
     const QList<QDSchemeUnit *> &getSchemeUnits() const {
         return schemeUnits;
     }
@@ -356,7 +356,7 @@ public:
         strand = opt;
     }
 
-    //actor group methods
+    // actor group methods
     void adaptActorsOrder();
     QString getActorGroup(QDActor *a) const;
     QList<QString> getActorGroups() const {
@@ -411,7 +411,7 @@ private:
     static QMap<QString, bool> initBooleanMap();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::QDActorPrototype *)
 

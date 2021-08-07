@@ -46,12 +46,12 @@ public:
     static QString prepareFileFilter(const QMap<QString, QStringList> &formatNamesWithExtensions, bool allowAnyFiles = true, const QStringList &extraExtensions = QStringList(".gz"));
     static QString prepareFileFilter(const QString &name, const QStringList &exts, bool any = true, const QStringList &extraExts = QStringList(".gz"));
     static QString prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extra = QStringList(".gz"));
-    //returns filter for all formats supported. All-docs filter is returned first if any==true
+    // returns filter for all formats supported. All-docs filter is returned first if any==true
     static QString prepareDocumentsFileFilter(bool any, const QStringList &extraExts = QStringList(".gz"));
     static QString prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any);
     static QString prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

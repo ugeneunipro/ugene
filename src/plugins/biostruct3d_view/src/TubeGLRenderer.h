@@ -59,6 +59,6 @@ public:
     RENDERER_FACTORY(TubeGLRenderer)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BIOSTRUCT3D_TUBE_RENDERER_H_
+#endif  // _U2_BIOSTRUCT3D_TUBE_RENDERER_H_

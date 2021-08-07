@@ -51,6 +51,6 @@ protected:
     quint32 hitCount;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BASE_BREAKPOINT_HIT_COUNTER_H_
+#endif  // _U2_BASE_BREAKPOINT_HIT_COUNTER_H_

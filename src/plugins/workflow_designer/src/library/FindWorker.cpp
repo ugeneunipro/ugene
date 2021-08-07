@@ -261,17 +261,17 @@ QString FindPrompter::composeRichDoc() {
 
     QString strandName;
     switch (cfg.strand) {
-    case FindAlgorithmStrand_Both:
-        strandName = FindWorker::tr("both strands");
-        break;
-    case FindAlgorithmStrand_Direct:
-        strandName = FindWorker::tr("direct strand");
-        break;
-    case FindAlgorithmStrand_Complement:
-        strandName = FindWorker::tr("complement strand");
-        break;
-    default:
-        assert(false);
+        case FindAlgorithmStrand_Both:
+            strandName = FindWorker::tr("both strands");
+            break;
+        case FindAlgorithmStrand_Direct:
+            strandName = FindWorker::tr("direct strand");
+            break;
+        case FindAlgorithmStrand_Complement:
+            strandName = FindWorker::tr("complement strand");
+            break;
+        default:
+            assert(false);
     }
     strandName = getHyperlink(BaseAttributes::STRAND_ATTRIBUTE().getId(), strandName);
 
@@ -404,7 +404,7 @@ Task *FindWorker::tick() {
         if (actor->getParameter(AMINO_ATTR)->getAttributeValue<bool>(context)) {
             DNATranslationType tt = seq.alphabet->getType() == DNAAlphabet_NUCL ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
             QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(seq.alphabet, tt);
-            if (!TTs.isEmpty()) {    //FIXME let user choose or use hints ?
+            if (!TTs.isEmpty()) {  // FIXME let user choose or use hints ?
                 cfg.proteinTT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(seq.alphabet);
             }
         }
@@ -422,7 +422,7 @@ Task *FindWorker::tick() {
             return new FailTask(tr("Empty pattern given"));
         }
         QList<Task *> subs;
-        //pattern in parameters
+        // pattern in parameters
         foreach (const QString &p, ptrnStrs) {
             assert(!p.isEmpty());
             FindAlgorithmTaskSettings config(cfg);
@@ -432,7 +432,7 @@ Task *FindWorker::tick() {
             subs << findTask;
         }
 
-        //patterns from file
+        // patterns from file
         typedef QPair<QString, QString> NamePattern;
         foreach (const NamePattern &np, namesPatterns) {
             FindAlgorithmTaskSettings config(cfg);
@@ -472,11 +472,11 @@ void FindWorker::sl_taskFinished(Task *t) {
             }
             isCircular = findTask->getSettings().searchIsCircular;
             seqLen = findTask->getSettings().sequence.length();
-            //parameters pattern
+            // parameters pattern
             if (!filePatterns.contains(sub)) {
                 annData << findTask->popResults();
                 ptrns << patterns.value(findTask);
-            } else {    //file pattern
+            } else {  // file pattern
                 const QString patternNameQualName = actor->getParameter(PATTERN_NAME_QUAL_ATTR)
                                                         ->getAttributeValue<QString>(context);
 
@@ -554,5 +554,5 @@ QList<FindAlgorithmResult> FindAllRegionsTask::getResult() {
     return lst;
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

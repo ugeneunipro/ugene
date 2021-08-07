@@ -74,5 +74,5 @@ bool KrakenBuildValidator::validateTaxonomy(const Actor *actor, NotificationsLis
     return isValid;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

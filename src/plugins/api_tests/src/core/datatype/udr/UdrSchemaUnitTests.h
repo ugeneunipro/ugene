@@ -93,7 +93,7 @@ DECLARE_TEST(UdrSchemaUnitTests, UdrSchema_ObjectReference);
 /* Schema without object reference */
 DECLARE_TEST(UdrSchemaUnitTests, UdrSchema_NoObjectReference);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(UdrSchemaUnitTests, addField_RecordId);
 DECLARE_METATYPE(UdrSchemaUnitTests, addField_Object);
@@ -129,4 +129,4 @@ DECLARE_METATYPE(UdrSchemaUnitTests, registerSchema_IncorrectName);
 DECLARE_METATYPE(UdrSchemaUnitTests, UdrSchema_ObjectReference);
 DECLARE_METATYPE(UdrSchemaUnitTests, UdrSchema_NoObjectReference);
 
-#endif    // _U2_UDR_SCHEMA_UNIT_TESTS_H_
+#endif  // _U2_UDR_SCHEMA_UNIT_TESTS_H_

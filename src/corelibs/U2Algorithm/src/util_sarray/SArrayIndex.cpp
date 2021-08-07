@@ -110,7 +110,7 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
     }
     sArray = new quint32[arrLen];
     if (bitTable != nullptr && bitCharLen > 0 && bitCharLen <= 5) {
-        wCharsInMask = qMin(30 / bitCharLen, w);    //30 to avoid +- overflow
+        wCharsInMask = qMin(30 / bitCharLen, w);  // 30 to avoid +- overflow
         wAfterBits = qMax(0, w - wCharsInMask);
         if (wCharsInMask * bitCharLen == 32) {
             bitFilter = 0xFFFFFFFF;
@@ -130,7 +130,7 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
         for (const char *crunner = seqStart + gapOffset; crunner < seqEnd; arunner++, crunner += step) {
             *arunner = seq2val(crunner);
         }
-    } else {    //filter suffixes with unknown char from result
+    } else {  // filter suffixes with unknown char from result
         int oldLen = arrLen;
         const char *crunner = seqStart;
         int lastErrDist = 0;
@@ -166,7 +166,7 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
     arrLen = arunner - sArray;
 
     if (bitTable != nullptr) {
-        //mask all prefixes in sArray with 32-bit values
+        // mask all prefixes in sArray with 32-bit values
         bitMask = new quint32[arrLen];
         quint32 bitValue = 0;
         quint32 *arunner = sArray;
@@ -180,7 +180,7 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
         quint32 wCharsInMask1 = wCharsInMask - 1;
         for (quint32 *end = mrunner + arrLen; mrunner < end; arunner++, mrunner++) {
             const char *seq = sarr2seq(arunner);
-            if (*arunner == expectedNext && expectedNext != 0) {    //pop first bit, push wCharsInMask1 char to the mask
+            if (*arunner == expectedNext && expectedNext != 0) {  // pop first bit, push wCharsInMask1 char to the mask
                 bitValue = ((bitValue << bitCharLen) | bitTable[uchar(*(seq + wCharsInMask1))]) & bitFilter;
 #ifdef _DEBUG
                 // double check that optimization doesn't break anything
@@ -188,7 +188,7 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
                 assert(bitValue == bitValue2);
 #endif
             } else {
-                //recompute the mask if we have some symbols skipped
+                // recompute the mask if we have some symbols skipped
                 bitValue = getBitValue(seq);
             }
             expectedNext = seq2val(seq + 1);
@@ -200,12 +200,12 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
         return;
     }
 
-    //now sort sArray. Use bit-mask if available
+    // now sort sArray. Use bit-mask if available
     if (bitMask != nullptr) {
         sortBit(bitMask, 0, arrLen);
-        //sortBitClassic(bitMask, 0, arrLen-1);
+        // sortBitClassic(bitMask, 0, arrLen-1);
 
-        //create L1 cache for bitMask
+        // create L1 cache for bitMask
         if (arrLen < 200 * 1000) {
             L1_SIZE = arrLen;
             l1Step = 1;
@@ -248,7 +248,7 @@ quint32 SArrayIndex::getBitValue(const char *seq) const {
     return bitValue;
 }
 
-//Stable sort of sequences
+// Stable sort of sequences
 void SArrayIndex::sort(quint32 *x, int off, int len) {
     // Insertion sort on smallest arrays
     if (len < 7) {
@@ -261,17 +261,17 @@ void SArrayIndex::sort(quint32 *x, int off, int len) {
     }
 
     // Choose a partition element, v
-    quint32 m = off + len / 2;    // Small arrays, middle element
+    quint32 m = off + len / 2;  // Small arrays, middle element
     if (len > 7) {
         quint32 l = off;
         quint32 n = off + len - 1;
-        if (len > 40) {    // Big arrays, pseudo median of 9
+        if (len > 40) {  // Big arrays, pseudo median of 9
             quint32 s = len / 8;
             l = med3(x, l, l + s, l + 2 * s);
             m = med3(x, m - s, m, m + s);
             n = med3(x, n - 2 * s, n - s, n);
         }
-        m = med3(x, l, m, n);    // Mid-size, med of 3
+        m = med3(x, l, m, n);  // Mid-size, med of 3
     }
     quint32 v = x[m];
 
@@ -317,7 +317,7 @@ void SArrayIndex::sort(quint32 *x, int off, int len) {
     }
 }
 
-//Stable sort of sequences
+// Stable sort of sequences
 void SArrayIndex::sortBit(quint32 *x, int off, int len) {
     // Insertion sort on smallest arrays
     if (len < 7) {
@@ -330,17 +330,17 @@ void SArrayIndex::sortBit(quint32 *x, int off, int len) {
     }
 
     // Choose a partition element, v
-    quint32 m = off + len / 2;    // Small arrays, middle element
+    quint32 m = off + len / 2;  // Small arrays, middle element
     if (len > 7) {
         quint32 l = off;
         quint32 n = off + len - 1;
-        if (len > 40) {    // Big arrays, pseudo median of 9
+        if (len > 40) {  // Big arrays, pseudo median of 9
             quint32 s = len / 8;
             l = med3Bit(x, l, l + s, l + 2 * s);
             m = med3Bit(x, m - s, m, m + s);
             n = med3Bit(x, n - 2 * s, n - s, n);
         }
-        m = med3Bit(x, l, m, n);    // Mid-size, med of 3
+        m = med3Bit(x, l, m, n);  // Mid-size, med of 3
     }
     quint32 *v = x + m;
 
@@ -350,14 +350,14 @@ void SArrayIndex::sortBit(quint32 *x, int off, int len) {
         int cr;
         while (b <= c && (cr = compareBit(v, x + b)) >= 0) {
             if (cr == 0) {
-                (x + b == v) && (v = x + a);    //save middle pos value
+                (x + b == v) && (v = x + a);  // save middle pos value
                 swapBit(x + a++, x + b);
             }
             b++;
         }
         while (c >= b && (cr = compareBit(x + c, v)) >= 0) {
             if (cr == 0) {
-                (x + c == v) && (v = x + d);    //save middle pos value
+                (x + c == v) && (v = x + d);  // save middle pos value
                 swapBit(x + c, x + d--);
             }
             c--;
@@ -409,9 +409,9 @@ void SArrayIndex::sortBitClassic(quint32 *x, int l, int r) {
 
 // Compare by char sequences, then by their position in main sequence
 int SArrayIndex::compare(const char *seq1, const char *seq2) const {
-    //TODO: use memcmp instead?
+    // TODO: use memcmp instead?
     int res = qstrncmp(seq1, seq2, w);
-    return res;    //==0 ? seq1-seq2 : res;
+    return res;  //==0 ? seq1-seq2 : res;
 
     //     const quint32* a1 = (const quint32*)seq1;
     //     const quint32* a2 = (const quint32*)seq2;
@@ -499,7 +499,7 @@ bool SArrayIndex::find(SArrayIndex::SAISearchContext *t, const char *seq) {
             low = mid + 1;
         } else if (rc > 0) {
             high = mid - 1;
-        } else {    // match!
+        } else {  // match!
             t->currSample = seq;
             int i = mid;
             // Find first match position
@@ -546,7 +546,7 @@ bool SArrayIndex::findBit(SArrayIndex::SAISearchContext *t, quint32 bitValue, co
             low = mid + 1;
         } else if (rc > 0) {
             high = mid - 1;
-        } else {    //found bitMask
+        } else {  // found bitMask
             if (wAfterBits == 0) {
                 quint32 *maskPos = bitMask + mid;
                 for (; maskPos > bitMask && compareBit(maskPos, maskPos - 1) == 0; maskPos--) {
@@ -558,11 +558,11 @@ bool SArrayIndex::findBit(SArrayIndex::SAISearchContext *t, quint32 bitValue, co
                 bool found = false;
                 rc = compareAfterBits(mid, afterBitsSeq);
                 if (rc == 0) {
-                    found = true;    // moving to the start of the search item
+                    found = true;  // moving to the start of the search item
                     while (mid > 0 && a[mid - 1] == midVal && compareAfterBits(mid - 1, afterBitsSeq) == 0) {
                         mid--;
                     }
-                } else if (rc > 0) {    // search item have lower index
+                } else if (rc > 0) {  // search item have lower index
                     for (mid = mid - 1; int(mid) >= 0 && a[mid] == midVal; mid--) {
                         if (compareAfterBits(mid, afterBitsSeq) == 0) {
                             found = true;
@@ -572,7 +572,7 @@ bool SArrayIndex::findBit(SArrayIndex::SAISearchContext *t, quint32 bitValue, co
                             break;
                         }
                     }
-                } else {    //if (rc < 0) { // search item have higher index
+                } else {  // if (rc < 0) { // search item have higher index
                     for (mid = mid + 1; mid < arrLen && a[mid] == midVal; mid++) {
                         if (compareAfterBits(mid, afterBitsSeq) == 0) {
                             found = true;
@@ -670,4 +670,4 @@ inline T readNum(char *num, QFile &file) {
 
     return n;
 }
-}    // namespace U2
+}  // namespace U2

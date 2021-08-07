@@ -129,5 +129,5 @@ WevoteTaskSettings WevoteWorker::getSettings(U2OpStatus &os) {
     return settings;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

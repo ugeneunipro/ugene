@@ -70,6 +70,6 @@ private:
     static const int ICON_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOCK_WIDGET_PAINTER_H_
+#endif  // _U2_DOCK_WIDGET_PAINTER_H_

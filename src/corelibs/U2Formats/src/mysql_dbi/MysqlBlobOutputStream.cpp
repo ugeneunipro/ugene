@@ -69,4 +69,4 @@ void MysqlBlobOutputStream::write(const char *buffer, int length, U2OpStatus &os
     updateBlobQuery.update();
 }
 
-}    // namespace U2
+}  // namespace U2

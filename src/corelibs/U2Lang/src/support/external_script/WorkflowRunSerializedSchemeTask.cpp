@@ -111,4 +111,4 @@ LoadWorkflowTask *WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
     return new LoadWorkflowTask(scheme, nullptr, approvedPath);
 }
 
-}    // namespace U2
+}  // namespace U2

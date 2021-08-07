@@ -74,15 +74,15 @@ private:
     static const int BUFLEN = 32768;
     IOAdapter *io;
     GzipUtil *z;
-    RingBuffer *buf;    // seek buffer
-    int rewinded;    // how much should read from seek buffer
+    RingBuffer *buf;  // seek buffer
+    int rewinded;  // how much should read from seek buffer
 };
 
 struct GZipIndexAccessPoint {
-    qint64 out;    // corresponding offset in uncompressed data
-    qint64 in;    // offset in input file of first full byte
-    int bits;    // number of bits (1-7) from byte at in - 1, or 0
-    QByteArray window;    //preceding WINSIZE of uncompressed data
+    qint64 out;  // corresponding offset in uncompressed data
+    qint64 in;  // offset in input file of first full byte
+    int bits;  // number of bits (1-7) from byte at in - 1, or 0
+    QByteArray window;  // preceding WINSIZE of uncompressed data
 };
 
 struct U2CORE_EXPORT GZipIndex {
@@ -91,8 +91,8 @@ struct U2CORE_EXPORT GZipIndex {
     static const int CHUNK = 16384;
 
     QList<GZipIndexAccessPoint> points;
-};    // GZipIndex
+};  // GZipIndex
 
-};    // namespace U2
+};  // namespace U2
 
 #endif

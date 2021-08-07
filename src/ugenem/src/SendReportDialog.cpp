@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include <qglobal.h>
 
@@ -25,7 +25,7 @@
 #    include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-#    include <unistd.h>    // for sysconf(3)
+#    include <unistd.h>  // for sysconf(3)
 #endif
 
 #include <QBuffer>
@@ -99,7 +99,7 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
 
         report += "UGENE version: ";
 #ifdef UGENE_VERSION_SUFFIX
-        //Example of usage on linux: DEFINES+='UGENE_VERSION_SUFFIX=\\\"-ppa\\\"'
+        // Example of usage on linux: DEFINES+='UGENE_VERSION_SUFFIX=\\\"-ppa\\\"'
         report += list.takeFirst() + QString(UGENE_VERSION_SUFFIX) + getUgeneBitCount() + "\n\n";
 #else
         report += list.takeFirst() + getUgeneBitCount() + "\n\n";
@@ -165,7 +165,7 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
     netManager->setProxy(proxy);
 
     connect(netManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(sl_replyFinished(QNetworkReply *)));
-    //check destination availability
+    // check destination availability
 
     QNetworkReply *reply = netManager->get(QNetworkRequest(QString(HOST_URL) + QString(DESTINATION_URL_KEEPER_PAGE)));
     loop.exec();
@@ -177,7 +177,7 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
         return false;
     }
 
-    //send report
+    // send report
     QString data = QUrl::toPercentEncoding(report);
     QNetworkRequest request(reportsPath);
 
@@ -459,19 +459,19 @@ QString ReportSender::getCPUInfo() {
     // Get vendor
     char vendor[12];
     cpuID(0, regs);
-    ((unsigned *)vendor)[0] = regs[1];    // EBX
-    ((unsigned *)vendor)[1] = regs[3];    // EDX
-    ((unsigned *)vendor)[2] = regs[2];    // ECX
+    ((unsigned *)vendor)[0] = regs[1];  // EBX
+    ((unsigned *)vendor)[1] = regs[3];  // EDX
+    ((unsigned *)vendor)[2] = regs[2];  // ECX
     QString cpuVendor = QString(vendor);
     result += "\n  Vendor :" + cpuVendor;
 
     // Get CPU features
     cpuID(1, regs);
-    unsigned cpuFeatures = regs[3];    // EDX
+    unsigned cpuFeatures = regs[3];  // EDX
 
     // Logical core count per CPU
     cpuID(1, regs);
-    unsigned logical = (regs[1] >> 16) & 0xff;    // EBX[23:16]
+    unsigned logical = (regs[1] >> 16) & 0xff;  // EBX[23:16]
 
     result += "\n  logical cpus: " + QString::number(logical);
     unsigned cores = 0;
@@ -479,12 +479,12 @@ QString ReportSender::getCPUInfo() {
     if (cpuVendor.contains("GenuineIntel")) {
         // Get DCP cache info
         cpuID(4, regs);
-        cores = ((regs[0] >> 26) & 0x3f) + 1;    // EAX[31:26] + 1
+        cores = ((regs[0] >> 26) & 0x3f) + 1;  // EAX[31:26] + 1
 
     } else if (cpuVendor.contains("AuthenticAMD")) {
         // Get NC: Number of CPU cores - 1
         cpuID(0x80000008, regs);
-        cores = ((unsigned)(regs[2] & 0xff)) + 1;    // ECX[7:0] + 1
+        cores = ((unsigned)(regs[2] & 0xff)) + 1;  // ECX[7:0] + 1
     }
 
     result += "\n  cpu cores: " + QString::number(cores);

@@ -21,10 +21,11 @@
 
 #ifndef _PRIMER3_PLUGIN_H_
 #define _PRIMER3_PLUGIN_H_ 1
-#include <U2Core/PluginModel.h>
-#include <U2Gui/ObjectViewModel.h>
-
 #include <QMenu>
+
+#include <U2Core/PluginModel.h>
+
+#include <U2Gui/ObjectViewModel.h>
 
 #include "Primer3Tests.h"
 
@@ -40,24 +41,25 @@ public:
     ~Primer3Plugin();
 
 private:
-    Primer3ADVContext* viewCtx;
+    Primer3ADVContext *viewCtx;
 };
 
-class Primer3ADVContext: public GObjectViewWindowContext {
+class Primer3ADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    Primer3ADVContext(QObject* p);
+    Primer3ADVContext(QObject *p);
 protected slots:
-        void sl_showDialog();
+    void sl_showDialog();
+
 protected:
-    void initViewContext(GObjectView* v) override;
-    //virtual void makeBaseMenu(GObjectView* v, QMenu* m);
+    void initViewContext(GObjectView *v) override;
+    // virtual void makeBaseMenu(GObjectView* v, QMenu* m);
 };
 
 class Primer3Tests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-} //namespace
-#endif //_PRIMER3_PLUGIN_H_
+}  // namespace U2
+#endif  //_PRIMER3_PLUGIN_H_

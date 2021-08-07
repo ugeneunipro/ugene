@@ -41,7 +41,7 @@
 namespace U2 {
 class U2SequenceObject;
 
-//TODO: support results separation on complement and direct strands
+// TODO: support results separation on complement and direct strands
 
 CollocationsDialogController::CollocationsDialogController(QStringList _names, ADVSequenceObjectContext *_ctx)
     : allNames(_names), ctx(_ctx) {
@@ -133,7 +133,7 @@ void CollocationsDialogController::sl_addName() {
     assert(!usedNames.contains(name));
 
     bool remove = false;
-    //UGENE-2318 inserting and removed unused item because of QT bug
+    // UGENE-2318 inserting and removed unused item because of QT bug
     if (annotationsTree->topLevelItemCount() == 1)
         remove = true;
 
@@ -151,7 +151,7 @@ void CollocationsDialogController::sl_addName() {
     annotationsTree->insertTopLevelItem(annotationsTree->topLevelItemCount() - 1, item);
     annotationsTree->setItemWidget(item, 1, minusButton);
 
-    //UGENE-2318
+    // UGENE-2318
     if (remove) {
         QTreeWidgetItem *ii = new QTreeWidgetItem();
         int index = annotationsTree->topLevelItemCount() - 1;
@@ -299,9 +299,9 @@ void CollocationsDialogController::sl_onResultActivated(QListWidgetItem *item) {
     assert(item != nullptr);
     CDCResultItem *ri = static_cast<CDCResultItem *>(item);
     Q_UNUSED(ri);
-    //todo: add to selection?
-    //ctx->getPanView()->setVisibleRange(ri->r);
-    //ctx->getDetView()->setCenterPos(ri->r.startPos);
+    // todo: add to selection?
+    // ctx->getPanView()->setVisibleRange(ri->r);
+    // ctx->getDetView()->setCenterPos(ri->r.startPos);
 }
 
 CDCResultItem::CDCResultItem(const U2Region &_r)
@@ -468,4 +468,4 @@ bool CollocationSearchTask::isSuitableRegion(const U2Region &r, const QVector<U2
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

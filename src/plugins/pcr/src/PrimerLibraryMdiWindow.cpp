@@ -63,4 +63,4 @@ void PrimerLibraryMdiWindow::sl_closeWindow() {
     mdiManager->closeMDIWindow(this);
 }
 
-}    // namespace U2
+}  // namespace U2

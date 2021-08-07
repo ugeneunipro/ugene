@@ -55,6 +55,6 @@ protected:
     int memLimit;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // SPADESGENOMEASSEMBLYDIALOGFILLER_H
+#endif  // SPADESGENOMEASSEMBLYDIALOGFILLER_H

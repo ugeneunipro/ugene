@@ -152,4 +152,4 @@ const QList<ColumnDataParser::Column> &ColumnDataParser::getCurrentColumns() con
     return currentColumns;
 }
 
-}    // namespace U2
+}  // namespace U2

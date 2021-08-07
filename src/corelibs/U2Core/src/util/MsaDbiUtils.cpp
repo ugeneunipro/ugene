@@ -286,7 +286,7 @@ void MaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const QL
     }
 
     // Calculate end position in the sequence
-    int endRegionPos = pos + count;    // non-inclusive
+    int endRegionPos = pos + count;  // non-inclusive
 
     if (endRegionPos > rowLengthWithoutTrailingGap) {
         endRegionPos = rowLengthWithoutTrailingGap;
@@ -492,7 +492,7 @@ QList<U2MsaRow> MsaDbiUtils::cutOffTrailingGaps(QList<U2MsaRow> &rows, const qin
 
 void MsaDbiUtils::calculateGapModelAfterRemove(QList<U2MsaGap> &gapModel, qint64 pos, qint64 count) {
     QList<U2MsaGap> newGapModel;
-    qint64 endRegionPos = pos + count;    // non-inclusive
+    qint64 endRegionPos = pos + count;  // non-inclusive
     foreach (U2MsaGap gap, gapModel) {
         qint64 gapEnd = gap.offset + gap.gap;
         if (gapEnd < pos) {
@@ -630,7 +630,7 @@ void calculateGapModelAfterAppendChar(QList<U2MsaGap> &gapModel, qint64 pos, qin
     CHECK(pos > originalRowLength, );
     gapModel.append(U2MsaGap(originalRowLength, pos - originalRowLength));
 }
-}    // namespace
+}  // namespace
 
 void MsaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, char newChar) {
     SAFE_POINT(pos >= 0, "Incorrect position!", );
@@ -831,7 +831,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAli
             CHECK_OP(os, );
 
             // Create the row
-            row.rowId = -1;    // set the row ID automatically
+            row.rowId = -1;  // set the row ID automatically
             row.sequenceId = sequence.id;
             row.gstart = 0;
             row.gend = sequence.length;
@@ -1159,7 +1159,7 @@ void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, c
             continue;
         }
         if (!isRowLengthChanged) {
-            continue;    // do not touch this column at all.
+            continue;  // do not touch this column at all.
         }
         U2DataId sequenceId = row->getRowDbInfo().sequenceId;
         SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
@@ -1265,4 +1265,4 @@ void MsaDbiUtils::removeRow(const U2EntityRef &msaRef, qint64 rowId, U2OpStatus 
     msaDbi->removeRow(msaRef.entityId, rowId, os);
 }
 
-}    // namespace U2
+}  // namespace U2

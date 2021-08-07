@@ -51,6 +51,6 @@ private:
     Parameters *parameters;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_
+#endif  // _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_

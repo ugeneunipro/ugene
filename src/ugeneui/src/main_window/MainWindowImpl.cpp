@@ -74,7 +74,7 @@ public:
     }
     virtual QMenu *createPopupMenu() {
         return nullptr;
-    }    //todo: decide if we do really need this menu and fix it if yes?
+    }  // todo: decide if we do really need this menu and fix it if yes?
 protected:
     virtual void closeEvent(QCloseEvent *e);
     virtual void dragEnterEvent(QDragEnterEvent *event);
@@ -320,7 +320,7 @@ void MainWindowImpl::registerAction(QAction *action) {
 }
 
 void MainWindowImpl::prepareGUI() {
-    mw = new MWStub(this);    //todo: parents?
+    mw = new MWStub(this);  // todo: parents?
     mw->setObjectName("main_window");
     setWindowTitle("");
 
@@ -352,7 +352,7 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
-    //TODO: re-test support for MAC OS before enabling.
+    // TODO: re-test support for MAC OS before enabling.
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
 #endif
@@ -464,7 +464,7 @@ void MainWindowImpl::sl_installToPathAction() {
         QMessageBox::information(nullptr, tr("Installation successful"), tr("Terminal usage successfully enabled.\n\nNow you can type ugene in command line to start UGENE."));
     }
 }
-#endif    // #ifdef _INSTALL_TO_PATH_ACTION
+#endif  // #ifdef _INSTALL_TO_PATH_ACTION
 
 QMenu *MainWindowImpl::getTopLevelMenu(const QString &sysName) const {
     return menuManager->getTopLevelMenu(sysName);
@@ -489,7 +489,7 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
     }
     QMdiArea::setViewMode(mode);
     if (mode == QMdiArea::TabbedView) {
-        //FIXME QTBUG-9293, Adding a close button to tabbed QMdiSubWindows
+        // FIXME QTBUG-9293, Adding a close button to tabbed QMdiSubWindows
         QList<QTabBar *> tb = findChildren<QTabBar *>();
         foreach (QTabBar *t, tb) {
             if (t->parentWidget() == this) {
@@ -498,7 +498,7 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
             }
         }
     } else {
-        //TODO QTBUG-3269: switching between TabbedView and SubWindowView does not preserve maximized window state
+        // TODO QTBUG-3269: switching between TabbedView and SubWindowView does not preserve maximized window state
     }
 }
 
@@ -507,17 +507,17 @@ void FixedMdiArea::closeSubWindow(int idx) {
     // We use Qt greater than 4.8.0
     // this workaround can be removed
     // do it accurately
-#if QT_VERSION < 0x040800    //In Qt version 4.8.0 was added default behavior for closing tab.
+#if QT_VERSION < 0x040800  // In Qt version 4.8.0 was added default behavior for closing tab.
     subWindowList().at(idx)->close();
 #endif
 }
 
-//Workaround for QTBUG-17428: Superfluous RestoreAction for tabbed QMdiSubWindows
+// Workaround for QTBUG-17428: Superfluous RestoreAction for tabbed QMdiSubWindows
 void FixedMdiArea::sysContextMenuAction(QAction *action) {
     if (viewMode() == QMdiArea::TabbedView && activeSubWindow()) {
         QList<QAction *> lst = activeSubWindow()->actions();
-        if (!lst.isEmpty() && action == lst.first()) {    //RestoreAction always comes before CloseAction
-            //FIXME better to detect via shortcut or icon ???
+        if (!lst.isEmpty() && action == lst.first()) {  // RestoreAction always comes before CloseAction
+            // FIXME better to detect via shortcut or icon ???
             assert(action->icon().pixmap(32).toImage() == style()->standardIcon(QStyle::SP_TitleBarNormalButton).pixmap(32).toImage());
             activeSubWindow()->showMaximized();
         }
@@ -526,7 +526,7 @@ void FixedMdiArea::sysContextMenuAction(QAction *action) {
 
 QMdiSubWindow *FixedMdiArea::addSubWindow(QWidget *widget) {
     QMdiSubWindow *subWindow = QMdiArea::addSubWindow(widget);
-    //Workaround for QTBUG-17428
+    // Workaround for QTBUG-17428
     connect(subWindow->systemMenu(), SIGNAL(triggered(QAction *)), SLOT(sysContextMenuAction(QAction *)));
     return subWindow;
 }
@@ -545,7 +545,7 @@ void FixedMdiArea::tileSubWindows() {
     SAFE_POINT_EXT(nullptr != mainWindow, QMdiArea::tileSubWindows(), );
 
     QPoint topLeft = mainWindow->mapToGlobal(QPoint(0, 0));
-    static QPoint compensationOffset = QPoint(0, -22);    // I think, it is a menu bar. I'm not sure that it has constant height.
+    static QPoint compensationOffset = QPoint(0, -22);  // I think, it is a menu bar. I'm not sure that it has constant height.
 
     QMdiArea::tileSubWindows();
 
@@ -604,4 +604,4 @@ void MainWindowImpl::addNotification(const QString &message, NotificationType ty
     }
 }
 
-}    // namespace U2
+}  // namespace U2

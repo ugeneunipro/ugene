@@ -43,4 +43,4 @@ void GTUtilsEscClicker::commonScenario() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

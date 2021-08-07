@@ -24,7 +24,7 @@ TEST_CLASS_DEFINITION(FilePermissionTest) {
     CHECK_SET_ERR(f1_size == 5, "wrong size of testfile1");
 
     // set the file RO and check we cannot modify it
-    //GTFile::setReadOnly(os, f1); TODO: restore after merging with master
+    // GTFile::setReadOnly(os, f1); TODO: restore after merging with master
     qDebug() << "RO testfile1 perms " << ff1.permissions();
     res = ff1.open(QFile::ReadWrite);
     CHECK_SET_ERR(!res, "should not open testfile1 to write");
@@ -64,7 +64,7 @@ TEST_CLASS_DEFINITION(DirPermissionTest) {
     GTFile::create(os, f1);
 
     // set the dir RO and check we can read the file
-    //GTFile::setReadOnly(os, testDir); TODO: restore after merging with master
+    // GTFile::setReadOnly(os, testDir); TODO: restore after merging with master
     QFile ff1(f1);
     qDebug() << "Initial testfile1 perms " << ff1.permissions();
     qint64 f1_size = GTFile::readAll(os, f1).size();

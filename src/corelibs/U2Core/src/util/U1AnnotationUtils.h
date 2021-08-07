@@ -94,10 +94,10 @@ public:
     static QList<U2Region> getRelatedLowerCaseRegions(const U2SequenceObject *so, const QList<GObject *> &anns);
 
     /**
-    * Check if it's the selection of the circular view, which contains the junction point
-    * Return true if the "Annotation Selection Data" argument contains two selected regions and two location IDs,
-    * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
-    */
+     * Check if it's the selection of the circular view, which contains the junction point
+     * Return true if the "Annotation Selection Data" argument contains two selected regions and two location IDs,
+     * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
+     */
     static bool isAnnotationContainsJunctionPoint(const Annotation *annotation, const qint64 sequenceLength);
     static bool isAnnotationContainsJunctionPoint(const QList<RegionsPair> &mergedRegions);
     static QList<RegionsPair> mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions, const qint64 sequenceLength);
@@ -155,7 +155,7 @@ private:
     U2OpStatus *stateInfo;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U1AnnotationUtils::AnnotationStrategyForResize)
 

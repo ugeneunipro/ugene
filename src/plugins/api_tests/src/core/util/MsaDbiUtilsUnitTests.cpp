@@ -958,21 +958,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_InvalidRowList) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "AACCGGTT"
                                                                                << "CCGGTTAA"
                                                                                << "GGTTAACC");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "AACCGGTT"
                                          << "CCGGTTAA"
                                          << "GGTTAACC";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -989,21 +989,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "--AACCGGTT"
                                                                                << "--CCGGTTAA"
                                                                                << "--GGTTA--C");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "AACCGGTT"
                                          << "CCGGTTAA"
                                          << "GGTTA--C";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -1020,21 +1020,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "AACCGGTT--"
                                                                                << "CCG--TAA--"
                                                                                << "GGTTAACC--");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "AACCGGTT"
                                          << "CCG--TAA"
                                          << "GGTTAACC";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -1051,21 +1051,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "---TAACCGG"
                                                                                << "--CCGGTTAA"
                                                                                << "--GGTTAACC");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "-TAACCGG"
                                          << "CCGGTTAA"
                                          << "GGTTAACC";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -1082,21 +1082,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "AACCGGT---"
                                                                                << "CCGGTTAA--"
                                                                                << "GGTTAACC--");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "AACCGGT-"
                                          << "CCGGTTAA"
                                          << "GGTTAACC";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -1113,21 +1113,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "--AACCGGTT--"
                                                                                << "---ACCGGT--"
                                                                                << "----CCGGTT---");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << "AACCGGTT"
                                          << "-ACCGGT-"
                                          << "--CCGGTT";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -1144,21 +1144,21 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
 }
 
 IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
-    //Init test data
+    // Init test data
     U2OpStatusImpl os;
     U2EntityRef msaRef = MsaDbiUtilsTestUtils::initTestAlignment(QStringList() << "------"
                                                                                << "----"
                                                                                << "-----");
 
-    //Prepare expected state
+    // Prepare expected state
     QStringList expected = QStringList() << ""
                                          << ""
                                          << "";
 
-    //Call test function
+    // Call test function
     MsaDbiUtils::trim(msaRef, os);
 
-    //Check actual state
+    // Check actual state
     MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
@@ -2038,4 +2038,4 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

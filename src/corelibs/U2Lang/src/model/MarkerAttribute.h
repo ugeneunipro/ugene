@@ -43,6 +43,6 @@ private:
     QList<Marker *> markers;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _MARKER_ATTRIBUTE_H_
+#endif  // _MARKER_ATTRIBUTE_H_

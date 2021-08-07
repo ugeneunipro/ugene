@@ -105,7 +105,7 @@ void ReadAssemblyWorker::onTaskFinished(Task *task) {
 QString ReadAssemblyWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::ASSEMBLY_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    //return getObjectName(handler, U2Type::Assembly);
+    // return getObjectName(handler, U2Type::Assembly);
     return getObjectName(handler, 4);
 }
 
@@ -121,7 +121,7 @@ ReadAssemblyProto::ReadAssemblyProto()
                                             " The element outputs message(s) with the assembled reads data."
                                             "<br/><br/>Note that some tools require URL(s) of the files as input, not the assembled reads data."));
 
-    {    // ports description
+    {  // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;
         outTypeMap[BaseSlots::ASSEMBLY_SLOT()] = BaseTypes::ASSEMBLY_TYPE();
         outTypeMap[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -151,5 +151,5 @@ Worker *ReadAssemblyWorkerFactory::createWorker(Actor *a) {
     return new ReadAssemblyWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

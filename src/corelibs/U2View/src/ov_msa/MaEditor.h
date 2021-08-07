@@ -106,7 +106,7 @@ public:
         ResizeMode_FontAndContent,
         ResizeMode_OnlyContent
     };
-    static const float zoomMult;    // SANGER_TODO: should be dependable on the view
+    static const float zoomMult;  // SANGER_TODO: should be dependable on the view
 
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj);
@@ -152,7 +152,7 @@ public:
     const MaEditorSelection &getSelection() const;
 
     virtual int getRowContentIndent(int rowId) const;
-    int getSequenceRowHeight() const;    // SANGER_TODO: order the methods
+    int getSequenceRowHeight() const;  // SANGER_TODO: order the methods
 
     int getColumnWidth() const;
 
@@ -249,7 +249,7 @@ protected:
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);    // SANGER_TODO: should the align menu exist in MCA?
+    void addAlignMenu(QMenu *m);  // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
 
@@ -310,6 +310,6 @@ public:
     QAction *copyConsensusWithGapsAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_H_
+#endif  // _U2_MA_EDITOR_H_

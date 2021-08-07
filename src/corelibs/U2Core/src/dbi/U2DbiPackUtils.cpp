@@ -81,19 +81,19 @@ QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &o
 bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // rowId
+    {  // rowId
         bool ok = false;
         rowId = tokens[1].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid gap modDetails rowId '%1'").arg(tokens[1].data()), false);
     }
-    {    // oldGaps
+    {  // oldGaps
         bool ok = unpackGaps(tokens[2], oldGaps);
         SAFE_POINT(ok, QString("Invalid gap string '%1'").arg(tokens[2].data()), false);
     }
-    {    // newGaps
+    {  // newGaps
         bool ok = unpackGaps(tokens[3], newGaps);
         SAFE_POINT(ok, QString("Invalid gap string '%1'").arg(tokens[3].data()), false);
     }
@@ -116,22 +116,22 @@ QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedO
 bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2DataId &relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(5 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // rowId
+    {  // rowId
         bool ok = false;
         rowId = tokens[1].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid gap modDetails rowId '%1'").arg(tokens[1].data()), false);
     }
-    {    // relatedObjectId
+    {  // relatedObjectId
         relatedObjectId = QByteArray::fromHex(tokens[2]);
     }
-    {    // oldGaps
+    {  // oldGaps
         bool ok = unpackGaps(tokens[3], oldGaps);
         SAFE_POINT(ok, QString("Invalid gap string '%1'").arg(tokens[3].data()), false);
     }
-    {    // newGaps
+    {  // newGaps
         bool ok = unpackGaps(tokens[4], newGaps);
         SAFE_POINT(ok, QString("Invalid gap string '%1'").arg(tokens[4].data()), false);
     }
@@ -177,14 +177,14 @@ QByteArray U2DbiPackUtils::packRowOrderDetails(const QList<qint64> &oldOrder, co
 bool U2DbiPackUtils::unpackRowOrderDetails(const QByteArray &modDetails, QList<qint64> &oldOrder, QList<qint64> &newOrder) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.size(), QString("Invalid rows order modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // oldOrder
+    {  // oldOrder
         bool ok = unpackRowOrder(tokens[1], oldOrder);
         SAFE_POINT(ok, QString("Invalid rows order string '%1'").arg(tokens[1].data()), false);
     }
-    {    // newGaps
+    {  // newGaps
         bool ok = unpackRowOrder(tokens[2], newOrder);
         SAFE_POINT(ok, QString("Invalid rows order string '%1'").arg(tokens[2].data()), false);
     }
@@ -206,18 +206,18 @@ QByteArray U2DbiPackUtils::packRowNameDetails(qint64 rowId, const QString &oldNa
 bool U2DbiPackUtils::unpackRowNameDetails(const QByteArray &modDetails, qint64 &rowId, QString &oldName, QString &newName) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid row name modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // rowId
+    {  // rowId
         bool ok = false;
         rowId = tokens[1].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid row name modDetails rowId '%1'").arg(tokens[1].data()), false);
     }
-    {    // oldName
+    {  // oldName
         oldName = tokens[2];
     }
-    {    // newName
+    {  // newName
         newName = tokens[3];
     }
     return true;
@@ -243,33 +243,33 @@ QByteArray U2DbiPackUtils::packRow(qint64 posInMsa, const U2MsaRow &row) {
 bool U2DbiPackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMsa, U2MsaRow &row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(7 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // posInMsa
+    {  // posInMsa
         bool ok = false;
         posInMsa = tokens[1].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails posInMsa '%1'").arg(tokens[1].data()), false);
     }
-    {    // rowId
+    {  // rowId
         bool ok = false;
         row.rowId = tokens[2].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails rowId '%1'").arg(tokens[2].data()), false);
     }
-    {    // sequenceId
+    {  // sequenceId
         row.sequenceId = QByteArray::fromHex(tokens[3]);
     }
-    {    // gstart
+    {  // gstart
         bool ok = false;
         row.gstart = tokens[4].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[4].data()), false);
     }
-    {    // gend
+    {  // gend
         bool ok = false;
         row.gend = tokens[5].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[5].data()), false);
     }
-    {    // gaps
+    {  // gaps
         bool ok = unpackGaps(tokens[6], row.gaps);
         SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[6].data()), false);
     }
@@ -298,36 +298,36 @@ QByteArray U2DbiPackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
 bool U2DbiPackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaRow &row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(8 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
-    {    // version
+    {  // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
-    {    // posInMsa
+    {  // posInMsa
         bool ok = false;
         posInMca = tokens[1].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails posInMsa '%1'").arg(tokens[1].data()), false);
     }
-    {    // rowId
+    {  // rowId
         bool ok = false;
         row.rowId = tokens[2].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails rowId '%1'").arg(tokens[2].data()), false);
     }
-    {    // chromatogramId
+    {  // chromatogramId
         row.chromatogramId = QByteArray::fromHex(tokens[3]);
     }
-    {    // sequenceId
+    {  // sequenceId
         row.sequenceId = QByteArray::fromHex(tokens[4]);
     }
-    {    // gstart
+    {  // gstart
         bool ok = false;
         row.gstart = tokens[5].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[5].data()), false);
     }
-    {    // gend
+    {  // gend
         bool ok = false;
         row.gend = tokens[6].toLongLong(&ok);
         SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[6].data()), false);
     }
-    {    // sequence gaps
+    {  // sequence gaps
         bool ok = unpackGaps(tokens[7], row.gaps);
         SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[7].data()), false);
     }
@@ -681,4 +681,4 @@ bool U2DbiPackUtils::unpackUdr(const QByteArray &modDetails, QByteArray &oldData
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

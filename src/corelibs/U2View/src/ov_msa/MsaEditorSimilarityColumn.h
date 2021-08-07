@@ -44,7 +44,7 @@ public:
     SimilarityStatisticsSettings()
         : usePercents(false), excludeGaps(false) {
     }
-    QString algoId;    // selected algorithm
+    QString algoId;  // selected algorithm
     bool usePercents;
     bool excludeGaps;
 };
@@ -163,6 +163,6 @@ private:
     QString DataIsValidMessage;
     QString DataIsBeingUpdatedMessage;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

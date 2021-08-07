@@ -52,8 +52,8 @@ private:
     QList<WizardPage *> pages;
     QMap<QString, Variable> vars;
 
-    QMap<QString, QString> nextIds;    // id <-> nextId
-    QMap<QString, WizardPage *> pagesMap;    // id <-> page
+    QMap<QString, QString> nextIds;  // id <-> nextId
+    QMap<QString, WizardPage *> pagesMap;  // id <-> page
     QMap<QString, QList<Predicate>> results;
 
 private:
@@ -217,7 +217,7 @@ private:
     QString result;
 };
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2
 
-#endif    // _U2_HRWIZARDSERIALIZER_H_
+#endif  // _U2_HRWIZARDSERIALIZER_H_

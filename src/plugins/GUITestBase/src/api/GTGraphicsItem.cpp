@@ -50,4 +50,4 @@ QPoint GTGraphicsItem::getItemCenter(HI::GUITestOpStatus &os, QGraphicsItem *it)
     return p;
 }
 #undef GT_CLASS_NAME
-}    // namespace U2
+}  // namespace U2

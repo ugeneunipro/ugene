@@ -116,5 +116,5 @@ void BgzfWriter::finishBlock() {
     headerOffset = ioAdapter.bytesRead();
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

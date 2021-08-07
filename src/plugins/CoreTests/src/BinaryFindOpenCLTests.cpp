@@ -104,6 +104,6 @@ Task::ReportResult GTest_BinaryFindOpenCL::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/

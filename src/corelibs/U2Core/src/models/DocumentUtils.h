@@ -142,6 +142,6 @@ public:
     static Document *createCopyRestructuredWithHints(Document *doc, U2OpStatus &os, bool shallowCopy = false);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

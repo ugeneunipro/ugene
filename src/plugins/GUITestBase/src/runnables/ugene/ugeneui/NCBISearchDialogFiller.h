@@ -29,26 +29,26 @@ using namespace HI;
 
 class NcbiSearchDialogFiller : public Filler {
 public:
-    enum ActionType {    // An appropriate action data (as QVariant)
-        SetField,    // QPair<int, QString> with a number of block and the combobox visible text
-        SetTerm,    // QPair<int, QString> with a number of block and a query term
-        AddTerm,    // ignored
-        RemoveTerm,    // int with a 0-based number of term (including the primary term, the primary term cannot be removed)
-        SetDatabase,    // QString with the combobox value
-        CheckQuery,    // QString with the expected query
-        ClickResultByNum,    // int with a result's number (0-based)
-        ClickResultById,    // QString with a result's ID
-        ClickResultByDesc,    // QString with a result's description (exact case sensitive comparison)
-        ClickResultBySize,    // int with a result's size (the first results with this size will be clicked)
-        SelectResultsByNumbers,    // QList<int> with results numbers (0-based)
-        SelectResultsByIds,    // QStringList with results IDs
-        SelectResultsByDescs,    // QStringList with results descriptions (exact case sensitive comparison)
-        SelectResultsBySizes,    // QList<int> with results sizes
-        SetResultLimit,    // int with the limit
-        ClickSearch,    // ignored
-        ClickDownload,    // QList with actions for the "Fetch from remote database" dialog filler
-        ClickClose,    // ignored
-        WaitTasksFinish    // ignored
+    enum ActionType {  // An appropriate action data (as QVariant)
+        SetField,  // QPair<int, QString> with a number of block and the combobox visible text
+        SetTerm,  // QPair<int, QString> with a number of block and a query term
+        AddTerm,  // ignored
+        RemoveTerm,  // int with a 0-based number of term (including the primary term, the primary term cannot be removed)
+        SetDatabase,  // QString with the combobox value
+        CheckQuery,  // QString with the expected query
+        ClickResultByNum,  // int with a result's number (0-based)
+        ClickResultById,  // QString with a result's ID
+        ClickResultByDesc,  // QString with a result's description (exact case sensitive comparison)
+        ClickResultBySize,  // int with a result's size (the first results with this size will be clicked)
+        SelectResultsByNumbers,  // QList<int> with results numbers (0-based)
+        SelectResultsByIds,  // QStringList with results IDs
+        SelectResultsByDescs,  // QStringList with results descriptions (exact case sensitive comparison)
+        SelectResultsBySizes,  // QList<int> with results sizes
+        SetResultLimit,  // int with the limit
+        ClickSearch,  // ignored
+        ClickDownload,  // QList with actions for the "Fetch from remote database" dialog filler
+        ClickClose,  // ignored
+        WaitTasksFinish  // ignored
     };
     typedef QPair<ActionType, QVariant> Action;
 
@@ -103,10 +103,10 @@ private:
     int getResultNumber();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 typedef QPair<int, QString> intStrStrPair;
 Q_DECLARE_METATYPE(intStrStrPair)
 Q_DECLARE_METATYPE(QList<int>)
 
-#endif    // _U2_NCBI_SEARCH_DIALOG_FILLER_H_
+#endif  // _U2_NCBI_SEARCH_DIALOG_FILLER_H_

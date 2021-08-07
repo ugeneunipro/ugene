@@ -196,4 +196,4 @@ IMPLEMENT_TEST(DatatypeSerializeUtilsUnitTest, FMatrixSerializer_failed) {
     CHECK_TRUE(os.hasError(), "no error");
 }
 
-}    // namespace U2
+}  // namespace U2

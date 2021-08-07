@@ -74,4 +74,4 @@ void DocumentFormatSelectorDialogFiller::commonScenario() {
 #undef GT_CLASS_NAME
 #undef GT_METHOD_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -36,6 +36,6 @@ protected:
     SQLiteDbi *dbi;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SQLITE_UPGRADER_H_
+#endif  // _U2_SQLITE_UPGRADER_H_

@@ -41,7 +41,7 @@ public:
     QString indexFileName;
     QString refFileName;
     bool justBuildIndex;
-    int seqPartSize;    //in Mb
+    int seqPartSize;  // in Mb
     bool prebuiltIndex;
 };
 
@@ -61,9 +61,9 @@ public:
     GenomeAlignerIndex *index;
 
 private:
-    SAType seqLength;    //reference sequence's length
-    int w;    //window size
-    QString baseFileName;    //base of the index's file name
+    SAType seqLength;  // reference sequence's length
+    int w;  // window size
+    QString baseFileName;  // base of the index's file name
     BitsTable bt;
     const quint32 *bitTable;
     int bitCharLen;
@@ -78,13 +78,13 @@ private:
     GenomeAlignerIndexSettings settings;
 
     quint32 MAX_ELEM_COUNT_IN_MEMORY;
-    static const int BUFF_SIZE = 6291456;    //6Mb. Must be divided by 8
-    static const int MEM_FOR_READS = 400;    //Mb for aligning reads
+    static const int BUFF_SIZE = 6291456;  // 6Mb. Must be divided by 8
+    static const int MEM_FOR_READS = 400;  // Mb for aligning reads
 
 private:
     void reformatSequence();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_INDEX_TASK_H_
+#endif  // _U2_GENOME_ALIGNER_INDEX_TASK_H_

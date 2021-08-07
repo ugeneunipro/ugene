@@ -162,7 +162,7 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
         occ->setSelectedObject(model.annotationObjectRef);
     }
 
-    //default field values
+    // default field values
 
     w->setAnnotationName(model.data->name);
     w->setGroupName(model.groupName.isEmpty() ? GROUP_NAME_AUTO : model.groupName);
@@ -493,4 +493,4 @@ void CreateAnnotationWidgetController::countDescriptionUsage() const {
     w->countDescriptionUsage();
 }
 
-}    // namespace U2
+}  // namespace U2

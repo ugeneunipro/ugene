@@ -138,14 +138,14 @@ class U2VIEW_EXPORT ExportCoveragePerBaseTask : public ExportCoverageTask {
 public:
     ExportCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings);
 
-    //void prepare();
+    // void prepare();
 
 protected:
     void processRegion(const QVector<CoveragePerBaseInfo> *data);
     void writeHeader();
 
 private:
-    QByteArray toByteArray(const CoveragePerBaseInfo &info, int pos) const;    // pos - 1-based position
+    QByteArray toByteArray(const CoveragePerBaseInfo &info, int pos) const;  // pos - 1-based position
     void writeResult(const QVector<CoveragePerBaseInfo> *data);
 };
 
@@ -153,7 +153,7 @@ class U2VIEW_EXPORT ExportCoverageBedgraphTask : public ExportCoverageTask {
 public:
     ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings);
 
-    //void prepare();
+    // void prepare();
     QList<Task *> onSubTaskFinished(Task *subTask);
 
 protected:
@@ -161,13 +161,13 @@ protected:
     void writeHeader();
 
 private:
-    QByteArray toByteArray() const;    // startpos - 0-based position, endpos - next after real end
+    QByteArray toByteArray() const;  // startpos - 0-based position, endpos - next after real end
     void writeRegion();
     QList<char> alphabet;
 
     QPair<U2Region, int> currentCoverage;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_COVERAGE_TASK_H_
+#endif  // _U2_EXPORT_COVERAGE_TASK_H_

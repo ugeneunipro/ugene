@@ -359,4 +359,4 @@ QModelIndex RFSTreeModel::addDir(const QModelIndex &index, const QString &dirNam
     return index.child(pos, 0);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -37,7 +37,7 @@ static double getFrequency() {
     QueryPerformanceFrequency(&freq);
     frequency = (double)freq.QuadPart;
 #else
-    frequency = 1000 * 1000;    //microseconds
+    frequency = 1000 * 1000;  // microseconds
 #endif
     return frequency;
 }
@@ -64,4 +64,4 @@ double TimeCounter::frequency = getFrequency();
 
 bool TimeCounter::enabled = true;
 QString TimeCounter::timeSuffix("seconds");
-}    // namespace U2
+}  // namespace U2

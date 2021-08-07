@@ -111,6 +111,6 @@ protected slots:
     void sl_textEdited(const QString &);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

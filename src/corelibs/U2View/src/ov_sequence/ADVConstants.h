@@ -45,6 +45,6 @@ namespace U2 {
 
 #define ANNOTATED_DNA_VIEW_FACTORY_ID "AnnotatedDNAView"
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

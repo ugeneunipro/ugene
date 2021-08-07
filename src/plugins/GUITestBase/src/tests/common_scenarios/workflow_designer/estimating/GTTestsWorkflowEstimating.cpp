@@ -37,21 +37,21 @@ namespace GUITest_common_scenarios_workflow_estimating {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Open WD.
-    //2. Open any NGS pipeline, e.g. Call Variants.
+    // 1. Open WD.
+    // 2. Open any NGS pipeline, e.g. Call Variants.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    //3. Click an "Estimate scheme" button on the toolbar.
-    //Expected state: a warning message box appears: user should fix all errors.
+    // 3. Click an "Estimate scheme" button on the toolbar.
+    // Expected state: a warning message box appears: user should fix all errors.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Estimate workflow"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //1. Open WD.
-    //2. Open any NGS pipeline, e.g. Call Variants.
+    // 1. Open WD.
+    // 2. Open any NGS pipeline, e.g. Call Variants.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -70,6 +70,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTWidget::click(os, GTAction::button(os, "Estimate workflow"));
 }
 
-}    // namespace GUITest_common_scenarios_workflow_estimating
+}  // namespace GUITest_common_scenarios_workflow_estimating
 
-}    // namespace U2
+}  // namespace U2

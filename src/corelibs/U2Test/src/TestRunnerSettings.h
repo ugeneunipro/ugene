@@ -85,6 +85,6 @@ private:
     QMap<QString, QVariant> d;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

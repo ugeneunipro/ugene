@@ -166,4 +166,4 @@ QList<ExternalProcessConfig *> ExternalToolCfgRegistry::getConfigs() const {
     return configs.values();
 }
 
-}    // namespace U2
+}  // namespace U2

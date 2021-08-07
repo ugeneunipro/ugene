@@ -328,9 +328,9 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
                                                                               BaseDocumentFormats::FASTA,
                                                                               AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Sequence of Selected Annotations");
-    d->disableAllFramesOption(true);    // only 1 frame is suitable
-    d->disableStrandOption(true);    // strand is already recorded in annotation
-    d->disableAnnotationsOption(true);    // here we do not export annotations for sequence under another annotations
+    d->disableAllFramesOption(true);  // only 1 frame is suitable
+    d->disableStrandOption(true);  // strand is already recorded in annotation
+    d->disableAnnotationsOption(true);  // here we do not export annotations for sequence under another annotations
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
@@ -764,4 +764,4 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-}    // namespace U2
+}  // namespace U2

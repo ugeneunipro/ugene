@@ -101,11 +101,11 @@ void FilterAnnotationsWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
     QList<Attribute *> attribs;
 
-    //accept sequence and annotated regions as input
+    // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
     inputMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
 
-    {    //Create input port descriptors
+    {  // Create input port descriptors
         Descriptor inDesc(BasePorts::IN_ANNOTATIONS_PORT_ID(), FilterAnnotationsWorker::tr("Input annotations"), FilterAnnotationsWorker::tr("Annotations to be filtered by name."));
         Descriptor outDesc(BasePorts::OUT_ANNOTATIONS_PORT_ID(), FilterAnnotationsWorker::tr("Result annotations"), FilterAnnotationsWorker::tr("Resulted annotations, filtered by name."));
 
@@ -113,7 +113,7 @@ void FilterAnnotationsWorkerFactory::init() {
         portDescs << new PortDescriptor(outDesc, DataTypePtr(new MapDataType("filter.anns", inputMap)), /*input*/ false, /*multi*/ true);
     }
 
-    {    //Create attributes descriptors
+    {  // Create attributes descriptors
         Descriptor filterNamesDesc(FILTER_NAMES_ATTR,
                                    FilterAnnotationsWorker::tr("Annotation names"),
                                    FilterAnnotationsWorker::tr("List of annotation names, separated by spaces, that will be accepted or filtered."));
@@ -159,7 +159,7 @@ bool hasValue(Attribute *attr) {
     }
     return false;
 }
-}    // namespace
+}  // namespace
 
 bool FilterAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
     Attribute *namesAttr = actor->getParameter(FILTER_NAMES_ATTR);
@@ -218,7 +218,7 @@ QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus &os) const {
 
     try {
         QString data = file.readAll();
-        if (0 == data.size() && file.size() > 0) {    // QFile::readAll() has no way of errors reporting.
+        if (0 == data.size() && file.size() > 0) {  // QFile::readAll() has no way of errors reporting.
             os.setError(tr("Too big annotation names file"));
             return QStringList();
         }
@@ -229,5 +229,5 @@ QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus &os) const {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

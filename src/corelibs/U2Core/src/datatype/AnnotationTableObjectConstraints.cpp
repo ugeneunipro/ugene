@@ -36,4 +36,4 @@ AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(
       sequenceSizeToFit(c.sequenceSizeToFit) {
 }
 
-}    // namespace U2
+}  // namespace U2

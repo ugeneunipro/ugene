@@ -37,5 +37,5 @@ private:
     bool dbShouldBeFound;
 };
 
-}    // namespace U2
-#endif    // _U2_SNPEFF_DATABASE_DIALOG_FILLER_H_
+}  // namespace U2
+#endif  // _U2_SNPEFF_DATABASE_DIALOG_FILLER_H_

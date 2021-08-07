@@ -90,4 +90,4 @@ bool DbFolderOptions::isRecursive() const {
     return ui->recursiveBox->isChecked();
 }
 
-}    // namespace U2
+}  // namespace U2

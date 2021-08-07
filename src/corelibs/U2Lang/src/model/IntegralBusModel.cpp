@@ -150,7 +150,7 @@ Actor *IntegralBusPort::getLinkedActorById(ActorId id) const {
         ret = nullptr;
     } else if (res.size() > 1) {
         ret = res.first();
-        //assert(false);
+        // assert(false);
     } else {
         ret = res.first();
     }
@@ -369,7 +369,7 @@ void IntegralBusPort::setupBusMap() {
     }
 
     DataTypePtr to = getType();
-    assert(to->isMap());    // all port types made as map datatypes
+    assert(to->isMap());  // all port types made as map datatypes
 
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
@@ -393,7 +393,7 @@ void IntegralBusPort::setupBusMap() {
             QString res = WorkflowUtils::candidatesAsStringList(candidates).join(";");
             busMap.insert(key.getId(), res);
         } else if (candidates.size() == 0) {
-            //no unambiguous match, reset
+            // no unambiguous match, reset
             busMap.insert(key.getId(), "");
         } else {
             bool fl = false;
@@ -444,8 +444,8 @@ bool IntegralBusPort::validate(NotificationsList &notificationList) const {
 }
 
 /*******************************
-* ScreenedSlotValidator
-*******************************/
+ * ScreenedSlotValidator
+ *******************************/
 bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const IntegralBusPort *vport, NotificationsList &notificationList) {
     bool good = true;
     {
@@ -460,13 +460,13 @@ bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const Int
         QMap<QString, QStringList> listMap = getListSlotsMappings(bm, vport);
         // iterate over all producers and exclude valid mappings from bus bindings
         foreach (Port *p, vport->getLinks().uniqueKeys()) {
-            assert(qobject_cast<IntegralBusPort *>(p));    //TBD?
+            assert(qobject_cast<IntegralBusPort *>(p));  // TBD?
             DataTypePtr t = p->getType();
             assert(t->isMap());
             {
                 foreach (Descriptor d, t->getAllDescriptors()) {
                     foreach (QString key, bm.keys(d.getId())) {
-                        //log.debug("reducing bus from key="+ikey+" to="+rkey);
+                        // log.debug("reducing bus from key="+ikey+" to="+rkey);
                         assert(!key.isEmpty());
                         bm.remove(key);
                     }
@@ -494,7 +494,7 @@ bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const Int
                 it.next();
                 const QString &slot = it.key();
                 QString slotName = vport->getType()->getDatatypeDescriptor(slot).getDisplayName();
-                //assert(!slotName.isEmpty());
+                // assert(!slotName.isEmpty());
                 if (it.value().isEmpty()) {
                     if (!screenedSlots.contains(slot)) {
                         notificationList.append(WorkflowNotification(IntegralBusPort::tr("Empty input slot: %1").arg(slotName), "", WorkflowNotification::U2_WARNING));
@@ -526,8 +526,8 @@ bool ScreenedSlotValidator::validate(const Configuration *cfg, NotificationsList
 }
 
 /*******************************
-* ScreenedParamValidator
-*******************************/
+ * ScreenedParamValidator
+ *******************************/
 ScreenedParamValidator::ScreenedParamValidator(const QString &id, const QString &port, const QString &slot)
     : id(id), port(port), slot(slot) {
 }
@@ -561,7 +561,7 @@ QString ScreenedParamValidator::validate(const Configuration *cfg) const {
     if (noParam && noSlot) {
         QString slotName = p->getType()->getDatatypeDescriptor(slot).getDisplayName();
         assert(!slotName.isEmpty());
-        return U2::WorkflowUtils::tr("Either parameter '%1' or input slot '%2' must be set").arg(param->getDisplayName()).arg(slotName);    //FIXME translator class
+        return U2::WorkflowUtils::tr("Either parameter '%1' or input slot '%2' must be set").arg(param->getDisplayName()).arg(slotName);  // FIXME translator class
     }
     if (noParam == noSlot) {
         QString slotName = p->getType()->getDatatypeDescriptor(slot).getDisplayName();
@@ -671,5 +671,5 @@ bool PortValidator::isBinded(const StrStrMap &busMap, const QString &slotId) {
     return (!busMap.value(slotId, "").isEmpty());
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

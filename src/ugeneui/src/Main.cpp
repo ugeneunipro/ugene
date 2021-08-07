@@ -24,7 +24,7 @@
 #ifdef Q_OS_WIN
 #    include <tchar.h>
 #    include <windows.h>
-#endif    // Q_OS_WIN
+#endif  // Q_OS_WIN
 
 #ifdef Q_OS_DARWIN
 #    include "app_settings/ResetSettingsMac.h"
@@ -141,7 +141,7 @@
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
 
-//U2Private imports
+// U2Private imports
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
 #include <DocumentFormatRegistryImpl.h>
@@ -179,21 +179,21 @@ LPFN_ISWOW64PROCESS fnIsWow64Process;
 BOOL IsWow64() {
     BOOL bIsWow64 = FALSE;
 
-    //IsWow64Process is not available on all supported versions of Windows.
-    //Use GetModuleHandle to get a handle to the DLL that contains the function
-    //and GetProcAddress to get a pointer to the function if available.
+    // IsWow64Process is not available on all supported versions of Windows.
+    // Use GetModuleHandle to get a handle to the DLL that contains the function
+    // and GetProcAddress to get a pointer to the function if available.
 
     fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
         GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
 
     if (nullptr != fnIsWow64Process) {
         if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
-            //handle error
+            // handle error
         }
     }
     return bIsWow64;
 }
-#endif    // Q_OS_WIN
+#endif  // Q_OS_WIN
 
 static void registerCoreServices() {
     ServiceRegistry *sr = AppContext::getServiceRegistry();
@@ -203,15 +203,15 @@ static void registerCoreServices() {
 }
 
 static void setDataSearchPaths() {
-    //set search paths for data files
+    // set search paths for data files
     QStringList dataSearchPaths;
     const static char *RELATIVE_DATA_DIR = "/data";
     const static char *RELATIVE_DEV_DATA_DIR = "/../../data";
-    //on windows data is normally located in the application folder
+    // on windows data is normally located in the application folder
     QString appDirPath = AppContext::getWorkingDirectoryPath();
     if (QDir(appDirPath + RELATIVE_DATA_DIR).exists()) {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
-    } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
+    } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {  // data location for developers
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_DARWIN
     } else {
@@ -223,7 +223,7 @@ static void setDataSearchPaths() {
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
-    //using folder which is set during installation process on Linux
+    // using folder which is set during installation process on Linux
     QString ugene_data_dir(UGENE_DATA_DIR);
     if (QDir(ugene_data_dir).exists()) {
         dataSearchPaths.push_back(QString(UGENE_DATA_DIR));
@@ -235,7 +235,7 @@ static void setDataSearchPaths() {
     }
 
     QDir::setSearchPaths(PATH_PREFIX_DATA, dataSearchPaths);
-    //now data files may be opened using QFile( "data:some_data_file" )
+    // now data files may be opened using QFile( "data:some_data_file" )
 }
 
 static void setSearchPaths() {
@@ -305,7 +305,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new AssemblyInfoWidgetFactory());
     opWidgetFactoryRegistry->registerFactory(new AssemblySettingsWidgetFactory());
 
-    //MSA groups
+    // MSA groups
     MSAGeneralTabFactory *msaGeneralTabFactory = new MSAGeneralTabFactory();
     QString msaGeneralId = msaGeneralTabFactory->getOPGroupParameters().getGroupId();
     opWidgetFactoryRegistry->registerFactory(msaGeneralTabFactory);
@@ -330,10 +330,10 @@ static void initOptionsPanels() {
     RefSeqCommonWidgetFactory *refSeqCommonWidget = new RefSeqCommonWidgetFactory(groupIds);
     opCommonWidgetFactoryRegistry->registerFactory(refSeqCommonWidget);
 
-    //Tree View groups
+    // Tree View groups
     opWidgetFactoryRegistry->registerFactory(new TreeOptionsWidgetFactory());
 
-    //MCA groups
+    // MCA groups
     opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
     opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
     opWidgetFactoryRegistry->registerFactory(new McaReadsTabFactory());
@@ -405,7 +405,7 @@ void fixMacFonts() {
     }
 }
 #endif
-}    // namespace
+}  // namespace
 
 int main(int argc, char **argv) {
     if (CrashHandler::isEnabled()) {
@@ -427,7 +427,7 @@ int main(int argc, char **argv) {
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
 
-    //QApplication app(argc, argv);
+    // QApplication app(argc, argv);
     GApplication app(argc, argv);
 
 #ifdef Q_OS_LINUX
@@ -459,7 +459,7 @@ int main(int argc, char **argv) {
 #    else
     QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../extras/windows/dotnet_style/_release").absolutePath();
 #    endif
-    QCoreApplication::addLibraryPath(devPluginsPath);    //dev version
+    QCoreApplication::addLibraryPath(devPluginsPath);  // dev version
 #endif
 
     setSearchPaths();
@@ -468,7 +468,7 @@ int main(int argc, char **argv) {
     CMDLineRegistry *cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
-    //1 create settings
+    // 1 create settings
     SettingsImpl *globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
@@ -499,7 +499,7 @@ int main(int argc, char **argv) {
     // Set translations if needed: use value in the settings or environment variables to override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
+    QStringList failedToLoadTranslatorFiles;  // List of translators file names tried but failed to load/not found.
 
     // The file specified by user has the highest priority in the translations lookup order.
     QStringList envList = QProcess::systemEnvironment();
@@ -574,7 +574,7 @@ int main(int argc, char **argv) {
 
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
-    //print some settings info, can't do it earlier than logging is initialized
+    // print some settings info, can't do it earlier than logging is initialized
     coreLog.trace(QString("Active UGENE.ini file : %1").arg(AppContext::getSettings()->fileName()));
 
     qInstallMessageHandler(guiTestMessageOutput);
@@ -849,10 +849,10 @@ int main(int argc, char **argv) {
 
     GCOUNTER(cvar, "ugeneui launch");
 
-    //3 run QT GUI
+    // 3 run QT GUI
     t1.stop();
 
-    //coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
+    // coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
     Version v = Version::appVersion();
     coreLog.info(QObject::tr("UGENE started"));
     coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(v.text).arg(Version::appArchitecture));
@@ -880,11 +880,11 @@ int main(int argc, char **argv) {
 
     mw->registerStartupChecks(tasks);
 
-    MemoryLocker l(160, AppResource::SystemMemory);    // 100Mb on UGENE start, ~60Mb SQLite cache
+    MemoryLocker l(160, AppResource::SystemMemory);  // 100Mb on UGENE start, ~60Mb SQLite cache
     int rc = app.exec();
     l.release();
 
-    //4 deallocate resources
+    // 4 deallocate resources
     if (!envList.contains(ENV_UGENE_DEV + QString("=1"))) {
         Shtirlitz::saveGatheredInfo();
     }
@@ -1084,7 +1084,7 @@ int main(int argc, char **argv) {
         ff.remove(iniFile);
 #else
         ResetSettingsMac::reset();
-#endif    // !Q_OS_DARWIN
+#endif  // !Q_OS_DARWIN
     }
 
     UgeneUpdater::onClose();

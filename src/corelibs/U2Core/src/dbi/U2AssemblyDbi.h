@@ -219,6 +219,6 @@ public:
     virtual void calculateCoverage(const U2DataId &assemblyId, const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

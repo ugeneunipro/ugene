@@ -51,4 +51,4 @@ AbstractProjectFilterTask *SequenceAccFilterTaskFactory::createNewTask(const Pro
     return new SequenceAccFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

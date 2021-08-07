@@ -42,6 +42,6 @@ private:
     MolecularSurfaceFactoryRegistry &operator=(const MolecularSurfaceFactoryRegistry &m);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // MOLECULARSURFACEFACTORYREGISTRY_H
+#endif  // MOLECULARSURFACEFACTORYREGISTRY_H

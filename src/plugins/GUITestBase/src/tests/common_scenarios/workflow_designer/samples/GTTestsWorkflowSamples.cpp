@@ -40,13 +40,13 @@ namespace U2 {
 namespace GUITest_common_scenarios_workflow_samples {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Click Tools -> NGS data analysis -> Filter short scaffolds...
-    //2. Add directory "data\samples\Genbank\"
-    //3. Click "Next", "Next" and "Run"
-    //4. Wait for workflow finished
-    //Expected state: No errors in the log, no notifications in the dashboard
-    //5. Open output file
-    //Expected state: There are two sequences in the project tree view: "NC_004718" and "NC_014267"
+    // 1. Click Tools -> NGS data analysis -> Filter short scaffolds...
+    // 2. Add directory "data\samples\Genbank\"
+    // 3. Click "Next", "Next" and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: No errors in the log, no notifications in the dashboard
+    // 5. Open output file
+    // Expected state: There are two sequences in the project tree view: "NC_004718" and "NC_014267"
 
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
@@ -83,6 +83,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_common_scenarios_workflow_samples
+}  // namespace GUITest_common_scenarios_workflow_samples
 
-}    // namespace U2
+}  // namespace U2

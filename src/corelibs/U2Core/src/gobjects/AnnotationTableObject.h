@@ -79,8 +79,8 @@ public:
      */
     QList<Annotation *> getAnnotationsByRegion(const U2Region &region, bool contains = false) const;
     /**
-    * Return the list of annotations having @featureType
-    */
+     * Return the list of annotations having @featureType
+     */
     QList<Annotation *> getAnnotationsByType(const U2FeatureType featureType) const;
     /**
      * Reimplemented from GObject
@@ -120,6 +120,6 @@ private:
     AnnotationGroup *rootGroup;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

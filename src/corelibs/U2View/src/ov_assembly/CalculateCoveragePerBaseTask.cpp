@@ -84,7 +84,7 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
     }
 
     if (read->leftmostPos < regionToProcess.startPos) {
-        cigarVector = cigarVector.mid(regionToProcess.startPos - read->leftmostPos);    //cut unneeded cigar string
+        cigarVector = cigarVector.mid(regionToProcess.startPos - read->leftmostPos);  // cut unneeded cigar string
     }
 
     for (int positionOffset = 0, cigarOffset = 0, deletionsCount = 0, insertionsCount = 0; regionToProcess.startPos + positionOffset < regionToProcess.endPos(); positionOffset++) {
@@ -198,4 +198,4 @@ void GetAssemblyLengthTask::run() {
 
     length = lengthAttribute.value;
 }
-}    // namespace U2
+}  // namespace U2

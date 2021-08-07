@@ -394,7 +394,7 @@ void DetViewSingleLineRenderer::drawTranslations(QPainter &p, int availableHeigh
     const char *visibleSequence = seqBlock + (visibleRange.startPos - translationMetrics.seqBlockRegion.startPos);
     drawDirectTranslations(p, visibleRange, visibleSequence, annotationsInRange, translationMetrics, availableHeight);
 
-    if (detView->hasComplementaryStrand()) {    //reverse translations
+    if (detView->hasComplementaryStrand()) {  // reverse translations
         drawComplementTranslations(p, visibleRange, seqBlock, annotationsInRange, translationMetrics, availableHeight);
     }
     p.restore();
@@ -424,9 +424,9 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter &painter,
         qint64 sequenceToTranslateLength = qMin(visibleRange.endPos() + 1, ctx->getSequenceLength()) - translationStartPos;
         QByteArray aminoSequence = translate(aminoTT, sequenceToTranslate, sequenceToTranslateLength);
 
-        QVector<bool> aminoVisibilityFlags(aminoSequence.size(), true);    // Visible amino acid positions. All positions are visible by default.
+        QVector<bool> aminoVisibilityFlags(aminoSequence.size(), true);  // Visible amino acid positions. All positions are visible by default.
         if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection) {
-            aminoVisibilityFlags.fill(false);    // Mark as visible only acids within selected regions.
+            aminoVisibilityFlags.fill(false);  // Mark as visible only acids within selected regions.
             U2Region translatableRange(visibleRange.startPos + translationIndent, aminoSequence.length() * 3);
             for (const U2Region &selectedRegion : qAsConst(ctx->getSequenceSelection()->getSelectedRegions())) {
                 if (selectedRegion.startPos % 3 == frameIndex) {
@@ -498,7 +498,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter &p,
     TextUtils::reverse(revComplDna.data(), revComplDna.size());
     for (int i = 0; i < 3; i++) {
         int indent = (detView->getSequenceLength() - visibleRange.endPos() + i) % 3;
-        qint64 revComplStartPos = visibleRange.endPos() - indent + 3;    // start of the reverse complement sequence in direct coords
+        qint64 revComplStartPos = visibleRange.endPos() - indent + 3;  // start of the reverse complement sequence in direct coords
         if (revComplStartPos > trMetrics.maxUsedPos) {
             revComplStartPos -= 3;
         }
@@ -662,7 +662,7 @@ void DetViewSingleLineRenderer::updateLines() {
         rulerLine = 1;
         numLines = 2;
     } else if (detView->hasComplementaryStrand() && detView->hasTranslations()) {
-        //change
+        // change
         firstDirectTransLine = 0;
         directLine = 3;
         rulerLine = 4;
@@ -776,7 +776,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     }
 
     const TriState aminoState = as->amino ? TriState_Yes : TriState_No;
-    const bool aminoOverlap = (aminoState == TriState_Yes);    // annotation is drawn on amino strand -> use black color for letters
+    const bool aminoOverlap = (aminoState == TriState_Yes);  // annotation is drawn on amino strand -> use black color for letters
     result = aminoOverlap ? Qt::black : as->color.darker(300);
 
     return true;
@@ -839,4 +839,4 @@ int DetViewSingleLineRenderer::posToComplTransLine(int p) const {
     return getVisibleComplTransLine(absoluteLineNumber);
 }
 
-}    // namespace U2
+}  // namespace U2

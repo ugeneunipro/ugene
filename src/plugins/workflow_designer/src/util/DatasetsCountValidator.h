@@ -39,7 +39,7 @@ public:
     static const QString ID;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_DATASETSCOUNTVALIDATOR_H_
+#endif  // _U2_DATASETSCOUNTVALIDATOR_H_

@@ -50,5 +50,5 @@ bool PairedReadsPortValidator::validate(const IntegralBusPort *port, Notificatio
     return res;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

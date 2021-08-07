@@ -154,5 +154,5 @@ bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, Acto
     return true;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -137,4 +137,4 @@ void DistanceMatrixMSAEditorContext::sl_showDistanceMatrixDialog() {
     d->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

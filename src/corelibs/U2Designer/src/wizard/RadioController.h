@@ -45,6 +45,6 @@ private:
     RadioWidget *rw;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_RADIOCONTROLLER_H_
+#endif  // _U2_RADIOCONTROLLER_H_

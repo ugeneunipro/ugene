@@ -28,7 +28,7 @@ void CollocationsAlgorithm::find(const QList<CollocationsAlgorithmItem> &items, 
 }
 
 void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
-    //todo: progress
+    // todo: progress
 
     qint64 i = searchRegion.endPos();
     foreach (const CollocationsAlgorithmItem &item, items) {
@@ -65,7 +65,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
         if (onResult && res.startPos == i) {
             assert(res.length > 0);
             if (prevResult.contains(res)) {
-                //nothing to do;
+                // nothing to do;
             } else {
                 assert(!res.contains(prevResult) || prevResult.length == 0);
                 assert(prevResult.endPos() < res.endPos());
@@ -95,7 +95,7 @@ void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint6
     res.length = distance;
     if (res.endPos() > searchRegion.endPos()) {
         res.startPos -= (res.endPos() - searchRegion.endPos());
-        //res.len = (searchRegion.endPos() - res.startPos);
+        // res.len = (searchRegion.endPos() - res.startPos);
     }
     if (res.endPos() > max.endPos()) {
         res.startPos -= (res.endPos() - max.endPos());
@@ -105,7 +105,7 @@ void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint6
 }
 
 void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
-    //printf("partial_search!\n");
+    // printf("partial_search!\n");
 
     qint64 i = searchRegion.endPos();
     foreach (const CollocationsAlgorithmItem &item, items) {
@@ -147,7 +147,7 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
             nextI = qMin(nextI, nextItemEnd);
             onResult = onResult && foundItem;
         }
-        //error mb use list of prev included anno?
+        // error mb use list of prev included anno?
         //
         if (onResult && prevMax != max) {
             prevMax = max;
@@ -165,4 +165,4 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
     } while (i < searchRegion.endPos());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -32,7 +32,7 @@ namespace U2 {
 
 class MainWindowImpl;
 
-//used to save/restore geometry of the dock
+// used to save/restore geometry of the dock
 class DockWrapWidget : public QWidget {
 public:
     DockWrapWidget(QWidget *w);
@@ -127,6 +127,6 @@ private:
     QString lastActiveDocksState[MWDockArea_MaxDocks];
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

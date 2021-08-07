@@ -50,6 +50,6 @@ private:
     WorkflowInvestigationData parsedInfo;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_
+#endif  // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_

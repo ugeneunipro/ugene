@@ -43,7 +43,7 @@ const QString TABLE_PREFIX = "UdrSchema_";
 QString tableName(const UdrSchemaId &schemaId) {
     return TABLE_PREFIX + schemaId;
 }
-}    // namespace
+}  // namespace
 
 MysqlUdrDbi::MysqlUdrDbi(MysqlDbi *dbi)
     : UdrDbi(dbi), MysqlChildDbiCommon(dbi) {
@@ -468,4 +468,4 @@ void MysqlUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, U
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -26,7 +26,7 @@
 
 namespace U2 {
 using namespace HI;
-//for now it just a stub, which can only press 'align' button
+// for now it just a stub, which can only press 'align' button
 class MuscleDialogFiller : public Filler {
 public:
     enum Mode {
@@ -43,6 +43,6 @@ private:
     bool translateToAmino;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

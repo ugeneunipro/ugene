@@ -69,7 +69,7 @@ private:
     QString commandLine;
     ExternalProcessConfig *cfg;
 
-    QMap<QString, bool> urlsForDashboard;    // url -> open by system
+    QMap<QString, bool> urlsForDashboard;  // url -> open by system
     QStringList inputUrls;
 };
 
@@ -112,7 +112,7 @@ private:
     QList<ExternalToolListener *> listeners;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_PROCESS_WORKER_H_
+#endif  // _U2_EXTERNAL_PROCESS_WORKER_H_

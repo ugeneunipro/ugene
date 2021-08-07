@@ -110,4 +110,4 @@ QList<Task *> ExportSequencesTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -191,7 +191,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             }
             QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
-            //setup style
+            // setup style
             resultText = "<!DOCTYPE html>\n<html>\n<head>\n";
             resultText += "<style>\n";
             resultText += ".tbl {border-width: 1px; border-style: solid; border-spacing: 0; border-collapse: collapse;}\n";
@@ -199,7 +199,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             resultText += "</style>\n";
             resultText += "</head>\n<body>\n";
 
-            //header
+            // header
             resultText += "<h2>" + tr("Multiple Sequence Alignment Distance Matrix") + "</h2><br>\n";
 
             resultText += "<table>\n";
@@ -251,7 +251,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
                     return res;
                 }
 
-                //legend:
+                // legend:
                 resultText += "<br><br>\n";
                 resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
                 if (isSimilarity) {
@@ -334,7 +334,7 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm *alg
     }
     resultText += "</tr>\n";
 
-    //out char freqs
+    // out char freqs
     for (int i = 0; i < rows.size(); i++) {
         QString name = rows.at(i)->getName();
         resultText += "<tr>";
@@ -402,4 +402,4 @@ DistanceMatrixMSAProfileTaskSettings::DistanceMatrixMSAProfileTaskSettings()
       ctx(nullptr) {
 }
 
-}    // namespace U2
+}  // namespace U2

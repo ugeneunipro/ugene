@@ -59,4 +59,4 @@ void ADVSequenceWidget::buildPopupMenu(QMenu &m) {
     Q_UNUSED(m);
 }
 
-}    // namespace U2
+}  // namespace U2

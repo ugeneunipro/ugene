@@ -74,7 +74,7 @@ QueryDesignerPlugin::QueryDesignerPlugin()
         LastUsedDirHelper::setLastUsedDir(defaultDir, QUERY_DESIGNER_ID);
     }
 
-    //tests
+    // tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -154,7 +154,7 @@ bool QueryDesignerService::closeViews() {
 
 void QueryDesignerService::sl_startQDPlugin() {
     QAction *action = new QAction(QIcon(":query_designer/images/query_designer.png"), tr("Query Designer..."), this);
-    //action->setObjectName("Query Designer");
+    // action->setObjectName("Query Designer");
     connect(action, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
     action->setObjectName(ToolsMenu::QUERY_DESIGNER);
@@ -191,4 +191,4 @@ void QueryDesignerService::serviceStateChangedCallback(ServiceState, bool enable
     }
 }
 
-}    // namespace U2
+}  // namespace U2

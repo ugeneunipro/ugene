@@ -46,5 +46,5 @@ private:
     static const int DEFAULT_WINDOW_STEP;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

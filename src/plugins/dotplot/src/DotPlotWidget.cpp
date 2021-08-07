@@ -73,7 +73,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView *dnaView)
       pixMapUpdateNeeded(true), deleteDotPlotFlag(false), filtration(false), dotPlotIsCalculating(false), dotPlotTask(nullptr), pixMap(nullptr), miniMap(nullptr),
       nearestRepeat(nullptr),
       clearedByRepitSel(false) {
-    textSpace = w = h = 0;    // values are used and will be initialized in drawAll.
+    textSpace = w = h = 0;  // values are used and will be initialized in drawAll.
 
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
@@ -230,32 +230,32 @@ QPointF DotPlotWidget::zoomTo(Qt::Axis axis, const U2Region &lr, bool emitSignal
 
     int seqLen = 0;
     switch (axis) {
-    case Qt::XAxis:
-        seqLen = sequenceX->getSequenceLength();
+        case Qt::XAxis:
+            seqLen = sequenceX->getSequenceLength();
 
-        zoom.setX(seqLen / (float)lr.length);
-        if (zoom.x() > seqLen / 2) {
-            zoom.setX(seqLen / 2);
-        }
+            zoom.setX(seqLen / (float)lr.length);
+            if (zoom.x() > seqLen / 2) {
+                zoom.setX(seqLen / 2);
+            }
 
-        shiftX = -lr.startPos * w / (float)seqLen;
-        shiftX *= zoom.x();
-        break;
+            shiftX = -lr.startPos * w / (float)seqLen;
+            shiftX *= zoom.x();
+            break;
 
-    case Qt::YAxis:
-        seqLen = sequenceY->getSequenceLength();
+        case Qt::YAxis:
+            seqLen = sequenceY->getSequenceLength();
 
-        zoom.setY(seqLen / (float)lr.length);
-        if (zoom.y() > seqLen / 2) {
-            zoom.setY(seqLen / 2);
-        }
+            zoom.setY(seqLen / (float)lr.length);
+            if (zoom.y() > seqLen / 2) {
+                zoom.setY(seqLen / 2);
+            }
 
-        shiftY = -lr.startPos * h / (float)seqLen;
-        shiftY *= zoom.y();
-        break;
+            shiftY = -lr.startPos * h / (float)seqLen;
+            shiftY *= zoom.y();
+            break;
 
-    default:
-        return zoom;
+        default:
+            return zoom;
     }
 
     checkShift(emitSignal);
@@ -274,22 +274,22 @@ U2Region DotPlotWidget::getVisibleRange(Qt::Axis axis) {
     int len = 0;
 
     switch (axis) {
-    case Qt::XAxis:
-        startPos = sequenceCoords(unshiftedUnzoomed(zeroPoint)).x();
-        len = sequenceCoords(unshiftedUnzoomed(rightPoint)).x();
-        break;
+        case Qt::XAxis:
+            startPos = sequenceCoords(unshiftedUnzoomed(zeroPoint)).x();
+            len = sequenceCoords(unshiftedUnzoomed(rightPoint)).x();
+            break;
 
-    case Qt::YAxis:
-        startPos = sequenceCoords(unshiftedUnzoomed(zeroPoint)).y();
-        len = sequenceCoords(unshiftedUnzoomed(topPoint)).y();
-        break;
+        case Qt::YAxis:
+            startPos = sequenceCoords(unshiftedUnzoomed(zeroPoint)).y();
+            len = sequenceCoords(unshiftedUnzoomed(topPoint)).y();
+            break;
 
-    default:
-        return U2Region();
+        default:
+            return U2Region();
     }
 
     len -= startPos;
-    if (0 == len) {    // to avoid division by zero
+    if (0 == len) {  // to avoid division by zero
         len = 1;
     }
 
@@ -387,7 +387,7 @@ void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
         dpFilteredResults->append(dpR);
     }
 
-    //inverted
+    // inverted
     if (inverted) {
         foreach (DotPlotResults dpR, *dpRevComplResultsListener->dotPlotList) {
             dpFilteredResultsRevCompl->append(dpR);
@@ -522,22 +522,22 @@ bool DotPlotWidget::sl_showSaveFileDialog() {
     lod.url = U2FileDialog::getSaveFileName(nullptr, tr("Save Dotplot"), lod.dir, tr("Dotplot files (*.dpt)"));
 
     if (lod.url.length() <= 0) {
-        return false;    // Cancel button pressed
+        return false;  // Cancel button pressed
     }
 
     // check if file opens
     DotPlotErrors err = SaveDotPlotTask::checkFile(lod.url);
 
     switch (err) {
-    case ErrorOpen:
-        QMessageBox::critical(this, tr("File opening error"), tr("Error opening file %1").arg(lod.url));
-        return false;
-    default:
-        break;
+        case ErrorOpen:
+            QMessageBox::critical(this, tr("File opening error"), tr("Error opening file %1").arg(lod.url));
+            return false;
+        default:
+            break;
     }
 
     TaskScheduler *ts = AppContext::getTaskScheduler();
-    if (dotPlotTask) {    // Check if there is already some dotPlotTask
+    if (dotPlotTask) {  // Check if there is already some dotPlotTask
         QMessageBox::critical(this, tr("Task is already running"), tr("Build or Load DotPlot task is already running"));
         return false;
     }
@@ -565,10 +565,10 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Load Dotplot"), lod.dir, tr("Dotplot files (*.dpt)"));
 
     if (lod.url.length() <= 0) {
-        return false;    // Cancel button pressed
+        return false;  // Cancel button pressed
     }
 
-    if (dotPlotTask) {    // Check if there is already some dotPlotTask
+    if (dotPlotTask) {  // Check if there is already some dotPlotTask
         QMessageBox::critical(this, tr("Task is already running"), tr("Build or Load DotPlot task is already running"));
         return false;
     }
@@ -586,19 +586,19 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
         sequenceY->getSequenceObject()->getGObjectName());
 
     switch (err) {
-    case ErrorOpen:
-        QMessageBox::critical(this, tr("File opening error"), tr("Error opening file %1").arg(lod.url));
-        return false;
-
-    case ErrorNames:
-        if (QMessageBox::critical(this, tr("Sequences are different"), tr("Current and loading sequences are different. Continue loading dot-plot anyway?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-            break;    // load dotplot anyway
-        } else {
+        case ErrorOpen:
+            QMessageBox::critical(this, tr("File opening error"), tr("Error opening file %1").arg(lod.url));
             return false;
-        }
 
-    default:
-        break;
+        case ErrorNames:
+            if (QMessageBox::critical(this, tr("Sequences are different"), tr("Current and loading sequences are different. Continue loading dot-plot anyway?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+                break;  // load dotplot anyway
+            } else {
+                return false;
+            }
+
+        default:
+            break;
     }
 
     SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", false);
@@ -636,7 +636,7 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
 
 // creating new dotplot or changing settings
 bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
-    if (dotPlotTask) {    // Check if there is already some dotPlotTask
+    if (dotPlotTask) {  // Check if there is already some dotPlotTask
         QMessageBox::critical(this, tr("Task is already running"), tr("Build or Load DotPlot task is already running"));
         return false;
     }
@@ -727,7 +727,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
     if ((al->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) || (al->getId() == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT())) {
         al = sequenceY->getAlphabet();
     } else {
-        alg = RFAlgorithm_Diagonal;    // only this algorithm works with protein sequences
+        alg = RFAlgorithm_Diagonal;  // only this algorithm works with protein sequences
     }
 
     RepeatFinderTaskFactoryRegistry *tfr = AppContext::getRepeatFinderTaskFactoryRegistry();
@@ -746,7 +746,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
             dpDirectResultListener,
             seqXCache.constData(),
             seqXCache.length(),
-            false,    // direct
+            false,  // direct
             seqYCache.constData(),
             seqYCache.length(),
             al,
@@ -765,7 +765,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
             dpRevComplResultsListener,
             seqXCache.constData(),
             seqXCache.length(),
-            true,    // inverted
+            true,  // inverted
             seqYCache.constData(),
             seqYCache.length(),
             al,
@@ -796,18 +796,18 @@ void DotPlotWidget::sl_showDeleteDialog() {
     bool saveDotPlot;
 
     switch (answer) {
-    case QMessageBox::Cancel:
-        return;
-
-    case QMessageBox::Yes:
-        saveDotPlot = sl_showSaveFileDialog();
-        if (!saveDotPlot) {    // cancel button pressed
+        case QMessageBox::Cancel:
             return;
-        }
-        break;
 
-    default:
-        break;
+        case QMessageBox::Yes:
+            saveDotPlot = sl_showSaveFileDialog();
+            if (!saveDotPlot) {  // cancel button pressed
+                return;
+            }
+            break;
+
+        default:
+            break;
     }
 
     emit si_removeDotPlot();
@@ -826,13 +826,13 @@ void DotPlotWidget::pixMapUpdate() {
 
     float ratioX = w / (float)seqXLen;
     float ratioY = h / (float)seqYLen;
-    //float ratioY = ratioX;
+    // float ratioY = ratioX;
 
     delete pixMap;
     pixMap = new QPixmap(w, h);
 
     QPainter pixp(pixMap);
-    pixp.setPen(Qt::NoPen);    // do not draw outline
+    pixp.setPen(Qt::NoPen);  // do not draw outline
     pixp.setBrush(dotPlotBGColor);
     pixp.drawRect(0, 0, w, h);
 
@@ -1524,7 +1524,7 @@ const DotPlotResults *DotPlotWidget::findNearestRepeat(const QPoint &p) {
     bool first = true;
 
     SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", nullptr);
-    //foreach (const DotPlotResults &r, *dpDirectResultListener->dotPlotList) {
+    // foreach (const DotPlotResults &r, *dpDirectResultListener->dotPlotList) {
     foreach (const DotPlotResults &r, *dpFilteredResults) {
         float halfLen = r.len / (float)2;
         float midX = r.x + halfLen;
@@ -1544,7 +1544,7 @@ const DotPlotResults *DotPlotWidget::findNearestRepeat(const QPoint &p) {
     }
 
     SAFE_POINT(dpRevComplResultsListener, "dpRevComplResultsListener is NULL", nullptr);
-    //foreach (const DotPlotResults &r, *dpRevComplResultsListener->dotPlotList) {
+    // foreach (const DotPlotResults &r, *dpRevComplResultsListener->dotPlotList) {
     foreach (const DotPlotResults &r, *dpFilteredResultsRevCompl) {
         float halfLen = r.len / (float)2;
         float midX = r.x + halfLen;
@@ -1734,7 +1734,7 @@ void DotPlotWidget::mousePressEvent(QMouseEvent *e) {
 
     // selecting sequences or using minimap
     if (e->button() == Qt::LeftButton) {
-        if (miniMap && miniMap->getBoundary().contains(clickedFirst)) {    // click on the miniMap
+        if (miniMap && miniMap->getBoundary().contains(clickedFirst)) {  // click on the miniMap
             miniMapLooking = true;
             miniMapShift();
 
@@ -1863,7 +1863,7 @@ void DotPlotWidget::sl_filter() {
                                               d->getFilterType());
         tasks << directT;
 
-        //inverted
+        // inverted
         if (inverted) {
             Task *recComplT = new DotPlotFilterTask(sequenceX,
                                                     sequenceY,
@@ -1993,4 +1993,4 @@ void DotPlotWidget::clearRepeatSelection() {
     update();
 }
 
-}    // namespace U2
+}  // namespace U2

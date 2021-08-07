@@ -132,7 +132,7 @@ void CoreLib::init() {
         m[writeUrlD] = BaseTypes::STRING_TYPE();
         m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
         writeMAType = new MapDataType(Descriptor(MA_TYPESET_ID), m);
-        //dr->registerEntry(writeMAType);
+        // dr->registerEntry(writeMAType);
     }
 
     ActorPrototypeRegistry *r = WorkflowEnv::getProtoRegistry();
@@ -350,10 +350,10 @@ void CoreLib::initUsersWorkers() {
 
     QDir dir(path);
     if (!dir.exists()) {
-        //log.info(tr("There isn't folder with users workflow elements"));
+        // log.info(tr("There isn't folder with users workflow elements"));
         return;
     }
-    dir.setNameFilters(QStringList() << "*.usa");    //think about file extension // Answer: Ok :)
+    dir.setNameFilters(QStringList() << "*.usa");  // think about file extension // Answer: Ok :)
     QFileInfoList fileList = dir.entryInfoList();
 
     foreach (const QFileInfo &fileInfo, fileList) {
@@ -460,5 +460,5 @@ void CoreLib::cleanup() {
     CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

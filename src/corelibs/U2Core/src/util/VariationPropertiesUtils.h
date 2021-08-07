@@ -32,7 +32,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//SequenceQueryCache
+// SequenceQueryCache
 /** a simple cache for fast access sequence data for variations
 assuming that variations are sorted by start pos*/
 class U2CORE_EXPORT SequenceQueryCache {
@@ -116,6 +116,6 @@ private:
     static QByteArray aaAlphabet;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_VARIATION_PROPERTIES_UTILS_H_
+#endif  //_U2_VARIATION_PROPERTIES_UTILS_H_

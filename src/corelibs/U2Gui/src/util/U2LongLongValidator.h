@@ -40,6 +40,6 @@ private:
     qint64 maximum;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LONG_LONG_VALIDATOR_H_
+#endif  // _U2_LONG_LONG_VALIDATOR_H_

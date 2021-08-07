@@ -72,7 +72,7 @@ void ExportAlignmentTask::run() {
     exportedDocument->addObject(obj);
     format->storeDocument(exportedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
-    exportedDocument.reset();    // Release resources.
+    exportedDocument.reset();  // Release resources.
 
     // Now reload the document.
     // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
@@ -88,7 +88,7 @@ ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment
                                                  const DocumentFormatId &_documentFormatId)
     : DocumentProviderTask(tr("Export alignment as sequence to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url),
       trimLeadingAndTrailingGaps(_trimLeadingAndTrailingGaps), documentFormatId(_documentFormatId) {
-    documentDescription= QFileInfo(url).fileName();
+    documentDescription = QFileInfo(url).fileName();
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
 }
@@ -115,7 +115,7 @@ void ExportMSA2SequencesTask::run() {
     }
     format->storeDocument(exportedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
-    exportedDocument.reset();    // Release resources.
+    exportedDocument.reset();  // Release resources.
 
     // Now reload the document.
     // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
@@ -283,4 +283,4 @@ QList<Task *> ExportDNAChromatogramTask::onSubTaskFinished(Task *subTask) {
     return {};
 }
 
-}    // namespace U2
+}  // namespace U2

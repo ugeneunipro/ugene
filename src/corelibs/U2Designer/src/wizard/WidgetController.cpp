@@ -64,4 +64,4 @@ void LabeledPropertyWidget::setLabelWidth(int width) {
     label->setFixedWidth(width);
 }
 
-}    // namespace U2
+}  // namespace U2

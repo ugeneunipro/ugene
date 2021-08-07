@@ -136,6 +136,6 @@ public:
     bool isSequenceLikeResult() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_
+#endif  // _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_

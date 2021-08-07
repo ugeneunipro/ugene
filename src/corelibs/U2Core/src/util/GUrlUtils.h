@@ -41,10 +41,10 @@ class U2OpStatus;
 class U2CORE_EXPORT GUrlUtils : public QObject {
     Q_OBJECT
 public:
-    //gets the uncompressed extension for the URL. Filters 'gz' like suffixes
+    // gets the uncompressed extension for the URL. Filters 'gz' like suffixes
     static QString getUncompressedExtension(const GUrl &url);
 
-    //gets the complete base file name without ignoring 'gz' suffix
+    // gets the complete base file name without ignoring 'gz' suffix
     static QString getUncompressedCompleteBaseName(const GUrl &url);
 
     // ensures that url ends with one of the exts
@@ -109,16 +109,16 @@ public:
     /*removes file if exists and if its a file*/
     static void removeFile(const QString &filePath, U2OpStatus &os);
 
-    //checks if filePath is writable
-    //creates and deletes a tmp file to check permissions
-    //it seems the only way to check permissions correctly on all platforms
+    // checks if filePath is writable
+    // creates and deletes a tmp file to check permissions
+    // it seems the only way to check permissions correctly on all platforms
     static bool canWriteFile(const QString &path);
 
-    //returns default path for UGENE data
-    //returns empty string if path is not ready
+    // returns default path for UGENE data
+    // returns empty string if path is not ready
     static QString getDefaultDataPath();
 
-    //Get quoted input string if it has spaces
+    // Get quoted input string if it has spaces
     static QString getQuotedString(const QString &inString);
 
     // Creates the folder with a rolled path: @path + @suffix + "num". Returns the new path
@@ -141,9 +141,9 @@ public:
     static QString getPairedFastqFilesBaseName(const QString &sourceFileUrl, bool truncate);
 
     /**
-    * Replaces from the filename all symbols except 0-9, a-z, A-Z, '.', '_', and '-' with '_' symbol,
-    * so file name will both POSIX-compatible and Windows-compatible.
-    */
+     * Replaces from the filename all symbols except 0-9, a-z, A-Z, '.', '_', and '-' with '_' symbol,
+     * so file name will both POSIX-compatible and Windows-compatible.
+     */
     static QString fixFileName(const QString &fileName);
 
     static QString getSlashEndedPath(const QString &dirPath);
@@ -151,6 +151,6 @@ public:
     static bool containSpaces(const QString &string);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

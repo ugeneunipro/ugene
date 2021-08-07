@@ -235,7 +235,7 @@ void ReloadDocumentTask::saveObjectRelationsFromDoc() {
                 coreLog.error("Objects with same names detected during saving of object relations!");
             }
             foreach (const GObjectRelation &relation, curObjRelations) {
-                if (doc->getURLString() != relation.getDocURL()) {    // don't save relations within a single object
+                if (doc->getURLString() != relation.getDocURL()) {  // don't save relations within a single object
                     savedObjectRelations.insert(curObjName, relation);
                 }
             }
@@ -271,4 +271,4 @@ void ReloadDocumentTask::restoreObjectRelationsForObject(GObject *obj, const QLi
     }
 }
 
-}    // namespace U2
+}  // namespace U2

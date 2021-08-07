@@ -24,8 +24,8 @@
 #include "GTKeyboardDriver.h"
 
 #if defined __linux__
-#    define XK_LATIN1    // for latin symbol
-#    define XK_MISCELLANY    // for action keys
+#    define XK_LATIN1  // for latin symbol
+#    define XK_MISCELLANY  // for action keys
 #    include <X11/extensions/XTest.h>
 #    include <X11/keysymdef.h>
 #endif
@@ -52,89 +52,89 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
     }
 
     switch (key) {
-    case '\n':
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Enter]), 1, 0);
-        break;
-    case '_':
-        key = '-';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '~':
-        key = '`';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '<':
-        key = ',';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '>':
-        key = '.';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '(':
-        key = '9';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '$':
-        key = '4';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '#':
-        key = '3';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case ')':
-        key = '0';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case ':':
-        key = ';';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '*':
-        key = '8';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '\"':
-        key = '\'';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '@':
-        key = '2';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '%':
-        key = '5';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '^':
-        key = '6';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '&':
-        key = '7';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '+':
-        key = '=';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '{':
-        key = '[';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '}':
-        key = ']';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '|':
-        key = '\\';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
-    case '!':
-        key = '1';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
-        break;
+        case '\n':
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Enter]), 1, 0);
+            break;
+        case '_':
+            key = '-';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '~':
+            key = '`';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '<':
+            key = ',';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '>':
+            key = '.';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '(':
+            key = '9';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '$':
+            key = '4';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '#':
+            key = '3';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case ')':
+            key = '0';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case ':':
+            key = ';';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '*':
+            key = '8';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '\"':
+            key = '\'';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '@':
+            key = '2';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '%':
+            key = '5';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '^':
+            key = '6';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '&':
+            key = '7';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '+':
+            key = '=';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '{':
+            key = '[';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '}':
+            key = ']';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '|':
+            key = '\\';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
+        case '!':
+            key = '1';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 1, 0);
+            break;
     }
 
     XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 1, 0);
@@ -157,122 +157,122 @@ bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
     DRIVER_CHECK(display != 0, "display is NULL");
 
     switch (key) {
-    case '\n':
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Enter]), 0, 0);
-        break;
-    case '_':
-        key = '-';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '\n':
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Enter]), 0, 0);
+            break;
+        case '_':
+            key = '-';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '~':
-        key = '`';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '~':
+            key = '`';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '<':
-        key = ',';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '<':
+            key = ',';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '>':
-        key = '.';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '>':
+            key = '.';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '(':
-        key = '9';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '(':
+            key = '9';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '$':
-        key = '4';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '$':
+            key = '4';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '#':
-        key = '3';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '#':
+            key = '3';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case ')':
-        key = '0';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case ')':
+            key = '0';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case ':':
-        key = ';';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case ':':
+            key = ';';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '*':
-        key = '8';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '*':
+            key = '8';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    case '\"':
-        key = '\'';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '@':
-        key = '2';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '%':
-        key = '5';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '^':
-        key = '6';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '&':
-        key = '7';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '+':
-        key = '=';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '{':
-        key = '[';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '}':
-        key = ']';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '|':
-        key = '\\';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
-    case '!':
-        key = '1';
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
-        break;
+        case '\"':
+            key = '\'';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '@':
+            key = '2';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '%':
+            key = '5';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '^':
+            key = '6';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '&':
+            key = '7';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '+':
+            key = '=';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '{':
+            key = '[';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '}':
+            key = ']';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '|':
+            key = '\\';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
+        case '!':
+            key = '1';
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[Qt::Key_Shift]), 0, 0);
+            break;
 
-    default:
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
+        default:
+            XTestFakeKeyEvent(display, XKeysymToKeycode(display, key), 0, 0);
     }
 
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);
@@ -367,4 +367,4 @@ GTKeyboardDriver::keys::keys() {
 
 #endif
 
-}    // namespace HI
+}  // namespace HI

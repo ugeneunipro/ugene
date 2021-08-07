@@ -99,4 +99,4 @@ void ResourceSettingsGUIPageWidget::sl_cpuCountChanged(int n) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

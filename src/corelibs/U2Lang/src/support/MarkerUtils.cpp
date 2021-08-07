@@ -218,4 +218,4 @@ void MarkerUtils::textValueToString(const QVariantList &value, QString &string) 
     string += value.at(1).toString();
 }
 
-}    // namespace U2
+}  // namespace U2

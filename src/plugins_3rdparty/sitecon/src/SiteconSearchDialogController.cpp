@@ -95,7 +95,7 @@ SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectCo
 
     model = nullptr;
 
-    //props = _props;
+    // props = _props;
 
     ctx = _ctx;
     task = nullptr;
@@ -123,14 +123,14 @@ SiteconSearchDialogController::~SiteconSearchDialogController() {
 }
 
 void SiteconSearchDialogController::connectGUI() {
-    //buttons
+    // buttons
     connect(pbSelectModelFile, SIGNAL(clicked()), SLOT(sl_selectModelFile()));
     connect(pbSaveAnnotations, SIGNAL(clicked()), SLOT(sl_onSaveAnnotations()));
     connect(pbClear, SIGNAL(clicked()), SLOT(sl_onClearList()));
     connect(pbSearch, SIGNAL(clicked()), SLOT(sl_onSearch()));
     connect(pbClose, SIGNAL(clicked()), SLOT(sl_onClose()));
 
-    //results list
+    // results list
     connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
 
     resultsTree->installEventFilter(this);
@@ -141,7 +141,7 @@ void SiteconSearchDialogController::updateState() {
     bool hasCompl = ctx->getComplementTT() != nullptr;
 
     bool hasResults = resultsTree->topLevelItemCount() > 0;
-    //bool hasModel = false;//TODO
+    // bool hasModel = false;//TODO
 
     pbSearch->setEnabled(!hasActiveTask);
 
@@ -319,7 +319,7 @@ void SiteconSearchDialogController::runTask() {
         return;
     }
 
-    //TODO: ask if to clear
+    // TODO: ask if to clear
     sl_onClearList();
 
     task = new SiteconSearchTask(*model, seq, cfg, reg.startPos);
@@ -385,4 +385,4 @@ SiteconResultItem::SiteconResultItem(const SiteconSearchResult &r)
     setText(4, QString::number(res.err2, 'g', 4));
 }
 
-}    // namespace U2
+}  // namespace U2

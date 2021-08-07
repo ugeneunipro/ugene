@@ -96,4 +96,4 @@ void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRe
     CHECK_OP(os, );
 }
 
-}    // namespace U2
+}  // namespace U2

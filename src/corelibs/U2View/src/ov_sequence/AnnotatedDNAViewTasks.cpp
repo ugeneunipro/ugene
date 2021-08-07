@@ -50,7 +50,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-//opens a single view for all sequence object in the list of sequence objects related to the objects in the list
+// opens a single view for all sequence object in the list of sequence objects related to the objects in the list
 OpenAnnotatedDNAViewTask::OpenAnnotatedDNAViewTask(const QList<GObject *> &objects)
     : ObjectViewTask(AnnotatedDNAViewFactory::ID) {
     //  remember only sequence objects -> other added automatically
@@ -107,7 +107,7 @@ void OpenAnnotatedDNAViewTask::populateSeqObjectRefs(GObject *object, QList<Docu
             return;
         }
     }
-    //look for sequence object using relations
+    // look for sequence object using relations
     objWithSeqRelation.append(GObjectUtils::selectRelations(object, GObjectTypes::SEQUENCE, ObjectRole_Sequence, allSequenceObjects, UOF_LoadedAndUnloaded));
 
     foreach (GObject *robj, objWithSeqRelation) {
@@ -210,7 +210,7 @@ void OpenAnnotatedDNAViewTask::open() {
             uiLog.details(tr("Sequence object not available! URL %1, name %2").arg(r.docUrl).arg(r.objName));
         }
     }
-    if (seqObjects.isEmpty()) {    //object was removed asynchronously with the task
+    if (seqObjects.isEmpty()) {  // object was removed asynchronously with the task
         if (0 == stateInfo.cancelFlag) {
             stateInfo.setError(tr("No sequence objects found"));
         }
@@ -328,7 +328,7 @@ UpdateAnnotatedDNAViewTask::UpdateAnnotatedDNAViewTask(AnnotatedDNAView *v, cons
 
 void UpdateAnnotatedDNAViewTask::update() {
     if (view.isNull()) {
-        return;    //view was closed;
+        return;  // view was closed;
     }
 
     AnnotatedDNAView *aview = qobject_cast<AnnotatedDNAView *>(view.data());
@@ -338,4 +338,4 @@ void UpdateAnnotatedDNAViewTask::update() {
     aview->updateState(state);
 }
 
-}    // namespace U2
+}  // namespace U2

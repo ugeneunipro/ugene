@@ -76,6 +76,6 @@ private:
     QMap<QString, QRadioButton *> gpuRadioButtons;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //__OPENCL_SUPPORT_SETTINGS_CONTROLLER__
+#endif  //__OPENCL_SUPPORT_SETTINGS_CONTROLLER__

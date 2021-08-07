@@ -35,7 +35,7 @@ public:
     bool fitToRow(const QVector<U2Region> &locations);
 
     QString key;
-    //invariant: keep the ranges in ascending order
+    // invariant: keep the ranges in ascending order
     QVector<U2Region> ranges;
     QList<Annotation *> annotations;
 };
@@ -62,10 +62,10 @@ public:
 
 private:
     QList<PVRowData *> rows;
-    QHash<QString, QList<PVRowData *>> rowByName;    // rows may have same names
+    QHash<QString, QList<PVRowData *>> rowByName;  // rows may have same names
     QHash<Annotation *, PVRowData *> rowByAnnotation;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

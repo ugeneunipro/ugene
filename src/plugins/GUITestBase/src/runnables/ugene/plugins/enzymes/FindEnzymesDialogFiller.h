@@ -48,6 +48,6 @@ private:
     qint64 excludeEnd = -1;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_
+#endif  // _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_

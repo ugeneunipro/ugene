@@ -33,7 +33,7 @@ RemoveAnnotationsTask::RemoveAnnotationsTask(AnnotationTableObject *ao, const QS
 Task::ReportResult RemoveAnnotationsTask::report() {
     AnnotationGroup *rootGroup = aobj->getRootGroup();
     AnnotationGroup *subGroup = rootGroup->getSubgroup(groupName, false);
-    if (subGroup == nullptr) {    // subgroup having @groupName does not exist
+    if (subGroup == nullptr) {  // subgroup having @groupName does not exist
         return ReportResult_Finished;
     }
 
@@ -55,4 +55,4 @@ Task::ReportResult RemoveAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -66,6 +66,6 @@ private:
     QList<DNASequence> resultedSeqList;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

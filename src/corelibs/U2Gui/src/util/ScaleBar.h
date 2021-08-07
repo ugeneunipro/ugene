@@ -66,6 +66,6 @@ protected:
     QToolButton *minusButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCALE_BAR_H_
+#endif  // _U2_SCALE_BAR_H_

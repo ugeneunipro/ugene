@@ -50,7 +50,7 @@ private:
 
 private:
     void addTaskAnnotations(const QVariant &data, Task *t);
-};    // ImportAnnotationsWorker
+};  // ImportAnnotationsWorker
 
 class ImportAnnotationsWorkerFactory : public DomainFactory {
 public:
@@ -62,9 +62,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // ImportAnnotationsWorkerFactory
+};  // ImportAnnotationsWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // __IMPORT_ANNOTATIONS_WORKER_H_
+#endif  // __IMPORT_ANNOTATIONS_WORKER_H_

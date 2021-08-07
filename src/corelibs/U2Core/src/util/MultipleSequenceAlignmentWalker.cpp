@@ -37,7 +37,7 @@ public:
     QByteArray nextData(int startPos, int length, U2OpStatus &os) {
         QByteArray result = row->getSequence().constSequence().mid(seqPos, length);
 
-        if (gaps.isEmpty()) {    // add trailing gaps if it is possible
+        if (gaps.isEmpty()) {  // add trailing gaps if it is possible
             seqPos += result.length();
             return result + gapsBytes(length - result.length());
         }
@@ -60,7 +60,7 @@ public:
         }
         CHECK_OP(os, "");
 
-        if (result.length() < length) {    // add trailing gaps if it is possible
+        if (result.length() < length) {  // add trailing gaps if it is possible
             gapsInserted += length - result.length();
             result += gapsBytes(length - result.length());
         }
@@ -146,4 +146,4 @@ QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStat
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

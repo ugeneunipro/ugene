@@ -58,17 +58,17 @@ void SyncSort<T, S>::sort(T *x, int off, int len) {
     }
 
     // Choose a partition element, v
-    quint32 m = off + len / 2;    // Small arrays, middle element
+    quint32 m = off + len / 2;  // Small arrays, middle element
     if (len > 7) {
         quint32 l = off;
         quint32 n = off + len - 1;
-        if (len > 40) {    // Big arrays, pseudo median of 9
+        if (len > 40) {  // Big arrays, pseudo median of 9
             quint32 s = len / 8;
             l = med3(x, l, l + s, l + 2 * s);
             m = med3(x, m - s, m, m + s);
             n = med3(x, n - 2 * s, n - s, n);
         }
-        m = med3(x, l, m, n);    // Mid-size, med of 3
+        m = med3(x, l, m, n);  // Mid-size, med of 3
     }
     T *v = x + m;
 
@@ -78,14 +78,14 @@ void SyncSort<T, S>::sort(T *x, int off, int len) {
         qint64 cr;
         while (b <= c && (cr = compare(v, x + b)) >= 0) {
             if (cr == 0) {
-                (x + b == v) && (v = x + a);    //save middle pos value
+                (x + b == v) && (v = x + a);  // save middle pos value
                 swap(x + a++, x + b);
             }
             b++;
         }
         while (c >= b && (cr = compare(x + c, v)) >= 0) {
             if (cr == 0) {
-                (x + c == v) && (v = x + d);    //save middle pos value
+                (x + c == v) && (v = x + d);  // save middle pos value
                 swap(x + c, x + d--);
             }
             c--;
@@ -165,6 +165,6 @@ void SyncSort<T, S>::sort() {
     sort(start, 0, len);
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

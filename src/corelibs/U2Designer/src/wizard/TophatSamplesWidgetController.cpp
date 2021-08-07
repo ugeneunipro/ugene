@@ -325,7 +325,7 @@ QWidget *TophatSamples::initSample(const QString &sampleName, const QStringList 
     vl->setContentsMargins(5, 5, 5, 5);
 
     QHBoxLayout *hl = new QHBoxLayout();
-    {    // header
+    {  // header
         hl->setContentsMargins(0, 0, 0, 0);
         QToolButton *removeButton = createButton(this, ":U2Designer/images/exit.png");
         connect(removeButton, SIGNAL(clicked()), SLOT(sl_remove()));
@@ -336,7 +336,7 @@ QWidget *TophatSamples::initSample(const QString &sampleName, const QStringList 
 
     QListWidget *datasetsList = new QListWidget(this);
     datasetsList->setObjectName(sampleName + " datasetsList");
-    {    // datasets
+    {  // datasets
         foreach (const QString &dataset, datasets) {
             datasetsList->addItem(dataset);
         }
@@ -556,7 +556,7 @@ QVBoxLayout *TophatSamples::createControlButtons() {
 
 void TophatSamples::updateArrows() {
     SAFE_POINT(order.size() > 1, "Unexpected count of samples", );
-    {    // check if the top dataset is selected
+    {  // check if the top dataset is selected
         QListWidget *topList = getListWidget(0);
         if (topList->selectedItems().size() > 0) {
             QListWidgetItem *topItem = topList->item(0);
@@ -566,7 +566,7 @@ void TophatSamples::updateArrows() {
         }
     }
 
-    {    // check if the bottom dataset is selected
+    {  // check if the bottom dataset is selected
         QListWidget *bottomList = getListWidget(order.size() - 1);
         if (bottomList->selectedItems().size() > 0) {
             QListWidgetItem *bottomItem = bottomList->item(bottomList->count() - 1);
@@ -591,4 +591,4 @@ void TophatSamples::updateArrows() {
     downButton->setEnabled(false);
 }
 
-}    // namespace U2
+}  // namespace U2

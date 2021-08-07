@@ -211,4 +211,4 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_gapRegion) {
     CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
 }
 
-}    // namespace U2
+}  // namespace U2

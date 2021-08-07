@@ -54,6 +54,6 @@ public:
     static float getScore(const char *seq, int len, const PWMatrix &m, DNATranslation *complMap);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

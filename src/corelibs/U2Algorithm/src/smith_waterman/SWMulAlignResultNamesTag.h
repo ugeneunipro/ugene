@@ -64,6 +64,6 @@ inline const bool &SWMulAlignResultNamesTag::isAcceptableForSubseqNamesOnly() co
     return acceptableForSubseqNamesOnly;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_H_
+#endif  // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_H_

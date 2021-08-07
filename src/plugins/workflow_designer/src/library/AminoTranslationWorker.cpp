@@ -263,8 +263,8 @@ QString AminoTranslationPrompter::composeRichDoc() {
         usingGenetic = getHyperlink(AUTO_TRANSLATION_ATTR, "auto selected genetic code");
     }
 
-    QString doc = QString("Translated sequence to amino from %1 position using %2.").arg(offset).    // offset from sequence will be translated
-                  arg(usingGenetic);    // genetic code
+    QString doc = QString("Translated sequence to amino from %1 position using %2.").arg(offset).  // offset from sequence will be translated
+                  arg(usingGenetic);  // genetic code
     return doc;
 }
 
@@ -321,7 +321,7 @@ Task *AminoTranslationWorker::tick() {
         if (!seqObj->getAlphabet()->isNucleic()) {
             algoLog.trace("Alphabet is not nucleic");
             return nullptr;
-            //return new FailTask(tr("Alphabet is not nucleic"));
+            // return new FailTask(tr("Alphabet is not nucleic"));
         }
 
         QStringList offsets = actor->getParameter(POS_2_TRANSLATE_ATTR)->getAttributeValue<QString>(context).split(OFFSET_DELIMITER, QString::SkipEmptyParts);
@@ -394,5 +394,5 @@ void AminoTranslationWorker::sl_taskFinished() {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

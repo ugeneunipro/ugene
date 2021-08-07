@@ -78,8 +78,8 @@ private:
     cl_mem buf_windowSizesArray;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/
 
-#endif    // _U2_BINARYFINDOPENCL_H_
+#endif  // _U2_BINARYFINDOPENCL_H_

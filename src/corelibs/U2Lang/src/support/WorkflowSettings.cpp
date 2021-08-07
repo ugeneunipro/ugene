@@ -294,4 +294,4 @@ void WorkflowSettings::setShowLoadButtonHint(bool value) {
     s->setValue(SHOW_LOAD_BUTTON_HINT, value);
 }
 
-}    // namespace U2
+}  // namespace U2

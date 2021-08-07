@@ -67,4 +67,4 @@ QList<Task *> ExportMca2MsaTask::onSubTaskFinished(Task *subTask) {
     return newSubTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

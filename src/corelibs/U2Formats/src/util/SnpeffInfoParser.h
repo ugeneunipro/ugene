@@ -146,6 +146,6 @@ private:
     static const QString VALUES_SEPARATOR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SNPEFF_INFO_PARSER_H_
+#endif  // _U2_SNPEFF_INFO_PARSER_H_

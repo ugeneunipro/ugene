@@ -40,7 +40,7 @@ GUI_TEST_CLASS_DECLARATION(test_0007)
 GUI_TEST_CLASS_DECLARATION(test_0008)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
+}  // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool
 
 namespace GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element {
 #undef GUI_TEST_SUITE
@@ -52,8 +52,8 @@ GUI_TEST_CLASS_DECLARATION(test_0003)
 GUI_TEST_CLASS_DECLARATION(test_0004)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element
+}  // namespace GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // GT_TESTS_METAPHLAN_H
+#endif  // GT_TESTS_METAPHLAN_H

@@ -61,6 +61,6 @@ private:
     qint64 seqId;
 };
 
-};    // namespace U2
+};  // namespace U2
 
 #endif

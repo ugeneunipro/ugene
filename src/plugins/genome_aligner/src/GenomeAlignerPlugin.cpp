@@ -138,4 +138,4 @@ void GenomeAlignerPlugin::registerCMDLineHelp() {
     cmdLineRegistry->registerCMDLineHelpProvider(taskSection);
 }
 
-}    // namespace U2
+}  // namespace U2

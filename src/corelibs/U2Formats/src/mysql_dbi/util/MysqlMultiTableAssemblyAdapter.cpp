@@ -72,7 +72,7 @@ void ensureGridSize(QVector<QVector<QList<U2AssemblyRead>>> &grid, int rowPos, i
     }
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 /****************************************************************/
 /* MysqlMtaSingleTableAdapter */
@@ -151,7 +151,7 @@ qint64 MysqlMultiTableAssemblyAdapter::getMaxPackedRow(const U2Region &r, U2OpSt
 }
 
 qint64 MysqlMultiTableAssemblyAdapter::getMaxEndPos(U2OpStatus &os) {
-    //TODO: optimize by using gstart + maxReadLen for first n-1 tables
+    // TODO: optimize by using gstart + maxReadLen for first n-1 tables
     qint64 max = 0;
 
     foreach (MysqlMtaSingleTableAdapter *a, adapters) {
@@ -216,7 +216,7 @@ void MysqlMultiTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it,
     qint64 prevLeftmostPos = -1;
     PackAlgorithmContext packContext;
 
-    QVector<QVector<QList<U2AssemblyRead>>> readsGrid;    //reads sorted by range
+    QVector<QVector<QList<U2AssemblyRead>>> readsGrid;  // reads sorted by range
     bool lastIteration = false;
     qint64 readsInGrid = 0;
 
@@ -297,7 +297,7 @@ void MysqlMultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds,
     foreach (MysqlMtaSingleTableAdapter *a, readsByAdapter.keys()) {
         QList<U2DataId> &rangeReadIds = readsByAdapter[a];
         a->singleTableAdapter->removeReads(rangeReadIds, os);
-        //TODO: remove adapters for empty tables. And tables as well
+        // TODO: remove adapters for empty tables. And tables as well
     }
 }
 
@@ -493,7 +493,7 @@ void MysqlMultiTableAssemblyAdapter::rereadTables(const QByteArray &idata, U2OpS
     // format: N, N, N, N | N, N |.....
     // elements are separated by | sign. First element encodes ranges, second prow step and max prow, others are for future extension
     if (idata.isEmpty()) {
-        //assembly is empty - no index data was created
+        // assembly is empty - no index data was created
         return;
     }
 
@@ -699,7 +699,7 @@ void MysqlMultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qin
 
     QVector<MysqlReadTableMigrationData> &newTableData = migrations[newA];
     newTableData.append(MysqlReadTableMigrationData(U2DbiUtils::toDbiId(readId), oldA, prow));
-    //TODO: add mem check here!
+    // TODO: add mem check here!
 }
 
 void MysqlMultiTablePackAlgorithmAdapter::releaseDbResources() {
@@ -754,7 +754,7 @@ void MysqlMultiTablePackAlgorithmAdapter::ensureGridSize(int nRows) {
 }
 
 void MysqlMultiTablePackAlgorithmAdapter::migrate(MysqlMtaSingleTableAdapter *newA, const QVector<MysqlReadTableMigrationData> &data, qint64 migratedBefore, qint64 totalMigrationCount, U2OpStatus &os) {
-    //delete reads from old tables, and insert into new one
+    // delete reads from old tables, and insert into new one
     QHash<MysqlMtaSingleTableAdapter *, QVector<MysqlReadTableMigrationData>> readsByOldTable;
     foreach (const MysqlReadTableMigrationData &d, data) {
         readsByOldTable[d.oldTable].append(d);
@@ -772,7 +772,7 @@ void MysqlMultiTablePackAlgorithmAdapter::migrate(MysqlMtaSingleTableAdapter *ne
 
         QString oldTable = oldA->singleTableAdapter->getReadsTableName();
         QString newTable = newA->singleTableAdapter->getReadsTableName();
-        QString idsTable = "tmp_mig_" + oldTable;    //TODO
+        QString idsTable = "tmp_mig_" + oldTable;  // TODO
 
 #ifdef _DEBUG
         qint64 nOldReads1 = U2SqlQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
@@ -785,7 +785,7 @@ void MysqlMultiTablePackAlgorithmAdapter::migrate(MysqlMtaSingleTableAdapter *ne
         perfLog.trace(QString("Assembly: running reads migration from %1 to %2 number of reads: %3").arg(oldTable).arg(newTable).arg(migData.size()));
         quint64 t0 = GTimer::currentTimeMicros();
 
-        {    //nested block is needed to ensure all queries are finalized
+        {  // nested block is needed to ensure all queries are finalized
 
             static const QString tempTableQuery = "CREATE TEMPORARY TABLE %1(id INTEGER PRIMARY KEY, prow INTEGER NOT NULL)";
             U2SqlQuery(tempTableQuery.arg(idsTable), db, os).execute();
@@ -812,7 +812,7 @@ void MysqlMultiTablePackAlgorithmAdapter::migrate(MysqlMtaSingleTableAdapter *ne
                 U2SqlQuery(deleteString.arg(oldTable).arg(idsTable), db, os).execute();
             }
         }
-        U2OpStatusImpl osStub;    // using stub here -> this operation must be performed even if any of internal queries failed
+        U2OpStatusImpl osStub;  // using stub here -> this operation must be performed even if any of internal queries failed
         static const QString dropTableString = "DROP TABLE IF EXISTS %1";
         U2SqlQuery(dropTableString.arg(idsTable), db, osStub).execute();
 
@@ -1000,4 +1000,4 @@ void MysqlMTAPackAlgorithmDataIterator::fetchNextData() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

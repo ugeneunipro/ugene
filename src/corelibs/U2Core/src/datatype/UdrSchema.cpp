@@ -148,4 +148,4 @@ bool UdrSchema::hasObjectReference() const {
     return withObjectReference;
 }
 
-}    // namespace U2
+}  // namespace U2

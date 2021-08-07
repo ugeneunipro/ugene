@@ -66,4 +66,4 @@ int WDWizardPage::nextId() const {
     return controller->nextId();
 }
 
-}    // namespace U2
+}  // namespace U2

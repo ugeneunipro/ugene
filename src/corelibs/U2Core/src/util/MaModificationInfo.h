@@ -51,6 +51,6 @@ private:
     static bool registerMeta;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_MODIFICATION_INFO_H_
+#endif  // _U2_MA_MODIFICATION_INFO_H_

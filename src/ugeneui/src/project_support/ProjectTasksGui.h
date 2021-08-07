@@ -146,7 +146,7 @@ private:
 };
 
 /// register project task
-//TODO: remove service+plugin binding -> add 'singleton' property to service. After its done this task will not be needed
+// TODO: remove service+plugin binding -> add 'singleton' property to service. After its done this task will not be needed
 
 class RegisterProjectServiceTask : public Task {
     Q_OBJECT
@@ -174,7 +174,7 @@ private:
     QString projectFile;
 };
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_LoadProject : public XmlTest {
     Q_OBJECT
 public:
@@ -197,7 +197,7 @@ private:
     QString url;
 };
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_ExportProject : public XmlTest {
     Q_OBJECT
 public:
@@ -216,7 +216,7 @@ private:
     ExportProjectTask *exportTask;
 };
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_UnloadProject : public XmlTest {
     Q_OBJECT
 public:
@@ -228,7 +228,7 @@ private:
     QStringList unloadDocList;
 };
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_LoadDocumentFromProject : public XmlTest {
     Q_OBJECT
 public:
@@ -250,6 +250,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

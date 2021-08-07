@@ -173,4 +173,4 @@ void DirectoriesSettingsPageWidget::sl_onIndexDirButton() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

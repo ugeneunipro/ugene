@@ -42,4 +42,4 @@ void GTUtilsStartPage::checkRecentListUrl(HI::GUITestOpStatus &os, const QString
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

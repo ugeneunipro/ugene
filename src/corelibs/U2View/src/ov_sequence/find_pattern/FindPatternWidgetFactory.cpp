@@ -62,4 +62,4 @@ const QString &FindPatternWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 
-}    // namespace U2
+}  // namespace U2

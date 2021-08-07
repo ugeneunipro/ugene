@@ -63,6 +63,6 @@ public: \
         } \
     };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEC_STRUCT_PREDICT_TASK_H_
+#endif  // _U2_SEC_STRUCT_PREDICT_TASK_H_

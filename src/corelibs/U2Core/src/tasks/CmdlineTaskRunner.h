@@ -88,6 +88,6 @@ private slots:
     void sl_outputProgressAndState();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMDLINE_TASK_RUNNER_H_
+#endif  // _U2_CMDLINE_TASK_RUNNER_H_

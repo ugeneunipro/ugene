@@ -59,4 +59,4 @@ WorkflowDebugStatus *ScriptContext::getDebugStatus() const {
     return scheduler->getDebugStatus();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -184,4 +184,4 @@ void MaLabelWidget::sendEventToNameList(QMouseEvent *e) const {
     QApplication::instance()->notify((QObject *)ui->getEditorNameList(), e);
 }
 
-}    // namespace U2
+}  // namespace U2

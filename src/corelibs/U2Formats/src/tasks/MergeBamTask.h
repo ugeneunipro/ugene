@@ -40,8 +40,8 @@ protected:
     QString targetUrl;
     QStringList bamUrls;
     bool sortInputBams;
-};    // MergeBamTask
+};  // MergeBamTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MERGE_BAM_TASK_H_
+#endif  // _U2_MERGE_BAM_TASK_H_

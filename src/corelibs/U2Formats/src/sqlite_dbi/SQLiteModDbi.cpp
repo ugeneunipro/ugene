@@ -563,4 +563,4 @@ bool SQLiteModDbi::canRedo(const U2DataId &objectId, U2OpStatus &os) {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

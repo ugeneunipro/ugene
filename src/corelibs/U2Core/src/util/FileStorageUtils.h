@@ -63,6 +63,6 @@ public:
     static void addSamToBamConvertInfo(const QString &samUrl, const QString &bamUrl, FileStorage::WorkflowProcess &process);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FILE_STORAGE_UTILS_
+#endif  // _U2_FILE_STORAGE_UTILS_

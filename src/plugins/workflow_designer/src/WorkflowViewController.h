@@ -148,7 +148,7 @@ private:
 
     /* Point stores last mouse press position on the scene.  Used to insert new elements from context menu */
     QPointF lastMousePressPoint;
-};    // WorkflowScene
+};  // WorkflowScene
 
 class WorkflowView : public MWMDIWindow, public SchemaConfig {
     friend class DashboardManagerHelper;
@@ -446,6 +446,6 @@ private:
     WorkflowView *parent;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

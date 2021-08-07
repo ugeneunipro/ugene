@@ -185,7 +185,7 @@ void AssemblyDbiUnitTests_getReads::Test() {
     U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
-    //getReads
+    // getReads
     {
         testData.addValue(GET_READS_IN, U2Region(140, 145));
 
@@ -595,4 +595,4 @@ void AssemblyDbiUnitTests_calculateCoverageInvalid::Test() {
     CHECK_TRUE(os.hasError(), "error should be thrown");
 }
 
-}    // namespace U2
+}  // namespace U2

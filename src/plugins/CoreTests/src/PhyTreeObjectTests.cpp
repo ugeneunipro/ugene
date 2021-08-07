@@ -303,4 +303,4 @@ QList<XMLTestFactory *> PhyTreeObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

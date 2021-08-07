@@ -351,4 +351,4 @@ IMPLEMENT_TEST(LocationParserTestData, locationParserGreaterInvalid) {
     CHECK_EQUAL(1, location->regions.size(), "incorrect expected regions size");
 }*/
 
-}    // namespace U2
+}  // namespace U2

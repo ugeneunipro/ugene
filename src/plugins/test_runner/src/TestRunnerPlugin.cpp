@@ -121,7 +121,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
                 foreach (GTestSuite *testSuite, testSuiteList) {
                     QString testSuiteUrl = testSuite->getURL();
                     if (testRunnerService->findTestSuiteByURL(testSuiteUrl) != nullptr) {
-                        delete testSuite;    // duplicate.
+                        delete testSuite;  // duplicate.
                         continue;
                     }
                     testRunnerService->addTestSuite(testSuite);
@@ -222,7 +222,7 @@ void TestRunnerService::addTestSuite(GTestSuite *ts) {
     GTestEnvironment *tsEnv = ts->getEnv();
     const QStringList &tsEnvKeys = tsEnv->getVars().keys();
     QStringList tsEnvResultedKeys;
-    //skipping non-empty variables
+    // skipping non-empty variables
     foreach (const QString &key, tsEnvKeys) {
         if (tsEnv->getVar(key).isEmpty()) {
             tsEnvResultedKeys.push_back(key);
@@ -238,7 +238,7 @@ void TestRunnerService::removeTestSuite(GTestSuite *ts) {
     assert(suites.contains(ts));
     suites.removeOne(ts);
 
-    //todo: cleanup vars, but leave built-in
+    // todo: cleanup vars, but leave built-in
     saveEnv();
     saveSuites();
 
@@ -277,7 +277,7 @@ void TestRunnerService::readBuiltInVars() {
 }
 
 void TestRunnerService::readSavedSuites() {
-    //TODO: do it in in service startup task!!!
+    // TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
     for (const QString &suiteUrl : qAsConst(suiteUrls)) {
@@ -338,4 +338,4 @@ void TestRunnerService::sl_refresh() {
 /*void TestRunnerScriptModule::setup(QScriptEngine *engine) const{
     GTestScriptWrapper::setQTest(engine);
 }*/
-}    // namespace U2
+}  // namespace U2

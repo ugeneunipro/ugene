@@ -119,7 +119,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef &seqRef, const U2Region &regi
     U2SequenceObject seq("sequence", seqRef);
     SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     seqlen = seq.getSequenceLength();
-    //for every enzymes in selection create FindSingleEnzymeTask
+    // for every enzymes in selection create FindSingleEnzymeTask
     for (const SEnzymeData &enzyme : qAsConst(enzymes)) {
         addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, circular));
     }
@@ -373,7 +373,7 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
     U2Region savedSearchRegion = getLastSearchRegionForObject(sequenceObject);
     U2Region wholeSequenceRegion(0, sequenceLength);
     if (cfg.circular) {
-        //In circular mode the region can have an overflow to handle end/start positions correctly
+        // In circular mode the region can have an overflow to handle end/start positions correctly
         cfg.searchRegion = U2Region(savedSearchRegion.startPos, qMin(savedSearchRegion.length, wholeSequenceRegion.length));
     } else {
         cfg.searchRegion = savedSearchRegion.intersect(wholeSequenceRegion);
@@ -403,7 +403,7 @@ bool FindEnzymesAutoAnnotationUpdater::checkConstraints(const AutoAnnotationCons
 static void setRegionToHints(GObject *object, const QString &hintName, const U2Region &region) {
     GHints *objectHints = object->getGHints();
     if (region.isEmpty()) {
-        objectHints->remove(hintName);    // same as default, no need to save.
+        objectHints->remove(hintName);  // same as default, no need to save.
         return;
     }
     objectHints->set(hintName, QVariant::fromValue<U2Region>(region));
@@ -438,4 +438,4 @@ bool FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(qint64 se
     return maxResultsEstimation > AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE;
 }
 
-}    // namespace U2
+}  // namespace U2

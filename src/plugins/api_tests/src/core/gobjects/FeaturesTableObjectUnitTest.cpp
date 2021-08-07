@@ -41,9 +41,8 @@ namespace U2 {
 
 template<>
 QString toString<U2FeatureLocation>(const U2FeatureLocation &loc) {
-    QString strand = loc.strand == U2Strand::Direct ? "direct" :
-                                                      loc.strand == U2Strand::Complementary ? "complement" :
-                                                                                              "nostrand";
+    QString strand = loc.strand == U2Strand::Direct ? "direct" : loc.strand == U2Strand::Complementary ? "complement"
+                                                                                                       : "nostrand";
     return QString("%1-%2").arg(loc.region.toString()).arg(strand);
 }
 
@@ -132,7 +131,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationSingleRegion) {
     CHECK_EQUAL(areg, subAnnotation.location.region, "feature region");
     CHECK_EQUAL(subGroup.id, subAnnotation.parentFeatureId, "annotation feature parent id");
 
-    //check groups and qualifiers
+    // check groups and qualifiers
     const QList<U2FeatureKey> fkeys = featureDbi->getFeatureKeys(subAnnotation.id, os);
     bool hasQual = false;
     foreach (const U2FeatureKey &fkey, fkeys) {
@@ -183,7 +182,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationMultipleRegion) {
     CHECK_EQUAL(U2Region(), subAnnotation.location.region, "feature region");
     CHECK_EQUAL(subGroup.id, subAnnotation.parentFeatureId, "feature parent id");
 
-    //check groups and qualifiers
+    // check groups and qualifiers
     const QList<U2FeatureKey> fkeys = featureDbi->getFeatureKeys(subAnnotation.id, os);
     bool hasQual = false;
     foreach (const U2FeatureKey &fkey, fkeys) {
@@ -622,4 +621,4 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, checkConstraints) {
     CHECK_TRUE(ft.checkConstraints(&constraints), "unexpected constraint test result");
 }
 
-}    // namespace U2
+}  // namespace U2

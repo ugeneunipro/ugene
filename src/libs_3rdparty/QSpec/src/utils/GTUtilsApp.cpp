@@ -64,4 +64,4 @@ void GTUtilsApp::checkUGENETitleContains(GUITestOpStatus &os, const QString &str
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

@@ -60,7 +60,7 @@ public:
     U2Region chainRegion;
 
     int modelId;
-};    // class BioStruct3DReference
+};  // class BioStruct3DReference
 
 class U2ALGORITHM_EXPORT StructuralAlignmentTaskSettings {
 public:
@@ -68,7 +68,7 @@ public:
         : ref(_ref), alt(_alt) {
     }
     BioStruct3DReference ref, alt;
-};    // struct StructuralAlignmentTaskSettings
+};  // struct StructuralAlignmentTaskSettings
 
 /** Structural alignment algorithm result */
 class U2ALGORITHM_EXPORT StructuralAlignment {
@@ -78,7 +78,7 @@ public:
     }
     double rmsd;
     Matrix44 transform;
-};    // class StructuralAlignment
+};  // class StructuralAlignment
 
 /** Structural alignment algorithm abstract interface */
 class U2ALGORITHM_EXPORT StructuralAlignmentAlgorithm {
@@ -87,11 +87,11 @@ public:
     }
 
     /** Test settings for algorithm specific constraints.
-      * @returns "" on ok and error descripton on fail
-      */
+     * @returns "" on ok and error descripton on fail
+     */
     virtual QString validate(const StructuralAlignmentTaskSettings &settings) = 0;
     virtual StructuralAlignment align(const StructuralAlignmentTaskSettings &settings, TaskStateInfo &state) = 0;
-};    // class StructuralAlignmentAlgorithm
+};  // class StructuralAlignmentAlgorithm
 
 /** Task wrapper for structural alignment algorithm */
 class U2ALGORITHM_EXPORT StructuralAlignmentTask : public Task {
@@ -116,8 +116,8 @@ private:
     StructuralAlignmentTaskSettings settings;
 
     StructuralAlignment result;
-};    // class StructuralAlignmentTask
+};  // class StructuralAlignmentTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_H_
+#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_H_

@@ -65,7 +65,7 @@ public:
             m_view->style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter, m_view);
 
             QStyleOptionViewItem branchOption;
-            static const int i = 9;    // ### hardcoded in qcommonstyle.cpp
+            static const int i = 9;  // ### hardcoded in qcommonstyle.cpp
             QRect r = option.rect;
             branchOption.rect = QRect(r.left() + i / 2, r.top() + (r.height() - i) / 2, i, i);
             branchOption.palette = option.palette;
@@ -117,7 +117,7 @@ public:
             buttonOption.toolButtonStyle = Qt::ToolButtonTextBesideIcon;
             m_view->style()->drawComplexControl(QStyle::CC_ToolButton, &buttonOption, painter, m_view);
 
-            //QItemDelegate::paint(painter, option, index);
+            // QItemDelegate::paint(painter, option, index);
         }
     }
 
@@ -325,4 +325,4 @@ void QueryPalette::resetSelection() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -46,4 +46,4 @@ void CommonImportOptionsDialog::init(const QString &baseFolder, const ImportToDa
     optionsWidget->init(baseFolder, options);
 }
 
-}    // namespace U2
+}  // namespace U2

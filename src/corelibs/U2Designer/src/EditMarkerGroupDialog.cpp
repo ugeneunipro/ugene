@@ -54,7 +54,7 @@ EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflo
         typeIds << MarkerTypes::SEQ_NAME().getId();
         types << MarkerTypes::ANNOTATION_COUNT().getDisplayName();
         typeIds << MarkerTypes::ANNOTATION_COUNT().getId();
-        //types << MarkerTypes::ANNOTATION_LENGTH().getDisplayName(); typeIds << MarkerTypes::ANNOTATION_LENGTH().getId();
+        // types << MarkerTypes::ANNOTATION_LENGTH().getDisplayName(); typeIds << MarkerTypes::ANNOTATION_LENGTH().getId();
         types << MarkerTypes::QUAL_INT_VALUE().getDisplayName();
         typeIds << MarkerTypes::QUAL_INT_VALUE().getId();
         types << MarkerTypes::QUAL_TEXT_VALUE().getDisplayName();
@@ -200,7 +200,7 @@ void EditMarkerGroupDialog::sl_onTypeChanged(int newTypeIndex) {
     MarkerDataType newType = MarkerTypes::getDataTypeById(typeIds.at(newTypeIndex));
 
     bool changeMarker = false;
-    if (1 == marker->getValues().size()) {    // contains only "rest"
+    if (1 == marker->getValues().size()) {  // contains only "rest"
         changeMarker = true;
     } else {
         if (oldType == newType) {
@@ -243,7 +243,7 @@ bool EditMarkerGroupDialog::checkEditMarkerResult(const QString &oldName, const 
     }
 
     if (values.contains(newValue)) {
-        if (values.value(newValue) != oldName) {    // adding duplicating marker value
+        if (values.value(newValue) != oldName) {  // adding duplicating marker value
             message.append(tr("Duplicate marker's value: %1").arg(newValue));
             return false;
         }
@@ -280,7 +280,7 @@ bool EditMarkerGroupDialog::checkAddMarkerResult(const QString &newName, const Q
 
 void EditMarkerGroupDialog::accept() {
     marker->setName(markerGroupNameEdit->text());
-    {    // check edit/add marker result
+    {  // check edit/add marker result
         MarkerEditorWidget *parent = dynamic_cast<MarkerEditorWidget *>(this->parent());
         QString message;
 
@@ -433,7 +433,7 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QStrin
 }
 
 void EditMarkerDialog::accept() {
-    {    // check edit/add marker result
+    {  // check edit/add marker result
         EditMarkerGroupDialog *parent = dynamic_cast<EditMarkerGroupDialog *>(this->parent());
         QString message;
         QString valueString;
@@ -616,4 +616,4 @@ QVariantList EditStringMarkerWidget::getValues() {
     return values;
 }
 
-}    // namespace U2
+}  // namespace U2

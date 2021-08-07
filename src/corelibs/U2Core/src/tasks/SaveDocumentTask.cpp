@@ -302,7 +302,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
 #endif
             if (!fileName.isEmpty()) {
                 url = fileName;
-            } else {    // Cancel in "Save as" dialog clicked
+            } else {  // Cancel in "Save as" dialog clicked
                 cancel();
                 break;
             }
@@ -384,11 +384,11 @@ Task::ReportResult RelocateDocumentTask::report() {
     }
 
     d->setURL(toURL);
-    if (fromURL.baseFileName() == d->getName() || fromURL.fileName() == d->getName()) {    // if document name is default -> update it too
+    if (fromURL.baseFileName() == d->getName() || fromURL.fileName() == d->getName()) {  // if document name is default -> update it too
         d->setName(toURL.baseFileName());
     }
 
-    //update relations to new url
+    // update relations to new url
     foreach (Document *d, p->getDocuments()) {
         foreach (GObject *o, d->getObjects()) {
             GObjectUtils::updateRelationsURL(o, fromURL, toURL);
@@ -398,4 +398,4 @@ Task::ReportResult RelocateDocumentTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

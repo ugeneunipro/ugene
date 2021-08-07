@@ -63,7 +63,7 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::DNASequence)
 Q_DECLARE_METATYPE(QList<U2::DNASequence>)

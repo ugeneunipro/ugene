@@ -69,6 +69,7 @@ protected:
 
     /** Default implementation of the 'getObjectsToWrite'. */
     QSet<GObject *> getObjectsToWriteBaseImpl(const QVariantMap &data) const;
+
 protected:
     DocumentFormat *format;
 
@@ -81,7 +82,7 @@ private:
     bool append;
     uint fileMode;
     QSet<QString> usedUrls;
-    QMap<QString, int> counters;    // url <-> count suffix
+    QMap<QString, int> counters;  // url <-> count suffix
     QMap<QString, IOAdapter *> adapters;
     QMap<IOAdapter *, Document *> docs;
 
@@ -115,7 +116,7 @@ private:
     static QString getBaseName(const MessageMetadata &metadata, bool groupByDatasets, const QString &defaultName);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_BASEDOC_WRITER_H_
+#endif  // _U2_BASEDOC_WRITER_H_

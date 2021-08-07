@@ -182,5 +182,5 @@ void BgzfReader::nextBlock() {
     stream.avail_out = oldAvailOut;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

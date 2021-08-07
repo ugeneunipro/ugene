@@ -93,4 +93,4 @@ void AssemblyConsensusWorker::run() {
                       .arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
 }
 
-}    // namespace U2
+}  // namespace U2

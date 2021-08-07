@@ -47,7 +47,7 @@ class DocumentUpdater : public QObject {
     Q_OBJECT
 public:
     DocumentUpdater(QObject *p = nullptr);
-    void reloadDocuments(QList<Document *> docs2Reload);    //reload and reopen views for given documents
+    void reloadDocuments(QList<Document *> docs2Reload);  // reload and reopen views for given documents
 
 private slots:
     void sl_update();
@@ -95,7 +95,7 @@ public:
 
     void initView();
 
-    //QAction* getAddExistingDocumentAction() const {return NULL;}
+    // QAction* getAddExistingDocumentAction() const {return NULL;}
 
     virtual QList<Task *> createLoadDocumentTasks(const QList<Document *> &docs) const;
 
@@ -149,7 +149,7 @@ private:
     void saveViewState(GObjectViewWindow *v, const QString &stateName);
     void updateMWTitle();
 
-    //todo: find a better place to do this
+    // todo: find a better place to do this
     void registerBuiltInObjectViews();
     void unregisterBuiltInObjectViews();
 
@@ -192,5 +192,5 @@ private:
     bool saveProject;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

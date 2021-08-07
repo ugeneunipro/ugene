@@ -84,7 +84,7 @@ AssemblyAdapter *SQLiteAssemblyDbi::getAdapter(const U2DataId &assemblyId, U2OpS
     QString indexMethod = q.getString(0);
     QByteArray idata = q.getBlob(2);
     assert(!indexMethod.isEmpty());
-    //TODO    QString comp = q.getString(1);
+    // TODO    QString comp = q.getString(1);
 
     if (indexMethod == SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE) {
         res = new SingleTableAssemblyAdapter(dbi, assemblyId, 'S', "", nullptr, db, os);
@@ -198,9 +198,9 @@ void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly &assembly, const QString
     dbi->getSQLiteObjectDbi()->createObject(assembly, folder, U2DbiObjectRank_TopLevel, os);
     SAFE_POINT_OP(os, );
 
-    //QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE, os);
+    // QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE, os);
     QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1, os);
-    //QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE, os);
+    // QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE, os);
 
     SQLiteWriteQuery q("INSERT INTO Assembly(object, reference, imethod, cmethod) VALUES(?1, ?2, ?3, ?4)", db, os);
     q.bindDataId(1, assembly.id);
@@ -535,7 +535,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRea
         os.setError(err);
     }
 }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
 namespace {
 int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
     const QVector<U2CigarOp>::const_iterator ce = vector->cend(), cit = std::find(vector->cbegin(), ce, t);
@@ -548,7 +548,7 @@ int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
     vector->erase(it, e);
     return result;
 }
-}    // namespace
+}  // namespace
 #endif
 void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
     int csize = coverage.size();
@@ -558,7 +558,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
         qint64 len = q.getInt64(1);
-        //read data and convert to data with cigar
+        // read data and convert to data with cigar
         QByteArray data = q.getBlob(2);
         U2AssemblyRead read(new U2AssemblyReadData());
         unpackData(data, read, os);
@@ -576,7 +576,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
         removeAll(&cigarVector, U2CigarOp_I);
         removeAll(&cigarVector, U2CigarOp_S);
         removeAll(&cigarVector, U2CigarOp_P);
@@ -587,15 +587,15 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
 #endif
 
         if (r.startPos > startPos) {
-            cigarVector = cigarVector.mid(r.startPos - startPos);    //cut unneeded cigar string
+            cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
         }
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos) / basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
             switch (cigarVector[(i - firstCoverageIdx) * basesPerRange]) {
-                case U2CigarOp_D:    // skip the deletion
-                case U2CigarOp_N:    // skip the skiped
+                case U2CigarOp_D:  // skip the deletion
+                case U2CigarOp_N:  // skip the skiped
                     continue;
                 default:
                     coverage[i]++;
@@ -614,7 +614,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
     removeAll(&cigarVector, U2CigarOp_I);
     removeAll(&cigarVector, U2CigarOp_S);
     removeAll(&cigarVector, U2CigarOp_P);
@@ -632,8 +632,8 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
     int *coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
-            case U2CigarOp_D:    // skip the deletion
-            case U2CigarOp_N:    // skip the skiped
+            case U2CigarOp_D:  // skip the deletion
+            case U2CigarOp_N:  // skip the skiped
                 continue;
             default:
                 coverageData[i]++;
@@ -664,7 +664,7 @@ U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery *q) {
         return U2AssemblyRead();
     }
 #ifdef _DEBUG
-    //additional check to ensure that db stores correct info
+    // additional check to ensure that db stores correct info
     qint64 effectiveLengthFromCigar = read->readSequence.length() + U2AssemblyUtils::getCigarExtraLength(read->cigar);
     assert(effectiveLengthFromCigar == read->effectiveLen);
 #endif
@@ -679,4 +679,4 @@ PackAlgorithmData SimpleAssemblyReadPackedDataLoader::load(SQLiteQuery *q) {
     return data;
 }
 
-}    // namespace U2
+}  // namespace U2

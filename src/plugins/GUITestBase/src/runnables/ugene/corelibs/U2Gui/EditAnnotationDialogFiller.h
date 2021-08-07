@@ -53,6 +53,6 @@ private:
     QString annotationName;
     QString location;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

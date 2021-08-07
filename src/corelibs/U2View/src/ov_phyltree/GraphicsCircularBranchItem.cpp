@@ -89,7 +89,7 @@ void GraphicsCircularBranchItem::paint(QPainter *painter, const QStyleOptionGrap
 QPainterPath GraphicsCircularBranchItem::shape() const {
     QPainterPath path;
 
-    qreal rad = 30.0;    // all hardcode will be deleted later during complete refactoring
+    qreal rad = 30.0;  // all hardcode will be deleted later during complete refactoring
     QRectF rect(-2 * rad - width, -rad, 2 * rad, 2 * rad);
 
     path.lineTo(width, 0);
@@ -118,4 +118,4 @@ void GraphicsCircularBranchItem::setLabelPositions() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

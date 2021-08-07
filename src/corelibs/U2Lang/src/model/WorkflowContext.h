@@ -98,7 +98,7 @@ public:
     static const QString WORKING_DIR;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_CONTEXT_H_
+#endif  // _U2_WORKFLOW_CONTEXT_H_

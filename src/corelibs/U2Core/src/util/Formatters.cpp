@@ -31,4 +31,4 @@ QString DocumentNameByIdFormatter::format(const QString &documentFormatId) const
     return documentFormat == nullptr ? documentFormatId : documentFormat->getFormatName();
 }
 
-}    // namespace U2
+}  // namespace U2

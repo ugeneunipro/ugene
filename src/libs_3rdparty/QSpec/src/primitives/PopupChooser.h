@@ -123,6 +123,6 @@ protected:
     GTGlobals::UseMethod useMethod = GTGlobals::UseMouse;
     Qt::MatchFlag matchFlag = Qt::MatchExactly;
 };
-}    // namespace HI
+}  // namespace HI
 
 #endif

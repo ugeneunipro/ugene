@@ -119,9 +119,9 @@ void SaveGraphCutoffsDialogController::accept() {
             } else {
                 QList<U2Region>::iterator it = resultRegions.end();
                 it--;
-                if ((prevAccepetedPos + step) == curPos) {    //expand if accepted values in a row
+                if ((prevAccepetedPos + step) == curPos) {  // expand if accepted values in a row
                     it->length += step;
-                } else {    //remove previous empty region, and add new region to list
+                } else {  // remove previous empty region, and add new region to list
                     resultRegions.append(U2Region(curPos - startOffset, window));
                 }
             }
@@ -169,4 +169,4 @@ void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annot
     advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 
-}    // namespace U2
+}  // namespace U2

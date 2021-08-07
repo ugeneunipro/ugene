@@ -150,6 +150,6 @@ private:
     QStringList warnings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_NEXUS_PARSER_H_
+#endif  // #ifndef _U2_NEXUS_PARSER_H_

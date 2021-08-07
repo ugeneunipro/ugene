@@ -35,6 +35,6 @@ public:
     bool isEditingActive();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EDITABLE_TREE_VIEW_H_
+#endif  // _U2_EDITABLE_TREE_VIEW_H_

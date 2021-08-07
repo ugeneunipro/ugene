@@ -108,4 +108,4 @@ void ProjectDocumentSelection::sl_onDocumentRemoved(Document* d) {
     remove(QList<Document*>()<<d);
 }*/
 
-}    // namespace U2
+}  // namespace U2

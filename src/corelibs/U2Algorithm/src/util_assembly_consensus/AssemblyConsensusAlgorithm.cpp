@@ -26,4 +26,4 @@ namespace U2 {
 AssemblyConsensusAlgorithm::~AssemblyConsensusAlgorithm() {
 }
 
-}    // namespace U2
+}  // namespace U2

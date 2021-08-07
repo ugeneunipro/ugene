@@ -106,6 +106,6 @@ inline void AnaglyphRenderer::checkGlError(const char *file, int line) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_ANAGLYPH_RENDERER_H_
+#endif  // #ifndef _U2_ANAGLYPH_RENDERER_H_

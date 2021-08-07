@@ -86,7 +86,7 @@ void GSequenceGraphUtils::calculateMinMax(const QVector<float> &data, float &min
 float GSequenceGraphUtils::calculateAverage(const QVector<float> &data, float start, float range) {
     float result;
     if (int(start) != int(start + range)) {
-        //result constructed from 3 parts: ave[start, startIdx] + ave[startIdx, endIdx] + ave[endIdx, end]
+        // result constructed from 3 parts: ave[start, startIdx] + ave[startIdx, endIdx] + ave[endIdx, end]
         float part1 = 0;
         float part2 = 0;
         float part3 = 0;
@@ -99,7 +99,7 @@ float GSequenceGraphUtils::calculateAverage(const QVector<float> &data, float st
 
         assert(qAbs(startDiff + (endIdx - (startIdx + 1)) + endDiff - range) / range <= ACCEPTABLE_FLOAT_PRESISION_LOSS);
 
-        //calculating part1
+        // calculating part1
         if (startDiff > ACCEPTABLE_FLOAT_PRESISION_LOSS) {
             float v1 = data[startIdx];
             float v2 = data[startIdx + 1];
@@ -108,11 +108,11 @@ float GSequenceGraphUtils::calculateAverage(const QVector<float> &data, float st
             part1 = startDiff * (valInStart + v2) / 2;
         }
         int firstIdxInRange = int(ceil(start));
-        //calculating part2
+        // calculating part2
         for (int i = firstIdxInRange; i < endIdx; i++) {
             part2 += data[i];
         }
-        //calculating part3
+        // calculating part3
         if (endDiff > ACCEPTABLE_FLOAT_PRESISION_LOSS && endIdx + 1 < (int)data.size()) {
             float v1 = data[endIdx];
             float v2 = data[endIdx + 1];
@@ -120,10 +120,10 @@ float GSequenceGraphUtils::calculateAverage(const QVector<float> &data, float st
             float valInEnd = v1 + k * endDiff;
             part3 = endDiff * (v1 + valInEnd) / 2;
         }
-        //sum
+        // sum
         result = (part1 + part2 + part3) / range;
     } else {
-        //result constructed from 1 part: ave[start, end], no data points between
+        // result constructed from 1 part: ave[start, end], no data points between
         int startIdx = int(start);
         float startDiff = start - float(startIdx);
         float endDiff = startDiff + range;
@@ -139,7 +139,7 @@ float GSequenceGraphUtils::calculateAverage(const QVector<float> &data, float st
 }
 
 void GSequenceGraphUtils::fitToScreen(const QVector<float> &data, int dataStartBase, int dataEndBase, QVector<float> &results, int resultStartBase, int resultEndBase, int screenWidth, float unknownVal) {
-    //BUG:422: use intervals and max/min values instead of average!
+    // BUG:422: use intervals and max/min values instead of average!
     float basesPerPixel = (resultEndBase - resultStartBase) / (float)screenWidth;
     float basesInDataPerIndex = (dataEndBase - dataStartBase) / (float)(data.size() - 1);
     float currentBase = resultStartBase;
@@ -166,9 +166,9 @@ int GSequenceGraphUtils::getNumSteps(const U2Region &range, int w, int s) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//drawer
+// drawer
 
-const float GSequenceGraphDrawer::UNKNOWN_VAL = -1000;    // todo: use numeric limits and test all platforms
+const float GSequenceGraphDrawer::UNKNOWN_VAL = -1000;  // todo: use numeric limits and test all platforms
 
 GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView *v, const GSequenceGraphWindowData &wd, QMap<QString, QColor> colors)
     : QObject(v), view(v), lineColors(colors), globalMin(0), globalMax(0), wdata(wd) {
@@ -213,18 +213,18 @@ void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenc
     }
 
     {
-        //draw min/max
+        // draw min/max
         QPen minMaxPen(Qt::DashDotDotLine);
         minMaxPen.setWidth(1);
         p.setPen(minMaxPen);
         p.setFont(*defFont);
 
-        //max
+        // max
         p.drawLine(rect.topLeft(), rect.topRight());
         QRect maxTextRect(rect.x(), rect.y(), rect.width(), 12);
         p.drawText(maxTextRect, Qt::AlignRight, QString::number((double)globalMax, 'g', 4));
 
-        //min
+        // min
         p.drawLine(rect.bottomLeft(), rect.bottomRight());
         QRect minTextRect(rect.x(), rect.bottom() - 12, rect.width(), 12);
         p.drawText(minTextRect, Qt::AlignRight, QString::number((double)globalMin, 'g', 4));
@@ -365,7 +365,7 @@ void GSequenceGraphDrawer::drawGraph(QPainter &p, const QSharedPointer<GSequence
                         p.drawLine(prevX, prevY, x, prevY);
                     }
 
-                    if (prevY != y && prevX != -1) {    // common case for cutoffs
+                    if (prevY != y && prevX != -1) {  // common case for cutoffs
                         p.drawLine(x, prevY, x, y);
                     }
                     prevY = y;
@@ -742,15 +742,15 @@ void GSequenceGraphDrawer::calculatePoints(const QSharedPointer<GSequenceGraphDa
 
     min = UNKNOWN_VAL;
     max = UNKNOWN_VAL;
-    int alignedFirst = 0;    //start point for the first window
-    int alignedLast = 0;    //start point for the last window
+    int alignedFirst = 0;  // start point for the first window
+    int alignedLast = 0;  // start point for the last window
     align(vr.startPos, vr.endPos(), win, step, seqLen, alignedFirst, alignedLast);
     int nSteps = (alignedLast - alignedFirst) / step;
 
     bool winStepNotChanged = win == d->cachedW && step == d->cachedS;
     bool numPointsNotChanged = numPoints == d->cachedData.firstPoints.size();
 
-    if (!calculationTaskRunner.isIdle() && winStepNotChanged && d->cachedData.firstPoints.size() == 0) {    //first time calculation condition
+    if (!calculationTaskRunner.isIdle() && winStepNotChanged && d->cachedData.firstPoints.size() == 0) {  // first time calculation condition
         return;
     }
     CalculatePointsTask *calculationTask = nullptr;
@@ -905,7 +905,7 @@ QVector<float> GraphPointsUpdater::getCutoffRegion(int regionStart, int regionEn
 void GraphPointsUpdater::calculateWithFit() {
     int nPoints = result.firstPoints.size();
     float basesPerPoint = (alignedLast - alignedFirst) / float(nPoints);
-    CHECK(int(basesPerPoint) >= wdata.step, );    //ensure that every point is associated with some step data
+    CHECK(int(basesPerPoint) >= wdata.step, );  // ensure that every point is associated with some step data
     QVector<float> pointData;
     qint64 len = qMax(qint64(basesPerPoint), wdata.window);
 
@@ -924,7 +924,7 @@ void GraphPointsUpdater::calculateWithFit() {
         GSequenceGraphUtils::calculateMinMax(pointData, min, max, os);
         CHECK_OP(os, );
 
-        result.firstPoints[i] = max;    //BUG:422: support interval based graph!!!
+        result.firstPoints[i] = max;  // BUG:422: support interval based graph!!!
         result.secondPoints[i] = min;
     }
 }
@@ -941,7 +941,7 @@ void GraphPointsUpdater::calculateWithExpand() {
 
     QVector<float> res = getCutoffRegion(alignedFirst, alignedLast);
 
-    //0 or 1 step is before the visible range
+    // 0 or 1 step is before the visible range
     SAFE_POINT(alignedFirst + win2 + step >= visibleRange.startPos, "Incorrect region for graph calculation is detected", );
     SAFE_POINT(alignedLast + win2 - step <= visibleRange.endPos(), "Incorrect region for graph calculation is detected", );
 
@@ -949,8 +949,8 @@ void GraphPointsUpdater::calculateWithExpand() {
     bool hasAfterStep = alignedLast + win2 >= visibleRange.endPos();
 
     int firstBaseOffset = hasBeforeStep ? (step - (visibleRange.startPos - (alignedFirst + win2))) : (alignedFirst + win2 - visibleRange.startPos);
-    int lastBaseOffset = hasAfterStep ? (step - (alignedLast + win2 - visibleRange.endPos()))    //extra step on the right is available
-                                      : (visibleRange.endPos() - (alignedLast + win2));    // no extra step available -> end of the sequence
+    int lastBaseOffset = hasAfterStep ? (step - (alignedLast + win2 - visibleRange.endPos()))  // extra step on the right is available
+                                      : (visibleRange.endPos() - (alignedLast + win2));  // no extra step available -> end of the sequence
 
     SAFE_POINT(firstBaseOffset >= 0 && lastBaseOffset >= 0, "Incorrect offset is detected", );
     SAFE_POINT(hasBeforeStep ? (firstBaseOffset < step && firstBaseOffset != 0) : firstBaseOffset <= win2, "Incorrect offset is detected", );
@@ -967,7 +967,7 @@ void GraphPointsUpdater::calculateWithExpand() {
         result.firstPoints[px] = res[ri];
     }
 
-    //restore boundary points if possible
+    // restore boundary points if possible
     if (res.size() < 2) {
         return;
     }
@@ -1007,4 +1007,4 @@ PairVector::PairVector()
     : useIntervals(false) {
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -169,5 +169,5 @@ void IntegralBusType::addOutput(DataTypePtr t, const Port *producer) {
     }
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -427,4 +427,4 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getNewMova
     return newMovableCorner;
 }
 
-}    // namespace U2
+}  // namespace U2

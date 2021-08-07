@@ -39,6 +39,6 @@ private:
     const QString path;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_ADD_NEW_DOCUMENT_DIALOG_FILLER_H_
+#endif  // _U2_GT_ADD_NEW_DOCUMENT_DIALOG_FILLER_H_

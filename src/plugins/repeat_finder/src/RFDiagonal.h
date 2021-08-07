@@ -72,6 +72,6 @@ private:
     quint64 nextPercentS;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

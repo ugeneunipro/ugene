@@ -82,6 +82,6 @@ private:
     BackgroundTaskRunner<ConsensusInfo> consensusTaskRunner;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

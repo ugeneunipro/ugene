@@ -55,7 +55,7 @@ public:
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static QList<QLabel *> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
-    //returns color of point p in widget w coordinates
+    // returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
     static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
     static bool hasPixelWithColor(const QImage &image, const QColor &expectedColor);
@@ -148,6 +148,6 @@ public:
 #undef GT_CLASS_NAME
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

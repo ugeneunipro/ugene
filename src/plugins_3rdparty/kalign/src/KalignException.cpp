@@ -35,7 +35,7 @@ extern "C" void checkAllocatedMemory(void *ptr) {
 
 namespace U2 {
 
-KalignException::KalignException(const char* _str) {
+KalignException::KalignException(const char *_str) {
     int len = strlen(_str);
     assert(len < 4096);
     memcpy(str, _str, len);
@@ -46,4 +46,4 @@ KalignException::KalignException() {
     memset(str, '\0', 4096);
 }
 
-} // namespace U2
+}  // namespace U2

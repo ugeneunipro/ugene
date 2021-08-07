@@ -239,11 +239,11 @@ bool GenericSeqActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *pa
 }
 
 QString SeqReadPrompter::composeRichDoc() {
-    //TODO finish
-    //BusPort* input = qobject_cast<BusPort*>(target->getPort(CoreLib::DATA_PORT_ID));
+    // TODO finish
+    // BusPort* input = qobject_cast<BusPort*>(target->getPort(CoreLib::DATA_PORT_ID));
     QString url = getURL(BaseAttributes::URL_IN_ATTRIBUTE().getId());
     return QString("%1").arg(url);
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

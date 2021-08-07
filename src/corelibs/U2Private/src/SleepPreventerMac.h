@@ -50,6 +50,6 @@ class SleepPreventerMac : public SleepPreventer {
 
 #endif
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SLEEP_PREVENTER_MAC_H_
+#endif  // _U2_SLEEP_PREVENTER_MAC_H_

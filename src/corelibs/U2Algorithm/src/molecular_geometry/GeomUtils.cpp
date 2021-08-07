@@ -97,7 +97,7 @@ QVector<Vector3D> *GeodesicSphere::createGeodesicSphere(int detailLevel) {
     base[10] = Vector3D(0.0f, 1.0f, 0.0f);
     base[11] = Vector3D(-1.0f, 0.0f, 0.0f);
 
-    //down
+    // down
     base[12] = Vector3D(-1.0f, 0.0f, 0.0f);
     base[13] = Vector3D(0.0f, 0.0f, -1.0f);
     base[14] = Vector3D(0.0f, -1.0f, 0.0f);
@@ -122,4 +122,4 @@ QVector<Vector3D> *GeodesicSphere::createGeodesicSphere(int detailLevel) {
     return v;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -44,7 +44,7 @@ public:
     virtual bool isIOModeSupported(IOAdapterMode m) const {
         Q_UNUSED(m);
         return true;
-    }    //data can be read and be written
+    }  // data can be read and be written
 
     virtual TriState isResourceAvailable(const GUrl &url) const {
         Q_UNUSED(url);
@@ -113,6 +113,6 @@ private:
     GUrl url;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_STRING_ADAPTER_H_
+#endif  // _U2_STRING_ADAPTER_H_

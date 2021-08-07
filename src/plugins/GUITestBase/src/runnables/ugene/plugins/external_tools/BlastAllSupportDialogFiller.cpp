@@ -78,23 +78,23 @@ void BlastAllSupportDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 void BlastAllSupportDialogFiller::test_3211() {
-    //Expected state: there is a "Request to Local BLAST Database" dialog without an annotation widget.
+    // Expected state: there is a "Request to Local BLAST Database" dialog without an annotation widget.
     QWidget *widget = GTWidget::findWidget(os, "rbCreateNewTable", nullptr, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(nullptr == widget, "Annotations widget exists");
 
-    //2. Set any input sequence.
+    // 2. Set any input sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, UGUITest::dataDir + "samples/FASTA/human_T1.fa"));
     GTWidget::click(os, GTWidget::findWidget(os, "browseInput"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: an annotation widget was added.
+    // Expected state: an annotation widget was added.
     GTWidget::findWidget(os, "rbCreateNewTable");
 
-    //3. Set any another input sequence.
+    // 3. Set any another input sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, UGUITest::testDir + "_common_data/fasta/human_T1_cutted.fa"));
     GTWidget::click(os, GTWidget::findWidget(os, "browseInput"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //Expected state: there is a single annotation widget.
+    // Expected state: there is a single annotation widget.
     GTWidget::findWidget(os, "rbCreateNewTable");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -102,4 +102,4 @@ void BlastAllSupportDialogFiller::test_3211() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

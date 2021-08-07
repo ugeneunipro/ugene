@@ -37,7 +37,10 @@ typedef PrompterBase<CallVariantsPrompter> CallVariantsPrompterBase;
 class CallVariantsPrompter : public CallVariantsPrompterBase {
     Q_OBJECT
 public:
-    CallVariantsPrompter(Actor* p = 0) : CallVariantsPrompterBase(p) {}
+    CallVariantsPrompter(Actor *p = 0)
+        : CallVariantsPrompterBase(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
@@ -45,15 +48,15 @@ protected:
 class CallVariantsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    CallVariantsWorker(Actor* a);
+    CallVariantsWorker(Actor *a);
 
     virtual bool isReady() const;
     virtual void init();
-    virtual Task* tick();
+    virtual Task *tick();
     virtual void cleanup();
 
-    private slots:
-        void sl_taskFinished();
+private slots:
+    void sl_taskFinished();
 
 private:
     IntegralBus *refSeqPort, *assemblyPort, *output;
@@ -75,8 +78,8 @@ private:
     void takeAssembly(U2OpStatus &os);
     void takeReference(U2OpStatus &os);
     CallVariantsTaskSettings getSettings();
-    void processError(const U2OpStatus& os);
-    void checkState(U2OpStatus& os);
+    void processError(const U2OpStatus &os);
+    void checkState(U2OpStatus &os);
     bool hasAssembly() const;
     bool hasReferenceInPort() const;
 };
@@ -85,8 +88,12 @@ class CallVariantsWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    CallVariantsWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor* a) {return new CallVariantsWorker(a);}
+    CallVariantsWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *a) {
+        return new CallVariantsWorker(a);
+    }
 };
 
 class ScientificDoubleWidget : public PropertyWidget {
@@ -109,16 +116,16 @@ public:
 
     // PropertyDelegate
     virtual QVariant getDisplayValue(const QVariant &v) const;
-    virtual PropertyDelegate * clone();
-    virtual PropertyWidget * createWizardWidget(U2OpStatus &os, QWidget *parent) const;
+    virtual PropertyDelegate *clone();
+    virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
 
     // QItemDelegate
-    virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
     virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 };
 
-}// Workflow namespace
-} // namespace
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif //_SAMTOOLS_MPILEUP_WORKER_H_
+#endif  //_SAMTOOLS_MPILEUP_WORKER_H_

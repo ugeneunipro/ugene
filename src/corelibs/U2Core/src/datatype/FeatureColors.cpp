@@ -35,7 +35,7 @@ static QList<QColor> prepareColors() {
              << "00";
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < optional.size(); j++) {
-            for (int k = 1; k < optional.size(); k++) {    //todo: avoid duplicates
+            for (int k = 1; k < optional.size(); k++) {  // todo: avoid duplicates
                 QString colorName =
                     i == 0 ? mustHave + optional[j] + optional[k] : i == 1 ? optional[j] + mustHave + optional[k]
                                                                            : optional[j] + optional[k] + mustHave;
@@ -60,4 +60,4 @@ QColor FeatureColors::genLightColor(const QString &name) {
     return c;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -203,6 +203,6 @@ QList<T> U2DbiUtils::toList(U2DbiIterator<T> *it) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -162,4 +162,4 @@ void SArrayBasedFindTask::cleanup() {
     config = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

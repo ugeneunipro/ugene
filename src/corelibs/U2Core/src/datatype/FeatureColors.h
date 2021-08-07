@@ -33,6 +33,6 @@ public:
     static QColor genLightColor(const QString &name);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

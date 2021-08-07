@@ -70,21 +70,21 @@ void GTTreeWidget::checkItem(GUITestOpStatus &os, QTreeWidgetItem *item, int col
     const QPoint itemLevelOffset(getItemLevel(os, item) * tree->indentation(), 0);
 
     switch (method) {
-    case GTGlobals::UseKeyBoard: {
-        const QPoint cellCenterOffset(tree->columnWidth(column) / 2, itemRect.height() / 2);
-        GTMouseDriver::moveTo(itemStartPos + itemLevelOffset + columnOffset + cellCenterOffset);
-        GTMouseDriver::click();
-        GTKeyboardDriver::keyClick(Qt::Key_Space);
-        break;
-    }
-    case GTGlobals::UseMouse: {
-        const QPoint magicCheckBoxOffset = QPoint(15, 0);
-        GTMouseDriver::moveTo(tree->viewport()->mapToGlobal(itemStartPos + itemLevelOffset + columnOffset + magicCheckBoxOffset));
-        GTMouseDriver::click();
-        break;
-    }
-    default:
-        GT_CHECK(false, "Method is not implemented");
+        case GTGlobals::UseKeyBoard: {
+            const QPoint cellCenterOffset(tree->columnWidth(column) / 2, itemRect.height() / 2);
+            GTMouseDriver::moveTo(itemStartPos + itemLevelOffset + columnOffset + cellCenterOffset);
+            GTMouseDriver::click();
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
+            break;
+        }
+        case GTGlobals::UseMouse: {
+            const QPoint magicCheckBoxOffset = QPoint(15, 0);
+            GTMouseDriver::moveTo(tree->viewport()->mapToGlobal(itemStartPos + itemLevelOffset + columnOffset + magicCheckBoxOffset));
+            GTMouseDriver::click();
+            break;
+        }
+        default:
+            GT_CHECK(false, "Method is not implemented");
     }
 }
 #undef GT_METHOD_NAME
@@ -264,4 +264,4 @@ int GTTreeWidget::getItemLevel(GUITestOpStatus &os, QTreeWidgetItem *item) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

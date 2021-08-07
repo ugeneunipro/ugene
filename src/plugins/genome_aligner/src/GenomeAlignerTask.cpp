@@ -45,7 +45,7 @@
 
 namespace U2 {
 
-//TODO: calling tr() int static context! Translator is not initialized yet!
+// TODO: calling tr() int static context! Translator is not initialized yet!
 const QString GenomeAlignerTask::taskName(QObject::tr("UGENE Genome Aligner"));
 const QString GenomeAlignerTask::OPTION_ALIGN_REVERSED("align_reversed");
 const QString GenomeAlignerTask::OPTION_OPENCL("use_gpu_optimization");
@@ -144,7 +144,7 @@ GenomeAlignerTask::~GenomeAlignerTask() {
 
 void GenomeAlignerTask::prepare() {
     if (GzipDecompressTask::checkZipped(settings.refSeqUrl)) {
-        temp.open();    // opening creates new temporary file
+        temp.open();  // opening creates new temporary file
         temp.close();
         unzipTask = new GzipDecompressTask(settings.refSeqUrl, GUrl(QFileInfo(temp).absoluteFilePath()));
         settings.refSeqUrl = GUrl(QFileInfo(temp).absoluteFilePath());
@@ -344,7 +344,7 @@ Task::ReportResult GenomeAlignerTask::report() {
         taskLog.info(tr("The aligning is finished."));
         taskLog.info(tr("Whole working time = %1.").arg((GTimer::currentTimeMicros() - inf.startTime) / (1000 * 1000)));
         taskLog.info(tr("%1% reads aligned.").arg(100 * (double)nReadsProcessed / readsCount));
-        if (alignContext.bestMode) {    // not parallel writing could be measured
+        if (alignContext.bestMode) {  // not parallel writing could be measured
             taskLog.info(tr("Short-reads loading time = %1").arg(shortreadLoadTime / (1000 * 1000)));
             taskLog.info(tr("Results writing time = %1").arg(resultWriteTime / (1000 * 1000)));
         }
@@ -382,4 +382,4 @@ void GenomeAlignerTask::createGenomeAlignerWriteTask() {
     pWriteTask->setSubtaskProgressWeight(0.0f);
 }
 
-}    // namespace U2
+}  // namespace U2

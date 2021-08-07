@@ -37,8 +37,8 @@ public:
     DumpVersionTask();
     virtual void run();
 
-};    // DumpVersionTask
+};  // DumpVersionTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DUMP_VERSION_TASK_H__
+#endif  // _U2_DUMP_VERSION_TASK_H__

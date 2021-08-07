@@ -24,6 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "MuscleTask.h"
 
 namespace U2 {
@@ -33,7 +34,10 @@ namespace LocalWorkflow {
 class MusclePrompter : public PrompterBase<MusclePrompter> {
     Q_OBJECT
 public:
-    MusclePrompter(Actor* p = 0) : PrompterBase<MusclePrompter>(p) {}
+    MusclePrompter(Actor *p = 0)
+        : PrompterBase<MusclePrompter>(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
@@ -41,31 +45,34 @@ protected:
 class MuscleWorker : public BaseWorker {
     Q_OBJECT
 public:
-    MuscleWorker(Actor* a);
-    
+    MuscleWorker(Actor *a);
+
     virtual void init();
-    virtual Task* tick();
+    virtual Task *tick();
     virtual void cleanup();
-    
+
 private slots:
     void sl_taskFinished();
 
 protected:
     IntegralBus *input, *output;
-    QString resultName,transId;
+    QString resultName, transId;
     MuscleTaskSettings cfg;
-    
-}; 
+};
 
 class MuscleWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    MuscleWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    virtual Worker* createWorker(Actor* a) {return new MuscleWorker(a);}
+    MuscleWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
+    virtual Worker *createWorker(Actor *a) {
+        return new MuscleWorker(a);
+    }
 };
 
-}// Workflow namespace
-}// U2 namespace
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

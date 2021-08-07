@@ -156,4 +156,4 @@ DocumentFormat *RenameChromosomeInVariationFileTask::getFormat() {
     return formatDetectionResults.first().format;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -38,7 +38,7 @@
 
 #ifdef Q_OS_UNIX
 #    include <QTimer>
-#endif    // Q_OS_UNIX
+#endif  // Q_OS_UNIX
 
 namespace U2 {
 
@@ -262,6 +262,6 @@ private:
     QLabel *nameLabel;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

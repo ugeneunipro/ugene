@@ -30,7 +30,7 @@ Header::Header(QWidget *w)
     pal.setBrush(backgroundRole(), QBrush(palette().highlight().color()));
     pal.setBrush(foregroundRole(), QBrush(Qt::white));
     setPalette(pal);
-    //setBackgroundRole(QPalette::Highlight);
+    // setBackgroundRole(QPalette::Highlight);
 
     close = new QLabel(this);
     pin = new QLabel(this);
@@ -164,7 +164,7 @@ void NotificationWidget::addNotification(QWidget *w) {
 }
 
 bool NotificationWidget::removeNotification(QWidget *w) {
-    if (layout->indexOf(w) == -1) {    //Can't delete notification that isn't in stack
+    if (layout->indexOf(w) == -1) {  // Can't delete notification that isn't in stack
         return false;
     }
     layout->removeWidget(w);
@@ -182,4 +182,4 @@ bool NotificationWidget::removeNotification(QWidget *w) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

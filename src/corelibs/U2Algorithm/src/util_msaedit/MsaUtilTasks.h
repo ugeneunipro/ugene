@@ -99,6 +99,6 @@ protected:
     QMap<qint64, QList<U2MsaGap>> emptyGapModel;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_UTIL_TASKS
+#endif  // _U2_MSA_UTIL_TASKS

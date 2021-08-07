@@ -53,7 +53,7 @@ public:
 
     virtual bool isObjectOpSupported(const Document *d, DocumentFormat::DocObjectOp op, GObjectType t) const;
 
-    //exceptions
+    // exceptions
     struct StockholmBaseException {
         QString msg;
         StockholmBaseException(const QString &str)
@@ -77,8 +77,8 @@ protected:
 
     virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
 
-};    // StockholmFormat
+};  // StockholmFormat
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_STOCKHOLM_FORMAT_H_
+#endif  //_U2_STOCKHOLM_FORMAT_H_

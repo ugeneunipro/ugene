@@ -87,4 +87,4 @@ void U2FileDialog::activateWindow() {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2

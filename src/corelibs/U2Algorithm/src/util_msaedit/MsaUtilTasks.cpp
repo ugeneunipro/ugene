@@ -106,7 +106,7 @@ void AlignInAminoFormTask::prepare() {
     MultipleSequenceAlignment msa = maObj->getMsaCopy();
     const U2DbiRef &dbiRef = maObj->getEntityRef().dbiRef;
 
-    //Create temporal document for the workflow run task
+    // Create temporal document for the workflow run task
     const AppSettings *appSettings = AppContext::getAppSettings();
     SAFE_POINT_EXT(nullptr != appSettings, setError(tr("Invalid applications settings detected")), );
 
@@ -123,7 +123,7 @@ void AlignInAminoFormTask::prepare() {
     tmpDoc = docFormat->createNewLoadedDocument(iof, fileName, os);
     CHECK_OP(os, );
 
-    //Create copy of multiple alignment object
+    // Create copy of multiple alignment object
     clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, msa, stateInfo);
     CHECK_OP(stateInfo, );
     clonedObj->setGHints(new GHintsDefaultImpl(maObj->getGHintsMap()));
@@ -143,7 +143,7 @@ void AlignInAminoFormTask::run() {
     const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
     const QList<MultipleSequenceAlignmentRow> rows = newMsa->getMsaRows();
 
-    //Create gap map from amino-acid alignment
+    // Create gap map from amino-acid alignment
     foreach (const MultipleSequenceAlignmentRow &row, rows) {
         const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
         const MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
@@ -170,4 +170,4 @@ Task::ReportResult AlignInAminoFormTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

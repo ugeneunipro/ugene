@@ -63,4 +63,4 @@ void TableViewTabKey::keyPressEvent(QKeyEvent *event) {
     }
     QTableView::keyPressEvent(event);
 }
-}    // namespace U2
+}  // namespace U2

@@ -34,7 +34,7 @@ class AnnotatedDNAView;
 class OpenAnnotatedDNAViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    //opens a single view for all sequence object in the list of sequence objects related to the objects in the list
+    // opens a single view for all sequence object in the list of sequence objects related to the objects in the list
     OpenAnnotatedDNAViewTask(const QList<GObject *> &objects);
 
     virtual void open();
@@ -61,6 +61,6 @@ public:
     virtual void update();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

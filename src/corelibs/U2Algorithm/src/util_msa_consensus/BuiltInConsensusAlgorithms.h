@@ -37,6 +37,6 @@ public:
     static const QString SIMPLE_EXTENDED_ALGO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BUILT_IN_CONSENSUS_ALGORITHMS_H_
+#endif  // _U2_BUILT_IN_CONSENSUS_ALGORITHMS_H_

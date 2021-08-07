@@ -106,4 +106,4 @@ void ProjectFilteringController::connectNewTask(AbstractProjectFilterTask *task)
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_filteringFinished()));
 }
 
-}    // namespace U2
+}  // namespace U2

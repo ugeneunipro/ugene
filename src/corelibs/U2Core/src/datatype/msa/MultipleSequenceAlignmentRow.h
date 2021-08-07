@@ -307,6 +307,6 @@ inline bool operator!=(const MultipleSequenceAlignmentRowData *ptr1, const Multi
     return !(ptr1 == ptr2);
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
+#endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_

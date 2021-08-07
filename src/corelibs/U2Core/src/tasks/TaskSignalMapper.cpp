@@ -57,4 +57,4 @@ Task *TaskSignalMapper::getTask() const {
     return task;
 }
 
-}    //namespace U2
+}  // namespace U2

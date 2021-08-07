@@ -53,6 +53,6 @@ protected:
     U2ObjectRelationsDbi(U2Dbi *rootDbi);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_OBJECT_RELATIONS_DBI_H_
+#endif  // _U2_OBJECT_RELATIONS_DBI_H_

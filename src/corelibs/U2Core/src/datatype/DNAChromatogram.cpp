@@ -26,12 +26,12 @@
 namespace U2 {
 
 const ushort DNAChromatogram::INVALID_VALUE = 0;
-const char DNAChromatogram::DEFAULT_PROBABILITY = 0;    // SANGER_TODO: 100?
+const char DNAChromatogram::DEFAULT_PROBABILITY = 0;  // SANGER_TODO: 100?
 const QMap<DNAChromatogram::Trace, char> DNAChromatogram::TRACE_CHARACTER =
-                    { { DNAChromatogram::Trace::Trace_A, 'A' },
-                      { DNAChromatogram::Trace::Trace_C, 'C' },
-                      { DNAChromatogram::Trace::Trace_G, 'G' },
-                      { DNAChromatogram::Trace::Trace_T, 'T' } };
+    {{DNAChromatogram::Trace::Trace_A, 'A'},
+     {DNAChromatogram::Trace::Trace_C, 'C'},
+     {DNAChromatogram::Trace::Trace_G, 'G'},
+     {DNAChromatogram::Trace::Trace_T, 'T'}};
 
 DNAChromatogram::DNAChromatogram()
     : name("chromatogram"),
@@ -75,4 +75,4 @@ bool DNAChromatogram::operator==(const DNAChromatogram &otherChromatogram) const
            hasQV == otherChromatogram.hasQV;
 }
 
-}    // namespace U2
+}  // namespace U2

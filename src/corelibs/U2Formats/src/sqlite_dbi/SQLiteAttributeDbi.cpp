@@ -51,7 +51,7 @@ void SQLiteAttributeDbi::initSqlSchema(U2OpStatus &os) {
                      os)
         .execute();
 
-    //TODO: check if index is efficient for getting attribute for specific object
+    // TODO: check if index is efficient for getting attribute for specific object
     SQLiteWriteQuery("CREATE INDEX Attribute_name on Attribute(name)", db, os).execute();
     SQLiteWriteQuery("CREATE INDEX Attribute_object on Attribute(object)", db, os).execute();
 
@@ -353,4 +353,4 @@ void SQLiteAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpS
     q->execute();
 }
 
-}    // namespace U2
+}  // namespace U2

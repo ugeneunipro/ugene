@@ -50,8 +50,8 @@ SearchQuery::SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl) {
 qint64 SearchQuery::memoryHint() const {
     qint64 m = sizeof(*this);
 
-    m += seqLength + 1;    // seq
-    m += nameLength + 1;    // name
+    m += seqLength + 1;  // seq
+    m += nameLength + 1;  // name
 
     m += results.capacity() * sizeof(SAType);
     m += overlapResults.capacity() * sizeof(SAType);
@@ -59,7 +59,7 @@ qint64 SearchQuery::memoryHint() const {
 
     m += quality ? quality->memoryHint() : 0;
 
-    return m * 2;    // overhead due to many new calls of small regions
+    return m * 2;  // overhead due to many new calls of small regions
 }
 
 SearchQuery::SearchQuery(const U2AssemblyRead &, SearchQuery *revCompl) {
@@ -231,4 +231,4 @@ SearchQuery *SearchQueryContainer::at(quint64 pos) {
     return queries[pos];
 }
 
-}    // namespace U2
+}  // namespace U2

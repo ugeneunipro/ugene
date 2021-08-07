@@ -139,4 +139,4 @@ ChromaViewAction::ChromaViewAction()
     : ADVSequenceWidgetAction("CHROMA_ACTION", tr("Show chromatogram")), view(nullptr) {
 }
 
-}    // namespace U2
+}  // namespace U2

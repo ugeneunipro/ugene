@@ -101,4 +101,4 @@ void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *m
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -47,11 +47,11 @@ public:
     };
 
     enum class TrimmomaticValues {
-        //AVGQUAL, LEADING, SLIDINGWINDOW and TRAIILING
+        // AVGQUAL, LEADING, SLIDINGWINDOW and TRAIILING
         QualityThreshold,
-        //CROP, HEADCROP, MINLEN
+        // CROP, HEADCROP, MINLEN
         Length,
-        //ILLUMINACLIP
+        // ILLUMINACLIP
         AdapterSequence,
         SeedMismatches,
         PalindromeClipThreshold,
@@ -59,10 +59,10 @@ public:
         ProvideOptionalSettings,
         MinAdapterLength,
         KeepBothReads,
-        //MAXINFO
+        // MAXINFO
         TargetLength,
         Strictness,
-        //SLIDINGWINDOW
+        // SLIDINGWINDOW
         WindowSize
     };
 
@@ -73,11 +73,11 @@ public:
 
     static void openDialog(HI::GUITestOpStatus &os, WorkflowProcessItem *trimmomaticElement);
 
-    //Add steps
+    // Add steps
     TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<TrimmomaticSteps, QMap<TrimmomaticValues, QVariant>>> &addValues);
-    //Move steps
+    // Move steps
     TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<QPair<TrimmomaticSteps, int>, TrimmomaticDirection>> &moveValues);
-    //Remove steps
+    // Remove steps
     TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<TrimmomaticSteps, int>> &removeValues);
     TrimmomaticDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
 
@@ -103,6 +103,6 @@ private:
     static const QMap<TrimmomaticValues, QString> VALUES;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // TRIMMOMATIC_DIALOG_FILLER_H
+#endif  // TRIMMOMATIC_DIALOG_FILLER_H

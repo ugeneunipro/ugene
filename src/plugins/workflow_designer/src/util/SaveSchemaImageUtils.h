@@ -87,8 +87,8 @@ private:
     Metadata meta;
     QString imageLink;
 
-};    // ProduceSchemaImageLinkTask
+};  // ProduceSchemaImageLinkTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_SAVE_SCHEMA_IMAGE_UTILS_H_
+#endif  // _U2_WORKFLOW_SAVE_SCHEMA_IMAGE_UTILS_H_

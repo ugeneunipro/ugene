@@ -93,7 +93,7 @@ public:
 
     void saveState(QDElementStatement *el) const;
     void loadState(QDElementStatement *el);
-    //returns constraint's connection point in scene coords
+    // returns constraint's connection point in scene coords
     QPointF getRightConnector();
     QPointF getLeftConnector();
     bool isLinkedWith(QDElement *other, QDDistanceType kind);
@@ -260,7 +260,7 @@ private:
     QFont font;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::QDElement *);
 

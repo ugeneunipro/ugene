@@ -54,6 +54,6 @@ public:
     static bool removeIdenticalResults(QList<SmithWatermanResult> *lst);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

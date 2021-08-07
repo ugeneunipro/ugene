@@ -97,7 +97,7 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget *p, double min, double max, b
     minmaxGroup->setChecked(enabled);
     minmaxGroup->setObjectName("minmaxGroup");
 
-    //for range use min max of type
+    // for range use min max of type
     minBox = new MinMaxDoubleSpinBox;
     minBox->setRange(INT_MIN, INT_MAX);
     minBox->setValue(min);
@@ -216,4 +216,4 @@ void WindowStepSelectorDialog::sl_onOkClicked(bool v) {
     QMessageBox::critical(this, tr("Error!"), err.append(' ').append(mmerr));
 }
 
-}    // namespace U2
+}  // namespace U2

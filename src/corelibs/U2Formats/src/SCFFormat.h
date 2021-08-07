@@ -53,6 +53,6 @@ private:
     bool loadSCFObjects(IOAdapter *io, DNASequence &dna, DNAChromatogram &cd, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -92,13 +92,13 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
         case GTGlobals::UseMouse: {
             Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED, method);
             GTUtilsDialog::waitForDialog(os, popupChooser);
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
             GTMouseDriver::click(Qt::RightButton);
             break;
         }
         case GTGlobals::UseKey:
         default:
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
             GTMouseDriver::click();
             GTKeyboardDriver::keyClick(Qt::Key_Delete);
             break;
@@ -134,7 +134,7 @@ void GTUtilsDocument::saveDocument(HI::GUITestOpStatus &os, const QString &docum
     Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT, GTGlobals::UseMouse);
 
     GTUtilsDialog::waitForDialog(os, popupChooser);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep(500);
@@ -153,7 +153,7 @@ void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus &os, const QString &doc
     }
 
     GTUtilsDialog::waitForDialog(os, popupChooser);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep(500);
@@ -164,7 +164,7 @@ void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus &os, const QString &doc
 void GTUtilsDocument::loadDocument(HI::GUITestOpStatus &os, const QString &documentName) {
     GT_CHECK_RESULT(!isDocumentLoaded(os, documentName), "Document is loaded", );
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));    //dirty hack
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
     GTMouseDriver::doubleClick();
 
     GTGlobals::sleep(500);
@@ -217,4 +217,4 @@ QList<GObjectView *> GTUtilsDocument::getAllGObjectViews() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

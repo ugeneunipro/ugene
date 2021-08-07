@@ -66,6 +66,6 @@ private:
     mutable DNAChromatogram cache;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

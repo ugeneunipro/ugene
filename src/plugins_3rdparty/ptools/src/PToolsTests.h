@@ -22,9 +22,9 @@
 #ifndef _U2_PTOOLS_TESTS_H_
 #define _U2_PTOOLS_TESTS_H_
 
-#include "PToolsAligner.h"
-
 #include <U2Test/XMLTestUtils.h>
+
+#include "PToolsAligner.h"
 
 namespace U2 {
 
@@ -50,7 +50,6 @@ private:
     double accuracy;
 };  // class Gtest_PToolsAlignerTask
 
-}   // namespace U2
+}  // namespace U2
 
 #endif  // #ifndef _U2_PTOOLS_TESTS_H_
-

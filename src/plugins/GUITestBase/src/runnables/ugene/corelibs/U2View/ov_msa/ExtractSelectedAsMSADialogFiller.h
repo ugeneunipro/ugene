@@ -32,7 +32,7 @@ public:
     /**
      * Initialize the default filler scenario for the dialog.
      * If 'useDefaultSequenceSelection' is 'true' ignores 'selectedSequenceNameList' values and re-uses currently checked values by MSA editor.
-    */
+     */
     ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os,
                                      const QString &filepath,
                                      const QStringList &selectedSequenceNameList = QStringList(),
@@ -68,6 +68,6 @@ private:
     bool useDefaultSequenceSelection;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -162,7 +162,7 @@ StrStrMap initFormatIdsMap() {
     return anyIds2trueIds;
 }
 
-}    // namespace
+}  // namespace
 
 bool BaseDocumentFormats::equal(const DocumentFormatId &first, const DocumentFormatId &second) {
     // After UGENE-5719 fix format IDs were occasionally changed
@@ -181,4 +181,4 @@ DocumentFormatId BaseDocumentFormats::toValidId(const DocumentFormatId &invalidF
     return invalidIds.value(invalidFormatId, invalidFormatId);
 }
 
-}    // namespace U2
+}  // namespace U2

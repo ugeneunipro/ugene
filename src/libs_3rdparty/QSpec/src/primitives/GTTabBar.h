@@ -35,5 +35,5 @@ public:
     static void setCurrentIndex(GUITestOpStatus &os, QTabBar *tabBar, int index);
 };
 
-}    // namespace HI
-#endif    // _HI_GT_TABBAR_H_
+}  // namespace HI
+#endif  // _HI_GT_TABBAR_H_

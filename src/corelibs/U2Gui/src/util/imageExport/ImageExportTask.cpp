@@ -91,4 +91,4 @@ QWidget *ImageExportController::getSettingsWidget() {
     return settingsWidget;
 }
 
-}    // namespace U2
+}  // namespace U2

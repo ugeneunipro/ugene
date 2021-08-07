@@ -138,4 +138,4 @@ void WevoteTask::parseClassification() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

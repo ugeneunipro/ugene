@@ -39,7 +39,7 @@ namespace U2 {
 
 MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject *maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(maObject->getMultipleAlignmentCopy()),    // SANGER_TODO: getiing before any check
+      ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getiing before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),
@@ -269,4 +269,4 @@ bool MaHighlightingOverviewCalculationTask::isCellHighlighted(int seq, int pos) 
     return isCellHighlighted(ma, highlightingScheme, colorScheme, seq, pos, refSequenceId);
 }
 
-}    // namespace U2
+}  // namespace U2

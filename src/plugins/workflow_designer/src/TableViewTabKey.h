@@ -37,6 +37,6 @@ private:
     void setNextIndex();
     QModelIndex getNextIndex() const;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TABLE_VIEW_TAB_KEY_H_
+#endif  // _U2_TABLE_VIEW_TAB_KEY_H_

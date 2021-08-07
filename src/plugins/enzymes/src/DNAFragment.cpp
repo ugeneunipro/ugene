@@ -283,4 +283,4 @@ void DNAFragment::toRevCompl(QByteArray &seq) {
     TextUtils::reverse(seq.data(), seq.size());
 }
 
-}    // namespace U2
+}  // namespace U2

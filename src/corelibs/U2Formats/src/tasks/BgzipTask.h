@@ -57,6 +57,6 @@ private:
     GUrl unzippedUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BGZIP_TASK_H_
+#endif  // _U2_BGZIP_TASK_H_

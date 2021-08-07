@@ -60,7 +60,7 @@ int DiProperty::index(char c) {
     if (c == 'T' || c == 'U') {
         return 3;
     }
-    return 0;    //default is 'A'
+    return 0;  // default is 'A'
 }
 
 char DiProperty::fromIndex(int index) {
@@ -82,6 +82,6 @@ char DiProperty::fromIndexHi(int index) {
     return fromIndex(index >> 2);
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

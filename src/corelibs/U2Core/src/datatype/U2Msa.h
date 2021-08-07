@@ -43,8 +43,8 @@ public:
     U2MsaGap();
     U2MsaGap(qint64 off, qint64 gap);
 
-    qint64 endPos() const;    // not inclusive
-    void setEndPos(qint64 endPos);    // not inclusive
+    qint64 endPos() const;  // not inclusive
+    void setEndPos(qint64 endPos);  // not inclusive
 
     bool isValid() const;
 
@@ -80,7 +80,7 @@ public:
     U2DataId sequenceId;
 
     /** Start of the row in the sequence */
-    qint64 gstart;    // TODO: rename or remove, if it is not used
+    qint64 gstart;  // TODO: rename or remove, if it is not used
 
     /** End of the row in the sequence */
     qint64 gend;
@@ -114,6 +114,6 @@ public:
     static const char INVALID_CHAR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_H_
+#endif  // _U2_MSA_H_

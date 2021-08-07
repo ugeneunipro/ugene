@@ -49,8 +49,8 @@ GUI_TEST_CLASS_DECLARATION(test_0005)
 GUI_TEST_CLASS_DECLARATION(test_0006)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_msa_editor_consensus
+}  // namespace GUITest_common_scenarios_msa_editor_consensus
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //GTTESTS_MSA_EDITOR_CONSENSUS_H_
+#endif  // GTTESTS_MSA_EDITOR_CONSENSUS_H_

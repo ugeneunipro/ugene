@@ -44,7 +44,7 @@ public:
 
     static QString prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extraExts = QStringList(".gz"));
 
-    //returns filter for all formats supported. All-docs filter is returned first if any==true
+    // returns filter for all formats supported. All-docs filter is returned first if any==true
     static QString prepareDocumentsFileFilter(bool any, const QStringList &extraExts = QStringList(".gz"));
 
     static QString prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any);
@@ -69,6 +69,6 @@ private:
     bool multi;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -53,6 +53,6 @@ public:
     virtual void setAttributeValue(const QVariant &newVal);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GROUPER_SLOT_ATTRIBUTE_
+#endif  // _GROUPER_SLOT_ATTRIBUTE_

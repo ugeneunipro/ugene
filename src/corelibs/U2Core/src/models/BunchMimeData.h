@@ -43,6 +43,6 @@ public:
     QList<Folder> folders;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BUNCHMIMEDATA_H_
+#endif  // _U2_BUNCHMIMEDATA_H_

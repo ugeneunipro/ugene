@@ -153,6 +153,6 @@ private:
     int firstComplTransLine;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DET_VIEW_SINGLE_LINE_RENDERER_H_
+#endif  // _U2_DET_VIEW_SINGLE_LINE_RENDERER_H_

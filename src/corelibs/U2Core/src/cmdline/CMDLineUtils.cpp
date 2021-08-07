@@ -30,8 +30,8 @@
 namespace U2 {
 
 /***************************************************
-* CMDLineRegistryUtils
-***************************************************/
+ * CMDLineRegistryUtils
+ ***************************************************/
 int CMDLineRegistryUtils::getParameterIndex(const QString &paramName, int startWith) {
     QList<StrStrPair> params;
     setCMDLineParams(params);
@@ -50,7 +50,7 @@ QStringList CMDLineRegistryUtils::getParameterValues(const QString &paramName, i
     QStringList res;
     int sz = params.size();
     int paramIdx = getParameterIndex(paramName, startWith);
-    if (-1 == paramIdx) {    // no such parameter
+    if (-1 == paramIdx) {  // no such parameter
         return res;
     }
     for (int i = paramIdx; i < sz; ++i) {
@@ -102,12 +102,12 @@ QStringList generateCandidates(const QString &prefix) {
 #ifndef Q_OS_WIN
     res << generateCandidatesWithExt(prefix + "/" + "ugene");
     res << generateCandidatesWithExt(prefix + "/" + "ugened");
-#endif    // !Q_OS_WIN
+#endif  // !Q_OS_WIN
     res << generateCandidatesWithExt(prefix + "/" + "ugenecl");
     res << generateCandidatesWithExt(prefix + "/" + "ugenecld");
     return res;
 }
-}    // namespace
+}  // namespace
 
 QString CMDLineRegistryUtils::getCmdlineUgenePath() {
     QString executableDir = AppContext::getWorkingDirectoryPath();
@@ -128,10 +128,10 @@ void CMDLineRegistryUtils::setCMDLineParams(QList<StrStrPair> &to) {
 }
 
 /***************************************************
-* CMDLineUtils
-***************************************************/
+ * CMDLineUtils
+ ***************************************************/
 void CMDLineUtils::init() {
     CMDLineCoreOptions::initHelp();
 }
 
-}    // namespace U2
+}  // namespace U2

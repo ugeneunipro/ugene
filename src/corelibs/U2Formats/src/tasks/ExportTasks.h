@@ -141,6 +141,6 @@ private:
     LoadDocumentTask *loadTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

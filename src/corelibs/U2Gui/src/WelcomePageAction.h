@@ -47,6 +47,6 @@ public:
     static const QString QUICK_START;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WELCOME_PAGE_ACTION_H_
+#endif  // _U2_WELCOME_PAGE_ACTION_H_

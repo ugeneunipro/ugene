@@ -94,6 +94,6 @@ private:
     static const QMap<QString, QString> FIXED_CASE_QSTYLE_KEY_MAP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

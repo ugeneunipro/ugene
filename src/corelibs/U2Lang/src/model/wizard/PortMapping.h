@@ -57,6 +57,6 @@ private:
                                U2OpStatus &os) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PORTMAPPING_H_
+#endif  // _U2_PORTMAPPING_H_

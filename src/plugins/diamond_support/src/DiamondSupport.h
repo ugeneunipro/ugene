@@ -35,6 +35,6 @@ public:
     static const QString TOOL_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DIAMOND_SUPPORT_H_
+#endif  // _U2_DIAMOND_SUPPORT_H_

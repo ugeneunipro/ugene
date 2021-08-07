@@ -77,4 +77,4 @@ MessageMetadata MessageMetadataStorage::get(int metadataId) const {
     return data.value(metadataId, MessageMetadata());
 }
 
-}    // namespace U2
+}  // namespace U2

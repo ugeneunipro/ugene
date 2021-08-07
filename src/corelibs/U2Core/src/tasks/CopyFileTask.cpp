@@ -49,4 +49,4 @@ void CopyFileTask::run() {
     CHECK_EXT(succeeded, setError(tr("File copy from '%1' to '%2' failed").arg(sourceFilePath).arg(targetFilePath)), );
 }
 
-}    // namespace U2
+}  // namespace U2

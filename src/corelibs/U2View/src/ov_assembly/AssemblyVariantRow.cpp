@@ -178,7 +178,7 @@ bool AssemblyVariantRow::findVariantOnPos(QList<U2Variant> &variants) {
     foreach (const U2Variant &v, currentData.variants) {
         int xStart = (v.startPos - startPos) * currentData.snpWidth;
         int xEnd = 0;
-        if (isSNP(v)) {    // SNP
+        if (isSNP(v)) {  // SNP
             xEnd = xStart + currentData.snpWidth;
         } else {
             xEnd = (v.refData.length()) * currentData.snpWidth + xStart;
@@ -223,7 +223,7 @@ void AssemblyVariantRow::updateHint() {
         offset -= QPoint(hintRect.right() - readsAreaRect.right(), 0);
     }
     if (hintRect.bottom() > readsAreaRect.bottom()) {
-        offset -= QPoint(0, hintRect.bottom() - readsAreaRect.bottom());    // move hint bottom to reads area
+        offset -= QPoint(0, hintRect.bottom() - readsAreaRect.bottom());  // move hint bottom to reads area
         offset -= QPoint(0, readsAreaRect.bottom() - QCursor::pos().y() + AssemblyReadsAreaHint::OFFSET_FROM_CURSOR.y());
     }
     QPoint newPos = QCursor::pos() + AssemblyReadsAreaHint::OFFSET_FROM_CURSOR + offset;
@@ -323,4 +323,4 @@ void AssemblyVariantRowManager::sl_removeRow() {
     model->sl_trackObjRemoved(row->getTrackObject());
 }
 
-}    // namespace U2
+}  // namespace U2

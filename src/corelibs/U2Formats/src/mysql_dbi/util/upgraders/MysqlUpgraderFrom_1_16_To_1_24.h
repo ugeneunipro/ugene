@@ -51,6 +51,6 @@ private:
     static const QString COLUMN_SEPARATOR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADER_FROM_1_17_TO_1_24_H_
+#endif  // _U2_MYSQL_UPGRADER_FROM_1_17_TO_1_24_H_

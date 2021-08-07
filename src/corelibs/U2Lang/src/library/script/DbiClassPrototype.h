@@ -105,7 +105,7 @@ protected:
     static void fromScriptValue(const QScriptValue &obj, ScriptDbiData &id);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 /** Template implementations */
 namespace U2 {
@@ -128,9 +128,9 @@ QScriptValue DbiScriptClass::toScriptValue(QScriptEngine *engine, const ScriptDb
     return sClass->newInstance(id, false /* deepCopy */);
 }
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::ScriptDbiData)
 Q_DECLARE_METATYPE(U2::ScriptDbiData *)
 
-#endif    // _U2_DBICLASSPROTOTYPE_H_
+#endif  // _U2_DBICLASSPROTOTYPE_H_

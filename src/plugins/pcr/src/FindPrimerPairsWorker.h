@@ -75,7 +75,7 @@ public:
     }
 };
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 class FindPrimersTask : public Task {
     Q_OBJECT
@@ -102,6 +102,6 @@ private:
     QStringList rows;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

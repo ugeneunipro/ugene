@@ -64,7 +64,7 @@ bool selectAreaMac(const int x, const int y) {
 }
 #    undef GT_METHOD_NAME
 
-}    // namespace
+}  // namespace
 
 #    define GT_METHOD_NAME "moveToP"
 bool GTMouseDriver::moveTo(const QPoint &p) {
@@ -166,7 +166,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(0);    // don't touch, it's Mac's magic
+    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
     CFRelease(event);
 
     return true;
@@ -197,7 +197,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(0);    // don't touch, it's Mac's magic
+    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
     CFRelease(event);
 
     return true;
@@ -216,7 +216,7 @@ bool GTMouseDriver::doubleClick() {
     DRIVER_CHECK(eventRelease != NULL, "Can't create event");
 
     CGEventPost(kCGSessionEventTap, eventPress);
-    GTGlobals::sleep(0);    // don't touch, it's Mac's magic
+    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
     CGEventPost(kCGSessionEventTap, eventRelease);
     GTGlobals::sleep(0);
 
@@ -224,7 +224,7 @@ bool GTMouseDriver::doubleClick() {
     CGEventSetDoubleValueField(eventRelease, kCGMouseEventClickState, 2);
 
     CGEventPost(kCGSessionEventTap, eventPress);
-    GTGlobals::sleep(0);    // don't touch, it's Mac's magic
+    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
     CGEventPost(kCGSessionEventTap, eventRelease);
     GTGlobals::sleep(0);
 
@@ -246,7 +246,7 @@ bool GTMouseDriver::scroll(int value) {
     value = value > 0 ? value : -value;
     for (int i = 0; i < value; i += 10) {
         CGEventPost(kCGSessionEventTap, event);
-        GTGlobals::sleep(0);    // don't touch, it's Mac's magic
+        GTGlobals::sleep(0);  // don't touch, it's Mac's magic
     }
 
     CFRelease(event);
@@ -256,5 +256,5 @@ bool GTMouseDriver::scroll(int value) {
 #    undef GT_METHOD_NAME
 #    undef GT_CLASS_NAME
 
-#endif    // Q_OS_DARWIN
-}    // namespace HI
+#endif  // Q_OS_DARWIN
+}  // namespace HI

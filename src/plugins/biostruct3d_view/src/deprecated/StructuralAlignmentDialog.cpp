@@ -151,4 +151,4 @@ StructuralAlignmentTask *StructuralAlignmentDialog::getTask() {
     return task;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -338,7 +338,7 @@ DECLARE_TEST(MsaRowUnitTests, replaceChars_tildasToGapsNoGaps);
 DECLARE_TEST(MsaRowUnitTests, replaceChars_tildasToGapsWithGaps);
 DECLARE_TEST(MsaRowUnitTests, replaceChars_trailingGaps);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaRowUnitTests, createRow_fromBytes)
 DECLARE_METATYPE(MsaRowUnitTests, createRow_fromBytesTrailing)

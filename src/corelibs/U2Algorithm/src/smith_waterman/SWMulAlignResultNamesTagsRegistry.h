@@ -56,16 +56,16 @@ public:
     inline ~SWMulAlignResultNamesTagsRegistry();
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QList<QPushButton *> *getTagsButtons() const;    // to be deallocated outside
+    inline QList<QPushButton *> *getTagsButtons() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForMobjectsNames() const;    // to be deallocated outside
+    inline QStringList *getDefaultTagsForMobjectsNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForRefSubseqNames() const;    // to be deallocated outside
+    inline QStringList *getDefaultTagsForRefSubseqNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForPtrnSubseqNames() const;    // to be deallocated outside
+    inline QStringList *getDefaultTagsForPtrnSubseqNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
     // to be deallocated outside; also if bit is set in returned QBitArray object then corresponding button
@@ -75,7 +75,7 @@ public:
     QString parseStringWithTags(const QString &str, const SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData &expansionSet) const;
 
     // this method is supposed to be invoked before each string with counter tags parsing
-    //if there's need to begin counting from 1
+    // if there's need to begin counting from 1
     inline void resetCounters();
 
 private:
@@ -160,6 +160,6 @@ inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForPtrnSubs
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_REGISTRY_H_
+#endif  // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_REGISTRY_H_

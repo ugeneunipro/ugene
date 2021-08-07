@@ -35,6 +35,6 @@ public:
     void commonScenario();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // BRANCHSETTINGSDIALOGFILLER_H
+#endif  // BRANCHSETTINGSDIALOGFILLER_H

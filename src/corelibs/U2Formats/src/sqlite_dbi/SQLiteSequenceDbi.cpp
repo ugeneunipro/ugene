@@ -169,9 +169,9 @@ static QList<QByteArray> quantify(const QList<QByteArray> &input) {
     QByteArray currentChunk;
     foreach (const QByteArray &i, input) {
         int bytes2Chunk = SEQUENCE_CHUNK_SIZE - currentChunk.length();
-        if (i.length() <= bytes2Chunk) {    //if 'i' fits into chunk - just add it
+        if (i.length() <= bytes2Chunk) {  // if 'i' fits into chunk - just add it
             currentChunk.append(i);
-        } else {    // 'i' does not fit into chunk -> split it into separate chunks
+        } else {  // 'i' does not fit into chunk -> split it into separate chunks
             for (int j = 0; j < i.length(); j += bytes2Chunk) {
                 if (j > 0) {
                     bytes2Chunk = qMin(SEQUENCE_CHUNK_SIZE, i.length() - j);
@@ -254,10 +254,10 @@ void SQLiteSequenceDbi::updateSequenceDataCore(const U2DataId &sequenceId, const
     bool emptySequence = hints.value(U2SequenceDbiHints::EMPTY_SEQUENCE, false).toBool();
     SQLiteTransaction t(db, os);
 
-    //algorithm:
-    // find all regions affected -> remove them
-    // construct new regions from cuts from old regions and new dataToInsert
-    // remove affected annotations or adjust their locations if possible
+    // algorithm:
+    //  find all regions affected -> remove them
+    //  construct new regions from cuts from old regions and new dataToInsert
+    //  remove affected annotations or adjust their locations if possible
 
     // find cropped parts
     QByteArray leftCrop, rightCrop;
@@ -407,4 +407,4 @@ void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId &sequenceId, const
 
     updateSequenceDataCore(sequenceId, replacedRegion, newData, hints, os);
 }
-}    // namespace U2
+}  // namespace U2

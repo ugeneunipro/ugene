@@ -55,7 +55,7 @@ private:
     static const QString KRAKEN_DIR;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_KRAKEN_CLASSIFY_WORKER_H_
+#endif  // _U2_KRAKEN_CLASSIFY_WORKER_H_

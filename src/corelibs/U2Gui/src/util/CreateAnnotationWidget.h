@@ -120,6 +120,6 @@ protected:
     static bool caseInsensitiveLessThan(const QString &first, const QString &second);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CREATE_ANNOTATION_WIDGET_H_
+#endif  // _U2_CREATE_ANNOTATION_WIDGET_H_

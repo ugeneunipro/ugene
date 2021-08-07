@@ -49,7 +49,7 @@ protected:
     // document's target
     Actor *target;
 
-};    // ActorDocument
+};  // ActorDocument
 
 /**
  * base class for factory of Actor's documents
@@ -59,9 +59,9 @@ public:
     virtual ActorDocument *createDescription(Actor *) = 0;
     virtual ~Prompter() {
     }
-};    // Prompter
+};  // Prompter
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_ACTORDOCUMENT_H_
+#endif  // _U2_ACTORDOCUMENT_H_

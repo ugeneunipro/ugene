@@ -196,7 +196,7 @@ void U2SQLiteTripleStore::addValue(const U2Triplet &value, U2OpStatus &os) {
     this->getTripletId(value, found, os);
     CHECK_OP(os, );
 
-    if (!found) {    // insert triplet
+    if (!found) {  // insert triplet
         this->insertTriplet(value, os);
         CHECK_OP(os, );
     }
@@ -299,4 +299,4 @@ void U2SQLiteTripleStore::removeValue(const U2Triplet &value, U2OpStatus &os) {
     q.execute();
 }
 
-}    // namespace U2
+}  // namespace U2

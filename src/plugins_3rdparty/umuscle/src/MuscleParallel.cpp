@@ -44,7 +44,7 @@ namespace U2 {
 
 MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, const MuscleTaskSettings &_config, MuscleContext *ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(nullptr), refineTreeTask(nullptr), refineTask(nullptr) {
-    //assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
+    // assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
     workpool = new MuscleWorkPool(ctx, _config, stateInfo, _config.nThreads, ma, res, _config.regionToAlign.startPos == 0);
     prepareTask = new MusclePrepareTask(workpool);
@@ -90,7 +90,7 @@ QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {
 }
 
 void MuscleParallelTask::cleanup() {
-    //delete workpool->ph;
+    // delete workpool->ph;
     delete workpool;
     workpool = nullptr;
 }
@@ -98,7 +98,7 @@ void MuscleParallelTask::cleanup() {
 ///////////////////////////////////////////////////////////////////////////////////////
 MusclePrepareTask::MusclePrepareTask(MuscleWorkPool *wp)
     : Task("MusclePrepareTask", TaskFlags_FOSCOE), workpool(wp) {
-    //do nothing
+    // do nothing
 }
 
 void MusclePrepareTask::run() {
@@ -130,11 +130,11 @@ void MusclePrepareTask::_run() {
             break;
         case MuscleTaskOp_AddUnalignedToProfile:
             assert(0);
-            //doAddUnalignedToProfile();
+            // doAddUnalignedToProfile();
             break;
         case MuscleTaskOp_ProfileToProfile:
             assert(0);
-            //doProfile2Profile();
+            // doProfile2Profile();
             break;
     }
 }
@@ -201,10 +201,10 @@ void MusclePrepareTask::alignPrepareUnsafe() {
     SetMuscleTree(GuideTree);
     ValidateMuscleIds(GuideTree);
 
-    //ProgressiveAlignment
+    // ProgressiveAlignment
     assert(workpool->GuideTree.IsRooted());
 
-    //const unsigned uIterCount = uSeqCount - 1;
+    // const unsigned uIterCount = uSeqCount - 1;
     const unsigned uNodeCount = 2 * uSeqCount - 1;
 
     if (ctx->params.g_bLow) {
@@ -219,7 +219,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
     workpool->treeNodeStatus = new TreeNodeStatus[GuideTree.GetNodeCount()];
     workpool->treeNodeIndexes = new unsigned[GuideTree.GetNodeCount()];
 #ifdef _DEBUG
-    //set initial values
+    // set initial values
     for (unsigned i = 0; i < GuideTree.GetNodeCount(); i++) {
         workpool->treeNodeStatus[i] = TreeNodeStatus_Processing;
         workpool->treeNodeIndexes[i] = NULL_NEIGHBOR;
@@ -234,7 +234,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
         }
     }
 #ifdef _DEBUG
-    //validate
+    // validate
     for (unsigned i = 0; i < GuideTree.GetNodeCount(); i++) {
         assert(workpool->treeNodeStatus[i] != TreeNodeStatus_Processing);
         assert(workpool->treeNodeIndexes[i] != NULL_NEIGHBOR);
@@ -327,10 +327,10 @@ void ProgressiveAlignTask::run() {
 
 void ProgressiveAlignTask::_run() {
     if (!workpool->res->isEmpty()) {
-        return;    // no more need in align
+        return;  // no more need in align
     }
     if (workpool->ti.hasError()) {
-        return;    // cancel on error
+        return;  // cancel on error
     }
     MuscleContext *ctx = workpool->ctx;
 
@@ -510,7 +510,7 @@ void RefineTreeTask::run() {
 
 void RefineTreeTask::_run() {
     if (!workpool->res->isEmpty()) {
-        return;    // no more need in align
+        return;  // no more need in align
     }
     MuscleContext *ctx = workpool->ctx;
 
@@ -570,7 +570,7 @@ void RefineTask::run() {
 
 void RefineTask::_run() {
     if (!workpool->res->isEmpty()) {
-        return;    // no more need in align
+        return;  // no more need in align
     }
     MuscleContext *ctx = workpool->ctx;
     MSA &msa = workpool->a;
@@ -591,7 +591,7 @@ void RefineTask::_run() {
     ValidateMuscleIds(workpool->GuideTree);
 
     if (workpool->config.op != MuscleTaskOp_Refine) {
-        //assert(int(msa.GetSeqCount()) == workpool->ma->getNumSequences());
+        // assert(int(msa.GetSeqCount()) == workpool->ma->getNumSequences());
         prepareAlignResults(msa, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     } else {
         prepareAlignResults(msa, workpool->ma->getAlphabet(), workpool->res, false);
@@ -622,4 +622,4 @@ void RefineWorker::run() {
     TaskLocalData::detachMuscleTLSContext();
 }
 
-}    // namespace U2
+}  // namespace U2

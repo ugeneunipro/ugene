@@ -154,12 +154,12 @@ FilterType DotPlotFilterDialog::getFilterType() {
 void DotPlotFilterDialog::sl_filterTypeChanged(int id) {
     FilterType curType = FilterType(id);
     switch (curType) {
-    case All:
-        intersectionParams->setEnabled(false);
-        break;
-    case Features:
-        intersectionParams->setEnabled(true);
-        break;
+        case All:
+            intersectionParams->setEnabled(false);
+            break;
+        case Features:
+            intersectionParams->setEnabled(true);
+            break;
     }
 }
 
@@ -255,4 +255,4 @@ void DotPlotFilterDialog::sl_invertSelection() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

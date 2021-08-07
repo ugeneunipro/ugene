@@ -178,4 +178,4 @@ IMPLEMENT_TEST(TextObjectUnitTests, remove) {
     CHECK_TRUE(records.isEmpty(), "records");
 }
 
-}    // namespace U2
+}  // namespace U2

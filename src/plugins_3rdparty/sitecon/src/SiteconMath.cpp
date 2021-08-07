@@ -104,4 +104,4 @@ double critchi(double p, int df) {
     return (chisqval);
 }
 
-}    // namespace U2
+}  // namespace U2

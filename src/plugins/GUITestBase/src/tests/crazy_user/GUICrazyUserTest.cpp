@@ -109,6 +109,6 @@ GUI_TEST_CLASS_DEFINITION(simple_crazy_user) {
     loop.exec();
 }
 
-}    // namespace GUITest_crazy_user
+}  // namespace GUITest_crazy_user
 
-}    // namespace U2
+}  // namespace U2

@@ -63,4 +63,4 @@ void AceImportWidget::initSaveController(const GUrl &url) {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-}    // namespace U2
+}  // namespace U2

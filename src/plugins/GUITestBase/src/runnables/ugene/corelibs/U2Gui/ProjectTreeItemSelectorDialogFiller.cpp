@@ -66,7 +66,7 @@ bool checkTreeRowCount(QTreeView *tree, int expectedDocCount) {
     return visibleItemCount == expectedDocCount;
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "commonScenario"
 void ProjectTreeItemSelectorDialogFiller::commonScenario() {
@@ -111,7 +111,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
         case Continuous:
             GTKeyboardDriver::keyClick(Qt::Key_Shift);
             break;
-        default:;    // empty default section to avoid GCC warning
+        default:;  // empty default section to avoid GCC warning
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -120,4 +120,4 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

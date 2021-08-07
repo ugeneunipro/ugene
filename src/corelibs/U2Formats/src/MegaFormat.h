@@ -65,6 +65,6 @@ private:
     static const int BLOCK_LENGTH = 45;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

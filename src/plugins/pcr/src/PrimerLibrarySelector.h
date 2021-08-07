@@ -40,6 +40,6 @@ private slots:
     void sl_selectionChanged();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_LIBRARY_SELECTOR_H_
+#endif  // _U2_PRIMER_LIBRARY_SELECTOR_H_

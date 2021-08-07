@@ -115,4 +115,4 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     project->addDocument(document);
 }
 
-}    // namespace U2
+}  // namespace U2

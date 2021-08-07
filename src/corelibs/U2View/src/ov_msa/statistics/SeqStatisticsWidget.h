@@ -69,6 +69,6 @@ private:
     MsaOpSavableTab savableTab;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

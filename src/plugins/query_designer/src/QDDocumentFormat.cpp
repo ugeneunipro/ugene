@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-//QDGobject
+// QDGobject
 //////////////////////////////////////////////////////////////////////////
 const GObjectType QDGObject::TYPE("query-obj");
 
@@ -46,7 +46,7 @@ GObject *QDGObject::clone(const U2DbiRef &, U2OpStatus &, const QVariantMap &hin
 
 ;
 
-//Format
+// Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject *p)
     : TextDocumentFormatDeprecated(p, DocumentFormatId("QueryDocFormat"), DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
@@ -112,7 +112,7 @@ FormatCheckResult QDDocFormat::checkRawTextData(const QByteArray &rawData, const
     return FormatDetection_NotMatched;
 }
 
-//Factory
+// Factory
 //////////////////////////////////////////////////////////////////////////
 const GObjectViewFactoryId QDViewFactory::ID("query-view-factory");
 
@@ -141,7 +141,7 @@ Task *QDViewFactory::createViewTask(const MultiGSelection &multiSelection, bool 
     return result;
 }
 
-//OpenViewTask
+// OpenViewTask
 //////////////////////////////////////////////////////////////////////////
 OpenQDViewTask::OpenQDViewTask(Document *doc)
     : ObjectViewTask(QDViewFactory::ID), document(doc) {
@@ -174,4 +174,4 @@ void OpenQDViewTask::open() {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
     }
 }
-}    // namespace U2
+}  // namespace U2

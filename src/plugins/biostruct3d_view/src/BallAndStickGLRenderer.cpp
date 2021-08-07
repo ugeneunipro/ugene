@@ -119,11 +119,11 @@ static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel
         Color4f atomColor = colorScheme->getAtomColor(atom);
         if (viewAtomColor == atomColor) {
             Vector3D pos = atom->coord3d;
-            //glPushMatrix();
+            // glPushMatrix();
             glTranslatef(pos.x, pos.y, pos.z);
             gluSphere(pObj, radius, numSlices, numSlices);
             glTranslatef(-pos.x, -pos.y, -pos.z);
-            //glPopMatrix();
+            // glPopMatrix();
         }
     }
 
@@ -138,15 +138,15 @@ static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel
 
         if (a1Color == viewAtomColor) {
             if (a1Color == a2Color) {
-                //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a1Color);
+                // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a1Color);
                 glDrawCylinder(pObj, a1->coord3d, a2->coord3d, bondThickness, renderDetailLevel);
             } else {
-                //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a1Color);
+                // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a1Color);
                 glDrawCylinder(pObj, a1->coord3d, middle, bondThickness, renderDetailLevel);
             }
         }
         if (a2Color == viewAtomColor) {
-            //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a2Color);
+            // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, a2Color);
             glDrawCylinder(pObj, middle, a2->coord3d, bondThickness, renderDetailLevel);
         }
     }
@@ -175,7 +175,7 @@ void BallAndStickGLRenderer::createDisplayList() {
                 Color4f atomColor = colorScheme->getAtomColor(atom);
 
                 if (colors.contains(atomColor)) {
-                    continue;    // Atom and bonds with this color has been already viewed
+                    continue;  // Atom and bonds with this color has been already viewed
                 } else {
                     drawAtomsBonds(atomColor, renderDetailLevel, model, colorScheme);
                     colors.push_back(atomColor);
@@ -189,4 +189,4 @@ void BallAndStickGLRenderer::createDisplayList() {
     CHECK_GL_ERROR;
 }
 
-}    // namespace U2
+}  // namespace U2

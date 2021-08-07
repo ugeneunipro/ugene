@@ -65,8 +65,8 @@ protected:
     ElapsedTimeUpdater *timeUpdater;
 };
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _WORKFLOW_LAST_READY_SCHEDULER_H_
+#endif  // _WORKFLOW_LAST_READY_SCHEDULER_H_

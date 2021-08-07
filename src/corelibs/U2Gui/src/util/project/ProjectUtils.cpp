@@ -99,4 +99,4 @@ LoadUnloadedDocumentTask *ProjectUtils::findLoadTask(const QString &url) {
     return LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
 }
 
-}    // namespace U2
+}  // namespace U2

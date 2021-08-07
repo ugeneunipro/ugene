@@ -44,7 +44,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
         chunk_start = buf;
         len = readBlock(buf, qMin(CHUNK, (qint64)end - (qint64)buf));
         if (len == -1) {
-            //error
+            // error
             return -1;
         }
         if (len < CHUNK) {
@@ -70,7 +70,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
 
     if (found) {
         bool b = skip((qint64)buf - (qint64)chunk_start - len);
-        assert(b);    // Cannot put back unused data;
+        assert(b);  // Cannot put back unused data;
         Q_UNUSED(b);
     }
 
@@ -122,4 +122,4 @@ void IOAdapter::cutByteOrderMarks(char *data, QString &errorString, qint64 &leng
     }
 }
 
-}    // namespace U2
+}  // namespace U2

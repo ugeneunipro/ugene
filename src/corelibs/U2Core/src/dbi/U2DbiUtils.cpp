@@ -308,4 +308,4 @@ DbiOperationsBlock::~DbiOperationsBlock() {
     delete connection;
 }
 
-}    // namespace U2
+}  // namespace U2

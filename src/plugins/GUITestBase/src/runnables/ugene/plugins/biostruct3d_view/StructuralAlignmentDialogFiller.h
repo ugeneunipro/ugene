@@ -37,6 +37,6 @@ private:
     QStringList chainIndexes;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_STRUCTURAL_ALIGNMENT_DIALOG_FILLER_H_
+#endif  // _U2_STRUCTURAL_ALIGNMENT_DIALOG_FILLER_H_

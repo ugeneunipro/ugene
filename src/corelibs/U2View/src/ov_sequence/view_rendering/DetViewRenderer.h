@@ -67,6 +67,6 @@ public:
     static DetViewRenderer *createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine = false);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DET_VIEW_RENDERER_H_
+#endif  // _U2_DET_VIEW_RENDERER_H_

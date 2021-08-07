@@ -114,7 +114,7 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
 
     if (foundExt) {
         int dotPos = urlStr.length() - lastSuffix.length() - 1;
-        if ((dotPos >= 0) && (QChar('.') == urlStr[dotPos])) {    //yes, lastSuffix is a correct extension with .
+        if ((dotPos >= 0) && (QChar('.') == urlStr[dotPos])) {  // yes, lastSuffix is a correct extension with .
             urlStr = urlStr.left(dotPos);
         }
     }
@@ -163,4 +163,4 @@ ValuesRelation *ValuesRelation::clone() const {
     return new ValuesRelation(*this);
 }
 
-}    // namespace U2
+}  // namespace U2

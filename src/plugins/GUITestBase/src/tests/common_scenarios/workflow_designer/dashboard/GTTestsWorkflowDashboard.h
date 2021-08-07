@@ -74,8 +74,8 @@ GUI_TEST_CLASS_DECLARATION(output_dir_scanning_test_0007)
 GUI_TEST_CLASS_DECLARATION(output_dir_scanning_test_0008)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_workflow_dashboard
+}  // namespace GUITest_common_scenarios_workflow_dashboard
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_TESTS_WORKFLOW_DASHBOARD_H_
+#endif  // _U2_GT_TESTS_WORKFLOW_DASHBOARD_H_

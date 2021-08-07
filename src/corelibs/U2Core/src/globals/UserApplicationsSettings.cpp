@@ -58,7 +58,7 @@ namespace U2 {
 #define UPDATES_ENABLED QString("check_updates")
 #define SKIP_UPDATE_PREFIX QString("skip_update_")
 
-//TODO: create a special ENV header to keep all env-vars ugene depends
+// TODO: create a special ENV header to keep all env-vars ugene depends
 #define UGENE_SKIP_TMP_DIR_CLEANUP "UGENE_SKIP_TMP_DIR_CLEANUP"
 
 UserAppsSettings::UserAppsSettings() {
@@ -298,4 +298,4 @@ void UserAppsSettings::skipUpdate(const QString &versionString) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SKIP_UPDATE_PREFIX + versionString, true);
 }
 
-}    // namespace U2
+}  // namespace U2

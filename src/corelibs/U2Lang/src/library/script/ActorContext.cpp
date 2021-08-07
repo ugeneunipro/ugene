@@ -87,5 +87,5 @@ QScriptValue ActorContext::createOutBus(Port *port, QScriptEngine *engine) {
     return busArray;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

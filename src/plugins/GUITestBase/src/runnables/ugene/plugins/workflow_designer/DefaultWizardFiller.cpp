@@ -33,4 +33,4 @@ void DefaultWizardFiller::commonScenario() {
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 }
 
-}    // namespace U2
+}  // namespace U2

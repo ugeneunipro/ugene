@@ -62,7 +62,7 @@ U2DbiPool *getDbiPool(U2OpStatus &os) {
     CHECK_EXT(nullptr != pool, os.setError("DBI pool is not initialized"), nullptr);
     return pool;
 }
-}    // namespace
+}  // namespace
 
 void DbiConnection::open(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties) {
     SAFE_POINT_EXT(!isOpen(), os.setError(QString("Connection is already opened! %1").arg(dbi->getDbiId())), );
@@ -109,4 +109,4 @@ DbiConnection::DbiConnection()
     : dbi(nullptr) {
 }
 
-}    // namespace U2
+}  // namespace U2

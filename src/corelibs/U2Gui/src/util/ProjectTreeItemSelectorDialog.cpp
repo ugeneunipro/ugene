@@ -119,7 +119,7 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
 
     if (rc == QDialog::Accepted) {
         SAFE_POINT(nullptr != d->controller, "Invalid project tree controller", );
-        folderList << d->controller->getSelectedFolders();    // add folders selected by a user
+        folderList << d->controller->getSelectedFolders();  // add folders selected by a user
 
         const GObjectSelection *os = d->controller->getGObjectSelection();
         SAFE_POINT(nullptr != os, "Invalid object selection", );
@@ -132,7 +132,7 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
                 }
             }
             if (!objectIsAlreadySelected) {
-                objList << obj;    // add objects selected by the user that are not located in chosen folders
+                objList << obj;  // add objects selected by the user that are not located in chosen folders
             }
         }
     }
@@ -156,4 +156,4 @@ Folder ProjectTreeItemSelectorDialog::selectFolder(QWidget *parent) {
     return Folder();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -58,4 +58,4 @@ DataBaseFactory *DataBaseRegistry::getFactoryById(const QString &id) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

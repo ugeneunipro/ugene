@@ -65,4 +65,4 @@ void SequenceTextEdit::insertFromMimeData(const QMimeData *source) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -166,7 +166,7 @@ public:
     QList<QPair<QString, QStringList>> data;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::DNALocusInfo)
 Q_DECLARE_METATYPE(U2::DNASourceInfo)

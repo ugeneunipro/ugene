@@ -85,7 +85,7 @@ protected:
     TLSContext *createContextInstance();
 };
 
-//locks MultipleSequenceAlignment object and propagate KalignTask results to it
+// locks MultipleSequenceAlignment object and propagate KalignTask results to it
 class KalignGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
@@ -102,17 +102,17 @@ public:
 };
 
 /**
-* runs kalign from cmdline schema in separate process
-* using data/cmdline/align-kalign.uwl schema
-* schema has following aliases:
-* in - input file with alignment (will be set in WorkflowRunSchemaForTask)
-* out - output file with result (will be set in WorkflowRunSchemaForTask)
-* format - output file format (will be set in WorkflowRunSchemaForTask)
-* bonus-score - bonus score of kalign task
-* gap-ext-penalty - kalign parameter
-* gap-open-penalty - kalign parameter
-* gap-terminal-penalty - kalign parameter
-*/
+ * runs kalign from cmdline schema in separate process
+ * using data/cmdline/align-kalign.uwl schema
+ * schema has following aliases:
+ * in - input file with alignment (will be set in WorkflowRunSchemaForTask)
+ * out - output file with result (will be set in WorkflowRunSchemaForTask)
+ * format - output file format (will be set in WorkflowRunSchemaForTask)
+ * bonus-score - bonus score of kalign task
+ * gap-ext-penalty - kalign parameter
+ * gap-open-penalty - kalign parameter
+ * gap-terminal-penalty - kalign parameter
+ */
 class KalignGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
@@ -143,6 +143,6 @@ private:
     LoadDocumentTask *loadDocumentTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

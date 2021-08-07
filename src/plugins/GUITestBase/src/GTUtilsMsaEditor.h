@@ -79,7 +79,7 @@ public:
     /** Clicks sequence with a mouse button and a keyboard key pressed. */
     static void clickSequenceName(HI::GUITestOpStatus &os,
                                   const QString &sequenceName,
-                                  const Qt::MouseButton& mouseButton = Qt::LeftButton,
+                                  const Qt::MouseButton &mouseButton = Qt::LeftButton,
                                   const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
 
     static void moveToColumn(HI::GUITestOpStatus &os, int column);
@@ -133,6 +133,6 @@ public:
     static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_MSA_EDITOR_H_
+#endif  // _U2_GT_UTILS_MSA_EDITOR_H_

@@ -9,4 +9,4 @@ void TestThread::run() {
     }
 }
 
-}    // namespace HI
+}  // namespace HI

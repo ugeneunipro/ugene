@@ -41,6 +41,6 @@ void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType>
     }
 }
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

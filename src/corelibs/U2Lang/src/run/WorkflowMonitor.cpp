@@ -449,7 +449,7 @@ static bool registerMeta() {
 
 const bool Registrator::isMetaRegistered = registerMeta();
 
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* WDListener */
@@ -546,7 +546,7 @@ void WDListener::writeToFile(int messageType, const QString &message) {
                 errorHasMessages = true;
             }
             break;
-        default:;    // Do not write to file
+        default:;  // Do not write to file
     }
 }
 
@@ -555,5 +555,5 @@ void WDListener::writeToFile(QTextStream &logStream, const QString &message) {
     logStream << message;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

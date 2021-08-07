@@ -127,6 +127,6 @@ protected:
     void addNavigationMenu(QMenu *menu);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MCA_EDITOR_H_
+#endif  // _U2_MCA_EDITOR_H_

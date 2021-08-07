@@ -40,7 +40,7 @@ private:
     QString pairedInputSlotId;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_INPUT_DATA_PORT_VALIDATOR_H_
+#endif  // _U2_INPUT_DATA_PORT_VALIDATOR_H_

@@ -53,6 +53,6 @@ private:
     static const int LOCAL_READ_BUFFER_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

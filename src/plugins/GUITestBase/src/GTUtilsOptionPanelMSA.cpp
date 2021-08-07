@@ -122,7 +122,7 @@ void GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab) 
 #define GT_METHOD_NAME "addReference"
 void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method) {
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
-    //Option panel should be opned to use this method
+    // Option panel should be opned to use this method
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
@@ -274,7 +274,7 @@ QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(HI::GUITestOpStatus &os, int
 void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method, int number) {
     GT_CHECK(number == 1 || number == 2, "number must be 1 or 2");
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
-    //Option panel should be opned to use this method
+    // Option panel should be opned to use this method
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
@@ -574,4 +574,4 @@ QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
-}    // namespace U2
+}  // namespace U2

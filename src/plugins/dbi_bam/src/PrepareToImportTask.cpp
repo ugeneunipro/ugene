@@ -73,7 +73,7 @@ namespace {
 bool equalUrls(const QString &url1, const QString &url2) {
     return QFileInfo(url1).absoluteFilePath() == QFileInfo(url2).absoluteFilePath();
 }
-}    // namespace
+}  // namespace
 
 bool PrepareToImportTask::needToCopyBam(const QString &sortedBamUrl) const {
     const QString indexedBamUrl = getIndexedBamUrl(sortedBamUrl);
@@ -160,7 +160,7 @@ static QString detectedFormatId(const FormatDetectionResult &f) {
     }
     return f.format->getFormatId();
 }
-}    // namespace
+}  // namespace
 
 void PrepareToImportTask::checkReferenceFile() {
     CHECK(!refUrl.isEmpty(), );
@@ -196,5 +196,5 @@ bool PrepareToImportTask::isNewURL() {
     return newURL;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

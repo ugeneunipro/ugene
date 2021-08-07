@@ -75,6 +75,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_common_scenarios_project_relations
+}  // namespace GUITest_common_scenarios_project_relations
 
-}    // namespace U2
+}  // namespace U2

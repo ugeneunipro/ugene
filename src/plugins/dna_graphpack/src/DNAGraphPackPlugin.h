@@ -67,6 +67,6 @@ private slots:
     void sl_sequenceWidgetAdded(ADVSequenceWidget *);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

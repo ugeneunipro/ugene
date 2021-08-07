@@ -46,6 +46,6 @@ private:
     UrlAndDatasetController *dsc;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_URL_AND_DATASET_WIZARD_CONTROLLER_H_
+#endif  // _U2_URL_AND_DATASET_WIZARD_CONTROLLER_H_

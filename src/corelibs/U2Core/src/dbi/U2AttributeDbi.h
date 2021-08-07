@@ -141,6 +141,6 @@ public:
     virtual void createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

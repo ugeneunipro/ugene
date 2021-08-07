@@ -45,4 +45,4 @@ const MaEditorSelection &MaEditorContext::getSelection() const {
     return selectionController->getSelection();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -63,4 +63,4 @@ void GSequenceGraphViewWithFactory::addActionsToGraphMenu(QMenu *graphMenu) {
     GSequenceGraphView::addActionsToGraphMenu(graphMenu);
 }
 
-}    // namespace U2
+}  // namespace U2

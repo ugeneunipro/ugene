@@ -129,7 +129,7 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
 
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
-        } else {    // id or value
+        } else {  // id or value
             if (al1->getMsaRows().size() != al2->getMsaRows().size()) {
                 return false;
             }
@@ -446,5 +446,5 @@ void MergeAnnotationPerformer::setParameters(const QVariantMap &map) {
     offset = map.value(MergeSequencePerformer::PREV_SEQ_LENGTH, 0).toLongLong();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

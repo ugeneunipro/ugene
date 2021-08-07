@@ -105,18 +105,18 @@ public:
     }
 
 private:
-    bool incorrectNumberOfFields;    // There should be 9 fields
-    bool emptyField;    // Each field shouldn't be empty or shouldn't consist of white spaces
-    bool incorrectCoordinates;    // Start and end should be integer, start should be <= end
-    bool incorrectScore;    // Should be float, or integer, or a dot('.'), i.e. empty
-    bool incorrectStrand;    // Should be '+', '-', or '.'
-    bool incorrectFrame;    // Should be 0, or 1, or 2, or '.'
-    bool noGeneIdAttribute;    // "gene_id" attribute is required
-    bool noTranscriptIdAttribute;    // "transcript_id" attribute is required
-    bool incorrectFormatOfAttributes;    // Attributes must end in a semicolon which must then be separated
-        // from the start of any subsequent attribute by exactly one space
-        // character (NOT a tab character). Textual attributes should be
-        // surrounded by double quotes.
+    bool incorrectNumberOfFields;  // There should be 9 fields
+    bool emptyField;  // Each field shouldn't be empty or shouldn't consist of white spaces
+    bool incorrectCoordinates;  // Start and end should be integer, start should be <= end
+    bool incorrectScore;  // Should be float, or integer, or a dot('.'), i.e. empty
+    bool incorrectStrand;  // Should be '+', '-', or '.'
+    bool incorrectFrame;  // Should be 0, or 1, or 2, or '.'
+    bool noGeneIdAttribute;  // "gene_id" attribute is required
+    bool noTranscriptIdAttribute;  // "transcript_id" attribute is required
+    bool incorrectFormatOfAttributes;  // Attributes must end in a semicolon which must then be separated
+                                       // from the start of any subsequent attribute by exactly one space
+                                       // character (NOT a tab character). Textual attributes should be
+                                       // surrounded by double quotes.
 };
 
 struct GTFLineData {
@@ -163,9 +163,9 @@ private:
     GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags &status) const;
 
     /**
-    * A common method for parsing and validating an input GTF file.
-    * It is used during loading the file or just getting the annotations data from it.
-    */
+     * A common method for parsing and validating an input GTF file.
+     * It is used during loading the file or just getting the annotations data from it.
+     */
     QMap<QString, QList<SharedAnnotationData>> parseDocument(IOAdapter *io, U2OpStatus &os);
 
     void load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os);
@@ -176,13 +176,13 @@ private:
     static const QString CHROMOSOME;
     static const QString SOURCE_QUALIFIER_NAME;
     static const QString SCORE_QUALIFIER_NAME;
-    static const QString STRAND_QUALIFIER_NAME;    // e.g. to detect if a value was in the original GTF file
-        // (when it is rewritten)
+    static const QString STRAND_QUALIFIER_NAME;  // e.g. to detect if a value was in the original GTF file
+                                                 // (when it is rewritten)
     static const QString FRAME_QUALIFIER_NAME;
     static const QString GENE_ID_QUALIFIER_NAME;
     static const QString TRANSCRIPT_ID_QUALIFIER_NAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

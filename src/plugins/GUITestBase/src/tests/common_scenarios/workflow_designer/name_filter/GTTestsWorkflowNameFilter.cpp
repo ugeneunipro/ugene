@@ -47,13 +47,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 2. Open the samples tab.
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
     GTTabWidget::setCurrentIndex(os, tabs, 1);
-    //GTWidget::click(os, GTWidget::findWidget(os, "samples"));
+    // GTWidget::click(os, GTWidget::findWidget(os, "samples"));
 
     // 3. Click the "Name filter" line edit.
     QWidget *parent = GTWidget::findWidget(os, "palette");
     QLineEdit *nameFilter = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
     CHECK(nameFilter, );
-    //hack. GTLineEdit can not set focus on widget. Don't know why
+    // hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
     GTKeyboardDriver::keySequence("HMM");
     // 4. Write "HMM".
@@ -87,10 +87,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::samples);
 
     // 3. Press Ctrl+F.
-    //Expected: the "Name filter" line edit has the focus
+    // Expected: the "Name filter" line edit has the focus
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     // 4. Write "align muscle".
-    //Expected: There is the muscle alignment sample after filtering.
+    // Expected: There is the muscle alignment sample after filtering.
     GTKeyboardDriver::keySequence("align muscle");
 
     // Expected: There are two samples after filtering.
@@ -113,8 +113,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     }
     CHECK_SET_ERR(count == 1, QString("Wrong number of visible items in sample tree with 'align muscle' filter: %1").arg(count));
 
-    //5. Press Esc.
-    //Expected: the name filter is clear, all samples are shown.
+    // 5. Press Esc.
+    // Expected: the name filter is clear, all samples are shown.
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -148,7 +148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK(nameFilter, );
 
     // 4. Write "NGS".
-    //hack. GTLineEdit can not set focus on widget. Don't know why
+    // hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
     GTKeyboardDriver::keySequence("NGS");
 
@@ -173,6 +173,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(count == 22, QString("Wrong number of visible items in sample tree: %1").arg(count));
 }
 
-}    // namespace GUITest_common_scenarios_workflow_name_filter
+}  // namespace GUITest_common_scenarios_workflow_name_filter
 
-}    // namespace U2
+}  // namespace U2

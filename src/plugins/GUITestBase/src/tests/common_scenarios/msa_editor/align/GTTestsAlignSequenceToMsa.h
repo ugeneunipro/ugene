@@ -52,8 +52,8 @@ GUI_TEST_CLASS_DECLARATION(test_0016_3)
 GUI_TEST_CLASS_DECLARATION(test_0017)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_align_sequences_to_msa
+}  // namespace GUITest_common_scenarios_align_sequences_to_msa
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
+#endif  // GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_

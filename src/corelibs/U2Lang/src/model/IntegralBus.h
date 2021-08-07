@@ -152,10 +152,10 @@ protected:
 
     QMutex *contextMutex;
 
-};    // IntegralBus
+};  // IntegralBus
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_INTEGRAL_BUS_H_
+#endif  // _U2_WORKFLOW_INTEGRAL_BUS_H_

@@ -94,8 +94,8 @@ GUI_TEST_CLASS_DECLARATION(export_test_0007)
 GUI_TEST_CLASS_DECLARATION(export_test_0008)
 GUI_TEST_CLASS_DECLARATION(export_test_0009)
 
-}    // namespace GUITest_common_scenarios_shared_database
+}  // namespace GUITest_common_scenarios_shared_database
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GTTESTS_SHARED_DATABASE_H_
+#endif  // _GTTESTS_SHARED_DATABASE_H_

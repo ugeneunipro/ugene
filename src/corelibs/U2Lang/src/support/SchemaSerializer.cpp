@@ -32,7 +32,7 @@
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowEnv.h>
 
-//Q_DECLARE_METATYPE(U2::Workflow::CfgMap)
+// Q_DECLARE_METATYPE(U2::Workflow::CfgMap)
 
 namespace U2 {
 namespace Workflow {
@@ -152,12 +152,12 @@ QDomElement SchemaSerializer::saveActor(const Actor *proc, QDomElement &proj) {
     return docElement;
 }
 
-//static Actor* readActor(const QDomElement& procElement) {
-//    const QString name = procElement.attribute(TYPE_ATTR);
-//    ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(name);
-//    if (!proto) {
-//        return NULL;
-//    }
+// static Actor* readActor(const QDomElement& procElement) {
+//     const QString name = procElement.attribute(TYPE_ATTR);
+//     ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(name);
+//     if (!proto) {
+//         return NULL;
+//     }
 
 //    Actor* proc = proto->createInstance();
 //    if (proc) {
@@ -236,12 +236,12 @@ void SchemaSerializer::readParamAliases(QMap<QString, QString> &aliases, const Q
 
 static const QString META_EL = "info";
 
-//static void saveMeta(const Workflow::Metadata* meta, QDomElement& proj){
-//    QDomElement el = proj.ownerDocument().createElement(META_EL);
-//    proj.appendChild(el);
-//    el.setAttribute(NAME_ATTR, meta->name);
-//    el.appendChild(proj.ownerDocument().createCDATASection(meta->comment));
-//}
+// static void saveMeta(const Workflow::Metadata* meta, QDomElement& proj){
+//     QDomElement el = proj.ownerDocument().createElement(META_EL);
+//     proj.appendChild(el);
+//     el.setAttribute(NAME_ATTR, meta->name);
+//     el.appendChild(proj.ownerDocument().createCDATASection(meta->comment));
+// }
 
 QString SchemaSerializer::readMeta(Workflow::Metadata *meta, const QDomElement &proj) {
     QDomElement el = proj.elementsByTagName(META_EL).item(0).toElement();
@@ -345,7 +345,7 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
         procMap[id] = proc;
         schema->addProcess(proc);
 
-        //read port params
+        // read port params
         QDomNodeList nl = procElement.elementsByTagName(PORT_EL);
         for (int j = 0; j < nl.size(); j++) {
             QDomElement el = nl.item(j).toElement();
@@ -427,5 +427,5 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
     return QString();
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

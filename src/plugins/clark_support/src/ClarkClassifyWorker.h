@@ -71,7 +71,7 @@ public:
 };
 
 //////////////////////////////////////////////////
-//ClarkClassify
+// ClarkClassify
 class ClarkClassifyPrompter;
 typedef PrompterBase<ClarkClassifyPrompter> ClarkClassifyBase;
 
@@ -196,9 +196,9 @@ private:
     TaxonomyClassificationResult parsedReport;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::LocalWorkflow::ClarkClassifySettings::Mode)
 
-#endif    //_U2_CLARK_WORKER_H_
+#endif  //_U2_CLARK_WORKER_H_

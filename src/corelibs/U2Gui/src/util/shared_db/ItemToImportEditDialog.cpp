@@ -53,4 +53,4 @@ void ItemToImportEditDialog::init(const QString &item, const QString &folder, co
     ui->leItem->setText(item);
 }
 
-}    // namespace U2
+}  // namespace U2

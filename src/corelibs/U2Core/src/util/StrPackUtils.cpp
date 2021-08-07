@@ -106,7 +106,7 @@ QBitArray StrPackUtils::initCharactersToEscape() {
 }
 
 QString StrPackUtils::escapeCharacters(QString string) {
-    string.replace('\\', QString("\\\\"));    // escape '\' first
+    string.replace('\\', QString("\\\\"));  // escape '\' first
     for (int i = 0; i < charactersToEscape.size(); i++) {
         if (charactersToEscape[i] && (char)i != '\\') {
             const char c = (char)i;
@@ -133,4 +133,4 @@ QString StrPackUtils::wrapString(const QString &string, Options options) {
     return wrapChar + string + wrapChar;
 }
 
-}    // namespace U2
+}  // namespace U2

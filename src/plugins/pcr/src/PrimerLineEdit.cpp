@@ -77,7 +77,7 @@ QRect PrimerLineEdit::placeHolderRect() const {
     int minLB = qMax(0, -fm.minLeftBearing());
     int minRB = qMax(0, -fm.minRightBearing());
     int vscroll = r.y() + (r.height() - fm.height() + 1) / 2;
-    static const int horizontalMargin = 2;    // QLineEditPrivate::horizontalMargin
+    static const int horizontalMargin = 2;  // QLineEditPrivate::horizontalMargin
     QRect lineRect(r.x() + horizontalMargin, vscroll, r.width() - 2 * horizontalMargin, fm.height());
     return lineRect.adjusted(minLB, 0, -minRB, 0);
 }
@@ -99,4 +99,4 @@ QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
     return QRegExpValidator::validate(input, pos);
 }
 
-}    // namespace U2
+}  // namespace U2

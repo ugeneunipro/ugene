@@ -761,8 +761,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010_1) {
-    //CHANGES: using genbank format
-    //    Creating new document from text
+    // CHANGES: using genbank format
+    //     Creating new document from text
 
     //  1. Open menu {File->New Document From Text}
     //  Expected result: Create document dialog has appear
@@ -804,8 +804,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010_2) {
-    //CHANGES: using keys instead mouse
-    //    Creating new document from text
+    // CHANGES: using keys instead mouse
+    //     Creating new document from text
 
     //  1. Open menu {File->New Document From Text}
     //  Expected result: Create document dialog has appear
@@ -890,8 +890,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
-    //CHANGES: using genbank format
-    //    Creating new document from text
+    // CHANGES: using genbank format
+    //     Creating new document from text
 
     //  1. Open menu {File->New Document From Text}
     //  Expected result: Create document dialog has appear
@@ -1085,7 +1085,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTUtilsProjectTreeView::rename(os, "result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
 }
 GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     Runnable *filler = new CreateDocumentFiller(os,
@@ -1110,7 +1110,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     GTUtilsProjectTreeView::rename(os, "result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
 }
 GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     Runnable *filler = new CreateDocumentFiller(os,
@@ -1135,7 +1135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     GTUtilsProjectTreeView::rename(os, "result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
@@ -1430,5 +1430,5 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_common_scenarios_document_from_text
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_document_from_text
+}  // namespace U2

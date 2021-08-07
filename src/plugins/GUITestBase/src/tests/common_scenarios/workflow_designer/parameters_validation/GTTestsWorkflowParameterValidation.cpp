@@ -153,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //1. Create the following workflow { Read Sequence -> Find Pattern -> Write Sequence }
+    // 1. Create the following workflow { Read Sequence -> Find Pattern -> Write Sequence }
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
@@ -167,7 +167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::connect(os, seqReader, patternFinder);
     GTUtilsWorkflowDesigner::connect(os, patternFinder, seqWriter);
 
-    //2. Set some name for an output file
+    // 2. Set some name for an output file
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
@@ -178,13 +178,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTKeyboardDriver::keySequence("sequence.gb");
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
-    //3. Add some valid sequence file as input
+    // 3. Add some valid sequence file as input
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/fa1.fa");
 
-    //4. Set some nonexistent path to a file as the "Pattern file" parameter of the "Find Substrings" worker
+    // 4. Set some nonexistent path to a file as the "Pattern file" parameter of the "Find Substrings" worker
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Find Pattern"));
     GTMouseDriver::click();
@@ -193,11 +193,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTKeyboardDriver::keySequence("pattern_file.txt");
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
-    //5. In WD press the "Validate" button
+    // 5. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
 
-    //Expected state: The "File not found" error has appeared in the "Error list"
+    // Expected state: The "File not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "File not found");
 }
 
@@ -217,7 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
-    //GTGlobals::sleep(60000);
+    // GTGlobals::sleep(60000);
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox/permDir").absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QVariant(s + "/wd_pv_0001.sto"), GTUtilsWorkflowDesigner::textValue);
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
@@ -254,8 +254,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //Workflow worker folder parameter validation
-    //1. Create the following workflow { Read Sequence -> CD Search -> Write Sequence }
+    // Workflow worker folder parameter validation
+    // 1. Create the following workflow { Read Sequence -> CD Search -> Write Sequence }
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
@@ -269,7 +269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsWorkflowDesigner::connect(os, seqReader, patternFinder);
     GTUtilsWorkflowDesigner::connect(os, patternFinder, seqWriter);
 
-    //2. Set some name for an output file
+    // 2. Set some name for an output file
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
@@ -280,17 +280,17 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTKeyboardDriver::keySequence("sequence.gb");
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
-    //3. Add some valid sequence file as input
+    // 3. Add some valid sequence file as input
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/fa1.fa");
 
-    //4. Create an empty folder somewhere (e.g. in the "test/_tmp" folder)
+    // 4. Create an empty folder somewhere (e.g. in the "test/_tmp" folder)
     QDir newDir(testDir);
     newDir.mkdir("_empty_tmp");
 
-    //5. Set the path to this folder as the "Database folder" parameter of the "CD Search" worker
+    // 5. Set the path to this folder as the "Database folder" parameter of the "CD Search" worker
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "CD Search"));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 2));
@@ -298,17 +298,17 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTKeyboardDriver::keySequence(testDir + "_empty_tmp");
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
-    //6. Remove this folder
+    // 6. Remove this folder
     newDir.rmdir("_empty_tmp");
 
-    //7. In WD press the "Validate" button
+    // 7. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
 
-    //Expected state: The "File not found" error has appeared in the "Error list"
+    // Expected state: The "File not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "Folder not found");
 }
 
-}    // namespace GUITest_common_scenarios_workflow_parameters_validation
+}  // namespace GUITest_common_scenarios_workflow_parameters_validation
 
-}    // namespace U2
+}  // namespace U2

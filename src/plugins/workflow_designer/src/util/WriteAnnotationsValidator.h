@@ -35,7 +35,7 @@ public:
     virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WRITE_ANNOTATIONS_VALIDATOR_H_
+#endif  // _U2_WRITE_ANNOTATIONS_VALIDATOR_H_

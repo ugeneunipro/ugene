@@ -95,4 +95,4 @@ AbstractAlignmentTask::AbstractAlignmentTask(const QString &taskName, TaskFlags 
 AbstractAlignmentTaskFactory::~AbstractAlignmentTaskFactory() {
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -69,4 +69,4 @@ void KrakenSupport::initClassify() {
     description = tr("The tool is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.");
 }
 
-}    // namespace U2
+}  // namespace U2

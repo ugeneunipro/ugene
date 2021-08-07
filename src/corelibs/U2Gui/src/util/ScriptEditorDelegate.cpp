@@ -108,4 +108,4 @@ void TextEditDelegate::installScriptHighlighter() const {
     new ScriptHighlighter(edit->document());
 }
 
-}    // namespace U2
+}  // namespace U2

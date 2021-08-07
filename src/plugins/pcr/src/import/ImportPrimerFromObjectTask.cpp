@@ -77,4 +77,4 @@ QString ImportPrimerFromObjectTask::generateReport() const {
     return report.arg(Theme::successColorLabelHtmlStr()).arg(tr("success"));
 }
 
-}    // namespace U2
+}  // namespace U2

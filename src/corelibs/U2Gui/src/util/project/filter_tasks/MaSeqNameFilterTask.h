@@ -73,6 +73,6 @@ protected:
     AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_SEQ_NAME_FILTER_TASK_H_
+#endif  // _U2_MSA_SEQ_NAME_FILTER_TASK_H_

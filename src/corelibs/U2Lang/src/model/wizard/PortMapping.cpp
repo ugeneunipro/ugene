@@ -117,4 +117,4 @@ QString PortMapping::getDstSlotId(const QString &srcSlotId, U2OpStatus &os) cons
     return "";
 }
 
-}    // namespace U2
+}  // namespace U2

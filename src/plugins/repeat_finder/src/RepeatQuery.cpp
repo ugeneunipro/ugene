@@ -71,17 +71,17 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
         if (attr.first == a->getId()) {
             RFAlgorithm alg = RFAlgorithm(a->getAttributeValueWithoutScript<int>());
             switch (alg) {
-            case RFAlgorithm_Auto:
-                attr.second = ALGO_AUTO;
-                break;
-            case RFAlgorithm_Diagonal:
-                attr.second = ALGO_DIAG;
-                break;
-            case RFAlgorithm_Suffix:
-                attr.second = ALGO_SUFFIX;
-                break;
-            default:
-                break;
+                case RFAlgorithm_Auto:
+                    attr.second = ALGO_AUTO;
+                    break;
+                case RFAlgorithm_Diagonal:
+                    attr.second = ALGO_DIAG;
+                    break;
+                case RFAlgorithm_Suffix:
+                    attr.second = ALGO_SUFFIX;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -91,17 +91,17 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
         if (attr.first == a->getId()) {
             RepeatsFilterAlgorithm falg = RepeatsFilterAlgorithm(a->getAttributeValueWithoutScript<int>());
             switch (falg) {
-            case DisjointRepeats:
-                attr.second = FA_DISJOINT;
-                break;
-            case NoFiltering:
-                attr.second = FA_NOFILTERING;
-                break;
-            case UniqueRepeats:
-                attr.second = FA_UNIQUE;
-                break;
-            default:
-                break;
+                case DisjointRepeats:
+                    attr.second = FA_DISJOINT;
+                    break;
+                case NoFiltering:
+                    attr.second = FA_NOFILTERING;
+                    break;
+                case UniqueRepeats:
+                    attr.second = FA_UNIQUE;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -175,9 +175,7 @@ int QDRepeatActor::getMaxResultLen() const {
 }
 
 QString QDRepeatActor::getText() const {
-    QString inverted = cfg->getParameter(INVERT_ATTR)->getAttributePureValue().toBool() ?
-                           QDRepeatActor::tr("inverted") :
-                           QDRepeatActor::tr("direct");
+    QString inverted = cfg->getParameter(INVERT_ATTR)->getAttributePureValue().toBool() ? QDRepeatActor::tr("inverted") : QDRepeatActor::tr("direct");
 
     inverted = QString("<a href=%1>%2</a>").arg(INVERT_ATTR).arg(inverted);
 
@@ -331,4 +329,4 @@ QDRepeatActorPrototype::QDRepeatActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

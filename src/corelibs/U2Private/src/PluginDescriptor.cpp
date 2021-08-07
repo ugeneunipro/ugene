@@ -77,7 +77,7 @@ static PluginMode modeFromText(const QString &text) {
 
 PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString &descUrl, QString &error) {
     PluginDesc result;
-    PluginDesc failResult;    //empty one, used if parsing is failed
+    PluginDesc failResult;  // empty one, used if parsing is failed
 
     QFile f(descUrl);
     if (!f.open(QIODevice::ReadOnly)) {
@@ -130,7 +130,7 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString &descUrl, 
 
     QDomElement libraryElement = pluginElement.firstChildElement("library");
     QString libraryUrlText = libraryElement.text();
-    if (!libraryUrlText.isEmpty() && QFileInfo(libraryUrlText).isRelative()) {    //if path is relative, use descriptor dir as 'current folder'
+    if (!libraryUrlText.isEmpty() && QFileInfo(libraryUrlText).isRelative()) {  // if path is relative, use descriptor dir as 'current folder'
         libraryUrlText = QFileInfo(descUrl).absoluteDir().canonicalPath() + "/" + libraryUrlText;
     }
     result.libraryUrl = libraryUrlText;
@@ -139,7 +139,7 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString &descUrl, 
         return failResult;
     }
     QString licenseUrl = QString(result.id + ".license");
-    if (QFileInfo(licenseUrl).isRelative()) {    //if path is relative, use descriptor dir as 'current folder'
+    if (QFileInfo(licenseUrl).isRelative()) {  // if path is relative, use descriptor dir as 'current folder'
         licenseUrl = QFileInfo(descUrl).absoluteDir().canonicalPath() + "/" + licenseUrl;
     }
     result.licenseUrl = licenseUrl;
@@ -217,7 +217,7 @@ bool PluginDesc::operator==(const PluginDesc &pd) const {
 //////////////////////////////////////////////////////////////////////////
 // ordering
 
-//states set used for DFS graph traversal
+// states set used for DFS graph traversal
 enum DepNodeState {
     DS_Clean,
     DS_InProcess,
@@ -230,8 +230,8 @@ public:
         state = DS_Clean;
         root = false;
     }
-    QList<DepNode *> parentNodes;    //nodes this node depends on
-    QList<DepNode *> childNodes;    //nodes that depends on this node
+    QList<DepNode *> parentNodes;  // nodes this node depends on
+    QList<DepNode *> childNodes;  // nodes that depends on this node
     PluginDesc desc;
 
     DepNodeState state;
@@ -248,10 +248,10 @@ static void findParentNodes(DepNode *node, const PluginDesc &desc, QString &err,
     assert(node->state == DS_Clean);
     node->state = DS_InProcess;
     foreach (DepNode *childNode, node->childNodes) {
-        if (childNode->state == DS_Done) {    //check if node is already processed
+        if (childNode->state == DS_Done) {  // check if node is already processed
             continue;
         }
-        if (childNode->state == DS_InProcess) {    // circular dependency between plugins
+        if (childNode->state == DS_InProcess) {  // circular dependency between plugins
             err = PluginDescriptorHelper::tr("Plugin circular dependency detected: %1 <-> %2").arg(desc.id).arg(node->desc.id);
             return;
         }
@@ -345,7 +345,7 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc> &
         return unordered;
     }
 
-    //traverse graph and add nodes in topological (reverse postorder) mode
+    // traverse graph and add nodes in topological (reverse postorder) mode
     resetState(allNodes.qlist);
     orderTopological(rootNode, result);
 
@@ -367,4 +367,4 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc> &
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

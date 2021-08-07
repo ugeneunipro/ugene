@@ -130,4 +130,4 @@ QList<QString> DataTypeRegistry::getAllIds() const {
     return registry.uniqueKeys();
 }
 
-}    // namespace U2
+}  // namespace U2

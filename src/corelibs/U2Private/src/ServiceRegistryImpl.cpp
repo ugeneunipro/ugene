@@ -88,7 +88,7 @@ void ServiceRegistryImpl::initiateServicesCheckTask() {
 
 void ServiceRegistryImpl::timerEvent(QTimerEvent *event) {
     if (!activeServiceTasks.empty()) {
-        return;    //wait until no active service tasks left
+        return;  // wait until no active service tasks left
     }
     killTimer(event->timerId());
     timerIsActive = false;
@@ -99,7 +99,7 @@ void ServiceRegistryImpl::timerEvent(QTimerEvent *event) {
 }
 
 Service *ServiceRegistryImpl::findServiceReadyToEnable() const {
-    //TODO: recheck circular tasks too
+    // TODO: recheck circular tasks too
 
     // look for new + parent_disabled services and check if a service can be run
     foreach (Service *s, services) {
@@ -168,7 +168,7 @@ Task::ReportResult RegisterServiceTask::report() {
     return ReportResult_Finished;
 }
 
-///EnableServiceTask
+/// EnableServiceTask
 
 EnableServiceTask::EnableServiceTask(ServiceRegistryImpl *_sr, Service *_s, bool lockServiceResource)
     : AbstractServiceTask(tr("Enable '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, lockServiceResource) {
@@ -209,7 +209,7 @@ static QStringList findNotEnabledServices(ServiceRegistryImpl *registry, const Q
 }
 
 void EnableServiceTask::prepare() {
-    //TODO: improve messaging. The service name is already mentioned in task name!
+    // TODO: improve messaging. The service name is already mentioned in task name!
     sr->activeServiceTasks.push_back(this);
     CHECK_EXT(s->isDisabled(), stateInfo.setError(tr("Service is enabled")), );
     CHECK_EXT(sr->services.contains(s), stateInfo.setError(tr("Service is not registered")), );
@@ -265,7 +265,7 @@ Task::ReportResult UnregisterServiceTask::report() {
         assert(sr->services.count(s) == 1);
         sr->services.removeAll(s);
         emit sr->si_serviceUnregistered(s);
-        delete s;    //TODO: redesign real-time service registration/unregistration-> synchronize with plugin list
+        delete s;  // TODO: redesign real-time service registration/unregistration-> synchronize with plugin list
     }
     return ReportResult_Finished;
 }
@@ -290,7 +290,7 @@ void DisableServiceTask::prepare() {
 
     const QList<Task *> &activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
     int nTopLevelTasks = activeTopTasks.count();
-    if (nTopLevelTasks > 1) {    // [parent] of DisableServiceTask
+    if (nTopLevelTasks > 1) {  // [parent] of DisableServiceTask
         foreach (Task *t, activeTopTasks) {
             coreLog.details(tr("Active top-level task name: %1").arg(t->getTaskName()));
         }
@@ -335,4 +335,4 @@ static QList<Service *> getDirectChilds(ServiceRegistryImpl *sr, ServiceType st)
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

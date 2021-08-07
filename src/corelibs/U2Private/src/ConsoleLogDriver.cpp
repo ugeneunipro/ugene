@@ -48,8 +48,8 @@ const QString ConsoleLogDriver::LOG_LEVEL_DETAILS_CMD_OPTION = "log-level-detail
 const QString ConsoleLogDriver::LOG_LEVEL_TRACE_CMD_OPTION = "log-level-trace";
 const QString ConsoleLogDriver::COLOR_OUTPUT_CMD_OPTION = "log-color-output";
 const QString ConsoleLogDriver::LOG_SETTINGS_ACTIVE_FLAG = "activeFlagLevel";
-//const QString ConsoleLogDriver::LOG_FORMAT                         = "log-format";
-//const QString ConsoleLogDriver::LOG_LEVEL                          = "log-level";
+// const QString ConsoleLogDriver::LOG_FORMAT                         = "log-format";
+// const QString ConsoleLogDriver::LOG_LEVEL                          = "log-level";
 
 bool ConsoleLogDriver::helpRegistered = false;
 
@@ -129,7 +129,7 @@ void ConsoleLogDriver::setLogSettings() {
         settings.showCategory = logFormat.contains("C", Qt::CaseSensitive);
         settings.showDate = logFormat.contains(QRegExp("[M{2}Y{2,4}d{2}H{2}m{2}s{2}z{3}]"));
         settings.logPattern = logFormat;
-    } else if (cmd->hasParameter(LOG_SHOW_DATE_CMD_OPTION) ||    //old options
+    } else if (cmd->hasParameter(LOG_SHOW_DATE_CMD_OPTION) ||  // old options
                cmd->hasParameter(LOG_SHOW_LEVEL_CMD_OPTION) ||
                cmd->hasParameter(LOG_SHOW_CATEGORY_CMD_OPTION)) {
         settings.logPattern = "";
@@ -263,12 +263,12 @@ void ConsoleLogDriver::onMessage(const LogMessage &msg) {
         return;
     }
 
-    //this is Hard Code
+    // this is Hard Code
     if (msg.text.contains(QString("##teamcity")) && (!AppContext::getSettings()->getValue("log_settings/teamcityOut", true).toBool())) {
         return;
     }
     if (effCategory == ULOG_CAT_USER_INTERFACE) {
-        return;    //do not print UI related messages
+        return;  // do not print UI related messages
     }
     QByteArray ba = prepareText(msg).toLocal8Bit();
     char *buf = ba.data();
@@ -277,7 +277,7 @@ void ConsoleLogDriver::onMessage(const LogMessage &msg) {
     CharToOemA(buf, buf);
 #endif
     if (AppContext::getSettings()->getValue(TSB_SETTINGS_ROOT + "showTaskStatusBar", true).toBool()) {
-        printf("                                                                               \r");    //80 spaces for remove TaskStatusBar
+        printf("                                                                               \r");  // 80 spaces for remove TaskStatusBar
     }
     if (!colored /*AppContext::getSettings()->getValue(LOG_SETTINGS_ROOT + "colorOut", false).toBool()*/) {
         printf("%s \n", buf);
@@ -293,7 +293,7 @@ void ConsoleLogDriver::onMessage(const LogMessage &msg) {
         printf("%s \n", buf);
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0007);
 #else
-        //TO DO: for MacOs release coloring function
+        // TO DO: for MacOs release coloring function
         if (msg.level == LogLevel_ERROR) {
             printf("\e[31m%s \e[0m\n", buf);
         } else if (msg.level == LogLevel_DETAILS) {
@@ -319,4 +319,4 @@ QString ConsoleLogDriver::getEffectiveCategory(const LogMessage &msg) const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

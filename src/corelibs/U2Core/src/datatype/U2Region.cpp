@@ -70,7 +70,7 @@ QVector<U2Region> U2Region::circularContainingRegion(QVector<U2Region> &_regions
 
 QVector<U2Region> U2Region::join(QVector<U2Region> &regions) {
     QVector<U2Region> result = regions;
-    std::stable_sort(result.begin(), result.end());    //sort by region start pos first
+    std::stable_sort(result.begin(), result.end());  // sort by region start pos first
     for (int i = 0; i < result.size() - 1;) {
         const U2Region &ri0 = result[i];
         const U2Region &ri1 = result[i + 1];
@@ -205,4 +205,4 @@ QDataStream &operator>>(QDataStream &in, U2Region &myObj) {
     return in;
 }
 
-}    // namespace U2
+}  // namespace U2

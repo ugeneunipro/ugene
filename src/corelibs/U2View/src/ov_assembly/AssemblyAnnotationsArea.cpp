@@ -43,4 +43,4 @@ AssemblyAnnotationsArea::~AssemblyAnnotationsArea() {
     delete variantRowManager;
 }
 
-}    // namespace U2
+}  // namespace U2

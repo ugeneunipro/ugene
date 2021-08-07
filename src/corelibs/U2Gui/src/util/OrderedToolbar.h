@@ -39,7 +39,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *) {
-        //do not draw any special toolbar control -> make is merged with parent widget
+        // do not draw any special toolbar control -> make is merged with parent widget
     }
 
 private:
@@ -49,6 +49,6 @@ private:
     QList<QString> *buttonTabOrderList;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ORDERED_TOOLBAR_H_
+#endif  // _U2_ORDERED_TOOLBAR_H_

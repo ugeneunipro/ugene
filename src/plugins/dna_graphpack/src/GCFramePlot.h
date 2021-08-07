@@ -56,6 +56,6 @@ private:
     int offset;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GC_FRAME_PLOT_H_
+#endif  // _U2_GC_FRAME_PLOT_H_

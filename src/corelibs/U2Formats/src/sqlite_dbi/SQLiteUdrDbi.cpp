@@ -39,7 +39,7 @@ const QString TABLE_PREFIX = "UdrSchema_";
 QString tableName(const UdrSchemaId &schemaId) {
     return TABLE_PREFIX + schemaId;
 }
-}    // namespace
+}  // namespace
 
 SQLiteUdrDbi::SQLiteUdrDbi(SQLiteDbi *dbi)
     : UdrDbi(dbi), SQLiteChildDBICommon(dbi) {
@@ -419,7 +419,7 @@ void SQLiteUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, 
                 data << UdrValue();
                 break;
             case UdrSchema::ID:
-                const U2DataType objectType = q.getInt32(schema->size() + 1);    // type is selected in the additional column
+                const U2DataType objectType = q.getInt32(schema->size() + 1);  // type is selected in the additional column
                 data << UdrValue(q.getDataId(colNum, objectType));
                 break;
         }
@@ -439,4 +439,4 @@ UdrSchema::FieldDesc SQLiteUdrDbi::getBlobField(const UdrSchemaId &schemaId, int
     return field;
 }
 
-}    // namespace U2
+}  // namespace U2

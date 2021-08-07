@@ -74,8 +74,8 @@ public:
 
     bool isRowVisible(int row) const;
 
-    int numLines;    // number of visible lines
-    int rowLinesOffset;    // row number on the first row line
+    int numLines;  // number of visible lines
+    int rowLinesOffset;  // row number on the first row line
 
     bool showMainRuler;
     bool showCustomRulers;
@@ -234,7 +234,7 @@ public:
 
     PVRowsManager *rowsManager;
     QScrollBar *rowBar;
-    int syncOffset;    //used by ADVSyncViewManager only
+    int syncOffset;  // used by ADVSyncViewManager only
 
     PanViewLinesSettings *settings;
 
@@ -275,6 +275,6 @@ private:
     PanViewRenderer *const renderer;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif
