@@ -41,6 +41,7 @@
 
 #include <U2Designer/URLLineEdit.h>
 
+#include <U2Core/Formatters.h>
 #include <U2Lang/ConfigurationEditor.h>
 
 #include "PropertyWidget.h"
@@ -201,13 +202,31 @@ private:
     QVariantMap spinProperties;
 };
 
-class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
+/** Base class for all combo-box delegates. Includes item name formatter. */
+class U2DESIGNER_EXPORT ComboBoxBaseDelegate : public PropertyDelegate {
+    Q_OBJECT
+public:
+    ComboBoxBaseDelegate(QObject *parent = nullptr);
+
+    /** Updates item text formatter. */
+    void setItemTextFormatter(const QSharedPointer<StringFormatter> &formatter);
+
+    /** Returns formatted value for the item with the given name. */
+    QString getFormattedItemText(const QString &itemKey) const;
+
+protected:
+    /** Assigns common properties like itemTextFormatter to the cloned delegate. */
+    ComboBoxBaseDelegate *initClonedDelegate(ComboBoxBaseDelegate *delegate) const;
+
+    /** Formatter for combo-box values. */
+    QSharedPointer<StringFormatter> itemTextFormatter;
+};
+
+class U2DESIGNER_EXPORT ComboBoxDelegate : public ComboBoxBaseDelegate {
     Q_OBJECT
 public:
     ComboBoxDelegate(const QVariantMap &comboItems, QObject *parent = 0);    // items: visible name -> value
     ComboBoxDelegate(const QList<ComboItem> &comboItems, QObject *parent = 0);    // items: visible name -> value
-    virtual ~ComboBoxDelegate() {
-    }
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -216,9 +235,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     QVariant getDisplayValue(const QVariant &) const;
 
-    virtual PropertyDelegate *clone() {
-        return new ComboBoxDelegate(comboItems, parent());
-    }
+    PropertyDelegate *clone() override;
 
     void getItems(QVariantMap &items) const;
 
@@ -322,14 +339,10 @@ private:
     QVariantMap items;
 };
 
-class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public PropertyDelegate {
+class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public ComboBoxBaseDelegate {
     Q_OBJECT
 public:
-    ComboBoxWithChecksDelegate(const QVariantMap &items, QObject *parent = 0)
-        : PropertyDelegate(parent), items(items) {
-    }
-    virtual ~ComboBoxWithChecksDelegate() {
-    }
+    ComboBoxWithChecksDelegate(const QVariantMap &items, QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -338,9 +351,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     QVariant getDisplayValue(const QVariant &) const;
 
-    virtual PropertyDelegate *clone() {
-        return new ComboBoxWithChecksDelegate(items, parent());
-    }
+    PropertyDelegate *clone() override;
 
     void getItems(QVariantMap &items) const;
 

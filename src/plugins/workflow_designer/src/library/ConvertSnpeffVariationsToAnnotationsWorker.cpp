@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Formatters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -114,10 +115,12 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(tags, "", "");
 
         QVariantMap map;
-        foreach (const DocumentFormatId &formatId, supportedFormats) {
+        for (const DocumentFormatId &formatId: qAsConst(supportedFormats)) {
             map[formatId] = formatId;
         }
-        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(map);
+        auto formatDelegate = new ComboBoxDelegate(map);
+        formatDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
     }
     proto->setEditor(new DelegateEditor(delegates));
 

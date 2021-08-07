@@ -475,7 +475,9 @@ void WriteAnnotationsWorkerFactory::init() {
         foreach (const QString &key, supportedFormats.keys()) {
             m[supportedFormats.value(key)] = key;
         }
-        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(m);
+        auto formatDelegate = new ComboBoxDelegate(m);
+        formatDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
             new URLDelegate(DialogUtils::prepareDocumentsFileFilter(format, true), QString(), false, false, true, nullptr, format);
         delegates[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
