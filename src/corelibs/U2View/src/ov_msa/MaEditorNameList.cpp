@@ -187,12 +187,6 @@ int MaEditorNameList::getGroupExpanderWidth() const {
     return ui->isCollapsingOfSingleRowGroupsEnabled() || editor->getCollapseModel()->hasGroupsWithMultipleRows() ? 2 * CROSS_SIZE : 0;
 }
 
-int MaEditorNameList::getSelectedMaRow() const {
-    QRect selectionRect = editor->getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), -1);
-    return editor->getCollapseModel()->getMaRowIndexByViewRowIndex(selectionRect.top());
-}
-
 void MaEditorNameList::sl_copyWholeRow() {
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
@@ -605,8 +599,9 @@ void MaEditorNameList::sl_selectionChanged(const MaEditorSelection &, const MaEd
 void MaEditorNameList::sl_updateActions() {
     copyWholeRowAction->setEnabled(!editor->getSelection().isEmpty());
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
-    editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
+    const MaEditorSelection &selection = editor->getSelection();
+    removeSequenceAction->setEnabled(!maObj->isStateLocked() && !selection.isEmpty());
+    editSequenceNameAction->setEnabled(!maObj->isStateLocked() && selection.isSingleRowSelection());
 }
 
 void MaEditorNameList::sl_vScrollBarActionPerformed() {
@@ -823,19 +818,22 @@ void MaEditorNameList::sl_editSequenceName() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
-    bool ok = false;
-    int n = getSelectedMaRow();
-    CHECK(n >= 0, );
+    const MaEditorSelection &selection = editor->getSelection();
+    CHECK(selection.isSingleRowSelection(), );
 
-    QString curName = maObj->getMultipleAlignment()->getRow(n)->getName();
+    int viewRowIndex = selection.getRectList()[0].top();
+    int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
 
-    bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    QString curName = maObj->getRow(maRowIndex)->getName();
+
+    bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
+    bool ok = false;
     QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
-        maObj->renameRow(n, newName);
+        maObj->renameRow(maRowIndex, newName);
     }
 }
 

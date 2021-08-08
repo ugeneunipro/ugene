@@ -52,6 +52,12 @@ public:
     /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
     bool isSingleRegionSelection() const;
 
+    /** Returns true if selection contains only 1 row (any column range). */
+    bool isSingleRowSelection() const;
+
+    /** Returns true if selection contains only 1 column (any rows range). */
+    bool isSingleColumnSelection() const;
+
     /** Returns true if selection contains 1 rect with 1x1 dimension. */
     bool isSingleBaseSelection() const;
 

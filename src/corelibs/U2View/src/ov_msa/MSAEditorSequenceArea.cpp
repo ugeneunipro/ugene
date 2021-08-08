@@ -241,16 +241,16 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
-    QList<QAction *> actions;
 
-    MSAEditor *editor = getEditor();
-    MsaEditorWgt *msaWgt = editor->getUI();
-    QAction *editSequenceNameAction = msaWgt->getEditorNameList()->getEditSequenceNameAction();
-    qint64 numSelectedRows = editor->getSelection().toRect().height();
-    if (numSelectedRows != 1) {
-        editSequenceNameAction->setDisabled(true);
-    }
-    actions << editSequenceNameAction << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
+    QList<QAction *> actions = {getEditor()->getUI()->getEditorNameList()->getEditSequenceNameAction(),
+                                fillWithGapsinsSymAction,
+                                replaceCharacterAction,
+                                reverseComplementAction,
+                                reverseAction,
+                                complementAction,
+                                delColAction,
+                                removeAllGapsAction};
+
     editMenu->insertActions(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
 
@@ -303,9 +303,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     ui->pasteBeforeAction->setEnabled(!readOnly);
 
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
-    QRect selectionRect = selection.toRect();
-    bool oneCharacterIsSelected = selectionRect.width() == 1 && selectionRect.height() == 1;
-    replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
+    replaceCharacterAction->setEnabled(canEditSelectedArea && selection.isSingleBaseSelection());
     delColAction->setEnabled(canEditAlignment);
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     reverseAction->setEnabled(canEditSelectedArea);
@@ -671,7 +669,6 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
     }
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
-    SAFE_POINT(isInRange(selection.toRect()), "Selection is not in range!", );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
