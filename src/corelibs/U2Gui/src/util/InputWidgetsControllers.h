@@ -54,7 +54,7 @@ public:
     void storeParameter();
     void restoreDefault();
 
-    /** If true, an command line option will be emitted even if the default value is selected. */
+    /** If true, a command line option will be emitted even if the default value is selected. */
     void setEmitCommandLineOptionForDefaultFlag(bool flag);
 
     virtual void addParameterToCmdLineSettings(QStringList &settings);
