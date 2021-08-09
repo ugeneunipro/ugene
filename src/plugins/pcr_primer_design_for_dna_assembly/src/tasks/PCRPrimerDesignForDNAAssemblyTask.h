@@ -105,6 +105,17 @@ private:
         return foundPrimerRegion;
     }
 
+    void findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence);
+
+    enum class SecondaryPrimer {
+        B2,
+        B3
+    };
+    void findSecondaryForwardReversePrimers(SecondaryPrimer type);
+    void findSecondaryReversePrimer(SecondaryPrimer type, const QByteArray& forwardCandidatePrimerSequence);
+
+    void findB2ForwardPrimer();
+    void findB2ForwardPrimer(const QByteArray& b2ForwardCandidatePrimerSequence);
     QString regionToString(const U2Region& region, bool isComplement) const;
     QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
 
