@@ -8,7 +8,7 @@
 
     <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
 
-    <find-annotation-by-location index="ann" obj="obj" location="5282..5884" complement="false"/>
+    <find-annotation-by-location index="ann" obj="obj" location="5281..5883" complement="false"/>
 
     <check-annotation-qualifier annotation="ann" qualifier="Score" value="-502.3"/>
 
