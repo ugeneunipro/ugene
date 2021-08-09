@@ -1436,6 +1436,7 @@ Unipro UGENE.app/Contents/MacOS/plugins/libngs_reads_classification.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libopencl_support.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/liborf_marker.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libpcr.dylib
+Unipro UGENE.app/Contents/MacOS/plugins/libpcr_primer_design_for_dna_assembly.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libphylip.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libprimer3.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libpsipred.dylib
@@ -1462,6 +1463,8 @@ Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.license
 Unipro UGENE.app/Contents/MacOS/plugins/orf_marker.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/pcr.license
 Unipro UGENE.app/Contents/MacOS/plugins/pcr.plugin
+Unipro UGENE.app/Contents/MacOS/plugins/pcr_primer_design_for_dna_assembly.license
+Unipro UGENE.app/Contents/MacOS/plugins/pcr_primer_design_for_dna_assembly.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/phylip.license
 Unipro UGENE.app/Contents/MacOS/plugins/phylip.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/primer3.license
