@@ -33,6 +33,7 @@ class FindPresenceOfUnwantedParametersTask;
 class FindUnwantedIslandsTask;
 
 class PCRPrimerDesignForDNAAssemblyTask : public Task {
+    Q_OBJECT
 public:
     PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
