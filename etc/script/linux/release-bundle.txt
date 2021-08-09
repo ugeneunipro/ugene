@@ -1321,6 +1321,7 @@ plugins/liblinkdata_support.so
 plugins/libopencl_support.so
 plugins/liborf_marker.so
 plugins/libpcr.so
+plugins/libpcr_primer_design_for_dna_assembly.so
 plugins/libphylip.so
 plugins/libprimer3.so
 plugins/libpsipred.so
@@ -1342,6 +1343,8 @@ plugins/orf_marker.license
 plugins/orf_marker.plugin
 plugins/pcr.license
 plugins/pcr.plugin
+plugins/pcr_primer_design_for_dna_assembly.license
+plugins/pcr_primer_design_for_dna_assembly.plugin
 plugins/phylip.license
 plugins/phylip.plugin
 plugins/primer3.license
