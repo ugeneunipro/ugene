@@ -29,6 +29,7 @@
 namespace U2 {
 
 class FindPresenceOfUnwantedParametersTask : public Task {
+    Q_OBJECT
 public:
     FindPresenceOfUnwantedParametersTask(const QByteArray& sequence, const PCRPrimerDesignForDNAAssemblyTaskSettings& settings);
 
