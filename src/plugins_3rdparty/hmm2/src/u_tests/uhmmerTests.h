@@ -1,10 +1,11 @@
 #ifndef _U2_UHMMER_TESTS_H_
 #define _U2_UHMMER_TESTS_H_
 
-#include <U2Core/GObject.h>
-#include <U2Test/XMLTestUtils.h>
-
 #include <QDomElement>
+
+#include <U2Core/GObject.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 namespace U2 {
 
@@ -18,74 +19,80 @@ struct plan7_s;
 class GTest_uHMMERSearch : public XmlTest {
     Q_OBJECT
 public:
-
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_uHMMERSearch, "uhmmer-search");
 
-	~GTest_uHMMERSearch();
-	void cleanup();
-	ReportResult report();
-	void prepare();
+    ~GTest_uHMMERSearch();
+    void cleanup() override;
+    ReportResult report() override;
+    void prepare() override;
 
-private:    
-	Task* searchTask;
-	Task* saveTask;
-    QString		hmmFileName;
-	QString		seqDocCtxName;
-	QString		resultDocName;
-	QString		resultDocContextName;
-	bool expertOptions;
-	int number_of_seq;
-	int hmmSearchChunk;
-	bool customHmmSearchChunk;
-	bool parallel_flag;
-	float evalueCutoff;
-	float domEvalueCutoff;
-	float minScoreCutoff;
-	Document* aDoc;
-	
+private:
+    Task *searchTask = nullptr;
+    Task *saveTask = nullptr;
+    QString hmmFileName;
+    QString seqDocCtxName;
+    QString resultDocName;
+    QString resultDocContextName;
+    bool expertOptions = false;
+    int number_of_seq = 0;
+    int hmmSearchChunk = 0;
+    bool customHmmSearchChunk = false;
+    bool parallel_flag = false;
+    float evalueCutoff = 0;
+    float domEvalueCutoff = 0;
+    float minScoreCutoff = 0;
+    Document *aDoc = nullptr;
+
 protected:
-	virtual QList<Task*> onSubTaskFinished(Task* subTask);
-	
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 };
 
-class GTest_uHMMERBuild: public XmlTest {
+class GTest_uHMMERBuild : public XmlTest {
     Q_OBJECT
+public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_uHMMERBuild, "uhmmer-build");
-    ReportResult report();
-	void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
+
 private:
-	QString outFile;
-	HMMBuildToFileTask *buildTask;
-	bool deleteTempFile;
+    QString outFile;
+    HMMBuildToFileTask *buildTask = nullptr;
+    bool deleteTempFile = false;
 };
 
-class GTest_hmmCompare: public XmlTest {
+class GTest_hmmCompare : public XmlTest {
     Q_OBJECT
+public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_hmmCompare, "hmm-compare");
-    ReportResult report();
+    ReportResult report() override;
+
 private:
-	QString file1Name;
-	QString file2Name;
+    QString file1Name;
+    QString file2Name;
 };
-class GTest_uHMMERCalibrate: public XmlTest {
+
+class GTest_uHMMERCalibrate : public XmlTest {
     Q_OBJECT
+public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_uHMMERCalibrate, "uhmmer-calibrate");
-    ReportResult report();
-	void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
+
 private:
-	class GTest_uHMMERCalibrateSubtask: public Task {
-	public:
-		GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask **calibrateTask, int n);
-	};
-	HMMCalibrateToFileTask **calibrateTask;
-	float mu;
-	float lambda;
-	int nCalibrates;
+    class GTest_uHMMERCalibrateSubtask : public Task {
+    public:
+        GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask **calibrateTask, int n);
+    };
+    HMMCalibrateToFileTask **calibrateTask = nullptr;
+    float mu = 0;
+    float lambda = 0;
+    int nCalibrates = 0;
 };
 
 class UHMMERTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
-}//namespace
+
+}  // namespace U2
 #endif
