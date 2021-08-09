@@ -29,6 +29,7 @@
 namespace U2 {
 
 class FindUnwantedIslandsTask : public Task {
+    Q_OBJECT
 public:
     FindUnwantedIslandsTask(const U2Region& searchArea, int possibleOverlap, const QByteArray& sequence, bool isComplement);
 
