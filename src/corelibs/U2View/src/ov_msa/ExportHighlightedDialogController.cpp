@@ -60,13 +60,11 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
     int alignLength = editor->getAlignmentLen();
     const MaEditorSelection &selection = editor->getSelection();
 
-    int startPos;
-    int endPos;
-    QRect selectionRect = selection.toRect();
-    if (selectionRect.isEmpty() || selectionRect.width() == 1) {
+    if (selection.isEmpty() || selection.isSingleColumnSelection()) {
         startPos = 1;
         endPos = alignLength;
     } else {
+        const QRect &selectionRect = selection.getRectList()[0];
         startPos = selectionRect.x() + 1;
         endPos = selectionRect.x() + selectionRect.width();
     }

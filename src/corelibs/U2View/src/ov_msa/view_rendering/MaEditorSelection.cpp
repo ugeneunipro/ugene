@@ -93,6 +93,14 @@ bool MaEditorSelection::isSingleRegionSelection() const {
     return rectList.size() == 1;
 }
 
+bool MaEditorSelection::isSingleRowSelection() const {
+    return rectList.size() == 1 && rectList[0].height() == 1;
+}
+
+bool MaEditorSelection::isSingleColumnSelection() const {
+    return rectList.size() == 1 && rectList[0].width() == 1;
+}
+
 bool MaEditorSelection::isSingleBaseSelection() const {
     return isSingleRegionSelection() && rectList.first().width() == 1 && rectList.first().height() == 1;
 }
@@ -203,13 +211,13 @@ void McaEditorSelectionController::clearSelection() {
 }
 
 void McaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
-    QRect selectionRect = newSelection.toRect();
-    if (selectionRect.isEmpty()) {
+    if (newSelection.isEmpty()) {
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();
         return;
     }
-    if (selectionRect.width() == 1 && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
+    const QList<QRect> selectedRects= newSelection.getRectList();
+    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();
