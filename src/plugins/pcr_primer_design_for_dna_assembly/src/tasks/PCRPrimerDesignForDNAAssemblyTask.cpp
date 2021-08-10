@@ -101,7 +101,7 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
 void PCRPrimerDesignForDNAAssemblyTask::run() {
     // We have A and B1, B2, B3 pairs of primers
     // A and B1 are pretty the same, except the fact that B1 has some depencedcies on B2 and B3
-    // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 and B3, we need to continue searching B1, which will be fit to B2 and B3
+    // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3
     bool aWasNotFoundYet = true;
     for (const auto& regionBetweenIslandsForward : regionsBetweenIslandsForward) {
         if (regionBetweenIslandsForward.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
@@ -111,7 +111,8 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         int b1ForwardCandidatePrimerEnd = regionBetweenIslandsForward.endPos();
         int b1ForwardPrimerLength = settings.overlapLength.minValue;
 
-        while (b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength > regionBetweenIslandsForward.startPos) { //While we are in the region between islands
+        //While the primer start position is in the region between islands
+        while (b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength > regionBetweenIslandsForward.startPos) {
             const U2Region b1ForwardCandidatePrimerRegion(b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength, b1ForwardPrimerLength);
             // The amplified fragment shouldn't contain the all primer
             // So move the primer untill at least one character out of the amplified fragment
@@ -120,16 +121,18 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                 continue;
             }
 
+            // The nucleotide sequence of the corresponding region
             QByteArray b1ForwardCandidatePrimerSequence = sequence.mid(b1ForwardCandidatePrimerRegion.startPos, b1ForwardCandidatePrimerRegion.length);
             //Check if candidate primer melting temperature and deltaG fit to settings
             bool areSettingsGood = areMetlingTempAndDeltaGood(b1ForwardCandidatePrimerSequence);
             // If they are not - increase primer size (if it's not too big)
-            // Otherwise move to the left and reset length to minimum...
+            // If it's too big, move to the left and reset length to minimum...
             if (!areSettingsGood) {
                 updatePrimerRegion(b1ForwardCandidatePrimerEnd, b1ForwardPrimerLength);
-                // And check the primer again
+                // ... and check the primer again
                 continue;
             } else {
+                // Region string representation
                 QString b1ForwardCandidatePrimerRegionString = regionToString(b1ForwardCandidatePrimerRegion, false);
                 taskLog.details(tr("The \"B1 Forward\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(QString(b1ForwardCandidatePrimerRegionString)));
                 //If melting temperature and delta G are good - add backbone and check unwanted connections
@@ -141,13 +144,14 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                     // b1 forwards and b1 reverse shouldn't have unwanted hetero-dimers - if they do we need to continue searching of b1 forward
                     findB1ReversePrimer(b1ForwardCandidatePrimerSequence);
 
-                    //If it wasn't found - continue searching
+                    //If b1 reverse wasn't found - continue searching
                     if (b1Reverse.isEmpty()) {
                         taskLog.details(tr("The \"B1 Forward\" primer with the region \"%1\" doesn't fit because there are no corresponding \"B1 Reverse\" primers").arg(QString(b1ForwardCandidatePrimerRegionString)));
                         updatePrimerRegion(b1ForwardCandidatePrimerEnd, b1ForwardPrimerLength);
                         continue;
                     }
 
+                    //If it was found - we found b1 forward
                     b1Forward = b1ForwardCandidatePrimerRegion;
 
                     //The first time we found the pair of B1 primers - they are also A primers
@@ -162,6 +166,8 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                     findSecondaryForwardReversePrimers(SecondaryPrimer::B2);
                     findSecondaryForwardReversePrimers(SecondaryPrimer::B3);
 
+                    // We need to find at leas one pair - B2 or B3 - for B1 to be valid
+                    // If we didn't - continue searching
                     if (b2Forward.isEmpty() && b3Forward.isEmpty()) {
                         taskLog.details(tr("B2 and B3 primer pairs haven't been found, search again"));
                         b1Forward = U2Region();
@@ -173,7 +179,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                     break;
                 } else {
                     taskLog.details(tr("The candidate primer region \"%1\" contains unwanted connections").arg(QString(b1ForwardCandidatePrimerRegionString)));
-                    //If they are - update primer region and check all parameters again
+                    //If they are unwanted connections - update primer region and check all parameters again
                     updatePrimerRegion(b1ForwardCandidatePrimerEnd, b1ForwardPrimerLength);
                     continue;
                 }
@@ -183,42 +189,6 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             break;
         }
     }
-    /*int amplifiedFragmentLeftEdge = settings.leftArea.endPos() - 1;
-    taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the left area"));
-    findCandidatePrimers(regionsBetweenIslandsForward,
-                         amplifiedFragmentLeftEdge,
-                         false,
-                         false,
-                         b1Forward, b2Forward, b3Forward);
-
-    int amplifiedFragmentRightEdgeReverseComplement = reverseComplementSequence.size() - settings.rightArea.startPos;
-    taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the right area"));
-    findCandidatePrimers(regionsBetweenIslandsReverse,
-                         amplifiedFragmentRightEdgeReverseComplement,
-                         false,
-                         true,
-                         b1Reverse, b2Reverse, b3Reverse);
-    if (!b1Reverse.isEmpty()) {
-        int sequenceSize = reverseComplementSequence.size();
-        b1Reverse = DNASequenceUtils::reverseComplementRegion(b1Reverse, sequenceSize);
-        if (!b2Reverse.isEmpty()) {
-            b2Reverse = DNASequenceUtils::reverseComplementRegion(b2Reverse, sequenceSize);
-        }
-        if (!b3Reverse.isEmpty()) {
-            b3Reverse = DNASequenceUtils::reverseComplementRegion(b3Reverse, sequenceSize);
-        }
-    }
-
-    U2Region fake;
-    taskLog.details(tr("Looking for the candidate primer A in the left area"));
-    findCandidatePrimers(regionsBetweenIslandsForward, amplifiedFragmentLeftEdge, true, false, aForward, fake, fake);
-
-    taskLog.details(tr("Looking for the candidate primer A in the right area"));
-    findCandidatePrimers(regionsBetweenIslandsReverse, amplifiedFragmentRightEdgeReverseComplement, true, true, aReverse, fake, fake);
-    if (!aReverse.isEmpty()) {
-        int sequenceSize = reverseComplementSequence.size();
-        aReverse = DNASequenceUtils::reverseComplementRegion(aReverse, sequenceSize);
-    }*/
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
@@ -329,102 +299,8 @@ QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(Load
     return loadedSequences;
 }
 
-bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteArray& primer) const {
-    auto candidatePrimerDeltaG = PrimerStatistics::getDeltaG(primer);
-    auto candidatePrimerMeltingTemp = PrimerStatistics::getMeltingTemperature(primer);
-    bool goodDeltaG = settings.gibbsFreeEnergy.minValue <= candidatePrimerDeltaG &&
-                      candidatePrimerDeltaG <= settings.gibbsFreeEnergy.maxValue;
-    bool goodMeltTemp = settings.meltingPoint.minValue <= candidatePrimerMeltingTemp &&
-                      candidatePrimerMeltingTemp <= settings.meltingPoint.maxValue;
-
-    return goodDeltaG && goodMeltTemp;
-}
-
-bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray& primer) const {
-    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
-    bool hasUnwantedHeteroDimer = false;
-    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence,
-        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
-    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence,
-        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
-    for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
-        hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
-            otherSeqInPcr, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
-    }
-
-    //TODO: hairpins
-    return isUnwantedSelfDimer || hasUnwantedHeteroDimer;
-}
-
-void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& primerLength) const {
-    //Increase candidate primer length
-    //If primer length is too big, reset it and decrease primer end
-    primerLength++;
-    if (primerLength > settings.overlapLength.maxValue) {
-        primerLength = settings.overlapLength.minValue;
-        primerEnd--;
-    }
-}
-
-void PCRPrimerDesignForDNAAssemblyTask::findCandidatePrimers(const QList<U2Region>& regionsBetweenIslands,
-                                                             int amplifiedFragmentEdge,
-                                                             bool findFirstOnly,
-                                                             bool isComplement,
-                                                             U2Region& first,
-                                                             U2Region& second,
-                                                             U2Region& third) const {
-    first = U2Region();
-    second = U2Region();
-    third = U2Region();
-    for (const auto& regionBetweenIslands : regionsBetweenIslands) {
-        if (regionBetweenIslands.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
-            continue;
-        }
-
-        auto firstCandidatePrimerWhileCondition = [&](int primerEnd, int primerLength) {
-            return primerEnd - primerLength > regionBetweenIslands.startPos;
-        };
-        int firstCandidatePrimerEnd = regionBetweenIslands.endPos();
-        first = findCandidatePrimer(firstCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, firstCandidatePrimerWhileCondition);
-
-        //If we didn't find primer - check another region between islands
-        if (first.isEmpty()) {
-            continue;
-        } else if (findFirstOnly) {
-            taskLog.details(tr("A %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
-            break;
-        }
-        taskLog.details(tr("B1 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
-
-        auto secondCandidatePrimerWhileCondition = [&](int primerEnd, int) {
-            return primerEnd == first.startPos + SECOND_PRIMER_OFFSET;
-        };
-        int secondCandidatePrimerEnd = first.startPos + SECOND_PRIMER_OFFSET;
-        second = findCandidatePrimer(secondCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, secondCandidatePrimerWhileCondition);
-        if (!second.isEmpty()) {
-            taskLog.details(tr("B2 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
-        }
-
-        auto thirdCandidatePrimerWhileCondition = [&](int primerEnd, int) {
-            return primerEnd == first.startPos;
-        };
-        int thirdCandidatePrimerEnd = first.startPos;
-        third = findCandidatePrimer(thirdCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, thirdCandidatePrimerWhileCondition);
-        if (!third.isEmpty()) {
-            taskLog.details(tr("B3 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
-        }
-
-        // If we didn't find at least one additional primer - clear reasults and try again
-        if (second.isEmpty() && third.isEmpty()) {
-            taskLog.details(tr("B2 and B3 %1 primers haven't been found, search again").arg(isComplement ? "reverse" : "forvard"));
-            first = U2Region();
-        } else {
-            break;
-        }
-    }
-}
-
 void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence) {
+    // Very the same algorithm, but for reverse regions etween islands
     for (const auto& regionBetweenIslandsReverse : regionsBetweenIslandsReverse) {
         if (regionBetweenIslandsReverse.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
             continue;
@@ -621,86 +497,41 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
     }
 }
 
-void PCRPrimerDesignForDNAAssemblyTask::findB2ForwardPrimer() {
-    int b2ForwardCandidatePrimerEnd = b1Forward.startPos + SECOND_PRIMER_OFFSET;
-    int b2ForwardPrimerLength = settings.overlapLength.minValue;
-    U2Region foundPrimerRegion;
-    while (b2ForwardCandidatePrimerEnd == b1Forward.startPos + SECOND_PRIMER_OFFSET) { //While we are in the region between islands
-        const U2Region b2ForwardCandidatePrimerRegion(b2ForwardCandidatePrimerEnd - b2ForwardPrimerLength, b2ForwardPrimerLength);
-        QByteArray b2ForwardCandidatePrimerSequence = sequence.mid(b2ForwardCandidatePrimerRegion.startPos, b2ForwardCandidatePrimerRegion.length);
+bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteArray& primer) const {
+    auto candidatePrimerDeltaG = PrimerStatistics::getDeltaG(primer);
+    auto candidatePrimerMeltingTemp = PrimerStatistics::getMeltingTemperature(primer);
+    bool goodDeltaG = settings.gibbsFreeEnergy.minValue <= candidatePrimerDeltaG &&
+                      candidatePrimerDeltaG <= settings.gibbsFreeEnergy.maxValue;
+    bool goodMeltTemp = settings.meltingPoint.minValue <= candidatePrimerMeltingTemp &&
+                      candidatePrimerMeltingTemp <= settings.meltingPoint.maxValue;
 
-        //Check if candidate primer melting temperature and deltaG fit to settings
-        bool areSettingsGood = areMetlingTempAndDeltaGood(b2ForwardCandidatePrimerSequence);
-        if (!areSettingsGood) {
-            updatePrimerRegion(b2ForwardCandidatePrimerEnd, b2ForwardPrimerLength);
-            continue;
-        } else {
-            //If melt temp and delta G are good - add backbone and check unwanted connections
-            QString b2ForwardCandidatePrimerRegionString = regionToString(b2ForwardCandidatePrimerRegion, false);
-            taskLog.details(tr("The \"B2 Forward\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(b2ForwardCandidatePrimerRegionString));
-            b2ForwardCandidatePrimerSequence = backboneSequence + b2ForwardCandidatePrimerSequence;
-            bool hasUnwanted = hasUnwantedConnections(b2ForwardCandidatePrimerSequence);
-            if (!hasUnwanted) {
-                // Find B2Reverse primer
-                findB1ReversePrimer(b2ForwardCandidatePrimerSequence);
-
-                if (b2Reverse.isEmpty()) {
-                    taskLog.details(tr("The \"B2 Forward\" primer with the region \"%1\" doesn't fit because there are no corresponding \"B2 Reverse\" primers").arg(QString(b2ForwardCandidatePrimerRegionString)));
-                    continue;
-                }
-
-                //If there are no unwanted connections - we are found primer region
-                b2Forward = b2ForwardCandidatePrimerRegion;
-                break;
-            } else {
-                taskLog.details(tr("The \"B2 Forward\" candidate primer region \"%1\" contains unwanted connections").arg(b2ForwardCandidatePrimerRegionString));
-                updatePrimerRegion(b2ForwardCandidatePrimerEnd, b2ForwardPrimerLength);
-                continue;
-            }
-        }
-    }
+    return goodDeltaG && goodMeltTemp;
 }
 
-void PCRPrimerDesignForDNAAssemblyTask::findB2ForwardPrimer(const QByteArray& b2ForwardCandidatePrimerSequence) {
-    int b2ReverseCandidatePrimerEnd = b1Reverse.startPos + SECOND_PRIMER_OFFSET;
-    int b2ReversePrimerLength = settings.overlapLength.minValue;
-    while (b2ReverseCandidatePrimerEnd == b1Reverse.startPos + SECOND_PRIMER_OFFSET) { //While we are in the region between islands
-        const U2Region b2ReverseCandidatePrimerRegion(b2ReverseCandidatePrimerEnd - b2ReversePrimerLength, b2ReversePrimerLength);
-        QByteArray b2ReverseCandidatePrimerSequence = sequence.mid(b2ReverseCandidatePrimerRegion.startPos, b2ReverseCandidatePrimerRegion.length);
-
-        //Check if candidate primer melting temperature and deltaG fit to settings
-        bool areSettingsGood = areMetlingTempAndDeltaGood(b2ReverseCandidatePrimerSequence);
-        if (!areSettingsGood) {
-            updatePrimerRegion(b2ReverseCandidatePrimerEnd, b2ReversePrimerLength);
-            continue;
-        } else {
-            //If melt temp and delta G are good - add backbone and check unwanted connections
-            QString b2ReverseCandidatePrimerRegionString = regionToString(b2ReverseCandidatePrimerRegion, true);
-            taskLog.details(tr("The \"B2 Reverse\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(b2ReverseCandidatePrimerRegionString));
-            b2ReverseCandidatePrimerSequence = backboneSequence + b2ReverseCandidatePrimerSequence;
-            bool hasUnwanted = hasUnwantedConnections(b2ReverseCandidatePrimerSequence);
-            if (!hasUnwanted) {
-                //If there are no unwanted connections - check hetero-dimers between B2 Forward and B2 Reverse
-                bool hasB2ForwardReverseHeteroDimer =
-                    UnwantedConnectionsUtils::isUnwantedHeteroDimer(b2ForwardCandidatePrimerSequence, b2ReverseCandidatePrimerSequence,
-                        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
-                if (hasB2ForwardReverseHeteroDimer) {
-                    taskLog.details(tr("\"B2 Forward\" and \"B2 Reverse\" have unwanted hetero-dimers, move on"));
-                    updatePrimerRegion(b2ReverseCandidatePrimerEnd, b2ReversePrimerLength);
-                    continue;
-                }
-
-                //If there are no unwanted connections - we are found primer region
-                b2Reverse = b2ReverseCandidatePrimerRegion;
-                break;
-            } else {
-                taskLog.details(tr("The \"B2 Reverse\" candidate primer region \"%1\" contains unwanted connections").arg(b2ReverseCandidatePrimerRegionString));
-                updatePrimerRegion(b2ReverseCandidatePrimerEnd, b2ReversePrimerLength);
-                continue;
-            }
-        }
+bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray& primer) const {
+    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    bool hasUnwantedHeteroDimer = false;
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence,
+        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence,
+        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
+        hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+            otherSeqInPcr, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
     }
 
+    //TODO: hairpins
+    return isUnwantedSelfDimer || hasUnwantedHeteroDimer;
+}
+
+void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& primerLength) const {
+    //Increase candidate primer length
+    //If primer length is too big, reset it and decrease primer end
+    primerLength++;
+    if (primerLength > settings.overlapLength.maxValue) {
+        primerLength = settings.overlapLength.minValue;
+        primerEnd--;
+    }
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const {
