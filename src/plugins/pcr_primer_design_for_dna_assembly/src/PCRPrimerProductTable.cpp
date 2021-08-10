@@ -54,7 +54,7 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &_currentPr
     for (const U2Region &region : _currentProducts) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
-            setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos)).arg(QString::number(region.endPos()))));
+            setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos + 1)).arg(QString::number(region.endPos()))));
             row++;
         }
         index++;
