@@ -52,7 +52,7 @@ qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvas
     return qMin(ctx->getSequenceLength(), posOnFirstLine + line * symbolsPerLine);
 }
 
-int DetViewMultiLineRenderer::posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
+int DetViewMultiLineRenderer::posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
     CHECK(visibleRange.contains(pos), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());

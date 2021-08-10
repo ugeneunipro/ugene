@@ -62,8 +62,8 @@ public:
     }
 
 private:
-    void setCursor(int newPos);
-    void navigate(int newPos, bool shiftPressed = false);
+    void setCursor(qint64 newPos);
+    void navigate(qint64 newPos, bool shiftPressed = false);
 
     void insertChar(int character);
     void deleteChar(int key);
@@ -81,7 +81,7 @@ private slots:
     void sl_paste(Task *pasteTask);
 
 private:
-    int cursor;  // TODO_SVEDIT: can be separate class
+    qint64 cursor = 0;  // TODO_SVEDIT: can be separate class
     QColor cursorColor;
     QTimer animationTimer;
     DetView *view;

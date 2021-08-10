@@ -540,6 +540,10 @@ void PanView::setSyncOffset(int o) {
     update();
 }
 
+int PanView::getSyncOffset() const {
+    return syncOffset;
+}
+
 void PanView::sl_sequenceChanged() {
     seqLen = ctx->getSequenceLength();
     U2Region curSource(0, ctx->getSequenceLength()), newRange(0, 0);
@@ -573,7 +577,7 @@ void PanView::sl_updateRows() {
     updateRows();
 }
 
-const U2Region PanView::getRegionToZoom() const {
+U2Region PanView::getRegionToZoom() const {
     const QVector<U2Region> &sel = ctx->getSequenceSelection()->getSelectedRegions();
     const QList<Annotation *> annotationSel = getSequenceContext()->getAnnotationsSelection()->getAnnotations();
     U2Region selRegion;
@@ -586,8 +590,48 @@ const U2Region PanView::getRegionToZoom() const {
     return selRegion;
 }
 
+QAction *PanView::getZoomInAction() const {
+    return zoomInAction;
+}
+
+QAction *PanView::getZoomOutAction() const {
+    return zoomOutAction;
+}
+
+QAction *PanView::getZoomToSelectionAction() const {
+    return zoomToSelectionAction;
+}
+
+QAction *PanView::getZoomToSequenceAction() const {
+    return zoomToSequenceAction;
+}
+
+PVRowsManager *PanView::getRowsManager() const {
+    return rowsManager;
+}
+
+QAction *PanView::getToggleMainRulerAction() const {
+    return toggleMainRulerAction;
+}
+
+QAction *PanView::getToggleCustomRulersAction() const {
+    return toggleCustomRulersAction;
+}
+
+PanViewLinesSettings *PanView::getLinesSettings() const {
+    return settings;
+}
+
+qint64 PanView::getSingleStep() const {
+    return qMax((qint64)1, visibleRange.length / 10);
+}
+
+qint64 PanView::getPageStep() const {
+    return qMax((qint64)1, visibleRange.length / 5);
+}
+
 //////////////////////////////////////////////////////////////////////////
-/// render
+/// PanViewRenderArea
 PanViewRenderArea::PanViewRenderArea(PanView *d, PanViewRenderer *renderer)
     : GSequenceLineViewGridAnnotationRenderArea(d),
       panView(d),
