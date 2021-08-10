@@ -436,7 +436,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
         url = GUrl("newfile");
     }
 
-    QString fileName = GUrlUtils::getNewLocalUrlByExtention(url, "newfile", ".csv", "_annotations");
+    QString fileName = GUrlUtils::getNewLocalUrlByExtension(url, "newfile", ".csv", "_annotations");
     QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );

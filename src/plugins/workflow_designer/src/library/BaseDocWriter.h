@@ -46,11 +46,10 @@ public:
 
     BaseDocWriter(Actor *a, const DocumentFormatId &fid);
     BaseDocWriter(Actor *a);
-    virtual ~BaseDocWriter() {
-    }
-    virtual void init();
-    virtual Task *tick();
-    virtual void cleanup();
+
+    void init() override;
+    Task *tick() override;
+    void cleanup() override;
 
     static QString getUniqueObjectName(const Document *doc, const QString &name);
     static QString generateUrl(const MessageMetadata &metadata, bool groupByDatasets, const QString &suffix, const QString &ext, const QString &defaultName);

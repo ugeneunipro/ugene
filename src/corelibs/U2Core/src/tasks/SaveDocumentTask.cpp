@@ -104,7 +104,7 @@ void SaveDocumentTask::run() {
 
     QString originalFilePath = url.getURLString();
     QFile originalFile(originalFilePath);
-    const bool originalFileExists = (url.isLocalFile()) ? originalFile.exists() && 0 != originalFile.size() : false;
+    const bool originalFileExists = url.isLocalFile() && originalFile.exists() && originalFile.size() != 0;
 
     if (originalFileExists && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         // Changes are already applied, the file shouldn't be saved
