@@ -19,11 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYML_DIALOGWIDGET_H
-#define _U2_PHYML_DIALOGWIDGET_H
-
-#include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
+#ifndef _U2_PHYML_DIALOG_WIDGET_H
+#define _U2_PHYML_DIALOG_WIDGET_H
 
 #include <U2Gui/InputWidgetsControllers.h>
 
@@ -34,7 +31,7 @@
 
 namespace U2 {
 
-class PhyMlSettingsPreffixes {
+class PhyMlSettingsPrefixes {
 public:
     static const QString AminoAcidModelType;
     static const QString DnaModelType;
@@ -42,7 +39,6 @@ public:
 
     static const QString EstimateTtRatio;
     static const QString TtRatio;
-    static const QString TtRatioCheckbox;
 
     static const QString EstimateSitesProportion;
     static const QString InvariableSitesProportion;
@@ -58,7 +54,7 @@ public:
 
     static const QString SubRatesNumber;
     static const QString OptimiseTopology;
-    static const QString OptimiseBranchLenghs;
+    static const QString OptimiseBranchLengths;
 
     static const QString TreeImprovementType;
     static const QString TreeSearchingType;
@@ -84,7 +80,7 @@ private:
 
     QStringList generatePhyMlSettingsScript();
 
-    bool isAminoAcid;    //is the msa has the amino acid alphabet
+    bool isAminoAcid;  // is the msa has the amino acid alphabet
 
     WidgetControllersContainer widgetControllers;
 private slots:
@@ -100,6 +96,6 @@ private:
     bool isTreeNumberSet;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHYML_DIALOGWIDGET_H
+#endif  // _U2_PHYML_DIALOG_WIDGET_H
