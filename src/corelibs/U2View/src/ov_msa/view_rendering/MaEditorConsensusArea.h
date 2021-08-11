@@ -141,6 +141,6 @@ protected:
     QPixmap *cachedView;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_CONSENSUS_AREA_H_
+#endif  // _U2_MA_EDITOR_CONSENSUS_AREA_H_

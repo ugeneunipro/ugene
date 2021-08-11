@@ -108,4 +108,4 @@ Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString dat
     return proto;
 }
 
-}    // namespace U2
+}  // namespace U2

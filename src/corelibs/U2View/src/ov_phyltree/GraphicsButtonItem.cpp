@@ -205,4 +205,4 @@ void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
     nodeLabel->setVisible(showNodeLabels);
 }
 
-}    // namespace U2
+}  // namespace U2

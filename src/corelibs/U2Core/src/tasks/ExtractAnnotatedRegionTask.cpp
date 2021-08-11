@@ -37,7 +37,7 @@ void ExtractAnnotatedRegionTask::prepare() {
 }
 
 void ExtractAnnotatedRegionTask::prepareTranslations() {
-    //TODO move these logic somewhere above
+    // TODO move these logic somewhere above
     bool aminoSeq = inputSeq.alphabet->isAmino();
     if (aminoSeq) {
         return;
@@ -62,7 +62,7 @@ void ExtractAnnotatedRegionTask::run() {
     QVector<U2Region> safeLocation = inputAnn->getRegions();
     U2Region::bound(0, inputSeq.length(), safeLocation);
     QList<QByteArray> resParts = U1SequenceUtils::extractRegions(inputSeq.seq, safeLocation, complT, nullptr, inputSeq.circular);
-    if (aminoT == nullptr) {    // extension does not work for translated annotations
+    if (aminoT == nullptr) {  // extension does not work for translated annotations
         if (cfg.extLeft > 0) {
             int annStart = safeLocation.first().startPos;
             int preStart = qMax(0, annStart - cfg.extLeft);
@@ -124,4 +124,4 @@ const SharedAnnotationData &ExtractAnnotatedRegionTask::getInputAnnotation() con
     return inputAnn;
 }
 
-}    // namespace U2
+}  // namespace U2

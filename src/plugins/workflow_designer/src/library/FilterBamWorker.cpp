@@ -22,18 +22,12 @@
 #include "FilterBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -115,7 +109,7 @@ QString getHexValueByFilterString(const QString &filterString, const QMap<QStrin
     }
     return QString::number(val, 16);
 }
-}    // namespace
+}  // namespace
 
 void FilterBamWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, FilterBamWorker::tr("Filter BAM/SAM files"), FilterBamWorker::tr("Filters BAM/SAM files using SAMTools view."));
@@ -183,7 +177,9 @@ void FilterBamWorkerFactory::init() {
         QVariantMap formatMap;
         formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
         formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
-        delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
+        auto outputFormatComboBoxDelegate = new ComboBoxDelegate(formatMap);
+        outputFormatComboBoxDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        delegates[OUT_FORMAT_ID] = outputFormatComboBoxDelegate;
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(0);
         lenMap["maximum"] = QVariant(254);
@@ -201,8 +197,8 @@ void FilterBamWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FilterBamPrompter());
-    //no way to include tool support files, so ids passed to functions manually
-    proto->addExternalTool("USUPP_SAMTOOLS");    //SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
+    // no way to include tool support files, so ids passed to functions manually
+    proto->addExternalTool("USUPP_SAMTOOLS");  // SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -272,7 +268,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void FilterBamWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -316,7 +312,7 @@ QString FilterBamWorker::getTargetName(const QString &fileUrl, const QString &ou
 }
 
 ////////////////////////////////////////////////////////
-//BamFilterSetting
+// BamFilterSetting
 QStringList BamFilterSetting::getSamtoolsArguments() const {
     QStringList result;
 
@@ -352,7 +348,7 @@ QStringList BamFilterSetting::getSamtoolsArguments() const {
 }
 
 ////////////////////////////////////////////////////////
-//SamtoolsViewFilterTask
+// SamtoolsViewFilterTask
 const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting &settings)
@@ -416,5 +412,5 @@ void SamtoolsViewFilterTask::checkExitCode(QProcess *process, const QString &too
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

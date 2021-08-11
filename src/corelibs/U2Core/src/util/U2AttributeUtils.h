@@ -60,6 +60,6 @@ public:
     static void copyObjectAttributes(const U2EntityRef &srcObjRef, const U2EntityRef &dstObjRef, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

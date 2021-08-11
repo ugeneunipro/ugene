@@ -40,6 +40,6 @@ private:
 
 typedef class GTWebkitView GTWebViewPrivate;
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // GTWEBKITVIEW_H
+#endif  // GTWEBKITVIEW_H

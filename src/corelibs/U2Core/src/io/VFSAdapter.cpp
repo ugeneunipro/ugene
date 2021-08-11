@@ -48,18 +48,18 @@ bool VFSAdapter::open(const GUrl &_url, IOAdapterMode m) {
     QString vfsPrefix = U2_VFS_URL_PREFIX;
     // assume that all membuf adapters work with files in some vfs
     if (!_url.getURLString().startsWith(vfsPrefix)) {
-        return false;    // not a file in vfs
+        return false;  // not a file in vfs
     }
     VirtualFileSystemRegistry *vfsReg = AppContext::getVirtualFileSystemRegistry();
     SAFE_POINT(vfsReg != nullptr, "VirtualFileSystemRegistry not found!", false);
 
     QStringList urlArgs = _url.getURLString().mid(vfsPrefix.size()).split(U2_VFS_FILE_SEPARATOR, QString::SkipEmptyParts);
-    if (2 != urlArgs.size()) {    // urlArgs - vfsname and filename
+    if (2 != urlArgs.size()) {  // urlArgs - vfsname and filename
         return false;
     }
     VirtualFileSystem *vfs = vfsReg->getFileSystemById(urlArgs[0]);
     if (nullptr == vfs) {
-        return false;    // no such vfs registered
+        return false;  // no such vfs registered
     }
 
     if (!vfs->fileExists(urlArgs[1])) {
@@ -129,4 +129,4 @@ QString VFSAdapter::errorString() const {
     return buffer->errorString().isEmpty() ? errorMessage : buffer->errorString();
 }
 
-};    // namespace U2
+};  // namespace U2

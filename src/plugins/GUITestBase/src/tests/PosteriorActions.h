@@ -41,7 +41,7 @@ POSTERIOR_ACTION_DECLARATION(post_action_0004)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_posterior_actions
-}    // namespace U2
+}  // namespace GUITest_posterior_actions
+}  // namespace U2
 
-#endif    // _U2_POSTERIOR_ACTIONS_H_
+#endif  // _U2_POSTERIOR_ACTIONS_H_

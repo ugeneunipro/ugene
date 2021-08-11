@@ -29,4 +29,4 @@ DefaultDialogFiller::DefaultDialogFiller(GUITestOpStatus &os, const QString &nam
 void DefaultDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(os, b);
 }
-}    // namespace HI
+}  // namespace HI

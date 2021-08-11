@@ -43,16 +43,16 @@ namespace GUITest_common_scenarios_querry_designer {
 using namespace HI;
 
 void test1(HI::GUITestOpStatus &os, QString s = "") {
-    //Bug: QD: Crash while resizing and deleting elements (0002402)
-    //1. Open Query Designer
+    // Bug: QD: Crash while resizing and deleting elements (0002402)
+    // 1. Open Query Designer
     GTUtilsQueryDesigner::openQueryDesigner(os);
 
     QString array[] = {"CDD", "Base Content", "HMM2", "ORF"};
     QPoint p;
-    //2. Add any algorithm to the scheme
+    // 2. Add any algorithm to the scheme
     for (int i = 0; i < 4; i++) {
-        //3. Reduce any elements size by dragging its right corner as far to the left as possible
-        //  (or a bit less than as far as possible)
+        // 3. Reduce any elements size by dragging its right corner as far to the left as possible
+        //   (or a bit less than as far as possible)
         if (s == "arr") {
             GTUtilsQueryDesigner::addAlgorithm(os, array[i]);
 
@@ -78,7 +78,7 @@ void test1(HI::GUITestOpStatus &os, QString s = "") {
 
         GTMouseDriver::release();
 
-        //4. Select the resized element and press <Del>
+        // 4. Select the resized element and press <Del>
         if (s == "arr") {
             GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, array[i]));
         } else {
@@ -86,13 +86,13 @@ void test1(HI::GUITestOpStatus &os, QString s = "") {
         }
         GTMouseDriver::click();
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        //check no elements on scene
+        // check no elements on scene
         QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
         QList<QGraphicsItem *> items = sceneView->items();
-        CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");    //2 - is equal empty scene
+        CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");  // 2 - is equal empty scene
     }
-    //5. repeat from step 2 (do 4 iterations)
-    //Expected state: UGENE not crashes.
+    // 5. repeat from step 2 (do 4 iterations)
+    // Expected state: UGENE not crashes.
 }
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     test1(os, "Pattern");
@@ -105,5 +105,5 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     test1(os, "arr");
 }
-}    // namespace GUITest_common_scenarios_querry_designer
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_querry_designer
+}  // namespace U2

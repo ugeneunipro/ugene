@@ -239,13 +239,13 @@ void AWidget::addBlob(int x, int y, int radius, int height) {
 
     // Set up the pointers
     int *newptr;
-    //int *oldptr;
+    // int *oldptr;
     if (page == 0) {
         newptr = &heightField1.front();
-        //oldptr = &heightField2.front();
+        // oldptr = &heightField2.front();
     } else {
         newptr = &heightField2.front();
-        //oldptr = &heightField1.front();
+        // oldptr = &heightField1.front();
     }
 
     int rquad = radius * radius;
@@ -688,4 +688,4 @@ NextPieceLabel::NextPieceLabel(QWidget *parent /* = 0*/)
     setAutoFillBackground(true);
 }
 
-}    // namespace U2
+}  // namespace U2

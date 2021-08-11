@@ -33,7 +33,7 @@
 namespace U2 {
 
 static QString makeFilePathCanonical(const QString &originalUrl) {
-    //ensure that name is canonical
+    // ensure that name is canonical
     QString result = originalUrl.trimmed();
 
     QString fileUrlPrefix = "file://";
@@ -54,7 +54,7 @@ static QString makeFilePathCanonical(const QString &originalUrl) {
     // Windows drive letter, Qt resource designation or Samba share designation and name
     QString prefix;
 
-    if (originalUrl.startsWith(':')) {    // is a Qt resource
+    if (originalUrl.startsWith(':')) {  // is a Qt resource
         prefix = ":";
         result = result.mid(1);
     } else {
@@ -77,7 +77,7 @@ static QString makeFilePathCanonical(const QString &originalUrl) {
         // append drive spec letter or Samba server name to the prefix
         if (isSambaPath) {
             prefix += parts.takeFirst();
-        } else if (parts.at(0).endsWith(':') && parts.at(0).length() == 2 && prefix.isEmpty()) {    // Windows drive letter designation
+        } else if (parts.at(0).endsWith(':') && parts.at(0).length() == 2 && prefix.isEmpty()) {  // Windows drive letter designation
             prefix = parts.takeFirst();
         }
 #endif
@@ -167,11 +167,11 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
 #else
     Q_UNUSED(codePage);
     return getURLString().toLocal8Bit();
-#endif    // Q_OS_WIN
+#endif  // Q_OS_WIN
 }
 
 static QString path(const GUrl *url) {
-    //TODO: parse HTTP and other formats for path part
+    // TODO: parse HTTP and other formats for path part
     QString result;
     if (url->isVFSFile()) {
         return result;
@@ -269,4 +269,4 @@ QDataStream &operator>>(QDataStream &in, GUrl &myObj) {
 
 bool GUrl::registerMeta = registerMetas();
 
-}    // namespace U2
+}  // namespace U2

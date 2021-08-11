@@ -71,6 +71,6 @@ protected:
     const AssemblyCompressor *compressor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ASSEMBLY_ADAPTER_H_
+#endif  // _U2_ASSEMBLY_ADAPTER_H_

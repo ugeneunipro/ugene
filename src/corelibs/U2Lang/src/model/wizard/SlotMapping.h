@@ -37,6 +37,6 @@ public:
     void validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus &os) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SLOTMAPPING_H_
+#endif  // _U2_SLOTMAPPING_H_

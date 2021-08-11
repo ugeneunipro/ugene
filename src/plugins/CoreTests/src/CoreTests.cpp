@@ -27,7 +27,7 @@
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
 
-//built-in test impls
+// built-in test impls
 #include "AnnotationTableObjectTest.h"
 #include "AnnotationUtilsTests.h"
 #include "AsnParserTests.h"
@@ -93,7 +93,7 @@ void CoreTests::registerFactories() {
 
     registerFactory<SMatrixTests>(xmlTestFormat);
 
-    //Document model tests
+    // Document model tests
     registerFactory<DocumentModelTests>(xmlTestFormat);
 
     // MultipleChromatogramAlignmentObject Tests
@@ -102,22 +102,22 @@ void CoreTests::registerFactories() {
     // MultipleSequenceAlignmentObject Tests
     registerFactory<MsaObjectTests>(xmlTestFormat);
 
-    //U2SequenceObject Tests
+    // U2SequenceObject Tests
     registerFactory<DNASequenceObjectTests>(xmlTestFormat);
 
-    //DNATranslationImplTests Tests
+    // DNATranslationImplTests Tests
     registerFactory<DNATranslationImplTests>(xmlTestFormat);
 
-    //Sequence Walker Test
+    // Sequence Walker Test
     registerFactory<SequenceWalkerTests>(xmlTestFormat);
 
-    //BioStruct3D Object Tests
+    // BioStruct3D Object Tests
     registerFactory<BioStruct3DObjectTests>(xmlTestFormat);
 
-    //PhyTree Object Tests
+    // PhyTree Object Tests
     registerFactory<PhyTreeObjectTests>(xmlTestFormat);
 
-    //Task Tests
+    // Task Tests
     registerFactory<TaskTests>(xmlTestFormat);
 
     // Edit sequence tests
@@ -173,4 +173,4 @@ void CoreTests::registerFactories() {
     registerFactory<DnaStatisticsTests>(xmlTestFormat);
 }
 
-}    // namespace U2
+}  // namespace U2

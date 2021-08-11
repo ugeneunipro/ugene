@@ -85,6 +85,6 @@ private slots:
     void sl_getColor();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

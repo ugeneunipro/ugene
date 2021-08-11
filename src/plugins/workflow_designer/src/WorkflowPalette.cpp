@@ -130,7 +130,7 @@ void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         m_view->style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter, m_view);
 
         QStyleOptionViewItem branchOption;
-        static const int i = 9;    // ### hardcoded in qcommonstyle.cpp
+        static const int i = 9;  // ### hardcoded in qcommonstyle.cpp
         QRect r = option.rect;
         branchOption.rect = QRect(r.left() + i / 2, r.top() + (r.height() - i) / 2, i, i);
         branchOption.palette = option.palette;
@@ -182,7 +182,7 @@ void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         buttonOption.toolButtonStyle = Qt::ToolButtonTextBesideIcon;
         m_view->style()->drawComplexControl(QStyle::CC_ToolButton, &buttonOption, painter, m_view);
 
-        //QItemDelegate::paint(painter, option, index);
+        // QItemDelegate::paint(painter, option, index);
     }
 }
 
@@ -205,13 +205,13 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, Sc
     setSelectionMode(QAbstractItemView::NoSelection);
     setItemDelegate(new PaletteDelegate(this));
     setRootIsDecorated(false);
-    //setAnimated(true);
+    // setAnimated(true);
     setMouseTracking(true);
     setColumnCount(1);
     header()->hide();
     header()->setSectionResizeMode(QHeaderView::Stretch);
 
-    //setTextElideMode (Qt::ElideMiddle);
+    // setTextElideMode (Qt::ElideMiddle);
     setContent(reg);
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
     connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
@@ -565,7 +565,7 @@ void WorkflowPaletteElements::editElement() {
             }
             LocalWorkflow::ScriptWorkerFactory::init(input, output, attrs, name, desc, dlg->getActorFilePath());
         }
-    } else {    //External process category
+    } else {  // External process category
         editPrototype(proto);
     }
 }
@@ -797,4 +797,4 @@ void WorkflowPaletteElements::sl_nameFilterChanged(const QString &filter) {
     rebuild();
 }
 
-}    // namespace U2
+}  // namespace U2

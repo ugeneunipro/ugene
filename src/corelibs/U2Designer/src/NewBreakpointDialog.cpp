@@ -49,4 +49,4 @@ void NewBreakpointDialog::sl_announceNewBreakpoint() {
     emit si_newBreakpointCreated(ui->elementCombo->currentText());
 }
 
-}    // namespace U2
+}  // namespace U2

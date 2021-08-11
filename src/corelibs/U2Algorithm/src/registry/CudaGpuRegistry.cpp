@@ -72,4 +72,4 @@ void CudaGpuRegistry::saveGpusSettings() const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -96,4 +96,4 @@ void DNAGraphPackViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenc
     }
 }
 
-}    // namespace U2
+}  // namespace U2

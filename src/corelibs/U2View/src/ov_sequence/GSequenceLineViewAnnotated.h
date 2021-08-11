@@ -46,7 +46,7 @@ public:
     /**
      * Returns list of annotations that hold the on-screen point.
      * The method is delegated to the renderArea. Override the renderArea's variant of the method when needed.
-    */
+     */
     QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
 
     static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
@@ -113,7 +113,7 @@ protected:
     GSequenceLineViewAnnotated *const sequenceLineViewAnnotated;
 
     //! VIEW_RENDERER_REFACTORING: this parameters are also doubled in SequenceViewAnnotaterRenderer
-    //af* == annotation font
+    // af* == annotation font
     QFont *afNormal;
     QFont *afSmall;
 
@@ -161,6 +161,6 @@ private:
     GSequenceLineViewAnnotated *view;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

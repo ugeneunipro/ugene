@@ -119,6 +119,6 @@ Handle<Value> ActorWrap::isReady(const Arguments &args) {
     return scope.Close(Boolean::New(worker->isReady()));
 }
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2

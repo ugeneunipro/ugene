@@ -159,4 +159,4 @@ void SelectSubalignmentDialog::init() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

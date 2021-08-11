@@ -43,11 +43,11 @@ void GTMouseUtils::moveCursorOutOfWidget(GUITestOpStatus &os, QWidget *widget) {
     GT_CHECK(widget != NULL, "Provided widget is null");
     QPoint currentPosition = QCursor::pos();
     GT_CHECK(widget->rect().contains(currentPosition, false), "Cursor not over widget");
-    QPoint finalPosition = widget->rect().topLeft() + QPoint(1, 1);    //top left + offset
+    QPoint finalPosition = widget->rect().topLeft() + QPoint(1, 1);  // top left + offset
     GTMouseDriver::moveTo(finalPosition);
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

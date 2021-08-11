@@ -60,6 +60,6 @@ private:
     static const QString HEADER_COMMON_STYLE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

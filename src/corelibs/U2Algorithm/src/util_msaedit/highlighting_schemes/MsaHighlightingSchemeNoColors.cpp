@@ -40,4 +40,4 @@ MsaHighlightingScheme *MsaHighlightingSchemeNoColorsFactory::create(QObject *par
     return new MsaHighlightingSchemeNoColors(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

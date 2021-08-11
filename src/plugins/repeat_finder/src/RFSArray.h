@@ -163,6 +163,6 @@ public:
     QVector<CheckEdge *> pool;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

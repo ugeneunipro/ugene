@@ -54,5 +54,5 @@ private slots:
     void sl_buildMenu(GObjectView *view, QMenu *menu, const QString &type);
 };
 
-}    // namespace U2
-#endif    // _U2_MSA_EDITOR_CONSENSUS_AREA_H_
+}  // namespace U2
+#endif  // _U2_MSA_EDITOR_CONSENSUS_AREA_H_

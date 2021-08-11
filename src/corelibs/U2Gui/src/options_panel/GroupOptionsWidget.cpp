@@ -81,4 +81,4 @@ GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_
     setFocusProxy(widget);
 }
 
-}    // namespace U2
+}  // namespace U2

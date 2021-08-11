@@ -30,7 +30,7 @@ const QString VIEW_ID = "view_id";
 const QString OBJ_REF = "asm_obj_ref";
 const QString REGION = "asm_region";
 const QString Y_OFFSET = "asm_y_offset";
-}    // namespace
+}  // namespace
 
 bool AssemblyBrowserState::isValid() const {
     return stateData.value(VIEW_ID) == AssemblyBrowserFactory::ID;
@@ -82,4 +82,4 @@ void AssemblyBrowserState::restoreState(AssemblyBrowser *ab) const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

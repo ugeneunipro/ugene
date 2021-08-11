@@ -114,7 +114,7 @@ DetView::DetView(QWidget *p, SequenceObjectContext *ctx)
     showTranslationAction->setChecked(hasAmino);
 
     assert(ctx->getSequenceObject() != nullptr);
-    featureFlags &= ~GSLV_FF_SupportsCustomRange;    // DetView does not support zooming.
+    featureFlags &= ~GSLV_FF_SupportsCustomRange;  // DetView does not support zooming.
     renderArea = new DetViewRenderArea(this);
     renderArea->setObjectName("render_area_" + ctx->getSequenceObject()->getSequenceName());
 
@@ -479,8 +479,8 @@ void DetView::setSelectedTranslations() {
 void DetView::updateTranslationRowsVisibilityBySelectionState() {
     QVector<bool> frameRowVisibilityFlag(6, false);
     for (const U2Region &region : qAsConst(ctx->getSequenceSelection()->getSelectedRegions())) {
-        frameRowVisibilityFlag[region.startPos % 3] = true;    // direct frame
-        frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;    // complement frame.
+        frameRowVisibilityFlag[region.startPos % 3] = true;  // direct frame
+        frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;  // complement frame.
     }
     for (int frameIndex = 0; frameIndex < frameRowVisibilityFlag.size(); frameIndex++) {
         bool isFrameActionChecked = frameRowVisibilityFlag[frameIndex];
@@ -517,8 +517,8 @@ void DetView::mouseMoveEvent(QMouseEvent *me) {
 }
 
 void DetView::mouseReleaseEvent(QMouseEvent *me) {
-    //click with 'alt' shift selects single base in GSingleSeqWidget;
-    //here we adjust this behavior -> if click was done in translation line -> select 3 bases
+    // click with 'alt' shift selects single base in GSingleSeqWidget;
+    // here we adjust this behavior -> if click was done in translation line -> select 3 bases
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
     if (me->button() == Qt::LeftButton && singleBaseSelectionMode) {
@@ -626,22 +626,22 @@ void DetView::updateVisibleRange() {
             visibleLinesCount++;
         }
 
-        int visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
+        qint64 visibleRangeLen = visibleLinesCount * detArea->getSymbolsPerLine();
 
-        int lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
+        qint64 lastLine = seqLen / detArea->getSymbolsPerLine() + (seqLen % detArea->getSymbolsPerLine() == 0 ? 0 : 1) - detArea->getLinesCount();
         if (detArea->height() - detArea->getLinesCount() * detArea->getShiftsCount() * detArea->getShiftHeight() > 0 && lastLine > 0) {
             lastLine--;
         }
-        int lastStartPos = lastLine * detArea->getSymbolsPerLine();
+        qint64 lastStartPos = lastLine * detArea->getSymbolsPerLine();
 
         bool posAtTheEnd = visibleRange.startPos > lastStartPos;
-        visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+        visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
         bool emptyLineDetected = (visibleRangeLen - visibleRange.length) > detArea->getSymbolsPerLine();
 
         if (posAtTheEnd || (emptyLineDetected && visibleRange.startPos + visibleRangeLen >= seqLen)) {
             // scroll to the end
             visibleRange.startPos = qMax(0, (verticalScrollBar->maximum() / numShiftsInOneLine) * detArea->getSymbolsPerLine());
-            visibleRange.length = qMin((int)(seqLen - visibleRange.startPos), qMin(visibleRangeLen, (int)seqLen));
+            visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
             currentShiftsCounter = qMax(0, verticalScrollBar->maximum() % numShiftsInOneLine);
         }
     } else {
@@ -690,7 +690,7 @@ void DetView::updateVerticalScrollBar() {
     int maximum;
     if (isWrapMode()) {
         DetViewRenderArea *detArea = getDetViewRenderArea();
-        int linesCount = seqLen / detArea->getSymbolsPerLine();
+        qint64 linesCount = seqLen / detArea->getSymbolsPerLine();
         if (seqLen % detArea->getSymbolsPerLine() != 0) {
             linesCount++;
         }
@@ -939,4 +939,4 @@ int DetViewRenderArea::getShiftHeight() const {
     return renderer->getRowLineHeight();
 }
 
-}    // namespace U2
+}  // namespace U2

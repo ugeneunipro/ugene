@@ -226,6 +226,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/FilesIterator.h \
            src/util/FileStorageUtils.h \
            src/util/FormatUtils.h \
+           src/util/Formatters.h \
            src/util/GAutoDeleteList.h \
            src/util/GenbankFeatures.h \
            src/util/GUrlUtils.h \
@@ -454,6 +455,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/FilesIterator.cpp \
            src/util/FileStorageUtils.cpp \
            src/util/FormatUtils.cpp \
+           src/util/Formatters.cpp \
            src/util/GAutoDeleteList.cpp \
            src/util/GenbankFeatures.cpp \
            src/util/GUrlUtils.cpp \

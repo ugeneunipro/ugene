@@ -79,18 +79,18 @@ void dumpVector(const QVector<T> &v) {
 }
 
 /*
-* Copyright (c) Medical Research Council 1994. All rights reserved.
-*
-* Permission to use, copy, modify and distribute this software and its
-* documentation for any purpose is hereby granted without fee, provided that
-* this copyright and notice appears in all copies.
-*
-* This file was written by James Bonfield, Simon Dear, Rodger Staden,
-* as part of the Staden Package at the MRC Laboratory of Molecular
-* Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
-*
-* MRC disclaims all warranties with regard to this software.
-*/
+ * Copyright (c) Medical Research Council 1994. All rights reserved.
+ *
+ * Permission to use, copy, modify and distribute this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * this copyright and notice appears in all copies.
+ *
+ * This file was written by James Bonfield, Simon Dear, Rodger Staden,
+ * as part of the Staden Package at the MRC Laboratory of Molecular
+ * Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
+ *
+ * MRC disclaims all warranties with regard to this software.
+ */
 
 /*
 Title:       read_scf.c
@@ -183,12 +183,12 @@ typedef struct {
 typedef char Comments; /* Zero terminated list of \n separated entries */
 
 /*
-* Reading SCF routines
-* -----------------
-* Return:
-*    0 - success
-*   -1 - failure
-*/
+ * Reading SCF routines
+ * -----------------
+ * Return:
+ *    0 - success
+ *   -1 - failure
+ */
 int read_scf_header(SeekableBuf *fp, Header *h) {
     int i;
 
@@ -563,18 +563,18 @@ Document *SCFFormat::parseSCF(const U2DbiRef &dbiRef, IOAdapter *io, const QVari
 }
 
 /*
-* Copyright (c) Medical Research Council 1994. All rights reserved.
-*
-* Permission to use, copy, modify and distribute this software and its
-* documentation for any purpose is hereby granted without fee, provided that
-* this copyright and notice appears in all copies.
-*
-* This file was written by James Bonfield, Simon Dear, Rodger Staden,
-* as part of the Staden Package at the MRC Laboratory of Molecular
-* Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
-*
-* MRC disclaims all warranties with regard to this software.
-*/
+ * Copyright (c) Medical Research Council 1994. All rights reserved.
+ *
+ * Permission to use, copy, modify and distribute this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * this copyright and notice appears in all copies.
+ *
+ * This file was written by James Bonfield, Simon Dear, Rodger Staden,
+ * as part of the Staden Package at the MRC Laboratory of Molecular
+ * Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
+ *
+ * MRC disclaims all warranties with regard to this software.
+ */
 
 /*
 Title:       write_scf.c
@@ -884,8 +884,8 @@ int write_scf_comment(FILE *fp, Comments *c, size_t s) {
 }
 
 /*
-* All of the above structs in a single scf format.
-*/
+ * All of the above structs in a single scf format.
+ */
 typedef struct {
     Header header;
     union Samples {
@@ -898,12 +898,12 @@ typedef struct {
 } Scf;
 
 /*
-* Request which (major) version of scf to use when writing.
-* Defaults to the latest. Currently suitable fields are
-* 2 and 3.
-*
-* Returns 0 for success, -1 for failure.
-*/
+ * Request which (major) version of scf to use when writing.
+ * Defaults to the latest. Currently suitable fields are
+ * 2 and 3.
+ *
+ * Returns 0 for success, -1 for failure.
+ */
 // int set_scf_version(int version) {
 //     if (version != 2 && version != 3)
 //         return -1;
@@ -918,8 +918,8 @@ inline QString scf_version_float2str(float f) {
 }
 
 /*
-* Write Seq out as a .scf file to the 'fp' FILE *
-*/
+ * Write Seq out as a .scf file to the 'fp' FILE *
+ */
 int fwrite_scf(Scf *scf, FILE *fp) {
     uint size;
     int err;
@@ -994,7 +994,7 @@ static void saveChromatogramToSCF(const DNAChromatogram &c, const QByteArray &se
 
     scf.header.bases_left_clip = 0;
     scf.header.bases_right_clip = 0;
-    scf.header.code_set = 2;    // TODO: not sure if correct
+    scf.header.code_set = 2;  // TODO: not sure if correct
     scf.header.comments_size = 0;
     scf.header.comments_offset = 0;
     scf.header.private_size = 0;
@@ -1239,4 +1239,4 @@ DNASequence *SCFFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     return seq;
 }
 
-}    // namespace U2
+}  // namespace U2

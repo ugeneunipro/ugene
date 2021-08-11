@@ -179,4 +179,4 @@ void BioStruct3DSubsetEditor::setModelDisabled() {
     modelCombo->setDisabled(true);
 }
 
-}    // namespace U2
+}  // namespace U2

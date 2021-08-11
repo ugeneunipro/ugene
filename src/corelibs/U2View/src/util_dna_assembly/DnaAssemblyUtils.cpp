@@ -201,7 +201,7 @@ ConvertFileTask *getConvertTask(const GUrl &url, const QStringList &targetFormat
     }
     return nullptr;
 }
-}    // namespace
+}  // namespace
 
 #define CHECK_FILE(url, targetFormats) \
     QString format; \
@@ -403,4 +403,4 @@ Task::ReportResult DnaAssemblyTaskWithConversions::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

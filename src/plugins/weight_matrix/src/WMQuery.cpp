@@ -98,7 +98,7 @@ int QDWMActor::getMaxResultLen() const {
     if (!scheme->getSequence().isNull()) {
         return scheme->getSequence().length();
     }
-    return 30;    //FIX ME: supply reasonable value
+    return 30;  // FIX ME: supply reasonable value
 }
 
 QString QDWMActor::getText() const {
@@ -106,15 +106,15 @@ QString QDWMActor::getText() const {
 
     QString strandName;
     switch (strand) {
-    case QDStrand_Both:
-        strandName = tr("both strands");
-        break;
-    case QDStrand_DirectOnly:
-        strandName = tr("direct strand");
-        break;
-    case QDStrand_ComplementOnly:
-        strandName = tr("complement strand");
-        break;
+        case QDStrand_Both:
+            strandName = tr("both strands");
+            break;
+        case QDStrand_DirectOnly:
+            strandName = tr("direct strand");
+            break;
+        case QDStrand_ComplementOnly:
+            strandName = tr("complement strand");
+            break;
     }
 
     QString profileUrl = params.value(PROFILE_URL_ATTR)->getAttributeValueWithoutScript<QString>();
@@ -207,4 +207,4 @@ QDWMActorPrototype::QDWMActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

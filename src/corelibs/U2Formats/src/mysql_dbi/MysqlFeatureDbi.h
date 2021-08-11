@@ -165,6 +165,6 @@ private:
     QSharedPointer<U2SqlQuery> createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

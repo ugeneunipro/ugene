@@ -68,7 +68,7 @@ enum GSLV_FeatureFlag {
 typedef QFlags<GSLV_UpdateFlag> GSLV_UpdateFlags;
 typedef QFlags<GSLV_FeatureFlag> GSLV_FeatureFlags;
 
-//single-line sequence view
+// single-line sequence view
 class U2VIEW_EXPORT GSequenceLineView : public WidgetWithLocalToolbar {
     Q_OBJECT
 public:
@@ -261,7 +261,7 @@ protected:
 
     //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modified in view).
     //! Currently they are doubled in SequenceViewRenderer class.
-    //per char and per line metrics
+    // per char and per line metrics
     QFont sequenceFont;
     QFont smallSequenceFont;
     QFont rulerFont;
@@ -274,6 +274,6 @@ protected:
     int xCharOffset;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

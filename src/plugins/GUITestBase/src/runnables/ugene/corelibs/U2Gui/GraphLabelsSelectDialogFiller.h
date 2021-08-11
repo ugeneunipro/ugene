@@ -40,6 +40,6 @@ private:
     bool selectedAreaCheck;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GRAPHLABELSSELECTDIALOGFILLER_H
+#endif  // GRAPHLABELSSELECTDIALOGFILLER_H

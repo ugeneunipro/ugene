@@ -426,7 +426,7 @@ private:
 
 static const int READS_CHUNK_SIZE = 250 * 1000;
 
-}    // namespace
+}  // namespace
 
 void ConvertToSQLiteTask::run() {
     try {
@@ -905,5 +905,5 @@ IOAdapter *ConvertToSQLiteTask::prepareIoAdapter() {
     return ioAdapter.take();
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

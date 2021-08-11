@@ -32,6 +32,6 @@ public:
     static void checkUGENETitleContains(GUITestOpStatus &os, const QString &string);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

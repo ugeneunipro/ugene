@@ -39,6 +39,8 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include <U2Core/Formatters.h>
+
 #include <U2Designer/URLLineEdit.h>
 
 #include <U2Lang/ConfigurationEditor.h>
@@ -85,7 +87,7 @@ protected:
 
 private:
     DelegateEditor &operator=(const DelegateEditor &);
-};    // DelegateEditor
+};  // DelegateEditor
 
 /**
  * filter - a file filter string in the format for QFileDialog.
@@ -101,11 +103,11 @@ class U2DESIGNER_EXPORT URLDelegate : public PropertyDelegate {
 public:
     enum Option {
         None = 0,
-        AllowSelectSeveralFiles = 1 << 0,    // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
-        AllowSelectOnlyExistingDir = 1 << 1,    // allows to select only existing directory. Otherwise, files can be selected (existing or not).
-        SelectFileToSave = 1 << 2,    // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
-        SelectParentDirInsteadSelectedFile = 1 << 3,    // user can select files, but the directory will be committed as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
-        DoNotUseWorkflowOutputFolder = 1 << 4    // do not offer to save file to the workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
+        AllowSelectSeveralFiles = 1 << 0,  // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
+        AllowSelectOnlyExistingDir = 1 << 1,  // allows to select only existing directory. Otherwise, files can be selected (existing or not).
+        SelectFileToSave = 1 << 2,  // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
+        SelectParentDirInsteadSelectedFile = 1 << 3,  // user can select files, but the directory will be committed as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
+        DoNotUseWorkflowOutputFolder = 1 << 4  // do not offer to save file to the workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
     };
     Q_DECLARE_FLAGS(Options, Option)
 
@@ -201,13 +203,31 @@ private:
     QVariantMap spinProperties;
 };
 
-class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
+/** Base class for all combo-box delegates. Includes item name formatter. */
+class U2DESIGNER_EXPORT ComboBoxBaseDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxDelegate(const QVariantMap &comboItems, QObject *parent = 0);    // items: visible name -> value
-    ComboBoxDelegate(const QList<ComboItem> &comboItems, QObject *parent = 0);    // items: visible name -> value
-    virtual ~ComboBoxDelegate() {
-    }
+    ComboBoxBaseDelegate(QObject *parent = nullptr);
+
+    /** Updates item text formatter. */
+    void setItemTextFormatter(const QSharedPointer<StringFormatter> &formatter);
+
+    /** Returns formatted value for the item with the given name. */
+    QString getFormattedItemText(const QString &itemKey) const;
+
+protected:
+    /** Assigns common properties like itemTextFormatter to the cloned delegate. */
+    ComboBoxBaseDelegate *initClonedDelegate(ComboBoxBaseDelegate *delegate) const;
+
+    /** Formatter for combo-box values. */
+    QSharedPointer<StringFormatter> itemTextFormatter;
+};
+
+class U2DESIGNER_EXPORT ComboBoxDelegate : public ComboBoxBaseDelegate {
+    Q_OBJECT
+public:
+    ComboBoxDelegate(const QVariantMap &comboItems, QObject *parent = 0);  // items: visible name -> value
+    ComboBoxDelegate(const QList<ComboItem> &comboItems, QObject *parent = 0);  // items: visible name -> value
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -216,9 +236,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     QVariant getDisplayValue(const QVariant &) const;
 
-    virtual PropertyDelegate *clone() {
-        return new ComboBoxDelegate(comboItems, parent());
-    }
+    PropertyDelegate *clone() override;
 
     void getItems(QVariantMap &items) const;
 
@@ -322,14 +340,10 @@ private:
     QVariantMap items;
 };
 
-class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public PropertyDelegate {
+class U2DESIGNER_EXPORT ComboBoxWithChecksDelegate : public ComboBoxBaseDelegate {
     Q_OBJECT
 public:
-    ComboBoxWithChecksDelegate(const QVariantMap &items, QObject *parent = 0)
-        : PropertyDelegate(parent), items(items) {
-    }
-    virtual ~ComboBoxWithChecksDelegate() {
-    }
+    ComboBoxWithChecksDelegate(const QVariantMap &items, QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -338,9 +352,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     QVariant getDisplayValue(const QVariant &) const;
 
-    virtual PropertyDelegate *clone() {
-        return new ComboBoxWithChecksDelegate(items, parent());
-    }
+    PropertyDelegate *clone() override;
 
     void getItems(QVariantMap &items) const;
 
@@ -398,7 +410,7 @@ public slots:
 signals:
     void si_showOpenFileButton(bool show);
 
-};    // SchemaRunModeDelegate
+};  // SchemaRunModeDelegate
 
 class ScriptSelectionWidget : public PropertyWidget {
     Q_OBJECT
@@ -438,7 +450,7 @@ public:
 
 private slots:
     void sl_commit();
-};    // AttributeScriptDelegate
+};  // AttributeScriptDelegate
 
 class U2DESIGNER_EXPORT StingListEdit : public QLineEdit {
     Q_OBJECT
@@ -554,7 +566,7 @@ public:
         return new CharacterDelegate(parent());
     }
 
-};    // CharacterDelegate
+};  // CharacterDelegate
 
 class U2DESIGNER_EXPORT LineEditWithValidatorDelegate : public PropertyDelegate {
     Q_OBJECT
@@ -574,7 +586,7 @@ private:
     const QRegularExpression regExp;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::URLDelegate::Options)
 

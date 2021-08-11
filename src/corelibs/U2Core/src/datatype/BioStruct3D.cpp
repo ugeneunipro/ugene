@@ -115,7 +115,7 @@ QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateAnnotations() const 
 QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateChainAnnotations() const {
     QMap<int, QList<SharedAnnotationData>> result;
     const char *molNameQualifier = "molecule_name";
-    //const char* pdbChainIdQualifier = "pdb_id";
+    // const char* pdbChainIdQualifier = "pdb_id";
 
     QMap<int, SharedMolecule>::ConstIterator iter = moleculeMap.constBegin();
     while (iter != moleculeMap.end()) {
@@ -346,4 +346,4 @@ char ResidueIndex::getInsCode() const {
     return insCode;
 }
 
-}    // namespace U2
+}  // namespace U2

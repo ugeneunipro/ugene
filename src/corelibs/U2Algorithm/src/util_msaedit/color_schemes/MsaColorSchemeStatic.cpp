@@ -52,4 +52,4 @@ MsaColorScheme *MsaColorSchemeStaticFactory::create(QObject *parent, MultipleAli
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 
-}    // namespace U2
+}  // namespace U2

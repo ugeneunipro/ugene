@@ -38,7 +38,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // MarkSequencePrompter
+};  // MarkSequencePrompter
 
 class MarkSequenceWorker : public BaseWorker {
     Q_OBJECT
@@ -58,7 +58,7 @@ private:
     IntegralBus *outChannel;
     DataTypePtr mtype;
 
-};    // MarkSequenceWorker
+};  // MarkSequenceWorker
 
 class MarkSequenceWorkerFactory : public DomainFactory {
 public:
@@ -70,9 +70,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // MarkSequenceWorkerFactory
+};  // MarkSequenceWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _MARK_SEQUENCE_WORKER_H_
+#endif  // _MARK_SEQUENCE_WORKER_H_

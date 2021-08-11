@@ -29,11 +29,11 @@ using namespace HI;
 
 class PwmBuildDialogFiller : public Filler {
 public:
-    enum ActionType {    // An appropriate action data:
-        EnterInput,    // QString with file path, the path will be entered into lineedit via keyyboard
-        SelectInput,    // QString with file path, the file will be selected via file dialog
-        ExpectInvalidFile,    // ignored
-        ClickCancel    // ignored
+    enum ActionType {  // An appropriate action data:
+        EnterInput,  // QString with file path, the path will be entered into lineedit via keyyboard
+        SelectInput,  // QString with file path, the file will be selected via file dialog
+        ExpectInvalidFile,  // ignored
+        ClickCancel  // ignored
     };
     typedef QPair<ActionType, QVariant> Action;
 
@@ -52,6 +52,6 @@ private:
     const QList<Action> actions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PWM_BUILD_DIALOG_FILLER_H_
+#endif  // _U2_PWM_BUILD_DIALOG_FILLER_H_

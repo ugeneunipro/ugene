@@ -36,7 +36,7 @@ class ADVSequenceWidget;
 class ADVSingleSequenceWidget;
 class LRegionsSelection;
 
-//Support for synchronous operation for ADVSingleSequenceViews: sync& lock scale, toggle visibility
+// Support for synchronous operation for ADVSingleSequenceViews: sync& lock scale, toggle visibility
 class ADVSyncViewManager : public QObject {
     Q_OBJECT
 public:
@@ -119,5 +119,5 @@ private:
     QAction *toggleDetAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

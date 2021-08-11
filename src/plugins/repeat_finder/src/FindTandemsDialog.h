@@ -57,7 +57,7 @@ private:
     bool getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Region> &res);
     void prepareAMenu(QToolButton *tb, QLineEdit *le, const QStringList &names);
 
-    //methods for results count estimation
+    // methods for results count estimation
     quint64 areaSize() const;
     int estimateResultsCount() const;
 
@@ -66,6 +66,6 @@ private:
     RegionSelector *rs;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

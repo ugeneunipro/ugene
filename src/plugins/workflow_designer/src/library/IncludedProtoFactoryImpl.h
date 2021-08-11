@@ -44,7 +44,7 @@ private:
                                                    const DataConfig &dcfg);
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _SCRIPT_PROTO_MAKER_IMPL_H_
+#endif  // _SCRIPT_PROTO_MAKER_IMPL_H_

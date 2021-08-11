@@ -536,7 +536,7 @@ bool Actor::validate(NotificationsList &notificationList) const {
             bool urlAttrValid = validateCodePage(attr, notificationList);
             Q_UNUSED(urlAttrValid)
             // we think that this is a warning, so I commented the following line
-            //urlsRes = urlsRes && urlAttrValid;
+            // urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {
@@ -557,5 +557,5 @@ bool Actor::validate(NotificationsList &notificationList) const {
     return result;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

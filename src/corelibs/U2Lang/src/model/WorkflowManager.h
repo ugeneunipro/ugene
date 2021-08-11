@@ -77,18 +77,18 @@ public:
 protected:
     WorkflowContext *context;
 
-};    // Worker
+};  // Worker
 
 /**
-* runtime state of worker
-*/
+ * runtime state of worker
+ */
 enum WorkerState {
     WorkerWaiting,
     WorkerReady,
     WorkerRunning,
     WorkerDone,
     WorkerPaused
-};    // WorkerState
+};  // WorkerState
 
 /**
  * Worker for whole schema
@@ -115,7 +115,7 @@ protected:
     WorkflowDebugStatus *debugInfo;
 
     virtual WorkerState getWorkerState(const Actor *) = 0;
-};    // Scheduler
+};  // Scheduler
 
 /**
  * represents controller between actor and runtime realizations of actor (Worker)
@@ -156,17 +156,17 @@ public:
         map.insert(attrValue, parametersMap);
     }
 
-};    // DomainFactory
+};  // DomainFactory
 
 /**
  * standard registry of factories
  * Usage: register here execution domain factories (see usage of DomainFactory)
  */
 class U2LANG_EXPORT DomainFactoryRegistry : public IdRegistry<DomainFactory> {
-};    // DomainFactoryRegistry
+};  // DomainFactoryRegistry
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

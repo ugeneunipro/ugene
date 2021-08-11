@@ -103,4 +103,4 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
     return Task::ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

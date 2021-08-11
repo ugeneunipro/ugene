@@ -323,13 +323,13 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
 
     CHECK(0 < readsCount, );
 
-    do {    // skip unused BQ part
+    do {  // skip unused BQ part
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
         readLine = (QByteArray(buff, len)).trimmed();
     } while (!readLine.startsWith(AF));
 
-    do {    // Read all AF entries
+    do {  // Read all AF entries
         afBlock += readLine + " ";
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
@@ -344,7 +344,7 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
         // the first AF entry won't be found: it hasn't space before
         if (-1 != (afIndex = afBlock.indexOf(" " + AF))) {
             afLine = afBlock.mid(0, afIndex);
-            afBlock.remove(0, afIndex + 1);    // with space before AF
+            afBlock.remove(0, afIndex + 1);  // with space before AF
         } else {
             afBlock.clear();
         }
@@ -452,14 +452,14 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> 
     char aceQStartChar = 'Q';
     QBitArray aceQStart = TextUtils::createBitMap(aceQStartChar);
 
-    do {    // skip unused BS part
+    do {  // skip unused BS part
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
         rdBlock = (QByteArray(buff, len)).trimmed();
     } while (!rdBlock.startsWith(RD));
     CHECK_EXT(rdBlock.startsWith(RD), os->setError(DocumentFormatUtils::tr("There is no read note")), );
 
-    do {    // read the tail of RD part
+    do {  // read the tail of RD part
         len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, aceQStart, IOAdapter::Term_Exclude, &ok);
         CHECK_EXT(len > 0, os->setError(DocumentFormatUtils::tr("Unexpected end of file")), );
         buff[len] = 0;
@@ -538,4 +538,4 @@ Assembly AceIterator::next() {
     return reader->getAssembly();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -87,32 +87,32 @@ public:
     virtual void close() = 0;
 
     enum TerminatorHandling {
-        Term_Exclude,    // stop before terminators
-        Term_Include,    // include all terminators into result
-        Term_Skip    // do not include terminators to the result, but skip to after last terminator
+        Term_Exclude,  // stop before terminators
+        Term_Include,  // include all terminators into result
+        Term_Skip  // do not include terminators to the result, but skip to after last terminator
     };
 
     enum FormatMode {
-        TextMode,    //Format is represented by text
-        BinaryMode    //Format is represented by binary data
+        TextMode,  // Format is represented by text
+        BinaryMode  // Format is represented by binary data
     };
 
-    //if format is represented by text (not by binary data) you need to call this func
+    // if format is represented by text (not by binary data) you need to call this func
     virtual void setFormatMode(FormatMode mode) {
         formatMode = mode;
     }
 
-    //return 0 if at the end of file, -1 if error
+    // return 0 if at the end of file, -1 if error
     virtual qint64 readUntil(char *buff, qint64 maxSize, const QBitArray &readTerminators, TerminatorHandling th, bool *terminatorFound = 0);
 
     virtual bool getChar(char *buff) {
         return 1 == readBlock(buff, 1);
     }
 
-    //If an error occurs, this function returns -1
+    // If an error occurs, this function returns -1
     virtual qint64 readBlock(char *buff, qint64 maxSize) = 0;
 
-    //read a single line of text and skips one EOL, returns length of line w/o terminator or -1
+    // read a single line of text and skips one EOL, returns length of line w/o terminator or -1
     virtual qint64 readLine(char *buff, qint64 maxSize, bool *terminatorFound = 0);
 
     virtual qint64 writeBlock(const char *buff, qint64 size) = 0;
@@ -127,7 +127,7 @@ public:
      */
     virtual bool skip(qint64 nBytes) = 0;
 
-    //returns -1 if not supported
+    // returns -1 if not supported
     virtual qint64 left() const = 0;
 
     /* Percent values in range 0..100, negative if unknown. */
@@ -188,6 +188,6 @@ public:
     static const IOAdapterId DATABASE_CONNECTION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

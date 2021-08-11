@@ -1063,7 +1063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
                                                 << "Add"
                                                 << "New annotation...");
 
-    //4. Check what created annotation has corresponding qualifier 'note'
+    // 4. Check what created annotation has corresponding qualifier 'note'
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)", treeWidget);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
@@ -1071,5 +1071,5 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsAnnotationsTreeView::findItem(os, "note");
 }
 
-}    // namespace GUITest_common_scenarios_annotations
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_annotations
+}  // namespace U2

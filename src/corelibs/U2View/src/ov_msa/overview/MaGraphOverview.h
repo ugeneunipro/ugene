@@ -56,10 +56,10 @@ public:
 };
 
 enum MaGraphCalculationMethod {
-    Strict,    // the most frequent nucleotide
-    Gaps,    // percent of gaps
-    Clustal,    // 0-30-60-100 groups
-    Highlighting    // count only highlighted cells
+    Strict,  // the most frequent nucleotide
+    Gaps,  // percent of gaps
+    Clustal,  // 0-30-60-100 groups
+    Highlighting  // count only highlighted cells
 };
 
 #define MSA_GRAPH_OVERVIEW_COLOR_KEY "msa_graph_overview_color"
@@ -137,6 +137,6 @@ private:
     MaGraphCalculationTask *graphCalculationTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_GRAPH_OVERVIEW_H_
+#endif  // _U2_MSA_GRAPH_OVERVIEW_H_

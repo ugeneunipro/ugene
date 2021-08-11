@@ -38,9 +38,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 
-#include <U2Formats/GenbankLocationParser.h>
-
-#include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -54,8 +51,8 @@
 #include "EnzymesIO.h"
 #include "FindEnzymesTask.h"
 
-//TODO: group by TYPE, ORGANIZM
-//TODO: check whole group (tristate mode)
+// TODO: group by TYPE, ORGANIZM
+// TODO: check whole group (tristate mode)
 
 namespace U2 {
 
@@ -72,9 +69,9 @@ EnzymesSelectorWidget::EnzymesSelectorWidget() {
     tree->setSortingEnabled(true);
     tree->sortByColumn(0, Qt::AscendingOrder);
     tree->setUniformRowHeights(true);
-    tree->setColumnWidth(0, 110);    //id
-    tree->setColumnWidth(1, 75);    //accession
-    tree->setColumnWidth(2, 50);    //type
+    tree->setColumnWidth(0, 110);  // id
+    tree->setColumnWidth(1, 75);  // accession
+    tree->setColumnWidth(2, 50);  // type
 
     totalEnzymes = 0;
     minLength = 1;
@@ -508,10 +505,10 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContex
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
 
-    regionSelector = new RegionSelectorWithExludedRegion(this,
-                                                         advSequenceContext->getSequenceLength(),
-                                                         advSequenceContext->getSequenceSelection(),
-                                                         advSequenceContext->getSequenceObject()->isCircular());
+    regionSelector = new RegionSelectorWithExcludedRegion(this,
+                                                          advSequenceContext->getSequenceLength(),
+                                                          advSequenceContext->getSequenceSelection(),
+                                                          advSequenceContext->getSequenceObject()->isCircular());
     searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
@@ -623,7 +620,9 @@ void FindEnzymesDialog::saveSettings() {
     }
 
     U2SequenceObject *sequenceObject = advSequenceContext->getSequenceObject();
-    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, regionSelector->getIncludeRegion());
+    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
+    U2Region searchRegion = regionSelector->isWholeSequenceSelected() ? U2Region() : regionSelector->getIncludeRegion();
+    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, searchRegion);
     FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
     enzSel->saveSettings();
 }
@@ -638,7 +637,7 @@ EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData &ed)
     setText(2, enzyme->type);
     setText(3, enzyme->seq);
     setData(3, Qt::ToolTipRole, enzyme->seq);
-    setText(4, enzyme->organizm);    //todo: show cut sites
+    setText(4, enzyme->organizm);  // todo: show cut sites
     setData(4, Qt::ToolTipRole, enzyme->organizm);
 }
 
@@ -689,4 +688,4 @@ bool EnzymeGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
     return text(col) < other.text(col);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -37,4 +37,4 @@ DbObjectItem::DbObjectItem(const QString &url, QListWidget *parent)
     setToolTip("\"" + objectName + tr("\" is located in the database <b>") + SharedDbUrlUtils::getDbShortNameFromEntityUrl(url) + "</b>");
 }
 
-}    // namespace U2
+}  // namespace U2

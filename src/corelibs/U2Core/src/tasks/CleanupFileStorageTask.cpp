@@ -38,4 +38,4 @@ void CleanupFileStorageTask::run() {
     fileStorage->cleanup(stateInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

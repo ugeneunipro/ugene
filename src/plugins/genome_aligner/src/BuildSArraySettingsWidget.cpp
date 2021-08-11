@@ -82,4 +82,4 @@ GUrl BuildSArraySettingsWidget::buildIndexUrl(const GUrl &url) {
     return GUrl();
 }
 
-}    // namespace U2
+}  // namespace U2

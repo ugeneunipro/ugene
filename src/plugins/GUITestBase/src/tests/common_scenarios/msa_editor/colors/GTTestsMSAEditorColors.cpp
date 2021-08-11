@@ -62,10 +62,10 @@ void checkColor(HI::GUITestOpStatus &os, const QPoint &p, const QString &expecte
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Colors->UGENE} in MSA editor area.
+    // 2. Use context menu {Colors->UGENE} in MSA editor area.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "UGENE"));
@@ -73,19 +73,19 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //    Expected state: background for symbols must be:
     //    A - yellow    G - blue    T - red    C - green    gap - no background
-    //check A
+    // check A
     checkColor(os, QPoint(0, 1), "#fdff6a", 5);
 
-    //check G
+    // check G
     checkColor(os, QPoint(2, 2), "#2aa1e1", 5, 3);
 
-    //check T
+    // check T
     GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#FF99B1");
 
-    //check C
+    // check C
     checkColor(os, QPoint(4, 0), "#49f949");
 
-    //check gap
+    // check gap
     checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
 }
 
@@ -99,46 +99,46 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                                         << "No colors"));
     GTMenu::showContextMenu(os, seq);
     //    Expected state: background for symbols must be white
-    //check A
+    // check A
     checkColor(os, QPoint(0, 1), "#ffffff", 5);
 
-    //check G
+    // check G
     checkColor(os, QPoint(2, 2), "#ffffff", 5, 3);
 
-    //check T
+    // check T
     checkColor(os, QPoint(0, 2), "#ffffff", 5);
 
-    //check C
+    // check C
     checkColor(os, QPoint(4, 0), "#ffffff");
 
-    //check gap
+    // check gap
     checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Colors->Jalview} in MSA editor area.
+    // 2. Use context menu {Colors->Jalview} in MSA editor area.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Jalview"));
     GTMenu::showContextMenu(os, seq);
-    //Expected state: background for symbols must be:
-    //A - green G - red T - blue  C - orange gap - no background
-    //check A
+    // Expected state: background for symbols must be:
+    // A - green G - red T - blue  C - orange gap - no background
+    // check A
     checkColor(os, QPoint(0, 1), "#48f718", 5);
 
-    //check G
+    // check G
     GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#EB413C");
 
-    //check T
+    // check T
     checkColor(os, QPoint(0, 2), "#1674ee", 5);
 
-    //check C
+    // check C
     checkColor(os, QPoint(4, 0), "#ffa318");
 
-    //check gap
+    // check gap
     checkColor(os, QPoint(4, 2), "#ffffff", 0, 5);
 }
 
@@ -330,5 +330,5 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                   QString("Use dots option status is incorrect: expected %1, got %2").arg(expectedIsUseDotsOptionsSet).arg(isUseDotsOptionsSet));
 }
 
-}    // namespace GUITest_common_scenarios_msa_editor_colors
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_msa_editor_colors
+}  // namespace U2

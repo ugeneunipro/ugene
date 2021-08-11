@@ -102,7 +102,7 @@ DocumentProviderTask *ImportFileToDatabaseTask::detectFormat() {
     CHECK(format == nullptr, nullptr);
 
     DocumentImporter *importer = preferredFormat.importer;
-    CHECK(importer != nullptr, nullptr);    // do something with unrecognized files here
+    CHECK(importer != nullptr, nullptr);  // do something with unrecognized files here
 
     QVariantMap hints = prepareHints();
     return importer->createImportTask(preferredFormat, false, hints);
@@ -161,7 +161,7 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
         } else if (detectedFormat.importer != nullptr) {
             detectedFormatIds << detectedFormat.importer->getId();
         } else {
-            detectedFormatIds << "";    // to keep the numeration
+            detectedFormatIds << "";  // to keep the numeration
         }
     }
 
@@ -175,4 +175,4 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
     return detectedFormats.first();
 }
 
-}    // namespace U2
+}  // namespace U2

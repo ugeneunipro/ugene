@@ -53,6 +53,6 @@ private:
     QTextCharFormat functionFormat;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCRIPT_HIGHLIGHTER_H_
+#endif  // _U2_SCRIPT_HIGHLIGHTER_H_

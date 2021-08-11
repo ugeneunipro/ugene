@@ -32,7 +32,7 @@ namespace HI {
 
 class HI_EXPORT GTMenu {
 public:
-    static QMenu *showMainMenu(GUITestOpStatus &os, const QString &menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);    // should be removed in Qt5, use clickMainMenuItem instead
+    static QMenu *showMainMenu(GUITestOpStatus &os, const QString &menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);  // should be removed in Qt5, use clickMainMenuItem instead
     static void clickMainMenuItem(GUITestOpStatus &os, const QStringList &itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     static void checkMainMenuItemState(GUITestOpStatus &os, const QStringList &itemPath, PopupChecker::CheckOption expectedState);
     static void checkMainMenuItemsState(GUITestOpStatus &os, const QStringList &menuPath, const QStringList &itemsNames, PopupChecker::CheckOption expectedState);
@@ -43,7 +43,7 @@ public:
 
     // moves cursor to menu item, clicks on menu item;
 
-    static QAction *clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, GTGlobals::UseMethod m = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static QAction *clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, GTGlobals::UseMethod useMethod = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
     static QAction *getMenuItem(GUITestOpStatus &os, const QMenu *menu, const QString &itemName, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
@@ -61,5 +61,5 @@ private:
     static void clickMenuItemPrivate(GUITestOpStatus &os, const QMenu *menu, const QStringList &itemName, GTGlobals::UseMethod m = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 };
 
-}    // namespace HI
-#endif    // GTMENU_H
+}  // namespace HI
+#endif  // GTMENU_H

@@ -36,4 +36,4 @@ PairAlignSequences::PairAlignSequences() {
     isAminoTranslated = false;
 }
 
-}    // namespace U2
+}  // namespace U2

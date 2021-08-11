@@ -36,8 +36,8 @@ GUI_TEST_CLASS_DECLARATION(test_0001_1)
 GUI_TEST_CLASS_DECLARATION(test_0001_2)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_querry_designer
+}  // namespace GUITest_common_scenarios_querry_designer
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTS_QUERY_DESIGNER_H_
+#endif  // GTTESTS_QUERY_DESIGNER_H_

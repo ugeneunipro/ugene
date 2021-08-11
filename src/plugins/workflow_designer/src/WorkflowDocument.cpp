@@ -110,7 +110,7 @@ Document *WorkflowDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &tar
         rawData.clear();
         return nullptr;
     }
-    //todo: check file-readonly status?
+    // todo: check file-readonly status?
 
     QList<GObject *> objects;
     QString data = QString::fromUtf8(rawData.data(), rawData.size());
@@ -198,4 +198,4 @@ void OpenWorkflowViewTask::open() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

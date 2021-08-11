@@ -50,7 +50,7 @@ public slots:
 protected:
     virtual bool isValid() {
         return true;
-    }    // it is not const method: derived class can do something non-const
+    }  // it is not const method: derived class can do something non-const
     virtual void applySettings() = 0;
 
     QVariantMap settings;
@@ -145,6 +145,6 @@ protected:
     QSet<GObjectType> supportedObjectTypes;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

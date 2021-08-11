@@ -38,6 +38,6 @@ private:
     void upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_UPGRADER_FROM_1_15_TO_1_16_H_
+#endif  // _U2_MYSQL_UPGRADER_FROM_1_15_TO_1_16_H_

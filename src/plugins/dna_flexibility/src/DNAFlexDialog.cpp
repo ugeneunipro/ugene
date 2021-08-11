@@ -55,7 +55,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext *_ctx)
     // Creating and initializing the annotation model
     CreateAnnotationModel annotModel;
     annotModel.hideAnnotationType = true;
-    annotModel.hideLocation = true;    // hides location field and does not check it in validate()
+    annotModel.hideLocation = true;  // hides location field and does not check it in validate()
     annotModel.data->name = "dna_flex";
     annotModel.sequenceObjectRef = ctx->getSequenceObject();
     annotModel.sequenceLen = sequenceLength;
@@ -70,7 +70,7 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext *_ctx)
 
     // Setting the bounds for the parameters
     spinBoxWindowSize->setMaximum(sequenceLength);
-    spinBoxWindowStep->setMaximum(sequenceLength - 2);    // Approximate value. In real life the step should be 1 or small enough.
+    spinBoxWindowStep->setMaximum(sequenceLength - 2);  // Approximate value. In real life the step should be 1 or small enough.
 
     // "-2" is added as the first window should be at least 2 nucleotides.
     if (settings.windowSize > sequenceLength) {
@@ -174,4 +174,4 @@ void DNAFlexDialog::sl_updateSizes(int index) {
     tabWidget->adjustSize();
 }
 
-}    // namespace U2
+}  // namespace U2

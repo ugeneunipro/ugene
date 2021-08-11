@@ -65,6 +65,6 @@ private:
     AnnotatedDNAView *annotatedDnaView;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PCR_GROUP_BOX_H_
+#endif  // _U2_PCR_GROUP_BOX_H_

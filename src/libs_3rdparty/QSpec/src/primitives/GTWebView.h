@@ -93,6 +93,6 @@ public:
     static void traceAllWebElements(GUITestOpStatus &os, WebView *view);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // GTWEBVIEW_H
+#endif  // GTWEBVIEW_H

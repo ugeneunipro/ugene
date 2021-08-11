@@ -78,10 +78,10 @@ public:
     }
 
 private:
-    quint32 seqLength;    //reference sequence's length
-    int seqPartSize;    //in Mb
-    int w;    //window size
-    QString baseFileName;    //base of the file name
+    quint32 seqLength;  // reference sequence's length
+    int seqPartSize;  // in Mb
+    int w;  // window size
+    QString baseFileName;  // base of the file name
     quint32 *memIdx;
     quint64 *memBM;
     BitsTable bt;
@@ -128,6 +128,6 @@ public:
     static const int overlapSize;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -43,6 +43,6 @@ private:
     QString formatName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DATABASE_CONNECTION_FORMAT_H_
+#endif  // _U2_DATABASE_CONNECTION_FORMAT_H_

@@ -116,4 +116,4 @@ U2Dbi *TestDbiProvider::getDbi() {
     return dbi;
 }
 
-}    // namespace U2
+}  // namespace U2

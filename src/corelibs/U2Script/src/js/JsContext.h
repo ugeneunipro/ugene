@@ -42,10 +42,10 @@ Handle<Value> debugStatus(const Arguments &args);
 Handle<Value> topologicalSortedGraph(const Arguments &args);
 Handle<Value> tick(const Arguments &args);
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2
 
 NODE_MODULE(U2SCRIPT_MODULE_NAME, U2::Js::initModule)
 
-#endif    // _U2_JS_CONTEXT_H_
+#endif  // _U2_JS_CONTEXT_H_

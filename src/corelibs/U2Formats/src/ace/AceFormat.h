@@ -53,6 +53,6 @@ private:
     static const QString BQ;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

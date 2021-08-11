@@ -99,6 +99,6 @@ private:
     QPointer<WorkflowDesignerService> service;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

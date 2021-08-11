@@ -44,6 +44,7 @@
 
 #include <QApplication>
 
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/TextUtils.h>
 
@@ -685,40 +686,30 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_3) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
-
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-
-    // 2. Do double click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
+    // Double-click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed.
+    // Expected state: Rename dialog appears.
+    // Put "Sequence_a" into text field. Click OK.
 
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Phaneroptera_falcata"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
+    // Expected state: Tettigonia_viridissima renamed to Sequence_a.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    // 4. Rlick Undo button.
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    // Click Undo button.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Tettigonia_viridissima renamed back
+    // Expected state: Tettigonia_viridissima is renamed back.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Phaneroptera_falcata", "Phaneroptera_falcata"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_4) {
@@ -823,7 +814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0008_1) {    // CHANGES: default names used
+GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // CHANGES: default names used
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1634,7 +1625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //    from 'AAG' to 'CTT' and save file.
     // CHANGES: backup old file, copy changed file
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTGlobals::sleep(1000);    // ugene doesn't detect changes whithin one second interval
+    GTGlobals::sleep(1000);  // ugene doesn't detect changes whithin one second interval
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
@@ -1955,7 +1946,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     // Expected state: Gaps are inserted, statistics "Pos" in right bottom is "Pos 1/14"
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0022_1) {    // DIFFERENCE: Column label is tested
+GUI_TEST_CLASS_DEFINITION(test_0022_1) {  // DIFFERENCE: Column label is tested
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1978,7 +1969,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {    // DIFFERENCE: Column label is teste
     // Expected state: Gaps are inserted, statistics "Pos" in right bottom is "Pos 1/14"
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0022_2) {    // DIFFERENCE: Line label is tested
+GUI_TEST_CLASS_DEFINITION(test_0022_2) {  // DIFFERENCE: Line label is tested
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2110,7 +2101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Expected state: image is exported
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0026_1) {    // DIFFERENCE: context menu is used
+GUI_TEST_CLASS_DEFINITION(test_0026_1) {  // DIFFERENCE: context menu is used
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2287,7 +2278,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    Expectes state: sequence added to project
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0029_1) {    // DIFFERENCE:gaps are trimmed, FASTQ format is used
+GUI_TEST_CLASS_DEFINITION(test_0029_1) {  // DIFFERENCE:gaps are trimmed, FASTQ format is used
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2349,7 +2340,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_2) {
     //    Expectes state: sequence added to project
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0031) {    // TODO: check statistic result
+GUI_TEST_CLASS_DEFINITION(test_0031) {  // TODO: check statistic result
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2366,7 +2357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {    // TODO: check statistic result
     //    Expected state: Alignment profile generated
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0031_1) {    // DIFFERENCE: Percentage is used
+GUI_TEST_CLASS_DEFINITION(test_0031_1) {  // DIFFERENCE: Percentage is used
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2383,7 +2374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_1) {    // DIFFERENCE: Percentage is used
     //    Expected state: Alignment profile generated
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0031_2) {    // TODO: check statistic result
+GUI_TEST_CLASS_DEFINITION(test_0031_2) {  // TODO: check statistic result
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2400,7 +2391,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2) {    // TODO: check statistic result
     //    Expected state: Alignment profile generated
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0031_3) {    // TODO: check statistic result
+GUI_TEST_CLASS_DEFINITION(test_0031_3) {  // TODO: check statistic result
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2417,7 +2408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3) {    // TODO: check statistic result
     //    Expected state: Alignment profile generated
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0031_4) {    // TODO: check statistic result
+GUI_TEST_CLASS_DEFINITION(test_0031_4) {  // TODO: check statistic result
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2455,7 +2446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     //    Expected state: Alignment profile file created
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0032_1) {    // DIFFERENCE: csv format is used
+GUI_TEST_CLASS_DEFINITION(test_0032_1) {  // DIFFERENCE: csv format is used
     //    1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2757,7 +2748,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
     QAbstractButton *tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
-    GTUtilsTaskTreeView::waitTaskFinished(os);    // some time is needed to build tree
+    GTUtilsTaskTreeView::waitTaskFinished(os);  // some time is needed to build tree
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
@@ -2782,7 +2773,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
 
     QAbstractButton *tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
-    GTUtilsTaskTreeView::waitTaskFinished(os);    // some time is needed to build tree
+    GTUtilsTaskTreeView::waitTaskFinished(os);  // some time is needed to build tree
     // Expected state: build tree dialog appeared
 
     // 3. Fill dialog:
@@ -2939,14 +2930,14 @@ GUI_TEST_CLASS_DEFINITION(test_0039_7) {
     test_0039_function(os, 7, "sto");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0040) {    // UGENE crashes when opening several files
+GUI_TEST_CLASS_DEFINITION(test_0040) {  // UGENE crashes when opening several files
     QFile human_T1(dataDir + "/samples/FASTA/human_T1.fa");
     human_T1.copy(dataDir + "/samples/CLUSTALW/human_T1.fa");
     GTFileDialog::openFileList(os, dataDir + "samples/CLUSTALW/", QStringList() << "COI.aln"
                                                                                 << "human_T1.fa");
 
     // GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os,QMessageBox::No));
-    GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");    // checks inside
+    GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");  // checks inside
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -3500,7 +3491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_6) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, {5, 0}, {10, 1});    // 2 rows.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, {5, 0}, {10, 1});  // 2 rows.
 
     // Add an extra row to the selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -4186,7 +4177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 GUI_TEST_CLASS_DEFINITION(test_0072) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);    // wait for overview rendering to finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);  // wait for overview rendering to finish.
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
     //    Check keys: arrows
@@ -4325,26 +4316,27 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0075) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QImage init = GTWidget::getImage(os, overview);
-    //    Use context menu on overview: {Calculation method->Clustal}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                                        << "Clustal"));
+
+    QImage initialImage = GTWidget::getImage(os, overview);
+
+    //  Use context menu on overview: {Calculation method->Clustal}
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Clustal"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overview);
-    //    Check state
-    QImage clustal = GTWidget::getImage(os, overview);
-    CHECK_SET_ERR(init != clustal, "overview was not changed(clustal)");
-    //    Use context menu on overview: {Display settings...->Graph type->Histogram}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                                        << "Graph type"
-                                                                        << "Histogram"));
+
+    //  Check that image was changed.
+    QImage clustalModeImage = GTWidget::getImage(os, overview);
+    CHECK_SET_ERR(initialImage != clustalModeImage, "overview was not changed (clustal)");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to 'histogram' mode.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Graph type", "Histogram"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overview);
-    //    Check state
-    QImage histogram = GTWidget::getImage(os, overview);
-    CHECK_SET_ERR(histogram != clustal, "overview was not changed(histogram)");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QImage histogramModeImage = GTWidget::getImage(os, overview);
+    CHECK_SET_ERR(histogramModeImage != clustalModeImage, "overview was not changed (histogram)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0076) {
@@ -4725,8 +4717,8 @@ GUI_TEST_CLASS_DEFINITION(test_0094) {
 
 GUI_TEST_CLASS_DEFINITION(test_0095) {
     // Check that sequences can be moved from one alignment into another.
-    QString sourceFile = "align.aln";    // {"IXI_234", "IXI_236", "IXI_237", "IXI_235"}
-    QString targetFile = "amino_from_wikipedia.aln";    // {"CYS1_DICDI", "ALEU_HORVU", "CATH_HUMAN"}
+    QString sourceFile = "align.aln";  // {"IXI_234", "IXI_236", "IXI_237", "IXI_235"}
+    QString targetFile = "amino_from_wikipedia.aln";  // {"CYS1_DICDI", "ALEU_HORVU", "CATH_HUMAN"}
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/" + sourceFile);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -4739,6 +4731,8 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsMsaEditor::selectRowsByName(os, {"IXI_234", "IXI_235"});
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "no_other_objects_item"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}, PopupChecker::IsEnabled));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Open another file. Check that sequences can be moved now. Move them.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/" + targetFile);
@@ -4749,10 +4743,10 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Document *doc1 = GTUtilsDocument::getDocument(os, sourceFile);
-    Document *doc2 = GTUtilsDocument::getDocument(os, targetFile);
-    CHECK_SET_ERR(doc1->isModified(), "Document 1 must be marked as modified");
-    CHECK_SET_ERR(doc2->isModified(), "Document 2 must be marked as modified");
+    Document *sourceDoc = GTUtilsDocument::getDocument(os, sourceFile);
+    Document *targetDoc = GTUtilsDocument::getDocument(os, targetFile);
+    CHECK_SET_ERR(sourceDoc->isModified(), "sourceDoc must be marked as modified");
+    CHECK_SET_ERR(targetDoc->isModified(), "targetDoc must be marked as modified");
 
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList == QStringList({"IXI_236", "IXI_237"}), "Unexpected source msa name list: " + nameList.join(","));
@@ -4769,12 +4763,14 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Make the target file read-only and the source not. Check that menu is enabled but is empty.
+    // Make the target file read-only and the source not. Check that menu is enabled but has no object items.
     GTUtilsDocument::lockDocument(os, targetFile);
     GTUtilsDocument::unlockDocument(os, sourceFile);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "no_other_objects_item"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", targetFile}, PopupChecker::NotExists));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}, PopupChecker::IsEnabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Make the target file not read-only. Check that menu is back again.
@@ -4783,5 +4779,50 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 
-}    // namespace GUITest_common_scenarios_msa_editor
-}    // namespace U2
+GUI_TEST_CLASS_DEFINITION(test_0096) {
+    // Check that sequences can be moved to a new MSA document.
+    QString sourceFile = "align.aln";  // {"IXI_234", "IXI_236", "IXI_237", "IXI_235"}
+    QString targetAlnFile = "test_0096.aln";
+    QString targetStoFile = "test_0096.sto";
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/" + sourceFile);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select a couple of sequences and check that 'Move' menu is enabled now and have a disabled "No other objects" item.
+    GTUtilsMsaEditor::selectRowsByName(os, {"IXI_234", "IXI_237"});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, targetAlnFile, GTFileDialogUtils::Save));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMdi::activateWindow(os, sourceFile);
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"IXI_236", "IXI_235"}), "Unexpected source msa name list: " + nameList.join(","));
+
+    GTUtilsMdi::activateWindow(os, targetAlnFile);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"IXI_234", "IXI_237"}), "Unexpected targetAln msa name list: " + nameList.join(","));
+
+    // Now export using Stockholm format.
+    GTUtilsMsaEditor::selectRowsByName(os, {"IXI_237"});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, targetStoFile, GTFileDialogUtils::Save));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"IXI_237"}), "Unexpected targetSto msa name list: " + nameList.join(","));
+
+    // Check modification flags & formats.
+    Document *sourceDoc = GTUtilsDocument::getDocument(os, sourceFile);
+    Document *targetAlnDoc = GTUtilsDocument::getDocument(os, targetAlnFile);
+    Document *targetStoDoc = GTUtilsDocument::getDocument(os, targetStoFile);
+    CHECK_SET_ERR(sourceDoc->isModified(), "sourceDoc must be marked as modified");
+    CHECK_SET_ERR(targetAlnDoc->isModified(), "targetAlnDoc must be marked as modified");
+    CHECK_SET_ERR(!targetStoDoc->isModified(), "targetStoDoc must not be marked as modified");
+
+    CHECK_SET_ERR(targetAlnDoc->getDocumentFormatId() == BaseDocumentFormats::CLUSTAL_ALN, "targetAlnDoc's format must be CLUSTALW");
+    CHECK_SET_ERR(targetStoDoc->getDocumentFormatId() == BaseDocumentFormats::STOCKHOLM, "targetStoDoc's format must be Stockholm");
+}
+
+}  // namespace GUITest_common_scenarios_msa_editor
+}  // namespace U2

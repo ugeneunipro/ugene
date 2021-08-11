@@ -35,9 +35,11 @@ public:
 
 class PToolsAlignerFactory : public StructuralAlignmentAlgorithmFactory {
 public:
-    virtual StructuralAlignmentAlgorithm* create() { return new PToolsAligner(); }
+    virtual StructuralAlignmentAlgorithm *create() {
+        return new PToolsAligner();
+    }
 };  // class PToolsAlignerFactory
 
-}   // namespace U2
+}  // namespace U2
 
 #endif  // #ifndef _U2_PTOOLS_ALIGNER_H_

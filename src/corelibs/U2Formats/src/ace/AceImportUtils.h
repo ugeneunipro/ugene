@@ -30,7 +30,7 @@ namespace U2 {
 
 class Assembly {
 public:
-    class Sequence {    // it is consensus in the ACE format specification
+    class Sequence {  // it is consensus in the ACE format specification
     public:
         Sequence()
             : offset(0), isComplemented(false) {
@@ -135,6 +135,6 @@ private:
     U2OpStatus *os;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ACE_IMPORT_UTILS_H_
+#endif  // _U2_ACE_IMPORT_UTILS_H_

@@ -51,7 +51,7 @@ const QString ExtractConsensusWorkerFactory::ACTOR_ID("extract-consensus");
 namespace {
 const QString ALGO_ATTR_ID("algorithm");
 const QString GAPS_ATTR_ID("keep-gaps");
-}    // namespace
+}  // namespace
 
 ExtractConsensusWorker::ExtractConsensusWorker(Actor *actor)
     : BaseWorker(actor) {
@@ -279,5 +279,5 @@ QString ExtractConsensusWorkerPrompter::composeRichDoc() {
     return tr("Extracts the consensus sequence from the incoming assembly using the %1 algorithm.").arg(link);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -63,7 +63,7 @@ public:
     QList<QString> getDBs();
     bool hasDbId(const QString &dbId);
     QString getHint(const QString &dbName);
-    //TODO: move this to AppContext
+    // TODO: move this to AppContext
     static RemoteDBRegistry &getRemoteDBRegistry();
 
 public:
@@ -103,7 +103,7 @@ public:
     static const QString NCBI_DB_PROTEIN;
 };
 
-//Base class for loading documents
+// Base class for loading documents
 class U2CORE_EXPORT BaseLoadRemoteDocumentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
@@ -212,7 +212,7 @@ private slots:
 private:
     void runRequest(const QUrl &requestUrl);
 
-    QNetworkReply *searchReply;    // TODO: I think, it is unsed variable. Check if you can remove it.
+    QNetworkReply *searchReply;  // TODO: I think, it is unsed variable. Check if you can remove it.
     QNetworkReply *downloadReply;
     QXmlSimpleReader xmlReader;
     QString db;
@@ -297,6 +297,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LOAD_REMOTE_DOCUMENT_TASK_H_
+#endif  // _U2_LOAD_REMOTE_DOCUMENT_TASK_H_

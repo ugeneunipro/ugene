@@ -215,7 +215,7 @@ bool compareNames(const MsaColorSchemeFactory *a1, const MsaColorSchemeFactory *
     return a1->getName() < a2->getName();
 }
 
-}    // namespace
+}  // namespace
 
 void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory) {
     assert(getSchemeFactoryById(commonFactory->getId()) == nullptr);
@@ -268,7 +268,7 @@ void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
     for (int i = 0; i < 256; i++) {
         colorsPerChar[i] = FeatureColors::genLightColor(QString((char)i));
     }
-    colorsPerChar[U2Msa::GAP_CHAR] = QColor();    //invalid color -> no color at all
+    colorsPerChar[U2Msa::GAP_CHAR] = QColor();  // invalid color -> no color at all
 }
 
 void addUgeneAmino(QVector<QColor> &colorsPerChar) {
@@ -278,41 +278,41 @@ void addUgeneAmino(QVector<QColor> &colorsPerChar) {
     // Reason: lighter() & darker() produce a color that can be mapped back to the RGB space differently on different OSes (RBG space is limited).
     // To make GUI testing stable across different OS-es we hard-code the some RBB values.
 
-    //amino groups: "KRH", "GPST", "FWY", "ILM"
+    // amino groups: "KRH", "GPST", "FWY", "ILM"
     QColor krh("#ffee00");
     SET_C('K', krh);
-    SET_C('R', "#d5c700");    // krh.darker(120)
-    SET_C('H', "#fff233");    // krh.lighter(120));
+    SET_C('R', "#d5c700");  // krh.darker(120)
+    SET_C('H', "#fff233");  // krh.lighter(120));
 
     QColor gpst("#ff5082");
     SET_C('G', gpst);
-    SET_C('P', "#d5426c");    // gpst.darker(120).
-    SET_C('S', "#ff83a7");    // gpst.lighter(120)
-    SET_C('T', "#ffd0dd");    // gpst.lighter(150)
+    SET_C('P', "#d5426c");  // gpst.darker(120).
+    SET_C('S', "#ff83a7");  // gpst.lighter(120)
+    SET_C('T', "#ffd0dd");  // gpst.lighter(150)
 
     QColor fwy("#3df490");
     SET_C('F', fwy);
-    SET_C('W', "#33cc78");    // fwy.darker(120)
-    SET_C('Y', "#65ffab");    // fwy.lighter(120)
+    SET_C('W', "#33cc78");  // fwy.darker(120)
+    SET_C('Y', "#65ffab");  // fwy.lighter(120)
 
     QColor ilm("#00abed");
     SET_C('I', ilm);
-    SET_C('L', "#008fc6");    // ilm.darker(120).
-    SET_C('M', "#1dc0ff");    // ilm.lighter(120)
+    SET_C('L', "#008fc6");  // ilm.darker(120).
+    SET_C('M', "#1dc0ff");  // ilm.lighter(120)
 
-    //fix some color overlaps:
-    //e looks like q by default
-    SET_C('E', "#c0bdbb");    //gray
+    // fix some color overlaps:
+    // e looks like q by default
+    SET_C('E', "#c0bdbb");  // gray
     SET_C('X', "#fcfcfc");
 }
 
 void addUgeneNucleotide(QVector<QColor> &colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
-    SET_C('A', "#FCFF92");    // yellow
-    SET_C('C', "#70F970");    // green
-    SET_C('T', "#FF99B1");    // light red
-    SET_C('G', "#4EADE1");    // light blue
+    SET_C('A', "#FCFF92");  // yellow
+    SET_C('C', "#70F970");  // green
+    SET_C('T', "#FF99B1");  // light red
+    SET_C('G', "#4EADE1");  // light blue
     SET_C('U', colorsPerChar['T'].lighter(120));
     SET_C('N', "#FCFCFC");
 }
@@ -343,38 +343,38 @@ void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
 void addZappoAmino(QVector<QColor> &colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
-    //Aliphatic/hydrophobic:    ILVAM       #ffafaf
+    // Aliphatic/hydrophobic:    ILVAM       #ffafaf
     SET_C('I', "#ffafaf");
     SET_C('L', "#ffafaf");
     SET_C('V', "#ffafaf");
     SET_C('A', "#ffafaf");
     SET_C('M', "#ffafaf");
 
-    //Aromatic:  FWY         #ffc800
+    // Aromatic:  FWY         #ffc800
     SET_C('F', "#ffc800");
     SET_C('W', "#ffc800");
     SET_C('Y', "#ffc800");
 
-    //Positive   KRH         #6464ff
+    // Positive   KRH         #6464ff
     SET_C('K', "#6464ff");
     SET_C('R', "#6464ff");
     SET_C('H', "#6464ff");
 
-    //Negative   DE          #ff0000
+    // Negative   DE          #ff0000
     SET_C('D', "#ff0000");
     SET_C('E', "#ff0000");
 
-    //Hydrophil  STNQ        #00ff00
+    // Hydrophil  STNQ        #00ff00
     SET_C('S', "#00ff00");
     SET_C('T', "#00ff00");
     SET_C('N', "#00ff00");
     SET_C('Q', "#00ff00");
 
-    //conformat  PG          #ff00ff
+    // conformat  PG          #ff00ff
     SET_C('P', "#ff00ff");
     SET_C('G', "#ff00ff");
 
-    //Cysteine   C           #ffff00
+    // Cysteine   C           #ffff00
     SET_C('C', "#ffff00");
 }
 
@@ -406,7 +406,7 @@ void addTailorAmino(QVector<QColor> &colorsPerChar) {
 void addHydroAmino(QVector<QColor> &colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
-    //The most hydrophobic residues according to this table are colored red and the most hydrophilic ones are colored blue.
+    // The most hydrophobic residues according to this table are colored red and the most hydrophilic ones are colored blue.
     SET_C('I', "#ff0000");
     SET_C('V', "#f60009");
     SET_C('L', "#ea0015");
@@ -554,12 +554,12 @@ void addJalviewNucleotide(QVector<QColor> &colorsPerChar) {
     SET_C('U', colorsPerChar['T'].lighter(105));
 }
 
-}    // namespace
+}  // namespace
 
 void MsaColorSchemeRegistry::initBuiltInSchemes() {
     QVector<QColor> colorsPerChar;
 
-    //nucleic
+    // nucleic
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::EMPTY, tr("No colors"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
@@ -581,7 +581,7 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
 
     addMsaColorSchemeFactory(new MsaColorSchemeWeakSimilaritiesFactory(this, MsaColorScheme::WEAK_SIMILARITIES_NUCL, tr("Weak similarities"), DNAAlphabet_NUCL));
 
-    //amino
+    // amino
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
 
     fillLightColorsColorScheme(colorsPerChar);
@@ -633,4 +633,4 @@ ColorSchemeData::ColorSchemeData()
       type(DNAAlphabet_RAW) {
 }
 
-}    // namespace U2
+}  // namespace U2

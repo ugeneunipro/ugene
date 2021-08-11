@@ -112,7 +112,7 @@ public:
 
     virtual bool convertCustomSettings();
 
-    //all settings except sMatrix and pointers must be set up through customSettings and then must be converted by convertCustomSettings().
+    // all settings except sMatrix and pointers must be set up through customSettings and then must be converted by convertCustomSettings().
     SmithWatermanReportCallbackMAImpl *reportCallback;
     SmithWatermanResultListener *resultListener;
     SmithWatermanResultFilter *resultFilter;
@@ -121,7 +121,7 @@ public:
     int gapExtd;
     int percentOfScore;
     QString sMatrixName;
-    SMatrix sMatrix;    //initialized by convertCustomSettings()
+    SMatrix sMatrix;  // initialized by convertCustomSettings()
 
     static const QString PA_SW_GAP_OPEN;
     static const QString PA_SW_GAP_EXTD;
@@ -188,6 +188,6 @@ private:
     QList<PairAlignSequences> resPAS;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_SW_ALGORITHM_TASK_H_
+#endif  //_U2_SW_ALGORITHM_TASK_H_

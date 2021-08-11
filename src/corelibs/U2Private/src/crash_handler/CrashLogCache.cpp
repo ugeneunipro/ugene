@@ -54,4 +54,4 @@ QString CrashLogCache::formMemInfo() {
     return memInfo;
 }
 
-}    // namespace U2
+}  // namespace U2

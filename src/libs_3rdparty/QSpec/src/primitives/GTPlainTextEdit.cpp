@@ -45,7 +45,7 @@ void GTPlainTextEdit::setPlainText(GUITestOpStatus &os, QPlainTextEdit *plainTex
 #undef GT_METHOD_NAME
 
 //#define GT_METHOD_NAME "clear"
-//void GTPlainTextEdit::clear(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit) {
+// void GTPlainTextEdit::clear(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit) {
 //
 //    GT_CHECK(plainTextEdit != NULL, "plainTextEdit is NULL");
 //
@@ -61,4 +61,4 @@ void GTPlainTextEdit::setPlainText(GUITestOpStatus &os, QPlainTextEdit *plainTex
 //}
 //#undef GT_METHOD_NAME
 
-}    // namespace HI
+}  // namespace HI

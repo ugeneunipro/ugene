@@ -46,7 +46,7 @@ private:
     friend class AlignmentParser;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_SAM_READER_H_
+#endif  // _U2_SAM_READER_H_

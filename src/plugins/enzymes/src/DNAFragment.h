@@ -48,7 +48,7 @@ struct DNAFragmentTerm {
     QByteArray enzymeId;
     QByteArray overhang;
     QByteArray type;
-    bool isDirect;    // overhang strand
+    bool isDirect;  // overhang strand
 };
 
 class DNAFragment {
@@ -110,6 +110,6 @@ public:
     static QList<DNAFragment> findAvailableFragments(const QList<GObject *> &aObjects, const QList<GObject *> &sObjects);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_FRAGMENT_H_
+#endif  // _U2_DNA_FRAGMENT_H_

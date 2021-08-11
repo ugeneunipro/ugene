@@ -50,11 +50,11 @@ QString SWRF_EmptyFilter::getId() const {
 }
 
 /***************************************
-* SWRF_WithoutIntersect
-***************************************/
+ * SWRF_WithoutIntersect
+ ***************************************/
 const QString SWRF_WithoutIntersect::ID = "filter-intersections";
 
-//greater score goes first
+// greater score goes first
 static bool revScoreComparator(const SmithWatermanResult &s0, const SmithWatermanResult &s1) {
     bool res = false;
     if (s0.score < s1.score) {
@@ -113,4 +113,4 @@ QString SWRF_WithoutIntersect::getId() const {
     return ID;
 }
 
-}    // namespace U2
+}  // namespace U2

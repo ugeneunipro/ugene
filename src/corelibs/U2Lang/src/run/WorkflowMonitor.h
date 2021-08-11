@@ -97,7 +97,7 @@ enum U2LANG_EXPORT TaskState {
     FAILED,
     SUCCESS
 };
-}    // namespace Monitor
+}  // namespace Monitor
 
 class U2LANG_EXPORT WorkflowMonitor : public QObject {
     Q_OBJECT
@@ -178,7 +178,7 @@ private:
     QMap<QString, Monitor::WorkerInfo> workers;
     QList<Monitor::WorkerParamsInfo> workersParamsInfo;
     QMap<QString, Monitor::WorkerLogInfo> workersLog;
-    QMap<QString, QMultiMap<QString, QString>> workersReports;    // workerId<taskName, taskReport> >
+    QMap<QString, QMultiMap<QString, QString>> workersReports;  // workerId<taskName, taskReport> >
     QString _outputDir;
     bool saveSchema;
     bool started;
@@ -247,8 +247,8 @@ private:
     bool errorHasMessages;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::TaskState)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::FileInfo)
@@ -256,4 +256,4 @@ Q_DECLARE_METATYPE(U2::Workflow::Monitor::WorkerInfo)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::LogEntry)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::WorkerParamsInfo)
 
-#endif    // _U2_WORKFLOWMONITOR_H_
+#endif  // _U2_WORKFLOWMONITOR_H_

@@ -48,4 +48,4 @@ void CrashHandlerPrivate::handleException(const QString &exceptionType, const QS
     CrashHandler::handleException(exceptionType, dumpUrl);
 }
 
-}    // namespace U2
+}  // namespace U2

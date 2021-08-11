@@ -57,6 +57,6 @@ public:
     virtual void initSqlSchema(U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_CROSS_DATABASE_REFERENCE_DBI_H_
+#endif  // _U2_MYSQL_CROSS_DATABASE_REFERENCE_DBI_H_

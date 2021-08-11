@@ -53,4 +53,4 @@ void TaskWatchdog::trackResourceExistence(QObject *resource, Task *task, const Q
     tracker->setCancelError(errorMessage);
 }
 
-}    // namespace U2
+}  // namespace U2

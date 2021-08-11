@@ -163,7 +163,7 @@ void PrimersGrouperWorkerFactory::init() {
     localDomain->registerEntry(new PrimersGrouperWorkerFactory());
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 /************************************************************************/
 /* PrimerGrouperTask */
@@ -182,7 +182,7 @@ static bool groupsCompareFunction(const QList<int> &firstGroup, const QList<int>
 void PrimerGrouperTask::run() {
     CHECK(primerPairs.size() > 0, );
 
-    findCompatibleGroups();    //primersCompatibilityMatrix);
+    findCompatibleGroups();  // primersCompatibilityMatrix);
 }
 
 bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairIndex) {
@@ -322,4 +322,4 @@ QString PrimerGrouperTask::createColumn(const QString &name, const QString &attr
     return QString("<th%1/><p align=\"left\"><strong>%2</strong></p></th>").arg(attrsString).arg(name);
 }
 
-}    // namespace U2
+}  // namespace U2

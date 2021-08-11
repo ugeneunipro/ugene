@@ -54,9 +54,9 @@ public:
     virtual SearchQuery *read() = 0;
     virtual bool isEnd() = 0;
     virtual int getProgress() = 0;
-    //It's better to make this function pure virtual,
-    //so if you need it in an inherited class, where it isn't overloaded yet,
-    //you need to overload the needed func
+    // It's better to make this function pure virtual,
+    // so if you need it in an inherited class, where it isn't overloaded yet,
+    // you need to overload the needed func
     virtual QString getMemberError() {
         assert(false);
         return QString();
@@ -161,7 +161,7 @@ private:
     MultipleSequenceAlignment result;
 };
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 /************************************************************************/
 /* DBI short reads reader and writer                                    */
@@ -212,7 +212,7 @@ private:
 
 bool checkAndLogError(const U2OpStatusImpl &status);
 
-}    // namespace U2
+}  // namespace U2
 Q_DECLARE_METATYPE(U2::GenomeAlignerReaderContainer);
 Q_DECLARE_METATYPE(U2::GenomeAlignerWriterContainer);
-#endif    //_GENOME_ALIGNER_IO_H_
+#endif  //_GENOME_ALIGNER_IO_H_

@@ -54,4 +54,4 @@ bool U2Qualifier::isValidQualifierValue(const QString &) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

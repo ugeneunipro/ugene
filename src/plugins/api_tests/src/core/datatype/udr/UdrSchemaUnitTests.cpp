@@ -50,7 +50,7 @@ UdrSchema getTestSchema2() {
     SAFE_POINT_OP(os, schema);
     return schema;
 }
-}    // namespace
+}  // namespace
 
 IMPLEMENT_TEST(UdrSchemaUnitTests, addField_RecordId) {
     U2OpStatusImpl os;
@@ -325,4 +325,4 @@ IMPLEMENT_TEST(UdrSchemaUnitTests, UdrSchema_NoObjectReference) {
     CHECK_FALSE(schema.hasObjectReference(), "no object reference");
 }
 
-}    // namespace U2
+}  // namespace U2

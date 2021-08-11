@@ -49,6 +49,6 @@ private:
     QMap<U2DataId, U2DataId> importedObjectIds;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
+#endif  // _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_

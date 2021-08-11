@@ -23,4 +23,3 @@
 #define _U2_KALIGN_CONSTANTS_H_
 
 #endif
-

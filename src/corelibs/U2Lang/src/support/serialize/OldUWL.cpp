@@ -76,7 +76,7 @@ bool isOldMarkerActor(Actor *actor) {
     MarkerAttribute *attr = dynamic_cast<MarkerAttribute *>(*attrs.begin());
     return (nullptr != attr);
 }
-}    // namespace
+}  // namespace
 
 void OldUWL::parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Actor *> &actorMap) {
     QString name = tokenizer.take();
@@ -102,5 +102,5 @@ void OldUWL::parseOldAttributes(Actor *proc, ParsedPairs &pairs) {
     }
 }
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2

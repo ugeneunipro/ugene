@@ -66,7 +66,7 @@ private:
     QString id;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_READ_DOCUMENT_TASK_FACTORY_
+#endif  // _U2_READ_DOCUMENT_TASK_FACTORY_

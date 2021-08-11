@@ -58,9 +58,9 @@ protected:
     virtual void fillInnerSettings();
 
 protected:
-    QVariantMap innerSettings;    //inner settings
-    QVariantMap *externSettings;    //extern settings (from msa)
-    bool externSettingsExists;    //msa editor is alive, pointer externSettings is valid
+    QVariantMap innerSettings;  // inner settings
+    QVariantMap *externSettings;  // extern settings (from msa)
+    bool externSettingsExists;  // msa editor is alive, pointer externSettings is valid
 };
 
 class U2VIEW_EXPORT AlignmentAlgorithmGUIExtensionFactory : public QObject {
@@ -77,6 +77,6 @@ protected:
     QMap<const QWidget *, AlignmentAlgorithmMainWidget *> mainWidgets;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_ALIGNMENT_ALGORITHM_GUI_EXTENSION_H_
+#endif  //_U2_ALIGNMENT_ALGORITHM_GUI_EXTENSION_H_

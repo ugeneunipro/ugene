@@ -39,6 +39,6 @@ private:
     const QList<DashboardInfo> dashboardInfos;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_REMOVE_DASHBOARDS_TASK_H_
+#endif  // _U2_REMOVE_DASHBOARDS_TASK_H_

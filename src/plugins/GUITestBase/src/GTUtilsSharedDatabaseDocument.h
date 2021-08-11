@@ -72,6 +72,6 @@ private:
     static const QVariant convertProjectItemsPaths(const QMap<QString, QStringList> &projectItems);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_SHARED_DATABASE_DOCUMENT_UTILS_H_
+#endif  // _U2_GUI_SHARED_DATABASE_DOCUMENT_UTILS_H_

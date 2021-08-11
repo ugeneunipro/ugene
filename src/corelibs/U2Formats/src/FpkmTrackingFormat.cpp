@@ -261,7 +261,7 @@ void FpkmTrackingFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2
         // Assume that the group name is the same as the annotation name
         QString groupName = annotName;
         if (!AnnotationGroup::isValidGroupName(groupName, false)) {
-            groupName = "Group";    // or set this name if the annotation name is not appropriate
+            groupName = "Group";  // or set this name if the annotation name is not appropriate
         }
 
         annTable2anns[annotTable][groupName].append(annotData);
@@ -316,7 +316,7 @@ bool parseLocus(QString locus, QString &seqName, U2Region &region) {
 
     seqName = locus.left(lastColonCharIndex);
 
-    QString coordinatesStr = locus.mid(lastColonCharIndex + 1);    // index is the next after ':'
+    QString coordinatesStr = locus.mid(lastColonCharIndex + 1);  // index is the next after ':'
     QStringList coordinates = coordinatesStr.split('-');
     if (2 != coordinates.size()) {
         return false;
@@ -567,7 +567,7 @@ void FpkmTrackingFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus 
                         // If there is no "locus" qualifier, restore the column value
                         if (columnValue.isEmpty()) {
                             if (seqName.isEmpty()) {
-                                columnValue = "unknown_genome";    // use some name
+                                columnValue = "unknown_genome";  // use some name
                             } else {
                                 columnValue = seqName;
                             }
@@ -579,7 +579,7 @@ void FpkmTrackingFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus 
                         }
                         // Otherwise verify the qualifier
                         else {
-                            QString seqNameFromLocusQual;    // Currently, do not verify a sequence name in locus!
+                            QString seqNameFromLocusQual;  // Currently, do not verify a sequence name in locus!
                             U2Region regionFromLocusQual;
                             if (!parseLocus(columnValue, seqNameFromLocusQual, regionFromLocusQual)) {
                                 ioLog.trace(tr("FPKM Tracking Format saving error: failed"
@@ -628,4 +628,4 @@ void FpkmTrackingFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,9 +41,9 @@ public:
     static const Descriptor VARIATION_TRACK_SLOT();
     static const Descriptor ASSEMBLY_SLOT();
     static const Descriptor DATASET_SLOT();
-};    // BaseSlots
+};  // BaseSlots
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // __U2_WORKFLOW_BASE_SLOTS_H_
+#endif  // __U2_WORKFLOW_BASE_SLOTS_H_

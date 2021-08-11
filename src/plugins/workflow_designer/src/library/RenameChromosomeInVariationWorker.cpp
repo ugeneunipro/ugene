@@ -44,7 +44,7 @@ const QString REPLACE_WITH_ATTR = "prefix-replace-with";
 
 const QString INPUT_PORT = "in-file";
 const QString OUTPUT_PORT = "out-file";
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* Prompter */
@@ -160,5 +160,5 @@ Worker *RenameChomosomeInVariationWorkerFactory::createWorker(Actor *actor) {
     return new RenameChomosomeInVariationWorker(actor);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

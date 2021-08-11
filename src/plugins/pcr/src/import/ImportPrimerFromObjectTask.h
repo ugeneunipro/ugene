@@ -46,6 +46,6 @@ private:
     Primer primer;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#endif  // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_

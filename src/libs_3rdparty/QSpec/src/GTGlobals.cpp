@@ -20,10 +20,9 @@
  */
 
 #include <QtCore/QEventLoop>
-#include <QtCore/QTimer>
 #include <QtTest/QSpontaneKeyEvent>
 #include <QtTest>
-#if (QT_VERSION < 0x050000)    //Qt 5
+#if (QT_VERSION < 0x050000)  // Qt 5
 #    include <QtGui/QApplication>
 #    include <QtGui/QDesktopWidget>
 #    include <QtGui/QPixmap>
@@ -50,7 +49,7 @@ void sysSleep(int sec) {
     sleep(sec);
 #endif
 }
-}    // namespace
+}  // namespace
 
 void GTGlobals::sleep(int msec) {
     if (msec > 0) {
@@ -67,25 +66,19 @@ void GTGlobals::sendEvent(QObject *obj, QEvent *e) {
     qApp->notify(obj, e);
 }
 
-void GTGlobals::takeScreenShot(QString path) {
+void GTGlobals::takeScreenShot(const QString &path) {
     QPixmap originalPixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
     originalPixmap.save(path);
 }
 
-GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchPolicy, int _depth, bool _searchInHidden)
+GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchPolicy, int _depth)
     : failIfNotFound(_failIfNotFound),
       matchPolicy(_matchPolicy),
-      depth(_depth),
-      searchInHidden(_searchInHidden) {
+      depth(_depth) {
 }
 
 void GTGlobals::GUITestFail() {
     qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
 }
 
-void GTLog::debug(const QString &message) {
-    QByteArray time = QTime::currentTime().toString().toLocal8Bit();
-    qDebug("[%s] GT_DEBUG: %s", time.constData(), message.toLocal8Bit().constData());
-}
-
-}    // namespace HI
+}  // namespace HI

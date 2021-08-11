@@ -104,4 +104,4 @@ GObject *DNAChromatogramObject::clone(const U2DbiRef &dstRef, U2OpStatus &os, co
     return dst;
 }
 
-}    // namespace U2
+}  // namespace U2

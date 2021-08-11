@@ -113,6 +113,6 @@ private:
     void calculateMatrixForAnnotationsResult();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

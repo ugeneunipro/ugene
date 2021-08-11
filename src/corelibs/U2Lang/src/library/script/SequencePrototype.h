@@ -95,8 +95,8 @@ private:
     WorkflowScriptEngine *workflowEngine() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::SequenceScriptClass *)
 
-#endif    // _U2_SEQUENCEPROTOTYPE_H_
+#endif  // _U2_SEQUENCEPROTOTYPE_H_

@@ -91,6 +91,6 @@ public:
     static const int MAX_COVERAGE_VECTOR_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

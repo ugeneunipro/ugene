@@ -90,4 +90,4 @@ void GroupSlotAttribute::setAttributeValue(const QVariant &newVal) {
     Attribute::setAttributeValue(GrouperOutSlot::busMap2readable(slotStr));
 }
 
-}    // namespace U2
+}  // namespace U2

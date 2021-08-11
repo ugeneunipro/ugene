@@ -63,7 +63,7 @@ MusclePlugin::MusclePlugin()
         ctx = new MuscleMSAEditorContext(this);
         ctx->init();
 
-        //Add to tools menu for fast run
+        // Add to tools menu for fast run
         QAction *muscleAction = new QAction(tr("Align with MUSCLE…"), this);
         muscleAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
         muscleAction->setObjectName(ToolsMenu::MALIGN_MUSCLE);
@@ -73,7 +73,7 @@ MusclePlugin::MusclePlugin()
     }
     LocalWorkflow::MuscleWorkerFactory::init();
     LocalWorkflow::ProfileToProfileWorkerFactory::init();
-    //uMUSCLE Test
+    // uMUSCLE Test
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -89,7 +89,7 @@ MusclePlugin::MusclePlugin()
 }
 
 void MusclePlugin::sl_runWithExtFileSpecify() {
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     MuscleTaskSettings settings;
     QObjectScopedPointer<MuscleAlignWithExtFileSpecifyDialogController> muscleRunDialog = new MuscleAlignWithExtFileSpecifyDialogController(AppContext::getMainWindow()->getQMainWindow(), settings);
     muscleRunDialog->exec();
@@ -105,7 +105,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
 }
 
 MusclePlugin::~MusclePlugin() {
-    //nothing to do
+    // nothing to do
 }
 
 MSAEditor *MuscleAction::getMSAEditor() const {
@@ -268,4 +268,4 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     ed->resetCollapseModel();
 }
 
-}    // namespace U2
+}  // namespace U2

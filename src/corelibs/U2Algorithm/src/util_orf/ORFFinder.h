@@ -70,7 +70,7 @@ public:
         }
         data->setStrand(frame < 0 ? U2Strand::Complementary : U2Strand::Direct);
         data->qualifiers.append(U2Qualifier("dna_len", QString::number(regLen)));
-        if (regLen >= 6) {    // 3 bp - end codon
+        if (regLen >= 6) {  // 3 bp - end codon
             data->qualifiers.append(U2Qualifier("protein_len", QString::number(regLen / 3)));
         }
         return data;
@@ -179,6 +179,6 @@ private:
                                       int symbolsFromEnd);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

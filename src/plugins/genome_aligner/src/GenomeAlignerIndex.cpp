@@ -300,7 +300,7 @@ bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAT
         return false;
     }
 
-    //binary search in reference objects
+    // binary search in reference objects
     int low = 0;
     int high = objCount;
     int mid = 0;
@@ -347,7 +347,7 @@ bool GenomeAlignerIndex::compare(const char *sourceSeq, const char *querySeq, in
     return false;
 }
 
-//this method contains big copy-paste but it works very fast because of it.
+// this method contains big copy-paste but it works very fast because of it.
 void GenomeAlignerIndex::alignShortRead(SearchQuery *qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext *settings, BMType bitFilter, int w) {
     if (firstResult < 0) {
         return;
@@ -434,7 +434,7 @@ void GenomeAlignerIndex::buildPart(SAType start, SAType length, SAType &arrLen) 
 
     for (BMType *end = mrunner + arrLen; mrunner < end; arunner++, mrunner++) {
         const char *s = seq + *arunner;
-        if (*arunner == expectedNext && expectedNext != 0) {    //pop first bit, push wCharsInMask1 char to the mask
+        if (*arunner == expectedNext && expectedNext != 0) {  // pop first bit, push wCharsInMask1 char to the mask
             bitValue = ((bitValue << bitCharLen) | bitTable[uchar(*(s + wCharsInMask1))]) & bitFilter;
 #ifdef _DEBUG
             // double check that optimization doesn't break anything
@@ -442,7 +442,7 @@ void GenomeAlignerIndex::buildPart(SAType start, SAType length, SAType &arrLen) 
             assert(bitValue == bitValue2);
 #endif
         } else {
-            //recompute the mask if we have some symbols skipped
+            // recompute the mask if we have some symbols skipped
             bitValue = getBitValue(s, w);
         }
         expectedNext = (s + 1) - seq;
@@ -456,7 +456,7 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen)
     indexPart.refFile->seek(start);
     qint64 l = indexPart.refFile->read(indexPart.seq, length);
     if (length != l) {
-        //setError("Index .ref file is corrupted.");
+        // setError("Index .ref file is corrupted.");
         return;
     }
 
@@ -478,7 +478,7 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen)
     bool goodSuff = false;
     arrLen = 0;
     SAType last = start + length - w;
-    for (quint32 i = 0; idx <= last; i++) {    //initializing sArray and arrLen
+    for (quint32 i = 0; idx <= last; i++) {  // initializing sArray and arrLen
         if (idx > (objLens[curObj] - w) && idx < objLens[curObj]) {
             seqIdx += objLens[curObj] - idx;
             idx = objLens[curObj];
@@ -527,7 +527,7 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen)
             goodSuff = true;
         }
 
-        *arunner = idx - start;    //-start for positioning at a part of the sequence
+        *arunner = idx - start;  //-start for positioning at a part of the sequence
         arrLen++;
         idx++;
         arunner++;
@@ -535,4 +535,4 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType &arrLen)
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -39,7 +39,7 @@ MSAConsensusAlgorithm *MSAConsensusAlgorithmFactoryClustal::createAlgorithm(cons
 }
 
 //////////////////////////////////////////////////////////////////////////
-//Algorithm
+// Algorithm
 
 char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma, int pos, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
@@ -74,7 +74,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
         static int maxStrongGroupLen = 4;
         static int maxWeakGroupLen = 6;
 
-        QByteArray currentGroup;    //TODO: optimize 'currentGroup' related code!
+        QByteArray currentGroup;  // TODO: optimize 'currentGroup' related code!
         int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
             char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
@@ -89,7 +89,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
             bool ok = false;
             int currentLen = currentGroup.length();
             const char *currentGroupData = currentGroup.data();
-            //check strong groups
+            // check strong groups
             if (currentLen <= maxStrongGroupLen) {
                 for (int sgi = 0, sgn = sizeof(strongGroups) / sizeof(QByteArray); sgi < sgn && !ok; sgi++) {
                     bool matches = true;
@@ -105,7 +105,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
                 }
             }
 
-            //check weak groups
+            // check weak groups
             if (!ok && currentLen <= maxWeakGroupLen) {
                 for (int wgi = 0, wgn = sizeof(weakGroups) / sizeof(QByteArray); wgi < wgn && !ok; wgi++) {
                     bool matches = true;
@@ -120,11 +120,11 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
                     consChar = '.';
                 }
             }
-            //use default
+            // use default
             if (!ok) {
                 consChar = ' ';
             }
-        }    //amino
+        }  // amino
         return consChar;
     }
 }
@@ -133,4 +133,4 @@ U2::MSAConsensusAlgorithmClustal *MSAConsensusAlgorithmClustal::clone() const {
     return new MSAConsensusAlgorithmClustal(*this);
 }
 
-}    // namespace U2
+}  // namespace U2

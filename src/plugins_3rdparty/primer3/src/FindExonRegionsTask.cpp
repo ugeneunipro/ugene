@@ -19,29 +19,26 @@
  * MA 02110-1301, USA.
  */
 
+#include "FindExonRegionsTask.h"
+
 #include <U2Algorithm/SplicedAlignmentTask.h>
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
-#include <U2Core/LoadRemoteDocumentTask.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/GObjectUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/AnnotationTableObject.h>
 
-#include "FindExonRegionsTask.h"
+#include <U2Core/AnnotationTableObject.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/GObjectUtils.h>
+#include <U2Core/LoadRemoteDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject *dObj, const QString &annName)
-    : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName)
-{
-
-
+    : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName) {
 }
 
 void FindExonRegionsTask::prepare() {
-
 }
 
 QList<Task *> FindExonRegionsTask::onSubTaskFinished(Task *subTask) {
@@ -89,16 +86,15 @@ QList<Task *> FindExonRegionsTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult FindExonRegionsTask::report() {
-    QList<GObject*> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
-    QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE,
-        ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
+    QList<GObject *> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    QList<GObject *> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
 
     if (relAnns.isEmpty()) {
         setError(tr("Failed to search for exon annotations. The sequence %1 doesn't have any related annotations.").arg(dnaObj->getSequenceName()));
         return ReportResult_Finished;
     }
-    
-    foreach (GObject* a, relAnns) {
+
+    foreach (GObject *a, relAnns) {
         AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(a);
         const QList<Annotation *> anns = att->getAnnotations();
         foreach (Annotation *ann, anns) {
@@ -113,4 +109,4 @@ Task::ReportResult FindExonRegionsTask::report() {
     return ReportResult_Finished;
 }
 
-} // namespace U2
+}  // namespace U2

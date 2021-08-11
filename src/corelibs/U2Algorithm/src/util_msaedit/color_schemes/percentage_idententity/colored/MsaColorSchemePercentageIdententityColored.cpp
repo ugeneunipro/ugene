@@ -119,4 +119,4 @@ int MsaColorSchemePercentageIdententityColored::getColorIndex(const int columnNu
     return index;
 }
 
-}    // namespace U2
+}  // namespace U2

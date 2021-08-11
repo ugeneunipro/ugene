@@ -195,7 +195,8 @@ void ExportSequencesDialog::initSaveController(const DocumentFormatId &defaultFo
 }
 
 void ExportSequencesDialog::updateModel() {
-    strand = directStrandButton->isChecked() ? TriState_Yes : complementStrandButton->isChecked() ? TriState_No : TriState_Unknown;
+    strand = directStrandButton->isChecked() ? TriState_Yes : complementStrandButton->isChecked() ? TriState_No
+                                                                                                  : TriState_Unknown;
     translate = translateButton->isChecked();
     translateAllFrames = allTFramesButton->isVisible() && allTFramesButton->isChecked();
     addToProject = addToProjectBox->isChecked();
@@ -272,4 +273,4 @@ void ExportSequencesDialog::disableAnnotationsOption(bool v) {
     withAnnotationsBox->setDisabled(v);
 }
 
-}    // namespace U2
+}  // namespace U2

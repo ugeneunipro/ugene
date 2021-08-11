@@ -52,7 +52,7 @@ private:
     QVariant data;
     // message metadata identifier
     int metadataId;
-};    // Message
+};  // Message
 
 /**
  * pure virtual controller of passing/receiving messages
@@ -92,7 +92,7 @@ public:
     // default indices values should be used for obtaining all the messages in channel
     virtual QQueue<Message> getMessages(int startIndex = 0, int endIndex = -1) const = 0;
 
-};    // CommunicationChannel
+};  // CommunicationChannel
 
 /**
  * represents entity that communicate with others by CommunicationChannel
@@ -106,10 +106,10 @@ public:
     virtual bool addCommunication(const QString &portId, CommunicationChannel *ch) = 0;
     virtual CommunicationChannel *getCommunication(const QString &portId) = 0;
 
-};    // CommunicationSubject
+};  // CommunicationSubject
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_TRANSPORT_H_
+#endif  // _U2_WORKFLOW_TRANSPORT_H_

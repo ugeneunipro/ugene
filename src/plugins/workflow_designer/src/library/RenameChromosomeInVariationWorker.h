@@ -63,7 +63,7 @@ public:
     Worker *createWorker(Actor *actor);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_RENAME_CHOMOSOME_IN_VARIATION_WORKER_H_
+#endif  // _U2_RENAME_CHOMOSOME_IN_VARIATION_WORKER_H_

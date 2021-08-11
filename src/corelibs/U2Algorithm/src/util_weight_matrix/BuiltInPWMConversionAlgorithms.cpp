@@ -28,4 +28,4 @@ const QString BuiltInPWMConversionAlgorithms::LOD_ALGO("Log-odds");
 const QString BuiltInPWMConversionAlgorithms::MCH_ALGO("Match");
 const QString BuiltInPWMConversionAlgorithms::NLG_ALGO("NLG");
 
-}    // namespace U2
+}  // namespace U2

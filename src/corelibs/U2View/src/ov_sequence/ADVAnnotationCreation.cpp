@@ -97,7 +97,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
         m.data->location->regions << seqCtx->getSequenceSelection()->getSelectedRegions();
     }
 
-    //setup default object and group if possible from AnnotationsTreeView
+    // setup default object and group if possible from AnnotationsTreeView
     AnnotationsTreeView *tv = ctx->getAnnotationsView();
     AVItem *ai = tv->currentItem();
     if (ai != nullptr && !ai->isReadonly()) {
@@ -125,4 +125,4 @@ void ADVAnnotationCreation::sl_createAnnotation() {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-}    // namespace U2
+}  // namespace U2

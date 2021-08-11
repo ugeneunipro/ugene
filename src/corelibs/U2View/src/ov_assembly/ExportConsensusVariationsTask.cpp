@@ -136,4 +136,4 @@ void ExportConsensusVariationsTask::reportResult(const ConsensusInfo &result) {
     CHECK_OP(stateInfo, );
 }
 
-}    // namespace U2
+}  // namespace U2

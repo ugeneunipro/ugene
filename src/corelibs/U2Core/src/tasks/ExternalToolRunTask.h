@@ -35,7 +35,7 @@ class ExternalToolRunTaskHelper;
 class SaveDocumentTask;
 class ExternalToolListener;
 
-//using namespace Workflow;
+// using namespace Workflow;
 
 class U2CORE_EXPORT ProcessRun {
 public:
@@ -232,6 +232,6 @@ private:
     QString toolName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_TOOL_RUN_TASK_H
+#endif  // _U2_EXTERNAL_TOOL_RUN_TASK_H

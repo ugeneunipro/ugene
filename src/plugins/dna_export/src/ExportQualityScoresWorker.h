@@ -72,7 +72,7 @@ public:
     virtual Worker *createWorker(Actor *a);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _EXPORT_PHRED_QUALITY_WORKER_H_
+#endif  // _EXPORT_PHRED_QUALITY_WORKER_H_

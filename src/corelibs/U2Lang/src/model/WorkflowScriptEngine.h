@@ -37,6 +37,6 @@ private:
     Workflow::WorkflowContext *context;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_SCRIPT_ENGINE_H_
+#endif  // _U2_WORKFLOW_SCRIPT_ENGINE_H_

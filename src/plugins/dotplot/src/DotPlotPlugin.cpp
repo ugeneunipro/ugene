@@ -113,7 +113,7 @@ void DotPlotViewContext::sl_loadTaskStateChanged(Task *task) {
     bool canCreate = f->canCreateView(ms);
     if (canCreate) {
         AppContext::getTaskScheduler()->registerTopLevelTask(f->createViewTask(ms, false));
-        createdByWizard = true;    // set flag that we need to show a dotplot settings dialog
+        createdByWizard = true;  // set flag that we need to show a dotplot settings dialog
         firstFile = loadTask->getFirstFile();
         secondFile = loadTask->getSecondFile();
     }
@@ -169,13 +169,13 @@ void DotPlotViewContext::showBuildDotPlotDialog(GObjectView *ov) {
 
     // show settings dialog
     if (dotPlot->sl_showSettingsDialog(createdByWizard)) {
-        DotPlotSplitter *splitter = getView(dnaView, true);    // create new splitter
+        DotPlotSplitter *splitter = getView(dnaView, true);  // create new splitter
         Q_ASSERT(splitter);
         splitter->addView(dotPlot);
 
         connect(dotPlot, SIGNAL(si_removeDotPlot()), SLOT(sl_removeDotPlot()));
     } else {
-        delete dotPlot;    // user clicked cancel button
+        delete dotPlot;  // user clicked cancel button
         dotPlot = nullptr;
     }
     createdByWizard = false;
@@ -308,4 +308,4 @@ void DotPlotViewContext::sl_windowActivated(MWMDIWindow *w) {
     showBuildDotPlotDialog(view);
 }
 
-}    // namespace U2
+}  // namespace U2

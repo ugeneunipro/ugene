@@ -141,9 +141,9 @@ private:
 
     PluginSupportImpl *ps;
     QStringList pluginFiles;
-    QList<PluginDesc> orderedPlugins;    // plugins ordered by desc
+    QList<PluginDesc> orderedPlugins;  // plugins ordered by desc
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -117,7 +117,7 @@ void OptionsPanelWidget::initMainLayout(QWidget *groupsWidget) {
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
-    mainLayout->setAlignment(Qt::AlignRight);    // prevents blinking when the options panel has been opened/closed
+    mainLayout->setAlignment(Qt::AlignRight);  // prevents blinking when the options panel has been opened/closed
     mainLayout->addWidget(groupsWidget);
     setLayout(mainLayout);
 }
@@ -217,4 +217,4 @@ GroupOptionsWidget *OptionsPanelWidget::focusOptionsWidget(const QString &groupI
     return optionsWidget;
 }
 
-}    // namespace U2
+}  // namespace U2

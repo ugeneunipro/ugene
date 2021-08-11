@@ -140,7 +140,7 @@ void CreateAnnotationFullWidget::setAnnotationType(U2FeatureType type) {
         return;
     }
 
-    Q_ASSERT(false);    // an incorrect type
+    Q_ASSERT(false);  // an incorrect type
     items = lwAnnotationType->findItems(U2FeatureTypes::getVisualName(U2FeatureTypes::MiscFeature), Qt::MatchExactly);
     if (Q_LIKELY(!items.isEmpty())) {
         lwAnnotationType->setCurrentItem(items.first());
@@ -284,7 +284,7 @@ void CreateAnnotationFullWidget::sl_regionChanged() {
     isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
 
     U2Location location;
-    if (startPos > endPos) {    // split (200..100) to (200..len,1..100)
+    if (startPos > endPos) {  // split (200..100) to (200..len,1..100)
         if (startPos <= seqLen && endPos >= 1) {
             location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
         }
@@ -313,7 +313,7 @@ void CreateAnnotationFullWidget::init() {
 }
 
 void CreateAnnotationFullWidget::initOsDependingLayoutSettings() {
-//macOS as default
+// macOS as default
 #ifdef Q_OS_WIN
     verticalLayout_6->setSpacing(6);
     horizontalLayout_10->setSpacing(2);
@@ -357,4 +357,4 @@ void CreateAnnotationFullWidget::fillSaveDocumentControllerConfig(SaveDocumentCo
     config.fileDialogButton = tbBrowseNewTable;
 }
 
-}    // namespace U2
+}  // namespace U2

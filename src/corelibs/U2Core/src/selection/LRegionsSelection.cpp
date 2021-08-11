@@ -107,4 +107,4 @@ bool LRegionsSelection::isEmpty() const {
     return regions.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

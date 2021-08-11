@@ -182,7 +182,7 @@ void GTest_RemoveAlignmentRegion::init(XMLTestFormat *tf, const QDomElement &el)
     }
     expectedDocName = buf;
 
-    //Region height
+    // Region height
 
     buf = el.attribute(REGION_HEIGHT);
     if (buf.isEmpty()) {
@@ -420,4 +420,4 @@ QList<XMLTestFactory *> CreateSubalignimentTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

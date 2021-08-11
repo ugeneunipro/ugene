@@ -85,9 +85,12 @@ public:
     static void callContextMenuOnItem(HI::GUITestOpStatus &os, const QString &itemName);
     static void callContextMenuOnQualifier(HI::GUITestOpStatus &os, const QString &parentName, const QString &qualifierName);
 
+    /** Checks that there are no annotations in the annotations view. */
+    static void checkNoAnnotations(HI::GUITestOpStatus &os);
+
     static const QString widgetName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

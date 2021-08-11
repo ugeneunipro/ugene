@@ -155,7 +155,7 @@ void FindPrimerPairsWorkerFactory::init() {
     localDomain->registerEntry(new FindPrimerPairsWorkerFactory());
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 /************************************************************************/
 /* FindPrimersTask */
@@ -265,4 +265,4 @@ QString FindPrimersTask::createColumn(const QString &name) {
     return QString("<th width=\"30%\"/><p align=\"center\"><strong>%2</strong></p></th>").arg(name);
 }
 
-}    // namespace U2
+}  // namespace U2

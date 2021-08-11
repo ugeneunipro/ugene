@@ -45,11 +45,11 @@ Warning: in the current state GUrl canonical form can contain symlinks.
 
 /** Type of the URL */
 enum GUrlType {
-    GUrl_File,    // local file or default URL type for unknown files
-    GUrl_Http,    // both http and https protocols
+    GUrl_File,  // local file or default URL type for unknown files
+    GUrl_Http,  // both http and https protocols
     GUrl_Ftp,
-    GUrl_VFSFile,    // memory block
-    GUrl_Network    // an abstract network url (e.g. shared database url)
+    GUrl_VFSFile,  // memory block
+    GUrl_Network  // an abstract network url (e.g. shared database url)
 };
 
 class U2CORE_EXPORT GUrl {
@@ -126,7 +126,7 @@ private:
 QDataStream &operator<<(QDataStream &out, const GUrl &myObj);
 QDataStream &operator>>(QDataStream &in, GUrl &myObj);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::GUrl);
 

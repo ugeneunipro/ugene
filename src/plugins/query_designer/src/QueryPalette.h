@@ -70,7 +70,7 @@ private:
     friend class PaletteDelegate;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(QAction *)
 

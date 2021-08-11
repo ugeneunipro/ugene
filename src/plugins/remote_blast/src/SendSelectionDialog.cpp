@@ -210,7 +210,7 @@ QString SendSelectionDialog::getUrl() const {
 }
 
 void SendSelectionDialog::setupDataBaseList() {
-    //cannot analyze amino sequences using nucleotide databases
+    // cannot analyze amino sequences using nucleotide databases
     if (isAminoSeq) {
         dataBase->removeItem(0);
     }
@@ -267,7 +267,7 @@ void SendSelectionDialog::sl_scriptSelected(int index) {
 
             wordSizeComboBox->clear();
             wordSizeComboBox->addItems(ParametersLists::blastp_wordSize);
-            wordSizeComboBox->setCurrentIndex(2);    //The default value is "6".
+            wordSizeComboBox->setCurrentIndex(2);  // The default value is "6".
 
             costsComboBox->clear();
             costsComboBox->addItems(ParametersLists::blastp_gapCost);
@@ -364,7 +364,7 @@ void SendSelectionDialog::sl_OK() {
         }
     }
 
-    else {    //CDD
+    else {  // CDD
         requestParameters = "CMD=Put";
         db = "blastp";
         addParametr(requestParameters, ReqParams::program, db);
@@ -417,4 +417,4 @@ void SendSelectionDialog::sl_Cancel() {
     reject();
 }
 
-}    // namespace U2
+}  // namespace U2

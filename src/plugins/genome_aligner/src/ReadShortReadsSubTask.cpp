@@ -212,17 +212,16 @@ inline bool ReadShortReadsSubTask::add(int &CMAX, int &W, int &q, int &readNum, 
     const char *querySeq = query->constData();
     SAFE_POINT(nullptr != querySeq, "No querySeq", false);
 
-    int win = query->length() < GenomeAlignerTask::MIN_SHORT_READ_LENGTH ?
-                  GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,
-                                                         alignContext.nMismatches,
-                                                         alignContext.ptMismatches,
-                                                         query->length(),
-                                                         query->length()) :
-                  GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,
-                                                         alignContext.nMismatches,
-                                                         alignContext.ptMismatches,
-                                                         alignContext.minReadLength,
-                                                         alignContext.maxReadLength);
+    int win = query->length() < GenomeAlignerTask::MIN_SHORT_READ_LENGTH ? GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,
+                                                                                                                  alignContext.nMismatches,
+                                                                                                                  alignContext.ptMismatches,
+                                                                                                                  query->length(),
+                                                                                                                  query->length())
+                                                                         : GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,
+                                                                                                                  alignContext.nMismatches,
+                                                                                                                  alignContext.ptMismatches,
+                                                                                                                  alignContext.minReadLength,
+                                                                                                                  alignContext.maxReadLength);
 
     for (int i = 0; i < W - q + 1; i += q) {
         const char *seq = querySeq + i;
@@ -239,4 +238,4 @@ inline bool ReadShortReadsSubTask::add(int &CMAX, int &W, int &q, int &readNum, 
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -61,5 +61,5 @@ bool SchemaWorkerFactory::init(Schema *schema, const QString &name, const QStrin
     return true;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

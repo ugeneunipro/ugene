@@ -85,4 +85,4 @@ void EditPrimerDialog::validate(bool isValid) {
     okButton->setEnabled(isValid);
 }
 
-}    // namespace U2
+}  // namespace U2

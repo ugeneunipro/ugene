@@ -145,4 +145,4 @@ QList<Annotation *> CreateAnnotationsTask::getResultAnnotations() const {
     return resultAnnotations;
 }
 
-}    // namespace U2
+}  // namespace U2

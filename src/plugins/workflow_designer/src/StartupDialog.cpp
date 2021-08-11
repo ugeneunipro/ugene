@@ -69,4 +69,4 @@ void StartupDialog::sl_accepted() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

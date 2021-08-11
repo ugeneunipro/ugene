@@ -83,4 +83,4 @@ EditSettings EditSettingsDialog::getSettings() const {
     return s;
 }
 
-}    // namespace U2
+}  // namespace U2

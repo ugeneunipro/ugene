@@ -56,7 +56,7 @@ ProjectImpl::ProjectImpl(const QString &_name, const QString &_url, const QList<
 }
 
 ProjectImpl::~ProjectImpl() {
-    //delete all views. Documents are to be removed by a Shutdown task instance
+    // delete all views. Documents are to be removed by a Shutdown task instance
     qDeleteAll(objectViewStates);
 }
 
@@ -310,7 +310,7 @@ void ProjectImpl::updateObjectRelations(const GObjectReference &oldRef, const GO
     } else if (newRef.objType == GObjectTypes::PHYLOGENETIC_TREE) {
         objRole = ObjectRole_PhylogeneticTree;
     } else {
-        return;    // other object types cannot be referenced
+        return;  // other object types cannot be referenced
     }
     const QList<GObject *> dependentObjs = GObjectUtils::findObjectsRelatedToObjectByRole(oldRef, "", objRole, allObjs, UOF_LoadedAndUnloaded);
 
@@ -334,4 +334,4 @@ void ProjectImpl::updateDocInRelations(const QString &oldDocUrl, const QString &
     }
 }
 
-}    // namespace U2
+}  // namespace U2

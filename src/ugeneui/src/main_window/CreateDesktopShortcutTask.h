@@ -50,6 +50,6 @@ private:
     bool startError;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

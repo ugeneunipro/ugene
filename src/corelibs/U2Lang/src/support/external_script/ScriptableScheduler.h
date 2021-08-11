@@ -43,6 +43,6 @@ protected:
     QList<ActorId> nextTicks;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCRIPTABLE_SCHEDULER_H_
+#endif  // _U2_SCRIPTABLE_SCHEDULER_H_

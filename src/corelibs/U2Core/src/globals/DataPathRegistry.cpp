@@ -30,7 +30,7 @@
 namespace U2 {
 
 ////////////////////////////////////////
-//U2DataPath
+// U2DataPath
 U2DataPath::U2DataPath(const QString &_name, const QString &_path, const QString &_descr, Options _options)
     : name(_name),
       path(_path),
@@ -162,7 +162,7 @@ QString U2DataPath::chopExtention(QString name) {
 }
 
 ////////////////////////////////////////
-//U2DataPathRegistry
+// U2DataPathRegistry
 U2DataPathRegistry::~U2DataPathRegistry() {
     qDeleteAll(registry.values());
 }
@@ -188,4 +188,4 @@ void U2DataPathRegistry::unregisterEntry(const QString &name) {
 QList<U2DataPath *> U2DataPathRegistry::getAllEntries() const {
     return registry.values();
 }
-}    // namespace U2
+}  // namespace U2

@@ -36,4 +36,4 @@ QDActorPrototype *QDActorPrototypeRegistry::unregisterProto(const QString &id) {
     return removed;
 }
 
-}    // namespace U2
+}  // namespace U2

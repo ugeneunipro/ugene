@@ -104,9 +104,9 @@ private:
     const Wizard *wizard;
     QList<WizardPageController *> pageControllers;
     QList<Actor *> currentActors;
-    QMap<QString, int> pageIdMap;    // hr-id <-> qt-id
+    QMap<QString, int> pageIdMap;  // hr-id <-> qt-id
     QMap<QString, Variable> vars;
-    QMap<QString, SelectorActors> selectors;    // varName <-> actors
+    QMap<QString, SelectorActors> selectors;  // varName <-> actors
     QVariantMap values;
     QMap<QString, PropertyWizardController *> propertyControllers;
     QMap<QString, DelegateTags *> tagsWithoutController;
@@ -221,6 +221,6 @@ private:
     void changeView(const QString &buttonText, const QString &showHide);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDCONTROLLER_H_
+#endif  // _U2_WIZARDCONTROLLER_H_

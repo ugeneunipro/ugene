@@ -30,7 +30,7 @@ U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray &read_, QList<U2
     for (int i = 0; i < startPos && hasNext();) {
         skip();
         U2CigarToken t = cigar.at(offsetInCigar);
-        if (i + t.count <= startPos) {    //we are going to skip the current token
+        if (i + t.count <= startPos) {  // we are going to skip the current token
             if (isMatch()) {
                 offsetInRead += t.count;
             }
@@ -40,7 +40,7 @@ U2AssemblyReadIterator::U2AssemblyReadIterator(const QByteArray &read_, QList<U2
                 break;
             advanceToNextToken();
         } else {
-            //landing in the current token
+            // landing in the current token
             offsetInToken = startPos - i;
             if (isMatch()) {
                 offsetInRead += offsetInToken;
@@ -55,13 +55,13 @@ bool U2AssemblyReadIterator::hasNext() const {
     if (offsetInCigar == cigar.size()) {
         return false;
     }
-    //check if staying on the last pos of current token
+    // check if staying on the last pos of current token
     if (offsetInToken == cigar.at(offsetInCigar).count) {
-        //if staying on the last pos of current token of the last token -> hasn't next
+        // if staying on the last pos of current token of the last token -> hasn't next
         if (offsetInCigar == cigar.size() - 1) {
             return false;
         }
-        //check if everything after current pos is insertion/padding/hard clip
+        // check if everything after current pos is insertion/padding/hard clip
         int i = offsetInCigar + 1;
         for (; i < cigar.size(); ++i) {
             U2CigarOp op = cigar.at(i).op;
@@ -71,7 +71,7 @@ bool U2AssemblyReadIterator::hasNext() const {
         }
 
         if (i == cigar.size()) {
-            return false;    //no matches/deletions found
+            return false;  // no matches/deletions found
         }
     }
     return true;
@@ -81,15 +81,15 @@ char U2AssemblyReadIterator::nextLetter() {
     assert(hasNext());
     skip();
     SAFE_POINT(offsetInCigar < cigar.size(), "CIGAR out of range", 0);
-    if (offsetInToken != cigar.at(offsetInCigar).count) {    //staying in the current token
+    if (offsetInToken != cigar.at(offsetInCigar).count) {  // staying in the current token
         offsetInToken++;
-    } else {    //current token is finished
+    } else {  // current token is finished
         advanceToNextToken();
         offsetInToken = 1;
     }
     bool del = isDeletion();
-    char c = del ? '-' : read.at(offsetInRead);    //TODO: hardcoded '-'
-    offsetInRead += !del;    //adjust offsetInRead only when going through match token
+    char c = del ? '-' : read.at(offsetInRead);  // TODO: hardcoded '-'
+    offsetInRead += !del;  // adjust offsetInRead only when going through match token
     return c;
 }
 
@@ -126,7 +126,7 @@ void U2AssemblyReadIterator::skip() {
     }
 }
 
-//skip tokens and corresponding letters
+// skip tokens and corresponding letters
 void U2AssemblyReadIterator::skipInsertion() {
     while (hasNext() && isInsertion()) {
         offsetInRead += cigar.at(offsetInCigar).count;
@@ -134,7 +134,7 @@ void U2AssemblyReadIterator::skipInsertion() {
     }
 }
 
-//silently skip this tokens.
+// silently skip this tokens.
 void U2AssemblyReadIterator::skipPaddingAndHardClip() {
     while (hasNext() && isPaddingOrHardClip()) {
         offsetInCigar++;
@@ -158,7 +158,7 @@ void check(const QByteArray &expectedSeq, U2AssemblyReadIterator &it) {
 void t01() {
     QByteArray read("SIIISSAIIIAAASSIS");
     QList<U2CigarToken> cigar;
-    //1H 1S 2I 1I 2S 1M 3I 1D 1M 2D 100H 200P 2M 2S 1I 1S 5H
+    // 1H 1S 2I 1I 2S 1M 3I 1D 1M 2D 100H 200P 2M 2S 1I 1S 5H
     cigar
         << U2CigarToken(U2CigarOp_H, 1)
         << U2CigarToken(U2CigarOp_S, 1)
@@ -186,7 +186,7 @@ void t01() {
 void t02() {
     QByteArray read("SIIIA");
     QList<U2CigarToken> cigar;
-    //1S 3I 1M
+    // 1S 3I 1M
     cigar
         << U2CigarToken(U2CigarOp_S, 1)
         << U2CigarToken(U2CigarOp_I, 3)
@@ -199,7 +199,7 @@ void t02() {
 void t03() {
     QByteArray read("ACTS");
     QList<U2CigarToken> cigar;
-    //2H 1P 1M 1= 1X 1S 5H
+    // 2H 1P 1M 1= 1X 1S 5H
     cigar
         << U2CigarToken(U2CigarOp_H, 2)
         << U2CigarToken(U2CigarOp_P, 1)
@@ -214,7 +214,7 @@ void t03() {
     check(expectedRead, it);
 }
 
-}    // namespace
+}  // namespace
 
 void shortReadIteratorSmokeTest() {
     t01();
@@ -222,4 +222,4 @@ void shortReadIteratorSmokeTest() {
     t03();
 }
 
-}    // namespace U2
+}  // namespace U2

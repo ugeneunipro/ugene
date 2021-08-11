@@ -130,4 +130,4 @@ void AssemblyImporter::finalizeAssembly() {
     assemblyDbi->finalizeAssemblyObject(assembly, os);
 }
 
-}    // namespace U2
+}  // namespace U2

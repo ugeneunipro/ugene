@@ -69,6 +69,6 @@ public:
     static const QColor OK_COLOR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

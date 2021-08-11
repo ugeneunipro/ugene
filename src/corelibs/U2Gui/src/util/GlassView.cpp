@@ -32,7 +32,7 @@ void GlassView::setGlass(GlassPane *glp) {
     if (glass) {
         glass->resize(viewport()->size());
     }
-    //scene()->update();
+    // scene()->update();
     viewport()->update();
 }
 
@@ -41,7 +41,7 @@ void GlassView::paintEvent(QPaintEvent *e) {
     if (glass) {
         QPainter painter;
         painter.begin(viewport());
-        //painter.setClipRect(e->rect());
+        // painter.setClipRect(e->rect());
         glass->paint(&painter);
     }
 }
@@ -87,4 +87,4 @@ bool GlassView::viewportEvent(QEvent *e) {
     return QGraphicsView::viewportEvent(e);
 }
 
-}    // namespace U2
+}  // namespace U2

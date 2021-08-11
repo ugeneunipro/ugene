@@ -53,6 +53,10 @@ public:
     void restoreFromSettings();
     void storeParameter();
     void restoreDefault();
+
+    /** If true, a command line option will be emitted even if the default value is selected. */
+    void setEmitCommandLineOptionForDefaultFlag(bool flag);
+
     virtual void addParameterToCmdLineSettings(QStringList &settings);
     virtual void setWidgetEnabled(bool isEnabled);
     virtual void addDependentParameter(ParameterDependence dependence) {
@@ -68,6 +72,7 @@ protected:
     QString settingsPath;
     QVariant curValue;
     QVariant defaultValue;
+    bool isEmitCommandLineOptionForDefaultFlag = false;
     QWidget *baseWidget;
 };
 
@@ -98,7 +103,6 @@ protected:
 
 private:
     QDoubleSpinBox *inputWidget;
-    double minimumValue;
 };
 
 class U2GUI_EXPORT CheckBoxController : public InputWidgetController {
@@ -167,12 +171,12 @@ public:
     }
     ~WidgetControllersContainer();
 
-    InputWidgetController *addWidgetController(QCheckBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix);
-    InputWidgetController *addWidgetController(QRadioButton *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix);
-    InputWidgetController *addWidgetController(QSpinBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix);
-    InputWidgetController *addWidgetController(QDoubleSpinBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix);
-    InputWidgetController *addWidgetController(QComboBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix, const QStringList &parameters = QStringList());
-    InputWidgetController *addWidgetController(QLineEdit *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix);
+    InputWidgetController *addWidgetController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
+    InputWidgetController *addWidgetController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
+    InputWidgetController *addWidgetController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
+    InputWidgetController *addWidgetController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
+    InputWidgetController *addWidgetController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QStringList &parameters = QStringList());
+    InputWidgetController *addWidgetController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
 
     void storeSettings();
     void restoreDefault();
@@ -183,6 +187,6 @@ private:
     InputWidgetController *addWidget(InputWidgetController *inputWidget);
     QList<InputWidgetController *> widgetControllers;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_INPUT_WIDGETS_CONTROLLERS_H
+#endif  // _U2_INPUT_WIDGETS_CONTROLLERS_H

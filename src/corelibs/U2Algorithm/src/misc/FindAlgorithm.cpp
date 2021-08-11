@@ -82,7 +82,7 @@ public:
         : dynTable(width, height, insDel), pattern(p) {
     }
 
-    StrandContext(const char *data, int arr_size, const char *p)    //using rolling array only in subst mode
+    StrandContext(const char *data, int arr_size, const char *p)  // using rolling array only in subst mode
         : rollArr(data, arr_size), pattern(p) {
     }
 
@@ -135,7 +135,7 @@ static qint64 getSearchEndPos(const char *seq, const U2Region &searchRange, int 
     return searchRange.endPos();
 }
 
-//TODO: in BothStrands&SingleShot mode it's impossible to find result on complement strand if there also a result on direct strand from the same pos!
+// TODO: in BothStrands&SingleShot mode it's impossible to find result on complement strand if there also a result on direct strand from the same pos!
 
 static void findInAmino(FindAlgorithmResultsListener *rl,
                         DNATranslation *aminoTT,
@@ -187,15 +187,15 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
             const char *p = ctx.pattern;
             FindAlgorithmResult &res = ctx.res;
 
-            for (int j = 0; j < patternLen && !stopFlag; j++) {    //TODO: optimize -> specialize loops
+            for (int j = 0; j < patternLen && !stopFlag; j++) {  // TODO: optimize -> specialize loops
                 int k = cycleIndex(seqLen, i);
                 char amino = ci == 0 ? aminoTT->translate3to1(seq[k],
                                                               seq[cycleIndex(seqLen, k + 1)],
                                                               seq[cycleIndex(seqLen, k + 2)])
-                                     :    //direct amino
+                                     :  // direct amino
                                  aminoTT->translate3to1(complMap.at((quint8)seq[cycleIndex(seqLen, k + 2)]),
                                                         complMap.at((quint8)seq[cycleIndex(seqLen, k + 1)]),
-                                                        complMap.at((quint8)seq[k]));    //compl amino
+                                                        complMap.at((quint8)seq[k]));  // compl amino
 
                 bool matched = (amino == p[j]);
                 dt.match(j, matched);
@@ -213,7 +213,7 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
                     int newStart = i - newLen + 3;
                     bool boundaryCheck = range.contains(newStart) && range.contains(newStart + newLen - 1);
                     bool circularBoundaryCheck = (!range.contains(newStart + newLen - 1) && searchIsCircular);
-                    if (insDel || boundaryCheck || circularBoundaryCheck) {    //boundary check for mismatch mode
+                    if (insDel || boundaryCheck || circularBoundaryCheck) {  // boundary check for mismatch mode
                         SAFE_POINT(insDel || newLen == patternLenInNucl, "Internal algorithm error!", );
                         SAFE_POINT(newStart >= range.startPos, "Internal algorithm error!", );
                         SAFE_POINT(searchIsCircular || newStart + newLen <= range.endPos(), "Internal algorithm error!", );
@@ -231,10 +231,10 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
                 percentsCompleted = qMin(percentsCompleted + 1, 100);
                 leftTillPercent = onePercentLen;
             }
-        }    //ci
+        }  // ci
     }
     for (int i = 0; i < 6; i++) {
-        if (!context[i].res.isEmpty()) {    //todo: order by startpos?
+        if (!context[i].res.isEmpty()) {  // todo: order by startpos?
             SAFE_POINT(insDel || context[i].res.region.length == patternLenInNucl,
                        "Internal algorithm error: found region has invalid length!", );
             rl->onResult(context[i].res);
@@ -353,8 +353,8 @@ static void findInAmino_subst(FindAlgorithmResultsListener *rl,
                 percentsCompleted = qMin(percentsCompleted + 1, 100);
                 leftTillPercent = onePercentLen;
             }
-        }    //strand
-    }    //base pos
+        }  // strand
+    }  // base pos
 }
 
 static char *createAmbiguousBaseMap() {
@@ -368,23 +368,23 @@ static char *createAmbiguousBaseMap() {
         map[i] = 0x00;
     }
 
-    map['A'] = 0x01;    // Bitmask: 00000001
-    map['C'] = 0x02;    // Bitmask: 00000010
-    map['G'] = 0x04;    // Bitmask: 00000100
-    map['T'] = 0x08;    // Bitmask: 00001000
-    map['U'] = 0x08;    // Bitmask: 00001000
-    map['M'] = 0x03;    // Bitmask: 00000011
-    map['R'] = 0x05;    // Bitmask: 00000101
-    map['W'] = 0x09;    // Bitmask: 00001001
-    map['S'] = 0x06;    // Bitmask: 00000110
-    map['Y'] = 0x0A;    // Bitmask: 00001010
-    map['K'] = 0x0C;    // Bitmask: 00001100
-    map['V'] = 0x07;    // Bitmask: 00000111
-    map['H'] = 0x0B;    // Bitmask: 00001011
-    map['D'] = 0x0D;    // Bitmask: 00001101
-    map['B'] = 0x0E;    // Bitmask: 00001110
-    map['N'] = 0x0F;    // Bitmask: 00001111
-    map['X'] = 0x0F;    // Bitmask: 00001111
+    map['A'] = 0x01;  // Bitmask: 00000001
+    map['C'] = 0x02;  // Bitmask: 00000010
+    map['G'] = 0x04;  // Bitmask: 00000100
+    map['T'] = 0x08;  // Bitmask: 00001000
+    map['U'] = 0x08;  // Bitmask: 00001000
+    map['M'] = 0x03;  // Bitmask: 00000011
+    map['R'] = 0x05;  // Bitmask: 00000101
+    map['W'] = 0x09;  // Bitmask: 00001001
+    map['S'] = 0x06;  // Bitmask: 00000110
+    map['Y'] = 0x0A;  // Bitmask: 00001010
+    map['K'] = 0x0C;  // Bitmask: 00001100
+    map['V'] = 0x07;  // Bitmask: 00000111
+    map['H'] = 0x0B;  // Bitmask: 00001011
+    map['D'] = 0x0D;  // Bitmask: 00001101
+    map['B'] = 0x0E;  // Bitmask: 00001110
+    map['N'] = 0x0F;  // Bitmask: 00001111
+    map['X'] = 0x0F;  // Bitmask: 00001111
 
     return &map[0];
 }
@@ -431,7 +431,7 @@ inline void prepareResultPosition(int regionStart, int regionLength, int &foundS
 
 static void sendResultToListener(int resultStartPos, int resultLength, U2Strand resultStrand, FindAlgorithmResultsListener *rl) {
     SAFE_POINT(resultLength >= 0 && resultStartPos >= 0, "Invalid find algorithm results", );
-    CHECK(resultLength > 0, );    // zero-length regions may satisfy some regular expressions though they don't make sense
+    CHECK(resultLength > 0, );  // zero-length regions may satisfy some regular expressions though they don't make sense
 
     FindAlgorithmResult res;
     res.region.startPos = resultStartPos;
@@ -447,14 +447,14 @@ static void regExpSearch(const QString &refSequence,
                          const U2Region &sequenceRange,
                          int maxResultLen,
                          int currentStrand,
-                         int tailCut,    //only for translation on complementary strand, it is size of the tail that can not form amino acid
+                         int tailCut,  // only for translation on complementary strand, it is size of the tail that can not form amino acid
                          int totalStrandCount,
                          bool refSeqIsAminoTranslation,
                          int aminoFrameNumber,
                          int &percentsCompleted,
                          int &stopFlag,
                          FindAlgorithmResultsListener *rl,
-                         int cyclePoint = -1)    // in cyclePoint position copy of the sequence beginning starts (for circular search)
+                         int cyclePoint = -1)  // in cyclePoint position copy of the sequence beginning starts (for circular search)
 {
     if (cyclePoint == -1) {
         cyclePoint = sequenceRange.endPos();
@@ -552,13 +552,13 @@ static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
             U2Strand resultStrand;
             const int translationLen = (len + bufferSize) / 3;
 
-            if (ci == 1) {    // complementary
+            if (ci == 1) {  // complementary
                 TextUtils::translate(complTT->getOne2OneMapper(), sequence + range.startPos + aminoFrameNumber, len + bufferSize, rawTranslation.data());
                 TextUtils::reverse(rawTranslation.data(), len + bufferSize - (len + bufferSize) % 3);
                 aminoTT->translate(rawTranslation.data(), len + bufferSize);
 
                 resultStrand = U2Strand::Complementary;
-            } else {    // direct
+            } else {  // direct
                 qstrcpy(rawTranslation.data(), QByteArray(sequence + range.startPos + aminoFrameNumber, len + bufferSize).data());
                 aminoTT->translate(rawTranslation.data(), len + bufferSize);
 
@@ -608,7 +608,7 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
         QByteArray tmp(range.length + 1, 0);
         U2Strand resultStrand;
 
-        if (ci == 1) {    // complementary
+        if (ci == 1) {  // complementary
             char *complSeq = tmp.data();
             TextUtils::translate(complTT->getOne2OneMapper(), seq + range.startPos, qMin(range.length, seqLen - range.startPos), complSeq);
             TextUtils::reverse(complSeq, qMin(range.length, seqLen - range.startPos));
@@ -623,7 +623,7 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
             }
 
             resultStrand = U2Strand::Complementary;
-        } else {    // direct
+        } else {  // direct
             substr = QString(QByteArray(seq + range.startPos,
                                         qMin(range.length, seqLen - range.startPos)));
             if (searchIsCircular) {
@@ -728,8 +728,8 @@ static void find_subst(FindAlgorithmResultsListener *rl,
                 percentsCompleted = qMin(percentsCompleted + 1, 100);
                 leftTillPercent = onePercentLen;
             }
-        }    //strand
-    }    //base pos
+        }  // strand
+    }  // base pos
 }
 
 // value 12 - standart "out of memory" error code in linux
@@ -738,9 +738,9 @@ const int FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR = -12;
 
 void FindAlgorithm::find(
     FindAlgorithmResultsListener *rl,
-    DNATranslation *aminoTT,    // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
-    DNATranslation *complTT,    // if complTT!=NULL -> sequence is complemented before comparison with pattern
-    FindAlgorithmStrand strand,    // if not direct there complTT must not be NULL
+    DNATranslation *aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
+    DNATranslation *complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
+    FindAlgorithmStrand strand,  // if not direct there complTT must not be NULL
     FindAlgorithmPatternSettings patternSettings,
     bool useAmbiguousBases,
     const char *seq,
@@ -857,7 +857,7 @@ void FindAlgorithm::find(
                         int newStart = i - newLen + 1;
                         bool boundaryCheck = (range.contains(newStart) && range.contains(newStart + newLen - 1));
                         bool circularBoundaryCheck = (!range.contains(newStart + newLen - 1) && searchIsCircular);
-                        if (insDel || boundaryCheck || circularBoundaryCheck) {    //boundary check for mismatch mode
+                        if (insDel || boundaryCheck || circularBoundaryCheck) {  // boundary check for mismatch mode
                             SAFE_POINT(insDel || newLen == patternLen, "Internal algorithm error!", );
                             SAFE_POINT(newStart >= range.startPos, "Internal algorithm error!", );
                             SAFE_POINT(searchIsCircular || newStart + newLen <= range.endPos(), "Internal algorithm error!", );
@@ -876,11 +876,11 @@ void FindAlgorithm::find(
                     percentsCompleted = qMin(percentsCompleted + 1, 100);
                     leftTillPercent = onePercentLen;
                 }
-            }    //strand
-        }    //base pos
+            }  // strand
+        }  // base pos
 
         for (int i = 0; i < 2; i++) {
-            if (!context[i].res.isEmpty()) {    //todo: order by startpos?
+            if (!context[i].res.isEmpty()) {  // todo: order by startpos?
                 SAFE_POINT(insDel || context[i].res.region.length == patternLen,
                            "Internal algorithm error: found region has invalid length!", );
                 rl->onResult(context[i].res);
@@ -913,4 +913,4 @@ int FindAlgorithm::estimateRamUsageInMbytes(const FindAlgorithmPatternSettings p
     return ramUsage / bytesToMbytesFactor;
 }
 
-}    // namespace U2
+}  // namespace U2

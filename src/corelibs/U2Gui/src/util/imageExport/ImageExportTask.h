@@ -140,6 +140,6 @@ protected:
     ExportImageFormatPolicy formatPolicy;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMAGE_EXPORT_TASK_H
+#endif  // _U2_IMAGE_EXPORT_TASK_H

@@ -68,10 +68,10 @@ public:
     QStringList getAllFilenames() const;
 
 private:
-    QString fileSystemName;    // unique id of fs
+    QString fileSystemName;  // unique id of fs
     QMap<QString, QByteArray> files;
 
-};    // VirtualFileSystem
+};  // VirtualFileSystem
 
 class U2CORE_EXPORT VirtualFileSystemRegistry {
 public:
@@ -88,8 +88,8 @@ public:
 private:
     QMap<QString, VirtualFileSystem *> registry;
 
-};    // VirtualFileSystemRegistry
+};  // VirtualFileSystemRegistry
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VIRTUAL_FILE_SYSTEM_H_
+#endif  // _U2_VIRTUAL_FILE_SYSTEM_H_

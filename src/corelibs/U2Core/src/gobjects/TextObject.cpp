@@ -99,4 +99,4 @@ void TextObject::commitTextToDB(const QString &newText) {
     RawDataUdrSchema::writeContent(newText.toUtf8(), entityRef, os);
 }
 
-}    // namespace U2
+}  // namespace U2

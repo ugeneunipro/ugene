@@ -84,17 +84,17 @@ QList<Nucleotide> ColumnCharsCounter::getNucleotideList() const {
     return nucleotideList;
 }
 
-//const int ColumnCharsCounter::getIndexOfNucleotideWithCharacter(const char c) const {
-//    int result = -1;
-//    foreach(const Nucleotide& nucl, nucleotideList) {
-//        CHECK_CONTINUE(nucl.character == c);
+// const int ColumnCharsCounter::getIndexOfNucleotideWithCharacter(const char c) const {
+//     int result = -1;
+//     foreach(const Nucleotide& nucl, nucleotideList) {
+//         CHECK_CONTINUE(nucl.character == c);
 //
-//        result = nucleotideList.indexOf(nucl);
-//        break;
-//    }
+//         result = nucleotideList.indexOf(nucl);
+//         break;
+//     }
 //
-//    return result;
-//}
+//     return result;
+// }
 
 bool ColumnCharsCounter::hasGaps() const {
     return gapsNumber != 0;
@@ -112,20 +112,20 @@ void ColumnCharsCounter::sortNucleotideList() {
     std::sort(nucleotideList.begin(), nucleotideList.end());
 }
 
-//bool ColumnCharsCounter::hasEqualPercentage() const {
-//    CHECK(!nucleotideList.isEmpty(), false);
+// bool ColumnCharsCounter::hasEqualPercentage() const {
+//     CHECK(!nucleotideList.isEmpty(), false);
 //
-//    bool result = true;
-//    double firstPercentage = nucleotideList.first().percentage;
-//    foreach(const Nucleotide& n, nucleotideList) {
-//        CHECK_CONTINUE(firstPercentage != n.percentage);
+//     bool result = true;
+//     double firstPercentage = nucleotideList.first().percentage;
+//     foreach(const Nucleotide& n, nucleotideList) {
+//         CHECK_CONTINUE(firstPercentage != n.percentage);
 //
-//        result = false;
-//        break;
-//    }
+//         result = false;
+//         break;
+//     }
 //
-//    return result;
-//}
+//     return result;
+// }
 
 bool ColumnCharsCounter::isNucleotideAlreadyInList(const char character) const {
     bool result = false;
@@ -161,4 +161,4 @@ double ColumnCharsCounter::getTopCharacterPercentage() const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

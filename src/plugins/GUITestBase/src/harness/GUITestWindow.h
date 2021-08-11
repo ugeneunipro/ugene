@@ -164,5 +164,5 @@ private:
     QStringList classes;
 };
 
-}    // namespace U2
-#endif    // GUITESTINGWINDOWIMPL_H
+}  // namespace U2
+#endif  // GUITESTINGWINDOWIMPL_H

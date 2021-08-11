@@ -73,6 +73,6 @@ private:
     bool onlyFirstMatch;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SARRAY_BASED_FIND_TASK_H_
+#endif  // _U2_SARRAY_BASED_FIND_TASK_H_

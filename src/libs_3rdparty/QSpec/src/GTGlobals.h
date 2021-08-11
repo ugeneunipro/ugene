@@ -45,14 +45,17 @@
 
 namespace HI {
 
-/*!
- * \brief The class contains the most commonly used methods
- */
+/** Common utils and data types for GT tests. */
 class HI_EXPORT GTGlobals {
 public:
-    enum UseMethod { UseMouse,
-                     UseKey,
-                     UseKeyBoard };
+    enum UseMethod {
+        /** Perform action with a mouse. */
+        UseMouse = 1,
+        /** Use a special key. For example Up/Down for SpinBox to increase or decrease a value. */
+        UseKey = 2,
+        /** Input a value using keyboard. */
+        UseKeyBoard = 3,
+    };
     enum WindowAction { Minimize,
                         Maximize,
                         Close,
@@ -61,12 +64,11 @@ public:
     // if failIfNull is set to true, fails if object wasn't found
     class HI_EXPORT FindOptions {
     public:
-        FindOptions(bool failIfNotFound = true, Qt::MatchFlags matchPolicy = Qt::MatchExactly, int depth = INFINITE_DEPTH, bool searchInHidden = false);
+        FindOptions(bool failIfNotFound = true, Qt::MatchFlags matchPolicy = Qt::MatchExactly, int depth = INFINITE_DEPTH);
 
         bool failIfNotFound;
         Qt::MatchFlags matchPolicy;
         int depth;
-        bool searchInHidden;
 
         static const int INFINITE_DEPTH = 0;
     };
@@ -74,13 +76,8 @@ public:
     static void sleep(int msec = 2000);
     static void systemSleep(int sec = 2);
     static void sendEvent(QObject *obj, QEvent *e);
-    static void takeScreenShot(QString path);
+    static void takeScreenShot(const QString &path);
     static void GUITestFail();
-};
-
-class GTLog {
-public:
-    static void debug(const QString &message);
 };
 
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
@@ -142,7 +139,7 @@ public:
     CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
 
 #define GT_CHECK_OP_RESULT(os, errorMessage, result) \
-    GT_CHECK_RESULT(!os.isCoR(), errorMessage, result)
+    GT_CHECK_RESULT(!(os).isCoR(), errorMessage, result)
 
 #define DRIVER_CHECK(condition, errorMessage) \
     if (!(condition)) { \
@@ -150,6 +147,6 @@ public:
         return false; \
     }
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

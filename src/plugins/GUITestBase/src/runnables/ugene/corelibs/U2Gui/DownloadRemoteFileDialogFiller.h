@@ -29,21 +29,21 @@ using namespace HI;
 
 class DownloadRemoteFileDialogFiller : public Filler {
 public:
-    enum ActionType {    // An appropriate action data:
-        SetResourceIds,    // QStringList with IDs
-        SetDatabase,    // QString with exact database name
-        EnterSaveToDirectoryPath,    // QString with path
-        SelectSaveToDirectoryPath,    // QString with path
-        SetOutputFormat,    // QString with format
-        SetForceSequenceDownload,    // bool value
-        CheckDatabase,    // QString with expected database name
-        CheckDatabasesCount,    // int with expected databases count
-        CheckOutputFormatVisibility,    // bool expected state (is visible)
-        CheckOutputFormat,    // QString with expected format name
-        CheckForceSequenceDownloadVisibility,    // bool expected state (is visible)
-        CheckForceSequenceDownload,    // bool expected state (is checked)
-        ClickOk,    // ignored
-        ClickCancel    // ignored
+    enum ActionType {  // An appropriate action data:
+        SetResourceIds,  // QStringList with IDs
+        SetDatabase,  // QString with exact database name
+        EnterSaveToDirectoryPath,  // QString with path
+        SelectSaveToDirectoryPath,  // QString with path
+        SetOutputFormat,  // QString with format
+        SetForceSequenceDownload,  // bool value
+        CheckDatabase,  // QString with expected database name
+        CheckDatabasesCount,  // int with expected databases count
+        CheckOutputFormatVisibility,  // bool expected state (is visible)
+        CheckOutputFormat,  // QString with expected format name
+        CheckForceSequenceDownloadVisibility,  // bool expected state (is visible)
+        CheckForceSequenceDownload,  // bool expected state (is checked)
+        ClickOk,  // ignored
+        ClickCancel  // ignored
     };
 
     typedef QPair<ActionType, QVariant> Action;
@@ -100,8 +100,8 @@ private:
     int outFormatVal;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(QList<U2::DownloadRemoteFileDialogFiller::Action>)
 
-#endif    // _U2_GT_RUNNABLES_DOWNLOAD_REMOTE_FILE_DIALOG_FILLER_H_
+#endif  // _U2_GT_RUNNABLES_DOWNLOAD_REMOTE_FILE_DIALOG_FILLER_H_

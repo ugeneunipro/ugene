@@ -102,4 +102,4 @@ QString TreeSettingsDialog::getCladogramTreeModeText() {
     return tr("Cladogram");
 }
 
-}    // namespace U2
+}  // namespace U2

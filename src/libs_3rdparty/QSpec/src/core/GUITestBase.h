@@ -44,6 +44,6 @@ protected:
     GUITestMap tests;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

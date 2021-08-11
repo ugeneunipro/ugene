@@ -51,7 +51,7 @@ inline void memmove(void *_src, void *_dst, const size_t _size) {
         }
     }
 }
-}    // namespace U2
+}  // namespace U2
 
 static const quint64 c01 = 0x0101010101010101LL;
 static const quint64 c1f = 0x1f1f1f1f1f1f1f1fLL;
@@ -70,7 +70,7 @@ class BitMask {
     const quint32 origSequenceSize;
     quint64 *bitSequence;
     quint32 bitSequenceSize;
-    const static int SYMB_PER_INTEGER = sizeof(quint64) * 8 / 2;    //32 symbols per one request
+    const static int SYMB_PER_INTEGER = sizeof(quint64) * 8 / 2;  // 32 symbols per one request
 
     int maskSize;
     quint64 mask;
@@ -88,9 +88,9 @@ public:
 
         quint64 *bitSeqRunner = bitSequence;
         quint64 *charSeqRunner = (quint64 *)origSequence;
-        //number of bytes multiple to 32
+        // number of bytes multiple to 32
         const quint64 *charSeqRunnerStop = (quint64 *)(origSequence + (origSequenceSize & (~0x1f)));
-        //construct bitSequence
+        // construct bitSequence
         while (charSeqRunner < charSeqRunnerStop) {
             quint64 bitSeqBit = 0;
             bitSeqBit |= word4(*charSeqRunner++);
@@ -100,9 +100,9 @@ public:
             *bitSeqRunner = bitSeqBit;
             bitSeqRunner++;
         }
-        //construct rest of bitMask
+        // construct rest of bitMask
         char restStr[32];
-        U2::memset(restStr, 'A', 32);    //TODO: what is the best fill for tail?
+        U2::memset(restStr, 'A', 32);  // TODO: what is the best fill for tail?
         U2::memmove(restStr, charSeqRunner, origSequenceSize & 0x1f);
         charSeqRunner = (quint64 *)restStr;
         *bitSeqRunner = word4(*charSeqRunner++);
@@ -116,7 +116,7 @@ public:
         currentPosition = 0;
         currBitPosition = 32;
 
-        //check bitSequence
+        // check bitSequence
 #ifdef _DEBUG
 /*
         const char* decAlph="AGTC";
@@ -138,14 +138,14 @@ public:
 
     void setPrefixLen(const int prefLen) {
         Q_ASSERT(prefLen <= SYMB_PER_INTEGER);
-        maskSize = 2 * prefLen;    //number of bits in prefix
+        maskSize = 2 * prefLen;  // number of bits in prefix
         mask = ~((quint64)~0 >> maskSize);
     }
     inline quint64 operator[](const quint64 index) const {
         const quint64 *localCell = bitSequence + index / SYMB_PER_INTEGER;
         const int bitPosition = index % SYMB_PER_INTEGER * 2;
         const int &q0 = bitPosition;
-        //const int q1 = (q0+maskSize)%(SYMB_PER_INTEGER*2);
+        // const int q1 = (q0+maskSize)%(SYMB_PER_INTEGER*2);
         return q0 == 0 ? (mask & localCell[0]) : mask & ((localCell[0] << q0) | (localCell[1] >> (64 - q0)));
     }
     inline quint64 next() {
@@ -180,12 +180,12 @@ public:
         return ((v << 32) | (v >> 8)) & 0xffff000000000000LL;
     }
     inline quint64 decode(const quint64 &str) {
-        //decode symbols
+        // decode symbols
         const quint64 r = (str & c1f) - c01;
         const quint64 s = r + (r << 1);
         const quint64 t = s ^ ((s & c01) << 2);
         const quint64 u = (t >> 1) & c03;
-        //compress
+        // compress
         const quint64 v = u | (u << 10);
         return (v | (v << 20)) & 0xff000000ff000000LL;
     }

@@ -55,10 +55,10 @@ public:
     static const QString GROUPER_OUT_SLOTS_ATTR;
     static const QString GROUPER_OPER_ATTR;
 
-};    // CoreLibConstants
+};  // CoreLibConstants
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_
+#endif  // _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_

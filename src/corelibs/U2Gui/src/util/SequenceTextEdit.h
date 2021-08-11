@@ -46,6 +46,6 @@ protected:
     static const int NO_QUESTION_LIMIT = 5000000;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_TEXT_EDIT_H_
+#endif  // _U2_SEQUENCE_TEXT_EDIT_H_

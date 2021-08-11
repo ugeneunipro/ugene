@@ -66,7 +66,7 @@ U2AssemblyRead MysqlSimpleAssemblyReadLoader::load(U2SqlQuery *q) {
     }
 
 #ifdef _DEBUG
-    //additional check to ensure that db stores correct info
+    // additional check to ensure that db stores correct info
     qint64 effectiveLengthFromCigar = read->readSequence.length() + U2AssemblyUtils::getCigarExtraLength(read->cigar);
     assert(effectiveLengthFromCigar == read->effectiveLen);
 #endif
@@ -82,4 +82,4 @@ PackAlgorithmData MysqlSimpleAssemblyReadPackedDataLoader::load(U2SqlQuery *q) {
     return data;
 }
 
-}    // namespace U2
+}  // namespace U2

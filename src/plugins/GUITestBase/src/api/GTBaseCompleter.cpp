@@ -80,4 +80,4 @@ QTreeWidget *GTBaseCompleter::getCompleter(HI::GUITestOpStatus &os, QWidget *wid
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

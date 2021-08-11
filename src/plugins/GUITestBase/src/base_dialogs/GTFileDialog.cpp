@@ -90,13 +90,13 @@ void GTFileDialogUtils::commonScenario() {
         GTGlobals::sleep(300);
     }
 
-    if (button == Save) {    //saving file
+    if (button == Save) {  // saving file
         setName();
         clickButton(button);
         return;
     }
 
-    //opening file or getting size
+    // opening file or getting size
     GTGlobals::sleep(300);
     setViewMode(Detail);
     GTGlobals::sleep(300);
@@ -404,4 +404,4 @@ QString GTFileDialog::toAbsoluteNativePath(const QString &path, bool appendSlash
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

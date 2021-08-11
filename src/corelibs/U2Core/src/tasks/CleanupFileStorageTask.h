@@ -34,6 +34,6 @@ public:
     virtual void run();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLEANUP_FILE_STORAGE_TASK_
+#endif  // _U2_CLEANUP_FILE_STORAGE_TASK_

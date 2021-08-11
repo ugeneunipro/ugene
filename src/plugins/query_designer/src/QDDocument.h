@@ -187,7 +187,7 @@ private:
     QList<QDLinkStatement *> links;
     QList<QString> importedUrls;
     QString docDesc;
-    //ID, comment
+    // ID, comment
     QMap<QString, QString> comments;
     QStringList order;
     QDStrandOption schemaStrand;
@@ -201,7 +201,7 @@ public:
     static QString constraintType2string(const QDConstraintType &type);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::QDDocument *)
 

@@ -39,9 +39,9 @@ PVRowData::PVRowData(const QString &key)
 }
 
 bool PVRowData::fitToRow(const QVector<U2Region> &location) {
-    //assume locations are always in ascending order
-    //usually annotations come in sorted by location
-    //first check the most frequent way
+    // assume locations are always in ascending order
+    // usually annotations come in sorted by location
+    // first check the most frequent way
     if (!ranges.isEmpty()) {
         const U2Region &l = location.first();
         const U2Region &r = ranges.last();
@@ -49,24 +49,24 @@ bool PVRowData::fitToRow(const QVector<U2Region> &location) {
             ranges << location;
             return true;
         } else if (l.startPos >= r.startPos || l.endPos() >= r.startPos) {
-            //got intersection
+            // got intersection
             return false;
         }
     }
-    //bad luck, full search required
+    // bad luck, full search required
     QVarLengthArray<int, 16> pos;
     LRIter zero = ranges.constBegin();
     LRIter end = ranges.constEnd();
     foreach (const U2Region &l, location) {
         LRIter it = std::lower_bound(zero, end, l);
         if (it != end && (it->startPos <= l.endPos() || (it != zero && (it - 1)->endPos() >= l.startPos))) {
-            //got intersection
+            // got intersection
             return false;
         }
         pos.append(it - zero);
     }
-    //ok this feature can be added to row;
-    //keep the ranges in ascending order
+    // ok this feature can be added to row;
+    // keep the ranges in ascending order
     for (int i = location.size() - 1; i >= 0; i--) {
         ranges.insert(pos[i], location.at(i));
     }
@@ -133,11 +133,11 @@ void substractRegions(QVector<U2Region> &regionsToProcess, const QVector<U2Regio
     regionsToProcess = result;
 }
 
-}    // namespace
+}  // namespace
 
 void PVRowsManager::removeAnnotation(Annotation *a) {
     PVRowData *row = rowByAnnotation.value(a, nullptr);
-    CHECK(nullptr != row, );    // annotation may present in a DB, but has not been added to the panview yet
+    CHECK(nullptr != row, );  // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
     rowByName.remove(a->getName());
     row->annotations.removeOne(a);
@@ -187,4 +187,4 @@ PVRowData *PVRowsManager::getRow(int row) const {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

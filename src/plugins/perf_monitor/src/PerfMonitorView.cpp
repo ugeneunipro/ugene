@@ -132,4 +132,4 @@ void PerfTreeItem::update() {
     setText(2, counter->suffix);
     setText(3, counter->isReportable ? "Yes" : "No");
 }
-}    // namespace U2
+}  // namespace U2

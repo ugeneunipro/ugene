@@ -113,4 +113,4 @@ QList<DocumentFormatId> DocumentFormatComboboxController::getFormatsInCombo(QCom
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

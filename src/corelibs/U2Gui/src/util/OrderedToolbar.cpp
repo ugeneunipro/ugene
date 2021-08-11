@@ -78,4 +78,4 @@ void OrderedToolbar::setButtonsTabOrder() const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

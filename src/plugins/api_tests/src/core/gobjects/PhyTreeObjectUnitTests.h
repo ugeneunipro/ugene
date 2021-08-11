@@ -69,7 +69,7 @@ DECLARE_TEST(PhyTreeObjectUnitTests, clone_NullObj);
 /* remove */
 DECLARE_TEST(PhyTreeObjectUnitTests, remove);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(PhyTreeObjectUnitTests, createInstance);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, createInstance_WrongDbi);
@@ -81,4 +81,4 @@ DECLARE_METATYPE(PhyTreeObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, remove);
 
-#endif    // _U2_PHY_TREE_OBJECT_UNIT_TESTS_H_
+#endif  // _U2_PHY_TREE_OBJECT_UNIT_TESTS_H_

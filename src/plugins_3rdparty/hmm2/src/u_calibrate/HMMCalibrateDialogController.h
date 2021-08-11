@@ -36,7 +36,7 @@ class HMMCalibrateDialogController : public QDialog, public Ui_HMMCalibrateDialo
     Q_OBJECT
 
 public:
-    HMMCalibrateDialogController(QWidget* w = NULL);
+    HMMCalibrateDialogController(QWidget *w = NULL);
 
 public slots:
     virtual void reject();
@@ -51,13 +51,12 @@ private slots:
 private:
     void initSaveController();
 
-    Task* task;
-    QPushButton* okButton;
-    QPushButton* cancelButton;
+    Task *task;
+    QPushButton *okButton;
+    QPushButton *cancelButton;
     SaveDocumentController *saveController;
 };
 
-} //namespace
+}  // namespace U2
 
 #endif
-

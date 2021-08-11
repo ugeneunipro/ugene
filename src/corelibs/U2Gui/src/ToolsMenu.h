@@ -119,9 +119,9 @@ private:
 private:
     static QMap<QString, QString> actionText;
     static QMap<QString, QString> actionIcon;
-    static QMap<QString, QStringList> subMenuAction;    // subMenuObjectName -> List(actionObjectName)
+    static QMap<QString, QStringList> subMenuAction;  // subMenuObjectName -> List(actionObjectName)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TOOLS_MENU_H_
+#endif  // _U2_TOOLS_MENU_H_

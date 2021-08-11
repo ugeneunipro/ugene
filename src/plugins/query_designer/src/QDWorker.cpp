@@ -58,8 +58,8 @@ namespace U2 {
 namespace LocalWorkflow {
 
 /*************************************************************************
-* QDWorkerFactory
-*************************************************************************/
+ * QDWorkerFactory
+ *************************************************************************/
 
 static const QString SCHEMA_ATTR(BaseAttributes::URL_IN_ATTRIBUTE().getId());
 static const QString OUTPUT_ATTR("merge");
@@ -128,8 +128,8 @@ void QDWorkerFactory::init() {
 }
 
 /******************************
-* QDPrompter
-******************************/
+ * QDPrompter
+ ******************************/
 QString QDPrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
@@ -145,8 +145,8 @@ QString QDPrompter::composeRichDoc() {
 }
 
 /******************************
-* QDWorker
-******************************/
+ * QDWorker
+ ******************************/
 QDWorker::QDWorker(Actor *a)
     : BaseWorker(a), input(nullptr), output(nullptr), scheme(nullptr) {
 }
@@ -263,5 +263,5 @@ void QDWorker::sl_taskFinished(Task *t) {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

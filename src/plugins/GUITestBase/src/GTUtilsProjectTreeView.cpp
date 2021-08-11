@@ -92,7 +92,7 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseM
     QMainWindow *qmw = mw->getQMainWindow();
     GT_CHECK(qmw != nullptr, "QMainWindow is NULL");
 
-    //qmw->setFocus();
+    // qmw->setFocus();
 
     switch (method) {
         case GTGlobals::UseKey:
@@ -156,7 +156,7 @@ void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals
     GTGlobals::sleep(500);
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "rename"
 void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus &os, const QString &itemName, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
@@ -230,7 +230,7 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
     QModelIndex itemIndex = findIndex(os, itemName);
     scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
 
-    QPoint p = getItemCenter(os, itemIndex);    // clicking on the center does not select the item (Linux)
+    QPoint p = getItemCenter(os, itemIndex);  // clicking on the center does not select the item (Linux)
     p.setX(p.x() + 1);
     p.setY(p.y() + 5);
     GTMouseDriver::moveTo(p);
@@ -359,7 +359,7 @@ bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags 
     }
     return (data == pattern);
 }
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "findIndiciesInTreeNoWait"
 QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
@@ -754,4 +754,4 @@ void GTUtilsProjectTreeView::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeV
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

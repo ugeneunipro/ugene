@@ -184,6 +184,6 @@ public:
     void write(U2OpStatus &os, const QString &text);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

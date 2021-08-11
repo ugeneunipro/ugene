@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QProcess>
-
 #include "GTUtilsMac.h"
+
+#include <QProcess>
 
 namespace HI {
 
@@ -51,12 +51,7 @@ void GTUtilsMac::startWorkaroundForMacCGEvents(int delay, bool waitFinished) {
             delete process;
         }
         process = new QProcess();
-        process->start(prog, {"-x", "1000",
-                              "-y", "0",
-                              "-w", "80",
-                              "-h", "40",
-                              "-d", QString::number(delay),
-                              "-t", "40"});
+        process->start(prog, {"-x", "1000", "-y", "0", "-w", "80", "-h", "40", "-d", QString::number(delay), "-t", "40"});
         if (waitFinished) {
             bool finished = process->waitForFinished();
             if (!finished) {
@@ -74,4 +69,4 @@ void GTUtilsMac::startWorkaroundForMacCGEvents(int delay, bool waitFinished) {
 
 #undef GT_METHOD_NAME
 
-}    // namespace HI
+}  // namespace HI

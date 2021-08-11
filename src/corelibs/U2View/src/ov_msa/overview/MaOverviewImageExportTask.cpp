@@ -126,4 +126,4 @@ void MaOverviewImageExportController::initSettingsWidget() {
     settingsWidget->setLayout(layout);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -153,7 +153,7 @@ void convertByteArray(const QList<QByteArray> &byteArray, char **charArray) {
         charArray[i] = const_cast<char *>(byteArray[i].constData());
     }
 }
-}    // namespace
+}  // namespace
 
 #define SAMTOOL_CHECK(cond, msg, ret) \
     if (!(cond)) { \
@@ -208,8 +208,8 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
     bam1_t *b = bam_init1();
     {
         int r = 0;
-        while ((r = samread(in, b)) >= 0) {    // read one alignment from `in'
-            samwrite(out, b);    // write the alignment to `out'
+        while ((r = samread(in, b)) >= 0) {  // read one alignment from `in'
+            samwrite(out, b);  // write the alignment to `out'
         }
 
         samreadCheck<QString>(r, os, sourceFileUrl.getURLString());
@@ -353,8 +353,8 @@ GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2O
                             .arg(QString::fromLocal8Bit(bamFileName))
                             .arg(maxMemMB)
                             .arg(QString::fromLocal8Bit(sortedFileName)));
-        size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));    // maxMemMB < 500 Mb, so the conversation is correct!
-        bam_sort_core(0, bamFileName.constData(), baseName.toLocal8Bit().constData(), maxMemBytes);    //maxMemBytes
+        size_t maxMemBytes = (size_t)(mB2bytes(maxMemMB));  // maxMemMB < 500 Mb, so the conversation is correct!
+        bam_sort_core(0, bamFileName.constData(), baseName.toLocal8Bit().constData(), maxMemBytes);  // maxMemBytes
     }
     memory->release(maxMemMB);
 
@@ -623,9 +623,9 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
 
     QByteArray openMode("w");
     if (BaseDocumentFormats::BAM == formatId) {
-        openMode += "b";    // BAM output
+        openMode += "b";  // BAM output
     } else if (BaseDocumentFormats::SAM == formatId) {
-        openMode += "h";    // SAM only: write header
+        openMode += "h";  // SAM only: write header
     } else {
         os.setError("Only BAM or SAM files could be written");
         return;
@@ -646,7 +646,7 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
     samclose(out);
 }
 
-//the function assumes the equal order of alignments in files
+// the function assumes the equal order of alignments in files
 bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpStatus &os, bool isBAM) {
     const QByteArray &fileName1 = fileUrl1.getURLString().toLocal8Bit();
     const QByteArray &fileName2 = fileUrl2.getURLString().toLocal8Bit();
@@ -670,7 +670,7 @@ bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpS
     }
 
     if (in->header->target_len && out->header->target_len) {
-        //if there are headers
+        // if there are headers
         if (*(in->header->target_len) != *(out->header->target_len)) {
             os.setError(QString("Different target length of files. %1 and %2").arg(qint64(in->header->target_len)).arg(qint64(out->header->target_len)));
             closeFiles(in, out);
@@ -683,8 +683,8 @@ bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpS
     {
         int r1 = 0;
         int r2 = 0;
-        while ((r1 = samread(in, b1)) >= 0) {    // read one alignment from file1
-            if ((r2 = samread(out, b2)) >= 0) {    //read one alignment from file2
+        while ((r1 = samread(in, b1)) >= 0) {  // read one alignment from file1
+            if ((r2 = samread(out, b2)) >= 0) {  // read one alignment from file2
                 if (b1->data_len != b2->data_len) {
                     os.setError("Different alignment of reads");
                     break;
@@ -714,8 +714,8 @@ bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpS
 }
 
 namespace {
-const int bufferSize = 1024 * 1024;    // 1 Mb
-const int referenceColumn = 2;    // 5 Mb
+const int bufferSize = 1024 * 1024;  // 1 Mb
+const int referenceColumn = 2;  // 5 Mb
 
 inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize) {
     QByteArray result;
@@ -736,7 +736,7 @@ inline QByteArray parseReferenceName(const QByteArray &line) {
     }
     return columns[referenceColumn];
 }
-}    // namespace
+}  // namespace
 
 QStringList BAMUtils::scanSamForReferenceNames(const GUrl &samUrl, U2OpStatus &os) {
     QStringList result;
@@ -768,7 +768,7 @@ void BAMUtils::createFai(const GUrl &faiUrl, const QStringList &references, U2Op
 }
 
 /////////////////////////////////////////////////
-//FASTQIterator
+// FASTQIterator
 
 #ifdef _MSC_VER
 #    pragma warning(push)
@@ -830,4 +830,4 @@ void FASTQIterator::fetchNext() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

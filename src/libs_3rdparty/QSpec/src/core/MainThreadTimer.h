@@ -43,6 +43,6 @@ private:
     qint64 counter;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -375,7 +375,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //Rename annotation
+    // Rename annotation
 
     // Steps:
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
@@ -405,7 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
-    //Rename annotation
+    // Rename annotation
 
     // Steps:
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
-    //Rename annotation
+    // Rename annotation
 
     // Steps:
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
@@ -466,66 +466,66 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //Rename annotation
-    // Steps:
+    // Rename annotation
+    //  Steps:
 
     // 1. Open data/samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Press <Ctrl>+N
-    //2.1 CHECK if dialog box titled with "Create annotation" appeared
-    //2.2 CHECK if "Create new table" radio button is checked
-    //3. Specify the annotation with the next data and the press "Create":
-    //Group name: group
-    //Annotation name: misc_feature
-    //Location: 1..1000
+    // 2. Press <Ctrl>+N
+    // 2.1 CHECK if dialog box titled with "Create annotation" appeared
+    // 2.2 CHECK if "Create new table" radio button is checked
+    // 3. Specify the annotation with the next data and the press "Create":
+    // Group name: group
+    // Annotation name: misc_feature
+    // Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    //4. CHECK if new gb-format document is loaded into the annotation editor
-    //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
+    // 4. CHECK if new gb-format document is loaded into the annotation editor
+    // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
-    //5. Select misc_feature annotation and press <DEL>
+    // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //6. CHECK if misc_feature annotation is removed
+    // 6. CHECK if misc_feature annotation is removed
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 0)");
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
-    //Rename annotation
-    // Steps:
+    // Rename annotation
+    //  Steps:
 
     // 1. Open data/samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Press <Ctrl>+N
-    //2.1 CHECK if dialog box titled with "Create annotation" appeared
-    //2.2 CHECK if "Create new table" radio button is checked
-    //3. Specify the annotation with the next data and the press "Create":
-    //Group name: group
-    //Annotation name: misc_feature
-    //Location: 1..1000
+    // 2. Press <Ctrl>+N
+    // 2.1 CHECK if dialog box titled with "Create annotation" appeared
+    // 2.2 CHECK if "Create new table" radio button is checked
+    // 3. Specify the annotation with the next data and the press "Create":
+    // Group name: group
+    // Annotation name: misc_feature
+    // Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    //4. CHECK if new gb-format document is loaded into the annotation editor
-    //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
-    //TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
+    // 4. CHECK if new gb-format document is loaded into the annotation editor
+    // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
+    // TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
-    //5. Select misc_feature annotation and press <DEL>
+    // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //6. CHECK if misc_feature annotation is removed
-    //TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
+    // 6. CHECK if misc_feature annotation is removed
+    // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
     QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", options);
@@ -547,36 +547,36 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
-    //Rename annotation
-    // Steps:
+    // Rename annotation
+    //  Steps:
 
     // 1. Open data/samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Press <Ctrl>+N
-    //2.1 CHECK if dialog box titled with "Create annotation" appeared
-    //2.2 CHECK if "Create new table" radio button is checked
-    //3. Specify the annotation with the next data and the press "Create":
-    //Group name: group
-    //Annotation name: misc_feature
-    //Location: 1..1000
+    // 2. Press <Ctrl>+N
+    // 2.1 CHECK if dialog box titled with "Create annotation" appeared
+    // 2.2 CHECK if "Create new table" radio button is checked
+    // 3. Specify the annotation with the next data and the press "Create":
+    // Group name: group
+    // Annotation name: misc_feature
+    // Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group_new", "misc_feature_1", "1..500"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    //4. CHECK if new gb-format document is loaded into the annotation editor
-    //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
-    //TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
+    // 4. CHECK if new gb-format document is loaded into the annotation editor
+    // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
+    // TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
     GTUtilsAnnotationsTreeView::findItem(os, "group_new  (0, 1)");
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
 
-    //5. Select misc_feature annotation and press <DEL>
+    // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -585,17 +585,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    //6. CHECK if misc_feature annotation is removed
-    //TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
+    // 6. CHECK if misc_feature annotation is removed
+    // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", GTGlobals::FindOptions(false));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //Check rename annotation action at popup menu (UGENE-3449)
-    // Rename annotation
-    // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    // Check rename annotation action at popup menu (UGENE-3449)
+    //  Rename annotation
+    //  Steps:
+    //  1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
@@ -620,10 +620,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 }
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
-    //Check rename annotation action at popup menu (UGENE-3449)
-    // Rename annotation
-    // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    // Check rename annotation action at popup menu (UGENE-3449)
+    //  Rename annotation
+    //  Steps:
+    //  1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
@@ -657,10 +657,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_2) {
-    //Check rename annotation action at popup menu (UGENE-3449)
-    // Rename annotation
-    // Steps:
-    // 1. Open data/samples/Genbank/mirine.gb
+    // Check rename annotation action at popup menu (UGENE-3449)
+    //  Rename annotation
+    //  Steps:
+    //  1. Open data/samples/Genbank/mirine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -685,5 +685,5 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "CDS");
 }
 
-}    // namespace GUITest_common_scenarios_annotations_edit
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_annotations_edit
+}  // namespace U2

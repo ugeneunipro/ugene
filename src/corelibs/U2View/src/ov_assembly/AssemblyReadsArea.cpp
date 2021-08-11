@@ -244,7 +244,7 @@ void AssemblyReadsArea::setupVScrollBar() {
     qint64 numVisibleRows = browser->rowsVisible();
 
     vBar->setMinimum(0);
-    vBar->setMaximum(assemblyHeight - numVisibleRows + 2);    //TODO: remove +2
+    vBar->setMaximum(assemblyHeight - numVisibleRows + 2);  // TODO: remove +2
     vBar->setSliderPosition(browser->getYOffsetInAssembly());
 
     vBar->setSingleStep(1);
@@ -252,10 +252,10 @@ void AssemblyReadsArea::setupVScrollBar() {
 
     if (numVisibleRows == assemblyHeight) {
         vBar->setDisabled(true);
-        //vBar->hide(); TODO: do hide(), but prevent infinite resizing (hide->show->hide->show) caused by width change
+        // vBar->hide(); TODO: do hide(), but prevent infinite resizing (hide->show->hide->show) caused by width change
     } else {
         vBar->setDisabled(false);
-        //vBar->show();
+        // vBar->show();
     }
 
     connect(vBar, SIGNAL(valueChanged(int)), SLOT(sl_onVScrollMoved(int)));
@@ -442,13 +442,13 @@ void AssemblyReadsArea::drawReads(QPainter &p) {
             continue;
         }
 
-        U2Region readVisibleRows = U2Region(read->packedViewRow, 1).intersect(cachedReads.visibleRows);    // WTF?
+        U2Region readVisibleRows = U2Region(read->packedViewRow, 1).intersect(cachedReads.visibleRows);  // WTF?
         U2Region yToDrawRegion(readVisibleRows.startPos - cachedReads.yOffsetInAssembly, readVisibleRows.length);
         if (readVisibleRows.isEmpty()) {
             continue;
         }
 
-        if (browser->areCellsVisible()) {    //->draw color rects
+        if (browser->areCellsVisible()) {  //->draw color rects
             int firstVisibleBase = readVisibleBases.startPos - readBases.startPos;
             int x_pix_start = browser->calcPainterOffset(xToDrawRegion.startPos);
             int y_pix_start = browser->calcPainterOffset(yToDrawRegion.startPos);
@@ -458,8 +458,8 @@ void AssemblyReadsArea::drawReads(QPainter &p) {
                 int height = cachedReads.letterWidth;
                 p.fillRect(x_pix_start, y_pix_start, width, height, QColor("#BBBBBB"));
             } else {
-                //iterate over letters of the read
-                QList<U2CigarToken> cigar(read->cigar);    // hack: to show reads without cigar but with mapped position
+                // iterate over letters of the read
+                QList<U2CigarToken> cigar(read->cigar);  // hack: to show reads without cigar but with mapped position
                 if (cigar.isEmpty()) {
                     cigar << U2CigarToken(U2CigarOp_M, readSequence.size());
                 }
@@ -564,7 +564,7 @@ void AssemblyReadsArea::updateHint() {
         offset -= QPoint(hintRect.right() - readsAreaRect.right(), 0);
     }
     if (hintRect.bottom() > readsAreaRect.bottom()) {
-        offset -= QPoint(0, hintRect.bottom() - readsAreaRect.bottom());    // move hint bottom to reads area
+        offset -= QPoint(0, hintRect.bottom() - readsAreaRect.bottom());  // move hint bottom to reads area
         offset -= QPoint(0, readsAreaRect.bottom() - QCursor::pos().y() + AssemblyReadsAreaHint::OFFSET_FROM_CURSOR.y());
     }
     QPoint newPos = QCursor::pos() + AssemblyReadsAreaHint::OFFSET_FROM_CURSOR + offset;
@@ -828,14 +828,14 @@ void AssemblyReadsArea::mouseDoubleClickEvent(QMouseEvent *e) {
     qint64 cursorXoffset = browser->calcAsmPosX(e->pos().x());
     qint64 cursorYoffset = browser->calcAsmPosY(e->pos().y());
 
-    //1. zoom in
+    // 1. zoom in
     static const int howManyZoom = 1;
     for (int i = 0; i < howManyZoom; ++i) {
         browser->sl_zoomIn();
     }
 
-    //2. move cursor offset to center
-    // move x
+    // 2. move cursor offset to center
+    //  move x
     if (hBar->isEnabled()) {
         qint64 xOffset = browser->getXOffsetInAssembly();
         qint64 windowHalfX = xOffset + qRound64((double)browser->basesCanBeVisible() / 2);
@@ -881,7 +881,7 @@ void AssemblyReadsArea::sl_onCopyReadData() {
 }
 
 void AssemblyReadsArea::sl_copyPositionToClipboard() {
-    qint64 assemblyPosition = browser->calcAsmPosX(curPos.x()) + 1;    // User values starts from 1.
+    qint64 assemblyPosition = browser->calcAsmPosX(curPos.x()) + 1;  // User values starts from 1.
     QApplication::clipboard()->setText(QString::number(assemblyPosition));
 }
 
@@ -1051,4 +1051,4 @@ void AssemblyReadsArea::setScrolling(bool value) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

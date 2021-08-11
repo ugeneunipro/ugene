@@ -99,7 +99,7 @@ private:
     QTimer *timer;
     int waitingTime;
 
-    void finishWaiting();    // deletes timer and runnable
+    void finishWaiting();  // deletes timer and runnable
 };
 
 class HI_EXPORT Filler : public Runnable {
@@ -191,6 +191,6 @@ private:
     static const int timerPeriod = 100;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -22,6 +22,7 @@
 #include "FindEnzymesDialogFiller.h"
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
@@ -29,17 +30,15 @@
 #include <QCheckBox>
 #include <QTreeWidget>
 
+#include <U2Gui/MainWindow.h>
+
 namespace U2 {
 
 #define GT_CLASS_NAME "FindEnzymesDialogFiller"
 
 FindEnzymesDialogFiller::FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, CustomScenario *scenario)
     : Filler(os, "FindEnzymesDialog", scenario),
-      enzymesToFind(enzymesToFind),
-      searchStart(-1),
-      searchEnd(-1),
-      excludeStart(-1),
-      excludeEnd(-1) {
+      enzymesToFind(enzymesToFind) {
 }
 
 FindEnzymesDialogFiller::FindEnzymesDialogFiller(GUITestOpStatus &os, const QStringList &enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart, qint64 excludedRegionEnd, CustomScenario *scenario)
@@ -99,6 +98,19 @@ void FindEnzymesDialogFiller::commonScenario() {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "openDialogWithToolbarAction"
+void FindEnzymesDialogFiller::openDialogWithToolbarAction(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectEnzymes"
+void FindEnzymesDialogFiller::selectEnzymes(HI::GUITestOpStatus &os, const QStringList &enzymeNames) {
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, enzymeNames));
+    openDialogWithToolbarAction(os);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

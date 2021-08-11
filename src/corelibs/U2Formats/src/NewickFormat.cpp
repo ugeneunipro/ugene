@@ -96,7 +96,7 @@ FormatCheckResult NewickFormat::checkRawTextData(const QString &dataPrefix, cons
                 }
                 break;
             default:
-                if (ch < 0) {    // for ex. if file contains utf-8 symbols
+                if (ch < 0) {  // for ex. if file contains utf-8 symbols
                     return FormatDetection_NotMatched;
                 }
                 if (TextUtils::ALPHA_NUMS[ch] || ch == '-' || ch == '_') {
@@ -151,4 +151,4 @@ static QList<GObject *> parseTrees(IOAdapterReader &reader, const U2DbiRef &dbiR
     return objects;
 }
 
-}    // namespace U2
+}  // namespace U2

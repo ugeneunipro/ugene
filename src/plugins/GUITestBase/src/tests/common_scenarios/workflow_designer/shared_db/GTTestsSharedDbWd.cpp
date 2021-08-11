@@ -69,7 +69,7 @@ void createTestConnection(HI::GUITestOpStatus &os) {
     CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), );
 }
 
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -630,7 +630,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0004) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep(10000);    //neccessary sleep
+    GTGlobals::sleep(10000);  // neccessary sleep
 
     GTUtilsWorkflowDesigner::checkErrorList(os, "You do not have write permissions to the database");
 }
@@ -714,5 +714,5 @@ GUI_TEST_CLASS_DEFINITION(test_3726) {
     //    Expected state: nothing happens.
 }
 
-}    // namespace GUITest_common_scenarios_shared_db_wd
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_shared_db_wd
+}  // namespace U2

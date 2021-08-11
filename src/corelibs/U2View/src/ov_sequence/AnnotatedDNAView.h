@@ -63,7 +63,7 @@ class CodonTableView;
 
 class U2VIEW_EXPORT AnnotatedDNAView : public GObjectView {
     Q_OBJECT
-    friend class DetViewSequenceEditor;    // TODO_SVEDIT: remove this
+    friend class DetViewSequenceEditor;  // TODO_SVEDIT: remove this
 public:
     AnnotatedDNAView(const QString &viewName, const QList<U2SequenceObject *> &dnaObjects);
     ~AnnotatedDNAView();
@@ -303,7 +303,7 @@ private:
      */
     ADVSequenceWidget *activeSequenceWidget;
 
-    ADVSequenceWidget *replacedSeqWidget;    // not NULL when any sequence widget is dragging to the new place.
+    ADVSequenceWidget *replacedSeqWidget;  // not NULL when any sequence widget is dragging to the new place.
 
     int timerId;
 
@@ -313,6 +313,6 @@ private:
     QList<int> savedMainSplitterSizes;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

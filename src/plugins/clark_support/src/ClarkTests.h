@@ -48,10 +48,10 @@ private:
     QStringList database2Prefixes;
 
     // attributes
-    static const QString DATABASE1;    // this attribute is a path to the first CLARK database
-    static const QString DATABASE2;    // this attribute is a path to the second CLARK database
-    static const QString DATABASE1_PREFIXES;    // this attribute contains prefixes separated with ';' for database 1 that will be removed from every database 1 metafile line before lines comparison
-    static const QString DATABASE2_PREFIXES;    // this attribute contains prefixes separated with ';' for database 2 that will be removed from every database 2 metafile line before lines comparison
+    static const QString DATABASE1;  // this attribute is a path to the first CLARK database
+    static const QString DATABASE2;  // this attribute is a path to the second CLARK database
+    static const QString DATABASE1_PREFIXES;  // this attribute contains prefixes separated with ';' for database 1 that will be removed from every database 1 metafile line before lines comparison
+    static const QString DATABASE2_PREFIXES;  // this attribute contains prefixes separated with ';' for database 2 that will be removed from every database 2 metafile line before lines comparison
 
     // inner constants
     static const QString DATABASE_PREFIX_PLACEHOLDER;
@@ -64,6 +64,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLARK_TESTS_H_
+#endif  // _U2_CLARK_TESTS_H_

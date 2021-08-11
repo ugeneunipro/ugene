@@ -84,7 +84,7 @@ BAMDbiPlugin::BAMDbiPlugin()
 // BAM importer
 BAMImporter::BAMImporter()
     : DocumentImporter("bam-importer", tr("BAM/SAM file import")) {
-    //prepare sorted extensions list
+    // prepare sorted extensions list
     QSet<QString> extsSet;
     BAMFormatUtils bam;
     SAMFormat sam;
@@ -147,7 +147,7 @@ namespace {
 QString getDirUrl(const GUrl &fileUrl) {
     return QFileInfo(fileUrl.getURLString()).dir().absolutePath();
 }
-}    // namespace
+}  // namespace
 
 QList<Task *> BAMImporterTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
@@ -306,5 +306,5 @@ void BAMImporterTask::initLoadDocumentTask() {
     }
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

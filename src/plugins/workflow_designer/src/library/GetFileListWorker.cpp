@@ -134,5 +134,5 @@ QString GetFileListPrompter::composeRichDoc() {
         .arg(url);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -36,8 +36,8 @@ typedef QPair<char, char> TwoChars;
 static QMap<char, QColor> initDefaultColorSheme() {
     QMap<char, QColor> colors;
 
-    //TODO other chars ??
-    //TODO = symbol
+    // TODO other chars ??
+    // TODO = symbol
     colors['a'] = colors['A'] = QColor("#FCFF92");
     colors['c'] = colors['C'] = QColor("#70F970");
     colors['g'] = colors['G'] = QColor("#4EADE1");
@@ -75,12 +75,12 @@ static QMap<char, TwoChars> initExtendedPairs() {
 }
 
 inline static bool isGap(char c) {
-    //TODO : get rid of hardcoded values!
-    //TODO: smarter analysis. Don't forget about '=' symbol and IUPAC codes
+    // TODO : get rid of hardcoded values!
+    // TODO: smarter analysis. Don't forget about '=' symbol and IUPAC codes
     return (c == '-' || c == 'N');
 }
 
-}    // namespace
+}  // namespace
 
 static const QMap<char, QColor> nucleotideColorScheme = initDefaultColorSheme();
 static const QList<char> assemblyAlphabet = nucleotideColorScheme.keys();
@@ -89,7 +89,7 @@ static const QMap<char, TwoChars> extendedPairs = initExtendedPairs();
 static void drawBackground(QPixmap &img, const QSize &size, const QColor &topColor, const QColor &bottomColor) {
     QPainter p(&img);
 
-    //TODO invent something greater
+    // TODO invent something greater
     QLinearGradient linearGrad(QPointF(0, 0), QPointF(size.width(), size.height()));
     linearGrad.setColorAt(0, QColor::fromRgb(topColor.red() - 70, topColor.green() - 70, topColor.blue() - 70));
     linearGrad.setColorAt(1, bottomColor);
@@ -574,4 +574,4 @@ AssemblyCellRendererFactoryRegistry::~AssemblyCellRendererFactoryRegistry() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

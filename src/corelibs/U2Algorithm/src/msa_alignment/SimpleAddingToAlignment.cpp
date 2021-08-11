@@ -222,4 +222,4 @@ SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()
                          new SimpleAddToAlignmentTaskFactory()) {
 }
 
-}    // namespace U2
+}  // namespace U2

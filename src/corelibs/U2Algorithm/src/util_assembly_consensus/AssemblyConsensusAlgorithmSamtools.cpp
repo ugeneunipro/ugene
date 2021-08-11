@@ -101,7 +101,7 @@ struct AlgorithmInternal {
 
         for (i = 0; i < 4; ++i)
             qsum[i] = bcr.qsum[i] << 2 | i;
-        for (i = 1; i < 4; ++i)    // insertion sort
+        for (i = 1; i < 4; ++i)  // insertion sort
             for (j = i; j > 0 && qsum[j] > qsum[j - 1]; --j)
                 tmp = qsum[j], qsum[j] = qsum[j - 1], qsum[j - 1] = tmp;
         a1 = qsum[0] & 3;
@@ -156,4 +156,4 @@ QByteArray AssemblyConsensusAlgorithmSamtools::getConsensusRegion(const U2Region
     return algorithm.getResult();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -76,7 +76,7 @@ protected:
 
 /**
  * Since output formats are not registered in any registry, FileExtensionRelation can't be used
-*/
+ */
 class ExtractAssemblyCoverageFileExtensionRelation : public AttributeRelation {
 public:
     ExtractAssemblyCoverageFileExtensionRelation(const QString &relatedAttrId);
@@ -90,7 +90,7 @@ public:
     ExtractAssemblyCoverageFileExtensionRelation *clone() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_EXTRACT_ASSEMBLY_COVERAGE_WORKER_H_
+#endif  // _U2_EXTRACT_ASSEMBLY_COVERAGE_WORKER_H_

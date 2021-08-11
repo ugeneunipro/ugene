@@ -56,7 +56,7 @@ GenbankPlainTextFormat::GenbankPlainTextFormat(QObject *p)
 }
 
 FormatCheckResult GenbankPlainTextFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    //TODO: improve handling
+    // TODO: improve handling
     const char *data = rawData.constData();
     int size = rawData.size();
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
@@ -89,7 +89,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
     if (!st->hasKey(LOCUS)) {
         QByteArray rawData(st->buff);
         int locusStartPos = rawData.indexOf("\n" + LOCUS);
-        if (locusStartPos != -1) {    //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
+        if (locusStartPos != -1) {  // We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);
@@ -97,12 +97,12 @@ bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
             }
             st->buff = st->buff + locusStartPos;
         } else {
-            //The GenBank file should have the indent (st->valOffset) before the real data
-            //Possibly, this GenBank file doesn't have the strong indent (UGENE-7092)
+            // The GenBank file should have the indent (st->valOffset) before the real data
+            // Possibly, this GenBank file doesn't have the strong indent (UGENE-7092)
             rawData = QByteArray::fromRawData(st->buff, st->len);
             CHECK_EXT(rawData.indexOf(LOCUS) == 0, st->si.setError(tr("LOCUS is not the first line")), false);
 
-            //Indent before the beginnig of the line and name of the sequence
+            // Indent before the beginnig of the line and name of the sequence
             int indentBeforeName = 0;
             do {
                 if (indentBeforeName == 0) {
@@ -118,7 +118,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
     }
 
     QString locusStr = st->value();
-    QStringList tokens = locusStr.split(QRegExp("(\t| )"), QString::SkipEmptyParts);    //separators: tabs and spaces
+    QStringList tokens = locusStr.split(QRegExp("(\t| )"), QString::SkipEmptyParts);  // separators: tabs and spaces
     if (tokens.isEmpty()) {
         st->si.setError(tr("Error parsing LOCUS line"));
         return false;
@@ -195,7 +195,7 @@ bool GenbankPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqI
         if (st->hasKey("REFERENCE")) {
             DNAReferenceInfo ri;
             ri.referencesRecord.append(st->value());
-            while (st->readNextLine() && (st->hasContinuation() || st->hasKey("REFERENCE") || st->hasKey("  AUTHORS") || st->hasKey("  TITLE") || st->hasKey("  JOURNAL") || st->hasKey("  MEDLINE") || st->hasKey("   PUBMED") || (st->hasValue() && st->buff[0] == ' '))) {    //read until the end of the references record
+            while (st->readNextLine() && (st->hasContinuation() || st->hasKey("REFERENCE") || st->hasKey("  AUTHORS") || st->hasKey("  TITLE") || st->hasKey("  JOURNAL") || st->hasKey("  MEDLINE") || st->hasKey("   PUBMED") || (st->hasValue() && st->buff[0] == ' '))) {  // read until the end of the references record
                 ri.referencesRecord.append("\n" + QByteArray(st->buff, st->len));
             }
 
@@ -320,7 +320,7 @@ void GenbankPlainTextFormat::readHeaderAttributes(QVariantMap &tags, DbiConnecti
         }
     }
 
-    tags.insert(UGENE_MARK, "");    //to allow writing
+    tags.insert(UGENE_MARK, "");  // to allow writing
 }
 
 bool GenbankPlainTextFormat::isNcbiLikeFormat() const {
@@ -467,7 +467,7 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     }
     SAFE_POINT(nullptr != seq || !anns.isEmpty(), "Store entry: nothing to write", );
 
-    //reading header attribute
+    // reading header attribute
     QString locusFromAttributes;
     QString gbHeader;
     if (seq) {
@@ -480,7 +480,7 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             gbHeader = attr.value;
         }
 
-        if (gbHeader.startsWith("LOCUS")) {    //trim the first line
+        if (gbHeader.startsWith("LOCUS")) {  // trim the first line
             int locusStringEndIndex = gbHeader.indexOf("\n");
             assert(locusStringEndIndex != -1);
             locusFromAttributes = gbHeader.left(locusStringEndIndex);
@@ -494,11 +494,11 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     }
     // write other keywords
     if (seq) {
-        //header
+        // header
         io->writeBlock(gbHeader.toLocal8Bit());
     }
 
-    //write tool mark
+    // write tool mark
     QList<GObject *> annsAndSeqObjs;
     annsAndSeqObjs << anns;
     if (seq != nullptr) {
@@ -523,7 +523,7 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     }
 
     if (seq) {
-        //todo: store sequence alphabet!
+        // todo: store sequence alphabet!
         QList<U2Region> lowerCaseRegs = U1AnnotationUtils::getRelatedLowerCaseRegions(seq, anns);
         writeSequence(io, seq, lowerCaseRegs, os);
         CHECK_OP(os, );
@@ -553,7 +553,7 @@ bool GenbankPlainTextFormat::checkCircularity(const GUrl &filePath, U2OpStatus &
     st.buff = readBuffer.data();
     EMBLGenbankDataEntry data;
     st.entry = &data;
-    st.readNextLine(true);    // all information is in the first line!
+    st.readNextLine(true);  // all information is in the first line!
 
     if (readIdLine(&st)) {
         return st.entry->circular;
@@ -796,14 +796,14 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
     assert(!aos.isEmpty());
     QByteArray header("FEATURES             Location/Qualifiers\n");
 
-    //write "FEATURES"
+    // write "FEATURES"
     qint64 len = io->writeBlock(header);
     if (len != header.size()) {
         si.setError(GenbankPlainTextFormat::tr("Error writing document"));
         return;
     }
 
-    //write every feature
+    // write every feature
     const char *spaceLine = TextUtils::SPACE_LINE.data();
     const QByteArray &nameQ = GBFeatureUtils::QUALIFIER_NAME;
     const QByteArray &groupQ = GBFeatureUtils::QUALIFIER_GROUP;
@@ -825,7 +825,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
             continue;
         }
 
-        //write name of the feature
+        // write name of the feature
         len = io->writeBlock(spaceLine, 5);
         if (len != 5) {
             si.setError(GenbankPlainTextFormat::tr("Error writing document"));
@@ -846,7 +846,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
             return;
         }
 
-        //write location
+        // write location
         const SharedAnnotationData &ad = a->getData();
         QString multiLineLocation = U1AnnotationUtils::buildLocationString(ad);
         prepareMultiline(multiLineLocation, 21);
@@ -856,7 +856,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
             return;
         }
 
-        //write qualifiers
+        // write qualifiers
         foreach (const U2Qualifier &q, a->getQualifiers()) {
             writeQualifier(q.name, q.value, io, si, spaceLine);
             if (si.hasError()) {
@@ -864,18 +864,18 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
             }
         }
 
-        //write name if its not the same as a name
+        // write name if its not the same as a name
         if (aName != keyStr) {
             writeQualifier(nameQ, aName, io, si, spaceLine);
         }
 
-        //write strand info
-        //if (a->getAminoFrame() != TriState_Unknown) {
-        //    const QString& val = a->getAminoFrame() == TriState_No ? aminoQNo : aminoQYes;
-        //    writeQualifier(aminoQ, val, io, si, spaceLine);
-        //}
+        // write strand info
+        // if (a->getAminoFrame() != TriState_Unknown) {
+        //     const QString& val = a->getAminoFrame() == TriState_No ? aminoQNo : aminoQYes;
+        //     writeQualifier(aminoQ, val, io, si, spaceLine);
+        // }
 
-        //write group
+        // write group
         AnnotationGroup *ag = a->getGroup();
         const bool storeGroups = !ag->isTopLevelGroup() || ag->getName() != aName;
 
@@ -909,7 +909,7 @@ void GenbankPlainTextFormat::writeSequence(IOAdapter *io, U2SequenceObject *ao, 
         }
         num.setNum(pos + 1);
 
-        //right spaces
+        // right spaces
         blen = 10 - num.length() - 1;
         qint64 l = io->writeBlock(QByteArray::fromRawData(spaces, blen));
         if (l != blen) {
@@ -917,14 +917,14 @@ void GenbankPlainTextFormat::writeSequence(IOAdapter *io, U2SequenceObject *ao, 
             break;
         }
 
-        //current pos
+        // current pos
         l = io->writeBlock(num);
         if (l != num.length()) {
             ok = false;
             break;
         }
 
-        //sequence
+        // sequence
         qint64 last = qMin(pos + charsInLine, slen);
         for (qint64 j = pos; j < last; j += 10) {
             l = io->writeBlock(QByteArray::fromRawData(" ", 1));
@@ -943,7 +943,7 @@ void GenbankPlainTextFormat::writeSequence(IOAdapter *io, U2SequenceObject *ao, 
             break;
         }
 
-        //line end
+        // line end
         l = io->writeBlock(QByteArray("\n", 1));
         if (l != 1) {
             ok = false;
@@ -974,18 +974,18 @@ void GenbankPlainTextFormat::prepareMultiline(QString &line, int spacesOnLineSta
             }
             skipLineBreak = false;
             int pos2 = pos + charsInLine - 1;
-            if (pos2 < len) {    //not the last line
+            if (pos2 < len) {  // not the last line
                 while (pos2 > pos && !line[pos2].isSpace() && lineBreakOnlyOnSpace) {
                     pos2--;
                 }
-                if (pos == pos2) {    //we failed to find word end
+                if (pos == pos2) {  // we failed to find word end
                     pos2 = pos + charsInLine - 1;
                     if (lineBreakOnlyOnSpace) {
                         skipLineBreak = true;
                     }
                 }
                 newLine.append(line.mid(pos, pos2 - pos + (!lineBreakOnlyOnSpace || skipLineBreak)));
-            } else {    //last line
+            } else {  // last line
                 newLine.append(line.mid(pos, len - pos));
             }
             pos = pos2 + 1;
@@ -997,4 +997,4 @@ void GenbankPlainTextFormat::prepareMultiline(QString &line, int spacesOnLineSta
     }
 }
 
-}    // namespace U2
+}  // namespace U2

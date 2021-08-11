@@ -30,7 +30,7 @@ WorkflowEnv *WorkflowEnv::instance = nullptr;
 
 bool WorkflowEnv::init(WorkflowEnv *env) {
     if (instance) {
-        assert(0);    // Duplicate initialization;
+        assert(0);  // Duplicate initialization;
         return false;
     }
 
@@ -51,5 +51,5 @@ WorkflowEnv *WorkflowEnv::getInstance() {
     return instance;
 }
 
-}    // namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

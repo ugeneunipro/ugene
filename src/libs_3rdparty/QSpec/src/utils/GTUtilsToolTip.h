@@ -35,6 +35,6 @@ public:
     static QString getToolTip();
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

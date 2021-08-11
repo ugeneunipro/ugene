@@ -63,4 +63,4 @@ void PerfMonitorPlugin::sl_openWindow() {
     mdi->activateWindow(mdiWindow);
 }
 
-}    // namespace U2
+}  // namespace U2

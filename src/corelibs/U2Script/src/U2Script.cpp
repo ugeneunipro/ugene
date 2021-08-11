@@ -33,7 +33,7 @@
 static U2::UgeneContextWrapper *GLOBAL_CONTEXT = nullptr;
 
 U2ErrorType processTask(U2::Task *task) {
-    if (nullptr == GLOBAL_CONTEXT) {    // when script interface was used from inside UGENE
+    if (nullptr == GLOBAL_CONTEXT) {  // when script interface was used from inside UGENE
         // now it's being used in unit tests
         CHECK(U2::UgeneContextWrapper::isAppContextInitialized(), U2_INVALID_CALL);
         U2::TaskScheduler *scheduler = U2::AppContext::getTaskScheduler();

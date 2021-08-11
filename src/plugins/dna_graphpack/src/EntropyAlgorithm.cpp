@@ -92,7 +92,7 @@ void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, 
             int &val = index.mapNC(seqStr + x);
             val++;
         }
-        //derive entropy from triplets and zero them
+        // derive entropy from triplets and zero them
         float total = end - start - 2;
         float ent = 0;
         for (int j = 0; j < indexSize; j++) {
@@ -101,7 +101,7 @@ void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, 
             if (ifreq == 0) {
                 continue;
             }
-            mapData[j] = 0;    //zero triplets
+            mapData[j] = 0;  // zero triplets
             float freq = ifreq / total;
             ent -= freq * log10(freq) / log10_2;
         }
@@ -109,4 +109,4 @@ void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

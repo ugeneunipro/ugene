@@ -100,7 +100,7 @@ uHMMPlugin::uHMMPlugin()
     QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new HMM2QDActorPrototype());
 
-    //uHMMER Tests
+    // uHMMER Tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != NULL);
@@ -128,7 +128,7 @@ void uHMMPlugin::sl_calibrate() {
 void uHMMPlugin::sl_build() {
     MultipleSequenceAlignment ma = MultipleSequenceAlignment();
 
-    //try to find alignment check that MSA Editor is active
+    // try to find alignment check that MSA Editor is active
     QString profileName;
     MWMDIWindow *w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (w != NULL) {
@@ -151,9 +151,9 @@ void uHMMPlugin::sl_build() {
 }
 
 void uHMMPlugin::sl_search() {
-    //to select a sequence
-    //1. check that annotated DNA view is active
-    //2. if not -> check that DNASequence object is selected in project view
+    // to select a sequence
+    // 1. check that annotated DNA view is active
+    // 2. if not -> check that DNASequence object is selected in project view
 
     U2SequenceObject *obj = NULL;
     ADVSequenceObjectContext *seqCtx = NULL;
@@ -269,4 +269,4 @@ void HMMADVContext::sl_search() {
     d->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

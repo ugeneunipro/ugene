@@ -53,4 +53,4 @@ Document *DocumentProviderTask::takeDocument(bool mainThread) {
     return getDocument(mainThread);
 }
 
-}    // namespace U2
+}  // namespace U2

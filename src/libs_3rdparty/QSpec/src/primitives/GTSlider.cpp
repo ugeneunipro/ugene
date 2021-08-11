@@ -55,4 +55,4 @@ void GTSlider::setValue(GUITestOpStatus &os, QSlider *slider, int value) {
 #undef GT_CLASS_NAME
 
 #undef GT_METHOD_NAME
-}    // namespace HI
+}  // namespace HI

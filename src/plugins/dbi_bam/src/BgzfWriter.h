@@ -54,7 +54,7 @@ private:
     bool finished;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_BGZF_WRITER_H_
+#endif  // _U2_BAM_BGZF_WRITER_H_

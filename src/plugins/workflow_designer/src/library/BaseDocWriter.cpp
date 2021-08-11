@@ -55,8 +55,8 @@ namespace U2 {
 namespace LocalWorkflow {
 
 /**********************************
-* BaseDocWriter
-**********************************/
+ * BaseDocWriter
+ **********************************/
 BaseDocWriter::BaseDocWriter(Actor *a, const DocumentFormatId &fid)
     : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
     format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
@@ -87,7 +87,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
         dataStorage = LocalFs;
 
         Attribute *formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-        if (nullptr != formatAttr) {    // user sets format
+        if (nullptr != formatAttr) {  // user sets format
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         }
@@ -125,7 +125,7 @@ QString toFileName(const QString &base, const QString &suffix, const QString &ex
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 QString BaseDocWriter::getDefaultFileName() const {
     return actor->getId() + "_output";
@@ -223,7 +223,7 @@ bool BaseDocWriter::ifCreateAdapter(const QString &url) const {
 }
 
 void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDocFlags &flags, U2OpStatus &os) {
-    {    // prepare dir
+    {  // prepare dir
         QFileInfo info(aUrl);
         if (!info.dir().exists()) {
             bool created = info.dir().mkpath(info.dir().absolutePath());
@@ -379,7 +379,7 @@ void BaseDocWriter::reportNoDataReceivedWarning() {
 
 QSet<GObject *> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap &data) const {
     QSet<GObject *> result = getObjectsToWrite(data);
-    result.remove(nullptr);    // eliminate invalid objects
+    result.remove(nullptr);  // eliminate invalid objects
     return result;
 }
 
@@ -456,5 +456,5 @@ QString BaseDocWriter::getUniqueObjectName(const Document *doc, const QString &n
     return found ? result : name;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

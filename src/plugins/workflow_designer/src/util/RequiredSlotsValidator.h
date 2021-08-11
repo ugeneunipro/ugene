@@ -36,7 +36,7 @@ private:
     QList<Descriptor> requiredSlots;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_REQUIREDSLOTSVALIDATOR_H_
+#endif  // _U2_REQUIREDSLOTSVALIDATOR_H_

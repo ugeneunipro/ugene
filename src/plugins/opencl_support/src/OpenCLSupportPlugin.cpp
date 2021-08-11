@@ -79,13 +79,13 @@ OpenCLSupportPlugin::OpenCLSupportPlugin()
         coreLog.details(err_str);
     }
 
-    //adding settings page
+    // adding settings page
     if (AppContext::getMainWindow()) {
         QString settingsPageMsg = getSettingsErrorString(err);
         AppContext::getAppSettingsGUI()->registerPage(new OpenCLSupportSettingsPageController(settingsPageMsg));
     }
 
-    //registering gpu resource
+    // registering gpu resource
     if (!gpus.empty()) {
         AppResource *gpuResource = new AppResourceSemaphore(RESOURCE_OPENCL_GPU, gpus.size(), RESOURCE_OPENCL_GPU_NAME);
         AppResourcePool::instance()->registerResource(gpuResource);
@@ -106,26 +106,26 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::getError() const {
 
 QString OpenCLSupportPlugin::getSettingsErrorString(OpenCLSupportError err) {
     switch (err) {
-    case Error_NoError:
-        return QString("");
+        case Error_NoError:
+            return QString("");
 
-    case Error_BadDriverLib:
-        return tr("Cannot load OpenCL driver dynamic library.<p> \
+        case Error_BadDriverLib:
+            return tr("Cannot load OpenCL driver dynamic library.<p> \
                        Install the latest video GPU driver.");
 
-    case Error_OpenCLError:
-        return tr("An error has occurred while obtaining information \
+        case Error_OpenCLError:
+            return tr("An error has occurred while obtaining information \
                       about installed OpenCL GPUs.<br>\
                       See OpenCL Support plugin log for details.");
 
-    default:
-        assert(false);
-        return QString();
+        default:
+            assert(false);
+            return QString();
     }
 }
 
 OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QString &errStr) {
-    //load driver library
+    // load driver library
     if (!openCLHelper.isLoaded()) {
         errStr = openCLHelper.getErrorString();
         return Error_BadDriverLib;
@@ -135,7 +135,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
 
     coreLog.details(tr("Initializing OpenCL"));
 
-    //numEntries is the number of cl_platform_id entries that can be added to platforms
+    // numEntries is the number of cl_platform_id entries that can be added to platforms
     cl_uint numPlatformEntries = 15;
     gauto_array<cl_platform_id> platformIDs(new cl_platform_id[numPlatformEntries]);
     cl_uint numPlatforms = 0;
@@ -146,9 +146,9 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
     }
     coreLog.details(tr("Number of OpenCL platforms: %1").arg(numPlatforms));
 
-    //Get each platform info
+    // Get each platform info
     for (unsigned int i = 0; i < numPlatforms; i++) {
-        //numEntries is the number of cl_platform_id entries that can be added to platforms
+        // numEntries is the number of cl_platform_id entries that can be added to platforms
         cl_uint numDeviceEntries = 15;
         gauto_array<cl_device_id> deviceIDs(new cl_device_id[numDeviceEntries]);
 
@@ -246,7 +246,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
                 return Error_OpenCLError;
             }
 
-            //create OpenCL model
+            // create OpenCL model
             OpenCLGpuModel *openCLGpuModel = new OpenCLGpuModel(vendorName + " " + deviceName,
                                                                 cl_context(deviceContext),
                                                                 cl_device_id(deviceId),
@@ -274,7 +274,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
 }
 
 bool OpenCLSupportPlugin::hasOPENCLError(cl_int errCode, QString &errMessage) {
-    //TODO: print details error message
+    // TODO: print details error message
     if (errCode != CL_SUCCESS) {
         errMessage = tr("OpenCL error code (%1)").arg(errCode);
         return true;
@@ -312,4 +312,4 @@ void OpenCLSupportPlugin::loadGpusSettings() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

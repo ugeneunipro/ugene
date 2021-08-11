@@ -91,4 +91,4 @@ ModificationAction::ModificationAction(U2AbstractDbi *_dbi, const U2DataId &_mas
 ModificationAction::~ModificationAction() {
 }
 
-}    // namespace U2
+}  // namespace U2

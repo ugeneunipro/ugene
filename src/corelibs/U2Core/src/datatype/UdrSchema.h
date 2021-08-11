@@ -158,6 +158,6 @@ private:
     bool contains(const QByteArray &name) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_UDRSCHEMA_H_
+#endif  // _U2_UDRSCHEMA_H_

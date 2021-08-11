@@ -32,4 +32,4 @@ Workflow::WorkflowContext *WorkflowScriptEngine::getWorkflowContext() {
     return context;
 }
 
-}    // namespace U2
+}  // namespace U2

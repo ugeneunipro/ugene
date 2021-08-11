@@ -75,7 +75,7 @@ public:
         Sequence,
         String
     };
-    typedef QPair<InOutType, QString> InOutDataType;    // type / argument value
+    typedef QPair<InOutType, QString> InOutDataType;  // type / argument value
     typedef Data<InOutDataType> InOutData;
 
     enum ParameterType {
@@ -88,7 +88,7 @@ public:
         OutputFileUrl,
         OutputFolderUrl
     };
-    typedef QPair<ParameterType, QString> ParameterDataType;    // type / default value
+    typedef QPair<ParameterType, QString> ParameterDataType;  // type / default value
     typedef Data<ParameterDataType> ParameterData;
 
     struct ElementWithCommandLineSettings {
@@ -98,29 +98,29 @@ public:
               summaryDialogButton(QMessageBox::Yes) {
         }
 
-        //1th page
+        // 1th page
         QString elementName;
         CommandLineToolType tooltype;
         QString tool;
 
-        //2th page
+        // 2th page
         QList<InOutData> input;
 
-        //3th page
+        // 3th page
         QList<ParameterData> parameters;
 
-        //4th page
+        // 4th page
         QList<InOutData> output;
 
-        //5th page
+        // 5th page
         QString command;
         QString commandDialogButtonTitle;
 
-        //6th page
+        // 6th page
         QString description;
         QString prompter;
 
-        //7th page
+        // 7th page
         QMessageBox::Button summaryDialogButton;
     };
 
@@ -190,6 +190,6 @@ private:
     ElementWithCommandLineSettings settings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_CREATE_ELEMENT_WITH_COMMAND_LINE_TOOL_FILLER_H_
+#endif  // _U2_GT_CREATE_ELEMENT_WITH_COMMAND_LINE_TOOL_FILLER_H_

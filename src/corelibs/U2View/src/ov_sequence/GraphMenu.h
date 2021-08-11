@@ -71,6 +71,6 @@ private:
     static GraphMenuAction *findGraphMenuAction(ADVSequenceObjectContext *);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

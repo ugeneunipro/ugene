@@ -38,6 +38,6 @@ public:
     static QStringList getItems(GUITestOpStatus &os, QListWidget *listWidget);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_LISTWIDGET_H_
+#endif  // _HI_GT_LISTWIDGET_H_

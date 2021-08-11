@@ -61,6 +61,6 @@ public:
     static U2ErrorType getOutputPortIdForSlot(const QString &elementId, const QString &slotId, QString &portId);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _WORKFLOW_ELEMENT_FACADE_H_
+#endif  // _WORKFLOW_ELEMENT_FACADE_H_

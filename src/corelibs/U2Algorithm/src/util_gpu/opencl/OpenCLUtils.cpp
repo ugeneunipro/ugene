@@ -40,7 +40,7 @@ cl_program OpenCLUtils::createProgramByResource(
     const QString &resourceName,
     const OpenCLHelper &openCLHelper,
     cl_int &err) {
-    //open and read file contains OPENCL code
+    // open and read file contains OPENCL code
     QByteArray file;
     QFile data(resourceName);
 
@@ -87,12 +87,12 @@ size_t OpenCLUtils::getPreferredWorkGroupSize(
     err2 |= openCLHelper.clGetKernelWorkGroupInfo_p(kernel, deviceId, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE, sizeof(size_t), &preferredWorkGroupSize, nullptr);
 
     if (err2 != CL_SUCCESS) {
-        preferredWorkGroupSize = 32;    // set default value to prevent calculation error because of this "performance hint" error
+        preferredWorkGroupSize = 32;  // set default value to prevent calculation error because of this "performance hint" error
     }
 
     return preferredWorkGroupSize;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/

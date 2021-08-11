@@ -72,5 +72,5 @@ const Descriptor BaseSlots::DATASET_SLOT() {
     return Descriptor(DATASET_SLOT_ID, tr("Dataset name"), tr("Dataset name"));
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

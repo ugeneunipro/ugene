@@ -47,7 +47,7 @@ void CircularViewImageExportToSVGTask::run() {
     painter.begin(&generator);
     cvWidget->paint(painter, cvWidget->width(), cvWidget->height(), cvExportSettings.includeSelection, cvExportSettings.includeMarker);
     bool result = painter.end();
-    //fix for UGENE-76
+    // fix for UGENE-76
     QDomDocument doc("svg");
     QFile file(settings.fileName);
     bool ok = file.open(QIODevice::ReadOnly);
@@ -199,4 +199,4 @@ void CircularViewImageExportController::updateCvWidget() const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

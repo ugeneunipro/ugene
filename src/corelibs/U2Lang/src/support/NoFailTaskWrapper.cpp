@@ -51,4 +51,4 @@ QStringList NoFailTaskWrapper::getWarnings() const {
     return subTask->getWarnings();
 }
 
-}    // namespace U2
+}  // namespace U2

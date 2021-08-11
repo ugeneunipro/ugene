@@ -225,4 +225,4 @@ bool MaConsensusAlgorithmFactorySimpleExtended::isSequenceLikeResult() const {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

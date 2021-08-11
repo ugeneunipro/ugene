@@ -26,8 +26,8 @@ namespace U2 {
 namespace Workflow {
 
 /**************************
-* PortDescriptor
-**************************/
+ * PortDescriptor
+ **************************/
 PortDescriptor::PortDescriptor(const Descriptor &desc, DataTypePtr t, bool input, bool multi, uint f)
     : Descriptor(desc), type(t), input(input), multi(multi), flags(f) {
     assert(type->isMap());
@@ -110,8 +110,8 @@ QString PortDescriptor::getSlotNameById(const QString &id) const {
 }
 
 /**************************
-* Port
-**************************/
+ * Port
+ **************************/
 Port::Port(const PortDescriptor &d, Actor *p)
     : PortDescriptor(d), proc(p), enabled(true) {
 }
@@ -162,7 +162,7 @@ bool Port::canBind(const Port *other) const {
 void Port::addLink(Link *b) {
     Port *peer = isInput() ? b->source() : b->destination();
     assert(this == (isInput() ? b->destination() : b->source()));
-    //assert(canBind(peer));
+    // assert(canBind(peer));
     assert(!bindings.contains(peer));
     bindings[peer] = b;
     emit bindingChanged();
@@ -184,8 +184,8 @@ void Port::setEnabled(bool _enabled) {
 }
 
 /**************************
-* Link
-**************************/
+ * Link
+ **************************/
 Link::Link()
     : src(nullptr), dest(nullptr) {
 }
@@ -222,6 +222,6 @@ void Link::disconnect() {
     }
 }
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

@@ -32,4 +32,4 @@ void SaveProjectDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(os, dialog, b);
 }
-}    // namespace U2
+}  // namespace U2

@@ -100,4 +100,4 @@ QString SettingsController::getSettingValue() {
     return QString();
 }
 
-}    // namespace U2
+}  // namespace U2

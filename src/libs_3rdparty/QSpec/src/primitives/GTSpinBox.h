@@ -43,6 +43,6 @@ public:
     static void checkLimits(GUITestOpStatus &os, const QString &spinBoxName, int min, int max, QWidget *parent = nullptr);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -39,7 +39,7 @@ void MysqlFeatureDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    //nameHash is used for better indexing
+    // nameHash is used for better indexing
     U2SqlQuery("CREATE TABLE Feature (id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, "
                "class INTEGER NOT NULL, type INTEGER NOT NULL, parent BIGINT, root BIGINT, nameHash INTEGER, name TEXT, "
                "sequence BIGINT, strand INTEGER NOT NULL DEFAULT 0, start BIGINT NOT NULL DEFAULT 0, "
@@ -67,7 +67,7 @@ void MysqlFeatureDbi::initSqlSchema(U2OpStatus &os) {
     U2SqlQuery("CREATE INDEX FeatureLocationIndex ON Feature(start, end)", db, os).execute();
     U2SqlQuery("CREATE INDEX FeatureNameIndex ON Feature(root, nameHash)", db, os).execute();
 
-    //FeatureKey index
+    // FeatureKey index
     U2SqlQuery("CREATE INDEX FeatureKeyIndex ON FeatureKey(feature)", db, os).execute();
 }
 
@@ -79,7 +79,7 @@ inline QString getFeatureFields(const QString &featureAlias = "f") {
         .arg(featureAlias);
 }
 
-}    // namespace
+}  // namespace
 
 class MysqlFeatureRSLoader : public MysqlRSLoader<U2Feature> {
 public:
@@ -89,7 +89,7 @@ public:
 
     static U2Feature loadStatic(U2SqlQuery *q) {
         U2Feature res;
-        //class, type, parent, root, name, sequence, strand, start, len
+        // class, type, parent, root, name, sequence, strand, start, len
         res.id = q->getDataId(0, U2Type::Feature);
         res.featureClass = static_cast<U2Feature::FeatureClass>(q->getInt32(1));
         res.featureType = static_cast<U2FeatureType>(q->getInt32(2));
@@ -288,7 +288,7 @@ QString getWhereQueryPartFromType(const QString &featurePlaceholder, const Featu
     return result;
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 QSharedPointer<U2SqlQuery> MysqlFeatureDbi::createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os) {
     QString wherePart;
@@ -332,14 +332,14 @@ QSharedPointer<U2SqlQuery> MysqlFeatureDbi::createFeatureQuery(const QString &se
     bool useRegion = (0 < fq.intersectRegion.length);
     bool oneClosestFeature = (ComparisonOp_Invalid != fq.closestFeature);
     if (useRegion) {
-        if (!oneClosestFeature) {    //check if intersects
+        if (!oneClosestFeature) {  // check if intersects
             if (1 != fq.intersectRegion.length) {
                 add(wherePart, QString("f.start < :endPos%2 AND f.end > :startPos%1").arg(n + 1).arg(n + 2), "", "", n);
             } else {
                 add(wherePart, QString("f.start < :endPos%2 AND f.start + f.len > :startPos%1").arg(n + 1).arg(n + 2), "", "", n);
             }
             n += 2;
-        } else {    //check if close
+        } else {  // check if close
             add(wherePart, QString("f.start %1 :startPos%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", "", n);
             n++;
         }
@@ -491,7 +491,7 @@ QString getFeatureKeyInsertQuery(int keyCount) {
     for (int i = 1, n = 3 * keyCount; i <= n; i += 3) {
         queryStringk += QString("(:%1, :%2, :%3),").arg(i).arg(i + 1).arg(i + 2);
     }
-    queryStringk.chop(1);    //remove last comma
+    queryStringk.chop(1);  // remove last comma
     return queryStringk;
 }
 
@@ -514,7 +514,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     query.insert();
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 void MysqlFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey> &keys, U2OpStatus &os) {
     MysqlTransaction t(db, os);
@@ -734,7 +734,7 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, Mysql
     qf.execute();
 }
 
-}    // namespace
+}  // namespace
 
 void MysqlFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, U2OpStatus &os) {
     MysqlTransaction t(db, os);
@@ -888,4 +888,4 @@ QMap<U2DataId, QStringList> MysqlFeatureDbi::getAnnotationTablesByFeatureKey(con
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

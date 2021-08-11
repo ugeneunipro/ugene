@@ -41,4 +41,4 @@ bool SimpleSNPVariationFormat::checkFormatByColumnCount(int columnCount) const {
     return (columnCount == maxColumnNumber + 1);
 }
 
-}    // namespace U2
+}  // namespace U2

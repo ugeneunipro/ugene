@@ -112,11 +112,11 @@ void SubstMatrixDialog::prepareTable() {
 
     tableMatrix->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableMatrix->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    tableMatrix->setMinimumSize(CELL_WIDTH * (n + 1) + 20, CELL_WIDTH * (n + 1) + 20);    //+20 is for borders
+    tableMatrix->setMinimumSize(CELL_WIDTH * (n + 1) + 20, CELL_WIDTH * (n + 1) + 20);  //+20 is for borders
 }
 
 void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
-    //update mid-cell
+    // update mid-cell
     if (row != 0 && column != 0 && !(column == hlInnerColumn && row == hlInnerRow)) {
         QTableWidgetItem *prevItem = tableMatrix->item(hlInnerRow, hlInnerColumn);
         if (prevItem != nullptr) {
@@ -130,7 +130,7 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
         hlInnerRow = row;
     }
 
-    //update row header
+    // update row header
     if (row != hlBorderRow && row != 0) {
         QTableWidgetItem *pw = tableMatrix->item(row, 0);
         if (pw != nullptr) {
@@ -144,7 +144,7 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
         hlBorderRow = row;
     }
 
-    //update column header
+    // update column header
     if (column != hlBorderColumn && column != 0) {
         QTableWidgetItem *pw = tableMatrix->item(0, column);
         if (pw != nullptr) {
@@ -159,4 +159,4 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

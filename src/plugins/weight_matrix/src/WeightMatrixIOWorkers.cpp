@@ -54,10 +54,10 @@ const QString PWMatrixWriter::ACTOR_ID("wmatrix-write");
 const QString PFMatrixReader::ACTOR_ID("fmatrix-read");
 const QString PFMatrixWriter::ACTOR_ID("fmatrix-write");
 
-static const QString FMATRIX_OUT_PORT_ID("out-fmatrix");    // FIXME: redifinition
-static const QString FMATRIX_IN_PORT_ID("in-fmatrix");    // FIXME: redifinition
-static const QString WMATRIX_OUT_PORT_ID("out-wmatrix");    // FIXME: redifinition
-static const QString WMATRIX_IN_PORT_ID("in-wmatrix");    // FIXME: redifinition
+static const QString FMATRIX_OUT_PORT_ID("out-fmatrix");  // FIXME: redifinition
+static const QString FMATRIX_IN_PORT_ID("in-fmatrix");  // FIXME: redifinition
+static const QString WMATRIX_OUT_PORT_ID("out-wmatrix");  // FIXME: redifinition
+static const QString WMATRIX_IN_PORT_ID("in-wmatrix");  // FIXME: redifinition
 
 const QString PWMatrixWorkerFactory::WEIGHT_MATRIX_MODEL_TYPE_ID("pwmatrix.model");
 const QString PFMatrixWorkerFactory::FREQUENCY_MATRIX_MODEL_TYPE_ID("pfmatrix.model");
@@ -258,7 +258,7 @@ Task *PWMatrixWriter::tick() {
         }
         if (anUrl.isEmpty()) {
             QString err = tr("Unspecified URL for writing weight matrix");
-            //if (failFast) {
+            // if (failFast) {
             return new FailTask(err);
             /*} else {
                 ioLog.error(err);
@@ -480,7 +480,7 @@ Task *PFMatrixWriter::tick() {
         }
         if (anUrl.isEmpty()) {
             QString err = tr("Unspecified URL for writing frequency matrix");
-            //if (failFast) {
+            // if (failFast) {
             return new FailTask(err);
             /*} else {
                 ioLog.error(err);
@@ -503,5 +503,5 @@ Task *PFMatrixWriter::tick() {
     return nullptr;
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

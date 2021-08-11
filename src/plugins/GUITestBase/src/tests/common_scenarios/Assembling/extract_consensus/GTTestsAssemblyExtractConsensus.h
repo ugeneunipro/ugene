@@ -35,8 +35,8 @@ GUI_TEST_CLASS_DECLARATION(test_0002_multiple_input)
 GUI_TEST_CLASS_DECLARATION(test_0003_wrong_input)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_assembly_extract_consensus
+}  // namespace GUITest_assembly_extract_consensus
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
+#endif  // _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_

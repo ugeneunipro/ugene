@@ -66,4 +66,4 @@ void FindPatternMsaWidgetSavableTab::setRegionWidgetIds(const QStringList &s) {
     regionWidgetIds.append(s);
 }
 
-}    // namespace U2
+}  // namespace U2

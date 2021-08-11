@@ -210,4 +210,4 @@ bool GzipDecompressTask::checkZipped(const GUrl &fileUrl) {
     return (IOAdapterUtils::url2io(fileUrl) == BaseIOAdapters::GZIPPED_LOCAL_FILE);
 }
 
-}    // namespace U2
+}  // namespace U2

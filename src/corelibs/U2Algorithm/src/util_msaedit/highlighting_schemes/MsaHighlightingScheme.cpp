@@ -155,4 +155,4 @@ QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory *>> MsaHighlightingScheme
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

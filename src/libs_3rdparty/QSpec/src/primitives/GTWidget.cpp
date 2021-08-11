@@ -78,7 +78,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
 
-#ifdef Q_OS_DARWIN    // TODO: workaround for MacOS gui tests
+#ifdef Q_OS_DARWIN  // TODO: workaround for MacOS gui tests
     if (!qobject_cast<QComboBox *>(w) &&
         !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
@@ -405,7 +405,7 @@ void GTWidget::clickWindowTitle(GUITestOpStatus &os, QWidget *window) {
 
 #define GT_METHOD_NAME "moveWidgetTo"
 void GTWidget::moveWidgetTo(GUITestOpStatus &os, QWidget *window, const QPoint &point) {
-    //QPoint(window->width()/2,3) - is hack
+    // QPoint(window->width()/2,3) - is hack
     GTMouseDriver::moveTo(getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3));
     const QPoint p0 = getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3);
     const QPoint p1 = point + QPoint(window->width() / 2, 3);
@@ -527,4 +527,4 @@ void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, c
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

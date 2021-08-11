@@ -45,7 +45,7 @@
 
 #include "ExportUtils.h"
 
-static const qint64 MAX_CHUNK_LENGTH = 4194305;    // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
+static const qint64 MAX_CHUNK_LENGTH = 4194305;  // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
 
 static QMutex seqRefGuard(QMutex::NonRecursive);
 
@@ -186,11 +186,11 @@ ExportSequenceTaskSettings::ExportSequenceTaskSettings()
 }
 
 //////////////////////////////////////////////////////////////////////////
-//ExportSequenceTask
+// ExportSequenceTask
 
 ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
-    : DocumentProviderTask("", TaskFlag_None), config(s) {
-    setTaskName(tr("Export sequence to '%1'").arg(QFileInfo(s.fileName).fileName()));
+    : DocumentProviderTask(tr("Export sequence to %1").arg(s.fileName), TaskFlag_None), config(s) {
+    documentDescription = QFileInfo(s.fileName).fileName();
     setVerboseLogMode(true);
 }
 
@@ -292,7 +292,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
         const U2Sequence frameSeq = frameImporters[frameNumber].finalizeSequence(os);
         CHECK_OP(os, res);
 
-        if (0 == frameSeq.length) {    // no translation was produced
+        if (0 == frameSeq.length) {  // no translation was produced
             coreLog.info(ExportSequenceTask::tr("The \"%1\" translation is empty due to small source sequence length").arg(frameSeq.visualName));
             continue;
         }
@@ -442,18 +442,19 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 void ExportSequenceTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(config.formatId);
-    SAFE_POINT(nullptr != f, L10N::nullPointerError("sequence document format"), );
+    GTIMER(cvar, tvar, "ExportSequenceTask");
+
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
-    SAFE_POINT(nullptr != iof, L10N::nullPointerError("I/O adapter factory"), );
-    resultDocument = f->createNewLoadedDocument(iof, config.fileName, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, config.fileName, stateInfo));
     CHECK_OP(stateInfo, );
 
-    const U2DbiRef dbiRef = resultDocument->getDbiRef();
+    const U2DbiRef dbiRef = exportedDocument->getDbiRef();
 
     DbiOperationsBlock dbiBlock(dbiRef, stateInfo);
     Q_UNUSED(dbiBlock);
@@ -476,7 +477,7 @@ void ExportSequenceTask::run() {
         CHECK_OP(stateInfo, );
         notMergedItems.append(r2Items);
 
-        //TODO: if we do not need to merge items, here we can use streaming & save the doc!
+        // TODO: if we do not need to merge items, here we can use streaming & save the doc!
     }
     CHECK_EXT(!notMergedItems.isEmpty(), stateInfo.setError(tr("No sequences have been produced.")), );
 
@@ -489,10 +490,15 @@ void ExportSequenceTask::run() {
         resultItems = notMergedItems;
     }
 
-    saveExportItems2Doc(resultItems, config.sequenceName, resultDocument, stateInfo);
+    saveExportItems2Doc(resultItems, config.sequenceName, exportedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
-    //store the document
-    f->storeDocument(resultDocument, stateInfo);
+    // Store the document.
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    exportedDocument.reset();  // Release resources.
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, config.fileName, {}, stateInfo);
 }
 
 ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem &first, const ExportSequenceItem &second, U2OpStatus &os) {
@@ -540,7 +546,7 @@ int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings &config) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData &ad, const ExportSequenceAItem &ei, const U2DbiRef &resultDbiRef, QVector<U2Region> &resultRegions, U2OpStatus &os) {
     U2SequenceImporter importer(QVariantMap(), true);
@@ -615,4 +621,4 @@ void ExportAnnotationSequenceSubTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

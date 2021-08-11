@@ -82,4 +82,4 @@ bool DNAAlphabet::containsAll(const char *str, int len) const {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

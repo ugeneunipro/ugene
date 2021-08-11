@@ -470,4 +470,4 @@ void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema() {
     FAIL("something wrong causes color scheme deletion, this code must be unreacheble", );
 }
 
-}    // namespace U2
+}  // namespace U2

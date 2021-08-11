@@ -112,4 +112,4 @@ void DbiScriptClass::fromScriptValue(const QScriptValue &obj, ScriptDbiData &id)
     id = qvariant_cast<ScriptDbiData>(obj.data().toVariant());
 }
 
-}    // namespace U2
+}  // namespace U2

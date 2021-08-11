@@ -59,4 +59,4 @@ StructuralAlignmentTask *StructuralAlignmentAlgorithmRegistry::createStructuralA
     return t;
 }
 
-}    // namespace U2
+}  // namespace U2

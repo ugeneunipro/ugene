@@ -176,40 +176,40 @@ void HRWizardParser::finilizePagesOrder(U2OpStatus &os) {
     // TODO: UGENE-1322
     Q_UNUSED(os);
     pages = pagesMap.values();
-    //QString lastId;
-    //QList<QString> ids = nextIds.keys();
+    // QString lastId;
+    // QList<QString> ids = nextIds.keys();
     //// Check loops, first page id and last page id
-    //foreach (const QString &id, nextIds.keys()) {
-    //    if (nextIds[id].isEmpty()) {
-    //        if (!lastId.isEmpty()) {
-    //            os.setError(tr("Two pages of the wizard are defined as last: %1, %2").arg(lastId).arg(id));
-    //            return;
-    //        }
-    //        lastId = id;
-    //    } else {
-    //        if (!nextIds.keys().contains(nextIds[id])) {
-    //            os.setError(tr("Unknown next page id: %1").arg(nextIds[id]));
-    //            return;
-    //        }
-    //        if (!ids.contains(nextIds[id])) {
-    //            os.setError(tr("Two pages of the wizard have equal next page ids: %1").arg(nextIds[id]));
-    //            return;
-    //        }
-    //        ids.removeOne(nextIds[id]);
-    //    }
-    //}
-    //if (ids.isEmpty()) {
-    //    os.setError(tr("Some pages of the widget are looped"));
-    //    return;
-    //} else if (ids.size() > 1) {
-    //    os.setError(tr("Several pages of the wizard are defined as first: %1, %2, ...").arg(ids[0]).arg(ids[1]));
-    //    return;
-    //}
+    // foreach (const QString &id, nextIds.keys()) {
+    //     if (nextIds[id].isEmpty()) {
+    //         if (!lastId.isEmpty()) {
+    //             os.setError(tr("Two pages of the wizard are defined as last: %1, %2").arg(lastId).arg(id));
+    //             return;
+    //         }
+    //         lastId = id;
+    //     } else {
+    //         if (!nextIds.keys().contains(nextIds[id])) {
+    //             os.setError(tr("Unknown next page id: %1").arg(nextIds[id]));
+    //             return;
+    //         }
+    //         if (!ids.contains(nextIds[id])) {
+    //             os.setError(tr("Two pages of the wizard have equal next page ids: %1").arg(nextIds[id]));
+    //             return;
+    //         }
+    //         ids.removeOne(nextIds[id]);
+    //     }
+    // }
+    // if (ids.isEmpty()) {
+    //     os.setError(tr("Some pages of the widget are looped"));
+    //     return;
+    // } else if (ids.size() > 1) {
+    //     os.setError(tr("Several pages of the wizard are defined as first: %1, %2, ...").arg(ids[0]).arg(ids[1]));
+    //     return;
+    // }
 
     //// Create pages list saving order
-    //QString currentId = ids.first();
-    //while ("" != currentId) {
-    //    QString nextId = nextIds[currentId];
+    // QString currentId = ids.first();
+    // while ("" != currentId) {
+    //     QString nextId = nextIds[currentId];
 
     //    WizardPage *page = pagesMap[currentId];
     //    if (!nextId.isEmpty()) {
@@ -963,5 +963,5 @@ const QString &PageContentSerializer::getResult() const {
     return result;
 }
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2

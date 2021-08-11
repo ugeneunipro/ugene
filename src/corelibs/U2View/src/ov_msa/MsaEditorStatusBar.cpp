@@ -57,4 +57,4 @@ void MsaEditorStatusBar::updateLabels() {
     updateSelectionLabel();
 }
 
-}    // namespace U2
+}  // namespace U2

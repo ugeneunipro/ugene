@@ -73,7 +73,7 @@ RepeatFinderPlugin::RepeatFinderPlugin()
     pr->registerProto(new QDRepeatActorPrototype());
     pr->registerProto(new QDTandemActorPrototype());
 
-    //tests
+    // tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -130,4 +130,4 @@ void RepeatViewContext::sl_showTandemDialog() {
     d->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -144,4 +144,4 @@ void MsaUndoRedoFramework::sl_redo() {
     maObj->updateCachedMultipleAlignment(modInfo);
 }
 
-}    // namespace U2
+}  // namespace U2

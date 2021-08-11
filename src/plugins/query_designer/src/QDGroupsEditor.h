@@ -56,6 +56,6 @@ private:
     QAction *setGroupReqNumAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

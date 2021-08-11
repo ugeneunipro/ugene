@@ -72,6 +72,6 @@ public:
     static void checkNoVisibleNotifications(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_NOTIFICATIONS_H_
+#endif  // _U2_GT_UTILS_NOTIFICATIONS_H_

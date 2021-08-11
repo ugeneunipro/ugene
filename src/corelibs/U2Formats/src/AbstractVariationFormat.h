@@ -49,10 +49,10 @@ public:
         OneBased
     };
 
-    //Variation1: chr1 123 G A,C
-    //to
-    //Variation1.1: chr1 123 G A
-    //Variation1.2: chr1 123 G C
+    // Variation1: chr1 123 G A,C
+    // to
+    // Variation1.1: chr1 123 G A
+    // Variation1.2: chr1 123 G C
     enum SplitAlleles {
         Split = 0,
         NoSplit
@@ -87,6 +87,6 @@ private:
     static QStringList getHeader(const VariantTrackObject *variantTrackObject, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ABSTRACT_VARIATION_FORMAT_H_
+#endif  // _U2_ABSTRACT_VARIATION_FORMAT_H_

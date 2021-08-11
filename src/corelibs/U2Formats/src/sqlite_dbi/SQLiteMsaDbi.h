@@ -264,6 +264,6 @@ private:
     void updateMsaLength(SQLiteModificationAction &updateAction, const U2DataId &msaId, qint64 length, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -33,5 +33,5 @@ public:
     }
     void commonScenario();
 };
-}    // namespace HI
-#endif    //_HI_GT_FONT_DIALOG_FILLER_H_
+}  // namespace HI
+#endif  //_HI_GT_FONT_DIALOG_FILLER_H_

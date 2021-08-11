@@ -20,20 +20,19 @@
  */
 
 #include "PToolsAligner.h"
+#include <exception>
 
-#include <U2Core/Log.h>
 #include <U2Core/BioStruct3D.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2Region.h>
 
 #include "ptools/superpose.h"
-
-#include <exception>
 
 namespace U2 {
 
 /* class PToolsAligner : public StructuralAlignmentAlgorithm */
 
-static PTools::Rigidbody* createRigidBody(const BioStruct3DReference &subset) {
+static PTools::Rigidbody *createRigidBody(const BioStruct3DReference &subset) {
     PTools::Rigidbody *body = new PTools::Rigidbody();
     const BioStruct3D &biostruct = subset.obj->getBioStruct3D();
 
@@ -44,24 +43,22 @@ static PTools::Rigidbody* createRigidBody(const BioStruct3DReference &subset) {
         if (subset.chains.size() == 1) {
             // take region associated with the single chain from the subset
             region = subset.chainRegion;
-        }
-        else {
+        } else {
             // take full chain
             region = U2Region(0, biostruct.moleculeMap.value(chainId)->residueMap.size());
         }
 
         // built in assumtion that order of atoms in BioStruct3D matches order of residues
         int i = 0;
-        foreach (const SharedAtom &atom, model.atoms)
-        {
+        foreach (const SharedAtom &atom, model.atoms) {
             // take into account only CA atoms (backbone) because subsets may have different residues,
             // i.e. different number of atoms on the same nuber of residues
-            if ( atom->name == "CA") {
+            if (atom->name == "CA") {
                 if (i >= region.startPos && i < region.endPos()) {
                     PTools::Atomproperty pproperty;
                     pproperty.SetType(atom->name.data());
                     pproperty.SetResidId(atom->residueIndex.toInt());
-                    //pproperty.SetAtomId();
+                    // pproperty.SetAtomId();
 
                     const Vector3D &coord = atom->coord3d;
                     PTools::Coord3D pcoord(coord.x, coord.y, coord.z);
@@ -83,8 +80,7 @@ static int getSubsetSize(const BioStruct3DReference &subset) {
     if (subset.chains.size() == 1) {
         // lenggth of region
         res = subset.chainRegion.length;
-    }
-    else {
+    } else {
         // lenghth of all chains
         foreach (int chainId, subset.chains) {
             int length = subset.obj->getBioStruct3D().moleculeMap.value(chainId)->residueMap.size();
@@ -116,20 +112,17 @@ StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &
 
         if (prefBody->Size() != paltBody->Size()) {
             error = QString("Failed to align, subsets turn to RigidBodies of a different size");
-        }
-        else {
+        } else {
             Superpose_t presult = PTools::superpose(*prefBody, *paltBody);
 
             result.rmsd = presult.rmsd;
             for (int i = 0; i < 16; ++i) {
-                result.transform[i] = presult.matrix(i/4, i%4);
+                result.transform[i] = presult.matrix(i / 4, i % 4);
             }
         }
-    }
-    catch (const std::exception &e) {
+    } catch (const std::exception &e) {
         error = QString("Internal ptools error: %1").arg(e.what());
-    }
-    catch (...) {
+    } catch (...) {
         error = QString("Internal ptools error");
     }
 
@@ -141,4 +134,4 @@ StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &
     return result;
 }
 
-}   // namespace U2
+}  // namespace U2

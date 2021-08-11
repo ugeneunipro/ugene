@@ -75,15 +75,15 @@ public:
         countGapsInConsensusNumbering = true;
     }
 
-    QString profileName;    // usually object name
-    QString profileURL;    // document url
+    QString profileName;  // usually object name
+    QString profileURL;  // document url
     MultipleSequenceAlignment ma;
-    bool usePercents;    //report percents but not counts
+    bool usePercents;  // report percents but not counts
     DNAStatMSAProfileOutputFormat outFormat;
     QString outURL;
-    bool reportGaps;    // report GAPS statistics
-    bool stripUnused;    // do not include into report chars unused in alignment
-    bool countGapsInConsensusNumbering;    //affects html output only
+    bool reportGaps;  // report GAPS statistics
+    bool stripUnused;  // do not include into report chars unused in alignment
+    bool countGapsInConsensusNumbering;  // affects html output only
 };
 
 class DNAStatMSAProfileTask : public Task {
@@ -111,11 +111,11 @@ private:
     QStringList verticalColumnNames;
     QVector<ColumnStat> columns;
     QVector<char> consenusChars;
-    QHash<char, int> char2index;    //char 2 index in 'ColumnStat'
+    QHash<char, int> char2index;  // char 2 index in 'ColumnStat'
     QSet<char> unusedChars;
     QString resultText;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

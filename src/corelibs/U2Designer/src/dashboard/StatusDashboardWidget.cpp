@@ -221,4 +221,4 @@ QString StatusDashboardWidget::toHtml() const {
     return html;
 }
 
-}    // namespace U2
+}  // namespace U2

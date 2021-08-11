@@ -73,6 +73,6 @@ private:
     void setFValue(int i, int j, float v);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_NW_ALIGNER_H_
+#endif  // _U2_NW_ALIGNER_H_

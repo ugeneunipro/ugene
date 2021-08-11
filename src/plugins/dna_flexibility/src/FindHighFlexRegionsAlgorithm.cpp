@@ -35,7 +35,7 @@ void FindHighFlexRegionsAlgorithm::find(
     int &stopFlag,
     int &percentsCompleted) {
     Q_UNUSED(stopFlag);
-    Q_UNUSED(percentsCompleted);    //TODO: fix it
+    Q_UNUSED(percentsCompleted);  // TODO: fix it
 
     SAFE_POINT(settings.windowSize <= seqLength,
                "Internal error: a user is not allowed to input such window size", );
@@ -95,11 +95,11 @@ void FindHighFlexRegionsAlgorithm::find(
 
                     // Creating the region
                     U2Region resultRegion(
-                        areaHighFlexLeft,    // left coordinate of the area
+                        areaHighFlexLeft,  // left coordinate of the area
                         areaLength);
 
                     // Calculating the area average threshold
-                    double areaAverageThreshold = areaTotalThreshold / (areaHighFlexWindowsNumber + 1);    // "+1" as it starts from 0
+                    double areaAverageThreshold = areaTotalThreshold / (areaHighFlexWindowsNumber + 1);  // "+1" as it starts from 0
 
                     // Adding the result found to the results
                     HighFlexResult result(resultRegion,
@@ -135,7 +135,7 @@ double FindHighFlexRegionsAlgorithm::flexibilityAngle(char firstNucleotide, char
         if (secondNucleotide == 'T') {
             return 25;
         }
-        return 7.6;    // if second is N or -, choose minimum
+        return 7.6;  // if second is N or -, choose minimum
     }
 
     if (firstNucleotide == 'C') {
@@ -151,7 +151,7 @@ double FindHighFlexRegionsAlgorithm::flexibilityAngle(char firstNucleotide, char
         if (secondNucleotide == 'T') {
             return 8.2;
         }
-        return 7.2;    // if second is N or -, choose minimum
+        return 7.2;  // if second is N or -, choose minimum
     }
 
     if (firstNucleotide == 'G') {
@@ -167,7 +167,7 @@ double FindHighFlexRegionsAlgorithm::flexibilityAngle(char firstNucleotide, char
         if (secondNucleotide == 'T') {
             return 14.6;
         }
-        return 7.2;    // if second is N or -, choose minimum
+        return 7.2;  // if second is N or -, choose minimum
     }
 
     if (firstNucleotide == 'T') {
@@ -183,23 +183,23 @@ double FindHighFlexRegionsAlgorithm::flexibilityAngle(char firstNucleotide, char
         if (secondNucleotide == 'T') {
             return 7.6;
         }
-        return 7.6;    // if second is N or -, choose minimum
+        return 7.6;  // if second is N or -, choose minimum
     }
 
     if (firstNucleotide == 'N' || firstNucleotide == '-') {
         if (secondNucleotide == 'A') {
             return 7.6;
-        }    // minimum of AA, CA, GA, TA
+        }  // minimum of AA, CA, GA, TA
         if (secondNucleotide == 'C') {
             return 7.2;
-        }    // minimum of AC, CC, GC, TC
+        }  // minimum of AC, CC, GC, TC
         if (secondNucleotide == 'G') {
             return 7.2;
-        }    // minimum of AG, CG, GG, TG
+        }  // minimum of AG, CG, GG, TG
         if (secondNucleotide == 'T') {
             return 7.6;
-        }    // minimum of AT, CT, GT, TT
-        return 7.2;    // if second is N or -, choose minimum
+        }  // minimum of AT, CT, GT, TT
+        return 7.2;  // if second is N or -, choose minimum
     }
 
     FAIL("Illegal combination of nucleotides. The standard DNA alphabet is only supported.", 0);
@@ -213,4 +213,4 @@ void FindHighFlexRegionsAlgorithm::addToResults(
     resultsListener->onResult(result);
 }
 
-}    // namespace U2
+}  // namespace U2

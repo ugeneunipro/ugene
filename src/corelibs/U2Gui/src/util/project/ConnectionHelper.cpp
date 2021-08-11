@@ -41,4 +41,4 @@ ConnectionHelper::~ConnectionHelper() {
     delete con;
 }
 
-}    // namespace U2
+}  // namespace U2

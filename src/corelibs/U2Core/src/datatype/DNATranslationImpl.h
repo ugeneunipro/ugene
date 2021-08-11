@@ -67,7 +67,7 @@ public:
     char c[3];
 };
 
-//Triplet extended with probability value, used for back translation
+// Triplet extended with probability value, used for back translation
 struct U2CORE_EXPORT TripletP {
 public:
     TripletP() {
@@ -105,7 +105,7 @@ public:
     }
 
     char c[3];
-    int p;    //probability value, values in [0..100]
+    int p;  // probability value, values in [0..100]
 };
 
 class U2CORE_EXPORT Index3To1 {
@@ -160,20 +160,20 @@ class IndexedMapping3To1 {
     Q_DISABLE_COPY(IndexedMapping3To1)
 public:
     IndexedMapping3To1(const QList<Mapping3To1<T>> &rawMapping, const T &defaultVal) {
-        //init index;
+        // init index;
         QList<Triplet> ts;
         foreach (const Mapping3To1<T> &m, rawMapping) {
             ts.append(m.t);
         }
         index.init(ts);
 
-        //allocate value area and fill it with default values
+        // allocate value area and fill it with default values
         int size = index.getIndexSize();
         assert(size > 0);
         resultByIndex = new T[size];
         std::fill(resultByIndex, resultByIndex + size, defaultVal);
 
-        //assign indexed values
+        // assign indexed values
         foreach (const Mapping3To1<T> &m, rawMapping) {
             int i = index.indexOf(m.t);
             resultByIndex[i] = m.res;
@@ -181,10 +181,10 @@ public:
     }
 
     IndexedMapping3To1(const QByteArray &alphabetChars, const T &defaultVal) {
-        //init index
+        // init index
         index.init(alphabetChars);
 
-        //allocate value area and fill it with default values
+        // allocate value area and fill it with default values
         int size = index.getIndexSize();
         assert(size > 0);
         resultByIndex = new T[size];
@@ -340,6 +340,6 @@ private:
     BackTranslationRules index;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

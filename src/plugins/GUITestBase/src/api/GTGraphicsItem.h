@@ -37,6 +37,6 @@ public:
     static QPoint getItemCenter(HI::GUITestOpStatus &os, QGraphicsItem *it);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTGRAPHICSITEM_H
+#endif  // GTGRAPHICSITEM_H

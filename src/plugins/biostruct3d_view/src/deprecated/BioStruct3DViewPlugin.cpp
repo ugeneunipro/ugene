@@ -49,27 +49,27 @@
 namespace U2 {
 
 /*!
-* \mainpage BioStruct3D Viewer Plugin Documentation
-*
-* \section viewer Introduction
-*
-* BioStruct3D Viewer is a macromolecular viewing / editing tool.
-* It is activated whenever UGENE loads document that contains BioStruct3DObject.
-*
-*
-* \subsection main Main Classes
-*
-* plugin classes:
-* - BioStruct3DGLWidget : Widget for rendering 3d representations of macromolecular structure.
-* - BioStruct3DSplitter : Multiple glWidgets layout and manipulation
-* - GLFrame : Class for manipulating the 3d viewpoint
-*
-* plugin interfaces:
-* - BioStruct3DGLRenderer : General interface for structure 3d graphical styles
-* - BioStruct3DColorScheme : Interface for coloring atoms, bonds, etc.
-*
-*
-*/
+ * \mainpage BioStruct3D Viewer Plugin Documentation
+ *
+ * \section viewer Introduction
+ *
+ * BioStruct3D Viewer is a macromolecular viewing / editing tool.
+ * It is activated whenever UGENE loads document that contains BioStruct3DObject.
+ *
+ *
+ * \subsection main Main Classes
+ *
+ * plugin classes:
+ * - BioStruct3DGLWidget : Widget for rendering 3d representations of macromolecular structure.
+ * - BioStruct3DSplitter : Multiple glWidgets layout and manipulation
+ * - GLFrame : Class for manipulating the 3d viewpoint
+ *
+ * plugin interfaces:
+ * - BioStruct3DGLRenderer : General interface for structure 3d graphical styles
+ * - BioStruct3DColorScheme : Interface for coloring atoms, bonds, etc.
+ *
+ *
+ */
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
@@ -135,7 +135,7 @@ bool BioStruct3DViewContext::canHandle(GObjectView *v, GObject *o) {
 }
 
 void BioStruct3DViewContext::onObjectAdded(GObjectView *view, GObject *obj) {
-    //todo: add sequence & all objects associated with sequence to the view?
+    // todo: add sequence & all objects associated with sequence to the view?
 
     BioStruct3DObject *obj3d = qobject_cast<BioStruct3DObject *>(obj);
     if (obj3d == nullptr || view == nullptr) {
@@ -164,7 +164,7 @@ void BioStruct3DViewContext::onObjectRemoved(GObjectView *v, GObject *obj) {
     bool close = splitter->removeObject(obj3d);
     if (close) {
         splitter->close();
-        //unregister3DView(v,splitter);
+        // unregister3DView(v,splitter);
     }
 }
 
@@ -213,4 +213,4 @@ void BioStruct3DViewContext::sl_windowClosing(MWMDIWindow *w) {
     GObjectViewWindowContext::sl_windowClosing(w);
 }
 
-}    // namespace U2
+}  // namespace U2

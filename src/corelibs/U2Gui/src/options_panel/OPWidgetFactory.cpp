@@ -50,7 +50,7 @@ OPWidgetFactory::~OPWidgetFactory() {
 }
 
 bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
-    //by default checks type only
+    // by default checks type only
     bool res = false;
 
     SAFE_POINT(filter != nullptr, "OPWidgetFactory::passFiltration. Filter is null", res);
@@ -72,4 +72,4 @@ OPCommonWidgetFactory::~OPCommonWidgetFactory() {
 OPFactoryFilterVisitorInterface::~OPFactoryFilterVisitorInterface() {
 }
 
-}    // namespace U2
+}  // namespace U2

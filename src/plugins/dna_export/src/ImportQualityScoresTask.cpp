@@ -110,7 +110,7 @@ void ReadQualityScoresTask::recordQuality(int headerCounter) {
             qualCodes = encodedQuality;
         }
         result.insert(headers[headerCounter], DNAQuality(qualCodes, type));
-        //log.trace( QString("Phred quality parsed: %1 %2").arg(headers[headerCounter]).arg(qualCodes.constData()) );
+        // log.trace( QString("Phred quality parsed: %1 %2").arg(headers[headerCounter]).arg(qualCodes.constData()) );
     }
 }
 
@@ -162,7 +162,7 @@ QList<Task *> ImportPhredQualityScoresTask::onSubTaskFinished(Task *subTask) {
     QMap<QString, DNAQuality> qualities = readQualitiesTask->getResult();
     if (config.createNewDocument) {
         assert(0);
-        //TODO: consider creating this option
+        // TODO: consider creating this option
     } else {
         foreach (U2SequenceObject *obj, seqList) {
             if (obj->isStateLocked()) {
@@ -181,4 +181,4 @@ QList<Task *> ImportPhredQualityScoresTask::onSubTaskFinished(Task *subTask) {
     return subTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

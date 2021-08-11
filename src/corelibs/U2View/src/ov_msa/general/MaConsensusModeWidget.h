@@ -58,5 +58,5 @@ private:
     QString curAlphabetId;
 };
 
-}    // namespace U2
-#endif    // _U2_MA_CONSENSUS_MODE_WIDGET_H_
+}  // namespace U2
+#endif  // _U2_MA_CONSENSUS_MODE_WIDGET_H_

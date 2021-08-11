@@ -67,37 +67,37 @@ private:
 };
 
 /**
-  * Changeing order of rows:
-  * moveRows_oneLineInMiddle: shifts one row from the middle of alignment in one position up and down.
-  * moveRows_oneLineInMiddleToTheTop: shifts one row from the middle of alignment (with number i)
-  *     in i, i-1, i+1 positions up.
-  * moveRows_oneLineInMiddleToTheBottom: shifts one row from the middle of alignment (with number i)
-  *     in i, i-1, i+1 positions down.
-  * moveRows_oneBlockInMiddle: shifts the block of some rows from the middle of alignement in one
-  *     position up and down.
-  * moveRows_oneBlockInMiddleToTheOutside: tries to shift the block of some rows from the middle of alignement
-  *     beyond the borders of the alignment.
-  * moveRows_twoBlocksInMiddleWithoutGluing: shifts two blocks from the middle of alignment without
-  *     reaching the alignment boundary by any block.
-  * moveRows_twoBlocksInMiddleWithGluing: shifts two blocks from the middle of alignment with
-  *     reaching the alignment boundary by one block, another block adjoins the first block.
-  * moveRows_twoBlocksOnTopWithoutGluing: shifts two blocks (one from the top, one from the middle of alignment)
-  *     without reaching the alignment boundary or the top block by the middle block.
-  * moveRows_twoBlocksOnTopWithGluing: shifts two blocks (one from the top, one from the middle of alignment)
-  *     with reaching the alignment boundary by the middle block, blocks adjoin each other.
-  * moveRows_twoBlocksOnBottomWithoutGluing: shifts two blocks (one from the bottom, one from the middle of alignment)
-  *     without reaching the alignment boundary or the  bottom block by the middle block.
-  * moveRows_twoBlocksOnBottomWithGluing: shifts two blocks (one from the bottom, one from the middle of alignment)
-  *     with reaching the alignment boundary by the middle block, blocks adjoin each other.
-  * moveRows_threeBlocksWithoutGluing: shifts three blocks (one from the top, one from the middle, one from
-  *     the bottom of alignment) without adjoining the alignment boundary or other blocks by the middle block.
-  * moveRows_threeBlocksWithOnceGluing: shifts three blocks (one from the top, one from the middle, one from
-  *     the bottom of alignment) with adjoining one of the end block (top or botom) by the middle block.
-  * moveRows_threeBlocksWithTwiceGluing: shifts three blocks (one from the top, one from the middle, one from
-  *     the bottom of alignment) with adjoining all blocks into one big block.
-  * moveRows_UnorderedList: unordered list of rows is given to the moveRows function.
-  * moveRows_InvalidRowList: invalid row id is given to the moveRows function.
-  */
+ * Changeing order of rows:
+ * moveRows_oneLineInMiddle: shifts one row from the middle of alignment in one position up and down.
+ * moveRows_oneLineInMiddleToTheTop: shifts one row from the middle of alignment (with number i)
+ *     in i, i-1, i+1 positions up.
+ * moveRows_oneLineInMiddleToTheBottom: shifts one row from the middle of alignment (with number i)
+ *     in i, i-1, i+1 positions down.
+ * moveRows_oneBlockInMiddle: shifts the block of some rows from the middle of alignement in one
+ *     position up and down.
+ * moveRows_oneBlockInMiddleToTheOutside: tries to shift the block of some rows from the middle of alignement
+ *     beyond the borders of the alignment.
+ * moveRows_twoBlocksInMiddleWithoutGluing: shifts two blocks from the middle of alignment without
+ *     reaching the alignment boundary by any block.
+ * moveRows_twoBlocksInMiddleWithGluing: shifts two blocks from the middle of alignment with
+ *     reaching the alignment boundary by one block, another block adjoins the first block.
+ * moveRows_twoBlocksOnTopWithoutGluing: shifts two blocks (one from the top, one from the middle of alignment)
+ *     without reaching the alignment boundary or the top block by the middle block.
+ * moveRows_twoBlocksOnTopWithGluing: shifts two blocks (one from the top, one from the middle of alignment)
+ *     with reaching the alignment boundary by the middle block, blocks adjoin each other.
+ * moveRows_twoBlocksOnBottomWithoutGluing: shifts two blocks (one from the bottom, one from the middle of alignment)
+ *     without reaching the alignment boundary or the  bottom block by the middle block.
+ * moveRows_twoBlocksOnBottomWithGluing: shifts two blocks (one from the bottom, one from the middle of alignment)
+ *     with reaching the alignment boundary by the middle block, blocks adjoin each other.
+ * moveRows_threeBlocksWithoutGluing: shifts three blocks (one from the top, one from the middle, one from
+ *     the bottom of alignment) without adjoining the alignment boundary or other blocks by the middle block.
+ * moveRows_threeBlocksWithOnceGluing: shifts three blocks (one from the top, one from the middle, one from
+ *     the bottom of alignment) with adjoining one of the end block (top or botom) by the middle block.
+ * moveRows_threeBlocksWithTwiceGluing: shifts three blocks (one from the top, one from the middle, one from
+ *     the bottom of alignment) with adjoining all blocks into one big block.
+ * moveRows_UnorderedList: unordered list of rows is given to the moveRows function.
+ * moveRows_InvalidRowList: invalid row id is given to the moveRows function.
+ */
 DECLARE_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddle);
 DECLARE_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheTop);
 DECLARE_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheBottom);
@@ -116,15 +116,15 @@ DECLARE_TEST(MsaDbiUtilsUnitTests, moveRows_UnorderedList);
 DECLARE_TEST(MsaDbiUtilsUnitTests, moveRows_InvalidRowList);
 
 /**
-  * Trim gaps:
-  * trim_noGaps: trim the alignment without trimable gaps.
-  * trim_leadingGaps: trim some leading gaps.
-  * trim_trailingGaps: trim some trailing gaps.
-  * trim_leadingGapsCutOff: trim the leading gaps, some gaps are not deleted, but cut off.
-  * trim_trailingGaps: trim the trailing gaps, some gaps are not deleted, but cut off.
-  * trim_leadingAndTrailingGaps: trim the leading and trailing gaps with cut off.
-  * trim_gapsOnly: trim the alignment consists from gaps only.
-  */
+ * Trim gaps:
+ * trim_noGaps: trim the alignment without trimable gaps.
+ * trim_leadingGaps: trim some leading gaps.
+ * trim_trailingGaps: trim some trailing gaps.
+ * trim_leadingGapsCutOff: trim the leading gaps, some gaps are not deleted, but cut off.
+ * trim_trailingGaps: trim the trailing gaps, some gaps are not deleted, but cut off.
+ * trim_leadingAndTrailingGaps: trim the leading and trailing gaps with cut off.
+ * trim_gapsOnly: trim the alignment consists from gaps only.
+ */
 DECLARE_TEST(MsaDbiUtilsUnitTests, trim_noGaps);
 DECLARE_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps);
 DECLARE_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps);
@@ -143,19 +143,19 @@ DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongId);
 DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount);
 
 /**
-  * updateMsa - updates a Msa in a database with data from a MultipleSequenceAlignment.
-  * The msa stored in the database is not empty by default.
-  *     ^   empty               - there is the empty msa stored in the database, the MultipleSequenceAlignment contains new rows.
-  *     ^   nothingNew          - the MultipleSequenceAlignment contains the same information.
-  *     ^   newOrder            - the MultipleSequenceAlignment contains the same rows in other order.
-  *     ^   newName             - the MultipleSequenceAlignment contains the same rows, the msa name changes.
-  *     ^   newAlphabet         - the MultipleSequenceAlignment contains the same rows, the msa alphabet changes.
-  *     ^   newContent          - the MultipleSequenceAlignment doesn't contain new rows, some rows data changes.
-  *     ^   newSequence         - the MultipleSequenceAlignment doesn't contain new rows, some rows have new sequences.
-  *     ^   additionalRows      - the MultipleSequenceAlignment contains new rows, no rows are deleted.
-  *     ^   removeRows          - the MultipleSequenceAlignment doesn't contain some rows.
-  *     ^   clear               - the MultipleSequenceAlignment is empty.
-  */
+ * updateMsa - updates a Msa in a database with data from a MultipleSequenceAlignment.
+ * The msa stored in the database is not empty by default.
+ *     ^   empty               - there is the empty msa stored in the database, the MultipleSequenceAlignment contains new rows.
+ *     ^   nothingNew          - the MultipleSequenceAlignment contains the same information.
+ *     ^   newOrder            - the MultipleSequenceAlignment contains the same rows in other order.
+ *     ^   newName             - the MultipleSequenceAlignment contains the same rows, the msa name changes.
+ *     ^   newAlphabet         - the MultipleSequenceAlignment contains the same rows, the msa alphabet changes.
+ *     ^   newContent          - the MultipleSequenceAlignment doesn't contain new rows, some rows data changes.
+ *     ^   newSequence         - the MultipleSequenceAlignment doesn't contain new rows, some rows have new sequences.
+ *     ^   additionalRows      - the MultipleSequenceAlignment contains new rows, no rows are deleted.
+ *     ^   removeRows          - the MultipleSequenceAlignment doesn't contain some rows.
+ *     ^   clear               - the MultipleSequenceAlignment is empty.
+ */
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_empty);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder);
@@ -167,7 +167,7 @@ DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_clear);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddle);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheTop);
@@ -214,4 +214,4 @@ DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_additionalRows);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_removeRows);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_clear);
 
-#endif    // _U2_MSA_DBI_UTILS_UNIT_TESTS_H_
+#endif  // _U2_MSA_DBI_UTILS_UNIT_TESTS_H_

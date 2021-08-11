@@ -46,5 +46,5 @@ public:
     static int getItemBottom(HI::GUITestOpStatus &os, QString itemName);
 };
 
-}    // namespace U2
-#endif    // GT_UTILS_QUERY_DESIGNER_H
+}  // namespace U2
+#endif  // GT_UTILS_QUERY_DESIGNER_H

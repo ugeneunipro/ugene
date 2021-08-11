@@ -92,7 +92,7 @@ void HMMSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &si) {
     bool wasAmino = t->isAminoTranslated();
     U2Region globalReg = t->getGlobalRegion();
 
-    //set TLS data
+    // set TLS data
     TaskLocalData::createHMMContext(t->getTaskId(), true);
 
     QList<UHMMSearchResult> sresults;
@@ -109,7 +109,7 @@ void HMMSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &si) {
         return;
     }
 
-    //convert all UHMMSearchResults into HMMSearchTaskResult
+    // convert all UHMMSearchResults into HMMSearchTaskResult
     QMutexLocker locker(&lock);
     int halfOverlap = hmm->M;
     foreach (const UHMMSearchResult &sr, sresults) {
@@ -126,12 +126,12 @@ void HMMSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &si) {
         r.r.startPos = globalReg.startPos + resStart;
         r.r.length = resLen;
         if (t->intersectsWithOverlaps(r.r)) {
-            //don't add to overlaps if it must be found in 2 regions
+            // don't add to overlaps if it must be found in 2 regions
             bool add = true;
-            if (!r.onCompl && t->hasRightOverlap()) {    //check if will be found in a next chunk
+            if (!r.onCompl && t->hasRightOverlap()) {  // check if will be found in a next chunk
                 U2Region nextChunkRegion(globalReg.endPos() - halfOverlap, halfOverlap);
                 add = !nextChunkRegion.contains(r.r);
-            } else if (r.onCompl && t->hasLeftOverlap()) {    //check if will found in a prev chunk
+            } else if (r.onCompl && t->hasLeftOverlap()) {  // check if will found in a prev chunk
                 U2Region prevChunkRegion(globalReg.startPos, halfOverlap);
                 add = !prevChunkRegion.contains(r.r);
             }
@@ -165,8 +165,8 @@ Task::ReportResult HMMSearchTask::report() {
         return ReportResult_Finished;
     }
 
-    //postprocess overlaps
-    int maxCommonLen = hmm->M / 2;    //if 2 results have common part of 'maxCommonLen' or greater -> select best one
+    // postprocess overlaps
+    int maxCommonLen = hmm->M / 2;  // if 2 results have common part of 'maxCommonLen' or greater -> select best one
     for (int i = 0; i < overlaps.count(); i++) {
         HMMSearchTaskResult &r1 = overlaps[i];
         if (r1.filtered) {
@@ -177,10 +177,10 @@ Task::ReportResult HMMSearchTask::report() {
             if (r2.filtered) {
                 continue;
             }
-            if (r1.onCompl != r2.onCompl) {    //check both regions are on the same strand
+            if (r1.onCompl != r2.onCompl) {  // check both regions are on the same strand
                 continue;
             }
-            if (r1.onAmino) {    //check both regions have the same amino frame
+            if (r1.onAmino) {  // check both regions have the same amino frame
                 int s1 = r1.onCompl ? r1.r.endPos() % 3 : r1.r.startPos % 3;
                 int s2 = r2.onCompl ? r2.r.endPos() % 3 : r2.r.startPos % 3;
                 if (s1 != s2) {
@@ -244,7 +244,7 @@ QList<SharedAnnotationData> HMMSearchTask::getResultsAsAnnotations(U2FeatureType
         if (!info.isEmpty()) {
             a->qualifiers.append(U2Qualifier("HMM-model", info));
         }
-        //a->qualifiers.append(U2Qualifier("E-value", QString().sprintf("%.2lg", ((double) hmmRes.evalue))));
+        // a->qualifiers.append(U2Qualifier("E-value", QString().sprintf("%.2lg", ((double) hmmRes.evalue))));
         a->qualifiers.append(U2Qualifier("E-value", str));
         a->qualifiers.append(U2Qualifier("Score", QString().sprintf("%.1f", hmmRes.score)));
         annotations.append(a);
@@ -349,4 +349,4 @@ QList<Task *> HMMSearchTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

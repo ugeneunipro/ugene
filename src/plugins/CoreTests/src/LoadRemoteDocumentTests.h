@@ -49,6 +49,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LOAD_REMOTE_DOCUMENT_TEST_H_
+#endif  // _U2_LOAD_REMOTE_DOCUMENT_TEST_H_

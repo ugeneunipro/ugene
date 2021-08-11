@@ -81,7 +81,7 @@ void ReadVariationWorker::onTaskFinished(Task *task) {
 QString ReadVariationWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::VARIATION_TRACK_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-    //return getObjectName(handler, U2Type::VariantTrack);
+    // return getObjectName(handler, U2Type::VariantTrack);
     return getObjectName(handler, 5);
 }
 
@@ -116,7 +116,7 @@ void ReadVariationTask::prepare() {
     memUseMB = file.size() / (1024 * 1024);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE || iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
-        memUseMB *= 2.5;    //Need to calculate compress level
+        memUseMB *= 2.5;  // Need to calculate compress level
     }
     coreLog.trace(QString("load document:Memory resource %1").arg(memUseMB));
 
@@ -226,5 +226,5 @@ Worker *ReadVariationWorkerFactory::createWorker(Actor *a) {
     return new ReadVariationWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

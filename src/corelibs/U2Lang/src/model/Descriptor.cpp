@@ -90,4 +90,4 @@ void VisualDescriptor::setIcon(QIcon i) {
     icon = i;
 }
 
-}    // namespace U2
+}  // namespace U2

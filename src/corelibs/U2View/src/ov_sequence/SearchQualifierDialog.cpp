@@ -196,8 +196,8 @@ int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem *group) {
 
     if (AVItem *parentGroup = dynamic_cast<AVItem *>(resultAnnotation->parent())) {
         AVItem *groupToSearchChild = parentGroup != group
-                                         ? parentGroup    // If parent group is a subgroup of group seek to its index.
-                                         : resultAnnotation;    // If annotation is in the same group seek to its idx.
+                                         ? parentGroup  // If parent group is a subgroup of group seek to its index.
+                                         : resultAnnotation;  // If annotation is in the same group seek to its idx.
         int idx = group->indexOfChild(groupToSearchChild);
         if (idx != -1) {
             result = idx;
@@ -209,7 +209,7 @@ int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem *group) {
 int SearchQualifierDialog::SearchQualifier::getStartAnnotationIndex(AVItem *annotation) {
     int result = 0;
     if (resultAnnotation != nullptr && resultAnnotation == annotation) {
-        result = resultInd + 1;    // Start from the next qualifier in the annotation.
+        result = resultInd + 1;  // Start from the next qualifier in the annotation.
     }
     return result;
 }
@@ -350,4 +350,4 @@ void SearchQualifierDialog::sl_onSearchSettingsChanged() {
     ui->buttonBox->button(QDialogButtonBox::Yes)->setEnabled(!searchTextIsEmpty);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -116,7 +116,7 @@ void DotPlotDialog::updateSequenceSelectors() {
 
     int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
 
-    //sequences in the project
+    // sequences in the project
     QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     foreach (GObject *obj, sequenceObjects) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
@@ -139,7 +139,7 @@ void DotPlotDialog::updateSequenceSelectors() {
     }
     if (ySeqIndex >= 0) {
         yAxisCombo->setCurrentIndex(ySeqIndex);
-    } else if (sequenceObjects.size() > 1) {    // choose the second sequence for Y axis by default
+    } else if (sequenceObjects.size() > 1) {  // choose the second sequence for Y axis by default
         yAxisCombo->setCurrentIndex(1);
     }
 }
@@ -368,4 +368,4 @@ GObject *DotPlotDialog::getGObjectByName(const QString &gObjectName) {
     return obj;
 }
 
-}    // namespace U2
+}  // namespace U2

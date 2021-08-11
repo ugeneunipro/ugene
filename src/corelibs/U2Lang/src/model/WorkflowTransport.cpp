@@ -57,6 +57,6 @@ Message Message::getEmptyMapMessage() {
     return Message(emptyType, emptyData, -1);
 }
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

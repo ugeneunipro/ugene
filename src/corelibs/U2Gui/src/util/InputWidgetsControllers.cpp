@@ -26,7 +26,6 @@
 #include <QDoubleSpinBox>
 #include <QLineEdit>
 #include <QRadioButton>
-#include <QSpinBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
@@ -35,8 +34,8 @@
 namespace U2 {
 
 /*InputWidgetController*/
-InputWidgetController::InputWidgetController(QWidget *baseWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : cmdLinePrefix(cmdLinePreffix),
+InputWidgetController::InputWidgetController(QWidget *baseWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : cmdLinePrefix(cmdLinePrefix),
       settingsPath(settingsPath),
       curValue(defaultValue),
       defaultValue(defaultValue),
@@ -64,11 +63,17 @@ void InputWidgetController::storeParameter() {
 void InputWidgetController::addParameterToCmdLineSettings(QStringList &settings) {
     CHECK(baseWidget->isEnabled(), );
     CHECK(!cmdLinePrefix.isEmpty(), );
+
     curValue = getWidgetValue();
-    if (!curValue.isNull() && curValue != defaultValue) {
-        settings << cmdLinePrefix;
-        settings << curValue.toString();
+    CHECK(!curValue.isNull(), );
+
+    if (curValue != defaultValue || isEmitCommandLineOptionForDefaultFlag) {
+        settings << cmdLinePrefix << curValue.toString();
     }
+}
+
+void InputWidgetController::setEmitCommandLineOptionForDefaultFlag(bool flag) {
+    isEmitCommandLineOptionForDefaultFlag = flag;
 }
 
 void InputWidgetController::setWidgetEnabled(bool isEnabled) {
@@ -78,22 +83,18 @@ void InputWidgetController::setWidgetEnabled(bool isEnabled) {
 }
 
 /*SpinBoxController*/
-SpinBoxController::SpinBoxController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
-      inputWidget(inputWidget),
-      minimumValue(0) {
+SpinBoxController::SpinBoxController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
+      inputWidget(inputWidget) {
     minimumValue = inputWidget->minimum();
 }
 
 void SpinBoxController::setWidgetValue(const QVariant &newValue) {
-    int newSpinValue = 0;
-    if (!newValue.isNull()) {
-        newSpinValue = newValue.toInt();
-    } else {
+    if (newValue.isNull()) {
         inputWidget->setValue(curValue.toInt());
         return;
     }
-
+    int newSpinValue = newValue.toInt();
     bool withoutSpecialValue = inputWidget->specialValueText().isEmpty();
     if (withoutSpecialValue || newSpinValue > minimumValue) {
         curValue = newValue;
@@ -124,22 +125,17 @@ void SpinBoxController::setWidgetEnabled(bool isEnabled) {
 }
 
 /*DoubleSpinBoxController*/
-DoubleSpinBoxController::DoubleSpinBoxController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
-      inputWidget(inputWidget),
-      minimumValue(0.0) {
-    minimumValue = inputWidget->value();
+DoubleSpinBoxController::DoubleSpinBoxController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
+      inputWidget(inputWidget) {
 }
 
 void DoubleSpinBoxController::setWidgetValue(const QVariant &newValue) {
-    double newSpinValue = 0.0;
-    if (!newValue.isNull()) {
-        newSpinValue = newValue.toDouble();
-    } else {
+    if (newValue.isNull()) {
         inputWidget->setValue(curValue.toDouble());
         return;
     }
-
+    double newSpinValue = newValue.toDouble();
     bool withoutSpecialValue = inputWidget->specialValueText().isEmpty();
     if (withoutSpecialValue || newSpinValue > inputWidget->minimum()) {
         curValue = newValue;
@@ -170,8 +166,8 @@ void DoubleSpinBoxController::setWidgetEnabled(bool isEnabled) {
 }
 
 /*CheckBoxController*/
-CheckBoxController::CheckBoxController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
+CheckBoxController::CheckBoxController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
       inputWidget(inputWidget) {
     connect(inputWidget, SIGNAL(stateChanged(int)), SLOT(stateChanged(int)));
 }
@@ -200,8 +196,8 @@ QVariant CheckBoxController::getWidgetValue() {
 }
 
 /*RadioButtonController*/
-RadioButtonController::RadioButtonController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
+RadioButtonController::RadioButtonController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
       inputWidget(inputWidget) {
 }
 
@@ -216,8 +212,8 @@ QVariant RadioButtonController::getWidgetValue() {
 }
 
 /*ComboBoxController*/
-ComboBoxController::ComboBoxController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue, const QStringList &parameters)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
+ComboBoxController::ComboBoxController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue, const QStringList &parameters)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
       inputWidget(inputWidget),
       parameters(parameters) {
     SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()), )
@@ -258,8 +254,8 @@ void ComboBoxController::addParameterToCmdLineSettings(QStringList &settings) {
 }
 
 /*LineEditController*/
-LineEditController::LineEditController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePreffix, const QVariant &defaultValue)
-    : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
+LineEditController::LineEditController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue)
+    : InputWidgetController(inputWidget, settingsPath, cmdLinePrefix, defaultValue),
       inputWidget(inputWidget) {
 }
 
@@ -278,28 +274,28 @@ WidgetControllersContainer::~WidgetControllersContainer() {
     qDeleteAll(widgetControllers);
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QCheckBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix) {
-    return addWidget(new CheckBoxController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->isChecked()));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix) {
+    return addWidget(new CheckBoxController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->isChecked()));
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QRadioButton *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix) {
-    return addWidget(new RadioButtonController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->isChecked()));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix) {
+    return addWidget(new RadioButtonController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->isChecked()));
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QSpinBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix) {
-    return addWidget(new SpinBoxController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->value()));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix) {
+    return addWidget(new SpinBoxController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->value()));
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QDoubleSpinBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix) {
-    return addWidget(new DoubleSpinBoxController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->value()));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix) {
+    return addWidget(new DoubleSpinBoxController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->value()));
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QComboBox *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix, const QStringList &parameters) {
-    return addWidget(new ComboBoxController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->currentIndex(), parameters));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QStringList &parameters) {
+    return addWidget(new ComboBoxController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->currentIndex(), parameters));
 }
 
-InputWidgetController *WidgetControllersContainer::addWidgetController(QLineEdit *inputWidget, const QString &seetingsPath, const QString &cmdLinePreffix) {
-    return addWidget(new LineEditController(inputWidget, seetingsPath, cmdLinePreffix, inputWidget->text()));
+InputWidgetController *WidgetControllersContainer::addWidgetController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix) {
+    return addWidget(new LineEditController(inputWidget, settingsPath, cmdLinePrefix, inputWidget->text()));
 }
 
 InputWidgetController *WidgetControllersContainer::addWidget(InputWidgetController *inputWidget) {
@@ -331,4 +327,4 @@ void WidgetControllersContainer::addParametersToCmdLine(QStringList &cmdLineSett
         curController->addParameterToCmdLineSettings(cmdLineSettings);
     }
 }
-}    // namespace U2
+}  // namespace U2

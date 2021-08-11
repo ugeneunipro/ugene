@@ -76,4 +76,4 @@ void PcrPlugin::sl_primerLibrary() {
     PrimerLibraryMdiWindow::showLibrary();
 }
 
-}    // namespace U2
+}  // namespace U2

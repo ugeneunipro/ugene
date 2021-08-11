@@ -77,18 +77,18 @@ public:
 };
 
 /*!
-* @class BioStruct3DGLWidget BioStruct3DGLWidget.h
-* @brief Class for BioStruct3DObject visualization.
-*
-* This widget provides a 3D graphical view of a macromolecular structure.   In terms
-* of the Model-View architecture we consider
-* the BioStruct3D the model and GLWidget a view of this model.
-*
-* The widget relies on various GLRenderer and ColorScheme subclasses to handle the
-* rendering of the 3d objects.
-*
-* Also it includes actions for visualization control.
-*/
+ * @class BioStruct3DGLWidget BioStruct3DGLWidget.h
+ * @brief Class for BioStruct3DObject visualization.
+ *
+ * This widget provides a 3D graphical view of a macromolecular structure.   In terms
+ * of the Model-View architecture we consider
+ * the BioStruct3D the model and GLWidget a view of this model.
+ *
+ * The widget relies on various GLRenderer and ColorScheme subclasses to handle the
+ * rendering of the 3d objects.
+ *
+ * Also it includes actions for visualization control.
+ */
 class BioStruct3DGLWidget : public QOpenGLWidget {
     Q_OBJECT
     static int widgetCount;
@@ -102,12 +102,12 @@ public:
 
 public:
     /*!
-    * Constructor.
-    * @param bsObj BioStruct3DObject contains 3d model for visualization
-    * @param view DnaView context for connecting structure 3D representation and sequence view
-    * @param manager GlFrameManager is required for OpenGL frame manipulation
-    * @param parent Parent widget
-    */
+     * Constructor.
+     * @param bsObj BioStruct3DObject contains 3d model for visualization
+     * @param view DnaView context for connecting structure 3D representation and sequence view
+     * @param manager GlFrameManager is required for OpenGL frame manipulation
+     * @param parent Parent widget
+     */
     BioStruct3DGLWidget(BioStruct3DObject *bsObj, const AnnotatedDNAView *view, GLFrameManager *manager, QWidget *parent);
 
     //! Destructor.
@@ -123,31 +123,31 @@ public:
     const QString getBioStruct3DObjectName() const;
 
     /*!
-    * @return Menu containing display actions: renderers, color schemes etc.
-    */
+     * @return Menu containing display actions: renderers, color schemes etc.
+     */
     QMenu *getDisplayMenu();
     /*!
-    * Records widget active settings (part of UGENE architecture).
-    * @return Current widgets settings.
-    */
+     * Records widget active settings (part of UGENE architecture).
+     * @return Current widgets settings.
+     */
     QVariantMap getState();
     /*!
-    * Restores widget settings with given (part of UGENE architecture).
-    * @param state Widgets settings.
-    */
+     * Restores widget settings with given (part of UGENE architecture).
+     * @param state Widgets settings.
+     */
     void setState(const QVariantMap &state);
     /*!
-    * Restores default widget settings (viewMatrix, glRenderer, color scheme)
-    */
+     * Restores default widget settings (viewMatrix, glRenderer, color scheme)
+     */
     void restoreDefaultSettigns();
     /*!
-    * @param delta Positive value: zoom in, negative value: zoom out.
-    */
+     * @param delta Positive value: zoom in, negative value: zoom out.
+     */
     void zoom(float delta);
     void shift(float deltaX, float deltaY);
     /*!
-    * Creates 2d vector image of BioStruct3DGLWidget contents using gl2ps.
-    */
+     * Creates 2d vector image of BioStruct3DGLWidget contents using gl2ps.
+     */
     void writeImage2DToFile(int format, int options, int nbcol, const char *fileName);
 
     void setBackgroundColor(QColor backgroundColor);
@@ -168,34 +168,34 @@ public:
 
 protected:
     /*!
-    * QGlWidget virtual function, initializes OpenGL params. See, Qt docs "QGLWidget" for details.
-    */
+     * QGlWidget virtual function, initializes OpenGL params. See, Qt docs "QGLWidget" for details.
+     */
     void initializeGL();
     /*!
-    * QGlWidget virtual function, sets viewport
-    * @param width GLWidget width
-    * @param height GLWidget height
-    */
+     * QGlWidget virtual function, sets viewport
+     * @param width GLWidget width
+     * @param height GLWidget height
+     */
     void resizeGL(int width, int height);
     /*!
-    * QGlWidget virtual function, draw GL scene.
-    */
+     * QGlWidget virtual function, draw GL scene.
+     */
     void paintGL();
     /*!
-    * QWidget virtual function, mouse button down event handler.
-    */
+     * QWidget virtual function, mouse button down event handler.
+     */
     void mousePressEvent(QMouseEvent *event);
     /*!
-    * QWidget virtual function, mouse move event handler.
-    */
+     * QWidget virtual function, mouse move event handler.
+     */
     void mouseMoveEvent(QMouseEvent *event);
     /*!
-    * QWidget virtual function, mouse wheel event handler.
-    */
+     * QWidget virtual function, mouse wheel event handler.
+     */
     void wheelEvent(QWheelEvent *event);
     /*!
-    * QWidget virtual function, executes context menu.
-    */
+     * QWidget virtual function, executes context menu.
+     */
     void contextMenuEvent(QContextMenuEvent *_event);
 
 private:
@@ -203,9 +203,9 @@ private:
     void setUnselectedShadingLevel(int shading);
 
     /*!
-    * Sets light position.
-    * @param pos New light source position. Directional light is being used.
-    */
+     * Sets light position.
+     * @param pos New light source position. Directional light is being used.
+     */
     void setLightPosition(const Vector3D &pos);
 
     // controller logic
@@ -225,8 +225,8 @@ private:
 
     // view logic
     /** Adds biostruct object to scene.
-      * @param shownModels is a modelId list (same as in PDB)
-      */
+     * @param shownModels is a modelId list (same as in PDB)
+     */
     void addBiostruct(const BioStruct3DObject *biostruct, const QList<int> &shownModels = QList<int>());
 
     //! Creates renderers for all biostructs.
@@ -239,8 +239,8 @@ private:
     void updateAllColorSchemes();
 
     /** Updates all renderers.
-      * Should be called from initializeGL for display list recreation
-      */
+     * Should be called from initializeGL for display list recreation
+     */
     void updateAllRenderers();
 
     //! Show/hide selected model for first biostruct
@@ -378,6 +378,6 @@ public:
     static const QString ANAGLYPH_STATUS_NAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_OPENGL_WIDGET_H
+#endif  // _U2_OPENGL_WIDGET_H

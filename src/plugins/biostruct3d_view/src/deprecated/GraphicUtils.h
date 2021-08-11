@@ -78,7 +78,7 @@ public:
 
     void setColor(const Color4f &c);
 
-};    // class Strand3D
+};  // class Strand3D
 
 //! Alpha Helix 3D representation
 class Helix3D : public Object3D {
@@ -93,7 +93,7 @@ public:
     virtual ~Helix3D();
 
     virtual void draw(float renderDetailLevel);
-};    // class Helix3D
+};  // class Helix3D
 
 //! Beta Strand 3D representation
 class Strand3D : public Object3D {
@@ -108,7 +108,7 @@ public:
     virtual ~Strand3D();
 
     virtual void draw(float renderDetailLevel);
-};    // class Strand3D
+};  // class Strand3D
 
 //! Draw arrow
 void glCreateArrowPrimitive(float width, float height, float length);
@@ -152,6 +152,6 @@ inline void checkGlError(const char *file, int line) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GRAPHIC_UTILS_H_
+#endif  // _U2_GRAPHIC_UTILS_H_

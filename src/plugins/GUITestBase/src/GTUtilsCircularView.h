@@ -76,6 +76,6 @@ private:
     static const QString actionName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _GT_UTILS_CIRCULAR_VIEW_H_
+#endif  // _GT_UTILS_CIRCULAR_VIEW_H_

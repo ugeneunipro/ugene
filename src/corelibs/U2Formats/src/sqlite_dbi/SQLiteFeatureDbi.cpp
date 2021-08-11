@@ -43,7 +43,7 @@ static QString getQueryForFeatureDeletionTrigger() {
 }
 
 void SQLiteFeatureDbi::initSqlSchema(U2OpStatus &os) {
-    //nameHash is used for better indexing
+    // nameHash is used for better indexing
     SQLiteWriteQuery("CREATE TABLE Feature (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
                      "class INTEGER NOT NULL, type INTEGER NOT NULL, parent INTEGER, root INTEGER, nameHash INTEGER, name TEXT, "
                      "sequence INTEGER, strand INTEGER NOT NULL, "
@@ -71,10 +71,10 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE INDEX IF NOT EXISTS FeatureParentIndex ON Feature(parent)", db, os).execute();
     SQLiteWriteQuery("CREATE INDEX IF NOT EXISTS FeatureNameIndex ON Feature(root, nameHash)", db, os).execute();
 
-    //FeatureKey index
+    // FeatureKey index
     SQLiteWriteQuery("CREATE INDEX IF NOT EXISTS FeatureKeyIndex ON FeatureKey(feature)", db, os).execute();
 
-    //Deletion triggers
+    // Deletion triggers
     SQLiteWriteQuery(getQueryForFeatureDeletionTrigger(), db, os).execute();
 }
 
@@ -86,7 +86,7 @@ public:
 
     static U2Feature loadStatic(SQLiteQuery *q) {
         U2Feature res;
-        //class, type, parent, root, name, sequence, strand, start, len
+        // class, type, parent, root, name, sequence, strand, start, len
         res.id = q->getDataId(0, U2Type::Feature);
         res.featureClass = static_cast<U2Feature::FeatureClass>(q->getInt32(1));
         res.featureType = static_cast<U2FeatureType>(q->getInt32(2));
@@ -312,10 +312,10 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     bool useRegion = (0 < fq.intersectRegion.length);
     bool oneClosestFeature = (ComparisonOp_Invalid != fq.closestFeature);
     if (useRegion) {
-        if (!oneClosestFeature) {    //check if intersects
+        if (!oneClosestFeature) {  // check if intersects
             add(wherePart, QString("f.start < ?%2 AND f.start + f.len > ?%1").arg(n + 1).arg(n + 2), "", n);
             n += 2;
-        } else {    //check if close
+        } else {  // check if close
             add(wherePart, QString("f.start %1 ?%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", n);
             n++;
         }
@@ -472,7 +472,7 @@ QString getFeatureKeyInsertQuery(int keyCount) {
     for (int i = 1, n = 3 * keyCount; i <= n; i += 3) {
         queryStringk += QString("(?%1, ?%2, ?%3),").arg(i).arg(i + 1).arg(i + 2);
     }
-    queryStringk.chop(1);    //remove last comma
+    queryStringk.chop(1);  // remove last comma
     return queryStringk;
 }
 
@@ -484,7 +484,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     CHECK(keyCount > 0, );
 
     const int maximumBoundKeysNumber = SQLiteDbi::BIND_PARAMETERS_LIMIT / 3;
-    const int residualBindQueryCount = keyCount % maximumBoundKeysNumber;    // 3 is the number of FeatureKey table attributes
+    const int residualBindQueryCount = keyCount % maximumBoundKeysNumber;  // 3 is the number of FeatureKey table attributes
     const int fullBindQueryCount = keyCount / maximumBoundKeysNumber;
     const bool fullQueryPresents = fullBindQueryCount > 0;
 
@@ -524,7 +524,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     }
 }
 
-}    // namespace
+}  // namespace
 
 void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey> &keys, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
@@ -691,7 +691,7 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, DbRef
     for (int i = 1, n = parentIds.count(); i <= n; i++) {
         idsList += QString("?%1,").arg(i);
     }
-    idsList.chop(1);    // remove last comma
+    idsList.chop(1);  // remove last comma
     idsList += ")";
 
     SQLiteWriteQuery qf(QString("DELETE FROM Feature WHERE parent IN %1 OR id IN %1").arg(idsList), db, os);
@@ -701,7 +701,7 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, DbRef
     qf.execute();
 }
 
-}    // namespace
+}  // namespace
 
 void SQLiteFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
@@ -864,4 +864,4 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

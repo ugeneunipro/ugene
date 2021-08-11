@@ -93,4 +93,4 @@ HIWebElement GTWebkitView::toHiWebElement(const QWebElement &element) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

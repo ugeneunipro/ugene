@@ -69,15 +69,15 @@ Task *QDFindActor::getAlgorithmTask(const QVector<U2Region> &location) {
     settings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
 
     switch (getStrandToRun()) {
-    case QDStrand_Both:
-        settings.strand = FindAlgorithmStrand_Both;
-        break;
-    case QDStrand_DirectOnly:
-        settings.strand = FindAlgorithmStrand_Direct;
-        break;
-    case QDStrand_ComplementOnly:
-        settings.strand = FindAlgorithmStrand_Complement;
-        break;
+        case QDStrand_Both:
+            settings.strand = FindAlgorithmStrand_Both;
+            break;
+        case QDStrand_DirectOnly:
+            settings.strand = FindAlgorithmStrand_Direct;
+            break;
+        case QDStrand_ComplementOnly:
+            settings.strand = FindAlgorithmStrand_Complement;
+            break;
     }
 
     if (settings.strand != FindAlgorithmStrand_Direct) {
@@ -137,4 +137,4 @@ QDFindActorPrototype::QDFindActorPrototype() {
     attributes << new Attribute(pd, BaseTypes::STRING_TYPE(), true);
 }
 
-}    // namespace U2
+}  // namespace U2

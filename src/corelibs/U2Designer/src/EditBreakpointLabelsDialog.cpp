@@ -131,4 +131,4 @@ void EditBreakpointLabelsDialog::keyPressEvent(QKeyEvent *event) {
     QDialog::keyPressEvent(event);
 }
 
-}    // namespace U2
+}  // namespace U2

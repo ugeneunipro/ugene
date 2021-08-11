@@ -43,6 +43,6 @@ public:
     static DataTypePtr GENOME_ALIGNER_INDEX_TYPE();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_PLUGIN_H_
+#endif  // _U2_GENOME_ALIGNER_PLUGIN_H_

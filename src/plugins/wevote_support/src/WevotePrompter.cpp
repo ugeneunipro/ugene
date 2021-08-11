@@ -32,5 +32,5 @@ QString WevotePrompter::composeRichDoc() {
     return tr("Ensemble classification data, produced by other tools.");
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

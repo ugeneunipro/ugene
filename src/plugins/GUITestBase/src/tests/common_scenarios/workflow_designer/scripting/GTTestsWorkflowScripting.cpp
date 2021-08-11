@@ -198,5 +198,5 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR(text == newText, "Different script text");
 }
 
-}    // namespace GUITest_common_scenarios_workflow_scripting
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_workflow_scripting
+}  // namespace U2

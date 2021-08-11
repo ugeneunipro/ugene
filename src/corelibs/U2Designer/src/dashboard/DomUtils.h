@@ -47,5 +47,5 @@ public:
     static QString toString(const QDomElement &element, bool includeElement);
 };
 
-}    // namespace U2
-#endif    // _U2_DOM_UTILS_H_
+}  // namespace U2
+#endif  // _U2_DOM_UTILS_H_

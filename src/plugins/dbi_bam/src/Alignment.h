@@ -107,7 +107,7 @@ private:
     QList<U2AuxData> aux;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_ALIGNMENT_H_
+#endif  // _U2_BAM_ALIGNMENT_H_

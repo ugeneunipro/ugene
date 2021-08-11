@@ -141,4 +141,4 @@ QList<SharedAnnotationData> SecStructPredictUtils::saveAlgorithmResultsAsAnnotat
 
     return predictedStructures;
 }
-}    // namespace U2
+}  // namespace U2

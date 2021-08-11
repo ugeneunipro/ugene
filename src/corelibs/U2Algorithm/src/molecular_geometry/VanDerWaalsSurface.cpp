@@ -67,13 +67,13 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
     }
 }
 
-//void VanDerWaalsSurface::calculate(const BioStruct3D& bioStruct)
+// void VanDerWaalsSurface::calculate(const BioStruct3D& bioStruct)
 //{
-//     Vector3D center = bioStruct.getCenter();
-//     float radius = bioStruct.getMaxDistFromCenter();
-//     GeodesicSphere sphere(center, radius);
-//     vertices = sphere.getVertices();
-//}
+//      Vector3D center = bioStruct.getCenter();
+//      float radius = bioStruct.getMaxDistFromCenter();
+//      GeodesicSphere sphere(center, radius);
+//      vertices = sphere.getVertices();
+// }
 
 qint64 VanDerWaalsSurface::estimateMemoryUsage(int numberOfAtoms) {
     return numberOfAtoms * FACTOR * sizeof(double) * 3 * 6 * 1.5;
@@ -85,4 +85,4 @@ MolecularSurface *VanDerWaalsSurfaceFactory::createInstance() const {
     return new VanDerWaalsSurface();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-//factory method
+// factory method
 RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w, int mismatches, RFAlgorithm alg, int nThreads) {
     assert(l != nullptr);
     assert(mismatches < w);
@@ -45,7 +45,7 @@ RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *s
 
     RFAlgorithmBase *res = nullptr;
     if (alg == RFAlgorithm_Auto) {
-        //alg = RFAlgorithm_Diagonal; //the slowest but tested better
+        // alg = RFAlgorithm_Diagonal; //the slowest but tested better
         alg = RFAlgorithm_Suffix;
     }
     if (mismatches == 0) {
@@ -78,7 +78,8 @@ RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *s
 // Task
 
 char RFAlgorithmBase::getUnknownChar(const DNAAlphabetType &type) {
-    return type == DNAAlphabet_AMINO ? 'X' : type == DNAAlphabet_NUCL ? 'N' : '\0';
+    return type == DNAAlphabet_AMINO ? 'X' : type == DNAAlphabet_NUCL ? 'N'
+                                                                      : '\0';
 }
 
 RFAlgorithmBase::RFAlgorithmBase(RFResultsListener *l, const char *seqx, int sizex, const char *seqy, int sizey, DNAAlphabetType seqType, int w, int k, TaskFlags flags)
@@ -148,7 +149,7 @@ void RFAlgorithmBase::prepare() {
 }
 
 bool RFAlgorithmBase::checkResults(const QVector<RFResult> &v) {
-    //debug mode self-check routine
+    // debug mode self-check routine
     foreach (const RFResult &r, v) {
         checkResult(r);
     }
@@ -158,7 +159,7 @@ bool RFAlgorithmBase::checkResults(const QVector<RFResult> &v) {
 bool RFAlgorithmBase::checkResult(const RFResult &r) {
     assert(r.x >= 0 && r.y >= 0 && r.x + r.l <= SIZE_X && r.y + r.l <= SIZE_Y);
 
-    //check that there is mismatch before and after the result
+    // check that there is mismatch before and after the result
     if (r.x > 0 && r.y > 0) {
         char cx = seqX[r.x - 1];
         Q_UNUSED(cx);
@@ -174,7 +175,7 @@ bool RFAlgorithmBase::checkResult(const RFResult &r) {
         assert(!CHAR_MATCHES(cx, cy));
     }
 
-    //check that result starts and ends with match if len > W
+    // check that result starts and ends with match if len > W
     if (r.l > int(WINDOW_SIZE)) {
         char cx = seqX[r.x];
         char cy = seqY[r.y];
@@ -187,7 +188,7 @@ bool RFAlgorithmBase::checkResult(const RFResult &r) {
         assert(CHAR_MATCHES(cx, cy));
     }
 
-    //check that for every window W inside of the result the match rate is valid
+    // check that for every window W inside of the result the match rate is valid
     int c = 0;
     int allMatches = 0;
     for (int i = 0; i < r.l; i++) {
@@ -219,4 +220,4 @@ bool Tandem::operator<(const Tandem &t) const {
     return repeatLen < t.repeatLen || (repeatLen == t.repeatLen && rightSide < t.offset);
 }
 
-}    // namespace U2
+}  // namespace U2

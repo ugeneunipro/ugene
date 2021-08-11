@@ -243,4 +243,4 @@ QString GrouperOutSlot::busMap2readable(const QString &busMapSlotStr) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

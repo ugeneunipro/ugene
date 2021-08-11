@@ -96,6 +96,6 @@ public:
     virtual PanViewRenderArea *createRenderArea(PanView *panView) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PAN_VIEW_PAINTER_H_
+#endif  // _U2_PAN_VIEW_PAINTER_H_

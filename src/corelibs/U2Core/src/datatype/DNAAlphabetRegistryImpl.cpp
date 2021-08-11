@@ -43,7 +43,7 @@ DNAAlphabetRegistryImpl::~DNAAlphabetRegistryImpl() {
 }
 
 static bool alphabetComplexityComparator(const DNAAlphabet *a1, const DNAAlphabet *a2) {
-    int a1Size = a1->getMap().count(true);    //TODO: cache this val
+    int a1Size = a1->getMap().count(true);  // TODO: cache this val
     int a2Size = a2->getMap().count(true);
     return a1Size < a2Size;
 }
@@ -53,7 +53,7 @@ bool DNAAlphabetRegistryImpl::registerAlphabet(const DNAAlphabet *a) {
         return false;
     }
     alphabets.push_back(a);
-    //WARN: original order for equal alphabets must not be changed (DNA must be before RNA)
+    // WARN: original order for equal alphabets must not be changed (DNA must be before RNA)
     std::stable_sort(alphabets.begin(), alphabets.end(), alphabetComplexityComparator);
     return true;
 }
@@ -73,4 +73,4 @@ const DNAAlphabet *DNAAlphabetRegistryImpl::findById(const QString &id) const {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

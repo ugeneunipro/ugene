@@ -63,7 +63,7 @@ void SelectorValue::validate(Actor *actor, U2OpStatus &os) const {
         return;
     }
 
-    if (proto->getId() == actor->getProto()->getId()) {    // no mapping
+    if (proto->getId() == actor->getProto()->getId()) {  // no mapping
         return;
     }
 
@@ -132,4 +132,4 @@ void SelectorValue::validatePortsCount(const QList<Port *> &src,
     }
 }
 
-}    // namespace U2
+}  // namespace U2

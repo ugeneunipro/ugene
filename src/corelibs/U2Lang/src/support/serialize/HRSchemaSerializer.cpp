@@ -115,7 +115,7 @@ enum IncludeElementType {
     EXTERNAL_TOOL,
     SCRIPT
 };
-}    // namespace
+}  // namespace
 
 QString HRSchemaSerializer::valueString(const QString &s, bool quoteEmpty) {
     QString str = s;
@@ -508,7 +508,7 @@ Actor *HRSchemaSerializer::parseElementsDefinition(Tokenizer &tokenizer, const Q
 
     QString procScriptText = pairs.blockPairs.take(Constants::SCRIPT_ATTR);
     Actor *proc = nullptr;
-    proc = deprecatedActorsReplacer(actorName, procType, pairs);    //AttributeScript always empty for replaced actors
+    proc = deprecatedActorsReplacer(actorName, procType, pairs);  // AttributeScript always empty for replaced actors
     if (proto == nullptr && proc == nullptr) {
         throw ReadFailed(tr("Unknown type of %1 element: %2").arg(actorName).arg(procType));
     }
@@ -728,7 +728,7 @@ void HRSchemaSerializer::parseGrouperOutSlots(Actor *proc, const QStringList &ou
 
 void HRSchemaSerializer::finalizeGrouperSlots(const QMap<QString, Actor *> &actorMap) {
     foreach (Actor *p, actorMap.values()) {
-        if (p->getId() != "grouper") {    // TODO: fix it
+        if (p->getId() != "grouper") {  // TODO: fix it
             continue;
         }
 
@@ -868,8 +868,8 @@ void parseAndCheckParameterAlias(const QString &paramString, const QMap<QString,
 }
 
 void HRSchemaSerializer::parseParameterAliases(Tokenizer &tokenizer, const QMap<QString, Actor *> &actorMap) {
-    QList<QString> newParamNames;    // keeps all unique parameters aliases
-    QList<QString> paramStrings;    // keeps all unique aliased parameters
+    QList<QString> newParamNames;  // keeps all unique parameters aliases
+    QList<QString> paramStrings;  // keeps all unique aliased parameters
 
     while (tokenizer.look() != Constants::BLOCK_END) {
         QString paramString = tokenizer.take();
@@ -976,8 +976,8 @@ void parseSlotAlias(const QString &slotString, const QMap<QString, Actor *> &act
 }
 
 void HRSchemaSerializer::parsePortAliases(Tokenizer &tokenizer, const QMap<QString, Actor *> &actorMap, QList<PortAlias> &portAliases) {
-    QList<QString> newPortNames;    // keeps all unique ports aliases
-    QList<QString> portStrings;    // keeps all unique aliased ports
+    QList<QString> newPortNames;  // keeps all unique ports aliases
+    QList<QString> portStrings;  // keeps all unique aliased ports
 
     while (tokenizer.look() != Constants::BLOCK_END) {
         QString portString = tokenizer.take();
@@ -1052,7 +1052,7 @@ QPair<Port *, Port *> HRSchemaSerializer::parseDataflow(Tokenizer &tokenizer, co
         throw ReadFailed(tr("Undefined slot id '%1' at '%2'").arg(srcSlotId).arg(srcTok));
     }
 
-    tokenizer.assertToken(Constants::DATAFLOW_SIGN);    // "->"
+    tokenizer.assertToken(Constants::DATAFLOW_SIGN);  // "->"
     QString destTok = tokenizer.take();
     QString destActorName = parseAt(destTok, 0);
     QString destPortId = parseAt(destTok, 1);
@@ -1364,7 +1364,7 @@ ExternalProcessConfig *HRSchemaSerializer::parseActorBody(Tokenizer &tokenizer) 
             HRSchemaSerializer::parseAttributes(tokenizer, cfg->attrs);
             tokenizer.assertToken(Constants::BLOCK_END);
         } else if (tok == Constants::BLOCK_START) {
-            //tokenizer.take();
+            // tokenizer.take();
             /*Actor * proc = HRSchemaSerializer::parseElementsDefinition(tokenizer, tok, data.actorMap, data.idMap);
             data.schema->addProcess(proc);
             tokenizer.assertToken(HRSchemaSerializer::BLOCK_END);*/
@@ -1951,7 +1951,7 @@ HRSchemaSerializer::NamesMap HRSchemaSerializer::generateElementNames(const QLis
     foreach (Actor *proc, procs) {
         QString id = aid2str(proc->getId());
         QString name = id.replace(QRegExp("\\s"), "-");
-        nmap[proc->getId()] = name;    //generateElementName(proc, nmap.values());
+        nmap[proc->getId()] = name;  // generateElementName(proc, nmap.values());
     }
     return nmap;
 }
@@ -2042,7 +2042,7 @@ QString bool2String(bool value) {
     return value ? Constants::TRUE : Constants::FALSE;
 }
 
-}    // namespace
+}  // namespace
 
 static QString attributesDefinition(const QList<AttributeConfig> &attrs) {
     QString res = Constants::TAB + Constants::ATTRIBUTES_START + " {\n";
@@ -2077,10 +2077,10 @@ QString HRSchemaSerializer::actor2String(ExternalProcessConfig *cfg) {
     res += Constants::TAB + Constants::NAME_ATTR + ":\"" + cfg->name + "\";\n";
     res += Constants::TAB + Constants::USE_INTEGRATED_TOOL + ":" + (cfg->useIntegratedTool ? Constants::TRUE : Constants::FALSE) + ";\n";
     if (!cfg->customToolPath.isEmpty()) {
-        res += Constants::TAB + Constants::CUSTOM_TOOL_PATH + ":\"" + cfg->customToolPath + "\";\n";    // TODO: it should be escaped (UGENE-6437)
+        res += Constants::TAB + Constants::CUSTOM_TOOL_PATH + ":\"" + cfg->customToolPath + "\";\n";  // TODO: it should be escaped (UGENE-6437)
     }
     if (!cfg->integratedToolId.isEmpty()) {
-        res += Constants::TAB + Constants::INTEGRATED_TOOL_ID + ":\"" + cfg->integratedToolId + "\";\n";    // TODO: it also should be escaped (UGENE-6437)
+        res += Constants::TAB + Constants::INTEGRATED_TOOL_ID + ":\"" + cfg->integratedToolId + "\";\n";  // TODO: it also should be escaped (UGENE-6437)
     }
     res += Constants::TAB + Constants::CMDLINE + ":\"" + cfg->cmdLine + "\";\n";
     if (!cfg->description.isEmpty()) {
@@ -2194,4 +2194,4 @@ QString HRSchemaSerializer::markersDefinition(Attribute *attribute) {
     return res + Constants::NEW_LINE;
 }
 
-}    // namespace U2
+}  // namespace U2

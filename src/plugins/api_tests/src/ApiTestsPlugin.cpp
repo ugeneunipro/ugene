@@ -50,4 +50,4 @@ ApiTestsPlugin::ApiTestsPlugin()
     Q_UNUSED(res);
 }
 
-}    // namespace U2
+}  // namespace U2

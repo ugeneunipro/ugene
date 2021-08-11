@@ -38,7 +38,7 @@ public:
     QList<T *> qlist;
 };
 
-//todo: move to separate header
+// todo: move to separate header
 template<class T>
 class gauto_array {
 public:
@@ -54,6 +54,6 @@ public:
     T *data;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

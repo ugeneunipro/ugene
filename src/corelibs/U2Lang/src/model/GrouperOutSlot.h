@@ -112,6 +112,6 @@ private:
     GrouperSlotAction *action;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_GROUPER_SLOT_ACTION_
+#endif  //_GROUPER_SLOT_ACTION_

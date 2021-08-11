@@ -201,4 +201,4 @@ void SeqStatisticsWidget::showSimilaritySettings() {
     sl_onRefSeqChanged(msa->getReferenceRowId());
 }
 
-}    // namespace U2
+}  // namespace U2

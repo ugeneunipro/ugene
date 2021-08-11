@@ -198,5 +198,5 @@ int ActorPrototype::getUsageCounter() const {
     return usageCounter;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -51,6 +51,6 @@ private:
     QList<U2Region> regions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

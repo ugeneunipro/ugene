@@ -49,4 +49,4 @@ float WeightMatrixAlgorithm::getScore(const char *seq, int len, const PWMatrix &
     return (curr - lower) / (upper - lower);
 }
 
-}    // namespace U2
+}  // namespace U2

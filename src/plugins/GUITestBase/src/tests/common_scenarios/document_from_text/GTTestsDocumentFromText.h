@@ -81,8 +81,8 @@ GUI_TEST_CLASS_DECLARATION(test_0018)
 GUI_TEST_CLASS_DECLARATION(test_0019)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_document_from_text
+}  // namespace GUITest_common_scenarios_document_from_text
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSDOCUMENTFROMTEXT_H
+#endif  // GTTESTSDOCUMENTFROMTEXT_H

@@ -75,7 +75,7 @@ public:
     }
 };
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
 class PrimerGrouperTask : public Task {
     Q_OBJECT
@@ -108,6 +108,6 @@ private:
     QString outputUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

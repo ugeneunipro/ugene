@@ -74,8 +74,8 @@ void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize
 }
 
 /********************************
-* FileLineEdit
-********************************/
+ * FileLineEdit
+ ********************************/
 void FileLineEdit::sl_onBrowse() {
     LastUsedDirHelper lod(type);
 
@@ -100,4 +100,4 @@ void FileLineEdit::sl_onBrowse() {
     setFocus();
 }
 
-}    // namespace U2
+}  // namespace U2

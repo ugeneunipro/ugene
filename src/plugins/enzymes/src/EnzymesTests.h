@@ -38,7 +38,7 @@ namespace U2 {
 class LoadEnzymeFileTask;
 class U2SequenceObject;
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_FindEnzymes : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindEnzymes, "find-enzymes");
@@ -63,7 +63,7 @@ private:
     QMultiMap<QString, U2Region> resultsPerEnzyme;
 };
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_DigestIntoFragments : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DigestIntoFragments, "digest-into-fragments");
@@ -85,7 +85,7 @@ private:
 
 class LigateFragmentsTask;
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_LigateFragments : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_LigateFragments, "ligate-fragments");
@@ -113,6 +113,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -44,6 +44,6 @@ public:
     bool isRemembered() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_AUTHENTICATION_WIDGET_H_
+#endif  // _U2_AUTHENTICATION_WIDGET_H_

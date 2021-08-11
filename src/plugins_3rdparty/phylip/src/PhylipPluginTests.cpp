@@ -19,40 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#include "PhylipPlugin.h"
 #include "PhylipPluginTests.h"
 
-#include <U2Core/SaveDocumentTask.h>
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/Log.h>
-
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/PhyTreeObject.h>
-
 #include <QDir>
-#include <U2Core/AppContext.h>
-#include "DistanceMatrix.h"
+
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
-namespace U2{
-	
-QList<XMLTestFactory*> PhylipPluginTests::createTestFactories(){
-	QList<XMLTestFactory* > res;
-	res.append(GTest_NeighborJoin::createFactory());
+#include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/PhyTreeObject.h>
+#include <U2Core/SaveDocumentTask.h>
+
+#include "DistanceMatrix.h"
+#include "PhylipPlugin.h"
+
+namespace U2 {
+
+QList<XMLTestFactory *> PhylipPluginTests::createTestFactories() {
+    QList<XMLTestFactory *> res;
+    res.append(GTest_NeighborJoin::createFactory());
     return res;
 }
 
-void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
     treeObjFromDoc = nullptr;
-	task = nullptr;
+    task = nullptr;
     input = nullptr;
     inputDocCtxName = el.attribute("in");
     if (inputDocCtxName.isEmpty()) {
@@ -62,74 +61,73 @@ void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement& el) {
     resultCtxName = el.attribute("sample");
     QString bootstrSeed;
     bootstrSeed = el.attribute("bootstrapSeed");
-    if(bootstrSeed == nullptr){
+    if (bootstrSeed == nullptr) {
         bootStrapSeed = -1;
-    }else{
+    } else {
         bootStrapSeed = bootstrSeed.toInt();
     }
 }
 
 void GTest_NeighborJoin::prepare() {
-
     maDoc = getContext<Document>(this, inputDocCtxName);
     if (maDoc == nullptr) {
-        stateInfo.setError(  QString("context not found %1").arg(inputDocCtxName) );
+        stateInfo.setError(QString("context not found %1").arg(inputDocCtxName));
         return;
     }
 
-    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject *> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
     GObject *obj = list.first();
-    if(obj==nullptr){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+    if (obj == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    assert(obj!=nullptr);
-    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(ma==nullptr){
-        stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
+    assert(obj != nullptr);
+    MultipleSequenceAlignmentObject *ma = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (ma == nullptr) {
+        stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }
 
-	input = ma;
+    input = ma;
 
-	treeDoc = getContext<Document>(this, resultCtxName);
-	if (treeDoc == nullptr) {
-		stateInfo.setError(  QString("context not found %1").arg(resultCtxName) );
-		return;
-	}
+    treeDoc = getContext<Document>(this, resultCtxName);
+    if (treeDoc == nullptr) {
+        stateInfo.setError(QString("context not found %1").arg(resultCtxName));
+        return;
+    }
 
-	QList<GObject*> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
-	if (list2.size() == 0) {
-		stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
-		return;
-	}
+    QList<GObject *> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    if (list2.size() == 0) {
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
+        return;
+    }
 
-	GObject *obj2 = list2.first();
-	if(obj2==nullptr){
-		stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::PHYLOGENETIC_TREE) );
-		return;
-	}
-	
-	treeObjFromDoc = qobject_cast<PhyTreeObject*>(obj2);
-	
-	if(treeObjFromDoc == nullptr){
-		stateInfo.setError(  QString("error can't cast to phylogenetic tree from GObject") );
-		return;
-	}
-	assert( obj != nullptr);
+    GObject *obj2 = list2.first();
+    if (obj2 == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::PHYLOGENETIC_TREE));
+        return;
+    }
+
+    treeObjFromDoc = qobject_cast<PhyTreeObject *>(obj2);
+
+    if (treeObjFromDoc == nullptr) {
+        stateInfo.setError(QString("error can't cast to phylogenetic tree from GObject"));
+        return;
+    }
+    assert(obj != nullptr);
 
     CreatePhyTreeSettings settings;
     settings.algorithm = PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY;
 
-    if(bootStrapSeed != -1){
+    if (bootStrapSeed != -1) {
         settings.bootstrap = true;
         settings.seed = bootStrapSeed;
-        settings.consensusID =  "Majority Rule (extended)";
+        settings.consensusID = "Majority Rule (extended)";
         settings.replicates = 100;
     }
 
@@ -144,14 +142,14 @@ Task::ReportResult GTest_NeighborJoin::report() {
             stateInfo.setError("Result tree is NULL");
             return ReportResult_Finished;
         }
-        const PhyTree& treeFromDoc = treeObjFromDoc->getTree(); 
+        const PhyTree &treeFromDoc = treeObjFromDoc->getTree();
         bool same = PhyTreeObject::treesAreAlike(computedTree, treeFromDoc);
-        if(!same){
- 		    stateInfo.setError("Trees are not equal");
+        if (!same) {
+            stateInfo.setError("Trees are not equal");
         }
     }
-    
+
     return ReportResult_Finished;
 }
 
-}
+}  // namespace U2

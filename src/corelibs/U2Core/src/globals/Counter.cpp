@@ -74,4 +74,4 @@ void GCounter::increment(const QString &name, const QString &suffix) {
     counter->value++;
 }
 
-}    // namespace U2
+}  // namespace U2

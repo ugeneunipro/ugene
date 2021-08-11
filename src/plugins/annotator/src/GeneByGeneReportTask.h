@@ -30,7 +30,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//Settings
+// Settings
 class GeneByGeneReportSettings {
 public:
     GeneByGeneReportSettings();
@@ -50,7 +50,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-//Algorithm
+// Algorithm
 class GeneByGeneCompareResult {
 public:
     GeneByGeneCompareResult()
@@ -75,7 +75,7 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-//IO
+// IO
 class GeneByGeneReportIO {
 public:
     GeneByGeneReportIO(const QString &_outFile, const QString &_existingMode);
@@ -98,7 +98,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-//Task
+// Task
 class GeneByGeneReportTask : public Task {
     Q_OBJECT
 public:
@@ -114,6 +114,6 @@ private:
     QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>> geneData;
 };
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    //_U2_GENE_BY_GENE_REPORT_TASK_H_
+#endif  //_U2_GENE_BY_GENE_REPORT_TASK_H_

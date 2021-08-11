@@ -110,4 +110,4 @@ GObject *BioStruct3DObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, con
     return dst;
 }
 
-}    // namespace U2
+}  // namespace U2

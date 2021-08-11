@@ -73,13 +73,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(!thresholdSpinBox->isEnabled(), "thresholdSpinBox is unexpectidly enabled");
 }
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Default consensus type. Set 100% treshhold
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Default consensus type. Set 100% treshhold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -94,22 +94,22 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTSpinBox::setValue(os, thresholdSpinBox, 100);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "aagc+tattaataa");
-    //Expected state: consensus must be aagc+tattaataa
+    // Expected state: consensus must be aagc+tattaataa
 
-    //4. Set 1% treshhold.
+    // 4. Set 1% treshhold.
     GTSpinBox::setValue(os, thresholdSpinBox, 1, GTGlobals::UseKeyBoard);
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC+TATTAATAA");
-    //Expected state: consensus must be AAGC+TATTAATAA
+    // Expected state: consensus must be AAGC+TATTAATAA
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Default consensus type. Set 100% treshhold
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Default consensus type. Set 100% treshhold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -124,17 +124,17 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC+TATTAATAA");
-    //Expected state: consensus must be AAGC+TATTAATAA
+    // Expected state: consensus must be AAGC+TATTAATAA
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Default consensus type. Set 100% treshhold
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Default consensus type. Set 100% treshhold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -149,17 +149,17 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGc+TaTTAAtaa");
-    //Expected state: consensus must be AAGc+TaTTAAtaa
+    // Expected state: consensus must be AAGc+TaTTAAtaa
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Strict consensus type. Set 100% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Strict consensus type. Set 100% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -174,22 +174,22 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "--------------");
-    //Expected state: consensus must be --------------
+    // Expected state: consensus must be --------------
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC-TATTAAT-A");
-    //4. Set 50% treshhold.
-    //Expected state: consensus must be AAGC-TATTAAT-A
+    // 4. Set 50% treshhold.
+    // Expected state: consensus must be AAGC-TATTAAT-A
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_1) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Strict consensus type. Set 100% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Strict consensus type. Set 100% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -204,21 +204,21 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGCTTATTAATAA");
-    //Expected state: consensus must be AAGCTTATTAATAA
+    // Expected state: consensus must be AAGCTTATTAATAA
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_2) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Strict consensus type. Set 100% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Strict consensus type. Set 100% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
-    //GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
+    // GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -230,17 +230,17 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAG--T-TTAA---");
-    //Expected state: consensus must be AAG--T-TTAA---
+    // Expected state: consensus must be AAG--T-TTAA---
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Levitsky consensus type. Set 90% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -255,21 +255,21 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTSpinBox::setValue(os, thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "WAGHH--HTWW---");
-    //Expected state: consensus must be WAGHH--HTWW---
+    // Expected state: consensus must be WAGHH--HTWW---
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGMYTWTTAA---");
-    //4. Set 60% treshhold.
-    //Expected state: consensus must be AAGMYTWTTAA---
+    // 4. Set 60% treshhold.
+    // Expected state: consensus must be AAGMYTWTTAA---
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Levitsky consensus type. Set 90% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -284,17 +284,17 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "WAGYYTWYTAW---");
-    //Expected state: consensus must be WAGYYTWYTAW---
+    // Expected state: consensus must be WAGYYTWYTAW---
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
-    //Check consensus in MSA editor
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // Check consensus in MSA editor
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Use context menu {Consensus mode} in MSA editor area.
-    //Expected state: consensus representstion dialog appeared
-    //3. Select Levitsky consensus type. Set 90% treshhold.
+    // 2. Use context menu {Consensus mode} in MSA editor area.
+    // Expected state: consensus representstion dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% treshhold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -309,7 +309,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "W-------------");
-    //Expected state: consensus must be W-------------
+    // Expected state: consensus must be W-------------
 }
 
 void checkLimits(HI::GUITestOpStatus &os, int minVal, int maxVal) {
@@ -329,21 +329,21 @@ void checkLimits(HI::GUITestOpStatus &os, int minVal, int maxVal) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //check thresholdSpinBox and thresholdSlider limits
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // check thresholdSpinBox and thresholdSlider limits
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Open general option panel tab
+    // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != nullptr, "consensus combobox not found");
-    //3. Select "Default" consensus mode. Limits are 1-100
+    // 3. Select "Default" consensus mode. Limits are 1-100
     GTComboBox::selectItemByText(os, consensusType, "Default");
     checkLimits(os, 1, 100);
-    //4. Select "Levitsky" consensus mode. Limits are 50-100
+    // 4. Select "Levitsky" consensus mode. Limits are 50-100
     GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     checkLimits(os, 50, 100);
-    //4. Select "Strict" consensus mode. Limits are 50-100
+    // 4. Select "Strict" consensus mode. Limits are 50-100
     GTComboBox::selectItemByText(os, consensusType, "Strict");
     checkLimits(os, 1, 100);
 }
@@ -361,11 +361,11 @@ void checkValues(HI::GUITestOpStatus &os, int expected) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //check reset button
-    //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    // check reset button
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Open general option panel tab
+    // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -374,21 +374,21 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
     QWidget *thresholdResetButton = GTWidget::findWidget(os, "thresholdResetButton");
     CHECK_SET_ERR(thresholdResetButton != nullptr, "thresholdResetButton not found");
-    //3. Select "Default" consensus mode
+    // 3. Select "Default" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Default");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     checkValues(os, 100);
-    //3. Select "Levitsky" consensus mode
+    // 3. Select "Levitsky" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     checkValues(os, 90);
-    //3. Select "Strict" consensus mode
+    // 3. Select "Strict" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     checkValues(os, 100);
 }
-}    // namespace GUITest_common_scenarios_msa_editor_consensus
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_msa_editor_consensus
+}  // namespace U2

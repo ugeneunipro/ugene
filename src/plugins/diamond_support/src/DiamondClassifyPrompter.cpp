@@ -37,5 +37,5 @@ QString DiamondClassifyPrompter::composeRichDoc() {
     return tr("Classify sequences from <u>%1</u> with DIAMOND, use %2 database.").arg(readsProducerName).arg(databaseUrl);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

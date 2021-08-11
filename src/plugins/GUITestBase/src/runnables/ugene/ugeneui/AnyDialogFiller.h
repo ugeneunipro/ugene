@@ -39,5 +39,5 @@ public:
 private:
     QDialogButtonBox::StandardButton b;
 };
-}    // namespace U2
-#endif    // ANYDIALOGFILLER_H
+}  // namespace U2
+#endif  // ANYDIALOGFILLER_H

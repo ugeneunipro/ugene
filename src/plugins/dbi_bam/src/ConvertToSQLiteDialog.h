@@ -74,7 +74,7 @@ private:
     BAMInfo &bamInfo;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_CONVERT_TO_SQLITE_DIALOG_H_
+#endif  // _U2_BAM_CONVERT_TO_SQLITE_DIALOG_H_

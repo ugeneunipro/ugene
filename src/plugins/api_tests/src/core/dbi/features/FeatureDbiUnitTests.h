@@ -92,7 +92,7 @@ DECLARE_TEST(FeatureDbiUnitTests, getFeaturesBySequence);
 /** Testing properly sorting of annotation subgroups */
 DECLARE_TEST(FeatureDbiUnitTests, sortingSubgroups);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(FeatureDbiUnitTests, createFeature);
 DECLARE_METATYPE(FeatureDbiUnitTests, getFeature);
@@ -112,4 +112,4 @@ DECLARE_METATYPE(FeatureDbiUnitTests, getSubFeatures);
 DECLARE_METATYPE(FeatureDbiUnitTests, getFeaturesBySequence);
 DECLARE_METATYPE(FeatureDbiUnitTests, sortingSubgroups);
 
-#endif    // _U2_FEATURES_DBI_UNIT_TESTS_H_
+#endif  // _U2_FEATURES_DBI_UNIT_TESTS_H_

@@ -34,7 +34,7 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     config.seqRef = seqRef;
     config.complTrans = complementTranslation;
     config.strandToWalk = StrandOption_Both;
-    config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
+    config.chunkSize = 10 * 1000 * 1000;  // Use maximum 6*10mb RAM.
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
     addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count all codons in sequence")));
@@ -46,7 +46,7 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     config.seqRef = seqRef;
     config.complTrans = complementTranslation;
     config.strandToWalk = StrandOption_Both;
-    config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
+    config.chunkSize = 10 * 1000 * 1000;  // Use maximum 6*10mb RAM.
     config.translateOnlyFirstFrame = true;
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
@@ -61,7 +61,7 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     SequenceDbiWalkerConfig config;
     config.seqRef = seqRef;
     config.complTrans = complementTranslation;
-    config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
+    config.chunkSize = 10 * 1000 * 1000;  // Use maximum 6*10mb RAM.
     config.translateOnlyFirstFrame = true;
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
@@ -92,4 +92,4 @@ Task::ReportResult CodonOccurTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

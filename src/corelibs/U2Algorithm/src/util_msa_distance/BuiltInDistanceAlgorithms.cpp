@@ -27,4 +27,4 @@ const QString BuiltInDistanceAlgorithms::HAMMING_ALGO("HAMMING_ALGO");
 const QString BuiltInDistanceAlgorithms::SIMILARITY_ALGO("SIMILARITY_ALGO");
 const QString BuiltInDistanceAlgorithms::HAMMING_REVCOMPL_ALGO("HAMMING_REVCOMPL_ALGO");
 
-}    // namespace U2
+}  // namespace U2

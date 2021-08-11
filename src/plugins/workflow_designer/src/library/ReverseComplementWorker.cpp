@@ -64,7 +64,7 @@ void RCWorkerFactory::init() {
     inM[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
     p << new PortDescriptor(ind, DataTypePtr(new MapDataType("rc.input.sequence", inM)), true);
     QMap<Descriptor, DataTypePtr> outM;
-    //outM[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
+    // outM[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
     p << new PortDescriptor(outd, DataTypePtr(new MapDataType("rc.outpur.sequence", inM)), false, true);
 
     Descriptor opType(OP_TYPE, RCWorker::tr("Operation type"), RCWorker::tr("Select what to do with sequence."));
@@ -94,7 +94,8 @@ QString RCWorkerPrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     QString type = getRequiredParam(OP_TYPE);
-    QString op = type == "norev" ? "complement" : type == "nocompl" ? "reverse" : "reverse-complement";
+    QString op = type == "norev" ? "complement" : type == "nocompl" ? "reverse"
+                                                                    : "reverse-complement";
     op = getHyperlink(OP_TYPE, op);
 
     QString res = tr("Converts each input sequence %1 into its %2 counterpart.").arg(producerName).arg(op);
@@ -176,5 +177,5 @@ Task *RCWorker::tick() {
     return nullptr;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

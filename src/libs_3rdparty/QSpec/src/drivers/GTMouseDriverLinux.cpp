@@ -105,11 +105,10 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     Display *display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
-    //1 = Left, 2 = Middle, 3 = Right
-    unsigned int btn = button == Qt::LeftButton  ? 1 :
-                       button == Qt::RightButton ? 3 :
-                       button == Qt::MidButton   ? 2 :
-                                                   0;
+    // 1 = Left, 2 = Middle, 3 = Right
+    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
+                                                  : button == Qt::MidButton     ? 2
+                                                                                : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     XTestFakeButtonEvent(display, btn, True, 0);
@@ -130,10 +129,9 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     Display *display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
-    unsigned int btn = button == Qt::LeftButton  ? 1 :
-                       button == Qt::RightButton ? 3 :
-                       button == Qt::MidButton   ? 2 :
-                                                   0;
+    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
+                                                  : button == Qt::MidButton     ? 2
+                                                                                : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     XTestFakeButtonEvent(display, btn, False, 0);
@@ -153,7 +151,7 @@ bool GTMouseDriver::scroll(int value) {
     Display *display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
-    unsigned button = value > 0 ? Button4 : Button5;    //Button4 - scroll up, Button5 - scroll down
+    unsigned button = value > 0 ? Button4 : Button5;  // Button4 - scroll up, Button5 - scroll down
     value = value > 0 ? value : -value;
 
     for (int i = 0; i < value; i++) {
@@ -171,4 +169,4 @@ bool GTMouseDriver::scroll(int value) {
 #    undef GT_CLASS_NAME
 
 #endif
-}    // namespace HI
+}  // namespace HI

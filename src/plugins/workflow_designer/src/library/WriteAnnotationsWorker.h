@@ -43,7 +43,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // WriteAnnotationsPrompter
+};  // WriteAnnotationsPrompter
 
 class WriteAnnotationsWorker : public BaseWorker {
     Q_OBJECT
@@ -83,7 +83,7 @@ private:
     QList<AnnotationTableObject *> createdAnnotationObjects;
     QMap<QString, QList<AnnotationTableObject *>> annotationsByUrl;
 
-};    // WriteAnnotationsWorker
+};  // WriteAnnotationsWorker
 
 class WriteAnnotationsWorkerFactory : public DomainFactory {
 public:
@@ -95,9 +95,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // WriteAnnotationsWorkerFactory
+};  // WriteAnnotationsWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // __WRITE_ANNOTATIONS_WORKER_H_
+#endif  // __WRITE_ANNOTATIONS_WORKER_H_

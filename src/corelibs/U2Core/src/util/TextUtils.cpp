@@ -50,7 +50,7 @@ const QBitArray TextUtils::LESS_THAN = getLessThan();
 const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
 
-//TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
+// TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
 
 static QBitArray getEmptyBitMap() {
     return QBitArray(256);
@@ -205,9 +205,20 @@ qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 bu
 
 QStringList TextUtils::split(const QString &text, int chunkSize) {
     if (text.length() < chunkSize) {
-        return QStringList() << text;
+        return {text};
     }
     QStringList result;
+    for (int i = 0; i < text.length(); i += chunkSize) {
+        result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
+    }
+    return result;
+}
+
+QList<QByteArray> TextUtils::split(const QByteArray &text, int chunkSize) {
+    if (text.length() < chunkSize) {
+        return {text};
+    }
+    QList<QByteArray> result;
     for (int i = 0; i < text.length(); i += chunkSize) {
         result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
     }
@@ -249,4 +260,4 @@ QString TextUtils::skip(const QBitArray &map, const QString &text) {
     return "";
 }
 
-}    // namespace U2
+}  // namespace U2

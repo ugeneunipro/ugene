@@ -46,6 +46,6 @@ inline SWMulAlignSubseqPropTag::SWMulAlignSubseqPropTag(const QString _shorthand
     acceptableForSubseqNamesOnly = true;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_
+#endif  // _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_

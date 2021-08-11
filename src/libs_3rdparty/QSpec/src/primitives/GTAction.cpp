@@ -66,7 +66,7 @@ QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *a, QObject
         QAbstractButton *tb = qobject_cast<QAbstractButton *>(w);
         if (tb) {
             if (parent) {
-                QList<QToolButton *> childButtons = parent->findChildren<QToolButton *>();    // da. daa.
+                QList<QToolButton *> childButtons = parent->findChildren<QToolButton *>();  // da. daa.
                 if (childButtons.contains(dynamic_cast<QToolButton *>(tb))) {
                     return tb;
                 }
@@ -82,7 +82,7 @@ QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *a, QObject
 
 #define GT_METHOD_NAME "findAction"
 QAction *GTAction::findAction(GUITestOpStatus &os, const QString &actionName, QObject *parent, const GTGlobals::FindOptions &options) {
-    if (parent == NULL) {    // If parent null, then searching for at QMainWindows
+    if (parent == NULL) {  // If parent null, then searching for at QMainWindows
         QList<QAction *> list;
         foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
             if (parent->findChild<QAction *>(actionName) != NULL) {
@@ -104,7 +104,7 @@ QAction *GTAction::findAction(GUITestOpStatus &os, const QString &actionName, QO
 
 #define GT_METHOD_NAME "findActionByText"
 QAction *GTAction::findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
-    if (parent == NULL) {    // If parent null, then searching for at QMainWindows
+    if (parent == NULL) {  // If parent null, then searching for at QMainWindows
         QList<QAction *> resultList;
         foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
             QList<QAction *> list = parent->findChildren<QAction *>();
@@ -135,4 +135,4 @@ QAction *GTAction::findActionByText(GUITestOpStatus &os, const QString &text, QW
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

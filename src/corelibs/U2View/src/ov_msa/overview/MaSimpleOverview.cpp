@@ -246,4 +246,4 @@ void MaSimpleOverview::recalculateSelection() {
     cachedSelection.setHeight(qRound((selectionRowsRegion.startPos + selectionRowsRegion.length) / stepY) - qRound(selectionRowsRegion.startPos / stepY));
 }
 
-}    // namespace U2
+}  // namespace U2

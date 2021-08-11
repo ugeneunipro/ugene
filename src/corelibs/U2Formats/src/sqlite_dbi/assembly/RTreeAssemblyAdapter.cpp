@@ -138,7 +138,7 @@ void RTreeAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2Assembl
     while (it->hasNext()) {
         U2AssemblyRead read = it->next();
 
-        bool dnaExt = false;    //TODO
+        bool dnaExt = false;  // TODO
         qint64 flags = read->flags;
         flags = flags | (dnaExt ? DnaExtAlphabet : 0);
 
@@ -241,4 +241,4 @@ void RTreePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 prow, 
     updateQuery->execute();
 }
 
-}    // namespace U2
+}  // namespace U2

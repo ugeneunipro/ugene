@@ -52,4 +52,4 @@ void SetParametersDialogController::sl_onOkButton() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -55,7 +55,7 @@ class TreeViewer : public GObjectView {
 public:
     TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
 
-    //from GObjectView
+    // from GObjectView
     void buildStaticToolbar(QToolBar *tb) override;
     void buildMenu(QMenu *m, const QString &type) override;
 
@@ -269,12 +269,12 @@ signals:
     void si_updateBranch();
 
 protected:
-     void wheelEvent(QWheelEvent *e) override;
-     void resizeEvent(QResizeEvent *e) override;
-     void mousePressEvent(QMouseEvent *e) override;
-     void mouseReleaseEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
 
-    virtual void setTreeLayout(const TreeLayout& newLayout);
+    virtual void setTreeLayout(const TreeLayout &newLayout);
 
     /** Returns root item for the tree. */
     GraphicsBranchItem *getRoot() const;
@@ -335,7 +335,7 @@ private:
 
     void paint(QPainter &painter);
     void showLabels(LabelTypes labelTypes);
-    //Scalebar
+    // Scalebar
     void addLegend();
     void updateLegend();
 
@@ -407,5 +407,5 @@ protected:
     QAction *zoomToAllAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

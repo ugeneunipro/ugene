@@ -237,4 +237,4 @@ QList<XMLTestFactory *> DnaStatisticsTests::createTestFactories() {
     return {GTest_DnaStatisticsTest::createFactory()};
 }
 
-}    // namespace U2
+}  // namespace U2

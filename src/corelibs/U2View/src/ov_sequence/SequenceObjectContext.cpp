@@ -88,9 +88,9 @@ SequenceObjectContext::SequenceObjectContext(U2SequenceObject *obj, QObject *par
                 a->setCheckable(true);
                 a->setChecked(false);
                 a->setEnabled(false);
-                //set row id
+                // set row id
                 a->setData(i);
-                //save status
+                // save status
                 if (translationStates.contains(i)) {
                     translationRowsStatus.append(a);
                 }
@@ -481,4 +481,4 @@ void SequenceObjectContext::showTranslationFrame(const int frameIndex, const boo
     actions[frameIndex]->setChecked(isChecked);
 }
 
-}    // namespace U2
+}  // namespace U2

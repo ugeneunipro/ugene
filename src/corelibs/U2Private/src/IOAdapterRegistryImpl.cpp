@@ -61,4 +61,4 @@ void IOAdapterRegistryImpl::init() {
     registerIOAdapter(new DatabaseConnectionAdapterFactory(this));
 }
 
-}    // namespace U2
+}  // namespace U2

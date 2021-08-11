@@ -104,4 +104,4 @@ StreamGzippedShortReadWriter::StreamGzippedShortReadWriter()
     io = iof->createIOAdapter();
 }
 
-}    // namespace U2
+}  // namespace U2

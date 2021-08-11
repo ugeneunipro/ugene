@@ -82,6 +82,6 @@ private:
     DnaAssemblyMultiTask *assemblyTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_ASSEMBLEY_TASK_H_
+#endif  // _U2_DNA_ASSEMBLEY_TASK_H_

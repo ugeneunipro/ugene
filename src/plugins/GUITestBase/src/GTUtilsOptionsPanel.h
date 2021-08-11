@@ -36,6 +36,6 @@ public:
     static QWidget *getActiveOptionsWidget(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_GUI_OPTIONS_PANEL_UTILS_H_
+#endif  //_U2_GUI_OPTIONS_PANEL_UTILS_H_

@@ -45,4 +45,4 @@ bool AlignSequencesToAlignmentTaskSettings::isValid() const {
     return AbstractAlignmentTaskSettings::isValid() && !addedSequencesRefs.isEmpty() && !addedSequencesNames.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

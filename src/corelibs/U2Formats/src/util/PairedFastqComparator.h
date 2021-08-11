@@ -93,6 +93,6 @@ private:
     int droppedCounter;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PAIRED_FASTQ_COMPARATOR_H_
+#endif  // _U2_PAIRED_FASTQ_COMPARATOR_H_

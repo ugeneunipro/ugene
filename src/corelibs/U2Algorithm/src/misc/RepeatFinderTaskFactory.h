@@ -37,6 +37,6 @@ public:
     virtual void setRFResultsListener(Task *, RFResultsListener *) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

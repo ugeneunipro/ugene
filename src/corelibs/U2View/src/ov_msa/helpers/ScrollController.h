@@ -47,7 +47,7 @@ public:
 
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
-    QPoint getScreenPosition() const;    // in pixels
+    QPoint getScreenPosition() const;  // in pixels
     QPoint getGlobalMousePosition(const QPoint &mousePos) const;
 
     void updateVerticalScrollBar();
@@ -105,11 +105,11 @@ private slots:
     void sl_collapsibleModelChanged();
 
 private:
-    int getAdditionalXOffset() const;    // in pixels;
-    int getAdditionalYOffset() const;    // in pixels;
+    int getAdditionalXOffset() const;  // in pixels;
+    int getAdditionalYOffset() const;  // in pixels;
 
-    U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;    // in pixels
-    U2Region getVerticalRangeToDrawIn(int widgetHeight) const;    // in pixels
+    U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;  // in pixels
+    U2Region getVerticalRangeToDrawIn(int widgetHeight) const;  // in pixels
 
     void zoomHorizontalScrollBarPrivate();
     void zoomVerticalScrollBarPrivate();
@@ -127,6 +127,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCROLL_CONTROLLER_H_
+#endif  // _U2_SCROLL_CONTROLLER_H_

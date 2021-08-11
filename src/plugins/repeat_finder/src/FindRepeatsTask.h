@@ -63,10 +63,10 @@ public:
     qint64 reportSeqShift;
     qint64 reportSeq2Shift;
 
-    //all these regions are in global sequence coordinates
-    QVector<U2Region> midRegionsToInclude;    //reported repeat must contain one of these regions
-    QVector<U2Region> midRegionsToExclude;    //reported repeat must not contain none of these regions
-    QVector<U2Region> allowedRegions;    //reported repeat must fit one of these regions
+    // all these regions are in global sequence coordinates
+    QVector<U2Region> midRegionsToInclude;  // reported repeat must contain one of these regions
+    QVector<U2Region> midRegionsToExclude;  // reported repeat must not contain none of these regions
+    QVector<U2Region> allowedRegions;  // reported repeat must fit one of these regions
 
     RFAlgorithm algo;
     RepeatsFilterAlgorithm filter;
@@ -88,7 +88,7 @@ public:
     }
 };
 
-//WARNING: this task is suitable only for a single sequence processing -> check addResults x/y sorting
+// WARNING: this task is suitable only for a single sequence processing -> check addResults x/y sorting
 class RevComplSequenceTask;
 class FindTandemsToAnnotationsTask;
 class FindRepeatsTask : public Task, public RFResultsListener {
@@ -108,7 +108,7 @@ public:
 
     QVector<RFResult> getResults() const {
         return results;
-    }    // used if createAnnotations == false
+    }  // used if createAnnotations == false
     const FindRepeatsTaskSettings &getSettings() const {
         return settings;
     }
@@ -170,6 +170,6 @@ public:
     DNASequence complementSequence;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

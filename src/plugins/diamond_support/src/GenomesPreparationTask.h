@@ -40,6 +40,6 @@ private:
     QString preparedGenomesFileUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOMES_PREPARATION_TASK_H_
+#endif  // _U2_GENOMES_PREPARATION_TASK_H_

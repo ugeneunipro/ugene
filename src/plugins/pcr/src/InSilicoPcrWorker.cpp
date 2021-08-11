@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "InSilicoPcrWorker.h"
 
@@ -60,7 +60,7 @@ const QString MAX_PRODUCT_ATTR_ID = "max-product";
 const QString EXTRACT_ANNOTATIONS_ATTR_ID = "extract-annotations";
 
 const char *PAIR_NUMBER_PROP_ID = "pair-number";
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* InSilicoPcrWorkerFactory */
@@ -110,25 +110,25 @@ void InSilicoPcrWorkerFactory::init() {
     {
         delegates[PRIMERS_ATTR_ID] = new URLDelegate("", "", false, false, false);
         delegates[REPORT_ATTR_ID] = new URLDelegate("", "", false, false, true);
-        {    // mismatches
+        {  // mismatches
             QVariantMap props;
             props["minimum"] = 0;
             props["maximum"] = 99;
             delegates[MISMATCHES_ATTR_ID] = new SpinBoxDelegate(props);
         }
-        {    // perfect match
+        {  // perfect match
             QVariantMap props;
             props["minimum"] = 0;
             props["maximum"] = 99;
             delegates[PERFECT_ATTR_ID] = new SpinBoxDelegate(props);
         }
-        {    // max product
+        {  // max product
             QVariantMap props;
             props["minimum"] = 0;
             props["maximum"] = 999999;
             delegates[MAX_PRODUCT_ATTR_ID] = new SpinBoxDelegate(props);
         }
-        {    // extract annotations
+        {  // extract annotations
             QVariantMap values;
             values[InSilicoPcrWorker::tr("Inner")] = ExtractProductSettings::Inner;
             values[InSilicoPcrWorker::tr("All intersected")] = ExtractProductSettings::All;
@@ -462,5 +462,5 @@ QString InSilicoPcrReportTask::readHtml() const {
     return result;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

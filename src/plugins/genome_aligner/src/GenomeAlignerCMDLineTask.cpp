@@ -189,4 +189,4 @@ QString GenomeAlignerCMDLineTask::getArgumentsDescritption() {
     return desc;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -120,7 +120,7 @@ static bool hasActiveDialogs(QObject *o) {
     }
     QDialog *d = qobject_cast<QDialog *>(o);
     if (d != nullptr && d->isVisible()) {
-        //coreLog.trace(QString("Rejecting dialog %1").arg(o->metaObject()->className()));
+        // coreLog.trace(QString("Rejecting dialog %1").arg(o->metaObject()->className()));
         return true;
     }
     return false;
@@ -161,7 +161,7 @@ void DocumentUpdater::update() {
         if (!fileCheckAllowedByHints) {
             continue;
         }
-        if (!doc->isModified() && !fi.exists()) {    // file was removed from its folder
+        if (!doc->isModified() && !fi.exists()) {  // file was removed from its folder
             removedDocs.append(doc);
         }
 
@@ -179,7 +179,7 @@ void DocumentUpdater::update() {
         if (updTime.isNull()) {
             continue;
         }
-        if (fi.lastModified() != updTime && fi.exists()) {    // file was modified
+        if (fi.lastModified() != updTime && fi.exists()) {  // file was modified
             outdatedDocs.append(doc);
         }
     }
@@ -210,7 +210,7 @@ void removeDocFromProject(Project *proj, Document *doc) {
     proj->removeDocument(doc);
 }
 
-}    // namespace
+}  // namespace
 
 bool DocumentUpdater::makeDecision(Document *doc, QListIterator<Document *> &iter) {
     QMessageBox::StandardButton btn = QMessageBox::question(AppContext::getMainWindow()->getQMainWindow(),
@@ -293,7 +293,7 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document 
             foreach (Document *doc, dbiDocs) {
                 removedDocNameList += doc->getURLString() + '\n';
             }
-            removedDocNameList.chop(1);    // remove the last new line character
+            removedDocNameList.chop(1);  // remove the last new line character
             warningBox->setDetailedText(removedDocNameList);
         }
         warningBox->exec();
@@ -464,7 +464,7 @@ ProjectViewImpl::ProjectViewImpl()
     openContainingFolder = nullptr;
     saveProjectOnClose = false;
 
-    //todo: move it somewhere else -> object views could be openend without project view service active
+    // todo: move it somewhere else -> object views could be openend without project view service active
     registerBuiltInObjectViews();
 }
 
@@ -545,7 +545,7 @@ void ProjectViewImpl::disable() {
     Project *pr = AppContext::getProject();
     pr->disconnect(this);
 
-    //All these QObjects are autodeleted when 'w' is deleted;
+    // All these QObjects are autodeleted when 'w' is deleted;
     projectTreeController = nullptr;
     objectViewController = nullptr;
 
@@ -631,7 +631,7 @@ void ProjectViewImpl::saveViewState(GObjectViewWindow *v, const QString &stateNa
         state = new GObjectViewState(id, v->getViewName(), stateName, stateData);
         p->addGObjectViewState(state);
     } else {
-        assert(state->getViewFactoryId() == id);    //TODO: handle this error;
+        assert(state->getViewFactoryId() == id);  // TODO: handle this error;
         state->setStateData(stateData);
     }
 }
@@ -679,10 +679,10 @@ void ProjectViewImpl::sl_onProjectModifiedStateChanged() {
 
 void ProjectViewImpl::sl_onViewPersistentStateChanged(GObjectViewWindow *v) {
     if (v->isPersistent()) {
-        //add last saved state
+        // add last saved state
         saveViewState(v, GObjectViewState::APP_CLOSING_STATE_NAME);
     } else {
-        //remove all states
+        // remove all states
         QList<GObjectViewState *> states = GObjectViewUtils::findStatesByViewName(v->getViewName());
         foreach (GObjectViewState *s, states) {
             AppContext::getProject()->removeGObjectViewState(s);
@@ -711,7 +711,7 @@ QList<Task *> ProjectViewImpl::createLoadDocumentTasks(const QList<Document *> &
     return res;
 }
 
-//TODO: selection could be modified before slot activation!
+// TODO: selection could be modified before slot activation!
 class OpenViewContext : public QObject {
 public:
     OpenViewContext()
@@ -788,11 +788,11 @@ void ProjectViewImpl::sl_onActivated(Document *d) {
     DocumentSelection ds;
 
     if (d->isLoaded()) {
-        //find view for loaded objects in document
+        // find view for loaded objects in document
         gs.addToSelection(d->getObjects());
         ms.addSelection(&gs);
     } else {
-        //try create view for unloaded
+        // try create view for unloaded
         ds.addToSelection(QList<Document *>() << d);
         ms.addSelection(&ds);
     }
@@ -824,7 +824,7 @@ void ProjectViewImpl::sl_onActivated(Document *d) {
 QList<QAction *> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory *f, const MultiGSelection &ms, QObject *actionsParent, bool tryActivate) {
     QList<QAction *> res;
 
-    //check if object is already displayed in some view.
+    // check if object is already displayed in some view.
     QList<MWMDIWindow *> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     const GObjectSelection *objectsSelection = static_cast<const GObjectSelection *>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
     const DocumentSelection *docSelection = static_cast<const DocumentSelection *>(ms.findSelectionByType(GSelectionTypes::DOCUMENTS));
@@ -874,7 +874,7 @@ QList<QAction *> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory *f, c
         return res;
     }
 
-    //check if new view can be created
+    // check if new view can be created
     if (f->canCreateView(ms)) {
         QAction *action = new QAction(tr("Open new view: %1").arg(f->getName()), actionsParent);
         action->setObjectName("Open New View");
@@ -888,7 +888,7 @@ QList<QAction *> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory *f, c
         return res;
     }
 
-    //check saved state can be activated
+    // check saved state can be activated
     QList<GObjectViewState *> viewStates = GObjectViewUtils::selectStates(f, ms, AppContext::getProject()->getGObjectViewStates());
     foreach (GObjectViewState *s, viewStates) {
         QAction *action = new QAction(tr("Open saved view '%1' with a state '%2'").arg(s->getViewName()).arg(s->getStateName()), actionsParent);
@@ -1091,7 +1091,7 @@ void ProjectViewImpl::sl_openNewView() {
 }
 
 void ProjectViewImpl::sl_addToView() {
-    //TODO: create specialized action classes instead of using ->data().value<void*>() casts
+    // TODO: create specialized action classes instead of using ->data().value<void*>() casts
     QAction *action = (QAction *)sender();
     AddToViewContext *ac = static_cast<AddToViewContext *>(action->data().value<void *>());
     GObjectView *view = ac->view;
@@ -1114,7 +1114,7 @@ void ProjectViewImpl::sl_openStateView() {
     const GObjectViewState *state = c->state;
     assert(state);
 
-    //todo: 70% of code duplication with ObjectViewTreeController::sl_activateView -> create util
+    // todo: 70% of code duplication with ObjectViewTreeController::sl_activateView -> create util
     GObjectViewWindow *view = GObjectViewUtils::findViewByName(state->getViewName());
     if (view != nullptr) {
         assert(view->isPersistent());
@@ -1140,7 +1140,7 @@ void ProjectViewImpl::sl_relocate() {
     if (d == nullptr) {
         return;
     }
-    if (d->isLoaded()) {    //TODO: support loaded docs relocation?
+    if (d->isLoaded()) {  // TODO: support loaded docs relocation?
         return;
     }
     LastUsedDirHelper h;
@@ -1195,7 +1195,7 @@ void ProjectViewImpl::sl_onOpenContainingFolder() {
 //////////////////////////////////////////////////////////////////////////
 // Tasks
 
-//EnableProjectViewTask
+// EnableProjectViewTask
 
 EnableProjectViewTask::EnableProjectViewTask(ProjectViewImpl *_pvi)
     : Task(tr("Enable ProjectView"), TaskFlag_NoRun), pvi(_pvi) {
@@ -1227,4 +1227,4 @@ Task::ReportResult DisableProjectViewTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

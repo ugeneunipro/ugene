@@ -52,6 +52,12 @@ public:
     /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
     bool isSingleRegionSelection() const;
 
+    /** Returns true if selection contains only 1 row (any column range). */
+    bool isSingleRowSelection() const;
+
+    /** Returns true if selection contains only 1 column (any rows range). */
+    bool isSingleColumnSelection() const;
+
     /** Returns true if selection contains 1 rect with 1x1 dimension. */
     bool isSingleBaseSelection() const;
 
@@ -80,6 +86,9 @@ public:
 
     /** Returns true if the given row (any its part) is in the selection. */
     bool containsRow(int rowIndex) const;
+
+    /** Returns view row indexes of all rows present in the selection. */
+    QList<int> getSelectedRowIndexes() const;
 
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
@@ -146,6 +155,6 @@ private:
     McaEditor *const mcaEditor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_SELECTION_
+#endif  // _U2_MA_EDITOR_SELECTION_

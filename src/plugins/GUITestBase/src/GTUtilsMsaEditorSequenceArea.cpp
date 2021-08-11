@@ -500,7 +500,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", false);
 
-    //Seq names are drawn on widget, so this hack is needed
+    // Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
     QList<int> selectedMaRows = msaEditArea->getSelectedMaRowIndexes();
     for (int i = 0; i < selectedMaRows.size(); i++) {
@@ -885,4 +885,4 @@ void GTUtilsMSAEditorSequenceArea::zoomToMin(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

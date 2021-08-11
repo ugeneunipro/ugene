@@ -150,8 +150,8 @@ class Registrator {
 
 const bool Registrator::u2DataIdRegistered = registerDataId();
 
-}    // namespace
+}  // namespace
 
 bool U2DbiRef::metaInfoRegistered = registerMetaInfo();
 
-}    // namespace U2
+}  // namespace U2

@@ -60,5 +60,5 @@ ActorValidator *ActorValidatorRegistry::findValidator(const QString &id) {
     return validators.value(id, nullptr);
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -36,13 +36,13 @@
 
 namespace U2 {
 
-//QDSaveSceneTask
+// QDSaveSceneTask
 //////////////////////////////////////////////////////////////////////////
 QDSaveSceneTask::QDSaveSceneTask(QueryScene *scene, const QDSceneInfo &info)
     : Task(tr("Save query scheme"), TaskFlag_None), path(info.path), scene(scene) {
     //    int st = path.lastIndexOf("/")+1;
     //    int end = path.indexOf(".", st);
-    QString id = info.schemeName;    //path.mid(st, end-st);
+    QString id = info.schemeName;  // path.mid(st, end-st);
     QDDocument *doc = QDSceneSerializer::scene2doc(scene);
     doc->setName(id);
     doc->setDocDesc(info.description);
@@ -63,7 +63,7 @@ void QDSaveSceneTask::run() {
     }
 }
 
-//QDLoadSceneTask
+// QDLoadSceneTask
 //////////////////////////////////////////////////////////////////////////
 QDLoadSceneTask::QDLoadSceneTask(QueryScene *scene, const QString &url)
     : Task(tr("Load query scheme"), TaskFlag_NoRun), scene(scene), url(url) {
@@ -96,7 +96,7 @@ Task::ReportResult QDLoadSceneTask::report() {
     return Task::ReportResult_Finished;
 }
 
-//QDLoadSchemetask
+// QDLoadSchemetask
 //////////////////////////////////////////////////////////////////////////
 QDLoadSchemeTask::QDLoadSchemeTask(const QString &uri)
     : Task(tr("Load query task"), TaskFlag_NoRun) {
@@ -126,7 +126,7 @@ Task::ReportResult QDLoadSchemeTask::report() {
     return Task::ReportResult_Finished;
 }
 
-//QDLoadDocumentTask
+// QDLoadDocumentTask
 //////////////////////////////////////////////////////////////////////////
 QDLoadDocumentTask::QDLoadDocumentTask(const QString &url)
     : Task(tr("Loading document from %1").arg(url), TaskFlag_None), doc(nullptr), url(url) {
@@ -135,7 +135,7 @@ QDLoadDocumentTask::QDLoadDocumentTask(const QString &url)
 void QDLoadDocumentTask::run() {
     ioLog.details(tr("Loading scheme from file: %1").arg(url));
     doc = new QDDocument;
-    //url = "E:/!sandbox/Schema.txt";
+    // url = "E:/!sandbox/Schema.txt";
     QFile f(url);
     if (!f.open(QIODevice::ReadOnly)) {
         stateInfo.setError(L10N::errorOpeningFileRead(url));
@@ -150,7 +150,7 @@ void QDLoadDocumentTask::run() {
     }
 }
 
-//QDSceneSerializer
+// QDSceneSerializer
 //////////////////////////////////////////////////////////////////////////
 bool QDSceneSerializer::doc2scene(QueryScene *scene, const QList<QDDocument *> &docs) {
     QMap<QDElementStatement *, QDActor *> stmt2actor;
@@ -221,11 +221,11 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
     }
 
     QDActor *actor = nullptr;
-    //map QDElementStatement to QDActor created from it
+    // map QDElementStatement to QDActor created from it
 
     foreach (QDElementStatement *grpStmt, groups) {
-        //if grpStmt references to stmt defined in other query
-        //find it and instantiate with that query attributes
+        // if grpStmt references to stmt defined in other query
+        // find it and instantiate with that query attributes
         if (grpStmt->getId() == QDDocument::GROUPS_SECTION) {
             continue;
         }
@@ -259,7 +259,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
         }
     }
 
-    //load constraints
+    // load constraints
     QList<QDLinkStatement *> lnks;
     foreach (QDDocument *doc, docs) {
         lnks << doc->getLinks();
@@ -273,7 +273,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
         }
     }
 
-    //specify order
+    // specify order
     QStringList ids = docs.first()->getOrder();
     if (!ids.isEmpty()) {
         for (int idx = 0, n = ids.size(); idx < n; idx++) {
@@ -289,7 +289,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument *> &docs, QMap<QDEleme
     QDStrandOption strOpt = docs.first()->getSchemaStrand();
     scheme->setStrand(strOpt);
 
-    //load groups
+    // load groups
     bool ok = QDSchemeSerializer::loadGroups(scheme, docs.first());
     if (!ok) {
         return false;
@@ -331,7 +331,7 @@ QDDocument *QDSceneSerializer::scene2doc(QueryScene *scene) {
     return doc;
 }
 
-//QDSchemeSerializer
+// QDSchemeSerializer
 //////////////////////////////////////////////////////////////////////////
 static const QString GROUP_ATTR = "group";
 
@@ -525,4 +525,4 @@ bool QDSchemeSerializer::loadGroups(QDScheme *scheme, QDDocument *doc) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

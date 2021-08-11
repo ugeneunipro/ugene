@@ -58,7 +58,7 @@ WorkflowContext::WorkflowContext(const QList<Actor *> &procs, WorkflowMonitor *_
         procMap.insert(p->getId(), p);
     }
 
-    {    // register WD process
+    {  // register WD process
         AppFileStorage *fileStorage = AppContext::getAppFileStorage();
         CHECK(nullptr != fileStorage, );
 
@@ -263,5 +263,5 @@ void WorkflowContextCMDLine::saveRunInfo(const QString &dir) {
     runInfo.close();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -241,16 +241,18 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
-    QList<QAction *> actions;
 
-    MSAEditor *editor = getEditor();
-    MsaEditorWgt *msaWgt = editor->getUI();
-    QAction *editSequenceNameAction = msaWgt->getEditorNameList()->getEditSequenceNameAction();
-    qint64 numSelectedRows = editor->getSelection().toRect().height();
-    if (numSelectedRows != 1) {
-        editSequenceNameAction->setDisabled(true);
-    }
-    actions << editSequenceNameAction << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
+    QList<QAction *> actions = {
+        getEditor()->getUI()->getEditorNameList()->getEditSequenceNameAction(),
+        fillWithGapsinsSymAction,
+        replaceCharacterAction,
+        reverseComplementAction,
+        reverseAction,
+        complementAction,
+        delColAction,
+        removeAllGapsAction,
+    };
+
     editMenu->insertActions(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
 
@@ -293,7 +295,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     addSeqFromFileAction->setEnabled(!readOnly);
     toggleSequenceRowOrderAction->setEnabled(!readOnly && !isAlignmentEmpty());
 
-    //Update actions of "Edit" group
+    // Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     const MaEditorSelection &selection = editor->getSelection();
     bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
@@ -303,9 +305,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     ui->pasteBeforeAction->setEnabled(!readOnly);
 
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
-    QRect selectionRect = selection.toRect();
-    bool oneCharacterIsSelected = selectionRect.width() == 1 && selectionRect.height() == 1;
-    replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
+    replaceCharacterAction->setEnabled(canEditSelectedArea && selection.isSingleBaseSelection());
     delColAction->setEnabled(canEditAlignment);
     reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     reverseAction->setEnabled(canEditSelectedArea);
@@ -414,7 +414,7 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
     QList<qint64> maRowIds = maRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(maRowIndexes);
     const MaEditorSelection &selection = editor->getSelection();
     U2Region columnRange = selection.isEmpty()
-                               ? U2Region(0, msaObject->getLength())    // Whole alignment.
+                               ? U2Region(0, msaObject->getLength())  // Whole alignment.
                                : U2Region::fromXRange(selection.getRectList().first());
 
     QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, maRowIds, columnRange, this);
@@ -540,7 +540,7 @@ void MSAEditorSequenceArea::runPasteTask(bool isPasteBefore) {
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
     SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
-    bool isAddToProject = false;    // Do not add the pasted document to the project -> add it to the alignment.
+    bool isAddToProject = false;  // Do not add the pasted document to the project -> add it to the alignment.
     PasteTask *pasteTask = pasteFactory->createPasteTask(isAddToProject);
     CHECK(pasteTask != nullptr, );
     connect(new TaskSignalMapper(pasteTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteTaskFinished(Task *)));
@@ -563,7 +563,7 @@ void MSAEditorSequenceArea::sl_pasteTaskFinished(Task *_pasteTask) {
     int insertRowIndex = isPasteBefore ? (selectionRect.isEmpty() ? 0 : selectionRect.y())
                                        : (selectionRect.isEmpty() ? -1 : selectionRect.y() + selectionRect.height());
     auto task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs, insertRowIndex, true);
-    task->setErrorNotificationSuppression(true);    // we manually show warning message if needed when task is finished.
+    task->setErrorNotificationSuppression(true);  // we manually show warning message if needed when task is finished.
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task *)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
@@ -671,7 +671,6 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
     }
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
-    SAFE_POINT(isInRange(selection.toRect()), "Selection is not in range!", );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
@@ -875,7 +874,7 @@ QString ExportHighlightingTask::exportHighlighting(int startPos, int endPos, int
         rowStr.append(QString("%1").arg(posInResult));
         rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
         bool informative = false;
-        for (int seq = 0; seq < msa->getNumRows(); seq++) {    //FIXME possible problems when sequences have moved in view
+        for (int seq = 0; seq < msa->getNumRows(); seq++) {  // FIXME possible problems when sequences have moved in view
             if (seq == refSeq)
                 continue;
             char c = msa->charAt(seq, pos);
@@ -919,4 +918,4 @@ QString ExportHighlightingTask::exportHighlighting(int startPos, int endPos, int
     return result.join("\n");
 }
 
-}    // namespace U2
+}  // namespace U2

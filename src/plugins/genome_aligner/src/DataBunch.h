@@ -50,6 +50,6 @@ struct DataBunch {
     void prepareSorted();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_
+#endif  // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_

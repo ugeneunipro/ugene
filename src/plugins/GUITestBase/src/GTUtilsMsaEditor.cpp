@@ -534,4 +534,4 @@ void GTUtilsMsaEditor::setReference(GUITestOpStatus &os, const QString &sequence
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

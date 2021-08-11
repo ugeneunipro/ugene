@@ -81,7 +81,7 @@ struct SWDialogConfig {
     GapModel gm;
     QString resultFilter;
 
-    int minScoreInPercent;    // c {0, 1, ..., 100}
+    int minScoreInPercent;  // c {0, 1, ..., 100}
 
     SmithWatermanSearchType searchType;
     StrandOption strand;
@@ -104,6 +104,6 @@ public:
     static void run(QWidget *p, ADVSequenceObjectContext *ctx, SWDialogConfig *dialogConfig);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

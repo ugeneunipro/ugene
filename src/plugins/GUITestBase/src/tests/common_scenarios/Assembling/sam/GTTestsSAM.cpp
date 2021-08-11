@@ -86,5 +86,5 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
-}    // namespace GUITest_SAM
-}    // namespace U2
+}  // namespace GUITest_SAM
+}  // namespace U2

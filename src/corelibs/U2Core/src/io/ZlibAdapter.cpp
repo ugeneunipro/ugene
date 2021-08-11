@@ -49,7 +49,7 @@ private:
     char buf[CHUNK];
     IOAdapter *io;
     bool doCompression;
-    qint64 curPos;    // position of uncompressed file
+    qint64 curPos;  // position of uncompressed file
 };
 
 GzipUtil::GzipUtil(IOAdapter *io, bool doCompression)
@@ -373,4 +373,4 @@ QString ZlibAdapter::errorString() const {
     return io->errorString().isEmpty() ? errorMessage : io->errorString();
 }
 
-};    // namespace U2
+};  // namespace U2

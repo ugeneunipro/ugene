@@ -42,7 +42,7 @@ QByteArray getQuality(const U2AssemblyRead &read) {
     return QByteArray(read->readSequence.length(), char(0xFF));
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 QByteArray MysqlAssemblyUtils::packData(MysqlAssemblyDataMethod method, const U2AssemblyRead &read, U2OpStatus &os) {
     const QByteArray &name = read->name;
@@ -207,7 +207,7 @@ void MysqlAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRead
         os.setError(err);
     }
 }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
 namespace {
 int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
     const QVector<U2CigarOp>::const_iterator ce = vector->cend(), cit = std::find(vector->cbegin(), ce, t);
@@ -220,7 +220,7 @@ int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
     vector->erase(it, e);
     return result;
 }
-}    // namespace
+}  // namespace
 #endif
 
 void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
@@ -231,7 +231,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
         qint64 len = q.getInt64(1);
-        //read data and convert to data with cigar
+        // read data and convert to data with cigar
         QByteArray data = q.getBlob(2);
         U2AssemblyRead read(new U2AssemblyReadData());
         unpackData(data, read, os);
@@ -249,7 +249,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
         removeAll(&cigarVector, U2CigarOp_I);
         removeAll(&cigarVector, U2CigarOp_S);
         removeAll(&cigarVector, U2CigarOp_P);
@@ -259,15 +259,15 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
         cigarVector.removeAll(U2CigarOp_P);
 #endif
         if (r.startPos > startPos) {
-            cigarVector = cigarVector.mid(r.startPos - startPos);    //cut unneeded cigar string
+            cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
         }
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos) / basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
             switch (cigarVector[(i - firstCoverageIdx) * basesPerRange]) {
-                case U2CigarOp_D:    // skip the deletion
-                case U2CigarOp_N:    // skip the skiped
+                case U2CigarOp_D:  // skip the deletion
+                case U2CigarOp_N:  // skip the skiped
                     continue;
                 default:
                     coverage[i]++;
@@ -287,7 +287,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
-#if (QT_VERSION < 0x050400)    //Qt 5.4
+#if (QT_VERSION < 0x050400)  // Qt 5.4
     removeAll(&cigarVector, U2CigarOp_I);
     removeAll(&cigarVector, U2CigarOp_S);
     removeAll(&cigarVector, U2CigarOp_P);
@@ -305,8 +305,8 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     int *coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
-            case U2CigarOp_D:    // skip the deletion
-            case U2CigarOp_N:    // skip the skiped
+            case U2CigarOp_D:  // skip the deletion
+            case U2CigarOp_N:  // skip the skiped
                 continue;
             default:
                 coverageData[i]++;
@@ -314,4 +314,4 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     }
 }
 
-}    // namespace U2
+}  // namespace U2

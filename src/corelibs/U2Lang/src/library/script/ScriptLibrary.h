@@ -105,8 +105,8 @@ public:
     // ================== Misc =======================
     static QScriptValue debugOut(QScriptContext *ctx, QScriptEngine *);
 
-};    // WorkflowScriptLibrary
+};  // WorkflowScriptLibrary
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

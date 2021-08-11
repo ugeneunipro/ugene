@@ -119,4 +119,4 @@ void SearchBox::resizeEvent(QResizeEvent *event) {
     QLineEdit::resizeEvent(event);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,7 +41,7 @@ public:
 
     virtual bool convertCustomSettings();
 
-    //all settings except translationTable must be set up through customSettings and then must be converted by convertCustomSettings().
+    // all settings except translationTable must be set up through customSettings and then must be converted by convertCustomSettings().
     int gapOpen;
     int gapExtd;
     int gapTerm;
@@ -55,27 +55,25 @@ public:
     static const QString PA_H_DEFAULT_RESULT_FILE_NAME;
 };
 
-
-class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask
-{
+class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask {
 public:
-    PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings);
+    PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings *_settings);
     ~PairwiseAlignmentHirschbergTask();
 
-    virtual QList<Task*> onSubTaskFinished(Task *subTask);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
     virtual ReportResult report();
 
 protected:
-    void changeGivenUrlIfDocumentExists(QString & givenUrl, const Project * curProject);
+    void changeGivenUrlIfDocumentExists(QString &givenUrl, const Project *curProject);
 
 protected:
-    PairwiseAlignmentHirschbergTaskSettings* settings;
-    KalignTask* kalignSubTask;
-    KalignGObjectRunFromSchemaTask* workflowKalignSubTask;
+    PairwiseAlignmentHirschbergTaskSettings *settings;
+    KalignTask *kalignSubTask;
+    KalignGObjectRunFromSchemaTask *workflowKalignSubTask;
     MultipleSequenceAlignment ma;
-    const DNAAlphabet* alphabet;
+    const DNAAlphabet *alphabet;
 };
 
-}   //namespace
+}  // namespace U2
 
-#endif // _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_TASK_H_
+#endif  // _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_TASK_H_

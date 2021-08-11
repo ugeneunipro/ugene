@@ -48,6 +48,6 @@ private:
     InSilicoPcrOptionPanelWidget *originalWrappedWidget;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PCR_OPTIONS_PANEL_SAVABLE_TAB_H_
+#endif  // _U2_PCR_OPTIONS_PANEL_SAVABLE_TAB_H_

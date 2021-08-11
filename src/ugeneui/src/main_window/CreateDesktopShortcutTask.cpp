@@ -37,7 +37,7 @@
 #    include <QFileInfo>
 #    include <QProcess>
 #    include <QTemporaryFile>
-#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
+#endif  // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -158,7 +158,7 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         }
     }
     return true;
-#endif    // Q_OS_WIN
+#endif  // Q_OS_WIN
 }
 void CreateDesktopShortcutTask::run() {
     if (!runOnStartup) {
@@ -180,4 +180,4 @@ CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() {
     return CreateDesktopShortcutTask::DoNothing;
 }
 
-}    // namespace U2
+}  // namespace U2

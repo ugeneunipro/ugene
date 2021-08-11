@@ -145,7 +145,7 @@ void StateLockableTreeItem::lockState(StateLock *lock) {
 
     locks.append(lock);
 
-    //notify all children on parent lock state change
+    // notify all children on parent lock state change
     if (wasUnlocked) {
         foreach (StateLockableTreeItem *c, childItems) {
             c->onParentStateLocked();
@@ -172,12 +172,12 @@ void StateLockableTreeItem::unlockState(StateLock *lock) {
 }
 
 void StateLockableTreeItem::onParentStateLocked() {
-    //parent has become locked -> check if my state is changed
+    // parent has become locked -> check if my state is changed
     if (!locks.isEmpty()) {
-        return;    //nothing changed - was locked too
+        return;  // nothing changed - was locked too
     }
 
-    //notify children
+    // notify children
     assert(isStateLocked());
 
     foreach (StateLockableTreeItem *c, childItems) {
@@ -188,12 +188,12 @@ void StateLockableTreeItem::onParentStateLocked() {
 }
 
 void StateLockableTreeItem::onParentStateUnlocked() {
-    //parent has become unlocked -> check if my state is changed
+    // parent has become unlocked -> check if my state is changed
     if (!locks.isEmpty()) {
-        return;    //nothing changed - was still locked
+        return;  // nothing changed - was still locked
     }
 
-    //notify children
+    // notify children
     assert(!isStateLocked());
 
     emit si_lockedStateChanged();
@@ -253,13 +253,13 @@ void StateLockableTreeItem::setModified(bool newModifiedState, const QString &mo
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
     bool parentUpdate = (nullptr != parentStateLockItem && numModifiedChildren == 0);
 
-    if (itemIsModified && parentUpdate) {    // let parent become modified first
+    if (itemIsModified && parentUpdate) {  // let parent become modified first
         parentStateLockItem->increaseNumModifiedChilds(1);
     }
 
     emit si_modifiedStateChanged();
 
-    if (!itemIsModified && parentUpdate) {    // let parent become clean last
+    if (!itemIsModified && parentUpdate) {  // let parent become clean last
         parentStateLockItem->decreaseNumModifiedChilds(1);
     }
 
@@ -348,4 +348,4 @@ StateLocker::~StateLocker() {
     delete lock;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -46,6 +46,6 @@ public:
     static QVariant fromScriptValue(QScriptEngine *engine, const QScriptValue &value, DataTypePtr type);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCRIPTENGINEUTILS_H_
+#endif  // _U2_SCRIPTENGINEUTILS_H_

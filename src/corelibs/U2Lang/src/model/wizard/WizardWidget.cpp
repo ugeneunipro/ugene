@@ -30,8 +30,8 @@
 namespace U2 {
 
 /**********************************
-* WizardWidget
-*********************************/
+ * WizardWidget
+ *********************************/
 WizardWidget::WizardWidget() {
 }
 
@@ -42,8 +42,8 @@ void WizardWidget::validate(const QList<Actor *> & /*actors*/, U2OpStatus & /*os
 }
 
 /**********************************
-* LogoWidget
-*********************************/
+ * LogoWidget
+ *********************************/
 const QString LogoWidget::ID("logo");
 
 LogoWidget::LogoWidget(const QString &_logoPath)
@@ -70,8 +70,8 @@ bool LogoWidget::isDefault() const {
 }
 
 /**********************************
-* WidgetsArea
-*********************************/
+ * WidgetsArea
+ *********************************/
 WidgetsArea::WidgetsArea(const QString &_name, const QString &_title)
     : WizardWidget(), titleable(true), name(_name), title(_title) {
     labelSize = -1;
@@ -130,8 +130,8 @@ void WidgetsArea::setLabelSize(int value) {
 }
 
 /**********************************
-* GroupWidget
-*********************************/
+ * GroupWidget
+ *********************************/
 const QString GroupWidget::ID("group");
 
 GroupWidget::GroupWidget()
@@ -158,8 +158,8 @@ GroupWidget::Type GroupWidget::getType() const {
 }
 
 /**********************************
-* AttributeWidget
-*********************************/
+ * AttributeWidget
+ *********************************/
 AttributeWidget::AttributeWidget()
     : WizardWidget(), info("", "") {
 }
@@ -398,4 +398,4 @@ void LabelWidget::accept(WizardWidgetVisitor *visitor) {
     visitor->visit(this);
 }
 
-}    // namespace U2
+}  // namespace U2

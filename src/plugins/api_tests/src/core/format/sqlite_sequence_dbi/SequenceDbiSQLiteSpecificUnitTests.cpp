@@ -221,7 +221,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -275,7 +275,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -329,7 +329,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -364,7 +364,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin) {
     U2Region region = U2Region(0, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "CCAAAA";
 
     // Call test function
@@ -386,7 +386,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -421,7 +421,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle) {
     U2Region region = U2Region(2, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AACCAA";
 
     // Call test function
@@ -443,7 +443,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -479,7 +479,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
     QVariantMap hints;
     hints.insert(U2SequenceDbiHints::UPDATE_SEQUENCE_LENGTH, false);
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AACCAAA";
 
     // Call test function
@@ -501,7 +501,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -536,7 +536,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end) {
     U2Region region = U2Region(4, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AAAACC";
 
     // Call test function
@@ -558,7 +558,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -615,7 +615,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_undo)
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -671,7 +671,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_und
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -727,7 +727,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_undo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -783,7 +783,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_undo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -839,7 +839,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_undo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -896,7 +896,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -952,7 +952,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_undo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1012,7 +1012,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_redo)
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1071,7 +1071,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_red
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1130,7 +1130,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_redo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1165,7 +1165,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_redo) {
     U2Region region = U2Region(0, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "CCAAAA";
 
     // Call test function, undo and redo changes
@@ -1192,7 +1192,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_redo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1227,7 +1227,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo) {
     U2Region region = U2Region(2, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AACCAA";
 
     // Call test function, undo and redo changes
@@ -1254,7 +1254,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1290,7 +1290,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
     QVariantMap hints;
     hints.insert(U2SequenceDbiHints::UPDATE_SEQUENCE_LENGTH, false);
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AACCAAA";
 
     // Call test function, undo and redo changes
@@ -1317,7 +1317,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1352,7 +1352,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo) {
     U2Region region = U2Region(4, 3);
     QVariantMap hints;
 
-    //Prepare expected data
+    // Prepare expected data
     QByteArray expectedData = "AAAACC";
 
     // Call test function, undo and redo changes
@@ -1379,7 +1379,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseModStepsNum + 1, finalModStepsNum, "mod steps num");
 
-    //Verify modSteps
+    // Verify modSteps
     U2SingleModStep modStep = sqliteDbi->getModDbi()->getModStep(seqId, finalSeqVersion - 1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(U2ModType::sequenceUpdatedData, modStep.modType, "mod type");
@@ -1393,4 +1393,4 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo) {
     CHECK_EQUAL(expectedData, QString(finalData), "sequence data");
 }
 
-}    // namespace U2
+}  // namespace U2

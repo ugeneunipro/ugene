@@ -84,7 +84,7 @@ void CreateSubalignmentTask::prepare() {
         resultDocument->addObject(resultMAObj);
         GObjectUtils::updateRelationsURL(resultMAObj, origDoc->getURL(), cfg.url);
         QList<GObjectRelation> phyTreeRelations = resultMAObj->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-        for (const GObjectRelation& phyTreeRel : qAsConst(phyTreeRelations)) {
+        for (const GObjectRelation &phyTreeRel : qAsConst(phyTreeRelations)) {
             resultMAObj->removeObjectRelation(phyTreeRel);
         }
         // Remap row ids.
@@ -107,7 +107,7 @@ void CreateSubalignmentTask::prepare() {
         docOwner = false;
     }
 
-    //TODO: add "remove empty rows and columns" flag to crop function
+    // TODO: add "remove empty rows and columns" flag to crop function
     resultMAObj->crop(resultRowIds, cfg.columnRange);
 
     if (cfg.saveImmediately) {
@@ -115,4 +115,4 @@ void CreateSubalignmentTask::prepare() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -71,7 +71,7 @@ public:
     U2_REGION_MAX to get all variants*/
     virtual U2DbiIterator<U2Variant> *getVariants(const U2DataId &track, const U2Region &region, U2OpStatus &os);
 
-    //TODO ADD ID
+    // TODO ADD ID
     virtual U2DbiIterator<U2Variant> *getVariantsRange(const U2DataId &track, int offset, int limit, U2OpStatus &os);
 
     /** Return number of variants in track */
@@ -89,6 +89,6 @@ public:
     virtual void updateTrackIDofVariant(const U2DataId &variant, const U2DataId &newTrackId, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

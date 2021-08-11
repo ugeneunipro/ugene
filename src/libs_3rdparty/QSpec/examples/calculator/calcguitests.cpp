@@ -23,7 +23,7 @@ TEST_CLASS_DEFINITION(Test1) {
     QToolButton *button_equal = qobject_cast<QToolButton *>(GTWidget::findButtonByText(os, "="));
 
     GTWidget::click(os, button_2);
-    //GTButton::click(os,"2");
+    // GTButton::click(os,"2");
 
     GTWidget::click(os, button_plus);
 

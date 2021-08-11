@@ -68,6 +68,6 @@ protected:
     MultipleSequenceAlignment parse(IOAdapter *io, U2OpStatus &os) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHYLIP_FORMAT_H_
+#endif  // _U2_PHYLIP_FORMAT_H_

@@ -222,7 +222,7 @@ Task::ReportResult GTest_RemoteBLAST::report() {
         foreach (Annotation *an, alist) {
             foreach (const U2Qualifier &q, an->getQualifiers()) {
                 if (q.name == "accession") {
-                    if (!result.contains(q.value))    //Don't count different hsp
+                    if (!result.contains(q.value))  // Don't count different hsp
                         result.append(q.value);
                 }
             }
@@ -247,7 +247,7 @@ Task::ReportResult GTest_RemoteBLAST::report() {
         QString exp = e.next(), act = a.next();
     }
     if (result != expectedResults) {
-        //stateInfo.setError( QString("Expected and actual id's not equal"));
+        // stateInfo.setError( QString("Expected and actual id's not equal"));
         QString res = "";
         foreach (const QString &str, result) {
             res.append(str);
@@ -268,4 +268,4 @@ void GTest_RemoteBLAST::cleanup() {
     XmlTest::cleanup();
 }
 
-}    // namespace U2
+}  // namespace U2

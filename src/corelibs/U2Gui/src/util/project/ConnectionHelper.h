@@ -38,6 +38,6 @@ public:
     U2ObjectDbi *oDbi;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CONNECTIONHELPER_H_
+#endif  // _U2_CONNECTIONHELPER_H_

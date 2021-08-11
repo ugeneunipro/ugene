@@ -142,5 +142,5 @@ void SequencesToMSAWorkerFactory::init() {
     localDomain->registerEntry(new SequencesToMSAWorkerFactory());
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

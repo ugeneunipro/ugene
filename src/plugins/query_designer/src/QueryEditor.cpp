@@ -39,7 +39,7 @@ QueryEditor::QueryEditor(QWidget *parent /* =0 */)
     setupUi(this);
     caption->setMinimumHeight(nameEdit->sizeHint().height());
 
-    //QueryViewController* controller = qobject_cast<QueryViewController*>(parent);
+    // QueryViewController* controller = qobject_cast<QueryViewController*>(parent);
     nameEdit->setValidator(new QRegExpValidator(QRegExp(QDDocument::ID_PATTERN), nameEdit));
     directionCombo->insertItem(0, tr("Forward"));
     directionCombo->insertItem(1, tr("Backward"));
@@ -72,7 +72,7 @@ void QueryEditor::setCurrentAttribute(const QString &id) {
         table->selectionModel()->reset();
     }
     table->setCurrentIndex(modelIndex);
-    //table->selectionModel()->setCurrentIndex(modelIndex, QItemSelectionModel::ClearAndSelect);
+    // table->selectionModel()->setCurrentIndex(modelIndex, QItemSelectionModel::ClearAndSelect);
 }
 
 void QueryEditor::sl_setLabel() {
@@ -122,10 +122,10 @@ void QueryEditor::showProto(QDActorPrototype *proto) {
         annotationLbl->show();
         directionLbl->setText(tr("Direction"));
         directionLbl->show();
-        //nameEdit->setText(a->getParameters()->getLabel());
+        // nameEdit->setText(a->getParameters()->getLabel());
         nameEdit->show();
         nameEdit->setDisabled(true);
-        //keyEdit->setText(a->getParameters()->getAnnotationKey());
+        // keyEdit->setText(a->getParameters()->getAnnotationKey());
         keyEdit->show();
         keyEdit->setDisabled(true);
         directionCombo->show();
@@ -215,4 +215,4 @@ void QueryEditor::reset() {
     propDoc->setText("");
 }
 
-}    // namespace U2
+}  // namespace U2

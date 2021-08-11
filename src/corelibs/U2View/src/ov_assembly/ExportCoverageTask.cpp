@@ -337,4 +337,4 @@ QString ExportCoverageSettings::getFormatExtension(ExportCoverageSettings::Forma
     }
 }
 
-}    // namespace U2
+}  // namespace U2

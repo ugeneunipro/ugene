@@ -123,4 +123,4 @@ DNAQualityType DNAQuality::detectTypeByMinMaxQualityValues(int minQualityValue, 
     return (maxQualityValue >= MAX_PHRED33_VALUE && minQualityValue >= MIN_PHRED64_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -37,7 +37,7 @@ public:
     static const QString SPLIT_ATTR;
 
     ReadVariationProto();
-};    // ReadVariationProto
+};  // ReadVariationProto
 
 class ReadVariationWorker : public GenericDocReader {
     Q_OBJECT
@@ -54,7 +54,7 @@ protected:
 
 private:
     ReadVariationProto::SplitAlleles splitMode;
-};    // ReadVariationWorker
+};  // ReadVariationWorker
 
 class ReadVariationWorkerFactory : public DomainFactory {
 public:
@@ -66,7 +66,7 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // ReadVariationWorkerFactory
+};  // ReadVariationWorkerFactory
 
 class ReadVariationTask : public Task {
     Q_OBJECT
@@ -89,7 +89,7 @@ private:
     QList<QVariantMap> results;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _READ_VARIATION_LIST_WORKER_
+#endif  // _READ_VARIATION_LIST_WORKER_

@@ -74,6 +74,6 @@ private:
     void initTreeWidget();
 };
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    //  _U2_RESTRICTION_MAP_WIDGET_H_
+#endif  //  _U2_RESTRICTION_MAP_WIDGET_H_

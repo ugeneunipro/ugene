@@ -80,4 +80,4 @@ TLSTask::~TLSTask() {
         delete taskContext;
     taskContext = nullptr;
 }
-}    //namespace U2
+}  // namespace U2

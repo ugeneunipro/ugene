@@ -36,12 +36,12 @@ public:
 
     void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
 
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
 
 private slots:
     void sl_openFiles();
@@ -58,10 +58,10 @@ private:
     QWidget *createMiddleWidget();
     QWidget *createFooterWidget();
 
-    QVBoxLayout *recentFilesLayout;
-    QVBoxLayout *recentProjectsLayout;
+    QVBoxLayout *recentFilesLayout = nullptr;
+    QVBoxLayout *recentProjectsLayout = nullptr;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WELCOME_PAGE_WIDGET_H_
+#endif  // _U2_WELCOME_PAGE_WIDGET_H_

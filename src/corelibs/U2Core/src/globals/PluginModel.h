@@ -29,7 +29,7 @@
 #include <U2Core/GUrl.h>
 
 namespace U2 {
-//BUG:417: add API version check
+// BUG:417: add API version check
 
 class Service;
 class ServiceRegistry;
@@ -60,7 +60,7 @@ class U2CORE_EXPORT Plugin : public QObject {
 public:
     Plugin(const QString &_name, const QString &_desc, const bool _isFree = true, PluginState _state = PluginState_Loaded);
 
-    //plugin is deallocated by plugin_support service when it's removed or on application shutting down
+    // plugin is deallocated by plugin_support service when it's removed or on application shutting down
     virtual ~Plugin() {
     }
 
@@ -121,6 +121,6 @@ signals:
     void si_allStartUpPluginsLoaded();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

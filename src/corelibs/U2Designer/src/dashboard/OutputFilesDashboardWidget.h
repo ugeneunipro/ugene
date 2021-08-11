@@ -67,6 +67,6 @@ private:
     QList<WorkerOutputInfo> workerOutputList;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

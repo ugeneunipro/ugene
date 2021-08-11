@@ -88,4 +88,4 @@ MsaColorScheme *MsaColorSchemeWeakSimilaritiesFactory::create(QObject *parent, M
     return new MsaColorSchemeWeakSimilarities(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

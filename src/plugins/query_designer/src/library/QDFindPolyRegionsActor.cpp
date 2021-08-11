@@ -85,7 +85,7 @@ void FindPolyRegionsTask::find(const char *seq,
 
     result.append(lastFound);
 
-    //remove (0,0) region located in the beginning of the array
+    // remove (0,0) region located in the beginning of the array
     if (!result.isEmpty() && result.first().isEmpty()) {
         result.remove(0);
     }
@@ -275,4 +275,4 @@ QDFindPolyActorPrototype::QDFindPolyActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

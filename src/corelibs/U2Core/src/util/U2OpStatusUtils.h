@@ -192,6 +192,6 @@ private:
     U2OpStatusMapping mapping;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

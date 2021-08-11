@@ -107,6 +107,6 @@ protected:
     QList<Task *> onSubTaskFinished(Task *t);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

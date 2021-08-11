@@ -24,14 +24,14 @@
 
 #include <QDomElement>
 
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 #include <U2Test/XMLTestUtils.h>
 
-#include "ExportTasks.h"
-
 namespace U2 {
-
+class LoadDocumentTask;
+class ExportMSA2MSATask;
 class U2SequenceObject;
 class MultipleSequenceAlignmentObject;
 
@@ -76,6 +76,6 @@ public:
     static QList<XMLTestFactory *> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

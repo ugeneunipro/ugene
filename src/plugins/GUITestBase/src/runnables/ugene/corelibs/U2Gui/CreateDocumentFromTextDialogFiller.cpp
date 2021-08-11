@@ -115,7 +115,7 @@ void CreateDocumentFiller::commonScenario() {
             GT_CHECK(lineEdit != nullptr, "line edit not found");
             GTLineEdit::setText(os, lineEdit, symbol);
         } else {
-            assert(false);    // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
+            assert(false);  // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
 
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
@@ -196,7 +196,7 @@ void CancelCreateDocumentFiller::commonScenario() {
             GT_CHECK(lineEdit != nullptr, "line edit not found");
             GTLineEdit::setText(os, lineEdit, symbol);
         } else {
-            assert(false);    // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
+            assert(false);  // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
 
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
@@ -236,4 +236,4 @@ void CancelCreateDocumentFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

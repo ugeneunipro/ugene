@@ -56,8 +56,8 @@ private:
     DbiDataHandler &operator=(const DbiDataHandler &);
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::Workflow::SharedDbiDataHandler);
 Q_DECLARE_METATYPE(QList<U2::Workflow::SharedDbiDataHandler>);

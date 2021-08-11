@@ -384,5 +384,5 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsDocument::checkDocument(os, "D0VTW9.txt", AnnotatedDNAViewFactory::ID);
 }
 
-}    // namespace GUITest_common_scenarios_project_remote_request
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_project_remote_request
+}  // namespace U2

@@ -515,4 +515,4 @@ bool SharedConnectionsDialog::checkDbShouldBeUpgraded(const U2DbiRef &ref) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

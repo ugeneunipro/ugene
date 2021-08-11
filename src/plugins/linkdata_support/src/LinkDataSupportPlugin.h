@@ -39,5 +39,5 @@ public:
     void createScript(WorkflowScriptEngine *engine);
 };
 
-}    // namespace U2
-#endif    //_U2_LINKDATA_SUPPORT_H_
+}  // namespace U2
+#endif  //_U2_LINKDATA_SUPPORT_H_

@@ -95,4 +95,4 @@ QList<XMLTestFactory *> MsaObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

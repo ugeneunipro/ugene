@@ -43,7 +43,7 @@ public:
     QString file;
     QString sequenceName;
 
-    TriState strand;    //Yes-> direct, No->complement, Unkn -> both
+    TriState strand;  // Yes-> direct, No->complement, Unkn -> both
     bool translate;
     bool translateAllFrames;
     bool useSpecificTable;
@@ -75,6 +75,6 @@ private:
     QList<QString> tableID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

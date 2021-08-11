@@ -57,7 +57,7 @@ DECLARE_TEST(LocationParserTestData, locationParserGreaterInvalid);
 DECLARE_TEST(LocationParserTestData, locationParserName);
 DECLARE_TEST(LocationParserTestData, locationParserNameInvalid);
 DECLARE_TEST(LocationParserTestData, locationBuildStringNumberInvalid);
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(LocationParserTestData, locationParser);
 DECLARE_METATYPE(LocationParserTestData, locationParserEmpty);

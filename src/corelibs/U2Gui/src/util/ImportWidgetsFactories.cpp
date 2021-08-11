@@ -57,4 +57,4 @@ ImportWidget *AprImportWidgetFactory::getWidget(const GUrl &url, const QVariantM
     return new AprImportWidget(url, settings);
 }
 
-}    // namespace U2
+}  // namespace U2

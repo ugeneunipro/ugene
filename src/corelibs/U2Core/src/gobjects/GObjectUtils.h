@@ -80,7 +80,7 @@ public:
 
     static DNATranslation *findBackTranslationTT(U2SequenceObject *so, const QString &table = nullptr);
 
-    //checks object type for both loaded and unloaded states
+    // checks object type for both loaded and unloaded states
     static bool hasType(GObject *obj, const GObjectType &type);
 
     static void updateRelationsURL(GObject *o, const QString &fromURL, const QString &toURL);
@@ -92,6 +92,6 @@ public:
     static GObject *createObject(const U2DbiRef &ref, const U2DataId &id, const QString &name);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

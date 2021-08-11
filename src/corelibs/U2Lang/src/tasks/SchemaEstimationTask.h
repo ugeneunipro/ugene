@@ -79,7 +79,7 @@ private:
     const QSharedPointer<const Schema> schema;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_SCHEMA_ESTIMATION_TASK_H_
+#endif  // _U2_SCHEMA_ESTIMATION_TASK_H_

@@ -376,7 +376,7 @@ bool isWidgetPartVisible(QWidget *widget) {
     return false;
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "isAnyPartOfWindowVisible"
 bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString &windowName) {
@@ -426,4 +426,4 @@ void GTUtilsMdi::clickTab(HI::GUITestOpStatus &os, int tabIndex) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

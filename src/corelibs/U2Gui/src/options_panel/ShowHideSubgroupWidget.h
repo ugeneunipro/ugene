@@ -91,13 +91,13 @@ private:
     QMovie *progressMovie;
 
     /**
-    * Used to provide a small timeout before the progress start
-    * Partially prevents blinking of the progress for very quick tasks
-    */
+     * Used to provide a small timeout before the progress start
+     * Partially prevents blinking of the progress for very quick tasks
+     */
     bool canStartProgress;
     static const int TIMEOUT = 300;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SHOW_HIDE_SUBGROUP_WIDGET_H_
+#endif  // _U2_SHOW_HIDE_SUBGROUP_WIDGET_H_

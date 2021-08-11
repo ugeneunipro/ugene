@@ -151,4 +151,4 @@ QList<XMLTestFactory *> SequenceWalkerTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

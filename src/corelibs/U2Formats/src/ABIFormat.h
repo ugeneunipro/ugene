@@ -49,6 +49,6 @@ private:
     bool loadABIObjects(SeekableBuf *fp, DNASequence &seq, DNAChromatogram &cd);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

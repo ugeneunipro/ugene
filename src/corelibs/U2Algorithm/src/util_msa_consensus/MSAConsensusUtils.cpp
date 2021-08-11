@@ -61,7 +61,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
     if (ma->getLength() == 0) {
         return QString();
     }
-    QVector<QPair<int, char>> freqs(32);    //TODO: try QVarLengthArray?
+    QVector<QPair<int, char>> freqs(32);  // TODO: try QVarLengthArray?
     assert(pos >= 0 && pos < ma->getLength());
     int nSeq = ma->getNumRows();
     assert(nSeq > 0);
@@ -171,7 +171,7 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment &ma, 
     }
     std::sort(freqs.begin(), freqs.end());
     if (!gapsAffectPercents && numNoGaps == 0) {
-        return 0xE0E0E0E0;    //'4' in masks, '0' in values
+        return 0xE0E0E0E0;  //'4' in masks, '0' in values
     }
     int res = 0;
     double percentK = 100.0 / (gapsAffectPercents ? nSeq : numNoGaps);
@@ -182,11 +182,11 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment &ma, 
                                               : (p >= mask4[3])   ? 3
                                                                   : 4;
         quint32 charVal = rangeBits == 4 ? 'A' : quint32(freqs[freqs.size() - i - 1].second);
-        quint32 maskedVal = (rangeBits << 5) | (charVal - 'A');    //3 bits for range, 5 for symbol
+        quint32 maskedVal = (rangeBits << 5) | (charVal - 'A');  // 3 bits for range, 5 for symbol
         assert(maskedVal <= 255);
         res = res | (maskedVal << (8 * i));
     }
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

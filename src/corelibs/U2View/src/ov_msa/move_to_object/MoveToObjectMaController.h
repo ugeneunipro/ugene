@@ -25,6 +25,8 @@
 #include <QAction>
 #include <QMenu>
 
+#include <U2Core/Task.h>
+
 #include <U2View/MaEditorContext.h>
 
 namespace U2 {
@@ -42,6 +44,9 @@ private slots:
     /** Shows moveSelectionToAnotherObject at cursor position. */
     void showMoveSelectedRowsToAnotherObjectMenu();
 
+    /** Shows new MSA file selection dialog, creates a new file with an alignment and runs a task to move selected sequences into that alignment. */
+    void runMoveSelectedRowsToNewFileDialog();
+
     /** Adds 'moveSelectionToAnotherObjectAction' to the export menu. */
     void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType);
 
@@ -54,8 +59,24 @@ private:
 
     /** Moves selected rows into another MSA object. */
     QAction *moveSelectionToAnotherObjectAction = nullptr;
+
+    /** Moves selected rows into a new file. Opens file selector dialog to select the file to move. */
+    QAction *moveSelectionToNewFileAction = nullptr;
 };
 
-}    // namespace U2
+/** Removes set of rows from the MSA object. */
+class RemoveRowsFromMaObjectTask : public Task {
+    Q_OBJECT
+public:
+    RemoveRowsFromMaObjectTask(MaEditor *maEditor, const QList<qint64> &rowIds);
 
-#endif    // _U2_MOVETOOBJECTMAMENUCONTROLLER_H_
+    void run() override;
+
+private:
+    const QPointer<MaEditor> maEditor;
+    const QList<qint64> rowIds;
+};
+
+}  // namespace U2
+
+#endif  // _U2_MOVETOOBJECTMAMENUCONTROLLER_H_

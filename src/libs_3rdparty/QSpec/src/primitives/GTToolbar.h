@@ -42,6 +42,6 @@ private:
     static QAction *getActionByObjectName(GUITestOpStatus &os, const QString &actionName, const QToolBar *toolbar);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

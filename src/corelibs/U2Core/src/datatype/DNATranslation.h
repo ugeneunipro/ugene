@@ -200,6 +200,6 @@ private:
     QList<DNACodon *> codons;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

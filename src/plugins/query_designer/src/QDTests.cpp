@@ -208,4 +208,4 @@ void CompareAnnotationGroupsTask::run() {
     equal = true;
 }
 
-}    // namespace U2
+}  // namespace U2

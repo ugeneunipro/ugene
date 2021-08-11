@@ -100,4 +100,4 @@ void GTMainWindow::minimizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWind
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

@@ -47,4 +47,4 @@ void GenomeAlignerSettingsUtils::setIndexDir(const QString &indexDir) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

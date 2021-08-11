@@ -99,5 +99,5 @@ ActorValidatorRegistry *WorkflowEnvImpl::initActorValidatorRegistry() {
     return actorValidatorRegistry;
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

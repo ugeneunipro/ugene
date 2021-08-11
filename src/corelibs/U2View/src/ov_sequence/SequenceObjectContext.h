@@ -180,6 +180,6 @@ protected:
     static const QVariantList DEFAULT_TRANSLATIONS;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_OBJECT_CONTEXT_H_
+#endif  // _U2_SEQUENCE_OBJECT_CONTEXT_H_

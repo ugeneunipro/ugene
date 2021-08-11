@@ -76,6 +76,6 @@ private:
     QString clipboardUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PASTE_CONTROLLER_H_
+#endif  // _U2_PASTE_CONTROLLER_H_

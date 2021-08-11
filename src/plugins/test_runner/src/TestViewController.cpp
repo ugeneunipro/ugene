@@ -51,7 +51,7 @@
 #include "TestRunnerPlugin.h"
 #include "TestViewReporter.h"
 
-//todo: remember splitter geom
+// todo: remember splitter geom
 
 namespace U2 {
 
@@ -252,22 +252,22 @@ TVTSItem *TestViewController::getFolder(TVItem *element, const QString *firstDir
 //<-----------------------------------------------------------------------------------
 void TestViewController::addTestSuite(GTestSuite *ts) {
     TVTSItem *tsi = new TVTSItem(ts);
-    //add to tree Excluded Tests
+    // add to tree Excluded Tests
     QMap<GTestRef *, QString> exCopy = ts->getExcludedTests();
-    QMap<QString, GTestRef *> excludedSorted;    //<test_ShortName, test> sorted by name
+    QMap<QString, GTestRef *> excludedSorted;  //<test_ShortName, test> sorted by name
     QMap<GTestRef *, QString>::iterator iter;
 
     for (iter = exCopy.begin(); iter != exCopy.end(); ++iter) {
         excludedSorted.insert(dynamic_cast<GTestRef *>(iter.key())->getShortName(), dynamic_cast<GTestRef *>(iter.key()));
     }
     foreach (GTestRef *t, excludedSorted.values()) {
-        QString firstDirName = t->getShortName().section('/', 0, 0);    //find first folder name
+        QString firstDirName = t->getShortName().section('/', 0, 0);  // find first folder name
         if (t->getShortName() == firstDirName) {
             addTest(tsi, t, ts->getExcludedTests().value(t));
         } else {
             TVTSItem *curDir = getFolder(tsi, &firstDirName);
-            QString otherPath = t->getShortName().section('/', 1);    //find other path
-            if (curDir) {    //find if dir already exist
+            QString otherPath = t->getShortName().section('/', 1);  // find other path
+            if (curDir) {  // find if dir already exist
                 addFolderTests(curDir, t, &otherPath, true);
             } else {
                 TVTSItem *newDir = new TVTSItem(firstDirName);
@@ -276,15 +276,15 @@ void TestViewController::addTestSuite(GTestSuite *ts) {
             }
         }
     }
-    //add to tree Tests to run
+    // add to tree Tests to run
     foreach (GTestRef *t, ts->getTests()) {
-        QString firstDirName = t->getShortName().section('/', 0, 0);    //find first folder name
+        QString firstDirName = t->getShortName().section('/', 0, 0);  // find first folder name
         if (t->getShortName() == firstDirName) {
             addTest(tsi, t, "");
         } else {
             TVTSItem *curDir = getFolder(tsi, &firstDirName);
-            QString otherPath = t->getShortName().section('/', 1);    //find other path
-            if (curDir) {    //find if dir already exist
+            QString otherPath = t->getShortName().section('/', 1);  // find other path
+            if (curDir) {  // find if dir already exist
                 addFolderTests(curDir, t, &otherPath, false);
             } else {
                 TVTSItem *newDir = new TVTSItem(firstDirName);
@@ -304,8 +304,8 @@ void TestViewController::addFolderTests(TVTSItem *tsi, GTestRef *testRef, const 
         addTest(tsi, testRef, testRef->getSuite()->getExcludedTests().value(testRef));
     } else {
         TVTSItem *curDir = getFolder(tsi, &firstDirName);
-        QString otherPath = curPath->section('/', 1);    //find other path
-        if (curDir) {    //find if dir already exist
+        QString otherPath = curPath->section('/', 1);  // find other path
+        if (curDir) {  // find if dir already exist
             addFolderTests(curDir, testRef, &otherPath, haveExcludedTests);
         } else {
             TVTSItem *newDir = new TVTSItem(firstDirName);
@@ -422,7 +422,7 @@ void TestViewController::updateState() {
 }
 
 void TestViewController::addTestSuiteList(QString url) {
-    //QString dir = AppContext::getSettings()->getValue(SETTINGS_ROOT + "lastDir", QString()).toString();
+    // QString dir = AppContext::getSettings()->getValue(SETTINGS_ROOT + "lastDir", QString()).toString();
     if (url.isEmpty())
         return;
 
@@ -430,7 +430,7 @@ void TestViewController::addTestSuiteList(QString url) {
     QList<GTestSuite *> lst = GTestSuite::readTestSuiteList(url, errs);
     if (!errs.isEmpty()) {
         QMessageBox::critical(this, tr("error"), tr("Error reading test suites: \n\n %1").arg(errs.join("\n")));
-        //return;
+        // return;
     }
     foreach (GTestSuite *ts, lst) {
         QString urlfs = ts->getURL();
@@ -461,15 +461,15 @@ void TestViewController::sl_addTestSuiteAction() {
             addTestSuiteList(url);
         } else {
             if (service->findTestSuiteByURL(url) != nullptr) {
-                //QMessageBox::critical(this, tr("error"), tr("Test suite is already loaded"));
-                //return;
+                // QMessageBox::critical(this, tr("error"), tr("Test suite is already loaded"));
+                // return;
             } else {
                 QString err;
                 GTestSuite *ts = GTestSuite::readTestSuite(url, err);
                 if (ts == nullptr) {
                     assert(!err.isEmpty());
                     QMessageBox::critical(this, tr("error"), tr("Error reading test suite: %1").arg(err));
-                    //return;
+                    // return;
                 } else {
                     service->addTestSuite(ts);
                 }
@@ -557,20 +557,20 @@ void TestViewController::sl_saveSelectedSuitesAction() {
         testsToEx.unite(getSubRefToExclude(item, runAll));
         TVTSItem *tlItem = static_cast<TVTSItem *>(item);
         if (testsToEx.isEmpty() && testsToRun.isEmpty()) {
-            //in current suite no selected elements
+            // in current suite no selected elements
         } else {
             if (!testsToEx.isEmpty() && tlItem->ts->getExcludedTests().isEmpty()) {
                 mustBeSaved = true;
             }
-            foreach (GTestRef *t, tlItem->ts->getExcludedTests().keys()) {    //get one of the old excluded tests
+            foreach (GTestRef *t, tlItem->ts->getExcludedTests().keys()) {  // get one of the old excluded tests
                 bool flag = true;
-                foreach (GTestState *ttr, testsToRun) {    //get one by one new enabled tests
+                foreach (GTestState *ttr, testsToRun) {  // get one by one new enabled tests
                     if (t->getShortName() == ttr->getTestRef()->getShortName()) {
                         flag = false;
                         break;
                     }
                 }
-                if (flag) {    //if the old exclude-value is not changed to enabled
+                if (flag) {  // if the old exclude-value is not changed to enabled
                     if (testsToEx.isEmpty()) {
                         oldToAdd.insert(t, tlItem->ts->getExcludedTests().value(t));
                     } else {
@@ -586,7 +586,7 @@ void TestViewController::sl_saveSelectedSuitesAction() {
                             mustBeSaved = true;
                         }
                     }
-                } else {    //old value excluded change to enabled
+                } else {  // old value excluded change to enabled
                     mustBeSaved = true;
                 }
             }
@@ -595,13 +595,13 @@ void TestViewController::sl_saveSelectedSuitesAction() {
         if ((testsToEx.size() != tlItem->ts->getExcludedTests().size()) && !testsToEx.isEmpty()) {
             mustBeSaved = true;
         }
-        if (mustBeSaved) {    //than save
+        if (mustBeSaved) {  // than save
             QString err;
             saveTestSuite(tlItem->ts->getURL(), testsToEx, err);
             if (!err.isEmpty()) {
-                return;    //todo throw error
+                return;  // todo throw error
             }
-            //reload saved suite
+            // reload saved suite
             QString urlToLoad = tlItem->ts->getURL();
             service->removeTestSuite(tlItem->ts);
             GTestSuite *ts = GTestSuite::readTestSuite(urlToLoad, err);
@@ -639,7 +639,7 @@ void TestViewController::saveTestSuite(const QString &url, QMap<GTestRef *, QStr
         suiteEl.removeChild(node);
     }
 
-    QMap<QString, QString> tests;    //sorted
+    QMap<QString, QString> tests;  // sorted
     QMap<GTestRef *, QString>::iterator i = testsToEx.begin();
     while (i != testsToEx.end()) {
         tests.insert(dynamic_cast<GTestRef *>(i.key())->getShortName(), i.value());
@@ -658,11 +658,11 @@ void TestViewController::saveTestSuite(const QString &url, QMap<GTestRef *, QStr
         suiteEl.appendChild(exEl);
     }
 
-    //Tests
+    // Tests
     if (!err.isEmpty()) {
         return;
     }
-    //time to save
+    // time to save
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Write)) {
@@ -674,20 +674,20 @@ void TestViewController::saveTestSuite(const QString &url, QMap<GTestRef *, QStr
 
 QStringList TestViewController::findAllTestFilesInDir(const QString &dirPath, const QString &ext, bool recursive, int rec) {
     QStringList res;
-    if (rec > 100) {    //symlink or other err
-        //todo: report err?
+    if (rec > 100) {  // symlink or other err
+        // todo: report err?
         return res;
     }
     QDir dir(dirPath);
 
-    //add files first
+    // add files first
     QStringList files = ext.isEmpty() ? dir.entryList(QDir::Files) : dir.entryList(ext.split(":"), QDir::Files);
     foreach (const QString &file, files) {
         QFileInfo fi(dir.absolutePath() + "/" + file);
         res.append(fi.absoluteFilePath());
     }
 
-    //process subdirs if needed
+    // process subdirs if needed
     if (recursive) {
         QStringList subDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         foreach (QString sub, subDirs) {
@@ -926,7 +926,7 @@ void TestViewController::sl_setEnvAction() {
         return;
     }
 
-    //todo: create custom utility class for properties like this
+    // todo: create custom utility class for properties like this
     QObjectScopedPointer<QDialog> d = new QDialog(this);
     d->setMinimumWidth(400);
     d->setWindowTitle(tr("env_mb_title"));
@@ -961,7 +961,7 @@ void TestViewController::sl_setEnvAction() {
         return;
     }
 
-    //save info from dialog to model
+    // save info from dialog to model
     foreach (const QString &name, vars.keys()) {
         QLineEdit *le = valsByName.value(name);
         assert(le);
@@ -1057,7 +1057,7 @@ void TVTSItem::updateVisual() {
     text1 += " ]";
 
     setText(1, text1);
-    //add icon
+    // add icon
     if (failed) {
         this->setIcon(0, ICON_FAILD_DIR);
     } else {
@@ -1075,7 +1075,7 @@ void TVTSItem::updateVisual() {
 }
 
 QString TVTSItem::getRichDesc() const {
-    //todo:
+    // todo:
     if (ts != nullptr) {
         return ts->getName();
     } else {
@@ -1153,19 +1153,19 @@ void TVTestItem::updateVisual() {
     } else {
         setText(1, getStateName(testState));
 
-        //add icon
+        // add icon
         this->setForeground(1, Qt::black);
         this->setIcon(0, ICON_NOTRUN_TEST);
         if (testState->isFailed()) {
             this->setForeground(1, Qt::red);
             this->setIcon(0, ICON_FAILD_TEST);
-            //log.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName(),QString(testState->getErrorMessage()).replace("'","|'")));
-            //log.info(QString("##teamcity[testFinished name='%1 : %2']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName()));
+            // log.info(QString("##teamcity[testFailed name='%1 : %2' message='%3' details='%3']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName(),QString(testState->getErrorMessage()).replace("'","|'")));
+            // log.info(QString("##teamcity[testFinished name='%1 : %2']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName()));
         }
         if (testState->isPassed()) {
             this->setForeground(1, Qt::darkGreen);
             this->setIcon(0, ICON_SUCCES_TEST);
-            //log.info(QString("##teamcity[testFinished name='%1 : %2']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName()));
+            // log.info(QString("##teamcity[testFinished name='%1 : %2']").arg(testState->getTestRef()->getSuite()->getName(),testState->getTestRef()->getShortName()));
         }
     }
 }
@@ -1201,4 +1201,4 @@ QString TVTestItem::getTestContent() {
     return text;
 }
 
-}    // namespace U2
+}  // namespace U2

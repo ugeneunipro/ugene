@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
-    //Difference: popup completer is used
+    // Difference: popup completer is used
     const QString seqName = "Phaneroptera_falcata";
     //    1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -120,17 +120,17 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
 
 GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     const QString seqName = "Phaneroptera_falcata";
-    //1. Open file data/samples/CLUSTALW/COI.aln
+    // 1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Open general option panel tab
+    // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    //3. Type "phan" in reference line edit
+    // 3. Type "phan" in reference line edit
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
     CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
     QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
-    //Expected state: popup helper contains Phaneroptera_falcata.(case insensitivity is checked)
+    // Expected state: popup helper contains Phaneroptera_falcata.(case insensitivity is checked)
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
 
@@ -152,7 +152,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003) {
     //    Expected state: empty popup helper appeared
     bool empty = GTBaseCompleter::isEmpty(os, sequenceLineEdit);
     CHECK_SET_ERR(empty, "completer is not empty");
-    GTWidget::click(os, sequenceLineEdit);    //needed to close completer
+    GTWidget::click(os, sequenceLineEdit);  // needed to close completer
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0004) {
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004) {
     QString second = completerList.at(1);
     CHECK_SET_ERR(first == "Phaneroptera_falcata", QString("first sequence in completer is wrong: %1").arg(first))
     CHECK_SET_ERR(second == "Phaneroptera_falcata", QString("second sequence in completer is wrong: %1").arg(second))
-    GTWidget::click(os, sequenceLineEdit);    //needed to close completer
+    GTWidget::click(os, sequenceLineEdit);  // needed to close completer
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0005) {
@@ -428,34 +428,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_1) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Buried index");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00a35c");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#00eb14");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#0000ff");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#00eb14");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#00f10e");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#008778");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#009d62");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#00d52a");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#0054ab");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#00ff00");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#007b84");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#009768");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#00eb14");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#00e01f");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#00f10e");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#00fc03");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#00d52a");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#00db24");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#005fa0");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#00a857");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#00b649");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#00e619");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#00f10e");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00a35c");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#00eb14");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#0000ff");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#00eb14");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#00f10e");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#008778");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#009d62");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#00d52a");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#0054ab");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#00ff00");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#007b84");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#009768");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#00eb14");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#00e01f");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#00f10e");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#00fc03");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#00d52a");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#00db24");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#005fa0");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#00a857");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#00b649");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#00e619");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#00f10e");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_2) {
@@ -468,34 +468,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_2) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Clustal X");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#80a0f0");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#f08080");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#c048c0");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c048c0");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#80a0f0");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#f09048");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#15a4a4");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#80a0f0");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#f01505");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#80a0f0");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#80a0f0");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#15c015");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#c0c000");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#15c015");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#f01505");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#15c015");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#15c015");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#80a0f0");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#80a0f0");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#15a4a4");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#80a0f0");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#f08080");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#c048c0");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c048c0");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#80a0f0");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#f09048");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#15a4a4");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#80a0f0");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#f01505");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#80a0f0");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#80a0f0");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#15c015");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#c0c000");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#15c015");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#f01505");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#15c015");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#15c015");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#80a0f0");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#80a0f0");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#15a4a4");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_3) {
@@ -508,34 +508,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_3) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Helix propensity");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#e718e7");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#49b649");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#23dc23");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#778877");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff00ff");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#986798");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#00ff00");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#758a75");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#8a758a");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#a05fa0");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ae51ae");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#ef10ef");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#1be41b");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#00ff00");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#926d92");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6f906f");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#36c936");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#47b847");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#857a85");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#8a758a");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#758a75");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#21de21");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#c936c9");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#e718e7");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#49b649");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#23dc23");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#778877");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff00ff");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#986798");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#00ff00");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#758a75");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#8a758a");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#a05fa0");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ae51ae");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#ef10ef");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#1be41b");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#00ff00");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#926d92");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6f906f");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#36c936");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#47b847");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#857a85");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#8a758a");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#758a75");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#21de21");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#c936c9");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_4) {
@@ -548,34 +548,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_4) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Hydrophobicity");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#0c00f3");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#c2003d");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#0c00f3");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0c00f3");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#cb0034");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#6a0095");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#1500ea");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ff0000");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#0000ff");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ea0015");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#b0004f");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#0c00f3");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#4600b9");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#0c00f3");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#5e00a1");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#61009e");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#f60009");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#5b00a4");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#680097");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#4f00b0");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#0c00f3");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#0c00f3");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#c2003d");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#0c00f3");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0c00f3");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#cb0034");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#6a0095");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#1500ea");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ff0000");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#0000ff");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ea0015");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#b0004f");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#0c00f3");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#4600b9");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#0c00f3");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#5e00a1");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#61009e");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#f60009");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#5b00a4");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#680097");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#4f00b0");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#0c00f3");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_5) {
@@ -588,34 +588,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_5) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Strand propensity");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#5858a7");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#4343bc");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#9d9d62");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#2121de");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0000ff");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#c2c23d");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#4949b6");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#60609f");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ecec13");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#4747b8");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#b2b24d");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#82827d");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#64649b");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#2323dc");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#8c8c73");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6b6b94");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#4949b6");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#9d9d62");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ffff00");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#c0c03f");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#797986");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#d3d32c");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#4747b8");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#5858a7");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#4343bc");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#9d9d62");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#2121de");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0000ff");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#c2c23d");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#4949b6");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#60609f");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ecec13");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#4747b8");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#b2b24d");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#82827d");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#64649b");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#2323dc");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#8c8c73");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6b6b94");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#4949b6");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#9d9d62");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ffff00");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#c0c03f");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#797986");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#d3d32c");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#4747b8");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_6) {
@@ -628,34 +628,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_6) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Tailor");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ccff00");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#ffff00");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ff0000");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff0066");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#00ff66");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff9900");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#0066ff");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#66ff00");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#6600ff");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#33ff00");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#00ff00");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#cc00ff");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#ffcc00");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#ff00cc");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#ff3300");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#ff6600");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#99ff00");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#00ccff");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#00ffcc");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ccff00");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#ffff00");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ff0000");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff0066");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#00ff66");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff9900");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#0066ff");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#66ff00");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#6600ff");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#33ff00");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#00ff00");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#cc00ff");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#ffcc00");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#ff00cc");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#ff3300");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#ff6600");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#99ff00");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#00ccff");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#00ffcc");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_7) {
@@ -668,34 +668,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_7) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Turn propensity");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#2cd3d3");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#f30c0c");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#a85757");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#e81717");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#3fc0c0");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#1ee1e1");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff0000");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#708f8f");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00ffff");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#7e8181");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#1ce3e3");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#1ee1e1");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#ff0000");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#f60909");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#778888");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#708f8f");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#e11e1e");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#738c8c");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#07f8f8");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#738c8c");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#7c8383");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#9d6262");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#5ba4a4");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#2cd3d3");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#f30c0c");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#a85757");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#e81717");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#3fc0c0");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#1ee1e1");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff0000");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#708f8f");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00ffff");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#7e8181");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#1ce3e3");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#1ee1e1");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#ff0000");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#f60909");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#778888");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#708f8f");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#e11e1e");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#738c8c");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#07f8f8");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#738c8c");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#7c8383");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#9d6262");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#5ba4a4");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
@@ -709,34 +709,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "UGENE");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00ccff");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ccff99");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#6600ff");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ffff00");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c0bdbb");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#3df490");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff5082");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#fff233");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00abed");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#6699ff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#ffee00");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#008fc6");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#1dc0ff");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#33ff00");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffff99");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#d5426c");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#3399ff");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#d5c700");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#ff83a7");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#ffd0dd");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ff00cc");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ff6699");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#33cc78");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#fcfcfc");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#65ffab");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffcc");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#33ff00");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00ccff");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ccff99");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#6600ff");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ffff00");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c0bdbb");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#3df490");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff5082");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#fff233");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00abed");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#6699ff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#ffee00");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#008fc6");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#1dc0ff");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#33ff00");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffff99");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#d5426c");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#3399ff");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#d5c700");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#ff83a7");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#ffd0dd");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ff00cc");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ff6699");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#33cc78");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#fcfcfc");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#65ffab");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffcc");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#33ff00");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_9) {
@@ -749,34 +749,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_9) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Zappo");
     //    4. Check colors for all symbols
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ffafaf");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#ffff00");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ff0000");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff0000");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#ffc800");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff00ff");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#6464ff");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ffafaf");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#6464ff");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ffafaf");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#ffafaf");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#00ff00");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#ff00ff");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#00ff00");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6464ff");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#00ff00");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#00ff00");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ffafaf");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#ffc800");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#ffc800");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ffafaf");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#ffff00");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#ff0000");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#ff0000");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#ffc800");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff00ff");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#6464ff");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ffafaf");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#6464ff");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ffafaf");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#ffafaf");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#00ff00");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#ff00ff");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#00ff00");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#6464ff");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#00ff00");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#00ff00");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#ffafaf");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#ffc800");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#ffffff");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#ffc800");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#ffffff");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
@@ -795,34 +795,34 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTComboBox::selectItemByText(os, colorScheme, scheme);
     //    4. Select custom scheme
     //    Expected state: scheme changed
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");    //a
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#0c00f3");    //b
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#c2003d");    //c
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#0c00f3");    //d
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0c00f3");    //e
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#cb0034");    //f
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#6a0095");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#1500ea");    //h
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ff0000");    //i
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");    //j
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#0000ff");    //k
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ea0015");    //l
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#b0004f");    //m
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#0c00f3");    //n
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");    //o
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#4600b9");    //p
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#0c00f3");    //q
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");    //r
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#5e00a1");    //s
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#61009e");    //t
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");    //u
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#f60009");    //v
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#5b00a4");    //w
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#680097");    //x
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#4f00b0");    //y
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#0c00f3");    //z
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");    //*
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");    //gap
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");  // a
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#0c00f3");  // b
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2, 0), "#c2003d");  // c
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3, 0), "#0c00f3");  // d
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#0c00f3");  // e
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#cb0034");  // f
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#6a0095");  // g
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#1500ea");  // h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#ff0000");  // i
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#ffffff");  // j
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#0000ff");  // k
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(10, 0), "#ea0015");  // l
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(11, 0), "#b0004f");  // m
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(12, 0), "#0c00f3");  // n
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(26, 0), "#ffffff");  // o
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(13, 0), "#4600b9");  // p
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(14, 0), "#0c00f3");  // q
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(15, 0), "#0000ff");  // r
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(16, 0), "#5e00a1");  // s
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(17, 0), "#61009e");  // t
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(27, 0), "#ffffff");  // u
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(18, 0), "#f60009");  // v
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(19, 0), "#5b00a4");  // w
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(20, 0), "#680097");  // x
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(21, 0), "#4f00b0");  // y
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(22, 0), "#0c00f3");  // z
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(23, 0), "#ffffff");  //*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(25, 0), "#ffffff");  // gap
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
@@ -885,7 +885,7 @@ void setHighlightingType(HI::GUITestOpStatus &os, const QString &type) {
     CHECK_SET_ERR(highlightingScheme != nullptr, "highlightingScheme not found");
     GTComboBox::selectItemByText(os, highlightingScheme, type);
 }
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0007) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1067,31 +1067,31 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0012) {
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0013) {
-    //1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
+    // 1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open highlighting option panel tab
+    // 2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QWidget *w = GTWidget::findWidget(os, "msa_editor_sequence_area");
     const QImage initImg = GTWidget::getImage(os, w);
 
-    //3. Check "use dots" checkbox
+    // 3. Check "use dots" checkbox
     setHighlightingType(os, "Agreements");
     QCheckBox *useDots = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "useDots"));
     CHECK_SET_ERR(useDots != nullptr, "use dots checkbox not found");
     GTCheckBox::setChecked(os, useDots, true);
 
-    //Expected state: no effect
+    // Expected state: no effect
     QImage img = GTWidget::getImage(os, w);
     CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
 
-    //4. Select Phaneroptera_falcata as reference.
+    // 4. Select Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 
-    //Expected state: not highlighted changed to dots
+    // Expected state: not highlighted changed to dots
     img = GTWidget::getImage(os, w);
-    CHECK_SET_ERR(img != initImg, "image not changed");    // no way to check dots. Can only check that sequence area changed
+    CHECK_SET_ERR(img != initImg, "image not changed");  // no way to check dots. Can only check that sequence area changed
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0001) {
@@ -1260,7 +1260,7 @@ void expandOutputSettings(HI::GUITestOpStatus &os) {
     expandSettings(os, "outputContainerWidget", "ArrowHeader_Output settings");
 }
 
-}    // namespace
+}  // namespace
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
@@ -1324,7 +1324,7 @@ void align(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));
 }
 
-}    // namespace
+}  // namespace
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
@@ -1403,7 +1403,7 @@ void setOutputPath(HI::GUITestOpStatus &os, const QString &path, const QString &
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name, GTFileDialogUtils::Save));
     GTWidget::click(os, outputFileSelectButton);
 }
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
     const QString fileName = "pairwise_alignment_test_0008.aln";
@@ -1501,16 +1501,16 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
-    //1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
+    // 1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Open Pairwise alignment option panel tab
+    // 2. Open Pairwise alignment option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
-    //3. Add Phaneroptera_falcata sequence
-    //4. Add Isophya_altaica_EF540820 sequence
+    // 3. Add Phaneroptera_falcata sequence
+    // 4. Add Isophya_altaica_EF540820 sequence
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
-    //5. Use empty path in output settings
+    // 5. Use empty path in output settings
     expandOutputSettings(os);
     QLineEdit *outputFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outputFileLineEdit"));
     CHECK_SET_ERR(outputFileLineEdit != nullptr, "outputFileLineEdit not found");
@@ -1520,7 +1520,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     QString finalText = outputFileLineEdit->text();
-    //Expected state: empty path can not be set
+    // Expected state: empty path can not be set
     CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
 }
 
@@ -1711,11 +1711,11 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     CHECK_SET_ERR(distanses.count() == initDistansesNumber, QString("unexpected number of distanses: %1").arg(names.count()));
 
     //    7. Check "align labels" checkbox.
-    //saving init image
+    // saving init image
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
     QWidget *w = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(w != nullptr, "tree view not found");
-    QImage initImg = GTWidget::getImage(os, w);    //initial state
+    QImage initImg = GTWidget::getImage(os, w);  // initial state
 
     GTCheckBox::setChecked(os, alignLabelsCheck, true);
 
@@ -1755,7 +1755,7 @@ bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) 
 
     const QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
 
-    //hack
+    // hack
     foreach (QGraphicsSimpleTextItem *label, labels) {
         QRectF rect = label->boundingRect();
         w->ensureVisible(label);
@@ -1775,7 +1775,7 @@ bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) 
     }
     return false;
 }
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     //    1. Open data/samples/CLUSTALW/COI.aln
@@ -1818,24 +1818,24 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     QWidget *italicAttrButton = GTWidget::findWidget(os, "italicAttrButton");
     QWidget *underlineAttrButton = GTWidget::findWidget(os, "underlineAttrButton");
 
-    //bold
+    // bold
     GTWidget::click(os, boldAttrButton);
     CHECK_SET_ERR(label->font().bold(), "expected bold font");
-    //not bold
+    // not bold
     GTWidget::click(os, boldAttrButton);
     CHECK_SET_ERR(!label->font().bold(), "bold font not canceled");
 
-    //italic
+    // italic
     GTWidget::click(os, italicAttrButton);
     CHECK_SET_ERR(label->font().italic(), "expected italic font");
-    //not italic
+    // not italic
     GTWidget::click(os, italicAttrButton);
     CHECK_SET_ERR(!label->font().italic(), "italic font not canceled");
 
-    //underline
+    // underline
     GTWidget::click(os, underlineAttrButton);
     CHECK_SET_ERR(label->font().underline(), "expected underline font");
-    //not underline
+    // not underline
     GTWidget::click(os, underlineAttrButton);
     CHECK_SET_ERR(!label->font().underline(), "underline font not canceled");
 }
@@ -1854,7 +1854,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
 
     // Disable sync mode to allow resize of the view.
 
-    GTUtilsProjectTreeView::toggleView(os);    // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+    GTUtilsProjectTreeView::toggleView(os);  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
 
@@ -1924,7 +1924,7 @@ double colorPercent(HI::GUITestOpStatus &os, QWidget *widget, const QString &col
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     //    1. Open data/samples/CLUSTALW/COI.aln
@@ -1934,7 +1934,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    //Click to empty space near the node to reset selection
+    // Click to empty space near the node to reset selection
     QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(nodes.size() == 16,
                   QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
@@ -1978,7 +1978,7 @@ void setConsensusOutputPath(HI::GUITestOpStatus &os, const QString &path) {
     CHECK_SET_ERR(pathLe != nullptr, "pathLe not found");
     GTLineEdit::setText(os, pathLe, path);
 }
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
     const QString fileName = "export_consensus_test_0001.txt";
@@ -2068,7 +2068,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
-    //0. Change Documents folder to sandbox
+    // 0. Change Documents folder to sandbox
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
@@ -2229,20 +2229,20 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0001) {
     //    2. Open export general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     //   Check saving parameters
-    //find widgets
+    // find widgets
     QComboBox *consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
     QSpinBox *thresholdSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "thresholdSpinBox");
 
-    //set some parameters
+    // set some parameters
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
     GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
 
-    //checks
+    // checks
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
     consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
     thresholdSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "thresholdSpinBox");
@@ -2260,22 +2260,22 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0002) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
     //   Check saving parameters
-    //find widgets
+    // find widgets
     QComboBox *colorScheme = GTWidget::findExactWidget<QComboBox *>(os, "colorScheme");
     QComboBox *highlightingScheme = GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme");
     QCheckBox *useDots = GTWidget::findExactWidget<QCheckBox *>(os, "useDots");
 
-    //set some parameters
+    // set some parameters
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
     GTComboBox::selectItemByText(os, colorScheme, "Jalview");
     GTComboBox::selectItemByText(os, highlightingScheme, "Agreements");
     GTCheckBox::setChecked(os, useDots, true);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
 
-    //checks
+    // checks
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
     colorScheme = GTWidget::findExactWidget<QComboBox *>(os, "colorScheme");
     highlightingScheme = GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme");
@@ -2288,8 +2288,8 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
-    //KAlign settings
-    //    1. Open data/samples/CLUSTALW/COI.aln
+    // KAlign settings
+    //     1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open export highlighting option panel tab
@@ -2299,29 +2299,29 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    //expand settings
+    // expand settings
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Algorithm settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
 
-    //find widgets
+    // find widgets
     QDoubleSpinBox *gapOpen = GTWidget::findExactWidget<QDoubleSpinBox *>(os, "gapOpen");
     QDoubleSpinBox *gapExtd = GTWidget::findExactWidget<QDoubleSpinBox *>(os, "gapExtd");
     QDoubleSpinBox *gapTerm = GTWidget::findExactWidget<QDoubleSpinBox *>(os, "gapTerm");
     QDoubleSpinBox *bonusScore = GTWidget::findExactWidget<QDoubleSpinBox *>(os, "bonusScore");
     QCheckBox *inNewWindowCheckBox = GTWidget::findExactWidget<QCheckBox *>(os, "inNewWindowCheckBox");
 
-    //set values
+    // set values
     GTDoubleSpinbox::setValue(os, gapOpen, 100, GTGlobals::UseKeyBoard);
     GTDoubleSpinbox::setValue(os, gapExtd, 100, GTGlobals::UseKeyBoard);
     GTDoubleSpinbox::setValue(os, gapTerm, 100, GTGlobals::UseKeyBoard);
     GTDoubleSpinbox::setValue(os, bonusScore, 100, GTGlobals::UseKeyBoard);
     GTCheckBox::setChecked(os, inNewWindowCheckBox, false);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
 
-    //checks
+    // checks
     QLineEdit *l1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit *l2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     gapOpen = GTWidget::findExactWidget<QDoubleSpinBox *>(os, "gapOpen");
@@ -2339,9 +2339,9 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
     CHECK_SET_ERR(!inNewWindowCheckBox->isChecked(), "inNewWindowCheckBox is unexpectidly checked");
 }
 
-GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
-    //smith-waterman settings
-    //    1. Open data/samples/CLUSTALW/COI.aln
+GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {  //
+    // smith-waterman settings
+    //     1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open export highlighting option panel tab
@@ -2351,10 +2351,10 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    //expand settings
+    // expand settings
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Algorithm settings"));
 
-    //find widgets
+    // find widgets
     QComboBox *algorithmListComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox");
     GTComboBox::selectItemByText(os, algorithmListComboBox, "Smith-Waterman");
 
@@ -2363,17 +2363,17 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
     QSpinBox *gapOpen = GTWidget::findExactWidget<QSpinBox *>(os, "gapOpen");
     QSpinBox *gapExtd = GTWidget::findExactWidget<QSpinBox *>(os, "gapExtd");
 
-    //setValues
+    // setValues
     GTComboBox::selectItemByText(os, algorithmVersion, "SW_classic");
     GTComboBox::selectItemByText(os, scoringMatrix, "dna");
     GTSpinBox::setValue(os, gapOpen, 5);
     GTSpinBox::setValue(os, gapExtd, 5);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
 
-    //checks
+    // checks
     QLineEdit *l1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit *l2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     algorithmListComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox");
@@ -2402,7 +2402,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //set some values
+    // set some values
     expandFontSettings(os);
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
@@ -2428,11 +2428,11 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "italicAttrButton"));
     GTWidget::click(os, GTWidget::findWidget(os, "underlineAttrButton"));
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
 
-    //check settings
+    // check settings
     layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
     treeViewCombo = GTWidget::findExactWidget<QComboBox *>(os, "treeViewCombo");
     QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
@@ -2463,7 +2463,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //find widgets
+    // find widgets
     QCheckBox *showNamesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showNamesCheck");
     QCheckBox *showDistancesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showDistancesCheck");
     QSlider *widthSlider = GTWidget::findExactWidget<QSlider *>(os, "widthSlider");
@@ -2472,7 +2472,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     expandPenSettings(os);
     QSpinBox *lineWeightSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "lineWeightSpinBox");
 
-    //set some values
+    // set some values
     GTCheckBox::setChecked(os, showNamesCheck, false);
     GTCheckBox::setChecked(os, showDistancesCheck, false);
     GTSlider::setValue(os, widthSlider, 50);
@@ -2481,11 +2481,11 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
     GTSpinBox::setValue(os, lineWeightSpinBox, 2);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
 
-    //checks
+    // checks
     showNamesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showNamesCheck");
     showDistancesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showDistancesCheck");
     widthSlider = GTWidget::findExactWidget<QSlider *>(os, "widthSlider");
@@ -2512,21 +2512,21 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
     //    3. Open export consensus tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
-    //find widgets
+    // find widgets
     QLineEdit *pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     QComboBox *formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
     QCheckBox *keepGapsChb = GTWidget::findExactWidget<QCheckBox *>(os, "keepGapsChb");
 
-    //set some values
+    // set some values
     GTLineEdit::setText(os, pathLe, "some_path");
     GTComboBox::selectItemByText(os, formatCb, "GenBank");
     GTCheckBox::setChecked(os, keepGapsChb, true);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_EXPORT_CONSENSUS"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_EXPORT_CONSENSUS"));
 
-    //checks
+    // checks
     pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
     keepGapsChb = GTWidget::findExactWidget<QCheckBox *>(os, "keepGapsChb");
@@ -2544,25 +2544,25 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 
-    //find widgets
+    // find widgets
     QCheckBox *showDistancesColumnCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showDistancesColumnCheck");
     QComboBox *algoComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox");
     QRadioButton *countsButton = GTWidget::findExactWidget<QRadioButton *>(os, "countsButton");
     QCheckBox *excludeGapsCheckBox = GTWidget::findExactWidget<QCheckBox *>(os, "excludeGapsCheckBox");
     QCheckBox *autoUpdateCheck = GTWidget::findExactWidget<QCheckBox *>(os, "autoUpdateCheck");
 
-    //set some parameters
+    // set some parameters
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     GTComboBox::selectItemByText(os, algoComboBox, "Similarity");
     GTRadioButton::click(os, countsButton);
     GTCheckBox::setChecked(os, excludeGapsCheckBox, true);
     GTCheckBox::setChecked(os, autoUpdateCheck, false);
 
-    //close and open option panel
+    // close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
 
-    //checks
+    // checks
     showDistancesColumnCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showDistancesColumnCheck");
     algoComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox");
     countsButton = GTWidget::findExactWidget<QRadioButton *>(os, "countsButton");
@@ -2575,5 +2575,5 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     CHECK_SET_ERR(excludeGapsCheckBox->isChecked(), "exclude gaps not checked");
     CHECK_SET_ERR(!autoUpdateCheck->isChecked(), "auto update is unexpectedly checked");
 }
-}    // namespace GUITest_common_scenarios_options_panel_MSA
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_options_panel_MSA
+}  // namespace U2

@@ -102,20 +102,20 @@ Task *GenomeAlignerWorker::tick() {
         Message m = getMessageAndSetupScriptValues(inChannel);
         QVariantMap data = m.getData().toMap();
 
-        //settings.indexFileName = getValue<QString>(REFERENCE_GENOME);
+        // settings.indexFileName = getValue<QString>(REFERENCE_GENOME);
         DnaAssemblyToRefTaskSettings settings = getSettings(os);
         if (os.hasError()) {
             return new FailTask(os.getError());
         }
         QString readsUrl = data[READS_URL_SLOT_ID].toString();
         if (data.contains(READS_PAIRED_URL_SLOT_ID)) {
-            //paired
+            // paired
             QString readsPairedUrl = data[READS_PAIRED_URL_SLOT_ID].toString();
             settings.shortReadSets.append(ShortReadSet(readsUrl, ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate));
             settings.shortReadSets.append(ShortReadSet(readsPairedUrl, ShortReadSet::PairedEndReads, ShortReadSet::DownstreamMate));
             settings.pairedReads = true;
         } else {
-            //single
+            // single
             settings.shortReadSets.append(ShortReadSet(readsUrl, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate));
             settings.pairedReads = false;
         }
@@ -278,7 +278,7 @@ public:
 
 void GenomeAlignerWorkerFactory::init() {
     QList<PortDescriptor *> p;
-    //in port
+    // in port
     QMap<Descriptor, DataTypePtr> inTypeMap;
     Descriptor readsDesc(READS_URL_SLOT_ID,
                          GenomeAlignerWorker::tr("URL of a file with reads"),
@@ -296,7 +296,7 @@ void GenomeAlignerWorkerFactory::init() {
 
     DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
     p << new PortDescriptor(inPortDesc, inTypeSet, true);
-    //out port
+    // out port
     QMap<Descriptor, DataTypePtr> outTypeMap;
     Descriptor assemblyOutDesc(ASSEBLY_OUT_SLOT_ID,
                                GenomeAlignerWorker::tr("Assembly URL"),
@@ -441,5 +441,5 @@ void GenomeAlignerWorkerFactory::init() {
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerWorkerFactory());
 }
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

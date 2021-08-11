@@ -73,7 +73,7 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
 
     QModelIndex documentItem = documentItems[0];
     QString tmpFolderPrefix = getSuiteFolderPrefix();
-    int maxToRemove = 4;    // if there are too many documents to remove the test may fail by timeout.
+    int maxToRemove = 4;  // if there are too many documents to remove the test may fail by timeout.
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     for (int item = 0; item < maxToRemove; item++) {
         bool isRemoved = false;
@@ -511,4 +511,4 @@ const QVariant GTUtilsSharedDatabaseDocument::convertProjectItemsPaths(const QMa
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

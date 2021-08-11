@@ -131,4 +131,4 @@ MysqlDbi *MysqlModificationAction::getDbi() const {
     return static_cast<MysqlDbi *>(dbi);
 }
 
-}    // namespace U2
+}  // namespace U2

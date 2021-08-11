@@ -46,6 +46,6 @@ public:
     static QString newDocName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTSEQUENCEREADINGMODEDIALOG_H
+#endif  // GTSEQUENCEREADINGMODEDIALOG_H

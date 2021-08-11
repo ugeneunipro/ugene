@@ -71,6 +71,6 @@ void PMatrixSerializeUtils<Serializer, Matrix>::retrieve(const U2EntityRef &enti
     matrix = Serializer::deserialize(data, os);
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PMATRIX_SERIALIZE_UTILS_H_
+#endif  // _U2_PMATRIX_SERIALIZE_UTILS_H_

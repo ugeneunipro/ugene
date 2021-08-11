@@ -99,4 +99,4 @@ void ReplyTimeout::timerEvent(QTimerEvent *timerEvent) {
     timer.stop();
 }
 
-}    // namespace U2
+}  // namespace U2

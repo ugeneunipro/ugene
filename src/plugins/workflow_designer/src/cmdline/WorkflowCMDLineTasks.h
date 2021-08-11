@@ -51,14 +51,14 @@ protected:
     QString schemaName;
     QMap<ActorId, ActorId> remapping;
 
-};    // WorkflowRunFromCMDLineBase
+};  // WorkflowRunFromCMDLineBase
 
 class WorkflowRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
     Q_OBJECT
 public:
     virtual Task *getWorkflowRunTask() const;
-};    // WorkflowRunFromCMDLineTask
+};  // WorkflowRunFromCMDLineTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_CMDLINE_TASKS_H_
+#endif  // _U2_WORKFLOW_CMDLINE_TASKS_H_

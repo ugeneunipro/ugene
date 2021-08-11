@@ -37,4 +37,4 @@ MaStateCheck::~MaStateCheck() {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2

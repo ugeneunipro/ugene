@@ -71,7 +71,7 @@ public:
 
 private:
     QMap<Port *, QList<Port *>> bindings;
-};    // ActorBindingsGraph
+};  // ActorBindingsGraph
 
 /**
  * Schema is oriented graph of actors
@@ -158,7 +158,7 @@ private:
     bool recursiveExpand(QList<QString> &schemaIds);
     void update(const QMap<ActorId, ActorId> &actorsMapping);
 
-};    // Schema
+};  // Schema
 
 class U2LANG_EXPORT ActorVisualData {
 public:
@@ -244,7 +244,7 @@ public:
 
 private:
     QMap<ActorId, ActorVisualData> actorVisual;
-    QMap<QString, QPointF> textPosMap;    // actorId.portId->actorId.portId <-> textPos
+    QMap<QString, QPointF> textPosMap;  // actorId.portId->actorId.portId <-> textPos
 
 private:
     QString getPortString(const ActorId &actorId, const QString &portId) const;
@@ -253,10 +253,10 @@ private:
     bool isActorLinked(const ActorId &actorId, const QString &linkStr) const;
     QString renameLink(const QString &linkStr, const QMap<ActorId, ActorId> &actorsMapping) const;
     QString renameLink(const QString &linkStr, const ActorId &oldId, const ActorId &newId, const QList<PortMapping> &mappings) const;
-};    // Metadata
+};  // Metadata
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_ITERATION_H_
+#endif  // _U2_WORKFLOW_ITERATION_H_

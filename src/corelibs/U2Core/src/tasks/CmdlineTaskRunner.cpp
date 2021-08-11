@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include <QTextCodec>
 #include <QTimer>
@@ -65,7 +65,7 @@ inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
     }
 
     // maybe, @line is "[time][loglevel] log"
-    int openPos = line.indexOf("[", 1);    // 1 because it is needed to skip first [time] substring
+    int openPos = line.indexOf("[", 1);  // 1 because it is needed to skip first [time] substring
     if (-1 == openPos) {
         return -1;
     }
@@ -101,7 +101,7 @@ bool containsPrefix(const QStringList &args, const QString &prefix) {
     }
     return false;
 }
-}    // namespace
+}  // namespace
 
 const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
 
@@ -390,7 +390,7 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 }
 
 void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatus) {
-    CHECK(!hasError(), );    // !do not overwrite previous error!
+    CHECK(!hasError(), );  // !do not overwrite previous error!
 
     // On Windows, if the process was terminated with TerminateProcess() from another application,
     // this function will still return NormalExit unless the exit code is less than 0.
@@ -408,7 +408,7 @@ const int UPDATE_PROGRESS_INTERVAL = 500;
 void logError(const QString &error) {
     coreLog.info(QString("%1%2%1").arg(ERROR_KEYWORD).arg(error));
 }
-}    // namespace
+}  // namespace
 
 CmdlineTask::CmdlineTask(const QString &name, TaskFlags flags)
     : Task(name, flags) {
@@ -439,4 +439,4 @@ QString CmdlineTask::getTaskError() const {
 void CmdlineTask::sl_outputProgressAndState() {
     coreLog.info(QString("%1%2").arg(OUTPUT_PROGRESS_TAG).arg(getProgress()));
 }
-}    // namespace U2
+}  // namespace U2

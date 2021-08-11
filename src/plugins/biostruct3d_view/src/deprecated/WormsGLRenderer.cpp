@@ -75,7 +75,7 @@ void WormsGLRenderer::create() {
 }
 
 void WormsGLRenderer::drawWorms() {
-    GLUquadricObj *pObj;    // Quadric Object
+    GLUquadricObj *pObj;  // Quadric Object
 
     // Draw atoms as spheres
     pObj = gluNewQuadric();
@@ -87,7 +87,7 @@ void WormsGLRenderer::drawWorms() {
         const Worm worm = wormMap.value(chainId);
         foreach (int index, shownModels) {
             const WormModel &model = worm.models.at(index);
-            //Draw worm bodies (let the bodies set the scene!!!)
+            // Draw worm bodies (let the bodies set the scene!!!)
             const AtomsVector wormCoords = model.atoms;
             int size = wormCoords.size();
             Color4f atomColor;
@@ -126,7 +126,7 @@ void WormsGLRenderer::drawWorms() {
                 glDrawHalfWorm(aN3->coord3d, aN2->coord3d, aN1->coord3d, atomCoordLast, ribbonThickness, false, false, tension, settings->detailLevel);
             }
 
-            //Draw 3d objects
+            // Draw 3d objects
             if (shownModels.count() == 1) {
                 foreach (Object3D *obj, model.objects) {
                     obj->draw(settings->detailLevel);
@@ -153,7 +153,7 @@ void WormsGLRenderer::updateColorScheme() {
         }
     }
 
-    //TODO: optimization -> don't have to create everything again
+    // TODO: optimization -> don't have to create everything again
     createObjects3D();
 }
 
@@ -362,4 +362,4 @@ Object3D *WormsGLRenderer::createStrand3D(int startId, int endId, const BioPolym
     return new Strand3D(color, axis.first, axis.second);
 }
 
-}    // namespace U2
+}  // namespace U2

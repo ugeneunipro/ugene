@@ -62,4 +62,4 @@ void PairedDatasetsController::sl_datasetsChanged() {
     wc->setAttributeValue(widget->getInfos().at(1), qVariantFromValue<QList<Dataset>>(dsc->getDatasets(1)));
 }
 
-}    // namespace U2
+}  // namespace U2

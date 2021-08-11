@@ -93,4 +93,4 @@ U2DataType U2Msa::getType() const {
     return U2Type::Msa;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -43,8 +43,8 @@ private:
     Local<Function> schedulerCallback;
 };
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_JS_SCHEDULER_H_
+#endif  // _U2_JS_SCHEDULER_H_

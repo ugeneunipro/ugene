@@ -30,7 +30,7 @@
 
 namespace U2 {
 //////////////////////////////////////////////////////////////////////////
-//GeneByGeneReportSettings
+// GeneByGeneReportSettings
 
 const QString GeneByGeneReportSettings::MERGE_EXISTING = "Merge";
 const QString GeneByGeneReportSettings::OVERWRITE_EXISTING = "Overwrite";
@@ -48,12 +48,12 @@ void GeneByGeneReportSettings::initDefaults() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//GeneByGeneCompareResult
+// GeneByGeneCompareResult
 const QString GeneByGeneCompareResult::IDENTICAL_YES = "Yes";
 const QString GeneByGeneCompareResult::IDENTICAL_NO = "No";
 
 //////////////////////////////////////////////////////////////////////////
-//GeneByGeneComparator
+// GeneByGeneComparator
 
 #define BLAST_IDENT "identities"
 #define BLAST_GAPS "gaps"
@@ -68,10 +68,10 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                 int reglen = location->regions.first().length;
                 float lenRatio = reglen * 100 / static_cast<float>(seq.length());
                 maxIdentity = qMax(maxIdentity, lenRatio);
-                if (lenRatio >= identity) {    //check length ratio
+                if (lenRatio >= identity) {  // check length ratio
                     QString ident = adata->findFirstQualifierValue(BLAST_IDENT);
                     if (!ident.isEmpty()) {
-                        //create BLAST string  YES/identity/gaps
+                        // create BLAST string  YES/identity/gaps
                         float blastIdent = parseBlastQual(ident);
                         if (blastIdent != -1.0f && blastIdent >= identity) {
                             result.identical = true;
@@ -87,7 +87,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                                 result.identityString.append(QString("\\0"));
                             }
                         }
-                    } else {    //not a blast annotation
+                    } else {  // not a blast annotation
                         result.identical = true;
                         result.identityString = GeneByGeneCompareResult::IDENTICAL_YES;
                     }
@@ -107,7 +107,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
 float GeneByGeneComparator::parseBlastQual(const QString &ident) {
     float res = -1.0f;
 
-    //identities="1881/1881 (100%)"
+    // identities="1881/1881 (100%)"
     QRegExp rx("(\\d+)/(\\d+)");
     if (rx.indexIn(ident) != -1) {
         int v1 = rx.cap(1).toInt();
@@ -121,7 +121,7 @@ float GeneByGeneComparator::parseBlastQual(const QString &ident) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//GeneByGeneReportIO
+// GeneByGeneReportIO
 GeneByGeneReportIO::GeneByGeneReportIO(const QString &_outFile, const QString &_existingMode)
     : outFile(_outFile), existingMode(_existingMode), io(nullptr), mergedGenomesSize(0) {
 }
@@ -154,7 +154,7 @@ void GeneByGeneReportIO::prepareOutputFile(U2OpStatus &os) {
                 return;
             }
         }
-        //over write otherwise
+        // over write otherwise
     }
 
     io = IOAdapterUtils::open(outFile, os, IOAdapterMode_Write);
@@ -208,17 +208,17 @@ void GeneByGeneReportIO::readMergedTable(const QString &filePath, U2OpStatus &os
         len = readIO->readLine(data.data(), data.size() - 1);
         data.data()[len] = '\0';
         data = data.trimmed();
-        if (data.isEmpty() || data.startsWith("#")) {    //skip comments
+        if (data.isEmpty() || data.startsWith("#")) {  // skip comments
             continue;
         }
         const QList<QByteArray> &columns = data.left(len).split('\t');
 
-        //check/get columns count
+        // check/get columns count
         if (columnsCount == -1 && columns.size() > 1) {
-            columnsCount = columns.size() - 1;    //exclude gene column
+            columnsCount = columns.size() - 1;  // exclude gene column
             mergedGenomesSize = columnsCount;
         } else if (columnsCount != columns.size() - 1) {
-            continue;    // bad columns count
+            continue;  // bad columns count
         }
 
         if (columnsCount != -1) {
@@ -280,7 +280,7 @@ void GeneByGeneReportIO::writeRow(const QList<QString> &rowData) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//GeneByGeneReportTask
+// GeneByGeneReportTask
 GeneByGeneReportTask::GeneByGeneReportTask(const GeneByGeneReportSettings &settings,
                                            const QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>> &geneData)
     : Task(tr("Generating gene-by-gene approach report"), TaskFlag_None), settings(settings), geneData(geneData) {
@@ -333,4 +333,4 @@ void GeneByGeneReportTask::run() {
     stateInfo.progress = 100;
 }
 
-}    // namespace U2
+}  // namespace U2

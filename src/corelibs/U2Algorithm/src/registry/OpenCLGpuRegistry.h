@@ -114,7 +114,7 @@ public:
 
 private:
     QString name;
-    cl_context context;    // There should be one context for each device, no need to recreate context billion times TODO: releasing
+    cl_context context;  // There should be one context for each device, no need to recreate context billion times TODO: releasing
     cl_device_id id;
     quint64 platformId;
     quint64 globalMemorySizeBytes;
@@ -161,8 +161,8 @@ private:
     OpenCLHelper *openCLHelper;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif /*OPENCL_SUPPORT*/
 
-#endif    //__OPEN_CL_GPU_REGISTRY_H__
+#endif  //__OPEN_CL_GPU_REGISTRY_H__

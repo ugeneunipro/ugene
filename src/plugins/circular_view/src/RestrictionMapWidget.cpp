@@ -42,14 +42,14 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-///EnzymeItem
+/// EnzymeItem
 
 EnzymeItem::EnzymeItem(const QString &location, Annotation *a)
     : QTreeWidgetItem(QStringList(location), ENZYME_ITEM_TYPE), annotation(a) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-///EnzymeFolderItem
+/// EnzymeFolderItem
 
 EnzymeFolderItem::EnzymeFolderItem(const QString &name)
     : QTreeWidgetItem(ENZYME_FOLDER_ITEM_TYPE), enzymeName(name) {
@@ -83,7 +83,7 @@ void EnzymeFolderItem::removeEnzymeItem(Annotation *enzAnn) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-///RestrictionMapWidget
+/// RestrictionMapWidget
 
 RestrctionMapWidget::RestrctionMapWidget(ADVSequenceObjectContext *context, QWidget *p)
     : QWidget(p), ctx(context) {
@@ -142,8 +142,8 @@ void RestrctionMapWidget::sl_onAnnotationsAdded(const QList<Annotation *> &anns)
         }
     }
 
-    //TODO: enable "intelligent" sorting by reimplementing custom AbstractModel
-    // Take into account number of items in each enzymes folder
+    // TODO: enable "intelligent" sorting by reimplementing custom AbstractModel
+    //  Take into account number of items in each enzymes folder
     treeWidget->sortItems(0, Qt::AscendingOrder);
 }
 
@@ -218,4 +218,4 @@ void RestrctionMapWidget::sl_onAnnotationsInGroupRemoved(const QList<Annotation 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

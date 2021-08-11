@@ -38,6 +38,6 @@ public:
 private:
     QString datasetName;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // DATASETNAMEEDITDIALOGFILLER_H
+#endif  // DATASETNAMEEDITDIALOGFILLER_H

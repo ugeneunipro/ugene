@@ -54,6 +54,6 @@ public:
     static DNAChromatogram getGappedChromatogram(const DNAChromatogram &chrom, const QList<U2MsaGap> &gapModel);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CHROMATOGRAM_UTILS_H_
+#endif  // _U2_CHROMATOGRAM_UTILS_H_

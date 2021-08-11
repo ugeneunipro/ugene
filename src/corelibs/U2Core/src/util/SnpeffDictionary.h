@@ -40,6 +40,6 @@ private:
     static QMap<QString, QString> initMessageDescriptions();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SNPEFF_DICTIONARY_H_
+#endif  // _U2_SNPEFF_DICTIONARY_H_

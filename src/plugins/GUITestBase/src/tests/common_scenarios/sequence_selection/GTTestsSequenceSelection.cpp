@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "GTTestsSequenceSelection.h"
 #include <base_dialogs/GTFileDialog.h>
@@ -43,26 +43,26 @@ namespace GUITest_common_scenarios_sequence_selection {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(double_click_test_0001) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state :
-    //The corresponding annotations are shown in the Zoom View, Details View and Annotations Editor.
-    //There is no selection in the Overview, Zoom View, Details View, Annotations Editor.
+    // Expected state :
+    // The corresponding annotations are shown in the Zoom View, Details View and Annotations Editor.
+    // There is no selection in the Overview, Zoom View, Details View, Annotations Editor.
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selection.isEmpty(), "Unexpected selection");
     QString annTreeItem = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(annTreeItem.isEmpty(), QString("Incorrect selected item %1").arg(annTreeItem));
 
-    //2. Double - click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
+    // 2. Double - click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
-    //Expected state :
-    //In the Overview : there is blue selection.
-    //In the Zoom View : the annotation has wide border, the blue selection is shown.
-    //In the Details View : the annotation has wide border, there is dashed selection.
-    //In the Annotations Editor : the annotation is selected in the tree view.
+    // Expected state :
+    // In the Overview : there is blue selection.
+    // In the Zoom View : the annotation has wide border, the blue selection is shown.
+    // In the Details View : the annotation has wide border, there is dashed selection.
+    // In the Annotations Editor : the annotation is selected in the tree view.
     selection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selection.size() == 1, QString("Expected section size: 1, current : %1").arg(selection.size()));
     CHECK_SET_ERR(selection.first() == U2Region(1041, 1617), QString("Expected selection: startPos = 1041, length = 1617, current: startPos = %1, length = %2").arg(selection.first().startPos).arg(selection.first().length));
@@ -71,21 +71,21 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Double - click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
+    // 2. Double - click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
-    //3. Open "Copy/Paste" menu item in the Details View context menu.
-    //Expected state :The following items are enabled :
-    //    "Copy sequence"
-    //    "Copy reverse-complement sequence"
-    //    "Copy translation"
-    //    "Copy reverse-complement translation"
-    //    "Copy annotation sequence"
-    //    "Copy annotation sequence translation"
+    // 3. Open "Copy/Paste" menu item in the Details View context menu.
+    // Expected state :The following items are enabled :
+    //     "Copy sequence"
+    //     "Copy reverse-complement sequence"
+    //     "Copy translation"
+    //     "Copy reverse-complement translation"
+    //     "Copy annotation sequence"
+    //     "Copy annotation sequence translation"
     QStringList menuPath;
     menuPath << "Copy/Paste";
     QStringList itemsNames;
@@ -104,45 +104,45 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
     QKeySequence ks = copy->shortcut();
     CHECK_SET_ERR(ks == check_ks, "Unexpected shortcut");
 
-    //4. Open "Copy/Paste" menu item in the "Actions" main menu.
-    //Expected state : Items, specified in the step 1 expected state, are enabled.
-    //Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy sequence" item.
+    // 4. Open "Copy/Paste" menu item in the "Actions" main menu.
+    // Expected state : Items, specified in the step 1 expected state, are enabled.
+    // Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy sequence" item.
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << menuPath, itemsNames, PopupChecker::CheckOption(PopupChecker::IsEnabled));
 
-    //5.Look at the SV toolbar.
-    //Expected state : the same buttons as on the step 1 are enabled.
+    // 5.Look at the SV toolbar.
+    // Expected state : the same buttons as on the step 1 are enabled.
 
-    //6. Click "Copy sequence".
+    // 6. Click "Copy sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, menuPath << "Copy selected sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     menuPath.removeOne("Copy selected sequence");
 
-    //Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
+    // Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("ATGGGCCAGACTGTT"), QString("'Copy sequence clipboard check', expected: ATGGGCCAGACTGTT, current: %1").arg(text.left(10)));
 
-    //7. Click "Copy annotation sequence translation".
+    // 7. Click "Copy annotation sequence translation".
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << menuPath << "Copy annotation amino acids");
 
-    //Expected state : a sequence that starts from "MGQTVTTPLSL" is stored in the clipboard.
+    // Expected state : a sequence that starts from "MGQTVTTPLSL" is stored in the clipboard.
     text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("MGQTVTTPLSL"), QString("'Copy annotation sequence translation' clipboard check, expected: MGQTVTTPLSL, current: %1").arg(text.left(10)));
 
-    //8. Press Ctrl + C(or Cmd + C on Mac OS X).
+    // 8. Press Ctrl + C(or Cmd + C on Mac OS X).
     GTKeyboardUtils::copy();
 
-    //Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
+    // Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
     text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("ATGGGCCAGACTGTT"), QString("'Copy sequence clipboard check', expected: ATGGGCCAGACTGTT, current: %1").arg(text.left(10)));
 }
 
 GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Double - click on the CDS annotation with location(3875..4999) in the Zoom View.
+    // 2. Double - click on the CDS annotation with location(3875..4999) in the Zoom View.
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, true);
 
@@ -159,25 +159,25 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     }
     CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
-    //3. Click on the "Zoom In" button in the Zoom View left toolbar.
+    // 3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction *zoom = GTAction::findActionByText(os, "Zoom In");
     CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
-    //Expected state : the Zoom View has been zoomed to the region of the annotation location.
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    // Expected state : the Zoom View has been zoomed to the region of the annotation location.
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 3000, "Location moved incorrect, first check");
 
-    //4. Double - click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
+    // 4. Double - click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
     GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
 
     //    Expected state:
     //    The Details View has been scrolled to the "misc_feature" location.The annotation has wide border.There is dashed selection of the region.
     //    The Zoom View has been scrolled to the "misc_feature" location.The annotation has wide border.There is blue selection for the region.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
-    //5. In the Details View scroll to coordinate 5050. Double - click on the annotation located there.
+    // 5. In the Details View scroll to coordinate 5050. Double - click on the annotation located there.
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
@@ -186,47 +186,47 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.There is blue selection for the region.
     //    The fourth CDS annotation is selected in the Annotations Editor.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 4500, "Location moved incorrect, third check");
 }
 
 GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Switch on the editing mode.
+    // 2. Switch on the editing mode.
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
-    //3. Double-click in the Details View on the direct strand between coordinates 6 and 7.
+    // 3. Double-click in the Details View on the direct strand between coordinates 6 and 7.
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     GTMouseDriver::doubleClick();
 
-    //4. Press 'G' on the keyboard.
+    // 4. Press 'G' on the keyboard.
     GTKeyboardDriver::keyClick('g');
 
-    //Expected state:
-    //The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
-    //The sequence has been modified. It starts from characters "AGTGGGGGCT".
+    // Expected state:
+    // The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
+    // The sequence has been modified. It starts from characters "AGTGGGGGCT".
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
     CHECK_SET_ERR(items.size() == 1, "Annotation was not removed");
 }
 
 GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click on the first CDS annotation with location(1042..2658).
+    // 2. Click on the first CDS annotation with location(1042..2658).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
 
-    //3. Hold Shift, click on the second CDS annotation with location(2970, 3873) in the Annotations Editor.
+    // 3. Hold Shift, click on the second CDS annotation with location(2970, 3873) in the Annotations Editor.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    //GTKeyboardDriver::keyPress(Qt::Key_Control);
+    // GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
-    //GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    // GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //    Expected state :
@@ -242,7 +242,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     CHECK_SET_ERR(items[0]->isSelected(), "First item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
 
-    //4. Hold Ctrl, double - click on the fourth CDS annotation with location(5048..5203).
+    // 4. Hold Ctrl, double - click on the fourth CDS annotation with location(5048..5203).
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 5048, 0, true);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -259,7 +259,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[3]->isSelected(), "Fourth item in the annotation tree view is not selected");
 
-    //5. Select a region using the mouse.
+    // 5. Select a region using the mouse.
     const QPoint pos = GTMouseDriver::getMousePosition();
     GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 20));
     GTMouseDriver::click();
@@ -274,25 +274,25 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click on the first CDS annotation with location(1042..2658).
+    // 2. Click on the first CDS annotation with location(1042..2658).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
 
-    //3. Hold Ctrl, click on the second CDS annotation with location(2970..3873).
+    // 3. Hold Ctrl, click on the second CDS annotation with location(2970..3873).
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
 
-    //4. Hold Ctrl, double - click on the third CDS annotation with location(3875..4999).
+    // 4. Hold Ctrl, double - click on the third CDS annotation with location(3875..4999).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, true);
 
-    //5. Hold Ctrl, double - click on the fourth CDS annotation with location(5048..5203).
+    // 5. Hold Ctrl, double - click on the fourth CDS annotation with location(5048..5203).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 5048, 0, true);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //6. Click "Copy selected sequence".
+    // 6. Click "Copy selected sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy selected sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("ATGGCGCATT"), QString("Unexpected start of the clipboard text, expected: ATGGCGCATT, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("CGAGCCATAG"), QString("Unexpected end of the clipboard text, expected: CGAGCCATAG, current: %1").arg(text.right(10)));
 
-    //7. Click "Copy reverse-complement sequence".
+    // 7. Click "Copy reverse-complement sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy selected complementary 5'-3' sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("CTATGGCTCG"), QString("Unexpected start of the clipboard text, expected: CTATGGCTCG, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("AATGCGCCAT"), QString("Unexpected end of the clipboard text, expected: AATGCGCCAT, current: %1").arg(text.right(10)));
 
-    //8. Click "Copy translation".
+    // 8. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("MAHSTPCSQT"), QString("Unexpected start of the clipboard text, expected: MAHSTPCSQT, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("QLKPIEYEP*"), QString("Unexpected end of the clipboard text, expected: QLKPIEYEP*, current: %1").arg(text.right(10)));
 
-    //9. Click "Copy reverse-complement translation".
+    // 9. Click "Copy reverse-complement translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids of complementary 5'-3' strand"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -336,7 +336,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("LWLVLYRLQL"), QString("Unexpected start of the clipboard text, expected: LWLVLYRLQL, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("SLGAWR*MRH"), QString("Unexpected end of the clipboard text, expected: SLGAWR*MRH, current: %1").arg(text.right(10)));
 
-    //10. Click "Copy annotation sequence".
+    // 10. Click "Copy annotation sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -347,7 +347,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("ATGGGCCAGA"), QString("Unexpected start of the clipboard text, expected: ATGGGCCAGA, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("CGAGCCATAG"), QString("Unexpected end of the clipboard text, expected: CGAGCCATAG, current: %1").arg(text.right(10)));
 
-    //11. Click "Copy annotation sequence translation".
+    // 11. Click "Copy annotation sequence translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -358,7 +358,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.startsWith("MGQTVTTPLS"), QString("Unexpected start of the clipboard text, expected: MGQTVTTPLS, current: %1").arg(text.left(10)));
     CHECK_SET_ERR(text.endsWith("QLKPIEYEP*"), QString("Unexpected end of the clipboard text, expected: QLKPIEYEP*, current: %1").arg(text.right(10)));
 
-    //12. Press Ctrl + C(Cmd + C on Mac OS X).
+    // 12. Press Ctrl + C(Cmd + C on Mac OS X).
     GTKeyboardUtils::copy();
 
     //    Expected state : there is joined sequence from the third and fourth annotations in the clipboard.
@@ -368,16 +368,16 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click on the first CDS annotation with location(1042..2658).
+    // 2. Click on the first CDS annotation with location(1042..2658).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
 
-    //3. Open menu item "Select" in the Details View context menu.
-    //    Expected state :
-    //    There is item "Sequence between selected annotations", it is disabled.
+    // 3. Open menu item "Select" in the Details View context menu.
+    //     Expected state :
+    //     There is item "Sequence between selected annotations", it is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations",
                                                             PopupChecker::IsDisabled));
@@ -391,14 +391,14 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //4. Click "Sequence around selected annotations".
+    // 4. Click "Sequence around selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state :
-    //In the Overview : there is blue selection for region(1042..2658).
+    // In the Overview : there is blue selection for region(1042..2658).
     //    In the Zoom View : there is blue selection for region(1042..2658).
     //    In the Details View : there is dashed selection for region(1042..2658).
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
@@ -406,14 +406,14 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     U2Region sel = selection.first();
     CHECK_SET_ERR(sel == U2Region(1041, 1617), QString("Unexpected selected region, expected: start 2658, length 311, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
 
-    //5. Hold Ctrl, click on the second CDS annotation with location(2970..3873).
+    // 5. Hold Ctrl, click on the second CDS annotation with location(2970..3873).
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //6. Open menu item "Select" in the Details View context menu.
-    //    Expected state :
-    //    There is item "Sequence between selected annotations", it is enabled.
+    // 6. Open menu item "Select" in the Details View context menu.
+    //     Expected state :
+    //     There is item "Sequence between selected annotations", it is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations",
                                                             PopupChecker::IsEnabled));
@@ -427,7 +427,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //7. Click "Sequence between selected annotations".
+    // 7. Click "Sequence between selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence between selected annotations"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     CHECK_SET_ERR(items[0]->isSelected(), "First item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
 
-    //8. Click "Select > Sequence around selected annotations".
+    // 8. Click "Select > Sequence around selected annotations".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Select"
                                                                               << "Sequence around selected annotations"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -467,7 +467,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(one_click_test_0001) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -479,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0001) {
     QString annTreeItem = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(annTreeItem.isEmpty(), QString("Incorrect selected item %1").arg(annTreeItem));
 
-    //2. Click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
+    // 2. Click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, false);
 
     //    Expected state :
@@ -495,23 +495,23 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
+    // 2. Click on the first CDS annotation in the Annotations Editor(the annotation location is 1042..2658).
     GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, false);
 
-    //3. Open "Copy/Paste" menu item in the Details View context menu.
-    //    Expected state :
-    //    The following items are disabled :
-    //    "Copy sequence"
-    //    "Copy selected complementary 5'-3' sequence"
-    //    "Copy amino acids"
-    //    "Copy amino acids of complementary 5'-3' strand"
-    //    The following items are enabled :
-    //    "Copy annotation sequence"
-    //    "Copy annotation amino acids"
+    // 3. Open "Copy/Paste" menu item in the Details View context menu.
+    //     Expected state :
+    //     The following items are disabled :
+    //     "Copy sequence"
+    //     "Copy selected complementary 5'-3' sequence"
+    //     "Copy amino acids"
+    //     "Copy amino acids of complementary 5'-3' strand"
+    //     The following items are enabled :
+    //     "Copy annotation sequence"
+    //     "Copy annotation amino acids"
     QStringList enabledItemsNames = QStringList() << "Copy selected sequence"
                                                   << "Copy selected complementary 5'-3' sequence"
                                                   << "Copy amino acids"
@@ -532,10 +532,10 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     QKeySequence ks = copy->shortcut();
     CHECK_SET_ERR(ks == check_ks, "Unexpected shortcut");
 
-    //4. Open "Copy/Paste" menu item in the "Actions" main menu.
-    //    Expected state :
-    //    The same items as on step 1 are disabled / enabled.
-    //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy annotation sequence" item.
+    // 4. Open "Copy/Paste" menu item in the "Actions" main menu.
+    //     Expected state :
+    //     The same items as on step 1 are disabled / enabled.
+    //     Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy annotation sequence" item.
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions"
                                                       << "Copy/Paste",
                                     enabledItemsNames,
@@ -545,10 +545,10 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
                                     disabledItemsNames,
                                     PopupChecker::CheckOption(PopupChecker::IsEnabled));
 
-    //5. Look at the SV toolbar.
-    //    Expected state : the same buttons as on step 1 are disabled / enabled.
+    // 5. Look at the SV toolbar.
+    //     Expected state : the same buttons as on step 1 are disabled / enabled.
 
-    //6. Click "Copy annotation sequence".
+    // 6. Click "Copy annotation sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -558,7 +558,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("ATGGGCCAGA"), QString("Unexpected start of the clipboard text, expected: ATGGGCCAGA, current: %1").arg(text.left(10)));
 
-    //7. Click "Copy annotation amino acids".
+    // 7. Click "Copy annotation amino acids".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -568,7 +568,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     text = GTClipboard::text(os);
     CHECK_SET_ERR(text.startsWith("MGQTVTTPLS"), QString("Unexpected start of the clipboard text, expected: MGQTVTTPLS, current: %1").arg(text.left(10)));
 
-    //8. Press Ctrl + C(or Cmd + C on Mac OS X).
+    // 8. Press Ctrl + C(or Cmd + C on Mac OS X).
     GTKeyboardUtils::copy();
 
     //    Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
@@ -577,7 +577,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
-    //1. Open "murine.gb".
+    // 1. Open "murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -599,7 +599,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Select a sequence region using the mouse.
+    // 2. Select a sequence region using the mouse.
     GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
 
     //    Expected state :
@@ -627,7 +627,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click "Copy translation".
+    // 3. Click "Copy translation".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy amino acids"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -638,7 +638,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR("RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V" == text, QString("Unexpected text in the clipboard, expected: RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V, current: %1").arg(text));
 
-    //4. Press Ctrl + C(or Cmd + C on Mac OS X) on the keyboard.
+    // 4. Press Ctrl + C(or Cmd + C on Mac OS X) on the keyboard.
     GTKeyboardUtils::copy();
 
     //    Expected state : the selected region is stored in the clipboard.
@@ -648,11 +648,11 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click on the CDS annotation with location(3875..4999) in the Zoom View.
+    // 2. Click on the CDS annotation with location(3875..4999) in the Zoom View.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, false);
 
     //    Expected state :
@@ -668,25 +668,25 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     }
     CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
-    //3. Click on the "Zoom In" button in the Zoom View left toolbar.
+    // 3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction *zoom = GTAction::findActionByText(os, "Zoom In");
     CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
     //    Expected state : the Zoom View has been zoomed to the region of the annotation location.
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 3000, "Location moved incorrect, first check");
 
-    //4. Click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
+    // 4. Click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
     GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, false);
 
     //    Expected state :
     //    The Details View has been scrolled to the "misc_feature" location.The annotation has wide border.
     //    The Zoom View has been scrolled to the "misc_feature" location.The annotation has wide border.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
-    //5. In the Details View scroll to coordinate 5050. Click on the annotation located there.
+    // 5. In the Details View scroll to coordinate 5050. Click on the annotation located there.
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
@@ -695,24 +695,24 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.
     //    The fourth CDS annotation is selected in the Annotations Editor.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 4500, "Location moved incorrect, third check");
 }
 
 GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
-    //1. Open "murine.gb" in SV.
+    // 1. Open "murine.gb" in SV.
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Switch on the editing mode.
+    // 2. Switch on the editing mode.
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
-    //3. Click in the Details View on the direct strand between coordinates 6 and 7.
+    // 3. Click in the Details View on the direct strand between coordinates 6 and 7.
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
 
-    //4. Press 'G' on the keyboard.
+    // 4. Press 'G' on the keyboard.
     GTKeyboardDriver::keyClick('g');
 
     //    Expected state : the sequence has been modified.It starts from characters "AAATGAGAAGAC".
@@ -720,6 +720,6 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
     CHECK_SET_ERR(items.size() == 2, "Annotation was removed");
 }
 
-}    // namespace GUITest_common_scenarios_sequence_selection
+}  // namespace GUITest_common_scenarios_sequence_selection
 
-}    // namespace U2
+}  // namespace U2

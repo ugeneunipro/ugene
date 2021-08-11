@@ -57,6 +57,6 @@ inline QString toString<U2Region>(const U2Region &r) {
     return r.toString();
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // DBITEST_H
+#endif  // DBITEST_H

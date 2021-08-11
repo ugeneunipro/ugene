@@ -23,6 +23,6 @@
 
 namespace U2 {
 void ExportConsensusDialogFiller::commonScenario() {
-    //not implemented jet
+    // not implemented jet
 }
-}    // namespace U2
+}  // namespace U2

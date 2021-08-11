@@ -152,7 +152,7 @@ void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &
 void DashboardWidgetUtils::addTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList) {
     // Update last border style for the old last.
     int lastRowIndex = gridLayout->rowCount() - 1;
-    if (lastRowIndex > 0) {    // row = 0 is a header.
+    if (lastRowIndex > 0) {  // row = 0 is a header.
         auto leftCellLayoutItem = gridLayout->itemAtPosition(lastRowIndex, 0);
         auto leftCellWidget = leftCellLayoutItem->widget();
         leftCellWidget->setStyleSheet("#tableCell {" + cellStyle + "}");
@@ -323,7 +323,7 @@ void DashboardFileButton::sl_openFileClicked() {
     QString type = tokens[0];
     QString url = tokens[1];
     QFileInfo fileInfo(url);
-    bool isOpenParentDir = type == "folder";    // A parent dir of the url must be opened.
+    bool isOpenParentDir = type == "folder";  // A parent dir of the url must be opened.
     if (isOpenParentDir) {
         fileInfo = QFileInfo(fileInfo.absolutePath());
     }
@@ -351,4 +351,4 @@ void DashboardFileButton::sl_openFileClicked() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

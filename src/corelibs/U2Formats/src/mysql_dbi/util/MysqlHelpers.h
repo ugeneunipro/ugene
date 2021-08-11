@@ -157,12 +157,12 @@ public:
 
     /**
      *Executes update and returns last row id
-    */
+     */
     qint64 insert();
 
     /**
      * Executes update and returns last row id converted to U2DataId using type info
-    */
+     */
     U2DataId insert(U2DataType type, const QByteArray &dbExtra = QByteArray());
 
     /** Executes query without additional checks*/
@@ -171,7 +171,7 @@ public:
     /**
      * Executes update and returns number of rows affected.
      * Returns count of rows affected by the query.
-    */
+     */
     qint64 update();
 
     /** Selects a single int32 value */
@@ -328,6 +328,6 @@ protected:
     QByteArray dbExtra;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_HELPERS_H_
+#endif  // _U2_MYSQL_HELPERS_H_

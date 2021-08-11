@@ -63,7 +63,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
     SAFE_POINT(maObj != nullptr, tr("Alignment object is NULL"), false);
     const MultipleAlignment &ma = maObj->getMultipleAlignment();
 
-    //Use dots to draw regions, which are similar to reference sequence
+    // Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
     foreach (int maRow, maRows) {
@@ -94,7 +94,7 @@ void SequenceAreaRenderer::drawSelectionFrame(QPainter &painter) const {
         QRect screenRect = ui->getDrawHelper()->getScreenRect(selectionRect);
         int viewWidth = ui->getSequenceArea()->width();
         if (screenRect.right() < 0 || screenRect.left() > viewWidth) {
-            continue;    // Selection is out of the screen.
+            continue;  // Selection is out of the screen.
         }
 
         // Check that frame has enough space to be drawn on both sides.
@@ -157,7 +157,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         QRect charRect(xStart, yStart, baseWidth, rowHeight);
         char c = ma->charAt(maRowIndex, column);
 
-        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRowIndex, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRowIndex, column, c);  //! SANGER_TODO: add NULL checks or do smt with the infrastructure
         if (backgroundColor.isValid() && hasHighlightedBackground(column, viewRowIndex)) {
             backgroundColor = backgroundColor.convertTo(QColor::Hsv);
             int modifiedSaturation = qMin(backgroundColor.saturation() + SELECTION_SATURATION_INCREASE, 255);
@@ -165,7 +165,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         }
 
         bool highlight = false;
-        if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {    //schemes which applied without reference
+        if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {  // schemes which applied without reference
             char refChar = '\n';
             highlightingScheme->process(refChar, c, backgroundColor, highlight, column, maRowIndex);
         } else if (isReferenceRow || !hasReference) {
@@ -179,7 +179,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
             painter.fillRect(charRect, backgroundColor);
         }
         if (isResizeMode) {
-            QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRowIndex, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+            QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRowIndex, column, c);  //! SANGER_TODO: add NULL checks or do smt with the infrastructure
             painter.setPen(fontColor);
             painter.drawText(charRect, Qt::AlignCenter, QString(c));
         }
@@ -194,4 +194,4 @@ bool SequenceAreaRenderer::hasHighlightedBackground(int columnIndex, int viewRow
     return ui->getEditor()->getSelection().contains(columnIndex, viewRowIndex);
 }
 
-}    // namespace U2
+}  // namespace U2

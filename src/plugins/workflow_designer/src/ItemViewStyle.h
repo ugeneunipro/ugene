@@ -174,6 +174,6 @@ protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -45,7 +45,7 @@ EditQualifierDialog::EditQualifierDialog(QWidget *p, const U2Qualifier &q, bool 
         this->setWindowTitle(tr("View Qualifier"));
     }
 
-    if (!existingQualifier) {    // adding new qualifier
+    if (!existingQualifier) {  // adding new qualifier
         setWindowTitle("Add New Qualifier");
     }
 
@@ -107,4 +107,4 @@ void EditQualifierDialog::accept() {
 EditQualifierDialog::~EditQualifierDialog() {
     delete ui;
 }
-}    // namespace U2
+}  // namespace U2

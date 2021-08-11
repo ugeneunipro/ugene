@@ -66,7 +66,7 @@ AnnotationTableObject *DocumentFormatUtils::addAnnotationsForMergedU2Sequence(co
         ao->addObjectRelation(GObjectRelation(mergedSequenceRef, ObjectRole_Sequence));
     }
 
-    //save mapping info as annotations
+    // save mapping info as annotations
     QStringList::const_iterator it = contigNames.begin();
     QList<SharedAnnotationData> resultData;
     for (int i = 0; it != contigNames.end(); i++, it++) {
@@ -90,7 +90,7 @@ public:
     bool operator()(const DocumentFormat *f1, const DocumentFormat *f2) const {
         int v1 = f1->getSupportedDocumentFileExtensions().contains(ext) ? 1 : 0;
         int v2 = f2->getSupportedDocumentFileExtensions().contains(ext) ? 1 : 0;
-        return v2 < v1;    // reverse sort -> make higher vals on the top
+        return v2 < v1;  // reverse sort -> make higher vals on the top
     }
     QString ext;
 };
@@ -140,7 +140,7 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject *obj) {
         return res;
     }
     const MultipleSequenceAlignmentObject *maObj = qobject_cast<const MultipleSequenceAlignmentObject *>(obj);
-    CHECK(maObj != nullptr, res);    //MultipleSequenceAlignmentObject is NULL
+    CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet *al = maObj->getAlphabet();
     qint64 alLen = maObj->getMsa()->getLength();
     foreach (const MultipleSequenceAlignmentRow &row, maObj->getMsa()->getMsaRows()) {
@@ -171,8 +171,8 @@ int DocumentFormatUtils::getMergedSize(const QVariantMap &hints, int defaultVal)
 }
 
 void DocumentFormatUtils::updateFormatHints(QList<GObject *> &objects, QVariantMap &fs) {
-    //1. remove all cached sequence sizes
-    //2. add new sizes
+    // 1. remove all cached sequence sizes
+    // 2. add new sizes
     QList<GObject *> sequences;
     foreach (GObject *obj, objects) {
         if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
@@ -194,4 +194,4 @@ QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId &formatId)
     return format->getFormatName();
 }
 
-}    // namespace U2
+}  // namespace U2

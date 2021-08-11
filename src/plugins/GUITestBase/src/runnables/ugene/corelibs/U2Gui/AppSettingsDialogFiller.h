@@ -116,5 +116,5 @@ public:
     }
     virtual void commonScenario();
 };
-}    // namespace U2
-#endif    // APPSETTINGSDIALOGFILLER_H
+}  // namespace U2
+#endif  // APPSETTINGSDIALOGFILLER_H

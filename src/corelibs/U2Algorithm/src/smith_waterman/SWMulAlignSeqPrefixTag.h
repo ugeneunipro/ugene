@@ -40,6 +40,6 @@ inline SWMulAlignSeqPrefixTag::SWMulAlignSeqPrefixTag(const QString _shorthand, 
     acceptableForSubseqNamesOnly = false;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SW_MUL_ALIGN_SEQ_PREFIX_TAG_H_
+#endif  // _U2_SW_MUL_ALIGN_SEQ_PREFIX_TAG_H_

@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-//thread safe design in main thread model
+// thread safe design in main thread model
 static int windowCounter = 0;
 
 MWMDIWindow::MWMDIWindow(const QString &windowName)
@@ -38,4 +38,4 @@ MWMDIWindow::~MWMDIWindow() {
     U2WidgetStateStorage::onWindowClose(this);
 }
 
-}    // namespace U2
+}  // namespace U2

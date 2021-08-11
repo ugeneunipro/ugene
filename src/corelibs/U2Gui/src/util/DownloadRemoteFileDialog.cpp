@@ -195,7 +195,7 @@ void DownloadRemoteFileDialog::accept() {
         QString message = tr("There are more than 100 files found for download.\nAre you sure you want to open all of them?");
         int button = QMessageBox::question(QApplication::activeWindow(), tr("Warning"), message, tr("Cancel"), tr("Open anyway"), tr("Don't open"));
         if (button == 0) {
-            return;    // return to dialog
+            return;  // return to dialog
         } else if (button == 2) {
             addToProject = false;
         }
@@ -263,4 +263,4 @@ void DownloadRemoteFileDialog::setupHintText(const QString &text) {
     ui->hintLabel->setText(hintStart + hintSample + hintEnd);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -39,6 +39,6 @@ private:
     const GTGlobals::UseMethod acceptMethod;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _ADD_FOLDER_DIALOG_FILLER_H_
+#endif  // _ADD_FOLDER_DIALOG_FILLER_H_

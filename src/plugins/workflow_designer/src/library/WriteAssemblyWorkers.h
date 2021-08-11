@@ -35,7 +35,7 @@ protected:
     virtual void data2doc(Document *doc, const QVariantMap &data);
     virtual bool hasDataToWrite(const QVariantMap &data) const;
     virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
-};    // BaseWriteAssemblyWorker
+};  // BaseWriteAssemblyWorker
 
 class WriteBAMWorker : public BaseWriteAssemblyWorker {
     Q_OBJECT
@@ -49,7 +49,7 @@ protected:
 
 private:
     bool buildIndex;
-};    // WriteBAMWorker
+};  // WriteBAMWorker
 
 class WriteAssemblyWorkerFactory : public DomainFactory {
 public:
@@ -61,7 +61,7 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // WriteAssemblyWorkerFactory
+};  // WriteAssemblyWorkerFactory
 
 class WriteBAMTask : public Task {
 public:
@@ -73,7 +73,7 @@ private:
     Document *doc;
     bool buildIndex;
     SaveDocFlags flags;
-};    // WriteBAMTask
+};  // WriteBAMTask
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

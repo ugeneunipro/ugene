@@ -55,7 +55,7 @@ protected:
     QString id;
     QString name;
     QString path;
-    QStringList runParams;    //used for every program run (e.g. -jar in Java)
+    QStringList runParams;  // used for every program run (e.g. -jar in Java)
 };
 
 class U2CORE_EXPORT ScriptingToolRegistry : public QObject {
@@ -75,5 +75,5 @@ protected:
     QMap<QString, ScriptingTool *> registry;
 };
 
-}    // namespace U2
-#endif    // _U2_SCRIPTING_TOOL_REGISTRY_H
+}  // namespace U2
+#endif  // _U2_SCRIPTING_TOOL_REGISTRY_H

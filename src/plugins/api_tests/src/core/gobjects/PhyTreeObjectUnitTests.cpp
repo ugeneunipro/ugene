@@ -113,7 +113,7 @@ PhyTree createTree() {
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, createInstance) {
     U2OpStatusImpl os;
@@ -201,4 +201,4 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, remove) {
     CHECK_TRUE(records.isEmpty(), "records");
 }
 
-}    // namespace U2
+}  // namespace U2

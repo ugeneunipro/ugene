@@ -36,6 +36,6 @@ public:
     static U2DataId getSequenceId(const QString &sequenceName, U2ObjectDbi *objectDbi);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DATABASE_UTILS_
+#endif  // _U2_DATABASE_UTILS_

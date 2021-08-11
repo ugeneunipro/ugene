@@ -82,6 +82,6 @@ private:
     ConsensusSettingsQueue *settingsQueue;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ASSEMBLY_CONSENSUS_H_
+#endif  // _U2_ASSEMBLY_CONSENSUS_H_

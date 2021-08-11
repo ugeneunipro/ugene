@@ -35,6 +35,6 @@ public:
     static const QString SAMTOOLS_ALGO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

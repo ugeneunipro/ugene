@@ -238,4 +238,4 @@ bool CustomPatternAutoAnnotationUpdater::checkConstraints(const AutoAnnotationCo
     return constraints.alphabet->isNucleic();
 }
 
-}    // namespace U2
+}  // namespace U2

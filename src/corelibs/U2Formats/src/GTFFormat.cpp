@@ -138,7 +138,7 @@ QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter *i
     bool fileIsValid = true;
     int lineNumber = 1;
     while (readGTFLine(qstrbuf, io, buff, os) > 0) {
-        if (qstrbuf.startsWith("track")) {    //skip comments
+        if (qstrbuf.startsWith("track")) {  // skip comments
             lineNumber++;
             continue;
         }
@@ -285,9 +285,9 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
 
         const QList<SharedAnnotationData> &annotList = iter.value();
         foreach (const SharedAnnotationData &annotData, annotList) {
-            QString groupName = annotData->name;    // Assume that the group name is the same as the annotation name
+            QString groupName = annotData->name;  // Assume that the group name is the same as the annotation name
             if (!AnnotationGroup::isValidGroupName(groupName, false)) {
-                groupName = "Group";    // Or just a value if the name of the feature is not appropriate
+                groupName = "Group";  // Or just a value if the name of the feature is not appropriate
             }
             annTable2Annotations[annotTable][groupName].append(annotData);
         }
@@ -332,7 +332,7 @@ FormatCheckResult GTFFormat::checkRawTextData(const QByteArray &rawData, const G
     }
 
     for (int i = 0; i < numToIterate; ++i) {
-        if (!fileLines[i].trimmed().isEmpty()) {    // e.g. the last line in file can be empty
+        if (!fileLines[i].trimmed().isEmpty()) {  // e.g. the last line in file can be empty
             parseAndValidateLine(fileLines[i], validationStatus);
         }
     }
@@ -353,7 +353,7 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString> &parsedAttrVa
     int pos = 0;
 
     while (pos < attributesStr.size()) {
-        //skip sequence of spaces
+        // skip sequence of spaces
         while (attributesStr.at(pos) == QChar(' ')) {
             pos++;
         }
@@ -435,13 +435,13 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags &
     // Verify that there is required number of fields and they are not empty
     if (FIELDS_COUNT_IN_EACH_LINE != fields.count()) {
         status.setFlagIncorrectNumberOfFields();
-        return parsedData;    // Do not continue to validate the line
+        return parsedData;  // Do not continue to validate the line
     }
 
     foreach (QString field, fields) {
         if (field.trimmed().isEmpty()) {
             status.setFlagEmptyField();
-            return parsedData;    // Do not continue to validate the line
+            return parsedData;  // Do not continue to validate the line
         }
     }
 
@@ -452,7 +452,7 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags &
     int end = fields[GTF_END_INDEX].toInt(&endIsInt);
     if (!startIsInt || !endIsInt || (start < 1) || (start > end)) {
         status.setFlagIncorrectCoordinates();
-        return parsedData;    // Do not continue to validate the line
+        return parsedData;  // Do not continue to validate the line
     }
 
     // Attributes
@@ -474,7 +474,7 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags &
     parsedData.seqName = fields[GTF_SEQ_NAME_INDEX];
     parsedData.source = fields[GTF_SOURCE_INDEX];
     parsedData.feature = fields[GTF_FEATURE_INDEX];
-    parsedData.region = U2Region(start - 1, end - start + 1);    // In GTF sequence numbering starts at 1
+    parsedData.region = U2Region(start - 1, end - start + 1);  // In GTF sequence numbering starts at 1
     parsedData.score = fields[GTF_SCORE_INDEX];
     parsedData.strand = fields[GTF_STRAND_INDEX];
     parsedData.frame = fields[GTF_FRAME_INDEX];
@@ -572,7 +572,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                         // All other qualifiers are saved as attributes
                         QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
                         if (GENE_ID_QUALIFIER_NAME != qualifier.name) {
-                            attrStr = " " + attrStr;    // Exactly one space char between different attributes
+                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
                         }
 
                         if (GENE_ID_QUALIFIER_NAME == qualifier.name) {
@@ -605,4 +605,4 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

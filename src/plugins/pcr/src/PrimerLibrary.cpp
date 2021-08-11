@@ -48,7 +48,7 @@ const int NAME_FILED = 0;
 const int SEQ_FILED = 1;
 const int GC_FILED = 2;
 const int TM_FILED = 3;
-}    // namespace
+}  // namespace
 
 PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
     QMutexLocker lock(&mutex);
@@ -81,7 +81,7 @@ PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
     QHash<QString, QString> properties;
     properties[U2DbiOptions::U2_DBI_LOCKING_MODE] = "normal";
 
-    QScopedPointer<DbiConnection> connection(new DbiConnection(dbiRef, true, os, properties));    // create if not exists
+    QScopedPointer<DbiConnection> connection(new DbiConnection(dbiRef, true, os, properties));  // create if not exists
     SAFE_POINT_OP(os, nullptr);
 
     instance.reset(new PrimerLibrary(connection.take()));
@@ -211,4 +211,4 @@ void PrimerLibrary::setTmAndGcOfPrimer(Primer &primer) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

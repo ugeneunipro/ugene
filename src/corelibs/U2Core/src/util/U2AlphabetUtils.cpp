@@ -28,7 +28,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//ExtendedDNAlphabetComparator
+// ExtendedDNAlphabetComparator
 
 ExtendedDNAlphabetComparator::ExtendedDNAlphabetComparator(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
     : DNAAlphabetComparator(_al1, _al2) {
@@ -225,7 +225,7 @@ const DNAAlphabet *U2AlphabetUtils::deriveCommonAlphabet(const DNAAlphabet *al1,
     if (al1->getType() != al2->getType()) {
         return raw;
     }
-    //al1 and al2 same types below, DNA and RNA are SAME TYPE
+    // al1 and al2 same types below, DNA and RNA are SAME TYPE
     QByteArray al1Chars = al1->getAlphabetChars();
     QByteArray al2Chars = al2->getAlphabetChars();
     if (al1->containsAll(al2Chars, al2Chars.length())) {
@@ -253,4 +253,4 @@ const U2::DNAAlphabet *U2AlphabetUtils::getExtendedAlphabet(const DNAAlphabet *a
     }
 }
 
-}    // namespace U2
+}  // namespace U2

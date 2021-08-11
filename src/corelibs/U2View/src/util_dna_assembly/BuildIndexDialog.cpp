@@ -240,4 +240,4 @@ QMap<QString, QVariant> BuildIndexDialog::getCustomSettings() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

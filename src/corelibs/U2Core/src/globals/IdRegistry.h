@@ -60,8 +60,8 @@ public:
 protected:
     QMap<QString, T *> registry;
 
-};    // IdRegistry
+};  // IdRegistry
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_COREAPI_ID_REGISTRY_H_
+#endif  // _U2_COREAPI_ID_REGISTRY_H_

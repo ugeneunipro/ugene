@@ -68,12 +68,12 @@ public:
     ~StdResidueDictionary();
     static StdResidueDictionary *createStandardDictionary();
     static StdResidueDictionary *createFromAsnTree(AsnNode *rootElem);
-    //TODO : move this method to AppContext
+    // TODO : move this method to AppContext
     static const StdResidueDictionary *getStandardDictionary();
     static ResidueType getResidueTypeByName(const QByteArray &name);
     const StdResidue getResidueById(int id) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_STD_RESIDUE_DICTIONARY_H_
+#endif  // _U2_STD_RESIDUE_DICTIONARY_H_

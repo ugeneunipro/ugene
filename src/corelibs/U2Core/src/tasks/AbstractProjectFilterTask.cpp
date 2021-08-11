@@ -102,4 +102,4 @@ AbstractProjectFilterTask *ProjectFilterTaskFactory::registerNewTask(const Proje
     return task;
 }
 
-}    // namespace U2
+}  // namespace U2

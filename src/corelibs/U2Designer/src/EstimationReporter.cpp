@@ -54,4 +54,4 @@ QMessageBox *EstimationReporter::createTimeMessage(const Workflow::EstimationRes
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -89,7 +89,7 @@ public:
         quint32 bitValue;
     };
 
-    //qlt - quick lookup table, size = 0 disable it's usage
+    // qlt - quick lookup table, size = 0 disable it's usage
     SArrayIndex(const char *serStart, const quint32 *bitTable, int bitCharLen);
     SArrayIndex(const char *seq, quint32 size, quint32 w, TaskStateInfo &ti, char unknownChar = 0, const quint32 *bitTable = nullptr, int bitCharLen = 0, int skipGap = 0, int gapOffset = 0);
 
@@ -98,7 +98,7 @@ public:
     quint32 getBitValue(const char *seq) const;
     bool find(SAISearchContext *c, const char *seq);
     bool findBit(SAISearchContext *c, quint32 bitValue, const char *seq);
-    int nextArrSeqPos(SAISearchContext *c);    //-1 -> end
+    int nextArrSeqPos(SAISearchContext *c);  //-1 -> end
 
     /** compares subsequence with offsets x1 and x2, returns -1;0;1 */
     inline int compare(quint32 x1, quint32 x2) const;
@@ -112,9 +112,9 @@ public:
     int compareAfterBits(quint32 bitMaskPos, const char *afterBitsSeq) const;
 
     inline quint32 seq2val(const char *seq) const;
-    inline const char *val2seq(quint32 offs) const;    // value of sarray element -> seq
-    inline const char *sarr2seq(const quint32 *sarr) const;    // pointer to sarray element -> seq
-    inline const char *idx2seq(quint32 idx) const;    // index in sarray element -> seq
+    inline const char *val2seq(quint32 offs) const;  // value of sarray element -> seq
+    inline const char *sarr2seq(const quint32 *sarr) const;  // pointer to sarray element -> seq
+    inline const char *idx2seq(quint32 idx) const;  // index in sarray element -> seq
 
     int getCharsInMask() const {
         return wCharsInMask;
@@ -146,9 +146,9 @@ public:
 private:
     int w, w4, wRest, skipGap, gapOffset;
 
-    int arrLen;    // size of the array == sequence len with unknown chars removed
-    quint32 *sArray;    // sorted offsets (or direct addr) to the sequence
-    quint32 *bitMask;    // for all suffixes in sArray this mask contains bit-masked prefix (32-bit)
+    int arrLen;  // size of the array == sequence len with unknown chars removed
+    quint32 *sArray;  // sorted offsets (or direct addr) to the sequence
+    quint32 *bitMask;  // for all suffixes in sArray this mask contains bit-masked prefix (32-bit)
     quint32 bitFilter;
     int wCharsInMask;
     int wAfterBits;
@@ -160,7 +160,7 @@ private:
     int l1Step;
     int L1_SIZE;
 
-    quint32 *l1bitMask;    // compressed bitMask. Used to localize range before accessing to the real bitMask
+    quint32 *l1bitMask;  // compressed bitMask. Used to localize range before accessing to the real bitMask
 
     void sort(quint32 *x, int off, int len);
     void sortBit(quint32 *x, int off, int len);
@@ -168,7 +168,7 @@ private:
     void sortBitClassic(quint32 *x, int off, int len);
     int partition(quint32 *x, int p, int r);
 
-    //swaps bit mask values. Swap corresponding sArray values too
+    // swaps bit mask values. Swap corresponding sArray values too
     inline void swapBit(quint32 *x1, quint32 *x2) const;
 
     /** Swaps x[a .. (a+n-1)] with x[b .. (b+n-1)]. */
@@ -183,7 +183,7 @@ private:
 };
 
 void SArrayIndex::swapBit(quint32 *x1, quint32 *x2) const {
-    //swaps bit mask values. Swap corresponding sArray values too
+    // swaps bit mask values. Swap corresponding sArray values too
     assert(x1 - bitMask >= 0 && x1 - bitMask < arrLen);
     assert(x2 - bitMask >= 0 && x2 - bitMask < arrLen);
 
@@ -232,7 +232,7 @@ quint32 SArrayIndex::seq2val(const char *seq) const {
     //    return (quint32)seq;
     //#else
     assert(seq >= seqStart && seq <= seqStart + seqLen);
-    return seq - seqStart;    // on 64-bit platform index stores sequence offsets
+    return seq - seqStart;  // on 64-bit platform index stores sequence offsets
     //#endif
 }
 
@@ -243,7 +243,7 @@ const char *SArrayIndex::val2seq(quint32 val) const {
     //    assert(res >= seqStart && res < seqStart + seqLen);
     //    return res;
     //#else
-    assert(val < quint32(seqLen));    // on 64-bit platform index stores sequence offsets
+    assert(val < quint32(seqLen));  // on 64-bit platform index stores sequence offsets
     return seqStart + val;
     //#endif
 }
@@ -261,6 +261,6 @@ int SArrayIndex::compare(quint32 x1, quint32 x2) const {
     return compare(val2seq(x1), val2seq(x2));
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

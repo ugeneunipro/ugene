@@ -42,4 +42,4 @@ void IdMapping::invertMapping() {
     qSwap<QString>(srcId, dstId);
 }
 
-}    // namespace U2
+}  // namespace U2

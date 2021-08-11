@@ -50,6 +50,6 @@ private:
     QList<QPointer<Document>> docPtrs;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

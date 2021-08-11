@@ -58,6 +58,6 @@ private:
     int spinValue;
     QMap<Radio, QString> radioMap;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

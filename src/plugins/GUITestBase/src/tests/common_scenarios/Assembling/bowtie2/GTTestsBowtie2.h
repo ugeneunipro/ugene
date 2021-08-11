@@ -37,7 +37,7 @@ GUI_TEST_CLASS_DECLARATION(test_0005)
 GUI_TEST_CLASS_DECLARATION(test_0006)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_Bowtie2
-}    // namespace U2
+}  // namespace GUITest_Bowtie2
+}  // namespace U2
 
-#endif    // _U2_GUITEST_BOWTIE2_H_
+#endif  // _U2_GUITEST_BOWTIE2_H_

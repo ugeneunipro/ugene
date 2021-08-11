@@ -69,23 +69,28 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //    Start UGENE
-    //    Open any file.
+    // Open any file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Go to Start page.
+
+    // Go to Start page.
     GTUtilsStartPage::openStartPage(os);
-    //    Expected state: File added to "Resent files" list
-    //    Remove file from project
+    // Expected state: File is added to the "Recent files" list.
+    // Remove the file from the project.
     GTUtilsProjectTreeView::click(os, "COI.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Go to Start page
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Go to Start page.
     GTUtilsStartPage::openStartPage(os);
-    //    Click file name in "Resent files" list
+
+    // Click the file name in the "Recent files" list.
     GTWidget::click(os, GTWidget::findLabelByText(os, "COI.aln").first());
-    //    Expected state: file is opened
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: file is opened.
     QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == "COI [COI.aln]", "unexpected window title " + name);
+    CHECK_SET_ERR(name == "COI [COI.aln]", "Unexpected window title: " + name);
     GTUtilsProjectTreeView::checkItem(os, "COI.aln");
 }
 
@@ -133,6 +138,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 }
 
-}    // namespace GUITest_common_scenarios_start_page
+}  // namespace GUITest_common_scenarios_start_page
 
-}    // namespace U2
+}  // namespace U2

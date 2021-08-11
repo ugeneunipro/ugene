@@ -83,4 +83,4 @@ DocumentFormatId AprImportWidget::getFormatId(const QVariantMap &settings) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

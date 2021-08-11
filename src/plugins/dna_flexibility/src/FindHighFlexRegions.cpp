@@ -51,4 +51,4 @@ void FindHighFlexRegions::onResult(const HighFlexResult &result) {
     results.append(result);
 }
 
-}    // namespace U2
+}  // namespace U2

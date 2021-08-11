@@ -368,4 +368,4 @@ int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus &os, const QString &re
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

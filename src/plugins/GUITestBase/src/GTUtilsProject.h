@@ -109,13 +109,17 @@ public:
     static void openMultiSequenceFileAsMalignment(HI::GUITestOpStatus &os, const QString &filePath);
 
     static void saveProjectAs(HI::GUITestOpStatus &os, const QString &path);
+
+    /** Deprecated. This method leaves dialog fillers (like QMessageBoxFiller) that may conflict with other user dialogs. */
     static void closeProject(HI::GUITestOpStatus &os);
+
+    static void closeProject(HI::GUITestOpStatus &os, bool isExpectSaveProjectDialog);
 
 protected:
     static void openFilesDrop(HI::GUITestOpStatus &os, const QList<QUrl> &urls);
     static void openFilesWithDialog(HI::GUITestOpStatus &os, const QList<QUrl> &filePaths);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -53,7 +53,7 @@ public:
     // Returns row index or -1 if name is not present
     static int getRowIndexByName(const MultipleSequenceAlignment &ma, const QString &name);
 
-    //checks that alignment is not empty and all packed sequence parts has equal length
+    // checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2OpStatus &ti);
 
     static MultipleSequenceAlignmentObject *seqDocs2msaObj(QList<Document *> doc, const QVariantMap &hints, U2OpStatus &os, bool recheckAlphabetFromDataIfRaw = false);
@@ -92,14 +92,14 @@ public:
     static QString rollMsaRowName(const QString &rowName, const QSet<QString> &usedRowNamesSet, const QString &suffixSeparator = "_");
 
     /**
-      * Renames rows in the 'msa' to 'names' according to the following convention:
-      *   1) Current 'msa' row names are integers from [0..n - 1] interval, where 'n' is a row index in 'msa';
-      *   2) Row name 'i' will be renamed to 'names[i]' value;
-      *
-      *  The optional 'prefix' field may be used to detect indexed rows. In this case all rows with no given prefix will not be renamed, but passed as is.
-      *
-      *  The method returns 'true' if all rows with a correct prefix were renamed.
-      **/
+     * Renames rows in the 'msa' to 'names' according to the following convention:
+     *   1) Current 'msa' row names are integers from [0..n - 1] interval, where 'n' is a row index in 'msa';
+     *   2) Row name 'i' will be renamed to 'names[i]' value;
+     *
+     *  The optional 'prefix' field may be used to detect indexed rows. In this case all rows with no given prefix will not be renamed, but passed as is.
+     *
+     *  The method returns 'true' if all rows with a correct prefix were renamed.
+     **/
     static bool restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment &msa, const QStringList &names, const QString &prefix = "");
 
     static QList<U2Region> getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount = -1);
@@ -112,6 +112,6 @@ public:
     static void addRowsToMsa(U2EntityRef &msaObjectRef, QList<MultipleSequenceAlignmentRow> &rows, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

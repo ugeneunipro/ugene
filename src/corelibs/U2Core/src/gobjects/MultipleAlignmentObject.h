@@ -91,6 +91,9 @@ public:
     /** Removes all rows from the list from the alignment by row indexes. */
     void removeRows(const QList<int> &rowIndexes);
 
+    /** Removes all rows with the given ids from the alignment. */
+    void removeRowsById(const QList<qint64> &rowIds);
+
     /** Removes columns region from all rows in the list. */
     void removeRegion(const QList<int> &rowIndexes, int x, int width, bool removeEmptyRows);
 
@@ -108,6 +111,12 @@ public:
 
     /** Returns list of ordered row ids. */
     QList<qint64> getRowIds() const;
+
+    /**
+     * Returns list of row ids for the given row indexes.
+     * Returns empty list if some row index is out of range.
+     */
+    QList<qint64> getRowIdsByRowIndexes(const QList<int> &rowIndexes) const;
 
     /**
      * Updates the rows order.
@@ -199,6 +208,6 @@ private:
     MaSavedState savedState;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_ALIGNMENT_OBJECT_H_
+#endif  // _U2_MULTIPLE_ALIGNMENT_OBJECT_H_

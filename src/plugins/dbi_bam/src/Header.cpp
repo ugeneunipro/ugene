@@ -251,5 +251,5 @@ void Header::setText(const QString &text) {
     this->text = text;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

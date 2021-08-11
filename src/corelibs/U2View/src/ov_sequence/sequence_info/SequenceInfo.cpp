@@ -52,16 +52,16 @@ const QString SequenceInfo::CAPTION_SUFFIX_SS_DNA = "ssDNA:";
 const QString SequenceInfo::CAPTION_SUFFIX_DS_RNA = "dsRNA:";
 const QString SequenceInfo::CAPTION_SUFFIX_SS_RNA = "ssRNA:";
 
-//nucl
+// nucl
 const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC content: ";
 const QString SequenceInfo::CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = "Molecular weight: ";
 const QString SequenceInfo::CAPTION_SEQ_EXTINCTION_COEFFICIENT = "Extinction coefficient: ";
 const QString SequenceInfo::CAPTION_SEQ_MELTING_TEMPERATURE = "Melting temperature: ";
 
 const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>: ";
-const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>: ");    // 0x3BC - greek 'mu'
+const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>: ");  // 0x3BC - greek 'mu'
 
-//amino
+// amino
 const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular weight: ";
 const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic point: ";
 
@@ -173,7 +173,7 @@ QString getFormattedLongNumber(qint64 num) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 void SequenceInfo::updateCharOccurLayout() {
     ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
@@ -232,7 +232,7 @@ QString getValue(const QString &value, bool isValid) {
     return isValid ? value : "N/A";
 }
 
-}    // namespace
+}  // namespace
 
 void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatistics) {
     ADVSequenceWidget *wgt = annotatedDnaView->getActiveSequenceWidget();
@@ -380,7 +380,7 @@ void SequenceInfo::updateCodonsOccurrenceData(const QMap<QByteArray, qint64> &co
         // Prepare codons report & convert raw codons into amino acids.
         QList<QByteArray> codons = codonStatMap.keys();
         QHash<char, qint64> countPerAminoAcid;
-        bool tableColumnIndex = 0;    // Report is written using 2 columns.
+        bool tableColumnIndex = 0;  // Report is written using 2 columns.
         for (const QByteArray &codon : qAsConst(codons)) {
             codonsHtml += tableColumnIndex == 0 ? "<tr>" : "";
             codonsHtml += QString("<td><b>") + QString::fromLatin1(codon) + QString(":&nbsp;&nbsp;</b></td>");
@@ -484,7 +484,7 @@ void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
 void SequenceInfo::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
     if (sequenceContext == nullptr) {
-        return;    // Sequence context may be null when ADV is being destroyed.
+        return;  // Sequence context may be null when ADV is being destroyed.
     }
     getCodonsOccurrenceCache()->sl_invalidate();
     updateCurrentRegions();
@@ -503,7 +503,7 @@ void SequenceInfo::sl_onSequenceModified() {
 }
 
 void SequenceInfo::sl_onActiveSequenceChanged(ADVSequenceWidget * /*oldSequenceWidget*/, ADVSequenceWidget *newSequenceWidget) {
-    if (newSequenceWidget != nullptr) {    // i.e. the sequence has been deleted
+    if (newSequenceWidget != nullptr) {  // i.e. the sequence has been deleted
         updateLayout();
         updateCurrentRegions();
         updateData();
@@ -700,4 +700,4 @@ StatisticsCache<QMap<QByteArray, qint64>> *SequenceInfo::getCodonsOccurrenceCach
     return sequenceContext->getCodonsOccurrenceCache();
 }
 
-}    // namespace U2
+}  // namespace U2

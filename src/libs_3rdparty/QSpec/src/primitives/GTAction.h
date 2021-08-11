@@ -41,6 +41,6 @@ public:
     static QAction *findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent = NULL);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

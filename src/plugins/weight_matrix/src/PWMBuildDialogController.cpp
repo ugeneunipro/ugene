@@ -192,7 +192,7 @@ void PWMBuildDialogController::sl_matrixTypeChanged(bool matrixType) {
 
 void PWMBuildDialogController::sl_okButtonClicked() {
     if (task != nullptr) {
-        accept();    //go to background
+        accept();  // go to background
         return;
     }
 
@@ -220,8 +220,8 @@ void PWMBuildDialogController::sl_okButtonClicked() {
         s.target = WEIGHT_MATRIX;
     }
 
-    //save settings
-    //AppContext::getSettings()->setValue(SETTINGS_ROOT + WEIGHT_ALG, weightAlgCombo->currentIndex());
+    // save settings
+    // AppContext::getSettings()->setValue(SETTINGS_ROOT + WEIGHT_ALG, weightAlgCombo->currentIndex());
 
     if (mononucleicButton->isChecked()) {
         s.type = PM_MONONUCLEOTIDE;
@@ -241,7 +241,7 @@ void PWMBuildDialogController::sl_okButtonClicked() {
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     statusLabel->setText(tr("Counting frequency statistics"));
 
-    //update buttons
+    // update buttons
     okButton->setText(tr("Hide"));
     cancelButton->setText(tr("Cancel"));
 }
@@ -387,7 +387,7 @@ PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString &inFile, const QS
         }
     }
 
-    //DocumentFormatId format = formats.first()->getFormatId();
+    // DocumentFormatId format = formats.first()->getFormatId();
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(inFile));
     loadTask = new LoadDocumentTask(format, inFile, iof);
     loadTask->setSubtaskProgressWeight(0.03F);
@@ -571,4 +571,4 @@ QList<Task *> PWMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -32,9 +32,9 @@ CoveredRegionsManager::CoveredRegionsManager(const U2Region &visibleRegion_, con
     assert(!coverageInfo.empty());
     assert(!visibleRegion.isEmpty());
 
-    //convert coverage info to covered regions
-    //splitting visible region to coverageInfo.size() "covered" regions
-    double step = double(visibleRegion.length) / coverageInfo.size();    //precise length of the region
+    // convert coverage info to covered regions
+    // splitting visible region to coverageInfo.size() "covered" regions
+    double step = double(visibleRegion.length) / coverageInfo.size();  // precise length of the region
     // But if regions are too small, reduce their number by joining
     int regionsToJoin = 1;
     int regionsCount = coverageInfo.size();
@@ -50,7 +50,7 @@ CoveredRegionsManager::CoveredRegionsManager(const U2Region &visibleRegion_, con
         }
         U2Region region(step * i, qint64(step));
         CoveredRegion coveredRegion(region, maxCoverage);
-        //coreLog.trace(QString("Assembly: adding covered region %1 - %2, coverage %3").arg(region.startPos).arg(region.endPos()).arg(maxCoverage));
+        // coreLog.trace(QString("Assembly: adding covered region %1 - %2, coverage %3").arg(region.startPos).arg(region.endPos()).arg(maxCoverage));
 
         allRegions.push_back(coveredRegion);
     }
@@ -82,9 +82,9 @@ QList<CoveredRegion> CoveredRegionsManager::getTopCoveredRegions(int topMax, qin
     assert(topCovered.size() <= topMax);
     QList<CoveredRegion> topCoveredList = topCovered.values();
     QList<CoveredRegion> result;
-    //reverse copy, since topCoveredList is sorted in the ascending order
+    // reverse copy, since topCoveredList is sorted in the ascending order
     std::copy(topCoveredList.begin(), topCoveredList.end(), std::front_inserter(result));
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

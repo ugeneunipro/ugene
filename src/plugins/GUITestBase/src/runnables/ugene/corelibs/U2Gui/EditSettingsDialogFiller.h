@@ -45,6 +45,6 @@ private:
     const bool recalculateQualifiers;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EDIT_SETTINGS_DIALOG_FILLER_H_
+#endif  // _U2_EDIT_SETTINGS_DIALOG_FILLER_H_

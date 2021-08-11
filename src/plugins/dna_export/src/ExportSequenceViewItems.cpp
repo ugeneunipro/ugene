@@ -45,6 +45,8 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportAnnotationsDialog.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -60,7 +62,6 @@
 #include "ExportSelectedSeqRegionsTask.h"
 #include "ExportSequences2MSADialog.h"
 #include "ExportSequencesDialog.h"
-#include "ExportTasks.h"
 #include "ExportUtils.h"
 #include "GetSequenceByIdDialog.h"
 
@@ -102,7 +103,7 @@ void ExportSequenceViewItemsController::init() {
 //////////////////////////////////////////////////////////////////////////
 // ADV view context
 
-//TODO: define global BLAST text constants in CoreLibs
+// TODO: define global BLAST text constants in CoreLibs
 #define BLAST_ANNOTATION_NAME "blast result"
 
 ADVExportContext::ADVExportContext(AnnotatedDNAView *v)
@@ -327,9 +328,9 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
                                                                               BaseDocumentFormats::FASTA,
                                                                               AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle("Export Sequence of Selected Annotations");
-    d->disableAllFramesOption(true);    // only 1 frame is suitable
-    d->disableStrandOption(true);    // strand is already recorded in annotation
-    d->disableAnnotationsOption(true);    // here we do not export annotations for sequence under another annotations
+    d->disableAllFramesOption(true);  // only 1 frame is suitable
+    d->disableStrandOption(true);  // strand is already recorded in annotation
+    d->disableAnnotationsOption(true);  // here we do not export annotations for sequence under another annotations
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
@@ -360,7 +361,7 @@ void ADVExportContext::sl_saveSelectedSequences() {
     ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
     DNASequenceSelection *sel = nullptr;
     if (seqCtx != nullptr) {
-        //TODO: support multi-export..
+        // TODO: support multi-export..
         sel = seqCtx->getSequenceSelection();
     }
     if (sel == nullptr || sel->isEmpty()) {
@@ -444,7 +445,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
         return;
     }
 
-    //TODO: lock documents or use shared-data objects
+    // TODO: lock documents or use shared-data objects
     std::stable_sort(annotationSet.begin(), annotationSet.end(), Annotation::annotationLessThan);
 
     // run task
@@ -533,7 +534,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
             al = seqCtx->getAlphabet();
         } else {
             const DNAAlphabet *al2 = seqCtx->getAlphabet();
-            //BUG524: support alphabet reduction
+            // BUG524: support alphabet reduction
             CHECK_EXT(al->getType() == al2->getType(), os.setError(tr("Different sequence alphabets")), );
             al = al->getMap().count(true) >= al2->getMap().count(true) ? al : al2;
         }
@@ -566,7 +567,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
 
     const DNAAlphabet *al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : nullptr;
 
-    //derive alphabet
+    // derive alphabet
     int nItems = 0;
     bool forceTranslation = false;
     foreach (ADVSequenceObjectContext *c, view->getSequenceContexts()) {
@@ -593,7 +594,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
     CHECK_EXT(nItems >= 2, os.setError(tr("At least 2 sequences required")), );
     ma->setAlphabet(al);
 
-    //cache sequences
+    // cache sequences
     QSet<QString> names;
     qint64 maxLen = 0;
     foreach (ADVSequenceObjectContext *seqCtx, view->getSequenceContexts()) {
@@ -763,4 +764,4 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-}    //namespace U2
+}  // namespace U2

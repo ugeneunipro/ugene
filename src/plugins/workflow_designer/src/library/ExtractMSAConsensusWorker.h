@@ -146,7 +146,7 @@ public:
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_EXTRACTMSACONSENSUSWORKER_H_
+#endif  // _U2_EXTRACTMSACONSENSUSWORKER_H_

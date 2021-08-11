@@ -102,7 +102,7 @@ U2Region RegionSelectorController::getRegion(bool *_ok) const {
         return U2Region();
     }
 
-    if (v1 > v2 && !settings.circular) {    // start > end
+    if (v1 > v2 && !settings.circular) {  // start > end
         if (_ok != nullptr) {
             *_ok = false;
         }
@@ -174,7 +174,7 @@ namespace {
 const QString START_IS_INVALID = QApplication::translate("RegionSelectorController", "Invalid Start position of region");
 const QString END_IS_INVALID = QApplication::translate("RegionSelectorController", "Invalid End position of region");
 const QString REGION_IS_INVALID = QApplication::translate("RegionSelectorController", "Start position is greater than End position");
-}    // namespace
+}  // namespace
 
 QString RegionSelectorController::getErrorMessage() const {
     bool ok = false;
@@ -188,7 +188,7 @@ QString RegionSelectorController::getErrorMessage() const {
         return END_IS_INVALID;
     }
 
-    if (v1 > v2 && !settings.circular) {    // start > end
+    if (v1 > v2 && !settings.circular) {  // start > end
         return REGION_IS_INVALID;
     }
 
@@ -248,7 +248,7 @@ void RegionSelectorController::sl_onRegionChanged() {
 }
 
 void RegionSelectorController::sl_onSelectionChanged(GSelection *selection) {
-    CHECK(gui.presetsComboBox != nullptr, );    // no combobox - no selection dependency
+    CHECK(gui.presetsComboBox != nullptr, );  // no combobox - no selection dependency
 
     SAFE_POINT(settings.selection == selection, "Invalid sequence selection", );
     int selectedRegionIndex = gui.presetsComboBox->findText(RegionSelectorSettings::SELECTED_REGION);
@@ -336,4 +336,4 @@ void RegionSelectorController::connectSlots() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -28,11 +28,11 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT BaseAlignmentAlgorithmsIds {
 public:
-    //align sequences to alignment algorithms
+    // align sequences to alignment algorithms
     static const QString ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
     static const QString ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BASE_ALIGNMENT_ALGORITHM_IDS_H_
+#endif  // _U2_BASE_ALIGNMENT_ALGORITHM_IDS_H_

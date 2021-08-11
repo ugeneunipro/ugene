@@ -88,6 +88,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
+#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -2359,7 +2360,7 @@ bool compareColorsInRange(const QColor &col1, const QColor &col2, int percentage
     return true;
 }
 
-}    // namespace GuiTests
+}  // namespace GuiTests
 
 GUI_TEST_CLASS_DEFINITION(test_6455) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "regression_6455.ugenedb");
@@ -3061,7 +3062,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 3));
 
     // Hold Ctrl key and click on a sequence name.
-    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");    // Y = 4.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");  // Y = 4.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -3079,7 +3080,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
 
     // Hold Ctrl key and click on a sequence name.
-    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");    // Y = 4.
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");  // Y = 4.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -3097,7 +3098,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 4), QPoint(4, 4));
 
     // Hold Ctrl key and click on the selected sequence name.
-    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");    // Y = 4
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");  // Y = 4
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -3114,7 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_3) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(5, 5));
 
     // Hold Ctrl key and click on a sequence name in the middle of the region.
-    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");    // Y = 4
+    GTUtilsMsaEditor::moveToSequenceName(os, "Montana_montana");  // Y = 4
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -3132,11 +3133,11 @@ GUI_TEST_CLASS_DEFINITION(test_6546_4) {
 
     // Extend it with Control.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");    // Y = 4.
+    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");  // Y = 4.
 
     // Extend it with Shift: the last cursor position is 4.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");    // Y = 8
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");  // Y = 8
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
@@ -3149,16 +3150,16 @@ GUI_TEST_CLASS_DEFINITION(test_6546_5) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select a horizontal line region.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));    // Y = 1.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));  // Y = 1.
 
     // Make a multi-selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");    // Y = 8.
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");  // Y = 8.
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     // Try to extend it with Shift: click on the first sequence again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Isophya_altaica_EF540820");    // Y = 1.
+    GTUtilsMsaEditor::clickSequenceName(os, "Isophya_altaica_EF540820");  // Y = 1.
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // Expected state: the selection is from 8 to 1 (y).
@@ -3188,9 +3189,9 @@ GUI_TEST_CLASS_DEFINITION(test_6546_7) {
 
     // Check that selection can have 3 areas.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");    // Y = 2.
-    GTUtilsMsaEditor::clickSequenceName(os, "Podisma_sapporensis");    // Y = 16.
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");    // Y = 8.
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");  // Y = 2.
+    GTUtilsMsaEditor::clickSequenceName(os, "Podisma_sapporensis");  // Y = 16.
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");  // Y = 8.
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     GTUtilsMsaEditor::checkSelection(os, {{0, 2, 604, 1}, {0, 8, 604, 1}, {0, 16, 604, 1}});
@@ -3204,12 +3205,12 @@ GUI_TEST_CLASS_DEFINITION(test_6546_8) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(3, 1));
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");    // Y = 8.
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");  // Y = 8.
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMsaEditor::checkSelection(os, {{1, 1, 3, 8}});
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");    // Y = 4.
+    GTUtilsMsaEditor::clickSequenceName(os, "Montana_montana");  // Y = 4.
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMsaEditor::checkSelection(os, {{1, 1, 3, 4}});
 }
@@ -3279,34 +3280,34 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
 
     // First column check
     GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 0), "#0000ff", "#00ffff");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 3), "#000000", "#ffffff");    // Gap symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 3), "#000000", "#ffffff");  // Gap symbol
 
     // Second column check
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 5), "#ff00ff", "#ffffff");    // Second frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 9), "#000000", "#ffffff");    // Third frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 12), "#000000", "#c0c0c0");    // Fourth frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 14), "#ff6600", "#ffffff");    // Fifth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 5), "#ff00ff", "#ffffff");  // Second frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 9), "#000000", "#ffffff");  // Third frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 12), "#000000", "#c0c0c0");  // Fourth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 14), "#ff6600", "#ffffff");  // Fifth frequent symbol
 
     // Third column check: T > G > C > A > R
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");    // T
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");    // G
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");    // C
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#c0c0c0");    // A
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 4), "#ff6600", "#ffffff");    // R
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");  // T
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");  // G
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");  // C
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#c0c0c0");  // A
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 4), "#ff6600", "#ffffff");  // R
 
     // Fourth column: M > S > V > W > Y
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#0000ff", "#00ffff");    // M
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 2), "#ff00ff", "#ffffff");    // S
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 4), "#000000", "#ffffff");    // V
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");    // W
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 3), "#ff6600", "#ffffff");    // Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#0000ff", "#00ffff");  // M
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 2), "#ff00ff", "#ffffff");  // S
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 4), "#000000", "#ffffff");  // V
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");  // W
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 3), "#ff6600", "#ffffff");  // Y
 
     // Fifth column: D > H > K > N > X
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 2), "#0000ff", "#00ffff");    // D
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 1), "#ff00ff", "#ffffff");    // H
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 0), "#000000", "#ffffff");    // K
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 3), "#000000", "#c0c0c0");    // N
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 4), "#ff6600", "#ffffff");    // X
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 2), "#0000ff", "#00ffff");  // D
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 1), "#ff00ff", "#ffffff");  // H
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 0), "#000000", "#ffffff");  // K
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 3), "#000000", "#c0c0c0");  // N
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 4), "#ff6600", "#ffffff");  // X
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6548_2) {
@@ -3324,20 +3325,20 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
 
     // Second column check
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 1), "#0000ff", "#00ffff");    // Second frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 0), "#ff00ff", "#ffffff");    // Third frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 2), "#000000", "#ffffff");    // Fourth frequent symbol
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 3), "#000000", "#c0c0c0");    // Fifth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 1), "#0000ff", "#00ffff");  // Second frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 0), "#ff00ff", "#ffffff");  // Third frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 2), "#000000", "#ffffff");  // Fourth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 3), "#000000", "#c0c0c0");  // Fifth frequent symbol
 
     // Third column check: A > R > Y
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");    // A
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");    // R
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");    // Y
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#ffffff");    // gap
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");  // A
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");  // R
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");  // Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#ffffff");  // gap
 
     // Fourth column: S > W
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#000000", "#ffffff");    // S
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");    // W
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#000000", "#ffffff");  // S
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");  // W
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6564) {
@@ -3349,11 +3350,11 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0));    // Y = 0.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0));  // Y = 0.
 
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");    // Y = 2.
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");  // Y = 2.
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // 5. Sequences 0, 1, 2 selected (because _Shift_ was used), X-range was not changed.
@@ -5591,6 +5592,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -5618,6 +5620,52 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
 
     // Expected result: the annotation is present in another sequence view too.
     GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6797_1) {
+    // Checks recent list behavior when document file is missed.
+    QString filePath = QFileInfo(sandBoxDir + "test_6797.aln").absoluteFilePath();
+    GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::closeProject(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QFile(filePath).remove();
+
+    GTUtilsStartPage::openStartPage(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.aln", true);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Remove From List"));
+    GTMenu::clickMainMenuItem(os, {"File", "Recent files", filePath});
+
+    // Check that recent files list link does not exit.
+    GTMenu::checkMainMenuItemState(os, {"File", "Recent files"}, PopupChecker::IsDisabled);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.aln", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6797_2) {
+    // Checks recent list behavior when project file is missed.
+    QString filePath = QFileInfo(sandBoxDir + "test_6797.uprj").absoluteFilePath();
+
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::saveProjectAs(os, filePath);
+    GTUtilsProject::closeProject(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QFile(filePath).remove();
+
+    GTUtilsStartPage::openStartPage(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.uprj", true);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Remove From List"));
+    GTMenu::clickMainMenuItem(os, {"File", "Recent projects", filePath});
+
+    // Check that recent projects list link does not exit.
+    GTMenu::checkMainMenuItemState(os, {"File", "Recent projects"}, PopupChecker::IsDisabled);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.uprj", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6807) {
@@ -5877,7 +5925,7 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     GTWidget::click(os, GTAction::button(os, editMode));
 
     QPoint editButtonPoint = GTMouseDriver::getMousePosition();
-    GTMouseDriver::moveTo(editButtonPoint + QPoint(100, 0));    // Move mouse to the right into the sequence area.
+    GTMouseDriver::moveTo(editButtonPoint + QPoint(100, 0));  // Move mouse to the right into the sequence area.
     GTMouseDriver::click();
 
     // 3. Paste content with non-sequence characters
@@ -7058,6 +7106,6 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsAnnotationsTreeView::findItem(os, "Annotations [annot1.gb] *");
 }
 
-}    // namespace GUITest_regression_scenarios
+}  // namespace GUITest_regression_scenarios
 
-}    // namespace U2
+}  // namespace U2

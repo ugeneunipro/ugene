@@ -60,7 +60,7 @@ protected:
 
 private slots:
 
-    //buttons:
+    // buttons:
     void sl_selectModelFile();
     void sl_onSaveAnnotations();
     void sl_onClearList();
@@ -116,6 +116,6 @@ private:
     QPushButton *queueButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

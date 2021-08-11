@@ -106,7 +106,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
 
             if (mouseEvent->buttons() & Qt::LeftButton) {
                 qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
-                setCursor(pos);    // use navigate and take shift into account
+                setCursor(pos);  // use navigate and take shift into account
             }
             return false;
         }
@@ -221,7 +221,7 @@ void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
 void DetViewSequenceEditor::insertChar(int character) {
     U2SequenceObject *seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != nullptr, "SeqObject is NULL", );
-    CHECK(seqObj->getAlphabet()->contains(character), );    // TODO_SVEDIT: support alphabet changing, separate issue
+    CHECK(seqObj->getAlphabet()->contains(character), );  // TODO_SVEDIT: support alphabet changing, separate issue
     cancelSelectionResizing();
 
     const DNASequence seq(QByteArray(1, character));
@@ -346,7 +346,7 @@ void DetViewSequenceEditor::sl_cursorAnimationTimerCallback() {
     // Reproduce 'blink' effect: change the cursor color periodically.
     // Show 'edit-cursor' only for the focused view and hide it (use transparent color) otherwise.
     QColor newCursorColor = view->hasFocus() ? (cursorColor == Qt::black ? Qt::darkGray : Qt::black) : Qt::transparent;
-    if (newCursorColor == cursorColor) {    // Avoid extra updates on no changes when  in disabled/transparent mode)
+    if (newCursorColor == cursorColor) {  // Avoid extra updates on no changes when  in disabled/transparent mode)
         return;
     }
     cursorColor = newCursorColor;
@@ -393,4 +393,4 @@ void DetViewSequenceEditor::sl_paste(Task *task) {
     setCursor(cursor + seq.length());
 }
 
-}    // namespace U2
+}  // namespace U2

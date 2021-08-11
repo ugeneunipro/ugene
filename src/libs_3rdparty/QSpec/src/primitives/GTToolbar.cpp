@@ -38,7 +38,7 @@ QToolBar *GTToolbar::getToolbar(GUITestOpStatus &os, const QString &toolbarSysNa
 
 #define GT_METHOD_NAME "getWidgetForAction"
 QWidget *GTToolbar::getWidgetForAction(GUITestOpStatus &os, const QToolBar *toolbar, QAction *action) {
-    GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);    //the found widget is not a qtoolbar or doesn't exist
+    GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);  // the found widget is not a qtoolbar or doesn't exist
 
     QWidget *widget = toolbar->widgetForAction(action);
     GT_CHECK_RESULT(widget != nullptr, "No widget for action", nullptr);
@@ -87,4 +87,4 @@ QAction *GTToolbar::getActionByObjectName(GUITestOpStatus &os, const QString &ac
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

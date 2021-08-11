@@ -40,6 +40,6 @@ private:
     bool doubleClick;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_LIBRARY_SELECTOR_FILLER_H_
+#endif  // _U2_PRIMER_LIBRARY_SELECTOR_FILLER_H_

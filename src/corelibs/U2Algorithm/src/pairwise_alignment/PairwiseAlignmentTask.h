@@ -39,8 +39,8 @@ public:
 
     virtual bool isValid() const;
 
-    U2EntityRef firstSequenceRef;    //couldn't be in customSettings. Set manually.
-    U2EntityRef secondSequenceRef;    //couldn't be in customSettings. Set manually.
+    U2EntityRef firstSequenceRef;  // couldn't be in customSettings. Set manually.
+    U2EntityRef secondSequenceRef;  // couldn't be in customSettings. Set manually.
 
     static const QString PA_FIRST_SEQUENCE_REF;
     static const QString PA_SECOND_SEQUENCE_REF;
@@ -57,6 +57,6 @@ protected:
     QByteArray first;
     QByteArray second;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PAIRWISE_ALIGNMENT_TASK_H_
+#endif  // _U2_PAIRWISE_ALIGNMENT_TASK_H_

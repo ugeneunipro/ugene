@@ -97,8 +97,8 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget *w, ADVSequenceObjectContext *c
 
     swResultFilterRegistry = AppContext::getSWResultFilterRegistry();
     if (0 == swResultFilterRegistry) {
-        coreLog.error(tr("No filter registry found."));    //FIXME should be optional?
-        QDialog::done(-1);    //No.
+        coreLog.error(tr("No filter registry found."));  // FIXME should be optional?
+        QDialog::done(-1);  // No.
         return;
     }
 
@@ -135,7 +135,7 @@ void SmithWatermanDialog::connectGUI() {
     connect(bttnRun, SIGNAL(clicked()), SLOT(sl_bttnRun()));
     connect(bttnCancel, SIGNAL(clicked()), SLOT(sl_cancelButton()));
     connect(radioTranslation, SIGNAL(toggled(bool)), SLOT(sl_translationToggled(bool)));
-    //connect( remoteRunPushButton, SIGNAL( clicked() ), SLOT( sl_remoteRunButtonClicked() ) );
+    // connect( remoteRunPushButton, SIGNAL( clicked() ), SLOT( sl_remoteRunButtonClicked() ) );
 
     connect(teditPattern, SIGNAL(textChanged()), SLOT(sl_patternChanged()));
     connect(resultViewVariants, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_resultViewChanged(const QString &)));
@@ -319,7 +319,7 @@ void SmithWatermanDialog::setParameters() {
     QStringList alg_lst = swTaskFactoryRegistry->getListFactoryNames();
     comboRealization->addItems(alg_lst);
 
-    QStringList filterIds = swResultFilterRegistry->getFiltersIds();    //TODO: use localized names!
+    QStringList filterIds = swResultFilterRegistry->getFiltersIds();  // TODO: use localized names!
     comboResultFilter->addItems(filterIds);
     int defaultFilterIndex = filterIds.indexOf(swResultFilterRegistry->getDefaultFilterId());
     comboResultFilter->setCurrentIndex(defaultFilterIndex);
@@ -795,4 +795,4 @@ void SmithWatermanDialogController::run(QWidget *p, ADVSequenceObjectContext *ct
     smv->exec();
 }
 
-}    // namespace U2
+}  // namespace U2

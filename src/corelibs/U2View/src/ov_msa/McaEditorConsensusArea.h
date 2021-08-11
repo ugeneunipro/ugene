@@ -59,5 +59,5 @@ private:
     MaConsensusMismatchController *mismatchController;
 };
 
-}    // namespace U2
-#endif    // _U2_MCA_EDITOR_CONSENSUS_AREA_H_
+}  // namespace U2
+#endif  // _U2_MCA_EDITOR_CONSENSUS_AREA_H_

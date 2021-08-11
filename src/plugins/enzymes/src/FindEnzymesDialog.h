@@ -37,7 +37,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
-class RegionSelectorWithExludedRegion;
+class RegionSelectorWithExcludedRegion;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -79,7 +79,7 @@ private:
     EnzymeGroupTreeItem *findGroupItem(const QString &s, bool create);
 
     static QList<SEnzymeData> loadedEnzymes;
-    //saves selection between calls to getSelectedEnzymes()
+    // saves selection between calls to getSelectedEnzymes()
     static QSet<QString> lastSelection;
 
     int totalEnzymes;
@@ -103,7 +103,7 @@ private:
     ADVSequenceObjectContext *advSequenceContext;
 
     EnzymesSelectorWidget *enzSel;
-    RegionSelectorWithExludedRegion *regionSelector;
+    RegionSelectorWithExcludedRegion *regionSelector;
 };
 
 class EnzymeTreeItem;
@@ -125,6 +125,6 @@ public:
 
 #define ANY_VALUE -1
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

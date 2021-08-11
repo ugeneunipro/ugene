@@ -29,7 +29,7 @@ namespace U2 {
 
 static QStringList getStrProperties();
 DinucleotitePropertyRegistry::DinucleotitePropertyRegistry() {
-    //init all 38+ properties
+    // init all 38+ properties
     foreach (QString prop, getStrProperties()) {
         registerProperty(prop);
     }
@@ -52,7 +52,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString &str) {
     QStringList lines = str.split('\n', QString::SkipEmptyParts);
     bool dimode = false;
     foreach (QString line, lines) {
-        //printf("line=%s\n",line.toLatin1().constData());
+        // printf("line=%s\n",line.toLatin1().constData());
         if (dimode) {
             line = line.trimmed();
             assert(line.length() >= 4);
@@ -110,7 +110,7 @@ static void normalize(DiPropertySitecon *p) {
 }
 
 static QStringList getStrProperties() {
-    //todo: move props to file
+    // todo: move props to file
     static const QString _properties = QString("") + "\
 MI P0000001\n\
 MN Conformational\n\
@@ -1462,4 +1462,4 @@ DINUCLEOTIDE\n\
     return l;
 }
 
-}    // namespace U2
+}  // namespace U2

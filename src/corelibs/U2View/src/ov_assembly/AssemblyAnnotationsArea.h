@@ -43,6 +43,6 @@ private:
     AssemblyVariantRowManager *variantRowManager;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _ASSEMBLY_ANNOTATIONS_AREA_
+#endif  // _ASSEMBLY_ANNOTATIONS_AREA_

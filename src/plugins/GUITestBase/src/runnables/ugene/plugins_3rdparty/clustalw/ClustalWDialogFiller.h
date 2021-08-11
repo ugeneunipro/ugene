@@ -37,6 +37,6 @@ private:
     int gapOpenVal;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_GT_RUNNABLES_PLUGINS_3RDPARTY_CLUSTALW_DIALOG_FILLER_H_
+#endif  //_U2_GT_RUNNABLES_PLUGINS_3RDPARTY_CLUSTALW_DIALOG_FILLER_H_

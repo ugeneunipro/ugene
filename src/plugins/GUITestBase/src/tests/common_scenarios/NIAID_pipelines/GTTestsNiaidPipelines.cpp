@@ -71,7 +71,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
-    //GTUtilsDialog::waitForDialog(os, new WizardFiller0001(os,"BED or position list file"));
+    // GTUtilsDialog::waitForDialog(os, new WizardFiller0001(os,"BED or position list file"));
     QAbstractButton *wiz = GTAction::button(os, "Show wizard");
     GTWidget::click(os, wiz);
 
@@ -150,11 +150,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Only treatment tags
-    //2. Set "cistrome_input/macs_input_chr4/chr4.bed" as input
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Only treatment tags
+    // 2. Set "cistrome_input/macs_input_chr4/chr4.bed" as input
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Cistrome Workflow", QStringList() << "Only treatment tags"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-seq Analysis Wizard", new ChIPSeqAnalysisWizardFiller()));
@@ -186,11 +186,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         }
     };
 
-    //1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Treatment and control
-    //2. Set "cistrome_input/macs_input_chr4/chr4.bed" as "Treatment" and "cistrome_input/macs_input_chr4/control_tags/chr4.bed" as "Control"
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Treatment and control
+    // 2. Set "cistrome_input/macs_input_chr4/chr4.bed" as "Treatment" and "cistrome_input/macs_input_chr4/control_tags/chr4.bed" as "Control"
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Cistrome Workflow", QStringList() << "Treatment and control"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-Seq Analysis Wizard", new ChIPSeqAnalysisWizardFiller()));
@@ -204,11 +204,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Single-end
-    //2. Set "_common_data/fastq/lymph.fastq" and _common_data/fasta/DNA.fa as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Single-end
+    // 2. Set "_common_data/fastq/lymph.fastq" and _common_data/fasta/DNA.fa as reads and reference in wizard
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
 
     class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
@@ -239,11 +239,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Paired-end
-    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Paired-end
+    // 2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
 
     class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
@@ -276,12 +276,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    //1. Click Tools -> NGS data analysis -> Variant calling...
-    //2. Set "data\samples\Assembly\chrM.fa" as reference sequence file in wizard
-    //3. Add "data\samples\Assembly\chrM.sorted.bam"
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: No errors in the log, no notifications in the dashboard. One output file "variations.vcf"
+    // 1. Click Tools -> NGS data analysis -> Variant calling...
+    // 2. Set "data\samples\Assembly\chrM.fa" as reference sequence file in wizard
+    // 3. Add "data\samples\Assembly\chrM.sorted.bam"
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: No errors in the log, no notifications in the dashboard. One output file "variations.vcf"
 
     class VariantCallingWizard : public CustomScenario {
         QString assemblyFilePath;
@@ -327,11 +327,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     CHECK_SET_ERR(GTUtilsDashboard::getOutputFiles(os) == QStringList("variations.vcf"),
                   "Expected output file variations.vcf")
 
-    //6. Return to workflow and call the Variant calling wizard
-    //7. Delete "chrM.sorted.bam" and add "data\samples\Assembly\chrM.sam"
-    //4. Click "Next" several times and "Run"
-    //5. Wait for workflow finished
-    //Expected state: One error in log and one warning on the dashboard about header in the SAM file, two output files:
+    // 6. Return to workflow and call the Variant calling wizard
+    // 7. Delete "chrM.sorted.bam" and add "data\samples\Assembly\chrM.sam"
+    // 4. Click "Next" several times and "Run"
+    // 5. Wait for workflow finished
+    // Expected state: One error in log and one warning on the dashboard about header in the SAM file, two output files:
     //"chrM.sam.bam.sorted.bam", "variations.vcf"
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
 
@@ -357,11 +357,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Skip mapping
-    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Skip mapping
+    // 2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -387,11 +387,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Skip mapping
-    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Skip mapping
+    // 2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    // 3. Click "Next" several times and "Run"
+    // 4. Wait for workflow finished
+    // Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -420,13 +420,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Include mapping with tophat
-    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" two times
-    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
-    //5. Click "Next" several times and "Run"
-    //6. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Include mapping with tophat
+    // 2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    // 3. Click "Next" two times
+    // 4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    // 5. Click "Next" several times and "Run"
+    // 6. Wait for workflow finished
+    // Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -459,13 +459,13 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
-    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Include mapping with tophat
-    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" two times
-    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
-    //5. Click "Next" several times and "Run"
-    //6. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Include mapping with tophat
+    // 2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    // 3. Click "Next" two times
+    // 4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    // 5. Click "Next" several times and "Run"
+    // 6. Wait for workflow finished
+    // Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -501,14 +501,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
-    //1. Click Tools -> NGS data analysis -> RNA-Seq data analysis...
-    //2. Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq" as FASTQ file 1
-    //3. Message box about paired reads appears. Click Yes in it
-    //4. Click "Next". Select ILLUMINACLIP as Trimming steps
-    //5. Click "Next". Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/NC_010473.fa" as reference genome
-    //6. Click "Next" two times and "Run"
-    //7. Wait for workflow finished
-    //Expected state: no errors in log and dashboard
+    // 1. Click Tools -> NGS data analysis -> RNA-Seq data analysis...
+    // 2. Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq" as FASTQ file 1
+    // 3. Message box about paired reads appears. Click Yes in it
+    // 4. Click "Next". Select ILLUMINACLIP as Trimming steps
+    // 5. Click "Next". Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/NC_010473.fa" as reference genome
+    // 6. Click "Next" two times and "Run"
+    // 7. Wait for workflow finished
+    // Expected state: no errors in log and dashboard
     class RnaSeqAnalysisWizardScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -565,13 +565,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
-    //1. Click Tools -> NGS data analysis -> Extract transcript sequences...
-    //2. Click "Read Sequence(s)" element
-    //3. Add "_common_data/cmdline/tuxedo_pipeline/data/index/chr6.fa" file to "Dataset 1" dataset
-    //4. Click "Read Transcripts" element
-    //5. Add "_common_data/cmdline/tuxedo_pipeline/data_to_compare_with/transcripts.gtf" file to "Dataset 1" dataset
-    //6. Run workflow. Wait for workflow finished
-    //Expected state: no errors
+    // 1. Click Tools -> NGS data analysis -> Extract transcript sequences...
+    // 2. Click "Read Sequence(s)" element
+    // 3. Add "_common_data/cmdline/tuxedo_pipeline/data/index/chr6.fa" file to "Dataset 1" dataset
+    // 4. Click "Read Transcripts" element
+    // 5. Add "_common_data/cmdline/tuxedo_pipeline/data_to_compare_with/transcripts.gtf" file to "Dataset 1" dataset
+    // 6. Run workflow. Wait for workflow finished
+    // Expected state: no errors
     const GTLogTracer lt;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -594,5 +594,5 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
                   "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
-}    // namespace GUITest_common_scenarios_NIAID_pipelines
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_NIAID_pipelines
+}  // namespace U2

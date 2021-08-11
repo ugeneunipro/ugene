@@ -108,4 +108,4 @@ void AssemblyDbiTestUtil::var2readList(const QVariantList &varList, QList<U2Asse
     }
 }
 
-}    // namespace U2
+}  // namespace U2

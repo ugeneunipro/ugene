@@ -87,7 +87,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence> &list, U2OpS
     const DNAAlphabet *alphabet = deriveCommonAlphabet(list, recheckAlphabetFromDataIfRaw);
     ma->setAlphabet(alphabet);
     foreach (const DNASequence &seq, list) {
-        //TODO: handle memory overflow
+        // TODO: handle memory overflow
         ma->addRow(seq.getName(), seq.seq);
     }
     CHECK_OP(os, MultipleSequenceAlignment());
@@ -122,7 +122,7 @@ MultipleSequenceAlignmentObject *prepareSequenceHeadersList(const QList<GObject 
 
 void appendSequenceToAlignmentRow(MultipleSequenceAlignment &ma, int rowIndex, int afterPos, const U2SequenceObject &seq, U2OpStatus &os) {
     U2Region seqRegion(0, seq.getSequenceLength());
-    const qint64 blockReadFromBD = 4194305;    // 4 MB + 1
+    const qint64 blockReadFromBD = 4194305;  // 4 MB + 1
 
     qint64 sequenceLength = seq.getSequenceLength();
     for (qint64 startPosition = seqRegion.startPos; startPosition < seqRegion.length; startPosition += blockReadFromBD) {
@@ -134,7 +134,7 @@ void appendSequenceToAlignmentRow(MultipleSequenceAlignment &ma, int rowIndex, i
     }
 }
 
-}    // unnamed namespace
+}  // unnamed namespace
 
 MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool useGenbankHeader, bool recheckAlphabetFromDataIfRaw) {
     QList<U2SequenceObject *> dnaList;
@@ -172,15 +172,15 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 static const DNAAlphabet *selectBestAlphabetForAlignment(const QList<const DNAAlphabet *> &availableAlphabets) {
     const DNAAlphabet *bestMatch = nullptr;
     foreach (const DNAAlphabet *alphabet, availableAlphabets) {
-        if (bestMatch == nullptr || bestMatch->isRaw()) {    // prefer any other alphabet over RAW.
+        if (bestMatch == nullptr || bestMatch->isRaw()) {  // prefer any other alphabet over RAW.
             bestMatch = alphabet;
             continue;
         }
-        if (bestMatch->isDNA() && alphabet->isAmino()) {    // prefer Amino over DNA.
+        if (bestMatch->isDNA() && alphabet->isAmino()) {  // prefer Amino over DNA.
             bestMatch = alphabet;
             continue;
         }
-        if (bestMatch->isExtended() && !alphabet->isExtended()) {    // narrow down the set of characters.
+        if (bestMatch->isExtended() && !alphabet->isExtended()) {  // narrow down the set of characters.
             bestMatch = alphabet;
         }
     }
@@ -332,7 +332,7 @@ QList<U2Sequence> getDbSequences(const QList<GObject *> &objects) {
     return sequencesInDb;
 }
 
-}    // namespace
+}  // namespace
 
 MultipleSequenceAlignmentObject *MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os, bool shallowCopy, bool recheckAlphabetFromDataIfRaw) {
     CHECK(!objects.isEmpty(), nullptr);
@@ -341,7 +341,7 @@ MultipleSequenceAlignmentObject *MSAUtils::seqObjs2msaObj(const QList<GObject *>
     CHECK(listContainsSeqObject(objects, firstSeqObjPos), nullptr);
     SAFE_POINT_EXT(-1 != firstSeqObjPos, os.setError("Sequence object not found"), nullptr);
 
-    const U2DbiRef dbiRef = objects.at(firstSeqObjPos)->getEntityRef().dbiRef;    // make a copy instead of referencing since objects will be deleted
+    const U2DbiRef dbiRef = objects.at(firstSeqObjPos)->getEntityRef().dbiRef;  // make a copy instead of referencing since objects will be deleted
 
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
@@ -426,7 +426,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef 
 
 U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDbi, U2OpStatus &os) {
     U2MsaRow row;
-    row.rowId = -1;    // set the ID automatically
+    row.rowId = -1;  // set the ID automatically
 
     QByteArray oldSeqData = dnaSeq.seq;
     int tailGapsIndex = oldSeqData.length() - 1;
@@ -571,4 +571,4 @@ void MSAUtils::addRowsToMsa(U2EntityRef &msaObjectRef, QList<MultipleSequenceAli
     }
 }
 
-}    // namespace U2
+}  // namespace U2

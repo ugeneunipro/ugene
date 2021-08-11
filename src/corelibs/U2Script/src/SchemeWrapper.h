@@ -135,6 +135,6 @@ private:
     QMap<int, QString> commentLinesPositions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _SCHEME_WRAPPER_H_
+#endif  // _SCHEME_WRAPPER_H_

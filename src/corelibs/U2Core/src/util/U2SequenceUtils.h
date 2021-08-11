@@ -116,7 +116,7 @@ protected:
     bool singleThread;
 
     bool sequenceCreated;
-    qint64 committedLength;    // singleThread only
+    qint64 committedLength;  // singleThread only
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */
@@ -161,6 +161,6 @@ private:
     qint64 seqLen;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

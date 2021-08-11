@@ -58,7 +58,7 @@ private slots:
 
 protected:
     IntegralBus *input, *output;
-    //QString resultName,transId;
+    // QString resultName,transId;
     RemoteBLASTTaskSettings cfg;
 };
 
@@ -75,7 +75,7 @@ public:
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

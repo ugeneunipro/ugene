@@ -37,5 +37,5 @@ public:
 private:
     QString input;
 };
-}    // namespace U2
-#endif    // _U2_UHMM3_PHMMER_DIALOG_FILLER_H_
+}  // namespace U2
+#endif  // _U2_UHMM3_PHMMER_DIALOG_FILLER_H_

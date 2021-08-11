@@ -155,5 +155,5 @@ Worker *SequenceQualityTrimWorkerFactory::createWorker(Actor *actor) {
     return new SequenceQualityTrimWorker(actor);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

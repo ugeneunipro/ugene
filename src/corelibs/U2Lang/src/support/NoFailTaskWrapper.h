@@ -45,6 +45,6 @@ private:
     Task *subTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_NOFAILTASKWRAPPER_H_
+#endif  // _U2_NOFAILTASKWRAPPER_H_

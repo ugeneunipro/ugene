@@ -92,6 +92,6 @@ private slots:
     void sl_dotPlotSelecting();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOT_PLOT_SPLITTER_H_
+#endif  // _U2_DOT_PLOT_SPLITTER_H_

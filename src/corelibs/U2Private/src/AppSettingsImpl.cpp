@@ -59,4 +59,4 @@ void AppSettingsImpl::addPublicDbCredentials2Settings() {
     passStorage->addEntry(U2DbiUtils::PUBLIC_DATABASE_URL, U2DbiUtils::PUBLIC_DATABASE_PASSWORD, true);
 }
 
-}    // namespace U2
+}  // namespace U2

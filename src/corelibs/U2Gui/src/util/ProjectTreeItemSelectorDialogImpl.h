@@ -47,6 +47,6 @@ private:
     ProjectTreeController *controller;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

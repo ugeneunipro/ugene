@@ -21,36 +21,38 @@
 
 #include "McaReadsTabFactory.h"
 
-#include "McaAlternativeMutationsWidget.h"
+#include <QVBoxLayout>
 
 #include <U2Core/U2SafePoints.h>
-#include <U2View/MSAEditor.h>
+
 #include <U2Gui/ShowHideSubgroupWidget.h>
 
-#include <QVBoxLayout>
+#include <U2View/MSAEditor.h>
+
+#include "McaAlternativeMutationsWidget.h"
 
 namespace U2 {
 
 const QString McaReadsTabFactory::GROUP_ID = "OP_MCA_READS";
 const QString McaReadsTabFactory::GROUP_ICON_STR = ":core/images/graphs.png";
-const QString McaReadsTabFactory::GROUP_DOC_PAGE = "TODO";
+const QString McaReadsTabFactory::GROUP_DOC_PAGE = "66814020";
 
 McaReadsTabFactory::McaReadsTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
+QWidget *McaReadsTabFactory::createWidget(GObjectView *objView, const QVariantMap &) {
     SAFE_POINT(objView != nullptr,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        nullptr);
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               nullptr);
 
-    MaEditor* ma = qobject_cast<MaEditor*>(objView);
+    MaEditor *ma = qobject_cast<MaEditor *>(objView);
     SAFE_POINT(ma != nullptr,
-        QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
-        nullptr);
+               QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
+               nullptr);
 
-    QWidget* widget = new QWidget(objView->getWidget());
-    QVBoxLayout* layout = new QVBoxLayout();
+    QWidget *widget = new QWidget(objView->getWidget());
+    QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
@@ -69,4 +71,4 @@ OPGroupParameters McaReadsTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Reads"), GROUP_DOC_PAGE);
 }
 
-}
+}  // namespace U2

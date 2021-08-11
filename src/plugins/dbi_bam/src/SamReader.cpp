@@ -123,7 +123,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         if (position < 0) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid read position: %1").arg(position));
         }
-        alignment.setPosition(position - 1);    //to 0-based mapping
+        alignment.setPosition(position - 1);  // to 0-based mapping
     }
     {
         bool ok = false;
@@ -152,35 +152,35 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
             for (int i = 0; i < res.length(); i++) {
                 Alignment::CigarOperation::Operation operation;
                 switch (res[i].op) {
-                case U2CigarOp_M:
-                    operation = Alignment::CigarOperation::AlignmentMatch;
-                    break;
-                case U2CigarOp_I:
-                    operation = Alignment::CigarOperation::Insertion;
-                    break;
-                case U2CigarOp_D:
-                    operation = Alignment::CigarOperation::Deletion;
-                    break;
-                case U2CigarOp_N:
-                    operation = Alignment::CigarOperation::Skipped;
-                    break;
-                case U2CigarOp_S:
-                    operation = Alignment::CigarOperation::SoftClip;
-                    break;
-                case U2CigarOp_H:
-                    operation = Alignment::CigarOperation::HardClip;
-                    break;
-                case U2CigarOp_P:
-                    operation = Alignment::CigarOperation::Padding;
-                    break;
-                case U2CigarOp_EQ:
-                    operation = Alignment::CigarOperation::SequenceMatch;
-                    break;
-                case U2CigarOp_X:
-                    operation = Alignment::CigarOperation::SequenceMismatch;
-                    break;
-                default:
-                    throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(res[i].op));
+                    case U2CigarOp_M:
+                        operation = Alignment::CigarOperation::AlignmentMatch;
+                        break;
+                    case U2CigarOp_I:
+                        operation = Alignment::CigarOperation::Insertion;
+                        break;
+                    case U2CigarOp_D:
+                        operation = Alignment::CigarOperation::Deletion;
+                        break;
+                    case U2CigarOp_N:
+                        operation = Alignment::CigarOperation::Skipped;
+                        break;
+                    case U2CigarOp_S:
+                        operation = Alignment::CigarOperation::SoftClip;
+                        break;
+                    case U2CigarOp_H:
+                        operation = Alignment::CigarOperation::HardClip;
+                        break;
+                    case U2CigarOp_P:
+                        operation = Alignment::CigarOperation::Padding;
+                        break;
+                    case U2CigarOp_EQ:
+                        operation = Alignment::CigarOperation::SequenceMatch;
+                        break;
+                    case U2CigarOp_X:
+                        operation = Alignment::CigarOperation::SequenceMismatch;
+                        break;
+                    default:
+                        throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(res[i].op));
                 }
                 int operatonLength = res[i].count;
                 cigar.append(Alignment::CigarOperation(operatonLength, operation));
@@ -215,7 +215,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         if (nextPosition < 0) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid mate position: %1").arg(nextPosition));
         }
-        alignment.setNextPosition(nextPosition - 1);    //to 0-based mapping
+        alignment.setNextPosition(nextPosition - 1);  // to 0-based mapping
     }
     {
         bool ok = false;
@@ -266,7 +266,7 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         CigarValidator validator(cigar);
         validator.validate(&totalLength);
         if (!cigar.isEmpty() && length != totalLength) {
-            const_cast<QList<Alignment::CigarOperation> &>(cigar).clear();    //Ignore invalid cigar
+            const_cast<QList<Alignment::CigarOperation> &>(cigar).clear();  // Ignore invalid cigar
         }
     }
     return alignment;
@@ -352,13 +352,13 @@ void SamReader::readHeader() {
                         if (-1 != colonIndex) {
                             fieldTag = tokens[index].mid(0, colonIndex);
                             fieldValue = tokens[index].mid(colonIndex + 1);
-                        } else if ("PG" == recordTag) {    // workaround for invalid headers produced by some programs
+                        } else if ("PG" == recordTag) {  // workaround for invalid headers produced by some programs
                             continue;
                         } else {
                             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid header field: %1").arg(QString(tokens[index])));
                         }
                     }
-                    if (!QRegExp("[A-Za-z][A-Za-z]").exactMatch(fieldTag) && "M5" != fieldTag) {    //workaround for bug in the spec
+                    if (!QRegExp("[A-Za-z][A-Za-z]").exactMatch(fieldTag) && "M5" != fieldTag) {  // workaround for bug in the spec
                         throw InvalidFormatException(BAMDbiPlugin::tr("Invalid header field tag: %1").arg(QString(fieldTag)));
                     }
                     // CL and PN tags of can contain any string
@@ -376,8 +376,8 @@ void SamReader::readHeader() {
                 if (fields.contains("VN")) {
                     QByteArray value = fields["VN"];
                     if (!QRegExp("[0-9]+\\.[0-9]+").exactMatch(value)) {
-                        //Do nothing to support malformed BAMs
-                        //throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-VN value: %1").arg(QString(value)));
+                        // Do nothing to support malformed BAMs
+                        // throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-VN value: %1").arg(QString(value)));
                     }
                     header.setFormatVersion(Version::parseVersion(value));
                 } else {
@@ -393,7 +393,7 @@ void SamReader::readHeader() {
                         header.setSortingOrder(Header::QueryName);
                     } else if ("coordinate" == value) {
                         header.setSortingOrder(Header::Coordinate);
-                    } else if ("sorted" == value) {    // workaround for invalid headers produced by some programs
+                    } else if ("sorted" == value) {  // workaround for invalid headers produced by some programs
                         header.setSortingOrder(Header::Coordinate);
                     } else {
                         throw InvalidFormatException(BAMDbiPlugin::tr("Invalid HD-SO value: %1").arg(QString(value)));
@@ -466,8 +466,8 @@ void SamReader::readHeader() {
                         if (date.isValid()) {
                             readGroup.setDate(date);
                         } else {
-                            //Allow anything.
-                            //throw InvalidFormatException(BAMDbiPlugin::tr("Invalid RG-DT field value: %1").arg(QString(value)));
+                            // Allow anything.
+                            // throw InvalidFormatException(BAMDbiPlugin::tr("Invalid RG-DT field value: %1").arg(QString(value)));
                         }
                     }
                 }
@@ -536,5 +536,5 @@ void SamReader::readHeader() {
     }
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

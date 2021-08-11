@@ -60,15 +60,15 @@ QString QDORFActor::getText() const {
 
     QString strandName;
     switch (strand) {
-    case QDStrand_Both:
-        strandName = QDORFActor::tr("both strands");
-        break;
-    case QDStrand_DirectOnly:
-        strandName = QDORFActor::tr("direct strand");
-        break;
-    case QDStrand_ComplementOnly:
-        strandName = QDORFActor::tr("complement strand");
-        break;
+        case QDStrand_Both:
+            strandName = QDORFActor::tr("both strands");
+            break;
+        case QDStrand_DirectOnly:
+            strandName = QDORFActor::tr("direct strand");
+            break;
+        case QDStrand_ComplementOnly:
+            strandName = QDORFActor::tr("complement strand");
+            break;
     }
 
     const QString &transId = cfg->getParameters().value(ID_ATTR)->getAttributeValueWithoutScript<QString>();
@@ -95,11 +95,11 @@ QString QDORFActor::getText() const {
 
     QString doc = QDORFActor::tr("Finds ORFs in <u>%1</u> using the <u>%2</u>."
                                  "<br>Detects only ORFs <u>not shorter than %3, not longer than %4</u>%5.")
-                      .arg(strandName)    //both strands
-                      .arg(ttName)    //Standard Genetic Code
-                      .arg(minLenStr)    //100
+                      .arg(strandName)  // both strands
+                      .arg(ttName)  // Standard Genetic Code
+                      .arg(minLenStr)  // 100
                       .arg(maxLenStr)
-                      .arg(extra);    //  take into account alternative start codons.
+                      .arg(extra);  //  take into account alternative start codons.
 
     return doc;
 }
@@ -110,15 +110,15 @@ Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     QMap<QString, Attribute *> params = cfg->getParameters();
 
     switch (getStrandToRun()) {
-    case QDStrand_Both:
-        settings.strand = ORFAlgorithmStrand_Both;
-        break;
-    case QDStrand_DirectOnly:
-        settings.strand = ORFAlgorithmStrand_Direct;
-        break;
-    case QDStrand_ComplementOnly:
-        settings.strand = ORFAlgorithmStrand_Complement;
-        break;
+        case QDStrand_Both:
+            settings.strand = ORFAlgorithmStrand_Both;
+            break;
+        case QDStrand_DirectOnly:
+            settings.strand = ORFAlgorithmStrand_Direct;
+            break;
+        case QDStrand_ComplementOnly:
+            settings.strand = ORFAlgorithmStrand_Complement;
+            break;
     }
     settings.minLen = params.value(LEN_ATTR)->getAttributePureValue().toInt();
     settings.mustFit = params.value(FIT_ATTR)->getAttributePureValue().toBool();
@@ -242,4 +242,4 @@ QDORFActorPrototype::QDORFActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

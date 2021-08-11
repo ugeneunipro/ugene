@@ -37,6 +37,6 @@ private:
     static QStringList initWellKnownErrors();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_KRAKEN_TRANSLATE_LOG_PARSER_H_
+#endif  // _U2_KRAKEN_TRANSLATE_LOG_PARSER_H_

@@ -58,4 +58,4 @@ bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }
 
-}    // namespace U2
+}  // namespace U2

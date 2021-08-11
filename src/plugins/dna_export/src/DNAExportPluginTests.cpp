@@ -34,6 +34,8 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include "ImportQualityScoresTask.h"
 
 namespace U2 {
@@ -307,4 +309,4 @@ QList<XMLTestFactory *> DNAExportPluginTests::createTestFactories() {
     return factories;
 }
 
-}    // namespace U2
+}  // namespace U2

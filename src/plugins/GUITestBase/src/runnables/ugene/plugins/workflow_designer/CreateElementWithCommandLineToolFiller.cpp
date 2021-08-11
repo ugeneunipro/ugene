@@ -195,7 +195,7 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget *dialog, Q
             break;
     }
 
-    //GTGlobals::sleep();
+    // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -210,7 +210,7 @@ bool CreateElementWithCommandLineToolFiller::processSecondPage(QWidget *dialog, 
 
     fillTheTable(tvInput, pbAddInput, settings.input);
 
-    //GTGlobals::sleep();
+    // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -239,7 +239,7 @@ bool CreateElementWithCommandLineToolFiller::processFourthPage(QWidget *dialog, 
 
     fillTheTable(tvOutput, pbAddOutput, settings.output);
 
-    //GTGlobals::sleep();
+    // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -253,7 +253,7 @@ bool CreateElementWithCommandLineToolFiller::processFifthPage(QWidget *dialog, Q
 
     MessageBoxDialogFiller *msbxFiller = new MessageBoxDialogFiller(os, settings.commandDialogButtonTitle, "You don't use listed parameters in template string");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
-    //GTGlobals::sleep();
+    // GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
@@ -293,4 +293,4 @@ bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget * /*dial
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -145,4 +145,4 @@ U2Sequence ExportConsensusTask::getResult() const {
     return resultSequence;
 }
 
-}    // namespace U2
+}  // namespace U2

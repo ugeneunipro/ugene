@@ -71,7 +71,7 @@ static Task *createOpenViewTask(const MultiGSelection &ms) {
     QList<GObjectViewFactory *> ls;
 
     foreach (GObjectViewFactory *f, fs) {
-        //check if new view can be created
+        // check if new view can be created
         if (f->canCreateView(ms)) {
             ls.append(f);
         }
@@ -123,13 +123,13 @@ OpenViewTask::OpenViewTask(Document *d)
 void OpenViewTask::prepare() {
     QList<Task *> res;
 
-    //if any of existing views has added an object from the document -> do not open new view
+    // if any of existing views has added an object from the document -> do not open new view
     const QList<GObject *> &docObjects = doc->getObjects();
     if (!GObjectViewUtils::findViewsWithAnyOfObjects(docObjects).isEmpty()) {
         return;
     }
 
-    //try open new view
+    // try open new view
     GObjectSelection os;
     os.addToSelection(docObjects);
     MultiGSelection ms;
@@ -161,7 +161,7 @@ void OpenViewTask::prepare() {
             const GObjectRelation &rel = rels.first();
             Document *seqDoc = AppContext::getProject()->findDocumentByURL(rel.ref.docUrl);
             if (seqDoc != nullptr) {
-                if (seqDoc->isLoaded()) {    //try open sequence view
+                if (seqDoc->isLoaded()) {  // try open sequence view
                     GObject *seqObj = seqDoc->findGObjectByName(rel.ref.objName);
                     if (seqObj != nullptr && seqObj->getGObjectType() == GObjectTypes::SEQUENCE) {
                         GObjectSelection os2;
@@ -174,11 +174,11 @@ void OpenViewTask::prepare() {
                             res.append(openViewTask);
                         }
                     }
-                } else {    //try load doc and open sequence view
+                } else {  // try load doc and open sequence view
                     AppContext::getTaskScheduler()->registerTopLevelTask(new LoadUnloadedDocumentAndOpenViewTask(seqDoc));
                 }
             }
-            if (!res.isEmpty()) {    //one view is ok
+            if (!res.isEmpty()) {  // one view is ok
                 break;
             }
         }
@@ -262,7 +262,7 @@ Task *createLoadedDocTask(Document *loadedDoc, bool openView) {
     }
     return nullptr;
 }
-}    // namespace
+}  // namespace
 
 QList<Task *> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> subTasks;
@@ -380,4 +380,4 @@ QList<Task *> AddDocumentAndOpenViewTask::onSubTaskFinished(Task *t) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

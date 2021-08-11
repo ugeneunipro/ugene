@@ -61,9 +61,9 @@ FormatCheckResult ABIFormat::checkRawData(const QByteArray &rawData, const GUrl 
 
     if (size <= 4 || data[0] != 'A' || data[1] != 'B' || data[2] != 'I' || data[3] != 'F') {
         /*
-        * Maybe we've got a file in MacBinary format in which case
-        * we'll have an extra offset 128 bytes to add.
-        */
+         * Maybe we've got a file in MacBinary format in which case
+         * we'll have an extra offset 128 bytes to add.
+         */
         data += 128;
         size -= 128;
         if (size <= 4 || data[0] != 'A' || data[1] != 'B' || data[2] != 'I' || data[3] != 'F') {
@@ -125,44 +125,44 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
 }
 
 /*
-* Copyright (c) Medical Research Council 1994. All rights reserved.
-*
-* Permission to use, copy, modify and distribute this software and its
-* documentation for any purpose is hereby granted without fee, provided that
-* this copyright and notice appears in all copies.
-*
-* This file was written by James Bonfield, Simon Dear, Rodger Staden,
-* as part of the Staden Package at the MRC Laboratory of Molecular
-* Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
-*
-* MRC disclaims all warranties with regard to this software.
-*/
+ * Copyright (c) Medical Research Council 1994. All rights reserved.
+ *
+ * Permission to use, copy, modify and distribute this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * this copyright and notice appears in all copies.
+ *
+ * This file was written by James Bonfield, Simon Dear, Rodger Staden,
+ * as part of the Staden Package at the MRC Laboratory of Molecular
+ * Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
+ *
+ * MRC disclaims all warranties with regard to this software.
+ */
 
 /*
-* Title:    seqIOABI
-*
-* File:     seqIOABI.c
-* Purpose:  Reading (not writing) of ABI sequences
-* Last update: Fri Sep 02, 1994
-*/
+ * Title:    seqIOABI
+ *
+ * File:     seqIOABI.c
+ * Purpose:  Reading (not writing) of ABI sequences
+ * Last update: Fri Sep 02, 1994
+ */
 
 /*
-* The ABI magic number - "ABIF"
-*/
+ * The ABI magic number - "ABIF"
+ */
 #define ABI_MAGIC ((int)((((('A' << 8) + 'B') << 8) + 'I') << 8) + 'F')
 
 /*
-* The index is located towards the end of the ABI trace file.
-* It's location is given by a longword at a fixed place.
-*/
+ * The index is located towards the end of the ABI trace file.
+ * It's location is given by a longword at a fixed place.
+ */
 #define IndexPO 26
 
 #define IndexEntryLength 28
 
 /*
-* Here are some labels we will be looking for, four chars packed
-* into an int_4
-*/
+ * Here are some labels we will be looking for, four chars packed
+ * into an int_4
+ */
 #define LABEL(a) ((int)((((((a)[0] << 8) + (a)[1]) << 8) + (a)[2]) << 8) + (a)[3])
 #define DataEntryLabel LABEL("DATA")
 #define BaseEntryLabel LABEL("PBAS")
@@ -190,19 +190,19 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
                                                   : 3)
 
 /*
-* Gets the offset of the ABI index.
-* Returns -1 for failure, 0 for success.
-*/
+ * Gets the offset of the ABI index.
+ * Returns -1 for failure, 0 for success.
+ */
 static int getABIIndexOffset(SeekableBuf *fp, uint *indexO) {
     uint magic = 0;
 
     /*
-    * Initialise header_fudge.
-    *
-    * This is usually zero, but maybe we've transfered a file in MacBinary
-    * format in which case we'll have an extra 128 bytes to add to all
-    * our fseeks.
-    */
+     * Initialise header_fudge.
+     *
+     * This is usually zero, but maybe we've transfered a file in MacBinary
+     * format in which case we'll have an extra 128 bytes to add to all
+     * our fseeks.
+     */
     be_read_int_4(fp, &magic);
     if (magic != ABI_MAGIC) {
         fp->head += 128;
@@ -216,11 +216,11 @@ static int getABIIndexOffset(SeekableBuf *fp, uint *indexO) {
 }
 
 /*
-* From the ABI results file connected to `fp' whose index starts
-* at byte offset `indexO', return in `val' the `lw'th long word
-* from the `count'th entry labelled `label'.
-* The result is 0 for failure, or index offset for success.
-*/
+ * From the ABI results file connected to `fp' whose index starts
+ * at byte offset `indexO', return in `val' the `lw'th long word
+ * from the `count'th entry labelled `label'.
+ * The result is 0 for failure, or index offset for success.
+ */
 int getABIIndexEntryLW(SeekableBuf *fp, int indexO, uint label, uint count, int lw, uint *val) {
     int entryNum = -1;
     int i;
@@ -248,11 +248,11 @@ int getABIIndexEntryLW(SeekableBuf *fp, int indexO, uint label, uint count, int 
 }
 
 /*
-* From the ABI results file connected to `fp' whose index starts
-* at byte offset `indexO', return in `val' the `sw'th short word
-* from the `count'th entry labelled `label'.
-* The result is 0 for failure, or index offset for success.
-*/
+ * From the ABI results file connected to `fp' whose index starts
+ * at byte offset `indexO', return in `val' the `sw'th short word
+ * from the `count'th entry labelled `label'.
+ * The result is 0 for failure, or index offset for success.
+ */
 int getABIIndexEntrySW(SeekableBuf *fp, int indexO, uint label, uint count, int sw, ushort *val) {
     int entryNum = -1;
     int i;
@@ -280,18 +280,18 @@ int getABIIndexEntrySW(SeekableBuf *fp, int indexO, uint label, uint count, int 
 }
 
 /*
-* Get an "ABI String". These strings are either pointed to by the index
-* offset, or held in the offset itself when the string is <= 4 characters.
-* The "type" of the index entry is either 0x12 (a pascal string in which
-* case the first byte of the string determines its length) or a 0x02 (a
-* C-style string with length coming from the abi index).
-*
-* "string" will be max 256 bytes for the pascal string, but is of unknown
-* (and hence potentially buggy) length for C-strings. For now we live with
-* it as this entire file needs rewriting from scratch anyway.
-*
-* Returns -1 for failure, string length for success.
-*/
+ * Get an "ABI String". These strings are either pointed to by the index
+ * offset, or held in the offset itself when the string is <= 4 characters.
+ * The "type" of the index entry is either 0x12 (a pascal string in which
+ * case the first byte of the string determines its length) or a 0x02 (a
+ * C-style string with length coming from the abi index).
+ *
+ * "string" will be max 256 bytes for the pascal string, but is of unknown
+ * (and hence potentially buggy) length for C-strings. For now we live with
+ * it as this entire file needs rewriting from scratch anyway.
+ *
+ * Returns -1 for failure, string length for success.
+ */
 int getABIString(SeekableBuf *fp, int indexO, uint label, uint count, char *string) {
     uint off;
     uint len;
@@ -332,17 +332,17 @@ int getABIString(SeekableBuf *fp, int indexO, uint label, uint count, char *stri
 }
 
 /*
-* Get an "ABI Int_1". This is raw 1-byte integer data pointed to by the
-* offset, or held in the offset itself when the data is <= 4 characters.
-*
-* If indexO is 0 then we do not search for (or indeed use) label and count,
-* but simply assume that we are already at the correct offset and read from
-* here. (NB: This negates the length <= 4 check.)
-*
-* Returns -1 for failure, length desired for success (it'll only fill out
-* up to max_data_len elements, but it gives an indication of whether there
-* was more to come).
-*/
+ * Get an "ABI Int_1". This is raw 1-byte integer data pointed to by the
+ * offset, or held in the offset itself when the data is <= 4 characters.
+ *
+ * If indexO is 0 then we do not search for (or indeed use) label and count,
+ * but simply assume that we are already at the correct offset and read from
+ * here. (NB: This negates the length <= 4 check.)
+ *
+ * Returns -1 for failure, length desired for success (it'll only fill out
+ * up to max_data_len elements, but it gives an indication of whether there
+ * was more to come).
+ */
 int getABIint1(SeekableBuf *fp, int indexO, uint label, uint count, uchar *data, int max_data_len) {
     uint off;
     uint len, len2;
@@ -373,13 +373,13 @@ int getABIint1(SeekableBuf *fp, int indexO, uint label, uint count, uchar *data,
 }
 
 /*
-* Get an "ABI Int_2". This is raw 2-byte integer data pointed to by the
-* offset, or held in the offset itself when the data is <= 4 characters.
-*
-* Returns -1 for failure, length desired for success (it'll only fill out
-* up to max_data_len elements, but it gives an indication of whether there
-* was more to come).
-*/
+ * Get an "ABI Int_2". This is raw 2-byte integer data pointed to by the
+ * offset, or held in the offset itself when the data is <= 4 characters.
+ *
+ * Returns -1 for failure, length desired for success (it'll only fill out
+ * up to max_data_len elements, but it gives an indication of whether there
+ * was more to come).
+ */
 int getABIint2(SeekableBuf *fp, int indexO, uint label, uint count, ushort *data, int max_data_len) {
     int len, l2;
     int i;
@@ -398,13 +398,13 @@ int getABIint2(SeekableBuf *fp, int indexO, uint label, uint count, ushort *data
 }
 
 /*
-* Get an "ABI Int_4". This is raw 4-byte integer data pointed to by the
-* offset, or held in the offset itself when the data is <= 4 characters.
-*
-* Returns -1 for failure, length desired for success (it'll only fill out
-* up to max_data_len elements, but it gives an indication of whether there
-* was more to come).
-*/
+ * Get an "ABI Int_4". This is raw 4-byte integer data pointed to by the
+ * offset, or held in the offset itself when the data is <= 4 characters.
+ *
+ * Returns -1 for failure, length desired for success (it'll only fill out
+ * up to max_data_len elements, but it gives an indication of whether there
+ * was more to come).
+ */
 int getABIint4(SeekableBuf *fp, int indexO, uint label, uint count, uint *data, int max_data_len) {
     int len, l2;
     int i;
@@ -514,8 +514,8 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
 
     /* Allocate the sequence */
     /* Allocate space for the bases - 1 extra for the ->base field so
-    * that we can treat it as a NULL terminated string.
-    */
+     * that we can treat it as a NULL terminated string.
+     */
     if (sections & READ_BASES) {
         cd.prob_A.resize(numBases + 1);
         cd.prob_C.resize(numBases + 1);
@@ -538,9 +538,9 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
     }
 
     /*
-    * The order of the DATA fields is determined by the field FWO_
-    * Juggle around with data pointers to get it right
-    */
+     * The order of the DATA fields is determined by the field FWO_
+     * Juggle around with data pointers to get it right
+     */
     if (sections & READ_SAMPLES) {
         uint *dataxO[4];
 
@@ -559,8 +559,8 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
     }
 
     /*************************************************************
-    * Read the traces and bases information
-    *************************************************************/
+     * Read the traces and bases information
+     *************************************************************/
 
     if (sections & READ_SAMPLES) {
         /* Read in the C trace */
@@ -672,9 +672,9 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
     }
 
     /*
-    * Check for corrupted traces where the bases are positioned on sample
-    * coordinates which do not exist. Witnessed on some MegaBACE files.
-    */
+     * Check for corrupted traces where the bases are positioned on sample
+     * coordinates which do not exist. Witnessed on some MegaBACE files.
+     */
     if (cd.baseCalls[numBases - 1] > numPoints) {
         int n = cd.baseCalls[numBases - 1] + 1;
         cd.A.resize(n);
@@ -686,8 +686,8 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
 
 skip_bases:
     /*************************************************************
-    * Gather useful information - the comments field
-    *************************************************************/
+     * Gather useful information - the comments field
+     *************************************************************/
     if (sections & READ_COMMENTS) {
         char buffer[257];
         char commstr[256];
@@ -743,7 +743,7 @@ skip_bases:
         float fspacing = 0;
         if (-1 != getABIint4(fp, indexO, SpacingEntryLabel, 1, (uint *)&spacing, 1)) {
             fspacing = int_to_float(spacing);
-            sequenceComment.append(QString("SPAC=%1\n").arg(fspacing));    //-6.2f",
+            sequenceComment.append(QString("SPAC=%1\n").arg(fspacing));  //-6.2f",
         }
         /* Correction for when spacing is negative. Why does this happen? */
         if (fspacing <= 0) {
@@ -768,7 +768,7 @@ skip_bases:
             getABIIndexEntryLW(fp, indexO, RUNDLabel, 2, 5, &offset2) &&
             getABIIndexEntryLW(fp, indexO, RUNTLabel, 1, 5, &offset3) &&
             getABIIndexEntryLW(fp, indexO, RUNTLabel, 2, 5, &offset4)) {
-            //char buffer[1025];
+            // char buffer[1025];
             char buffer_s[1025];
             char buffer_e[1025];
             struct tm t;
@@ -807,10 +807,10 @@ skip_bases:
             t.tm_sec = (runt_s >> 8) & 0xff;
             t.tm_isdst = -1;
             /*
-                * Convert struct tm to time_t. We ignore the time_t value, but
-                * the conversion process will update the tm_wday element of
-                * struct tm.
-                */
+             * Convert struct tm to time_t. We ignore the time_t value, but
+             * the conversion process will update the tm_wday element of
+             * struct tm.
+             */
             mktime(&t);
             strftime(buffer_s, 1024, "%a %d %b %H:%M:%S %Y", &t);
 
@@ -822,10 +822,10 @@ skip_bases:
             t.tm_sec = (runt_e >> 8) & 0xff;
             t.tm_isdst = -1;
             /*
-                * Convert struct tm to time_t. We ignore the time_t value, but
-                * the conversion process will update the tm_wday element of
-                * struct tm.
-                */
+             * Convert struct tm to time_t. We ignore the time_t value, but
+             * the conversion process will update the tm_wday element of
+             * struct tm.
+             */
             mktime(&t);
             strftime(buffer_e, 1024, "%a %d %b %H:%M:%S %Y", &t);
 
@@ -895,4 +895,4 @@ skip_bases:
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

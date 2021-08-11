@@ -74,6 +74,6 @@ public:
     static void setCutoff(QVariantMap &map, Cutoffs coff, float val);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#endif  // _U2_MULTIPLE_ALIGNMENT_INFO_H_

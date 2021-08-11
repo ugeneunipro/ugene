@@ -80,8 +80,8 @@ GUI_TEST_CLASS_DECLARATION(test_0015)
 GUI_TEST_CLASS_DECLARATION(test_0016)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_toggle_view
+}  // namespace GUITest_common_scenarios_toggle_view
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -112,7 +112,7 @@ void ZoomableAssemblyOverview::initSelectionRedraw() {
 
 void ZoomableAssemblyOverview::drawAll() {
     if (!model->isEmpty()) {
-        //no coverage -> draw nothing
+        // no coverage -> draw nothing
         if (!coverageTaskRunner.isIdle()) {
             cachedBackground = QPixmap(size() * devicePixelRatio());
             cachedBackground.setDevicePixelRatio(devicePixelRatio());
@@ -120,7 +120,7 @@ void ZoomableAssemblyOverview::drawAll() {
             p.fillRect(rect(), Qt::gray);
             p.drawText(rect(), Qt::AlignCenter, tr("Background is rendering..."));
         }
-        //coverage is ready -> redraw background if needed
+        // coverage is ready -> redraw background if needed
         else if (redrawBackground) {
             cachedBackground = QPixmap(size() * devicePixelRatio());
             cachedBackground.setDevicePixelRatio(devicePixelRatio());
@@ -128,7 +128,7 @@ void ZoomableAssemblyOverview::drawAll() {
             drawBackground(p);
             redrawBackground = false;
         }
-        //draw selection and labels
+        // draw selection and labels
         if (redrawSelection) {
             cachedView = cachedBackground;
             QPainter p(&cachedView);
@@ -173,7 +173,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
     const int widgetHeight = height();
     const int widgetWidth = width();
 
-    //1. calc reads per pixel
+    // 1. calc reads per pixel
     static double logMax = .0;
     double readsPerYPixel = .0;
     switch (scaleType) {
@@ -190,7 +190,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
 
     p.fillRect(rect(), Qt::white);
 
-    //2. draw the graph line-by-line
+    // 2. draw the graph line-by-line
     for (int i = 0; i < widgetWidth; ++i) {
         quint64 columnPixels = 0;
         double grayCoeffD = 0.;
@@ -201,22 +201,22 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
                         grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
                     }
                     columnPixels = qint64(double(ci.coverageInfo[i]) / readsPerYPixel + 0.5);
-                    //grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
+                    // grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
                     break;
                 case AssemblyBrowserSettings::Scale_Logarithmic:
                     grayCoeffD = log((double)ci.coverageInfo[i]) / logMax;
                     columnPixels = qint64(double(log((double)ci.coverageInfo[i])) / readsPerYPixel + 0.5);
-                    //grayCoeff = 255 - int(double(255) / logMax * log((double)ci.coverageInfo[i]) + 0.5);
+                    // grayCoeff = 255 - int(double(255) / logMax * log((double)ci.coverageInfo[i]) + 0.5);
                     break;
             }
         }
 
-        //UGENE-style colors
+        // UGENE-style colors
         p.setPen(ui->getCoverageColor(grayCoeffD));
         p.drawLine(i, 0, i, columnPixels);
     }
 
-    //3. draw gray border
+    // 3. draw gray border
     p.setPen(Qt::gray);
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
@@ -231,7 +231,7 @@ static const QPoint CROSS_RIGHT_CORNER(0, CROSS_HALF_SIZE);
 
 void ZoomableAssemblyOverview::drawSelection(QPainter &p) {
     cachedSelection = calcCurrentSelection();
-    //if selection is TOO small - enlarge it a bit
+    // if selection is TOO small - enlarge it a bit
     if (0 == cachedSelection.width()) {
         cachedSelection.setWidth(1);
     }
@@ -239,13 +239,13 @@ void ZoomableAssemblyOverview::drawSelection(QPainter &p) {
         cachedSelection.setHeight(1);
     }
 
-    //cached selection can be outside the visible range, so intersect it with it
+    // cached selection can be outside the visible range, so intersect it with it
     QRect selectionToDraw = rect().intersected(cachedSelection);
     if (selectionToDraw.isNull()) {
         return;
     }
     if (isRectVerySmall(selectionToDraw)) {
-        //draw red cross
+        // draw red cross
         QPoint c = selectionToDraw.center();
         QPen oldPen = p.pen();
         p.setPen(Qt::red);
@@ -253,9 +253,9 @@ void ZoomableAssemblyOverview::drawSelection(QPainter &p) {
         p.drawLine(c - CROSS_RIGHT_CORNER, c + CROSS_RIGHT_CORNER);
         p.setPen(oldPen);
     } else {
-        //draw transparent rectangle
+        // draw transparent rectangle
         if (selectionToDraw.width() < 5 || selectionToDraw.height() < 5) {
-            //red borders if rect is thin
+            // red borders if rect is thin
             p.setPen(Qt::red);
         }
         p.fillRect(selectionToDraw, QColor(230, 230, 230, 180));
@@ -275,7 +275,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
 
     U2OpStatusImpl status;
 
-    //Prepare text
+    // Prepare text
     QString visibleStartText = QString::number(visibleRange.startPos);
     QString visibleEndText = QString::number(visibleRange.endPos());
     QString visibleDiffText = QString::number(visibleRange.length);
@@ -283,7 +283,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
     insertSpaceSeparators(visibleEndText);
     insertSpaceSeparators(visibleDiffText);
 
-    //Prepare font
+    // Prepare font
     QFont font = p.font();
 #if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
     font.setStyleHint(QFont::SansSerif, (QFont::StyleStrategy)(QFont::PreferAntialias | QFont::ForceIntegerMetrics));
@@ -295,7 +295,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
 
     p.setPen(labelForegroundColor);
 
-    //draw Visible Region
+    // draw Visible Region
     QString visibleRegionText = tr("%1 to %2 (%3 bp)").arg(visibleStartText).arg(visibleEndText).arg(visibleDiffText);
     QRect grtRect = QRect(0, 0, fontMetrics.width(visibleRegionText), fontMetrics.height());
     grtRect.translate(xoffset, rect().height() - yoffset - grtRect.height());
@@ -304,12 +304,12 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
         p.drawText(grtRect, visibleRegionText);
     }
 
-    //draw Selected Region
+    // draw Selected Region
     qint64 from = browser->getXOffsetInAssembly();
     qint64 to = qMin(browser->getXOffsetInAssembly() + browser->basesCanBeVisible(), model->getModelLength(status));
 
-    //prepare text
-    QString fromText = QString::number(from + 1);    // because of 1-based coords
+    // prepare text
+    QString fromText = QString::number(from + 1);  // because of 1-based coords
     QString toText = QString::number(to);
     QString diff = QString::number(to - from);
 
@@ -317,7 +317,7 @@ void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
     insertSpaceSeparators(toText);
     insertSpaceSeparators(diff);
 
-    //draw text
+    // draw text
     QString selectedRegionText = tr("%1 to %2 (%3 bp)").arg(fromText, toText, diff);
     QRect srtRect = QRect(0, 0, fontMetrics.width(selectedRegionText), fontMetrics.height());
     srtRect.translate(rect().width() - srtRect.width() - xoffset, rect().height() - yoffset - grtRect.height());
@@ -354,8 +354,8 @@ QRect ZoomableAssemblyOverview::calcCurrentSelection() const {
     return QRect(x_pix_start, y_pix_start, pix_width, pix_height);
 }
 
-//prevents selection from crossing widget borders.
-//Tries to move selection center to pos.
+// prevents selection from crossing widget borders.
+// Tries to move selection center to pos.
 void ZoomableAssemblyOverview::moveSelectionToPos(QPoint pos, bool moveModel) {
     const QRect &thisRect = rect();
     QRect newSelection(cachedSelection);
@@ -443,8 +443,8 @@ void ZoomableAssemblyOverview::checkedSetVisibleRange(qint64 newStartPos, qint64
         if (newLen < minLen) {
             minLenDiff = minLen - newLen;
         }
-        //shift start pos to keep needed region in the center, if
-        //requested length is smaller than minimal allowed length
+        // shift start pos to keep needed region in the center, if
+        // requested length is smaller than minimal allowed length
         newStartPos -= minLenDiff / 2;
 
         newStartPos = qMax((qint64)0, newStartPos);
@@ -475,7 +475,7 @@ void ZoomableAssemblyOverview::resizeEvent(QResizeEvent *e) {
 }
 
 void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
-    //background scribbling
+    // background scribbling
     if (me->button() == Qt::MidButton) {
         visibleRangeScribbling = true;
         visibleRangeLastPos = me->pos();
@@ -483,7 +483,7 @@ void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
     }
 
     if (me->button() == Qt::LeftButton) {
-        //zoom in
+        // zoom in
         if (me->modifiers() & Qt::AltModifier) {
             QPoint pos = me->pos();
             int left_pix = qMax(0, pos.x() - 2);
@@ -495,7 +495,7 @@ void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
             zoomToRegionSelector.scribbling = true;
             zoomToRegionSelector.startPos = me->pos();
         }
-        //selection scribbling
+        // selection scribbling
         else {
             selectionScribbling = true;
             if (!cachedSelection.contains(me->pos())) {
@@ -511,14 +511,14 @@ void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
 }
 
 void ZoomableAssemblyOverview::mouseMoveEvent(QMouseEvent *me) {
-    //selection scribbling
+    // selection scribbling
     if ((me->buttons() & Qt::LeftButton) && selectionScribbling) {
         if (!ui->getReadsArea()->isScrolling()) {
             ui->getReadsArea()->setScrolling(true);
         }
         moveSelectionToPos(me->pos() - selectionDiff);
     }
-    //background scribbling (Ctrl-Click)
+    // background scribbling (Ctrl-Click)
     else if ((me->buttons() & Qt::MidButton) && visibleRangeScribbling) {
         int pixelDiff = visibleRangeLastPos.x() - me->pos().x();
         qint64 asmDiff = calcXAssemblyCoord(pixelDiff);
@@ -608,7 +608,7 @@ void ZoomableAssemblyOverview::sl_zoomIn(const QPoint &pos) {
     if (!zoomable)
         return;
 
-    //1. count new length of the visible region
+    // 1. count new length of the visible region
     qint64 newLen = visibleRange.length / ZOOM_MULT + 0.5;
     //     if(newLen < browser->basesCanBeVisible()) {
     //         newLen = browser->basesCanBeVisible();
@@ -624,23 +624,23 @@ void ZoomableAssemblyOverview::sl_zoomIn(const QPoint &pos) {
         return;
     }
 
-    //2. count new start position of the visible region
+    // 2. count new start position of the visible region
     qint64 newStart = 0;
     if (!pos.isNull()) {
-        //Black magic. Zooms overview so that region under mouse pointer remains
-        //under pointer after zoom
+        // Black magic. Zooms overview so that region under mouse pointer remains
+        // under pointer after zoom
         newStart = calcXAssemblyCoord(pos.x()) - double(newLen) / width() * pos.x();
     } else {
-        //simply zoom to center
+        // simply zoom to center
         newStart = visibleRange.startPos + (visibleRange.length - newLen) / 2;
     }
 
-    //3. if nothing changed -> do nothing
+    // 3. if nothing changed -> do nothing
     if (newLen == visibleRange.length && newStart == visibleRange.startPos) {
         return;
     }
 
-    //4. set new values and update widget
+    // 4. set new values and update widget
     checkedSetVisibleRange(newStart, newLen);
     sl_redraw();
 }
@@ -679,20 +679,20 @@ void ZoomableAssemblyOverview::sl_zoomOut(const QPoint &pos) {
     // 2. count new start of the visible region
     qint64 newStart = 0;
     if (!pos.isNull()) {
-        //Black magic. Zooms overview so that region under mouse pointer remains
-        //under pointer after zoom
+        // Black magic. Zooms overview so that region under mouse pointer remains
+        // under pointer after zoom
         newStart = calcXAssemblyCoord(pos.x()) - double(newLen) / width() * pos.x();
     } else {
-        //simply zoom to center
+        // simply zoom to center
         newStart = visibleRange.startPos + (visibleRange.length - newLen) / 2;
     }
 
-    //3. if nothing changed -> do nothing
+    // 3. if nothing changed -> do nothing
     if (newLen == visibleRange.length && newStart == visibleRange.startPos) {
         return;
     }
 
-    //4. set new values and update widget
+    // 4. set new values and update widget
     checkedSetVisibleRange(newStart, newLen);
     sl_redraw();
 }
@@ -722,4 +722,4 @@ void ZoomableAssemblyOverview::launchCoverageCalculation() {
     sl_redraw();
 }
 
-}    // namespace U2
+}  // namespace U2

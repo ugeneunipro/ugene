@@ -82,4 +82,4 @@ bool CredentialsAskerGui::askWithModifiableLogin(QString &resourceUrl) const {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

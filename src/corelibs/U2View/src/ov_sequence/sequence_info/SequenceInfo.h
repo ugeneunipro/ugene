@@ -81,7 +81,7 @@ private:
     void initLayout();
 
     /** Show or hide widgets depending on the alphabet of the sequence in focus */
-    void updateLayout();    // calls the following update functions
+    void updateLayout();  // calls the following update functions
     void updateCharOccurLayout();
     void updateDinuclLayout();
     void updateCodonOccurLayout();
@@ -162,7 +162,7 @@ private:
     static const QString CAPTION_SUFFIX_DS_RNA;
     static const QString CAPTION_SUFFIX_SS_RNA;
 
-    //nucl
+    // nucl
     static const QString CAPTION_SEQ_GC_CONTENT;
     static const QString CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT;
     static const QString CAPTION_SEQ_EXTINCTION_COEFFICIENT;
@@ -171,7 +171,7 @@ private:
     static const QString CAPTION_SEQ_NMOLE_OD;
     static const QString CAPTION_SEQ_MG_OD;
 
-    //amino
+    // amino
     static const QString CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT;
     static const QString CAPTION_SEQ_ISOELECTIC_POINT;
 
@@ -182,6 +182,6 @@ private:
     static const QString STAT_GROUP_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

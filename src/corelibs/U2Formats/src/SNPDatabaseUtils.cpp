@@ -57,4 +57,4 @@ U2DataId SNPDatabaseUtils::getSequenceId(const QString &sequenceName, U2ObjectDb
     return seqId;
 }
 
-}    // namespace U2
+}  // namespace U2

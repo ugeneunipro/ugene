@@ -46,7 +46,7 @@
 namespace U2 {
 
 void ExportObjectUtils::exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl) {
-    QList<Annotation *> annotations = aObj->getAnnotations();    // copy for further modification
+    QList<Annotation *> annotations = aObj->getAnnotations();  // copy for further modification
     if (annotations.isEmpty()) {
         QMessageBox::warning(QApplication::activeWindow(), QObject::tr("Export annotations..."), QObject::tr("Selected object doesn't have annotations"));
         return;
@@ -221,4 +221,4 @@ Task *ExportObjectUtils::saveAnnotationsTask(const QString &filepath, const Docu
     return new SaveDocumentTask(doc, fl, DocumentUtils::getNewDocFileNameExcludesHint());
 }
 
-}    // namespace U2
+}  // namespace U2

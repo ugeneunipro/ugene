@@ -40,7 +40,7 @@ class GSequenceGraphWindowData;
 class GSequenceGraphView;
 class CalculatePointsTask;
 
-//BUG:402: refactor to remove cross references in structures!
+// BUG:402: refactor to remove cross references in structures!
 
 class U2VIEW_EXPORT GSequenceGraphAlgorithm {
 public:
@@ -93,7 +93,7 @@ public:
 
 struct PairVector {
     PairVector();
-    QVector<float> firstPoints;    //max if use both
+    QVector<float> firstPoints;  // max if use both
     QVector<float> secondPoints;
     QVector<float> cutoffPoints;
     QVector<float> allCutoffPoints;
@@ -246,6 +246,6 @@ private:
     GraphPointsUpdater graphUpdater;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

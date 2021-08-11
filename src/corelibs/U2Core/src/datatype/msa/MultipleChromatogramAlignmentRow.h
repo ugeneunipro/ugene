@@ -194,7 +194,7 @@ public:
     qint64 getBaseCount(qint64 before) const;
 
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const;
+    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool &hasTwoPeaks) const;
 
     /**
      * Exactly compares the rows. Sequences and gap models must match.
@@ -345,6 +345,6 @@ inline bool operator!=(const MultipleChromatogramAlignmentRowData *ptr1, const M
     return !(ptr1 == ptr2);
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
+#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_

@@ -53,10 +53,10 @@ public:
 
     static QList<GObject *> getSelectedObjects(const MultiGSelection &ms);
 
-    //todo: find a better place: like DNAUtils..
+    // todo: find a better place: like DNAUtils..
     static U2Region normalizeRegionBy3(U2Region reg, int seqLen, bool direct);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

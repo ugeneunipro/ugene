@@ -55,6 +55,6 @@ private:
     QPushButton *exportPrimersButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_LIBRARY_WIDGET_H_
+#endif  // _U2_PRIMER_LIBRARY_WIDGET_H_

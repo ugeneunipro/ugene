@@ -158,4 +158,4 @@ void UnitTestSuite::cleanup() {
     XmlTest::cleanup();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -179,7 +179,7 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus &os, i
 
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
-    GTGlobals::sleep(1000);    // don't touch
+    GTGlobals::sleep(1000);  // don't touch
 
     QString sequence;
     Runnable *chooser = new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey);
@@ -216,7 +216,7 @@ int GTUtilsSequenceView::getLengthOfSequence(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-int GTUtilsSequenceView::getVisiableStart(HI::GUITestOpStatus &os, int widgetNumber) {
+int GTUtilsSequenceView::getVisibleStart(HI::GUITestOpStatus &os, int widgetNumber) {
     return getSeqWidgetByNumber(os, widgetNumber)->getDetView()->getVisibleRange().startPos;
 }
 
@@ -246,7 +246,7 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSeveralRegionsByDialog"
-void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString) {
+void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString &multipleRangeString) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
     clickMouseOnTheSafeSequenceViewArea(os);
     GTKeyboardUtils::selectAll();
@@ -278,7 +278,7 @@ void GTUtilsSequenceView::addSequenceView(HI::GUITestOpStatus &os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "goToPosition"
-void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
+void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, qint64 position) {
     QToolBar *toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
 
@@ -413,7 +413,7 @@ QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus &os, ADVSingleSequen
     GT_CHECK_RESULT(nullptr != nameLabel, "Name label is NULL!", "");
 
     QString labelText = nameLabel->text();
-    QString result = labelText.left(labelText.indexOf("[") - 1);    //detachment of name from label text
+    QString result = labelText.left(labelText.indexOf("[") - 1);  // detachment of name from label text
     return result;
 }
 #undef GT_METHOD_NAME
@@ -474,7 +474,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
     U2Region annotationVisibleRegion = annotationRegion.intersect(visibleRegion);
     int x1 = renderArea->posToCoord(annotationVisibleRegion.startPos, true);
     int x2 = renderArea->posToCoord(annotationVisibleRegion.endPos() - 1, true) + renderArea->getCharWidth();
-    if (x2 <= x1) {    // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
+    if (x2 <= x1) {  // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
         x2 = renderArea->width();
     }
 
@@ -489,7 +489,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickAnnotationPan"
-void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number, const bool isDoubleClick, Qt::MouseButton button) {
+void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startPos, int number, const bool isDoubleClick, Qt::MouseButton button) {
     ADVSingleSequenceWidget *seq = getSeqWidgetByNumber(os, number);
     GSequenceLineViewRenderArea *area = seq->getPanView()->getRenderArea();
     PanViewRenderArea *pan = dynamic_cast<PanViewRenderArea *>(area);
@@ -503,13 +503,13 @@ void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString na
         foreach (Annotation *a, ao->getAnnotations()) {
             const int sp = a->getLocation().data()->regions.first().startPos;
             const QString annName = a->getName();
-            if (sp == startpos - 1 && annName == name) {
+            if (sp == startPos - 1 && annName == name) {
                 anns << a;
             }
         }
     }
-    GT_CHECK(anns.size() != 0, QString("Annotation with name %1 and startPos %2").arg(name).arg(startpos));
-    GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startpos).arg(anns.size()));
+    GT_CHECK(anns.size() != 0, QString("Annotation with name %1 and startPos %2").arg(name).arg(startPos));
+    GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startPos).arg(anns.size()));
 
     Annotation *a = anns.first();
 
@@ -601,6 +601,16 @@ void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, in
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "insertSubsequence"
+void GTUtilsSequenceView::insertSubsequence(HI::GUITestOpStatus &os, qint64 offset, const QString &subsequence, bool isDirectStrand) {
+    makeDetViewVisible(os);
+    enableEditingMode(os, true);
+    setCursor(os, offset, isDirectStrand);
+    GTKeyboardDriver::keySequence(subsequence);
+    enableEditingMode(os, false);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setCursor"
 void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool clickOnDirectLine, bool doubleClick) {
     // Multiline view is no supported correctly
@@ -627,7 +637,7 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
 
     const bool wrapMode = detView->isWrapMode();
     if (!wrapMode) {
-        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));  // TODO: replace the hardcoded value with method in renderer
     } else {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
@@ -646,7 +656,7 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
         SAFE_POINT_EXT(linesBeforePos != -1, os.setError("Position not found"), );
 
         const int shiftsCount = renderArea->getShiftsCount();
-        int middleShift = (int)(shiftsCount / 2) + 1;    //TODO: this calculation might consider the case then complementary is turned off or translations are drawn
+        int middleShift = (int)(shiftsCount / 2) + 1;  // TODO: this calculation might consider the case then complementary is turned off or translations are drawn
         if (clickOnDirectLine) {
             middleShift--;
         }
@@ -709,8 +719,17 @@ void GTUtilsSequenceView::clickOnDetView(HI::GUITestOpStatus &os) {
 
     GTGlobals::sleep(500);
 }
-#undef MIN_ANNOTATION_WIDTH
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "makeDetViewVisible"
+void GTUtilsSequenceView::makeDetViewVisible(HI::GUITestOpStatus &os) {
+    QToolButton *toggleDetViewButton = GTWidget::findToolButton(os, "show_hide_details_view");
+    if (!toggleDetViewButton->isChecked()) {
+        GTWidget::click(os, toggleDetViewButton);
+    }
+}
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

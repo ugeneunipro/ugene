@@ -70,6 +70,6 @@ public:
     static const QString backupPostfix;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -50,6 +50,6 @@ private:
     RegionSelector *regionSelector;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
+#endif  // _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_

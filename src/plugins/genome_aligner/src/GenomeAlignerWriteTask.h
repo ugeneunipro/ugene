@@ -68,6 +68,6 @@ private:
 
     inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_WRITE_TASK_H_
+#endif  // _U2_GENOME_ALIGNER_WRITE_TASK_H_

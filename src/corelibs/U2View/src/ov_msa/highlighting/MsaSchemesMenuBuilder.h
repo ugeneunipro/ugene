@@ -60,6 +60,6 @@ private:
     static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString &, MaEditorSequenceArea *actionsParent);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

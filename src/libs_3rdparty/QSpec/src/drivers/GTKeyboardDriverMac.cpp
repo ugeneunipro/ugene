@@ -146,150 +146,150 @@ int asciiToVirtual(int key) {
     }
 
     switch (key) {
-    case ' ':
-        key = kVK_Space;
-        break;
-    case '0':
-        key = kVK_ANSI_0;
-        break;
-    case '1':
-        key = kVK_ANSI_1;
-        break;
-    case '2':
-        key = kVK_ANSI_2;
-        break;
-    case '3':
-        key = kVK_ANSI_3;
-        break;
-    case '4':
-        key = kVK_ANSI_4;
-        break;
-    case '5':
-        key = kVK_ANSI_5;
-        break;
-    case '6':
-        key = kVK_ANSI_6;
-        break;
-    case '7':
-        key = kVK_ANSI_7;
-        break;
-    case '8':
-        key = kVK_ANSI_8;
-        break;
-    case '9':
-        key = kVK_ANSI_9;
-        break;
-    case 'a':
-        key = kVK_ANSI_A;
-        break;
-    case 'b':
-        key = kVK_ANSI_B;
-        break;
-    case 'c':
-        key = kVK_ANSI_C;
-        break;
-    case 'd':
-        key = kVK_ANSI_D;
-        break;
-    case 'e':
-        key = kVK_ANSI_E;
-        break;
-    case 'f':
-        key = kVK_ANSI_F;
-        break;
-    case 'g':
-        key = kVK_ANSI_G;
-        break;
-    case 'h':
-        key = kVK_ANSI_H;
-        break;
-    case 'i':
-        key = kVK_ANSI_I;
-        break;
-    case 'j':
-        key = kVK_ANSI_J;
-        break;
-    case 'k':
-        key = kVK_ANSI_K;
-        break;
-    case 'l':
-        key = kVK_ANSI_L;
-        break;
-    case 'm':
-        key = kVK_ANSI_M;
-        break;
-    case 'n':
-        key = kVK_ANSI_N;
-        break;
-    case 'o':
-        key = kVK_ANSI_O;
-        break;
-    case 'p':
-        key = kVK_ANSI_P;
-        break;
-    case 'q':
-        key = kVK_ANSI_Q;
-        break;
-    case 'r':
-        key = kVK_ANSI_R;
-        break;
-    case 's':
-        key = kVK_ANSI_S;
-        break;
-    case 't':
-        key = kVK_ANSI_T;
-        break;
-    case 'u':
-        key = kVK_ANSI_U;
-        break;
-    case 'v':
-        key = kVK_ANSI_V;
-        break;
-    case 'w':
-        key = kVK_ANSI_W;
-        break;
-    case 'x':
-        key = kVK_ANSI_X;
-        break;
-    case 'y':
-        key = kVK_ANSI_Y;
-        break;
-    case 'z':
-        key = kVK_ANSI_Z;
-        break;
-    case '=':
-        key = kVK_ANSI_Equal;
-        break;
-    case '-':
-        key = kVK_ANSI_Minus;
-        break;
-    case ']':
-        key = kVK_ANSI_RightBracket;
-        break;
-    case '[':
-        key = kVK_ANSI_LeftBracket;
-        break;
-    case '\'':
-        key = kVK_ANSI_Quote;
-        break;
-    case ';':
-        key = kVK_ANSI_Semicolon;
-        break;
-    case '\\':
-        key = kVK_ANSI_Backslash;
-        break;
-    case ',':
-        key = kVK_ANSI_Comma;
-        break;
-    case '/':
-        key = kVK_ANSI_Slash;
-        break;
-    case '.':
-        key = kVK_ANSI_Period;
-        break;
-    case '\n':
-        key = kVK_Return;
-        break;
+        case ' ':
+            key = kVK_Space;
+            break;
+        case '0':
+            key = kVK_ANSI_0;
+            break;
+        case '1':
+            key = kVK_ANSI_1;
+            break;
+        case '2':
+            key = kVK_ANSI_2;
+            break;
+        case '3':
+            key = kVK_ANSI_3;
+            break;
+        case '4':
+            key = kVK_ANSI_4;
+            break;
+        case '5':
+            key = kVK_ANSI_5;
+            break;
+        case '6':
+            key = kVK_ANSI_6;
+            break;
+        case '7':
+            key = kVK_ANSI_7;
+            break;
+        case '8':
+            key = kVK_ANSI_8;
+            break;
+        case '9':
+            key = kVK_ANSI_9;
+            break;
+        case 'a':
+            key = kVK_ANSI_A;
+            break;
+        case 'b':
+            key = kVK_ANSI_B;
+            break;
+        case 'c':
+            key = kVK_ANSI_C;
+            break;
+        case 'd':
+            key = kVK_ANSI_D;
+            break;
+        case 'e':
+            key = kVK_ANSI_E;
+            break;
+        case 'f':
+            key = kVK_ANSI_F;
+            break;
+        case 'g':
+            key = kVK_ANSI_G;
+            break;
+        case 'h':
+            key = kVK_ANSI_H;
+            break;
+        case 'i':
+            key = kVK_ANSI_I;
+            break;
+        case 'j':
+            key = kVK_ANSI_J;
+            break;
+        case 'k':
+            key = kVK_ANSI_K;
+            break;
+        case 'l':
+            key = kVK_ANSI_L;
+            break;
+        case 'm':
+            key = kVK_ANSI_M;
+            break;
+        case 'n':
+            key = kVK_ANSI_N;
+            break;
+        case 'o':
+            key = kVK_ANSI_O;
+            break;
+        case 'p':
+            key = kVK_ANSI_P;
+            break;
+        case 'q':
+            key = kVK_ANSI_Q;
+            break;
+        case 'r':
+            key = kVK_ANSI_R;
+            break;
+        case 's':
+            key = kVK_ANSI_S;
+            break;
+        case 't':
+            key = kVK_ANSI_T;
+            break;
+        case 'u':
+            key = kVK_ANSI_U;
+            break;
+        case 'v':
+            key = kVK_ANSI_V;
+            break;
+        case 'w':
+            key = kVK_ANSI_W;
+            break;
+        case 'x':
+            key = kVK_ANSI_X;
+            break;
+        case 'y':
+            key = kVK_ANSI_Y;
+            break;
+        case 'z':
+            key = kVK_ANSI_Z;
+            break;
+        case '=':
+            key = kVK_ANSI_Equal;
+            break;
+        case '-':
+            key = kVK_ANSI_Minus;
+            break;
+        case ']':
+            key = kVK_ANSI_RightBracket;
+            break;
+        case '[':
+            key = kVK_ANSI_LeftBracket;
+            break;
+        case '\'':
+            key = kVK_ANSI_Quote;
+            break;
+        case ';':
+            key = kVK_ANSI_Semicolon;
+            break;
+        case '\\':
+            key = kVK_ANSI_Backslash;
+            break;
+        case ',':
+            key = kVK_ANSI_Comma;
+            break;
+        case '/':
+            key = kVK_ANSI_Slash;
+            break;
+        case '.':
+            key = kVK_ANSI_Period;
+            break;
+        case '\n':
+            key = kVK_Return;
+            break;
     }
 
     return key;
@@ -297,63 +297,63 @@ int asciiToVirtual(int key) {
 
 bool extractShiftModifier(char &key) {
     switch (key) {
-    case '_':
-        key = asciiToVirtual('-');
-        return true;
-    case '+':
-        key = asciiToVirtual('=');
-        return true;
-    case '<':
-        key = asciiToVirtual(',');
-        return true;
-    case '>':
-        key = asciiToVirtual('.');
-        return true;
-    case ')':
-        key = asciiToVirtual('0');
-        return true;
-    case '!':
-        key = asciiToVirtual('1');
-        return true;
-    case '@':
-        key = asciiToVirtual('2');
-        return true;
-    case '#':
-        key = asciiToVirtual('3');
-        return true;
-    case '$':
-        key = asciiToVirtual('4');
-        return true;
-    case '%':
-        key = asciiToVirtual('5');
-        return true;
-    case '^':
-        key = asciiToVirtual('6');
-        return true;
-    case '&':
-        key = asciiToVirtual('7');
-        return true;
-    case '*':
-        key = asciiToVirtual('8');
-        return true;
-    case '(':
-        key = asciiToVirtual('9');
-        return true;
-    case '\"':
-        key = asciiToVirtual('\'');
-        return true;
-    case '|':
-        key = asciiToVirtual('\\');
-        return true;
-    case ':':
-        key = asciiToVirtual(';');
-        return true;
-    case '{':
-        key = asciiToVirtual('[');
-        return true;
-    case '}':
-        key = asciiToVirtual(']');
-        return true;
+        case '_':
+            key = asciiToVirtual('-');
+            return true;
+        case '+':
+            key = asciiToVirtual('=');
+            return true;
+        case '<':
+            key = asciiToVirtual(',');
+            return true;
+        case '>':
+            key = asciiToVirtual('.');
+            return true;
+        case ')':
+            key = asciiToVirtual('0');
+            return true;
+        case '!':
+            key = asciiToVirtual('1');
+            return true;
+        case '@':
+            key = asciiToVirtual('2');
+            return true;
+        case '#':
+            key = asciiToVirtual('3');
+            return true;
+        case '$':
+            key = asciiToVirtual('4');
+            return true;
+        case '%':
+            key = asciiToVirtual('5');
+            return true;
+        case '^':
+            key = asciiToVirtual('6');
+            return true;
+        case '&':
+            key = asciiToVirtual('7');
+            return true;
+        case '*':
+            key = asciiToVirtual('8');
+            return true;
+        case '(':
+            key = asciiToVirtual('9');
+            return true;
+        case '\"':
+            key = asciiToVirtual('\'');
+            return true;
+        case '|':
+            key = asciiToVirtual('\\');
+            return true;
+        case ':':
+            key = asciiToVirtual(';');
+            return true;
+        case '{':
+            key = asciiToVirtual('[');
+            return true;
+        case '}':
+            key = asciiToVirtual(']');
+            return true;
     }
 
     return false;
@@ -384,4 +384,4 @@ bool keyReleaseMac(int key) {
 }
 
 #endif
-}    // namespace HI
+}  // namespace HI

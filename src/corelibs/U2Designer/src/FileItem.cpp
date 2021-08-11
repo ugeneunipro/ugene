@@ -33,4 +33,4 @@ void FileItem::accept(UrlItemVisitor *visitor) {
     visitor->visit(this);
 }
 
-}    // namespace U2
+}  // namespace U2

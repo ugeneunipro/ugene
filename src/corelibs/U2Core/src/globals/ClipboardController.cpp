@@ -29,13 +29,13 @@ namespace U2 {
 const QString U2Clipboard::UGENE_MIME_TYPE = "text/ugene";
 
 ///////////////////
-///PasteFactory
+/// PasteFactory
 PasteFactory::PasteFactory(QObject *parent)
     : QObject(parent) {
 }
 
 ///////////////////
-///PasteTask
+/// PasteTask
 PasteTask::PasteTask(TaskFlags flags)
     : Task(tr("Paste data"), flags) {
 }
@@ -44,7 +44,7 @@ void PasteTask::processDocument(Document *) {
 }
 
 ///////////////////
-///PasteUtils
+/// PasteUtils
 QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpStatus &os) {
     QList<DNASequence> res;
 
@@ -80,4 +80,4 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpS
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

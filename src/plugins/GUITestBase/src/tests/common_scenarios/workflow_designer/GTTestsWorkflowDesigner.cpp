@@ -71,17 +71,17 @@
 
 namespace U2 {
 
-//8 - text
-//65536 - frame without ports
-//65537 - frame with ports
-//65538 - ports
+// 8 - text
+// 65536 - frame without ports
+// 65537 - frame with ports
+// 65538 - ports
 
 namespace GUITest_common_scenarios_workflow_designer {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
-    //1. Start UGENE. Open workflow schema file from data\cmdline\pfm-build.uws
+    // 1. Start UGENE. Open workflow schema file from data\cmdline\pfm-build.uws
     GTFileDialog::openFile(os, dataDir + "cmdline/", "pwm-build.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //  Expected state: workflow schema opened in Workflow designer
@@ -136,30 +136,30 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //1. Open WD
+    // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    //2. Press button Validate schema
+    // 2. Press button Validate schema
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Nothing to run: empty workflow"));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    //Expected state: message box which warns of validating empty schema has appeared
+    // Expected state: message box which warns of validating empty schema has appeared
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //1. Do menu Settings->Prefrences
+    // 1. Do menu Settings->Prefrences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::minimal));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
 
-    //2. Open WD settings
-    //3. Change Default visualization Item style from Extended to Minimal.
-    //4. Click OK button
+    // 2. Open WD settings
+    // 3. Change Default visualization Item style from Extended to Minimal.
+    // 4. Click OK button
 
-    //5. Open WD
+    // 5. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //6. Load any scheme from samples tab
+    // 6. Load any scheme from samples tab
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
-    //Expected state: item style on loaded schema must be Minimal
+    // Expected state: item style on loaded schema must be Minimal
     StyleId id;
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
     QList<QGraphicsItem *> items = sceneView->items();
@@ -173,21 +173,21 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
-    //1. Do menu Settings->Prefrences
+    // 1. Do menu Settings->Prefrences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::extended));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
 
-    //2. Open WD settings
-    //3. Change Default visualization Item style from Extended to Minimal.
-    //4. Click OK button
+    // 2. Open WD settings
+    // 3. Change Default visualization Item style from Extended to Minimal.
+    // 4. Click OK button
 
-    //5. Open WD
+    // 5. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //6. Load any scheme from samples tab
+    // 6. Load any scheme from samples tab
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
-    //Expected state: item style on loaded schema must be Minimal
+    // Expected state: item style on loaded schema must be Minimal
     StyleId id;
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
     QList<QGraphicsItem *> items = sceneView->items();
@@ -201,17 +201,17 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    //1. Do menu {Settings->Prefrences}
+    // 1. Do menu {Settings->Prefrences}
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, 255, 0, 0));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
 
-    //2. Activate WD prefrences page. Change Backgrounf color for workers.
+    // 2. Activate WD prefrences page. Change Backgrounf color for workers.
 
-    //3. Open WD and place any worker on working area.
+    // 3. Open WD and place any worker on working area.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    //Expected state: workers background color must be same as in prefrences
+    // Expected state: workers background color must be same as in prefrences
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     QPoint p(GTUtilsWorkflowDesigner::getItemLeft(os, "Read Alignment") + 20,
              GTUtilsWorkflowDesigner::getItemTop(os, "Read Alignment") + 20);
@@ -336,7 +336,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //    Expected state: Actor info (parameters, input data ...) will be displayed at the right part of window
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0015_1) {    //DIFFERENCE:file is loaded
+GUI_TEST_CLASS_DEFINITION(test_0015_1) {  // DIFFERENCE:file is loaded
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     //    1. open WD.
     GTFileDialog::openFile(os, dataDir + "cmdline/", "pwm-build.uwl");
@@ -360,9 +360,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    3. Press button "Configure command line aliases"
     QMap<QPoint *, QString> map;
     QPoint p(1, 0);
-    //map.i
+    // map.i
     map[&p] = "qqq";
-    //map.insert(p,QString("qqq"));
+    // map.insert(p,QString("qqq"));
     GTUtilsDialog::waitForDialog(os, new AliasesDialogFiller(os, map));
     GTWidget::click(os, GTAction::button(os, "Configure parameter aliases"));
     //    4. Add command line alias 'qqq' for schema parameter 'Input files'
@@ -382,21 +382,21 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
-    //Test for UGENE-2202
+    // Test for UGENE-2202
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, testDir + "_common_data/scenarios/sandbox/somedir"));
-    //1. Open Workflow Designer
+    // 1. Open Workflow Designer
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
 
-    //2. Write the path to the folder which does not exist(in the StartupDialogFiller).
-    //3. Click OK(in the StartupDialogFiller).
+    // 2. Write the path to the folder which does not exist(in the StartupDialogFiller).
+    // 3. Click OK(in the StartupDialogFiller).
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
-    //1. Click the menu {File -> New workflow}
-    //Expected: Workflow Designer is opened.
+    // 1. Click the menu {File -> New workflow}
+    // Expected: Workflow Designer is opened.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     QWidget *wdView = GTUtilsMdi::activeWindow(os);
@@ -540,6 +540,6 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
 }
 
-}    // namespace GUITest_common_scenarios_workflow_designer
+}  // namespace GUITest_common_scenarios_workflow_designer
 
-}    // namespace U2
+}  // namespace U2

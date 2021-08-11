@@ -44,7 +44,7 @@ inline int char2index(char c) {
             return -1;
     }
 }
-}    // namespace
+}  // namespace
 
 U2AssemblyBasesFrequenciesInfo::U2AssemblyBasesFrequenciesInfo() {
     memset(baseFrequencies, 0, sizeof(baseFrequencies));
@@ -81,4 +81,4 @@ QByteArray AssemblyBasesFrequenciesStat::getConsensusFragment() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

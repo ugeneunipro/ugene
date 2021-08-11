@@ -10,7 +10,7 @@
 
 namespace HI {
 
-QString getScreenshotDir() {    //TODO:rewrite to use working directory /screenshots
+QString getScreenshotDir() {  // TODO:rewrite to use working directory /screenshots
     QString result;
 #ifdef Q_OS_DARWIN
     result = "../../../../../../screenshotFol/";
@@ -29,4 +29,4 @@ QString getScreenshotDir() {    //TODO:rewrite to use working directory /screens
 
 const QString GUITest::screenshotDir = getScreenshotDir();
 
-}    // namespace HI
+}  // namespace HI

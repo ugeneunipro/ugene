@@ -50,7 +50,7 @@ void setButtonColor(QPushButton *button, const QColor &color) {
     button->setPalette(palette);
 }
 
-}    // namespace
+}  // namespace
 
 GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer *d, const U2Region &range, QWidget *parent)
     : QDialog(parent), colorMap(d->getColors()) {
@@ -136,4 +136,4 @@ void GraphSettingsDialog::sl_onOkClicked() {
     QMessageBox::critical(this, windowTitle(), err.append(' ').append(mmerr));
 }
 
-}    // namespace U2
+}  // namespace U2

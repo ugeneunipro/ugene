@@ -132,7 +132,7 @@ CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QList<q
                                                                    const U2Region &columnRange,
                                                                    const DocumentFormatId &formatId,
                                                                    U2OpStatus &os) {
-    //Create temporal document for the workflow run task
+    // Create temporal document for the workflow run task
     const AppSettings *appSettings = AppContext::getAppSettings();
     UserAppsSettings *usersSettings = appSettings->getUserAppsSettings();
     QString tmpDirPath = usersSettings->getCurrentProcessTemporaryDirPath();
@@ -192,7 +192,7 @@ void RichTextMsaClipboardTask::prepare() {
             char c = row->charAt(pos);
             bool isHighlightOn = false;
             QColor color = colorScheme->getBackgroundColor(maRowIndex, pos, c);
-            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {    //schemes which applied without reference
+            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {  // schemes which applied without reference
                 highlightingScheme->process('\n', c, color, isHighlightOn, pos, maRowIndex);
             } else if (maRowIndex == refSeqIndex || refSeqIndex == U2MsaRow::INVALID_ROW_ID) {
                 isHighlightOn = true;
@@ -233,4 +233,4 @@ QList<Task *> SubalignmentToClipboardTask::onSubTaskFinished(Task *subTask) {
     }
     return result;
 }
-}    // namespace U2
+}  // namespace U2

@@ -44,7 +44,7 @@ CopyDocumentTask::CopyDocumentTask(Document *_srcDoc, const DocumentFormatId &_f
 }
 
 CopyDocumentTask::~CopyDocumentTask() {
-    if (addToProject) {    // it means not "SaveDoc_DestroyAfter", so it is needed to be deleted
+    if (addToProject) {  // it means not "SaveDoc_DestroyAfter", so it is needed to be deleted
         if (hasError() || isCanceled()) {
             delete dstDoc;
         }
@@ -140,4 +140,4 @@ QList<GObject *> CloneObjectsTask::takeResult() {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

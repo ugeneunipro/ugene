@@ -60,7 +60,7 @@ void adjustAnnotationLocations(const U2Region &r, QList<SharedAnnotationData> &a
     }
 }
 
-}    // namespace
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////
 /// CreateExportItemsFromSeqRegionsTask
@@ -104,7 +104,7 @@ QList<SharedAnnotationData> CreateExportItemsFromSeqRegionsTask::findAnnotations
 }
 
 void CreateExportItemsFromSeqRegionsTask::run() {
-    const qint64 sequenceChunkMaxLength = 4194304;    // 4 MiB chunk
+    const qint64 sequenceChunkMaxLength = 4194304;  // 4 MiB chunk
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
     SAFE_POINT_OP(stateInfo, );
 
@@ -219,4 +219,4 @@ QList<Task *> ExportSelectedSeqRegionsTask::onSubTaskFinished(Task *subTask) {
     return resultTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

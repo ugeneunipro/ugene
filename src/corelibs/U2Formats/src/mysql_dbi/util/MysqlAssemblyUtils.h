@@ -48,6 +48,6 @@ public:
     static void addToCoverage(U2AssemblyCoverageImportInfo &cii, const U2AssemblyRead &read);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_ASSEMBLY_UTILS_H_
+#endif  // _U2_MYSQL_ASSEMBLY_UTILS_H_

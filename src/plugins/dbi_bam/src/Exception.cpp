@@ -35,5 +35,5 @@ const QString &Exception::getMessage() const {
     return message;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

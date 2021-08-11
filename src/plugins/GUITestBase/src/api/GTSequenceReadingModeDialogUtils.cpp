@@ -190,7 +190,7 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
             case GTGlobals::UseMouse:
                 spinBoxRect = sb->rect();
                 if (val > sb->value()) {
-                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);    // -5 it's needed that area under cursor was clickable
+                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);  // -5 it's needed that area under cursor was clickable
                 } else {
                     arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
                 }
@@ -224,4 +224,4 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

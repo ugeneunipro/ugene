@@ -173,4 +173,4 @@ void InputIntFiller::commonScenario() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

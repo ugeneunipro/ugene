@@ -98,5 +98,5 @@ public:
     static QString parseOpenUrlValueFromOnClick(const QString &onclickValue);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

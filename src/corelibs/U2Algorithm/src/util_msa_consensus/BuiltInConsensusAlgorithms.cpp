@@ -29,4 +29,4 @@ const QString BuiltInConsensusAlgorithms::STRICT_ALGO = "Strict";
 const QString BuiltInConsensusAlgorithms::LEVITSKY_ALGO = "Levitsky";
 const QString BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO = "Simple extended";
 
-}    // namespace U2
+}  // namespace U2

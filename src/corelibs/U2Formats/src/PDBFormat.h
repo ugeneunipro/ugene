@@ -112,6 +112,6 @@ private:
     };
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

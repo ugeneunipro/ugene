@@ -31,4 +31,4 @@ McaRowDatabaseData::McaRowDatabaseData()
     : rowLength(0) {
 }
 
-}    // namespace U2
+}  // namespace U2

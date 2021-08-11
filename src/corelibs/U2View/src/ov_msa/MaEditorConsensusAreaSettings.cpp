@@ -47,4 +47,4 @@ void MaEditorConsensusAreaSettings::setRulerFont(const QFont &font) {
     rulerFont.setPointSize(qMax(8, qRound(font.pointSize() * 0.7)));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -53,6 +53,6 @@ private:
     RegionSelector *regionSelector;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
+#endif  // _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_

@@ -60,6 +60,6 @@ private:
     static const QString DEFAULT_PORT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EDIT_CONNECTION_DIALOG_H_
+#endif  // _U2_EDIT_CONNECTION_DIALOG_H_

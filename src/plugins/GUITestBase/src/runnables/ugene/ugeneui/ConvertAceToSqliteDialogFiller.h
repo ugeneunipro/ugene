@@ -43,5 +43,5 @@ private:
     QString leDestUrl;
     OutFileAction action;
 };
-}    // namespace U2
-#endif    // CONVERTACETOSQLITEDIALOGFILLER_H
+}  // namespace U2
+#endif  // CONVERTACETOSQLITEDIALOGFILLER_H

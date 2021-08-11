@@ -113,14 +113,14 @@ void GTLineEdit::pasteClipboard(GUITestOpStatus &os, QLineEdit *lineEdit, PasteM
 
     clear(os, lineEdit);
     switch (pasteMethod) {
-    case Mouse:
-        os.setError("GTLineEdit::pasteClipboard: Not implemented: Paste by mouse");
-        break;
+        case Mouse:
+            os.setError("GTLineEdit::pasteClipboard: Not implemented: Paste by mouse");
+            break;
 
-    default:
-    case Shortcut:
-        GTKeyboardUtils::paste();
-        break;
+        default:
+        case Shortcut:
+            GTKeyboardUtils::paste();
+            break;
     }
 
     GTGlobals::sleep(500);
@@ -183,4 +183,4 @@ bool GTLineEdit::tryToSetText(GUITestOpStatus &os, QLineEdit *lineEdit, const QS
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

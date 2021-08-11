@@ -71,12 +71,12 @@ class DistanceMatrixMSAProfileTaskSettings {
 public:
     DistanceMatrixMSAProfileTaskSettings();
 
-    QString algoId;    // selected algorithm id
-    QString profileName;    // usually object name
-    QString profileURL;    // document url
+    QString algoId;  // selected algorithm id
+    QString profileName;  // usually object name
+    QString profileURL;  // document url
     MultipleSequenceAlignment ma;
-    bool usePercents;    //report percents but not counts
-    bool excludeGaps;    //exclude gaps when calculate distance
+    bool usePercents;  // report percents but not counts
+    bool excludeGaps;  // exclude gaps when calculate distance
     bool showGroupStatistic;
     DistanceMatrixMSAProfileOutputFormat outFormat;
     QString outURL;
@@ -97,7 +97,7 @@ public:
     QList<Task *> createStatisticsDocument(Task *subTask);
 
     QList<Task *> onSubTaskFinished(Task *subTask);
-    //void run();
+    // void run();
     ReportResult report();
 
 private:
@@ -105,6 +105,6 @@ private:
     QString resultText;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

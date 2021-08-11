@@ -55,7 +55,7 @@ void DesignerGUIUtils::paintSamplesArrow(QPainter *painter) {
     p.lineTo(res.bottomRight());
     p.lineTo(res.bottomLeft());
     p.closeSubpath();
-    QColor yc = QColor(255, 255, 160);    //QColor(Qt::yellow).lighter();yc.setAlpha(127);
+    QColor yc = QColor(255, 255, 160);  // QColor(Qt::yellow).lighter();yc.setAlpha(127);
     painter->fillPath(p, QBrush(yc));
     painter->drawPath(p);
     painter->setPen(Qt::black);
@@ -105,7 +105,7 @@ void DesignerGUIUtils::paintSamplesDocument(QPainter *painter, QTextDocument *do
     g.setColorAt(0.9, Qt::black);
     g.setColorAt(1, Qt::transparent);
 
-    //pal.setBrush(QPalette::Text, g);
+    // pal.setBrush(QPalette::Text, g);
 
     ctx.palette = pal;
     ctx.clip = QRect(0, 0, textRect.width(), textRect.height());
@@ -155,9 +155,9 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor &d, const QIcon &ic
     text = text.arg(d.getDisplayName()).arg(hasIcon ? img : "").arg(body).arg(body2).arg(QObject::tr("Double click to load the sample"));
     doc->setHtml(text);
     QFont f;
-    //f.setFamily("Times New Roman");
+    // f.setFamily("Times New Roman");
     f.setPointSizeF(12);
     doc->setDefaultFont(f);
 }
 
-}    // namespace U2
+}  // namespace U2

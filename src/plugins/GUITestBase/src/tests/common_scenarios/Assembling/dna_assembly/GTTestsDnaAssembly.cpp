@@ -138,5 +138,5 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_dna_assembly
-}    // namespace U2
+}  // namespace GUITest_dna_assembly
+}  // namespace U2

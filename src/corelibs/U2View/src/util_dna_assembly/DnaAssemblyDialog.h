@@ -97,6 +97,6 @@ private:
     static bool samOutput;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //  _U2_DNA_ASSEMBLEY_DIALOG_H_
+#endif  //  _U2_DNA_ASSEMBLEY_DIALOG_H_

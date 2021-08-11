@@ -31,4 +31,4 @@ PWMConversionAlgorithm::PWMConversionAlgorithm(PWMConversionAlgorithmFactory *_f
     : QObject(p), factory(_factory) {
 }
 
-}    // namespace U2
+}  // namespace U2

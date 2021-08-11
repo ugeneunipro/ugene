@@ -75,7 +75,7 @@ public:
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _IMPORT_PHRED_QUALITY_WORKER_H_
+#endif  // _IMPORT_PHRED_QUALITY_WORKER_H_

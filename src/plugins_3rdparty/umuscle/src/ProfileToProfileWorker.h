@@ -39,7 +39,7 @@ public:
     ProfileToProfileWorker(Actor *a);
 
     virtual void init();
-    virtual Task * tick();
+    virtual Task *tick();
     virtual void cleanup();
 
 private slots:
@@ -49,15 +49,17 @@ private:
     IntegralBus *inPort;
     IntegralBus *outPort;
 
-    QList<MultipleSequenceAlignmentObject*> objects;
+    QList<MultipleSequenceAlignmentObject *> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {
 public:
-    ProfileToProfileWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    ProfileToProfileWorkerFactory()
+        : DomainFactory(ACTOR_ID) {
+    }
 
     static void init();
-    virtual Worker * createWorker(Actor *a);
+    virtual Worker *createWorker(Actor *a);
 
 private:
     static const QString ACTOR_ID;
@@ -66,7 +68,9 @@ private:
 class ProfileToProfilePrompter : public PrompterBase<ProfileToProfilePrompter> {
     Q_OBJECT
 public:
-    ProfileToProfilePrompter(Actor* p = 0) : PrompterBase<ProfileToProfilePrompter>(p) {}
+    ProfileToProfilePrompter(Actor *p = 0)
+        : PrompterBase<ProfileToProfilePrompter>(p) {
+    }
 
 protected:
     QString composeRichDoc();
@@ -79,9 +83,9 @@ public:
     ~ProfileToProfileTask();
 
     virtual void prepare();
-    virtual QList<Task*> onSubTaskFinished(Task *subTask);
+    virtual QList<Task *> onSubTaskFinished(Task *subTask);
 
-    const MultipleSequenceAlignment & getResult();
+    const MultipleSequenceAlignment &getResult();
 
 private:
     MultipleSequenceAlignment masterMsa;
@@ -92,11 +96,11 @@ private:
 
 private:
     void appendResult(Task *task);
-    QList<Task*> createAlignTasks();
+    QList<Task *> createAlignTasks();
     bool canCreateTask() const;
 };
 
-} // LocalWorkflow
-} // U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif // _U2_PROFILE_TO_PROFILE_WORKER_H_
+#endif  // _U2_PROFILE_TO_PROFILE_WORKER_H_

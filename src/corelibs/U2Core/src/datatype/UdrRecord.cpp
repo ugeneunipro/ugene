@@ -152,4 +152,4 @@ bool UdrRecord::checkNum(int fieldNum, U2OpStatus &os) const {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

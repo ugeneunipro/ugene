@@ -88,4 +88,4 @@ QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView, const QVa
     return new RefSeqCommonWidget(msa);
 }
 
-}    // namespace U2
+}  // namespace U2

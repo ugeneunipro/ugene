@@ -61,7 +61,7 @@ class U2CORE_EXPORT MultiGSelection {
 public:
     MultiGSelection() {
     }
-    //TODO: deallocation! -> use shared data
+    // TODO: deallocation! -> use shared data
 
     void addSelection(const GSelection *s);
 
@@ -81,5 +81,5 @@ private:
     QList<const GSelection *> selections;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

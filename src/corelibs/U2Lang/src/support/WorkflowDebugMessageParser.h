@@ -33,7 +33,7 @@ namespace Workflow {
 class WorkflowContext;
 class Message;
 
-}    // namespace Workflow
+}  // namespace Workflow
 
 class U2LANG_EXPORT WorkflowDebugMessageParser {
 public:
@@ -55,6 +55,6 @@ protected:
     static QStringList possibleMessageTypes;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_
+#endif  // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_H_

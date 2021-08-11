@@ -143,5 +143,5 @@ const QVariantMap BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP() {
     return strandMap;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

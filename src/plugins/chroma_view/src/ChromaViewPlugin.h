@@ -63,6 +63,6 @@ public:
     ChromatogramView *view;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

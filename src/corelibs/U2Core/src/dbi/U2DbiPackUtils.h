@@ -121,6 +121,6 @@ private:
     static const char SECOND_SEP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DBI_PACK_UTILS_H_
+#endif  // _U2_DBI_PACK_UTILS_H_

@@ -49,6 +49,6 @@ private:
     const QString description;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_RUNNABLES_CREATE_ANNOTATIONS_WIDGET_FILLER_H_
+#endif  // _U2_GT_RUNNABLES_CREATE_ANNOTATIONS_WIDGET_FILLER_H_

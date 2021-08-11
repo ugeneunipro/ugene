@@ -93,8 +93,8 @@ private:
     QVariantMap listValues;
     bool scriptMode;
 
-};    // ActorCfgModel
+};  // ActorCfgModel
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_ACTOR_CFG_H_
+#endif  // _U2_ACTOR_CFG_H_

@@ -37,6 +37,6 @@ private:
     static const int logMemoryInfoEvery = 20;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CRASH_LOG_CACHE_H_
+#endif  // _U2_CRASH_LOG_CACHE_H_

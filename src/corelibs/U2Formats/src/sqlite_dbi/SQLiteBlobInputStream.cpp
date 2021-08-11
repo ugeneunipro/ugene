@@ -116,4 +116,4 @@ qint64 SQLiteBlobInputStream::skip(qint64 n, U2OpStatus &os) {
     return n;
 }
 
-}    // namespace U2
+}  // namespace U2

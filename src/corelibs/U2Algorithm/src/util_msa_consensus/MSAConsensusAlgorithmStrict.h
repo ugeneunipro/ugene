@@ -72,6 +72,6 @@ public:
     MSAConsensusAlgorithmStrict *clone() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

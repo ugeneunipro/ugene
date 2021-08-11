@@ -61,7 +61,7 @@ QLineEdit *buildLineEdit(QString text, QWidget *p = nullptr, const QString &obje
     }
     return lineEdit;
 }
-}    // namespace
+}  // namespace
 
 AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     : QWidget(p), savableTab(this, GObjectViewUtils::findViewByName(browser->getName())) {
@@ -143,4 +143,4 @@ OPGroupParameters AssemblyInfoWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Assembly Statistics"), GROUP_DOC_PAGE);
 }
 
-}    // namespace U2
+}  // namespace U2

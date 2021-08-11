@@ -45,6 +45,6 @@ public:
     static void cut();
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

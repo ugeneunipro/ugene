@@ -214,4 +214,4 @@ MatrixViewController::MatrixViewController(PWMatrix matrix)
     setLayout(layout);
 }
 
-}    // namespace U2
+}  // namespace U2

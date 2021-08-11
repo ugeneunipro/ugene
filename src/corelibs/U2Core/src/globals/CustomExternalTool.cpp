@@ -92,4 +92,4 @@ const QString &CustomExternalTool::getConfigFilePath() const {
     return configFilePath;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -101,7 +101,7 @@ UdrRecordId createObjectCore(UdrDbi *dbi, const QString &folder, U2RawData &obje
 
     return dbi->addRecord(RawDataUdrSchema::ID, data, os);
 }
-}    // namespace
+}  // namespace
 
 void RawDataUdrSchema::init(U2OpStatus &os) {
     UdrSchema::FieldDesc content("content", UdrSchema::BLOB);
@@ -226,4 +226,4 @@ void RawDataUdrSchema::cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,7 +41,7 @@ public:
     GUrl fileUrl;
     bool useGammaDistributionRates;
     double alphaFactor;
-    double ttRatio;    // transition transversion ratio
+    double ttRatio;  // transition transversion ratio
     bool bootstrap;
     int replicates;
     int seed;
@@ -54,6 +54,6 @@ public:
     QStringList extToolArguments;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

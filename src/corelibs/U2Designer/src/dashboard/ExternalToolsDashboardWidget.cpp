@@ -57,7 +57,7 @@ static QString fixOldStyleOpenFileJs(const QString &html) {
 
 ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor) {
-    setMinimumWidth(1100);    // TODO: make it expanding.
+    setMinimumWidth(1100);  // TODO: make it expanding.
 
     // A frame with rounded borders around the content.
     auto frameLayout = new QVBoxLayout();
@@ -103,7 +103,7 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
                         layout->addWidget(commandContentNode);
                     }
 
-                    QDomNode outputLi = commandSpan.parentNode();    // previous node for the real outputLi.
+                    QDomNode outputLi = commandSpan.parentNode();  // previous node for the real outputLi.
                     while (true) {
                         outputLi = outputLi.nextSiblingElement("li");
                         QDomElement outputSpan = outputLi.firstChildElement("span");
@@ -345,11 +345,11 @@ void ExternalToolsTreeNode::sl_toggle() {
 
 void ExternalToolsTreeNode::updateExpandCollapseState(bool isParentExpanded, bool isApplyToAllLevelOfChildren) {
     this->setVisible(isParentExpanded);
-    if (!isParentExpanded) {    // make all children invisible (we use flat VBOX layout model for the tree, so parent must hide children manually).
+    if (!isParentExpanded) {  // make all children invisible (we use flat VBOX layout model for the tree, so parent must hide children manually).
         for (auto child : qAsConst(children)) {
             child->updateExpandCollapseState(false);
         }
-    } else if (isApplyToAllLevelOfChildren) {    // make children on all levels visible.
+    } else if (isApplyToAllLevelOfChildren) {  // make children on all levels visible.
         for (auto child : qAsConst(children)) {
             child->updateExpandCollapseState(true, true);
         }
@@ -383,10 +383,10 @@ void ExternalToolsTreeNode::paintEvent(QPaintEvent *event) {
         if (node == this) {
             int horizontalLineY = height() / 2;
             if (node->kind != NODE_KIND_ACTOR) {
-                painter.drawLine(x, 0, x, isLastChild(node) ? horizontalLineY : height());    // vertical line from from the parent to the Y-center.
-                painter.drawLine(x, horizontalLineY, x + TREE_NODE_X_OFFSET - 5, horizontalLineY);    // horizontal line to the node.
+                painter.drawLine(x, 0, x, isLastChild(node) ? horizontalLineY : height());  // vertical line from from the parent to the Y-center.
+                painter.drawLine(x, horizontalLineY, x + TREE_NODE_X_OFFSET - 5, horizontalLineY);  // horizontal line to the node.
             }
-            if (!children.isEmpty() && isExpanded()) {    // part of the link to the first child.
+            if (!children.isEmpty() && isExpanded()) {  // part of the link to the first child.
                 int childX = level * TREE_NODE_X_OFFSET + BRANCH_X_PADDING;
                 painter.drawLine(childX, horizontalLineY, childX, height());
             }
@@ -496,4 +496,4 @@ void BadgeLabel::switchToImportantStyle() {
     copyButton->setStyleSheet(copyButton->styleSheet().replace(RUN_NODE_NORMAL_COLOR, RUN_NODE_IMPORTANT_COLOR));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -35,4 +35,4 @@ void EscapeClicker::commonScenario() {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
-}    // namespace U2
+}  // namespace U2

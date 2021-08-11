@@ -38,6 +38,6 @@ private:
     QString groupName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

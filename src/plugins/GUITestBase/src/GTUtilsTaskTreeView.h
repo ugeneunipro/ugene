@@ -70,6 +70,6 @@ private:
     static QString getTasksInfo(QList<U2::Task *> tasks, int level);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

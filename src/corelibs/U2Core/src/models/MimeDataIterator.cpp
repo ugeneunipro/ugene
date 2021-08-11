@@ -85,4 +85,4 @@ Folder MimeDataIterator::nextFolder() {
     return folders[folderIdx - 1];
 }
 
-}    // namespace U2
+}  // namespace U2

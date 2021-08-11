@@ -39,7 +39,6 @@
 #include <U2Lang/SchemaConfig.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLContainer.h>
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "OutputFileDialog.h"
@@ -183,16 +182,27 @@ void DoubleSpinBoxWidget::sl_valueChanged(double value) {
     emit si_valueChanged(value);
 }
 
+////////////////////////////////////
+//// ComboBoxWidgetBase
+
+ComboBoxWidgetBase::ComboBoxWidgetBase(QWidget *parent, const QSharedPointer<StringFormatter> &_formatter)
+    : PropertyWidget(parent), formatter(_formatter) {
+}
+
+QString ComboBoxWidgetBase::getFormattedItemText(const QString &itemKey) const {
+    return formatter.isNull() ? itemKey : formatter->format(itemKey);
+}
+
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent)
-    : PropertyWidget(parent) {
+ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
+    : ComboBoxWidgetBase(parent, formatter) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
-    foreach (const ComboItem p, items) {
-        comboBox->addItem(p.first, p.second);
+    for (const ComboItem &item : qAsConst(items)) {
+        comboBox->addItem(getFormattedItemText(item.first), item.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
@@ -245,7 +255,7 @@ QVariant ComboBoxEditableWidget::value() {
 void ComboBoxEditableWidget::setValue(const QVariant &value) {
     int idx = comboBox->findData(value);
     if (idx == -1) {
-        //try by text
+        // try by text
         idx = comboBox->findText(value.toString());
         if (idx == -1) {
             if (customIdx == -1) {
@@ -370,7 +380,7 @@ void ComboBoxWithDbUrlWidget::sl_browse() {
 
     if (QDialog::Accepted == dialogResult) {
         const QString dbUrlWithoutProvider = editDialog->getFullDbiUrl();
-        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);    // TODO: fix this hardcoded value when other shared DB providers appear
+        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);  // TODO: fix this hardcoded value when other shared DB providers appear
         const QString dbUrl = SharedDbUrlUtils::createDbUrl(dbiRef);
         SharedDbUrlUtils::saveNewDbConnection(editDialog->getName(), dbUrlWithoutProvider);
         updateComboValues();
@@ -409,8 +419,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), cm(nullptr), items(_items) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
+    : ComboBoxWidgetBase(parent, formatter), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -460,19 +470,28 @@ void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
         }
     }
 
-    comboBox->setItemText(0, value().toString());
+    comboBox->setItemText(0, getFormattedValue());
+}
+
+QString ComboBoxWithChecksWidget::getFormattedValue() {
+    QStringList selectedValues = value().toString().split(",");
+    QStringList formattedValues;
+    for (const QString &value : qAsConst(selectedValues)) {
+        formattedValues << getFormattedItemText(value);
+    }
+    return formattedValues.join(",");
 }
 
 void ComboBoxWithChecksWidget::initModelView() {
     cm = new QStandardItemModel(items.size(), 1, comboBox);
 
+    auto ghostItem = new QStandardItem(getFormattedValue());
     int i = 0;
-    auto ghostItem = new QStandardItem();
-    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
     cm->setItem(i++, ghostItem);
 
     for (auto it = items.begin(); it != items.end(); ++it) {
-        QStandardItem *item = new QStandardItem(it.key());
+        QString formattedValue = getFormattedItemText(it.key());
+        auto item = new QStandardItem(formattedValue);
         item->setCheckable(true);
         item->setEditable(false);
         item->setSelectable(false);
@@ -639,4 +658,4 @@ QString NoFileURLWidget::finalyze(const QString &url) {
     return finalyze(url, const_cast<DelegateTags *>(tags()));
 }
 
-}    // namespace U2
+}  // namespace U2

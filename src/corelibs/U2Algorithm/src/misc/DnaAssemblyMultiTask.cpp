@@ -107,4 +107,4 @@ QString DnaAssemblyMultiTask::generateReport() const {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

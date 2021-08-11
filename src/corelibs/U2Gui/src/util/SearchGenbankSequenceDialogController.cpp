@@ -335,4 +335,4 @@ void QueryBuilderController::sl_queryReturnPressed() {
     parentController->sl_searchButtonClicked();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -44,6 +44,6 @@ protected:
     virtual QList<Task *> onSubTaskFinished(Task *subTask);
 };
 
-}    //namespace U2
+}  // namespace U2
 
 #endif

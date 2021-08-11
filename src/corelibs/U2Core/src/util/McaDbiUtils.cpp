@@ -140,7 +140,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
             CHECK_OP(os, );
 
             // Create the row
-            dbRow.rowId = U2MsaRow::INVALID_ROW_ID;    // set the row ID automatically
+            dbRow.rowId = U2MsaRow::INVALID_ROW_ID;  // set the row ID automatically
             dbRow.chromatogramId = chromatogramRef.entityId;
             dbRow.sequenceId = sequenceRef.entityId;
             dbRow.gstart = 0;
@@ -309,7 +309,7 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef &mcaRef, qint64 rowId,
     qint64 endPosInSeq = -1;
 
     MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps, pos, 1, posInSeq, endPosInSeq);
-    if (posInSeq >= 0 && endPosInSeq > posInSeq) {    // not gap
+    if (posInSeq >= 0 && endPosInSeq > posInSeq) {  // not gap
         U2OpStatus2Log os;
         DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
         SAFE_POINT_OP(os, );
@@ -329,12 +329,12 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef &mcaRef, qint64 rowId,
     CHECK_OP(os, );
 }
 
-void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os) {
+void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus &os) {
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     CHECK_OP(os, );
-    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
-    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
+    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
     CHECK_OP(os, );
 
@@ -356,7 +356,7 @@ void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 r
         SAFE_POINT(posInSeq >= 0, "incorrect posInSeq value", );
         SAFE_POINT(endPosInSeq >= 0, "incorrect endPosInSeq value", );
 
-        if (posInSeq >= 0 && endPosInSeq > posInSeq) {    // not gap
+        if (posInSeq >= 0 && endPosInSeq > posInSeq) {  // not gap
             U2OpStatus2Log os;
             DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
             SAFE_POINT_OP(os, );
@@ -412,4 +412,4 @@ void McaDbiUtils::removeRegion(const U2EntityRef &entityRef, const qint64 rowId,
     SAFE_POINT_OP(os, );
 }
 
-}    // namespace U2
+}  // namespace U2

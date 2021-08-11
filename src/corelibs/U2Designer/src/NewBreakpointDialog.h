@@ -46,6 +46,6 @@ private:
     Ui_NewBreakpointDialog *ui;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _NEW_BREAKPOINT_DIALOG_H_
+#endif  // _NEW_BREAKPOINT_DIALOG_H_

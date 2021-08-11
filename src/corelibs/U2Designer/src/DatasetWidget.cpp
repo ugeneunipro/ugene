@@ -151,7 +151,7 @@ ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectTy
     return settings;
 }
 
-}    // namespace
+}  // namespace
 
 void URLListWidget::sl_sharedDbConnected() {
     SAFE_POINT(waitingForDbToConnect, "Unexpected database state", );
@@ -223,7 +223,7 @@ bool URLListWidget::readingFromDbIsSupported() const {
 void URLListWidget::sl_downButton() {
     CHECK(ui->itemsArea->selectedItems().size() > 0, );
 
-    for (int pos = ui->itemsArea->count() - 2; pos >= 0; pos--) {    // without last item
+    for (int pos = ui->itemsArea->count() - 2; pos >= 0; pos--) {  // without last item
         if (ui->itemsArea->item(pos)->isSelected()) {
             QListWidgetItem *item = ui->itemsArea->takeItem(pos);
             ui->itemsArea->insertItem(pos + 1, item);
@@ -236,7 +236,7 @@ void URLListWidget::sl_downButton() {
 void URLListWidget::sl_upButton() {
     CHECK(ui->itemsArea->selectedItems().size() > 0, );
 
-    for (int pos = 1; pos < ui->itemsArea->count(); pos++) {    // without first item
+    for (int pos = 1; pos < ui->itemsArea->count(); pos++) {  // without first item
         if (ui->itemsArea->item(pos)->isSelected()) {
             QListWidgetItem *item = ui->itemsArea->takeItem(pos);
             ui->itemsArea->insertItem(pos - 1, item);
@@ -332,4 +332,4 @@ void OptionsPopup::hideOptions() {
     hide();
 }
 
-}    // namespace U2
+}  // namespace U2

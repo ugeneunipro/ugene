@@ -175,7 +175,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
     const QPoint p = toRenderAreaPoint(me->pos());
     const Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
-    bool annotationEvent = false;    // true if mouse pressed in some annotation area
+    bool annotationEvent = false;  // true if mouse pressed in some annotation area
     if (renderArea->rect().contains(p) && me->button() == Qt::LeftButton && !singleBaseSelectionMode) {
         const Qt::KeyboardModifiers km = me->modifiers();
         const bool controlOrShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
@@ -213,7 +213,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                 if (processAllRegions) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
-                    int mousePressPos = renderArea->coordToPos(renderAreaPoint);
+                    qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
                     for (int i = 0; i < annotationRegions.size(); i++) {
                         const U2Region &region = annotationRegions[i];
                         if (region.contains(mousePressPos)) {
@@ -294,7 +294,7 @@ GSequenceLineViewAnnotatedRenderArea::GSequenceLineViewAnnotatedRenderArea(GSequ
     afNormalCharWidth = afmNormal->width('w');
     afSmallCharWidth = afmSmall->width('w');
 
-    QLinearGradient gradient(0, 0, 0, 1);    //vertical
+    QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setColorAt(0.00, QColor(255, 255, 255, 120));
     gradient.setColorAt(0.50, QColor(0, 0, 0, 0));
@@ -438,7 +438,7 @@ QList<Annotation *> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsBy
         uncertaintyLength = static_cast<qint64>(1 / scale);
         SAFE_POINT(uncertaintyLength < sequenceLength, "Invalid uncertaintyLength for the given seqLen!", resultAnnotationList);
     }
-    U2Region pointRegion(pos - uncertaintyLength, 1 + 2 * uncertaintyLength);    // A region of sequence covered by the 'QPoint& coord'.
+    U2Region pointRegion(pos - uncertaintyLength, 1 + 2 * uncertaintyLength);  // A region of sequence covered by the 'QPoint& coord'.
     const QSet<AnnotationTableObject *> annotationObjectSet = sequenceContext->getAnnotationObjects(true);
     for (const AnnotationTableObject *annotationObject : qAsConst(annotationObjectSet)) {
         for (Annotation *annotation : annotationObject->getAnnotationsByRegion(pointRegion)) {
@@ -462,7 +462,7 @@ QList<Annotation *> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsBy
                     }
                     AnnotationSettings *annotationSettings = annotationsSettingsRegistry->getAnnotationSettings(aData);
                     if (annotationSettings->visible && checkAnnotationRegionContainsYPoint(coord.y(), annotation, i, annotationSettings)) {
-                        resultAnnotationList.append(annotation);    // select whole annotation (all regions)
+                        resultAnnotationList.append(annotation);  // select whole annotation (all regions)
                         break;
                     }
                 }
@@ -482,4 +482,4 @@ bool GSequenceLineViewGridAnnotationRenderArea::checkAnnotationRegionContainsYPo
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

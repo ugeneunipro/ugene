@@ -221,10 +221,10 @@ void AlignmentLogoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     QString chStr(ch);
     path.addText(baseline, font, chStr);
 
-    //adjust item's height
+    // adjust item's height
     QRectF bound = path.boundingRect();
 
-    //epsilon value needed to avoid division by extremely small values and raising exception in qt gui
+    // epsilon value needed to avoid division by extremely small values and raising exception in qt gui
     qreal eps = 1e-3;
 
     qreal sx = qMax(charWidth / bound.width(), eps);
@@ -232,7 +232,7 @@ void AlignmentLogoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
     painter->scale(sx, sy);
 
-    //map baseline position to scaled coordinates
+    // map baseline position to scaled coordinates
     qreal offsetx = baseline.x() * (1 / sx - 1);
     qreal offsety = baseline.y() * (1 / sy - 1);
     painter->translate(offsetx, offsety);
@@ -241,4 +241,4 @@ void AlignmentLogoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->restore();
 }
 
-}    // namespace U2
+}  // namespace U2

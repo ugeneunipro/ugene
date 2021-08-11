@@ -38,7 +38,7 @@ DECLARE_TEST(AnnotationUnitTest, find_Qualifiers);
 DECLARE_TEST(AnnotationUnitTest, get_Group);
 DECLARE_TEST(AnnotationUnitTest, getSet_Case);
 
-}    //namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(AnnotationUnitTest, get_IdObjectData)
 DECLARE_METATYPE(AnnotationUnitTest, getSet_Name)
@@ -51,4 +51,4 @@ DECLARE_METATYPE(AnnotationUnitTest, find_Qualifiers)
 DECLARE_METATYPE(AnnotationUnitTest, get_Group)
 DECLARE_METATYPE(AnnotationUnitTest, getSet_Case)
 
-#endif    //_U2_ANNOTATION_TESTS_H_
+#endif  //_U2_ANNOTATION_TESTS_H_

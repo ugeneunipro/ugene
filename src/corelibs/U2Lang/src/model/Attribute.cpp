@@ -246,8 +246,8 @@ bool Attribute::validate(NotificationsList &notificationList) {
 }
 
 /*************************************
-*  AttributeScript
-*************************************/
+ *  AttributeScript
+ *************************************/
 AttributeScript::AttributeScript(const QString &t)
     : text(t) {
 }
@@ -303,4 +303,4 @@ void AttributeScript::setVarValueWithId(const QString &varName, const QVariant &
     }
 }
 
-}    // namespace U2
+}  // namespace U2

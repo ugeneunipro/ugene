@@ -296,4 +296,4 @@ QString ImportToDatabaseTask::sayAboutSkippedObjects() const {
     return tr("Just objects without a document:") + "<br>" + result;
 }
 
-}    // namespace U2
+}  // namespace U2

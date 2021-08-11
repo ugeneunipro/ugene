@@ -33,7 +33,7 @@ namespace U2 {
 
 const GObjectType PFMatrixObject::TYPE("pfm-obj");
 
-//PFMatrixObject
+// PFMatrixObject
 //////////////////////////////////////////////////////////////////////////
 
 U2PFMatrix::U2PFMatrix()
@@ -48,7 +48,7 @@ U2DataType U2PFMatrix::getType() const {
     return U2Type::PFMatrix;
 }
 
-//PFMatrixObject
+// PFMatrixObject
 //////////////////////////////////////////////////////////////////////////
 PFMatrixObject *PFMatrixObject::createInstance(const PFMatrix &matrix, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap) {
     U2PFMatrix object(dbiRef);
@@ -101,4 +101,4 @@ GObject *PFMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
     return dst;
 }
 
-}    // namespace U2
+}  // namespace U2

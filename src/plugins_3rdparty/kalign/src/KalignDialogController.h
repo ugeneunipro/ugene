@@ -22,13 +22,14 @@
 #ifndef _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
 #define _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
 
+#include <ui_KalignDialog.h>
+
 #include <QDialog>
 
 #include <U2Core/GAutoDeleteList.h>
 
 #include <U2Gui/DialogUtils.h>
 
-#include <ui_KalignDialog.h>
 #include "KalignTask.h"
 
 namespace U2 {
@@ -39,7 +40,7 @@ class KalignDialogController : public QDialog, public Ui_KalignDialog {
     Q_OBJECT
 
 public:
-    KalignDialogController(QWidget* w, const MultipleSequenceAlignment& ma, KalignTaskSettings& settings);
+    KalignDialogController(QWidget *w, const MultipleSequenceAlignment &ma, KalignTaskSettings &settings);
     bool translateToAmino();
     QString getTranslationId();
 
@@ -47,16 +48,16 @@ public slots:
     void accept();
 
 private:
-    void setupUiExt(); 
-    MultipleSequenceAlignment                          ma;
-    KalignTaskSettings&                 settings;
+    void setupUiExt();
+    MultipleSequenceAlignment ma;
+    KalignTaskSettings &settings;
 };
 
 class KalignAlignWithExtFileSpecifyDialogController : public QDialog, public Ui_KalignDialog {
     Q_OBJECT
 
 public:
-    KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& settings);
+    KalignAlignWithExtFileSpecifyDialogController(QWidget *w, KalignTaskSettings &settings);
 
 public slots:
     void accept();
@@ -67,10 +68,9 @@ private slots:
 private:
     void initSaveController();
 
-    KalignTaskSettings&                 settings;
-    SaveDocumentController *            saveController;
+    KalignTaskSettings &settings;
+    SaveDocumentController *saveController;
 };
 
-
-}//namespace
+}  // namespace U2
 #endif

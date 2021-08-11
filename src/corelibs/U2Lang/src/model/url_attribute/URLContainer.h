@@ -89,9 +89,9 @@ public:
     virtual void accept(URLContainerVisitor *visitor);
 
     /**
-    * Validates filtered files inside the folder
-    * are present and accessible for reading.
-    */
+     * Validates filtered files inside the folder
+     * are present and accessible for reading.
+     */
     virtual bool validateUrl(NotificationsList &notificationList);
 
     const QString &getIncludeFilter() const;
@@ -145,6 +145,6 @@ public:
     virtual void visit(DbFolderUrlContainer *) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_URL_CONTAINER_H_
+#endif  // _U2_URL_CONTAINER_H_

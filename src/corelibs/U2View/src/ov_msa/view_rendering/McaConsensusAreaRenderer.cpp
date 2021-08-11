@@ -54,4 +54,4 @@ void McaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRende
     }
 }
 
-}    // namespace U2
+}  // namespace U2

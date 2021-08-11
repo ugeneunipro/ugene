@@ -173,7 +173,7 @@ bool FileAndDirectoryUtils::canWriteToPath(const QString &absoluteDirPath) {
         // Get upper folder
         QString dirPath = existenDir.path();
         QString dirName = existenDir.dirName();
-        dirPath.remove(    // remove dir name and slash (if any) from the path
+        dirPath.remove(  // remove dir name and slash (if any) from the path
             dirPath.length() - dirName.length() - 1,
             dirName.length() + 1);
         if (dirPath.isEmpty()) {
@@ -194,4 +194,4 @@ bool FileAndDirectoryUtils::canWriteToPath(const QString &absoluteDirPath) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

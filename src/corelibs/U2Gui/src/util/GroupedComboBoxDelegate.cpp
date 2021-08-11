@@ -81,4 +81,4 @@ void GroupedComboBoxDelegate::addUngroupedItem(QStandardItemModel *model, const 
     model->appendRow(item);
 }
 
-}    // namespace U2
+}  // namespace U2

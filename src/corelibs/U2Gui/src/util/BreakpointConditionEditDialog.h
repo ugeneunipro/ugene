@@ -58,6 +58,6 @@ private:
     Ui_BreakpointConditionEditDialog *ui;
 };
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_BREAKPOINT_CONDITION_EDIT_DIALOG_H_
+#endif  // _U2_BREAKPOINT_CONDITION_EDIT_DIALOG_H_

@@ -22,10 +22,12 @@
 #ifndef _U2_MUSCLE_ALIGN_DIALOG_CONTROLLER_H_
 #define _U2_MUSCLE_ALIGN_DIALOG_CONTROLLER_H_
 
+#include <ui_MuscleAlignDialog.h>
+
 #include <QDialog>
 
 #include <U2Core/GAutoDeleteList.h>
-#include <ui_MuscleAlignDialog.h>
+
 #include <U2Gui/DialogUtils.h>
 
 #include "MuscleTask.h"
@@ -36,8 +38,9 @@ class SaveDocumentController;
 
 class MuscleAlignPreset {
 public:
-    virtual ~MuscleAlignPreset(){}
-    virtual void apply(MuscleTaskSettings& ts) const = 0;
+    virtual ~MuscleAlignPreset() {
+    }
+    virtual void apply(MuscleTaskSettings &ts) const = 0;
 
     QString name;
     QString desc;
@@ -46,8 +49,8 @@ public:
 class DefaultModePreset : public MuscleAlignPreset {
 public:
     DefaultModePreset();
-    virtual void apply(MuscleTaskSettings& ts) const {
-        //no options
+    virtual void apply(MuscleTaskSettings &ts) const {
+        // no options
         ts.reset();
     }
 };
@@ -56,7 +59,7 @@ class LargeModePreset : public MuscleAlignPreset {
 public:
     LargeModePreset();
 
-    virtual void apply(MuscleTaskSettings& ts) const {
+    virtual void apply(MuscleTaskSettings &ts) const {
         ts.reset();
         ts.maxIterations = 2;
     }
@@ -65,41 +68,39 @@ public:
 class RefineModePreset : public MuscleAlignPreset {
 public:
     RefineModePreset();
-    virtual void apply(MuscleTaskSettings& ts) const {
+    virtual void apply(MuscleTaskSettings &ts) const {
         ts.reset();
         ts.op = MuscleTaskOp_Refine;
     }
 };
 
-
 class MuscleAlignDialogController : public QDialog, public Ui_MuscleAlignmentDialog {
     Q_OBJECT
 
 public:
-    MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& ma, MuscleTaskSettings& settings);
+    MuscleAlignDialogController(QWidget *w, const MultipleSequenceAlignment &ma, MuscleTaskSettings &settings);
     bool translateToAmino();
-    QString getTranslationId();    
+    QString getTranslationId();
 public slots:
     void accept();
 
 private slots:
     void sl_onPresetChanged(int current);
-    
+
 private:
     void initPresets();
 
-    MultipleSequenceAlignment                          ma;
-    MuscleTaskSettings&                 settings;
-    GAutoDeleteList<MuscleAlignPreset>  presets;
-
+    MultipleSequenceAlignment ma;
+    MuscleTaskSettings &settings;
+    GAutoDeleteList<MuscleAlignPreset> presets;
 };
 
 class MuscleAlignWithExtFileSpecifyDialogController : public QDialog, public Ui_MuscleAlignmentDialog {
     Q_OBJECT
 
 public:
-    MuscleAlignWithExtFileSpecifyDialogController(QWidget* w, MuscleTaskSettings& settings);
-    
+    MuscleAlignWithExtFileSpecifyDialogController(QWidget *w, MuscleTaskSettings &settings);
+
 public slots:
     void accept();
 
@@ -111,11 +112,10 @@ private:
     void initPresets();
     void initSaveController();
 
-    MuscleTaskSettings&                 settings;
-    GAutoDeleteList<MuscleAlignPreset>  presets;
-    SaveDocumentController *            saveController;
+    MuscleTaskSettings &settings;
+    GAutoDeleteList<MuscleAlignPreset> presets;
+    SaveDocumentController *saveController;
 };
 
-
-}//namespace
+}  // namespace U2
 #endif

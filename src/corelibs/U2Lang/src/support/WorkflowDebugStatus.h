@@ -145,6 +145,6 @@ private:
     static QList<BreakpointLabel> existingBreakpointLabels;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_DEBUG_STATUS_H_
+#endif  // _U2_WORKFLOW_DEBUG_STATUS_H_

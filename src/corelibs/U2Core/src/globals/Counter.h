@@ -90,6 +90,6 @@ public:
     static GCounter cvar(name, "", 0, 1, true, false); \
     cvar.value += 1;
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

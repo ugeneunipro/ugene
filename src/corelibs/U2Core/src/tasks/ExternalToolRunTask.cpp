@@ -183,7 +183,7 @@ void ExternalToolRunTask::parseError(const QString &error) const {
 }
 
 ////////////////////////////////////////
-//ExternalToolSupportTask
+// ExternalToolSupportTask
 void ExternalToolSupportTask::setListenerForTask(ExternalToolRunTask *runTask, int listenerNumber) {
     CHECK(listeners.size() > listenerNumber, );
     runTask->addOutputListener(listeners.at(listenerNumber));
@@ -200,7 +200,7 @@ ExternalToolListener *ExternalToolSupportTask::getListener(int listenerNumber) {
 }
 
 ////////////////////////////////////////
-//ExternalToolRunTaskHelper
+// ExternalToolRunTaskHelper
 ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(ExternalToolRunTask *t)
     : os(t->stateInfo), logParser(t->logParser), process(t->externalToolProcess), listener(nullptr) {
     logData.resize(1000);
@@ -224,7 +224,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     }
     int numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     while (numberReadChars > 0) {
-        //call log parser
+        // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
         if (nullptr != listener) {
@@ -244,7 +244,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     }
     int numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
     while (numberReadChars > 0) {
-        //call log parser
+        // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
         if (nullptr != listener) {
@@ -268,7 +268,7 @@ void ExternalToolRunTaskHelper::processErrorToLog() {
 }
 
 ////////////////////////////////////////
-//ExternalToolLogParser
+// ExternalToolLogParser
 ExternalToolLogParser::ExternalToolLogParser(bool _writeErrorsToLog) {
     progress = -1;
     lastLine = "";
@@ -280,7 +280,7 @@ ExternalToolLogParser::ExternalToolLogParser(bool _writeErrorsToLog) {
 void ExternalToolLogParser::parseOutput(const QString &partOfLog) {
     lastPartOfLog = partOfLog.split(QRegularExpression("\\r?\\n"));
     lastPartOfLog.first() = lastLine + lastPartOfLog.first();
-    //It's a possible situation, that one message will be processed twice
+    // It's a possible situation, that one message will be processed twice
     lastLine = lastPartOfLog.last();
     foreach (const QString &buf, lastPartOfLog) {
         processLine(buf);
@@ -290,7 +290,7 @@ void ExternalToolLogParser::parseOutput(const QString &partOfLog) {
 void ExternalToolLogParser::parseErrOutput(const QString &partOfLog) {
     lastPartOfLog = partOfLog.split(QRegularExpression("\\r?\\n"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
-    //It's a possible situation, that one message will be processed twice
+    // It's a possible situation, that one message will be processed twice
     lastErrLine = lastPartOfLog.last();
     foreach (const QString &buf, lastPartOfLog) {
         processErrLine(buf);
@@ -325,7 +325,7 @@ void ExternalToolLogParser::setLastError(const QString &value) {
 }
 
 ////////////////////////////////////////
-//ExternalToolSupportUtils
+// ExternalToolSupportUtils
 void ExternalToolSupportUtils::removeTmpDir(const QString &tmpDirUrl, U2OpStatus &os) {
     if (tmpDirUrl.isEmpty()) {
         os.setError(tr("Can not remove temporary folder: path is empty."));
@@ -465,9 +465,9 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolId, const
 QString ExternalToolSupportUtils::prepareArgumentsForCmdLine(const QStringList &arguments) {
     QString argumentsLine;
     foreach (QString argumentStr, arguments) {
-        //Find start of the parameter value
+        // Find start of the parameter value
         int startIndex = argumentStr.indexOf('=') + 1;
-        //Add quotes if parameter contains whitespace characters
+        // Add quotes if parameter contains whitespace characters
         QString valueStr = argumentStr.mid(startIndex);
         if (valueStr.contains(' ') || valueStr.contains('\t')) {
             argumentStr.append('"');
@@ -607,4 +607,4 @@ const QString &ExternalToolListener::getToolName() const {
     return toolName;
 }
 
-}    // namespace U2
+}  // namespace U2

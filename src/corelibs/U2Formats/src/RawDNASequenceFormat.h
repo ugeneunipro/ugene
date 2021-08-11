@@ -46,6 +46,6 @@ protected:
     Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

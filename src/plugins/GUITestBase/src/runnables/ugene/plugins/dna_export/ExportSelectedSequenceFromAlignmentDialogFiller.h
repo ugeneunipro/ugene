@@ -48,6 +48,6 @@ private:
     bool keepGaps, addToProj;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H
+#endif  // EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H

@@ -45,6 +45,6 @@ private:
     qint64 offset;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_BLOB_INPUT_STREAM_H_
+#endif  // _U2_MYSQL_BLOB_INPUT_STREAM_H_

@@ -57,7 +57,7 @@ public:
 private:
     QString id;
     QString nextId;
-    QMap<Predicate, QString> nextIds;    // predicate <-> id
+    QMap<Predicate, QString> nextIds;  // predicate <-> id
     QString title;
 
     TemplatedPageContent *content;
@@ -111,8 +111,8 @@ private:
     LogoWidget *logoArea;
     WidgetsArea *paramsArea;
 
-    static const int HEIGHT;    // px
-    static const int WIDTH;    // px
+    static const int HEIGHT;  // px
+    static const int WIDTH;  // px
 
 public:
     static const QString ID;
@@ -125,6 +125,6 @@ public:
     virtual void visit(DefaultPageContent *) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDPAGE_H_
+#endif  // _U2_WIZARDPAGE_H_

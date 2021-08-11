@@ -46,8 +46,8 @@ GUI_TEST_CLASS_DECLARATION(test_0008_1)
 GUI_TEST_CLASS_DECLARATION(test_0008_2)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view
+}  // namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_TEST_FROM_PROJECT_VIEW_H_
+#endif  // _U2_GUI_TEST_FROM_PROJECT_VIEW_H_

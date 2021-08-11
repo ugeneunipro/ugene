@@ -144,7 +144,7 @@ void GTest_FindEnzymes::prepare() {
         return;
     }
 
-    //get sequence object
+    // get sequence object
     seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
     if (seqObj == nullptr) {
         stateInfo.setError(QString("Sequence context not found %1").arg(seqObjCtx));
@@ -191,7 +191,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
     if (hasError() || isCanceled()) {
         return Task::ReportResult_Finished;
     }
-    //for each enzyme from resultsPerEnzyme check that all annotations are present
+    // for each enzyme from resultsPerEnzyme check that all annotations are present
     foreach (const QString &enzymeId, resultsPerEnzyme.keys()) {
         QList<U2Region> regions = resultsPerEnzyme.values(enzymeId);
         AnnotationGroup *ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
@@ -279,7 +279,7 @@ void GTest_DigestIntoFragments::prepare() {
         return;
     }
 
-    //get sequence object
+    // get sequence object
     seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
     if (seqObj == nullptr) {
         stateInfo.setError(QString("Sequence context not found %1").arg(seqObjCtx));
@@ -467,4 +467,4 @@ QList<XMLTestFactory *> EnzymeTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -24,6 +24,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {
@@ -71,7 +72,8 @@ TextDocumentFormat::TextDocumentFormat(QObject *p, const DocumentFormatId &id, D
 }
 
 FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryData, const GUrl &url) const {
-    QTextStream stream(rawBinaryData, QIODevice::ReadOnly);    // Use QTextStream to auto-detect multi-byte encoding.
+    GTIMER(c1, t1, "TextDocumentFormat::checkRawData");
+    QTextStream stream(rawBinaryData, QIODevice::ReadOnly);  // Use QTextStream to auto-detect multi-byte encoding.
     QString text = stream.readAll();
     // QTextStream does not provide any info if the codec was successfully detected or not and
     // fall backs to a local 8-bit in case if it can't find a correct codec.
@@ -92,14 +94,16 @@ FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryDa
 }
 
 Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+    GTIMER(c1, t1, "TextDocumentFormat::loadDocument");
     CHECK_OP(os, nullptr);
-    IOAdapterReader reader(io);    // TODO: store codec in the result document hints.
+    IOAdapterReader reader(io);  // TODO: store codec in the result document hints.
     Document *document = loadTextDocument(reader, dbiRef, hints, os);
     SAFE_POINT(document != nullptr || os.hasError(), "Either document must not be null or there must be an error!", document);
     return document;
 }
 
 DNASequence *TextDocumentFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
+    GTIMER(c1, t1, "TextDocumentFormat::loadSequence");
     CHECK_OP(os, nullptr);
     if (io->isEof()) {
         return nullptr;
@@ -114,7 +118,8 @@ DNASequence *TextDocumentFormat::loadTextSequence(IOAdapterReader &, U2OpStatus 
 }
 
 void TextDocumentFormat::storeDocument(Document *document, IOAdapter *io, U2OpStatus &os) {
-    IOAdapterWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
+    GTIMER(c1, t1, "TextDocumentFormat::storeDocument");
+    IOAdapterWriter writer(io);  // TODO: re-use original codec if possible (store it in the document hints while loading).
     storeTextDocument(writer, document, os);
 }
 
@@ -123,7 +128,7 @@ void TextDocumentFormat::storeTextDocument(IOAdapterWriter &, Document *, U2OpSt
 }
 
 void TextDocumentFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    IOAdapterWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
+    IOAdapterWriter writer(io);  // TODO: re-use original codec if possible (store it in the document hints while loading).
     storeTextEntry(writer, objectsMap, os);
 }
 
@@ -131,4 +136,4 @@ void TextDocumentFormat::storeTextEntry(IOAdapterWriter & /*writer*/, const QMap
     os.setError(tr("The document format does not support writing of documents in streaming mode: %1").arg(getFormatId()));
 }
 
-}    // namespace U2
+}  // namespace U2

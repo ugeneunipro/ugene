@@ -281,4 +281,4 @@ void MsaEditorAlignmentDependentWidget::sl_onFontChanged(const QFont &font) {
     nameWidget.setFont(font);
 }
 
-}    // namespace U2
+}  // namespace U2

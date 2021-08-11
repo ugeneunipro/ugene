@@ -265,7 +265,7 @@ DECLARE_TEST(MsaUnitTests, operNotEqual_notEqual);
 DECLARE_TEST(MsaUnitTests, hasEmptyGapModel_gaps);
 DECLARE_TEST(MsaUnitTests, hasEmptyGapModel_noGaps);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(MsaUnitTests, clear_notEmpty);
 DECLARE_METATYPE(MsaUnitTests, name_ctor);

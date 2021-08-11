@@ -69,4 +69,4 @@ void McaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *menu) 
     alignmentMenu->addAction(list.first());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -49,7 +49,7 @@ public:
     int getAskToSaveProject() const;
     void setAskToSaveProject(int v);
 
-    //a style selected by user
+    // a style selected by user
     QString getVisualStyle() const;
     void setVisualStyle(const QString &newStyle);
 
@@ -106,6 +106,6 @@ private:
     bool cleanupTmpDir;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

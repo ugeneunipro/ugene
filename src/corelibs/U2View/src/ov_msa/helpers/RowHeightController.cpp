@@ -135,7 +135,7 @@ U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const
 
 U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) const {
     MaCollapseModel *collapseModel = ui->getEditor()->getCollapseModel();
-    if (collapseModel->getViewRowCount() == 0) {    // empty alignment.
+    if (collapseModel->getViewRowCount() == 0) {  // empty alignment.
         return U2Region(-OUT_OF_RANGE_OFFSET, 0);
     }
     int viewRowCount = collapseModel->getViewRowCount();
@@ -182,4 +182,4 @@ U2Region RowHeightController::getScreenYRegionByViewRowIndex(int viewRowIndex) c
     return mapGlobalToScreen(getGlobalYRegionByViewRowIndex(viewRowIndex));
 }
 
-}    // namespace U2
+}  // namespace U2

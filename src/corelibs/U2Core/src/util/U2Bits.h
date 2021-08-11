@@ -90,11 +90,11 @@ public:
 };
 
 inline int U2Bits::getBitInByte(int pos) {
-    return pos & 7;    // use last 3 bits
+    return pos & 7;  // use last 3 bits
 }
 
 inline int U2Bits::getByteIndex(int bit) {
-    return (bit >> 3);    // we store 8 bits (2^3) per word
+    return (bit >> 3);  // we store 8 bits (2^3) per word
 }
 
 inline int U2Bits::getNumberOfBytes(int nBits) {
@@ -129,6 +129,6 @@ inline qint64 U2Bits::makeFirstNSignedBitsValue(int nBits) {
     return ~res;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

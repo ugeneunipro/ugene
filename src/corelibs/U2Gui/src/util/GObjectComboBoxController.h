@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-//TODO: use custom class for objects filtering, share it with ProjectTreeController
+// TODO: use custom class for objects filtering, share it with ProjectTreeController
 
 class GObjectComboBoxControllerConstraints {
 public:
@@ -84,6 +84,6 @@ private:
     QIcon unloadedObjectIcon;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

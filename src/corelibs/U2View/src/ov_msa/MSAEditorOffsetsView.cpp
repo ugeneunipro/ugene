@@ -225,4 +225,4 @@ void MSAEditorOffsetsViewWidget::drawRefSequence(QPainter &p, const QRect &r) {
     p.fillRect(r, QColor("#9999CC"));
 }
 
-}    // namespace U2
+}  // namespace U2

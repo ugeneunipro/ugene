@@ -380,6 +380,6 @@ private:
     U2Dbi *rootDbi;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

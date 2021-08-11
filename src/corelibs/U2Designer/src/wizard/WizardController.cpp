@@ -113,7 +113,7 @@ void WizardController::setupButtons(QWizard *gui) {
     QList<QWizard::WizardButton> order;
     order << QWizard::Stretch << QWizard::BackButton << QWizard::NextButton << QWizard::FinishButton << QWizard::CancelButton;
     if (!wizard->getHelpPageId().isEmpty()) {
-        //TODO: manually add button as in other layouts (mac, win, kde, gnome)
+        // TODO: manually add button as in other layouts (mac, win, kde, gnome)
         order << QWizard::HelpButton;
     }
 
@@ -234,7 +234,7 @@ public:
 private:
     WizardController *wc;
 };
-}    // namespace
+}  // namespace
 
 void WizardController::defaults(QWizardPage *wPage) {
     WizardPage *page = findPage(wPage);
@@ -272,9 +272,9 @@ void WizardController::sl_pageChanged(int num) {
 bool WizardController::eventFilter(QObject *watched, QEvent *event) {
     CHECK(nullptr != event, false);
 
-    if (event->type() == QEvent::Close) {    // if close button is pressed
+    if (event->type() == QEvent::Close) {  // if close button is pressed
         rejected = true;
-    } else if (event->type() == QEvent::KeyPress) {    // if ESC is pressed
+    } else if (event->type() == QEvent::KeyPress) {  // if ESC is pressed
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
         CHECK(nullptr != keyEvent, QObject::eventFilter(watched, event));
 
@@ -548,7 +548,7 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
             AttributeInfo related(info.actorId, otherAttr->getId());
             if (propertyControllers.contains(related.toString())) {
                 bool isVisible = true;
-                //isVisible &= isAttributeVisible(masterAttribute);
+                // isVisible &= isAttributeVisible(masterAttribute);
                 isVisible &= relation->getAffectResult(value, getAttributeValue(related)).toBool();
                 propertyControllers[related.toString()]->updateVisibility(isVisible);
             }
@@ -771,7 +771,7 @@ void PageContentCreator::visit(DefaultPageContent *content) {
     contentLayout->setContentsMargins(0, 0, 0, 0);
     int paramsHeight = content->getPageDefaultHeight();
     int paramsWidth = content->getPageWidth();
-    {    // create logo
+    {  // create logo
         WidgetCreator logoWC(wc);
         content->getLogoArea()->accept(&logoWC);
         if (nullptr != logoWC.getResult()) {
@@ -783,10 +783,10 @@ void PageContentCreator::visit(DefaultPageContent *content) {
     }
     createTitle(contentLayout);
     createSubTitle(contentLayout);
-    {    //TODO: compute real title and subtitle height
+    {  // TODO: compute real title and subtitle height
         paramsHeight = 0;
     }
-    {    // create parameters
+    {  // create parameters
         WidgetCreator paramsWC(wc);
         content->getParamsArea()->accept(&paramsWC);
         if (nullptr != paramsWC.getResult()) {
@@ -798,7 +798,7 @@ void PageContentCreator::visit(DefaultPageContent *content) {
             paramsWC.getResult()->setMinimumSize(paramsWidth, paramsHeight);
             controllers << paramsWC.getControllers();
 
-            //let it process attribute relations
+            // let it process attribute relations
             foreach (WidgetController *wcc, controllers) {
                 PropertyWizardController *pwc = qobject_cast<PropertyWizardController *>(wcc);
                 if (pwc) {
@@ -872,7 +872,7 @@ GroupBox::GroupBox(bool collapsible, const QString &title, bool fullWidth)
 #ifdef Q_OS_DARWIN
     layout->setContentsMargins(0, 0, 0, 0);
     QString style = "QGroupBox  {"
-                    "margin-top: 30px;"    // leave space at the top for the title
+                    "margin-top: 30px;"  // leave space at the top for the title
                     "padding: 5 5 5 5px;"
                     "}"
 
@@ -948,4 +948,4 @@ void GroupBox::changeView(const QString &buttonText, const QString &showHide) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

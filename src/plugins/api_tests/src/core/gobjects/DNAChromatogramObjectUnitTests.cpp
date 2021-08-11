@@ -199,4 +199,4 @@ IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, remove) {
     CHECK_TRUE(records.isEmpty(), "records");
 }
 
-}    // namespace U2
+}  // namespace U2

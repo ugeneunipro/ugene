@@ -166,4 +166,4 @@ void QDSamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

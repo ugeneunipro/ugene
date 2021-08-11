@@ -260,9 +260,9 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
+void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os) {
     for (int i = 0; i < getNumRows(); i++) {
-        const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
+        const MultipleChromatogramAlignmentRow &mcaRow = static_cast<const MultipleChromatogramAlignmentRow &>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
         QHash<qint64, char> newCharList;
@@ -290,7 +290,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
             newCharList.insert(gappedPos, newChar);
         }
 
-        const MultipleAlignment& ma = getMultipleAlignment();
+        const MultipleAlignment &ma = getMultipleAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
         McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharList, os);
         SAFE_POINT_OP(os, );
@@ -343,4 +343,4 @@ int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
     return lengthWithoutGaps + gapLength;
 }
 
-}    // namespace U2
+}  // namespace U2

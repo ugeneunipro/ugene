@@ -70,6 +70,6 @@ private:
     QSet<QString> getUniqueAnnotationNames(ADVSequenceObjectContext *seq);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

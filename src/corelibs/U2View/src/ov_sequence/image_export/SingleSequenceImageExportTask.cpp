@@ -77,7 +77,7 @@ void SequenceImageExportToSvgTask::run() {
     painter->paint(p, customSettings.data());
 
     bool result = p.end();
-    //fix for UGENE-76
+    // fix for UGENE-76
     QDomDocument doc("svg");
     QFile file(settings.fileName);
     bool ok = file.open(QIODevice::ReadOnly);
@@ -121,4 +121,4 @@ void SequenceImageExportToBitmapTask::run() {
     CHECK_EXT(im.save(settings.fileName, qPrintable(settings.format), settings.imageQuality), setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 }
 
-}    // namespace U2
+}  // namespace U2

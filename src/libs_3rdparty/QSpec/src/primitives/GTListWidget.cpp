@@ -113,4 +113,4 @@ QStringList GTListWidget::getItems(GUITestOpStatus &os, QListWidget *listWidget)
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
-}    // namespace HI
+}  // namespace HI

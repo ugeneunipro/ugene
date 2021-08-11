@@ -77,4 +77,4 @@ ImportWidget *DocumentImporter::createImportWidget(const GUrl &url, const QVaria
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

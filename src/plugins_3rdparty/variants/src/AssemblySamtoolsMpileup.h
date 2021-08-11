@@ -22,9 +22,9 @@
 #ifndef _U2_ASSEMBLY_SAMTOOLS_MPILEUP_H_
 #define _U2_ASSEMBLY_SAMTOOLS_MPILEUP_H_
 
-#include <U2Core/global.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Task.h>
+#include <U2Core/global.h>
 
 #include <U2Lang/LocalDomain.h>
 
@@ -32,53 +32,52 @@ namespace U2 {
 
 class LoadDocumentTask;
 
-namespace LocalWorkflow{
+namespace LocalWorkflow {
 
-class CallVariantsTaskSettings{
-    public:
-
+class CallVariantsTaskSettings {
+public:
     QString variationsUrl;
     QList<QString> assemblyUrls;
-    QString refSeqUrl; // TODO: change to sequence ID
+    QString refSeqUrl;  // TODO: change to sequence ID
 
-    //mpileup
-    bool    illumina13;
-    bool    use_orphan;
-    bool    disable_baq;
-    int     capq_thres;
-    int     max_depth;
-    bool    ext_baq;
+    // mpileup
+    bool illumina13;
+    bool use_orphan;
+    bool disable_baq;
+    int capq_thres;
+    int max_depth;
+    bool ext_baq;
     QByteArray bed;
     QByteArray reg;
-    int     min_mq;
-    int     min_baseq;
-    int     extq;
-    int     tandemq;
-    bool    no_indel;
-    int     max_indel_depth;
-    int     openq;
+    int min_mq;
+    int min_baseq;
+    int extq;
+    int tandemq;
+    bool no_indel;
+    int max_indel_depth;
+    int openq;
     QByteArray pl_list;
-    
-    //bcf view
-    bool    keepalt;
-    bool    fix_pl;
-    bool    no_geno;
-    bool    acgt_only;
-    QByteArray bcf_bed;
-    bool    qcall;
-    QByteArray samples;
-    float   min_smpl_frac;
-    bool    call_gt;
-    float   indel_frac;
-    float   pref;
-    QByteArray ptype;
-    float   theta;
-    QByteArray ccall;
-    int     n1;
-    int     n_perm;
-    float   min_perm_p;
 
-    //varFilter
+    // bcf view
+    bool keepalt;
+    bool fix_pl;
+    bool no_geno;
+    bool acgt_only;
+    QByteArray bcf_bed;
+    bool qcall;
+    QByteArray samples;
+    float min_smpl_frac;
+    bool call_gt;
+    float indel_frac;
+    float pref;
+    QByteArray ptype;
+    float theta;
+    QByteArray ccall;
+    int n1;
+    int n_perm;
+    float min_perm_p;
+
+    // varFilter
     int minQual;
     int minDep;
     int maxDep;
@@ -97,7 +96,7 @@ class CallVariantsTaskSettings{
     QStringList getVarFilterArgs() const;
 };
 
-class SamtoolsMpileupTask : public ExternalToolSupportTask{
+class SamtoolsMpileupTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     SamtoolsMpileupTask(const CallVariantsTaskSettings &settings);
@@ -121,31 +120,38 @@ private:
 class CallVariantsTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    CallVariantsTask(const CallVariantsTaskSettings& _settings, DbiDataStorage* _store);
+    CallVariantsTask(const CallVariantsTaskSettings &_settings, DbiDataStorage *_store);
 
     void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    const QList<QVariantMap>& getResults(){return results;}
-    QString getResultUrl(){return settings.variationsUrl;}
-    void clearResults(){results.clear();}
+    const QList<QVariantMap> &getResults() {
+        return results;
+    }
+    QString getResultUrl() {
+        return settings.variationsUrl;
+    }
+    void clearResults() {
+        results.clear();
+    }
 
     static QString tmpFilePath(const QString &baseName, const QString &ext, U2OpStatus &os);
 
 private:
-    enum FileType {Reference, Assembly};
+    enum FileType { Reference,
+                    Assembly };
     static QString toString(FileType type);
     bool ensureFileExists(const QString &url, FileType type);
 
 private:
-    CallVariantsTaskSettings    settings;
-    LoadDocumentTask*       loadTask;
-    SamtoolsMpileupTask*    mpileupTask;
-    DbiDataStorage*         storage;
-    QList<QVariantMap>      results;
+    CallVariantsTaskSettings settings;
+    LoadDocumentTask *loadTask;
+    SamtoolsMpileupTask *mpileupTask;
+    DbiDataStorage *storage;
+    QList<QVariantMap> results;
 };
 
-}
-}//namespace
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif //_U2_ASSEMBLY_SAMTOOLS_MPILEUP_H_
+#endif  //_U2_ASSEMBLY_SAMTOOLS_MPILEUP_H_

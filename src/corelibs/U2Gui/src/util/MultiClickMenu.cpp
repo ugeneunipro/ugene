@@ -60,4 +60,4 @@ bool MultiClickMenu::isSelectEvent(QEvent *event) {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

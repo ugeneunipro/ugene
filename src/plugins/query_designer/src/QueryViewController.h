@@ -255,6 +255,6 @@ public:
     static QPixmap generateSnapShot(QueryScene *scene, const QRect &rect);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

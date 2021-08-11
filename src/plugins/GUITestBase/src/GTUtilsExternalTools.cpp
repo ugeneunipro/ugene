@@ -116,4 +116,4 @@ void GTUtilsExternalTools::setToolUrl(HI::GUITestOpStatus &os, const QString &to
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

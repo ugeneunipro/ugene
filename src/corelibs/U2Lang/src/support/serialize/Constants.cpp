@@ -113,5 +113,5 @@ const QString Constants::INTEGRATED_TOOL_ID = "integrated-tool-id";
 const QString Constants::ADD_TO_DASHBOARD = "add-to-dashboard";
 const QString Constants::OPEN_WITH_UGENE = "open-with-ugene";
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2

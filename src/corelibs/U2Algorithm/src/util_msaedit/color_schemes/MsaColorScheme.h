@@ -48,7 +48,7 @@ class U2ALGORITHM_EXPORT MsaColorScheme : public QObject {
 public:
     MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
-    //Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
+    // Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
     virtual QColor getBackgroundColor(int seq, int pos, char c) const = 0;
     virtual QColor getFontColor(int seq, int pos, char c) const = 0;
 
@@ -151,6 +151,6 @@ private:
     QList<MsaColorSchemeCustomFactory *> customColorers;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_COLOR_SCHEME_H_
+#endif  // _U2_MSA_COLOR_SCHEME_H_

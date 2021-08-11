@@ -42,7 +42,7 @@ public:
     virtual Task *tick();
     virtual void cleanup();
 
-    //for files in the report
+    // for files in the report
     virtual QStringList getOutputFiles();
 
 private:
@@ -52,7 +52,7 @@ private:
 
 private slots:
     void sl_taskFinished();
-};    // GeneByGeneReportWorker
+};  // GeneByGeneReportWorker
 
 class GeneByGeneReportWorkerFactory : public DomainFactory {
 public:
@@ -63,7 +63,7 @@ public:
     }
     static void init();
     virtual Worker *createWorker(Actor *a);
-};    // GeneByGeneReportWorkerFactory
+};  // GeneByGeneReportWorkerFactory
 
 class GeneByGeneReportPrompter : public PrompterBase<GeneByGeneReportPrompter> {
     Q_OBJECT
@@ -75,9 +75,9 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // GeneByGeneReportPrompter
+};  // GeneByGeneReportPrompter
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_GENEBYGENEREPORT_WORKER_H_
+#endif  //_U2_GENEBYGENEREPORT_WORKER_H_

@@ -23,6 +23,7 @@
 
 #include <QMessageBox>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -39,32 +40,32 @@
 
 namespace U2 {
 
-const QString PhyMlSettingsPreffixes::AminoAcidModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_amino_acid_model_t");
-const QString PhyMlSettingsPreffixes::DnaModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_dna_model_t");
-const QString PhyMlSettingsPreffixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_eq_freq_flag");
+const QString PhyMlSettingsPrefixes::AminoAcidModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_amino_acid_model_t");
+const QString PhyMlSettingsPrefixes::DnaModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_dna_model_t");
+const QString PhyMlSettingsPrefixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_eq_freq_flag");
 
-const QString PhyMlSettingsPreffixes::EstimateTtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_trans_ratio");
-const QString PhyMlSettingsPreffixes::TtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_trans_ratio");
+const QString PhyMlSettingsPrefixes::EstimateTtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_trans_ratio");
+const QString PhyMlSettingsPrefixes::TtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_trans_ratio");
 
-const QString PhyMlSettingsPreffixes::EstimateSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_sites_prop");
-const QString PhyMlSettingsPreffixes::InvariableSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sites_proportion");
+const QString PhyMlSettingsPrefixes::EstimateSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_sites_prop");
+const QString PhyMlSettingsPrefixes::InvariableSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sites_proportion");
 
-const QString PhyMlSettingsPreffixes::EstimateGammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_gamma");
-const QString PhyMlSettingsPreffixes::GammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_gamma");
+const QString PhyMlSettingsPrefixes::EstimateGammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_gamma");
+const QString PhyMlSettingsPrefixes::GammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_gamma");
 
-const QString PhyMlSettingsPreffixes::UseBootstrap(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_boot");
-const QString PhyMlSettingsPreffixes::BootstrapReplicatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_boot_repl");
+const QString PhyMlSettingsPrefixes::UseBootstrap(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_boot");
+const QString PhyMlSettingsPrefixes::BootstrapReplicatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_boot_repl");
 
-const QString PhyMlSettingsPreffixes::UseFastMethod(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_fast");
-const QString PhyMlSettingsPreffixes::FastMethodIndex(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_fast_method");
+const QString PhyMlSettingsPrefixes::UseFastMethod(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_fast");
+const QString PhyMlSettingsPrefixes::FastMethodIndex(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_fast_method");
 
-const QString PhyMlSettingsPreffixes::SubRatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sub_rates");
-const QString PhyMlSettingsPreffixes::OptimiseTopology(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_topol");
-const QString PhyMlSettingsPreffixes::OptimiseBranchLenghs(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_lengths");
+const QString PhyMlSettingsPrefixes::SubRatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sub_rates");
+const QString PhyMlSettingsPrefixes::OptimiseTopology(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_topol");
+const QString PhyMlSettingsPrefixes::OptimiseBranchLengths(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_lengths");
 
-const QString PhyMlSettingsPreffixes::TreeImprovementType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_tree_impr");
-const QString PhyMlSettingsPreffixes::TreeSearchingType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_search");
-const QString PhyMlSettingsPreffixes::UserTreePath(CreatePhyTreeWidget::getAppSettingsRoot() + "/user_tree");
+const QString PhyMlSettingsPrefixes::TreeImprovementType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_tree_impr");
+const QString PhyMlSettingsPrefixes::TreeSearchingType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_search");
+const QString PhyMlSettingsPrefixes::UserTreePath(CreatePhyTreeWidget::getAppSettingsRoot() + "/user_tree");
 
 PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
     : CreatePhyTreeWidget(parent),
@@ -94,7 +95,8 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
 
 void PhyMlWidget::fillComboBoxes() {
     subModelCombo->addItems(isAminoAcid ? PhyMLModelTypes::getAminoAcidModelTypes() : PhyMLModelTypes::getDnaModelTypes());
-    fastMethodCombo->addItems(PhyMLRatioTestsTypes::getRatioTestsTypes());
+    fastMethodCombo->addItems(PhyMLRatioTestsTypes::ratioTestsTypes);
+    fastMethodCombo->setCurrentIndex(PhyMLRatioTestsTypes::defaultRatioTestsTypeIndex);
     treeTypesCombo->addItems(TreeSearchingParams::getInputTreeTypes());
     treeImprovementsCombo->addItems(TreeSearchingParams::getTreeImprovementTypes());
 }
@@ -146,66 +148,69 @@ void PhyMlWidget::makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType
 }
 
 void PhyMlWidget::createWidgetsControllers() {
-    //Substitutional model
-    const QString subModelSettingsPath = isAminoAcid ? PhyMlSettingsPreffixes::AminoAcidModelType
-                                                     : PhyMlSettingsPreffixes::DnaModelType;
+    // Substitution model.
+    const QString subModelSettingsPath = isAminoAcid ? PhyMlSettingsPrefixes::AminoAcidModelType
+                                                     : PhyMlSettingsPrefixes::DnaModelType;
     widgetControllers.addWidgetController(subModelCombo, subModelSettingsPath, "-m");
 
-    //Number of substitution rate categories
-    widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");
+    // Number of substitution rate categories.
+    widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPrefixes::SubRatesNumber, "-c");
 
-    //Transition / transversion ratio
-    InputWidgetController *ttRatioEstimationController = widgetControllers.addWidgetController(transFixedRb, PhyMlSettingsPreffixes::EstimateTtRatio, "");
-    InputWidgetController *ttRatioController = widgetControllers.addWidgetController(tranSpinBox, PhyMlSettingsPreffixes::TtRatio, "-t");
+    // Transition / transversion ratio
+    InputWidgetController *ttRatioEstimationController = widgetControllers.addWidgetController(transFixedRb, PhyMlSettingsPrefixes::EstimateTtRatio, "");
+    InputWidgetController *ttRatioController = widgetControllers.addWidgetController(tranSpinBox, PhyMlSettingsPrefixes::TtRatio, "-t");
     ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, true));
 
-    //Proportion of invariable sites
-    InputWidgetController *sitesEstimationController = widgetControllers.addWidgetController(sitesFixedRb, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
-    InputWidgetController *sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-v");
+    // Proportion of invariable sites.
+    InputWidgetController *sitesEstimationController = widgetControllers.addWidgetController(sitesFixedRb, PhyMlSettingsPrefixes::EstimateSitesProportion, "");
+    InputWidgetController *sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPrefixes::InvariableSitesProportion, "-v");
     sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, true));
 
-    //Gamma shape parameter
-    InputWidgetController *gammaEstimationController = widgetControllers.addWidgetController(gammaFixedRb, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
-    InputWidgetController *gammaController = widgetControllers.addWidgetController(gammaSpinBox, PhyMlSettingsPreffixes::GammaFactor, "-a");
+    // Gamma shape parameter.
+    InputWidgetController *gammaEstimationController = widgetControllers.addWidgetController(gammaFixedRb, PhyMlSettingsPrefixes::EstimateGammaFactor, "");
+    InputWidgetController *gammaController = widgetControllers.addWidgetController(gammaSpinBox, PhyMlSettingsPrefixes::GammaFactor, "-a");
     gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, true));
 
-    //Bootstrap replicates number
-    InputWidgetController *bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapRadioButton, PhyMlSettingsPreffixes::UseBootstrap, "");
-    InputWidgetController *bootstrapController = widgetControllers.addWidgetController(bootstrapSpinBox, PhyMlSettingsPreffixes::BootstrapReplicatesNumber, "-b");
+    // Bootstrap replicates number.
+    // -b (or --bootstrap) int:
+    //		int >  0: int is the number of bootstrap replicates.
+    //		int =  0: neither approximate likelihood ratio test nor bootstrap values are computed.
+    //		int = -1: approximate likelihood ratio test returning aLRT statistics.
+    //		int = -2: approximate likelihood ratio test returning Chi2-based parametric branch supports.
+    //		int = -4: (default) SH-like branch supports alone.
+    //		int = -5: approximate Bayes branch supports.
+    InputWidgetController *bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapRadioButton, PhyMlSettingsPrefixes::UseBootstrap, "");
+    InputWidgetController *bootstrapController = widgetControllers.addWidgetController(bootstrapSpinBox, PhyMlSettingsPrefixes::BootstrapReplicatesNumber, "-b");
+    // When bootstrapSpinBox has 0 -> use it in the command line. Otherwise, the real default will be used which is -4 (SH-like).
+    bootstrapController->setEmitCommandLineOptionForDefaultFlag(true);
     bootstrapCheckBoxController->addDependentParameter(ParameterDependence(bootstrapController, true));
 
-    //Optimisation options
-    widgetControllers.addWidgetController(optBranchCheckbox, PhyMlSettingsPreffixes::OptimiseBranchLenghs, "");
-    widgetControllers.addWidgetController(optTopologyCheckbox, PhyMlSettingsPreffixes::OptimiseTopology, "");
-
-    //Fast methods
-    InputWidgetController *fastMethodCheckBoxController = widgetControllers.addWidgetController(fastMethodCheckbox, PhyMlSettingsPreffixes::UseFastMethod, "");
-    QStringList cmdLineValues;
-    cmdLineValues << "-1"
-                  << "-2"
-                  << "-4";
-    InputWidgetController *fastMethodController = widgetControllers.addWidgetController(fastMethodCombo, PhyMlSettingsPreffixes::FastMethodIndex, "-b", cmdLineValues);
+    // Fast methods.
+    InputWidgetController *fastMethodCheckBoxController = widgetControllers.addWidgetController(fastMethodCheckbox, PhyMlSettingsPrefixes::UseFastMethod, "");
+    QStringList cmdLineValues = {"-1", "-2", "-4", "-5"};
+    InputWidgetController *fastMethodController = widgetControllers.addWidgetController(fastMethodCombo, PhyMlSettingsPrefixes::FastMethodIndex, "-b", cmdLineValues);
     fastMethodCheckBoxController->addDependentParameter(ParameterDependence(fastMethodController, true));
 
-    //Tree improvements
-    QStringList treeImprovements;
-    treeImprovements << "NNI"
-                     << "SPR"
-                     << "BEST";
-    widgetControllers.addWidgetController(treeImprovementsCombo, PhyMlSettingsPreffixes::TreeImprovementType, "-s", treeImprovements);
+    // Optimisation options.
+    widgetControllers.addWidgetController(optBranchCheckbox, PhyMlSettingsPrefixes::OptimiseBranchLengths, "");
+    widgetControllers.addWidgetController(optTopologyCheckbox, PhyMlSettingsPrefixes::OptimiseTopology, "");
 
-    //Equilibrium frequencies
-    widgetControllers.addWidgetController(freqOptimRadio, PhyMlSettingsPreffixes::OptimiseEquilibriumFreq, "");
+    // Tree improvements.
+    QStringList treeImprovements = {"NNI", "SPR", "BEST"};
+    widgetControllers.addWidgetController(treeImprovementsCombo, PhyMlSettingsPrefixes::TreeImprovementType, "-s", treeImprovements);
 
-    //Generated tree numbers
-    InputWidgetController *treeNumbersCheckBoxController = widgetControllers.addWidgetController(treeNumbersCheckbox, PhyMlSettingsPreffixes::UseBootstrap, "");
-    InputWidgetController *treeNumbersController = widgetControllers.addWidgetController(treeNumbersSpinBox, PhyMlSettingsPreffixes::BootstrapReplicatesNumber, "-b");
+    // Equilibrium frequencies.
+    widgetControllers.addWidgetController(freqOptimRadio, PhyMlSettingsPrefixes::OptimiseEquilibriumFreq, "");
+
+    // Generated tree numbers.
+    InputWidgetController *treeNumbersCheckBoxController = widgetControllers.addWidgetController(treeNumbersCheckbox, PhyMlSettingsPrefixes::UseBootstrap, "");
+    InputWidgetController *treeNumbersController = widgetControllers.addWidgetController(treeNumbersSpinBox, PhyMlSettingsPrefixes::BootstrapReplicatesNumber, "-b");
     treeNumbersCheckBoxController->addDependentParameter(ParameterDependence(treeNumbersController, true));
 
-    //Tree searching
-    widgetControllers.addWidgetController(treeTypesCombo, PhyMlSettingsPreffixes::TreeSearchingType, "");
-    //User tree
-    widgetControllers.addWidgetController(inputFileLineEdit, PhyMlSettingsPreffixes::UserTreePath, "");
+    // Tree searching.
+    widgetControllers.addWidgetController(treeTypesCombo, PhyMlSettingsPrefixes::TreeSearchingType, "");
+    // User tree
+    widgetControllers.addWidgetController(inputFileLineEdit, PhyMlSettingsPrefixes::UserTreePath, "");
 }
 
 void PhyMlWidget::sl_checkUserTreeType(int newIndex) {
@@ -215,8 +220,8 @@ void PhyMlWidget::sl_checkUserTreeType(int newIndex) {
 }
 
 void PhyMlWidget::sl_checkTreeImprovement(int newIndex) {
-    const bool isNni = (newIndex == 0);
-    const bool shouldSaveTreeNumbersValue = treeNumbersCheckbox->isEnabled();
+    bool isNni = newIndex == 0;
+    bool shouldSaveTreeNumbersValue = treeNumbersCheckbox->isEnabled();
     if (shouldSaveTreeNumbersValue) {
         isTreeNumberSet = treeNumbersCheckbox->isChecked();
     }
@@ -284,8 +289,8 @@ void PhyMlWidget::restoreDefault() {
 }
 
 bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
-    const bool fileExists = QFileInfo(inputFileLineEdit->text()).exists();
-    const bool fileHaveToExist = (1 == treeTypesCombo->currentIndex());
+    bool fileExists = QFileInfo::exists(inputFileLineEdit->text());
+    bool fileHaveToExist = treeTypesCombo->currentIndex() == 1;
     if (fileHaveToExist && !fileExists) {
         twSettings->setCurrentIndex(2);
         inputFileLineEdit->setFocus();
@@ -297,16 +302,16 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
         return false;
     }
 
-    //Check that PhyMl and tempory folder path defined
+    // Check that PhyMl and temporary folder path defined.
     ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
     ExternalTool *phyml = reg->getById(PhyMLSupport::PHYML_ID);
-    SAFE_POINT(nullptr != phyml, "External tool PHyML is not registered", false);
+    SAFE_POINT(phyml != nullptr, "External tool PHyML is not registered", false);
 
     const QString &path = phyml->getPath();
     const QString &name = phyml->getName();
 
     if (path.isEmpty()) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
         msgBox->setWindowTitle(name);
         msgBox->setText(tr("Path for %1 tool not selected.").arg(name));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
@@ -321,10 +326,8 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
                 break;
             case QMessageBox::No:
                 return false;
-                break;
             default:
                 SAFE_POINT(false, "Incorrect state of the message box", false);
-                break;
         }
     }
 
@@ -342,8 +345,8 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
 QStringList PhyMlWidget::generatePhyMlSettingsScript() {
     QStringList script;
     if (isAminoAcid) {
-        script << "-d";
-        script << "aa";
+        script << "-d"
+               << "aa";
     }
 
     widgetControllers.addParametersToCmdLine(script);
@@ -356,7 +359,7 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript() {
                << "e";
     }
 
-    if (1 == treeTypesCombo->currentIndex()) {
+    if (treeTypesCombo->currentIndex() == 1) {
         script << "-u";
         script << inputFileLineEdit->text();
     }
@@ -378,4 +381,4 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript() {
     return script;
 }
 
-}    // namespace U2
+}  // namespace U2

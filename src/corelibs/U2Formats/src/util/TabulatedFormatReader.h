@@ -59,6 +59,6 @@ private:
     qint64 currentLine;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TABULATED_FORMAT_READER_H_
+#endif  // _U2_TABULATED_FORMAT_READER_H_

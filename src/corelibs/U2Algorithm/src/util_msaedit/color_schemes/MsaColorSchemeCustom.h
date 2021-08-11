@@ -45,6 +45,6 @@ private:
     QVector<QColor> colorsPerChar;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_COLOR_SCHEME_CUSTOM_H_
+#endif  // _U2_MSA_COLOR_SCHEME_CUSTOM_H_

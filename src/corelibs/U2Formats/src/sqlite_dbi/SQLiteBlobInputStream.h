@@ -59,6 +59,6 @@ public:
     qint64 skip(qint64 n, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SQLITEBLOBINPUTSTREAM_H_
+#endif  // _U2_SQLITEBLOBINPUTSTREAM_H_

@@ -54,6 +54,6 @@ private:
     void setError(WDWizardPage *wPage);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDPAGECONTROLLER_H_
+#endif  // _U2_WIZARDPAGECONTROLLER_H_

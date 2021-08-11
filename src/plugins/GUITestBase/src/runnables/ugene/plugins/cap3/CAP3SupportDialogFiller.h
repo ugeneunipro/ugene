@@ -41,5 +41,5 @@ private:
     QStringList input;
     QString output;
 };
-}    // namespace U2
-#endif    // CAP3SUPPORTDIALOGFILLER_H
+}  // namespace U2
+#endif  // CAP3SUPPORTDIALOGFILLER_H

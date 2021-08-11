@@ -101,8 +101,8 @@ inline int be_read_int_4(SeekableBuf *fp, uint *i4) {
 }
 
 /*
-* Write a big-endian int1
-*/
+ * Write a big-endian int1
+ */
 inline int be_write_int_1(FILE *fp, uchar *i1) {
     if (fwrite(i1, sizeof(uchar), 1, fp) != 1)
         return (0);
@@ -110,8 +110,8 @@ inline int be_write_int_1(FILE *fp, uchar *i1) {
 }
 
 /*
-* Write a big-endian int2
-*/
+ * Write a big-endian int2
+ */
 inline int be_write_int_2(FILE *fp, ushort *i2) {
     ushort i = be_int2(reinterpret_cast<const uchar *>(i2));
 
@@ -121,8 +121,8 @@ inline int be_write_int_2(FILE *fp, ushort *i2) {
 }
 
 /*
-* Write a big-endian int4
-*/
+ * Write a big-endian int4
+ */
 inline int be_write_int_4(FILE *fp, uint *i4) {
     uint i = be_int4(reinterpret_cast<const uchar *>(i4));
 
@@ -133,14 +133,14 @@ inline int be_write_int_4(FILE *fp, uint *i4) {
 }
 
 /*
-* Copyright (c) Medical Research Council 1994. All rights reserved.
-*
-* Permission to use, copy, modify and distribute this software and its
-* documentation for any purpose is hereby granted without fee, provided that
-* this copyright and notice appears in all copies.
-*
-* MRC disclaims all warranties with regard to this software.
-*/
+ * Copyright (c) Medical Research Council 1994. All rights reserved.
+ *
+ * Permission to use, copy, modify and distribute this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * this copyright and notice appears in all copies.
+ *
+ * MRC disclaims all warranties with regard to this software.
+ */
 #define READ_BASES (1 << 0)
 #define READ_SAMPLES (1 << 1)
 #define READ_COMMENTS (1 << 2)
@@ -196,5 +196,5 @@ inline float int_to_float(int in)
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2
 #endif

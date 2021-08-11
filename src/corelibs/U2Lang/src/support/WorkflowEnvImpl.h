@@ -43,9 +43,9 @@ protected:
     virtual SchemaActorsRegistry *initSchemaActorsRegistry();
     virtual WorkflowTasksRegistry *initWorkflowTasksRegistry();
     virtual ActorValidatorRegistry *initActorValidatorRegistry();
-};    // WorkflowEnvImpl
+};  // WorkflowEnvImpl
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_ENVIMPL_H_
+#endif  // _U2_WORKFLOW_ENVIMPL_H_

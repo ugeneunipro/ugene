@@ -81,6 +81,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 }
 
-}    // namespace GUITest_common_scenarios_project_multiple_docs
+}  // namespace GUITest_common_scenarios_project_multiple_docs
 
-}    // namespace U2
+}  // namespace U2

@@ -98,4 +98,4 @@ void ElementSelectorWidget::validateDuplicates(const SelectorValue &value,
     }
 }
 
-}    // namespace U2
+}  // namespace U2

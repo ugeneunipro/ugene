@@ -86,7 +86,7 @@ void DotPlotFilesDialog::sl_openFirstFile() {
             lod.url = "";
             return;
         }
-        FormatDetectionResult format = results.at(0);    //get moslty matched format
+        FormatDetectionResult format = results.at(0);  // get moslty matched format
         bool multySeq = format.rawDataCheckResult.properties.value(RawDataCheckResult_MultipleSequences).toBool();
         if (multySeq) {
             mergeFirstCheckBox->setChecked(true);
@@ -117,7 +117,7 @@ void DotPlotFilesDialog::sl_openSecondFile() {
             lod.url = "";
             return;
         }
-        FormatDetectionResult format = results.at(0);    //get moslty matched format
+        FormatDetectionResult format = results.at(0);  // get moslty matched format
         bool multySeq = format.rawDataCheckResult.properties.value(RawDataCheckResult_MultipleSequences).toBool();
         if (multySeq) {
             mergeSecondCheckBox->setChecked(true);
@@ -139,11 +139,8 @@ void DotPlotFilesDialog::accept() {
     }
 
     if (firstFileName.isEmpty() || secondFileName.isEmpty()) {
-        QString error = oneSequenceCheckBox->isChecked() ?
-                            tr("Select a file with a sequence to build dotplot!") :
-                            firstFileName.isEmpty() ?
-                            tr("Select first file with a sequence to build dotplot!") :
-                            tr("Input the second sequence or check the 'Compare sequence against itself' option.");
+        QString error = oneSequenceCheckBox->isChecked() ? tr("Select a file with a sequence to build dotplot!") : firstFileName.isEmpty() ? tr("Select first file with a sequence to build dotplot!")
+                                                                                                                                           : tr("Input the second sequence or check the 'Compare sequence against itself' option.");
         QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), error);
         mb->exec();
         return;
@@ -185,4 +182,4 @@ int DotPlotFilesDialog::getSecondGap() const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

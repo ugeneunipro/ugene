@@ -52,6 +52,6 @@ private:
     QMultiMap<U2DbiRef, QString> dbi2Path;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DELETE_OBJECTS_H_
+#endif  // _U2_DELETE_OBJECTS_H_

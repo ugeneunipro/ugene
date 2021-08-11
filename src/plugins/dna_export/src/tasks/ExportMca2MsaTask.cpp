@@ -26,8 +26,9 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include "ConvertMca2MsaTask.h"
-#include "ExportTasks.h"
 
 namespace U2 {
 
@@ -66,4 +67,4 @@ QList<Task *> ExportMca2MsaTask::onSubTaskFinished(Task *subTask) {
     return newSubTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

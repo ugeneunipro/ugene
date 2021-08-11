@@ -83,7 +83,7 @@ TaskStatusBar::TaskStatusBar() {
     connect(AppContext::getTaskScheduler(), SIGNAL(si_topLevelTaskUnregistered(Task *)), SLOT(sl_newReport(Task *)));
 
     nStack = AppContext::getMainWindow()->getNotificationStack();
-    //nStack = new NotificationStack;
+    // nStack = new NotificationStack;
     connect(nStack, SIGNAL(si_changed()), SLOT(sl_notificationChanged()));
 
     lampLabel->installEventFilter(this);
@@ -112,7 +112,7 @@ NotificationType getNotificationType(const U2OpStatus &os) {
     }
     return Report_Not;
 }
-}    // namespace
+}  // namespace
 
 void TaskStatusBar::sl_newReport(Task *task) {
     Notification *t = nullptr;
@@ -213,7 +213,7 @@ void TaskStatusBar::sl_taskStateChanged(Task *t) {
         return;
     }
     setTaskToTrack(t);
-    //AppContext::getTaskScheduler()->disconnect(this);
+    // AppContext::getTaskScheduler()->disconnect(this);
     disconnect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), this, SLOT(sl_taskStateChanged(Task *)));
 }
 
@@ -328,7 +328,7 @@ void TaskStatusBar::drawProgress(QLabel *label) {
 
     int percent = taskToTrack->getStateInfo().progress;
     int h = height() - 2;
-    //float radius = h / 2;
+    // float radius = h / 2;
     QPixmap pix(h, h);
     QPainter p(&pix);
 
@@ -344,4 +344,4 @@ void TaskStatusBar::drawProgress(QLabel *label) {
     label->setPixmap(pix);
 }
 
-}    // namespace U2
+}  // namespace U2

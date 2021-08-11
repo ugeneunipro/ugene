@@ -88,7 +88,7 @@ void updateProgress(U2OpStatus &os, int current, int size) {
         os.setProgress(100 * current / size);
     }
 }
-}    // namespace
+}  // namespace
 
 #define CHECK_OBJECT(object) \
     CHECK_OP(os, nullptr); \
@@ -125,4 +125,4 @@ QList<GObject *> DatabaseConnectionFormat::getObjects(U2Dbi *dbi, U2OpStatus &os
     return resultList;
 }
 
-}    // namespace U2
+}  // namespace U2

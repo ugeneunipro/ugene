@@ -95,6 +95,6 @@ typedef QList<GUITest *> GUITests;
 #define TEST_CLASS_DEFINITION(className) \
     void className::run(HI::GUITestOpStatus &os)
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -114,4 +114,4 @@ QString GenomeAssemblyMultiTask::getResultUrl() const {
     return "";
 }
 
-}    // namespace U2
+}  // namespace U2

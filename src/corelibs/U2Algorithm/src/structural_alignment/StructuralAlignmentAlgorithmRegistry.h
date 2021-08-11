@@ -55,8 +55,8 @@ private:
 
 private:
     QMap<QString, StructuralAlignmentAlgorithmFactory *> factories;
-};    // class StructuralAlignmentAlgorithmRegistry
+};  // class StructuralAlignmentAlgorithmRegistry
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
+#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_

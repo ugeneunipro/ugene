@@ -25,9 +25,6 @@
 #include <U2Algorithm/PhyTreeGenerator.h>
 
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/PhyTree.h>
-
-#include <U2View/CreatePhyTreeDialogController.h>
 
 namespace U2 {
 
@@ -65,20 +62,18 @@ public:
     static SubstModelTrRatioType getTtRatioType(const QString &modelName);
 
 private:
-    static const QStringList dnaSubstitutionModels;    //all dna models
-    static const QStringList dnaModelsWithFixedTtRatio;    //only fixed Transition / transversion ratio
-    static const QStringList dnaModelsWithEstimatedTtRatio;    //only estimated Transition / transversion ratio
+    static const QStringList dnaSubstitutionModels;  // all dna models
+    static const QStringList dnaModelsWithFixedTtRatio;  // only fixed Transition / transversion ratio
+    static const QStringList dnaModelsWithEstimatedTtRatio;  // only estimated Transition / transversion ratio
     static const QStringList aminoSubstitutionModels;
 };
 
 class PhyMLRatioTestsTypes {
 public:
-    static const QStringList &getRatioTestsTypes() {
-        return ratioTestsTypes;
-    }
-
-private:
     static const QStringList ratioTestsTypes;
+
+    /** Indicates which test type is to use by default. */
+    static const int defaultRatioTestsTypeIndex;
 };
 
 class TreeSearchingParams {
@@ -95,5 +90,5 @@ private:
     static const QStringList treeImprovementTypes;
 };
 
-}    // namespace U2
-#endif    // _U2_PHYML_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_PHYML_SUPPORT_H_

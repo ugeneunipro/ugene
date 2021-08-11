@@ -60,6 +60,6 @@ private:
     QList<SampleAction> actions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SAMPLE_ACTION_H_
+#endif  // _U2_SAMPLE_ACTION_H_

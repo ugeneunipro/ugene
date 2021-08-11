@@ -171,7 +171,7 @@ Task *CDSearchWorker::tick() {
                 return new FailTask(err);
             }
             settings.localDbFolder = actor->getParameter(DB_PATH_ATTR)->getAttributeValue<QString>(context);
-        } else {    // remote
+        } else {  // remote
             factory = AppContext::getCDSFactoryRegistry()->getFactory(CDSearchFactoryRegistry::RemoteSearch);
             if (!factory) {
                 QString err = tr("'Remote blast' plugin has to be loaded.");
@@ -209,5 +209,5 @@ void CDSearchWorker::sl_taskFinished(Task *t) {
     cds = nullptr;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

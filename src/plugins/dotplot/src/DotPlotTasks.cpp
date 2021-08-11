@@ -275,8 +275,8 @@ Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
     CHECK_OP(stateInfo, nullptr);
     doc->setUserModLock(false);
 
-    addSubTask(new AddDocumentTask(doc));    // add document to the project
-    addSubTask(new LoadUnloadedDocumentTask(doc));    // load document
+    addSubTask(new AddDocumentTask(doc));  // add document to the project
+    addSubTask(new LoadUnloadedDocumentTask(doc));  // load document
 
     return doc;
 }
@@ -318,18 +318,18 @@ void DotPlotFilterTask::run() {
     copyInitialResults();
     progressStep = 100 / (float)size;
     switch (fType) {
-    case All:
-        break;
-    case Features:
-        progressStep /= 2;
+        case All:
+            break;
+        case Features:
+            progressStep /= 2;
 
-        createSuperRegionsList(sequenceX, SequenceX);
-        filterForCurrentSuperRegions(SequenceX);
+            createSuperRegionsList(sequenceX, SequenceX);
+            filterForCurrentSuperRegions(SequenceX);
 
-        createSuperRegionsList(sequenceY, SequenceY);
-        filterForCurrentSuperRegions(SequenceY);
+            createSuperRegionsList(sequenceY, SequenceY);
+            filterForCurrentSuperRegions(SequenceY);
 
-        break;
+            break;
     }
 }
 
@@ -338,14 +338,14 @@ Task::ReportResult DotPlotFilterTask::report() {
     SAFE_POINT(initialResults, "There are no initial results", ReportResult_Finished);
 
     switch (fType) {
-    case All: {
-        copyInitialResults();
-    } break;
-    case Features: {
-        if (isCanceled()) {
+        case All: {
             copyInitialResults();
-        }
-    } break;
+        } break;
+        case Features: {
+            if (isCanceled()) {
+                copyInitialResults();
+            }
+        } break;
     }
 
     return ReportResult_Finished;
@@ -411,4 +411,4 @@ void DotPlotFilterTask::copyInitialResults() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

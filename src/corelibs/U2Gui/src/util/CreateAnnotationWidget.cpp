@@ -103,4 +103,4 @@ bool CreateAnnotationWidget::isComplementLocation(const QString &locationString)
     return locationString.startsWith("complement(") && locationString.endsWith(")");
 }
 
-}    // namespace U2
+}  // namespace U2

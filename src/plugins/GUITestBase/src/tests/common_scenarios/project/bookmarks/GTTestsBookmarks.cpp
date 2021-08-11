@@ -94,7 +94,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
-    //2'. Change: Remove the bookmark
+    // 2'. Change: Remove the bookmark
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_REMOVE_BOOKMARK, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
@@ -104,5 +104,5 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 }
-}    // namespace GUITest_common_scenarios_project_bookmarks
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_project_bookmarks
+}  // namespace U2

@@ -67,7 +67,7 @@ private:
 
 private:
     QMap<QString, BioStruct3DColorSchemeFactory *> factories;
-};    // class BioStruct3DColorSchemeRegistry
+};  // class BioStruct3DColorSchemeRegistry
 
 //!  Abstract factory for BioStruct3DColorScheme
 class BioStruct3DColorSchemeFactory {
@@ -88,9 +88,9 @@ public: \
 
 //! Abstract BioStruct3DColorScheme
 /*!
-*    Color scheme determines 3d structure coloring style. For example, we could use colors to mark chemical
-*    elements or secondary structure.
-*/
+ *    Color scheme determines 3d structure coloring style. For example, we could use colors to mark chemical
+ *    elements or secondary structure.
+ */
 class BioStruct3DColorScheme {
 protected:
     BioStruct3DColorScheme(const BioStruct3DObject *biostruct);
@@ -117,7 +117,7 @@ protected:
 
 private:
     float unselectedShading;
-};    // class BioStruct3DColorScheme
+};  // class BioStruct3DColorScheme
 
 class ChemicalElemColorScheme : public BioStruct3DColorScheme {
     QHash<int, Color4f> elementColorMap;
@@ -126,7 +126,7 @@ class ChemicalElemColorScheme : public BioStruct3DColorScheme {
 
 public:
     COLOR_SCHEME_FACTORY(ChemicalElemColorScheme)
-};    // class ChemicalElemColorScheme
+};  // class ChemicalElemColorScheme
 
 class ChainsColorScheme : public BioStruct3DColorScheme {
     QMap<int, Color4f> chainColorMap;
@@ -139,7 +139,7 @@ private:
 
 public:
     COLOR_SCHEME_FACTORY(ChainsColorScheme)
-};    // class ChainsColorScheme
+};  // class ChainsColorScheme
 
 class SecStructColorScheme : public BioStruct3DColorScheme {
     struct MolStructs {
@@ -156,7 +156,7 @@ private:
 
 public:
     COLOR_SCHEME_FACTORY(SecStructColorScheme)
-};    // class SecStructColorScheme
+};  // class SecStructColorScheme
 
 /** One color scheme for debug purposes */
 class SimpleColorScheme : public BioStruct3DColorScheme {
@@ -168,8 +168,8 @@ private:
 
 public:
     COLOR_SCHEME_FACTORY(SimpleColorScheme)
-};    // class SimpleColorScheme
+};  // class SimpleColorScheme
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_BIOSTRUCT3D_COLORSCHEME_H_
+#endif  //_U2_BIOSTRUCT3D_COLORSCHEME_H_

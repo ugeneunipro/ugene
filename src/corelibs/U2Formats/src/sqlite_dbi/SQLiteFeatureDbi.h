@@ -162,6 +162,6 @@ private:
     QSharedPointer<SQLiteQuery> createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os, SQLiteTransaction *trans = nullptr);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -61,6 +61,6 @@ private:
     static QList<GObjectView *> getAllGObjectViews();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

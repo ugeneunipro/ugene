@@ -128,7 +128,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     CHECK(!dlg.isNull(), );
 
     if (QDialog::Accepted == dlg->result()) {
-        //prepare query
+        // prepare query
         DNASequenceSelection *s = seqCtx->getSequenceSelection();
         QVector<U2Region> regions;
         if (s->isEmpty()) {
@@ -175,4 +175,4 @@ QList<XMLTestFactory *> RemoteBLASTPluginTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

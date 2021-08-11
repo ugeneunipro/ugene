@@ -32,7 +32,7 @@ namespace U2 {
 
 Service::Service(ServiceType t, const QString &_name, const QString &_desc, const QList<ServiceType> &_parentServices, ServiceFlags f)
     : type(t), name(_name), description(_desc), parentServices(_parentServices), state(ServiceState_Disabled_New), flags(f) {
-    //Register service resource
+    // Register service resource
     AppSettings *settings = AppContext::getAppSettings();
     SAFE_POINT(nullptr != settings, "Can not get application settings", );
     AppResourcePool *resourcePool = settings->getAppResourcePool();
@@ -59,4 +59,4 @@ void ServiceRegistry::_setServiceState(Service *s, ServiceState state) {
     emit si_serviceStateChanged(s, oldState);
 }
 
-}    // namespace U2
+}  // namespace U2

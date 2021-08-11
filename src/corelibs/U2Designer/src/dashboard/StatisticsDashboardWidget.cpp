@@ -123,4 +123,4 @@ StatisticsRow::StatisticsRow(const QString &id, const QString &name, const QStri
     : id(id), name(name), time(time), count(count) {
 }
 
-}    // namespace U2
+}  // namespace U2

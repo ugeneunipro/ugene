@@ -45,7 +45,7 @@ class U2CORE_EXPORT SMatrix {
 public:
     SMatrix(const QString &name, const DNAAlphabet *alphabet, const QList<SScore> &rawMatrix, const QString &description = QString());
 
-    //constructs empty anonymous matrix
+    // constructs empty anonymous matrix
     SMatrix() {
         alphabet = nullptr, minChar = 0;
         maxChar = 0;
@@ -80,7 +80,7 @@ public:
         return maxScore;
     }
 
-    //TODO: make this class serializable
+    // TODO: make this class serializable
     QVariant toQVariant() const;
 
     static SMatrix fromQVariant(const QVariant &v);
@@ -93,13 +93,13 @@ private:
     QString description;
 
     const DNAAlphabet *alphabet;
-    QVarLengthArray<float> scores;    //TODO: make scores integer ?
-    char minChar;    // used for optimization of scores size. Minimal character in the alphabet.
-    char maxChar;    // used for optimization of scores size. Maximum character in the alphabet.
+    QVarLengthArray<float> scores;  // TODO: make scores integer ?
+    char minChar;  // used for optimization of scores size. Minimal character in the alphabet.
+    char maxChar;  // used for optimization of scores size. Maximum character in the alphabet.
     int charsInRow;
     float minScore;
     float maxScore;
-    QByteArray validCharacters;    // used only for debugging now. Use array but not Set since number of characters is low
+    QByteArray validCharacters;  // used only for debugging now. Use array but not Set since number of characters is low
 };
 
 inline float SMatrix::getScore(char c1, char c2) const {
@@ -121,6 +121,6 @@ inline int SMatrix::getScoreIdx(char c1, char c2) const {
     return d1 * charsInRow + d2;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

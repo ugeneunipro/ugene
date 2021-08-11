@@ -38,6 +38,6 @@ public:
     virtual MolecularSurface *createInstance() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // VANDERWAALSSURFACE_H
+#endif  // VANDERWAALSSURFACE_H

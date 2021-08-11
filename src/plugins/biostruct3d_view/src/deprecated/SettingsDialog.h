@@ -108,6 +108,6 @@ private:
     AnaglyphSettings anaglyphSettings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SETTINGSDIALOG_H_
+#endif  // _U2_SETTINGSDIALOG_H_

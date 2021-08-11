@@ -102,7 +102,7 @@ CreatePhyTreeSettings fetchSettings() {
     }
     return settings;
 }
-}    // namespace
+}  // namespace
 
 void PhylipPlugin::processCmdlineOptions() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
@@ -128,4 +128,4 @@ void PhylipPlugin::processCmdlineOptions() {
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
 }
 
-}    // namespace U2
+}  // namespace U2

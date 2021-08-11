@@ -74,6 +74,6 @@ private:
     QMap<QString, DataBaseFactory *> factories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

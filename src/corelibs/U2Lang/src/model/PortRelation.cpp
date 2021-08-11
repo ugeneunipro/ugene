@@ -46,4 +46,4 @@ const QString &PortRelationDescriptor::getPortId() const {
     return portId;
 }
 
-}    // namespace U2
+}  // namespace U2

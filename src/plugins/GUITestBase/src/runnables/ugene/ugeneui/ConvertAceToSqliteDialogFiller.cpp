@@ -50,8 +50,8 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
     }
     MessageBoxDialogFiller *mbf = new MessageBoxDialogFiller(os, button);
     if (NOT_SET == action) {
-        //when launching filler 2 or more times messagebox is caught by wrong filler
-        //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, mbf);
+        // when launching filler 2 or more times messagebox is caught by wrong filler
+        // GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, mbf);
     } else {
         GTUtilsDialog::waitForDialog(os, mbf);
     }
@@ -67,4 +67,4 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

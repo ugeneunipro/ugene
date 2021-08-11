@@ -34,7 +34,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//open view task
+// open view task
 
 OpenSimpleTextObjectViewTask::OpenSimpleTextObjectViewTask(const QList<GObject *> &_objects)
     : ObjectViewTask(SimpleTextObjectViewFactory::ID), objects(_objects) {
@@ -130,4 +130,4 @@ void UpdateSimpleTextObjectViewTask::update() {
     tv->updateView(stateData);
 }
 
-}    // namespace U2
+}  // namespace U2

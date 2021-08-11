@@ -143,4 +143,4 @@ bool InSilicoPcrProductsTable::onSequenceChanged(ADVSequenceObjectContext *chang
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

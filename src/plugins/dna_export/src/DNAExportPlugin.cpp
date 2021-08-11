@@ -57,7 +57,7 @@ DNAExportPlugin::DNAExportPlugin()
         ToolsMenu::addAction(ToolsMenu::TOOLS, a);
     }
 
-    //tests
+    // tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -124,4 +124,4 @@ void DNAExportService::serviceStateChangedCallback(ServiceState oldState, bool e
     }
 }
 
-}    // namespace U2
+}  // namespace U2

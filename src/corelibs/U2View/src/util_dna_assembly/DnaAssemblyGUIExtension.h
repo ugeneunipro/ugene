@@ -96,6 +96,6 @@ public:
     virtual bool isParametersOk(QString &error) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_
+#endif  // _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_

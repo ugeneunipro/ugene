@@ -159,4 +159,4 @@ QMap<QString, QString> SnpeffDictionary::initMessageDescriptions() {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -37,7 +37,7 @@ protected:
     virtual void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum);
     virtual bool hasDataToWrite(const QVariantMap &data) const;
     virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
-};    // WriteVariationWorker
+};  // WriteVariationWorker
 
 class WriteVariationWorkerFactory : public DomainFactory {
 public:
@@ -49,9 +49,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // WriteVariationWorkerFactory
+};  // WriteVariationWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _WRITE_VARIATION_LIST_WORKER_
+#endif  // _WRITE_VARIATION_LIST_WORKER_

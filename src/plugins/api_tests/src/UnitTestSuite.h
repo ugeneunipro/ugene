@@ -46,6 +46,6 @@ private:
     int failed = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

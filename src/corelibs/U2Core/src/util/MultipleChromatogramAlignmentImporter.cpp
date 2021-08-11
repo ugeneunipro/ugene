@@ -107,7 +107,7 @@ void MultipleChromatogramAlignmentImporter::importMcaInfo(U2OpStatus &os, const 
     SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi during importing an alignment"), );
 
     foreach (const QString key, info.keys()) {
-        if (key != MultipleAlignmentInfo::NAME) {    // name is stored in the object
+        if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
             const QString value = info.value(key).toString();
             U2StringAttribute attribute(mcaId, key, value);
             attributeDbi->createStringAttribute(attribute, os);
@@ -232,4 +232,4 @@ void MultipleChromatogramAlignmentImporter::createRelation(U2OpStatus &os, const
     CHECK_OP(os, );
 }
 
-}    // namespace U2
+}  // namespace U2

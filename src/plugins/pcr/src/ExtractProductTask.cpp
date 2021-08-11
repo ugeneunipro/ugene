@@ -160,7 +160,7 @@ bool crop(const U2Region &within, QVector<U2Region> &regions) {
     }
     return cropped;
 }
-}    // namespace
+}  // namespace
 
 void ExtractProductTask::addProductAnnotations(AnnotationTableObject *targetObject, const U2EntityRef &annsRef) const {
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject("features", annsRef));
@@ -169,7 +169,7 @@ void ExtractProductTask::addProductAnnotations(AnnotationTableObject *targetObje
 
     U2Region begin = product.region;
     U2Region end(0, 0);
-    if (product.region.endPos() > wholeSequenceLength) {    // circular
+    if (product.region.endPos() > wholeSequenceLength) {  // circular
         begin.length = wholeSequenceLength - product.region.startPos;
         end.length = product.region.endPos() % wholeSequenceLength;
         anns.unite(annsObject->getAnnotationsByRegion(end, contain).toSet());
@@ -317,4 +317,4 @@ void ExtractProductWrapperTask::prepareUrl(const InSilicoPcrProduct &product, co
     file.close();
 }
 
-}    // namespace U2
+}  // namespace U2

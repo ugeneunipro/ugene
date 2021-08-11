@@ -119,7 +119,7 @@ public:
 
     static qint64 cutByteOrderMarks(char *data, QString &errorMessage, qint64 buffLen = -1);
 
-    //todo: move this method to another class
+    // todo: move this method to another class
     inline static QByteArray selectIdx256(const QBitArray &map, bool sign);
 
     // Returns first index of the character not equal to 'c'. Returns -1 if not found
@@ -135,6 +135,9 @@ public:
 
     /** Splits text into chunks of the given length. */
     static QStringList split(const QString &text, int chunkSize);
+
+    /** Splits latin1 text into chunks of the given length. */
+    static QList<QByteArray> split(const QByteArray &text, int chunkSize);
 
     /** Returns first line found in the text with no line separtors. If there are no line separators returns the text itself. */
     static QString readFirstLine(const QString &text);
@@ -289,7 +292,7 @@ inline bool TextUtils::isQuoted(const char *str, int len, int qChar) {
             nquotes++;
         }
     }
-    return (nquotes & 0x1) == 0;    //all opened quotes are closed if odd number
+    return (nquotes & 0x1) == 0;  // all opened quotes are closed if odd number
 }
 
 inline QByteArray TextUtils::selectIdx256(const QBitArray &map, bool sign) {
@@ -370,6 +373,6 @@ inline QStringList TextUtils::transposeCSVRows(const QStringList &rows, const QS
     return transposedRows;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -144,4 +144,4 @@ void CreateDocumentFromTextDialogController::sl_filepathTextChanged() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

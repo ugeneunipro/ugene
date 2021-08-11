@@ -48,4 +48,4 @@ U2Variant::U2Variant()
       endPos(0) {
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -89,4 +89,4 @@ void OutputDirectoryWidget::hideEvent(QHideEvent *event) {
     QWidget::hideEvent(event);
 }
 
-}    // namespace U2
+}  // namespace U2

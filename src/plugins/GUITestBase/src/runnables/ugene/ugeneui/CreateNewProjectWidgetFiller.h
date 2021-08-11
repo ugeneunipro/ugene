@@ -37,6 +37,6 @@ private:
     const QString projectName;
     const QString projectFile;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

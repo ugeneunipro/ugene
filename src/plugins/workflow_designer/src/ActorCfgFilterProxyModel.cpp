@@ -49,4 +49,4 @@ bool ActorCfgFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QMode
     return srcModel->getScriptMode() || sourceColumn < 2;
 }
 
-}    // namespace U2
+}  // namespace U2

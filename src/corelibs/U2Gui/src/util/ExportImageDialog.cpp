@@ -297,4 +297,4 @@ bool ExportImageDialog::isLossyFormat(const QString &formatName) {
     return lcFormat == "jpeg" || lcFormat == "jpg";
 }
 
-}    // namespace U2
+}  // namespace U2

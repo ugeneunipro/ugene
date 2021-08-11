@@ -88,4 +88,4 @@ QString BundleInfo::getToolsSearchPath() {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2

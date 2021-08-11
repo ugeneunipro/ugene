@@ -67,7 +67,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//ClarkClassify
+// ClarkClassify
 
 QString ClarkClassifyPrompter::composeRichDoc() {
     const QString databaseUrl = getHyperlink(ClarkClassifyWorkerFactory::DB_URL, getURL(ClarkClassifyWorkerFactory::DB_URL));
@@ -463,8 +463,8 @@ Task *ClarkClassifyWorker::tick() {
             reportUrl = tmpDir +
                         "/" +
                         (fileUrl.isEmpty() ? QString("CLARK_%1.txt")
-                                                 .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX) :
-                                             NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
+                                                 .arg(NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX)
+                                           : NgsReadsClassificationUtils::getBaseFileNameWithSuffixes(fileUrl,
                                                                                                       QStringList() << "CLARK"
                                                                                                                     << NgsReadsClassificationUtils::CLASSIFICATION_SUFFIX,
                                                                                                       "csv",
@@ -477,7 +477,7 @@ Task *ClarkClassifyWorker::tick() {
         if (paired) {
             pairedReadsUrl = message.getData().toMap()[ClarkClassifyWorkerFactory::PAIRED_INPUT_SLOT].toString();
         }
-        //TODO uncompress input files if needed
+        // TODO uncompress input files if needed
 
         ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, reportUrl);
         task->addListeners(createLogListeners());
@@ -669,5 +669,5 @@ ClarkClassifySettings::ClarkClassifySettings()
 const QString ClarkClassifySettings::TOOL_DEFAULT("default");
 const QString ClarkClassifySettings::TOOL_LIGHT("light");
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

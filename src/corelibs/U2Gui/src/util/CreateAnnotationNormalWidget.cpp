@@ -124,7 +124,7 @@ void CreateAnnotationNormalWidget::setGroupName(const QString &name) {
 void CreateAnnotationNormalWidget::setAnnotationType(U2FeatureType type) {
     int index = cbAnnotationType->findText(U2FeatureTypes::getVisualName(type));
     if (Q_UNLIKELY(index == -1)) {
-        Q_ASSERT(false);    // an incorrect type
+        Q_ASSERT(false);  // an incorrect type
         index = cbAnnotationType->findText(U2FeatureTypes::getVisualName(U2FeatureTypes::MiscFeature));
     }
     cbAnnotationType->setCurrentIndex(index);
@@ -242,4 +242,4 @@ void CreateAnnotationNormalWidget::connectSignals() {
     connect(chbUsePatternNames, SIGNAL(stateChanged(int)), SIGNAL(si_usePatternNamesStateChanged()));
 }
 
-}    // namespace U2
+}  // namespace U2

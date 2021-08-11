@@ -34,7 +34,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 //////////////////////////////////////////////////
-//ClarkBuildValidator
+// ClarkBuildValidator
 
 class ClarkBuildValidator : public ActorValidator {
     Q_DECLARE_TR_FUNCTIONS(ClarkBuildValidator)
@@ -46,7 +46,7 @@ private:
 };
 
 //////////////////////////////////////////////////
-//ClarkBuild
+// ClarkBuild
 class ClarkBuildPrompter;
 typedef PrompterBase<ClarkBuildPrompter> ClarkBuildBase;
 
@@ -59,7 +59,7 @@ public:
 
 protected:
     QString composeRichDoc();
-};    //ClarkBuildPrompter
+};  // ClarkBuildPrompter
 
 class ClarkBuildWorker : public BaseWorker {
     Q_OBJECT
@@ -78,7 +78,7 @@ private slots:
 protected:
     IntegralBus *output;
 
-};    //ClarkBuildWorker
+};  // ClarkBuildWorker
 
 class ClarkBuildWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -92,7 +92,7 @@ public:
     Worker *createWorker(Actor *a) {
         return new ClarkBuildWorker(a);
     }
-};    //ClarkBuildWorkerFactory
+};  // ClarkBuildWorkerFactory
 
 class ClarkBuildTask : public ExternalToolSupportTask {
     Q_OBJECT
@@ -114,7 +114,7 @@ private:
     int rank;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_CLARK_BUILD_WORKER_H_
+#endif  //_U2_CLARK_BUILD_WORKER_H_

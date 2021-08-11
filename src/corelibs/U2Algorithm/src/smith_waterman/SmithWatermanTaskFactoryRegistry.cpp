@@ -59,4 +59,4 @@ bool SmithWatermanTaskFactoryRegistry::hadRegistered(const QString &factoryId) {
     return factories.contains(factoryId);
 }
 
-}    // namespace U2
+}  // namespace U2

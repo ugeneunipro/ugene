@@ -55,6 +55,6 @@ private:
     static void skipValidatorBlocks(QString &schemeContent);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_C_INTERFACE_SAS_TESTS_H_
+#endif  // _U2_C_INTERFACE_SAS_TESTS_H_

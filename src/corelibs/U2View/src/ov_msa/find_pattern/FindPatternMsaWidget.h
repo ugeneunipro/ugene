@@ -238,6 +238,6 @@ private:
     ShowHideSubgroupWidget *otherSettingsSubgroup;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FIND_PATTERN_WIDGET_H_
+#endif  // _U2_FIND_PATTERN_WIDGET_H_
