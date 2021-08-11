@@ -26,6 +26,7 @@ src/*.so.*
 *.vcxproj*
 *.tmp
 *.sln
+/src/plugins/smith_waterman/vc*.pdb
 
 # MacOS generated files
 .DS_Store

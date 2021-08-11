@@ -61,11 +61,11 @@ int calcPartSeqSize(int seqLibLength, int overlapLength, int partsNumber) {
 }
 
 //size of vector that contain all results
-int calcSizeRow(int seqLibLength, int overlapLength, int partsNumber, int partSeqSize) {
+int calcSizeRow(int, int, int partsNumber, int partSeqSize) {
     return (partSeqSize + 1) * partsNumber;
 }
 
-quint64 sw_cuda_cpp::estimateNeededGpuMemory(int seqLibLength, ScoreType qProfLen, int queryLength, const U2::SmithWatermanSettings::SWResultView resultView) {
+quint64 sw_cuda_cpp::estimateNeededGpuMemory(int seqLibLength, ScoreType, int queryLength, const U2::SmithWatermanSettings::SWResultView resultView) {
     int sizeP = qProfLen * sizeof(ScoreType);
     int sizeL = (seqLibLength) * sizeof(char);
 
@@ -196,7 +196,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
     cudaMalloc((void **)&g_directionsRec, sizeQ);
 
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
-        cudaError errorMatrix = cudaMalloc(reinterpret_cast<void **>(&g_directionsMatrix), directionMatrixSize);
+        cudaMalloc(reinterpret_cast<void **>(&g_directionsMatrix), directionMatrixSize);
         cudaError errorBacktrace = cudaMalloc(reinterpret_cast<void **>(&g_backtraceBegins), backtraceBeginsSize);
     }
 
