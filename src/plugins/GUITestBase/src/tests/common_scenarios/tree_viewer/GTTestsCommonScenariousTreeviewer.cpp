@@ -322,37 +322,39 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    1. Open file samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Click on "Build tree" button on toolbar
-    //    Expected state: "Create Philogenetic Tree" dialog appears
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
 
+    //    2. Click on "Build tree" button on toolbar
+    //    Expected state: "Create Phylogenetic Tree" dialog appears
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
     QAbstractButton *tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
-    //    Expected state: philogenetic tree appears
+    //    Expected state: phylogenetic tree appears
     //    4. Disable "Show sequence name"
     //    Expected state: sequence name labels are not shown
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Names"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Names"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     QList<QGraphicsItem *> list = treeView->scene()->items();
 
-    foreach (QGraphicsItem *item, list) {
-        QGraphicsSimpleTextItem *node = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
-        if (node && node->isVisible()) {
-            CHECK_SET_ERR(!node->text().contains("o") || !node->text().contains("a"), "names are visiable");
+    for (const QGraphicsItem *item : qAsConst(list)) {
+        auto node = qgraphicsitem_cast<const QGraphicsSimpleTextItem *>(item);
+        if (node != nullptr && node->isVisible()) {
+            CHECK_SET_ERR(!node->text().contains("o") || !node->text().contains("a"), QString("names are visible: %1").arg(node->text()));
         }
     }
-    //    5. Disable "Show distance labels"
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Distances"));
+    //    5. Disable "Show distance labels".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Distances"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
-    foreach (QGraphicsItem *item, list) {
-        QGraphicsSimpleTextItem *node = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
-        if (node && node->isVisible()) {
+    for (const QGraphicsItem *item : qAsConst(list)) {
+        auto node = qgraphicsitem_cast<const QGraphicsSimpleTextItem *>(item);
+        if (node != nullptr && node->isVisible()) {
             if (node->text() != "0.011") {
-                CHECK_SET_ERR(!node->text().contains("0."), "Distances are visiable");
+                CHECK_SET_ERR(!node->text().contains("0."), "Distances are visible");
             }
         }
     }
