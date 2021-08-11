@@ -203,7 +203,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
         cudaMalloc(reinterpret_cast<void **>(&g_directionsMatrix), directionMatrixSize);
-        cudaError errorBacktrace = cudaMalloc(reinterpret_cast<void **>(&g_backtraceBegins), backtraceBeginsSize);
+        cudaMalloc(reinterpret_cast<void **>(&g_backtraceBegins), backtraceBeginsSize);
     }
 
     u2log.details(QString("GLOBAL MEMORY USED %1 KB").arg((sizeL + sizeP + sizeQ * 7 + directionMatrixSize + backtraceBeginsSize) / 1024));
