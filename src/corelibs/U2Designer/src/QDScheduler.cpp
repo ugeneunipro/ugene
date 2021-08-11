@@ -58,10 +58,16 @@ QDScheduler::QDScheduler(const QDRunSettings &_settings)
     // annotations will be added in subtask thread
     // => leave some progress bar space for it
     Document *annObjDoc = settings.annotationsObj == nullptr ? nullptr : settings.annotationsObj->getDocument();
+    int actorsCount = settings.scheme->getActors().size();
+
     if (annObjDoc) {
-        progressDelta = 100 / settings.scheme->getActors().size();
+        progressDelta = actorsCount > 0
+                            ? 100 / actorsCount
+                            : 100;
     } else {
-        progressDelta = PROCESSING_PROGRESS_WEIGHT / settings.scheme->getActors().size();
+        progressDelta = actorsCount > 0
+                            ? PROCESSING_PROGRESS_WEIGHT / actorsCount
+                            : PROCESSING_PROGRESS_WEIGHT;
     }
 
     if (settings.annotationsObj == nullptr) {
