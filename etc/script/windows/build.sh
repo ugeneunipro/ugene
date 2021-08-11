@@ -70,6 +70,9 @@ cp "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
+mkdir "${BUNDLE_DIR}/styles"
+cp "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
+
 mkdir "${BUNDLE_DIR}/sqldrivers"
 cp "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUNDLE_DIR}/sqldrivers"
 
