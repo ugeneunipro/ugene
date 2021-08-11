@@ -146,11 +146,13 @@ void ConvertFilesFormatWorkerFactory::init() {
         QVariantMap formatsNameByIdMap = getFormatsMap(MapType::IDS);
         auto formatByIdCombo = new ComboBoxDelegate(formatsNameByIdMap);
         formatByIdCombo->setItemTextFormatter(documentNameFormatter);
+        formatByIdCombo->setSortFlag(true);
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatByIdCombo;
 
         QVariantMap excludedFormatByIdMap = getFormatsMap(MapType::BOOLEANS);
         auto excludedFormatIdCombo = new ComboBoxWithChecksDelegate(excludedFormatByIdMap);
         excludedFormatIdCombo->setItemTextFormatter(documentNameFormatter);
+        excludedFormatIdCombo->setSortFlag(true);
         delegates[EXCLUDED_FORMATS_ID] = excludedFormatIdCombo;
 
         QVariantMap directoryMap;

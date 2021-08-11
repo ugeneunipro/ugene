@@ -139,15 +139,24 @@ private slots:
     void sl_valueChanged(double value);
 };
 
+/** Base class for different kinds of ComboBox widgets that adds support of features like value formatting, sorting, etc.. */
 class ComboBoxWidgetBase : public PropertyWidget {
 public:
-    ComboBoxWidgetBase(QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
+    ComboBoxWidgetBase(QWidget *parent = nullptr,
+                       const QSharedPointer<StringFormatter> &formatter = nullptr,
+                       bool isSorted = false);
 
     /** Returns formatted value for the item with the given name. */
     QString getFormattedItemText(const QString &itemKey) const;
 
 protected:
+    /** Sorts in-place combo box items by name (item.first) in case-insensitive mode. */
+    static void sortComboItemsByName(QList<ComboItem> &itemList);
+
     QSharedPointer<StringFormatter> formatter;
+
+    /** Makes combo-box list sorted. The sorting is case insensitive. */
+    bool isSorted = false;
 };
 
 /************************************************************************/
@@ -156,9 +165,13 @@ protected:
 class ComboBoxWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    ComboBoxWidget(const QList<ComboItem> &items,
+                   QWidget *parent = nullptr,
+                   const QSharedPointer<StringFormatter> &formatter = nullptr,
+                   bool isSorted = false);
+
+    QVariant value() override;
+    void setValue(const QVariant &value) override;
 
     static ComboBoxWidget *createBooleanWidget(QWidget *parent = nullptr);
 
@@ -244,9 +257,14 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr, const QSharedPointer<StringFormatter> &formatter = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    ComboBoxWithChecksWidget(const QVariantMap &items,
+                             QWidget *parent = nullptr,
+                             const QSharedPointer<StringFormatter> &formatter = nullptr,
+                             bool isSorted = false);
+
+    QVariant value() override;
+
+    void setValue(const QVariant &value) override;
 
 signals:
     void valueChanged(const QString &value);

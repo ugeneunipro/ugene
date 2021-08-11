@@ -477,6 +477,7 @@ void WriteAnnotationsWorkerFactory::init() {
         }
         auto formatDelegate = new ComboBoxDelegate(m);
         formatDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        formatDelegate->setSortFlag(true);
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
             new URLDelegate(DialogUtils::prepareDocumentsFileFilter(format, true), QString(), false, false, true, nullptr, format);

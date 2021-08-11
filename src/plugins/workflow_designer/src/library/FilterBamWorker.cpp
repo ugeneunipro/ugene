@@ -178,6 +178,7 @@ void FilterBamWorkerFactory::init() {
         formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
         formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
         auto outputFormatComboBoxDelegate = new ComboBoxDelegate(formatMap);
+        outputFormatComboBoxDelegate->setSortFlag(true);
         outputFormatComboBoxDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
         delegates[OUT_FORMAT_ID] = outputFormatComboBoxDelegate;
         QVariantMap lenMap;

@@ -203,7 +203,7 @@ private:
     QVariantMap spinProperties;
 };
 
-/** Base class for all combo-box delegates. Includes item name formatter. */
+/** Base class for all combo-box delegates. Includes item name formatter and other common features. */
 class U2DESIGNER_EXPORT ComboBoxBaseDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
@@ -215,12 +215,18 @@ public:
     /** Returns formatted value for the item with the given name. */
     QString getFormattedItemText(const QString &itemKey) const;
 
+    /** Enables/disables sorting of the value in the combo-box. */
+    void setSortFlag(bool flag);
+
 protected:
     /** Assigns common properties like itemTextFormatter to the cloned delegate. */
     ComboBoxBaseDelegate *initClonedDelegate(ComboBoxBaseDelegate *delegate) const;
 
     /** Formatter for combo-box values. */
     QSharedPointer<StringFormatter> itemTextFormatter;
+
+    /** Makes combo-box list sorted. The sorting is case insensitive. */
+    bool isSorted = false;
 };
 
 class U2DESIGNER_EXPORT ComboBoxDelegate : public ComboBoxBaseDelegate {
