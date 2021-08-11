@@ -128,6 +128,9 @@ public:
     /** Calls findExactWidget with QToolButton type. Shortcut method. */
     static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
+    /** Calls findExactWidget with QPushButton type. Shortcut method. */
+    static QPushButton *findPushButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
     /** Calls findExactWidget with QSlider type. Shortcut method. */
     static QSlider *findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 

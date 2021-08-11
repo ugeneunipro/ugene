@@ -5654,24 +5654,26 @@ GUI_TEST_CLASS_DEFINITION(test_3953) {
     5. Pres "delete" key, until all symbols are deleted
     Expected state: "create annotation" button is disabled
     Actual: "create annotation" button is enabled
-*/
-    QString pattern("TTGTCAGATTCACCA");
+    */
+    QString pattern = "TTGTCAGATTCACCA";
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
 
     GTKeyboardDriver::keySequence(pattern);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QPushButton *getAnnotationsButton = GTWidget::findPushButton(os, "getAnnotationsPushButton");
+    GTWidget::checkEnabled(os, getAnnotationsButton, true);
+
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-
-    QPushButton *getAnnotations = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
-    CHECK_SET_ERR(getAnnotations != nullptr, "getAnnotationsPushButton is NULL");
-    CHECK_SET_ERR(getAnnotations->isEnabled() == true, QString("getAnnotationsPushButton is not active"));
-
-    for (int i = 0; i <= pattern.length(); i++) {
+    for (int i = pattern.length(); --i >= 0;) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTWidget::checkEnabled(os, getAnnotationsButton, i > 0);
     }
-    CHECK_SET_ERR(getAnnotations->isEnabled() == false, QString("getAnnotationsPushButton is active"));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_3959) {
     // 1. { File -> New document from text... }
     // Expected state: the "Create document" dialog has appeared
