@@ -24,10 +24,10 @@
 
 #include <QMutex>
 
+#include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/UdrSchema.h>
-
-#include "Primer.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 

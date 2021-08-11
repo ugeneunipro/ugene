@@ -24,8 +24,7 @@
 #include <QPainter>
 #include <QStyleOption>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/PrimerValidator.h>
 
 namespace U2 {
 
@@ -53,7 +52,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
     col.setAlpha(128);
     p.setPen(col);
 
-    QRect r = placeHolderRect();
+    QRect r = getPlaceHolderRect();
 
     QString left = fontMetrics().elidedText("5'", Qt::ElideRight, r.width());
     Qt::Alignment leftAlignment = QStyle::visualAlignment(Qt::LeftToRight, QFlag(Qt::AlignLeft));
@@ -64,7 +63,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
     p.drawText(r, rightAlignment, right);
 }
 
-QRect PrimerLineEdit::placeHolderRect() const {
+QRect PrimerLineEdit::getPlaceHolderRect() const {
     QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
@@ -82,21 +81,4 @@ QRect PrimerLineEdit::placeHolderRect() const {
     return lineRect.adjusted(minLB, 0, -minRB, 0);
 }
 
-PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
-    : QRegExpValidator(parent) {
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(
-        allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    QByteArray alphabetChars = alphabet->getAlphabetChars(true);
-    // Gaps are not allowed
-    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
-    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
-}
-
-QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
-    input = input.simplified();
-    input = input.toUpper();
-    input.remove(" ");
-    return QRegExpValidator::validate(input, pos);
-}
-
-}  // namespace U2
+}    // namespace U2

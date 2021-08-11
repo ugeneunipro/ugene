@@ -23,13 +23,13 @@
 
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
+#include <U2Core/PrimerStatistics.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 
 #include "InSilicoPcrTask.h"
-#include "Primer.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 

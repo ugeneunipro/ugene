@@ -26,11 +26,11 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "Primer.h"
-#include "PrimerGroupBox.h"
+#include "PrimerValidator.h"
 
 namespace U2 {
 
@@ -55,6 +55,23 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const Q
     PrimersPairStatistics calc(forward, reverse);
     message = calc.getFirstError();
     return message;
+}
+
+double PrimerStatistics::getDeltaG(const QByteArray& sequence) {
+    CHECK(validate(sequence), Primer::INVALID_TM);
+
+    double freeEnergy = 0.0;
+    for (int i = 0; i < sequence.size() - 1; i++) {
+        QByteArray curArray;
+        curArray.append(sequence.at(i));
+        curArray.append(sequence.at(i + 1));
+        bool homologousRegionEnded = !BaseDimersFinder::ENERGY_MAP.contains(curArray);
+        if (!homologousRegionEnded) {
+            freeEnergy += BaseDimersFinder::ENERGY_MAP[curArray];
+        }
+    }
+
+    return freeEnergy;
 }
 
 double PrimerStatistics::getMeltingTemperature(const QByteArray &sequence) {
@@ -113,8 +130,11 @@ const int PrimerStatisticsCalculator::CLAMP_BOTTOM = 1;
 const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
-PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequence, Direction direction)
-    : sequence(sequence), direction(direction), nA(0), nC(0), nG(0), nT(0), maxRun(0) {
+PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequence,
+                                                       Direction direction,
+                                                       const qreal _energyThreshold)
+    : sequence(sequence), direction(direction), energyThreshold(_energyThreshold),
+      nA(0), nC(0), nG(0), nT(0), maxRun(0) {
     CHECK(!sequence.isEmpty(), );
 
     int currentRun = 0;
@@ -153,7 +173,7 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequenc
         maxRun = currentRun;
     }
 
-    HeteroDimersFinder dimersFinder(sequence, sequence);
+    HeteroDimersFinder dimersFinder(sequence, sequence, energyThreshold);
     dimersInfo = dimersFinder.getResult();
 }
 
@@ -348,6 +368,10 @@ QString PrimersPairStatistics::generateReport() const {
 
 QString PrimersPairStatistics::getInitializationError() const {
     return initializationError;
+}
+
+const DimerFinderResult& U2::PrimersPairStatistics::getDimersInfo() const {
+    return dimersInfo;
 }
 
 void PrimersPairStatistics::addDimersToReport(QString &report) const {

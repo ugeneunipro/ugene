@@ -25,9 +25,8 @@
 #include <QAbstractItemModel>
 #include <QTableView>
 
+#include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
-
-#include "Primer.h"
 
 namespace U2 {
 

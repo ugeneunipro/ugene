@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -35,7 +36,6 @@
 #include <U2Core/UdrSchemaRegistry.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "PrimerStatistics.h"
 
 namespace U2 {
 

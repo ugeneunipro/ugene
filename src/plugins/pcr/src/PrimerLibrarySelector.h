@@ -24,7 +24,8 @@
 
 #include <QDialog>
 
-#include "Primer.h"
+#include <U2Core/Primer.h>
+
 #include "ui_PrimerLibrarySelector.h"
 
 namespace U2 {

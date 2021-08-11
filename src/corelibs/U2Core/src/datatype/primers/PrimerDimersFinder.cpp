@@ -28,6 +28,8 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "PrimerStatistics.h"
+
 namespace U2 {
 
 /************************************************************************/
@@ -39,43 +41,39 @@ QString DimerFinderResult::getFullReport() const {
 QString DimerFinderResult::getShortReport() const {
     return QString("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
 }
+QString DimerFinderResult::getReportWithMeltingTemp() const {
+    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 <b>Melting temperature:</b> %3&deg;C").arg(deltaG)
+        .arg(baseCounts).arg(PrimerStatistics::getMeltingTemperature(dimer.toUtf8())) + "<pre>" + dimersOverlap + "</pre>";
+}
 
 /************************************************************************/
 /* DrimersFinder */
 /************************************************************************/
-static QMap<QByteArray, qreal> initEnergyMap() {
-    QMap<QByteArray, qreal> initializedEnergyMap;
 
-    /*The pairwise dG values for DNA are taken from article:
-    Breslauer, K.,J., Frank, R., Blocker, H., and Marky, L.A. (1986) Predicting DNA duplex
-    stability from the base sequence, Proc. Natl. Acad. Sci. USA 83:3746-3750.*/
+const QMap<QByteArray, qreal> BaseDimersFinder::ENERGY_MAP = {
+        { "AA", -1.9 },
+        { "TT", -1.9 },
 
-    initializedEnergyMap["AA"] = -1.9;
-    initializedEnergyMap["TT"] = -1.9;
+        { "AT", -1.5 },
+        { "TA", -1.0 },
 
-    initializedEnergyMap["AT"] = -1.5;
-    initializedEnergyMap["TA"] = -1.0;
+        { "CA", -2.0 },
+        { "TG", -2.0 },
 
-    initializedEnergyMap["CA"] = -2.0;
-    initializedEnergyMap["TG"] = -2.0;
+        { "AC", -1.3 },
+        { "GT", -1.3 },
 
-    initializedEnergyMap["AC"] = -1.3;
-    initializedEnergyMap["GT"] = -1.3;
+        { "CT", -1.6 },
+        { "AG", -1.6 },
+        { "GA", -1.6 },
+        { "TC", -1.6 },
 
-    initializedEnergyMap["CT"] = -1.6;
-    initializedEnergyMap["AG"] = -1.6;
-    initializedEnergyMap["GA"] = -1.6;
-    initializedEnergyMap["TC"] = -1.6;
+        { "CG", -3.6 },
+        { "GC", -3.1 },
 
-    initializedEnergyMap["CG"] = -3.6;
-    initializedEnergyMap["GC"] = -3.1;
-
-    initializedEnergyMap["GG"] = -3.1;
-    initializedEnergyMap["CC"] = -3.1;
-    return initializedEnergyMap;
-}
-
-QMap<QByteArray, qreal> BaseDimersFinder::energyMap = initEnergyMap();
+        { "GG", -3.1 },
+        { "CC", -3.1 }
+};
 
 BaseDimersFinder::BaseDimersFinder(const QByteArray &forwardPrimer, const QByteArray &reversePrimer, double energyThreshold)
     : forwardPrimer(forwardPrimer), reversePrimer(reversePrimer), energyThreshold(energyThreshold), maximumDeltaG(0) {
@@ -101,16 +99,20 @@ void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray &homologo
         QByteArray curArray;
         curArray.append(homologousBases.at(i));
         curArray.append(homologousBases.at(i + 1));
-        bool homologousRegionEnded = !energyMap.contains(curArray);
+        bool homologousRegionEnded = !ENERGY_MAP.contains(curArray);
         if (!homologousRegionEnded) {
-            freeEnergy += energyMap[curArray];
+            freeEnergy += ENERGY_MAP[curArray];
         }
-        if (homologousRegionEnded || i == homologousBases.size() - 2) {
+        bool reachedBasesEnd = i == homologousBases.size() - 2;
+        if (homologousRegionEnded || reachedBasesEnd) {
             if (freeEnergy < maximumDeltaG) {
                 maximumDeltaG = freeEnergy;
                 resHomologousRegion = homologousBases;
                 overlappingRegion.startPos = startPos;
-                overlappingRegion.length = i - startPos + 2;
+                overlappingRegion.length = i - startPos + 1;
+                if (!homologousRegionEnded && reachedBasesEnd) {
+                    overlappingRegion.length++;
+                }
                 dimersOverlap = getDimersOverlapping(overlapStartPos);
             }
             freeEnergy = 0.0;
@@ -122,6 +124,7 @@ void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray &homologo
 DimerFinderResult BaseDimersFinder::getResult() const {
     DimerFinderResult result;
     result.dimersOverlap = dimersOverlap;
+    result.dimer = resHomologousRegion.mid(overlappingRegion.startPos, overlappingRegion.length);
     result.baseCounts = overlappingRegion.length;
     result.deltaG = maximumDeltaG;
     result.canBeFormed = maximumDeltaG < energyThreshold;

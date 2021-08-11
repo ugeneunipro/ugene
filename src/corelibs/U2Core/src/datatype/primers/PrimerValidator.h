@@ -19,37 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
-#define _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+#ifndef _U2_PRIMER_VALIDATOR_H_
+#define _U2_PRIMER_VALIDATOR_H_
 
-#include <U2Core/GUrl.h>
-#include <U2Core/Primer.h>
-#include <U2Core/Task.h>
+#include <QValidator>
+
+#include <U2Core/global.h>
 
 namespace U2 {
-
-class Document;
-class DocumentFormat;
-class U2DbiRef;
-class ExportPrimersToDatabaseTask;
-
-class ExportPrimersToLocalFileTask : public Task {
-    Q_OBJECT
+/**
+ * @PrimerValidator
+ * QRegExpValidator improving for primers. Make possible to type nucleotide or amino charaters only.
+ */
+class U2CORE_EXPORT PrimerValidator : public QRegExpValidator {
 public:
-    ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
+    PrimerValidator(QObject *parent, bool allowExtended = true);
 
-    void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
-
-private:
-    Document *prepareDocument();
-    void addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask);
-
-    const QList<Primer> primers;
-    DocumentFormat *format;
-    const GUrl url;
+    State validate(QString &input, int &pos) const override;
 };
 
-}  // namespace U2
+}    // namespace U2
 
-#endif  // _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+#endif    // _U2_PRIMER_VALIDATOR_H_

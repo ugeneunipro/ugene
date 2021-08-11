@@ -22,11 +22,12 @@
 #ifndef _U2_PRIMER_H_
 #define _U2_PRIMER_H_
 
+#include <U2Core/global.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
 
-class Primer : public U2Entity {
+class U2CORE_EXPORT Primer : public U2Entity {
 public:
     Primer();
 

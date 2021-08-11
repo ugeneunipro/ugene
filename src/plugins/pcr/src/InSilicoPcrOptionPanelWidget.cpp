@@ -29,6 +29,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -41,9 +42,8 @@
 
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
-#include "PrimerGroupBox.h"
-#include "PrimerStatistics.h"
 #include "PrimersDetailsDialog.h"
+#include "PrimerGroupBox.h"
 
 namespace U2 {
 
