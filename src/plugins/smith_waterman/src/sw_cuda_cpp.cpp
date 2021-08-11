@@ -87,7 +87,7 @@ quint64 sw_cuda_cpp::estimateNeededGpuMemory(int seqLibLength, ScoreType, int qu
     return memToAlloc * 1.2;  // just for safety
 }
 
-quint64 sw_cuda_cpp::estimateNeededRamAmount(int seqLibLength, ScoreType qProfLen, int queryLength, const U2::SmithWatermanSettings::SWResultView resultView) {
+quint64 sw_cuda_cpp::estimateNeededRamAmount(int seqLibLength, ScoreType, int queryLength, const U2::SmithWatermanSettings::SWResultView resultView) {
     const int overlapLength = calcOverlap(queryLength);
     const int partsNumber = calcPartsNumber(seqLibLength, overlapLength);
     const int partSeqSize = calcPartSeqSize(seqLibLength, overlapLength, partsNumber);
