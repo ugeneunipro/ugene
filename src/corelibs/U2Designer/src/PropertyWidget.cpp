@@ -185,24 +185,37 @@ void DoubleSpinBoxWidget::sl_valueChanged(double value) {
 ////////////////////////////////////
 //// ComboBoxWidgetBase
 
-ComboBoxWidgetBase::ComboBoxWidgetBase(QWidget *parent, const QSharedPointer<StringFormatter> &_formatter)
-    : PropertyWidget(parent), formatter(_formatter) {
+ComboBoxWidgetBase::ComboBoxWidgetBase(QWidget *parent, const QSharedPointer<StringFormatter> &_formatter, bool _isSorted)
+    : PropertyWidget(parent), formatter(_formatter), isSorted(_isSorted) {
 }
 
 QString ComboBoxWidgetBase::getFormattedItemText(const QString &itemKey) const {
     return formatter.isNull() ? itemKey : formatter->format(itemKey);
 }
 
+void ComboBoxWidgetBase::sortComboItemsByName(QList<ComboItem> &itemList) {
+    std::stable_sort(itemList.begin(), itemList.end(), [](auto &i1, auto &i2) -> bool {
+        return QString::compare(i1.first, i2.first, Qt::CaseInsensitive) < 0;
+    });
+}
+
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
-    : ComboBoxWidgetBase(parent, formatter) {
+ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter, bool isSorted)
+    : ComboBoxWidgetBase(parent, formatter, isSorted) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
+    QList<ComboItem> sortedItems;
     for (const ComboItem &item : qAsConst(items)) {
-        comboBox->addItem(getFormattedItemText(item.first), item.second);
+        sortedItems.append({getFormattedItemText(item.first), item.second});
+    }
+    if (isSorted) {
+        sortComboItemsByName(sortedItems);
+    }
+    for (const ComboItem &item : qAsConst(sortedItems)) {
+        comboBox->addItem(item.first, item.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
@@ -419,8 +432,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter)
-    : ComboBoxWidgetBase(parent, formatter), cm(nullptr), items(_items) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter, bool isSorted)
+    : ComboBoxWidgetBase(parent, formatter, isSorted), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -479,16 +492,19 @@ QString ComboBoxWithChecksWidget::getFormattedValue() {
     for (const QString &value : qAsConst(selectedValues)) {
         formattedValues << getFormattedItemText(value);
     }
+    if (isSorted) {
+        formattedValues.sort(Qt::CaseInsensitive);
+    }
     return formattedValues.join(",");
 }
 
 void ComboBoxWithChecksWidget::initModelView() {
-    cm = new QStandardItemModel(items.size(), 1, comboBox);
+    cm = new QStandardItemModel(comboBox);
 
     auto ghostItem = new QStandardItem(getFormattedValue());
-    int i = 0;
-    cm->setItem(i++, ghostItem);
+    cm->appendRow(ghostItem);
 
+    QList<QStandardItem *> standardItems;
     for (auto it = items.begin(); it != items.end(); ++it) {
         QString formattedValue = getFormattedItemText(it.key());
         auto item = new QStandardItem(formattedValue);
@@ -497,9 +513,14 @@ void ComboBoxWithChecksWidget::initModelView() {
         item->setSelectable(false);
         item->setCheckState(it.value().toBool() ? Qt::Checked : Qt::Unchecked);
         item->setData(it.key());
-        cm->setItem(i++, item);
+        standardItems << item;
     }
-
+    if (isSorted) {
+        std::stable_sort(standardItems.begin(), standardItems.end(), [](auto i1, auto i2) -> bool {
+            return QString::compare(i1->text(), i2->text(), Qt::CaseInsensitive) < 0;
+        });
+    }
+    std::for_each(standardItems.begin(), standardItems.end(), [&](auto item) -> void { cm->appendRow(item); });
     comboBox->setModel(cm);
 
     auto vw = new QListView(comboBox);

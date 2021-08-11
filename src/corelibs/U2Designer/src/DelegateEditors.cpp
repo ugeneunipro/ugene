@@ -25,7 +25,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -36,7 +35,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ScriptEditorDialog.h>
 
-#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "PropertyWidget.h"
@@ -194,7 +192,12 @@ void ComboBoxBaseDelegate::setItemTextFormatter(const QSharedPointer<StringForma
 
 ComboBoxBaseDelegate *ComboBoxBaseDelegate::initClonedDelegate(ComboBoxBaseDelegate *delegate) const {
     delegate->setItemTextFormatter(itemTextFormatter);
+    delegate->setSortFlag(isSorted);
     return delegate;
+}
+
+void ComboBoxBaseDelegate::setSortFlag(bool flag) {
+    isSorted = flag;
 }
 
 QString ComboBoxBaseDelegate::getFormattedItemText(const QString &itemKey) const {
@@ -221,7 +224,7 @@ PropertyDelegate *ComboBoxDelegate::clone() {
 }
 
 PropertyWidget *ComboBoxDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new ComboBoxWidget(comboItems, parent, itemTextFormatter);
+    return new ComboBoxWidget(comboItems, parent, itemTextFormatter, isSorted);
 }
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
@@ -236,7 +239,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
             l.append(qMakePair(key, m.value(key)));
         }
     }
-    auto editor = new ComboBoxWidget(l, parent, itemTextFormatter);
+    auto editor = new ComboBoxWidget(l, parent, itemTextFormatter, isSorted);
     connect(editor, SIGNAL(valueChanged(const QString &)), SLOT(sl_commit()));
     connect(editor, SIGNAL(valueChanged(const QString &)), SIGNAL(si_valueChanged(const QString &)));
 
@@ -437,13 +440,13 @@ PropertyDelegate *ComboBoxWithChecksDelegate::clone() {
 }
 
 PropertyWidget *ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new ComboBoxWithChecksWidget(items, parent, itemTextFormatter);
+    return new ComboBoxWithChecksWidget(items, parent, itemTextFormatter, isSorted);
 }
 
 QWidget *ComboBoxWithChecksDelegate::createEditor(QWidget *parent,
                                                   const QStyleOptionViewItem & /* option */,
                                                   const QModelIndex & /* index */) const {
-    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent, itemTextFormatter);
+    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent, itemTextFormatter, isSorted);
     connect(editor, SIGNAL(valueChanged(const QString &)), this, SIGNAL(si_valueChanged(const QString &)));
     connect(editor, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_commit()));
     return editor;
