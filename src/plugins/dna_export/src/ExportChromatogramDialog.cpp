@@ -56,7 +56,7 @@ ExportChromatogramDialog::ExportChromatogramDialog(QWidget *p, const GUrl &fileU
 
 void ExportChromatogramDialog::initSaveController(const GUrl &fileUrl) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtention(fileUrl, "chromatogram", ".scf", "_copy");
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(fileUrl, "chromatogram", ".scf", "_copy");
     config.defaultFormatId = BaseDocumentFormats::SCF;
     config.formatCombo = formatCombo;
     config.fileDialogButton = fileButton;

@@ -74,43 +74,6 @@ bool GUrlUtils::containSpaces(const QString &string) {
     return string.contains(QRegExp("\\s"));
 }
 
-GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &oldFormatId, const DocumentFormatId &newFormatId) {
-    CHECK(url.isLocalFile(), GUrl());
-    DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
-    CHECK(nullptr != dfRegistry, GUrl());
-    DocumentFormat *oldFormat = dfRegistry->getFormatById(oldFormatId);
-    CHECK(nullptr != oldFormat, GUrl());
-    DocumentFormat *newFormat = dfRegistry->getFormatById(newFormatId);
-    CHECK(nullptr != newFormat, GUrl());
-
-    const QString dirPath = url.dirPath();
-    const QString baseFileName = url.baseFileName();
-    QString completeSuffix = url.completeFileSuffix();
-
-    bool isCompressed = false;
-    if (completeSuffix.endsWith("gz")) {
-        isCompressed = true;
-        completeSuffix.chop(QString(".gz").size());
-    }
-
-    const QString currentExtension = completeSuffix.mid(completeSuffix.lastIndexOf(".") + 1);
-    if (oldFormat->getSupportedDocumentFileExtensions().contains(currentExtension)) {
-        completeSuffix.chop(currentExtension.size() + 1);
-    }
-
-    const QStringList newFormatExtensions = newFormat->getSupportedDocumentFileExtensions();
-    if (!newFormatExtensions.isEmpty()) {
-        completeSuffix += "." + newFormatExtensions.first();
-    }
-
-    if (isCompressed) {
-        completeSuffix += ".gz";
-    }
-
-    const QString dotCompleteSuffix = (completeSuffix.startsWith(".") ? completeSuffix : "." + completeSuffix);
-    return GUrl(dirPath + QDir::separator() + baseFileName + dotCompleteSuffix);
-}
-
 GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
     DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
@@ -191,25 +154,16 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post,
     }
 }
 
-QString GUrlUtils::insertSuffix(const QString &originalUrl, const QString &suffix) {
-    QString pre, post;
-    int i = 0;
-    getPreNPost(originalUrl, pre, post, i, suffix);
-    return pre + suffix + post;
-}
-
-QStringList GUrlUtils::getRolledFilesList(const QString &originalUrl, const QString &rolledSuffix) {
-    QString pre, post;  // pre and post url parts. A number will be placed between
-    int i = 0;
-    getPreNPost(originalUrl, pre, post, i, rolledSuffix);
-
-    QString resultUrl = originalUrl;
-    QStringList urls;
-    while (QFile::exists(resultUrl)) {
-        urls << resultUrl;
-        resultUrl = pre + rolledSuffix + QString("%1").arg(++i) + post;
+QString GUrlUtils::insertSuffix(const QString &url, const QString &baseNameSuffix) {
+    GUrl gUrl(url);
+    QString completeExtension = gUrl.completeFileSuffix();
+    if (completeExtension.isEmpty()) {
+        return url + baseNameSuffix;
     }
-    return urls;
+    SAFE_POINT(completeExtension.length() < url.length(), "Extension must be smaller than url", baseNameSuffix + "." + completeExtension);
+
+    QString prefix = url.mid(0, url.length() - completeExtension.length() - 1);
+    return prefix + baseNameSuffix + "." + completeExtension;
 }
 
 QString GUrlUtils::rollFileName(const QString &originalUrl, const QString &rolledSuffix, const QSet<QString> &excludeList) {
@@ -235,14 +189,6 @@ QUrl GUrlUtils::gUrl2qUrl(const GUrl &gurl) {
     } else {
         return QUrl("file:///" + QFileInfo(str).absoluteFilePath());
     }
-}
-
-QList<QUrl> GUrlUtils::gUrls2qUrls(const QList<GUrl> &gurls) {
-    QList<QUrl> urls;
-    foreach (const GUrl &gurl, gurls) {
-        urls << gUrl2qUrl(gurl);
-    }
-    return urls;
 }
 
 GUrl GUrlUtils::qUrl2gUrl(const QUrl &qurl) {
@@ -376,26 +322,17 @@ void GUrlUtils::removeFile(const QString &filePath, U2OpStatus &os) {
 }
 
 bool GUrlUtils::canWriteFile(const QString &path) {
-    bool res = false;
-
-#ifdef Q_OS_WIN  // a workaround of that files with a colon in names can be created but are not accessible on Windows
-    if (QFileInfo(path).fileName().contains(':')) {
+    if (isOsWindows() && QFileInfo(path).fileName().contains(':')) {
+        // Files with a colon in their names can be created but are not accessible on Windows.
         return false;
     }
-#endif
 
     QFile tmpFile(path);
-    if (!tmpFile.open(QIODevice::WriteOnly)) {
-        return false;
-    }
-    if (tmpFile.isWritable()) {
-        res = true;
-        tmpFile.close();
-        tmpFile.remove();
-    } else {
-        res = false;
-    }
-    return res;
+    CHECK(tmpFile.open(QIODevice::WriteOnly), false);
+    CHECK(tmpFile.isWritable(), false);
+    tmpFile.close();
+    tmpFile.remove();
+    return true;
 }
 
 QString GUrlUtils::getDefaultDataPath() {
@@ -455,20 +392,20 @@ void GUrlUtils::getLocalPathFromUrl(const GUrl &url, const QString &defaultBaseF
     }
 }
 
-QString GUrlUtils::getLocalUrlFromUrl(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtention, const QString &suffix) {
+QString GUrlUtils::getLocalUrlFromUrl(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtension, const QString &suffix) {
     QString dirPath;
     QString baseFileName;
     GUrlUtils::getLocalPathFromUrl(url, defaultBaseFileName, dirPath, baseFileName);
-    QString result = dirPath + QDir::separator() + baseFileName + suffix + dotExtention;
+    QString result = dirPath + QDir::separator() + baseFileName + suffix + dotExtension;
     return QDir::toNativeSeparators(result);
 }
 
 QString GUrlUtils::getNewLocalUrlByFormat(const GUrl &url, const QString &defaultBaseFileName, const DocumentFormatId &format, const QString &suffix) {
-    return getNewLocalUrlByExtention(url, defaultBaseFileName, getDotExtension(format), suffix);
+    return getNewLocalUrlByExtension(url, defaultBaseFileName, getDotExtension(format), suffix);
 }
 
-QString GUrlUtils::getNewLocalUrlByExtention(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtention, const QString &suffix) {
-    QString result = getLocalUrlFromUrl(url, defaultBaseFileName, dotExtention, suffix);
+QString GUrlUtils::getNewLocalUrlByExtension(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtension, const QString &suffix) {
+    QString result = getLocalUrlFromUrl(url, defaultBaseFileName, dotExtension, suffix);
     return rollFileName(result, DocumentUtils::getNewDocFileNameExcludesHint());
 }
 
@@ -520,7 +457,7 @@ QString GUrlUtils::fixFileName(const QString &fileName) {
     result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");
     result.replace(QRegExp("_+"), "_");
 
-    /* We truncate long file names a little bit more to allow suffix adjustments (rolling) later. */
+    // Truncate long file names a bit more to allow suffix adjustments (rolling) later.
     result.truncate(MAX_OS_FILE_NAME_LENGTH - 50);
     return result;
 }

@@ -98,7 +98,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
 
         fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
         Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-        if (nullptr != a) {
+        if (a != nullptr) {
             append = a->getAttributeValue<bool>(context);
         } else {
             append = true;
@@ -233,11 +233,11 @@ void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDo
         }
     }
 
-    // generate a target URL from the source URL
+    // Generate a target URL from the source URL.
     QString url = aUrl;
     int suffix = 0;
     do {
-        if ((0 == suffix) && counters.contains(aUrl)) {
+        if (suffix == 0 && counters.contains(aUrl)) {
             suffix = counters[aUrl];
         }
         if (suffix > 0) {
@@ -339,7 +339,7 @@ Task *BaseDocWriter::tick() {
             continue;
         }
 
-        if (LocalFs == dataStorage) {
+        if (dataStorage == LocalFs) {
             const QStringList urls = takeUrlList(data, inputMessage.getMetadataId(), os);
             CHECK_OS(os);
             storeData(urls, data, os);
@@ -348,9 +348,9 @@ Task *BaseDocWriter::tick() {
             if (!append) {
                 break;
             }
-        } else if (SharedDb == dataStorage) {
+        } else if (dataStorage == SharedDb) {
             Task *result = createWriteToSharedDbTask(data);
-            if (nullptr == result) {
+            if (result == nullptr) {
                 continue;
             } else {
                 return result;
@@ -367,10 +367,10 @@ Task *BaseDocWriter::tick() {
     if (done) {
         setDone();
     }
-    if (SharedDb == dataStorage && !objectsReceived) {
+    if (dataStorage == SharedDb && !objectsReceived) {
         reportNoDataReceivedWarning();
     }
-    return LocalFs == dataStorage ? processDocs() : nullptr;
+    return dataStorage == LocalFs ? processDocs() : nullptr;
 }
 
 void BaseDocWriter::reportNoDataReceivedWarning() {
