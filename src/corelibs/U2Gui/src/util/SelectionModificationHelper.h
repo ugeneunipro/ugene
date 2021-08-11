@@ -52,6 +52,9 @@ public:
     static QRect getNewSelection(MovableSide &movableSide, const QPoint &globalMousePos, const QSizeF &baseSize, const QRect &currentSelection);
     static QList<U2Region> getNewSelection(MovableSide &border, const double mouseAngle, const double rotation, const int sequenceLength, const int startBase, const int endBase, bool &isTwoRegions);
 
+    /** Maximum distance from border to show 'resize' shape for cursor. */
+    static const int PIXEL_OFFSET_FOR_BORDER_POINTING;
+
 private:
     static MovableSide getMovableSide(const int globalMousePos, const int selectionPos, const int selectionSize, const double baseSize);
     static U2Region getNewSelectionForBorderMoving(MovableSide &border, const int globalMousePos, const double baseSize, const U2Region &currentSelection);
@@ -60,7 +63,6 @@ private:
     static MovableSide getOppositeBorder(const MovableSide border);
     static MovableSide getNewMovableCorner(const MovableSide horizontalBorder, const MovableSide verticalBorder);
 
-    static const int PIXEL_OFFSET_FOR_BORDER_POINTING;
     static const double PIXEL_OFFSET_FOR_CIRCULAR_VIEW;
     /**
      *Must be equal to the similar named value in CircularView class

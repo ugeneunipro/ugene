@@ -77,7 +77,7 @@ public:
     int getShift() const;
     void setSelectedTranslations();
 
-    void ensurePositionVisible(int pos);
+    void ensurePositionVisible(qint64 pos);
 
 protected slots:
     void sl_sequenceChanged() override;
@@ -87,7 +87,7 @@ protected slots:
     void sl_showComplementToggle(bool v);
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
-    void sl_verticalSrcollBarMoved(int position);
+    void sl_verticalScrollBarMoved(int position);
     void sl_doNotTranslate();
     void sl_translateAnnotationsOrSelection();
     void sl_setUpFramesManually();
@@ -131,7 +131,10 @@ private:
     void setupGeneticCodeMenu();
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint &pos);
     void moveBorder(const QPoint &p);
-    void setBorderCursor(const QPoint &p);
+
+    /** Returns whole rendering area height region for the normal mode & limited Y range for the wrap mode. */
+    U2Region getCapturingRenderAreaYRegionForPos(qint64 pos) const override;
+
     void setDefaultState();
 
     void updateTranslationRowsVisibilityBySelectionState();
@@ -170,7 +173,7 @@ public:
     int getSymbolsPerLine() const;
 
     /** Returns number of visible lines in the view. */
-    int getLinesCount() const;
+    qint64 getLinesCount() const;
 
     /** Returns number of bases in all visible lines.  */
     int getVisibleSymbolsCount() const;

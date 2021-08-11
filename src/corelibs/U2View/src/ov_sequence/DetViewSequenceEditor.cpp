@@ -164,7 +164,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
     }
 }
 
-void DetViewSequenceEditor::setCursor(int newPos) {
+void DetViewSequenceEditor::setCursor(qint64 newPos) {
     CHECK(newPos >= 0 && newPos <= view->getSequenceLength(), );
     if (cursor != newPos) {
         cursor = newPos;
@@ -173,13 +173,13 @@ void DetViewSequenceEditor::setCursor(int newPos) {
     }
 }
 
-void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
+void DetViewSequenceEditor::navigate(qint64 newPos, bool shiftPressed) {
     CHECK(newPos != cursor, );
-    newPos = qBound(0, newPos, (int)view->getSequenceLength());
+    newPos = qBound((qint64)0, newPos, view->getSequenceLength());
 
     DNASequenceSelection *selection = view->getSequenceContext()->getSequenceSelection();
     if (shiftPressed) {
-        int extension = qAbs(cursor - newPos);
+        qint64 extension = qAbs(cursor - newPos);
         if (selection->isEmpty()) {
             // if selection is empty - start a new one!
             selection->setRegion(U2Region(qMin(cursor, newPos), extension));

@@ -186,15 +186,23 @@ protected slots:
 
 protected:
     QPoint toRenderAreaPoint(const QPoint &p) const;
+
+    /**
+     * Returns a valid Y-range to react to mouse events for the given 'pos'.
+     * Normally this is a whole vertical range of the widget area, but in some widgets, like DetView it may be a limited space.
+     * Reason for this is that DetView is a 'multi-line', while all methods inside GSequenceLineView are 'single-line'.
+     * Uses 'renderArea' local coordinates.
+     */
+    virtual U2Region getCapturingRenderAreaYRegionForPos(qint64 pos) const;
+
     virtual void updateScrollBar();
     virtual void setSelection(const U2Region &r);
     void addSelection(const U2Region &r);
-    void removeSelection(const U2Region &r);
-    virtual void setBorderCursor(const QPoint &p);
+    virtual void updateCursorShapeOnMouseMove(const QPoint &p);
     virtual void moveBorder(const QPoint &p);
     virtual void pack();
-    virtual int getSingleStep() const;
-    virtual int getPageStep() const;
+    virtual qint64 getSingleStep() const;
+    virtual qint64 getPageStep() const;
     void autoScrolling(const QPoint &areaPoint);
     virtual void resizeSelection(const QPoint &areaPoint);
     void cancelSelectionResizing();
@@ -214,7 +222,6 @@ protected:
     GSequenceLineView *frameView;
     GSequenceLineView *coherentRangeView;
     double coefScrollBarMapping;
-    SelectionModificationHelper::MovableSide movableBorder;
 
     // special flag setup by child classes that tells to this class do or skip
     // any changes to selection on mouse ops
@@ -266,12 +273,12 @@ protected:
     QFont smallSequenceFont;
     QFont rulerFont;
 
-    int charWidth;
-    int smallCharWidth;
+    int charWidth = 0;
+    int smallCharWidth = 0;
 
-    int lineHeight;
-    int yCharOffset;
-    int xCharOffset;
+    int lineHeight = 0;
+    int yCharOffset = 0;
+    int xCharOffset = 0;
 };
 
 }  // namespace U2

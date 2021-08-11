@@ -250,7 +250,7 @@ int DetView::getShift() const {
     return isWrapMode() ? currentShiftsCounter * getDetViewRenderArea()->getShiftHeight() : 0;
 }
 
-void DetView::ensurePositionVisible(int pos) {
+void DetView::ensurePositionVisible(qint64 pos) {
     CHECK(pos >= 0 && pos <= getSequenceLength(), );
 
     DetViewRenderArea *detViewRenderArea = getDetViewRenderArea();
@@ -258,21 +258,21 @@ void DetView::ensurePositionVisible(int pos) {
         if (!visibleRange.contains(pos)) {
             if (pos < visibleRange.startPos) {
                 // scroll up till the line is visible
-                int line = pos / getSymbolsPerLine();
-                int listStartPos = line * getSymbolsPerLine();
+                qint64 line = pos / getSymbolsPerLine();
+                qint64 listStartPos = line * getSymbolsPerLine();
                 visibleRange.startPos = listStartPos;
                 currentShiftsCounter = detViewRenderArea->getDirectLine() + 1;
             } else {
                 // scroll down till the line becomes visible
-                const int line = pos / getSymbolsPerLine();
-                const int visibleShiftsCount = detViewRenderArea->height() / detViewRenderArea->getShiftHeight();
-                const int shiftToEnsureIsVisible = line * numShiftsInOneLine + detViewRenderArea->getDirectLine() + 1;
-                const int lastVisibleShift = verticalScrollBar->value() + visibleShiftsCount;
-                const int shiftsToScrollDown = shiftToEnsureIsVisible - lastVisibleShift + 1;
+                qint64 line = pos / getSymbolsPerLine();
+                int visibleShiftsCount = detViewRenderArea->height() / detViewRenderArea->getShiftHeight();
+                qint64 shiftToEnsureIsVisible = line * numShiftsInOneLine + detViewRenderArea->getDirectLine() + 1;
+                int lastVisibleShift = verticalScrollBar->value() + visibleShiftsCount;
+                qint64 shiftsToScrollDown = shiftToEnsureIsVisible - lastVisibleShift + 1;
 
-                currentShiftsCounter += shiftsToScrollDown;
-                visibleRange.startPos += getSymbolsPerLine() * (currentShiftsCounter / numShiftsInOneLine);
-                currentShiftsCounter %= numShiftsInOneLine;
+                qint64 currentShiftsCounter64 = currentShiftsCounter + shiftsToScrollDown;
+                visibleRange.startPos += getSymbolsPerLine() * (currentShiftsCounter64 / numShiftsInOneLine);
+                currentShiftsCounter = int(currentShiftsCounter64 % numShiftsInOneLine);
             }
         } else {
             // ensure the direct strand is visible
@@ -425,7 +425,7 @@ void DetView::sl_wrapSequenceToggle(bool v) {
     }
 }
 
-void DetView::sl_verticalSrcollBarMoved(int pos) {
+void DetView::sl_verticalScrollBarMoved(int pos) {
     if (isWrapMode()) {
         currentShiftsCounter = pos % numShiftsInOneLine;
         DetViewRenderArea *detArea = getDetViewRenderArea();
@@ -434,7 +434,7 @@ void DetView::sl_verticalSrcollBarMoved(int pos) {
             completeUpdate();
             return;
         }
-        setStartPos((pos / numShiftsInOneLine) * detArea->getSymbolsPerLine());
+        setStartPos((pos / numShiftsInOneLine) * (qint64)detArea->getSymbolsPerLine());
     } else {
         updateVisibleRange();
     }
@@ -479,8 +479,8 @@ void DetView::setSelectedTranslations() {
 void DetView::updateTranslationRowsVisibilityBySelectionState() {
     QVector<bool> frameRowVisibilityFlag(6, false);
     for (const U2Region &region : qAsConst(ctx->getSequenceSelection()->getSelectedRegions())) {
-        frameRowVisibilityFlag[region.startPos % 3] = true;  // direct frame
-        frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;  // complement frame.
+        frameRowVisibilityFlag[int(region.startPos % 3)] = true;  // direct frame
+        frameRowVisibilityFlag[int(3 + (ctx->getSequenceLength() - region.endPos()) % 3)] = true;  // complement frame.
     }
     for (int frameIndex = 0; frameIndex < frameRowVisibilityFlag.size(); frameIndex++) {
         bool isFrameActionChecked = frameRowVisibilityFlag[frameIndex];
@@ -490,7 +490,7 @@ void DetView::updateTranslationRowsVisibilityBySelectionState() {
 
 void DetView::mouseMoveEvent(QMouseEvent *me) {
     if (!me->buttons()) {
-        setBorderCursor(me->pos());
+        updateCursorShapeOnMouseMove(me->pos());
     }
 
     if (isSelectionResizing) {
@@ -618,10 +618,10 @@ void DetView::updateVisibleRange() {
     if (isWrapMode()) {
         if (visibleRange.startPos % detArea->getSymbolsPerLine() != 0) {
             // shift to the nearest line break
-            visibleRange.startPos = detArea->getSymbolsPerLine() * (int)(visibleRange.startPos / detArea->getSymbolsPerLine());
+            visibleRange.startPos = detArea->getSymbolsPerLine() * (visibleRange.startPos / detArea->getSymbolsPerLine());
         }
 
-        int visibleLinesCount = detArea->getLinesCount() + (getShift() != 0 ? 1 : 0);
+        qint64 visibleLinesCount = detArea->getLinesCount() + (getShift() != 0 ? 1 : 0);
         if (detArea->height() + getShift() - detArea->getShiftsCount() * detArea->getShiftHeight() * visibleLinesCount > 0) {
             visibleLinesCount++;
         }
@@ -640,7 +640,7 @@ void DetView::updateVisibleRange() {
 
         if (posAtTheEnd || (emptyLineDetected && visibleRange.startPos + visibleRangeLen >= seqLen)) {
             // scroll to the end
-            visibleRange.startPos = qMax(0, (verticalScrollBar->maximum() / numShiftsInOneLine) * detArea->getSymbolsPerLine());
+            visibleRange.startPos = qMax((qint64)0, (verticalScrollBar->maximum() / numShiftsInOneLine) * (qint64)detArea->getSymbolsPerLine());
             visibleRange.length = qMin(seqLen - visibleRange.startPos, qMin(visibleRangeLen, seqLen));
             currentShiftsCounter = qMax(0, verticalScrollBar->maximum() % numShiftsInOneLine);
         }
@@ -687,7 +687,7 @@ void DetView::updateVerticalScrollBar() {
         verticalScrollBar->setSliderPosition(0);
     }
 
-    int maximum;
+    qint64 maximum;
     if (isWrapMode()) {
         DetViewRenderArea *detArea = getDetViewRenderArea();
         qint64 linesCount = seqLen / detArea->getSymbolsPerLine();
@@ -705,7 +705,8 @@ void DetView::updateVerticalScrollBar() {
         const int sliderPosition = verticalScrollBar->sliderPosition();
         const int currentMaximum = verticalScrollBar->maximum();
         if (sliderPosition == currentMaximum && currentMaximum > maximum) {
-            const int newSliderPos = sliderPosition - (currentMaximum - maximum);
+            qint64 newSliderPos = sliderPosition - (currentMaximum - maximum);
+            // TODO: see comment for 'verticalScrollBar->setMaximum' below.
             verticalScrollBar->setSliderPosition(newSliderPos);
         }
     } else {
@@ -714,10 +715,14 @@ void DetView::updateVerticalScrollBar() {
     }
 
     verticalScrollBar->setMinimum(0);
+    // TODO: the following code does not work for large sequences.
+    //  Scroll bars domain is limited to 'int32' and can't be mapped directly to 'int64' sequence ranges.
+    //  An extra mapping should be added between scroll bar & sequence domains.
+    //  Until that the vertical scrollbar works correctly in sequence ranges below INT_MAX * symbolsPerLine (~100-200Gb).
     verticalScrollBar->setMaximum(maximum);
     verticalScrollBar->setPageStep(numShiftsInOneLine);
     updateVerticalScrollBarPosition();
-    connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalSrcollBarMoved(int)));
+    connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalScrollBarMoved(int)));
 }
 
 void DetView::updateVerticalScrollBarPosition() {
@@ -725,8 +730,8 @@ void DetView::updateVerticalScrollBarPosition() {
         DetViewRenderArea *detArea = getDetViewRenderArea();
         SignalBlocker blocker(verticalScrollBar);
         Q_UNUSED(blocker);
-        verticalScrollBar->setSliderPosition(qMin(verticalScrollBar->maximum(),
-                                                  currentShiftsCounter + numShiftsInOneLine * int(visibleRange.startPos / detArea->getSymbolsPerLine())));
+        int newMax = currentShiftsCounter + numShiftsInOneLine * visibleRange.startPos / detArea->getSymbolsPerLine();
+        verticalScrollBar->setSliderPosition(qMin(verticalScrollBar->maximum(), newMax));
     }
 }
 
@@ -786,27 +791,16 @@ void DetView::moveBorder(const QPoint &p) {
     resizeSelection(areaPoint);
 }
 
-void DetView::setBorderCursor(const QPoint &p) {
+U2Region DetView::getCapturingRenderAreaYRegionForPos(qint64 pos) const {
     if (!isWrapMode()) {
-        GSequenceLineView::setBorderCursor(p);
-    } else {
-        const int sliderPos = verticalScrollBar->sliderPosition();
-        const int shiftHeight = getDetViewRenderArea()->getShiftHeight();
-        const int lineHeight = numShiftsInOneLine * shiftHeight;
-        const int globalY = p.y() + sliderPos * shiftHeight;
-        const int numLines = qRound(double(globalY) / lineHeight + 0.5);
-
-        const double scale = renderArea->getCurrentScale();
-        const int width = getRenderArea()->width();
-        const int symPerLine = width / scale;
-        const int correctWidth = symPerLine * scale;
-
-        const int offset = correctWidth * (numLines - 1);
-        CHECK(offset >= 0, );
-
-        QPoint pos(p.x() + offset, p.y());
-        GSequenceLineView::setBorderCursor(pos);
+        return GSequenceLineViewAnnotated::getCapturingRenderAreaYRegionForPos(pos);
     }
+    if (!visibleRange.contains(pos)) {
+        return {};
+    }
+    qint64 posRowIndex = (pos - visibleRange.startPos) / getSymbolsPerLine();
+    qint64 rowHeight = getDetViewRenderArea()->getRenderer()->getOneLineHeight();
+    return U2Region(posRowIndex * rowHeight - getShift(), rowHeight);
 }
 
 void DetView::setDefaultState() {
@@ -919,7 +913,7 @@ int DetViewRenderArea::getSymbolsPerLine() const {
     return width() / charWidth;
 }
 
-int DetViewRenderArea::getLinesCount() const {
+qint64 DetViewRenderArea::getLinesCount() const {
     return renderer->getLinesCount(size());
 }
 

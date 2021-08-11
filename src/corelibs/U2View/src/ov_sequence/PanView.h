@@ -108,36 +108,24 @@ public:
         return frameView->getVisibleRange();
     }
 
-    virtual QAction *getZoomInAction() const {
-        return zoomInAction;
-    }
+    QAction *getZoomInAction() const override;
 
-    virtual QAction *getZoomOutAction() const {
-        return zoomOutAction;
-    }
+    QAction *getZoomOutAction() const override;
 
-    virtual QAction *getZoomToSelectionAction() const {
-        return zoomToSelectionAction;
-    }
+    QAction *getZoomToSelectionAction() const override;
 
-    virtual QAction *getZoomToSequenceAction() const {
-        return zoomToSequenceAction;
-    }
+    QAction *getZoomToSequenceAction() const override;
 
     // [0..seqLen)
-    virtual void setVisibleRange(const U2Region &reg, bool signal = true);
+    void setVisibleRange(const U2Region &reg, bool signal = true) override;
 
-    PVRowsManager *getRowsManager() const {
-        return rowsManager;
-    }
+    PVRowsManager *getRowsManager() const;
 
     virtual void setNumBasesVisible(qint64 n);
 
     void setSyncOffset(int o);
 
-    int getSyncOffset() const {
-        return syncOffset;
-    }
+    int getSyncOffset() const;
 
     QList<RulerInfo> getCustomRulers() const;
 
@@ -147,39 +135,32 @@ public:
 
     void removeAllCustomRulers();
 
-    QAction *getToggleMainRulerAction() const {
-        return toggleMainRulerAction;
-    }
+    QAction *getToggleMainRulerAction() const;
 
-    QAction *getToggleCustomRulersAction() const {
-        return toggleCustomRulersAction;
-    }
+    QAction *getToggleCustomRulersAction() const;
 
-    void hideEvent(QHideEvent *ev);
+    void hideEvent(QHideEvent *ev) override;
 
-    void showEvent(QShowEvent *ev);
+    void showEvent(QShowEvent *ev) override;
 
-    PanViewLinesSettings *getLinesSettings() const {
-        return settings;
-    }
+    PanViewLinesSettings *getLinesSettings() const;
 
 protected:
-    virtual int getSingleStep() const {
-        return qMax(1, int(visibleRange.length) / 10);
-    }
-    virtual int getPageStep() const {
-        return qMax(1, int(visibleRange.length) / 5);
-    }
-    virtual void onVisibleRangeChanged(bool signal = true);
-    virtual void pack();
+    qint64 getSingleStep() const override;
 
-    virtual void registerAnnotations(const QList<Annotation *> &l);
-    virtual void unregisterAnnotations(const QList<Annotation *> &l);
-    virtual void ensureVisible(Annotation *a, int locationIdx);
+    qint64 getPageStep() const override;
+
+    void onVisibleRangeChanged(bool signal = true) override;
+
+    void pack() override;
+
+    void registerAnnotations(const QList<Annotation *> &l) override;
+    void unregisterAnnotations(const QList<Annotation *> &l) override;
+    void ensureVisible(Annotation *a, int locationIdx) override;
 
 protected slots:
-    virtual void sl_sequenceChanged();
-    virtual void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
+    void sl_sequenceChanged() override;
+    void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) override;
 
 private slots:
     void sl_zoomInAction();
@@ -191,8 +172,8 @@ private slots:
 
     void sl_onRangeChangeRequest(qint64 start, qint64 end);
 
-    virtual void sl_onDNASelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed);
-    virtual void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
+    void sl_onDNASelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
+    void sl_onAnnotationSettingsChanged(const QStringList &changedSettings) override;
 
     void sl_toggleMainRulerVisibility(bool visible);
     void sl_toggleCustomRulersVisibility(bool visible);
@@ -219,7 +200,7 @@ public:
     PanViewRenderArea *getRenderArea() const;
 
 private:
-    const U2Region getRegionToZoom() const;
+    U2Region getRegionToZoom() const;
 
 public:
     U2Region frameRange;
