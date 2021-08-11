@@ -369,8 +369,21 @@ void MSAEditorSequenceArea::sl_goto() {
 
 void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
     ui->getScrollController()->centerBase(position, width());
-    const MaEditorSelection &selection = editor->getSelection();
-    setSelectionRect(QRect(position - 1, selection.toRect().y(), 1, 1));
+    // Keep the vertical part of the selection but limit the horizontal to the given position.
+    // In case of 1-row selection it will procude a single cell selection as the result.
+    // If there is no active selection - select a cell of the first visible row on the screen.
+    int selectedBaseIndex = position - 1;
+    QList<QRect> selectedRects = editor->getSelection().getRectList();
+    if (selectedRects.isEmpty()) {
+        int firstVisibleViewRowIndex = ui->getScrollController()->getFirstVisibleViewRowIndex();
+        selectedRects.append({selectedBaseIndex, firstVisibleViewRowIndex, 1, 1});
+    } else {
+        for (QRect &rect : selectedRects) {
+            rect.setX(selectedBaseIndex);
+            rect.setWidth(1);
+        }
+    }
+    editor->getSelectionController()->setSelection(selectedRects);
 }
 
 void MSAEditorSequenceArea::sl_lockedStateChanged() {
