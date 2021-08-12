@@ -41,8 +41,8 @@ class U2OpStatus;
 class GUITestLauncher : public Task {
     Q_OBJECT
 public:
-    GUITestLauncher(int suiteNumber, bool noIgnored = false, QString iniFileTemplate = "");
-    GUITestLauncher(QString pathToSuite = "", bool noIgnored = false, QString iniFileTemplate = "");
+    GUITestLauncher(int suiteNumber, bool noIgnored = false, const QString& iniFileTemplate = "");
+    GUITestLauncher(const QString& pathToSuite = "", bool noIgnored = false, const QString& iniFileTemplate = "");
 
     void run() override;
     QString generateReport() const override;
@@ -83,7 +83,7 @@ private:
     bool initTestList();
     void updateProgress(int finishedCount);
 
-    QString getScreenRecorderString(QString testName);
+    static QString getScreenRecorderString(const QString& testName);
 
     /**
      * Returns full video file path for the given test.

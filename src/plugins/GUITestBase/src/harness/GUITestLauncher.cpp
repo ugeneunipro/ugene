@@ -35,14 +35,13 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-#define GUITESTING_REPORT_PREFIX "GUITesting"
-
 namespace U2 {
 
-GUITestLauncher::GUITestLauncher(int suiteNumber, bool noIgnored, QString iniFileTemplate)
+GUITestLauncher::GUITestLauncher(int suiteNumber, bool noIgnored, const QString &iniFileTemplate)
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
       suiteNumber(suiteNumber), noIgnored(noIgnored), pathToSuite(""), iniFileTemplate(iniFileTemplate) {
     tpm = Task::Progress_Manual;
@@ -54,7 +53,7 @@ GUITestLauncher::GUITestLauncher(int suiteNumber, bool noIgnored, QString iniFil
     }
 }
 
-GUITestLauncher::GUITestLauncher(QString _pathToSuite, bool _noIgnored, QString _iniFileTemplate)
+GUITestLauncher::GUITestLauncher(const QString &_pathToSuite, bool _noIgnored, const QString &_iniFileTemplate)
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
       suiteNumber(0), noIgnored(_noIgnored), pathToSuite(_pathToSuite), iniFileTemplate(_iniFileTemplate) {
     tpm = Task::Progress_Manual;
@@ -73,7 +72,7 @@ void GUITestLauncher::run() {
     if (!initTestList()) {
         // FIXME: if test suite can't run for some reason UGENE runs shutdown task that asserts that startup is in progress.
         //  Workaround: wait 3 seconds to ensure that startup is complete & GUI test base error message is printed.
-        QThread::currentThread()->sleep(3);
+        QThread::sleep(3);
         return;
     }
     if (testList.isEmpty()) {
@@ -366,13 +365,19 @@ QString GUITestLauncher::runTest(const QString &testName, const int timeout) {
 QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, int iteration, const int timeout, bool enableVideoRecording) {
     QProcessEnvironment environment = prepareTestRunEnvironment(testName, iteration);
 
-    QString path = QCoreApplication::applicationFilePath();
+    QString ugeneUiPath = QCoreApplication::applicationFilePath();
     QStringList arguments = getTestProcessArguments(testName);
 
     // ~QProcess is killing the process, will not return until the process is terminated.
     QProcess process;
     process.setProcessEnvironment(environment);
-    process.start(path, arguments);
+    QString ugeneTestRunWrapper = qgetenv("UGENE_TEST_RUN_WRAPPER");
+    if (ugeneTestRunWrapper.isEmpty()) {
+        process.start(ugeneUiPath, arguments);
+    } else {
+        arguments.push_front(ugeneUiPath);
+        process.start(ugeneTestRunWrapper, arguments);
+    }
     qint64 processId = process.processId();
 
     QProcess screenRecorderProcess;
@@ -435,7 +440,7 @@ QString GUITestLauncher::readTestResult(const QByteArray &output) {
     while (!stream.atEnd()) {
         QString str = stream.readLine();
 
-        if (str.contains(GUITESTING_REPORT_PREFIX)) {
+        if (str.contains(GUITestService::GUITESTING_REPORT_PREFIX)) {
             msg = str.remove(0, str.indexOf(':') + 1);
             if (!msg.isEmpty()) {
                 break;
@@ -464,7 +469,7 @@ QString GUITestLauncher::generateReport() const {
     return res;
 }
 
-QString GUITestLauncher::getScreenRecorderString(QString testName) {
+QString GUITestLauncher::getScreenRecorderString(const QString &testName) {
     QString result;
     QString videoFilePath = getVideoPath(testName);
     if (isOsLinux()) {
