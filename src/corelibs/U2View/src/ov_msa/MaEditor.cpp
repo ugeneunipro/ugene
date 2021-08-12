@@ -359,11 +359,6 @@ void MaEditor::sl_resetColumnWidthCache() {
 }
 
 void MaEditor::initActions() {
-    saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
-    saveScreenshotAction->setObjectName("Export as image");
-    connect(saveScreenshotAction, SIGNAL(triggered()), ui, SLOT(sl_saveScreenshot()));
-    ui->addAction(saveScreenshotAction);
-
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
