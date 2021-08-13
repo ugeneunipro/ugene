@@ -68,7 +68,7 @@ void GTMainWindow::checkTitle(GUITestOpStatus &os, const QString &title) {
             return;
         }
     }
-    GT_CHECK_RESULT(false, QString("Can't find window with the title: '%1'").arg(title), );
+    GT_FAIL(QString("Can't find window with the title: '%1'").arg(title), );
 }
 #undef GT_METHOD_NAME
 

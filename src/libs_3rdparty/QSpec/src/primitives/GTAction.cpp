@@ -22,7 +22,6 @@
 
 #include <QAbstractButton>
 #include <QApplication>
-#include <QToolButton>
 #include <QWidget>
 
 #include "primitives/GTWidget.h"
@@ -58,7 +57,7 @@ QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *action) {
 
 #define GT_METHOD_NAME "findAction"
 QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
-    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [objectName](QAction *action) -> bool { return action->objectName() == objectName; });
+    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [&objectName](QAction *action) -> bool { return action->objectName() == objectName; });
     GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
     if (actions.size() == 1) {
         return actions[0];
