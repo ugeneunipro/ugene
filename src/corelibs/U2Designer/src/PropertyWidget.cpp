@@ -194,7 +194,7 @@ QString ComboBoxWidgetBase::getFormattedItemText(const QString &itemKey) const {
 }
 
 void ComboBoxWidgetBase::sortComboItemsByName(QList<ComboItem> &itemList) {
-    std::stable_sort(itemList.begin(), itemList.end(), [](auto &i1, auto &i2) -> bool {
+    std::stable_sort(itemList.begin(), itemList.end(), [](auto &i1, auto &i2) {
         return QString::compare(i1.first, i2.first, Qt::CaseInsensitive) < 0;
     });
 }
@@ -516,7 +516,7 @@ void ComboBoxWithChecksWidget::initModelView() {
         standardItems << item;
     }
     if (isSorted) {
-        std::stable_sort(standardItems.begin(), standardItems.end(), [](auto i1, auto i2) -> bool {
+        std::stable_sort(standardItems.begin(), standardItems.end(), [](auto i1, auto i2) {
             return QString::compare(i1->text(), i2->text(), Qt::CaseInsensitive) < 0;
         });
     }

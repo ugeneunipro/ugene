@@ -57,7 +57,7 @@ QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *action) {
 
 #define GT_METHOD_NAME "findAction"
 QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
-    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [&objectName](QAction *action) -> bool { return action->objectName() == objectName; });
+    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [&objectName](auto action) { return action->objectName() == objectName; });
     GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
     if (actions.size() == 1) {
         return actions[0];
@@ -69,7 +69,7 @@ QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QO
 
 #define GT_METHOD_NAME "findActionByText"
 QAction *GTAction::findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
-    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [text](QAction *action) -> bool { return action->text() == text; });
+    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [text](auto action) { return action->text() == text; });
     GT_CHECK_RESULT(!actions.isEmpty(), "Action with text not found: " + text, nullptr);
     GT_CHECK_RESULT(actions.size() != 1, QString("There are %1 actions with text: %2").arg(actions.size()).arg(text), nullptr);
     return actions[0];

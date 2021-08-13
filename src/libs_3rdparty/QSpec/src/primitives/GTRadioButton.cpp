@@ -71,7 +71,7 @@ QRadioButton *GTRadioButton::getRadioButtonByText(GUITestOpStatus &os, QString t
 QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
     return GTWidget::findChildren<QRadioButton>(os,
                                                 parent,
-                                                [text](QRadioButton *button) -> bool { return button->text() == text; });
+                                                [text](auto button) { return button->text() == text; });
 }
 #undef GT_METHOD_NAME
 

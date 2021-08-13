@@ -99,7 +99,7 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, co
     QWidget *widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QList<QWidget *> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget *w) -> bool { return w->objectName() == objectName; });
+        QList<QWidget *> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget *w) { return w->objectName() == objectName; });
         GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
@@ -152,7 +152,7 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         resultButtonList = findChildren<QAbstractButton>(os,
                                                          parentWidget,
-                                                         [text](QAbstractButton *button) -> bool { return button->text().contains(text, Qt::CaseInsensitive); });
+                                                         [text](auto button) { return button->text().contains(text, Qt::CaseInsensitive); });
         if (!options.failIfNotFound) {
             break;
         }
@@ -175,7 +175,7 @@ QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS && resultLabelList.isEmpty() : 0);
         resultLabelList = findChildren<QLabel>(os,
                                                parentWidget,
-                                               [text](QLabel *label) -> bool { return label->text().contains(text, Qt::CaseInsensitive); });
+                                               [text](auto label) { return label->text().contains(text, Qt::CaseInsensitive); });
         if (!options.failIfNotFound) {
             break;
         }
