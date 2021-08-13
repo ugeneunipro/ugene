@@ -123,7 +123,7 @@ public:
             condition, if (!os.hasError()) { HI::GTGlobals::GUITestFail(); os.setError(errorMessage); }, result) \
     }
 
-/** Unconditionally marks the test the active test as failed. Prints the error message into the log. */
+/** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
 #define GT_FAIL(errorMessage, result) \
     { \
         GT_DEBUG_MESSAGE(false, errorMessage, result); \
