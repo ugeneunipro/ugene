@@ -22,8 +22,6 @@
 #ifndef _U2_VCF4_VARIATION_FORMAT_H_
 #define _U2_VCF4_VARIATION_FORMAT_H_
 
-#include <U2Core/BaseDocumentFormats.h>
-
 #include <U2Formats/AbstractVariationFormat.h>
 
 namespace U2 {
@@ -34,7 +32,7 @@ public:
     VCF4VariationFormat(QObject *p);
 
 protected:
-    virtual bool checkFormatByColumnCount(int columnCount) const;
+    bool checkFormatByColumnCount(int columnCount) const override;
 };
 
 }  // namespace U2
