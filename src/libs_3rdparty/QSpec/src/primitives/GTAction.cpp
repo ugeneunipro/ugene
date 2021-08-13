@@ -18,118 +18,62 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 #include "primitives/GTAction.h"
 
 #include <QAbstractButton>
 #include <QApplication>
-#include <QMainWindow>
 #include <QToolButton>
 #include <QWidget>
 
-#include "primitives/GTMainWindow.h"
+#include "primitives/GTWidget.h"
 
 namespace HI {
 
 #define GT_CLASS_NAME "GTAction"
 
 #define GT_METHOD_NAME "button"
-QAbstractButton *GTAction::button(GUITestOpStatus &os, const QString &actionName, QObject *parent, const GTGlobals::FindOptions &options) {
-    QAction *a = findAction(os, actionName, parent);
-    if (!a) {
-        a = findAction(os, actionName, parent, GTGlobals::FindOptions(false));
+QAbstractButton *GTAction::button(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
+    QAction *action = findAction(os, objectName, parent, options);
+    if (action == nullptr) {
+        return nullptr;
     }
-    if (options.failIfNotFound) {
-        GT_CHECK_RESULT(NULL != a, "Action " + actionName + " is NULL!", NULL);
-    } else if (NULL == a) {
-        return NULL;
-    }
-
-    QList<QWidget *> associated = a->associatedWidgets();
-    foreach (QWidget *w, associated) {
-        QAbstractButton *tb = qobject_cast<QAbstractButton *>(w);
-        if (tb) {
-            return tb;
-        }
-    }
-
-    return NULL;
+    QAbstractButton *resultButton = button(os, action);
+    GT_CHECK_RESULT(resultButton != nullptr || !options.failIfNotFound, "Button with object name not found: " + objectName, nullptr);
+    return resultButton;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "button"
-QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *a, QObject *parent) {
-    GT_CHECK_RESULT(a != NULL, "action is NULL", NULL);
-
-    QList<QWidget *> associated = a->associatedWidgets();
-    foreach (QWidget *w, associated) {
-        QAbstractButton *tb = qobject_cast<QAbstractButton *>(w);
-        if (tb) {
-            if (parent) {
-                QList<QToolButton *> childButtons = parent->findChildren<QToolButton *>();  // da. daa.
-                if (childButtons.contains(dynamic_cast<QToolButton *>(tb))) {
-                    return tb;
-                }
-            } else {
-                return tb;
-            }
+QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *action) {
+    GT_CHECK_RESULT(action != nullptr, "action is NULL", nullptr);
+    QList<QWidget *> associatedWidgets = action->associatedWidgets();
+    for (QWidget *associatedWidget : associatedWidgets) {
+        if (auto button = qobject_cast<QAbstractButton *>(associatedWidget)) {
+            return button;
         }
     }
-
-    return NULL;
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findAction"
-QAction *GTAction::findAction(GUITestOpStatus &os, const QString &actionName, QObject *parent, const GTGlobals::FindOptions &options) {
-    if (parent == NULL) {  // If parent null, then searching for at QMainWindows
-        QList<QAction *> list;
-        foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
-            if (parent->findChild<QAction *>(actionName) != NULL) {
-                list.append(parent->findChild<QAction *>(actionName));
-            }
-        }
-        GT_CHECK_RESULT(list.count() < 2, QString("There are %1 actions with this text").arg(list.count()), NULL);
-        if (options.failIfNotFound) {
-            GT_CHECK_RESULT(list.count() != 0, "action not found", NULL);
-            return list.takeFirst();
-        }
-        return NULL;
+QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
+    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [objectName](QAction *action) -> bool { return action->objectName() == objectName; });
+    GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
+    if (actions.size() == 1) {
+        return actions[0];
     }
-    QAction *a = parent->findChild<QAction *>(actionName);
-
-    return a;
+    GT_CHECK_RESULT(!options.failIfNotFound, "Action with object name not found: " + objectName, nullptr);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findActionByText"
 QAction *GTAction::findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
-    if (parent == NULL) {  // If parent null, then searching for at QMainWindows
-        QList<QAction *> resultList;
-        foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
-            QList<QAction *> list = parent->findChildren<QAction *>();
-            foreach (QAction *act, list) {
-                if (act->text() == text) {
-                    resultList << act;
-                }
-            }
-        }
-        GT_CHECK_RESULT(resultList.count() != 0, "action not found", NULL);
-        GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), NULL);
-        return resultList.takeFirst();
-    }
-    QList<QAction *> list = parent->findChildren<QAction *>();
-    QList<QAction *> resultList;
-    foreach (QAction *act, list) {
-        if (act->text() == text) {
-            resultList << act;
-        }
-    }
-
-    GT_CHECK_RESULT(resultList.count() != 0, "action not found", NULL);
-    GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), NULL);
-
-    return resultList.takeFirst();
+    QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [text](QAction *action) -> bool { return action->text() == text; });
+    GT_CHECK_RESULT(!actions.isEmpty(), "Action with text not found: " + text, nullptr);
+    GT_CHECK_RESULT(actions.size() != 1, QString("There are %1 actions with text: %2").arg(actions.size()).arg(text), nullptr);
+    return actions[0];
 }
 #undef GT_METHOD_NAME
 

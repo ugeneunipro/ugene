@@ -20,9 +20,6 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTTreeWidget.h>
@@ -30,17 +27,10 @@
 
 #include "GTTestsAnnotationsImport.h"
 #include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsDocument.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/GTAction.h"
-#include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

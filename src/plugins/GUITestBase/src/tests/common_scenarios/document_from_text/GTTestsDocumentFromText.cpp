@@ -21,8 +21,6 @@
 #include "GTTestsDocumentFromText.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTWidget.h>
@@ -40,7 +38,6 @@
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

@@ -50,8 +50,8 @@ public:
     // copy directory entries removing target file if exist
     static void copyDir(GUITestOpStatus &os, const QString &dirToCopy, const QString &dirToPaste);
 
-    // copy file removing target file if exist
-    static void removeDir(QString dirName);
+    /** Removes the dir if exists. */
+    static void removeDir(const QString& dirName);
 
     // restores file and deletes backup. fail if there is no backup or can't write to the given file
     static void restore(GUITestOpStatus &os, const QString &);

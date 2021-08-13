@@ -22,6 +22,8 @@
 #ifndef _HI_GUI_GTWIDGET_H_
 #define _HI_GUI_GTWIDGET_H_
 
+#include <functional>
+
 #include <QAbstractButton>
 #include <QAbstractItemView>
 #include <QCheckBox>
@@ -35,6 +37,7 @@
 #include <QWidget>
 
 #include "GTGlobals.h"
+#include "GTMainWindow.h"
 
 namespace HI {
 /*!
@@ -49,7 +52,7 @@ public:
     static void setFocus(GUITestOpStatus &os, QWidget *w);
 
     // finds widget with the given object name using given FindOptions. Parent widget is QMainWindow, if not set
-    static QWidget *findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *const parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QWidget *findWidget(GUITestOpStatus &os, const QString &objectName, const QWidget *const parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static QPoint getWidgetCenter(QWidget *widget);
 
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
@@ -102,9 +105,8 @@ public:
 #define GT_METHOD_NAME "findExactWidget"
     template<class T>
     static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions()) {
-        T result = nullptr;
         QWidget *w = findWidget(os, widgetName, parentWidget, options);
-        result = qobject_cast<T>(w);
+        T result = qobject_cast<T>(w);
         if (options.failIfNotFound) {
             GT_CHECK_RESULT(w != nullptr, "widget " + widgetName + " not found", result);
             GT_CHECK_RESULT(result != nullptr, "widget of specified class not found, but there is another widget with the same name, its class is: " + QString(w->metaObject()->className()), result);
@@ -145,6 +147,35 @@ public:
         }
         GT_CHECK_RESULT(widget != nullptr, errorMessage, nullptr);
         return widget;
+    }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "findChildren"
+    /**
+     * Finds all children of the 'parent' using 'findChildren' method and checkFn to check if the child is matched.
+     * If parent is null, find all child in all main windows.
+     * Note: this function does not wait until any child is found and returns immediately.
+     */
+    template<class ChildType>
+    static QList<ChildType *> findChildren(GUITestOpStatus &os, const QObject *parent, std::function<bool(ChildType *)> checkFn) {
+        QList<ChildType *> children;
+        auto checkAndAddToList = [&children, &checkFn](const QList<ChildType *> candidates) -> void {
+            for (ChildType *child : candidates) {
+                if (checkFn(child)) {
+                    children.append(child);
+                }
+            }
+        };
+        if (parent == nullptr) {
+            // If parent null, start from QMainWindows.
+            QList<QWidget *> mainWindows = GTMainWindow::getMainWindowsAsWidget(os);
+            for (QWidget *mainWindowWidget : qAsConst(mainWindows)) {
+                checkAndAddToList(mainWindowWidget->findChildren<ChildType *>());
+            }
+        } else {
+            checkAndAddToList(parent->findChildren<ChildType *>());
+        }
+        return children;
     }
 #undef GT_METHOD_NAME
 

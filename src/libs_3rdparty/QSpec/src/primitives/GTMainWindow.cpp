@@ -60,6 +60,18 @@ QList<QWidget *> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkTitle"
+void GTMainWindow::checkTitle(GUITestOpStatus &os, const QString &title) {
+    QList<QWidget *> mainWindowWidgets = getMainWindowsAsWidget(os);
+    for (const QWidget *widget : qAsConst(mainWindowWidgets)) {
+        if (widget->windowTitle() == title) {
+            return;
+        }
+    }
+    GT_CHECK_RESULT(false, QString("Can't find window with the title: '%1'").arg(title), );
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "maximizeMainWindow"
 void GTMainWindow::maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow) {
     class MaximizeMainWindowScenario : public CustomScenario {

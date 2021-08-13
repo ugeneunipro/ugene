@@ -34,16 +34,13 @@
 
 #include <U2View/ADVConstants.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsProject.h"
-#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
@@ -54,8 +51,6 @@
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
-#include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
 
