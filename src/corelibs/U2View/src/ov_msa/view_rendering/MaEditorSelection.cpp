@@ -164,6 +164,13 @@ QList<int> MaEditorSelection::getSelectedRowIndexes() const {
     return selectedRowIndexes;
 }
 
+U2Region MaEditorSelection::getColumnRegion() const {
+    if (isEmpty()) {
+        return {};
+    }
+    return {rectList[0].x(), rectList[0].width()};
+}
+
 /************************************************************************/
 /* MaEditorSelectionController */
 /************************************************************************/
@@ -216,7 +223,7 @@ void McaEditorSelectionController::setSelection(const MaEditorSelection &newSele
         mcaEditor->getUI()->getReferenceArea()->clearSelection();
         return;
     }
-    const QList<QRect> selectedRects= newSelection.getRectList();
+    QList<QRect> selectedRects = newSelection.getRectList();
     if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});

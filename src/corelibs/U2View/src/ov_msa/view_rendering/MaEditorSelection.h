@@ -75,6 +75,9 @@ public:
     /** Returns width of the selection. Note: all rects in the selection have unified width (left & right coordinates). */
     int getWidth() const;
 
+    /** Returns selected X region or an empty region if there is no active selection. */
+    U2Region getColumnRegion() const;
+
     /** Returns list of selected rects. */
     const QList<QRect> &getRectList() const;
 
