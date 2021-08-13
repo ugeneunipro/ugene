@@ -42,8 +42,8 @@ MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString &
     : MultipleAlignmentObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, msaRef, hintsMap, alnData) {
 }
 
-const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const {
-    return getMultipleAlignment().dynamicCast<MultipleSequenceAlignment>();
+const MultipleSequenceAlignment &MultipleSequenceAlignmentObject::getMsa() const {
+    return getMultipleAlignment().dynamicCast<const MultipleSequenceAlignment &>();
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
