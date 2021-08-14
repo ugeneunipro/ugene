@@ -45,60 +45,53 @@ public:
     QString generateReport() const override;
 
 private:
+    enum class UserPrimer {
+        Forward,
+        Reverse
+    };
+    // Sequences for finding unwanted connections with user primers.
+    enum class SeqToSearchInThem {
+        ForwardUser,
+        ReverseUser,
+        Sequence,
+        RevComplSeq,
+        OtherSeq
+    };
+
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
+    void findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence);
+    enum class SecondaryPrimer {
+        B2,
+        B3
+    };
+    void findSecondaryForwardReversePrimers(SecondaryPrimer type);
+    void findSecondaryReversePrimer(SecondaryPrimer type, const QByteArray& forwardCandidatePrimerSequence);
+    /**
+     * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and add them
+     * to @userPrimersUnwantedConnections. Includes homodimers, heterodimers.
+     */
+    void saveUnwantedConnectionsReports();
+    /**
+     * Helper method for @saveUnwantedConnectionsReports. Find all unwanted connections in user primer and add them to
+     * @userPrimersUnwantedConnections.
+     */
+    void saveUnwantedConnections(const QByteArray& primer, UserPrimer primerType);
+
     bool areMetlingTempAndDeltaGood(const QByteArray& primer) const;
     bool hasUnwantedConnections(const QByteArray& primer) const;
     void updatePrimerRegion(int& primerEnd, int& primerLength) const;
-    void findCandidatePrimers(const QList<U2Region>& regionsBetweenIslands, int amplifiedFragmentEdge,
-                              bool findFirstOnly, bool isComplement,
-                              U2Region& b1, U2Region& b2, U2Region& b3) const;
 
-    template<class WhileCondition>
-    U2Region findCandidatePrimer(int primerEnd, int amplifiedFragmentEdge, bool isComplement, WhileCondition cond) const {
-        int primerLength = settings.overlapLength.minValue;
-        U2Region foundPrimerRegion;
-        while (cond(primerEnd, primerLength)) { //While we are in the region between islands
-            const U2Region candidatePrimerRegion(primerEnd - primerLength, primerLength);
-            if ((amplifiedFragmentEdge/*settings.leftArea.endPos() - 1*/) < candidatePrimerRegion.startPos) {
-                primerEnd--;
-                continue;
-            }
-            QByteArray candidatePrimerSequence;
-            if (!isComplement) {
-                candidatePrimerSequence = sequence.mid(candidatePrimerRegion.startPos, candidatePrimerRegion.length);
-            } else {
-                candidatePrimerSequence = reverseComplementSequence.mid(candidatePrimerRegion.startPos, candidatePrimerRegion.length);
-            }
-
-            //Check if candidate primer melting temperature and deltaG fit to settings
-            bool areSettingsGood = areMetlingTempAndDeltaGood(candidatePrimerSequence);
-            if (!areSettingsGood) {
-                updatePrimerRegion(primerEnd, primerLength);
-                continue;
-            } else {
-                //If melt temp and delta G are good - add backbone and check unwanted connections
-                QString candidatePrimerRegionString = regionToString(candidatePrimerRegion, isComplement);
-                taskLog.details(tr("The candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections")
-                                .arg(candidatePrimerRegionString));
-                candidatePrimerSequence = backboneSequence + candidatePrimerSequence;
-                bool hasUnwanted = hasUnwantedConnections(candidatePrimerSequence);
-                if (!hasUnwanted) {
-                    //If there are no unwanted connections - we are found primer region
-                    foundPrimerRegion = candidatePrimerRegion;
-                    break;
-                } else {
-                    taskLog.details(tr("The candidate primer region \"%1\" contains unwanted connections")
-                        .arg(candidatePrimerRegionString));
-                    updatePrimerRegion(primerEnd, primerLength);
-                    continue;
-                }
-            }
-        }
-
-        return foundPrimerRegion;
-    }
-
-    QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const;
+    QString regionToString(const U2Region& region, bool isComplement) const;
+    /**
+     * Helper methods for @generateReport. Return html with result sequences for primer pair.
+     * Called when there are no unwanted connections.
+     */
+    QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
+    QString getPairReportForUserPrimers() const;
+    /**
+     * Return html report of unwanted connections in user primers (summary table and each connection).
+     */
+    QString getUserPrimersUnwantedConnectionsReport() const;
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
@@ -112,7 +105,10 @@ private:
     QList<QByteArray> backboneSequencesCandidates;
     QList<QByteArray> otherSequencesInPcr;
     QByteArray backboneSequence;
-    QList<U2Region> candidatePrimerRegions;
+    QList<U2Region> regionsBetweenIslandsForward;
+    QList<U2Region> regionsBetweenIslandsReverse;
+    // User primer and sequence analyzed for unwanted connections -> Reports of unwanted connections.
+    QMap<QPair<UserPrimer, SeqToSearchInThem>, QStringList> userPrimersUnwantedConnections;
 
     //Results
     U2Region aForward = U2Region(54, 77 - 54);
