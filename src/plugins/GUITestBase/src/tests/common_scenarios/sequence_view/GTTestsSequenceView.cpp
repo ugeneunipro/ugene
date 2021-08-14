@@ -81,6 +81,7 @@ namespace U2 {
 
 namespace GUITest_common_scenarios_sequence_view {
 using namespace HI;
+
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    disable circular view for protein sequences (0002400)
 
@@ -95,12 +96,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     QWidget *w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
-    GTGlobals::FindOptions f;
-    f.failIfNotFound = false;
-
-    QWidget *button0 = GTWidget::findWidget(os, "CircularViewAction", w0, f);
-    QWidget *button1 = GTWidget::findWidget(os, "CircularViewAction", w1, f);
+    QWidget *button0 = GTWidget::findWidget(os, "CircularViewAction", w0, false);
     CHECK_SET_ERR(button0 == nullptr, "b0 is not NULL");
+
+    QWidget *button1 = GTWidget::findWidget(os, "CircularViewAction", w1, false);
     CHECK_SET_ERR(button1 == nullptr, "b1 is not NULL");
 
     GTWidget::findWidget(os, "CircularViewAction", w2);
@@ -116,16 +115,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     QWidget *w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
-    QAbstractButton *b0 = GTAction::button(os, "complement_action", w0);
-    QAbstractButton *b1 = GTAction::button(os, "complement_action", w1);
-    QAbstractButton *b2 = GTAction::button(os, "complement_action", w2);
-    QAbstractButton *b3 = GTAction::button(os, "complement_action", w3);
-
+    QAbstractButton *b0 = GTAction::button(os, "complement_action", w0, false);
     CHECK_SET_ERR(b0 == nullptr, "b0 is not NULL");
+
+    QAbstractButton *b1 = GTAction::button(os, "complement_action", w1, false);
     CHECK_SET_ERR(b1 == nullptr, "b1 is not NULL");
-    CHECK_SET_ERR(b2 != nullptr, "b2 is NULL");
-    CHECK_SET_ERR(b3 != nullptr, "b3 is NULL");
+
+    GTAction::button(os, "complement_action", w2);
+    GTAction::button(os, "complement_action", w3);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -135,15 +134,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     QWidget *w3 = GTWidget::findWidget(os, "ADV_single_sequence_widget_3");
 
-    QWidget *b0 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w0, GTGlobals::FindOptions(false));
-    QWidget *b1 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w1, GTGlobals::FindOptions(false));
-    QWidget *b2 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w2);
-    QWidget *b3 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w3);
-
+    QWidget *b0 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w0, false);
     CHECK_SET_ERR(b0 == nullptr, "b0 is not NULL");
+
+    QWidget *b1 = GTWidget::findWidget(os, "translationsMenuToolbarButton", w1, false);
     CHECK_SET_ERR(b1 == nullptr, "b1 is not NULL");
-    CHECK_SET_ERR(b2 != nullptr, "b2 is NULL");
-    CHECK_SET_ERR(b3 != nullptr, "b3 is NULL");
+
+    GTWidget::findWidget(os, "translationsMenuToolbarButton", w2);
+    GTWidget::findWidget(os, "translationsMenuToolbarButton", w3);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {

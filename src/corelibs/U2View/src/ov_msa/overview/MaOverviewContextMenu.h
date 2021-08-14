@@ -67,7 +67,7 @@ private:
     MaGraphOverview *graphOverview;
 
     QAction *showSimpleOverviewAction;
-    QAction *exportAsImage;
+    QAction *exportAsImageAction;
 
     QMenu *displaySettingsMenu;
     QMenu *graphTypeMenu;
