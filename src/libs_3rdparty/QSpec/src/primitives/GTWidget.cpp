@@ -31,7 +31,10 @@
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
 #include "utils/GTThread.h"
-#include "utils/GTUtilsMac.h"
+
+#ifdef Q_OS_DARWIN
+#    include "utils/GTUtilsMac.h"
+#endif
 
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
@@ -136,6 +139,10 @@ QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, 
 
 QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+}
+
+QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QPushButton *>(os, widgetName, parentWidget, options);
 }
 
 QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
@@ -489,8 +496,11 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
     GT_CHECK(widget != nullptr, "Widget is NULL");
     GT_CHECK(widget->isVisible(), "Widget is not visible");
     bool actualEnabledState = widget->isEnabled();
-    GT_CHECK(expectedEnabledState == actualEnabledState,
-             QString("Widget state is incorrect: expected '%1', got '%'2")
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && actualEnabledState != expectedEnabledState; time += GT_OP_CHECK_MILLIS) {
+        actualEnabledState = widget->isEnabled();
+    }
+    GT_CHECK(actualEnabledState == expectedEnabledState,
+             QString("Widget state is incorrect: expected '%1', got '%2'")
                  .arg(expectedEnabledState ? "enabled" : "disabled")
                  .arg(actualEnabledState ? "enabled" : "disabled"));
 }

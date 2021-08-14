@@ -27,6 +27,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -34,6 +36,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
 #include <U2Gui/GroupOptionsWidget.h>
@@ -50,6 +53,7 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
+#include "export/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
@@ -115,6 +119,10 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     sortGroupsBySizeDescendingAction->setObjectName("action_sort_groups_by_size_descending");
     sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
+
+    saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
+    saveScreenshotAction->setObjectName("Export as image");
+    connect(saveScreenshotAction, &QAction::triggered, this, &MSAEditor::sl_exportImage);
 
     initZoom();
     initFont();
@@ -911,6 +919,18 @@ void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
 
 MaEditorSelectionController *MSAEditor::getSelectionController() const {
     return selectionController;
+}
+
+void MSAEditor::sl_exportImage() {
+    MSAImageExportController controller(ui);
+    QWidget *parentWidget = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QString fileName = GUrlUtils::fixFileName(maObject->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller,
+                                                                        ExportImageDialog::MSA,
+                                                                        fileName,
+                                                                        ExportImageDialog::NoScaling,
+                                                                        parentWidget);
+    dlg->exec();
 }
 
 }  // namespace U2

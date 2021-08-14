@@ -125,9 +125,6 @@ signals:
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
 
-public slots:
-    void sl_saveScreenshot();
-
 private slots:
     void sl_countUndo();
     void sl_countRedo();

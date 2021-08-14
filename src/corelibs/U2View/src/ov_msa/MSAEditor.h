@@ -167,6 +167,9 @@ protected slots:
     /** Converts from RAW to Amino alphabet. Replaces all unknown chars with 'X'. */
     void sl_convertRawToAminoAlphabet();
 
+    /** Shows 'Export Image' dialog. */
+    void sl_exportImage();
+
 protected:
     QWidget *createWidget() override;
     bool eventFilter(QObject *o, QEvent *e) override;
@@ -207,6 +210,9 @@ public:
     QAction *sortByLengthDescendingAction = nullptr;
     QAction *sortByLeadingGapAscendingAction = nullptr;
     QAction *sortByLeadingGapDescendingAction = nullptr;
+
+    /** Initiates a dialog to export the alignment using some image format. */
+    QAction *saveScreenshotAction = nullptr;
 
     /**
      * Sorts collapsing groups by number of sequences in ascending order.

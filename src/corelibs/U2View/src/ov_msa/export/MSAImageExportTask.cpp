@@ -27,6 +27,11 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MaEditorConsensusArea.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorWgt.h>
+
 #include "ov_msa/MSASelectSubalignmentDialog.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
@@ -97,6 +102,8 @@ void MSAImageExportToBitmapTask::run() {
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToBitmapTask")), );
 
     SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
+
+    // TODO: unsafe access to UI model from another thread. Use U2EntityRef or move the task to the main thread.
     MultipleAlignmentObject *mObj = ui->getEditor()->getMaObject();
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
     StateLock *lock = new StateLock();
@@ -193,6 +200,7 @@ void MSAImageExportToSvgTask::run() {
     SAFE_POINT_EXT(settings.isSVGFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToSvgTask")), );
 
+    // TODO: unsafe access to UI model from another thread. Use U2EntityRef or move the task to the main thread.
     MaEditor *editor = ui->getEditor();
     SAFE_POINT_EXT(editor != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
     MultipleAlignmentObject *mObj = editor->getMaObject();
@@ -307,14 +315,16 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    QRect selectionRect = ui->getEditor()->getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), );
-    msaSettings.region = U2Region(selectionRect.x(), selectionRect.width());
+    const QList<QRect> &selectedRects = ui->getEditor()->getSelection().getRectList();
+    CHECK(!selectedRects.isEmpty(), );
+    msaSettings.region = U2Region(selectedRects[0].x(), selectedRects[0].width());
     msaSettings.seqIdx.clear();
     MaCollapseModel *model = ui->getEditor()->getCollapseModel();
-    for (qint64 viewRowIndex = selectionRect.y(); viewRowIndex <= selectionRect.bottom(); viewRowIndex++) {
-        int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
-        msaSettings.seqIdx.append(maRowIndex);
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        for (qint64 viewRowIndex = selectedRect.y(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+            int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
+            msaSettings.seqIdx.append(maRowIndex);
+        }
     }
 }
 

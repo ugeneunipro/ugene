@@ -300,7 +300,6 @@ public:
     QAction *showOverviewAction;
     QAction *changeFontAction;
     QAction *resetZoomAction;
-    QAction *saveScreenshotAction;
     QAction *exportHighlightedAction;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
