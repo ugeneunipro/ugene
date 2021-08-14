@@ -57,7 +57,7 @@ private:
     int suiteNumber;
     bool noIgnored;
     QString pathToSuite;
-    QString testOutDir;
+    QString testOutputDir;
     QString iniFileTemplate;
 
     static QStringList getTestProcessArguments(const QString &testName);
@@ -67,7 +67,7 @@ private:
      */
     QProcessEnvironment prepareTestRunEnvironment(const QString &testName, int testRunIteration);
     static QString getTestOutputFileName(const QString &testName, int testRunIteration);
-    static QString getTestOutDir();
+    static QString findAvailableTestOutputDir();
 
     void firstTestRunCheck(const QString &testName);
 

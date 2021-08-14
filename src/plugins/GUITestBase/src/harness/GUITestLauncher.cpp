@@ -45,7 +45,7 @@ GUITestLauncher::GUITestLauncher(int suiteNumber, bool noIgnored, const QString 
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
       suiteNumber(suiteNumber), noIgnored(noIgnored), pathToSuite(""), iniFileTemplate(iniFileTemplate) {
     tpm = Task::Progress_Manual;
-    testOutDir = getTestOutDir();
+    testOutputDir = findAvailableTestOutputDir();
 
     QWidget *splashScreen = QApplication::activeWindow();
     if (splashScreen != nullptr) {
@@ -57,12 +57,12 @@ GUITestLauncher::GUITestLauncher(const QString &_pathToSuite, bool _noIgnored, c
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
       suiteNumber(0), noIgnored(_noIgnored), pathToSuite(_pathToSuite), iniFileTemplate(_iniFileTemplate) {
     tpm = Task::Progress_Manual;
-    testOutDir = getTestOutDir();
+    testOutputDir = findAvailableTestOutputDir();
 }
 
 bool GUITestLauncher::renameTestLog(const QString &testName, int testRunIteration) {
     QString outFileName = getTestOutputFileName(testName, testRunIteration);
-    QString outFilePath = testOutDir + QString("/logs/");
+    QString outFilePath = testOutputDir + QString("/logs/");
 
     QFile outLog(outFilePath + outFileName);
     return outLog.rename(outFilePath + "failed_" + outFileName);
@@ -248,7 +248,7 @@ QString GUITestLauncher::getTestOutputFileName(const QString &testName, int test
     return QString("ugene_" + testName + iterationText + ".out").replace(':', '_');
 }
 
-QString GUITestLauncher::getTestOutDir() {
+QString GUITestLauncher::findAvailableTestOutputDir() {
     QString date = QDate::currentDate().toString("dd.MM.yyyy");
     QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");
     QString initPath;
@@ -321,13 +321,13 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
 QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &testName, int testRunIteration) {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-    QDir().mkpath(testOutDir + "/logs");
+    QDir().mkpath(testOutputDir + "/logs");
     env.insert(ENV_UGENE_DEV, "1");
     env.insert(ENV_GUI_TEST, "1");
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
-    env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + getTestOutputFileName(testName, testRunIteration));
+    env.insert(U2_PRINT_TO_FILE, testOutputDir + "/logs/" + getTestOutputFileName(testName, testRunIteration));
 
-    QString iniFilePath = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
+    QString iniFilePath = testOutputDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
         QFile::copy(iniFileTemplate, iniFilePath);
     }
@@ -347,7 +347,10 @@ QString GUITestLauncher::runTest(const QString &testName, int timeoutMillis) {
     bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
     for (int iteration = 0; iteration < 1 + maxReruns; iteration++) {
         if (iteration >= 1) {
-            coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(iteration).arg(maxReruns));
+            coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2, check logs in: %3")
+                              .arg(iteration)
+                              .arg(maxReruns)
+                              .arg(testOutputDir));
         }
         U2OpStatusImpl os;
         testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && iteration > 0);
