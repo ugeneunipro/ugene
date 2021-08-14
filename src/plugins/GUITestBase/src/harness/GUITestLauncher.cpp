@@ -244,8 +244,7 @@ void GUITestLauncher::updateProgress(int finishedCount) {
 }
 
 QString GUITestLauncher::getTestOutputFileName(const QString &testName, int testRunIteration) {
-    QString iterationText = testRunIteration == 0 ? "" : "_iteration_" + QString::number(testRunIteration);
-    return QString("ugene_" + testName + iterationText + ".out").replace(':', '_');
+    return QString("ugene_" + testName + "_r_" + QString::number(testRunIteration) + ".out").replace(':', '_');
 }
 
 QString GUITestLauncher::findAvailableTestOutputDir() {
@@ -327,7 +326,7 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &te
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutputDir + "/logs/" + getTestOutputFileName(testName, testRunIteration));
 
-    QString iniFilePath = testOutputDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
+    QString iniFilePath = testOutputDir + "/inis/" + QString(testName).replace(':', '_') + "_r_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
         QFile::copy(iniFileTemplate, iniFilePath);
     }
