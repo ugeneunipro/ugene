@@ -71,7 +71,7 @@ QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QO
 QAction *GTAction::findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
     QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [text](auto action) { return action->text() == text; });
     GT_CHECK_RESULT(!actions.isEmpty(), "Action with text not found: " + text, nullptr);
-    GT_CHECK_RESULT(actions.size() != 1, QString("There are %1 actions with text: %2").arg(actions.size()).arg(text), nullptr);
+    GT_CHECK_RESULT(actions.size() == 1, QString("There are %1 actions with text: %2").arg(actions.size()).arg(text), nullptr);
     return actions[0];
 }
 #undef GT_METHOD_NAME

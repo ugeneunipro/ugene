@@ -154,26 +154,33 @@ public:
     /**
      * Finds all children of the 'parent' using 'findChildren' method and checkFn to check if the child is matched.
      * If parent is null, find all child in all main windows.
-     * Note: this function does not wait until any child is found and returns immediately.
+     * Note 1: this function does not wait until any child is found and returns immediately.
+     * Note 2: if 'parent' is provided this function will stop lookup after the first child is found.
+     *  This is a legacy behaviour and must be fixed.
      */
     template<class ChildType>
-    static QList<ChildType *> findChildren(GUITestOpStatus &os, const QObject *parent, std::function<bool(ChildType *)> checkFn) {
+    static QList<ChildType *> findChildren(GUITestOpStatus &os, const QObject *parent, std::function<bool(ChildType *)> matchFn) {
         QList<ChildType *> children;
-        auto checkAndAddToList = [&children, &checkFn](const QList<ChildType *> candidates) -> void {
+        auto checkAndAddToList = [&children, &matchFn](const QList<ChildType *> candidates, bool addOnlyOneChild) {
             for (ChildType *child : candidates) {
-                if (checkFn(child)) {
+                if (matchFn(child)) {
                     children.append(child);
+                    if (addOnlyOneChild) {
+                        break;
+                    }
                 }
             }
         };
         if (parent == nullptr) {
-            // If parent null, start from QMainWindows.
+            // If parent is null, start from QMainWindows.
             QList<QWidget *> mainWindows = GTMainWindow::getMainWindowsAsWidget(os);
             for (QWidget *mainWindowWidget : qAsConst(mainWindows)) {
-                checkAndAddToList(mainWindowWidget->findChildren<ChildType *>());
+                checkAndAddToList(mainWindowWidget->findChildren<ChildType *>(), false);
             }
         } else {
-            checkAndAddToList(parent->findChildren<ChildType *>());
+            // TODO: a lot of tests will fail if all child are searched in this branch.
+            //  This should be fixed: UGENE tests should not run ambiguous lookups.
+            checkAndAddToList(parent->findChildren<ChildType *>(), true);
         }
         return children;
     }
