@@ -3502,11 +3502,11 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
 
     // Export the msa to SVG.
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "SVG", 0));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::click(Qt::RightButton);
 
-    const qint64 imageFileSize = GTFile::getSize(os, sandBoxDir + "test_4524.svg");
+    qint64 imageFileSize = GTFile::getSize(os, sandBoxDir + "test_4524.svg");
     CHECK_SET_ERR(imageFileSize > 0, "Export MSA to image failed. Unexpected image file size");
 
     // Current state : "undo" action becomes disabled.
