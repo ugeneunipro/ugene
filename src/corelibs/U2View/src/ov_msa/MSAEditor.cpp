@@ -121,7 +121,7 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
 
     saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
-    saveScreenshotAction->setObjectName("Export as image");
+    saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MSAEditor::sl_exportImage);
 
     initZoom();

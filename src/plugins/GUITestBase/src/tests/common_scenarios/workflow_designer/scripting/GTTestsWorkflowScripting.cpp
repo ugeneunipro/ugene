@@ -21,44 +21,24 @@
 
 #include "GTTestsWorkflowScripting.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <src/GTUtilsSequenceView.h>
 
-#include <QGraphicsItem>
-#include <QProcess>
-#include <QTextEdit>
-
 #include <U2Core/AppContext.h>
 
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2Lang/WorkflowSettings.h>
-
+// TODO: cross-plugin dependency!
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTGlobals.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/GTAction.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "system/GTFile.h"
-#include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {

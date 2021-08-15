@@ -109,9 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTWidget::click(os, GTWidget::findLabelByText(os, "proj1.uprj").first());
     //    Expected state: project is opened
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
-    QString expectedTitle;
-    expectedTitle = "proj1 UGENE";
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {

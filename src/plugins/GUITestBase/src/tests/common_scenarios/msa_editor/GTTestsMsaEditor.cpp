@@ -2080,25 +2080,18 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
-    //    1. open document samples/CLUSTALW/COI.aln
+    // Open document samples/CLUSTALW/COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.bmp"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
-    QAbstractButton *saveImage = GTAction::button(os, "Export as image");
-    CHECK_SET_ERR(saveImage, "Save as image button not found");
-
-    GTWidget::click(os, saveImage);
-    //    Expected state: export dialog appeared
-
-    //    3. fill dialog:
-    //    file name: test/_common_data/scenarios/sandbox/image.bmp
-    //    press OK
-    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/sandbox/", "image.bmp");
+    // Press "export as image" on toolbar.
+    QString filePath = testDir + "_common_data/scenarios/sandbox/image.bmp";
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os, filePath));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: image is exported
+
+    // Expected state: image is exported.
+    bool isFileExist = GTFile::check(os, filePath);
+    CHECK_SET_ERR(isFileExist, "Image file not found: " + filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {  // DIFFERENCE: context menu is used
@@ -2106,15 +2099,14 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {  // DIFFERENCE: context menu is used
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.bmp"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    QString filePath = testDir + "_common_data/scenarios/sandbox/image.bmp";
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os, filePath));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    //    Expected state: export dialog appeared
 
-    //    3. fill dialog:
-    //    file name: test/_common_data/scenarios/sandbox/image.bmp
-    //    press OK
-    //    Expected state: image is exported
+    // Expected state: image is exported.
+    bool isFileExist = GTFile::check(os, filePath);
+    CHECK_SET_ERR(isFileExist, "Image file not found: " + filePath);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
@@ -2125,7 +2117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //    2. press "export as image" on toolbar
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
-    QAbstractButton *saveImage = GTAction::button(os, "Export as image");
+    QAbstractButton *saveImage = GTAction::button(os, "export_msa_as_image_action");
     GTWidget::click(os, saveImage);
 
     //    Expected state: export dialog appeared
@@ -2208,7 +2200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028_linux) {
 
     //    2. Context menu -- "Export as image"
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     //    3. Fill dialog: svg format, output file
@@ -2224,7 +2216,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028_windows) {
 
     //    2. Context menu -- "Export as image"
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     //    3. Fill dialog: svg format, output file
@@ -2983,7 +2975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042.png"));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -2994,7 +2986,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042_1.png", ExportMsaImage::Settings(true, true, true) /*include all*/));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -3004,7 +2996,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0042_1", ExportMsaImage::Settings(true, false, true) /*include all*/, true, false, RegionMsa(), "BMP"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -3019,7 +3011,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
               << "Conocephalus_percaudata"
               << "Podisma_sapporensis";
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0043.png", ExportMsaImage::Settings(), false, false, RegionMsa(U2Region(1, 594), sequences)));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -3032,7 +3024,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 2), QPoint(25, 8));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0044.png", ExportMsaImage::Settings(true, true, true), false, true));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -3061,7 +3053,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportDialogChecker(os));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -3099,7 +3091,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportChecker(os));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -3111,7 +3103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0046", "JPG", 50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -3176,7 +3168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(1, 1));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportChecker(os));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -3212,7 +3204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new CustomFiller_0048(os));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -3337,7 +3329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
     };
 
     GTUtilsDialog::waitForDialog(os, new CustomFiller_0052(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
 

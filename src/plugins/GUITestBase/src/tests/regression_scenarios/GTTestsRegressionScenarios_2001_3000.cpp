@@ -624,7 +624,7 @@ GUI_TEST_CLASS_DEFINITION(test_2049) {
 
     w = GTWidget::findWidget(os, "Codon table widget");
     int finalHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
-    CHECK_SET_ERR(ititHeight != finalHeight, "codone table not changed");
+    CHECK_SET_ERR(ititHeight != finalHeight, "codon table not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2053) {

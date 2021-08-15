@@ -1810,21 +1810,19 @@ GUI_TEST_CLASS_DEFINITION(test_3283) {
 GUI_TEST_CLASS_DEFINITION(test_3287) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_OP(os, );
 
     ImageExportFormFiller::Parameters params;
     params.fileName = testDir + "_common_data/scenarios/sandbox/test_3287.bmp";
     params.format = "BMP";
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"export_overview_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ImageExportFormFiller(os, params));
 
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_OP(os, );
     GTWidget::click(os, overview, Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QImage image(params.fileName);
-    CHECK_SET_ERR(70 == image.height(), "Wrong image height");
+    CHECK_SET_ERR(image.height() == 70, "Wrong image height");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3288) {

@@ -34,7 +34,6 @@
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/ExportProjectDialogFiller.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
 
 namespace U2 {

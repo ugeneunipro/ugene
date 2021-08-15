@@ -23,7 +23,6 @@
 #define _U2_PROJECT_UTILS_H_
 
 #include <GTGlobals.h>
-#include <utils/GTUtilsApp.h>
 
 #include <QMessageBox>
 
@@ -60,7 +59,7 @@ public:
     /* Initiates file open dialog for multiple files and waits until all tasks finished before the return. Asserts that the project exists. */
     static void openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s = OpenFileSettings(), ProjectCheckType checkType = Exists);
 
-    /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project does not exists. */
+    /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project does not exist. */
     static void openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings());
 
     static void checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType = Exists);
