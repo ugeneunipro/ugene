@@ -51,7 +51,6 @@ class DetView;
 class DNAAlphabet;
 class DNATranslation;
 class GSequenceLineView;
-class GSingleSeqBlockState;
 class Overview;
 class PanView;
 class U2SequenceObject;
@@ -93,7 +92,7 @@ public:
 
     DNASequenceSelection *getSequenceSelection() const;
 
-    int getSequenceLength() const;
+    qint64 getSequenceLength() const;
 
     virtual void addSequenceView(GSequenceLineView *v, QWidget *after = nullptr);
 

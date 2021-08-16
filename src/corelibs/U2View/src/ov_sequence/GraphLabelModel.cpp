@@ -18,25 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include <cmath>
+#include "GraphLabelModel.h"
 
 #include <QBitmap>
 #include <QPainterPath>
-
-#include "GraphLabelModel.h"
 
 namespace U2 {
 
 TextLabel::TextLabel(QWidget *parent)
     : QLabel(parent) {
-}
-TextLabel::~TextLabel() {
-}
-void TextLabel::mouseMoveEvent(QMouseEvent *me) {
-    this->raise();
-    if (Qt::ShiftModifier != me->modifiers()) {
-        QWidget::mouseMoveEvent(me);
-    }
 }
 
 void TextLabel::paintEvent(QPaintEvent *e) {
@@ -53,14 +43,12 @@ RoundHint::RoundHint(QWidget *parent, QColor _borderColor, QColor _fillingColor)
     : QWidget(parent), borderColor(_borderColor), fillingColor(_fillingColor), markedFillingColor(_borderColor), isMarked(false) {
     this->setGeometry(QRect(0, 0, 0, 0));
 }
-RoundHint::~RoundHint() {
-}
 
 void RoundHint::paintEvent(QPaintEvent *) {
     QPainter paint;
     paint.begin(this);
     paint.setPen(QPen(borderColor));
-    if (false == isMarked) {
+    if (!isMarked) {
         paint.setBrush(QBrush(fillingColor));
         paint.drawEllipse(QRect(2, 2, this->geometry().width() - 4, this->geometry().height() - 4));
     } else {
@@ -78,21 +66,19 @@ void RoundHint::unmark() {
 }
 
 GraphLabel::GraphLabel()
-    : attachedLabel(nullptr), text(new TextLabel(nullptr)), image(new RoundHint()), position(-1), value(0.0), coord(-1, -1), radius(defaultRadius) {
+    : text(new TextLabel(nullptr)), image(new RoundHint()), position(-1), value(0.0), coord(-1, -1), radius(defaultRadius) {
     text->setLineWidth(3);
     text->setAlignment(Qt::AlignCenter);
     text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
-    text->installEventFilter(this);
-    image->installEventFilter(this);
 }
+
 GraphLabel::GraphLabel(float pos, QWidget *parent, int _radius)
-    : attachedLabel(nullptr), text(new TextLabel(parent)), image(new RoundHint(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
+    : text(new TextLabel(parent)), image(new RoundHint(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
     text->setLineWidth(3);
     text->setAlignment(Qt::AlignCenter);
     text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
-    text->installEventFilter(this);
-    image->installEventFilter(this);
 }
+
 GraphLabel::~GraphLabel() {
     if (!text.isNull()) {
         delete text;
@@ -100,18 +86,6 @@ GraphLabel::~GraphLabel() {
     if (!image.isNull()) {
         delete image;
     }
-}
-
-bool GraphLabel::eventFilter(QObject *target, QEvent *e) {
-    if (target == text || target == image) {
-        QMouseEvent *me = static_cast<QMouseEvent *>(e);
-        CHECK(me != nullptr, false);
-        if (me->type() == QEvent::MouseButtonPress && me->button() == Qt::LeftButton) {
-            emit si_onHintDeleted(this);
-            return true;
-        }
-    }
-    return QObject::eventFilter(target, e);
 }
 
 void GraphLabel::setCoord(const QPoint &_coord) {
@@ -123,19 +97,9 @@ void GraphLabel::setHintRect(const QRect &_hintRect) {
     text->setGeometry(_hintRect);
 }
 
-bool GraphLabel::select(float pos) {
-    return qFuzzyCompare(pos, position);
-}
-
-void GraphLabel::show() {
-    image->show();
-    text->show();
-    text->setMouseTracking(true);
-}
-void GraphLabel::hide() {
-    image->hide();
-    text->hide();
-    text->setMouseTracking(false);
+void GraphLabel::setVisible(bool flag) {
+    image->setVisible(flag);
+    text->setVisible(flag);
 }
 
 bool GraphLabel::isHidden() const {
@@ -145,12 +109,15 @@ bool GraphLabel::isHidden() const {
 void GraphLabel::raise() {
     text->raise();
 }
+
 void GraphLabel::mark() {
     image->mark();
 }
+
 void GraphLabel::unmark() {
     image->unmark();
 }
+
 void GraphLabel::setColor(QColor color, QColor markingColor) {
     text->setStyleSheet(tr("QLabel {color : %1; }").arg(color.name()));
     image->setFillingColor(color);
@@ -158,12 +125,13 @@ void GraphLabel::setColor(QColor color, QColor markingColor) {
     image->setBorderColor(invertingColor);
     image->setMarkingColor(markingColor);
 }
+
 void GraphLabel::setParent(QWidget *parent) {
     text->setParent(parent);
     image->setParent(parent);
 }
 
-QColor GraphLabel::getFillingColor() {
+QColor GraphLabel::getFillColor() {
     return image->getFillingColor();
 }
 
@@ -203,17 +171,14 @@ void MultiLabel::getLabelPositions(QList<QVariant> &labelPositions) {
     foreach (GraphLabel *currentLabel, labels)
         labelPositions.append(currentLabel->getPosition());
 }
+
 void MultiLabel::addLabel(GraphLabel *pLabel) {
-    connect(pLabel, SIGNAL(si_onHintDeleted(GraphLabel *)), this, SLOT(sl_deleteLabel(GraphLabel *)));
-    labels.push_back(pLabel);
+    labels.append(pLabel);
 }
+
 void MultiLabel::removeLabel(GraphLabel *pLabel) {
     labels.removeAll(pLabel);
     delete pLabel;
-}
-
-void MultiLabel::sl_deleteLabel(GraphLabel *label) {
-    removeLabel(label);
 }
 
 bool MultiLabel::removeLabel(float xPos) {
@@ -227,17 +192,18 @@ GraphLabel *MultiLabel::at(int i) const {
     return labels.at(i);
 }
 
-GraphLabel *MultiLabel::findLabelByPosition(float xPos) const {
-    foreach (GraphLabel *currentLabel, labels) {
-        if (currentLabel->select(xPos)) {
-            return currentLabel;
+GraphLabel *MultiLabel::findLabelByPosition(float sequencePos, float deviation) const {
+    for (GraphLabel *label : qAsConst(labels)) {
+        float labelPos = label->getPosition();
+        if ((labelPos >= sequencePos - deviation && labelPos <= sequencePos + deviation) || qFuzzyCompare(labelPos, sequencePos)) {
+            return label;
         }
     }
     return nullptr;
 }
 
-GraphLabel &MultiLabel::getMovingLabel() {
-    return *movingLabel;
+GraphLabel *MultiLabel::getMovingLabel() const {
+    return movingLabel;
 }
 
 }  // namespace U2

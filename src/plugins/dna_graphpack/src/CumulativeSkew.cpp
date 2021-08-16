@@ -61,8 +61,7 @@ QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGrap
     Q_UNUSED(v);
     QList<QSharedPointer<GSequenceGraphData>> res;
     assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    d->ga = new CumulativeSkewGraphAlgorithm(cumPair);
+    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName(), new CumulativeSkewGraphAlgorithm(cumPair)));
     res.append(d);
     return res;
 }
@@ -74,7 +73,7 @@ CumulativeSkewGraphAlgorithm::CumulativeSkewGraphAlgorithm(const QPair<char, cha
     : p(_p) {
 }
 
-float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArray &seq) {
+float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArray &seq) const {
     int leap = end - begin;
     float resultValue = 0;
     int len;
@@ -101,20 +100,20 @@ float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArra
     return resultValue;
 }
 
-void CumulativeSkewGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != nullptr);
-    int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
-    res.reserve(nSteps);
+void CumulativeSkewGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+    U2Region vr(0, sequenceObject->getSequenceLength());
+    int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
+    result.reserve(nSteps);
 
-    const QByteArray &seq = getSequenceData(o, os);
+    QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
     for (int i = 0; i < nSteps; i++) {
         CHECK_OP(os, );
-        int start = vr.startPos + i * d->step;
-        int end = start + d->window;
-        float result = getValue(start, end, seq);
-        res.append(result);
+        int start = vr.startPos + i * step;
+        int end = start + window;
+        float value = getValue(start, end, seq);
+        result.append(value);
     }
 }
 

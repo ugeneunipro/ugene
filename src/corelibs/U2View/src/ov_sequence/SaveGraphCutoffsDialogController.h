@@ -34,23 +34,21 @@ class SequenceObjectContext;
 class SaveGraphCutoffsDialogController : public QDialog, Ui_SaveGraphCutoffsDialog {
     Q_OBJECT
 public:
-    SaveGraphCutoffsDialogController(GSequenceGraphDrawer *d,
-                                     QSharedPointer<GSequenceGraphData> &gd,
+    SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData> &graph,
+                                     const GSequenceGraphMinMaxCutOffState &cutOffState,
                                      QWidget *parent,
                                      SequenceObjectContext *ctx);
 
-    virtual void accept();
+    void accept() override;
 
 private:
-    inline bool isAcceptableValue(float val);
+    bool isAcceptableValue(float val) const;
     bool validate();
     void tryAddObject(AnnotationTableObject *annotationTableObject);
 
-    CreateAnnotationWidgetController *ac;
+    CreateAnnotationWidgetController *createAnnotationController;
     SequenceObjectContext *ctx;
-    GSequenceGraphDrawer *d;
-    QSharedPointer<GSequenceGraphData> gd;
-    QList<U2Region> resultRegions;
+    QSharedPointer<GSequenceGraphData> graph;
 };
 
 class SaveGraphCutoffsSettings {

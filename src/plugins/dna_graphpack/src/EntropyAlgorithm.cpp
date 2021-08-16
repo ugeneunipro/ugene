@@ -48,7 +48,6 @@ EntropyGraphFactory::EntropyGraphFactory(QObject *p)
 }
 
 #define MAX_CHARS_IN_ALPHABET 7
-#define MAX_INDEX_SIZE 512
 
 bool EntropyGraphFactory::isEnabled(const U2SequenceObject *o) const {
     const DNAAlphabet *al = o->getAlphabet();
@@ -59,8 +58,7 @@ QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSeq
     Q_UNUSED(v);
     QList<QSharedPointer<GSequenceGraphData>> res;
     assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    d->ga = new EntropyGraphAlgorithm;
+    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(graphName, new EntropyGraphAlgorithm()));
     res.append(d);
     return res;
 }
@@ -68,14 +66,14 @@ QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSeq
 //////////////////////////////////////////////////////////////////////////
 // EntropyGraphAlgorithm
 
-void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != nullptr);
-    int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
-    res.reserve(nSteps);
+void EntropyGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+    U2Region vr(0, sequenceObject->getSequenceLength());
+    int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
+    result.reserve(nSteps);
 
-    const QByteArray &seq = getSequenceData(o, os);
+    QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
-    const DNAAlphabet *al = o->getAlphabet();
+    const DNAAlphabet *al = sequenceObject->getAlphabet();
 
     // prepare index -> TODO: make it once and cache!
     IndexedMapping3To1<int> index(al->getAlphabetChars(), 0);
@@ -86,8 +84,8 @@ void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, 
     float log10_2 = log10(2.0);
     const char *seqStr = seq.constData();
     for (int i = 0; i < nSteps; i++) {
-        int start = vr.startPos + i * d->step;
-        int end = start + d->window;
+        int start = vr.startPos + i * step;
+        int end = start + window;
         for (int x = start; x < end - 2; x++) {
             int &val = index.mapNC(seqStr + x);
             val++;
@@ -105,7 +103,7 @@ void EntropyGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, 
             float freq = ifreq / total;
             ent -= freq * log10(freq) / log10_2;
         }
-        res.append(ent);
+        result.append(ent);
     }
 }
 

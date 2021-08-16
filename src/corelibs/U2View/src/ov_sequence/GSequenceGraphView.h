@@ -29,9 +29,9 @@
 
 namespace U2 {
 
-class GSequenceGraphWindowData;
 class GSequenceGraphView;
 class GObjectView;
+class GSequenceGraphViewRA;
 
 //////////////////////////////////////////////////////////////////////////
 /// View
@@ -40,17 +40,15 @@ class U2VIEW_EXPORT GSequenceGraphView : public GSequenceLineView {
 public:
     GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, GSequenceLineView *baseView, const QString &vName);
 
-    ~GSequenceGraphView();
-
     const QString &getGraphViewName() const {
         return vName;
     }
 
-    void getLabelPositions(QList<QVariant> &labelPositions);
+    void getSavedLabelsState(QList<QVariant> &savedLabels);
 
-    void createLabelsOnPositions(const QList<QVariant> &positions);
+    void setLabelsFromSavedState(const QList<QVariant> &savedLabels);
 
-    void addGraphData(const QSharedPointer<GSequenceGraphData> &g);
+    void addGraphData(const QSharedPointer<GSequenceGraphData> &graph);
 
     void setGraphDrawer(GSequenceGraphDrawer *gd);
 
@@ -64,7 +62,7 @@ public:
 
     void buildPopupMenu(QMenu &m);
 
-    void changeLabelsColor();
+    GSequenceGraphViewRA *getGraphRenderArea() const;
 
 protected:
     virtual void pack();
@@ -72,22 +70,13 @@ protected:
     void leaveEvent(QEvent *le);
     void mousePressEvent(QMouseEvent *me);
     void mouseMoveEvent(QMouseEvent *me);
-    void addLabel(float xPos);
-    void moveLabel(float xPos);
-    void hideLabel();
-    void onVisibleRangeChanged(bool signal = true);
+    void updateMovingLabels();
 
-signals:
-    void si_labelAdded(const QSharedPointer<GSequenceGraphData> &, GraphLabel *, const QRect &);
-    void si_labelMoved(const QSharedPointer<GSequenceGraphData> &, GraphLabel *, const QRect &);
-    void si_frameRangeChanged(const QSharedPointer<GSequenceGraphData> &, const QRect &);
-    void si_labelsColorChange(const QSharedPointer<GSequenceGraphData> &);
 private slots:
     void sl_onShowVisualProperties(bool);
-    void sl_onSelectExtremumPoints();
+    void sl_showLocalMinMaxLabels();
     void sl_onDeleteAllLabels();
     void sl_onSaveGraphCutoffs(bool);
-    void sl_graphRectChanged(const QRect &);
 
 private:
     GSequenceLineView *baseView;
@@ -97,7 +86,9 @@ private:
     QAction *visualPropertiesAction;
     QAction *saveGraphCutoffsAction;
     QAction *deleteAllLabelsAction;
-    QAction *selectAllExtremumPoints;
+
+    /** Shows all min/max labels for the current graph state. */
+    QAction *showLocalMinMaxLabelsAction;
 };
 
 class U2VIEW_EXPORT GSequenceGraphViewRA : public GSequenceLineViewRenderArea {
@@ -119,8 +110,7 @@ protected:
     virtual void drawAll(QPaintDevice *pd);
     virtual void drawHeader(QPainter &p);
     void drawSelection(QPainter &p);
-signals:
-    void si_graphRectChanged(const QRect &);
+
 private slots:
     void sl_graphDataUpdated();
 
@@ -128,7 +118,6 @@ private:
     QFont *headerFont;
     int headerHeight;
     QRect graphRect;
-    GSequenceGraphDrawer *gd;
 };
 
 }  // namespace U2

@@ -655,40 +655,31 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(nullptr != sequenceWidget, "sequenceWidget is not present");
-
-    GTWidget::click(os, sequenceWidget);
 
     // 2. Show DNA Flexibility graph
     // Expected state: 'Calculate graph points' task is started
-    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
-    Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");
-    GTUtilsDialog::waitForDialog(os, chooser);
+    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"DNA Flexibility"}));
     GTWidget::click(os, graphAction);
     GTUtilsTask::waitTaskStart(os, "Calculate graph points", 30000);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Zoom graph
     // Expected state: cached data is used and 'Calculate graph points' task is not started
     GTWidget::click(os, GTAction::button(os, "action_zoom_in_gi|119866057|ref|NC_008705.1| Mycobacterium sp. KMS, complete genome"));
     GTGlobals::sleep(500);
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "'Calculate graph points' task is started, but cached data should be used");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "'Calculate graph points' task is started, but cached data should be used");
 
     // 4. Use context menu {Graph -> Graph settings...}
     // Expected state: 'Graph Settings' dialog is appeared
     // 5. Set parameters: window = 1000, step = 4
     // 6. Press 'Ok'
-    // Expected state: 'Calculate graph points' task is started
+    // Expected state: 'Calculate graph points' task is started.
     GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, 200, 100));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
-                                                                        << "visual_properties_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Graph", "visual_properties_action"}));
     QWidget *graphView = GTUtilsSequenceView::getGraphView(os);
     GTWidget::click(os, graphView, Qt::RightButton);
-    GTGlobals::sleep(500);
-    const int taskcount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
-    CHECK_SET_ERR(1 == taskcount, QString("'Calculate graph points' task is not started. Task count= %1").arg(taskcount));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::checkTask(os, "Calculate graph points");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0605) {

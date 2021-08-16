@@ -33,15 +33,7 @@ namespace U2 {
  */
 class DNAFlexGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
-    DNAFlexGraphAlgorithm();
-    virtual ~DNAFlexGraphAlgorithm();
-
-    virtual void calculate(
-        QVector<float> &,
-        U2SequenceObject *,
-        const U2Region &,
-        const GSequenceGraphWindowData *,
-        U2OpStatus &os);
+    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
 };
 
 }  // namespace U2

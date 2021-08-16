@@ -465,7 +465,7 @@ GSequenceLineView *ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint &
     return nullptr;
 }
 
-int ADVSingleSequenceWidget::getSequenceLength() const {
+qint64 ADVSingleSequenceWidget::getSequenceLength() const {
     return getSequenceContext()->getSequenceLength();
 }
 
@@ -794,7 +794,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
         GSequenceGraphView *graphView = dynamic_cast<GSequenceGraphView *>(view);
         if (nullptr != graphView) {
             graphNames.append(graphView->getGraphViewName());
-            graphView->getLabelPositions(positions);
+            graphView->getSavedLabelsState(positions);
             myData[graphView->getGraphViewName()] = positions;
         }
     }

@@ -61,7 +61,6 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
@@ -1759,14 +1758,12 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Open any graph
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
     GSequenceGraphView *graphView = GTUtilsSequenceView::getGraphView(os);
 
     //    Use context menu {graph->Select all extremum points}
-    GTUtilsDialog::waitForDialog(os, new GraphLabelsSelectDialogFiller(os, 5000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
-                                                                        << "select_all_extremum_points"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Graph", "show_labels_for_min_max_points"}));
     GTWidget::click(os, graphView, Qt::RightButton);
     //    In dialog select any value
     int labelsNum = GTUtilsSequenceView::getGraphLabels(os, graphView).size();

@@ -560,7 +560,7 @@ GSequenceGraphView *GTUtilsSequenceView::getGraphView(HI::GUITestOpStatus &os) {
 QList<QVariant> GTUtilsSequenceView::getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
     Q_UNUSED(os);
     QList<QVariant> list;
-    graph->getLabelPositions(list);
+    graph->getSavedLabelsState(list);
     return list;
 }
 

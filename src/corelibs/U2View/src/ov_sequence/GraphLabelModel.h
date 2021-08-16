@@ -39,18 +39,14 @@ class U2VIEW_EXPORT TextLabel : public QLabel {
     Q_OBJECT
 public:
     TextLabel(QWidget *parent = nullptr);
-    ~TextLabel();
 
 private:
-    void mouseMoveEvent(QMouseEvent *me);
-
     void paintEvent(QPaintEvent *e);
 };
 
 class RoundHint : public QWidget {
 public:
     RoundHint(QWidget *parent = nullptr, QColor _borderColor = Qt::white, QColor _fillingColor = Qt::black);
-    ~RoundHint();
 
     void setBorderColor(QColor color) {
         borderColor = color;
@@ -91,8 +87,6 @@ public:
     GraphLabel(float pos, QWidget *parent = nullptr, int _radius = defaultRadius);
     ~GraphLabel();
 
-    bool select(float _position);
-    bool isSelected() const;
     bool isHidden() const;
 
     void setCoord(const QPoint &_coord);
@@ -124,35 +118,32 @@ public:
 
     void setParent(QWidget *parent);
 
-    int getSize() const {
+    int getDotRadius() const {
         return radius;
     }
 
-    void show();
-    void hide();
+    /** Calls setVisible on label subcomponents. */
+    void setVisible(bool flag);
+
     void raise();
 
     void mark();
     void unmark();
 
     void setColor(QColor color, QColor markingColor);
-    QColor getFillingColor();
-
-    GraphLabel *attachedLabel;
-signals:
-    void si_onHintDeleted(GraphLabel *label);
+    QColor getFillColor();
 
 private:
-    bool eventFilter(QObject *target, QEvent *e);
     QPointer<TextLabel> text;
     QPointer<RoundHint> image;
+
+    /** Position of the label in sequence coordinates. */
     float position;
+
     float value;
     QPoint coord;
     int radius;
 };
-
-typedef QList<GraphLabel *> Labels;
 
 class MultiLabel : public QObject {
     Q_OBJECT
@@ -168,21 +159,19 @@ public:
 
     void deleteAllLabels();
 
-    GraphLabel *findLabelByPosition(float xPos) const;
+    GraphLabel *findLabelByPosition(float sequencePos, float deviation = 0) const;
     GraphLabel *at(int i) const;
 
-    Labels &getLabels() {
+    const QList<GraphLabel *> &getLabels() const {
         return labels;
     }
 
-    GraphLabel &getMovingLabel();
+    GraphLabel *getMovingLabel() const;
 
 private:
     Q_DISABLE_COPY(MultiLabel)
-    Labels labels;
+    QList<GraphLabel *> labels;
     QPointer<GraphLabel> movingLabel;
-private slots:
-    void sl_deleteLabel(GraphLabel *label);
 };
 
 }  // namespace U2
