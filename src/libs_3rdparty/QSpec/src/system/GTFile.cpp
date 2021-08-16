@@ -217,7 +217,7 @@ bool GTFile::equals(GUITestOpStatus &os, const QString &path1) {
     return byteArray1 == byteArray2;
 }
 #undef GT_METHOD_NAME
-#define GT_METHOD_NAME "getDotRadius"
+#define GT_METHOD_NAME "getSize"
 qint64 GTFile::getSize(GUITestOpStatus &os, const QString &path) {
     QFile file(path);
     bool ok = file.open(QIODevice::ReadOnly);

@@ -508,7 +508,7 @@ namespace BALL
 
 		/**	Return true if the hash set is consistent.
 				Condition: the number of entries in all buckets has to be equal the 
-				stored number of entries (getDotRadius()).
+				stored number of entries (getSize()).
 		*/
 		bool isValid() const;
 
