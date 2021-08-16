@@ -198,10 +198,7 @@ void GSequenceGraphDrawer::drawGraph(QPainter &p, const QSharedPointer<GSequence
 
     int prevX = INT_MAX;  // INT_MAX is a default value that means that prevX/Y is not defined yet.
     int prevY = INT_MAX;
-    auto hasPrevPoint = [&prevX]() {
-        return prevX != INT_MAX;
-    };
-
+    auto hasPrevPoint = [&prevX]() { return prevX != INT_MAX; };
     auto drawNextPoint = [&](int xOffset, float value) {
         CHECK(!isUndefined(value), );
         if (cutOffState.isEnabled) {
