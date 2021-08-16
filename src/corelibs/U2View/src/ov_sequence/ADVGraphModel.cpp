@@ -47,8 +47,6 @@ void GSequenceGraphData::clearAllPoints() {
     useIntervals = false;
     visibleMin = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
     visibleMax = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
-    globalMin = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
-    globalMax = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
     visibleRange = {};
     graphLabels.deleteAllLabels();
     graphLabels.getMovingLabel()->setVisible(false);
@@ -72,9 +70,7 @@ float GSequenceGraphUtils::getMaxValue(float value1, float value2) {
 }
 
 qint64 GSequenceGraphUtils::getNumSteps(const U2Region &range, qint64 window, qint64 step) {
-    return range.length <= window
-               ? 1
-               : (range.length - window) / step + 1;
+    return range.length <= window ? 1 : (range.length - window) / step + 1;
 }
 
 float GSequenceGraphUtils::getPointValue(const QSharedPointer<GSequenceGraphData> &graph, int x) {
@@ -103,9 +99,7 @@ QPair<float, float> GSequenceGraphUtils::getMinAndMaxInRange(const QSharedPointe
 GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView *view, qint64 _window, qint64 _step)
     : QObject(view), view(view), window(_window), step(_step), visibleMin(UNDEFINED_GRAPH_VALUE), visibleMax(UNDEFINED_GRAPH_VALUE) {
     DEFAULT_COLOR = tr("Default color");
-
-    // TODO: unsafe. MS-only font.
-    defFont = new QFont("Arial", 8);
+    defFont = new QFont("Arial", 8);  // TODO: unsafe. MS-only font.
     seriesColorByName.insert(DEFAULT_COLOR, Qt::black);
 
     connect(&calculationTaskRunner, &BackgroundTaskRunner_base::si_finished, this, &GSequenceGraphDrawer::sl_calculationTaskFinished);
@@ -546,8 +540,7 @@ void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequence
     int firstDataIndex = (int)(qMax((qint64)0, visibleRange.startPos - (window + 1) / 2) / step);
     int lastDataIndex = qMin((int)((visibleRange.endPos() - window / 2) / step) + 1, data.size() - 1);
     if (lastDataIndex < firstDataIndex) {
-        // No data points to map.
-        // The visible range is before the first or after the last data points.
+        // No data points to map. The visible range is before the first or after the last data points.
         return;
     }
 
@@ -571,7 +564,7 @@ void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequence
         }
         return;
     }
-    // Build continues linear segments between all defined data points. Save results to 'viewPoints'.
+    // Build continuous linear segments between all defined data points. Save results to 'viewPoints'.
     DataByX prev = dataByX[0];
     int nextDataIndex = 1;
     graph->visibleMin = UNDEFINED_GRAPH_VALUE;

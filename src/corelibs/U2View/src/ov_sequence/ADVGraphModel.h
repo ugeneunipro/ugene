@@ -218,12 +218,6 @@ public:
     /** Maximum visible value. */
     float visibleMax = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
 
-    /** Minimal global value. */
-    float globalMin = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
-
-    /** Maximum global value. */
-    float globalMax = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
-
     /** If true every point on screen is an interval: {min,max}.*/
     bool useIntervals = false;
 
