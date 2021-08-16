@@ -37,7 +37,7 @@ public:
     static void click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent = NULL);
 
     static QRadioButton *getRadioButtonByText(GUITestOpStatus &os, QString text, QWidget *parent = NULL);
-    static QList<QRadioButton *> getAllButtonsByText(GUITestOpStatus &os, QString text, QWidget *parent = NULL);
+    static QList<QRadioButton *> getAllButtonsByText(GUITestOpStatus &os, const QString& text, QWidget *parent = nullptr);
 };
 
 }  // namespace HI

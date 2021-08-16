@@ -41,8 +41,8 @@ class U2OpStatus;
 class GUITestLauncher : public Task {
     Q_OBJECT
 public:
-    GUITestLauncher(int suiteNumber, bool noIgnored = false, QString iniFileTemplate = "");
-    GUITestLauncher(QString pathToSuite = "", bool noIgnored = false, QString iniFileTemplate = "");
+    GUITestLauncher(int suiteNumber, bool noIgnored = false, const QString &iniFileTemplate = "");
+    GUITestLauncher(const QString &pathToSuite = "", bool noIgnored = false, const QString &iniFileTemplate = "");
 
     void run() override;
     QString generateReport() const override;
@@ -57,7 +57,7 @@ private:
     int suiteNumber;
     bool noIgnored;
     QString pathToSuite;
-    QString testOutDir;
+    QString testOutputDir;
     QString iniFileTemplate;
 
     static QStringList getTestProcessArguments(const QString &testName);
@@ -66,24 +66,24 @@ private:
      * Returns system environment for the test process.
      */
     QProcessEnvironment prepareTestRunEnvironment(const QString &testName, int testRunIteration);
-    static QString testOutFile(const QString &testName);
-    static QString getTestOutDir();
+    static QString getTestOutputFileName(const QString &testName, int testRunIteration);
+    static QString findAvailableTestOutputDir();
 
     void firstTestRunCheck(const QString &testName);
 
     /** Runs test multiple times (UGENE_TEST_NUMBER_RERUN_FAILED_TEST) and returns test output of the last run. */
-    QString runTest(const QString &testName, const int timeout);
+    QString runTest(const QString &testName, int timeoutMillis);
 
     /** Runs test once and returns test output. */
     QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, const int timeout, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray &output);
-    bool renameTestLog(const QString &testName);
+    bool renameTestLog(const QString &testName, int testRunIteration);
 
     bool initTestList();
     void updateProgress(int finishedCount);
 
-    QString getScreenRecorderString(QString testName);
+    static QString getScreenRecorderString(const QString &testName);
 
     /**
      * Returns full video file path for the given test.

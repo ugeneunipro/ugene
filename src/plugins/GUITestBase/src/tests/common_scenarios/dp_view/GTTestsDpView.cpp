@@ -21,8 +21,6 @@
 #include "GTTestsDpView.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
@@ -31,10 +29,8 @@
 
 #include <U2Gui/ToolsMenu.h>
 
-#include "../../../GTUtilsEscClicker.h"
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsDocument.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -42,8 +38,7 @@
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
-#include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
+#include "src/GTUtilsEscClicker.h"
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -52,12 +47,12 @@ namespace GUITest_Common_scenarios_dp_view {
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     // 1. Use menu {Tools->Build Dot plot}.
-    // Expected state: dialog "Build dotplot from sequences" has appear.
+    // Expected state: dialog "Build dotplot from sequences" has appeared.
     // 2. Fill the next fields in dialog:
     //     {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
     //     {File with second sequence} _common_data/scenarios/dp_view/dp2.fa
     // 3. Click Next button
-    // Expected state: dialog "Dotplot" has appear.
+    // Expected state: dialog "Dotplot" has appeared.
     // 4. Fill the next fields in dialog:
     //     {Minimum repeat length} 8bp
     //     {repeats identity} 80%
@@ -69,9 +64,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                 << "Build dotplot...");
     GTUtilsDialog::waitAllFinished(os);
 
-    // Expected state: Dot plot view has appear. There is 1 line at view.
+    // Expected state: Dot plot view has appeared. There is 1 line at view.
     // 6. Use context menu on dot plot view {Dotplot->Remove}
-    // Expected state: save "Dotplot" has appear.
+    // Expected state: save "Dotplot" has appeared.
     // 7. Click No button
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot"
                                                                         << "Remove"));
@@ -103,7 +98,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
-    // DIFFERENCE: EXITBUTTON IS USED
+    // DIFFERENCE: EXIT BUTTON IS USED
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/scenarios/dp_view/dp1.fa", "", false, true));
 
@@ -119,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
-    // DIFFERENCE: EXITBUTTON IS USED
+    // DIFFERENCE: EXIT BUTTON IS USED
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "dp1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
@@ -150,7 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // 2. Fill the following fields in the dialog:
     //     {File with first sequence} _common_data/scenarios/dp_view/dp1.fa
-    //     {Compare sequence againist itself} set checked
+    //     {Compare sequence against itself} set checked
     // 3. Click Next button
     // Expected state: dialog "Dotplot" has appeared.
 
@@ -264,7 +259,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     //    6. Repeat step 2
     //    Expected state: "Include repeat selection" is enabled, the other one is disabled
     //    7. Select an area again
-    //    Expected state: there is an area an repeat selected on the dotplot
+    //    Expected state: there is an area and the repeat selected on the dotplot
     //    8. Repeat step 2
     //    Expected state: both checkboxes are enabled
 
@@ -278,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QCheckBox *includeAreaCheckbox = dialog->findChild<QCheckBox *>("include_area_selection");
-            CHECK_SET_ERR(includeAreaCheckbox != nullptr, "inlclu_area_selection is NULL");
+            CHECK_SET_ERR(includeAreaCheckbox != nullptr, "includeAreaCheckbox is NULL");
 
             QCheckBox *includeRepeatCheckbox = dialog->findChild<QCheckBox *>("include_repeat_selection");
             CHECK_SET_ERR(includeRepeatCheckbox != nullptr, "include_repeat_selection is NULL");

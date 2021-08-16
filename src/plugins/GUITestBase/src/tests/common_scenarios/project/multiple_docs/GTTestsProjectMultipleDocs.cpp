@@ -21,17 +21,14 @@
 
 #include "GTTestsProjectMultipleDocs.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTMouseDriver.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

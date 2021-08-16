@@ -43,10 +43,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
-#include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

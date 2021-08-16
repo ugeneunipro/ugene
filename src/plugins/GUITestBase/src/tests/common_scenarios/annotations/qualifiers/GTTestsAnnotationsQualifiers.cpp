@@ -24,7 +24,6 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
 #include <QHeaderView>
@@ -39,12 +38,9 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

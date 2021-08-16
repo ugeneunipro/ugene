@@ -39,7 +39,6 @@
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -58,13 +57,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
     //     2) UGENE window titled with text "UGENE"
-    QString expectedTitle;
-#ifdef Q_OS_DARWIN
-    expectedTitle = "proj2 UGENE";
-#else
-    expectedTitle = "-* UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    QString expectedTitle = isOsMac() ? "proj2 UGENE" : "-* UGENE";
+    GTMainWindow::checkTitle(os, expectedTitle);
 
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));

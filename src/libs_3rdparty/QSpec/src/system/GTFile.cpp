@@ -286,28 +286,25 @@ void GTFile::removeDir(QString dirName) {
     dir.rmdir(dir.absoluteFilePath(dirName));
 }
 #else
-void GTFile::removeDir(QString dirName) {
-    QDir dir(dirName);
-    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirName.toLocal8Bit().constData());
+void GTFile::removeDir(const QString &dirPath) {
+    QDir dir(dirPath);
+    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirPath.toLocal8Bit().constData());
 
     foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
         QString fileName = fileInfo.fileName();
         QString filePath = fileInfo.filePath();
         if (fileName != "." && fileName != "..") {
-            if (QFile::remove(filePath))
-                continue;
-            else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath))
-                    continue;
-                else
+            if (!QFile::remove(filePath)) {
+                QDir fileDir(filePath);
+                if (!fileDir.rmdir(filePath)) {
                     removeDir(filePath);
+                }
             }
         }
     }
-    dir.rmdir(dir.absoluteFilePath(dirName));
+    dir.rmdir(dir.absoluteFilePath(dirPath));
 
-    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirName.toLocal8Bit().constData());
+    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirPath.toLocal8Bit().constData());
 }
 #endif
 
