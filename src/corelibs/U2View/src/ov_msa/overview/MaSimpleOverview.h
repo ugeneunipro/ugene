@@ -30,43 +30,39 @@
 
 namespace U2 {
 
-class MSAEditor;
-class MaEditorWgt;
-class MSAEditorSequenceArea;
-class MsaColorScheme;
-class MsaHighlightingScheme;
-
 class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
     Q_OBJECT
 public:
     MaSimpleOverview(MaEditorWgt *ui);
+
+    /** Height of the overview. */
     const static int FIXED_HEIGTH = 70;
-    bool isValid() const;
-    QPixmap getView();
+
+    bool isValid() const override;
+
+    QPixmap getView() override;
 
 public slots:
-    void sl_selectionChanged();
-    void sl_redraw();
+    void sl_selectionChanged() override;
+    void sl_redraw() override;
     void sl_highlightingChanged();
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void resizeEvent(QResizeEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
 
 private:
-    void drawOverview(QPainter &p);
-    void drawVisibleRange(QPainter &p);
-    void drawSelection(QPainter &p);
+    void drawOverview(QPainter &p) override;
+    void drawVisibleRange(QPainter &p) override;
+    void drawSelection(QPainter &p) override;
 
-    void moveVisibleRange(QPoint pos);
-
-    void recalculateSelection();
+    void moveVisibleRange(QPoint pos) override;
 
 private:
-    mutable QPixmap cachedMSAOverview;
+    QPixmap cachedMSAOverview;
 
-    mutable bool redrawMsaOverview;
-    mutable bool redrawSelection;
+    bool redrawMsaOverview = true;
+    bool redrawSelection = true;
 };
 
 }  // namespace U2

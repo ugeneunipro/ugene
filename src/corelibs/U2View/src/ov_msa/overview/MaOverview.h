@@ -81,7 +81,6 @@ protected:
     MaEditorSequenceArea *sequenceArea;
 
     QPixmap cachedView;
-    QRect cachedSelection;
     QRect cachedVisibleRange;
 
     bool visibleRangeIsMoving;
