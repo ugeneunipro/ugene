@@ -57,13 +57,9 @@ bool DeviationGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> DeviationGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName(), new DeviationGraphAlgorithm(devPair)));
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> DeviationGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new DeviationGraphAlgorithm(devPair)))};
 }
 
 //////////////////////////////////////////////////////////////////////////

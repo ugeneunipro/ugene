@@ -34,7 +34,7 @@ class PanView;
 class U2Region;
 class Overview;
 class GSequenceGraphView;
-class TextLabel;
+class GraphLabelTextBox;
 
 class GTUtilsSequenceView {
 public:
@@ -94,7 +94,7 @@ public:
 
     static GSequenceGraphView *getGraphView(HI::GUITestOpStatus &os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
-    static QList<TextLabel *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+    static QList<GraphLabelTextBox *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
 
     static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);

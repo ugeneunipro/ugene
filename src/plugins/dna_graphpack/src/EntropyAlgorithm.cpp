@@ -54,13 +54,9 @@ bool EntropyGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic() && al->getAlphabetChars().size() <= MAX_CHARS_IN_ALPHABET;
 }
 
-QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(graphName, new EntropyGraphAlgorithm()));
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, graphName, new EntropyGraphAlgorithm()))};
 }
 
 //////////////////////////////////////////////////////////////////////////

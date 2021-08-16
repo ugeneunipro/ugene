@@ -53,13 +53,9 @@ bool BaseContentGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName(), new BaseContentGraphAlgorithm(map)));
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new BaseContentGraphAlgorithm(map)))};
 }
 
 //////////////////////////////////////////////////////////////////////////

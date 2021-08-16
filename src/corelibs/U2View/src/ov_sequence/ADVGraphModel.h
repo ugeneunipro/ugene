@@ -167,7 +167,7 @@ private:
     void updateMovingLabelMarkState(const QSharedPointer<GSequenceGraphData> &graph, GraphLabel *label) const;
 
     /** Updates moving labels coordinates, so they do not overlap. */
-    static void adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels);
+    static void adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels, int viewWidth);
 
 protected slots:
     /** Emits 'si_graphDataUpdated' or 'si_graphRenderError' based on the calculation task state. */
@@ -190,7 +190,7 @@ private:
 
 class U2VIEW_EXPORT GSequenceGraphData {
 public:
-    GSequenceGraphData(const QString &graphName, GSequenceGraphAlgorithm *algorithm);
+    GSequenceGraphData(GSequenceGraphView *view, const QString &graphName, GSequenceGraphAlgorithm *algorithm);
 
     void clearAllPoints();
 
@@ -198,7 +198,7 @@ public:
 
     QSharedPointer<GSequenceGraphAlgorithm> algorithm;
 
-    MultiLabel graphLabels;
+    GraphLabelSet labels;
 
     /** Sequence range view points were calculated for. */
     U2Region visibleRange;

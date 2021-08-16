@@ -495,7 +495,7 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus &o
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getHintText"
+#define GT_METHOD_NAME "getLabelText"
 const QString GTUtilsOptionPanelSequenceView::getHintText(HI::GUITestOpStatus &os) {
     QLabel *lblHint = GTWidget::findExactWidget<QLabel *>(os, "lblErrorMessage");
     GT_CHECK_RESULT(nullptr != lblHint, "Hintlabel is NULL", "");

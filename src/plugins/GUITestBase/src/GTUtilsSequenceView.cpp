@@ -564,9 +564,9 @@ QList<QVariant> GTUtilsSequenceView::getLabelPositions(HI::GUITestOpStatus &os, 
     return list;
 }
 
-QList<TextLabel *> GTUtilsSequenceView::getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
+QList<GraphLabelTextBox *> GTUtilsSequenceView::getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
     Q_UNUSED(os);
-    QList<TextLabel *> result = graph->findChildren<TextLabel *>();
+    QList<GraphLabelTextBox *> result = graph->findChildren<GraphLabelTextBox *>();
     return result;
 }
 

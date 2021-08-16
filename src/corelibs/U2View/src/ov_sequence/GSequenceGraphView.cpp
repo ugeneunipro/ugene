@@ -100,12 +100,12 @@ void GSequenceGraphView::mousePressEvent(QMouseEvent *me) {
         int capturingDistancePx = 4;
         float posDeviation = capturingDistancePx * (float)getVisibleRange().length / getGraphRenderArea()->getGraphRect().width();
         for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
-            GraphLabel *label = graph->graphLabels.findLabelByPosition(sequencePos, posDeviation);
+            GraphLabel *label = graph->labels.findLabelByPosition(sequencePos, posDeviation);
             if (label != nullptr) {
-                graph->graphLabels.removeLabel(label);
+                graph->labels.removeLabel(label);
                 continue;
             }
-            graph->graphLabels.addLabel(new GraphLabel(sequencePos, renderArea));
+            graph->labels.addLabel(new GraphLabel(sequencePos, renderArea));
         }
     }
     GSequenceLineView::mousePressEvent(me);
@@ -123,17 +123,17 @@ void GSequenceGraphView::leaveEvent(QEvent *) {
 
 void GSequenceGraphView::getSavedLabelsState(QList<QVariant> &savedLabels) {
     // TODO: save/restore labels from all graphs.
-    graphs.at(0)->graphLabels.getLabelPositions(savedLabels);
+    graphs.at(0)->labels.getLabelPositions(savedLabels);
 }
 
 void GSequenceGraphView::setLabelsFromSavedState(const QList<QVariant> &savedLabels) {
     CHECK(!graphs.isEmpty(), );
     // Labels are stored for the first graph only today.
     const QSharedPointer<GSequenceGraphData> &graph = graphs[0];
-    graph->graphLabels.deleteAllLabels();
+    graph->labels.deleteAllLabels();
     for (const QVariant &savedLabel : qAsConst(savedLabels)) {
         float pos = savedLabel.toFloat();
-        graph->graphLabels.addLabel(new GraphLabel(pos, renderArea));
+        graph->labels.addLabel(new GraphLabel(pos, renderArea));
     }
     update();
 }
@@ -144,12 +144,12 @@ void GSequenceGraphView::updateMovingLabels() {
     bool isMouseInsideRenderArea = rect.contains(areaPoint);
     float sequencePos = isMouseInsideRenderArea ? areaPoint.x() / renderArea->getCurrentScale() + getVisibleRange().startPos : -1;
     for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
-        GraphLabel *label = graph->graphLabels.getMovingLabel();
+        GraphLabel *label = graph->labels.getMovingLabel();
         label->setPosition(sequencePos);
     }
     graphDrawer->updateMovingLabels(graphs, getGraphRenderArea()->getGraphRect());
     for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
-        GraphLabel *label = graph->graphLabels.getMovingLabel();
+        GraphLabel *label = graph->labels.getMovingLabel();
         if (!label->isHidden()) {
             label->raise();
         }
@@ -181,7 +181,7 @@ void GSequenceGraphView::pack() {
 
 void GSequenceGraphView::addGraph(const QSharedPointer<GSequenceGraphData> &graph) {
     // TODO: design flow: moving label is already created but has no valid parent.
-    graph->graphLabels.getMovingLabel()->setParent(renderArea);
+    graph->labels.getMovingLabel()->setParent(renderArea);
     graphs.append(graph);
 }
 
@@ -232,7 +232,7 @@ void GSequenceGraphView::sl_onShowVisualProperties(bool) {
 
 void GSequenceGraphView::sl_onDeleteAllLabels() {
     foreach (const QSharedPointer<GSequenceGraphData> graph, graphs) {
-        graph->graphLabels.deleteAllLabels();
+        graph->labels.deleteAllLabels();
     }
 }
 

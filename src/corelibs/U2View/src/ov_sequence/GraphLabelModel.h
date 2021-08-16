@@ -33,70 +33,74 @@
 
 namespace U2 {
 
-const int defaultRadius = 4;
-
-class U2VIEW_EXPORT TextLabel : public QLabel {
+class U2VIEW_EXPORT GraphLabelTextBox : public QLabel {
     Q_OBJECT
 public:
-    TextLabel(QWidget *parent = nullptr);
+    GraphLabelTextBox(QWidget *parent);
 
 private:
     void paintEvent(QPaintEvent *e);
 };
 
-class RoundHint : public QWidget {
+class GraphLabelDot : public QWidget {
 public:
-    RoundHint(QWidget *parent = nullptr, QColor _borderColor = Qt::white, QColor _fillingColor = Qt::black);
+    GraphLabelDot(QWidget *parent, const QColor &borderColor = Qt::white, const QColor &fillColor = Qt::black);
 
-    void setBorderColor(QColor color) {
+    void setBorderColor(const QColor &color) {
         borderColor = color;
     }
-    QColor getBorderColor() {
+
+    const QColor &getBorderColor() const {
         return borderColor;
     }
 
-    void setFillingColor(QColor color) {
-        fillingColor = color;
-    }
-    QColor getFillingColor() {
-        return fillingColor;
+    void setFillColor(const QColor &color) {
+        fillColor = color;
     }
 
-    void setMarkingColor(QColor color) {
-        markedFillingColor = color;
+    const QColor &getFillColor() const {
+        return fillColor;
     }
-    QColor getMarkingingColor() {
-        return markedFillingColor;
+
+    void setMarkedFillColor(const QColor &color) {
+        markedFillColor = color;
+    }
+
+    const QColor &getMarkedFillColor() const {
+        return markedFillColor;
     }
 
     void mark();
+
     void unmark();
 
 private:
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+
     QColor borderColor;
-    QColor fillingColor;
-    QColor markedFillingColor;
-    bool isMarked;
+    QColor fillColor;
+    QColor markedFillColor;
+    bool isMarked = false;
 };
 
 class GraphLabel : public QObject {
     Q_OBJECT
 public:
-    GraphLabel();
-    GraphLabel(float pos, QWidget *parent = nullptr, int _radius = defaultRadius);
+    GraphLabel(float pos, QWidget *parent, int dotRadius = 4);
     ~GraphLabel();
 
     bool isHidden() const;
 
     void setCoord(const QPoint &_coord);
-    QPoint getCoord() const {
+
+    const QPoint &getCoord() const {
         return coord;
     }
 
     void setPosition(float pos) {
         position = pos;
     }
+
     float getPosition() const {
         return position;
     }
@@ -104,19 +108,18 @@ public:
     void setValue(float val) {
         value = val;
     }
+
     float getValue() const {
         return value;
     }
 
-    void setHintText(const QString &_hintText);
-    QString getHintText() const;
+    void setText(const QString &labelText);
 
-    TextLabel &getTextLabel();
+    void setTextRect(const QRect &textRect);
 
-    void setHintRect(const QRect &_hintRect);
-    QRect getHintRect();
+    GraphLabelTextBox *getTextBox() const;
 
-    void setParent(QWidget *parent);
+    const QRect &getTextBoxRect() const;
 
     int getDotRadius() const {
         return radius;
@@ -128,14 +131,16 @@ public:
     void raise();
 
     void mark();
+
     void unmark();
 
-    void setColor(QColor color, QColor markingColor);
-    QColor getFillColor();
+    void setColor(const QColor &color, const QColor &markingColor);
+
+    const QColor &getFillColor() const;
 
 private:
-    QPointer<TextLabel> text;
-    QPointer<RoundHint> image;
+    QPointer<GraphLabelTextBox> textBox;
+    QPointer<GraphLabelDot> dotImage;
 
     /** Position of the label in sequence coordinates. */
     float position;
@@ -145,22 +150,22 @@ private:
     int radius;
 };
 
-class MultiLabel : public QObject {
+/** Set of all labels per graph. Every graph has at least 1 moving cursor label + optional set of other labels. */
+class GraphLabelSet : public QObject {
     Q_OBJECT
 public:
-    MultiLabel();
-    ~MultiLabel();
+    GraphLabelSet(QWidget* parent);
+    ~GraphLabelSet();
 
     void addLabel(GraphLabel *pLabel);
+
     void removeLabel(GraphLabel *pLabel);
-    bool removeLabel(float xPos);
 
     void getLabelPositions(QList<QVariant> &labelPositions);
 
     void deleteAllLabels();
 
-    GraphLabel *findLabelByPosition(float sequencePos, float deviation = 0) const;
-    GraphLabel *at(int i) const;
+    GraphLabel *findLabelByPosition(float sequencePos, float distance = 0) const;
 
     const QList<GraphLabel *> &getLabels() const {
         return labels;
@@ -169,7 +174,7 @@ public:
     GraphLabel *getMovingLabel() const;
 
 private:
-    Q_DISABLE_COPY(MultiLabel)
+    Q_DISABLE_COPY(GraphLabelSet)
     QList<GraphLabel *> labels;
     QPointer<GraphLabel> movingLabel;
 };

@@ -20,8 +20,8 @@
  */
 
 #include "ADVGraphModel.h"
+#include <cmath>
 #include <limits>
-#include <math.h>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
@@ -36,8 +36,8 @@
 
 namespace U2 {
 
-GSequenceGraphData::GSequenceGraphData(const QString &_graphName, GSequenceGraphAlgorithm *_algorithm)
-    : graphName(_graphName), algorithm(_algorithm) {
+GSequenceGraphData::GSequenceGraphData(GSequenceGraphView *view, const QString &_graphName, GSequenceGraphAlgorithm *_algorithm)
+    : graphName(_graphName), algorithm(_algorithm), labels(view->getRenderArea()) {
 }
 
 void GSequenceGraphData::clearAllPoints() {
@@ -48,8 +48,8 @@ void GSequenceGraphData::clearAllPoints() {
     visibleMin = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
     visibleMax = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
     visibleRange = {};
-    graphLabels.deleteAllLabels();
-    graphLabels.getMovingLabel()->setVisible(false);
+    labels.deleteAllLabels();
+    labels.getMovingLabel()->setVisible(false);
 }
 
 const float GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE = std::numeric_limits<float>::quiet_NaN();
@@ -159,7 +159,7 @@ void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenc
 
     for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
         drawGraph(p, graph, rect);
-        const QList<GraphLabel *> &labels = graph->graphLabels.getLabels();
+        const QList<GraphLabel *> &labels = graph->labels.getLabels();
         for (GraphLabel *label : qAsConst(labels)) {
             bool isVisible = updateLabel(graph, label, rect);
             label->setVisible(isVisible);
@@ -259,11 +259,11 @@ void GSequenceGraphDrawer::addLabelsForLocalMinMaxPoints(const QSharedPointer<GS
             continue;
         }
         float labelPos = (float)window / 2 + dataIndex * step;
-        if (graph->graphLabels.findLabelByPosition(labelPos) != nullptr) {
+        if (graph->labels.findLabelByPosition(labelPos) != nullptr) {
             continue;  // Do not add the same label twice.
         }
         auto label = new GraphLabel(labelPos, view->getRenderArea());
-        graph->graphLabels.addLabel(label);
+        graph->labels.addLabel(label);
         bool isVisible = updateLabel(graph, label, rect);
         label->setVisible(isVisible);
     }
@@ -276,38 +276,38 @@ bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData> 
     bool isVisible = updateCoordinatesAndText(graph, rect, label);
     CHECK(isVisible, false);
 
-    QRectF labelTextRect = label->getHintRect();  // After 'updateCoordinatesAndText' this is a pure text bounding box.
-    int labelBorderWidth = label->getTextLabel().lineWidth();
+    QRectF labelTextRect = label->getTextBoxRect();  // After 'updateCoordinatesAndText' this is a pure text bounding box.
+    int labelBorderWidth = label->getTextBox()->lineWidth();
     int boxHeight = qRound(labelTextRect.height()) + 2 * labelBorderWidth;
     int boxWidth = qRound(labelTextRect.width()) + 2 * labelBorderWidth;
 
     int areaWidth = rect.width();
-    int boxX = qBound(2, label->getCoord().x(), areaWidth - boxWidth - 2);
+    int boxX = qBound(2, label->getCoord().x() - boxWidth / 2, areaWidth - boxWidth - 2);
     int boxY = label->getCoord().y();
 
     bool isTextBelowDot = rect.top() > boxY - label->getDotRadius() - boxHeight;
     boxY += isTextBelowDot ? label->getDotRadius() + 1 : -(label->getDotRadius() + boxHeight);
-    label->setHintRect(QRect(boxX, boxY, boxWidth, boxHeight));
+    label->setTextRect(QRect(boxX, boxY, boxWidth, boxHeight));
     return true;
 }
 
-void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels) {
+void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels, int viewWidth) {
     CHECK(labels.size() > 1, );
     int groupWidth = 0;
     int labelSpacing = 4;  // Spacing between labels.
     int commonY = INT_MAX;  // Align labels on top of all dots to avoid label & dot overlap.
     for (GraphLabel *label : qAsConst(labels)) {
-        QRect rect = label->getHintRect();
+        QRect rect = label->getTextBoxRect();
         groupWidth += rect.width() + (groupWidth > 0 ? labelSpacing : 0);
         int dotY = label->getCoord().y();
         commonY = qMin(dotY > rect.y() ? rect.y() : dotY - rect.height() - 1, commonY);
     }
-    int x = labels[0]->getHintRect().center().x() - groupWidth / 2;
+    int x = qBound(2, labels[0]->getCoord().x() - groupWidth / 2, viewWidth - (groupWidth + 2));
     for (GraphLabel *label : qAsConst(labels)) {
-        QRect rect = label->getHintRect();
+        QRect rect = label->getTextBoxRect();
         int xShift = x - rect.x();
         int yShift = commonY - rect.y();
-        label->setHintRect(rect.adjusted(xShift, yShift, xShift, yShift));
+        label->setTextRect(rect.adjusted(xShift, yShift, xShift, yShift));
         x += rect.width() + labelSpacing;
     }
 }
@@ -315,7 +315,7 @@ void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabe
 void GSequenceGraphDrawer::updateMovingLabels(const QList<QSharedPointer<GSequenceGraphData>> &graphs, const QRect &rect) const {
     QList<GraphLabel *> visibleMovingLabels;
     for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
-        GraphLabel *label = graph->graphLabels.getMovingLabel();
+        GraphLabel *label = graph->labels.getMovingLabel();
         bool isVisible = updateLabel(graph, label, rect);
         label->setVisible(isVisible);
         if (isVisible) {
@@ -325,7 +325,7 @@ void GSequenceGraphDrawer::updateMovingLabels(const QList<QSharedPointer<GSequen
         }
     }
 
-    adjustMovingLabelGroupPositions(visibleMovingLabels);
+    adjustMovingLabelGroupPositions(visibleMovingLabels, rect.width());
 }
 
 int GSequenceGraphDrawer::getScreenOffsetByPos(double sequencePos, int screenWidth) const {
@@ -375,8 +375,8 @@ bool GSequenceGraphDrawer::updateCoordinatesAndText(const QSharedPointer<GSequen
 
     QPoint labelCoord(labelX, rect.bottom() - 1 - labelY);
     label->setCoord(labelCoord);
-    label->setHintText(text);
-    label->getTextLabel().adjustSize();
+    label->setText(text);
+    label->getTextBox()->adjustSize();
     return true;
 }
 

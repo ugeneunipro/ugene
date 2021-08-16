@@ -57,13 +57,9 @@ bool CumulativeSkewGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName(), new CumulativeSkewGraphAlgorithm(cumPair)));
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new CumulativeSkewGraphAlgorithm(cumPair)))};
 }
 
 //////////////////////////////////////////////////////////////////////////

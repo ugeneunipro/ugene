@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-TextLabel::TextLabel(QWidget *parent)
+GraphLabelTextBox::GraphLabelTextBox(QWidget *parent)
     : QLabel(parent) {
 }
 
-void TextLabel::paintEvent(QPaintEvent *e) {
+void GraphLabelTextBox::paintEvent(QPaintEvent *e) {
     QPainter paint;
     paint.begin(this);
     paint.setBrush(QBrush(QColor(255, 255, 255, 200)));
@@ -39,170 +39,150 @@ void TextLabel::paintEvent(QPaintEvent *e) {
     QLabel::paintEvent(e);
 }
 
-RoundHint::RoundHint(QWidget *parent, QColor _borderColor, QColor _fillingColor)
-    : QWidget(parent), borderColor(_borderColor), fillingColor(_fillingColor), markedFillingColor(_borderColor), isMarked(false) {
+GraphLabelDot::GraphLabelDot(QWidget *parent, const QColor &_borderColor, const QColor &_fillColor)
+    : QWidget(parent), borderColor(_borderColor), fillColor(_fillColor), markedFillColor(_borderColor) {
     this->setGeometry(QRect(0, 0, 0, 0));
 }
 
-void RoundHint::paintEvent(QPaintEvent *) {
+void GraphLabelDot::paintEvent(QPaintEvent *) {
     QPainter paint;
     paint.begin(this);
     paint.setPen(QPen(borderColor));
+    QRect geometryRect = this->geometry();
     if (!isMarked) {
-        paint.setBrush(QBrush(fillingColor));
-        paint.drawEllipse(QRect(2, 2, this->geometry().width() - 4, this->geometry().height() - 4));
+        paint.setBrush(QBrush(fillColor));
+        paint.drawEllipse(QRect(2, 2, geometryRect.width() - 4, geometryRect.height() - 4));
     } else {
-        paint.setBrush(QBrush(markedFillingColor));
-        paint.drawEllipse(QRect(2, 2, this->geometry().width() - 4, this->geometry().height() - 4));
+        paint.setBrush(QBrush(markedFillColor));
+        paint.drawEllipse(QRect(2, 2, geometryRect.width() - 4, geometryRect.height() - 4));
     }
     paint.end();
 }
 
-void RoundHint::mark() {
+void GraphLabelDot::mark() {
     isMarked = true;
 }
-void RoundHint::unmark() {
+
+void GraphLabelDot::unmark() {
     isMarked = false;
 }
 
-GraphLabel::GraphLabel()
-    : text(new TextLabel(nullptr)), image(new RoundHint()), position(-1), value(0.0), coord(-1, -1), radius(defaultRadius) {
-    text->setLineWidth(3);
-    text->setAlignment(Qt::AlignCenter);
-    text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
-}
-
 GraphLabel::GraphLabel(float pos, QWidget *parent, int _radius)
-    : text(new TextLabel(parent)), image(new RoundHint(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
-    text->setLineWidth(3);
-    text->setAlignment(Qt::AlignCenter);
-    text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
+    : textBox(new GraphLabelTextBox(parent)), dotImage(new GraphLabelDot(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
+    textBox->setLineWidth(3);
+    textBox->setAlignment(Qt::AlignCenter);
+    textBox->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
 }
 
 GraphLabel::~GraphLabel() {
-    if (!text.isNull()) {
-        delete text;
+    if (!textBox.isNull()) {
+        delete textBox;
     }
-    if (!image.isNull()) {
-        delete image;
+    if (!dotImage.isNull()) {
+        delete dotImage;
     }
 }
 
-void GraphLabel::setCoord(const QPoint &_coord) {
-    coord = _coord;
-    image->setGeometry(QRect(coord.x() - radius - 1, coord.y() - radius - 1, radius * 2 + 2, radius * 2 + 2));
+void GraphLabel::setCoord(const QPoint &newCoord) {
+    coord = newCoord;
+    dotImage->setGeometry(QRect(coord.x() - radius - 1, coord.y() - radius - 1, radius * 2 + 2, radius * 2 + 2));
 }
 
-void GraphLabel::setHintRect(const QRect &_hintRect) {
-    text->setGeometry(_hintRect);
+void GraphLabel::setTextRect(const QRect &textBoxRect) {
+    textBox->setGeometry(textBoxRect);
+}
+
+GraphLabelTextBox *GraphLabel::getTextBox() const {
+    return textBox;
 }
 
 void GraphLabel::setVisible(bool flag) {
-    image->setVisible(flag);
-    text->setVisible(flag);
+    dotImage->setVisible(flag);
+    textBox->setVisible(flag);
 }
 
 bool GraphLabel::isHidden() const {
-    return text->isHidden();
+    return textBox->isHidden();
 }
 
 void GraphLabel::raise() {
-    text->raise();
+    textBox->raise();
 }
 
 void GraphLabel::mark() {
-    image->mark();
+    dotImage->mark();
 }
 
 void GraphLabel::unmark() {
-    image->unmark();
+    dotImage->unmark();
 }
 
-void GraphLabel::setColor(QColor color, QColor markingColor) {
-    text->setStyleSheet(tr("QLabel {color : %1; }").arg(color.name()));
-    image->setFillingColor(color);
-    QColor invertingColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
-    image->setBorderColor(invertingColor);
-    image->setMarkingColor(markingColor);
+void GraphLabel::setColor(const QColor &color, const QColor &markingColor) {
+    textBox->setStyleSheet(tr("QLabel {color : %1; }").arg(color.name()));
+    dotImage->setFillColor(color);
+    QColor invertedColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
+    dotImage->setBorderColor(invertedColor);
+    dotImage->setMarkedFillColor(markingColor);
 }
 
-void GraphLabel::setParent(QWidget *parent) {
-    text->setParent(parent);
-    image->setParent(parent);
+const QColor &GraphLabel::getFillColor() const {
+    return dotImage->getFillColor();
 }
 
-QColor GraphLabel::getFillColor() {
-    return image->getFillingColor();
+const QRect &GraphLabel::getTextBoxRect() const {
+    return textBox->geometry();
 }
 
-QRect GraphLabel::getHintRect() {
-    return text->geometry();
+void GraphLabel::setText(const QString &labelText) {
+    textBox->setText(labelText);
 }
 
-QString GraphLabel::getHintText() const {
-    return text->text();
-}
-
-void GraphLabel::setHintText(const QString &_hintText) {
-    text->setText(_hintText);
-}
-
-TextLabel &GraphLabel::getTextLabel() {
-    return *text;
-}
-
-MultiLabel::MultiLabel()
-    : movingLabel(new GraphLabel()) {
-    movingLabel->setHintRect(QRect(0, 0, 0, 0));
+GraphLabelSet::GraphLabelSet(QWidget *parent)
+    : movingLabel(new GraphLabel(-1, parent)) {
+    movingLabel->setTextRect(QRect(0, 0, 0, 0));
     movingLabel->setColor(Qt::black, Qt::red);
 }
-MultiLabel::~MultiLabel() {
+
+GraphLabelSet::~GraphLabelSet() {
     deleteAllLabels();
     if (!movingLabel.isNull()) {
         delete movingLabel;
     }
 }
-void MultiLabel::deleteAllLabels() {
-    foreach (GraphLabel *currentLabel, labels) {
-        removeLabel(currentLabel);
+
+void GraphLabelSet::deleteAllLabels() {
+    QList<GraphLabel *> copyOfLabels = labels;
+    for (GraphLabel *label : qAsConst(copyOfLabels)) {
+        removeLabel(label);
     }
 }
-void MultiLabel::getLabelPositions(QList<QVariant> &labelPositions) {
-    foreach (GraphLabel *currentLabel, labels)
-        labelPositions.append(currentLabel->getPosition());
+
+void GraphLabelSet::getLabelPositions(QList<QVariant> &labelPositions) {
+    for (GraphLabel *label : qAsConst(labels)) {
+        labelPositions.append(label->getPosition());
+    }
 }
 
-void MultiLabel::addLabel(GraphLabel *pLabel) {
+void GraphLabelSet::addLabel(GraphLabel *pLabel) {
     labels.append(pLabel);
 }
 
-void MultiLabel::removeLabel(GraphLabel *pLabel) {
+void GraphLabelSet::removeLabel(GraphLabel *pLabel) {
     labels.removeAll(pLabel);
     delete pLabel;
 }
 
-bool MultiLabel::removeLabel(float xPos) {
-    GraphLabel *label = findLabelByPosition(xPos);
-    CHECK(nullptr != label, false)
-    removeLabel(label);
-    return true;
-}
-
-GraphLabel *MultiLabel::at(int i) const {
-    return labels.at(i);
-}
-
-GraphLabel *MultiLabel::findLabelByPosition(float sequencePos, float deviation) const {
+GraphLabel *GraphLabelSet::findLabelByPosition(float sequencePos, float distance) const {
     for (GraphLabel *label : qAsConst(labels)) {
         float labelPos = label->getPosition();
-        if ((labelPos >= sequencePos - deviation && labelPos <= sequencePos + deviation) || qFuzzyCompare(labelPos, sequencePos)) {
+        if ((labelPos >= sequencePos - distance && labelPos <= sequencePos + distance) || qFuzzyCompare(labelPos, sequencePos)) {
             return label;
         }
     }
     return nullptr;
 }
 
-GraphLabel *MultiLabel::getMovingLabel() const {
+GraphLabel *GraphLabelSet::getMovingLabel() const {
     return movingLabel;
 }
 

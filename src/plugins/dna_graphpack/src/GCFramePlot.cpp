@@ -43,23 +43,15 @@ bool GCFramePlotFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-
+QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequenceGraphView *view) {
     // TODO: All points should be calculated during one loop over the window.
 
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(OFFSET_NULL, new GCFramePlotAlgorithm(0)));
-    res.append(d);
-
-    QSharedPointer<GSequenceGraphData> d2 = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(OFFSET_ONE, new GCFramePlotAlgorithm(1)));
-    res.append(d2);
-
-    QSharedPointer<GSequenceGraphData> d3 = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(OFFSET_TWO, new GCFramePlotAlgorithm(2)));
-    res.append(d3);
-
-    return res;
+    assert(isEnabled(view->getSequenceObject()));
+    return {
+        QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, OFFSET_NULL, new GCFramePlotAlgorithm(0))),
+        QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, OFFSET_ONE, new GCFramePlotAlgorithm(1))),
+        QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, OFFSET_TWO, new GCFramePlotAlgorithm(2))),
+    };
 }
 
 GSequenceGraphDrawer *GCFramePlotFactory::getDrawer(GSequenceGraphView *v) {
