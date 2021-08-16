@@ -29,8 +29,6 @@
 
 namespace U2 {
 
-class GSequenceGraphView;
-class GObjectView;
 class GSequenceGraphViewRA;
 
 //////////////////////////////////////////////////////////////////////////
@@ -38,38 +36,33 @@ class GSequenceGraphViewRA;
 class U2VIEW_EXPORT GSequenceGraphView : public GSequenceLineView {
     Q_OBJECT
 public:
-    GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, GSequenceLineView *baseView, const QString &vName);
+    GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, GSequenceLineView *baseView, const QString &graphViewName);
 
-    const QString &getGraphViewName() const {
-        return vName;
-    }
+    const QString &getGraphViewName() const;
 
     void getSavedLabelsState(QList<QVariant> &savedLabels);
 
     void setLabelsFromSavedState(const QList<QVariant> &savedLabels);
 
-    void addGraphData(const QSharedPointer<GSequenceGraphData> &graph);
+    void addGraph(const QSharedPointer<GSequenceGraphData> &graph);
+
+    const QList<QSharedPointer<GSequenceGraphData>> &getGraphs() const;
 
     void setGraphDrawer(GSequenceGraphDrawer *gd);
 
-    const QList<QSharedPointer<GSequenceGraphData>> &getGraphs() const {
-        return graphs;
-    }
+    GSequenceGraphDrawer *getGraphDrawer() const;
 
-    GSequenceGraphDrawer *getGSequenceGraphDrawer() const {
-        return graphDrawer;
-    }
-
-    void buildPopupMenu(QMenu &m);
-
-    GSequenceGraphViewRA *getGraphRenderArea() const;
+    void buildPopupMenu(QMenu &m) override;
 
 protected:
-    virtual void pack();
-    virtual void addActionsToGraphMenu(QMenu *graphMenu);
-    void leaveEvent(QEvent *le);
-    void mousePressEvent(QMouseEvent *me);
-    void mouseMoveEvent(QMouseEvent *me);
+    void pack() override;
+
+    void leaveEvent(QEvent *le) override;
+    void mousePressEvent(QMouseEvent *me) override;
+    void mouseMoveEvent(QMouseEvent *me) override;
+
+    void addActionsToGraphMenu(QMenu *graphMenu);
+    GSequenceGraphViewRA *getGraphRenderArea() const;
     void updateMovingLabels();
 
 private slots:
@@ -79,12 +72,25 @@ private slots:
     void sl_onSaveGraphCutoffs(bool);
 
 private:
+    /** Sequence view this graph view is in sync with: usually a related PanView. */
     GSequenceLineView *baseView;
-    QString vName;
+
+    /** Name (title) of the graph widget. */
+    QString graphViewName;
+
+    /** List of visible graph series. */
     QList<QSharedPointer<GSequenceGraphData>> graphs;
+
+    /** Class responsible to compute and draw graphs & graph labels. */
     GSequenceGraphDrawer *graphDrawer;
+
+    /** Opens graph properties dialog. */
     QAction *visualPropertiesAction;
+
+    /** Opens dialog to export cutoff regions as annotations. */
     QAction *saveGraphCutoffsAction;
+
+    /** Removes all labels from all graphs. */
     QAction *deleteAllLabelsAction;
 
     /** Shows all min/max labels for the current graph state. */
@@ -94,29 +100,25 @@ private:
 class U2VIEW_EXPORT GSequenceGraphViewRA : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
-    GSequenceGraphViewRA(GSequenceGraphView *g);
-    ~GSequenceGraphViewRA();
-    virtual GSequenceGraphView *getGraphView() const {
-        return static_cast<GSequenceGraphView *>(view);
-    }
+    GSequenceGraphViewRA(GSequenceGraphView *view);
 
-    double getCurrentScale() const;
+    double getCurrentScale() const override;
 
-    const QRect &getGraphRect() const {
-        return graphRect;
-    }
+    /** Returns coordinates of the area to draw a line chart inside of the render area. */
+    const QRect &getGraphRect() const;
 
 protected:
-    virtual void drawAll(QPaintDevice *pd);
-    virtual void drawHeader(QPainter &p);
+    void drawAll(QPaintDevice *pd) override;
+
+    void drawHeader(QPainter &p);
+
     void drawSelection(QPainter &p);
 
-private slots:
-    void sl_graphDataUpdated();
+    GSequenceGraphView *getGraphView() const;
 
 private:
-    QFont *headerFont;
-    int headerHeight;
+    const int headerHeight = 20;
+    QFont headerFont;
     QRect graphRect;
 };
 

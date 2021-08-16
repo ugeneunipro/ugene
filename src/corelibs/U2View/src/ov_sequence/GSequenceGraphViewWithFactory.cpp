@@ -55,11 +55,4 @@ GSequenceGraphViewWithFactory::GSequenceGraphViewWithFactory(
     setObjectName("GSequenceGraphViewWithFactory");
 }
 
-/**
- * Adds an action to the graphs menu
- */
-void GSequenceGraphViewWithFactory::addActionsToGraphMenu(QMenu *graphMenu) {
-    GSequenceGraphView::addActionsToGraphMenu(graphMenu);
-}
-
 }  // namespace U2

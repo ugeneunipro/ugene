@@ -77,7 +77,7 @@ void GraphAction::sl_handleGraphAction() {
         view->setGraphDrawer(graphDrawer);
         QList<QSharedPointer<GSequenceGraphData>> graphs = factory->createGraphs(view);
         foreach (const QSharedPointer<GSequenceGraphData> &graph, graphs) {
-            view->addGraphData(graph);
+            view->addGraph(graph);
         }
         sequenceWidget->addSequenceView(view);
         if (isBookmarkUpdate) {

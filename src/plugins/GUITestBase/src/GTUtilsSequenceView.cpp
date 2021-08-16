@@ -571,7 +571,7 @@ QList<TextLabel *> GTUtilsSequenceView::getGraphLabels(HI::GUITestOpStatus &os, 
 }
 
 QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenceGraphView *graph) {
-    ColorMap map = graph->getGSequenceGraphDrawer()->getColors();
+    ColorMap map = graph->getGraphDrawer()->getColors();
     QColor result = map.value("Default color");
     return result;
 }

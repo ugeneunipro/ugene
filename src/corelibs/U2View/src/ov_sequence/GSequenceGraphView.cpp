@@ -43,7 +43,7 @@ namespace U2 {
 GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, GSequenceLineView *_baseView, const QString &_vName)
     : GSequenceLineView(p, ctx),
       baseView(_baseView),
-      vName(_vName),
+      graphViewName(_vName),
       graphDrawer(nullptr) {
     GCOUNTER(cvar, "GSequenceGraphView");
     assert(baseView);
@@ -179,7 +179,7 @@ void GSequenceGraphView::pack() {
     setMinimumHeight(140);
 }
 
-void GSequenceGraphView::addGraphData(const QSharedPointer<GSequenceGraphData> &graph) {
+void GSequenceGraphView::addGraph(const QSharedPointer<GSequenceGraphData> &graph) {
     // TODO: design flow: moving label is already created but has no valid parent.
     graph->graphLabels.getMovingLabel()->setParent(renderArea);
     graphs.append(graph);
@@ -258,17 +258,23 @@ GSequenceGraphViewRA *GSequenceGraphView::getGraphRenderArea() const {
     return static_cast<GSequenceGraphViewRA *>(renderArea);
 }
 
-//////////////////////////////////////////////////////////////////////////
-// RA
-GSequenceGraphViewRA::GSequenceGraphViewRA(GSequenceGraphView *g)
-    : GSequenceLineViewRenderArea(g) {
-    setObjectName("GSequenceGraphViewRenderArea");
-    headerFont = new QFont("Courier", 10);
-    headerHeight = 20;
+const QString &GSequenceGraphView::getGraphViewName() const {
+    return graphViewName;
 }
 
-GSequenceGraphViewRA::~GSequenceGraphViewRA() {
-    delete headerFont;
+const QList<QSharedPointer<GSequenceGraphData>> &GSequenceGraphView::getGraphs() const {
+    return graphs;
+}
+
+GSequenceGraphDrawer *GSequenceGraphView::getGraphDrawer() const {
+    return graphDrawer;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// GSequenceGraphViewRA
+GSequenceGraphViewRA::GSequenceGraphViewRA(GSequenceGraphView *view)
+    : GSequenceLineViewRenderArea(view), headerFont("Courier", 10) {
+    setObjectName("GSequenceGraphViewRenderArea");
 }
 
 void GSequenceGraphViewRA::drawAll(QPaintDevice *pd) {
@@ -287,19 +293,27 @@ void GSequenceGraphViewRA::drawAll(QPaintDevice *pd) {
     drawHeader(p);
 
     const QList<QSharedPointer<GSequenceGraphData>> &graphs = getGraphView()->getGraphs();
-    GSequenceGraphDrawer *drawer = getGraphView()->getGSequenceGraphDrawer();
+    GSequenceGraphDrawer *drawer = getGraphView()->getGraphDrawer();
     drawer->draw(p, graphs, graphRect);
 
     drawFrame(p);
     drawSelection(p);
 }
 
+const QRect &GSequenceGraphViewRA::getGraphRect() const {
+    return graphRect;
+}
+
+GSequenceGraphView *GSequenceGraphViewRA::getGraphView() const {
+    return static_cast<GSequenceGraphView *>(view);
+}
+
 void GSequenceGraphViewRA::drawHeader(QPainter &p) {
-    p.setFont(*headerFont);
+    p.setFont(headerFont);
 
     const U2Region &visibleRange = view->getVisibleRange();
 
-    GSequenceGraphDrawer *drawer = getGraphView()->getGSequenceGraphDrawer();
+    GSequenceGraphDrawer *drawer = getGraphView()->getGraphDrawer();
     QString text = GSequenceGraphView::tr("%1 [%2, %3], Window: %4, Step %5")
                        .arg(getGraphView()->getGraphViewName())
                        .arg(QString::number(visibleRange.startPos + 1))
