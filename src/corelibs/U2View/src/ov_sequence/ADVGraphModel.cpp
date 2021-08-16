@@ -297,11 +297,11 @@ bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData> 
 void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels) {
     CHECK(labels.size() > 1, );
     int groupWidth = 0;
-    int spacing = 5;  // Spacing between labels.
+    int labelSpacing = 4;  // Spacing between labels.
     int commonY = INT_MAX;  // Align labels on top of all dots to avoid label & dot overlap.
     for (GraphLabel *label : qAsConst(labels)) {
         QRect rect = label->getHintRect();
-        groupWidth += rect.width() + (groupWidth > 0 ? spacing : 0);
+        groupWidth += rect.width() + (groupWidth > 0 ? labelSpacing : 0);
         int dotY = label->getCoord().y();
         commonY = qMin(dotY > rect.y() ? rect.y() : dotY - rect.height() - 1, commonY);
     }
@@ -311,7 +311,7 @@ void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabe
         int xShift = x - rect.x();
         int yShift = commonY - rect.y();
         label->setHintRect(rect.adjusted(xShift, yShift, xShift, yShift));
-        x += rect.width() + spacing;
+        x += rect.width() + labelSpacing;
     }
 }
 
