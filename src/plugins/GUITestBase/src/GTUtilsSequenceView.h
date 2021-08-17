@@ -97,6 +97,12 @@ public:
     static QList<GraphLabelTextBox *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
 
+    /** Toggle graph visibility by graph name. */
+    static void toggleGraphByName(HI::GUITestOpStatus &os, const QString &graphName, int sequenceViewIndex = 0);
+
+    /** Clicks zoom in button. */
+    static void zoomIn(HI::GUITestOpStatus &os, int sequenceViewIndex = 0);
+
     static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
 
     /** Enables editing mode, sets cursor to the offset, enters the sequence and disables editing mode. */
