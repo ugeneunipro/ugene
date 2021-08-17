@@ -61,9 +61,6 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
     //Backbone sequence
     QString backboneSequenceUrl;
 
-    //Generate sequence
-    QString generateSequenceUrl;
-
     //Other sequences in PCR
     QString otherSequencesInPcrUrl;
 };
