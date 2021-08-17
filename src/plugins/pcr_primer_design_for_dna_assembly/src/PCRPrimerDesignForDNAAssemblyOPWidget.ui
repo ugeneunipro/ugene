@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>367</width>
-    <height>808</height>
+    <height>1147</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,6 +33,9 @@
        <widget class="U2::ShowHideSubgroupWidget" name="userPrimersShowHideGroup" native="true"/>
       </item>
       <item>
+       <widget class="U2::ShowHideSubgroupWidget" name="generateSequenceShowHideGroup" native="true"/>
+      </item>
+      <item>
        <widget class="U2::ShowHideSubgroupWidget" name="parametersOfPrimingSequencesShowHideGroup" native="true"/>
       </item>
       <item>
@@ -43,9 +46,6 @@
       </item>
       <item>
        <widget class="U2::ShowHideSubgroupWidget" name="openBackboneSequenceShowHideGroup" native="true"/>
-      </item>
-      <item>
-       <widget class="U2::ShowHideSubgroupWidget" name="generateSequenceShowHideGroup" native="true"/>
       </item>
       <item>
        <widget class="U2::ShowHideSubgroupWidget" name="otherSequencesInPCRShowHideGroup" native="true"/>
@@ -121,7 +121,10 @@
             </widget>
            </item>
            <item>
-            <widget class="U2::PrimerLineEdit" name="leForwardPrimer">
+            <widget class="U2::UserPimerLineEdit" name="leForwardPrimer">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -148,7 +151,7 @@
             </widget>
            </item>
            <item>
-            <widget class="U2::PrimerLineEdit" name="leReversePrimer">
+            <widget class="U2::UserPimerLineEdit" name="leReversePrimer">
              <property name="text">
               <string/>
              </property>
@@ -157,6 +160,108 @@
              </property>
              <property name="placeholderText">
               <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="wgtGenerateSequence" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="leFilter">
+           <property name="placeholderText">
+            <string>Filter...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="U2::GeneratedSequencesTable" name="twGeneratedSequences">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="columnCount">
+            <number>1</number>
+           </property>
+           <column>
+            <property name="text">
+             <string>Sequence</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pbFindReverseComplement">
+           <property name="text">
+            <string>Find reverse-complement</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Add sequence to a user primer's end:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QPushButton" name="pbAddToForward5">
+             <property name="text">
+              <string>Forward 5'</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbAddToForward3">
+             <property name="text">
+              <string>Forevard 3'</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="pbAddToReverse3">
+             <property name="text">
+              <string>Reverse 3'</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbAddToReverse5">
+             <property name="text">
+              <string>Reverse 5'</string>
              </property>
             </widget>
            </item>
@@ -770,35 +875,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="wgtGenerateSequence" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLineEdit" name="leRandomSequencesFilePath"/>
-           </item>
-           <item>
-            <widget class="QToolButton" name="tbsaveRandomSequences">
-             <property name="text">
-              <string>...</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
        <widget class="QWidget" name="wgtOtherSequencesInPcr" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_8">
          <property name="leftMargin">
@@ -828,7 +904,7 @@
        </widget>
       </item>
       <item>
-       <widget class="U2::PCRPrimerProductTable" name="productsTable">
+       <widget class="U2::ResultTable" name="productsTable">
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
@@ -847,7 +923,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="alphabetWarningLabel" native="true">
+    <widget class="QLabel" name="alphabetWarningLabel">
      <property name="styleSheet">
       <string notr="true">color: green;
 font-weight: 600;</string>
@@ -873,14 +949,19 @@ font-weight: 600;</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>U2::PrimerLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">U2Gui/PrimerLineEdit.h</header>
+   <class>U2::ResultTable</class>
+   <extends>QTableWidget</extends>
+   <header>options_panel/ResultTable.h</header>
   </customwidget>
   <customwidget>
-   <class>U2::PCRPrimerProductTable</class>
+   <class>U2::UserPimerLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>options_panel/UserPimerLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>U2::GeneratedSequencesTable</class>
    <extends>QTableWidget</extends>
-   <header>PCRPrimerProductTable.h</header>
+   <header>options_panel/GeneratedSequencesTable.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PCR_PRIMER_PRODUCT_TABLE_H_
-#define _U2_PCR_PRIMER_PRODUCT_TABLE_H_
+#ifndef _U2_RESULT_TABLE_H_
+#define _U2_RESULT_TABLE_H_
 
 #include <QTableWidget>
 
@@ -32,22 +32,22 @@ class AnnotatedDNAView;
 class AnnotationGroup;
 class Annotation;
 
-struct PCRPrimerProductTableData {
+struct ResultTableData {
     AnnotatedDNAView *associatedView = nullptr;
     AnnotationGroup *associatedGroup = nullptr;
     QList<U2Region> currentProducts;
 };
 
-class PCRPrimerProductTable : public QTableWidget {
+class ResultTable : public QTableWidget {
     Q_OBJECT
 public:
-    PCRPrimerProductTable(QWidget *parent);
+    ResultTable(QWidget *parent);
 
     void setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *associatedView);
     void setAnnotationGroup(AnnotationGroup *associatedGroup);
     Annotation* getSelectedAnnotation() const;
-    PCRPrimerProductTableData getPCRPrimerProductTableData() const;
-
+    ResultTableData getPCRPrimerProductTableData() const;
+    
     static constexpr int MAXIMUM_ROW_COUNT = 8;
 private slots:
     void sl_selectionChanged();
