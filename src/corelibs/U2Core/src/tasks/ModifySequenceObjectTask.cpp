@@ -32,14 +32,12 @@
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2ObjectDbi.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
@@ -65,12 +63,10 @@ Task::ReportResult ModifySequenceContentTask::report() {
         return ReportResult_Finished;
     }
 
-    Project *p = AppContext::getProject();
-    if (p != nullptr) {
-        if (p->isStateLocked()) {
-            return ReportResult_CallMeAgain;
-        }
-        docs = p->getDocuments();
+    Project *project = AppContext::getProject();
+    if (project != nullptr) {
+        CHECK(!project->isStateLocked(), ReportResult_CallMeAgain);
+        docs = project->getDocuments();
     }
 
     if (!docs.contains(curDoc)) {
@@ -92,8 +88,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
         QList<Task *> tasks;
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         tasks.append(new SaveDocumentTask(seqObj->getDocument(), iof, url.getURLString()));
-        Project *p = AppContext::getProject();
-        if (p != nullptr) {
+        if (project != nullptr) {
             tasks.append(new AddDocumentTask(newDoc));
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask("Save document and add it to project (optional)", tasks));
@@ -163,12 +158,15 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
     SAFE_POINT(nullptr != df, "Invalid document format!", );
 
     U2SequenceObject *oldSeqObj = seqObj;
-    U2OpStatus2Log os;
-    newDoc = df->createNewLoadedDocument(iof, url, os, curDoc->getGHintsMap());
     SAFE_POINT_EXT(df->isObjectOpSupported(newDoc, DocumentFormat::DocObjectOp_Add, GObjectTypes::SEQUENCE),
-                   stateInfo.setError("Failed to add sequence object to document!"), );
+                   stateInfo.setError(tr("Failed to add sequence object to document!")), );
+
+    newDoc = df->createNewLoadedDocument(iof, url, stateInfo, curDoc->getGHintsMap());
+    CHECK_OP(stateInfo, );
+
     U2Sequence clonedSeq = U2SequenceUtils::copySequence(oldSeqObj->getSequenceRef(), newDoc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, stateInfo);
     CHECK_OP(stateInfo, );
+
     seqObj = new U2SequenceObject(oldSeqObj->getGObjectName(), U2EntityRef(newDoc->getDbiRef(), clonedSeq.id), oldSeqObj->getGHintsMap());
     newDoc->addObject(seqObj);
 
@@ -177,11 +175,11 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
             AnnotationTableObject *newDocAto = new AnnotationTableObject("Annotations", newDoc->getDbiRef());
             newDocAto->addObjectRelation(seqObj, ObjectRole_Sequence);
 
-            foreach (Document *d, docs) {
+            for (Document *d : qAsConst(docs)) {
                 QList<GObject *> annotationTablesList = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-                foreach (GObject *table, annotationTablesList) {
-                    AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-                    if (ato->hasObjectRelation(oldSeqObj, ObjectRole_Sequence)) {
+                for (GObject *table : qAsConst(annotationTablesList)) {
+                    auto ato = qobject_cast<AnnotationTableObject *>(table);
+                    if (ato != nullptr && ato->hasObjectRelation(oldSeqObj, ObjectRole_Sequence)) {
                         foreach (Annotation *ann, ato->getAnnotations()) {
                             newDocAto->addAnnotations(QList<SharedAnnotationData>() << ann->getData(), ann->getGroup()->getName());
                         }
@@ -192,10 +190,9 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
         } else {
             // use only sequence-doc annotations
             foreach (GObject *o, curDoc->getObjects()) {
-                AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(o);
-                if (nullptr != aObj) {
-                    U2OpStatus2Log os;
-                    GObject *cl = aObj->clone(newDoc->getDbiRef(), os);
+                if (auto aObj = qobject_cast<AnnotationTableObject *>(o)) {
+                    GObject *cl = aObj->clone(newDoc->getDbiRef(), stateInfo);
+                    CHECK_OP(stateInfo, );
                     newDoc->addObject(cl);
                     GObjectUtils::updateRelationsURL(cl, curDoc->getURL(), newDoc->getURL());
                 }

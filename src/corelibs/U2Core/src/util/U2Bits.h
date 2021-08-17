@@ -42,8 +42,6 @@ public:
 
     static QByteArray uncompress(const char *data, const QByteArray &alphabetChars, U2OpStatus &os);
 
-    static QVector<int> prepareCharNumsMask(const QByteArray &alphabetChars);
-
     static bool isCompressionNeeded(int textLen, int alphabetSize);
 };
 

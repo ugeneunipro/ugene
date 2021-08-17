@@ -71,8 +71,8 @@ static int readLength(const uchar *bits, int &nBits) {
 QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSize, const int *alphabetCharNums, U2OpStatus &os) {
     // algorithm:
     // 1. compute chars freq -> derive number of bits per char
-    // 2. assign bit masks per char. Do not assign any bit masks for non used alphabet chars
-    // 3. compress chars
+    // 2. assign bit masks per char. Do not assign any bit masks for non-used alphabet chars
+    // 3. compress chars.
     // 4. create header with used char mask
     // Result bits [len type][len][used alpha bits][compressed text]
     //  where [len type] is a type of length field: 00 -> empty, 01 -> 8 byte, 10 -> 16 bytes, 11 -> 32 bytes
@@ -100,20 +100,19 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
     // assign sequential bit-mask for all used chars
     QVector<uchar> maskVector(alphabetSize, 0);
     uchar *mask = maskVector.data();
-    uchar m = 0;
+    uchar visitedCharBitMask = 0;
     for (int i = 0; i < alphabetSize; i++) {
         if (visited[i]) {
-            mask[i] = m;
-            m++;
+            mask[i] = visitedCharBitMask;
+            visitedCharBitMask++;
         }
     }
     // store header and data to bit set
-    int bitsPerChar = U2Bits::getNumberOfBitsPerChar(m);
+    int bitsPerChar = U2Bits::getNumberOfBitsPerChar(visitedCharBitMask);
     int compressedBitSize = len * bitsPerChar;
     int lenBits = getLenBitsSize(len);
     int headerSizeBits = 2 + lenBits + alphabetSize;
     int resultSizeBits = headerSizeBits + compressedBitSize;
-    static QByteArray res;
     QByteArray bitSet = U2Bits::allocateBits(resultSizeBits);
     uchar *bits = (uchar *)bitSet.data();
     writeLength(bits, len, lenBits);
@@ -126,8 +125,8 @@ QByteArray U2BitCompression::compress(const char *text, int len, int alphabetSiz
     for (int i = 0; i < len; i++, pos += bitsPerChar) {
         uchar c = text[i];
         int n = alphabetCharNums[c];
-        uchar m = mask[n];
-        U2Bits::setBits(bits, pos, &m, bitsPerChar);
+        uchar alphabetCharBitMask = mask[n];
+        U2Bits::setBits(bits, pos, &alphabetCharBitMask, bitsPerChar);
     }
     return bitSet;
 }
@@ -158,45 +157,24 @@ QByteArray U2BitCompression::uncompress(const char *data, const QByteArray &alph
     int bitsPerChar = U2Bits::getNumberOfBitsPerChar(nChars);
 
     QVector<char> mask2Char(nChars, 0);
-    uchar m = 0;
+    uchar visitedCharBitMask = 0;
     for (int i = 0; i < alphabetSize; i++) {
         if (visited[i]) {
-            mask2Char[m] = aChars[i];
-            m++;
+            mask2Char[visitedCharBitMask] = aChars[i];
+            visitedCharBitMask++;
         }
     }
     int pos = alphaMaskOffset + alphabetSize;
-#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
     QByteArray result(len, Qt::Uninitialized);
-#else
-    QByteArray result(len, (char)0);
-#endif
     char *res = result.data();
     for (int i = 0; i < len; i++, pos += bitsPerChar) {
-        int m = U2Bits::bitsRange2Int32(bits, pos, bitsPerChar);
-        char c = mask2Char[m];
+        int bitsAsInt32 = U2Bits::bitsRange2Int32(bits, pos, bitsPerChar);
+        char c = mask2Char[bitsAsInt32];
         assert(c != 0);
         res[i] = c;
     }
     return result;
 }
-
-QVector<int> U2BitCompression::prepareCharNumsMask(const QByteArray &alphabetChars) {
-    QVector<int> res(256, -1);
-    for (int i = 0, n = alphabetChars.size(); i < n; i++) {
-        uchar a = (uchar)alphabetChars[i];
-        res[a] = i;
-    }
-    return res;
-}
-
-#define K_FACTOR 1.5
-/** Compression is eligible if compressed text < original text length with a compression factor of K */
-// static bool isCompressionNeeded(int textLen, int alphabetSize) {
-//     int nBits = alphabetSize + U2Bits::getNumberOfBitsPerChar(alphabetSize) * textLen;
-//     int compressedBytes = U2Bits::getNumberOfBytes(nBits);
-//     return compressedBytes * K_FACTOR < textLen;
-// }
 
 //////////////////////////////////////////////////////////////////////////
 // bits helper
@@ -211,11 +189,7 @@ int U2Bits::getNumberOfBitsPerChar(int nChars) {
 
 QByteArray U2Bits::allocateBits(int nBits) {
     int nBytes = getNumberOfBytes(nBits);
-#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
     return QByteArray(nBytes, Qt::Uninitialized);
-#else
-    return QByteArray(nBytes, char(0));
-#endif
 }
 
 void U2Bits::setBits(uchar *dstBits, int pos, const uchar *srcBits, int nBits) {

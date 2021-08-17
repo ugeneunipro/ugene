@@ -30,7 +30,6 @@
 #include <U2Core/L10n.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureKeys.h>
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -457,21 +456,19 @@ static QString getAlignmentTip(const QString &ref, const QList<U2CigarToken> &to
         return ref;
     }
 
-    int pos = 0;
-
+    int cigarPos = 0;
     QList<int> mismatchPositions;
-
-    foreach (const U2CigarToken &t, tokens) {
-        if (U2CigarOp_M == t.op) {
-            alignmentTip += ref.mid(pos, t.count);
-            pos += t.count;
+    for (const U2CigarToken &t : qAsConst(tokens)) {
+        if (t.op == U2CigarOp_M) {
+            alignmentTip += ref.midRef(cigarPos, t.count);
+            cigarPos += t.count;
         } else if (t.op == U2CigarOp_X) {
-            alignmentTip += ref.mid(pos, t.count);
-            mismatchPositions.append(pos);
-            pos += t.count;
-        } else if (U2CigarOp_I == t.op) {
+            alignmentTip += ref.midRef(cigarPos, t.count);
+            mismatchPositions.append(cigarPos);
+            cigarPos += t.count;
+        } else if (t.op == U2CigarOp_I) {
             // gap already present in sequence?
-            pos += t.count;
+            cigarPos += t.count;
         }
     }
 
@@ -483,8 +480,8 @@ static QString getAlignmentTip(const QString &ref, const QList<U2CigarToken> &to
     // make mismatches bold
     int offset = 0;
     static const int OFFSET_LEN = QString("<b></b>").length();
-    foreach (int pos, mismatchPositions) {
-        int newPos = pos + offset;
+    for (int mismatchPos : qAsConst(mismatchPositions)) {
+        int newPos = mismatchPos + offset;
         if (newPos + 1 >= alignmentTip.length()) {
             break;
         }

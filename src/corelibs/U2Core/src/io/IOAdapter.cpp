@@ -91,23 +91,23 @@ bool IOAdapter::isEof() {
 }
 
 qint64 IOAdapter::readLine(char *buff, qint64 maxSize, bool *terminatorFound /* = 0*/) {
-    bool b = false;
+    bool terminatorFlagStub = false;
     if (!terminatorFound) {
-        terminatorFound = &b;
+        terminatorFound = &terminatorFlagStub;
     }
     qint64 len = readUntil(buff, maxSize, TextUtils::LINE_BREAKS, Term_Exclude, terminatorFound);
     if (*terminatorFound) {
         char ch;
-        bool b = getChar(&ch);
-        assert(b);
+        bool isGetCharOk = getChar(&ch);
+        SAFE_POINT(isGetCharOk, L10N::internalError("IOAdapter::readLine::getChar"), len);
         if (ch == '\r') {
             // may be Windows EOL \r\n
-            b = getChar(&ch);
-            if (b && ch != '\n') {
+            isGetCharOk = getChar(&ch);
+            if (isGetCharOk && ch != '\n') {
                 skip(-1);
             }
         } else {
-            assert(ch == '\n');
+            SAFE_POINT(ch == '\n', L10N::internalError("IOAdapter::readLine char is not '\\n'"), len);
         }
     }
     return len;
