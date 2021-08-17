@@ -118,10 +118,9 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
-    QRect selectionRect = editor->getSelection().toRect();
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
-    consensusRenderData.selectedRegion = U2Region::fromXRange(selectionRect);
+    consensusRenderData.selectedRegion = editor->getSelection().getColumnRegion();
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
     MSAConsensusAlgorithm *algorithm = area->getConsensusAlgorithm();
@@ -307,8 +306,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
     const MaEditorSelection &selection = editor->getSelection();
-    QRect selectionRect = selection.toRect();
-    consensusRenderData.selectedRegion = U2Region(selectionRect.x(), selectionRect.width());
+    consensusRenderData.selectedRegion = selection.getColumnRegion();
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
     consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 

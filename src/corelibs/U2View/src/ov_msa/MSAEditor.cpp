@@ -663,14 +663,10 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
-    QSet<qint64> rowIds;
-    QRect selectionRect = selection.toRect();
-    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
-        rowIds.insert(ma->getRow(collapseModel->getMaRowIndexByViewRowIndex(i))->getRowId());
-    }
-    Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
-    TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
+    QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesFromSelectionRects(selection.getRectList());
+    QList<qint64> selectedRowIds = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
+    auto realignTask = new RealignSequencesInAlignmentTask(getMaObject(), selectedRowIds.toSet());
+    TaskWatchdog::trackResourceExistence(maObject, realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
 }
 
@@ -706,9 +702,10 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     const MaEditorSelection &selection = getSelection();
-    QRect selectionRect = selection.toRect();
-    bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
-    bool isAllRowsSelection = selectionRect.height() == collapseModel->getViewRowCount();
+    int selectionWidth = selection.getWidth();
+    int selectedRowsCount = selection.getCountOfSelectedRows();
+    bool isWholeSequenceSelection = selectionWidth == maObject->getLength() && selectedRowsCount >= 1;
+    bool isAllRowsSelection = selectedRowsCount == collapseModel->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 

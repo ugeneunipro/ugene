@@ -32,7 +32,6 @@
 namespace U2 {
 
 class MaEditorWgt;
-class MaSangerOverview;
 class MaSimpleOverview;
 class MaGraphOverview;
 class MaOverviewContextMenu;
@@ -42,18 +41,19 @@ class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
 public:
     MSAEditorOverviewArea(MaEditorWgt *ui);
 
-    void contextMenuEvent(QContextMenuEvent *event);
-    void cancelRendering();
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
+    void cancelRendering() override;
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
 private slots:
-    void sl_show();
+    void sl_show() override;
 
 private:
-    MaGraphOverview *graphOverview;
-    MaSimpleOverview *simpleOverview;
-    MaOverviewContextMenu *contextMenu;
+    MaGraphOverview *graphOverview = nullptr;
+    MaSimpleOverview *simpleOverview = nullptr;
+    MaOverviewContextMenu *contextMenu = nullptr;
 };
 
 }  // namespace U2

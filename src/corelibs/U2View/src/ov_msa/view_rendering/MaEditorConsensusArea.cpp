@@ -257,8 +257,8 @@ void MaEditorConsensusArea::sl_completeRedraw() {
 }
 
 void MaEditorConsensusArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev) {
-    U2Region currentRegion = U2Region::fromXRange(current.toRect());
-    U2Region prevRegion = U2Region::fromXRange(prev.toRect());
+    U2Region currentRegion = current.getColumnRegion();
+    U2Region prevRegion = prev.getColumnRegion();
     if (currentRegion != prevRegion) {
         sl_completeRedraw();
     }
