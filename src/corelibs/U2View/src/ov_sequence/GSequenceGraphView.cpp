@@ -242,7 +242,7 @@ void GSequenceGraphView::sl_showLocalMinMaxLabels() {
         regionsToAnnotate.append(getVisibleRange());
     }
     const QRect &graphRect = getGraphRenderArea()->getGraphRect();
-    for (QSharedPointer<GSequenceGraphData> &graph : graphs) {
+    for (const QSharedPointer<GSequenceGraphData> &graph : graphs) {
         for (const U2Region &region : qAsConst(regionsToAnnotate)) {
             graphDrawer->addLabelsForLocalMinMaxPoints(graph, region, graphRect);
         }
