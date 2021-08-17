@@ -413,7 +413,7 @@ void GSequenceGraphDrawer::calculatePoints(const QList<QSharedPointer<GSequenceG
     bool isAlgorithmParamsChanged = blueprintGraph->window != window ||
                                     blueprintGraph->step != step ||
                                     blueprintGraph->sequenceLength != sequenceLength;
-    if (isAlgorithmParamsChanged || (blueprintGraph->dataPoints.isEmpty() && calculationTaskRunner.isIdle())) {
+    if (isAlgorithmParamsChanged) {
         // Recompute data points.
         for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
             graph->clearAllPoints();
@@ -429,8 +429,7 @@ void GSequenceGraphDrawer::calculatePoints(const QList<QSharedPointer<GSequenceG
     }
     const U2Region &visibleRange = view->getVisibleRange();
     if (blueprintGraph->visibleRange == visibleRange && blueprintGraph->viewPoints.size() == viewWidth) {
-        // Graphs are up-to-date.
-        return;
+        return;  // Graphs are up-to-date.
     }
     for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
         graph->visibleRange = visibleRange;
@@ -489,9 +488,10 @@ void CalculatePointsTask::run() {
 
 Task::ReportResult CalculatePointsTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
-    QList<QVector<float>> result = getResult();
 
-    SAFE_POINT(result.size() == graphDataList.size(), "result.size() != graphDataList.size()", Task::ReportResult_Finished);
+    QList<QVector<float>> result = getResult();
+    CHECK_EXT(result.size() == graphDataList.size(), tr("Graph implementation didn't produce expected result"), ReportResult_Finished);
+
     for (int i = 0; i < result.size(); i++) {
         graphDataList[i]->dataPoints = result[i];
     }
