@@ -42,16 +42,22 @@ namespace {
 QString getPrimerReportTitle(const QString& primerName, bool isForward) {
     return QString("<h2>%1 %2:</h2>").arg(primerName).arg(isForward ? QObject::tr("Forward") : QObject::tr("Reverse"));
 }
+QString getPrimerForReport(const QString& primer) {
+    return QString("<b>%1</b>").arg(primer);
+}
+QString getBackboneForReport(const QByteArray& backbone) {
+    return QString("<u>%1</u>").arg(QString(backbone));
+}
 // Return html concatenated backbone and forward primer.
 QString getForwardPrimerReportResult(const QByteArray& backbone, const QString& primer) {
-    return QString("<div><u>%1</u><b>%2</b></div>").arg(QString(backbone)).arg(primer);
+    return QString("<div>%1%2</div>").arg(getBackboneForReport(backbone)).arg(getPrimerForReport(primer));
 }
 QString getForwardPrimerReportResult(const QByteArray& backbone, const QByteArray& primer) {
     return getForwardPrimerReportResult(backbone, QString(primer));
 }
 // Return html concatenated reverse primer and backbone.
 QString getReversePrimerReportResult(const QByteArray& backbone, const QString& primer) {
-    return QString("<div><b>%1</b><u>%2</u></div>").arg(primer).arg(QString(backbone));
+    return QString("<div>%1%2</div>").arg(getPrimerForReport(primer)).arg(getBackboneForReport(backbone));
 }
 QString getReversePrimerReportResult(const QByteArray& backbone, const QByteArray& primer) {
     return getReversePrimerReportResult(backbone, QString(primer));
@@ -172,10 +178,12 @@ QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
                    "<h3>%1</h3>");
     SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), report.arg(tr("Error, see log.")))
 
-    // No matching primers.
-    if (aForward.isEmpty() && aReverse.isEmpty() && b1Forward.isEmpty() && b1Reverse.isEmpty() && b2Forward.isEmpty() &&
-        b2Reverse.isEmpty() && b3Forward.isEmpty() && b3Reverse.isEmpty() &&
-        (settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty())) {
+    const bool primersNotFound = aForward.isEmpty()  && aReverse.isEmpty()  &&
+                                 b1Forward.isEmpty() && b1Reverse.isEmpty() &&
+                                 b2Forward.isEmpty() && b2Reverse.isEmpty() &&
+                                 b3Forward.isEmpty() && b3Reverse.isEmpty();
+    const bool noUserPrimers = settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty();
+    if (primersNotFound && noUserPrimers) {
         return report.arg(tr("There are no primers that meet the specified parameters."));
     }
 
@@ -561,9 +569,9 @@ QString PCRPrimerDesignForDNAAssemblyTask::getPairReportForUserPrimers() const {
     QString report_;
     if (!settings.forwardUserPrimer.isEmpty() && !settings.reverseUserPrimer.isEmpty()) {
         report_ += getPrimerReportTitle("C", true);
-        report_ += getForwardPrimerReportResult(backboneSequence, settings.forwardUserPrimer);
+        report_ += QString("<div>%1</div>").arg(getPrimerForReport(settings.forwardUserPrimer));
         report_ += getPrimerReportTitle("C", false);
-        report_ += getReversePrimerReportResult(backboneSequence, settings.reverseUserPrimer);
+        report_ += QString("<div>%1</div>").arg(getPrimerForReport(settings.reverseUserPrimer));
     }
     return report_;
 }
@@ -571,29 +579,31 @@ QString PCRPrimerDesignForDNAAssemblyTask::getPairReportForUserPrimers() const {
 QString PCRPrimerDesignForDNAAssemblyTask::getUserPrimersUnwantedConnectionsReport() const {
     using Seq = SeqToSearchInThem;
     const QList<Seq> allTypes = { Seq::ForwardUser, Seq::ReverseUser, Seq::Sequence, Seq::RevComplSeq, Seq::OtherSeq };
-    const QMap<Seq, QString> toString = { {Seq::ForwardUser, tr("User forward primer")},
-                                          {Seq::ReverseUser, tr("User reverse primer")},
+    const QMap<Seq, QString> toString = { {Seq::ForwardUser, tr("Forward user primer")},
+                                          {Seq::ReverseUser, tr("Reverse user primer")},
                                           {Seq::Sequence, tr("Sequence")},
                                           {Seq::RevComplSeq, tr("Reverse complement sequence")},
-                                          {Seq::OtherSeq, tr("Other sequences")} };
+                                          {Seq::OtherSeq, tr("Other sequences in PCR reaction")} };
 
     // Summary table for unwanted connections. Rows -- user primers, columns -- sequences with which unwanted
     // connections have been formed.
-    QString report_ = tr("<br><h3>Unwanted connections user primers</h3>");
-    QString table = "<table border=\"1\" cellpadding=\"4\">"
-                      "<tr>"
-                        "<td></td>"
-                        "<th>User forward</th>"
-                        "<th>User reverse</th>"
-                        "<th>Sequence</th>"
-                        "<th>Rev.compl.sequence</th>"
-                        "<th>Other sequences</th>"
-                      "</tr>"
-                      "<tr>%1</tr>"
-                      "<tr>%2</tr>"
-                    "</table>";
+    QString report_ = tr("<br><h3>Unwanted connections of user primers</h3>"
+                         "<div>"
+                           "<p>+ means there are unwanted connections,<br>- means there are no unwanted connections.</p>"
+                           "<p>Diagonal elements are homodimers, off-diagonal elements are heterodimers.<br></p>"
+                         "</div>");
+    QString table   = "<table border=\"1\" cellpadding=\"4\">"
+                        "<tr>%1</tr>"
+                        "<tr>%2</tr>"
+                        "<tr>%3</tr>"
+                      "</table>";
 
-    QString forwardRow = tr("<th>Forward</th>");
+    QString headerRow = "<td></td>";
+    for (auto it = toString.constBegin(); it != toString.constEnd(); ++it) {
+        headerRow += QString("<th>%1</th>").arg(it.value());
+    }
+
+    QString forwardRow = tr("<th>Forward user primer</th>");
     for (int i = 0; i < allTypes.size(); i++) {
         char ch = '-';    // In cell '-' means that no unwanted connections were found.
         if (userPrimersUnwantedConnections.contains({ UserPrimer::Forward, allTypes[i] })) {
@@ -604,7 +614,7 @@ QString PCRPrimerDesignForDNAAssemblyTask::getUserPrimersUnwantedConnectionsRepo
         forwardRow += "</td>";
     }
 
-    QString reverseRow = tr("<th>Reverse</th>");
+    QString reverseRow = tr("<th>Reverse user primer</th>");
     for (int i = 0; i < allTypes.size(); i++) {
         char ch = '-';
         if (userPrimersUnwantedConnections.contains({ UserPrimer::Reverse, allTypes[i] })) {
@@ -615,7 +625,7 @@ QString PCRPrimerDesignForDNAAssemblyTask::getUserPrimersUnwantedConnectionsRepo
         reverseRow += "</td>";
     }
 
-    report_ += table.arg(forwardRow).arg(reverseRow);
+    report_ += table.arg(headerRow).arg(forwardRow).arg(reverseRow);
     report_ += "<br>";
 
     // Add reports about unwanted connections.
