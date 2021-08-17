@@ -31,7 +31,6 @@
 
 #include "GSequenceGraphView.h"
 #include "GraphSettingsDialog.h"
-#include "SaveGraphCutoffsDialogController.h"
 #include "WindowStepSelectorWidget.h"
 
 namespace U2 {

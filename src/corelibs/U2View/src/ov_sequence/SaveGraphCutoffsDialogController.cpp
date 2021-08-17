@@ -67,6 +67,12 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointe
 
     float min = cutOffState.min;
     float max = cutOffState.max;
+    if (!cutOffState.isEnabled) {
+        // Automatically set some meaningful value between min and max visible values.
+        float delta = graph->visibleMax - graph->visibleMin;
+        min = graph->visibleMin + delta / 3;
+        max = graph->visibleMax - delta / 3;
+    }
 
     if (max < 1) {
         maxCutoffBox->setDecimals(4);

@@ -605,48 +605,37 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
 GUI_TEST_CLASS_DEFINITION(test_0597) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
-    CHECK_SET_ERR(sequenceWidget2 != nullptr, "sequenceWidget is not present");
-    QWidget *circularViewSe2 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget2, false);
-    Runnable *chooser2 = new PopupChooser(os, QStringList() << "GC Content (%)");
-    GTUtilsDialog::waitForDialog(os, chooser2);
-    GTWidget::click(os, circularViewSe2);
-    GTGlobals::sleep();
+    // Open graph.
+    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Karlin Signature Difference"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Save cutoffs as annotations and check the expected result.
     class SaveGraphCutoffsDialogFiller : public Filler {
     public:
         SaveGraphCutoffsDialogFiller(HI::GUITestOpStatus &os)
             : Filler(os, "SaveGraphCutoffsDialog") {
         }
-        void commonScenario() {
+        void commonScenario() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            QLineEdit *newTablePath = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
+            QLineEdit *newTablePath = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             GTLineEdit::setText(os, newTablePath, sandBoxDir + "test_0597");
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-
+            QDialogButtonBox *box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
             QPushButton *okButton = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(okButton != nullptr, "ok button is NULL");
+            CHECK_SET_ERR(okButton != nullptr, "OK button is NULL");
             GTWidget::click(os, okButton);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new SaveGraphCutoffsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
-                                                                        << "save_cutoffs_as_annotation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Graph", "save_cutoffs_as_annotation"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "GSequenceGraphViewRenderArea"));
-    // GTMenu::clickMenuItemByName(os, menu, QStringList() << "Graph" << "save_cutoffs_as_annotation", GTGlobals::UseKey);
-
-    GTGlobals::sleep();
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "graph_cutoffs  (0, 3)");
-    CHECK_SET_ERR(annotationGroup != nullptr, "annotation group not found");
+    GTUtilsAnnotationsTreeView::findItem(os, "graph_cutoffs  (0, 4)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0598) {
