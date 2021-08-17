@@ -138,15 +138,12 @@ namespace GUITest_regression_scenarios {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_5004) {
-    // 1. Open file _common_data/scenarios/_regression/5004/short.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5004", "short.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5004/short.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-
+    // Show DNA Flexibility graph, expected state: no errors in log.
     GTLogTracer lt;
-    // 2. Show DNA Flexibility graph
-    // Expected state: no errors in log
+    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"DNA Flexibility"}));
     GTWidget::click(os, graphAction);

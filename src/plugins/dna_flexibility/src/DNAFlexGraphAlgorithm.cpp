@@ -37,6 +37,7 @@ namespace U2 {
 void DNAFlexGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
     QByteArray sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
+    CHECK(window > 1, );
 
     // Reserve result space.
     U2Region region(0, sequenceObject->getSequenceLength());
@@ -44,14 +45,15 @@ void DNAFlexGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *
     result.reserve(stepCount);
 
     // Calculate the result.
-    for (int windowStartPos = region.startPos; windowStartPos < region.endPos() - window; windowStartPos += step) {
+    for (int windowStartPos = region.startPos; windowStartPos <= region.endPos() - window; windowStartPos += step) {
         // Calculating the threshold in the current window.
         float windowThreshold = 0;
-        for (int pos = windowStartPos; pos < windowStartPos + window; pos++) {
+        qint64 nPairs = window - 1;
+        for (int pos = windowStartPos; pos < windowStartPos + nPairs; pos++) {
             windowThreshold += FindHighFlexRegionsAlgorithm::flexibilityAngle(sequence[pos], sequence[pos + 1]);
         }
         CHECK_OP(os, );
-        windowThreshold /= window;
+        windowThreshold /= nPairs;
 
         // Returning the point on the graph
         result.append(windowThreshold);

@@ -204,11 +204,13 @@ void GSequenceGraphDrawer::drawGraph(QPainter &p, const QSharedPointer<GSequence
             value = value >= visibleMax ? visibleMax : value <= visibleMin ? visibleMin
                                                                            : (visibleMax + visibleMin) / 2;
         }
-        int height = qRound((value - visibleMin) * valueToHeightScale);
+        int height = visibleMin == visibleMax ? graphHeight / 2 : qRound((value - visibleMin) * valueToHeightScale);
         int y = rect.bottom() - 1 - height;
         int x = rect.left() + xOffset;
         if (hasPrevPoint()) {
             p.drawLine(x, y, prevX, prevY);
+        } else {
+            p.drawPoint(x, y);
         }
         prevX = x;
         prevY = y;
@@ -367,8 +369,10 @@ bool GSequenceGraphDrawer::updateCoordinatesAndText(const QSharedPointer<GSequen
         } else {
             labelY = 0;
         }
+    } else if (visibleMin == visibleMax) {
+        labelY = graphHeight / 2;
     } else {
-        float valueToHeightScale = (visibleMin == visibleMax) ? 1 : (graphHeight - 1) / (visibleMax - visibleMin);
+        float valueToHeightScale = (graphHeight - 1) / (visibleMax - visibleMin);
         labelY = qRound((value - visibleMin) * valueToHeightScale);
     }
 
