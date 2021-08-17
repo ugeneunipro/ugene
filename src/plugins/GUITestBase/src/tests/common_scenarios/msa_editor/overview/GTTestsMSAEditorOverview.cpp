@@ -66,16 +66,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    // 1. Open "_common_data/clustal/10000_sequences.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Wait until overview rendering is finished.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected state: simple overview is disabled, graph overview is displayed.
+
+    // Expected state: simple overview is hidden, graph overview is visible.
     QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(!simple->isVisible(), "simple overveiw is visiable");
+    CHECK_SET_ERR(!simple->isVisible(), "simple overview is visiable");
 
     QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_SET_ERR(graph->isVisible(), "graph overveiw is visiable");
+    CHECK_SET_ERR(graph->isVisible(), "graph overview is visiable");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
