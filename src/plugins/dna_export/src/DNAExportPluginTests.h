@@ -40,7 +40,7 @@ class GTest_ImportPhredQualityScoresTask : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ImportPhredQualityScoresTask, "import-phred-qualities", TaskFlags_NR_FOSCOE);
 
-    void prepare();
+    void prepare() override;
 
     QList<U2SequenceObject *> seqList;
     QStringList seqNameList;
@@ -53,9 +53,9 @@ class GTest_ExportNucleicToAminoAlignmentTask : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_ExportNucleicToAminoAlignmentTask, "export-nucleic-alignment", TaskFlags_NR_FOSCOE);
 
-    void prepare();
-    ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    ReportResult report() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
     int transTable;
     bool includeGaps = false;

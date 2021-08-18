@@ -40,9 +40,17 @@ public:
 
     static MultipleSequenceAlignment seq2ma(const QList<DNASequence> &dnas, U2OpStatus &os, bool recheckAlphabetFromDataIfRaw = false);
 
-    static QList<DNASequence> ma2seq(const MultipleSequenceAlignment &ma, bool trimGaps);
-
-    static QList<DNASequence> ma2seq(const MultipleSequenceAlignment &ma, bool trimGaps, const QSet<qint64> &rowIds);
+    /**
+     * Extracts list of sequences from MA.
+     * If 'rowIdFilter' is empty - all rows are used, otherwise only rows included into the set are exported.
+     * The order of the exported rows matches the original order in the MSA.
+     * If column region is not empty - the sequences are cropped first and gaps trimmed next.
+     */
+    static QList<DNASequence> convertMsaToSequenceList(const MultipleSequenceAlignment &msa,
+                                                       U2OpStatus &os,
+                                                       bool trimGaps = false,
+                                                       const QSet<qint64> &rowIdFilter = {},
+                                                       const U2Region &columnRegion = {});
 
     // Returns common alphabet for the sequences in the list. Returns RAW is the list is empty.
     static const DNAAlphabet *deriveCommonAlphabet(const QList<DNASequence> &sequenceList, bool recheckAlphabetFromDataIfRaw);

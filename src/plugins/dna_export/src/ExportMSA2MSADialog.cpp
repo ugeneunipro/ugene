@@ -43,6 +43,7 @@ ExportMSA2MSADialog::ExportMSA2MSADialog(const QString &defaultFileName, const D
     : QDialog(p),
       saveController(nullptr) {
     setupUi(this);
+    setWindowTitle(tr("Export Amino Translation"));
     new HelpButton(this, buttonBox, "65929314");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

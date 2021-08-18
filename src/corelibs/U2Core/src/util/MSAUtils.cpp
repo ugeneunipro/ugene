@@ -233,40 +233,34 @@ const DNAAlphabet *MSAUtils::deriveCommonAlphabet(const QList<const DNAAlphabet 
     return result == nullptr ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::RAW()) : result;
 }
 
-QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment &ma, bool trimGaps) {
-    QList<DNASequence> lst;
+QList<DNASequence> MSAUtils::convertMsaToSequenceList(const MultipleSequenceAlignment &msa,
+                                                      U2OpStatus &os,
+                                                      bool trimGaps,
+                                                      const QSet<qint64> &rowIdFilter,
+                                                      const U2Region &columnRegion) {
     QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
-    int len = ma->getLength();
-    const DNAAlphabet *al = ma->getAlphabet();
-    U2OpStatus2Log os;
-    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
-        DNASequence s(row->getName(), row->toByteArray(os, len), al);
-        if (trimGaps) {
-            int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
-            s.seq.resize(newLen);
-        }
-        lst << s;
-    }
-    return lst;
-}
+    int msaLength = msa->getLength();
+    CHECK_EXT(U2Region(0, msaLength).contains(columnRegion), os.setError(tr("Invalid column region")), {});
 
-QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment &ma, bool trimGaps, const QSet<qint64> &rowIds) {
-    QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
-    int len = ma->getLength();
-    const DNAAlphabet *al = ma->getAlphabet();
-    U2OpStatus2Log os;
-    QList<DNASequence> result;
-    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
-        if (rowIds.contains(row->getRowId())) {
-            DNASequence s(row->getName(), row->toByteArray(os, len), al);
-            if (trimGaps) {
-                int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
-                s.seq.resize(newLen);
-            }
-            result << s;
+    const DNAAlphabet *msaAlphabet = msa->getAlphabet();
+    QList<DNASequence> sequenceList;
+    const QList<MultipleSequenceAlignmentRow> &rows = msa->getMsaRows();
+    for (const MultipleSequenceAlignmentRow &row : qAsConst(rows)) {
+        if (!rowIdFilter.isEmpty() && !rowIdFilter.contains(row->getRowId())) {
+            continue;
         }
+        DNASequence sequence(row->getName(), row->toByteArray(os, msaLength), msaAlphabet);
+        CHECK_OP(os, {});
+        if (!columnRegion.isEmpty()) {
+            sequence.seq = sequence.seq.mid(columnRegion.startPos, columnRegion.length);
+        }
+        if (trimGaps) {
+            int newLen = TextUtils::remove(sequence.seq.data(), sequence.seq.length(), gapCharMap);
+            sequence.seq.resize(newLen);
+        }
+        sequenceList << sequence;
     }
-    return result;
+    return sequenceList;
 }
 
 bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2OpStatus &ti) {

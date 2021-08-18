@@ -74,11 +74,11 @@ private:
 class U2FORMATS_EXPORT ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
-                      int offset,
-                      int len,
+    ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
+                      const QList<qint64> &rowIds,
+                      const U2Region &columnRegion,
                       const QString &url,
-                      const QList<DNATranslation *> &aminoTranslations,
+                      const DNATranslation *aminoTranslation,
                       const DocumentFormatId &documentFormatId,
                       bool trimLeadingAndTrailingGaps,
                       bool convertUnknownToGap,
@@ -88,14 +88,17 @@ public:
     void run() override;
 
 private:
-    MultipleSequenceAlignment ma;
-    int offset;
-    int len;
+    /** Columns to export. */
+    U2Region columnRegion;
+
+    /** Alignment rows converted to sequences. */
+    QList<DNASequence> sequenceList;
+
     QString url;
     QString documentFormatId;
 
     /** Amino translation for a sequences in alignment. If not NULL -> sequence is translated. */
-    QList<DNATranslation *> aminoTranslations;
+    const DNATranslation *aminoTranslation = nullptr;
 
     /** Trim gaps before translation of not. */
     const bool trimLeadingAndTrailingGaps;

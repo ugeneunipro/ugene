@@ -25,6 +25,7 @@
 #include <U2Core/FailTask.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -71,9 +72,12 @@ Task *Alignment2SequenceWorker::tick() {
         if (msa->isEmpty()) {
             return new FailTask(tr("empty input alignment"));
         }
-        QList<DNASequence> seqs = MSAUtils::ma2seq(msa, true);
+        U2OpStatusImpl os;
+        QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msa, os, true);
+        CHECK_OP(os, new FailTask(os.getError()));
+
         QVariantMap channelContext = output->getContext();
-        foreach (const DNASequence &seq, seqs) {
+        for (const DNASequence &seq : qAsConst(sequenceList)) {
             QVariantMap msgData;
             SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
             msgData[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
