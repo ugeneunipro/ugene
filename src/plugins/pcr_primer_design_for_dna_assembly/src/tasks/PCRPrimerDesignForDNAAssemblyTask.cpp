@@ -590,7 +590,7 @@ QString PCRPrimerDesignForDNAAssemblyTask::getUserPrimersUnwantedConnectionsRepo
     QString report_ = tr("<br><h3>Unwanted connections of user primers</h3>"
                          "<div>"
                            "<p>+ means there are unwanted connections,<br>- means there are no unwanted connections.</p>"
-                           "<p>Diagonal elements are homodimers, off-diagonal elements are heterodimers.<br></p>"
+                           "<p>Main diagonal elements are self-dimers, elements outside the main diagonal are hetero-dimers.<br></p>"
                          "</div>");
     QString table   = "<table border=\"1\" cellpadding=\"4\">"
                         "<tr>%1</tr>"
