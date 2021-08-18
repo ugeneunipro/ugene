@@ -152,17 +152,17 @@ qint64 ModifySequenceContentTask::getSequenceLengthDelta() const {
 void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
     IOAdapterRegistry *ioReg = AppContext::getIOAdapterRegistry();
     IOAdapterFactory *iof = ioReg->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    CHECK(nullptr != iof, );
+    CHECK(iof != nullptr, );
     DocumentFormatRegistry *dfReg = AppContext::getDocumentFormatRegistry();
     DocumentFormat *df = dfReg->getFormatById(resultFormatId);
-    SAFE_POINT(nullptr != df, "Invalid document format!", );
+    SAFE_POINT(df != nullptr, "Invalid document format!", );
 
     U2SequenceObject *oldSeqObj = seqObj;
-    SAFE_POINT_EXT(df->isObjectOpSupported(newDoc, DocumentFormat::DocObjectOp_Add, GObjectTypes::SEQUENCE),
-                   stateInfo.setError(tr("Failed to add sequence object to document!")), );
-
     newDoc = df->createNewLoadedDocument(iof, url, stateInfo, curDoc->getGHintsMap());
     CHECK_OP(stateInfo, );
+
+    SAFE_POINT_EXT(df->isObjectOpSupported(newDoc, DocumentFormat::DocObjectOp_Add, GObjectTypes::SEQUENCE),
+                   stateInfo.setError(tr("Failed to add sequence object to document!")), );
 
     U2Sequence clonedSeq = U2SequenceUtils::copySequence(oldSeqObj->getSequenceRef(), newDoc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, stateInfo);
     CHECK_OP(stateInfo, );
