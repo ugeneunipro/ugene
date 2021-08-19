@@ -387,7 +387,7 @@ void SequenceViewAnnotatedRenderer::addArrowPath(QPainterPath &path, const QRect
     path = path.united(arrowPath);
 }
 
-qint64 SequenceViewAnnotatedRenderer::correctCutPos(const qint64 pos) const {
+qint64 SequenceViewAnnotatedRenderer::correctCutPos(qint64 pos) const {
     const bool isCircular = ctx->getSequenceObject()->isCircular();
     const qint64 sequenceLength = ctx->getSequenceLength();
     qint64 result = pos;

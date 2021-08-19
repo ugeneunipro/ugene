@@ -120,7 +120,7 @@ protected:
 
     void addArrowPath(QPainterPath &path, const QRect &rect, bool leftArrow) const;
 
-    qint64 correctCutPos(const qint64 pos) const;
+    qint64 correctCutPos(qint64 pos) const;
 
     AnnotationViewMetrics annMetrics;
 

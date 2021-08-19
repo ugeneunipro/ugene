@@ -31,7 +31,6 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
@@ -45,8 +44,7 @@ namespace U2 {
 GraphAction::GraphAction(GSequenceGraphFactory *_factory)
     : QAction(_factory->getGraphName(), nullptr),
       factory(_factory),
-      view(nullptr),
-      isBookmarkUpdate(false) {
+      view(nullptr) {
     setObjectName(factory->getGraphName());
     connect(this, SIGNAL(triggered()), SLOT(sl_handleGraphAction()));
 }
@@ -79,11 +77,11 @@ void GraphAction::sl_handleGraphAction() {
         view->setGraphDrawer(graphDrawer);
         QList<QSharedPointer<GSequenceGraphData>> graphs = factory->createGraphs(view);
         foreach (const QSharedPointer<GSequenceGraphData> &graph, graphs) {
-            view->addGraphData(graph);
+            view->addGraph(graph);
         }
         sequenceWidget->addSequenceView(view);
-        if (true == isBookmarkUpdate) {
-            view->createLabelsOnPositions(positions);
+        if (isBookmarkUpdate) {
+            view->setLabelsFromSavedState(positions);
             isBookmarkUpdate = false;
         }
     } else {

@@ -48,7 +48,6 @@ GSequenceLineView::GSequenceLineView(QWidget *p, SequenceObjectContext *_ctx)
       featureFlags(GSLV_FF_SupportsCustomRange),
       frameView(nullptr),
       coherentRangeView(nullptr),
-      movableBorder(SelectionModificationHelper::NoMovableBorder),
       ignoreMouseSelectionEvents(false),
       singleBaseSelection(false),
       isSelectionResizing(false) {
@@ -56,7 +55,7 @@ GSequenceLineView::GSequenceLineView(QWidget *p, SequenceObjectContext *_ctx)
     seqLen = ctx->getSequenceLength();
     setFocusPolicy(Qt::WheelFocus);
 
-    coefScrollBarMapping = (seqLen >= INT_MAX) ? (((double)INT_MAX) / seqLen) : 1;
+    coefScrollBarMapping = seqLen >= INT_MAX ? INT_MAX / (double)seqLen : 1;
 
     scrollBar = new GScrollBar(Qt::Horizontal, this);
 
@@ -88,24 +87,23 @@ void GSequenceLineView::updateScrollBar() {
     scrollBar->disconnect(this);
 
     scrollBar->setMinimum(0);
-    scrollBar->setMaximum(int((seqLen - visibleRange.length) * coefScrollBarMapping));
-
-    scrollBar->setSliderPosition(int(coefScrollBarMapping * visibleRange.startPos));
-
-    scrollBar->setSingleStep(getSingleStep() / coefScrollBarMapping);
-    scrollBar->setPageStep(getPageStep() * coefScrollBarMapping);
+    // The rounding to 'int' below is safe because we use 'coefScrollBarMapping' which will map int64 values to int32 domain.
+    scrollBar->setMaximum(qRound((double)(seqLen - visibleRange.length) * coefScrollBarMapping));
+    scrollBar->setSliderPosition(qRound(coefScrollBarMapping * (double)visibleRange.startPos));
+    scrollBar->setSingleStep(qRound((double)getSingleStep() / coefScrollBarMapping));
+    scrollBar->setPageStep(qRound((double)getPageStep() * coefScrollBarMapping));
 
     connect(scrollBar, SIGNAL(valueChanged(int)), SLOT(sl_onScrollBarMoved(int)));
 }
 
-int GSequenceLineView::getSingleStep() const {
+qint64 GSequenceLineView::getSingleStep() const {
     if (coherentRangeView != nullptr) {
         return coherentRangeView->getSingleStep();
     }
     return 1;
 }
 
-int GSequenceLineView::getPageStep() const {
+qint64 GSequenceLineView::getPageStep() const {
     if (coherentRangeView != nullptr) {
         return coherentRangeView->getPageStep();
     }
@@ -117,8 +115,8 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
         coherentRangeView->sl_onScrollBarMoved(pos);
         return;
     }
-    assert(coefScrollBarMapping != 0);
-    setStartPos(pos / coefScrollBarMapping);
+    SAFE_POINT(coefScrollBarMapping != 0, "coefScrollBarMapping is null", );
+    setStartPos(qRound64(pos / coefScrollBarMapping));
 
     if (lastPressPos != -1) {
         QAbstractSlider::SliderAction aAction = scrollBar->getRepeatAction();
@@ -145,13 +143,6 @@ void GSequenceLineView::addSelection(const U2Region &r) {
     SAFE_POINT(r.startPos >= 0 && r.endPos() <= seqLen, QString("Selection is out of range! [%2, len: %3]").arg(r.startPos).arg(r.length), );
     if (r.length != 0) {
         ctx->getSequenceSelection()->addRegion(r);
-    }
-}
-
-void GSequenceLineView::removeSelection(const U2Region &r) {
-    SAFE_POINT(r.startPos >= 0 && r.endPos() <= seqLen, QString("Selection is out of range! [%2, len: %3]").arg(r.startPos).arg(r.length), );
-    if (r.length != 0) {
-        ctx->getSequenceSelection()->removeRegion(r);
     }
 }
 
@@ -212,13 +203,12 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent *me) {
     lastPressPos = -1;
     resizableRegion = U2Region();
     overlappedRegions.clear();
-    movableBorder = SelectionModificationHelper::NoMovableBorder;
     QWidget::mouseReleaseEvent(me);
 }
 
 void GSequenceLineView::mouseMoveEvent(QMouseEvent *me) {
     if (!me->buttons()) {
-        setBorderCursor(me->pos());
+        updateCursorShapeOnMouseMove(me->pos());
     }
 
     if (isSelectionResizing) {
@@ -291,22 +281,31 @@ void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
     }
 }
 
-void GSequenceLineView::setBorderCursor(const QPoint &p) {
-    const QPoint areaPoint = toRenderAreaPoint(p);
-    const int sliderPos = scrollBar->isVisible() ? scrollBar->sliderPosition() : 0;
-    const double scale = renderArea->getCurrentScale();
-    const QPoint point(areaPoint.x() + (sliderPos * scale), areaPoint.y());
+U2Region GSequenceLineView::getCapturingRenderAreaYRegionForPos(qint64) const {
+    // Note: using height(), but not renderArea->height() to make the whole widget Y-range capturing (the original UGENE behaviour).
+    return U2Region(0, height());
+}
 
-    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+void GSequenceLineView::updateCursorShapeOnMouseMove(const QPoint &p) {
+    QPoint renderAreaPoint = toRenderAreaPoint(p);
+    int capturingDistance = SelectionModificationHelper::PIXEL_OFFSET_FOR_BORDER_POINTING;
+    // On screen 'capturing' X-region around the cursor in pixels.
+    // If the selection border is drawn inside the cursor shape is changed to 'Resize'.
+    U2Region capturingXRegion(renderAreaPoint.x() - capturingDistance, 2 * capturingDistance);
+    auto isCaptured = [this, capturingXRegion, renderAreaPoint](qint64 pos) {
+        U2Region yRegion = getCapturingRenderAreaYRegionForPos(pos);
+        if (!yRegion.contains(renderAreaPoint.y())) {
+            return false;
+        }
+        int xCoord = renderArea->posToCoord(pos, true);
+        return visibleRange.contains(pos) && capturingXRegion.contains(xCoord);
+    };
     Qt::CursorShape shape = Qt::ArrowCursor;
-    if (!regions.isEmpty()) {
-        for (int i = 0; i < regions.size(); i++) {
-            const QRect selection(QPoint(regions[i].startPos, 0), QPoint(regions[i].endPos() - 1, 1));
-            shape = SelectionModificationHelper::getCursorShape(point, selection, scale, height());
-            if (shape != Qt::ArrowCursor) {
-                shape = Qt::SizeHorCursor;
-                break;
-            }
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    for (const U2Region &region : qAsConst(regions)) {
+        if (isCaptured(region.startPos) || isCaptured(region.endPos())) {
+            shape = Qt::SizeHorCursor;
+            break;
         }
     }
     setCursor(shape);
@@ -653,8 +652,8 @@ void GSequenceLineViewRenderArea::drawFrame(QPainter &p) {
         return;
     }
     double scale = getCurrentScale();
-    int xStart = (int)(scale * (visibleFrameRange.startPos - visibleRange.startPos));
-    int xLen = qMax((int)(scale * visibleFrameRange.length), 4);
+    int xStart = posToCoord(visibleFrameRange.startPos - visibleRange.startPos);
+    int xLen = qMax((int)(scale * (double)visibleFrameRange.length), 4);
     QPen pen(Qt::lightGray, 2, Qt::DashLine);
     p.setPen(pen);
     p.drawRect(xStart, 0, xLen, height());
@@ -677,14 +676,14 @@ void GSequenceLineViewRenderArea::paintEvent(QPaintEvent *e) {
 }
 
 double GSequenceLineViewRenderArea::getCurrentScale() const {
-    return double(width()) / view->getVisibleRange().length;
+    return width() / (double)view->getVisibleRange().length;
 }
 
 qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &coord) const {
     int x = qBound(0, coord.x(), width());
     const U2Region &visibleRange = view->getVisibleRange();
     double scale = getCurrentScale();
-    qint64 pos = qRound(visibleRange.startPos + x / scale);
+    qint64 pos = qRound64((double)visibleRange.startPos + x / scale);
     return qBound(visibleRange.startPos, pos, visibleRange.endPos());
 }
 
@@ -694,7 +693,7 @@ int GSequenceLineViewRenderArea::posToCoord(qint64 pos, bool useVirtualSpace) co
     if (!isInVisibleRange && !useVirtualSpace) {
         return -1;
     }
-    int coord = qRound((pos - visibleRange.startPos) * getCurrentScale());
+    int coord = qRound((double)(pos - visibleRange.startPos) * getCurrentScale());
     SAFE_POINT(useVirtualSpace || coord <= width(), "Position is out of range!", coord);
     return coord;
 }

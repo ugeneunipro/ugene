@@ -27,6 +27,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -34,6 +36,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
 #include <U2Gui/GroupOptionsWidget.h>
@@ -50,6 +53,7 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
+#include "export/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
@@ -115,6 +119,10 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     sortGroupsBySizeDescendingAction->setObjectName("action_sort_groups_by_size_descending");
     sortGroupsBySizeDescendingAction->setToolTip(tr("Sort groups by number of sequences in the group, descending"));
     connect(sortGroupsBySizeDescendingAction, SIGNAL(triggered()), SLOT(sl_sortGroupsBySize()));
+
+    saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
+    saveScreenshotAction->setObjectName("export_msa_as_image_action");
+    connect(saveScreenshotAction, &QAction::triggered, this, &MSAEditor::sl_exportImage);
 
     initZoom();
     initFont();
@@ -655,14 +663,10 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
-    QSet<qint64> rowIds;
-    QRect selectionRect = selection.toRect();
-    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
-        rowIds.insert(ma->getRow(collapseModel->getMaRowIndexByViewRowIndex(i))->getRowId());
-    }
-    Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
-    TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
+    QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesFromSelectionRects(selection.getRectList());
+    QList<qint64> selectedRowIds = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
+    auto realignTask = new RealignSequencesInAlignmentTask(getMaObject(), selectedRowIds.toSet());
+    TaskWatchdog::trackResourceExistence(maObject, realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
 }
 
@@ -698,9 +702,10 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     const MaEditorSelection &selection = getSelection();
-    QRect selectionRect = selection.toRect();
-    bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
-    bool isAllRowsSelection = selectionRect.height() == collapseModel->getViewRowCount();
+    int selectionWidth = selection.getWidth();
+    int selectedRowsCount = selection.getCountOfSelectedRows();
+    bool isWholeSequenceSelection = selectionWidth == maObject->getLength() && selectedRowsCount >= 1;
+    bool isAllRowsSelection = selectedRowsCount == collapseModel->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
@@ -911,6 +916,18 @@ void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
 
 MaEditorSelectionController *MSAEditor::getSelectionController() const {
     return selectionController;
+}
+
+void MSAEditor::sl_exportImage() {
+    MSAImageExportController controller(ui);
+    QWidget *parentWidget = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QString fileName = GUrlUtils::fixFileName(maObject->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller,
+                                                                        ExportImageDialog::MSA,
+                                                                        fileName,
+                                                                        ExportImageDialog::NoScaling,
+                                                                        parentWidget);
+    dlg->exec();
 }
 
 }  // namespace U2

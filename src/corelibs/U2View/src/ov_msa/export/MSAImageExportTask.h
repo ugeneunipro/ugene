@@ -29,10 +29,6 @@
 
 #include <U2Gui/ImageExportTask.h>
 
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
-#include <U2View/MaEditorNameList.h>
-
 class Ui_MSAExportSettings;
 
 namespace U2 {
@@ -76,6 +72,7 @@ public:
 class MSAImageExportTask : public ImageExportTask {
     Q_OBJECT
 public:
+    // TODO: unsafe code: ui may be destroyed during the task execution (the editor is closed)!!
     MSAImageExportTask(MaEditorWgt *ui,
                        const MSAImageExportSettings &msaSettings,
                        const ImageExportTaskSettings &settings);

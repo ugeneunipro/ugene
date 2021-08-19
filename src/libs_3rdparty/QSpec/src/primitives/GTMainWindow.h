@@ -32,7 +32,11 @@ namespace HI {
 class HI_EXPORT GTMainWindow {
 public:
     static QList<QMainWindow *> getMainWindows(GUITestOpStatus &os);
+
     static QList<QWidget *> getMainWindowsAsWidget(GUITestOpStatus &os);
+
+    /** Checks that there is a main window with the given title. */
+    static void checkTitle(GUITestOpStatus &os, const QString &title);
 
     /** Minimizes main window: calls QMainWindow->showMinimized safely. */
     static void minimizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow);

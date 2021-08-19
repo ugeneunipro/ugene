@@ -65,8 +65,6 @@ public:
      */
     static void updateRowGapModel(const U2EntityRef &maRef, qint64 rowId, const QList<U2MsaGap> &gaps, U2OpStatus &os);
 
-    static QList<qint64> getRowsOrder(const U2EntityRef &meRef, U2OpStatus &os);
-
     /**
      * Updates positions of the rows in the database according to the order in the list.
      * All IDs must exactly match IDs of the MSA!
@@ -113,7 +111,7 @@ public:
      *    Otherwise adds or removes the corresponding rows and sequences.
      * 3) Updates rows positions
      */
-    static void updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAlignment &al, U2OpStatus &os);
+    static void updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAlignment &ma, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps to rows with specified IDs from 'pos' position.

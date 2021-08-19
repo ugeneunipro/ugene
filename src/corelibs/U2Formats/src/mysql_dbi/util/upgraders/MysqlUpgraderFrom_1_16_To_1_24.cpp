@@ -173,9 +173,9 @@ void MysqlUpgraderFrom_1_16_To_1_24::extractAttributes(U2OpStatus &os, QMap<U2Da
 
         trackId2header.insert(variantTrack.id, header);
 
-        addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
+        addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTRIBUTE, metaInfo);
         CHECK_OP(os, );
-        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
+        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTRIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, );
 
         number++;

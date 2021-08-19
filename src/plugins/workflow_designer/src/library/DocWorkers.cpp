@@ -37,7 +37,6 @@
 #include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -46,14 +45,12 @@
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Dataset.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include "CoreLib.h"
 #include "GenericReadWorker.h"
 
 namespace U2 {
@@ -545,7 +542,7 @@ void GenbankWriter::data2document(Document *doc, const QVariantMap &data, Workfl
                     annotationName = QString("unknown features %1").arg(featuresNum);
                 }
                 att = qobject_cast<AnnotationTableObject *>(doc->findGObjectByName(annotationName));
-                if (nullptr == att) {
+                if (att == nullptr) {
                     doc->addObject(att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef()));
                     if (dna) {
                         att->addObjectRelation(dna, ObjectRole_Sequence);

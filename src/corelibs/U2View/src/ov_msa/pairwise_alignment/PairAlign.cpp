@@ -119,12 +119,11 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 
 void PairAlign::initParameters() {
     const MaEditorSelection &selection = msa->getSelection();
-    QRect selectionRect = selection.toRect();
-    if (selectionRect.height() == 2) {
-        int selectionPos = selectionRect.y();
-        qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
+    QList<int> selectedViewRowIndexes = selection.getSelectedRowIndexes();
+    if (selectedViewRowIndexes.size() == 2) {
+        qint64 firstRowId = msa->getRowByViewRowIndex(selectedViewRowIndexes[0])->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();
+        qint64 secondRowId = msa->getRowByViewRowIndex(selectedViewRowIndexes[1])->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         if (isValidSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId)) {

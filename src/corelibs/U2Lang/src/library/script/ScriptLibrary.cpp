@@ -567,7 +567,10 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext *ctx, QScript
         if (seq.seq.isEmpty()) {
             return ctx->throwError(QObject::tr("Empty or invalid sequence"));
         }
-        foreach (const DNASequence &alnSeq, MSAUtils::ma2seq(aln, true)) {
+        U2OpStatusImpl os;
+        QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(aln, os, true);
+        CHECK_OP(os, ctx->throwError(os.getError()));
+        for (const DNASequence &alnSeq : qAsConst(sequenceList)) {
             if (alnSeq.seq == seq.seq) {
                 break;
             }

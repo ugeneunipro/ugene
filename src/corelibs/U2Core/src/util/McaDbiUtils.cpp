@@ -24,15 +24,12 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAChromatogram.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/DNASequenceUtils.h>
-#include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -310,11 +307,9 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef &mcaRef, qint64 rowId,
 
     MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps, pos, 1, posInSeq, endPosInSeq);
     if (posInSeq >= 0 && endPosInSeq > posInSeq) {  // not gap
-        U2OpStatus2Log os;
         DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
         SAFE_POINT_OP(os, );
     } else {
-        U2OpStatus2Log os;
         DNAChromatogram chrom = ChromatogramUtils::exportChromatogram(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId));
         ChromatogramUtils::insertBase(chrom, posInSeq, row.gaps, pos);
         ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);
@@ -357,11 +352,9 @@ void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 r
         SAFE_POINT(endPosInSeq >= 0, "incorrect endPosInSeq value", );
 
         if (posInSeq >= 0 && endPosInSeq > posInSeq) {  // not gap
-            U2OpStatus2Log os;
             DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
             SAFE_POINT_OP(os, );
         } else {
-            U2OpStatus2Log os;
             DNAChromatogram chrom = ChromatogramUtils::exportChromatogram(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId));
             ChromatogramUtils::insertBase(chrom, posInSeq, row.gaps, pos);
             ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);

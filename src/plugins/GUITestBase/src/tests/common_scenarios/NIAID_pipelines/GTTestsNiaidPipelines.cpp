@@ -22,16 +22,12 @@
 #include "GTTestsNiaidPipelines.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QFileInfo>
-#include <QGraphicsItem>
 #include <QLineEdit>
-#include <QProcess>
 #include <QWizard>
 
 #include <U2Core/AppContext.h>
@@ -48,15 +44,9 @@
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTToolbar.h"
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "system/GTFile.h"
-#include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 

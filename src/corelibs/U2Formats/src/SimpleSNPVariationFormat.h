@@ -34,7 +34,7 @@ public:
     SimpleSNPVariationFormat(QObject *p);
 
 protected:
-    virtual bool checkFormatByColumnCount(int columnCount) const;
+    bool checkFormatByColumnCount(int columnCount) const override;
 };
 
 }  // namespace U2

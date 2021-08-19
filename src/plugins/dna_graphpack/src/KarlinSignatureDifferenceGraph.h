@@ -45,7 +45,7 @@ public:
     KarlinGraphAlgorithm();
     ~KarlinGraphAlgorithm();
 
-    void calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &r, const GSequenceGraphWindowData *d, U2OpStatus &os);
+    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
 
 private:
     float getValue(int start, int end, const QByteArray &s, U2OpStatus &os);

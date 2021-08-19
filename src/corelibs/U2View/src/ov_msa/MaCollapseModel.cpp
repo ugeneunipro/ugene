@@ -244,4 +244,16 @@ QSet<qint64> MaCollapseModel::getAllRowIds() const {
     return rowIdSet;
 }
 
+QList<int> MaCollapseModel::getMaRowIndexesFromSelectionRects(const QList<QRect> &selectionRects) const {
+    QList<int> maRowIndexes;
+    for (const QRect &selectionRect : qAsConst(selectionRects)) {
+        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom(); viewRowIndex++) {
+            int maRowIndex = getMaRowIndexByViewRowIndex(viewRowIndex);
+            SAFE_POINT_EXT(maRowIndex >= 0, "Failed to map view row index: " + QString::number(viewRowIndex), {});
+            maRowIndexes.append(maRowIndex);
+        }
+    }
+    return maRowIndexes;
+}
+
 }  // namespace U2

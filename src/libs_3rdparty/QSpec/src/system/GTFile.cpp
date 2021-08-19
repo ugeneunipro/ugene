@@ -264,53 +264,49 @@ void GTFile::copyDir(GUITestOpStatus &os, const QString &dirToCopy, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeDir"
-#ifdef Q_OS_WIN
-void GTFile::removeDir(QString dirName) {
-    QDir dir(dirName);
-    dir.setFilter(QDir::Hidden | QDir::AllDirs | QDir::Files);
+void GTFile::removeDir(const QString &dirPath) {
+    QDir dir(dirPath);
+    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirPath.toLocal8Bit().constData());
 
-    foreach (QFileInfo fileInfo, dir.entryInfoList()) {
-        QString fileName = fileInfo.fileName();
-        QString filePath = fileInfo.filePath();
-        if (fileName != "." && fileName != "..") {
-            QFile file(filePath);
-            file.setPermissions(QFile::ReadOther | QFile::WriteOther);
-            if (!file.remove(filePath)) {
-                QDir dir(filePath);
-                if (!dir.rmdir(filePath)) {
-                    removeDir(filePath);
+    bool isOsWindows;
+#ifdef Q_OS_WIN
+    isOsWindows = true;
+#else
+    isOsWindows = false;
+#endif
+    if (isOsWindows) {
+        dir.setFilter(QDir::Hidden | QDir::AllDirs | QDir::Files);
+        foreach (QFileInfo fileInfo, dir.entryInfoList()) {
+            QString fileName = fileInfo.fileName();
+            QString filePath = fileInfo.filePath();
+            if (fileName != "." && fileName != "..") {
+                QFile file(filePath);
+                file.setPermissions(QFile::ReadOther | QFile::WriteOther);
+                if (!file.remove(filePath)) {
+                    QDir fileDir(dirPath);
+                    if (!fileDir.rmdir(filePath)) {
+                        removeDir(filePath);
+                    }
+                }
+            }
+        }
+    } else {
+        foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+            QString fileName = fileInfo.fileName();
+            QString filePath = fileInfo.filePath();
+            if (fileName != "." && fileName != "..") {
+                if (!QFile::remove(filePath)) {
+                    QDir fileDir(filePath);
+                    if (!fileDir.rmdir(filePath)) {
+                        removeDir(filePath);
+                    }
                 }
             }
         }
     }
-    dir.rmdir(dir.absoluteFilePath(dirName));
+    dir.rmdir(dir.absoluteFilePath(dirPath));
+    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirPath.toLocal8Bit().constData());
 }
-#else
-void GTFile::removeDir(QString dirName) {
-    QDir dir(dirName);
-    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirName.toLocal8Bit().constData());
-
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
-        QString fileName = fileInfo.fileName();
-        QString filePath = fileInfo.filePath();
-        if (fileName != "." && fileName != "..") {
-            if (QFile::remove(filePath))
-                continue;
-            else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath))
-                    continue;
-                else
-                    removeDir(filePath);
-            }
-        }
-    }
-    dir.rmdir(dir.absoluteFilePath(dirName));
-
-    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirName.toLocal8Bit().constData());
-}
-#endif
-
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "backup"

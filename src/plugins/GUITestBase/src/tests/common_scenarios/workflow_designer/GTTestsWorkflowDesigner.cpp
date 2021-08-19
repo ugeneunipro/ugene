@@ -1,4 +1,4 @@
-/**009
+/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -26,14 +26,9 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
-#include <utils/GTKeyboardUtils.h>
-#include <utils/GTUtilsApp.h>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -41,7 +36,6 @@
 #include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsView>
-#include <QProcess>
 #include <QScreen>
 #include <QTextEdit>
 
@@ -50,8 +44,7 @@
 
 #include <U2Gui/ToolsMenu.h>
 
-#include <U2Lang/WorkflowSettings.h>
-
+// TODO: GUI test plugin depends on another plugin!
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsWorkflowDesigner.h"
 #include "GTUtilsLog.h"
@@ -64,9 +57,7 @@
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -401,7 +392,6 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
 
     QWidget *wdView = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, );
-    QString windowName = wdView->objectName();
     CHECK_SET_ERR(wdView->objectName() == "Workflow Designer", "Wrong mdi window " + wdView->objectName());
 }
 

@@ -21,26 +21,18 @@
 
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
-#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
-#include <utils/GTUtilsApp.h>
 
 #include <QApplication>
-#include <QMainWindow>
 #include <QSplitter>
-#include <QTreeWidget>
 
 #include <U2Core/ProjectModel.h>
-#include <U2Core/U2OpStatus.h>
 #include <U2Core/global.h>
 
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/OptionsPanelWidget.h>
 
 #include "GTUtilsOptionsPanel.h"
-#include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 using namespace HI;

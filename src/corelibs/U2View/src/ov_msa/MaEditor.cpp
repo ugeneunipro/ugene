@@ -266,11 +266,9 @@ void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth = ui->getSequenceArea()->width();
     const MaEditorSelection &selection = getSelection();
-    if (selection.isEmpty()) {
-        return;
-    }
-    int selectionWidth = selection.toRect().width();
-    float pixelsPerBase = (seqAreaWidth / float(selectionWidth)) * zoomMult;
+    CHECK(!selection.isEmpty(), )
+    QRect selectionRect = selection.getRectList()[0];  // We need width (equal on all rects) + top-left of the first rect.
+    float pixelsPerBase = (seqAreaWidth / float(selectionRect.width())) * zoomMult;
     int fontPointSize = int(pixelsPerBase / fontPixelToPointSize);
     if (fontPointSize >= minimumFontPointSize) {
         fontPointSize = qMin(fontPointSize, maximumFontPointSize);
@@ -286,7 +284,6 @@ void MaEditor::sl_zoomToSelection() {
         setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
         resizeMode = ResizeMode_OnlyContent;
     }
-    QRect selectionRect = selection.toRect();
     ui->getScrollController()->setFirstVisibleBase(selectionRect.x());
     ui->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
 
@@ -359,11 +356,6 @@ void MaEditor::sl_resetColumnWidthCache() {
 }
 
 void MaEditor::initActions() {
-    saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
-    saveScreenshotAction->setObjectName("Export as image");
-    connect(saveScreenshotAction, SIGNAL(triggered()), ui, SLOT(sl_saveScreenshot()));
-    ui->addAction(saveScreenshotAction);
-
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);

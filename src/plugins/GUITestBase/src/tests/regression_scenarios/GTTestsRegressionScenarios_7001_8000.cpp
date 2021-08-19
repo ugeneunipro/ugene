@@ -26,7 +26,6 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
@@ -141,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7022/test_7022.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
+    // 2. Turn on "Wrap mode" and click on the first annotation in DetView
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
@@ -497,7 +496,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     QString alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
     CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/1: " + alphabet);
 
-    // Click convert to Amino button and check the the alphabet is 'Amino'.
+    // Click convert to Amino button and check the alphabet is 'Amino'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "Amino", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -510,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
     CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
 
-    // Click convert to DNA button and check the the alphabet is 'DNA'.
+    // Click convert to DNA button and check the alphabet is 'DNA'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -518,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "TTTNNNNNNNNNNTNNNNNANNNGNNNANNNNANNNNNNNGTNNNTNGNNANNTGGANGN", "Not a DNA sequence: " + sequence);
 
-    // Click convert to RNA button and check the the alphabet is 'RNA'.
+    // Click convert to RNA button and check the alphabet is 'RNA'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -721,6 +720,26 @@ GUI_TEST_CLASS_DEFINITION(test_7371) {
 
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
     CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (restored)");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7384_1) {
+    // Check that multi-series graph does not crash on large sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    for (int i = 0; i < 7; i++) {
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7384_2) {
+    // Open graph, zoom in, and close. Do not wait until the task is finished. UGENE must not crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
+    for (int i = 0; i < 4; i++) {
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+        GTUtilsSequenceView::zoomIn(os);
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+    }
 }
 
 }  // namespace GUITest_regression_scenarios

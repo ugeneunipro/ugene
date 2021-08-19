@@ -369,8 +369,21 @@ void MSAEditorSequenceArea::sl_goto() {
 
 void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
     ui->getScrollController()->centerBase(position, width());
-    const MaEditorSelection &selection = editor->getSelection();
-    setSelectionRect(QRect(position - 1, selection.toRect().y(), 1, 1));
+    // Keep the vertical part of the selection but limit the horizontal to the given position.
+    // In case of 1-row selection it will procude a single cell selection as the result.
+    // If there is no active selection - select a cell of the first visible row on the screen.
+    int selectedBaseIndex = position - 1;
+    QList<QRect> selectedRects = editor->getSelection().getRectList();
+    if (selectedRects.isEmpty()) {
+        int firstVisibleViewRowIndex = ui->getScrollController()->getFirstVisibleViewRowIndex();
+        selectedRects.append({selectedBaseIndex, firstVisibleViewRowIndex, 1, 1});
+    } else {
+        for (QRect &rect : selectedRects) {
+            rect.setX(selectedBaseIndex);
+            rect.setWidth(1);
+        }
+    }
+    editor->getSelectionController()->setSelection(selectedRects);
 }
 
 void MSAEditorSequenceArea::sl_lockedStateChanged() {
@@ -447,13 +460,23 @@ void MSAEditorSequenceArea::sl_saveSequence() {
     QString extension = df->getSupportedDocumentFileExtensions().first();
 
     MaCollapseModel *model = editor->getCollapseModel();
-    const MultipleAlignment &ma = editor->getMaObject()->getMultipleAlignment();
-    QSet<qint64> seqIds;
-    QRect selectionRect = editor->getSelection().toRect();
-    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
-        seqIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
+    QList<int> selectedMaRowIndexes;
+    QList<QRect> selectedRects = editor->getSelection().getRectList();
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+            selectedMaRowIndexes << model->getMaRowIndexByViewRowIndex(viewRowIndex);
+        }
     }
-    auto exportTask = new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqIds, d->getTrimGapsFlag(), d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, d->getCustomFileName());
+    const MultipleSequenceAlignment &msa = getEditor()->getMaObject()->getMsa();
+    QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
+    auto exportTask = new ExportSequencesTask(msa,
+                                              selectedMaRowIds,
+                                              d->getTrimGapsFlag(),
+                                              d->getAddToProjectFlag(),
+                                              d->getUrl(),
+                                              d->getFormat(),
+                                              extension,
+                                              d->getCustomFileName());
     AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
@@ -819,7 +842,7 @@ ExportHighlightingTask::ExportHighlightingTask(ExportHighligtingDialogController
 }
 
 void ExportHighlightingTask::run() {
-    QString exportedData = exportHighlighting(startPos, endPos, startingIndex, keepGaps, dots, transpose);
+    QString exportedData = generateExportHighlightingReport();
     QFile resultFile(url.getURLString());
     CHECK_EXT(resultFile.open(QFile::WriteOnly | QFile::Truncate), url.getURLString(), );
     QTextStream contentWriter(&resultFile);
@@ -838,27 +861,26 @@ QString ExportHighlightingTask::generateReport() const {
     return res;
 }
 
-QString ExportHighlightingTask::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
+QString ExportHighlightingTask::generateExportHighlightingReport() const {
     CHECK(msaEditor != nullptr, QString());
     SAFE_POINT(msaEditor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported without a reference", QString());
     QStringList result;
 
     MultipleAlignmentObject *maObj = msaEditor->getMaObject();
-    assert(maObj != nullptr);
-
-    const MultipleAlignment msa = maObj->getMultipleAlignment();
+    const MultipleAlignment &msa = maObj->getMultipleAlignment();
 
     U2OpStatusImpl os;
     int refSeq = msa->getRowIndexByRowId(msaEditor->getReferenceRowId(), os);
     SAFE_POINT_OP(os, QString());
-    MultipleAlignmentRow row = msa->getRow(refSeq);
+    const MultipleAlignmentRow &row = msa->getRow(refSeq);
 
     QString header;
     header.append("Position\t");
     QString refSeqName = msaEditor->getReferenceRowName();
     header.append(refSeqName);
     header.append("\t");
-    foreach (QString name, maObj->getMultipleAlignment()->getRowNames()) {
+    QStringList rowNames = msa->getRowNames();
+    for (const QString &name : qAsConst(rowNames)) {
         if (name != refSeqName) {
             header.append(name);
             header.append("\t");

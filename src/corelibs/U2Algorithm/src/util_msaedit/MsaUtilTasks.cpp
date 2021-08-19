@@ -66,10 +66,11 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask(MultipleSequenceAlignmentObject *
 void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(nullptr != translation, setError(tr("Invalid translation object")), );
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMultipleAlignment(), true);
-    resultMA = MultipleSequenceAlignment(maObj->getMultipleAlignment()->getName(), translation->getDstAlphabet());
+    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(maObj->getMultipleAlignment(), stateInfo, true);
+    CHECK_OP(stateInfo, );
 
-    foreach (const DNASequence &dna, lst) {
+    resultMA = MultipleSequenceAlignment(maObj->getMultipleAlignment()->getName(), translation->getDstAlphabet());
+    for (const DNASequence &dna : qAsConst(sequenceList)) {
         int buflen = dna.length() / 3;
         QByteArray buf(buflen, '\0');
         translation->translate(dna.seq.constData(), dna.length(), buf.data(), buflen);

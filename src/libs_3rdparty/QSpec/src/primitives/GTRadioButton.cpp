@@ -68,29 +68,10 @@ QRadioButton *GTRadioButton::getRadioButtonByText(GUITestOpStatus &os, QString t
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAllButtonsByText"
-QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, QString text, QWidget *parent) {
-    Q_UNUSED(os);
-    QList<QRadioButton *> result;
-    if (parent == NULL) {
-        foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
-            QList<QRadioButton *> list = parent->findChildren<QRadioButton *>();
-            foreach (QRadioButton *rb, list) {
-                if (rb->text() == text) {
-                    result.append(rb);
-                }
-            }
-        }
-        return result;
-    }
-    QList<QRadioButton *> radioList = parent->findChildren<QRadioButton *>();
-    foreach (QRadioButton *but, radioList) {
-        QString s = but->text().toLower();
-        if (but->text().toLower().contains(text.toLower())) {
-            result << but;
-        }
-    }
-
-    return result;
+QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
+    return GTWidget::findChildren<QRadioButton>(os,
+                                                parent,
+                                                [text](auto button) { return button->text() == text; });
 }
 #undef GT_METHOD_NAME
 

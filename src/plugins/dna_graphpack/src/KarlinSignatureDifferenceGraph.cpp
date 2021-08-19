@@ -46,14 +46,9 @@ bool KarlinGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> KarlinGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    d->ga = new KarlinGraphAlgorithm();
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> KarlinGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new KarlinGraphAlgorithm()))};
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,7 +69,6 @@ static int getIndex(char nucl) {
 }
 
 #define IDX(x, y) ((x)*4 + (y))
-#define IDX_NUCL(x, y) IDX(getIndex(x), getIndex(y))
 
 // todo:: use limits
 static const float FLOAT_MIN = 0.000000001f;
@@ -87,12 +81,12 @@ KarlinGraphAlgorithm::~KarlinGraphAlgorithm() {
     delete[] global_relative_abundance_values;
 }
 
-void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != nullptr);
-    int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
-    res.reserve(nSteps);
+void KarlinGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+    U2Region vr(0, sequenceObject->getSequenceLength());
+    int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
+    result.reserve(nSteps);
 
-    const DNAAlphabet *al = o->getAlphabet();
+    const DNAAlphabet *al = sequenceObject->getAlphabet();
     assert(al->isNucleic());
 
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
@@ -102,7 +96,7 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
     DNATranslation *complTrans = complT;
     mapTrans = complTrans->getOne2OneMapper();
 
-    const QByteArray &seq = getSequenceData(o, os);
+    QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
     int seqLen = seq.size();
     const char *seqc = seq.constData();
@@ -113,11 +107,11 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
     }
     // check!!
     for (int i = 0; i < nSteps; i++) {
-        int start = vr.startPos + i * d->step;
-        int end = start + d->window;
+        int start = vr.startPos + i * step;
+        int end = start + window;
         float val = getValue(start, end, seq, os);
         CHECK_OP(os, );
-        res.append(val);
+        result.append(val);
     }
 }
 

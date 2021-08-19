@@ -81,7 +81,7 @@ void GTest_ImportPhredQualityScoresTask::prepare() {
             return;
         }
 
-        U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
+        auto mySequence = qobject_cast<U2SequenceObject *>(obj);
         if (mySequence == nullptr) {
             stateInfo.setError(QString("Can't cast to sequence from: %1").arg(obj->getGObjectName()));
             return;
@@ -200,21 +200,27 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *alObj = qobject_cast<MultipleSequenceAlignmentObject *>(list.first());
+    auto alObj = qobject_cast<MultipleSequenceAlignmentObject *>(list.first());
     srcAl = alObj->getMsaCopy();
 
-    QList<DNATranslation *> trans;
-    QString trid = DNATranslationID(0);
-    trid.replace("0", QString("%1").arg(transTable));
-    trans << AppContext::getDNATranslationRegistry()->lookupTranslation(trid);
+    QString translationId = DNATranslationID(0);
+    translationId.replace("0", QString("%1").arg(transTable));
+    const DNATranslation *translation = AppContext::getDNATranslationRegistry()->lookupTranslation(translationId);
 
     bool reverseComplement = translationFrame < 0;
     int offset = qAbs(translationFrame) - 1;
+    QList<qint64> rowIds;
+    if (!selectedRows.isEmpty()) {
+        rowIds = srcAl->getRowsIds();
+        CHECK_EXT(U2Region(0, rowIds.size()).contains(selectedRows), stateInfo.setError("Invalid row range"), );
+        rowIds = rowIds.mid(selectedRows.startPos, selectedRows.length);
+    }
+    U2Region columnRegion(0, srcAl->getLength());
     exportTask = new ExportMSA2MSATask(srcAl,
-                                       selectedRows.length ? selectedRows.startPos : 0,
-                                       selectedRows.length ? selectedRows.length : srcAl->getNumRows(),
+                                       rowIds,
+                                       columnRegion,
                                        outputFileName,
-                                       trans,
+                                       translation,
                                        BaseDocumentFormats::CLUSTAL_ALN,
                                        !includeGaps,
                                        convertUnknownAmino2Gap,
@@ -224,7 +230,6 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
 }
 
 QList<Task *> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task *subTask) {
-    Q_UNUSED(subTask);
     QList<Task *> res;
     if (hasError() || subTask->hasError() || isCanceled()) {
         return res;
@@ -247,7 +252,7 @@ QList<Task *> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task *s
             stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        MultipleSequenceAlignmentObject *resAlign = qobject_cast<MultipleSequenceAlignmentObject *>(reslist.first());
+        auto resAlign = qobject_cast<MultipleSequenceAlignmentObject *>(reslist.first());
         resAl = resAlign->getMsaCopy();
     }
     return res;
@@ -270,7 +275,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    MultipleSequenceAlignmentObject *expAlign = qobject_cast<MultipleSequenceAlignmentObject *>(explist.first());
+    auto expAlign = qobject_cast<MultipleSequenceAlignmentObject *>(explist.first());
     const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {

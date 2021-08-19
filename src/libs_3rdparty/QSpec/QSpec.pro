@@ -49,7 +49,6 @@ HEADERS += \
            src/system/GTFile.h \
            src/utils/GTKeyboardUtils.h \
            src/utils/GTThread.h \
-           src/utils/GTUtilsApp.h \
            src/utils/GTUtilsDialog.h \
            src/utils/GTUtilsMac.h \
            src/utils/GTUtilsToolTip.h \
@@ -108,7 +107,6 @@ SOURCES += \
            src/system/GTFile.cpp \
            src/utils/GTKeyboardUtils.cpp \
            src/utils/GTThread.cpp \
-           src/utils/GTUtilsApp.cpp \
            src/utils/GTUtilsDialog.cpp \
            src/utils/GTUtilsMac.cpp \
            src/utils/GTUtilsToolTip.cpp \

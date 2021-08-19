@@ -150,10 +150,10 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document *, const QVariantMap &);
-    virtual void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum);
-    virtual bool hasDataToWrite(const QVariantMap &data) const;
-    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
+    void data2doc(Document *, const QVariantMap &) override;
+    void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) override;
+    bool hasDataToWrite(const QVariantMap &data) const override;
+    QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const override;
 
 public:
     static void data2document(Document *, const QVariantMap &, WorkflowContext *);

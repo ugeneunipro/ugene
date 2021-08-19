@@ -120,6 +120,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
         }
         auto formatDelegate = new ComboBoxDelegate(map);
         formatDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        formatDelegate->setSortFlag(true);
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
     }
     proto->setEditor(new DelegateEditor(delegates));

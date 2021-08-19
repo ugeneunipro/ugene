@@ -55,9 +55,9 @@ public:
 
     virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
 
-    virtual int posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
+    virtual int posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
 
-    virtual qint64 getRowLineHeight() const;
+    virtual int getRowLineHeight() const;
 
     virtual double getCurrentScale() const = 0;
 

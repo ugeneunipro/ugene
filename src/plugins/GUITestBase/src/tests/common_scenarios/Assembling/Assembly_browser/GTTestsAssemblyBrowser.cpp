@@ -58,7 +58,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -920,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, "chrM", documentIndex);
     GTUtilsProjectTreeView::rename(os, objectIndex, "new_name");
     //    Check UGENE title
-    GTUtilsApp::checkUGENETitle(os, "-* UGENE");
+    GTMainWindow::checkTitle(os, "-* UGENE");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {

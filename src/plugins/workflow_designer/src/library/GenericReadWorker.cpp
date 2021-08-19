@@ -407,12 +407,18 @@ void LoadSeqTask::run() {
         //              int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach (GObject *go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            foreach (const DNASequence &s, MSAUtils::ma2seq((qobject_cast<MultipleSequenceAlignmentObject *>(go))->getMsa(), false)) {
-                if (!selector->matches(s)) {
+            auto msaObject = qobject_cast<MultipleSequenceAlignmentObject *>(go);
+            if (msaObject == nullptr) {
+                continue;
+            }
+            QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getMsa(), os);
+            CHECK_OP(os, )
+            for (const DNASequence &sequence : qAsConst(sequenceList)) {
+                if (!selector->matches(sequence)) {
                     continue;
                 }
                 QVariantMap m;
-                U2EntityRef seqRef = U2SequenceUtils::import(os, storage->getDbiRef(), s);
+                U2EntityRef seqRef = U2SequenceUtils::import(os, storage->getDbiRef(), sequence);
                 CHECK_OP(os, );
                 m[BaseSlots::URL_SLOT().getId()] = url;
                 m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");

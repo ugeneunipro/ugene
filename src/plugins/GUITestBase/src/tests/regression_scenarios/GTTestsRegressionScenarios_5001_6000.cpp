@@ -138,21 +138,14 @@ namespace GUITest_regression_scenarios {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_5004) {
-    // 1. Open file _common_data/scenarios/_regression/5004/short.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5004", "short.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5004/short.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(nullptr != sequenceWidget, "sequenceWidget is not present");
-
-    GTWidget::click(os, sequenceWidget);
-
+    // Show DNA Flexibility graph, expected state: no errors in log.
     GTLogTracer lt;
-    // 2. Show DNA Flexibility graph
-    // Expected state: no errors in log
+    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
-    Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");
-    GTUtilsDialog::waitForDialog(os, chooser);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"DNA Flexibility"}));
     GTWidget::click(os, graphAction);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1428,7 +1421,7 @@ GUI_TEST_CLASS_DEFINITION(test_5382) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_5382/test_5382.png"));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));

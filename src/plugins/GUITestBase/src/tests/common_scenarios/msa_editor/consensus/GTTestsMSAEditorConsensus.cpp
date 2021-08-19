@@ -20,15 +20,12 @@
  */
 #include "GTTestsMSAEditorConsensus.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
@@ -37,8 +34,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsDialog.h"
 namespace U2 {
 
@@ -50,7 +45,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use context menu {Consensus mode} in MSA editor area.
-    //    Expected state: consensus representstion dialog appeared
+    //    Expected state: consensus representation dialog appeared
 
     //    3. Select ClustalW consensus type. Click OK.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
@@ -66,11 +61,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    Expected state: consensus must be empty
     QWidget *thresholdSlider = GTWidget::findWidget(os, "thresholdSlider");
     CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider is NULL");
-    CHECK_SET_ERR(!thresholdSlider->isEnabled(), "thresholdSlider is unexpectidly enabled");
+    CHECK_SET_ERR(!thresholdSlider->isEnabled(), "thresholdSlider is unexpectedly enabled");
 
     QWidget *thresholdSpinBox = GTWidget::findWidget(os, "thresholdSpinBox");
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpinBox is NULL");
-    CHECK_SET_ERR(!thresholdSpinBox->isEnabled(), "thresholdSpinBox is unexpectidly enabled");
+    CHECK_SET_ERR(!thresholdSpinBox->isEnabled(), "thresholdSpinBox is unexpectedly enabled");
 }
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Check consensus in MSA editor
@@ -78,8 +73,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Default consensus type. Set 100% treshhold
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -96,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "aagc+tattaataa");
     // Expected state: consensus must be aagc+tattaataa
 
-    // 4. Set 1% treshhold.
+    // 4. Set 1% threshold.
     GTSpinBox::setValue(os, thresholdSpinBox, 1, GTGlobals::UseKeyBoard);
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC+TATTAATAA");
     // Expected state: consensus must be AAGC+TATTAATAA
@@ -108,8 +103,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Default consensus type. Set 100% treshhold
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -133,8 +128,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Default consensus type. Set 100% treshhold
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -158,8 +153,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Strict consensus type. Set 100% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -178,7 +173,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGC-TATTAAT-A");
-    // 4. Set 50% treshhold.
+    // 4. Set 50% threshold.
     // Expected state: consensus must be AAGC-TATTAAT-A
 }
 
@@ -188,8 +183,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Strict consensus type. Set 100% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -213,8 +208,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Strict consensus type. Set 100% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -239,8 +234,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Levitsky consensus type. Set 90% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -258,7 +253,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Expected state: consensus must be WAGHH--HTWW---
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "AAGMYTWTTAA---");
-    // 4. Set 60% treshhold.
+    // 4. Set 60% threshold.
     // Expected state: consensus must be AAGMYTWTTAA---
 }
 
@@ -268,8 +263,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Levitsky consensus type. Set 90% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -293,8 +288,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Use context menu {Consensus mode} in MSA editor area.
-    // Expected state: consensus representstion dialog appeared
-    // 3. Select Levitsky consensus type. Set 90% treshhold.
+    // Expected state: consensus representation dialog appeared
+    // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
@@ -318,14 +313,14 @@ void checkLimits(HI::GUITestOpStatus &os, int minVal, int maxVal) {
     int actualSliderMin = thresholdSlider->minimum();
     int actualSliderMax = thresholdSlider->maximum();
     CHECK_SET_ERR(actualSliderMin == minVal, QString("wrong minimal value for slider. Expected: %1, actual: %2").arg(minVal).arg(actualSliderMin));
-    CHECK_SET_ERR(actualSliderMax == maxVal, QString("wrong maximim value for slider. Expected: %1, actual: %2").arg(maxVal).arg(actualSliderMin));
+    CHECK_SET_ERR(actualSliderMax == maxVal, QString("wrong maximum value for slider. Expected: %1, actual: %2").arg(maxVal).arg(actualSliderMin));
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
     int actualSpinMin = thresholdSpinBox->minimum();
     int actualSpinMax = thresholdSpinBox->maximum();
     CHECK_SET_ERR(actualSpinMin == minVal, QString("wrong minimal value for spin. Expected: %1, actual: %2").arg(minVal).arg(actualSpinMin));
-    CHECK_SET_ERR(actualSpinMax == maxVal, QString("wrong maximim value for spin. Expected: %1, actual: %2").arg(maxVal).arg(actualSpinMin));
+    CHECK_SET_ERR(actualSpinMax == maxVal, QString("wrong maximum value for spin. Expected: %1, actual: %2").arg(maxVal).arg(actualSpinMin));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -352,12 +347,12 @@ void checkValues(HI::GUITestOpStatus &os, int expected) {
     QSlider *thresholdSlider = qobject_cast<QSlider *>(GTWidget::findWidget(os, "thresholdSlider"));
     CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider not found");
     int actualSliderValue = thresholdSlider->value();
-    CHECK_SET_ERR(actualSliderValue == expected, QString("wrong value for slider. Exected: %1, actual: %2").arg(expected).arg(actualSliderValue));
+    CHECK_SET_ERR(actualSliderValue == expected, QString("wrong value for slider. Executed: %1, actual: %2").arg(expected).arg(actualSliderValue));
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
     int actualSpinValue = thresholdSpinBox->value();
-    CHECK_SET_ERR(actualSpinValue == expected, QString("wrong value for Spin. Exected: %1, actual: %2").arg(expected).arg(actualSpinValue));
+    CHECK_SET_ERR(actualSpinValue == expected, QString("wrong value for Spin. Executed: %1, actual: %2").arg(expected).arg(actualSpinValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

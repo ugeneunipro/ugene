@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/GObject.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatus.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -75,6 +75,14 @@ U2ByteArrayAttribute U2AttributeUtils::findByteArrayAttribute(U2AttributeDbi *ad
 
 U2StringAttribute U2AttributeUtils::findStringAttribute(U2AttributeDbi *adbi, const U2DataId &objectId, const QString &attrName, U2OpStatus &os) {
     return findGenericAttribute<U2StringAttribute>(adbi, objectId, attrName, U2Type::AttributeString, os);
+}
+
+U2StringAttribute U2AttributeUtils::findStringAttribute(const GObject *object, const QString &attrName, U2OpStatus &os) {
+    const U2EntityRef &entityRef = object->getEntityRef();
+    DbiConnection connection(entityRef.dbiRef, os);
+    CHECK_OP(os, {});
+    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+    return findStringAttribute(attributeDbi, entityRef.entityId, attrName, os);
 }
 
 // Getting attribute template specializations

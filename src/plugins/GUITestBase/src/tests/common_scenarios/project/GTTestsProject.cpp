@@ -71,7 +71,6 @@
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
@@ -86,7 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
 
     // 2. Use menu {File->Export Project}
     // Expected state: "Export Project" dialog has appeared
@@ -114,7 +113,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //     1) project view with document "1CF7.pdb" has been opened,
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
 
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
@@ -136,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/proj1.uprj");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
@@ -151,7 +150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
-    GTUtilsApp::checkUGENETitle(os, "proj2 UGENE");
+    GTMainWindow::checkTitle(os, "proj2 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
@@ -161,13 +160,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    QString expectedTitle;
-#ifdef Q_OS_DARWIN
-    expectedTitle = "UGENE";
-#else
-    expectedTitle = "UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    QString expectedTitle = "UGENE";
+    GTMainWindow::checkTitle(os, expectedTitle);
 
     QMenu *m = GTMenu::showMainMenu(os, MWMENU_FILE);
     QAction *result = GTMenu::getMenuItem(os, m, ACTION_PROJECTSUPPORT__EXPORT_PROJECT, false);

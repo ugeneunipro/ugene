@@ -49,8 +49,9 @@ class CumulativeSkewGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
     CumulativeSkewGraphAlgorithm(const QPair<char, char> &_p);
 
-    float getValue(int begin, int end, const QByteArray &seq);
-    virtual void calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &r, const GSequenceGraphWindowData *d, U2OpStatus &os);
+    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+
+    float getValue(int begin, int end, const QByteArray &seq) const;
 
 private:
     QPair<char, char> p;

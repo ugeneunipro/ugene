@@ -26,12 +26,6 @@
 
 namespace U2 {
 
-DNAFlexGraphAlgorithm::DNAFlexGraphAlgorithm() {
-}
-
-DNAFlexGraphAlgorithm::~DNAFlexGraphAlgorithm() {
-}
-
 /**
  * Calculates data for a DNA Flexibility graph
  *
@@ -40,55 +34,29 @@ DNAFlexGraphAlgorithm::~DNAFlexGraphAlgorithm() {
  * @param region The region of the sequence to use
  * @param windowData Current parameters of the graph (window, step, etc.)
  */
-void DNAFlexGraphAlgorithm::calculate(
-    QVector<float> &result,
-    U2SequenceObject *sequenceObject,
-    const U2Region &region,
-    const GSequenceGraphWindowData *windowData,
-    U2OpStatus &os) {
-    assert(windowData != nullptr);
-
-    const QByteArray &sequence = getSequenceData(sequenceObject, os);
+void DNAFlexGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+    QByteArray sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
+    CHECK(window > 1, );
 
-    int windowSize = windowData->window;
-    int windowStep = windowData->step;
+    // Reserve result space.
+    U2Region region(0, sequenceObject->getSequenceLength());
+    int stepCount = GSequenceGraphUtils::getNumSteps(region, window, step);
+    result.reserve(stepCount);
 
-    // Variables
-    int windowLeft = region.startPos;
-
-    // Getting the number of steps
-    int stepsNumber = GSequenceGraphUtils::getNumSteps(region, windowData->window, windowData->step);
-
-    try {
-        // Allocating memory for the results
-        result.reserve(stepsNumber);
-    } catch (const std::bad_alloc &) {
-#ifdef UGENE_X86
-        os.setError(DNAFlexPlugin::tr("UGENE ran out of memory during the DNA flexibility calculating. "
-                                      "The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead."));
-#else
-        os.setError(DNAFlexPlugin::tr("Out of memory during the DNA flexibility calculating."));
-#endif
-    } catch (...) {
-        os.setError(DNAFlexPlugin::tr("Internal error occurred during the DNA flexibility calculating."));
-    }
-
-    // Calculating the results
-    for (int i = 0; i < stepsNumber; ++i) {
-        // Calculating the threshold in the current window
+    // Calculate the result.
+    for (int windowStartPos = region.startPos; windowStartPos <= region.endPos() - window; windowStartPos += step) {
+        // Calculating the threshold in the current window.
         float windowThreshold = 0;
-        for (int j = windowLeft; j < windowLeft + windowSize - 1; ++j) {
-            CHECK_OP(os, );
-            windowThreshold += FindHighFlexRegionsAlgorithm::flexibilityAngle(sequence[j], sequence[j + 1]);
+        qint64 nPairs = window - 1;
+        for (int pos = windowStartPos; pos < windowStartPos + nPairs; pos++) {
+            windowThreshold += FindHighFlexRegionsAlgorithm::flexibilityAngle(sequence[pos], sequence[pos + 1]);
         }
-        windowThreshold /= (windowSize - 1);
+        CHECK_OP(os, );
+        windowThreshold /= nPairs;
 
         // Returning the point on the graph
         result.append(windowThreshold);
-
-        // Enlarging the left position to the step
-        windowLeft += windowStep;
     }
 }
 

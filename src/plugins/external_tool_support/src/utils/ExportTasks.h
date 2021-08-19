@@ -37,7 +37,7 @@ class SaveAlignmentTask : public Task {
 public:
     SaveAlignmentTask(const MultipleSequenceAlignment &ma, const QString &fileName, DocumentFormatId f, const QVariantMap &hints = QVariantMap());
 
-    void run();
+    void run() override;
 
     virtual Document *getDocument() const;
     const QString &getUrl() const;
@@ -55,19 +55,18 @@ private:
 class SaveMSA2SequencesTask : public Task {
     Q_OBJECT
 public:
-    SaveMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimAli, DocumentFormatId format);
+    SaveMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimAli, const DocumentFormatId& format);
 
-    void run();
+    void run() override;
 
     virtual Document *getDocument() const {
         return doc.data();
     }
 
 private:
-    MultipleSequenceAlignment ma;
+    QList<DNASequence> sequenceList;
     QString url;
-    bool trimAli;
-    QString format;
+    DocumentFormatId documentFormatId;
     QScopedPointer<Document> doc;
 };
 

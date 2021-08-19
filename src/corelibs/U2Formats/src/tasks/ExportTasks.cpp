@@ -100,15 +100,16 @@ void ExportMSA2SequencesTask::run() {
     SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
-    QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimLeadingAndTrailingGaps);
+    QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
+    CHECK_OP(stateInfo, );
     QSet<QString> usedNames;
-    foreach (DNASequence s, lst) {
-        QString name = s.getName();
+    for (DNASequence &sequence : sequenceList) {
+        QString name = sequence.getName();
         if (usedNames.contains(name)) {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
-            s.setName(name);
+            sequence.setName(name);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, exportedDocument->getDbiRef(), s);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, exportedDocument->getDbiRef(), sequence);
         CHECK_OP(stateInfo, );
         exportedDocument->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);
@@ -125,25 +126,30 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
-                                     int _offset,
-                                     int _len,
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
+                                     const QList<qint64> &rowIds,
+                                     const U2Region &columnRegion,
                                      const QString &_url,
-                                     const QList<DNATranslation *> &_aminoTranslations,
+                                     const DNATranslation *_aminoTranslation,
                                      const DocumentFormatId &_documentFormatId,
                                      bool _trimGaps,
                                      bool _convertUnknownToGap,
                                      bool _reverseComplement,
                                      int _translationFrame)
-    : DocumentProviderTask(tr("Export alignment as alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), offset(_offset), len(_len), url(_url),
-      documentFormatId(_documentFormatId), aminoTranslations(_aminoTranslations), trimLeadingAndTrailingGaps(_trimGaps),
+    : DocumentProviderTask(tr("Export alignment as alignment to %1").arg(_url), TaskFlag_None),
+      url(_url), documentFormatId(_documentFormatId), aminoTranslation(_aminoTranslation), trimLeadingAndTrailingGaps(_trimGaps),
       convertUnknownToGap(_convertUnknownToGap), reverseComplement(_reverseComplement), translationFrame(_translationFrame) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
     documentDescription = QFileInfo(url).fileName();
 
-    CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
+    CHECK_EXT(!msa->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
+
     SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
+    SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(tr("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
+
+    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
+    CHECK_OP(stateInfo, )
 }
 
 void ExportMSA2MSATask::run() {
@@ -154,37 +160,31 @@ void ExportMSA2MSATask::run() {
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimLeadingAndTrailingGaps);
-    QList<DNASequence> seqList;
-    for (int i = offset; i < offset + len; i++) {
-        DNASequence s = reverseComplement ? DNASequenceUtils::reverseComplement(lst[i]) : lst[i];
-        s.seq = s.seq.right(s.seq.length() - translationFrame);
-        QString name = s.getName();
-        if (!aminoTranslations.isEmpty()) {
-            DNATranslation *aminoTT = aminoTranslations.first();
+    QList<DNASequence> resultSequenceList;
+    for (const DNASequence &originalSequence : sequenceList) {
+        DNASequence sequence = reverseComplement ? DNASequenceUtils::reverseComplement(originalSequence) : originalSequence;
+        sequence.seq = sequence.seq.right(sequence.seq.length() - translationFrame);
+        QString name = sequence.getName();
+        if (aminoTranslation != nullptr) {
             name += "(translated)";
 
-            QByteArray seq = s.seq;
+            const QByteArray &seq = sequence.seq;
             int aminoSequenceLength = seq.length() / 3;
-            QByteArray resseq(aminoSequenceLength, '\0');
-            if (resseq.isNull() && aminoSequenceLength != 0) {
-                setError(tr("Out of memory"));
-                return;
-            }
-            assert(aminoTT->isThree2One());
-            aminoTT->translate(seq.constData(), seq.length(), resseq.data(), resseq.length());
+            QByteArray resultData(aminoSequenceLength, '\0');
+            CHECK_EXT(resultData.size() == aminoSequenceLength, L10N::outOfMemory(), );
+            aminoTranslation->translate(seq.constData(), seq.length(), resultData.data(), resultData.length());
 
             if (!trimLeadingAndTrailingGaps && convertUnknownToGap) {
-                resseq.replace("X", "-");
+                resultData.replace("X", "-");
             }
-            resseq.replace("*", "X");
-            DNASequence rs(name, resseq, aminoTT->getDstAlphabet());
-            seqList << rs;
+            resultData.replace("*", "X");
+            DNASequence resultSequence(name, resultData, aminoTranslation->getDstAlphabet());
+            resultSequenceList << resultSequence;
         } else {
-            seqList << s;
+            resultSequenceList << sequence;
         }
     }
-    MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(seqList, stateInfo);
+    MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(resultSequenceList, stateInfo);
     CHECK_OP(stateInfo, );
 
     MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
