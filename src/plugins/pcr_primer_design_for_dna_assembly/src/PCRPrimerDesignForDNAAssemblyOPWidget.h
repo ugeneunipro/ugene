@@ -86,9 +86,6 @@ private slots:
      * Show the "Open file" dialog, choose a file with other PCR sequences and set path to the corresponding line edit.
      */
     void sl_loadOtherSequenceInPcr();
-    /*
-     * Associate created resultannotations with result table.
-     */
     void sl_onFindTaskFinished();
     /*
      * Extract result product to file.
