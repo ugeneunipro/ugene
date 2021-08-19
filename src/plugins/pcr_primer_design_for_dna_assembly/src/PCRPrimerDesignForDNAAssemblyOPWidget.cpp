@@ -355,8 +355,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
         return;
     }
     CHECK(pcrTask->isFinished(), );
-    createResultAnnotations();
     productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
+    createResultAnnotations();
     backboneSequence = pcrTask->getBackboneSequence();
     lastRunSettings = pcrTask->getSettings();
     pcrTask = nullptr;
