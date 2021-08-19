@@ -151,57 +151,6 @@ void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, cons
     CHECK_OP(os, );
 }
 
-void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleSequenceAlignment msa = getMultipleAlignment();
-    SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
-    qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
-    qint64 rowLength = msa->getRow(rowIndex)->getCoreLength();
-
-    U2OpStatus2Log os;
-    bool wasRowRemoved = false;
-    if (newChar != U2Msa::GAP_CHAR) {
-        MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
-    } else {
-        if (rowLength == 1) {
-            MsaDbiUtils::removeRow(entityRef, modifiedRowId, os);
-            wasRowRemoved = true;
-        } else {
-            MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-            MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, false);
-        }
-    }
-    SAFE_POINT_OP(os, );
-
-    MaModificationInfo mi;
-    if (wasRowRemoved) {
-        mi.rowListChanged = true;
-    } else {
-        mi.rowContentChanged = true;
-        mi.rowListChanged = false;
-        mi.alignmentLengthChanged = false;
-        mi.modifiedRowIds << modifiedRowId;
-    }
-
-    if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
-        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
-        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
-        SAFE_POINT(nullptr != newAlphabet, "Common alphabet is NULL", );
-
-        if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
-            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
-            mi.alphabetChanged = true;
-            SAFE_POINT_OP(os, );
-        }
-    }
-
-    if (wasRowRemoved) {
-        updateCachedMultipleAlignment(mi, QList<qint64>() << modifiedRowId);
-    } else {
-        updateCachedMultipleAlignment(mi);
-    }
-}
-
 void MultipleSequenceAlignmentObject::replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     SAFE_POINT(oldChar != U2Msa::GAP_CHAR && newChar != U2Msa::GAP_CHAR, "Gap characters replacement is not supported", );

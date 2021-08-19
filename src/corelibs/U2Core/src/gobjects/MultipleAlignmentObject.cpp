@@ -23,6 +23,7 @@
 
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -86,6 +87,59 @@ void MultipleAlignmentObject::setTrackMod(U2OpStatus &os, U2TrackModType trackMo
 
     // Set the new status
     objectDbi->setTrackModType(entityRef.entityId, trackMod, os);
+}
+
+void MultipleAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
+    replaceCharacters({startPos, 1}, rowIndex, newChar);
+}
+
+void MultipleAlignmentObject::replaceCharacters(const U2Region &columnRange, int rowIndex, char newChar) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+
+    const MultipleAlignment &ma = getMultipleAlignment();
+    SAFE_POINT(U2Region(0, ma->getLength()).contains(columnRange), "Invalid parameters", );
+
+    const MultipleAlignmentRow &row = ma->getRow(rowIndex);
+    qint64 rowId = row->getRowId();
+    U2OpStatus2Log os;
+
+    bool isMca = getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    if (newChar != U2Msa::GAP_CHAR) {
+        if (isMca) {
+            McaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
+        } else {
+            MsaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
+        }
+        CHECK_OP(os, )
+    } else {
+        if (isMca) {
+            McaDbiUtils::removeCharacters(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
+        } else {
+            MsaDbiUtils::removeRegion(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
+        }
+        CHECK_OP(os, )
+        MsaDbiUtils::insertGaps(entityRef, {rowId}, columnRange.startPos, columnRange.length, os, true);
+        CHECK_OP(os, )
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds << rowId;
+
+    if (newChar != ' ' && !ma->getAlphabet()->contains(newChar)) {
+        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
+        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, ma->getAlphabet());
+        SAFE_POINT(newAlphabet != nullptr, "Common alphabet is NULL", );
+
+        if (newAlphabet->getId() != ma->getAlphabet()->getId()) {
+            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+            mi.alphabetChanged = true;
+            SAFE_POINT_OP(os, );
+        }
+    }
+    updateCachedMultipleAlignment(mi);
 }
 
 const MultipleAlignment &MultipleAlignmentObject::getMultipleAlignment() const {

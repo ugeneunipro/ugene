@@ -1479,32 +1479,40 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
 
 void MaEditorSequenceArea::replaceChar(char newCharacter) {
     CHECK(maMode == ReplaceCharMode, );
+
+    MultipleAlignmentObject *maObj = editor->getMaObject();
+    CHECK(!maObj->isStateLocked(), );
+
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
-    SAFE_POINT(isInRange(selection.toRect()), "Incorrect selection is detected!", );
-    MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (maObj == nullptr || maObj->isStateLocked()) {
-        return;
-    }
-    QRect selectionRect = selection.toRect();
-    if (maObj->getNumRows() == 1 && maObj->getRow(selectionRect.y())->getCoreLength() == 1 && newCharacter == U2Msa::GAP_CHAR) {
-        exitFromEditCharacterMode();
-        return;
-    }
 
-    bool isGap = maObj->getRow(selectionRect.y())->isGap(selectionRect.x());
-    GCounter::increment(isGap ? "Replace gap" : "Replace character", editor->getFactoryId());
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    const QList<QRect> &selectedRects = selection.getRectList();
 
+    if (newCharacter == U2Msa::GAP_CHAR) {  // Do not allow to replace all chars in any row with a gap.
+        bool hasEmptyRowsAsResult = false;
+        U2Region columnRange = selection.getColumnRegion();
+        for (int i = 0; i < selectedRects.size() && !hasEmptyRowsAsResult; i++) {
+            const QRect &selectedRect = selectedRects[i];
+            for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom() && !hasEmptyRowsAsResult; viewRowIndex++) {
+                int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+                MultipleAlignmentRow row = maObj->getRow(maRowIndex);
+                hasEmptyRowsAsResult = columnRange.contains(U2Region::fromStartAndEnd(row->getCoreStart(), row->getCoreEnd()));
+            }
+        }
+        if (hasEmptyRowsAsResult) {
+            uiLog.info(tr("Can't replace selected characters. The result row will have only gaps."));
+            exitFromEditCharacterMode();
+        }
+    }
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    int column = selectionRect.x();
-    for (int i = 0; i < selectedMaRows.size(); i++) {
-        int row = selectedMaRows[i];
-        maObj->replaceCharacter(column, row, newCharacter);
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+            maObj->replaceCharacters(U2Region::fromXRange(selectedRect), maRowIndex, newCharacter);
+        }
     }
 
     exitFromEditCharacterMode();

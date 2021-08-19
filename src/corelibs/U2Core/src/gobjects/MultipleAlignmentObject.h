@@ -130,7 +130,11 @@ public:
     void updateCachedMultipleAlignment(const MaModificationInfo &mi = MaModificationInfo(), const QList<qint64> &removedRowIds = QList<qint64>());
     void sortRowsByList(const QStringList &order);
 
-    virtual void replaceCharacter(int startPos, int rowIndex, char newChar) = 0;
+    /** Replaces character in the row and changes the alphabet, if the current one does not contain the character. */
+    virtual void replaceCharacter(int startPos, int rowIndex, char newChar);
+
+    /** Replaces sequence of characters from startPos with the new char. Updates alignment alphabet if needed*/
+    virtual void replaceCharacters(const U2Region &columnRange, int rowIndex, char newChar);
 
     /** Inserts gap into 'pos' for the given rows. */
     virtual void insertGap(const U2Region &rows, int pos, int nGaps) = 0;

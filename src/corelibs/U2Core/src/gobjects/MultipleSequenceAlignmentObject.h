@@ -65,9 +65,6 @@ public:
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);
 
-    /** Replaces character in row and change alphabet, if it does not contain the character. */
-    void replaceCharacter(int startPos, int rowIndex, char newChar);
-
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
     void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);
 

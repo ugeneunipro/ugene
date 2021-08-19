@@ -181,6 +181,10 @@ U2Region U2Region::fromYRange(const QRect &rect) {
     return U2Region(rect.y(), rect.height());
 }
 
+U2Region U2Region::fromStartAndEnd(qint64 startPos, qint64 endPos) {
+    return U2Region(startPos, endPos - startPos);
+}
+
 static bool _registerMeta() {
     qRegisterMetaType<U2Region>("U2Region");
     qRegisterMetaTypeStreamOperators<U2Region>("U2::U2Region");

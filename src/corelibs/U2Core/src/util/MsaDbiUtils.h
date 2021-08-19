@@ -134,12 +134,8 @@ public:
      */
     static void removeRegion(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os);
 
-    /**
-     * Replace a character in an alignment.
-     * Parameter 'rowId' must be valid ID of the alignment row in the database!
-     * Parameter 'pos' must be >= 0.
-     */
-    static void replaceCharacterInRow(const U2EntityRef &msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus &os);
+    /** Replaces all characters in the given column range with a new character. */
+    static void replaceCharactersInRow(const U2EntityRef &msaRef, qint64 rowId, const U2Region &range, char newChar, U2OpStatus &os);
 
     /**
      * Replaces a non-gap character in the whole alignment.
@@ -235,8 +231,8 @@ private:
     /** Removes chars/gaps from the row */
     static void removeCharsFromRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, qint64 count);
 
-    /** Replace chars in the row */
-    static void replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, char newChar);
+    /** Replace characters in the row with a new character. Updates sequence & gap model. */
+    static void replaceCharsInRow(QByteArray &sequence, QList<U2MsaGap> &gaps, const U2Region &range, char newChar, U2OpStatus &os);
 
     /**
      * Crops a row to region from 'pos' to 'pos' + 'count',
