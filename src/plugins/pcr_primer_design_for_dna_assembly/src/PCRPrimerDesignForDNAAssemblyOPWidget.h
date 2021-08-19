@@ -87,13 +87,16 @@ private slots:
      */
     void sl_loadOtherSequenceInPcr();
     /*
-    * Associate created resultannotations with result table.
-    */
+     * Associate created resultannotations with result table.
+     */
     void sl_onFindTaskFinished();
     /*
-    * Extract result product to file.
-    */
+     * Extract result product to file.
+     */
     void sl_extractProduct();
+    /*
+     * Associate created annotations with result table rows.
+     */
     void sl_annotationCreationTaskFinished();
 
 private:
