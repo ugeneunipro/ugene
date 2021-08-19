@@ -117,7 +117,6 @@ void UserPimerLineEdit::sl_textEdited(const QString& text) {
         int primerSize = qMax(0, lastTextSize - (leftEndSize + rightEndSize));
         int rightStartPos = leftEndSize + primerSize;
         int rightEndPos = leftEndSize + primerSize + rightEndSize;
-        int lastLeftEndSize = leftEndSize;
         if (0 <= startSelectionPos && startSelectionPos < leftEndSize) {
             leftEndSize = startSelectionPos;
         }
@@ -183,8 +182,8 @@ void UserPimerLineEdit::setCharColors(const QList<QColor>& newColors) {
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, start, length, charFormat));
         }
     }
-
-    QLineEdit::inputMethodEvent(&QInputMethodEvent(QString(), attributes));
+    QInputMethodEvent ime(QString(), attributes);
+    QLineEdit::inputMethodEvent(&ime);
 
     lastTextSize = text().size();
     colors = newColors;
