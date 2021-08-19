@@ -84,17 +84,15 @@ QList<Annotation *> AnnotationTableObject::addAnnotations(const QList<SharedAnno
     ensureDataLoaded();
 
     if (groupName.isEmpty()) {
-        QString previousGroupName;
         QMap<QString, AnnotationGroupData> group2Annotations;
-        foreach (const SharedAnnotationData &a, annotations) {
-            const QString groupName = a->name;
-            if (!group2Annotations.contains(groupName)) {
-                AnnotationGroup *group = rootGroup->getSubgroup(groupName, true);
-                group2Annotations[groupName].first = group;
+        for (const SharedAnnotationData &a : qAsConst(annotations)) {
+            if (!group2Annotations.contains(a->name)) {
+                AnnotationGroup *group = rootGroup->getSubgroup(a->name, true);
+                group2Annotations[a->name].first = group;
             }
-            group2Annotations[groupName].second.append(a);
+            group2Annotations[a->name].second.append(a);
         }
-        foreach (const AnnotationGroupData &groupData, group2Annotations) {
+        for (const AnnotationGroupData &groupData : qAsConst(group2Annotations)) {
             result.append(groupData.first->addAnnotations(groupData.second));
         }
     } else {

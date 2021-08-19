@@ -38,7 +38,6 @@ const QString BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT("NUCL_RNA_DEFAU
 const QString BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT("NUCL_DNA_EXTENDED_COMPLEMENT");
 const QString BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT("NUCL_RNA_EXTENDED_COMPLEMENT");
 
-#define DATA_DIR_KEY QString("back_translation")
 #define DATA_FILE_KEY QString("back_translation/lastFile")
 #define DEFAULT_ORGANISM_FILE QString("tables.xml")
 
@@ -72,7 +71,7 @@ static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QLi
     }
 }
 
-static void fill1To3(BackTranslationRules &map,
+static void fill1To3(BackTranslationRules &translationRules,
                      const DNAAlphabet *srcAl,
                      const DNAAlphabet *dstAl,
                      const char *amino,
@@ -85,28 +84,27 @@ static void fill1To3(BackTranslationRules &map,
     assert(dstAl->isNucleic());
     Q_UNUSED(dstAl);
 
-    TripletP t('N', 'N', 'N', 100);
-    map.map.append(t);
-    map.index['-'] = map.map.size();
-    TripletP dash('-', '-', '-', 100);
-    map.map.append(dash);
+    translationRules.map.append({'N', 'N', 'N', 100});
+    translationRules.index[(int)'-'] = translationRules.map.size();
+    translationRules.map.append({'-', '-', '-', 100});
     int len = strlen(amino);
     assert(len == (int)strlen(n1) && len == (int)strlen(n2) && len == (int)strlen(n3));
 
-    QByteArray alph = srcAl->getAlphabetChars();
-    QList<TripletP> v;
-    foreach (char c, alph) {
-        v.clear();
+    QByteArray alphabetChars = srcAl->getAlphabetChars();
+    QVector<TripletP> triplets;
+    for (char c: qAsConst(alphabetChars)) {
+        triplets.clear();
         int sump = 0;
         for (int i = 0; i < len; i++) {
-            if (amino[i] != c)
+            if (amino[i] != c) {
                 continue;
+            }
             char c1 = n1[i];
             char c2 = n2[i];
             char c3 = n3[i];
             int p = prob[i];
             sump += p;
-#ifdef DEBUG
+#ifdef _DEBUG
             char src = amino[i];
             assert(srcAl->contains(src));
             assert(dstAl->contains(c1));
@@ -114,21 +112,18 @@ static void fill1To3(BackTranslationRules &map,
             assert(dstAl->contains(c3));
             assert((0 <= p) && (p <= 100));
 #endif
-            TripletP t(c1, c2, c3, p);
-            v.append(t);
+            triplets.append({c1, c2, c3, p});
         }
-        if (v.empty()) {
+        if (triplets.empty()) {
             if (c != '-') {
-                map.index[(int)c] = 0;
-                map.index[(int)c] = 1;
+                translationRules.index[(int)c] = 0;
+                translationRules.index[(int)c] = 1;
             }
         } else {
-            map.index[(int)c] = map.map.size();
-            std::sort(v.begin(), v.end());
-            v.first().p += (100 - sump);
-            foreach (TripletP t, v) {
-                map.map.append(t);
-            }
+            translationRules.index[(int)c] = translationRules.map.size();
+            std::sort(triplets.begin(), triplets.end());
+            triplets.first().p += 100 - sump;
+            translationRules.map.append(triplets.constData(), triplets.size());
         }
     }
 }
@@ -654,27 +649,27 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
     }
 
     // init codon info
-    regCodon(treg, 'A', "Ala", tr("Alanine"), "http://en.wikipedia.org/wiki/Alanine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'C', "Cys", tr("Cysteine"), "http://en.wikipedia.org/wiki/Cysteine", DNACodonGroup_POLAR);
-    regCodon(treg, 'D', "Asp", tr("Aspartic acid"), "http://en.wikipedia.org/wiki/Aspartic_acid", DNACodonGroup_ACIDIC);
-    regCodon(treg, 'E', "Glu", tr("Glutamic acid"), "http://en.wikipedia.org/wiki/Glutamic_acid", DNACodonGroup_ACIDIC);
-    regCodon(treg, 'F', "Phe", tr("Phenylalanine"), "http://en.wikipedia.org/wiki/Phenylalanine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'G', "Gly", tr("Glycine"), "http://en.wikipedia.org/wiki/Glycine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'H', "His", tr("Histidine"), "http://en.wikipedia.org/wiki/Histidine", DNACodonGroup_BASIC);
-    regCodon(treg, 'I', "Ile", tr("Isoleucine"), "http://en.wikipedia.org/wiki/Isoleucine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'K', "Lys", tr("Lysine"), "http://en.wikipedia.org/wiki/Lysine", DNACodonGroup_BASIC);
-    regCodon(treg, 'L', "Leu", tr("Leucine"), "http://en.wikipedia.org/wiki/Leucine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'M', "Met", tr("Methionine"), "http://en.wikipedia.org/wiki/Methionine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'N', "Asn", tr("Asparagine"), "http://en.wikipedia.org/wiki/Asparagine", DNACodonGroup_POLAR);
-    regCodon(treg, 'P', "Pro", tr("Proline"), "http://en.wikipedia.org/wiki/Proline", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'Q', "Gln", tr("Glutamine"), "http://en.wikipedia.org/wiki/Glutamine", DNACodonGroup_POLAR);
-    regCodon(treg, 'R', "Arg", tr("Arginine"), "http://en.wikipedia.org/wiki/Arginine", DNACodonGroup_BASIC);
-    regCodon(treg, 'S', "Ser", tr("Serine"), "http://en.wikipedia.org/wiki/Serine", DNACodonGroup_POLAR);
-    regCodon(treg, 'T', "Thr", tr("Threonine"), "http://en.wikipedia.org/wiki/Threonine", DNACodonGroup_POLAR);
-    regCodon(treg, 'V', "Val", tr("Valine"), "http://en.wikipedia.org/wiki/Valine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'W', "Trp", tr("Tryptophan"), "http://en.wikipedia.org/wiki/Tryptophan", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'Y', "Tyr", tr("Tyrosine"), "http://en.wikipedia.org/wiki/Tyrosine", DNACodonGroup_POLAR);
-    regCodon(treg, '*', "*", tr("Stop codon"), "http://en.wikipedia.org/wiki/Stop_codon", DNACodonGroup_STOP);
+    regCodon(treg, 'A', "Ala", tr("Alanine"), "https://en.wikipedia.org/wiki/Alanine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'C', "Cys", tr("Cysteine"), "https://en.wikipedia.org/wiki/Cysteine", DNACodonGroup_POLAR);
+    regCodon(treg, 'D', "Asp", tr("Aspartic acid"), "https://en.wikipedia.org/wiki/Aspartic_acid", DNACodonGroup_ACIDIC);
+    regCodon(treg, 'E', "Glu", tr("Glutamic acid"), "https://en.wikipedia.org/wiki/Glutamic_acid", DNACodonGroup_ACIDIC);
+    regCodon(treg, 'F', "Phe", tr("Phenylalanine"), "https://en.wikipedia.org/wiki/Phenylalanine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'G', "Gly", tr("Glycine"), "https://en.wikipedia.org/wiki/Glycine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'H', "His", tr("Histidine"), "https://en.wikipedia.org/wiki/Histidine", DNACodonGroup_BASIC);
+    regCodon(treg, 'I', "Ile", tr("Isoleucine"), "https://en.wikipedia.org/wiki/Isoleucine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'K', "Lys", tr("Lysine"), "https://en.wikipedia.org/wiki/Lysine", DNACodonGroup_BASIC);
+    regCodon(treg, 'L', "Leu", tr("Leucine"), "https://en.wikipedia.org/wiki/Leucine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'M', "Met", tr("Methionine"), "https://en.wikipedia.org/wiki/Methionine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'N', "Asn", tr("Asparagine"), "https://en.wikipedia.org/wiki/Asparagine", DNACodonGroup_POLAR);
+    regCodon(treg, 'P', "Pro", tr("Proline"), "https://en.wikipedia.org/wiki/Proline", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'Q', "Gln", tr("Glutamine"), "https://en.wikipedia.org/wiki/Glutamine", DNACodonGroup_POLAR);
+    regCodon(treg, 'R', "Arg", tr("Arginine"), "https://en.wikipedia.org/wiki/Arginine", DNACodonGroup_BASIC);
+    regCodon(treg, 'S', "Ser", tr("Serine"), "https://en.wikipedia.org/wiki/Serine", DNACodonGroup_POLAR);
+    regCodon(treg, 'T', "Thr", tr("Threonine"), "https://en.wikipedia.org/wiki/Threonine", DNACodonGroup_POLAR);
+    regCodon(treg, 'V', "Val", tr("Valine"), "https://en.wikipedia.org/wiki/Valine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'W', "Trp", tr("Tryptophan"), "https://en.wikipedia.org/wiki/Tryptophan", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'Y', "Tyr", tr("Tyrosine"), "https://en.wikipedia.org/wiki/Tyrosine", DNACodonGroup_POLAR);
+    regCodon(treg, '*', "*", tr("Stop codon"), "https://en.wikipedia.org/wiki/Stop_codon", DNACodonGroup_STOP);
 }
 
 }  // namespace U2

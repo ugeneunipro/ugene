@@ -103,10 +103,9 @@ void SaveDocumentTask::run() {
     DocumentFormat *df = doc->getDocumentFormat();
 
     QString originalFilePath = url.getURLString();
-    QFile originalFile(originalFilePath);
-    const bool originalFileExists = url.isLocalFile() && originalFile.exists() && originalFile.size() != 0;
+    bool isOriginalFileExist = url.isLocalFile() && QFileInfo::exists(originalFilePath);
 
-    if (originalFileExists && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
+    if (isOriginalFileExist && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         // Changes are already applied, the file shouldn't be saved
         coreLog.trace(QString("Document with 'direct write operations' flag saving: "
                               "file '%1' exists, all changes are already applied, finishing the task")
@@ -114,7 +113,7 @@ void SaveDocumentTask::run() {
         return;
     }
 
-    if (url.isLocalFile() && originalFileExists) {
+    if (isOriginalFileExist) {  // The file exist and is local.
         coreLog.trace(QString("Local file '%1' already exists, going to overwrite it").arg(url.getURLString()));
 
         // make tmp file
@@ -136,26 +135,22 @@ void SaveDocumentTask::run() {
             QScopedPointer<IOAdapter> io(IOAdapterUtils::open(GUrl(tmpFileName), stateInfo, flags.testFlag(SaveDoc_Append) ? IOAdapterMode_Append : IOAdapterMode_Write, doc->getIOAdapterFactory()));
             CHECK_OP(stateInfo, );
             df->storeDocument(doc, io.data(), stateInfo);
+            CHECK_OP(stateInfo, );
         }
 
         // remove old file and rename tmp file
+        GUrlUtils::removeFile(originalFilePath, stateInfo);
         CHECK_OP(stateInfo, );
 
-        bool originalFileExists = originalFile.open(QIODevice::ReadOnly);
-        if (originalFileExists) {
-            originalFileExists = !originalFile.remove();
-        }
-        CHECK_EXT(originalFileExists == false, stateInfo.setError(tr("Can't remove original file to place tmp file instead")), );
-
-        bool renamed = QFile::rename(tmpFileName, originalFilePath);
-        CHECK_EXT(renamed == true, stateInfo.setError(tr("Can't rename saved tmp file to original file")), );
+        bool isRenamed = QFile::rename(tmpFileName, originalFilePath);
+        CHECK_EXT(isRenamed, stateInfo.setError(tr("Can't rename saved tmp file to original file: %1").arg(originalFilePath)), );
     } else {
         coreLog.trace(QString("File '%1' doesn't exist, going to write it directly").arg(url.getURLString()));
         QScopedPointer<IOAdapter> io(IOAdapterUtils::open(url, stateInfo, flags.testFlag(SaveDoc_Append) ? IOAdapterMode_Append : IOAdapterMode_Write, doc->getIOAdapterFactory()));
         CHECK_OP(stateInfo, );
         df->storeDocument(doc, io.data(), stateInfo);
-        if (stateInfo.isCoR() && !originalFileExists && url.isLocalFile()) {
-            QFile::remove(url.getURLString());
+        if (stateInfo.isCoR() && url.isLocalFile()) {
+            GUrlUtils::removeFile(originalFilePath, stateInfo);
         }
     }
 }
@@ -241,7 +236,6 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool
                 save = false;
             }
             if (res == QMessageBox::Cancel) {
-                save = false;
                 cancel();
                 break;
             }
@@ -297,9 +291,9 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
             QWidget *activeWindow = qobject_cast<QWidget *>(QApplication::activeWindow());
             QFileDialog::Options options(qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0 ? QFileDialog::DontUseNativeDialog : 0);
             const QString fileName = QFileDialog::getSaveFileName(activeWindow, tr("Save as"), newFileUrl, saveFileFilter, 0, options);
-#ifdef Q_OS_DARWIN
-            activeWindow->activateWindow();
-#endif
+            if (isOsMac()) {
+                activeWindow->activateWindow();
+            }
             if (!fileName.isEmpty()) {
                 url = fileName;
             } else {  // Cancel in "Save as" dialog clicked
@@ -337,22 +331,22 @@ SaveCopyAndAddToProjectTask::SaveCopyAndAddToProjectTask(Document *doc, IOAdapte
 
 Task::ReportResult SaveCopyAndAddToProjectTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
-    Project *p = AppContext::getProject();
-    CHECK_EXT(p != nullptr, setError(tr("No active project found")), ReportResult_Finished);
-    CHECK_EXT(!p->isStateLocked(), setError(tr("Project is locked")), ReportResult_Finished);
+    Project *project = AppContext::getProject();
+    CHECK_EXT(project != nullptr, setError(tr("No active project found")), ReportResult_Finished);
+    CHECK_EXT(!project->isStateLocked(), setError(tr("Project is locked")), ReportResult_Finished);
 
-    const GUrl &url = saveTask->getURL();
-    if (p->findDocumentByURL(url)) {
-        setError(tr("Document is already added to the project %1").arg(url.getURLString()));
+    const GUrl &saveUrl = saveTask->getURL();
+    if (project->findDocumentByURL(saveUrl)) {
+        setError(tr("Document is already added to the project %1").arg(saveUrl.getURLString()));
         return ReportResult_Finished;
     }
-    Document *doc = df->createNewUnloadedDocument(saveTask->getIOAdapterFactory(), url, stateInfo, hints, info);
+    Document *doc = df->createNewUnloadedDocument(saveTask->getIOAdapterFactory(), saveUrl, stateInfo, hints, info);
     CHECK_OP(stateInfo, ReportResult_Finished);
     foreach (GObject *o, doc->getObjects()) {
-        GObjectUtils::updateRelationsURL(o, origURL, url);
+        GObjectUtils::updateRelationsURL(o, origURL, saveUrl);
     }
     doc->setModified(false);
-    p->addDocument(doc);
+    project->addDocument(doc);
     return ReportResult_Finished;
 }
 
@@ -364,33 +358,34 @@ RelocateDocumentTask::RelocateDocumentTask(const GUrl &fu, const GUrl &tu)
 }
 
 Task::ReportResult RelocateDocumentTask::report() {
-    Project *p = AppContext::getProject();
-    if (p == nullptr) {
+    Project *project = AppContext::getProject();
+    if (project == nullptr) {
         setError(tr("No active project found"));
         return ReportResult_Finished;
     }
-    if (p->isStateLocked()) {
+    if (project->isStateLocked()) {
         setError(tr("Project is locked"));
         return ReportResult_Finished;
     }
-    Document *d = p->findDocumentByURL(fromURL);
-    if (d == nullptr) {
+    Document *fromDocument = project->findDocumentByURL(fromURL);
+    if (fromDocument == nullptr) {
         setError(L10N::errorDocumentNotFound(fromURL));
         return ReportResult_Finished;
     }
-    if (d->isLoaded()) {
+    if (fromDocument->isLoaded()) {
         setError(tr("Only unloaded objects can be relocated"));
         return ReportResult_Finished;
     }
 
-    d->setURL(toURL);
-    if (fromURL.baseFileName() == d->getName() || fromURL.fileName() == d->getName()) {  // if document name is default -> update it too
-        d->setName(toURL.baseFileName());
+    fromDocument->setURL(toURL);
+    if (fromURL.baseFileName() == fromDocument->getName() || fromURL.fileName() == fromDocument->getName()) {  // if document name is default -> update it too
+        fromDocument->setName(toURL.baseFileName());
     }
 
-    // update relations to new url
-    foreach (Document *d, p->getDocuments()) {
-        foreach (GObject *o, d->getObjects()) {
+    // Update relations to the new url.
+    const QList<Document *> &projectDocs = project->getDocuments();
+    for (Document *projectDoc : qAsConst(projectDocs)) {
+        for (GObject *o : qAsConst(projectDoc->getObjects())) {
             GObjectUtils::updateRelationsURL(o, fromURL, toURL);
         }
     }
