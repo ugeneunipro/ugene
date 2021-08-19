@@ -63,8 +63,8 @@ MaOverviewContextMenu::MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *
 void MaOverviewContextMenu::connectSlots() {
     connect(showSimpleOverviewAction, SIGNAL(toggled(bool)), simpleOverview, SLOT(setVisible(bool)));
 
-    connect(exportAsImage, SIGNAL(triggered()), SLOT(sl_exportAsImageTriggered()));
-    connect(graphOverview, SIGNAL(si_renderingStateChanged(bool)), exportAsImage, SLOT(setDisabled(bool)));
+    connect(exportAsImageAction, SIGNAL(triggered()), SLOT(sl_exportAsImageTriggered()));
+    connect(graphOverview, SIGNAL(si_renderingStateChanged(bool)), exportAsImageAction, SLOT(setDisabled(bool)));
 
     connect(graphTypeActionGroup, SIGNAL(triggered(QAction *)), SLOT(sl_graphTypeActionTriggered(QAction *)));
 
@@ -142,9 +142,9 @@ void MaOverviewContextMenu::initSimpleOverviewAction() {
 }
 
 void MaOverviewContextMenu::initExportAsImageAction() {
-    exportAsImage = new QAction(tr("Export as image"), this);
-    exportAsImage->setObjectName("Export as image");
-    addAction(exportAsImage);
+    exportAsImageAction = new QAction(tr("Export overview as image"), this);
+    exportAsImageAction->setObjectName("export_overview_as_image_action");
+    addAction(exportAsImageAction);
 }
 
 void MaOverviewContextMenu::initDisplaySettingsMenu() {
@@ -244,4 +244,4 @@ QAction *MaOverviewContextMenu::createCheckableAction(const QString &text, QActi
     return a;
 }
 
-}    // namespace U2
+}  // namespace U2

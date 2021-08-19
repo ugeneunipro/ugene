@@ -244,4 +244,4 @@ StdResidueDictionary *StdResidueDictionary::createFromAsnTree(AsnNode *rootElem)
 
     return localDictionary;
 }
-}    // namespace U2
+}  // namespace U2

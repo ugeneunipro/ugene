@@ -116,6 +116,6 @@ public:
 };
 GTAbstractGUIActionMap::const_iterator it_QFileDialog = GTRandomGUIActionFactory::actionMap.insert("QFileDialog", new GTAbstractGUIAction_QFileDialog(GTAbstractGUIAction::Priority_High));
 
-}    // namespace GUITest_crazy_user
+}  // namespace GUITest_crazy_user
 
-}    // namespace U2
+}  // namespace U2

@@ -183,4 +183,4 @@ const PhyNode *PhyTreeObject::findPhyNodeByName(const QString &name) {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

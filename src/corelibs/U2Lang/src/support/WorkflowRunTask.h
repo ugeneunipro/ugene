@@ -32,7 +32,7 @@ namespace Workflow {
 class CommunicationChannel;
 class Schema;
 class WorkflowMonitor;
-}    // namespace Workflow
+}  // namespace Workflow
 using namespace Workflow;
 
 class U2LANG_EXPORT WorkflowAbstractRunner : public CmdlineTask {
@@ -47,7 +47,7 @@ public:
 
 protected:
     QList<WorkflowMonitor *> monitors;
-};    // WorkflowAbstractRunner
+};  // WorkflowAbstractRunner
 
 class U2LANG_EXPORT WorkflowAbstractIterationRunner : public Task {
     Q_OBJECT
@@ -87,7 +87,7 @@ private:
     QMap<ActorId, ActorId> rmap;
     QList<Link *> flows;
 
-};    // WorkflowRunTask
+};  // WorkflowRunTask
 
 class WorkflowIterationRunTask : public WorkflowAbstractIterationRunner {
     Q_OBJECT
@@ -133,6 +133,6 @@ private:
     bool contextInitialized;
 };
 
-}    //namespace U2
+}  // namespace U2
 
 #endif

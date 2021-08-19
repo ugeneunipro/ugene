@@ -37,19 +37,19 @@ enum StrandOption {
 };
 class U2CORE_EXPORT SequenceWalkerConfig {
 public:
-    //TODO: allow select custom strand only!
+    // TODO: allow select custom strand only!
 
     SequenceWalkerConfig();
 
-    const char *seq;    //  sequence to split
-    quint64 seqSize;    //  size of the sequence to split
-    U2Region range;    //  if not empty -> only this region is processed
+    const char *seq;  //  sequence to split
+    quint64 seqSize;  //  size of the sequence to split
+    U2Region range;  //  if not empty -> only this region is processed
     DNATranslation *complTrans;
     DNATranslation *aminoTrans;
 
-    quint64 chunkSize;    // optimal chunk size, used by default for all regions except last one
-    int lastChunkExtraLen;    // extra length allowed to be added to the last chunk
-    int overlapSize;    // overlap for 2 neighbor regions
+    quint64 chunkSize;  // optimal chunk size, used by default for all regions except last one
+    int lastChunkExtraLen;  // extra length allowed to be added to the last chunk
+    int overlapSize;  // overlap for 2 neighbor regions
     int nThreads;
     StrandOption strandToWalk;
 
@@ -157,6 +157,6 @@ private:
     QByteArray processedSeqImage;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

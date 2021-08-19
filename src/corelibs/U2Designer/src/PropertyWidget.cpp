@@ -39,7 +39,6 @@
 #include <U2Lang/SchemaConfig.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLContainer.h>
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "OutputFileDialog.h"
@@ -183,16 +182,40 @@ void DoubleSpinBoxWidget::sl_valueChanged(double value) {
     emit si_valueChanged(value);
 }
 
+////////////////////////////////////
+//// ComboBoxWidgetBase
+
+ComboBoxWidgetBase::ComboBoxWidgetBase(QWidget *parent, const QSharedPointer<StringFormatter> &_formatter, bool _isSorted)
+    : PropertyWidget(parent), formatter(_formatter), isSorted(_isSorted) {
+}
+
+QString ComboBoxWidgetBase::getFormattedItemText(const QString &itemKey) const {
+    return formatter.isNull() ? itemKey : formatter->format(itemKey);
+}
+
+void ComboBoxWidgetBase::sortComboItemsByName(QList<ComboItem> &itemList) {
+    std::stable_sort(itemList.begin(), itemList.end(), [](auto &i1, auto &i2) {
+        return QString::compare(i1.first, i2.first, Qt::CaseInsensitive) < 0;
+    });
+}
+
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent)
-    : PropertyWidget(parent) {
+ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter, bool isSorted)
+    : ComboBoxWidgetBase(parent, formatter, isSorted) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
-    foreach (const ComboItem p, items) {
-        comboBox->addItem(p.first, p.second);
+    QList<ComboItem> sortedItems;
+    for (const ComboItem &item : qAsConst(items)) {
+        sortedItems.append({getFormattedItemText(item.first), item.second});
+    }
+    if (isSorted) {
+        sortComboItemsByName(sortedItems);
+    }
+    for (const ComboItem &item : qAsConst(sortedItems)) {
+        comboBox->addItem(item.first, item.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
@@ -245,7 +268,7 @@ QVariant ComboBoxEditableWidget::value() {
 void ComboBoxEditableWidget::setValue(const QVariant &value) {
     int idx = comboBox->findData(value);
     if (idx == -1) {
-        //try by text
+        // try by text
         idx = comboBox->findText(value.toString());
         if (idx == -1) {
             if (customIdx == -1) {
@@ -370,7 +393,7 @@ void ComboBoxWithDbUrlWidget::sl_browse() {
 
     if (QDialog::Accepted == dialogResult) {
         const QString dbUrlWithoutProvider = editDialog->getFullDbiUrl();
-        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);    // TODO: fix this hardcoded value when other shared DB providers appear
+        U2DbiRef dbiRef(MYSQL_DBI_ID, dbUrlWithoutProvider);  // TODO: fix this hardcoded value when other shared DB providers appear
         const QString dbUrl = SharedDbUrlUtils::createDbUrl(dbiRef);
         SharedDbUrlUtils::saveNewDbConnection(editDialog->getName(), dbUrlWithoutProvider);
         updateComboValues();
@@ -409,8 +432,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), cm(nullptr), items(_items) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent, const QSharedPointer<StringFormatter> &formatter, bool isSorted)
+    : ComboBoxWidgetBase(parent, formatter, isSorted), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -460,27 +483,44 @@ void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
         }
     }
 
-    comboBox->setItemText(0, value().toString());
+    comboBox->setItemText(0, getFormattedValue());
+}
+
+QString ComboBoxWithChecksWidget::getFormattedValue() {
+    QStringList selectedValues = value().toString().split(",");
+    QStringList formattedValues;
+    for (const QString &value : qAsConst(selectedValues)) {
+        formattedValues << getFormattedItemText(value);
+    }
+    if (isSorted) {
+        formattedValues.sort(Qt::CaseInsensitive);
+    }
+    return formattedValues.join(",");
 }
 
 void ComboBoxWithChecksWidget::initModelView() {
-    cm = new QStandardItemModel(items.size(), 1, comboBox);
+    cm = new QStandardItemModel(comboBox);
 
-    int i = 0;
-    auto ghostItem = new QStandardItem();
-    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
-    cm->setItem(i++, ghostItem);
+    auto ghostItem = new QStandardItem(getFormattedValue());
+    cm->appendRow(ghostItem);
 
+    QList<QStandardItem *> standardItems;
     for (auto it = items.begin(); it != items.end(); ++it) {
-        QStandardItem *item = new QStandardItem(it.key());
+        QString formattedValue = getFormattedItemText(it.key());
+        auto item = new QStandardItem(formattedValue);
         item->setCheckable(true);
         item->setEditable(false);
         item->setSelectable(false);
         item->setCheckState(it.value().toBool() ? Qt::Checked : Qt::Unchecked);
         item->setData(it.key());
-        cm->setItem(i++, item);
+        standardItems << item;
     }
-
+    if (isSorted) {
+        std::stable_sort(standardItems.begin(), standardItems.end(), [](auto i1, auto i2) {
+            return QString::compare(i1->text(), i2->text(), Qt::CaseInsensitive) < 0;
+        });
+    }
+    std::for_each(standardItems.begin(), standardItems.end(), [&](auto item) -> void { cm->appendRow(item); });
     comboBox->setModel(cm);
 
     auto vw = new QListView(comboBox);
@@ -639,4 +679,4 @@ QString NoFileURLWidget::finalyze(const QString &url) {
     return finalyze(url, const_cast<DelegateTags *>(tags()));
 }
 
-}    // namespace U2
+}  // namespace U2

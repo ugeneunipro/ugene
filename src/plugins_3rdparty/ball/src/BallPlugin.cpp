@@ -41,4 +41,4 @@ BallPlugin::BallPlugin()
     AppContext::getMolecularSurfaceFactoryRegistry()->registerSurfaceFactory(new SolventAccessibleSurfaceFactory(), QString("SAS"));
 }
 
-}    // namespace U2
+}  // namespace U2

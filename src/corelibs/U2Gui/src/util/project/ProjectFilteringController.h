@@ -62,6 +62,6 @@ private:
     static const int FILTER_START_INTERVAL;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECT_FILTERING_CONTROLLER_H_
+#endif  // _U2_PROJECT_FILTERING_CONTROLLER_H_

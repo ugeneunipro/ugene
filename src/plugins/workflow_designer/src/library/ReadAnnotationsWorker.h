@@ -37,7 +37,7 @@ public:
     };
 
     ReadAnnotationsProto();
-};    // ReadAnnotationsProto
+};  // ReadAnnotationsProto
 
 class ReadAnnotationsWorker : public GenericDocReader {
     Q_OBJECT
@@ -59,7 +59,7 @@ private:
 private:
     ReadAnnotationsProto::Mode mode;
     QList<QVariantMap> datasetData;
-};    // ReadAnnotationsWorker
+};  // ReadAnnotationsWorker
 
 class ReadAnnotationsWorkerFactory : public DomainFactory {
 public:
@@ -71,7 +71,7 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // ReadAnnotationsWorkerFactory
+};  // ReadAnnotationsWorkerFactory
 
 class ReadAnnotationsTask : public Task {
     Q_OBJECT
@@ -93,7 +93,7 @@ private:
     QList<QVariantMap> results;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_READ_ANNOTATIONS_WORKER_
+#endif  // _U2_READ_ANNOTATIONS_WORKER_

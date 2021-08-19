@@ -149,7 +149,7 @@ void stopConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller
     checkDocument(os, action.dbName, false);
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_CLASS_NAME "GTUtilsDialog::SharedConnectionsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
@@ -202,4 +202,4 @@ void SharedConnectionsDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

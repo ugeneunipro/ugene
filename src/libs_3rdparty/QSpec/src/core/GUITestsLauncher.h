@@ -23,6 +23,6 @@ private:
     GUITestOpStatus os;
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // GUITESTSLAUNCHER_H
+#endif  // GUITESTSLAUNCHER_H

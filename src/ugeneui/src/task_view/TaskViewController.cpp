@@ -38,7 +38,7 @@
 
 #include "TaskViewController.h"
 
-//TODO: do not create subtask items until not expanded
+// TODO: do not create subtask items until not expanded
 
 namespace U2 {
 
@@ -65,7 +65,7 @@ TaskViewDockWidget::TaskViewDockWidget() {
     l->addWidget(tree);
 
     buildTree();
-    tree->setColumnWidth(0, 400);    //TODO: save geometry!
+    tree->setColumnWidth(0, 400);  // TODO: save geometry!
     tree->setColumnWidth(1, 250);
     tree->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -390,7 +390,7 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem *qi) {
     if (ti->task == nullptr) {
         return;
     }
-    if (qi->childIndicatorPolicy() != QTreeWidgetItem::ShowIndicator) {    //all taskitems with subtasks have QTreeWidgetItem::ShowIndicator
+    if (qi->childIndicatorPolicy() != QTreeWidgetItem::ShowIndicator) {  // all taskitems with subtasks have QTreeWidgetItem::ShowIndicator
         assert(ti->task == nullptr || ti->task->getSubtasks().isEmpty());
         return;
     }
@@ -616,4 +616,4 @@ void TVTreeItem::detachFromTask() {
     task = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -64,6 +64,6 @@ private:
     static QMutex mutex;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_UGENE_UPDATER_H_
+#endif  // _U2_UGENE_UPDATER_H_

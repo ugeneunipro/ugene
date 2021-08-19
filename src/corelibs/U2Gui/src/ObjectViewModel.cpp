@@ -36,8 +36,8 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OptionsPanelWidget.h>
 
-//BUG:535 refactor closing interface.
-//Idea: make it QObject and call 'deleteLater' on it
+// BUG:535 refactor closing interface.
+// Idea: make it QObject and call 'deleteLater' on it
 
 namespace U2 {
 
@@ -398,7 +398,7 @@ GObjectViewWindow *GObjectViewUtils::findViewByName(const QString &name) {
 QString GObjectViewUtils::genUniqueViewName(const QString &name) {
     SAFE_POINT(!name.isEmpty(), "genUniqueViewName got empty name!", "");
 
-    QSet<QString> usedNames;    //set of names is derived from active views & saved states
+    QSet<QString> usedNames;  // set of names is derived from active views & saved states
     QList<MWMDIWindow *> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     for (const MWMDIWindow *w : qAsConst(windows)) {
         usedNames.insert(w->windowTitle());
@@ -474,7 +474,7 @@ QList<GObjectViewWindow *> GObjectViewUtils::findViewsByFactoryId(GObjectViewFac
     QList<GObjectViewWindow *> resultWindowList;
     MainWindow *mainWindow = AppContext::getMainWindow();
     if (mainWindow == nullptr || mainWindow->getMDIManager() == nullptr) {
-        return resultWindowList;    //Main window is closed.
+        return resultWindowList;  // Main window is closed.
     }
     QList<MWMDIWindow *> mdiWindows = mainWindow->getMDIManager()->getWindows();
     for (MWMDIWindow *mdiWindow : qAsConst(mdiWindows)) {
@@ -557,7 +557,7 @@ void GObjectViewWindowContext::init() {
 
 GObjectViewWindowContext::~GObjectViewWindowContext() {
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-    if (mdiManager == nullptr) {    //TODO: disconnect context on view removal and assert (mdi!=NULL) here.
+    if (mdiManager == nullptr) {  // TODO: disconnect context on view removal and assert (mdi!=NULL) here.
         return;
     }
     const QList<MWMDIWindow *> windowList = mdiManager->getWindows();
@@ -629,7 +629,7 @@ void GObjectViewWindowContext::buildActionMenu(GObjectView *view, QMenu *menu, c
 void GObjectViewWindowContext::disconnectView(GObjectView *v) {
     QList<QObject *> resourceObjectList = viewResources[v];
     for (QObject *resourceObject : qAsConst(resourceObjectList)) {
-        resourceObject->deleteLater();    // deliver close signals, save view states first
+        resourceObject->deleteLater();  // deliver close signals, save view states first
     }
     viewResources.remove(v);
     v->removeObjectHandler(this);
@@ -723,4 +723,4 @@ void GObjectViewObjectHandler::onObjectAdded(GObjectView *, GObject *) {
 void GObjectViewObjectHandler::onObjectRemoved(GObjectView *, GObject *) {
 }
 
-}    // namespace U2
+}  // namespace U2

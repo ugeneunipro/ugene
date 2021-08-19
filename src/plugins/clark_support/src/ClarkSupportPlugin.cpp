@@ -82,4 +82,4 @@ ClarkSupportPlugin::~ClarkSupportPlugin() {
     ClarkSupport::unregisterTools(etRegistry);
 }
 
-}    // namespace U2
+}  // namespace U2

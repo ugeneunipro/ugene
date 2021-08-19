@@ -334,4 +334,4 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(GraphicsRectangularBranchItem *fi
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

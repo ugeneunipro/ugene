@@ -62,9 +62,9 @@
 #include "QDSceneIOTasks.h"
 #include "QueryViewController.h"
 
-//TODO: there are issues with 'docWithSequence' here
-// Issue 1: if docWithSequence removed from the project during calc -> crash
-// Issue 2: if docWithSequence is loaded and task is failed -> memleak
+// TODO: there are issues with 'docWithSequence' here
+//  Issue 1: if docWithSequence removed from the project during calc -> crash
+//  Issue 2: if docWithSequence is loaded and task is failed -> memleak
 
 namespace U2 {
 
@@ -439,4 +439,4 @@ void QDDialog::sl_okBtnClicked() {
     QDDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

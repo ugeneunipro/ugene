@@ -44,7 +44,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
         chunk_start = buf;
         len = readBlock(buf, qMin(CHUNK, (qint64)end - (qint64)buf));
         if (len == -1) {
-            //error
+            // error
             return -1;
         }
         if (len < CHUNK) {
@@ -70,7 +70,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
 
     if (found) {
         bool b = skip((qint64)buf - (qint64)chunk_start - len);
-        assert(b);    // Cannot put back unused data;
+        assert(b);  // Cannot put back unused data;
         Q_UNUSED(b);
     }
 
@@ -91,23 +91,23 @@ bool IOAdapter::isEof() {
 }
 
 qint64 IOAdapter::readLine(char *buff, qint64 maxSize, bool *terminatorFound /* = 0*/) {
-    bool b = false;
+    bool terminatorFlagStub = false;
     if (!terminatorFound) {
-        terminatorFound = &b;
+        terminatorFound = &terminatorFlagStub;
     }
     qint64 len = readUntil(buff, maxSize, TextUtils::LINE_BREAKS, Term_Exclude, terminatorFound);
     if (*terminatorFound) {
         char ch;
-        bool b = getChar(&ch);
-        assert(b);
+        bool isGetCharOk = getChar(&ch);
+        SAFE_POINT(isGetCharOk, L10N::internalError("IOAdapter::readLine::getChar"), len);
         if (ch == '\r') {
             // may be Windows EOL \r\n
-            b = getChar(&ch);
-            if (b && ch != '\n') {
+            isGetCharOk = getChar(&ch);
+            if (isGetCharOk && ch != '\n') {
                 skip(-1);
             }
         } else {
-            assert(ch == '\n');
+            SAFE_POINT(ch == '\n', L10N::internalError("IOAdapter::readLine char is not '\\n'"), len);
         }
     }
     return len;
@@ -122,4 +122,4 @@ void IOAdapter::cutByteOrderMarks(char *data, QString &errorString, qint64 &leng
     }
 }
 
-}    // namespace U2
+}  // namespace U2

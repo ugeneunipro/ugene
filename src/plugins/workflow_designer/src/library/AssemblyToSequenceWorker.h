@@ -46,7 +46,7 @@ private:
     AssemblyToSequencesTask *converter;
     IntegralBus *inChannel;
     IntegralBus *outChannel;
-};    // AssemblyToSequencesWorker
+};  // AssemblyToSequencesWorker
 
 class AssemblyToSequencesTask : public Task {
     Q_OBJECT
@@ -73,7 +73,7 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // AssemblyToSequencesWorkerFactory
+};  // AssemblyToSequencesWorkerFactory
 
 class AssemblyToSequencesPrompter : public PrompterBase<AssemblyToSequencesPrompter> {
     Q_OBJECT
@@ -84,9 +84,9 @@ public:
 
 protected:
     QString composeRichDoc();
-};    // AssemblyToSequencesPrompter
+};  // AssemblyToSequencesPrompter
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _ASSEMBLY_TO_SEQUENCES_WORKER_
+#endif  // _ASSEMBLY_TO_SEQUENCES_WORKER_

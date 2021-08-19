@@ -47,14 +47,14 @@ namespace GUITest_common_scenarios_msa_editor_overview {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Open "_common_data/fasta/empty.fa".
+    // 1. Open "_common_data/fasta/empty.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    //Expected state: msa is empty, overview is pure white.
+    // Expected state: msa is empty, overview is pure white.
     QWidget *simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
 
     QColor c = GTWidget::getColor(os, simpleOverview, simpleOverview->rect().center());
@@ -66,16 +66,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //1. Open "_common_data/clustal/10000_sequences.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Wait until overview rendering is finished.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //Expected state: simple overview is disabled, graph overview is displayed.
+
+    // Expected state: simple overview is hidden, graph overview is visible.
     QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(!simple->isVisible(), "simple overveiw is visiable");
+    CHECK_SET_ERR(!simple->isVisible(), "simple overview is visiable");
 
     QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_SET_ERR(graph->isVisible(), "graph overveiw is visiable");
+    CHECK_SET_ERR(graph->isVisible(), "graph overview is visiable");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -186,18 +188,18 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
-    //Close Project view for small screens
+    // Close Project view for small screens
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
 
     for (int i = 0; i < 12; i++) {
-        //saving overviews' images
+        // saving overviews' images
         QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
         QImage imgGraph1 = GTWidget::getImage(os, overviewGraph);
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(40, 17));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-        //checking images changed
+        // checking images changed
         QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
         QImage imgGraph2 = GTWidget::getImage(os, overviewGraph);
 
@@ -216,7 +218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
-    //saving overviews' images
+    // saving overviews' images
     QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
     //    2. Select some area in msa view and move it with mouse.
@@ -227,7 +229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
     //    Simple overview updates simultaneously.
-    //checking simple overview image changed
+    // checking simple overview image changed
     QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
@@ -254,7 +256,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
 
-    //saving overviews' images
+    // saving overviews' images
     QImage imageBefore = GTWidget::getImage(os, overviewSimple);
 
     //    2. Select one symbol.
@@ -280,7 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
-    //saving overviews' images
+    // saving overviews' images
     QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
 
     //    2. Select one symbol.
@@ -292,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
     //    Simple overview updates simultaneously.
-    //checking simple overview image changed
+    // checking simple overview image changed
     QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
@@ -309,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/phylip/seq_protein.ph");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //saving overview image
+    // saving overview image
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     const QImage img = GTWidget::getImage(os, overviewGraph);
 
@@ -442,8 +444,8 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
-    //0019 and 0020 scenarios
-    //    1. Open "_common_data/CLUSLAL/HIV_1.aln"
+    // 0019 and 0020 scenarios
+    //     1. Open "_common_data/CLUSLAL/HIV_1.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -455,7 +457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //    3. Select {Calculation method -> Highlighting}.
     //    4. Go to Highlighting tab on Options panel.
-    //save grahpView
+    // save grahpView
     const QImage img = GTWidget::getImage(os, overviewGraph);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
@@ -468,7 +470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     //    Expected state: graph displays percent of highlighted cells in column.
-    //save grahpView
+    // save grahpView
     const QImage img1 = GTWidget::getImage(os, overviewGraph);
     CHECK_SET_ERR(img != img1, "overview not changed");
 
@@ -556,5 +558,5 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     CHECK_SET_ERR(color.name() == "#7eaecc", "simple overview has wrong color. Expected: #7eaecc, Found: " + color.name());
 }
 
-}    // namespace GUITest_common_scenarios_msa_editor_overview
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_msa_editor_overview
+}  // namespace U2

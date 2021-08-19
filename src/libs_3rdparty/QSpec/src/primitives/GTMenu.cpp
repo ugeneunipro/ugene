@@ -131,7 +131,7 @@ bool compare(QString s1, QString s2, Qt::MatchFlag mathcFlag, bool replaceSpecSy
     }
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "clickMainMenuItem"
 void GTMenu::clickMainMenuItem(GUITestOpStatus &os, const QStringList &itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
@@ -236,14 +236,14 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
     switch (useMethod) {
         case GTGlobals::UseMouse: {
             QPoint actionPosition = actionPos(os, menu, action);
-            bool isVerticalMenu = cursorPosition.y() < menuCorner.y();    // TODO: assuming here that submenu is always lower then menu
-            QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :    // move by Y first
-                                     QPoint(actionPosition.x(), cursorPosition.y());    // move by X first
+            bool isVerticalMenu = cursorPosition.y() < menuCorner.y();  // TODO: assuming here that submenu is always lower then menu
+            QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :  // move by Y first
+                                     QPoint(actionPosition.x(), cursorPosition.y());  // move by X first
 
             GTMouseDriver::moveTo(firstMoveTo);
             GTGlobals::sleep(200);
 
-            GTMouseDriver::moveTo(actionPosition);    // move cursor to action
+            GTMouseDriver::moveTo(actionPosition);  // move cursor to action
             GTGlobals::sleep(200);
 
 #ifdef Q_OS_WIN
@@ -301,4 +301,4 @@ void GTMenu::clickMenuItemByText(GUITestOpStatus &os, const QMenu *menu, const Q
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

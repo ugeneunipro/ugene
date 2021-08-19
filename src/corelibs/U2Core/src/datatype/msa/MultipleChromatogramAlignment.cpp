@@ -88,7 +88,7 @@ QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlig
     return maRows;
 }
 
-}    // namespace
+}  // namespace
 
 MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleChromatogramAlignmentRow> &rows)
     : MultipleAlignmentData(name, alphabet, convertToMaRows(rows)) {
@@ -626,4 +626,4 @@ MultipleAlignmentRow MultipleChromatogramAlignmentData::getEmptyRow() const {
     return MultipleChromatogramAlignmentRow();
 }
 
-}    // namespace U2
+}  // namespace U2

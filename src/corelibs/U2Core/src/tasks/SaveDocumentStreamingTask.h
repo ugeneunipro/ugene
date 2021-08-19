@@ -50,8 +50,8 @@ private:
     Document *doc;
     IOAdapter *io;
 
-};    // SaveDocumentStreamingTask
+};  // SaveDocumentStreamingTask
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SAVE_DOCUMENT_STREAMING_TASK_H_
+#endif  // _U2_SAVE_DOCUMENT_STREAMING_TASK_H_

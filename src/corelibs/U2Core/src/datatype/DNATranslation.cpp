@@ -198,4 +198,4 @@ DNACodon *DNATranslationRegistry::lookupCodon(char symbol) {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

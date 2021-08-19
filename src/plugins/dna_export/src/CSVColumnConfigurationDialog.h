@@ -43,6 +43,6 @@ private slots:
     virtual void sl_startToggle(bool);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

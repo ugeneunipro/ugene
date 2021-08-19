@@ -198,7 +198,7 @@ QStringList TreeOptionsWidget::getSaveDisabledWidgets() const {
 }
 
 void TreeOptionsWidget::initializeOptionsMap() {
-    //Scalebar settings widgets
+    // Scalebar settings widgets
     optionsMap[scaleSpinBox->objectName()] = SCALEBAR_RANGE;
     optionsMap[scaleFontSizeSpinBox->objectName()] = SCALEBAR_FONT_SIZE;
     optionsMap[lineWidthSpinBox->objectName()] = SCALEBAR_LINE_WIDTH;
@@ -228,13 +228,13 @@ void TreeOptionsWidget::connectSlots() {
 
     connect(getTreeViewer(), SIGNAL(si_optionChanged(TreeViewOption, const QVariant &)), SLOT(sl_onOptionChanged(TreeViewOption, const QVariant &)));
 
-    //Labels settings widgets
+    // Labels settings widgets
     connect(showNamesCheck, SIGNAL(stateChanged(int)), SLOT(sl_valueChanged()));
     connect(showDistancesCheck, SIGNAL(stateChanged(int)), SLOT(sl_valueChanged()));
     connect(alignLabelsCheck, SIGNAL(stateChanged(int)), SLOT(sl_valueChanged()));
     connect(showNodeLabelsCheck, SIGNAL(stateChanged(int)), SLOT(sl_valueChanged()));
 
-    //Labels format widgets
+    // Labels format widgets
     connect(labelsColorButton, SIGNAL(clicked()), SLOT(sl_labelsColorButton()));
     connect(boldAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontBoldChanged()));
     connect(italicAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontItalicChanged()));
@@ -242,12 +242,12 @@ void TreeOptionsWidget::connectSlots() {
     connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontSizeChanged()));
     connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontTypeChanged()));
 
-    //Scalebar settings widgets
+    // Scalebar settings widgets
     connect(scaleSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_valueChanged()));
     connect(scaleFontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
     connect(lineWidthSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
 
-    //Branches settings widgets
+    // Branches settings widgets
     connect(widthSlider, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
     connect(heightSlider, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
 
@@ -284,7 +284,7 @@ void TreeOptionsWidget::createGeneralSettingsWidgets() {
 }
 
 void TreeOptionsWidget::updateFormatSettings() {
-    //Update labels format settings widgets
+    // Update labels format settings widgets
     QColor curColor = qvariant_cast<QColor>(getTreeViewer()->getOptionValue(LABEL_COLOR));
     updateButtonColor(labelsColorButton, curColor);
 
@@ -464,4 +464,4 @@ bool TreeOptionsSavableWidget::childCanBeSaved(QWidget *child) const {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -96,5 +96,5 @@ bool PortAlias::isInput() const {
     return port->isInput();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

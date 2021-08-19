@@ -121,7 +121,7 @@ QBitArray getAmbiguousCharacters() {
     return ambiguousCharacters;
 }
 
-}    // namespace
+}  // namespace
 
 QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection direction) const {
     static const QBitArray ambiguousCharacters = getAmbiguousCharacters();
@@ -152,4 +152,4 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     cachedIterator->setDirection(direction);
 }
 
-}    // namespace U2
+}  // namespace U2

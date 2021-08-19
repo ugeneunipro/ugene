@@ -164,7 +164,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
-    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {  // Restored by the parent process
         qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
@@ -183,7 +183,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0004) {
-    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+    if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {  // Restored by the parent process
         qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
@@ -197,5 +197,5 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     }
 }
 
-}    // namespace GUITest_posterior_actions
-}    // namespace U2
+}  // namespace GUITest_posterior_actions
+}  // namespace U2

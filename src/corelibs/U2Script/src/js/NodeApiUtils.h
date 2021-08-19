@@ -38,8 +38,8 @@ public:
     static ScriptContext *getScriptContext();
 };
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_NODE_API_UTILS_H_
+#endif  // _U2_NODE_API_UTILS_H_

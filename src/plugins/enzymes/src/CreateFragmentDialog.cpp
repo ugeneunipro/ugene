@@ -190,4 +190,4 @@ void CreateFragmentDialog::setupAnnotationsWidget() {
     annotationsWidget->setMinimumSize(caw->layout()->minimumSize());
 }
 
-}    // namespace U2
+}  // namespace U2

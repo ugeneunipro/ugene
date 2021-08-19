@@ -55,16 +55,15 @@ SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext *ctx)
     : ctx(ctx) {
 }
 
-int SequenceViewRenderer::posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
-    Q_UNUSED(canvasSize);
+int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize &, const U2Region &visibleRange) const {
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
-    double res = (pos - visibleRange.startPos) * getCurrentScale();
+    double res = (double)(pos - visibleRange.startPos) * getCurrentScale();
     return qRound(res);
 }
 
-qint64 SequenceViewRenderer::getRowLineHeight() const {
+int SequenceViewRenderer::getRowLineHeight() const {
     return commonMetrics.lineHeight;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -117,7 +117,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     connect(table->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), SLOT(sl_showPropDoc()));
     connect(table->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(handleDataChanged(QModelIndex, QModelIndex)));
     // FIXME
-    //connect(doc, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_contextMenuForDoc(const QPoint &)));
+    // connect(doc, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_contextMenuForDoc(const QPoint &)));
     table->setTabKeyNavigation(true);
 }
 
@@ -437,7 +437,7 @@ void WorkflowEditor::sl_changeVisibleOutput(bool isChecked) {
 void WorkflowEditor::editPort(Port *p) {
     reset();
     if (p) {
-        //caption->setText(formatPortCaption(p));
+        // caption->setText(formatPortCaption(p));
         QString portDoc = tr("<b>%1 \"%2\"</b> of task \"%3\":<br>%4<br><br>%5")
                               .arg(p->isOutput() ? tr("Output port") : tr("Input port"))
                               .arg(p->getDisplayName())
@@ -658,4 +658,4 @@ int SpecialParametersPanel::contentHeight() const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

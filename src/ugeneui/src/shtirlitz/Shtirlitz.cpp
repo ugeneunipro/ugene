@@ -56,7 +56,7 @@ const static char *SETTINGS_UGENE_UID = "shtirlitz/uid";
 
 const static int DAYS_BETWEEN_REPORTS = 7;
 
-//This file stores the actual location of reports-receiver script.
+// This file stores the actual location of reports-receiver script.
 const static char *DESTINATION_URL_KEEPER_SRV = "http://ugene.net";
 const static char *DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
 
@@ -70,7 +70,7 @@ const QString Shtirlitz::SEPARATOR = "|";
 QUuid Shtirlitz::getUniqueUgeneId() {
     static QUuid uniqueUgeneId;
     if (uniqueUgeneId.isNull()) {
-        //try to load it from settings
+        // try to load it from settings
         QVariant uuidQvar = AppContext::getSettings()->getValue(SETTINGS_UGENE_UID);
         if (uuidQvar.isNull()) {
             uniqueUgeneId = QUuid::createUuid();
@@ -84,7 +84,7 @@ QUuid Shtirlitz::getUniqueUgeneId() {
 
 static QString getWhatsNewHtml() {
     QString activeLanguage = L10N::getActiveLanguageCode();
-    if (activeLanguage != "ru") {    // We have only Russian & English versions of "version_news_" files.
+    if (activeLanguage != "ru") {  // We have only Russian & English versions of "version_news_" files.
         activeLanguage = "en";
     }
     QFile htmlFile(":/ugene/html/version_news_" + activeLanguage + ".html");
@@ -96,8 +96,8 @@ static QString getWhatsNewHtml() {
     return in.readAll();
 }
 
-//Report about system is sent on the first launch of UGENE.
-//Statistical reports are sent once per DAYS_BETWEEN_REPORTS.
+// Report about system is sent on the first launch of UGENE.
+// Statistical reports are sent once per DAYS_BETWEEN_REPORTS.
 QList<Task *> Shtirlitz::wakeup() {
     QList<Task *> result;
     Settings *s = AppContext::getSettings();
@@ -140,7 +140,7 @@ QList<Task *> Shtirlitz::wakeup() {
         coreLog.details(ShtirlitzTask::tr("Shtirlitz is sending the first-time report"));
         result << sendSystemReport();
         bSentSystemReport = true;
-        //Leave a mark that the first-time report was sent
+        // Leave a mark that the first-time report was sent
     }
 
     // Check if previous report was sent more than a week ago
@@ -155,7 +155,7 @@ QList<Task *> Shtirlitz::wakeup() {
                 result << sendSystemReport();
             }
             result << sendCountersReport();
-            //and save the new date
+            // and save the new date
             s->setValue(SETTINGS_PREVIOUS_REPORT_DATE, QDate::currentDate());
         }
     }
@@ -170,7 +170,7 @@ void Shtirlitz::saveGatheredInfo() {
     if (!enabled()) {
         return;
     }
-    //1. Save counters
+    // 1. Save counters
     Settings *s = AppContext::getSettings();
     QList<GCounter *> appCounters = GCounter::getAllCounters();
     for (const GCounter *counter : qAsConst(appCounters)) {
@@ -181,7 +181,7 @@ void Shtirlitz::saveGatheredInfo() {
             QString curKey = QString(SETTINGS_COUNTERS) + "/" + ctrKey;
             QVariant lastValQvar = s->getValue(curKey, QVariant());
             double lastVal = lastValQvar.canConvert<double>() ? lastValQvar.toDouble() : 0.;
-            double newVal = (lastVal + ctrVal > lastVal) ? lastVal + ctrVal : lastVal;    //overflow detection
+            double newVal = (lastVal + ctrVal > lastVal) ? lastVal + ctrVal : lastVal;  // overflow detection
             s->setValue(curKey, newVal);
         }
     }
@@ -205,8 +205,8 @@ Task *Shtirlitz::sendSystemReport() {
     return sendCustomReport(systemReport);
 }
 
-//Tries to load saved counters from settings.
-//Adds loaded counters to report, sets saved values to zero
+// Tries to load saved counters from settings.
+// Adds loaded counters to report, sets saved values to zero
 QString Shtirlitz::formCountersReport() {
     Settings *s = AppContext::getSettings();
     QString countersReport;
@@ -277,13 +277,13 @@ void Shtirlitz::getSysInfo(QString &name,
     version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)
     name = "Linux";
-    version = "unknown";    //no version is available :(
+    version = "unknown";  // no version is available :(
 #elif defined(Q_OS_FREEBSD)
     name = "FreeBSD";
-    version = "unknown";    //no version is available :(
+    version = "unknown";  // no version is available :(
 #elif defined(Q_OS_UNIX)
     name = "Unix";
-    version = "unknown";    //no version is available :(
+    version = "unknown";  // no version is available :(
 #else
     name = "Other";
     version = "unknown";
@@ -323,7 +323,7 @@ ShtirlitzTask::ShtirlitzTask(const QString &_report)
 void ShtirlitzTask::run() {
     stateInfo.setDescription(tr("Connecting to remote server"));
 
-    //Creating SyncHttp object and enabling proxy if needed.
+    // Creating SyncHttp object and enabling proxy if needed.
     SyncHttp http(stateInfo);
     NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
@@ -337,7 +337,7 @@ void ShtirlitzTask::run() {
     preparedReport += QUrl::toPercentEncoding(report);
 
     // Get actual location of the reports receiver
-    //FIXME: error handling
+    // FIXME: error handling
     QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) +
                                             QString(DESTINATION_URL_KEEPER_PAGE)),
                                        10000);
@@ -350,14 +350,14 @@ void ShtirlitzTask::run() {
         return;
     }
 
-    //Checking proxy again, for the new url
+    // Checking proxy again, for the new url
     SyncHttp http2(stateInfo);
     isException = nc->getExceptionsList().contains(QUrl(reportsPath).host());
     if (isProxy && !isException) {
         http2.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));
     }
     QString fullPath = reportsPath + "?" + preparedReport;
-    http2.syncGet(fullPath, 20000);    //TODO: consider using POST method?
+    http2.syncGet(fullPath, 20000);  // TODO: consider using POST method?
     if (http.error() != QNetworkReply::NoError) {
         stateInfo.setError(tr("Network error while sending report: ") + http2.errorString());
         return;
@@ -374,4 +374,4 @@ void ShtirlitzStartupTask::prepare() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

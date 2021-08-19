@@ -47,6 +47,6 @@ private:
     U2UseCommonUserModStep *msaChangeTracker;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_EDITOR_USER_MOD_STEP_CONTROLLER_H_
+#endif  // _U2_MSA_EDITOR_USER_MOD_STEP_CONTROLLER_H_

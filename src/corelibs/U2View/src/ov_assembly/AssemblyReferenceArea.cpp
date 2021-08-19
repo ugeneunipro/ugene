@@ -206,4 +206,4 @@ void AssemblyReferenceArea::sl_onReferenceChanged() {
     unassociateReferenceAction->setEnabled(getModel()->referenceAssociated() && !getModel()->isLoadingReference());
 }
 
-}    // namespace U2
+}  // namespace U2

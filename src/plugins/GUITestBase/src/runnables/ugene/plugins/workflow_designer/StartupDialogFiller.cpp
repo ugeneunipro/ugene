@@ -68,4 +68,4 @@ void StartupDialogFiller::commonScenario() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

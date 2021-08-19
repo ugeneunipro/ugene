@@ -36,11 +36,11 @@ namespace U2 {
 class Vector3D;
 
 /*!
-* @brief Class for OpenGL 3d scene manipulation
-*/
+ * @brief Class for OpenGL 3d scene manipulation
+ */
 class GLFrame {
     static const GLfloat DEFAULT_ZOOM;
-    //static const Vector3D DEFAULT_CAMERA;
+    // static const Vector3D DEFAULT_CAMERA;
 public:
     GLFrame(QOpenGLWidget *widget);
 
@@ -101,6 +101,6 @@ public:
     QList<GLFrame *> getActiveGLFrameList(GLFrame *currentFrame, bool syncModeOn);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GL_FRAME_MANAGER_H_
+#endif  // _U2_GL_FRAME_MANAGER_H_

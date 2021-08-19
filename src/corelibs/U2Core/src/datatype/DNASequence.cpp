@@ -42,4 +42,4 @@ void DNASequence::setName(const QString &name) {
     info.insert(DNAInfo::ID, name);
 }
 
-}    // namespace U2
+}  // namespace U2

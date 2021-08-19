@@ -41,7 +41,7 @@ class AnnotationTableObject;
 class ADVSequenceObjectContext;
 class CollocationSearchTask;
 
-//TODO: listen for allocation add/remove to the view
+// TODO: listen for allocation add/remove to the view
 class CollocationsDialogController : public QDialog, Ui_FindAnnotationCollocationsDialog {
     Q_OBJECT
 public:
@@ -112,6 +112,6 @@ private:
     QList<SharedAnnotationData> sourceAnns;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

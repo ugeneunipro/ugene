@@ -47,6 +47,6 @@ private:
     static void setMergeMultiSequencePolicySeparatorSize(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_OPTIONS_WIDGET_FILLER_H_
+#endif  // _U2_IMPORT_OPTIONS_WIDGET_FILLER_H_

@@ -37,7 +37,7 @@ namespace U2 {
 
 const QString VanDerWaalsGLRenderer::ID(QObject::tr("Space Fill"));
 
-//unsigned int DisplayLists::atomDL = -1;
+// unsigned int DisplayLists::atomDL = -1;
 
 void VanDerWaalsGLRenderer::drawBioStruct3D() {
     drawAtoms(colorScheme);
@@ -74,4 +74,4 @@ VanDerWaalsGLRenderer::VanDerWaalsGLRenderer(const BioStruct3D &struc, const Bio
     create();
 }
 
-}    // namespace U2
+}  // namespace U2

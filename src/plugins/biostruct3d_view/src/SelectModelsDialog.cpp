@@ -102,4 +102,4 @@ const QList<int> &SelectModelsDialog::getSelectedModelsIndexes() const {
 SelectModelsDialog::~SelectModelsDialog() {
 }
 
-}    // namespace U2
+}  // namespace U2

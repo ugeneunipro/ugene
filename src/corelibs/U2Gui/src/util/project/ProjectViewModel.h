@@ -184,13 +184,13 @@ private:
     void afterRemove(int row);
 
     QList<Document *> docs;
-    QSet<Document *> justAddedDocs;    // documents that have been added to a project but not loaded yet
+    QSet<Document *> justAddedDocs;  // documents that have been added to a project but not loaded yet
     mutable QHash<Document *, DocumentFolders *> folders;
     ProjectTreeControllerModeSettings settings;
 
     static const QString MODIFIED_ITEM_COLOR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECTVIEWMODEL_H_
+#endif  // _U2_PROJECTVIEWMODEL_H_

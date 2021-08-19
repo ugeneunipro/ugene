@@ -29,7 +29,7 @@ using namespace HI;
 
 class RenameSequenceFiller : public Filler {
 public:
-    //class can be used for checking name if newName == oldName
+    // class can be used for checking name if newName == oldName
     RenameSequenceFiller(HI::GUITestOpStatus &_os, QString _newName, QString _oldName = QString(), bool useCopyPaste = false)
         : Filler(_os, ""), os(_os), newName(_newName), oldName(_oldName), useCopyPaste(useCopyPaste) {
     }
@@ -45,6 +45,6 @@ private:
     bool useCopyPaste;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

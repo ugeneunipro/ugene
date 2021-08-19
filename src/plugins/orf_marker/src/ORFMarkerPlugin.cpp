@@ -69,7 +69,7 @@ ORFMarkerPlugin::ORFMarkerPlugin()
     QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDORFActorPrototype());
 
-    //ORFMarker test
+    // ORFMarker test
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
@@ -85,7 +85,7 @@ ORFMarkerPlugin::ORFMarkerPlugin()
 }
 
 ORFMarkerPlugin::~ORFMarkerPlugin() {
-    //printf("ORF deallocated!\n");
+    // printf("ORF deallocated!\n");
 }
 
 ORFViewContext::ORFViewContext(QObject *p)
@@ -118,4 +118,4 @@ QList<XMLTestFactory *> ORFMarkerTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -138,6 +138,6 @@ private:
     LoadSequencesTask *loadSequencesTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_ALIGN_SEQUENCES_TO_ALIGNMENT_TASK_H_
+#endif  //_U2_ALIGN_SEQUENCES_TO_ALIGNMENT_TASK_H_

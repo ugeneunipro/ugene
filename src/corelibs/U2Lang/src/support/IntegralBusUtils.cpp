@@ -111,7 +111,7 @@ StringSlotType getSlotType(const Descriptor &slot) {
     }
     return TEXT;
 }
-}    // namespace
+}  // namespace
 
 QList<Descriptor> IntegralBusUtils::getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type) {
     QList<Descriptor> result = busMap.keys(type);
@@ -292,5 +292,5 @@ CandidatesSplitterRegistry::~CandidatesSplitterRegistry() {
     splitters.clear();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

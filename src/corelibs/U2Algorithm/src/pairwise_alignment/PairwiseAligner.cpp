@@ -56,4 +56,4 @@ PairwiseAligner *PairwiseAlignerFactory::createAligner(const QString &alignerId,
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

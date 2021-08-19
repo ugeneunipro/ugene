@@ -281,4 +281,4 @@ QColor CodonTableView::getColor(DNACodonGroup gr) {
     return QColor();
 }
 
-}    // namespace U2
+}  // namespace U2

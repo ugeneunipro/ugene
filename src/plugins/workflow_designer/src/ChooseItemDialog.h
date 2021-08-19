@@ -34,11 +34,11 @@ class ChooseItemDialog : public QDialog, public Ui_ChooseItemDialog {
     Q_OBJECT
 public:
     ChooseItemDialog(QWidget *p = nullptr);
-    //virtual int select(const QList<QString>& items);
+    // virtual int select(const QList<QString>& items);
     virtual QString select(const QMap<QString, QIcon> &items);
     Workflow::ActorPrototype *select(const QList<Workflow::ActorPrototype *> &items);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

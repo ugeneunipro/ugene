@@ -27,21 +27,18 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/QObjectScopedPointer.h>
-
-#include <U2Gui/ExportImageDialog.h>
 
 #include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
-#include "ov_msa/export/MSAImageExportTask.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/ScrollController.h"
@@ -106,15 +103,6 @@ QAction *MaEditorWgt::getRedoAction() const {
     QAction *a = undoFWK->getRedoAction();
     a->setObjectName("msa_action_redo");
     return a;
-}
-
-void MaEditorWgt::sl_saveScreenshot() {
-    CHECK(qobject_cast<MSAEditor *>(editor) != nullptr, );
-    MSAImageExportController controller(this);
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
-    QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());
-    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
-    dlg->exec();
 }
 
 void MaEditorWgt::initWidgets() {
@@ -194,9 +182,9 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
-    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");    // avoid white background of scrollbar set 1 line above.
+    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
-    nameAreaContainer->setMinimumWidth(15);    // splitter uses min-size to collapse a widget
+    nameAreaContainer->setMinimumWidth(15);  // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
@@ -299,4 +287,4 @@ MaEditor *MaEditorWgt::getEditor() const {
     return editor;
 }
 
-}    // namespace U2
+}  // namespace U2

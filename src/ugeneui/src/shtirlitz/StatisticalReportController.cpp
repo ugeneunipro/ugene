@@ -75,4 +75,4 @@ void ContentSizeHtmlViewer::sl_updateSize() {
     setMinimumHeight(docSize.height() + 10);
 }
 
-}    // namespace U2
+}  // namespace U2

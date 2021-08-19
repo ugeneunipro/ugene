@@ -43,6 +43,6 @@ private:
     QMenu *menu;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTI_CLICK_MENU_H_
+#endif  // _U2_MULTI_CLICK_MENU_H_

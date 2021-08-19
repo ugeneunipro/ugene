@@ -160,9 +160,9 @@ private:
     void setupVariablesForAttribute(AttributeScript *_script);
 
     void updateGrouperSlots(const QMap<ActorId, ActorId> &actorsMapping);
-};    // Actor
+};  // Actor
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_ACTOR_H_
+#endif  // _U2_ACTOR_H_

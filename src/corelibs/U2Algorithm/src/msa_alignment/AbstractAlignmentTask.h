@@ -51,9 +51,9 @@ public:
     QString algorithmId;
     QString realizationName;
     bool inNewWindow;
-    U2EntityRef msaRef;    //couldn't be in customSettings. Set manually.
-    U2AlphabetId alphabet;    //couldn't be in customSettings. Set manually.
-    GUrl resultFileName;    //could be in customSettings as a string only.
+    U2EntityRef msaRef;  // couldn't be in customSettings. Set manually.
+    U2AlphabetId alphabet;  // couldn't be in customSettings. Set manually.
+    GUrl resultFileName;  // could be in customSettings as a string only.
 
     static const QString RESULT_FILE_NAME;
     static const QString ALGORITHM_NAME;
@@ -78,6 +78,6 @@ public:
     virtual ~AbstractAlignmentTaskFactory();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ABSTRACT_ALIGNMENT_TASK_H_
+#endif  // _U2_ABSTRACT_ALIGNMENT_TASK_H_

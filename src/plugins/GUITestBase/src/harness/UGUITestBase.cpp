@@ -112,4 +112,4 @@ QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &la
     return filteredTestList;
 }
 
-}    // namespace U2
+}  // namespace U2

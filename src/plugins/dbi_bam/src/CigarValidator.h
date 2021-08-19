@@ -31,7 +31,7 @@ class CigarValidator {
 public:
     CigarValidator(QList<Alignment::CigarOperation> cigar_);
 
-    //fulfills the totalLength so caller can check if it conforms to read length
+    // fulfills the totalLength so caller can check if it conforms to read length
     void validate(int *totalLength);
 
 private:
@@ -48,7 +48,7 @@ private:
     QList<Alignment::CigarOperation> cigar;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
 #endif

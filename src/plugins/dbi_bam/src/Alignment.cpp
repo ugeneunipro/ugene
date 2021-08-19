@@ -195,5 +195,5 @@ int Alignment::computeLength(const QList<U2CigarToken> &cigar) {
     return length;
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

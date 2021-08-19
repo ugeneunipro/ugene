@@ -42,7 +42,7 @@ public:
 
 protected:
     QString composeRichDoc();
-};    //MergeBamPrompter
+};  // MergeBamPrompter
 
 class MergeBamWorker : public BaseWorker {
     Q_OBJECT
@@ -64,7 +64,7 @@ private:
     QString takeUrl();
     QString getOutputName(const QString &fileUrl);
     void sendResult(const QString &url);
-};    //MergeBamWorker
+};  // MergeBamWorker
 
 class MergeBamWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -77,9 +77,9 @@ public:
     Worker *createWorker(Actor *a) {
         return new MergeBamWorker(a);
     }
-};    //MergeBamWorkerFactory
+};  // MergeBamWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_MEGER_BAM_WORKER_H_
+#endif  //_U2_MEGER_BAM_WORKER_H_

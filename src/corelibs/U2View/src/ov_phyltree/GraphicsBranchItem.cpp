@@ -154,7 +154,7 @@ void GraphicsBranchItem::setSelectedRecurs(bool sel, bool selectChilds) {
         return;
     }
 
-    //Set selected for child items
+    // Set selected for child items
     QStack<GraphicsBranchItem *> graphicsItems;
     graphicsItems.push(this);
     do {
@@ -197,7 +197,7 @@ void GraphicsBranchItem::initText(qreal d) {
         --i;
     str.truncate(i + 1);
 
-    //it doesn't show zeroes by default. only in cladogramm mode
+    // it doesn't show zeroes by default. only in cladogramm mode
     if (str == "0") {
         str = "";
     }
@@ -395,4 +395,4 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform &viewTra
     return childsBoundingRect;
 }
 
-}    // namespace U2
+}  // namespace U2

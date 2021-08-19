@@ -48,11 +48,11 @@ private:
     void updateMutationsLabel();
 
     McaReferenceCharController *refCharController;
-    QLabel* mutationsStatus = nullptr;
+    QLabel *mutationsStatus = nullptr;
 
-    static const QMap<bool, const char*> MUTATION_MODE_ON_OFF_STATE_MAP;
+    static const QMap<bool, const char *> MUTATION_MODE_ON_OFF_STATE_MAP;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MCA_EDITOR_STATUS_BAR_H_
+#endif  // _U2_MCA_EDITOR_STATUS_BAR_H_

@@ -35,6 +35,6 @@ public:
     virtual QList<Task *> createLoadDocumentTasks(const QList<Document *> &docs) const = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LOADDOCUMENTTASKPROVIDER_H_
+#endif  // _U2_LOADDOCUMENTTASKPROVIDER_H_

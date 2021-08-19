@@ -305,7 +305,7 @@ QStringList RunFileSystem::test(FSItem &root) {
 /************************************************************************/
 void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actors, SchemaConfig *cfg) {
     rfs.reset();
-    {    // add report dir
+    {  // add report dir
         U2OpStatus2Log os;
         rfs.addItem("report", true, os);
     }
@@ -363,4 +363,4 @@ bool RFSUtils::isCorrectUrl(const QString &url) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

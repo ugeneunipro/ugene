@@ -112,7 +112,7 @@ FormatCheckResult FastqFormat::checkRawTextData(const QByteArray &rawData, const
         return FormatDetection_NotMatched;
     }
 
-    //check thats every seq had its own qual
+    // check thats every seq had its own qual
     if (STATE_QUALITY_HEADER == state || STATE_QUALITY == state) {
         if (sequenceCount != qualCount) {
             return FormatDetection_NotMatched;
@@ -134,11 +134,11 @@ FormatCheckResult FastqFormat::checkRawTextData(const QByteArray &rawData, const
 
 static QString readSequenceName(U2OpStatus &os, IOAdapter *io, char beginWith = '@') {
     QByteArray buffArray(DocumentFormat::READ_BUFF_SIZE + 1, 0);
-    {    // read name string
+    {  // read name string
         char *buff = buffArray.data();
         bool sequenceNameStartFound = false;
         int readedCount = 0;
-        while ((readedCount == 0) && !io->isEof()) {    // skip \ns
+        while ((readedCount == 0) && !io->isEof()) {  // skip \ns
             readedCount = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &sequenceNameStartFound);
             CHECK_EXT(!io->hasError(), os.setError(io->errorString()), QString());
         }
@@ -176,7 +176,7 @@ static void readSequence(U2OpStatus &os, IOAdapter *io, QByteArray &sequence, ch
         QByteArray trimmed = QByteArray(buffArray.data(), readedCount);
         trimmed = trimmed.trimmed();
 
-        if (eolnFound && checkFirstSymbol(trimmed, readUntil)) {    // read quality sequence name line, reverting back
+        if (eolnFound && checkFirstSymbol(trimmed, readUntil)) {  // read quality sequence name line, reverting back
             io->skip(-readedCount);
             if (io->hasError()) {
                 os.setError(io->errorString());
@@ -209,7 +209,7 @@ static void readQuality(U2OpStatus &os, IOAdapter *io, QByteArray &sequence, int
         trimmed = trimmed.trimmed();
 
         int qualitySize = sequence.size() + trimmed.size();
-        if (eolnFound && (qualitySize > count)) {    // read quality sequence name line, reverting back
+        if (eolnFound && (qualitySize > count)) {  // read quality sequence name line, reverting back
             io->skip(-readedCount);
             if (io->hasError()) {
                 os.setError(io->errorString());
@@ -270,7 +270,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints
     while (!os.isCoR()) {
         U2OpStatus2Log warningOs;
 
-        //read header
+        // read header
         QString sequenceName = readSequenceName(warningOs, io, '@');
         // check for eof while trying to read another FASTQ block
         if (io->isEof()) {
@@ -303,7 +303,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints
             }
         }
 
-        //read sequence
+        // read sequence
         if (merge && sequence.length() > 0) {
             seqImporter.addDefaultSymbolsBlock(gapSize, warningOs);
             sequenceStart += sequence.length();
@@ -500,14 +500,14 @@ void FastqFormat::writeEntry(const QString &sequenceName, const DNASequence &who
     // write sequence
     writeSequence(os, io, wholeSeq.constData(), wholeSeq.length(), errorMessage, cutLines);
 
-    //write transition
+    // write transition
     block.clear();
     block.append("+\n");
 
     writtenCount = io->writeBlock(block);
     CHECK_EXT(writtenCount == block.length(), os.setError(errorMessage), );
 
-    //write quality
+    // write quality
     QByteArray buf;
     const char *qualityData = nullptr;
     if (wholeSeq.hasQualityScores()) {
@@ -533,7 +533,7 @@ void FastqFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObjec
     GUrl url = seqObj->getDocument() ? seqObj->getDocument()->getURL() : GUrl();
     static QString errorMessage = L10N::errorWritingFile(url);
 
-    //write header;
+    // write header;
     QString sequenceName = seqObj->getGObjectName();
     const DNASequence &seqData = seqObj->getWholeSequence(os);
     CHECK_OP(os, );
@@ -551,7 +551,7 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     sequence.reserve(predictedSize);
     qualityScores.reserve(predictedSize);
 
-    //read header
+    // read header
     readBuff.clear();
     QString sequenceName = readSequenceName(os, io, '@');
     // check for eof while trying to read another FASTQ block
@@ -587,4 +587,4 @@ DNASequence *FastqFormat::loadTextSequence(IOAdapter *io, U2OpStatus &os) {
     return seq;
 }
 
-}    // namespace U2
+}  // namespace U2

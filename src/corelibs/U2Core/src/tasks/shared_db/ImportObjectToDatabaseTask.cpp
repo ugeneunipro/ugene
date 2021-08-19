@@ -80,4 +80,4 @@ const U2DbiRef &ImportObjectToDatabaseTask::getDbiRef() const {
     return dstDbiRef;
 }
 
-}    // namespace U2
+}  // namespace U2

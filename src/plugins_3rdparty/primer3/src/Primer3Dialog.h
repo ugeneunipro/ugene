@@ -22,43 +22,44 @@
 #ifndef PRIMER3DIALOG_H
 #define PRIMER3DIALOG_H
 
-#include <U2View/ADVSequenceObjectContext.h>
+#include <QDialog>
+
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/RegionSelector.h>
 
-#include "ui_Primer3Dialog.h"
-#include "Primer3Task.h"
+#include <U2View/ADVSequenceObjectContext.h>
 
-#include <QDialog>
+#include "Primer3Task.h"
+#include "ui_Primer3Dialog.h"
 
 namespace U2 {
 
-class Primer3Dialog : public QDialog
-{
+class Primer3Dialog : public QDialog {
     Q_OBJECT
 public:
     Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequenceObjectContext *context);
 
-    Primer3TaskSettings getSettings()const;
-    const CreateAnnotationModel &getCreateAnnotationModel()const;
-    U2Region getRegion(bool *ok = nullptr)const;
+    Primer3TaskSettings getSettings() const;
+    const CreateAnnotationModel &getCreateAnnotationModel() const;
+    U2Region getRegion(bool *ok = nullptr) const;
     QString checkModel();
     bool prepareAnnotationObject();
+
 public:
     enum IntervalDefinition {
         Start_Length,
         Start_End
     };
 
-    static bool parseIntervalList(const QString& inputString, const QString& delimiter, QList< U2Region > *outputList,
-                                  IntervalDefinition way = Start_Length);
-    static QString intervalListToString(const QList< U2Region>& intervalList, const QString& delimiter,
-                                        IntervalDefinition way = Start_Length);
+    static bool parseIntervalList(const QString &inputString, const QString &delimiter, QList<U2Region> *outputList, IntervalDefinition way = Start_Length);
+    static QString intervalListToString(const QList<U2Region> &intervalList, const QString &delimiter, IntervalDefinition way = Start_Length);
+
 private:
     void reset();
     bool doDataExchange();
 
     void showInvalidInputMessage(QWidget *field, QString fieldLabel);
+
 private:
     Ui_Primer3Dialog ui;
 
@@ -66,11 +67,11 @@ private:
     U2Region selection;
     int sequenceLength;
 
-    QList<QPair<QString, QByteArray> > repeatLibraries;
+    QList<QPair<QString, QByteArray>> repeatLibraries;
 
     Primer3TaskSettings defaultSettings;
     Primer3TaskSettings settings;
-    RegionSelector* rs;
+    RegionSelector *rs;
     ADVSequenceObjectContext *context;
 private slots:
     void sl_pbReset_clicked();
@@ -79,6 +80,6 @@ private slots:
     void sl_loadSettings();
 };
 
-} // namespace U2
+}  // namespace U2
 
-#endif // PRIMER3DIALOG_H
+#endif  // PRIMER3DIALOG_H

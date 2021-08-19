@@ -171,4 +171,4 @@ WorkerOutputInfo::WorkerOutputInfo(const QString &id, const QString &name, const
     : id(id), name(name), files(files) {
 }
 
-}    // namespace U2
+}  // namespace U2

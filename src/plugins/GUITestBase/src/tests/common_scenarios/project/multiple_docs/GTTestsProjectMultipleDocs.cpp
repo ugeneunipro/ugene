@@ -21,17 +21,14 @@
 
 #include "GTTestsProjectMultipleDocs.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTMouseDriver.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -81,6 +78,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 }
 
-}    // namespace GUITest_common_scenarios_project_multiple_docs
+}  // namespace GUITest_common_scenarios_project_multiple_docs
 
-}    // namespace U2
+}  // namespace U2

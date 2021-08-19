@@ -48,6 +48,6 @@ public:
     QString path;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // DISTANCEMATRIXDIALOGFILLER_H
+#endif  // DISTANCEMATRIXDIALOGFILLER_H

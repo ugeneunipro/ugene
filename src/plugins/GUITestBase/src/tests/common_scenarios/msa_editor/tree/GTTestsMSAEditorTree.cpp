@@ -87,7 +87,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 
-    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
+    GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "msa_editor_tree_test_0002", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
@@ -137,7 +137,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 
-    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
+    GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
     GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "msa_editor_tree_test_0003_1");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -170,5 +170,5 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     CHECK_SET_ERR(originalSequenceNames2 == originalSequenceNames2, "Original sequence order must be restored");
 }
 
-}    // namespace GUITest_common_scenarios_msa_editor_tree
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_msa_editor_tree
+}  // namespace U2

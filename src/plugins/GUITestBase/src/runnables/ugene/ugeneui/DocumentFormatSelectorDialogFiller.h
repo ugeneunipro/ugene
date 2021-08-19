@@ -52,6 +52,6 @@ private:
     QRadioButton *getButton(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // DOCUMENTFORMATSELECTORDIALOGFILLER_H
+#endif  // DOCUMENTFORMATSELECTORDIALOGFILLER_H

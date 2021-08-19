@@ -45,6 +45,6 @@ private:
     QList<ProjectFilterTaskFactory *> factories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECT_FILTER_TASK_REGISTRY_H_
+#endif  // _U2_PROJECT_FILTER_TASK_REGISTRY_H_

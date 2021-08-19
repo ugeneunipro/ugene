@@ -89,4 +89,4 @@ Task::ReportResult GTest_DiPropertySiteconCheckAttribs::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

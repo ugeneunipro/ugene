@@ -37,6 +37,6 @@ public:
     State validate(QString &input, int &pos) const override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKER_NAME_VALIDATOR_H_
+#endif  // _U2_WORKER_NAME_VALIDATOR_H_

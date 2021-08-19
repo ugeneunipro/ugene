@@ -51,4 +51,4 @@ QList<Task *> AddObjectsToDocumentTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -34,7 +34,7 @@ class PanView;
 class U2Region;
 class Overview;
 class GSequenceGraphView;
-class TextLabel;
+class GraphLabelTextBox;
 
 class GTUtilsSequenceView {
 public:
@@ -56,7 +56,7 @@ public:
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString &multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -94,8 +94,14 @@ public:
 
     static GSequenceGraphView *getGraphView(HI::GUITestOpStatus &os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
-    static QList<TextLabel *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+    static QList<GraphLabelTextBox *> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView *graph);
+
+    /** Toggle graph visibility by graph name. */
+    static void toggleGraphByName(HI::GUITestOpStatus &os, const QString &graphName, int sequenceViewIndex = 0);
+
+    /** Clicks zoom in button. */
+    static void zoomIn(HI::GUITestOpStatus &os, int sequenceViewIndex = 0);
 
     static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
 
@@ -115,9 +121,9 @@ public:
     static void clickOnDetView(HI::GUITestOpStatus &os);
 
     /** Enables det-view widget if it is not visible. */
-    static void makeDetViewVisible(HI::GUITestOpStatus& os);
+    static void makeDetViewVisible(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_SEQUENCE_VIEW_H
+#endif  // _U2_GT_UTILS_SEQUENCE_VIEW_H

@@ -37,15 +37,15 @@ public:
     static void pageUp(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);
     static void pageDown(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);
 
-    static void lineUp(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);    //does not necessarily move one line up (for example, moves cursor in text editors)
-    static void lineDown(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);    //does not necessarily move one line down (for example, moves cursor in text editors)
+    static void lineUp(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line up (for example, moves cursor in text editors)
+    static void lineDown(GUITestOpStatus &os, QScrollBar *scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line down (for example, moves cursor in text editors)
 
     static void moveSliderWithMouseUp(GUITestOpStatus &os, QScrollBar *scrollbar, int nPix);
     static void moveSliderWithMouseDown(GUITestOpStatus &os, QScrollBar *scrollbar, int nPix);
     static void moveSliderWithMouseToValue(GUITestOpStatus &os, QScrollBar *scrollbar, int value);
 
-    static void moveSliderWithMouseWheelUp(GUITestOpStatus &os, QScrollBar *scrollbar, int nScrolls);    //first moves the cursor to the slider and clicks it, then starts scrolling
-    static void moveSliderWithMouseWheelDown(GUITestOpStatus &os, QScrollBar *scrollbar, int nScrolls);    //first moves the cursor to the slider and clicks it, then starts scrolling
+    static void moveSliderWithMouseWheelUp(GUITestOpStatus &os, QScrollBar *scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
+    static void moveSliderWithMouseWheelDown(GUITestOpStatus &os, QScrollBar *scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
 
     static QPoint getSliderPosition(GUITestOpStatus &os, QScrollBar *scrollbar);
     static QPoint getUpArrowPosition(GUITestOpStatus &os, QScrollBar *scrollbar);
@@ -57,6 +57,6 @@ private:
     static QStyleOptionSlider initScrollbarOptions(GUITestOpStatus &os, QScrollBar *scrollbar);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

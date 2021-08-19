@@ -33,8 +33,8 @@ namespace GUITest_common_scenarios_workflow_samples {
 GUI_TEST_CLASS_DECLARATION(test_0001)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_workflow_samples
+}  // namespace GUITest_common_scenarios_workflow_samples
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTS_WORKFLOW_SAMPLES_H_
+#endif  // GTTESTS_WORKFLOW_SAMPLES_H_

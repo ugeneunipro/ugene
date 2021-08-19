@@ -223,5 +223,5 @@ QString GenomeAlignerIndexReaderPrompter::composeRichDoc() {
 
     return doc;
 }
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

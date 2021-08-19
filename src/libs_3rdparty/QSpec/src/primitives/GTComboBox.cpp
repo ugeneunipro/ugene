@@ -53,7 +53,7 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus &os, QComboBox *comboBox, int
             if (comboBox->isEditable()) {
                 GTWidget::click(os, comboBox, Qt::LeftButton, QPoint(comboBox->rect().width() - 10, 10));
                 GTThread::waitForMainThread();
-            } else if (!comboBox->view()->isVisible()) {    // activate dropdown if it is not visible.
+            } else if (!comboBox->view()->isVisible()) {  // activate dropdown if it is not visible.
                 GTWidget::click(os, comboBox);
                 GTThread::waitForMainThread();
             }
@@ -76,7 +76,7 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus &os, QComboBox *comboBox, int
                     QModelIndex modelIndex = listView->model()->index(index, 0);
                     GTWidget::scrollToIndex(os, listView, modelIndex);
                     QRect rect = listView->visualRect(modelIndex);
-                    QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);    // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
+                    QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);  // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
                     QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
                     qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
                     GTMouseDriver::moveTo(itemPointGlobal);
@@ -214,4 +214,4 @@ void GTComboBox::checkCurrentUserDataValue(GUITestOpStatus &os, QComboBox *combo
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

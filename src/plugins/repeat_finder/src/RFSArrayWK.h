@@ -56,7 +56,7 @@ private:
     void calculate(RFSArrayWKSubtask *t);
 
 public:
-    QVector<int> diagOffsets;    //holds start position for the last checked window
+    QVector<int> diagOffsets;  // holds start position for the last checked window
     int ARRAY_SIZE;
     int SEARCH_SIZE;
 
@@ -85,6 +85,6 @@ public:
     const int tid;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -73,6 +73,6 @@ private:
     QColor getColor(DNACodonGroup gr);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CODON_TABLE_H_
+#endif  // _U2_CODON_TABLE_H_

@@ -49,5 +49,5 @@ public:
     static const QString ET_CLARK_GET_FILES_TO_TAX_NODES_ID;
 };
 
-}    // namespace U2
-#endif    // _U2_CLARK_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_CLARK_SUPPORT_H_

@@ -150,6 +150,6 @@ private:
     QByteArray filteredConsensus;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

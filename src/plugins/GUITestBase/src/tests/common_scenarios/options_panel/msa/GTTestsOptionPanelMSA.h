@@ -113,7 +113,7 @@ GUI_TEST_CLASS_DECLARATION(save_parameters_test_0004_1)
 GUI_TEST_CLASS_DECLARATION(save_parameters_test_0005)
 GUI_TEST_CLASS_DECLARATION(save_parameters_test_0006)
 
-}    //namespace GUITest_common_scenarios_options_panel_MSA
+}  // namespace GUITest_common_scenarios_options_panel_MSA
 
-}    // namespace U2
-#endif    // GTTESTSOPTIONPANELMSA_H
+}  // namespace U2
+#endif  // GTTESTSOPTIONPANELMSA_H

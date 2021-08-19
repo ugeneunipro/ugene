@@ -53,8 +53,8 @@ GUI_TEST_CLASS_DECLARATION(test_0008)
 GUI_TEST_CLASS_DECLARATION(test_0009)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_annotations_qualifiers
+}  // namespace GUITest_common_scenarios_annotations_qualifiers
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSMSAEDITOR_H
+#endif  // GTTESTSMSAEDITOR_H

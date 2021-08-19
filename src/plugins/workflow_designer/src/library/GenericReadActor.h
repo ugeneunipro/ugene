@@ -72,6 +72,6 @@ protected:
     QString composeRichDoc();
 };
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2
 #endif

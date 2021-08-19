@@ -65,9 +65,9 @@ public:
     }
 
     JsonWriter &name(QString name) {
-        //if (name == null) {
-        //    throw new NullPointerException("name == null");
-        //}
+        // if (name == null) {
+        //     throw new NullPointerException("name == null");
+        // }
         beforeName();
         string(name);
         return *this;
@@ -147,53 +147,53 @@ private:
             char c = value[i].toAscii();
 
             /*
-           * From RFC 4627, "All Unicode characters may be placed within the
-           * quotation marks except for the characters that must be escaped:
-           * quotation mark, reverse solidus, and the control characters
-           * (U+0000 through U+001F)."
-           */
+             * From RFC 4627, "All Unicode characters may be placed within the
+             * quotation marks except for the characters that must be escaped:
+             * quotation mark, reverse solidus, and the control characters
+             * (U+0000 through U+001F)."
+             */
             switch (c) {
-            case '"':
-            case '\\':
-                out.append('\\');
-                out.append(c);
-                break;
+                case '"':
+                case '\\':
+                    out.append('\\');
+                    out.append(c);
+                    break;
 
-            case '\t':
-                out.append("\\t");
-                break;
+                case '\t':
+                    out.append("\\t");
+                    break;
 
-            case '\b':
-                out.append("\\b");
-                break;
+                case '\b':
+                    out.append("\\b");
+                    break;
 
-            case '\n':
-                out.append("\\n");
-                break;
+                case '\n':
+                    out.append("\\n");
+                    break;
 
-            case '\r':
-                out.append("\\r");
-                break;
+                case '\r':
+                    out.append("\\r");
+                    break;
 
-            case '\f':
-                out.append("\\f");
-                break;
+                case '\f':
+                    out.append("\\f");
+                    break;
 
-            case '<':
-            case '>':
-            case '&':
-            case '=':
-            case '\'':
-                out.append(c);
-                break;
+                case '<':
+                case '>':
+                case '&':
+                case '=':
+                case '\'':
+                    out.append(c);
+                    break;
 
-            default:
-                /*if (c <= 0x1F) {
-              out.append(String.format("\\u%04x", (int) c));
-            } else {*/
-                out.append(c);
-                //}
-                break;
+                default:
+                    /*if (c <= 0x1F) {
+                  out.append(String.format("\\u%04x", (int) c));
+                } else {*/
+                    out.append(c);
+                    //}
+                    break;
             }
         }
         out.append("\"");
@@ -240,9 +240,9 @@ private:
 
     void beforeName() {
         JsonScope context = peek();
-        if (context == NONEMPTY_OBJECT) {    // first in object
+        if (context == NONEMPTY_OBJECT) {  // first in object
             out.append(',');
-        } else if (context != EMPTY_OBJECT) {    // not in an object!
+        } else if (context != EMPTY_OBJECT) {  // not in an object!
             throw QString("Nesting problem");
         }
         newline();
@@ -251,33 +251,33 @@ private:
 
     void beforeValue(bool root) {
         switch (peek()) {
-        case EMPTY_DOCUMENT:    // first in document
-            if (!lenient && !root) {
-                throw QString("JSON must start with an array or an object.");
-            }
-            replaceTop(NONEMPTY_DOCUMENT);
-            break;
+            case EMPTY_DOCUMENT:  // first in document
+                if (!lenient && !root) {
+                    throw QString("JSON must start with an array or an object.");
+                }
+                replaceTop(NONEMPTY_DOCUMENT);
+                break;
 
-        case EMPTY_ARRAY:    // first in array
-            replaceTop(NONEMPTY_ARRAY);
-            newline();
-            break;
+            case EMPTY_ARRAY:  // first in array
+                replaceTop(NONEMPTY_ARRAY);
+                newline();
+                break;
 
-        case NONEMPTY_ARRAY:    // another in array
-            out.append(',');
-            newline();
-            break;
+            case NONEMPTY_ARRAY:  // another in array
+                out.append(',');
+                newline();
+                break;
 
-        case DANGLING_NAME:    // value for name
-            out.append(separator);
-            replaceTop(NONEMPTY_OBJECT);
-            break;
+            case DANGLING_NAME:  // value for name
+                out.append(separator);
+                replaceTop(NONEMPTY_OBJECT);
+                break;
 
-        case NONEMPTY_DOCUMENT:
-            throw QString("JSON must have only one top-level value.");
+            case NONEMPTY_DOCUMENT:
+                throw QString("JSON must have only one top-level value.");
 
-        default:
-            throw QString("Nesting problem");
+            default:
+                throw QString("Nesting problem");
         }
     }
 };
@@ -289,22 +289,22 @@ static QByteArray type2json(DataTypePtr type) {
         .value(type->getId())
         .name("kind");
     switch (type->kind()) {
-    case DataType::Single:
-        w.value("Single");
-        break;
-    case DataType::List:
-        w.value("List")
-            .name("type")
-            .plainValue(type2json(type->getDatatypeByDescriptor()));
-        break;
-    case DataType::Map:
-        w.value("Map").name("type").beginObject();
-        foreach (const Descriptor &desc, type->getDatatypesMap().keys()) {
-            w.name(desc.getId())
-                .plainValue(type2json(type->getDatatypesMap()[desc]));
-        }
-        w.endObject();
-        break;
+        case DataType::Single:
+            w.value("Single");
+            break;
+        case DataType::List:
+            w.value("List")
+                .name("type")
+                .plainValue(type2json(type->getDatatypeByDescriptor()));
+            break;
+        case DataType::Map:
+            w.value("Map").name("type").beginObject();
+            foreach (const Descriptor &desc, type->getDatatypesMap().keys()) {
+                w.name(desc.getId())
+                    .plainValue(type2json(type->getDatatypesMap()[desc]));
+            }
+            w.endObject();
+            break;
     }
     w.endObject();
     return w.getBytes();
@@ -409,4 +409,4 @@ void WorkflowDumpPlugin::sl_dumpWorkers() {
     file.close();
 }
 
-}    // namespace U2
+}  // namespace U2

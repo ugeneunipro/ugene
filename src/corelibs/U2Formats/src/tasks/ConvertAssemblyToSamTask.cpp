@@ -127,4 +127,4 @@ QString ConvertAssemblyToSamTask::generateReport() const {
     return QString("Conversion task was finished. A new SAM file is: <a href=\"%1\">%2</a>").arg(samFileUrl.getURLString()).arg(samFileUrl.getURLString());
 }
 
-}    // namespace U2
+}  // namespace U2

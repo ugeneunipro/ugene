@@ -47,6 +47,6 @@ private:
     QList<QToolBar *> toolbars;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

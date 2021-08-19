@@ -79,12 +79,12 @@ void AnaglyphRenderer::draw() {
 
     // Prepare anaglyph textures
     glPushMatrix();
-    //glTranslatef(eyesShift, 0, 0);
+    // glTranslatef(eyesShift, 0, 0);
     glLoadIdentity();
     gluLookAt(eyesShift, 0.0, glFrame->getCameraPosition().z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     // at this moment buffer must be clean glClear omitted as a slow operation
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // isolate errors from main scene renderer
     CHECK_GL_ERROR
@@ -96,7 +96,7 @@ void AnaglyphRenderer::draw() {
     glPopMatrix();
 
     glPushMatrix();
-    //glTranslatef(-eyesShift, 0, 0);
+    // glTranslatef(-eyesShift, 0, 0);
     glLoadIdentity();
     gluLookAt(-eyesShift, 0.0, glFrame->getCameraPosition().z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
@@ -185,12 +185,12 @@ void AnaglyphRenderer::createEmptyTextures() {
 void AnaglyphRenderer::drawTexturesAnaglyph() {
     CHECK_GL_ERROR
 
-    drawTexture(anaglyphRenderTextureLeft, settings.rightEyeColor.red(), settings.rightEyeColor.green(), settings.rightEyeColor.blue(), 0.5f, false);    // colored left image
+    drawTexture(anaglyphRenderTextureLeft, settings.rightEyeColor.red(), settings.rightEyeColor.green(), settings.rightEyeColor.blue(), 0.5f, false);  // colored left image
 
     glBindTexture(GL_TEXTURE_2D, tempAnaglyphRenderTexture);
-    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, width, height, 0);    // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
+    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, width, height, 0);  // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
 
-    drawTexture(anaglyphRenderTextureRight, settings.leftEyeColor.red(), settings.leftEyeColor.green(), settings.leftEyeColor.blue(), 0.5f, false);    // colored right image
+    drawTexture(anaglyphRenderTextureRight, settings.leftEyeColor.red(), settings.leftEyeColor.green(), settings.leftEyeColor.blue(), 0.5f, false);  // colored right image
     drawTexture(tempAnaglyphRenderTexture, 255, 255, 255, 1.0f, true);
 
     CHECK_GL_ERROR
@@ -259,4 +259,4 @@ bool AnaglyphRenderer::isAvailable() {
     return !hasErrors;
 }
 
-}    // namespace U2
+}  // namespace U2

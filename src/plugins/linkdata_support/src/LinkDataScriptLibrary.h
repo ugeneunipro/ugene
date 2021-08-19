@@ -56,5 +56,5 @@ private:
     QString error;
 };
 
-}    // namespace U2
-#endif    //_U2_LINKDATA_SCRIPT_LIBRARY_H_
+}  // namespace U2
+#endif  //_U2_LINKDATA_SCRIPT_LIBRARY_H_

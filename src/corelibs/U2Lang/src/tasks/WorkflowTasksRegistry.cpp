@@ -51,5 +51,5 @@ ReadDocumentTaskFactory *WorkflowTasksRegistry::getReadDocumentTaskFactory(const
     return readTasks.value(id, nullptr);
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

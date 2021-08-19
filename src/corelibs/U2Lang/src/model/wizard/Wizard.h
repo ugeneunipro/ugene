@@ -76,6 +76,6 @@ private:
     const QString helpPageId;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARD_H_
+#endif  // _U2_WIZARD_H_

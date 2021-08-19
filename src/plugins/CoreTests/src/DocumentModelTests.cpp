@@ -92,7 +92,7 @@ void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
         } else if ("merge" == seqMode) {
-            hints[DocumentReadingMode_SequenceMergeGapSize] = 10;    // just default value
+            hints[DocumentReadingMode_SequenceMergeGapSize] = 10;  // just default value
         } else if ("split" == seqMode) {
             hints[DocumentReadingMode_SequenceAsSeparateHint] = true;
         }
@@ -116,7 +116,7 @@ void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
         stateInfo.setError(QString("doc_format_is_not_specified"));
     } else {
         if (format == BaseDocumentFormats::SAM) {
-            //SAM format is temporarily removed from base formats list -> create it manually
+            // SAM format is temporarily removed from base formats list -> create it manually
             SAMFormat *samFormat = new SAMFormat();
             loadTask = new LoadDocumentTask(samFormat, url, iof, hints);
             samFormat->setParent(loadTask);
@@ -175,8 +175,8 @@ Task::ReportResult GTest_LoadDocument::report() {
 }
 
 /*******************************
-* GTest_SaveDocument
-*******************************/
+ * GTest_SaveDocument
+ *******************************/
 void GTest_SaveDocument::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -231,8 +231,8 @@ void GTest_SaveDocument::prepare() {
 }
 
 /*******************************
-* GTest_LoadBrokenDocument
-*******************************/
+ * GTest_LoadBrokenDocument
+ *******************************/
 void GTest_LoadBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -258,7 +258,7 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) {
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
         } else if ("merge" == seqMode) {
-            hints[DocumentReadingMode_SequenceMergeGapSize] = 10;    // just default value
+            hints[DocumentReadingMode_SequenceMergeGapSize] = 10;  // just default value
         }
     }
 
@@ -408,8 +408,8 @@ Task::ReportResult GTest_ImportDocument::report() {
 }
 
 /*******************************
-* GTest_ImportBrokenDocument
-*******************************/
+ * GTest_ImportBrokenDocument
+ *******************************/
 void GTest_ImportBrokenDocument::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -481,8 +481,8 @@ void GTest_ImportBrokenDocument::cleanup() {
 }
 
 /*******************************
-*GTest_DocumentFormat
-*******************************/
+ *GTest_DocumentFormat
+ *******************************/
 
 void GTest_DocumentFormat::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -516,8 +516,8 @@ Task::ReportResult GTest_DocumentFormat::report() {
 }
 
 /*******************************
-* GTest_DocumentNumObjects
-*******************************/
+ * GTest_DocumentNumObjects
+ *******************************/
 void GTest_DocumentNumObjects::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -553,8 +553,8 @@ Task::ReportResult GTest_DocumentNumObjects::report() {
 }
 
 /*******************************
-* GTest_DocumentObjectNames
-*******************************/
+ * GTest_DocumentObjectNames
+ *******************************/
 void GTest_DocumentObjectNames::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -603,8 +603,8 @@ Task::ReportResult GTest_DocumentObjectNames::report() {
 }
 
 /*******************************
-* GTest_DocumentObjectTypes
-*******************************/
+ * GTest_DocumentObjectTypes
+ *******************************/
 void GTest_DocumentObjectTypes::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -653,8 +653,8 @@ Task::ReportResult GTest_DocumentObjectTypes::report() {
 }
 
 /*******************************
-* GTest_FindGObjectByName
-*******************************/
+ * GTest_FindGObjectByName
+ *******************************/
 void GTest_FindGObjectByName::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
@@ -834,7 +834,7 @@ Task::ReportResult GTest_CompareFiles::report() {
         }
 
         if (line_num_only) {
-            //do not compare lines values
+            // do not compare lines values
             continue;
         }
 
@@ -1095,7 +1095,7 @@ Task::ReportResult GTest_Compare_PDF_Files::report() {
         if (i < NUMDER_OF_LINES) {
             i++;
             continue;
-        }    //skip first lines containing file info
+        }  // skip first lines containing file info
 
         if (bytes1.isEmpty() || bytes2.isEmpty()) {
             if (bytes1 != bytes2) {
@@ -1124,8 +1124,8 @@ Task::ReportResult GTest_Compare_PDF_Files::report() {
 }
 
 /*******************************
-* DocumentModelTests
-*******************************/
+ * DocumentModelTests
+ *******************************/
 QList<XMLTestFactory *> DocumentModelTests::createTestFactories() {
     QList<XMLTestFactory *> res;
     res.append(GTest_LoadDocument::createFactory());
@@ -1144,4 +1144,4 @@ QList<XMLTestFactory *> DocumentModelTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

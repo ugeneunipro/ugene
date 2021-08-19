@@ -89,8 +89,7 @@ QString U2SequenceObject::getSequenceName() const {
 }
 
 #define FETCH_SEQUENCE(seqGet, seq, entityRef) \
-    if (!seqGet) { \
-        U2OpStatus2Log os; \
+    if (!(seqGet)) { \
         DbiConnection con(entityRef.dbiRef, os); \
         CHECK_OP(os, DNASequence()); \
         seq = con.dbi->getSequenceDbi()->getSequenceObject(entityRef.entityId, os); \
@@ -272,7 +271,7 @@ void U2SequenceObject::setQuality(const DNAQuality &q) {
 }
 
 DNAQuality U2SequenceObject::getQuality() const {
-    //TODO: may be remove redundant checks
+    // TODO: may be remove redundant checks
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     DNAQuality res;
@@ -304,7 +303,7 @@ QVariantMap U2SequenceObject::getSequenceInfo() const {
 }
 
 QString U2SequenceObject::getStringAttribute(const QString &name) const {
-    //TODO: Re-check all usages and start using real attributes from DBI!
+    // TODO: Re-check all usages and start using real attributes from DBI!
     return getSequenceInfo().value(name).toString();
 }
 
@@ -354,7 +353,7 @@ void U2SequenceObject::setIntegerAttribute(const QString &name, int value) {
 }
 
 double U2SequenceObject::getRealAttribute(const QString &name) const {
-    //TODO: Re-check all usages and start using real attributes from DBI!
+    // TODO: Re-check all usages and start using real attributes from DBI!
     return getSequenceInfo().value(name).toReal();
 }
 
@@ -374,7 +373,7 @@ void U2SequenceObject::setRealAttribute(const QString &name, double value) {
 }
 
 QByteArray U2SequenceObject::getByteArrayAttribute(const QString &name) const {
-    //TODO: Re-check all usages and start using real attributes from DBI!
+    // TODO: Re-check all usages and start using real attributes from DBI!
     return getSequenceInfo().value(name).toByteArray();
 }
 
@@ -420,4 +419,4 @@ void U2SequenceObject::setGObjectName(const QString &newName) {
     cachedName = GObject::getGObjectName();
 }
 
-}    // namespace U2
+}  // namespace U2

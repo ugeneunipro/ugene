@@ -66,7 +66,7 @@ private:
 
 private:
     QMap<QString, BioStruct3DGLRendererFactory *> factories;
-};    // class BioStruct3DGLRendererRegistry
+};  // class BioStruct3DGLRendererRegistry
 
 /** BioStruct3DGLRenderer abstract factory */
 class BioStruct3DGLRendererFactory {
@@ -153,8 +153,8 @@ public:
     const BioStruct3DColorScheme *getColorScheme() const;
 
     /** @returns shown models indexes list reference.
-      * indexes are just index numbers of models, NOT modelIds
-      */
+     * indexes are just index numbers of models, NOT modelIds
+     */
     const QList<int> &getShownModelsIndexes() const;
 
     /** Sets shown models models list. */
@@ -175,6 +175,6 @@ protected:
     const BioStruct3DRendererSettings *settings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BIOSTRUCT3D_RENDERER_H_
+#endif  // _U2_BIOSTRUCT3D_RENDERER_H_

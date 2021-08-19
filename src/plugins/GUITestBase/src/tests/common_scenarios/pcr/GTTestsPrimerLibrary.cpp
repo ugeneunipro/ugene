@@ -49,65 +49,65 @@ namespace GUITest_common_scenarios_primer_library {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsMdi::click(os, GTGlobals::Close);
-    //The library is the singleton MDI window
+    // The library is the singleton MDI window
 
-    //1. Click the menu Tools -> Primer -> Primer Library.
-    //Expected: the library MDI window is opened.
+    // 1. Click the menu Tools -> Primer -> Primer Library.
+    // Expected: the library MDI window is opened.
     QWidget *libraryMdi1 = GTUtilsPrimerLibrary::openLibrary(os);
 
-    //2. Click the menu again.
+    // 2. Click the menu again.
     QWidget *libraryMdi2 = GTUtilsPrimerLibrary::openLibrary(os);
 
-    //Expected: the same MDI windows is opened (not the second one).
+    // Expected: the same MDI windows is opened (not the second one).
     CHECK_SET_ERR(libraryMdi1 == libraryMdi2, "Different MDI windows");
 
-    //3. Click the close button.
+    // 3. Click the close button.
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
-    //Expected: The window is closed.
+    // Expected: The window is closed.
     QWidget *libraryMdi3 = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(nullptr == libraryMdi3, "Library MDI is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Add new primer:
-    //    Primer line edit ACGT content
-    //    Availability of the OK button
+    // Add new primer:
+    //     Primer line edit ACGT content
+    //     Availability of the OK button
 
-    //1. Click the menu Tools -> Primer -> Primer Library.
+    // 1. Click the menu Tools -> Primer -> Primer Library.
     GTUtilsPrimerLibrary::openLibrary(os);
     int librarySize = GTUtilsPrimerLibrary::librarySize(os);
 
-    //2. Click the new primer button.
-    //Expected: the dialog appears. The OK button is disabled.
+    // 2. Click the new primer button.
+    // Expected: the dialog appears. The OK button is disabled.
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            //3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
+            // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
             QLineEdit *primerEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit"));
             GTLineEdit::setText(os, primerEdit, "Q%1", true);
 
-            //Expected: the line edit is empty.
+            // Expected: the line edit is empty.
             CHECK_SET_ERR(primerEdit->text().isEmpty(), "Wrong input");
 
-            //4. Write "atcg".
+            // 4. Write "atcg".
             GTLineEdit::setText(os, primerEdit, "atcg", true);
 
-            //Expected: the line edit content is "ATCG". The OK button is enabled.
+            // Expected: the line edit content is "ATCG". The OK button is enabled.
             CHECK_SET_ERR(primerEdit->text() == "ATCG", "No upper-case");
 
-            //5. Remove the primer name.
+            // 5. Remove the primer name.
             QLineEdit *nameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameEdit"));
             GTLineEdit::setText(os, nameEdit, "");
 
-            //Expected: The OK button is disabled.
+            // Expected: The OK button is disabled.
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QPushButton *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(!okButton->isEnabled(), "The OK button is enabled");
 
-            //6. Set the name "Primer".
+            // 6. Set the name "Primer".
             GTLineEdit::setText(os, nameEdit, "Primer");
 
-            //7. Click the OK button.
+            // 7. Click the OK button.
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -116,55 +116,55 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new AddPrimerDialogFiller(os, parameters));
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Add);
 
-    //Expected: the new primer appears in the table.
+    // Expected: the new primer appears in the table.
     CHECK_SET_ERR(librarySize + 1 == GTUtilsPrimerLibrary::librarySize(os), "Wrong primers count");
     CHECK_SET_ERR(GTUtilsPrimerLibrary::getPrimerSequence(os, librarySize) == "ATCG", "Wrong primer");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //Remove primers:
-    //    Availability of the button
+    // Remove primers:
+    //     Availability of the button
 
-    //1. Click the menu Tools -> Primer -> Primer Library.
+    // 1. Click the menu Tools -> Primer -> Primer Library.
     GTUtilsPrimerLibrary::openLibrary(os);
     int librarySize = GTUtilsPrimerLibrary::librarySize(os);
 
-    //2. Add a new primer if the library is empty.
+    // 2. Add a new primer if the library is empty.
     AddPrimerDialogFiller::Parameters parameters;
     parameters.primer = "AAAAAAAAAAAAAA";
     GTUtilsDialog::waitForDialog(os, new AddPrimerDialogFiller(os, parameters));
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Add);
 
-    //3. Click the empty place of the table.
+    // 3. Click the empty place of the table.
     QPoint emptyPoint = GTUtilsPrimerLibrary::getPrimerPoint(os, librarySize);
     emptyPoint.setY(emptyPoint.y() + 40);
     GTMouseDriver::moveTo(emptyPoint);
     GTMouseDriver::click();
 
-    //Expected: The remove button is disabled.
+    // Expected: The remove button is disabled.
     QAbstractButton *removeButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Remove);
     CHECK_SET_ERR(!removeButton->isEnabled(), "The remove button is enabled");
 
-    //4. Select the primer.
+    // 4. Select the primer.
     GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, librarySize));
     GTMouseDriver::click();
 
-    //Expected: The remove button is enabled.
+    // Expected: The remove button is enabled.
     CHECK_SET_ERR(removeButton->isEnabled(), "The remove button is disabled");
 
-    //5. Click the button.
+    // 5. Click the button.
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Remove);
 
-    //Expected: the primer is disappeared from the table.
+    // Expected: the primer is disappeared from the table.
     CHECK_SET_ERR(librarySize == GTUtilsPrimerLibrary::librarySize(os), "Wrong primers count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //In silico PCR with the library data:
-    //    Add a primer from the library
-    //    Double click
+    // In silico PCR with the library data:
+    //     Add a primer from the library
+    //     Double click
 
-    {    // Pre-test
+    {  // Pre-test
         GTUtilsPrimerLibrary::openLibrary(os);
         AddPrimerDialogFiller::Parameters parameters;
         parameters.primer = "AAAAAAAAAAAAAA";
@@ -173,34 +173,34 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
     }
 
-    //1. Open "_common_data/fasta/pcr_test.fa".
+    // 1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Click the browse library button for the forward primer.
-    //Expected: the library dialog appears, the OK button is disabled.
-    //4. Click a primer in the table.
-    //Expected: the OK button is enabled.
-    //5. Double click the primer.
+    // 3. Click the browse library button for the forward primer.
+    // Expected: the library dialog appears, the OK button is disabled.
+    // 4. Click a primer in the table.
+    // Expected: the OK button is enabled.
+    // 5. Double click the primer.
     GTUtilsDialog::waitForDialog(os, new PrimerLibrarySelectorFiller(os, -1, true));
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Direct));
 
-    //Expected: the dialog is closed, the chosen primer sequence is in the forward primer line edit.
+    // Expected: the dialog is closed, the chosen primer sequence is in the forward primer line edit.
     QLineEdit *primerEdit = GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
     CHECK_SET_ERR(primerEdit->text() == "AAAAAAAAAAAAAA", "Wrong primer");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //Edit primer:
-    //    Availability of the button
+    // Edit primer:
+    //     Availability of the button
 
-    //1. Click the menu Tools -> Primer -> Primer Library.
+    // 1. Click the menu Tools -> Primer -> Primer Library.
     GTUtilsPrimerLibrary::openLibrary(os);
 
-    //2. Add a new primer if the library is empty.
+    // 2. Add a new primer if the library is empty.
     for (int i = 0; i < 3; i++) {
         AddPrimerDialogFiller::Parameters parameters;
         parameters.primer = "AAAAAAAAAAAAAA";
@@ -209,17 +209,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     }
     int lastPrimer = GTUtilsPrimerLibrary::librarySize(os) - 1;
 
-    //3. Click the empty place of the table.
+    // 3. Click the empty place of the table.
     QPoint emptyPoint = GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer);
     emptyPoint.setY(emptyPoint.y() + 40);
     GTMouseDriver::moveTo(emptyPoint);
     GTMouseDriver::click();
 
-    //Expected: The edit button is disabled.
+    // Expected: The edit button is disabled.
     QAbstractButton *editButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Edit);
     CHECK_SET_ERR(!editButton->isEnabled(), "The remove button is enabled");
 
-    //4. Select several primers.
+    // 4. Select several primers.
     GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer - 2));
@@ -227,26 +227,26 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    //Expected: The edit button is disabled.
+    // Expected: The edit button is disabled.
     CHECK_SET_ERR(!editButton->isEnabled(), "The remove button is enabled");
 
-    //5. Select the primer P.
+    // 5. Select the primer P.
     GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
     GTMouseDriver::click();
 
-    //Expected: The edit button is enabled.
+    // Expected: The edit button is enabled.
     CHECK_SET_ERR(editButton->isEnabled(), "The remove button is disabled");
 
-    //6. Double click the primer P.
-    //Expected: the dialog appears. The P's data is written.
-    //7. Edit primer and name and click OK.
+    // 6. Double click the primer P.
+    // Expected: the dialog appears. The P's data is written.
+    // 7. Edit primer and name and click OK.
     AddPrimerDialogFiller::Parameters parameters;
     parameters.primer = "CCCCCCCCCCCCCC";
     parameters.name = "test_0005";
     GTUtilsDialog::waitForDialog(os, new AddPrimerDialogFiller(os, parameters));
     GTMouseDriver::doubleClick();
 
-    //Expected: the primer is changed in the table.
+    // Expected: the primer is changed in the table.
     CHECK_SET_ERR("CCCCCCCCCCCCCC" == GTUtilsPrimerLibrary::getPrimerSequence(os, lastPrimer), "The sequence is not changed");
 }
 
@@ -753,5 +753,5 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     CHECK_SET_ERR(2 == librarySize, QString("An unexpected library size: expect %1, got %2").arg(2).arg(librarySize));
 }
 
-}    // namespace GUITest_common_scenarios_primer_library
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_primer_library
+}  // namespace U2

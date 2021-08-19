@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "ScriptLibrary.h"
 
@@ -283,7 +283,7 @@ QScriptValue WorkflowScriptLibrary::translate(QScriptContext *ctx, QScriptEngine
     if (ctx->argumentCount() == 2) {
         bool ok;
         QVariant var = ctx->argument(1).toInt32();
-        offset = var.toInt(&ok);    //no need to check OK because, if var not integer its changed to default value
+        offset = var.toInt(&ok);  // no need to check OK because, if var not integer its changed to default value
         if (offset < 0 || offset > 2) {
             return ctx->throwError(QObject::tr("Offset must be from interval [0,2]"));
         }
@@ -369,7 +369,7 @@ QScriptValue WorkflowScriptLibrary::sequenceFromText(QScriptContext *ctx, QScrip
     }
 
     QString text = ctx->argument(0).toString();
-    //QString name = ctx->argument(1).toString();
+    // QString name = ctx->argument(1).toString();
     DNASequence seq("sequence", text.toLatin1());
     seq.alphabet = U2AlphabetUtils::findBestAlphabet(seq.seq);
     if (seq.alphabet->getId() == BaseDNAAlphabetIds::RAW()) {
@@ -450,7 +450,7 @@ QScriptValue WorkflowScriptLibrary::getTrimmedByQuality(QScriptContext *ctx, QSc
 
         int seqLen = dna.length();
         if (seqLen > dna.quality.qualCodes.length()) {
-            //quality length is shorter than the length of the sequence. return the an empty sequence
+            // quality length is shorter than the length of the sequence. return the an empty sequence
             DNASequence emptySequence("empty", QByteArray(), nullptr);
             calee.setProperty("res", putSequence(engine, emptySequence));
             return calee.property("res");
@@ -567,7 +567,10 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext *ctx, QScript
         if (seq.seq.isEmpty()) {
             return ctx->throwError(QObject::tr("Empty or invalid sequence"));
         }
-        foreach (const DNASequence &alnSeq, MSAUtils::ma2seq(aln, true)) {
+        U2OpStatusImpl os;
+        QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(aln, os, true);
+        CHECK_OP(os, ctx->throwError(os.getError()));
+        for (const DNASequence &alnSeq : qAsConst(sequenceList)) {
             if (alnSeq.seq == seq.seq) {
                 break;
             }
@@ -745,7 +748,7 @@ QScriptValue WorkflowScriptLibrary::getAnnotationRegion(QScriptContext *ctx, QSc
             QByteArray &res = resultedSeq.seq;
             QVector<U2Region> extendedRegions;
 
-            //extend regions
+            // extend regions
             U2Region sequenceRange(0, sequence.size());
             foreach (const U2Region &reg, location) {
                 U2Region ir = reg.intersect(sequenceRange);
@@ -1038,4 +1041,4 @@ QScriptValue WorkflowScriptLibrary::debugOut(QScriptContext *ctx, QScriptEngine 
 WorkflowScriptFactory::~WorkflowScriptFactory() {
 }
 
-}    // namespace U2
+}  // namespace U2

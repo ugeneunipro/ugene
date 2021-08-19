@@ -77,7 +77,7 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
         menuBefore = getTopLevelMenu(MWMENU_TOOLS);
     }
     qmenu = new QMenu(title, menuBar);
-    qmenu->setObjectName(sysName);    //??? need refactoring...
+    qmenu->setObjectName(sysName);  //??? need refactoring...
     qmenu->menuAction()->setObjectName(sysName);
     int insertPos = toplevelMenus.indexOf(menuBefore) + 1;
     if (insertPos == 0) {
@@ -109,7 +109,7 @@ static void touchMenu(QMenu *menu) {
             continue;
         }
         menu->setEnabled(false);
-        //coreLog.trace("Touched menu" + menu->menuAction()->text());
+        // coreLog.trace("Touched menu" + menu->menuAction()->text());
         touchMenu(menu);
         menu->setEnabled(true);
     }
@@ -119,13 +119,13 @@ bool MWMenuManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::ActionAdded || event->type() == QEvent::ActionRemoved) {
         QMenu *menu = qobject_cast<QMenu *>(obj);
         assert(menu != nullptr);
-        //coreLog.trace("aaa:EventFilter (Menu Manager)");
+        // coreLog.trace("aaa:EventFilter (Menu Manager)");
 #ifndef Q_OS_DARWIN
         menu->setEnabled(!menu->isEmpty());
 #else
         touchMenu(menu);
 #endif
-        //updateTopLevelMenuVisibility(menu);
+        // updateTopLevelMenuVisibility(menu);
     }
 
     return QObject::eventFilter(obj, event);
@@ -142,8 +142,8 @@ void MWMenuManagerImpl::updateTopLevelMenuVisibility(QMenu *m) {
 
 void MWMenuManagerImpl::unlinkTopLevelMenu(QMenu *m) {
     Q_UNUSED(m);
-    //assert(menuBar->actions().contains(m->menuAction()));
-    //menuBar->removeAction(m->menuAction());
+    // assert(menuBar->actions().contains(m->menuAction()));
+    // menuBar->removeAction(m->menuAction());
 }
 
 void MWMenuManagerImpl::linkTopLevelMenu(QMenu *m) {
@@ -160,4 +160,4 @@ void MWMenuManagerImpl::linkTopLevelMenu(QMenu *m) {
     menuBar->insertAction(nextActiveAction, m->menuAction());
 }
 
-}    // namespace U2
+}  // namespace U2

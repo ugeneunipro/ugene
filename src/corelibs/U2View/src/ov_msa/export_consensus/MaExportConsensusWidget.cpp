@@ -110,7 +110,7 @@ void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
     SAFE_POINT(consAlgorithmFactory != nullptr, "Fetched consensus algorithm factory is NULL", );
 
     if (consAlgorithmFactory->isSequenceLikeResult()) {
-        if (formatCb->count() == 1) {    //only text
+        if (formatCb->count() == 1) {  // only text
             formatCb->addItem(DocumentFormatUtils::getFormatNameById(BaseDocumentFormats::PLAIN_GENBANK));
             formatCb->addItem(DocumentFormatUtils::getFormatNameById(BaseDocumentFormats::FASTA));
             formatCb->model()->sort(0);
@@ -119,7 +119,7 @@ void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
         }
         showHint(false);
     } else {
-        if (formatCb->count() == 3) {    //all possible formats
+        if (formatCb->count() == 3) {  // all possible formats
             formatCb->setCurrentText(DocumentFormatUtils::getFormatNameById(BaseDocumentFormats::PLAIN_TEXT));
             formatCb->removeItem(formatCb->findText(DocumentFormatUtils::getFormatNameById(BaseDocumentFormats::FASTA)));
             formatCb->removeItem(formatCb->findText(DocumentFormatUtils::getFormatNameById(BaseDocumentFormats::PLAIN_GENBANK)));
@@ -160,4 +160,4 @@ QString MaExportConsensusWidget::getDefaultFilePath() const {
     return GUrlUtils::getDefaultDataPath() + "/" + ma->getMaObject()->getGObjectName() + "_consensus.txt";
 }
 
-}    // namespace U2
+}  // namespace U2

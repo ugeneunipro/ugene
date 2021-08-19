@@ -23,9 +23,11 @@
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
+#include <U2Core/AppContext.h>
+
 #include "PhyMLDialogWidget.h"
 #include "PhyMLTask.h"
-#include "PhyMLTests.h"
+
 namespace U2 {
 
 const QString PhyMLSupport::PHYML_ID("USUPP_PHYML");
@@ -40,25 +42,20 @@ PhyMLSupport::PhyMLSupport()
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
 
-#ifdef Q_OS_WIN
-    executableFileName = "PhyML.exe";
-#elif defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
-    executableFileName = "phyml";
-#endif
-
+    executableFileName = isOsWindows() ? "PhyML.exe" : "phyml";
     validationArguments << "--help";
     validMessage = "PhyML";
     description = tr("<i>PhyML</i> is a simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood");
     versionRegExp = QRegExp("- PhyML (\\d+)");
     toolKitName = "PhyML";
 
-    //register the method
+    // register the method
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////
-//PhyMLAdapter
+// PhyMLAdapter
 
 Task *PhyMLAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
     return new PhyMLSupportTask(ma, s);
@@ -69,9 +66,9 @@ CreatePhyTreeWidget *PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSeq
 }
 
 ////////////////////////////////////////
-//PhyMLModelTypes
+// PhyMLModelTypes
 
-//Amino-acid substitution models
+// Amino-acid substitution models
 const QStringList PhyMLModelTypes::aminoSubstitutionModels(QStringList()
                                                            << "LG"
                                                            << "WAG"
@@ -88,7 +85,7 @@ const QStringList PhyMLModelTypes::aminoSubstitutionModels(QStringList()
                                                            << "HIVw"
                                                            << "HIVb");
 
-//Dna substitution models
+// Dna substitution models
 const QStringList PhyMLModelTypes::dnaSubstitutionModels(QStringList()
                                                          << "HKY85"
                                                          << "JC69"
@@ -120,15 +117,13 @@ SubstModelTrRatioType PhyMLModelTypes::getTtRatioType(const QString &modelName) 
 }
 
 ////////////////////////////////////////
-//PhyMLRatioTestsTypes
+// PhyMLRatioTestsTypes
 
-const QStringList PhyMLRatioTestsTypes::ratioTestsTypes(QStringList()
-                                                        << "aLRT"
-                                                        << "Chi2-based"
-                                                        << "SH-like");
+const QStringList PhyMLRatioTestsTypes::ratioTestsTypes = {"aLRT", "Chi2-based", "SH-like", "Bayes branch"};
+const int PhyMLRatioTestsTypes::defaultRatioTestsTypeIndex = 2;  // SH-like;
 
 ////////////////////////////////////////
-//TreeSearchingParams
+// TreeSearchingParams
 const QStringList TreeSearchingParams::inputTreeTypes(QStringList()
                                                       << "Make initial tree automatically (BioNJ)"
                                                       << "Use tree from file");
@@ -138,4 +133,4 @@ const QStringList TreeSearchingParams::treeImprovementTypes(QStringList()
                                                             << "SRT(a bit slower than NNI)"
                                                             << "SRT & NNI(best of NNI and SPR search)");
 
-}    // namespace U2
+}  // namespace U2

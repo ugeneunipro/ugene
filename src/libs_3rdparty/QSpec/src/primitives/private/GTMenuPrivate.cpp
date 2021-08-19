@@ -117,23 +117,23 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
     m = GTGlobals::UseMouse;
 #endif
     switch (m) {
-    case GTGlobals::UseMouse:
-        pos = mainWindow->menuBar()->actionGeometry(menu).center();
-        gPos = mainWindow->menuBar()->mapToGlobal(pos);
+        case GTGlobals::UseMouse:
+            pos = mainWindow->menuBar()->actionGeometry(menu).center();
+            gPos = mainWindow->menuBar()->mapToGlobal(pos);
 
-        GTMouseDriver::click(gPos);
-        break;
+            GTMouseDriver::click(gPos);
+            break;
 
-    case GTGlobals::UseKey:
-        menuText = menu->text();
-        key_pos = menuText.indexOf('&');
-        key = (menuText.at(key_pos + 1)).toLatin1();
+        case GTGlobals::UseKey:
+            menuText = menu->text();
+            key_pos = menuText.indexOf('&');
+            key = (menuText.at(key_pos + 1)).toLatin1();
 
-        GTKeyboardDriver::keyClick(key, Qt::AltModifier);
-        break;
+            GTKeyboardDriver::keyClick(key, Qt::AltModifier);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(1000);
@@ -142,4 +142,4 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

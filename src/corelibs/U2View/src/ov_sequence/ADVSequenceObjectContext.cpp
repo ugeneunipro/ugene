@@ -56,4 +56,4 @@ void ADVSequenceObjectContext::sl_onAnnotationRelationChange() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

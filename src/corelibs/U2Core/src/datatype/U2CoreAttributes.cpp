@@ -42,4 +42,4 @@ const QStringList U2BaseAttributeName::getReadsRelatedAttributes() {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

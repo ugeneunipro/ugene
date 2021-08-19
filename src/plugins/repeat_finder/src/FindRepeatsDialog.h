@@ -62,7 +62,7 @@ private:
     void prepareAMenu(QToolButton *tb, QLineEdit *le, const QStringList &names);
     void updateStatus();
 
-    //methods for results count estimation
+    // methods for results count estimation
     quint64 areaSize() const;
     int estimateResultsCount() const;
 
@@ -80,6 +80,6 @@ public:
     QLineEdit *le;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -227,8 +227,8 @@ private:
     QAction *copyColumnURLAction;
     QAction *exportAutoAnnotationsGroup;
 
-    QAction *editAction;    // action to edit active group/qualifier/annotation only
-    QAction *addQualifierAction;    // action to create qualifier. Editable annotation or editable qualifier must be selected
+    QAction *editAction;  // action to edit active group/qualifier/annotation only
+    QAction *addQualifierAction;  // action to create qualifier. Editable annotation or editable qualifier must be selected
 
     QAction *searchQualifierAction;
     QAction *invertAnnotationSelectionAction;
@@ -268,7 +268,7 @@ private:
 //////////////////////////////////////////////////////////////////////////
 /// Tree model
 
-//TODO: create qualifiers subtrees only when qualifier node is opened (usually qualifiers get ~ 90% of memory)
+// TODO: create qualifiers subtrees only when qualifier node is opened (usually qualifiers get ~ 90% of memory)
 
 enum AVItemType {
     AVItemType_Group,
@@ -342,11 +342,11 @@ public:
 
     static QString simplifyText(const QString &origValue);
 
-    //TODO: keep values in U2Qualifier struct
+    // TODO: keep values in U2Qualifier struct
     const QString qName;
     QString qValue;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

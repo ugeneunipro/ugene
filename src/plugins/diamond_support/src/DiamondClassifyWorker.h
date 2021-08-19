@@ -51,7 +51,7 @@ private:
     static const QString DIAMOND_DIR;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_DIAMOND_CLASSIFY_WORKER_H_
+#endif  // _U2_DIAMOND_CLASSIFY_WORKER_H_

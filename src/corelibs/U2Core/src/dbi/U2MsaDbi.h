@@ -150,6 +150,6 @@ public:
     virtual void updateMsaLength(const U2DataId &msaId, qint64 length, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

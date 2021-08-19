@@ -141,23 +141,23 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequenc
     char prevC = sequence[0];
     foreach (const char c, sequence) {
         switch (c) {
-        case 'A':
-            nA++;
-            break;
-        case 'C':
-            nC++;
-            break;
-        case 'G':
-            nG++;
-            break;
-        case 'T':
-            nT++;
-            break;
-        case 'N':
-            break;
-        default:
-            initializationError = PrimerStatistics::tr("Unexpected symbol: %1").arg(c);
-            return;
+            case 'A':
+                nA++;
+                break;
+            case 'C':
+                nC++;
+                break;
+            case 'G':
+                nG++;
+                break;
+            case 'T':
+                nT++;
+                break;
+            case 'N':
+                break;
+            default:
+                initializationError = PrimerStatistics::tr("Unexpected symbol: %1").arg(c);
+                return;
         }
         if (prevC == c) {
             currentRun++;
@@ -275,12 +275,12 @@ bool PrimerStatisticsCalculator::isValidRuns(QString &error) const {
 
 QString PrimerStatisticsCalculator::getMessage(const QString &error) const {
     switch (direction) {
-    case Forward:
-        return PrimerStatistics::tr("forward primer has %1.").arg(error);
-    case Reverse:
-        return PrimerStatistics::tr("reverse primer has %1.").arg(error);
-    default:
-        return error;
+        case Forward:
+            return PrimerStatistics::tr("forward primer has %1.").arg(error);
+        case Reverse:
+            return PrimerStatistics::tr("reverse primer has %1.").arg(error);
+        default:
+            return error;
     }
 }
 
@@ -300,7 +300,7 @@ const QString TM_RANGE = QString("%1-%2").arg(PrimerStatisticsCalculator::TM_BOT
 const QString CLAMP_RANGE = QString("&gt;=%1 G or C at 3' end").arg(PrimerStatisticsCalculator::CLAMP_BOTTOM);
 const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalculator::RUNS_TOP);
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
-}    // namespace
+}  // namespace
 
 PrimersPairStatistics::PrimersPairStatistics(const QByteArray &_forward, const QByteArray &_reverse)
     : forward(_forward, PrimerStatisticsCalculator::Forward),
@@ -396,4 +396,4 @@ QString PrimersPairStatistics::toString(double value) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

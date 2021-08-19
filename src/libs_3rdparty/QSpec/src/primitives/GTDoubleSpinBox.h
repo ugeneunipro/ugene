@@ -22,5 +22,5 @@ public:
     static void checkLimits(GUITestOpStatus &os, QDoubleSpinBox *spinBox, double min, double max);
     static void checkLimits(GUITestOpStatus &os, const QString &spinBoxName, int min, int max, QWidget *parent = NULL);
 };
-}    // namespace HI
-#endif    // GTDOUBLESPINBOX_H
+}  // namespace HI
+#endif  // GTDOUBLESPINBOX_H

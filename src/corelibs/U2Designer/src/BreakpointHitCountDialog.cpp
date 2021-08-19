@@ -117,4 +117,4 @@ void BreakpointHitCountDialog::sl_hitConditionChanged(const QString &text) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

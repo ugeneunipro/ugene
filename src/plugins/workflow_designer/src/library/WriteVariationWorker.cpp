@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -75,10 +75,10 @@ void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, in
         tracks << trackObj.data();
         objectsMap[GObjectTypes::VARIANT_TRACK] = tracks;
     }
-    if (1 == entryNum) {
-        AbstractVariationFormat *variationFormat = qobject_cast<AbstractVariationFormat *>(format);
-        if (nullptr != variationFormat) {
-            variationFormat->storeHeader(trackObj.data(), io, os);
+    if (entryNum == 1) {
+        if (auto variationFormat = qobject_cast<AbstractVariationFormat *>(format)) {
+            IOAdapterWriter writer(io);
+            variationFormat->storeHeader(trackObj.data(), writer, os);
             SAFE_POINT_OP(os, );
         }
     }
@@ -131,7 +131,7 @@ void WriteVariationWorkerFactory::init() {
         }
 
         QList<Attribute *> attrs;
-        Attribute *docFormatAttr = nullptr;
+        Attribute *docFormatAttr;
         {
             Attribute *accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
@@ -165,5 +165,5 @@ Worker *WriteVariationWorkerFactory::createWorker(Actor *a) {
     return new WriteVariationWorker(a, fid);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

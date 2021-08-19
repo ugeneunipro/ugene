@@ -47,4 +47,4 @@ void LocalToolbar::addAction(QAction *a) {
     button->setFixedSize(TOOLBAR_BUTTON_SIZE, TOOLBAR_BUTTON_SIZE);
 }
 
-}    // namespace U2
+}  // namespace U2

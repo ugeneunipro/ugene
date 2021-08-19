@@ -64,6 +64,6 @@ public:
     static const QString MERGE_MULTI_SEQUENCE_POLICY_SEPARATOR_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_TO_DATABASE_OPTIONS_H_
+#endif  // _U2_IMPORT_TO_DATABASE_OPTIONS_H_

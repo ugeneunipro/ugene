@@ -42,8 +42,8 @@ namespace U2 {
 using namespace WorkflowSerialize;
 
 /*******************************************
-* GalaxyConfigTask
-*******************************************/
+ * GalaxyConfigTask
+ *******************************************/
 
 #define TOOL "tool"
 #define NAME "name"
@@ -181,7 +181,7 @@ void GalaxyConfigTask::tryToFindByLocate(const QString &objectName, QString &obj
     QString fileName = objectName + "_path.txt";
     QString locateCommand = QString("locate %1 -l 1 > %2").arg(objectName).arg(fileName);
     int rc = system(locateCommand.toLocal8Bit().constData());
-    if (rc == -1) {    // From docs: The value returned is -1 on error, and the return status of the command otherwise.
+    if (rc == -1) {  // From docs: The value returned is -1 on error, and the return status of the command otherwise.
         coreLog.info(QString("Locate command returned -1: %1").arg(locateCommand));
         return;
     }
@@ -373,7 +373,7 @@ bool GalaxyConfigTask::defineAliases() {
 }
 
 void GalaxyConfigTask::writeToolUnit() {
-    galaxyConfigOutput.writeStartElement(TOOL);    //tool unit begin
+    galaxyConfigOutput.writeStartElement(TOOL);  // tool unit begin
     galaxyConfigOutput.writeAttribute(ID, galaxyToolName + "_tool");
     QString toolName = galaxyToolName;
     toolName.replace(" ", "_");
@@ -455,7 +455,7 @@ void GalaxyConfigTask::writeOutputFilesChecks() {
 }
 
 bool GalaxyConfigTask::writeCommandUnit() {
-    galaxyConfigOutput.writeStartElement(COMMAND);    //command unit begin
+    galaxyConfigOutput.writeStartElement(COMMAND);  // command unit begin
     CHECK(divideElementsByType(), false);
 
     QString ugeneExecutable;
@@ -467,7 +467,7 @@ bool GalaxyConfigTask::writeCommandUnit() {
     writeRunUgeneCommand(ugeneExecutable);
     writeOutputFilesChecks();
 
-    galaxyConfigOutput.writeEndElement();    //command unit end
+    galaxyConfigOutput.writeEndElement();  // command unit end
     return true;
 }
 
@@ -688,8 +688,8 @@ bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate *pd, const QString
     return true;
 }
 
-//FIXME
-//look at tryToWriteSimpleType and tryToWriteComplexType functions
+// FIXME
+// look at tryToWriteSimpleType and tryToWriteComplexType functions
 bool GalaxyConfigTask::writeTypeForOptionElement(const QStringList &elementParameters, const ActorPrototype &element) {
     const QString attributeName = elementParameters.at(0);
     Attribute *elementAttribute = element.getAttribute(attributeName);
@@ -739,10 +739,10 @@ bool GalaxyConfigTask::writeOptionElements() {
 }
 
 bool GalaxyConfigTask::writeInputsUnit() {
-    galaxyConfigOutput.writeStartElement(INPUTS);    //inputs unit begin
+    galaxyConfigOutput.writeStartElement(INPUTS);  // inputs unit begin
     CHECK(writeInputElements(), false);
     CHECK(writeOptionElements(), false);
-    galaxyConfigOutput.writeEndElement();    //inputs unit end
+    galaxyConfigOutput.writeEndElement();  // inputs unit end
     return true;
 }
 
@@ -814,7 +814,7 @@ void GalaxyConfigTask::tryToWriteChangeFormatAttribute(const ActorPrototype &ele
 }
 
 bool GalaxyConfigTask::writeOutputsUnit() {
-    galaxyConfigOutput.writeStartElement(OUTPUTS);    //outputs unit begin
+    galaxyConfigOutput.writeStartElement(OUTPUTS);  // outputs unit begin
     QList<int> usedOptionElements;
 
     QList<int>::iterator outputElementsIterator;
@@ -846,7 +846,7 @@ bool GalaxyConfigTask::writeOutputsUnit() {
     galaxyConfigOutput.writeAttribute("label", WORKFLOW_RUN_LOG);
     galaxyConfigOutput.writeEndElement();
 
-    galaxyConfigOutput.writeEndElement();    //outputs unit end
+    galaxyConfigOutput.writeEndElement();  // outputs unit end
     return true;
 }
 
@@ -872,7 +872,7 @@ bool GalaxyConfigTask::createConfigForGalaxy() {
     CHECK(writeInputsUnit(), false);
     CHECK(writeOutputsUnit(), false);
     writeHelpUnit();
-    galaxyConfigOutput.writeEndElement();    //tool unit end
+    galaxyConfigOutput.writeEndElement();  // tool unit end
 
     galaxyConfigFile.close();
     coreLog.info("Tool config was created");
@@ -1036,4 +1036,4 @@ void GalaxyConfigTask::addToolToGalaxy() {
     modifyToolConfig();
 }
 
-}    // namespace U2
+}  // namespace U2

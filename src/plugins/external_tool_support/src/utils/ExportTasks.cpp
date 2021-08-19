@@ -99,34 +99,33 @@ const MultipleSequenceAlignment &SaveAlignmentTask::getMAlignment() const {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment &_ma, const QString &_url, bool _trimAli, DocumentFormatId _format)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment &msa, const QString &_url, bool trimAli, const DocumentFormatId &_documentFormatId)
     : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
-      ma(_ma->getCopy()), url(_url), trimAli(_trimAli), format(_format) {
+      url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
     stateInfo.setProgress(0);
+    sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimAli);
 }
 
 void SaveMSA2SequencesTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(format);
+    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    doc.reset(f->createNewLoadedDocument(iof, url, stateInfo));
+    doc.reset(documentFormat->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimAli);
     QSet<QString> usedNames;
-    foreach (const DNASequence &s, lst) {
-        QString name = s.getName();
+    for (const DNASequence &sequence : qAsConst(sequenceList)) {
+        QString name = sequence.getName();
         if (usedNames.contains(name)) {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), s);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), sequence);
         CHECK_OP(stateInfo, );
         doc->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);
     }
-    f->storeDocument(doc.data(), stateInfo);
+    documentFormat->storeDocument(doc.data(), stateInfo);
 }
 
 SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, const QString &url, const DocumentFormatId &formatId)
@@ -175,4 +174,4 @@ QList<Task *> SaveSequenceTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

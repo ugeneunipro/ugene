@@ -58,4 +58,4 @@ KrakenSupportPlugin::~KrakenSupportPlugin() {
     etRegistry->unregisterEntry(KrakenSupport::CLASSIFY_TOOL_ID);
 }
 
-}    // namespace U2
+}  // namespace U2

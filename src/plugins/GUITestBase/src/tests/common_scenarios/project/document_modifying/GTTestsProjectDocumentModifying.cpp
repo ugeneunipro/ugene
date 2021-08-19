@@ -30,15 +30,12 @@
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/ugeneui/ExportProjectDialogFiller.h"
-#include "utils/GTUtilsApp.h"
-#include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
 
@@ -59,7 +56,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
-    // Press Ctrl+N and add annotation to it annotations table.
+    // Press Ctrl+N and add annotation to the annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "CCC", "1.. 10"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
@@ -68,7 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProjectTreeView::itemModificationCheck(os, d, true);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
+GUI_TEST_CLASS_DEFINITION(test_0001_1) {  // CHANGES another annotation created
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2-1.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2-1.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -83,7 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
-    // Press Ctrl+N and add annotation to it annotations table.
+    // Press Ctrl+N and add annotation to the annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "GROUP", "Annotation", "4.. 18"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
@@ -160,6 +157,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 }
 
-}    // namespace GUITest_common_scenarios_project_document_modifying
+}  // namespace GUITest_common_scenarios_project_document_modifying
 
-}    // namespace U2
+}  // namespace U2

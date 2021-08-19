@@ -59,5 +59,5 @@ bool DiamondBuildValidator::validateTaxonomy(const Actor *actor, NotificationsLi
     return isValid;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

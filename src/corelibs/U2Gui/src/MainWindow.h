@@ -51,7 +51,7 @@ class QMainWindow;
 #define MWTOOLBAR_MAIN "mwtoolbar_main"
 #define MWTOOLBAR_ACTIVEMDI "mwtoolbar_activemdi"
 
-//actions
+// actions
 #define ACTION__EXIT "action__exit"
 #define ACTION__ABOUT "action__about"
 #define ACTION__LOGVIEW "action__logview"
@@ -240,7 +240,7 @@ public:
     virtual void dontActivateNextTime(MWDockArea a) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 Q_DECLARE_METATYPE(U2::MainWindow *)
 Q_DECLARE_METATYPE(U2::MWMDIManager *)
 Q_DECLARE_METATYPE(U2::MWDockManager *)

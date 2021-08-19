@@ -143,4 +143,4 @@ GObject *ExportDocumentDialogController::getSourceObject() const {
     return sourceObject;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -42,6 +42,6 @@ private:
     static const QMap<OpenWith, QString> openWithMap;
     static QMap<OpenWith, QString> initMap();
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_
+#endif  // _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_

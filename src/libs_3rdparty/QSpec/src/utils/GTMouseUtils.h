@@ -23,7 +23,7 @@
 #define HI_GUI_GTMOUSE_H_
 
 #include "GTGlobals.h"
-#if (QT_VERSION < 0x050000)    //Qt 5
+#if (QT_VERSION < 0x050000)  // Qt 5
 #    include <QtGui/QWidget>
 #else
 #    include <QtWidgets/QWidget>
@@ -37,5 +37,5 @@ public:
     static void moveCursorOutOfWidget(GUITestOpStatus &os, QWidget *widget);
 };
 
-}    // namespace HI
+}  // namespace HI
 #endif

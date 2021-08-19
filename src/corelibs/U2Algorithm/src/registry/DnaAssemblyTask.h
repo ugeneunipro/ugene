@@ -65,10 +65,10 @@ public:
     QList<GUrl> getShortReadUrls() const;
 
 public:
-    QString indexDir;    // if prebuiltIndex is true
-    QString indexBasename;    // if prebuiltIndex is true
+    QString indexDir;  // if prebuiltIndex is true
+    QString indexBasename;  // if prebuiltIndex is true
     QList<ShortReadSet> shortReadSets;
-    GUrl refSeqUrl;    // if prebuiltIndex is false
+    GUrl refSeqUrl;  // if prebuiltIndex is false
     GUrl resultFileName;
     QString indexFileName;
     QString algName;
@@ -130,6 +130,6 @@ public: \
             return new c(s, justBuildIndex); \
         } \
     };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_ASSEMBLEY_TASK_H_
+#endif  // _U2_DNA_ASSEMBLEY_TASK_H_

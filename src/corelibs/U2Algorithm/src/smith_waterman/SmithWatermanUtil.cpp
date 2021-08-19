@@ -66,7 +66,7 @@ int SmithWatermanUtil::calcOverlapSize(bool transl, int windowLen, float scoreIt
     return qMax(windowLen, dependSize);
 }
 
-//greater score goes first
+// greater score goes first
 static bool revScoreComparator(const SmithWatermanResult &s0, const SmithWatermanResult &s1) {
     bool res = false;
     if (s0.score < s1.score) {
@@ -105,4 +105,4 @@ bool SmithWatermanUtil::removeIdenticalResults(QList<SmithWatermanResult> *lst) 
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

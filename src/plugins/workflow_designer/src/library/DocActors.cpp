@@ -259,7 +259,7 @@ QString WriteDocPrompter::composeRichDoc() {
         QString dbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(dbUrl);
         dbName = dbName.isEmpty() ? unsetStr : getHyperlink(BaseAttributes::DATABASE_ATTRIBUTE().getId(), dbName);
 
-        result = spec.left(spec.size() - 1);    // remove last dot
+        result = spec.left(spec.size() - 1);  // remove last dot
         result += tr(" in the ") + "<u>%3</u>" + tr(" database.");
         return result.arg(producers).arg(url).arg(dbName);
     } else {
@@ -279,5 +279,5 @@ QString ReadDocPrompter::composeRichDoc() {
     }
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

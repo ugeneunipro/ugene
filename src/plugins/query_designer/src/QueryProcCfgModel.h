@@ -93,10 +93,10 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
             switch (section) {
-            case 0:
-                return tr("Name");
-            case 1:
-                return tr("Value");
+                case 0:
+                    return tr("Name");
+                case 1:
+                    return tr("Value");
             }
         }
         return QVariant();
@@ -109,38 +109,38 @@ public:
         }
         if (index.column() == 0) {
             switch (role) {
-            case Qt::DisplayRole:
-                return item->getDisplayName();
-            case Qt::ToolTipRole:
-                return item->getDocumentation();
-            case Qt::FontRole:
-                if (item->isRequiredAttribute()) {
-                    QFont fnt;
-                    fnt.setBold(true);
-                    return QVariant(fnt);
-                }
-                return QVariant();
-            default:
-                return QVariant();
+                case Qt::DisplayRole:
+                    return item->getDisplayName();
+                case Qt::ToolTipRole:
+                    return item->getDocumentation();
+                case Qt::FontRole:
+                    if (item->isRequiredAttribute()) {
+                        QFont fnt;
+                        fnt.setBold(true);
+                        return QVariant(fnt);
+                    }
+                    return QVariant();
+                default:
+                    return QVariant();
             }
         }
         QVariant val = item->getAttributePureValue();
         PropertyDelegate *pd = editor ? editor->getDelegate(item->getId()) : nullptr;
         switch (role) {
-        case Qt::DisplayRole:
-        case Qt::ToolTipRole: {
-            if (pd) {
-                return pd->getDisplayValue(val);
-            } else {
-                QString valueStr = WorkflowUtils::getStringForParameterDisplayRole(val);
-                return !valueStr.isEmpty() ? valueStr : val;
+            case Qt::DisplayRole:
+            case Qt::ToolTipRole: {
+                if (pd) {
+                    return pd->getDisplayValue(val);
+                } else {
+                    QString valueStr = WorkflowUtils::getStringForParameterDisplayRole(val);
+                    return !valueStr.isEmpty() ? valueStr : val;
+                }
             }
-        }
-        case DelegateRole:
-            return qVariantFromValue<PropertyDelegate *>(pd);
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            return val;
+            case DelegateRole:
+                return qVariantFromValue<PropertyDelegate *>(pd);
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                return val;
         }
         return QVariant();
     }
@@ -151,19 +151,19 @@ public:
         }
         Attribute *item = attrs[index.row()];
         switch (role) {
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            const QString &key = item->getId();
-            if (item->getAttributePureValue() != value) {
-                cfg->setParameter(key, value);
-                emit dataChanged(index, index);
-            }
-            return true;
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                const QString &key = item->getId();
+                if (item->getAttributePureValue() != value) {
+                    cfg->setParameter(key, value);
+                    emit dataChanged(index, index);
+                }
+                return true;
         }
         return false;
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

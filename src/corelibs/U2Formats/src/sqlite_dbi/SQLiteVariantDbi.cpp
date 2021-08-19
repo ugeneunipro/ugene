@@ -136,7 +136,7 @@ void SQLiteVariantDbi::createVariantTrack(U2VariantTrack &track, VariantTrackTyp
         os.setError(U2DbiL10n::tr("Sequence name is not set!"));
         return;
     }
-    //SQLiteTransaction t(db, os);
+    // SQLiteTransaction t(db, os);
 
     dbi->getSQLiteObjectDbi()->createObject(track, folder, U2DbiObjectRank_TopLevel, os);
     SAFE_POINT_OP(os, );
@@ -323,4 +323,4 @@ void SQLiteVariantDbi::updateTrackIDofVariant(const U2DataId &variant, const U2D
     CHECK_OP(os, );
 }
 
-}    // namespace U2
+}  // namespace U2

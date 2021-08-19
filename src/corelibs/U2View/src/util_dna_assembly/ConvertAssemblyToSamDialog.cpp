@@ -126,4 +126,4 @@ const GUrl ConvertAssemblyToSamDialog::getSamFileUrl() {
     return saveController->getSaveFileName();
 }
 
-}    // namespace U2
+}  // namespace U2

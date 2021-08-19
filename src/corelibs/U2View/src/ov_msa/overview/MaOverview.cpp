@@ -118,4 +118,4 @@ int MaOverview::getContentWidgetHeight() const {
     return height();
 }
 
-}    // namespace U2
+}  // namespace U2

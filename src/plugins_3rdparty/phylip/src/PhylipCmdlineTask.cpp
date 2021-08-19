@@ -1,23 +1,25 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
+#include "PhylipCmdlineTask.h"
 
 #include <QFile>
 
@@ -33,8 +35,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "PhylipCmdlineTask.h"
-
 namespace U2 {
 
 const QString PhylipCmdlineTask::PHYLIP_CMDLINE = "phylip";
@@ -49,8 +49,7 @@ const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
 PhylipCmdlineTask::PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings)
-: PhyTreeGeneratorTask(msa, settings), cmdlineTask(nullptr), msaObject(nullptr), treeObject(nullptr)
-{
+    : PhyTreeGeneratorTask(msa, settings), cmdlineTask(nullptr), msaObject(nullptr), treeObject(nullptr) {
     setTaskName(tr("PHYLIP command line wrapper task"));
     tpm = Progress_SubTasksBased;
 }
@@ -86,7 +85,7 @@ Task::ReportResult PhylipCmdlineTask::report() {
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
     CHECK_OP(stateInfo, );
-    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleSequenceAlignment&>(inputMA), stateInfo);
+    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleSequenceAlignment &>(inputMA), stateInfo);
     CHECK_OP(stateInfo, );
     msaObject->setParent(this);
     config.inputObjects << msaObject;
@@ -119,4 +118,4 @@ void PhylipCmdlineTask::prepareTempDbi() {
     DbiConnection(dbiRef, true, stateInfo, properties);
 }
 
-} // U2
+}  // namespace U2

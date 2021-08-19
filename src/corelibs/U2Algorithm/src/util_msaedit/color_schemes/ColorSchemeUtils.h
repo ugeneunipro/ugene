@@ -49,6 +49,6 @@ public:
     static const QString COLOR_SCHEME_COLOR_SCHEMA_DIR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_COLOR_SCHEME_UTILS_H_
+#endif  // _U2_COLOR_SCHEME_UTILS_H_

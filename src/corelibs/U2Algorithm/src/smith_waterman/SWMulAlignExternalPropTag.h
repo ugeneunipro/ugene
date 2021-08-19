@@ -58,6 +58,6 @@ inline SWMulAlignExternalPropTag::Type SWMulAlignExternalPropTag::getType() cons
     return type;
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_
+#endif  // _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_

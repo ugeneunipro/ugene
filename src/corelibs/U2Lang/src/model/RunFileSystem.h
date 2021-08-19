@@ -102,6 +102,6 @@ public:
     static bool isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &dir);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_RUNFILESYSTEM_H_
+#endif  // _U2_RUNFILESYSTEM_H_

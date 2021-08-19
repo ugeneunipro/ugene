@@ -134,6 +134,6 @@ private:
     QVariantMap dependencies;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ATTRIBUTE_RELATION_H_
+#endif  // _U2_ATTRIBUTE_RELATION_H_

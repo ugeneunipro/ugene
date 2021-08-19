@@ -125,11 +125,11 @@ qint64 MsaRowUtils::getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dat
 U2Region MsaRowUtils::getGappedRegion(const U2MsaRowGapModel &gaps, const U2Region &ungappedRegion) {
     U2Region result(ungappedRegion);
     foreach (const U2MsaGap &gap, gaps) {
-        if (gap.offset <= result.startPos) {    //leading gaps
+        if (gap.offset <= result.startPos) {  // leading gaps
             result.startPos += gap.gap;
-        } else if (gap.offset > result.startPos && gap.offset < result.endPos()) {    //inner gaps
+        } else if (gap.offset > result.startPos && gap.offset < result.endPos()) {  // inner gaps
             result.length += gap.gap;
-        } else {    //trailing
+        } else {  // trailing
             break;
         }
     }
@@ -235,7 +235,7 @@ void MsaRowUtils::removeGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLeng
     CHECK(position <= rowLengthWithoutTrailing, );
 
     QList<U2MsaGap> newGapModel;
-    int endRegionPos = position + count;    // non-inclusive
+    int endRegionPos = position + count;  // non-inclusive
     foreach (U2MsaGap gap, gaps) {
         qint64 gapEnd = gap.offset + gap.gap;
         if (gapEnd < position) {
@@ -332,16 +332,16 @@ bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel 
         return false;
     }
     if (gapModel[0].offset == 0 && position < gapModel[0].endPos()) {
-        return true;    // leading gap.
+        return true;  // leading gap.
     }
     int totalGapsLen = 0;
     for (const U2MsaGap &gap : qAsConst(gapModel)) {
         totalGapsLen += gap.gap;
         if (position < gap.offset) {
-            return false;    // somewhere in the middle.
+            return false;  // somewhere in the middle.
         }
     }
-    return position >= dataLength + totalGapsLen;    // trailing gap.
+    return position >= dataLength + totalGapsLen;  // trailing gap.
 }
 
 void MsaRowUtils::chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength) {
@@ -442,7 +442,7 @@ U2MsaGap getNextGap(QListIterator<U2MsaGap> &mainGapModelIterator, QListIterator
     }
 }
 
-}    // namespace
+}  // namespace
 
 U2MsaRowGapModel MsaRowUtils::insertGapModel(const U2MsaRowGapModel &mainGapModel, const U2MsaRowGapModel &additionalGapModel) {
     U2MsaRowGapModel mergedGapModel;
@@ -554,7 +554,7 @@ U2MsaGap extractCommonPart(QMutableListIterator<U2MsaGap> &firstIterator, QMutab
     return commonPart;
 }
 
-}    // namespace
+}  // namespace
 
 void MsaRowUtils::getGapModelsDifference(const U2MsaRowGapModel &firstGapModel, const U2MsaRowGapModel &secondGapModel, U2MsaRowGapModel &commonPart, U2MsaRowGapModel &firstDifference, U2MsaRowGapModel &secondDifference) {
     commonPart.clear();
@@ -621,7 +621,7 @@ void subtitudeGap(QMutableListIterator<U2MsaGap> &minuendIterator, QMutableListI
     }
 }
 
-}    // namespace
+}  // namespace
 
 U2MsaRowGapModel MsaRowUtils::mergeGapModels(const U2MsaListGapModel &gapModels) {
     U2MsaRowGapModel mergedGapModel;
@@ -655,7 +655,7 @@ U2MsaRowGapModel MsaRowUtils::reverseGapModel(const U2MsaRowGapModel &gapModel, 
 
     foreach (const U2MsaGap &gap, gapModel) {
         if (rowLengthWithoutTrailing - gap.endPos() < 0) {
-            Q_ASSERT(false);    // original model has gaps out of range or trailing gaps
+            Q_ASSERT(false);  // original model has gaps out of range or trailing gaps
             continue;
         }
         reversedGapModel.prepend(U2MsaGap(rowLengthWithoutTrailing - gap.offset, gap.gap));
@@ -686,4 +686,4 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &g
     }
 }
 
-}    // namespace U2
+}  // namespace U2

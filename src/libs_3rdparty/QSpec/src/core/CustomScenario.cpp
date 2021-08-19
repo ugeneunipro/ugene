@@ -26,4 +26,4 @@ namespace HI {
 CustomScenario::~CustomScenario() {
 }
 
-}    // namespace HI
+}  // namespace HI

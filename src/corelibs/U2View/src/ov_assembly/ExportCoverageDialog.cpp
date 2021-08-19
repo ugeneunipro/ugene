@@ -139,4 +139,4 @@ bool ExportCoverageDialog::checkPermissions() const {
     return (isFileExist && isFileWritable) || isDirWritable;
 }
 
-}    // namespace U2
+}  // namespace U2

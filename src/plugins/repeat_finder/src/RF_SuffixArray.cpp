@@ -80,7 +80,7 @@ SuffixArray::SuffixArray(const char *_sequence, int size, int _prefixLen)
 
     prefixes = new quint32[prefixNum];
     U2::memset(prefixes, 0, prefixNum * sizeof(quint32));
-    //init prefixes
+    // init prefixes
     const BitMask &mask = *bitMask;
     for (quint32 i = 0; i <= seqSize - prefixLen; i++) {
         const quint32 ind = (mask[i] >> (64 - usablePrefixLen * 2));
@@ -119,7 +119,7 @@ SuffixArray::SuffixArray(const char *_sequence, int size, int _prefixLen)
 
 void SuffixArray::sort() {
     suffixes = new quint32[seqSize - prefixLen + 1];
-    //sorting
+    // sorting
     for (quint32 i = 0; i <= seqSize - prefixLen; i++) {
         const quint32 ind = (*bitMask)[i] >> (64 - usablePrefixLen * 2);
 #ifdef _DEBUG
@@ -174,7 +174,7 @@ void SuffixArray::sortDeeper(const quint32 begin, const quint32 end) {
         const quint32 suffix = suffixes[suffRunner];
         qSortBuffer[suffRunner - begin] = suffix | ((bits[suffix] << usablePrefixLen * 2) & HI_DWORD_MASK);
     }
-    //qsort(begin, end-1);
+    // qsort(begin, end-1);
     std::sort(qSortBuffer, qSortBuffer + end - begin);
     for (quint32 suffRunner = begin; suffRunner < end; suffRunner++) {
         suffixes[suffRunner] = qSortBuffer[suffRunner - begin] & LO_DWORD_MASK;
@@ -191,7 +191,7 @@ void SuffixArray::sortUndefinedDeeper(const quint32 begin, const quint32 end) {
         const quint32 suffix = suffixes[suffRunner];
         qSortBuffer[suffRunner - begin] = suffix | (bits[suffix] & HI_DWORD_MASK);
     }
-    //qsort(begin, end-1);
+    // qsort(begin, end-1);
     const quint32 minDetectSize = 100;
     for (quint32 buffRunner = 0; buffRunner < end - begin - minDetectSize; buffRunner++) {
         quint32 areaOffs = buffRunner;
@@ -204,7 +204,7 @@ void SuffixArray::sortUndefinedDeeper(const quint32 begin, const quint32 end) {
             std::sort(qSortBuffer, qSortBuffer + end - begin - areaSize);
             U2::memmove(qSortBuffer + areaOffs + areaSize, qSortBuffer + areaOffs, areaSize);
             for (quint32 fillRunner = 0; fillRunner < areaSize; fillRunner++) {
-                //fill with garbage
+                // fill with garbage
                 (qSortBuffer + areaOffs)[fillRunner] = areaSize - fillRunner;
             }
             break;
@@ -232,7 +232,7 @@ void SuffixArray::qsort(const quint32 first, const quint32 last) {
             ++lrunner;
         while (midv < alignedSortBuf[rrunner])
             --rrunner;
-        if (lrunner >= rrunner) {    //lrunner == rrunner == middle
+        if (lrunner >= rrunner) {  // lrunner == rrunner == middle
             break;
         } else {
             const quint32 t = suffixes[lrunner];
@@ -246,7 +246,7 @@ void SuffixArray::qsort(const quint32 first, const quint32 last) {
     qsort(rrunner + 1, last);
 }
 
-//prefixes cannot be equal! either left less than right or right less than left
+// prefixes cannot be equal! either left less than right or right less than left
 inline bool SuffixArray::less(const quint32 li, const quint32 ri) {
 #ifdef _DEBUG
     Q_ASSERT(li != ri);
@@ -262,4 +262,4 @@ SuffixArray::~SuffixArray() {
     delete[] qSortBuffer;
 }
 
-}    // namespace U2
+}  // namespace U2

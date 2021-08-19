@@ -44,6 +44,6 @@ public:
     static void setFolder(HI::GUITestOpStatus &os, const QString &folder);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_PRIMERS_DIALOG_FILLER_H_
+#endif  // _U2_EXPORT_PRIMERS_DIALOG_FILLER_H_

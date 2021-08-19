@@ -52,6 +52,6 @@ private:
     int calculateMatrixSSE2(unsigned queryLength, unsigned char *dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

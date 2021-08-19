@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "AprFormat.h"
 
@@ -48,8 +48,8 @@ static const short SIZE_BEFORE_NUMBER_SEQUENCE_QUANTITY = QString("obj|Object*|"
 static const short SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH = QString("obj|IxAlignment|\\").length();
 
 /**
-*returns the string from which the alignment information is started
-*/
+ *returns the string from which the alignment information is started
+ */
 static QString getLine(IOAdapter *io, char *buff, const QString &pattern, U2OpStatus &os) {
     bool lineOk = false;
     bool finishedReading = false;
@@ -232,4 +232,4 @@ void AprFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     objects.append(obj);
 }
 
-}    // namespace U2
+}  // namespace U2

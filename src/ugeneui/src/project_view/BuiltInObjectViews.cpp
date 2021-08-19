@@ -73,4 +73,4 @@ void ProjectViewImpl::unregisterBuiltInObjectViews() {
     delete f;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,4 +41,4 @@ void LinkDataScriptFactory::createScript(WorkflowScriptEngine *engine) {
     LinkDataScriptLibrary::init(engine);
 }
 
-}    // namespace U2
+}  // namespace U2

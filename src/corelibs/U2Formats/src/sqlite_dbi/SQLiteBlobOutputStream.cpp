@@ -61,4 +61,4 @@ void SQLiteBlobOutputStream::update(DbRef *db, const QByteArray &tableId, const 
     q.update(1);
 }
 
-}    // namespace U2
+}  // namespace U2

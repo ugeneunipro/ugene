@@ -24,7 +24,7 @@
 
 namespace U2 {
 
-//TODO rethink...
+// TODO rethink...
 class U2LANG_EXPORT DataTypeConvertion {
 public:
     enum ConvertionType {
@@ -37,5 +37,5 @@ public:
     virtual ConvertionType canConvert(const DataTypePtr from, const DataTypePtr to) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

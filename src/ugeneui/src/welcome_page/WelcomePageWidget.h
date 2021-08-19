@@ -62,6 +62,6 @@ private:
     QVBoxLayout *recentProjectsLayout = nullptr;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WELCOME_PAGE_WIDGET_H_
+#endif  // _U2_WELCOME_PAGE_WIDGET_H_

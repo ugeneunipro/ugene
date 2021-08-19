@@ -90,7 +90,7 @@ void MarkerEditor::sl_onMarkerEdited(const QString &newMarkerName, const QString
     Marker *marker = markerModel->getMarker(newMarkerName);
     SAFE_POINT(nullptr != marker, "NULL marker", );
 
-    {    // TODO: make common way to get marked object output port
+    {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
         Port *outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
@@ -109,7 +109,7 @@ void MarkerEditor::sl_onMarkerAdded(const QString &markerName) {
     Marker *marker = markerModel->getMarker(markerName);
     SAFE_POINT(nullptr != marker, "NULL marker", );
 
-    {    // TODO: make common way to get marked object output port
+    {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
         Port *outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
@@ -123,7 +123,7 @@ void MarkerEditor::sl_onMarkerAdded(const QString &markerName) {
 }
 
 void MarkerEditor::sl_onMarkerRemoved(const QString &markerName) {
-    {    // TODO: make common way to get marked object output port
+    {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
         Port *outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
@@ -137,8 +137,8 @@ void MarkerEditor::sl_onMarkerRemoved(const QString &markerName) {
 }
 
 /* ***********************************************************************
-* MarkerCfgModel
-* ***********************************************************************/
+ * MarkerCfgModel
+ * ***********************************************************************/
 MarkerGroupListCfgModel::MarkerGroupListCfgModel(QObject *parent, QList<Marker *> &markers)
     : QAbstractTableModel(parent), markers(markers) {
 }
@@ -273,6 +273,6 @@ bool MarkerGroupListCfgModel::containsName(const QString &name) {
     return false;
 }
 
-}    // namespace Workflow
+}  // namespace Workflow
 
-}    // namespace U2
+}  // namespace U2

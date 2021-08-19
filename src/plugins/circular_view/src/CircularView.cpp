@@ -155,7 +155,7 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
     lastMovePos = movement;
     lastMouseY = areaPoint.y() - circularViewRenderArea->getCenterY();
 
-    if (e->modifiers() & Qt::ControlModifier) {    // invert the selection.
+    if (e->modifiers() & Qt::ControlModifier) {  // invert the selection.
         twoParts = !twoParts;
     }
     if (twoParts) {
@@ -374,7 +374,7 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView *d)
 
     setMouseTracking(true);
 
-    //build annotation items to get number of region levels for proper resize
+    // build annotation items to get number of region levels for proper resize
     buildItems(QFont());
 }
 
@@ -436,7 +436,7 @@ void CircularViewRenderArea::drawAll(QPaintDevice *pd) {
         verticalOffset += (outerEllipseSize + (regionY.count() - 1) * ellipseDelta + VIEW_MARGIN - viewSize) / 2;
         // distance from the ruler to the end of annotation layers
         int topSpace = ((regionY.count() - 1) * ellipseDelta + VIEW_MARGIN) / 2;
-        if (innerEllipseSize > pd->width()) {    // the ruller cannot fit in view
+        if (innerEllipseSize > pd->width()) {  // the ruller cannot fit in view
             // the distance from intersection point of ruler and side border to horizontal diameter
             double x = (innerEllipseSize / 2) * (innerEllipseSize / 2) - (pd->width() / 2) * (pd->width() / 2);
             x = sqrt(x);
@@ -515,7 +515,7 @@ void CircularViewRenderArea::drawAnnotationsSelection(QPainter &p) {
 namespace {
 const int RULER_PAD = 40;
 const int DEFAULT_SYMBOLS_ALLOWED = 20;
-}    // namespace
+}  // namespace
 void CircularViewRenderArea::drawSequenceName(QPainter &p) {
     QPen boldPen(Qt::black);
     boldPen.setWidth(3);
@@ -887,7 +887,7 @@ CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem
     float startAngle = (float)r.startPos / (float)seqLen * 360;
     float spanAngle = (float)totalLen / (float)seqLen * 360;
 
-    //cut annotation border if dna is linear
+    // cut annotation border if dna is linear
     if (!circularView->isCircularTopology()) {
         spanAngle = qMin(spanAngle, (float)(360 - startAngle));
     }
@@ -1161,4 +1161,4 @@ QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint 
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

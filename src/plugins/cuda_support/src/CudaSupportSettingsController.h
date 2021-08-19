@@ -73,6 +73,6 @@ public:
     QList<QCheckBox *> gpuEnableChecks;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //__CUDA_SUPPORT_SETTINGS_CONTROLLER__
+#endif  //__CUDA_SUPPORT_SETTINGS_CONTROLLER__

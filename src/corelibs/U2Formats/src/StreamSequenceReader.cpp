@@ -175,4 +175,4 @@ int StreamSequenceReader::getNumberOfSequences(const QString &url, U2OpStatus &o
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

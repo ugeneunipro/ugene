@@ -104,7 +104,7 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
         LogSettingsTopLineWidget *tw = new LogSettingsTopLineWidget(this, settings.levelColors[i], LogLevel(i));
         QHBoxLayout *l = new QHBoxLayout();
 
-        int marginLeft = 6;    //TODO: align with usual setCheckState boxes
+        int marginLeft = 6;  // TODO: align with usual setCheckState boxes
         l->setContentsMargins(marginLeft, 1, 10, 1);
         l->setSpacing(0);
 
@@ -170,7 +170,7 @@ AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
     LogSettingsPageState *state = new LogSettingsPageState();
     LogSettings &settings = state->settings;
 
-    //process global settings
+    // process global settings
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         QWidget *w = tableWidget->cellWidget(0, i + 1);
         LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(w);
@@ -178,7 +178,7 @@ AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
         settings.activeLevelGlobalFlag[i] = tw->cb->checkState() != Qt::Unchecked;
     }
 
-    //process per-category settings
+    // process per-category settings
     for (int row = 1; row < tableWidget->rowCount(); row++) {
         LoggerSettings logCat;
         logCat.categoryName = tableWidget->item(row, 0)->text();
@@ -312,4 +312,4 @@ void LogSettingsPageWidget::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-}    // namespace U2
+}  // namespace U2

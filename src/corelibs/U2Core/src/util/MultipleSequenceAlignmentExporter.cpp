@@ -178,4 +178,4 @@ U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId &m
     return msaDbi->getMsaObject(msaId, os);
 }
 
-}    // namespace U2
+}  // namespace U2

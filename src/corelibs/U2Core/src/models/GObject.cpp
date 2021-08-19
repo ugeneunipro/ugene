@@ -260,7 +260,7 @@ bool relationsAreEqualExceptDbId(const GObjectRelation &f, const GObjectRelation
            (!f.ref.entityRef.isValid() || !s.ref.entityRef.isValid() || f.ref.entityRef.dbiRef == s.ref.entityRef.dbiRef);
 }
 
-}    // namespace
+}  // namespace
 
 bool GObject::hasObjectRelation(const GObjectRelation &r) const {
     Document *parentDoc = getDocument();
@@ -400,4 +400,4 @@ QStringList GObjectMimeData::formats() const {
     return QStringList(MIME_TYPE);
 }
 
-}    // namespace U2
+}  // namespace U2

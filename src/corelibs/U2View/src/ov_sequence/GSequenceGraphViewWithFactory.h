@@ -64,13 +64,10 @@ public:
         return factory;
     }
 
-protected:
-    virtual void addActionsToGraphMenu(QMenu *graphMenu);
-
 private:
     GSequenceGraphFactory *factory;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

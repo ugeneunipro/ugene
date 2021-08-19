@@ -252,7 +252,7 @@ U2DataId MysqlMsaDbi::createMsaObject(const QString &folder, const QString &name
     q.bindDataId(":object", msa.id);
     q.bindInt64(":length", msa.length);
     q.bindString(":alphabet", msa.alphabet.id);
-    q.bindInt64(":numOfRows", 0);    // no rows
+    q.bindInt64(":numOfRows", 0);  // no rows
     q.insert();
 
     return msa.id;
@@ -300,7 +300,7 @@ void MysqlMsaDbi::updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &a
     updateAction.complete(os);
 }
 
-//TODO: a lof of code-duplication with SQLITE version!
+// TODO: a lof of code-duplication with SQLITE version!
 void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
@@ -673,7 +673,7 @@ U2DataId MysqlMsaDbi::createMcaObject(const QString &folder, const QString &name
     q.bindDataId(":object", mca.id);
     q.bindInt64(":length", mca.length);
     q.bindString(":alphabet", mca.alphabet.id);
-    q.bindInt64(":numOfRows", 0);    // no rows
+    q.bindInt64(":numOfRows", 0);  // no rows
     q.insert();
 
     return mca.id;
@@ -1350,4 +1350,4 @@ void MysqlMsaDbi::updateGapModel(MysqlModificationAction &updateAction, const U2
     updateAction.addModification(msaId, U2ModType::msaUpdatedGapModel, gapsDetails, os);
 }
 
-}    // namespace U2
+}  // namespace U2

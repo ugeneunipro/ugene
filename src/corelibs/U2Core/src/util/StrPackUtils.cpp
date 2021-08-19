@@ -87,12 +87,12 @@ QString StrPackUtils::packMap(const StrStrMap &map, Options options) {
 
 StrStrMap StrPackUtils::unpackMap(const QString &string, Options options) {
     StrStrMap map;
-    const QRegExp separator = (options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp);
-    foreach (const QString &pair, string.split(separator, QString::SkipEmptyParts)) {
-        const QRegExp separator = (options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp);
-        const QStringList splittedPair = pair.split(separator, QString::SkipEmptyParts);
-        Q_ASSERT(splittedPair.size() <= 2);
-        map.insert(splittedPair.first(), splittedPair.size() > 1 ? splittedPair[1] : "");
+    QRegExp elementsSeparator = options == SingleQuotes ? mapSingleQuoteSeparatorRegExp : mapDoubleQuoteSeparatorRegExp;
+    foreach (const QString &pair, string.split(elementsSeparator, QString::SkipEmptyParts)) {
+        QRegExp keyValueSeparator = options == SingleQuotes ? pairSingleQuoteSeparatorRegExp : pairDoubleQuoteSeparatorRegExp;
+        QStringList splitPair = pair.split(keyValueSeparator, QString::SkipEmptyParts);
+        Q_ASSERT(splitPair.size() <= 2);
+        map.insert(splitPair.first(), splitPair.size() > 1 ? splitPair[1] : "");
     }
     return map;
 }
@@ -106,7 +106,7 @@ QBitArray StrPackUtils::initCharactersToEscape() {
 }
 
 QString StrPackUtils::escapeCharacters(QString string) {
-    string.replace('\\', QString("\\\\"));    // escape '\' first
+    string.replace('\\', QString("\\\\"));  // escape '\' first
     for (int i = 0; i < charactersToEscape.size(); i++) {
         if (charactersToEscape[i] && (char)i != '\\') {
             const char c = (char)i;
@@ -133,4 +133,4 @@ QString StrPackUtils::wrapString(const QString &string, Options options) {
     return wrapChar + string + wrapChar;
 }
 
-}    // namespace U2
+}  // namespace U2

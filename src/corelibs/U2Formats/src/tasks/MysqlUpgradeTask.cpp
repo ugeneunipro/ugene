@@ -44,4 +44,4 @@ const U2DbiRef &MysqlUpgradeTask::getDbiRef() const {
     return dbiRef;
 }
 
-}    // namespace U2
+}  // namespace U2

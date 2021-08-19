@@ -77,7 +77,7 @@ protected:
 public slots:
     void sl_taskFinished(Task *task);
 
-};    //BaseNGSWorker
+};  // BaseNGSWorker
 
 class U2LANG_EXPORT BaseNGSParser : public ExternalToolLogParser {
 public:
@@ -117,7 +117,7 @@ protected:
     QString resultUrl;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_BASE_NGS_WORKER_H_
+#endif  //_U2_BASE_NGS_WORKER_H_

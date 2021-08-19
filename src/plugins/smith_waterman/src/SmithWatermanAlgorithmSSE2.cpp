@@ -998,7 +998,7 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
 
     int weight = 0;
     unsigned short *queryProfile = (unsigned short *)pvQueryProf;
-    int segSize = (queryLength + 7) / 8;    //iter
+    int segSize = (queryLength + 7) / 8;  // iter
     int nCount = segSize * 8;
     char curChar = ' ';
 
@@ -1144,7 +1144,7 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
         cmp = _mm_movemask_epi8(vTemp);
 
         while (cmp != 0x0000)
-        //for (unsigned cnt=0; cnt<iter; ++cnt)
+        // for (unsigned cnt=0; cnt<iter; ++cnt)
         {
             vE = _mm_load_si128(pvE + j);
 
@@ -1195,4 +1195,4 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
     return score + 32768;
 }
 
-}    // namespace U2
+}  // namespace U2

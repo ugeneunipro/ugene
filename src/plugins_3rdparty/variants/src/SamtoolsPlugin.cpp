@@ -20,21 +20,21 @@
  */
 
 #include "SamtoolsPlugin.h"
-#include "SamtoolMpileupWorker.h"
 
 #include <U2Core/AppContext.h>
 
+#include "SamtoolMpileupWorker.h"
+
 namespace U2 {
 
-
-extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    SamtoolsPlugin * plug = new SamtoolsPlugin();
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+    SamtoolsPlugin *plug = new SamtoolsPlugin();
     return plug;
 }
 
 SamtoolsPlugin::SamtoolsPlugin()
-: Plugin(tr("Samtools plugin"), tr("Samtools plugin for NGS data analysis")){
+    : Plugin(tr("Samtools plugin"), tr("Samtools plugin for NGS data analysis")) {
     LocalWorkflow::CallVariantsWorkerFactory::init();
 }
 
-}//namespace
+}  // namespace U2

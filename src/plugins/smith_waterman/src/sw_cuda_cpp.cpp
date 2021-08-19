@@ -40,12 +40,12 @@ QList<resType> sw_cuda_cpp::launch(const char *seqLib, int seqLibLength, ScoreTy
     return calculateOnGPU(seqLib, seqLibLength, queryProfile, qProfLen, queryLength, gapOpen, gapExtension, maxScore, resultView);
 }
 
-//TODO: calculate maximum alignment length
+// TODO: calculate maximum alignment length
 int calcOverlap(int queryLength) {
     return queryLength * 3;
 }
 
-//number of parts of the sequence which we divide
+// number of parts of the sequence which we divide
 int calcPartsNumber(int seqLibLength, int overlapLength) {
     int partsNumber = (seqLibLength + overlapLength - 1) / overlapLength;
 
@@ -55,12 +55,12 @@ int calcPartsNumber(int seqLibLength, int overlapLength) {
     return partsNumber;
 }
 
-//size of sequence's part
+// size of sequence's part
 int calcPartSeqSize(int seqLibLength, int overlapLength, int partsNumber) {
     return (seqLibLength + (partsNumber - 1) * (overlapLength + 1)) / partsNumber;
 }
 
-//size of vector that contain all results
+// size of vector that contain all results
 int calcSizeRow(int seqLibLength, int overlapLength, int partsNumber, int partSeqSize) {
     return (partSeqSize + 1) * partsNumber;
 }
@@ -83,8 +83,8 @@ quint64 sw_cuda_cpp::estimateNeededGpuMemory(int seqLibLength, ScoreType qProfLe
         backtraceBeginsSize = sizeof(int) * sizeRow * 2;
     }
 
-    quint64 memToAlloc = sizeL + sizeP + sizeN;    //see cudaMallocs in sw_cuda.cu for details
-    return memToAlloc * 1.2;    //just for safety
+    quint64 memToAlloc = sizeL + sizeP + sizeN;  // see cudaMallocs in sw_cuda.cu for details
+    return memToAlloc * 1.2;  // just for safety
 }
 
 quint64 sw_cuda_cpp::estimateNeededRamAmount(int seqLibLength, ScoreType qProfLen, int queryLength, const U2::SmithWatermanSettings::SWResultView resultView) {
@@ -104,10 +104,10 @@ quint64 sw_cuda_cpp::estimateNeededRamAmount(int seqLibLength, ScoreType qProfLe
     return memToAlloc;
 }
 
-//IMPORTANT: these settings depend on the video card
-//TODO: develop logic for calculation this settings
+// IMPORTANT: these settings depend on the video card
+// TODO: develop logic for calculation this settings
 const int sw_cuda_cpp::MAX_BLOCKS_NUMBER = 14;
-//we have 3 shared vector, this mean all shared memory = MAX_SHARED_VECTOR_LENGTH * 3
+// we have 3 shared vector, this mean all shared memory = MAX_SHARED_VECTOR_LENGTH * 3
 const int sw_cuda_cpp::MAX_SHARED_VECTOR_LENGTH = 128;
 
 //__global__
@@ -118,12 +118,11 @@ extern void setConstants(int partSeqSize, int partsNumber, int overlapLength, in
 QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
     QList<resType> pas;
     if (seqLibLength < queryLength) {
-        u2log.error(QObject::tr("Pattern length (%1) is longer than search sequence length (%2).").arg(queryLength).
-            arg(seqLibLength));
+        u2log.error(QObject::tr("Pattern length (%1) is longer than search sequence length (%2).").arg(queryLength).arg(seqLibLength));
         return pas;
     }
 
-    //TODO: calculate maximum alignment length
+    // TODO: calculate maximum alignment length
     const int overlapLength = calcOverlap(queryLength);
 
     int partsNumber = calcPartsNumber(seqLibLength, overlapLength);
@@ -232,7 +231,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
     dim3 dimBlock(BLOCK_SIZE);
     dim3 dimGrid(partQuerySize);
 
-    //move constants variables to constant cuda memory
+    // move constants variables to constant cuda memory
     setConstants(partSeqSize, partsNumber, overlapLength, seqLibLength, queryLength, gapOpen, gapExtension, maxScore, partQuerySize, U2::SmithWatermanAlgorithm::UP, U2::SmithWatermanAlgorithm::LEFT, U2::SmithWatermanAlgorithm::DIAG, U2::SmithWatermanAlgorithm::STOP);
 
     size_t sh_mem_size = sizeof(ScoreType) * (dimGrid.x + 1) * 3;
@@ -247,7 +246,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
             u2log.trace(QString("CUDA ERROR HAPPEN, errorId: ") + QString::number(hasErrors));
         }
 
-        //revert arrays
+        // revert arrays
         g_HdataTmp = g_HdataRec;
         g_HdataRec = g_HdataUp;
         g_HdataUp = g_HdataTmp;
@@ -257,7 +256,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
         g_directionsUp = g_HdataTmp;
     }
 
-    //Copy vectors on host and find actual results
+    // Copy vectors on host and find actual results
     cudaMemcpy(tempRow, g_HdataMax, sizeQQ, cudaMemcpyDeviceToHost);
     cudaMemcpy(directionRow, g_directionsMax, sizeQQ, cudaMemcpyDeviceToHost);
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
@@ -300,7 +299,7 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
         }
     }
 
-    //deallocation memory
+    // deallocation memory
     cudaFree(g_seqLib);
     cudaFree(g_queryProfile);
     cudaFree(g_HdataMax);
@@ -325,4 +324,4 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
     return pas;
 }
 
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA

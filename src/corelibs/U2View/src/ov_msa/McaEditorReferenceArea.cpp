@@ -309,4 +309,4 @@ PanViewRenderArea *McaEditorReferenceRenderAreaFactory::createRenderArea(PanView
     return new McaEditorReferenceRenderArea(ui, panView, new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor));
 }
 
-}    // namespace U2
+}  // namespace U2

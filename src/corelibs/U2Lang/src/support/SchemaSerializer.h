@@ -58,8 +58,8 @@ public:
 private:
     static QMap<QString, QString> initElemTypesMap();
 
-};    // SchemaSerializer
+};  // SchemaSerializer
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2
 #endif

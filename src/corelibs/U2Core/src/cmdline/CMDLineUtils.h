@@ -47,14 +47,14 @@ public:
 private:
     static void setCMDLineParams(QList<StrStrPair> &to);
 
-};    // CMDLineRegistryUtils
+};  // CMDLineRegistryUtils
 
 class U2CORE_EXPORT CMDLineUtils {
 public:
     static void init();
 
-};    // CMDLineUtils
+};  // CMDLineUtils
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMDLINE_UTILS_H_
+#endif  // _U2_CMDLINE_UTILS_H_

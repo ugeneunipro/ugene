@@ -241,4 +241,4 @@ URLContainerVisitor::~URLContainerVisitor() {
     // do nothing
 }
 
-}    // namespace U2
+}  // namespace U2

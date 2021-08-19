@@ -54,4 +54,4 @@ WevoteSupportPlugin::~WevoteSupportPlugin() {
     etRegistry->unregisterEntry(WevoteSupport::TOOL_ID);
 }
 
-}    // namespace U2
+}  // namespace U2

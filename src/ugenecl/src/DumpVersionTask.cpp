@@ -37,8 +37,8 @@ void DumpVersionTask::initHelp() {
     CMDLineHelpProvider *versionSection = new CMDLineHelpProvider(
         VERSION_CMDLINE_OPTION,
         tr("Shows version information."),
-        "",    // No full description
-        "",    // No arguments
+        "",  // No full description
+        "",  // No arguments
         VERSION_CMDLINE_OPTION_SHORT);
 
     AppContext::getCMDLineRegistry()->registerCMDLineHelpProvider(versionSection);
@@ -53,4 +53,4 @@ void DumpVersionTask::run() {
     fprintf(stdout, "Using Qt %s\n", qVersion());
 }
 
-}    // namespace U2
+}  // namespace U2

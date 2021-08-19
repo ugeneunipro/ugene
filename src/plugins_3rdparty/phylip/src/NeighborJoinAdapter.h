@@ -30,18 +30,18 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
-namespace U2 { 
+namespace U2 {
 
 class PhyTreeGeneratorTask;
 class TaskStateInfo;
 
 class NeighborJoinAdapter : public PhyTreeGenerator {
 public:
-    Task * createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
     CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
 };
 
-class NeighborJoinCalculateTreeTask: public PhyTreeGeneratorTask {
+class NeighborJoinCalculateTreeTask : public PhyTreeGeneratorTask {
 public:
     NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
     void run();
@@ -51,6 +51,6 @@ private:
     MemoryLocker memLocker;
 };
 
-}   // namespace U2
+}  // namespace U2
 
-#endif // _U2_NEIGHBOR_JOIN_ADAPTER_H_
+#endif  // _U2_NEIGHBOR_JOIN_ADAPTER_H_

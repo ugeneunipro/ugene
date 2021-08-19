@@ -370,5 +370,5 @@ QString ParsedPairs::skipBlock(Tokenizer &tokenizer) {
     return skipped;
 }
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2

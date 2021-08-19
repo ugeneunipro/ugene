@@ -122,7 +122,7 @@ void HMMSearchDialogController::sl_hmmFileClicked() {
 
 void HMMSearchDialogController::sl_okClicked() {
     if (searchTask != NULL) {
-        accept();    //go to background
+        accept();  // go to background
         return;
     }
 
@@ -168,12 +168,12 @@ void HMMSearchDialogController::sl_okClicked() {
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
     statusLabel->setText(tr("Starting search process"));
 
-    //update buttons
+    // update buttons
     okButton->setText(tr("Hide"));
     cancelButton->setText(tr("Cancel"));
 
     // new default behavior: hide dialog and use taskview to track the progress and results
-    accept();    //go to background
+    accept();  // go to background
 }
 
 void HMMSearchDialogController::sl_onStateChanged() {
@@ -282,4 +282,4 @@ QString HMMSearchToAnnotationsTask::generateReport() const {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

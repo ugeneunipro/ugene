@@ -24,8 +24,8 @@
 namespace U2 {
 
 VCF4VariationFormat::VCF4VariationFormat(QObject *p)
-    : AbstractVariationFormat(p, BaseDocumentFormats::VCF4, QStringList() << "vcf", true) {
-    formatName = QString("VCFv4");
+    : AbstractVariationFormat(p, BaseDocumentFormats::VCF4, {"vcf"}, true) {
+    formatName = "VCFv4";
 
     columnRoles.insert(0, ColumnRole_ChromosomeId);
     columnRoles.insert(1, ColumnRole_StartPos);
@@ -40,7 +40,7 @@ VCF4VariationFormat::VCF4VariationFormat(QObject *p)
 }
 
 bool VCF4VariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return (columnCount >= maxColumnNumber + 1);
+    return columnCount >= maxColumnNumber + 1;
 }
 
-}    // namespace U2
+}  // namespace U2

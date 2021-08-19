@@ -41,5 +41,5 @@ private:
     int numOfIters;
 };
 
-}    // namespace U2
-#endif    // _U2_TCOFFEE_DAILOG_FILLER_H_
+}  // namespace U2
+#endif  // _U2_TCOFFEE_DAILOG_FILLER_H_

@@ -94,7 +94,7 @@ QString getExtension(const QString &formatId) {
     CHECK(!exts.isEmpty(), "");
     return exts[0];
 }
-}    // namespace
+}  // namespace
 
 Task *WriteAnnotationsWorker::takeParameters(QString &formatId, SaveDocFlags &fl, QString &resultPath, U2DbiRef &dstDbiRef, WriteAnnotationsWorker::DataStorage &storage) {
     const QString storageStr = getValue<QString>(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
@@ -289,7 +289,7 @@ void updateAnnotationsName(AnnotationTableObject *object, QSet<QString> &usedNam
         object->setGObjectName(newName);
     }
 }
-}    // namespace
+}  // namespace
 
 Task *WriteAnnotationsWorker::getSaveDocTask(const QString &formatId, SaveDocFlags &fl) {
     SAFE_POINT(!formatId.isEmpty(), "Invalid format ID", nullptr);
@@ -302,7 +302,7 @@ Task *WriteAnnotationsWorker::getSaveDocTask(const QString &formatId, SaveDocFla
 
         Task *task = nullptr;
         if (formatId == CSV_FORMAT_ID) {
-            createdAnnotationObjects << annTables;    // will delete in destructor
+            createdAnnotationObjects << annTables;  // will delete in destructor
             TaskStateInfo ti;
             if (fl.testFlag(SaveDoc_Roll) && !GUrlUtils::renameFileWithNameRoll(filepath, ti, excludeFileNames, &coreLog)) {
                 return new FailTask(ti.getError());
@@ -331,7 +331,7 @@ Task *WriteAnnotationsWorker::getSaveDocTask(const QString &formatId, SaveDocFla
             foreach (AnnotationTableObject *annTable, annTables) {
                 updateAnnotationsName(annTable, usedNames);
                 annTable->setModified(false);
-                doc->addObject(annTable);    // savedoc task will delete doc -> doc will delete att
+                doc->addObject(annTable);  // savedoc task will delete doc -> doc will delete att
             }
             task = new SaveDocumentTask(doc, fl, excludeFileNames);
         }
@@ -475,7 +475,10 @@ void WriteAnnotationsWorkerFactory::init() {
         foreach (const QString &key, supportedFormats.keys()) {
             m[supportedFormats.value(key)] = key;
         }
-        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(m);
+        auto formatDelegate = new ComboBoxDelegate(m);
+        formatDelegate->setItemTextFormatter(QSharedPointer<StringFormatter>(new DocumentNameByIdFormatter()));
+        formatDelegate->setSortFlag(true);
+        delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
             new URLDelegate(DialogUtils::prepareDocumentsFileFilter(format, true), QString(), false, false, true, nullptr, format);
         delegates[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
@@ -544,5 +547,5 @@ QString WriteAnnotationsPrompter::composeRichDoc() {
            (storeToFs ? tr(" in %1 format.").arg(getHyperlink(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), formatName)) : tr(" in the ") + QString("<u>%1</u>").arg(dbName) + tr(" database."));
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

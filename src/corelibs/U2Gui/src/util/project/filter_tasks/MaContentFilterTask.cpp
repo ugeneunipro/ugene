@@ -153,4 +153,4 @@ AbstractProjectFilterTask *McaReferenceContentFilterTaskFactory::createNewTask(c
     return new McaReferenceContentFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

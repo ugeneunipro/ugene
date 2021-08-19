@@ -40,6 +40,6 @@ public:
     static void clear(GUITestOpStatus &os, QTextEdit *textEdit);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_TEXTEDIT_H_
+#endif  // _HI_GT_TEXTEDIT_H_

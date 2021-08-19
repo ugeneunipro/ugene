@@ -45,7 +45,7 @@ public:
      * the position of a non-gap character left-most to the 'pos'.
      */
     static qint64 getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dataLength, qint64 position, bool allowGapInPos = false);
-    //Only inner gaps, no leading and trailing
+    // Only inner gaps, no leading and trailing
     static U2Region getGappedRegion(const U2MsaRowGapModel &gaps, const U2Region &ungapped);
     static U2Region getUngappedRegion(const U2MsaRowGapModel &gaps, const U2Region &selection);
     static int getCoreStart(const U2MsaRowGapModel &gaps);
@@ -62,7 +62,7 @@ public:
     static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
     static bool isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
     static void chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength);
-    static void chopGapModel(U2MsaRowGapModel &gapModel, const U2Region &boundRegion);    // gaps will be shifted
+    static void chopGapModel(U2MsaRowGapModel &gapModel, const U2Region &boundRegion);  // gaps will be shifted
     static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
     static U2MsaRowGapModel insertGapModel(const U2MsaRowGapModel &firstGapModel, const U2MsaRowGapModel &secondGapModel);
     static void mergeConsecutiveGaps(U2MsaRowGapModel &gapModel);
@@ -73,11 +73,11 @@ public:
                                        U2MsaRowGapModel &secondDifference);
     static U2MsaRowGapModel mergeGapModels(const U2MsaListGapModel &gapModels);
     static U2MsaRowGapModel subtitudeGapModel(const U2MsaRowGapModel &minuendGapModel, const U2MsaRowGapModel &subtrahendGapModel);
-    static U2MsaRowGapModel reverseGapModel(const U2MsaRowGapModel &gapModel, qint64 rowLengthWithoutTrailing);    // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
+    static U2MsaRowGapModel reverseGapModel(const U2MsaRowGapModel &gapModel, qint64 rowLengthWithoutTrailing);  // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
     static bool hasLeadingGaps(const U2MsaRowGapModel &gapModel);
     static void removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &gapModel);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSAROWUTILS_H_
+#endif  // _U2_MSAROWUTILS_H_

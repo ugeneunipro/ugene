@@ -97,5 +97,5 @@ bool ValidationContext::hasErrors() const {
     return !errors.isEmpty();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

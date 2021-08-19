@@ -56,4 +56,4 @@ void DumpLicenseTask::run() {
     fprintf(stdout, "%s", licenseText.constData());
 }
 
-}    // namespace U2
+}  // namespace U2

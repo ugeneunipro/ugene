@@ -70,4 +70,4 @@ void GroupHeaderImageWidget::setHeaderDeselected() {
                       .append(HEADER_COMMON_STYLE));
 }
 
-}    // namespace U2
+}  // namespace U2

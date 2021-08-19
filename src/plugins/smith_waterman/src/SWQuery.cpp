@@ -89,23 +89,21 @@ QString QDSWActor::getText() const {
 
     int percentOfScore = params.value(SCORE_ATTR)->getAttributeValueWithoutScript<int>();
     QString percentOfScoreStr = QString("<a href=%1>%2%</a>").arg(SCORE_ATTR).arg(percentOfScore);
-    QString match = percentOfScore < 100 ?
-                        QDSWActor::tr("matches with <u>at least %1 score</u>").arg(percentOfScoreStr) :
-                        QDSWActor::tr("exact matches");
+    QString match = percentOfScore < 100 ? QDSWActor::tr("matches with <u>at least %1 score</u>").arg(percentOfScoreStr) : QDSWActor::tr("exact matches");
 
     QString strandName;
     switch (strand) {
-    case QDStrand_Both:
-        strandName = QDSWActor::tr("both strands");
-        break;
-    case QDStrand_DirectOnly:
-        strandName = QDSWActor::tr("direct strand");
-        break;
-    case QDStrand_ComplementOnly:
-        strandName = QDSWActor::tr("complement strand");
-        break;
-    default:
-        break;
+        case QDStrand_Both:
+            strandName = QDSWActor::tr("both strands");
+            break;
+        case QDStrand_DirectOnly:
+            strandName = QDSWActor::tr("direct strand");
+            break;
+        case QDStrand_ComplementOnly:
+            strandName = QDSWActor::tr("complement strand");
+            break;
+        default:
+            break;
     }
 
     QString doc = QDSWActor::tr("Finds pattern <u>%1</u>."
@@ -124,15 +122,15 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     settings.aminoTT = nullptr;
     settings.complTT = nullptr;
     switch (getStrandToRun()) {
-    case QDStrand_Both:
-        settings.strand = StrandOption_Both;
-        break;
-    case QDStrand_DirectOnly:
-        settings.strand = StrandOption_DirectOnly;
-        break;
-    case QDStrand_ComplementOnly:
-        settings.strand = StrandOption_ComplementOnly;
-        break;
+        case QDStrand_Both:
+            settings.strand = StrandOption_Both;
+            break;
+        case QDStrand_DirectOnly:
+            settings.strand = StrandOption_DirectOnly;
+            break;
+        case QDStrand_ComplementOnly:
+            settings.strand = StrandOption_ComplementOnly;
+            break;
     }
     settings.percentOfScore = params.value(SCORE_ATTR)->getAttributeValueWithoutScript<int>();
     if (settings.percentOfScore < 0 && settings.percentOfScore > 100) {
@@ -174,7 +172,7 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
         if (compTT != nullptr) {
             settings.complTT = compTT;
         } else {
-            //Could not find complement translation, searching only direct strand
+            // Could not find complement translation, searching only direct strand
             settings.strand = StrandOption_DirectOnly;
         }
     }
@@ -182,7 +180,7 @@ Task *QDSWActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     if (params.value(AMINO_ATTR)->getAttributeValueWithoutScript<bool>()) {
         DNATranslationType tt = (dnaSeq.alphabet->getType() == DNAAlphabet_NUCL) ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
         QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(dnaSeq.alphabet, tt);
-        if (!TTs.isEmpty()) {    //FIXME let user choose or use hints ?
+        if (!TTs.isEmpty()) {  // FIXME let user choose or use hints ?
             settings.aminoTT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(dnaSeq.alphabet);
         }
     }
@@ -312,4 +310,4 @@ SWQDActorFactory::SWQDActorFactory() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

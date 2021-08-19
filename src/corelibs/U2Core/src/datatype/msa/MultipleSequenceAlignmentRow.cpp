@@ -446,7 +446,7 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
         }
 
         if (gapsIndexes.isEmpty()) {
-            return;    // There is nothing to replace
+            return;  // There is nothing to replace
         }
 
         // Remove all 'origChar' characters from the row sequence
@@ -545,7 +545,7 @@ void MultipleSequenceAlignmentRowData::getStartAndEndSequencePositions(int pos, 
     }
 
     // Calculate end position in the sequence
-    int endRegionPos = pos + count;    // non-inclusive
+    int endRegionPos = pos + count;  // non-inclusive
 
     if (endRegionPos > rowLengthWithoutTrailingGap) {
         endRegionPos = rowLengthWithoutTrailingGap;
@@ -589,4 +589,4 @@ MultipleAlignmentData *MultipleSequenceAlignmentRowData::getMultipleAlignmentDat
     return alignment;
 }
 
-}    // namespace U2
+}  // namespace U2

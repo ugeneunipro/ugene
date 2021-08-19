@@ -101,4 +101,4 @@ const QString &McaExportConsensusTabFactory::getGroupId() {
     return GROUP_ID;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -206,7 +206,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void RmdupBamWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -250,7 +250,7 @@ void RmdupBamWorker::sendResult(const QString &url) {
 }
 
 ////////////////////////////////////////////////////////
-//BamRmdupSetting
+// BamRmdupSetting
 QStringList BamRmdupSetting::getSamtoolsArguments() const {
     QStringList result;
 
@@ -272,7 +272,7 @@ QStringList BamRmdupSetting::getSamtoolsArguments() const {
 }
 
 ////////////////////////////////////////////////////////
-//SamtoolsRmdupTask
+// SamtoolsRmdupTask
 
 const QString SamtoolsRmdupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
@@ -333,5 +333,5 @@ void SamtoolsRmdupTask::checkExitCode(QProcess *process, const QString &toolName
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

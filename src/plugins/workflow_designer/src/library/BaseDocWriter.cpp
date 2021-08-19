@@ -55,8 +55,8 @@ namespace U2 {
 namespace LocalWorkflow {
 
 /**********************************
-* BaseDocWriter
-**********************************/
+ * BaseDocWriter
+ **********************************/
 BaseDocWriter::BaseDocWriter(Actor *a, const DocumentFormatId &fid)
     : BaseWorker(a), format(nullptr), dataStorage(LocalFs), ch(nullptr), append(true), fileMode(SaveDoc_Roll), objectsReceived(false) {
     format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
@@ -87,7 +87,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
         dataStorage = LocalFs;
 
         Attribute *formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-        if (nullptr != formatAttr) {    // user sets format
+        if (nullptr != formatAttr) {  // user sets format
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         }
@@ -98,7 +98,7 @@ void BaseDocWriter::takeParameters(U2OpStatus &os) {
 
         fileMode = getValue<uint>(BaseAttributes::FILE_MODE_ATTRIBUTE().getId());
         Attribute *a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-        if (nullptr != a) {
+        if (a != nullptr) {
             append = a->getAttributeValue<bool>(context);
         } else {
             append = true;
@@ -125,7 +125,7 @@ QString toFileName(const QString &base, const QString &suffix, const QString &ex
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 QString BaseDocWriter::getDefaultFileName() const {
     return actor->getId() + "_output";
@@ -223,7 +223,7 @@ bool BaseDocWriter::ifCreateAdapter(const QString &url) const {
 }
 
 void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDocFlags &flags, U2OpStatus &os) {
-    {    // prepare dir
+    {  // prepare dir
         QFileInfo info(aUrl);
         if (!info.dir().exists()) {
             bool created = info.dir().mkpath(info.dir().absolutePath());
@@ -233,11 +233,11 @@ void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDo
         }
     }
 
-    // generate a target URL from the source URL
+    // Generate a target URL from the source URL.
     QString url = aUrl;
     int suffix = 0;
     do {
-        if ((0 == suffix) && counters.contains(aUrl)) {
+        if (suffix == 0 && counters.contains(aUrl)) {
             suffix = counters[aUrl];
         }
         if (suffix > 0) {
@@ -339,7 +339,7 @@ Task *BaseDocWriter::tick() {
             continue;
         }
 
-        if (LocalFs == dataStorage) {
+        if (dataStorage == LocalFs) {
             const QStringList urls = takeUrlList(data, inputMessage.getMetadataId(), os);
             CHECK_OS(os);
             storeData(urls, data, os);
@@ -348,9 +348,9 @@ Task *BaseDocWriter::tick() {
             if (!append) {
                 break;
             }
-        } else if (SharedDb == dataStorage) {
+        } else if (dataStorage == SharedDb) {
             Task *result = createWriteToSharedDbTask(data);
-            if (nullptr == result) {
+            if (result == nullptr) {
                 continue;
             } else {
                 return result;
@@ -367,10 +367,10 @@ Task *BaseDocWriter::tick() {
     if (done) {
         setDone();
     }
-    if (SharedDb == dataStorage && !objectsReceived) {
+    if (dataStorage == SharedDb && !objectsReceived) {
         reportNoDataReceivedWarning();
     }
-    return LocalFs == dataStorage ? processDocs() : nullptr;
+    return dataStorage == LocalFs ? processDocs() : nullptr;
 }
 
 void BaseDocWriter::reportNoDataReceivedWarning() {
@@ -379,7 +379,7 @@ void BaseDocWriter::reportNoDataReceivedWarning() {
 
 QSet<GObject *> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap &data) const {
     QSet<GObject *> result = getObjectsToWrite(data);
-    result.remove(nullptr);    // eliminate invalid objects
+    result.remove(nullptr);  // eliminate invalid objects
     return result;
 }
 
@@ -456,5 +456,5 @@ QString BaseDocWriter::getUniqueObjectName(const Document *doc, const QString &n
     return found ? result : name;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -161,4 +161,4 @@ void DotPlotRevComplResultsListener::onResults(const QVector<RFResult> &v) {
     DotPlotResultsListener::onResults(results);
 }
 
-}    // namespace U2
+}  // namespace U2

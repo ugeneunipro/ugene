@@ -129,4 +129,4 @@ IOAdapter *StringAdapterFactoryWithStringData::createIOAdapter() {
     return new StringAdapter(data.toLatin1(), this);
 }
 
-}    // namespace U2
+}  // namespace U2

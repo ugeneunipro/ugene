@@ -105,10 +105,10 @@ private:
 public:
     static PluginDesc readPluginDescriptor(const QString &url, QString &error);
 
-    //orders plugins by loading order
+    // orders plugins by loading order
     static QList<PluginDesc> orderPlugins(const QList<PluginDesc> &unordered, QString &err);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

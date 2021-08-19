@@ -31,8 +31,8 @@
 #include "GTUtilsDialog.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
-#include "utils/GTUtilsMac.h"
 #include "utils/GTThread.h"
+#include "utils/GTUtilsMac.h"
 
 namespace HI {
 
@@ -83,14 +83,14 @@ void GUIDialogWaiter::checkDialog() {
         GT_CHECK_NO_MESSAGE(runnable != NULL, "Runnable is NULL");
 
         switch (settings.dialogType) {
-        case Modal:
-            widget = QApplication::activeModalWidget();
-            break;
-        case Popup:
-            widget = QApplication::activePopupWidget();
-            break;
-        default:
-            break;
+            case Modal:
+                widget = QApplication::activeModalWidget();
+                break;
+            case Popup:
+                widget = QApplication::activePopupWidget();
+                break;
+            default:
+                break;
         }
 
         if (widget != nullptr && !isFinished && isExpectedName(widget->objectName(), settings.objectName)) {
@@ -232,13 +232,11 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialog
     QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
-    if (mbox != NULL && (button == QDialogButtonBox::Yes
-                         || button == QDialogButtonBox::No
-                         || button == QDialogButtonBox::NoToAll)) {
+    if (mbox != NULL && (button == QDialogButtonBox::Yes || button == QDialogButtonBox::No || button == QDialogButtonBox::NoToAll)) {
         QMessageBox::StandardButton btn =
-                button == QDialogButtonBox::Yes ? QMessageBox::Yes
-                : button == QDialogButtonBox::NoToAll ? QMessageBox::NoToAll
-                : QMessageBox::No;
+            button == QDialogButtonBox::Yes       ? QMessageBox::Yes
+            : button == QDialogButtonBox::NoToAll ? QMessageBox::NoToAll
+                                                  : QMessageBox::No;
         QAbstractButton *pushButton = mbox->button(btn);
         GT_CHECK(pushButton != NULL, "pushButton is NULL");
         GTWidget::click(os, pushButton);
@@ -342,14 +340,14 @@ void GTUtilsDialog::checkAllFinished(GUITestOpStatus &os) {
     foreach (GUIDialogWaiter *waiter, pool) {
         GT_CHECK(waiter != nullptr, "GUIDialogWaiter is null");
         switch (waiter->getSettings().destiny) {
-        case GUIDialogWaiter::MustBeRun:
-            GT_CHECK(waiter->isFinished, QString("\"%1\" not run but should be").arg((waiter->getSettings().objectName)));
-            break;
-        case GUIDialogWaiter::MustNotBeRun:
-            GT_CHECK(!waiter->isFinished, QString("\"%1\" had run but should not").arg((waiter->getSettings().objectName)));
-            break;
-        case GUIDialogWaiter::NoMatter:
-            break;
+            case GUIDialogWaiter::MustBeRun:
+                GT_CHECK(waiter->isFinished, QString("\"%1\" not run but should be").arg((waiter->getSettings().objectName)));
+                break;
+            case GUIDialogWaiter::MustNotBeRun:
+                GT_CHECK(!waiter->isFinished, QString("\"%1\" had run but should not").arg((waiter->getSettings().objectName)));
+                break;
+            case GUIDialogWaiter::NoMatter:
+                break;
         }
     }
 }
@@ -409,4 +407,4 @@ void Filler::releaseMouseButtons() {
     }
 }
 
-}    // namespace HI
+}  // namespace HI

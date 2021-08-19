@@ -120,7 +120,7 @@ qint64 SingleTableAssemblyAdapter::countReadsPrecise(const U2Region &r, U2OpStat
     if (!rangeMode) {
         return countReads(r, os);
     }
-    //here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
+    // here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
     QString qStr = QString("SELECT COUNT(*) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable);
     SQLiteReadQuery q(qStr, db, os);
     bindRegion(q, r, false);
@@ -172,11 +172,11 @@ void SingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2A
     SQLiteWriteQuery insertQ(q.arg(readsTable), db, os);
     while (it->hasNext() && !os.isCoR()) {
         U2AssemblyRead read = it->next();
-        bool dnaExt = false;    //TODO:
+        bool dnaExt = false;  // TODO:
         qint64 flags = read->flags;
         flags = flags | (dnaExt ? DnaExtAlphabet : 0);
 
-        if (rangeMode) {    //effective read length must be precomputed in this mode
+        if (rangeMode) {  // effective read length must be precomputed in this mode
             assert(read->effectiveLen >= minReadLength && read->effectiveLen < maxReadLength);
         } else {
             int readLen = read->readSequence.length();
@@ -204,9 +204,9 @@ void SingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2A
 }
 
 void SingleTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds, U2OpStatus &os) {
-    //TODO: add transaction per pack or reads
-    //TODO: remove multiple reads in 1 SQL at once
-    //SQLiteObjectDbi* objDbi = dbi->getSQLiteObjectDbi();
+    // TODO: add transaction per pack or reads
+    // TODO: remove multiple reads in 1 SQL at once
+    // SQLiteObjectDbi* objDbi = dbi->getSQLiteObjectDbi();
     foreach (U2DataId readId, readIds) {
         SQLiteUtils::remove(readsTable, "id", readId, 1, db, os);
         if (os.hasError()) {
@@ -270,4 +270,4 @@ void SingleTablePackAlgorithmAdapter::releaseDbResources() {
     updateQuery = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

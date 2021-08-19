@@ -100,4 +100,4 @@ Task *DotPlotImageExportController::getExportToBitmapTask(const ImageExportTaskS
     return new DotPlotImageExportToBitmapTask(dotplotWidget, dpSettings, settings);
 }
 
-}    // namespace U2
+}  // namespace U2

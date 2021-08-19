@@ -58,7 +58,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -66,26 +65,26 @@ namespace GUITest_Assembly_browser {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //It is possible to reach negative coord in assembly browser (UGENE-105)
+    // It is possible to reach negative coord in assembly browser (UGENE-105)
 
-    //1. Open _common_data/scenarios/assembly/example-alignment.ugenedb
+    // 1. Open _common_data/scenarios/assembly/example-alignment.ugenedb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
     GTWidget::click(os, window);
-    //2. Zoom in until overview selection transforms to cross-hair
+    // 2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
     }
-    //3. Move it to the very left
+    // 3. Move it to the very left
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    //4. Try to zoom out
+    // 4. Try to zoom out
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('-');
     }
-    //Expected state: coordinates is not negative
-    //CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
+    // Expected state: coordinates is not negative
+    // CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
     QWidget *assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
 
     QObject *l = assRuler->findChild<QObject *>("start position");
@@ -99,14 +98,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //1. open view for _common_data\scenarios\assembly\example-alignment.bam
-    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "replace" ));
+    // 1. open view for _common_data\scenarios\assembly\example-alignment.bam
+    // GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "replace" ));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
-    //2. convert bam file to example-alignment.ugenedb
-    //Expected state: conversion finished without error
+    // 2. convert bam file to example-alignment.ugenedb
+    // Expected state: conversion finished without error
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -489,37 +488,37 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0017.ugenedb");
 
-    //1. Open "samples/Assembly/chrM.fa".
+    // 1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0017.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click the "chrM" sequence object in Project View.
+    // 3. Click the "chrM" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
 
-    //4. Right click on the reference area.
-    //Expected: "Unassociate" is disabled.
+    // 4. Right click on the reference area.
+    // Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    //5. Click "Set reference sequence".
+    // 5. Click "Set reference sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    //6. Right click on the reference area.
-    //Expected: "Unassociate" is enabled.
+    // 6. Right click on the reference area.
+    // Expected: "Unassociate" is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    //7. Click "Unassociate".
+    // 7. Click "Unassociate".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    //8. Right click on the reference area.
-    //Expected: "Unassociate" is disabled.
+    // 8. Right click on the reference area.
+    // Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
@@ -538,44 +537,44 @@ void prepareBigFasta(const QString &url, HI::GUITestOpStatus &os) {
         file.write("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
     }
 }
-}    // namespace
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(test_0018) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0018.ugenedb");
     prepareBigFasta(sandBoxDir + "assembly_test_0018.fa", os);
 
-    //1. Open "samples/Assembly/chrM.fa".
+    // 1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0018.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click the "chrM" sequence object in Project View.
+    // 3. Click the "chrM" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
 
-    //4. Click the "Set reference sequence" toolbar button.
+    // 4. Click the "Set reference sequence" toolbar button.
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
-    //5. Clear the objects selection in Project View (e.g. click the document "chrM.fa").
+    // 5. Clear the objects selection in Project View (e.g. click the document "chrM.fa").
     GTUtilsProjectTreeView::click(os, "chrM.fa");
 
-    //6. Click "Set reference sequence".
-    //7. Choose the file "assembly_test_0018.fa" from sandbox.
+    // 6. Click "Set reference sequence".
+    // 7. Choose the file "assembly_test_0018.fa" from sandbox.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
-    //8. Right click on the reference area while the file is loading.
-    //Expected: "Unassociate" and "Set reference sequence" are disabled.
+    // 8. Right click on the reference area while the file is loading.
+    // Expected: "Unassociate" and "Set reference sequence" are disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
     // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    //GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction" , PopupChecker::IsDisabled));
-    //GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction" , PopupChecker::IsDisabled));
+    // GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    //9. Right click on the reference area after loading.
-    //Expected: "Unassociate" and "Set reference sequence" are enabled.
+    // 9. Right click on the reference area after loading.
+    // Expected: "Unassociate" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference"
                                                                                              << "Unassociate",
@@ -586,42 +585,42 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0019.ugenedb");
 
-    //1. Open "samples/Assembly/chrM.fa".
+    // 1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "samples/FASTA/human_T1.fa".
+    // 2. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0019.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //4. Click the "chrM" sequence object in Project View.
+    // 4. Click the "chrM" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
 
-    //5. Click the "Set reference sequence" actions menu item.
-    //Expected: it becomes reference.
+    // 5. Click the "Set reference sequence" actions menu item.
+    // Expected: it becomes reference.
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Set reference");
 
-    //6. Add the "human_T1" object to the selection.
+    // 6. Add the "human_T1" object to the selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //7. Click the "Set reference sequence" actions menu item.
-    //Expected: message box about two sequences appears.
+    // 7. Click the "Set reference sequence" actions menu item.
+    // Expected: message box about two sequences appears.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You have more than one sequence"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Set reference");
 
-    //8. Click the "chrM.fa" sequence object in Project View.
+    // 8. Click the "chrM.fa" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM.fa");
 
-    //9. Click the "Set reference sequence" actions menu item.
-    //Expected: file dialog appears.
+    // 9. Click the "Set reference sequence" actions menu item.
+    // Expected: file dialog appears.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Set reference");
@@ -630,29 +629,29 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 GUI_TEST_CLASS_DEFINITION(test_0020) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0020.ugenedb");
 
-    //1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0020.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click "Set reference sequence".
-    //Expected: file dialog appears.
-    //3. Choose "data/samples/Assembly/chrM.fa".
+    // 2. Click "Set reference sequence".
+    // Expected: file dialog appears.
+    // 3. Choose "data/samples/Assembly/chrM.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
-    //Expected: it become reference.
+    // Expected: it become reference.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0021.ugenedb");
 
-    //1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0021.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click "Set reference sequence".
-    //Expected: file dialog appears.
-    //3. Choose "data/samples/FASTQ/eas.fastq".
-    //Expected: error notification is shown.
+    // 2. Click "Set reference sequence".
+    // Expected: file dialog appears.
+    // 3. Choose "data/samples/FASTQ/eas.fastq".
+    // Expected: error notification is shown.
     GTUtilsNotifications::waitForNotification(os, true, "There are more than one sequence in file");
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
@@ -662,14 +661,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 GUI_TEST_CLASS_DEFINITION(test_0022) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0022.ugenedb");
 
-    //1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0022.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click "Set reference sequence".
-    //Expected: file dialog appears.
-    //3. Choose "data/samples/CLUSTALW/COI.aln".
-    //Expected: error notification is shown.
+    // 2. Click "Set reference sequence".
+    // Expected: file dialog appears.
+    // 3. Choose "data/samples/CLUSTALW/COI.aln".
+    // Expected: error notification is shown.
     GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
@@ -678,48 +677,48 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
 GUI_TEST_CLASS_DEFINITION(test_0023) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0023.ugenedb");
 
-    //1. Open "samples/Assembly/chrM.fa".
+    // 1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0023.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Click the "Set reference sequence" toolbar button.
-    //Expected: file dialog appears.
-    //4. Choose "samples/Assembly/chrM.fa".
+    // 3. Click the "Set reference sequence" toolbar button.
+    // Expected: file dialog appears.
+    // 4. Choose "samples/Assembly/chrM.fa".
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
-    //Expected: the sequence becomes reference.
+    // Expected: the sequence becomes reference.
     GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0024.ugenedb");
 
-    //1. Open "samples/Assembly/chrM.fa".
+    // 1. Open "samples/Assembly/chrM.fa".
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Unload the document.
+    // 2. Unload the document.
     GTUtilsDocument::unloadDocument(os, "chrM.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0024.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //4. Click the "Set reference sequence" toolbar button.
-    //Expected: file dialog appears.
-    //5. Choose "samples/Assembly/chrM.fa".
+    // 4. Click the "Set reference sequence" toolbar button.
+    // Expected: file dialog appears.
+    // 5. Choose "samples/Assembly/chrM.fa".
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
-    //Expected: the document is loaded, the sequence becomes reference.
+    // Expected: the document is loaded, the sequence becomes reference.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 }
@@ -727,22 +726,22 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 GUI_TEST_CLASS_DEFINITION(test_0025) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0025.ugenedb");
 
-    //1. Open "samples/CLUSTALW/COI.aln".
+    // 1. Open "samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Unload the document.
+    // 2. Unload the document.
     GTUtilsDocument::unloadDocument(os, "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
+    // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0025.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //4. Click the "Set reference sequence" toolbar button.
-    //Expected: file dialog appears.
-    //5. Choose "samples/CLUSTALW/COI.aln".
-    //Expected: the document is loaded, error notification is shown.
+    // 4. Click the "Set reference sequence" toolbar button.
+    // Expected: file dialog appears.
+    // 5. Choose "samples/CLUSTALW/COI.aln".
+    // Expected: the document is loaded, error notification is shown.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
@@ -835,19 +834,19 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
-    //1. Open assembly
+    // 1. Open assembly
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    //2. Lock document for editing
+    // 2. Lock document for editing
     GTUtilsDocument::lockDocument(os, "chrM.sorted.bam.ugenedb");
-    //3. Try to add reference
+    // 3. Try to add reference
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
-    //Expected: Error message appears
+    // Expected: Error message appears
     GTUtilsDialog::waitAllFinished(os);
 }
 
@@ -920,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, "chrM", documentIndex);
     GTUtilsProjectTreeView::rename(os, objectIndex, "new_name");
     //    Check UGENE title
-    GTUtilsApp::checkUGENETitle(os, "-* UGENE");
+    GTMainWindow::checkTitle(os, "-* UGENE");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
@@ -978,11 +977,11 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036) {
-    //1. Open assembly
+    // 1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
+    // Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
     GTUtilsAssemblyBrowser::zoomToReads(os);
     for (int i = 0; i < 7; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
@@ -1055,5 +1054,5 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     CHECK_SET_ERR(ok, "unexpected clipboard: " + clipboard)
 }
 
-}    // namespace GUITest_Assembly_browser
-}    // namespace U2
+}  // namespace GUITest_Assembly_browser
+}  // namespace U2

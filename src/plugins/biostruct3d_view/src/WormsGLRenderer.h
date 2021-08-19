@@ -109,6 +109,6 @@ public:
     RENDERER_FACTORY(WormsGLRenderer)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BIOSTRUCT3D_WORMS_RENDERER_H_
+#endif  // _U2_BIOSTRUCT3D_WORMS_RENDERER_H_

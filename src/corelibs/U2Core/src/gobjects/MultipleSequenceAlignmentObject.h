@@ -35,11 +35,14 @@ public:
                                     const QVariantMap &hintsMap = QVariantMap(),
                                     const MultipleSequenceAlignment &msaData = MultipleSequenceAlignment());
 
-    const MultipleSequenceAlignment getMsa() const;
+    /** Returns a reference to MultipleSequenceAlignment data . */
+    const MultipleSequenceAlignment &getMsa() const;
+
+    /** Returns a copy of the MultipleSequenceAlignment data . */
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
-    //Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
+    // Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
     virtual MultipleSequenceAlignmentObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
@@ -94,6 +97,6 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
+#endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_

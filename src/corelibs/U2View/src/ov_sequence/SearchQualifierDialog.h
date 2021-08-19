@@ -47,13 +47,13 @@ private:
         QString value;
         bool isExactMatch;
         bool searchAll;
-        AVItem *prevAnnotation;    // Annotation containing the previously found qualifier.
-        int prevIndex;    // Index in `prevAnnotation` of the previously found qualifier.
+        AVItem *prevAnnotation;  // Annotation containing the previously found qualifier.
+        int prevIndex;  // Index in `prevAnnotation` of the previously found qualifier.
     };
 
     // Qualifier search algorithm. The class also expands found `AVItem`(s) in the Annotation Tree View.
     class SearchQualifier {
-        AnnotationsTreeView *const treeView;    // This is needed to show the found qualifier(s).
+        AnnotationsTreeView *const treeView;  // This is needed to show the found qualifier(s).
         const QString name;
         const QString value;
         const bool isExactMatch;
@@ -70,8 +70,8 @@ private:
         // Outdated if `foundResult == false`.
         int resultInd;
 
-        QQueue<AVItem *> toExpand;    // This queue is needed to expand items in main thread.
-        QList<QPair<AVAnnotationItem *, int>> foundQuals;    // This is needed to set found items as selected.
+        QQueue<AVItem *> toExpand;  // This queue is needed to expand items in main thread.
+        QList<QPair<AVAnnotationItem *, int>> foundQuals;  // This is needed to set found items as selected.
 
         // Expands found `AVItem`(s) in the Annotation Tree View.
         void showQualifier() const;
@@ -129,6 +129,6 @@ private:
     int indexOfPrevResult;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_SEARCH_QUALIFIER_DIALOG_H_
+#endif  //_U2_SEARCH_QUALIFIER_DIALOG_H_

@@ -75,7 +75,7 @@ U2CORE_EXPORT QDataStream &operator<<(QDataStream &dataStream, const U2Qualifier
 U2CORE_EXPORT QDataStream &operator>>(QDataStream &dataStream, AnnotationData &data);
 U2CORE_EXPORT QDataStream &operator<<(QDataStream &dataStream, const AnnotationData &data);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::AnnotationData)
 Q_DECLARE_METATYPE(U2::SharedAnnotationData)

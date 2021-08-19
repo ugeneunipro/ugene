@@ -133,4 +133,4 @@ QScriptValue LinkDataScriptLibrary::fetchFile(QScriptContext *ctx, QScriptEngine
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

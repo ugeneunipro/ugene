@@ -196,7 +196,7 @@ QString RepeatPrompter::composeRichDoc() {
     QString doc = tr("For each sequence%1, find <u>%2</u> repeats."
                      "<br>Detect <u>%3% identical</u> repeats <u>not shorter than %4 bps</u>."
                      "<br>Output the list of found regions annotated as <u>%5</u>.")
-                      .arg(producerName)    //sequence from Read Fasta 1
+                      .arg(producerName)  // sequence from Read Fasta 1
                       .arg(getHyperlink(INVERT_ATTR, inverted))
                       .arg(getHyperlink(IDENTITY_ATTR, getParameter(IDENTITY_ATTR).toInt()))
                       .arg(getHyperlink(LEN_ATTR, getParameter(LEN_ATTR).toInt()))
@@ -297,5 +297,5 @@ void RepeatWorker::sl_taskFinished() {
 void RepeatWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

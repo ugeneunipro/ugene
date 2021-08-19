@@ -357,4 +357,4 @@ void SequenceDbiUnitTests_updateSequenceObject::Test() {
     CHECK_EXT(seq.circular == updated.circular, SetError("incorrect updated sequence circular"), );
 };
 
-}    // namespace U2
+}  // namespace U2

@@ -135,8 +135,8 @@ QStringList VirtualFileSystem::getAllFilenames() const {
 }
 
 /*******************************************
-* VirtualFileSystemRegistry
-*******************************************/
+ * VirtualFileSystemRegistry
+ *******************************************/
 
 VirtualFileSystemRegistry::VirtualFileSystemRegistry() {
 }
@@ -172,4 +172,4 @@ QStringList VirtualFileSystemRegistry::getAllIds() const {
     return registry.keys();
 }
 
-}    // namespace U2
+}  // namespace U2

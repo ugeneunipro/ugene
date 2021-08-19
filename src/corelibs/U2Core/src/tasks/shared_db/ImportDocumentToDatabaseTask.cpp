@@ -191,4 +191,4 @@ GObject *ImportDocumentToDatabaseTask::getAppropriateObject(const QList<GObject 
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -59,6 +59,6 @@ public slots:
     void sl_requestAsked(MainThreadRunnable *mainThreadRunnable);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

@@ -42,6 +42,6 @@ protected:
     void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

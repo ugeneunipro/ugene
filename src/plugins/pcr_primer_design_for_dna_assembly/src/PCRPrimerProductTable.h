@@ -47,7 +47,7 @@ public:
     void setAnnotationGroup(AnnotationGroup *associatedGroup);
     Annotation* getSelectedAnnotation() const;
     PCRPrimerProductTableData getPCRPrimerProductTableData() const;
-
+    
     static constexpr int MAXIMUM_ROW_COUNT = 8;
 private slots:
     void sl_selectionChanged();

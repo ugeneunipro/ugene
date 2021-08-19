@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "ExportAlignmentViewItems.h"
+
 #include <QDir>
 #include <QMainWindow>
 
@@ -34,17 +36,16 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Formats/ExportTasks.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
+#include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
-//#include <U2View/ma
 
-#include <U2Formats/ExportTasks.h>
-
-#include "ExportAlignmentViewItems.h"
 #include "ExportMSA2MSADialog.h"
 #include "ExportUtils.h"
 
@@ -100,44 +101,47 @@ void MSAExportContext::buildMenu(QMenu *m) {
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MultipleSequenceAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    MultipleSequenceAlignmentObject *maObject = editor->getMaObject();
+    const MultipleSequenceAlignment &ma = maObject->getMultipleAlignment();
     SAFE_POINT(ma->getAlphabet()->isNucleic(), "Alignment alphabet is not nucleic", );
 
-    GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    GUrl msaUrl = maObject->getDocument()->getURL();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, maObject->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
-    int selectionHeight = editor->getSelection().toRect().height();
-    bool isWholeAlignmentMode = selectionHeight == 0;
-    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, isWholeAlignmentMode, AppContext::getMainWindow()->getQMainWindow());
-    d->setWindowTitle(tr("Export Amino Translation"));
-    const int rc = d->exec();
-    CHECK(!d.isNull(), );
+    bool isWholeAlignmentMode = editor->getSelection().isEmpty();
+    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl,
+                                                                          BaseDocumentFormats::CLUSTAL_ALN,
+                                                                          isWholeAlignmentMode,
+                                                                          AppContext::getMainWindow()->getQMainWindow());
+    int rc = d->exec();
+    CHECK(!d.isNull() && rc != QDialog::Rejected, );
 
-    if (rc == QDialog::Rejected) {
-        return;
+    DNATranslation *translationTable = AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
+    const MaEditorSelection &selection = editor->getSelection();
+    U2Region columnRegion(0, editor->getAlignmentLen());
+    QList<qint64> rowIds = ma->getRowsIds();
+    if (!selection.isEmpty() && d->exportWholeAlignment) {
+        columnRegion = selection.getColumnRegion();
+        QList<int> maRowIndexes = editor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
+        rowIds = ma->getRowIdsByRowIndexes(maRowIndexes);
+        SAFE_POINT(!rowIds.isEmpty(), "No rows to export!", );
     }
-
-    QList<DNATranslation *> trans;
-    trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
-
-    int offset = d->exportWholeAlignment ? 0 : editor->getSelection().toRect().top();
-    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelection().toRect().height();
 
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
     int baseOffset = qAbs(d->translationFrame) - 1;
-    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
-                                                                offset,
-                                                                len,
-                                                                d->file,
-                                                                trans,
-                                                                d->formatId,
-                                                                !d->includeGaps,
-                                                                convertUnknowToGaps,
-                                                                reverseComplement,
-                                                                baseOffset),
-                                          d->addToProjectFlag);
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    auto exportTask = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
+                                                                        rowIds,
+                                                                        columnRegion,
+                                                                        d->file,
+                                                                        translationTable,
+                                                                        d->formatId,
+                                                                        !d->includeGaps,
+                                                                        convertUnknowToGaps,
+                                                                        reverseComplement,
+                                                                        baseOffset),
+                                                  d->addToProjectFlag);
+    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
-}    // namespace U2
+}  // namespace U2

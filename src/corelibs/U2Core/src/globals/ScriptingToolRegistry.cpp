@@ -28,7 +28,7 @@
 namespace U2 {
 
 ////////////////////////////////////////
-//ScriptingTool
+// ScriptingTool
 ScriptingTool::ScriptingTool(const QString &_id, const QString &_name, const QString &_path, const QStringList &_runParams)
     : id(_id), name(_name), path(_path), runParams(_runParams) {
 }
@@ -50,7 +50,7 @@ void ScriptingTool::onPathChanged(ExternalTool *tool, const QStringList &runPara
 }
 
 ////////////////////////////////////////
-//ScriptingToolRegistry
+// ScriptingToolRegistry
 ScriptingToolRegistry::~ScriptingToolRegistry() {
     qDeleteAll(registry.values());
 }
@@ -80,4 +80,4 @@ QStringList ScriptingToolRegistry::getAllNames() const {
     return registry.keys();
 }
 
-}    // namespace U2
+}  // namespace U2

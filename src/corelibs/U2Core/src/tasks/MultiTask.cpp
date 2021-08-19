@@ -76,7 +76,7 @@ QString MultiTask::generateReport() const {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//SequentialMultiTask
+// SequentialMultiTask
 
 SequentialMultiTask::SequentialMultiTask(const QString &name, const QList<Task *> &taskz, TaskFlags f)
     : Task(name, f), tasks(taskz) {
@@ -84,7 +84,7 @@ SequentialMultiTask::SequentialMultiTask(const QString &name, const QList<Task *
 }
 
 void SequentialMultiTask::prepare() {
-    //run the first task
+    // run the first task
     if (tasks.size() > 0) {
         addSubTask(tasks.first());
     }
@@ -105,4 +105,4 @@ QList<Task *> SequentialMultiTask::getTasks() const {
     return tasks;
 }
 
-}    // namespace U2
+}  // namespace U2

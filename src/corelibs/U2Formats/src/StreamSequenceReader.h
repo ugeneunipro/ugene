@@ -37,15 +37,15 @@ class DocumentFormat;
 class IOAdapter;
 
 /**
-*
-* Class provides stream reading for large sequence files.
-* For example, dna assembly short reads usually are
-* of size 1GB and more, it is impossible to store whole file in RAM.
-* Note, that document format has to support DocumentReadMode_SingleObject
-* to be read by StreamSequenceReader.
-* In case of multiple files, they will be read subsequently.
-*
-*/
+ *
+ * Class provides stream reading for large sequence files.
+ * For example, dna assembly short reads usually are
+ * of size 1GB and more, it is impossible to store whole file in RAM.
+ * Note, that document format has to support DocumentReadMode_SingleObject
+ * to be read by StreamSequenceReader.
+ * In case of multiple files, they will be read subsequently.
+ *
+ */
 
 class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
     Q_OBJECT
@@ -84,6 +84,6 @@ public:
     static int getNumberOfSequences(const QString &url, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_STREAM_SEQUENCE_READER_H_
+#endif  //_U2_STREAM_SEQUENCE_READER_H_

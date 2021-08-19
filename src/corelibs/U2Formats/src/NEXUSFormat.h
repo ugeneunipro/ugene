@@ -52,6 +52,6 @@ private:
     void storeObjects(QList<GObject *> objects, bool simpleNames, IOAdapter *io, U2OpStatus &ti);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_NEXUS_FORMAT_H_
+#endif  // #ifndef _U2_NEXUS_FORMAT_H_

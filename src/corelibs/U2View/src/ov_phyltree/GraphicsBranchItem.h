@@ -137,6 +137,6 @@ public:
     QRectF visibleChildrenBoundingRect(const QTransform &viewTransform) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

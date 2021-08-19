@@ -231,7 +231,7 @@ inline U2Region U2Region::containingRegion(const QVector<U2Region> &regions) {
 U2CORE_EXPORT QDataStream &operator<<(QDataStream &out, const U2Region &myObj);
 U2CORE_EXPORT QDataStream &operator>>(QDataStream &in, U2Region &myObj);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_TYPEINFO(U2::U2Region, Q_PRIMITIVE_TYPE);
 Q_DECLARE_METATYPE(U2::U2Region)

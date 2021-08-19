@@ -120,4 +120,4 @@ QString DNAInfo::getFastqComment(const QVariantMap &vm) {
     }
     return comment;
 }
-}    // namespace U2
+}  // namespace U2

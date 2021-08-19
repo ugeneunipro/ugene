@@ -74,6 +74,6 @@ public:
     static const QString SRC_URL;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ACE_IMPORTER_H_
+#endif  // _U2_ACE_IMPORTER_H_

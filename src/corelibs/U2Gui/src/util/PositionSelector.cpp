@@ -114,7 +114,7 @@ PositionSelector::PositionSelector(QDialog *dialog, qint64 rangeStart, qint64 ra
     dialog->setMinimumWidth(200);
     dialog->setMaximumWidth(400);
 
-    //todo: add checkbox to handle 'autoclose' state
+    // todo: add checkbox to handle 'autoclose' state
 }
 
 PositionSelector::~PositionSelector() {
@@ -158,4 +158,4 @@ void PositionSelector::exec() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

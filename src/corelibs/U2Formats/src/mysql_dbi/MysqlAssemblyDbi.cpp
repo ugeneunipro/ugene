@@ -219,9 +219,9 @@ void MysqlAssemblyDbi::createAssemblyObject(U2Assembly &assembly,
     assembly.version = fakeObject.version;
 
     QString elenMethod = "multi-table-v1";
-    //QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE, os);
-    //    QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1, os);
-    //QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE, os);
+    // QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE, os);
+    //     QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1, os);
+    // QString elenMethod = dbi->getProperty(Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, Mysql_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE, os);
 
     U2SqlQuery q("INSERT INTO Assembly(object, reference, imethod, cmethod) VALUES(:object, :reference, :imethod, :cmethod)", db, os);
     q.bindDataId(":object", assembly.id);
@@ -374,4 +374,4 @@ void MysqlAssemblyDbi::calculateCoverage(const U2DataId &assemblyId, const U2Reg
     perfLog.trace(QString("Assembly: full coverage calculation time for %2..%3: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)).arg(region.startPos).arg(region.endPos()));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -85,4 +85,4 @@ Document *ProjectDocumentComboBoxController::getDocument() const {
     return doc;
 }
 
-}    // namespace U2
+}  // namespace U2

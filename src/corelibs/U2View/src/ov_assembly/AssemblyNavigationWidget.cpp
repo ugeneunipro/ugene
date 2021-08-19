@@ -101,9 +101,9 @@ void CoveredRegionsLabel::sl_updateContent() {
         QString coveredRegionsText = "<style>td { padding-right: 8px;}</style>";
         coveredRegionsText += "<table cellspacing='2'>";
         /*
-        * |   | Region | Coverage |
-        * | 1 | [x,y]  | z        |
-        */
+         * |   | Region | Coverage |
+         * | 1 | [x,y]  | z        |
+         */
         coveredRegionsText += tr("<tr><th/><th align='left'><div style='margin-right: 5px;'>Position</div></th><th align = 'center'>Coverage</th></tr>");
         for (int i = 0; i < coveredRegions.size(); ++i) {
             const CoveredRegion &cr = coveredRegions.at(i);
@@ -152,4 +152,4 @@ OPGroupParameters AssemblyNavigationWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Navigation"), GROUP_DOC_PAGE);
 }
 
-}    // namespace U2
+}  // namespace U2

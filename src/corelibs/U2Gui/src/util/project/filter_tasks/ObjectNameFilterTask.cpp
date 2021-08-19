@@ -47,4 +47,4 @@ AbstractProjectFilterTask *ObjectNameFilterTaskFactory::createNewTask(const Proj
     return new ObjectNameFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

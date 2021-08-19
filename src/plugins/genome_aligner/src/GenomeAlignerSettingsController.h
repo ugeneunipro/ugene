@@ -34,6 +34,6 @@ public:
     static void setIndexDir(const QString &indexDir);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GA_SETTINGS_GUI_CONTROLLER_H_
+#endif  // _U2_GA_SETTINGS_GUI_CONTROLLER_H_

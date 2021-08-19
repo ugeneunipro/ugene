@@ -99,4 +99,4 @@ QVariant ScriptEngineUtils::fromScriptValue(QScriptEngine *engine, const QScript
     return value.toVariant();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -78,7 +78,7 @@ void QDDistanceConstraint::invert() {
     distType = QDConstraintController::getInvertedType(distType);
 }
 
-//QDConstraintController
+// QDConstraintController
 //////////////////////////////////////////////////////////////////////////
 const QString QDConstraintController::DISTANCE_CONSTRAINT_EL("distance");
 const QString QDConstraintController::TYPE_ATTR("type");
@@ -236,4 +236,4 @@ U2Region QDConstraintController::matchLocation(QDDistanceConstraint *dc, const Q
     return U2Region(start, end - start);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -39,5 +39,5 @@ bool RequiredSlotsValidator::validate(const IntegralBusPort *port, Notifications
     return noErrors;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

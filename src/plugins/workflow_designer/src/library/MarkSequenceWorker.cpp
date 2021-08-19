@@ -51,7 +51,7 @@ namespace {
 const QString SEQ_TYPESET_ID("seq.content");
 const QString MARKED_SEQ_TYPESET_ID("marker.seq.content");
 const QString MARKER_ATTR_ID("marker");
-}    // namespace
+}  // namespace
 
 /*******************************
  * MarkSequenceWorker
@@ -167,5 +167,5 @@ QString MarkSequencePrompter::composeRichDoc() {
     return tr("Adds one or several marks to the input sequence.");
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -60,6 +60,6 @@ public:
     virtual PackAlgorithmData load(U2SqlQuery *q);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_ASSEMBLY_ADAPTER_H_
+#endif  // _U2_MYSQL_ASSEMBLY_ADAPTER_H_

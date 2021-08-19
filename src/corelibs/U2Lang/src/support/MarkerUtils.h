@@ -51,6 +51,6 @@ private:
     static void textValueToString(const QVariantList &value, QString &string);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _MARKER_UTILS_H_
+#endif  // _MARKER_UTILS_H_

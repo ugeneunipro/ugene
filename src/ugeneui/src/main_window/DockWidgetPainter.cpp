@@ -132,7 +132,7 @@ void DockWidgetPainter::drawText(const QString &keyPrefix, const QString &text, 
     int prefixDx = 0;
     QString plainText = text;
     if (!keyPrefix.isEmpty()) {
-        QFont font;    //app default
+        QFont font;  // app default
         font.setUnderline(true);
 
         painter.setFont(font);
@@ -148,7 +148,7 @@ void DockWidgetPainter::drawText(const QString &keyPrefix, const QString &text, 
 
 DockWidgetPaintData::DockWidgetPaintData(const QIcon &icon, const QString &text, MWDockArea area)
     : area(area),
-      fm(QFontMetrics(QFont()))    //app default
+      fm(QFontMetrics(QFont()))  // app default
 {
     hasIcon = !icon.isNull();
     iconSize = hasIcon ? ICON_SIZE : 0;
@@ -199,4 +199,4 @@ int DockWidgetPaintData::getIconSize() const {
     return iconSize;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -77,6 +77,6 @@ private:
     QBitArray hiddenColumns;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_INVESTIGATION_DATA_MODEL_H_
+#endif  // _U2_INVESTIGATION_DATA_MODEL_H_

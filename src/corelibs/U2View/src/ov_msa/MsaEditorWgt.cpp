@@ -152,4 +152,4 @@ MSAEditorMultiTreeViewer *MsaEditorWgt::getMultiTreeViewer() {
     return multiTreeViewer;
 }
 
-}    // namespace U2
+}  // namespace U2

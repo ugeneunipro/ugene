@@ -38,7 +38,7 @@ SequenceWalkerTask::SequenceWalkerTask(const SequenceWalkerConfig &c, SequenceWa
       config(c),
       callback(cb),
       tempBuffer(nullptr) {
-    assert(config.chunkSize > static_cast<uint>(config.overlapSize));    // if chunk == overlap -> infinite loop occurs
+    assert(config.chunkSize > static_cast<uint>(config.overlapSize));  // if chunk == overlap -> infinite loop occurs
     assert(cb != nullptr);
     assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
@@ -71,7 +71,7 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
     }
 
     if (config.aminoTrans == nullptr) {
-        //try walk direct and complement strands
+        // try walk direct and complement strands
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
@@ -183,7 +183,7 @@ void SequenceWalkerSubtask::prepareLocalRegion() {
 
     QByteArray res(localSeq, localLen);
     if (doCompl) {
-        //do complement;
+        // do complement;
         assert(t->getConfig().complTrans != nullptr);
         const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
@@ -220,4 +220,4 @@ bool SequenceWalkerSubtask::intersectsWithOverlaps(const U2Region &reg) const {
     return intersects;
 }
 
-}    // namespace U2
+}  // namespace U2

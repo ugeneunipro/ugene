@@ -61,5 +61,5 @@ bool KrakenClassifyValidator::validateDatabase(const Actor *actor, Notifications
     return true;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

@@ -67,7 +67,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algori
 char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment &ma, int column, int &score, QVector<int> seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 
-    //now compute score using most freq character
+    // now compute score using most freq character
     int nonGaps = 0;
     QVector<int> freqsByChar(256);
     uchar topChar = MSAConsensusUtils::getColumnFreqs(ma, column, freqsByChar, nonGaps, seqIdx);
@@ -104,4 +104,4 @@ bool MSAConsensusAlgorithm::filterIdx(QVector<int> &seqIdx, const MultipleAlignm
     return !tmp.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

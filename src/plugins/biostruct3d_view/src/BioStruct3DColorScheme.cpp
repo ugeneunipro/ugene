@@ -95,7 +95,7 @@ Color4f BioStruct3DColorScheme::getAtomColor(const SharedAtom &atom) const {
         c = selectionColor;
     } else {
         c = getSchemeAtomColor(atom);
-        if (!selection.isEmpty() && unselectedShading > 0.0) {    // dim unselected
+        if (!selection.isEmpty() && unselectedShading > 0.0) {  // dim unselected
             c[3] *= (1.0 - unselectedShading);
         }
     }
@@ -138,7 +138,7 @@ Color4f ChemicalElemColorScheme::getSchemeAtomColor(const SharedAtom &a) const {
 
 ChemicalElemColorScheme::ChemicalElemColorScheme(const BioStruct3DObject *biostruct)
     : BioStruct3DColorScheme(biostruct) {
-    //CPK colors
+    // CPK colors
 
     elementColorMap.insert(1, Color4f(1.0f, 1.0f, 1.0f));
     elementColorMap.insert(6, Color4f(0.8f, 0.8f, 0.8f));
@@ -296,4 +296,4 @@ SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject *biostruct)
     defaultAtomColor = colors[(idx++) % colors.size()];
 }
 
-}    // namespace U2
+}  // namespace U2

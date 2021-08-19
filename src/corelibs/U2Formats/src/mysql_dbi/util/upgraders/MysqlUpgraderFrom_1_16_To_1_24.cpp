@@ -82,7 +82,7 @@ QString convertInfo(const QString &additionalInfo, const QStringList &header) {
         convertedInfoMap.insert(U2Variant::VCF4_INFO, splittedInfo.takeFirst());
     }
 
-    static const int maxVcf4MandatoryColumnNumber = 7;    // VCF4 format supposes 8 mandatory columns
+    static const int maxVcf4MandatoryColumnNumber = 7;  // VCF4 format supposes 8 mandatory columns
     for (int i = maxVcf4MandatoryColumnNumber + 1; i < header.size(); i++) {
         convertedInfoMap.insert(header[i], splittedInfo.isEmpty() ? "." : splittedInfo.takeFirst());
     }
@@ -95,7 +95,7 @@ QString convertInfo(const QString &additionalInfo, const QStringList &header) {
     return StrPackUtils::packMap(convertedInfoMap);
 }
 
-}    // namespace
+}  // namespace
 
 void MysqlUpgraderFrom_1_16_To_1_24::repackInfo(U2OpStatus &os, const QMap<U2DataId, QStringList> &trackId2header) const {
     coreLog.trace("Additional info repacking");
@@ -173,9 +173,9 @@ void MysqlUpgraderFrom_1_16_To_1_24::extractAttributes(U2OpStatus &os, QMap<U2Da
 
         trackId2header.insert(variantTrack.id, header);
 
-        addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
+        addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTRIBUTE, metaInfo);
         CHECK_OP(os, );
-        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
+        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTRIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, );
 
         number++;
@@ -213,4 +213,4 @@ void MysqlUpgraderFrom_1_16_To_1_24::splitFileHeader(const QString &fileHeader, 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

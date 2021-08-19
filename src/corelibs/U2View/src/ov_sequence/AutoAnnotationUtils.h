@@ -92,6 +92,6 @@ public:
     static void triggerAutoAnnotationsUpdate(ADVSequenceObjectContext *ctx, const QString &aaGroupName);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_AUTO_ANNOTATION_UTILS_H_
+#endif  // _U2_AUTO_ANNOTATION_UTILS_H_

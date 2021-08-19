@@ -38,6 +38,6 @@ private:
     void updateLabels() override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_EDITOR_STATUS_BAR_H_
+#endif  // _U2_MSA_EDITOR_STATUS_BAR_H_

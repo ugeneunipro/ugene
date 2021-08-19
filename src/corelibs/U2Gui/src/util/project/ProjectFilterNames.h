@@ -42,8 +42,8 @@ extern const QString MCA_REFERENCE_CONTENT_FILTER_NAME;
 extern const QString SEQUENCE_ACC_FILTER_NAME;
 extern const QString TEXT_CONTENT_FILTER_NAME;
 
-}    // namespace ProjectFilterNames
+}  // namespace ProjectFilterNames
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECT_FILTER_NAMES_H_
+#endif  // _U2_PROJECT_FILTER_NAMES_H_

@@ -51,7 +51,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-#define ICOLOR QColor(85, 85, 255)    // FIXME
+#define ICOLOR QColor(85, 85, 255)  // FIXME
 
 const QString RemoteDBFetcherFactory::ACTOR_ID("fetch-sequence");
 static const QString TYPE("remote.seq");
@@ -74,15 +74,11 @@ QString RemoteDBFetcherPrompter::composeRichDoc() {
     if (RemoteDBFetcherFactory::idsListString == getParameter(SOURCE_CHOOSER_ID).toString()) {
         sourceId = SEQID_ID;
         sourceValues = getParameter(SEQID_ID).value<QString>().split(";", QString::SkipEmptyParts);
-        sourceDescString = sourceValues.size() > 1 ?
-                               RemoteDBFetcherWorker::tr("sequences identified with") :
-                               RemoteDBFetcherWorker::tr("sequence identified with");
+        sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with") : RemoteDBFetcherWorker::tr("sequence identified with");
     } else {
         sourceId = SOURCE_FILE_ID;
         sourceValues = getParameter(SOURCE_FILE_ID).toString().split(";", QString::SkipEmptyParts);
-        sourceDescString = sourceValues.size() > 1 ?
-                               RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from files") :
-                               RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from file");
+        sourceDescString = sourceValues.size() > 1 ? RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from files") : RemoteDBFetcherWorker::tr("sequences identified with resource IDs that will be read from file");
     }
     sourceLinkStr = sourceValues.isEmpty() ? unsetStr : QString("<u>%1</u>").arg(sourceValues.join(", "));
 
@@ -505,7 +501,7 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
 const QString FetchSequenceByIdFromAnnotationFactory::ACTOR_ID("fetch-sequence-by-id-from-annotation");
 
 void FetchSequenceByIdFromAnnotationFactory::init() {
-    //accept annotations as input
+    // accept annotations as input
     QMap<Descriptor, DataTypePtr> inputMap;
     inputMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
 
@@ -519,7 +515,7 @@ void FetchSequenceByIdFromAnnotationFactory::init() {
                     FetchSequenceByIdFromAnnotationWorker::tr("Parses annotations to find any IDs and fetches corresponding sequences."));
 
     QList<PortDescriptor *> pds;
-    {    //Create input port descriptors
+    {  // Create input port descriptors
         Descriptor inDesc(BasePorts::IN_ANNOTATIONS_PORT_ID(), FetchSequenceByIdFromAnnotationWorker::tr("Input annotations"), FetchSequenceByIdFromAnnotationWorker::tr("The annotations are scanned for accesion ids."));
 
         pds << new PortDescriptor(inDesc, DataTypePtr(new MapDataType("input.anns", inputMap)), /*input*/ true);
@@ -574,6 +570,6 @@ void FetchSequenceByIdFromAnnotationFactory::init() {
     localDomain->registerEntry(new FetchSequenceByIdFromAnnotationFactory());
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    // namespace U2
+}  // namespace U2

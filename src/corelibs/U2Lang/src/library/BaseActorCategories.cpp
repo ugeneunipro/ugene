@@ -100,5 +100,5 @@ const Descriptor BaseActorCategories::CATEGORY_CHIP_SEQ() {
     return Descriptor("chs", tr("NGS: ChIP-Seq Analysis"), "");
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

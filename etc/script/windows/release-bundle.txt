@@ -1511,6 +1511,8 @@ plugins_checker.exe
 plugins_checker.map
 sqldrivers
 sqldrivers/qsqlmysql.dll
+styles
+styles/qwindowsvistastyle.dll
 tools
 tools/bedtools
 tools/bigwig

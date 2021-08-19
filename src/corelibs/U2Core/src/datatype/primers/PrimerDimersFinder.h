@@ -79,6 +79,6 @@ private:
     QString getDimersOverlapping(int dimerFormationPos);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_STATISTICS_H_
+#endif  // _U2_PRIMER_STATISTICS_H_

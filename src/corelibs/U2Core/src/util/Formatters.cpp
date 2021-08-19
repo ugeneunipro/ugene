@@ -19,38 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_GRAPH_CUTOFFS_TASK_H_
-#define _U2_SAVE_GRAPH_CUTOFFS_TASK_H_
+#include "Formatters.h"
 
-#include <U2Core/Task.h>
-
-#include "ADVGraphModel.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
 
 namespace U2 {
 
-struct SaveCutoffsTaskSettings {
-    enum Location {
-        Annotate_Inner,
-        Annotate_Outer
-    };
-    Location loc;
-    float min, max;
-    GSequenceGraphData *d;
-};
+QString DocumentNameByIdFormatter::format(const QString &documentFormatId) const {
+    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    return documentFormat == nullptr ? documentFormatId : documentFormat->getFormatName();
+}
 
-class SaveCutoffsTask : public Task {
-    Q_OBJECT
-public:
-    SaveCutoffsTask(SaveCutoffsTaskSettings _s);
-    void prepare();
-    void run();
-    Task::ReportResult report();
-
-private:
-    SaveCutoffsTaskSettings settings;
-    QList<U2Region> regions;
-};
-
-}    // namespace U2
-
-#endif
+}  // namespace U2

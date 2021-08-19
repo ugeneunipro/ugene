@@ -31,4 +31,4 @@ const OptionsMap &BaseSettingsDialog::getSettings() const {
     return updatedSettings;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -93,4 +93,4 @@ QVariantMap AnnotatedDNAViewState::saveState(AnnotatedDNAView *v) {
     return s.stateData;
 }
 
-}    // namespace U2
+}  // namespace U2

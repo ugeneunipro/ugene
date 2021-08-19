@@ -38,8 +38,8 @@ GUI_TEST_CLASS_DECLARATION(test_0006)
 GUI_TEST_CLASS_DECLARATION(test_0008)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_start_page
+}  // namespace GUITest_common_scenarios_start_page
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSSTARTPAGE_H
+#endif  // GTTESTSSTARTPAGE_H

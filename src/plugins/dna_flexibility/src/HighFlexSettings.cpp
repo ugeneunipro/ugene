@@ -71,7 +71,7 @@ bool HighFlexSettings::restoreRememberedSettings() {
     // Window size
     QVariant windowSizeVariant = AppContext::getSettings()->getValue(
         SETTINGS_PATH + "/" + SETTING_WINDOW_SIZE,
-        DEFAULT_WINDOW_SIZE);    // The second parameter has no actual meaning in this case
+        DEFAULT_WINDOW_SIZE);  // The second parameter has no actual meaning in this case
 
     windowSize = windowSizeVariant.toInt(&convertionSuccessful);
     if (!convertionSuccessful) {
@@ -105,4 +105,4 @@ bool HighFlexSettings::restoreRememberedSettings() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

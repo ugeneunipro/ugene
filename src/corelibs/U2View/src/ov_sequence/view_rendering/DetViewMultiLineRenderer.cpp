@@ -52,7 +52,7 @@ qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvas
     return qMin(ctx->getSequenceLength(), posOnFirstLine + line * symbolsPerLine);
 }
 
-int DetViewMultiLineRenderer::posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
+int DetViewMultiLineRenderer::posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
     CHECK(visibleRange.contains(pos), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
@@ -63,7 +63,7 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *anno
     SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", QList<U2Region>());
 
     // Compute region offset within a single line.
-    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();  // Use minimal required height to draw a single line in singleLineRenderer.
     U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, availableHeightForSingleLine);
     // The first line is indented from the widget start by the half of indent.
     singleLineYRegion.startPos += INDENT_BETWEEN_LINES / 2;
@@ -106,7 +106,7 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
 }
 
 bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region & /*visibleRange*/) const {
-    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();  // Use minimal required height to draw a single line in singleLineRenderer.
     U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, availableHeightForSingleLine);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;
     do {
@@ -240,4 +240,4 @@ U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *, int, const 
     FAIL("This method must never be called and exists due to a design flow. DetViewMultiLineRenderer delegates annotation rendering to DetViewSingleLineRenderer", U2Region());
 }
 
-}    // namespace U2
+}  // namespace U2

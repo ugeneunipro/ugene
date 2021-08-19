@@ -170,7 +170,7 @@ public:
     void Test();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_addReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_addReadsInvalid);
@@ -196,4 +196,4 @@ Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_packInvalid);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_removeReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_removeReadsInvalid);
 
-#endif    //_U2_ASSEMBLY_DBI_UNITTESTS_H_
+#endif  //_U2_ASSEMBLY_DBI_UNITTESTS_H_

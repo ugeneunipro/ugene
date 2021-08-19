@@ -116,4 +116,4 @@ int BaseWidthController::screenXPositionToBase(int x) const {
     return 0 <= column && column < maEditor->getAlignmentLen() ? column : -1;
 }
 
-}    // namespace U2
+}  // namespace U2

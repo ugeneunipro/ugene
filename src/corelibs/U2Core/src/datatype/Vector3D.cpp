@@ -171,4 +171,4 @@ Vector3D vector_cross(const Vector3D &a, const Vector3D &b) {
         a.x * b.y - a.y * b.x);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -156,7 +156,7 @@ void Overview::mousePressEvent(QMouseEvent *me) {
     if (me->buttons() & Qt::LeftButton) {
         QPoint renderAreaPos = toRenderAreaPoint(me->pos());
 
-        //make selection if shift was pressed
+        // make selection if shift was pressed
         if (me->modifiers().testFlag(Qt::ShiftModifier)) {
             lastPressPos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             QWidget::mousePressEvent(me);
@@ -169,7 +169,7 @@ void Overview::mousePressEvent(QMouseEvent *me) {
         panSliderMovedRight = (panSlider.topRight().x() - renderAreaPos.x() < 10) && panSliderClicked;
         panSliderMovedLeft = (renderAreaPos.x() - panSlider.topLeft().x() < 10) && panSliderClicked;
         offset = overviewRenderArea->coordXToPos(me->pos().x()) - overviewRenderArea->coordXToPos(panSlider.left());
-        //don't process detSlider when details view is collapsed
+        // don't process detSlider when details view is collapsed
         if (seqWidget->isDetViewCollapsed()) {
             detSliderClicked = false;
         } else {
@@ -220,7 +220,7 @@ void Overview::mouseMoveEvent(QMouseEvent *me) {
 
     if (me->buttons() & Qt::LeftButton) {
         qint64 pos = overviewRenderArea->coordXToPos(renderAreaPos.x() - mousePosToSlider.x());
-        if (lastPressPos != -1) {    //make selection
+        if (lastPressPos != -1) {  // make selection
             U2Region selection;
             qint64 mousePos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             qint64 selLen = mousePos - lastPressPos;
@@ -285,7 +285,7 @@ void Overview::mouseDoubleClickEvent(QMouseEvent *me) {
         panPos = qBound(qint64(0), qint64(panPos), seqLen - panVisLen);
         panView->setVisibleRange(U2Region(panPos, panVisLen));
 
-        //don't process detSlider when details view is collapsed
+        // don't process detSlider when details view is collapsed
         if (!seqWidget->isDetViewCollapsed()) {
             qint64 detPos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             detView->setStartPos(detPos);
@@ -387,7 +387,7 @@ void Overview::setGraphActionVisible(const bool setVisible) {
 OverviewRenderArea::OverviewRenderArea(Overview *p)
     : GSequenceLineViewRenderArea(p) {
     setFixedHeight(RENDER_AREA_HEIGHT);
-    QLinearGradient gradient(0, 0, 0, 1);    //vertical
+    QLinearGradient gradient(0, 0, 0, 1);  // vertical
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setColorAt(0.00, QColor(255, 255, 255, 120));
     gradient.setColorAt(0.50, QColor(0, 0, 0, 0));
@@ -405,7 +405,7 @@ const QRectF OverviewRenderArea::getDetSlider() const {
     return detSlider;
 }
 
-//pos [1, seqLen]; annotationsOnPos [0, seqLen)
+// pos [1, seqLen]; annotationsOnPos [0, seqLen)
 int OverviewRenderArea::getAnnotationDensity(int pos) const {
     if (pos < 1 || pos > annotationsOnPos.size()) {
         return 0;
@@ -481,7 +481,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
     pen.setColor(Qt::darkGray);
     p.setPen(pen);
 
-    //don't show arrow when det view collapsed
+    // don't show arrow when det view collapsed
     Overview *overview = qobject_cast<Overview *>(view);
     SAFE_POINT(overview != nullptr, tr("Overview is NULL"), );
     ADVSingleSequenceWidget *ssw = overview->seqWidget;
@@ -533,7 +533,7 @@ void OverviewRenderArea::drawRuler(QPainter &p) {
     int lastCharCenter = qRound(posToCoord(visibleRange.endPos() - 1) + halfChar);
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
-        firstLastWidth--;    // make the end of the ruler visible
+        firstLastWidth--;  // make the end of the ruler visible
     }
     GraphUtils::RulerConfig c;
     if (graphVisible) {
@@ -602,4 +602,4 @@ QColor OverviewRenderArea::getUnitColor(int count) {
             return QColor(0x00, 0x00, 0x00);
     }
 }
-}    // namespace U2
+}  // namespace U2

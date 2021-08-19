@@ -80,4 +80,4 @@ void DNAQualityIOUtils::writeDNAQuality(const QString &seqName, const DNAQuality
     ioAdapter->close();
 }
 
-}    // namespace U2
+}  // namespace U2

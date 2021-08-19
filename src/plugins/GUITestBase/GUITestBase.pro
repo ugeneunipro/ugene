@@ -53,7 +53,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h \
-            src/runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h \
@@ -336,7 +335,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.cpp \
-            src/runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.cpp \

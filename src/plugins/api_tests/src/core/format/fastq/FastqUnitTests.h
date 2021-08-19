@@ -44,7 +44,7 @@ DECLARE_TEST(FasqUnitTests, checkRawDataInvalidHeaderStartWith);
 DECLARE_TEST(FasqUnitTests, checkRawDataInvalidQualityHeaderStartWith);
 DECLARE_TEST(FasqUnitTests, checkRawDataMultiple);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(FasqUnitTests, checkRawData);
 DECLARE_METATYPE(FasqUnitTests, checkRawDataInvalidHeaderStartWith);

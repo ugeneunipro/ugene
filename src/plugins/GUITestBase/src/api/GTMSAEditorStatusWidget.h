@@ -47,5 +47,5 @@ public:
     static QString getSequenceUngappedLengthString(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
-#endif    // _U2_GT_MSAEDITOR_STATUSWIDGET_H_
+}  // namespace U2
+#endif  // _U2_GT_MSAEDITOR_STATUSWIDGET_H_

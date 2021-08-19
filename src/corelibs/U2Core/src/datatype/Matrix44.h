@@ -52,8 +52,8 @@ public:
 
 private:
     QVector<float> m;
-};    // class Matrix44
+};  // class Matrix44
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_MATRIX_44_H_
+#endif  // #ifndef _U2_MATRIX_44_H_

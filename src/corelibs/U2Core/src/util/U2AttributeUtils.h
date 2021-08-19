@@ -29,6 +29,7 @@ namespace U2 {
 
 class U2AttributeDbi;
 class U2OpStatus;
+class GObject;
 
 /**
     U2Attribute utility functions
@@ -51,6 +52,9 @@ public:
 
     static U2StringAttribute findStringAttribute(U2AttributeDbi *adbi, const U2DataId &objectId, const QString &name, U2OpStatus &os);
 
+    /** Calls 'findStringAttribute(dbi, objectId, name, os)' using dbi & objectId from object->entityRef. */
+    static U2StringAttribute findStringAttribute(const GObject *object, const QString &name, U2OpStatus &os);
+
     static void init(U2Attribute &attr, const U2Object &obj, const QString &name);
 
     static void removeAttribute(U2AttributeDbi *adbi, const U2DataId &attrId, U2OpStatus &os);
@@ -60,6 +64,6 @@ public:
     static void copyObjectAttributes(const U2EntityRef &srcObjRef, const U2EntityRef &dstObjRef, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

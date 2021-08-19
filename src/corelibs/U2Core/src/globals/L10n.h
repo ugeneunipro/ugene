@@ -139,7 +139,7 @@ public:
 
     static QString defaultStr() {
         return "default";
-    }    // It is used in WD, do not translate this without testing
+    }  // It is used in WD, do not translate this without testing
 
     static QString directStrandStr() {
         return tr("Direct");
@@ -163,6 +163,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -113,7 +113,7 @@ bool GTMouseDriver::moveTo(const QPoint &p) {
 #    ifdef _DEBUG
     GTGlobals::sleep(500);
 #    else
-    GTGlobals::sleep(100);    //May be not needed
+    GTGlobals::sleep(100);  // May be not needed
 #    endif
 
     return true;
@@ -122,10 +122,9 @@ bool GTMouseDriver::moveTo(const QPoint &p) {
 
 #    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
-    unsigned int btn = button == Qt::LeftButton  ? MOUSEEVENTF_LEFTDOWN :
-                       button == Qt::RightButton ? MOUSEEVENTF_RIGHTDOWN :
-                       button == Qt::MidButton   ? MOUSEEVENTF_MIDDLEDOWN :
-                                                   0;
+    unsigned int btn = button == Qt::LeftButton ? MOUSEEVENTF_LEFTDOWN : button == Qt::RightButton ? MOUSEEVENTF_RIGHTDOWN
+                                                                     : button == Qt::MidButton     ? MOUSEEVENTF_MIDDLEDOWN
+                                                                                                   : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     INPUT event;
@@ -146,11 +145,10 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
 #    define GT_METHOD_NAME "release"
 bool GTMouseDriver::release(Qt::MouseButton button) {
     // TODO: check if this key has been already pressed
-    //unsigned int buttons[3] = {MOUSEEVENTF_LEFTUP, MOUSEEVENTF_RIGHTUP, MOUSEEVENTF_MIDDLEUP};
-    unsigned int btn = button == Qt::LeftButton  ? MOUSEEVENTF_LEFTUP :
-                       button == Qt::RightButton ? MOUSEEVENTF_RIGHTUP :
-                       button == Qt::MidButton   ? MOUSEEVENTF_MIDDLEUP :
-                                                   0;
+    // unsigned int buttons[3] = {MOUSEEVENTF_LEFTUP, MOUSEEVENTF_RIGHTUP, MOUSEEVENTF_MIDDLEUP};
+    unsigned int btn = button == Qt::LeftButton ? MOUSEEVENTF_LEFTUP : button == Qt::RightButton ? MOUSEEVENTF_RIGHTUP
+                                                                   : button == Qt::MidButton     ? MOUSEEVENTF_MIDDLEUP
+                                                                                                 : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     INPUT event;
@@ -186,4 +184,4 @@ bool GTMouseDriver::scroll(int value) {
 #    undef GT_CLASS_NAME
 
 #endif
-}    // namespace HI
+}  // namespace HI

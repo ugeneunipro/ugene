@@ -78,7 +78,7 @@ FormatDetectionScore BEDLineValidateFlags::getFormatDetectionScore() {
 //-------------------------------------------------------------------
 //  BedFormat
 //-------------------------------------------------------------------
-//Names of supported qualifier names
+// Names of supported qualifier names
 namespace {
 const QString TRACK_NAME_QUALIFIER_NAME = "track_name";
 const QString TRACK_DESCR_QUALIFIER_NAME = "track_description";
@@ -92,7 +92,7 @@ const QString ITEM_RGB_QUALIFIER_NAME = "item_rgb";
 const QString BLOCK_COUNT_QUALIFIER_NAME = "block_count";
 const QString BLOCK_SIZES_QULAIFIER_NAME = "block_sizes";
 const QString BLOCK_STARTS_QUALIFIER_NAME = "block_starts";
-}    // namespace
+}  // namespace
 
 BedFormat::BedFormat(QObject *p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::BED, DocumentFormatFlag_SupportWriting, QStringList("bed")) {
@@ -147,7 +147,7 @@ void BedFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
         // Assume that the group name is the same as the annotation name
         QString groupName = defaultAnnotName;
         if (AnnotationGroup::isValidGroupName(groupName, false)) {
-            groupName = "Group";    // or set this name if the annotation name is not appropriate
+            groupName = "Group";  // or set this name if the annotation name is not appropriate
         }
 
         const QList<SharedAnnotationData> &annotations = annotationsHash.value(sequenceName);
@@ -171,10 +171,10 @@ bool validateThickCoordinates(const QString &thickStartStr, const QString &thick
 }
 
 /**
-* Validate that the color is valid
-* If color is "0", then it is not set, otherwise it has format r,g,b
-* If color is valid, corresponding QColor is set.
-*/
+ * Validate that the color is valid
+ * If color is "0", then it is not set, otherwise it has format r,g,b
+ * If color is valid, corresponding QColor is set.
+ */
 bool validateAnnotationColor(const QString &itemRgbStr, QColor &annotColor) {
     if ("0" == itemRgbStr) {
         return true;
@@ -281,11 +281,11 @@ FormatCheckResult BedFormat::checkRawTextData(const QByteArray &rawData, const G
         numToIterate = fileLines.size() - 1;
     }
 
-    bool trackLineDetected = false;    // A line that starts with "track" keyword should be present
+    bool trackLineDetected = false;  // A line that starts with "track" keyword should be present
     int numberOfFieldsPerLine = 0;
     bool firstAnnotLine = true;
     for (int i = 0; i < numToIterate; ++i) {
-        if (!fileLines[i].trimmed().isEmpty()) {    // e.g. the last line in file can be empty
+        if (!fileLines[i].trimmed().isEmpty()) {  // e.g. the last line in file can be empty
 
             QString line = fileLines[i];
             // Skip the header
@@ -485,7 +485,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                     // lower-numbered fields must always be populated
                     // if higher-numbered fields are used
                     if (nameQualValue.isEmpty()) {
-                        fieldsNumberPerLine = 3;    // No default value, skip all optional fields
+                        fieldsNumberPerLine = 3;  // No default value, skip all optional fields
                     } else {
                         fieldsNumberPerLine = 4;
 
@@ -616,8 +616,8 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
 //-------------------------------------------------------------------
 //  BedFormatParser
 //-------------------------------------------------------------------
-const int BedFormatParser::BufferSize = 1024 * 4;    // 4 Kb
-const int BedFormatParser::MinimumColumnsNumber = 3;    // "3" as there must be at least "chrom", "chromStart" and "chromEnd" fields
+const int BedFormatParser::BufferSize = 1024 * 4;  // 4 Kb
+const int BedFormatParser::MinimumColumnsNumber = 3;  // "3" as there must be at least "chrom", "chromStart" and "chromEnd" fields
 
 BedFormatParser::BedFormatParser(IOAdapter *io, const QString &defaultAnnotName, U2OpStatus &os)
     : io(io), os(os), defaultAnnotName(defaultAnnotName), buff(new char[BufferSize]), lineNumber(1), fileIsValid(true), noHeader(false) {
@@ -635,7 +635,7 @@ QHash<QString, QList<SharedAnnotationData>> BedFormatParser::parseDocument() {
     // Read other lines
     int numOfFieldsPerLine = 0;
 
-    //we have already red the line if there is no header
+    // we have already red the line if there is no header
     if (!noHeader) {
         readLine();
     }
@@ -644,7 +644,7 @@ QHash<QString, QList<SharedAnnotationData>> BedFormatParser::parseDocument() {
         // Parse and validate the line
         BEDLineValidateFlags validationStatus;
 
-        if (curLine.startsWith("#")) {    //skip comments
+        if (curLine.startsWith("#")) {  // skip comments
             os.setProgress(io->getProgress());
             readLine();
             continue;
@@ -852,7 +852,7 @@ void BedFormatParser::parseHeader(QString &trackName, QString &trackDescr) {
     // Search the 'track' line and get parameters from it
     bool headerLine = true;
     while (headerLine && readLine() > 0) {
-        if (curLine.startsWith("#")) {    //skip comments
+        if (curLine.startsWith("#")) {  // skip comments
             continue;
         }
         if (curLine.startsWith("browser")) {
@@ -862,7 +862,7 @@ void BedFormatParser::parseHeader(QString &trackName, QString &trackDescr) {
                 fileIsValid = false;
                 ioLog.trace(BedFormat::tr("BED parsing error: incorrect format of the 'track' header line!"));
             }
-            break;    // Stop parsing the header when 'track' line has been detected
+            break;  // Stop parsing the header when 'track' line has been detected
         } else {
             noHeader = true;
             break;
@@ -924,7 +924,7 @@ QString getAbridgedString(const QString &value) {
     resultString += (value.length() > 100) ? "..." : "";
     return resultString;
 }
-}    // namespace
+}  // namespace
 
 bool BedFormatParser::checkAnnotationParsingErrors(const BEDLineValidateFlags &validationStatus, const BedLineData &bedLineData) {
     // If there were some errors during parsing the output, write it to the log
@@ -993,4 +993,4 @@ void BedFormatParser::moveToNextLine() {
     readLine();
 }
 
-}    // namespace U2
+}  // namespace U2

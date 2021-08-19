@@ -43,7 +43,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // MultiplexerPrompter
+};  // MultiplexerPrompter
 
 class MultiplexerWorker : public BaseWorker {
     Q_OBJECT
@@ -76,7 +76,7 @@ private:
     QString getInputActorName(IntegralBus *bus) const;
     QString getMessagesMismatchError() const;
 
-};    // MultiplexerWorker
+};  // MultiplexerWorker
 
 class MultiplexerWorkerFactory : public DomainFactory {
 public:
@@ -88,9 +88,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // MultiplexerWorkerFactory
+};  // MultiplexerWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _MULTIPLEXER_WORKER_H_
+#endif  // _MULTIPLEXER_WORKER_H_

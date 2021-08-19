@@ -132,7 +132,7 @@ ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const Proje
     connect(mdi, SIGNAL(si_windowActivated(MWMDIWindow *)), SLOT(sl_windowActivated(MWMDIWindow *)));
     connect(mdi, SIGNAL(si_windowDeactivated(MWMDIWindow *)), SLOT(sl_windowDeactivated(MWMDIWindow *)));
     connect(mdi, SIGNAL(si_windowClosing(MWMDIWindow *)), SLOT(sl_windowDeactivated(MWMDIWindow *)));
-    sl_windowActivated(mdi->getActiveWindow());    // if any window is active - check it content
+    sl_windowActivated(mdi->getActiveWindow());  // if any window is active - check it content
 
     connectToResourceTracker();
 
@@ -143,7 +143,7 @@ ProjectTreeController::~ProjectTreeController() {
     if (nullptr != updater) {
         updater->stop();
         // TODO
-        //delete updater;
+        // delete updater;
     }
 }
 
@@ -190,7 +190,7 @@ QAction *ProjectTreeController::getLoadSeletectedDocumentsAction() const {
 namespace {
 // if documents number in project < MAX_DOCUMENTS_TO_AUTOEXPAND - document content will be automatically expanded on loading
 const int MAX_DOCUMENTS_TO_AUTOEXPAND = 20;
-}    // namespace
+}  // namespace
 
 void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettings &newSettings) {
     const bool objectFilterChanged = settings.isObjectFilterActive() != newSettings.isObjectFilterActive();
@@ -434,8 +434,8 @@ void ProjectTreeController::sl_doubleClicked(const QModelIndex &index) {
             if (!doc->isLoaded()) {
                 SAFE_POINT(loadSelectedDocumentsAction->isEnabled(), "Action is not enabled", );
                 loadSelectedDocumentsAction->trigger();
-            } else {    // there are children -> expand
-                tree->setExpanded(originalIndex, false);    // Magic: false
+            } else {  // there are children -> expand
+                tree->setExpanded(originalIndex, false);  // Magic: false
                 emit si_doubleClicked(doc);
             }
             break;
@@ -1366,4 +1366,4 @@ void ProjectTreeController::updateObjectActiveStateVisual(GObject *obj) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

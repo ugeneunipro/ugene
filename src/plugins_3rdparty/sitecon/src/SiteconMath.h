@@ -19,6 +19,6 @@ double pochisq(double x, int df);
 double critchi(double p, int df);
 double poz(double z);
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

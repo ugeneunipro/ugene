@@ -120,7 +120,7 @@ bool EventFilter::eventFilter(QObject *obj, QEvent *event) {
         prevButton = m->button();
         prevPos = m->globalPos();
         QObject *o = obj;
-        //do nothing if GuiTestWindow is clicked
+        // do nothing if GuiTestWindow is clicked
         while (o != nullptr) {
             if (o->objectName() == "GUITestingWindowWindow") {
                 return QObject::eventFilter(obj, event);
@@ -136,7 +136,7 @@ bool EventFilter::eventFilter(QObject *obj, QEvent *event) {
 void EventFilter::generateMouseMessage() {
     CHECK_EXT(m, coreLog.error(QString("MouseEvent is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
 
-    //widget info
+    // widget info
     QWidget *w = QApplication::widgetAt(m->globalPos());
     if (w != nullptr) {
         getInfo(w);
@@ -199,7 +199,7 @@ void EventFilter::getInfo(QWidget *w) {
 QString EventFilter::generateCode(QWidget *w) {
     QString result("");
 
-    //comparing previous focus widget with current.
+    // comparing previous focus widget with current.
     if (focusWidget != nullptr && QApplication::focusWidget() != focusWidget) {
         result.append(setValuesWhenFocusGone(focusWidget));
     }
@@ -475,7 +475,7 @@ QString EventFilter::generateParametersConstructorCode() {
         }
     }
 
-    //cut off last ',' and '\n'
+    // cut off last ',' and '\n'
     result.chop(2);
     result.append("{}\n\n\n");
     return result;
@@ -789,4 +789,4 @@ EventFilter::EventFilter(GUITestingWindow *_w)
             << "QGroupBox";
 }
 
-}    // namespace U2
+}  // namespace U2

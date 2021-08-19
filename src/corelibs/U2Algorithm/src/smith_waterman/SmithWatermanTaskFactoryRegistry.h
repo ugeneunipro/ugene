@@ -49,6 +49,6 @@ private:
     QHash<QString, SmithWatermanTaskFactory *> factories;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

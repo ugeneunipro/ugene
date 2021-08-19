@@ -34,7 +34,6 @@
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/ExportProjectDialogFiller.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
@@ -122,6 +121,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }
 
-}    // namespace GUITest_common_scenarios_project_anonymous_project
+}  // namespace GUITest_common_scenarios_project_anonymous_project
 
-}    // namespace U2
+}  // namespace U2

@@ -67,7 +67,7 @@ QString getOsSuffix() {
 #endif
 }
 
-}    // namespace
+}  // namespace
 
 QString GTDatabaseConfig::host() {
     return getStringSetting(HOST);
@@ -113,4 +113,4 @@ void GTDatabaseConfig::initTestConnectionInfo(const QString &name, const QString
     }
 }
 
-}    // namespace U2
+}  // namespace U2

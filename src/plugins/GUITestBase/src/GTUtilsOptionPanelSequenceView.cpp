@@ -381,7 +381,7 @@ void GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(HI::
 void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(HI::GUITestOpStatus &os) {
     QRadioButton *loadFromFile = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "usePatternFromFileRadioButton"));
     GTWidget::click(os, loadFromFile);
-    //kinda hack for QGroupBox should be rewriten
+    // kinda hack for QGroupBox should be rewriten
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 }
 
@@ -568,4 +568,4 @@ void GTUtilsOptionPanelSequenceView::setSetMaxResults(HI::GUITestOpStatus &os, i
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -37,6 +37,6 @@ public:
 private:
     int minVal, maxVal;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

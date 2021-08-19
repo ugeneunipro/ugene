@@ -419,9 +419,18 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         return;
     }
 
-    U2OpStatusImpl os;
-    const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    SAFE_POINT_OP(os, );
+    AnnotationTableObject *resultsTableObject = nullptr;
+    const QList<AnnotationTableObject *> atoList = annDnaView->getAnnotationObjects();
+    for (auto *ato : atoList) {
+        if (ato->getGObjectName() == PCR_TABLE_OBJECT_NAME) {
+            resultsTableObject = ato;
+            break;
+        }
+    }
+    if (resultsTableObject == nullptr) {
+        U2OpStatusImpl os;
+        const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+        SAFE_POINT_OP(os, );
     AnnotationTableObject *resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
     QString newDocUrl = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/PCRPrimers.gb", "_");
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);

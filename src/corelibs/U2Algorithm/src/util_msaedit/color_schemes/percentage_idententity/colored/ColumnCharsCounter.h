@@ -43,12 +43,12 @@ public:
     void addGap();
     void addNonAlphabetCharacter();
     QList<Nucleotide> getNucleotideList() const;
-    //const int getIndexOfNucleotideWithCharacter(const char c) const;
+    // const int getIndexOfNucleotideWithCharacter(const char c) const;
     bool hasGaps() const;
     bool hasNonAlphabetCharsNumber() const;
     bool hasPercentageMoreThen(const double &threshold) const;
     void sortNucleotideList();
-    //bool hasEqualPercentage() const;
+    // bool hasEqualPercentage() const;
 
 private:
     bool isNucleotideAlreadyInList(const char character) const;
@@ -60,6 +60,6 @@ private:
     int nonAlphabetCharsNumber;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_COLUMN_CHARS_COUNTER_H_
+#endif  // _U2_COLUMN_CHARS_COUNTER_H_

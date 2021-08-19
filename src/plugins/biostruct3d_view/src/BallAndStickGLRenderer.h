@@ -57,6 +57,6 @@ private:
     RENDERER_FACTORY(BallAndStickGLRenderer)
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BIOSTRUCT3D_BALLANDSTICK_RENDERER_H_
+#endif  // _U2_BIOSTRUCT3D_BALLANDSTICK_RENDERER_H_

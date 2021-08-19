@@ -80,12 +80,12 @@ void SceneSerializer::scene2xml(const WorkflowScene *scene, QDomDocument &xmlDoc
 void SceneSerializer::saveItems(const QList<QGraphicsItem *> &items, QDomElement &proj) {
     foreach (QGraphicsItem *item, items) {
         switch (item->type()) {
-        case WorkflowProcessItemType:
-            saveProcess(qgraphicsitem_cast<WorkflowProcessItem *>(item), proj);
-            break;
-        case WorkflowBusItemType:
-            saveFlow(static_cast<WorkflowBusItem *>(item), proj);
-            break;
+            case WorkflowProcessItemType:
+                saveProcess(qgraphicsitem_cast<WorkflowProcessItem *>(item), proj);
+                break;
+            case WorkflowBusItemType:
+                saveFlow(static_cast<WorkflowBusItem *>(item), proj);
+                break;
         }
     }
 }
@@ -165,4 +165,4 @@ QString SceneSerializer::xml2scene(const QDomElement &projectElement, WorkflowSc
     return QString();
 }
 
-}    // namespace U2
+}  // namespace U2

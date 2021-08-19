@@ -48,7 +48,7 @@ enum TSPreset { PresetAll = 0,
                 PresetMini = 2,
                 PresetBigPeriod = 3,
                 PresetCustom = 4 };
-}    // namespace TSConstants
+}  // namespace TSConstants
 
 class FindTandemsTaskSettings {
 public:
@@ -113,9 +113,9 @@ public:
     const FindTandemsTaskSettings &getSettings() const {
         return settings;
     }
-    const static quint32 maxCheckPeriod = 1024;    //max period is 1k
+    const static quint32 maxCheckPeriod = 1024;  // max period is 1k
 protected:
-    //main sequence
+    // main sequence
     char *sequence;
     FindTandemsTaskSettings settings;
     QMutex tandemsAccessMutex;
@@ -153,7 +153,7 @@ public:
     void prepare();
 
 protected:
-    //main sequence
+    // main sequence
     const char *sequence;
     const long seqSize;
 
@@ -182,7 +182,7 @@ public:
     void cleanup();
 
 protected:
-    //main sequence
+    // main sequence
     const char *sequence;
     const int seqSize;
 
@@ -229,6 +229,6 @@ private:
     bool comparePrefixChars(const char *, const char *);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // RF_SARRAYTANDEMFINDER_H
+#endif  // RF_SARRAYTANDEMFINDER_H

@@ -84,7 +84,7 @@ QString Predicate::toString() const {
 }
 
 Predicate Predicate::fromString(const QString &string, U2OpStatus &os) {
-    QStringList token = string.split(".");    // var.value
+    QStringList token = string.split(".");  // var.value
     if (2 != token.size()) {
         os.setError(QObject::tr("Can not parse predicate from the string: %1").arg(string));
         return Predicate();
@@ -96,4 +96,4 @@ bool Predicate::operator<(const Predicate &other) const {
     return (toString() < other.toString());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -26,8 +26,8 @@
 
 namespace U2 {
 /**
-* Intended for deferred task run, triggered by a signal.
-*/
+ * Intended for deferred task run, triggered by a signal.
+ */
 class U2CORE_EXPORT TaskStarter : public QObject {
     Q_OBJECT
 public:
@@ -47,6 +47,6 @@ private:
     StartCondition condition;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

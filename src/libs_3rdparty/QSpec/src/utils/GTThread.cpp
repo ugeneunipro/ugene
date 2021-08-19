@@ -31,7 +31,7 @@ namespace HI {
 const qint64 TIMER_INTERVAL = 100;
 
 ThreadWaiter::ThreadWaiter()
-    :    //os(os),
+    :  // os(os),
       startValue(0),
       endValue(0) {
 }
@@ -68,4 +68,4 @@ void GTThread::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

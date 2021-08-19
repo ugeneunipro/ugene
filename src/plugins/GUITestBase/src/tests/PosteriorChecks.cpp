@@ -48,5 +48,5 @@ POSTERIOR_CHECK_DEFINITION(post_check_0001) {
     CHECK_SET_ERR(popupWidget == nullptr, "There is a popup widget after test finish");
 }
 
-}    // namespace GUITest_posterior_checks
-}    // namespace U2
+}  // namespace GUITest_posterior_checks
+}  // namespace U2

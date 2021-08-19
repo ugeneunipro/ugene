@@ -30,6 +30,8 @@
 #include <QVariant>
 #include <QWidget>
 
+#include <U2Core/Formatters.h>
+
 #include <U2Designer/URLLineEdit.h>
 
 #include <U2Lang/ConfigurationEditor.h>
@@ -137,15 +139,39 @@ private slots:
     void sl_valueChanged(double value);
 };
 
+/** Base class for different kinds of ComboBox widgets that adds support of features like value formatting, sorting, etc.. */
+class ComboBoxWidgetBase : public PropertyWidget {
+public:
+    ComboBoxWidgetBase(QWidget *parent = nullptr,
+                       const QSharedPointer<StringFormatter> &formatter = nullptr,
+                       bool isSorted = false);
+
+    /** Returns formatted value for the item with the given name. */
+    QString getFormattedItemText(const QString &itemKey) const;
+
+protected:
+    /** Sorts in-place combo box items by name (item.first) in case-insensitive mode. */
+    static void sortComboItemsByName(QList<ComboItem> &itemList);
+
+    QSharedPointer<StringFormatter> formatter;
+
+    /** Makes combo-box list sorted. The sorting is case insensitive. */
+    bool isSorted = false;
+};
+
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-class ComboBoxWidget : public PropertyWidget {
+class ComboBoxWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    ComboBoxWidget(const QList<ComboItem> &items,
+                   QWidget *parent = nullptr,
+                   const QSharedPointer<StringFormatter> &formatter = nullptr,
+                   bool isSorted = false);
+
+    QVariant value() override;
+    void setValue(const QVariant &value) override;
 
     static ComboBoxWidget *createBooleanWidget(QWidget *parent = nullptr);
 
@@ -228,12 +254,17 @@ private:
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
+class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    ComboBoxWithChecksWidget(const QVariantMap &items,
+                             QWidget *parent = nullptr,
+                             const QSharedPointer<StringFormatter> &formatter = nullptr,
+                             bool isSorted = false);
+
+    QVariant value() override;
+
+    void setValue(const QVariant &value) override;
 
 signals:
     void valueChanged(const QString &value);
@@ -249,6 +280,9 @@ protected slots:
 
 private:
     void initModelView();
+
+    /** Returns formatted version of the current value. */
+    QString getFormattedValue();
 };
 
 /************************************************************************/
@@ -303,6 +337,6 @@ protected:
     virtual QString finalyze(const QString &url);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROPERTYWIDGET_H_
+#endif  // _U2_PROPERTYWIDGET_H_

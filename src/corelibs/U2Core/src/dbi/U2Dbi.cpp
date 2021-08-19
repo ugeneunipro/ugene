@@ -98,4 +98,4 @@ U2Dbi *U2ChildDbi::getRootDbi() const {
     return rootDbi;
 }
 
-}    // namespace U2
+}  // namespace U2

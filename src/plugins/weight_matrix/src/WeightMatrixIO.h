@@ -36,11 +36,11 @@ class IOAdapterFactory;
 class WeightMatrixIO : public QObject {
     Q_OBJECT
 public:
-    //IDs for LastOpenDirHelper
+    // IDs for LastOpenDirHelper
     static const QString WEIGHT_MATRIX_ID;
     static const QString FREQUENCY_MATRIX_ID;
 
-    //extensions for PFMatrix and PWMatrix files
+    // extensions for PFMatrix and PWMatrix files
     static const QString WEIGHT_MATRIX_EXT;
     static const QString FREQUENCY_MATRIX_EXT;
 
@@ -119,6 +119,6 @@ private:
     uint fileMode;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

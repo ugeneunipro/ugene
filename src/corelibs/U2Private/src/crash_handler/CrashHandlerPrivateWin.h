@@ -60,8 +60,8 @@ private:
     bool dumpWasSuccessfullySaved;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif
 
-#endif    // _U2_CRASH_HANDLER_PRIVATE_WIN_H_
+#endif  // _U2_CRASH_HANDLER_PRIVATE_WIN_H_

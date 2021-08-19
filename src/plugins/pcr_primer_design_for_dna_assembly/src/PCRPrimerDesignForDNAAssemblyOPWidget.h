@@ -88,8 +88,8 @@ private slots:
     void sl_loadOtherSequenceInPcr();
     void sl_onFindTaskFinished();
     /*
-     * Extract result product to file.
-     */
+    * Extract result product to file.
+    */
     void sl_extractProduct();
     /*
      * Associate created annotations with result table rows.

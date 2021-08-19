@@ -49,7 +49,7 @@ void RenameSequenceFiller::commonScenario() {
     }
 
     if (oldName != newName) {
-        //if filler used not for checking sequence name
+        // if filler used not for checking sequence name
         GTLineEdit::setText(os, nameEdit, newName, false, useCopyPaste);
     }
 
@@ -63,4 +63,4 @@ void RenameSequenceFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

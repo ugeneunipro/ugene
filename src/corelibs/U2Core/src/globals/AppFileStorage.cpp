@@ -113,7 +113,7 @@ void WorkflowProcess::unuseFiles() {
     usedFiles.clear();
 }
 
-}    // namespace FileStorage
+}  // namespace FileStorage
 
 /************************************************************************/
 /* AppFileStorage */
@@ -233,13 +233,13 @@ void AppFileStorage::unregisterWorkflowProcess(FileStorage::WorkflowProcess &pro
 
 void AppFileStorage::cleanup(U2OpStatus &os) {
     QMutexLocker lock(&cleanupMutex);
-    //1. Find data
+    // 1. Find data
     QList<U2Triplet> data = storage->getTriplets(os);
     CHECK_OP(os, );
 
     QList<U2Triplet> newData;
     QStringList unremovedFiles;
-    //2. Remove triplets' files
+    // 2. Remove triplets' files
     foreach (const U2Triplet &triplet, data) {
         FileStorage::FileInfo info(triplet);
         if (info.isFileToFileInfo()) {
@@ -254,14 +254,14 @@ void AppFileStorage::cleanup(U2OpStatus &os) {
                 storage->removeValue(info, logOs);
             } else {
                 unremovedFiles << url;
-                unremovedFiles << info.getKey();    // source url for hash
+                unremovedFiles << info.getKey();  // source url for hash
             }
         } else {
             newData << triplet;
         }
     }
 
-    //3. Remove triplets' data
+    // 3. Remove triplets' data
     foreach (const U2Triplet &t, newData) {
         if (unremovedFiles.contains(t.getKey())) {
             continue;
@@ -270,7 +270,7 @@ void AppFileStorage::cleanup(U2OpStatus &os) {
         storage->removeValue(t, logOs);
     }
 
-    //4. Remove empty directories
+    // 4. Remove empty directories
     QDir stDir(storageDir + "/" + WD_DIR_NAME);
     foreach (const QFileInfo &info, stDir.entryInfoList()) {
         if (info.isDir()) {
@@ -304,4 +304,4 @@ QString AppFileStorage::createDirectory() const {
     return storageRoot.path() + "/" + result;
 }
 
-}    // namespace U2
+}  // namespace U2

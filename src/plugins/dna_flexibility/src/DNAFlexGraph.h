@@ -34,9 +34,9 @@ class DNAFlexGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
     DNAFlexGraphFactory(QObject *);
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *);
-    virtual GSequenceGraphDrawer *getDrawer(GSequenceGraphView *);
-    virtual bool isEnabled(const U2SequenceObject *) const;
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *) override;
+    GSequenceGraphDrawer *getDrawer(GSequenceGraphView *) override;
+    bool isEnabled(const U2SequenceObject *) const override;
 
 private:
     /** Default size of "window" on a graph */
@@ -46,5 +46,5 @@ private:
     static const int DEFAULT_WINDOW_STEP;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

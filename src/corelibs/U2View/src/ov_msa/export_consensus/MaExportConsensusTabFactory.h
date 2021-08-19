@@ -53,6 +53,6 @@ private:
     static const QString GROUP_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#endif  // _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_

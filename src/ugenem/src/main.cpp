@@ -37,7 +37,7 @@ QString loadReport(int argc, char *argv[]) {
 
     return "";
 }
-}    // namespace
+}  // namespace
 
 int main(int argc, char *argv[]) {
     bool useGui = true;

@@ -43,71 +43,47 @@
 
 namespace U2 {
 
-PrepareSequenceObjectsTask::PrepareSequenceObjectsTask(const MultipleSequenceAlignment &msa, const QSet<qint64> &rowIds, bool trimGaps)
-    : Task(tr("Prepare sequences"), TaskFlag_None),
-      msa(msa),
-      rowIds(rowIds),
-      trimGaps(trimGaps) {
-}
-
-void PrepareSequenceObjectsTask::run() {
-    sequences = MSAUtils::ma2seq(msa, trimGaps, rowIds);
-}
-
 ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment &msa, const QSet<qint64> &rowIds, bool trimGaps, bool addToProjectFlag, const QString &dirUrl, const DocumentFormatId &format, const QString &extension, const QString &customFileName)
     : Task(tr("Export selected sequences from alignment"), TaskFlags_NR_FOSE_COSC),
       addToProjectFlag(addToProjectFlag),
       dirUrl(dirUrl),
       format(format),
       extension(extension),
-      customFileName(customFileName),
-      prepareObjectsTask(nullptr) {
-    prepareObjectsTask = new PrepareSequenceObjectsTask(msa, rowIds, trimGaps);
-    addSubTask(prepareObjectsTask);
+      customFileName(customFileName) {
+    sequences = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimGaps, rowIds);
 }
 
-QList<Task *> ExportSequencesTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
-    CHECK_OP(stateInfo, res);
+void ExportSequencesTask::prepare() {
+    QList<Task *> tasks;
+    QSet<QString> existingFilenames;
+    for (const DNASequence &sequence : qAsConst(sequences)) {
+        QString filename = GUrlUtils::fixFileName(customFileName.isEmpty() ? sequence.getName() : customFileName);
+        QString filePath = GUrlUtils::prepareFileLocation(dirUrl + "/" + filename + "." + extension, stateInfo);
+        CHECK_OP(stateInfo, );
 
-    if (subTask == prepareObjectsTask) {
-        QList<Task *> tasks;
-        QSet<QString> existingFilenames;
-        foreach (const DNASequence &s, prepareObjectsTask->getSequences()) {
-            CHECK_OP(stateInfo, res);
-            QString filename;
-            if (customFileName.isEmpty()) {
-                filename = GUrlUtils::fixFileName(s.getName());
-            } else {
-                filename = GUrlUtils::fixFileName(customFileName);
-            }
-            QString filePath = GUrlUtils::prepareFileLocation(dirUrl + "/" + filename + "." + extension, stateInfo);
-            CHECK_OP(stateInfo, res);
-            filePath = GUrlUtils::rollFileName(filePath, "_", existingFilenames);
-            existingFilenames.insert(filePath);
-            GUrl url(filePath);
-            IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-            DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-            SAFE_POINT(df != nullptr, "Cant get DocuemtFormat by given DocumentFormatId", res);
-            QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
-            CHECK_OP(stateInfo, res);
-            QVariantMap hints;
-            hints.insert(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER);
-            U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, s, s.alphabet->getId());
-            U2SequenceObject *seqObj = new U2SequenceObject(s.getName(), ref);
-            CHECK_OP(stateInfo, res);
-            doc->addObject(seqObj);
-            Document *takenDoc = doc.take();
-            SaveDocumentTask *t = new SaveDocumentTask(takenDoc, takenDoc->getIOAdapterFactory(), takenDoc->getURL());
-            if (addToProjectFlag) {
-                t->addFlag(SaveDoc_OpenAfter);
-            } else {
-                t->addFlag(SaveDoc_DestroyAfter);
-            }
-            res.append(t);
-        }
+        filePath = GUrlUtils::rollFileName(filePath, "_", existingFilenames);
+        existingFilenames.insert(filePath);
+        GUrl url(filePath);
+        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
+        SAFE_POINT(df != nullptr, "Cant get DocuemtFormat by given DocumentFormatId", );
+
+        QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
+        CHECK_OP(stateInfo, );
+
+        QVariantMap hints;
+        hints.insert(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER);
+        U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, sequence, sequence.alphabet->getId());
+        CHECK_OP(stateInfo, );
+
+        auto sequenceObject = new U2SequenceObject(sequence.getName(), ref);
+        doc->addObject(sequenceObject);
+
+        Document *takenDoc = doc.take();
+        auto saveTask = new SaveDocumentTask(takenDoc, takenDoc->getIOAdapterFactory(), takenDoc->getURL());
+        saveTask->addFlag(addToProjectFlag ? SaveDoc_OpenAfter : SaveDoc_DestroyAfter);
+        addSubTask(saveTask);
     }
-    return res;
 }
 
-}    // namespace U2
+}  // namespace U2

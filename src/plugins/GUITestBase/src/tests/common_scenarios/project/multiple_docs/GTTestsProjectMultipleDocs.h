@@ -33,8 +33,8 @@ namespace GUITest_common_scenarios_project_multiple_docs {
 GUI_TEST_CLASS_DECLARATION(test_0001)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_project_multiple_docs
+}  // namespace GUITest_common_scenarios_project_multiple_docs
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -23,7 +23,6 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <src/GTUtilsSequenceView.h>
 #include <system/GTFile.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
@@ -33,7 +32,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -54,11 +52,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
     const QString firstAnnFileName = "1.gb";
     const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    const QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -75,6 +73,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_common_scenarios_project_relations
+}  // namespace GUITest_common_scenarios_project_relations
 
-}    // namespace U2
+}  // namespace U2

@@ -116,7 +116,7 @@ qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
         while (l < size) {
             if (currentPos == bufLen) {
                 bufLen = f->read(bufData, BUF_SIZE);
-                if (bufLen == 0) {    // End of file.
+                if (bufLen == 0) {  // End of file.
                     currentPos = 0;
                     break;
                 }
@@ -124,7 +124,7 @@ qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
                     bufLen = TextUtils::cutByteOrderMarks(bufData, errorMessage, bufLen);
                 }
                 if (bufLen == -1 || hasError()) {
-                    //error
+                    // error
                     return -1;
                 }
                 currentPos = 0;
@@ -205,4 +205,4 @@ QString LocalFileAdapter::errorString() const {
     return (f->error() == QFile::NoError) ? errorMessage : f->errorString();
 }
 
-};    // namespace U2
+};  // namespace U2

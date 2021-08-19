@@ -52,5 +52,5 @@ public:
     static void checkCurrentUserDataValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedValue);
 };
 
-}    // namespace HI
+}  // namespace HI
 #endif

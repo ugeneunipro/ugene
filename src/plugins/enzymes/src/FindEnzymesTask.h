@@ -188,6 +188,6 @@ public:
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

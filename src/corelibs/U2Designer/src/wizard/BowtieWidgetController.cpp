@@ -91,4 +91,4 @@ QString BowtieWidgetController::finalyze(const QString &url) {
     return NoFileURLWidget::finalyze(url, wc->getTags(bw->idxDir));
 }
 
-}    // namespace U2
+}  // namespace U2

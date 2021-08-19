@@ -195,7 +195,7 @@ QWidget *AnnotatedDNAView::createWidget() {
     scrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     mainSplitter->addWidget(scrollArea);
-    mainSplitter->setHandleWidth(1);    // make smaller the distance between the Annotations Editor and the  sequence sub-views
+    mainSplitter->setHandleWidth(1);  // make smaller the distance between the Annotations Editor and the  sequence sub-views
     mainSplitter->setCollapsible(mainSplitter->indexOf(scrollArea), false);
 
     scrolledWidget = new QWidget(scrollArea);
@@ -234,7 +234,7 @@ QWidget *AnnotatedDNAView::createWidget() {
     scrolledWidget->setLayout(scrolledWidgetLayout);
     scrolledWidget->setObjectName("scrolled_widget_layout");
 
-    //TODO: scroll area does not restore focus for last active child widget after Alt-Tab...
+    // TODO: scroll area does not restore focus for last active child widget after Alt-Tab...
     scrollArea->setWidget(scrolledWidget);
 
     mainSplitter->installEventFilter(this);
@@ -244,7 +244,7 @@ QWidget *AnnotatedDNAView::createWidget() {
         setActiveSequenceWidget(seqViews.last());
     }
 
-    //add view global shortcuts
+    // add view global shortcuts
 
     connect(removeAnnsAndQsAction, SIGNAL(triggered()), annotationsView->removeAnnsAndQsAction, SIGNAL(triggered()));
 
@@ -304,7 +304,7 @@ void AnnotatedDNAView::sl_onSequenceWidgetTitleClicked(ADVSequenceWidget *seqWid
 }
 
 void AnnotatedDNAView::timerEvent(QTimerEvent *) {
-    //see comment for sl_splitterMoved()
+    // see comment for sl_splitterMoved()
     assert(timerId != 0);
     killTimer(timerId);
     timerId = 0;
@@ -331,7 +331,7 @@ void AnnotatedDNAView::updateScrollAreaHeight() {
         }
         newScrollAreaMaxHeight += v->maximumHeight();
     }
-    newScrollAreaMaxHeight += 2;    // magic '+2' is for the borders, without it unneccessary scroll bar will appear
+    newScrollAreaMaxHeight += 2;  // magic '+2' is for the borders, without it unneccessary scroll bar will appear
     if (newScrollAreaMaxHeight <= scrollArea->height()) {
         scrollArea->setMaximumHeight(newScrollAreaMaxHeight);
     }
@@ -375,22 +375,22 @@ bool AnnotatedDNAView::eventFilter(QObject *o, QEvent *e) {
         }
         // try to restore mainSplitter state on sequence views fixed <-> expandable state transition. Usually this happens when user toggles sequence views.
         if (e->type() == QEvent::Resize) {
-            bool hasExpandableSequenceWidgetsNow = false;    // expandable state: any of the sequence view widgets has unlimited height.
+            bool hasExpandableSequenceWidgetsNow = false;  // expandable state: any of the sequence view widgets has unlimited height.
             foreach (const ADVSequenceWidget *w, getSequenceWidgets()) {
                 if (w->maximumHeight() == QWIDGETSIZE_MAX) {
                     hasExpandableSequenceWidgetsNow = true;
                     break;
                 }
             }
-            if (hasExpandableSequenceWidgetsNow != hadExpandableSequenceWidgetsLastResize) {    // transition from fixed <-> expandable state
-                if (hasExpandableSequenceWidgetsNow) {    // try restore state from the saved sizes if possible.
+            if (hasExpandableSequenceWidgetsNow != hadExpandableSequenceWidgetsLastResize) {  // transition from fixed <-> expandable state
+                if (hasExpandableSequenceWidgetsNow) {  // try restore state from the saved sizes if possible.
                     if (savedMainSplitterSizes.size() > 0 && savedMainSplitterSizes.size() == mainSplitter->sizes().size()) {
                         mainSplitter->setSizes(savedMainSplitterSizes);
                     }
                 }
                 hadExpandableSequenceWidgetsLastResize = hasExpandableSequenceWidgetsNow;
             }
-            if (hasExpandableSequenceWidgetsNow) {    // update saved sizes for a future use.
+            if (hasExpandableSequenceWidgetsNow) {  // update saved sizes for a future use.
                 savedMainSplitterSizes = mainSplitter->sizes();
             }
         }
@@ -660,7 +660,7 @@ bool AnnotatedDNAView::canAddObject(GObject *obj) {
     if (obj->getGObjectType() != GObjectTypes::ANNOTATION_TABLE) {
         return false;
     }
-    //todo: add annotations related to sequence object not in view (sobj) and add 'sobj' too the view ?
+    // todo: add annotations related to sequence object not in view (sobj) and add 'sobj' too the view ?
     bool hasRelation = false;
     foreach (ADVSequenceObjectContext *soc, seqContexts) {
         if (obj->hasObjectRelation(soc->getSequenceObject(), ObjectRole_Sequence)) {
@@ -721,7 +721,7 @@ void AnnotatedDNAView::removeSequenceWidget(ADVSequenceWidget *sequenceWidget) {
         setActiveSequenceWidget(newActiveWidgetIndex < 0 ? nullptr : seqViews[newActiveWidgetIndex]);
     }
 
-    //remove widget
+    // remove widget
     seqViews.removeOne(sequenceWidget);
     sequenceWidget->hide();
 
@@ -733,7 +733,7 @@ void AnnotatedDNAView::removeSequenceWidget(ADVSequenceWidget *sequenceWidget) {
     updateMultiViewActions();
     emit si_sequenceWidgetRemoved(sequenceWidget);
     scrolledWidgetLayout->removeWidget(sequenceWidget);
-    delete sequenceWidget;    //v->deleteLater(); //problem: updates for 'v' after seqCtx is destroyed
+    delete sequenceWidget;  // v->deleteLater(); //problem: updates for 'v' after seqCtx is destroyed
     updateScrollAreaHeight();
 }
 
@@ -830,7 +830,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
 void AnnotatedDNAView::sl_onFindPatternClicked() {
     OptionsPanel *optionsPanel = getOptionsPanel();
     SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                     " when pattern search has been initiated!", );
+                                        " when pattern search has been initiated!", );
 
     const QString &findPatternGroupId = FindPatternWidgetFactory::getGroupId();
     optionsPanel->openGroupById(findPatternGroupId);
@@ -856,7 +856,7 @@ QString AnnotatedDNAView::tryAddObject(GObject *o) {
     if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         rCtx = findRelatedSequenceContexts(o);
         if (rCtx.isEmpty()) {
-            //ask user if to create new association
+            // ask user if to create new association
             QObjectScopedPointer<CreateObjectRelationDialogController> d = new CreateObjectRelationDialogController(o, getSequenceGObjectsWithContexts(), ObjectRole_Sequence, true, tr("Select sequence to associate annotations with:"));
             d->exec();
             CHECK(!d.isNull(), "");
@@ -896,7 +896,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         }
         ADVSequenceObjectContext *sc = new ADVSequenceObjectContext(this, dnaObj);
         seqContexts.append(sc);
-        //if mainSplitter==NULL -> its view initialization and widgets will be added later
+        // if mainSplitter==NULL -> its view initialization and widgets will be added later
         if (mainSplitter != nullptr && !isChildWidgetObject(dnaObj)) {
             ADVSingleSequenceWidget *block = new ADVSingleSequenceWidget(sc, this);
             connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget *)), SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget *)));
@@ -1171,8 +1171,8 @@ void AnnotatedDNAView::updateState(const AnnotatedDNAViewState &s) {
     QVector<U2Region> regs = s.getSequenceSelections();
     assert(objs.size() == regs.size());
 
-    //TODO: sync seq object lists
-    //TODO: sync annotation object lists
+    // TODO: sync seq object lists
+    // TODO: sync annotation object lists
 
     for (int i = 0; i < objs.size(); i++) {
         const GObjectReference &ref = objs[i];
@@ -1369,7 +1369,7 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
         ModifySequenceContentTask *modifyContentTask = qobject_cast<ModifySequenceContentTask *>(t);
         if (modifyContentTask != nullptr) {
             qint64 seqSizeDelta = modifyContentTask->getSequenceLengthDelta();
-            if (seqSizeDelta > 0) {    // try keeping all maximized zooms in max state
+            if (seqSizeDelta > 0) {  // try keeping all maximized zooms in max state
                 U2Region newMaxRange(0, modifyContentTask->getSequenceObject()->getSequenceLength());
                 U2Region oldMaxRange(0, newMaxRange.length - seqSizeDelta);
                 foreach (ADVSequenceObjectContext *ctx, seqContexts) {
@@ -1511,4 +1511,4 @@ ADVSequenceWidget *AnnotatedDNAView::getActiveSequenceWidget() const {
     return activeSequenceWidget;
 }
 
-}    // namespace U2
+}  // namespace U2

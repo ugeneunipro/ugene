@@ -141,7 +141,7 @@ public:
         return isActive;
     }
 
-    QString viewName;    //BUG:416: remove this field?
+    QString viewName;  // BUG:416: remove this field?
     GObjectViewWindow *viewWindow;
 
 private:
@@ -158,6 +158,6 @@ public:
     GObjectViewState *state;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

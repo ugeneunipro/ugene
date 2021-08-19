@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormatDeprecated {
+class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     enum ColumnRole {
@@ -40,7 +40,6 @@ public:
         ColumnRole_ObsData,
         ColumnRole_PublicId,
         ColumnRole_ChromosomeId,
-        ColumnRole_Comment,
         ColumnRole_Info
     };
 
@@ -49,44 +48,51 @@ public:
         OneBased
     };
 
-    //Variation1: chr1 123 G A,C
-    //to
-    //Variation1.1: chr1 123 G A
-    //Variation1.2: chr1 123 G C
+    // Variation1: chr1 123 G A,C
+    // to
+    // Variation1.1: chr1 123 G A
+    // Variation1.2: chr1 123 G C
     enum SplitAlleles {
         Split = 0,
         NoSplit
     };
 
-    AbstractVariationFormat(QObject *p, const DocumentFormatId &id, const QStringList &fileExts, bool _isSupportHeader = false);
-
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
-    virtual void storeHeader(GObject *obj, IOAdapter *io, U2OpStatus &os);
+    AbstractVariationFormat(QObject *p, const DocumentFormatId &id, const QStringList &fileExtensions, bool _isSupportHeader = false);
 
 protected:
     bool isSupportHeader;
 
     QMap<int, ColumnRole> columnRoles;
-    int maxColumnNumber;
+
+    int maxColumnNumber = 0;
 
     PositionIndexing indexing;
 
-    virtual FormatCheckResult checkRawTextData(const QByteArray &dataPrefix, const GUrl &url) const;
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+
+    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+
+    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+
     virtual bool checkFormatByColumnCount(int columnCount) const = 0;
+
 
     static const QString META_INFO_START;
     static const QString HEADER_START;
     static const QString COLUMNS_SEPARATOR;
 
-private:
-    void storeTrack(IOAdapter *io, const VariantTrackObject *trackObj, U2OpStatus &os);
+public:
+    void storeHeader(const VariantTrackObject *trackObject, IOAdapterWriter &writer, U2OpStatus &os) const;
 
-    static QString getMetaInfo(const VariantTrackObject *variantTrackObject, U2OpStatus &os);
-    static QStringList getHeader(const VariantTrackObject *variantTrackObject, U2OpStatus &os);
+    void storeTrack(IOAdapterWriter &writer, const VariantTrackObject *trackObject, U2OpStatus &os) const;
+
+    static QString getMetaInfo(const VariantTrackObject *trackObject, U2OpStatus &os);
+
+    static QStringList getHeader(const VariantTrackObject *trackObject, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ABSTRACT_VARIATION_FORMAT_H_
+#endif  // _U2_ABSTRACT_VARIATION_FORMAT_H_

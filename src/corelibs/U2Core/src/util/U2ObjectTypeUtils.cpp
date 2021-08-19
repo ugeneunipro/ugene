@@ -82,4 +82,4 @@ U2DataType U2ObjectTypeUtils::toDataType(const GObjectType &gType) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

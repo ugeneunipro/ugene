@@ -55,9 +55,9 @@ public:
 
     virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
 
-    virtual int posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
+    virtual int posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
 
-    virtual qint64 getRowLineHeight() const;
+    virtual int getRowLineHeight() const;
 
     virtual double getCurrentScale() const = 0;
 
@@ -73,6 +73,6 @@ protected:
     CommonSequenceViewMetrics commonMetrics;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_VIEW_RENDERER_H_
+#endif  // _U2_SEQUENCE_VIEW_RENDERER_H_

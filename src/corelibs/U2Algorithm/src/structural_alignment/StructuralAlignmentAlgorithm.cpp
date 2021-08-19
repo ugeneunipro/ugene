@@ -85,4 +85,4 @@ QString StructuralAlignmentTask::generateReport() const {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

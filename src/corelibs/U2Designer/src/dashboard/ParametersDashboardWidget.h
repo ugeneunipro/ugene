@@ -82,6 +82,6 @@ private:
     QList<WorkerParametersInfo> workers;
     QList<HoverQLabel *> workerNameLabels;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -56,7 +56,7 @@ public:
     quint64 offset;
     // repeat len
     int repeatLen;
-    //size of tandem in nucleotides
+    // size of tandem in nucleotides
     qint64 size;
     quint64 rightSide;
 };
@@ -101,7 +101,7 @@ protected:
     // adds multiple results to global results
     void addToResults(const QVector<RFResult> &newResults);
 
-    //always return true. bool -> to use in assertions
+    // always return true. bool -> to use in assertions
     bool checkResults(const QVector<RFResult> &v);
     bool checkResult(const RFResult &v);
 
@@ -121,6 +121,6 @@ protected:
     bool reportReflected;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

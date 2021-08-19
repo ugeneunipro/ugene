@@ -32,9 +32,9 @@ public:
     static void openStartPage(HI::GUITestOpStatus &os);
 
     /** Checks if the 'urlPart' is present or not in the recent files list. */
-    static void checkRecentListUrl(HI::GUITestOpStatus &os, const QString& urlPart, bool isPresent);
+    static void checkRecentListUrl(HI::GUITestOpStatus &os, const QString &urlPart, bool isPresent);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_START_PAGE_
+#endif  // _U2_GT_UTILS_START_PAGE_

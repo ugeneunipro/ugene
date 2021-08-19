@@ -29,25 +29,25 @@ using namespace HI;
 
 class ExportCoverageDialogFiller : public Filler {
 public:
-    enum ActionType {    // An appropriate action data
-        EnterFilePath,    // QString with a path (do not forget about native separators)
-        SelectFile,    // QString with a path
-        SetFormat,    // QString with a format name
-        SetCompress,    // bool with a new checkbox state
-        SetExportCoverage,    // bool with a new checkbox state
-        SetExportBasesQuantity,    // bool with a new checkbox state
-        SetThreshold,    // int with a new threshold value
-        CheckFilePath,    // QString with an expected path (do not forget about native separators)
-        CheckFormat,    // QString with an expected format name
-        CheckCompress,    // bool with an expected checkbox state
-        CheckOptionsVisibility,    // bool with an expected groupbox visibility state
-        CheckExportCoverage,    // bool with an expected checkbox state
-        CheckExportBasesQuantity,    // bool with an expected checkbox state
-        CheckThreshold,    // int with an expected spinbox value
-        CheckThresholdBounds,    // QPoint where x is a minimum value and y is a maximum value
-        ExpectMessageBox,    // ignored
-        ClickOk,    // ignored
-        ClickCancel    // ignored
+    enum ActionType {  // An appropriate action data
+        EnterFilePath,  // QString with a path (do not forget about native separators)
+        SelectFile,  // QString with a path
+        SetFormat,  // QString with a format name
+        SetCompress,  // bool with a new checkbox state
+        SetExportCoverage,  // bool with a new checkbox state
+        SetExportBasesQuantity,  // bool with a new checkbox state
+        SetThreshold,  // int with a new threshold value
+        CheckFilePath,  // QString with an expected path (do not forget about native separators)
+        CheckFormat,  // QString with an expected format name
+        CheckCompress,  // bool with an expected checkbox state
+        CheckOptionsVisibility,  // bool with an expected groupbox visibility state
+        CheckExportCoverage,  // bool with an expected checkbox state
+        CheckExportBasesQuantity,  // bool with an expected checkbox state
+        CheckThreshold,  // int with an expected spinbox value
+        CheckThresholdBounds,  // QPoint where x is a minimum value and y is a maximum value
+        ExpectMessageBox,  // ignored
+        ClickOk,  // ignored
+        ClickCancel  // ignored
     };
 
     typedef QPair<ActionType, QVariant> Action;
@@ -80,6 +80,6 @@ private:
     const QList<Action> actions;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_COVERAGE_DIALOG_FILLER_H_
+#endif  // _U2_EXPORT_COVERAGE_DIALOG_FILLER_H_

@@ -37,12 +37,12 @@ namespace U2 {
 namespace GUITest_Bowtie2 {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. {Tools -> Align to reference -> build index}
-    //2. Fill the dialog:
-    //  {Align short reads method} : Bowtie2
-    //  {Reference sequence} : _common_data/fasta/human_T1_cutted.fa
-    //  {Index file name} : _tmp/bowtie2/human_T1_cutted
-    // And click Start.
+    // 1. {Tools -> Align to reference -> build index}
+    // 2. Fill the dialog:
+    //   {Align short reads method} : Bowtie2
+    //   {Reference sequence} : _common_data/fasta/human_T1_cutted.fa
+    //   {Index file name} : _tmp/bowtie2/human_T1_cutted
+    //  And click Start.
     GTUtilsDialog::waitForDialog(os, new BuildIndexDialogFiller(os, testDir + "_common_data/fasta/", "human_T1_cutted.fa", "Bowtie2", false, testDir + "_common_data/scenarios/sandbox/", "human_T1_cutted"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -50,8 +50,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "Build index for reads mapping...");
 
     // Expected state: there are six files as result:
-    //human_T1_cutted.1.bt2, human_T1_cutted.2.bt2, human_T1_cutted.3.bt2, human_T1_cutted.4.bt2,
-    //human_T1_cutted.rev.1.bt2, human_T1_cutted.rev.2.bt2
+    // human_T1_cutted.1.bt2, human_T1_cutted.2.bt2, human_T1_cutted.3.bt2, human_T1_cutted.4.bt2,
+    // human_T1_cutted.rev.1.bt2, human_T1_cutted.rev.2.bt2
     QStringList indexList;
     for (int i = 0; i < 4; i++) {
         indexList << testDir + "_common_data/scenarios/sandbox/human_T1_cutted." + QString::number(i + 1) + ".bt2";
@@ -65,39 +65,39 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Align short reads with bowtie2
-    //no prebuilt index, default settings
-    //The settings defined here could be used as default in other tests
+    // Align short reads with bowtie2
+    // no prebuilt index, default settings
+    // The settings defined here could be used as default in other tests
 
-    //1. {Tools -> Align to reference -> Align short reads}
+    // 1. {Tools -> Align to reference -> Align short reads}
 
-    //2. Fill the dialog:
-    //    {Mapping tool} : Bowtie2
-    //    {Reference sequence} : _common_data/fasta/human_T1_cutted.fa
-    //    {Result file name} : _tmp/bowtie2/human_T1_cutted.sam
-    //    {Library} : single-end
-    //    {Prebuilt index} : unchecked
-    //    {Short reads} : _common_data/fasta/shuffled.fa
+    // 2. Fill the dialog:
+    //     {Mapping tool} : Bowtie2
+    //     {Reference sequence} : _common_data/fasta/human_T1_cutted.fa
+    //     {Result file name} : _tmp/bowtie2/human_T1_cutted.sam
+    //     {Library} : single-end
+    //     {Prebuilt index} : unchecked
+    //     {Short reads} : _common_data/fasta/shuffled.fa
 
-    //Parameters:
-    //    {Mode} : --end-to-end
-    //    {Number of mismatches} : 0
-    //    {Seed length (--L)} : unchecked (20)
-    //    {Add columns to allow gaps (--dpad)} : unchecked (15)
-    //    {Disallow gaps (--gbar)} : unchecked (4)
-    //    {Seed (--seed)} : unchecked (0)
-    //    {Threads} : 4 (depends on CPU cores)
+    // Parameters:
+    //     {Mode} : --end-to-end
+    //     {Number of mismatches} : 0
+    //     {Seed length (--L)} : unchecked (20)
+    //     {Add columns to allow gaps (--dpad)} : unchecked (15)
+    //     {Disallow gaps (--gbar)} : unchecked (4)
+    //     {Seed (--seed)} : unchecked (0)
+    //     {Threads} : 4 (depends on CPU cores)
 
-    //Flags:
-    //    {No unpaired alignments (--no-mixed)} : unchecked
-    //    {No discordant alignments (--no-discordant)} : unchecked
-    //    {No forward orientation (--nofw)} : unchecked
-    //    {No reverse-complement orientation (--norc)} : unchecked
-    //    {No overlapping mates (--no-overlap)} : unchecked
-    //    {No mates containing one another (--no-contain)} : unchecked
+    // Flags:
+    //     {No unpaired alignments (--no-mixed)} : unchecked
+    //     {No discordant alignments (--no-discordant)} : unchecked
+    //     {No forward orientation (--nofw)} : unchecked
+    //     {No reverse-complement orientation (--norc)} : unchecked
+    //     {No overlapping mates (--no-overlap)} : unchecked
+    //     {No mates containing one another (--no-contain)} : unchecked
 
-    //And click Start.
-    //Expected state: an "Import SAM file" dialog appears. The incoming assembly has name "human_T1" and contains 3 reads.
+    // And click Start.
+    // Expected state: an "Import SAM file" dialog appears. The incoming assembly has name "human_T1" and contains 3 reads.
     GTFile::copy(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
     CHECK_OP(os, );
 
@@ -292,5 +292,5 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-}    // namespace GUITest_Bowtie2
-}    // namespace U2
+}  // namespace GUITest_Bowtie2
+}  // namespace U2

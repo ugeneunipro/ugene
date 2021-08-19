@@ -80,4 +80,4 @@ QList<Task *> ReverseAndCreateTask::onSubTaskFinished(Task *subTask) {
     return subTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

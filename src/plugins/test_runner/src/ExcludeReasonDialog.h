@@ -40,5 +40,5 @@ private:
     Ui_ExcludeReasonDialog *ui;
 };
 
-}    // namespace U2
-#endif    // EXCLUDERESAONDIALOG_H
+}  // namespace U2
+#endif  // EXCLUDERESAONDIALOG_H

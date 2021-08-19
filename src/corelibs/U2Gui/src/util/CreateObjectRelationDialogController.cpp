@@ -92,4 +92,4 @@ void CreateObjectRelationDialogController::accept() {
 CreateObjectRelationDialogController::~CreateObjectRelationDialogController() {
     delete ui;
 }
-}    // namespace U2
+}  // namespace U2

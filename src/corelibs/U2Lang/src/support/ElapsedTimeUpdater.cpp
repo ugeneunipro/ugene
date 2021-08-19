@@ -57,5 +57,5 @@ void ElapsedTimeUpdater::sl_updateTime() {
     elapsedTime = newElapsedTime;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

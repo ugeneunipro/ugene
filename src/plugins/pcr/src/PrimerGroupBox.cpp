@@ -194,4 +194,4 @@ void PrimerGroupBox::updateStatistics(const QString &primer) {
     characteristicsLabel->setText(characteristics);
 }
 
-}    // namespace U2
+}  // namespace U2

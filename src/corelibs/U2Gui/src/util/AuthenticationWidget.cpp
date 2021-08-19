@@ -52,4 +52,4 @@ bool AuthenticationWidget::isRemembered() const {
     return cbRemember->isChecked();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -77,7 +77,7 @@ private:
     static const QRegExp pairDoubleQuoteSeparatorRegExp;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 template<>
 inline QVariant qVariantFromValue<StrStrMap>(const StrStrMap &map) {
@@ -89,4 +89,4 @@ inline StrStrMap qvariant_cast<StrStrMap>(const QVariant &variant) {
     return U2::StrPackUtils::unpackMap(qvariant_cast<QString>(variant));
 }
 
-#endif    // _U2_STR_PACK_UTILS_H_
+#endif  // _U2_STR_PACK_UTILS_H_

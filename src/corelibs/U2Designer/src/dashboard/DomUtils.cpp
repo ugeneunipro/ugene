@@ -110,4 +110,4 @@ QString DomUtils::toString(const QDomElement &element, bool includeElement) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

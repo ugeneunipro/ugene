@@ -62,7 +62,7 @@ void SmithWatermanAlgorithmCUDA::launch(const SMatrix &sm, const QByteArray &_pa
 
     int subLen = sm.getAlphabet()->getNumAlphabetChars();
 
-    //alphChars is sorted
+    // alphChars is sorted
     const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
     int profLen = subLen * (qLen + 1) * (alphChars[alphChars.size() - 1] + 1);
 
@@ -72,7 +72,7 @@ void SmithWatermanAlgorithmCUDA::launch(const SMatrix &sm, const QByteArray &_pa
         queryProfile[i] = 0;
     }
 
-    //calculate query profile
+    // calculate query profile
     for (int i = 0; i < subLen; i++) {
         for (int j = 0; j < qLen; j++) {
             char ch = alphChars[i];
@@ -104,11 +104,11 @@ void SmithWatermanAlgorithmCUDA::launch(const SMatrix &sm, const QByteArray &_pa
         pairAlignmentStrings.append(tmp);
     }
 
-    //free memory
+    // free memory
     delete[] queryProfile;
     algoLog.details("FINISH SmithWatermanAlgorithmCUDA::launch");
 }
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //SW2_BUILD_WITH_CUDA
+#endif  // SW2_BUILD_WITH_CUDA

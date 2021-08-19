@@ -48,6 +48,6 @@ private:
     CircularViewContext *ctx;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_
+#endif  // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_

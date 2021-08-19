@@ -43,4 +43,4 @@ bool DashboardInfo::operator==(const DashboardInfo &other) const {
     return path == other.path;
 }
 
-}    // namespace U2
+}  // namespace U2

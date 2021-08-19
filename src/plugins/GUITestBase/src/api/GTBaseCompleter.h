@@ -37,5 +37,5 @@ public:
     static QTreeWidget *getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor);
 };
 
-}    // namespace U2
-#endif    // GTBASECOMPLETER_H
+}  // namespace U2
+#endif  // GTBASECOMPLETER_H

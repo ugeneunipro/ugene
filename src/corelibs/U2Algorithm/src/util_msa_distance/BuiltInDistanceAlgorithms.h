@@ -35,6 +35,6 @@ public:
     static const QString HAMMING_REVCOMPL_ALGO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

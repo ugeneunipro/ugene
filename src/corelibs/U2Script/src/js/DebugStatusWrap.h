@@ -55,8 +55,8 @@ private:
     WorkflowDebugStatus *debugStatus;
 };
 
-}    // namespace Js
+}  // namespace Js
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DEBUG_STATUS_WRAP_H_
+#endif  // _U2_DEBUG_STATUS_WRAP_H_

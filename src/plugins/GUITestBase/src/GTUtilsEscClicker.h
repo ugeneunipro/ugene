@@ -37,6 +37,6 @@ private:
     bool mouse;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTUTILS_ESC_CLICKER_H_
+#endif  // GTUTILS_ESC_CLICKER_H_

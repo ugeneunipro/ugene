@@ -62,6 +62,6 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CREATE_PHY_TREE_DIALOG_CONTROLLER_H_
+#endif  // _U2_CREATE_PHY_TREE_DIALOG_CONTROLLER_H_

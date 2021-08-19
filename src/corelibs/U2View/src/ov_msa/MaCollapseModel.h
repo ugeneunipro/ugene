@@ -156,6 +156,9 @@ public:
     /** Returns all row ids in the model. */
     QSet<qint64> getAllRowIds() const;
 
+    /** Returns list of maRowIndexes for all rows in the selection. Asserts that all rows are mapped. */
+    QList<int> getMaRowIndexesFromSelectionRects(const QList<QRect> &selectionRects) const;
+
 signals:
     void si_aboutToBeToggled();
     void si_toggled();
@@ -172,6 +175,6 @@ private:
     bool hasGroupsWithMultipleItems;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

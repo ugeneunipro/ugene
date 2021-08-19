@@ -73,6 +73,6 @@ private:
     static const int MAX_WIDGET_WIDTH = 500;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

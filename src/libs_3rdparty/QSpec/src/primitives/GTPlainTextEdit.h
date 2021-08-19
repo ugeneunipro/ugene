@@ -45,9 +45,9 @@ public:
 
     // fails if lineEdit is NULL or lineEdit text is not in lineEdit's rect
     // considering lineEdit's fontMetrics and textMargins
-    //static void checkTextSize(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit);
+    // static void checkTextSize(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_PLAINTEXTEDIT_H_
+#endif  // _HI_GT_PLAINTEXTEDIT_H_

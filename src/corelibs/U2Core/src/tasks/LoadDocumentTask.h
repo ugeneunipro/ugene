@@ -38,7 +38,7 @@ class StateLock;
 class LoadDocumentTask;
 
 // creates object using name and type info from ref
-//NOTE: the default impl can create only limited set of objects
+// NOTE: the default impl can create only limited set of objects
 class U2CORE_EXPORT LDTObjectFactory : public QObject {
 public:
     LDTObjectFactory(QObject *p)
@@ -54,9 +54,9 @@ public:
         : createDoc(_createDoc), checkObjRef(_ref), objFactory(_f) {
     }
 
-    bool createDoc;    // if document is failed to load and 'createDoc' is true -> it will be created
-    GObjectReference checkObjRef;    // if is valid task checks that ref is found in doc, fails if not
-    LDTObjectFactory *objFactory;    // if not NULL and 'checkObjRef' is not found -> 'objFactory' is used to create obj
+    bool createDoc;  // if document is failed to load and 'createDoc' is true -> it will be created
+    GObjectReference checkObjRef;  // if is valid task checks that ref is found in doc, fails if not
+    LDTObjectFactory *objFactory;  // if not NULL and 'checkObjRef' is not found -> 'objFactory' is used to create obj
 };
 
 class U2CORE_EXPORT LoadUnloadedDocumentTask : public DocumentProviderTask {
@@ -121,6 +121,6 @@ private:
     LoadDocumentTaskConfig config;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

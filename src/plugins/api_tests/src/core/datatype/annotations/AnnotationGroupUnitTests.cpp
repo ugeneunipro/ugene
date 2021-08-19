@@ -346,4 +346,4 @@ IMPLEMENT_TEST(AnnotationGroupUnitTest, getSet_Subgroups) {
     CHECK_EQUAL(1, subSubgroups3.size(), "Count of subgroups");
 }
 
-}    // namespace U2
+}  // namespace U2

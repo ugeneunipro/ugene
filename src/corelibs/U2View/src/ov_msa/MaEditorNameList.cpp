@@ -187,12 +187,6 @@ int MaEditorNameList::getGroupExpanderWidth() const {
     return ui->isCollapsingOfSingleRowGroupsEnabled() || editor->getCollapseModel()->hasGroupsWithMultipleRows() ? 2 * CROSS_SIZE : 0;
 }
 
-int MaEditorNameList::getSelectedMaRow() const {
-    QRect selectionRect = editor->getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), -1);
-    return editor->getCollapseModel()->getMaRowIndexByViewRowIndex(selectionRect.top());
-}
-
 void MaEditorNameList::sl_copyWholeRow() {
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
@@ -249,14 +243,14 @@ void MaEditorNameList::sl_removeSelectedRows() {
         U2Region yRegion = U2Region::fromYRange(selectedRect);
         selectedMaRowIndexes << editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(yRegion, true);
     }
-    CHECK(maObj->getNumRows() > selectedMaRowIndexes.size(), );    // Do allow to remove all rows.
+    CHECK(maObj->getNumRows() > selectedMaRowIndexes.size(), );  // Do allow to remove all rows.
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    setSelection({});    // Clear selection.
+    setSelection({});  // Clear selection.
     maObj->removeRows(selectedMaRowIndexes);
 
     int numRows = editor->getCollapseModel()->getViewRowCount();
@@ -295,14 +289,14 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             if (selection.isEmpty() || selection.isMultiRegionSelection()) {
                 break;
             }
-            if (isShiftPressed) {    // Extend or shrink the selection.
+            if (isShiftPressed) {  // Extend or shrink the selection.
                 QRect selectedRect = selection.getRectList().first();
                 bool grow = selectedRect.height() == 1 || selectedRect.top() < cursorRow;
                 if (grow) {
                     if (selectedRect.top() > 0) {
                         setSelection({{selectedRect.adjusted(0, -1, 0, 0)}});
                     }
-                } else {    // Shrink.
+                } else {  // Shrink.
                     setSelection({{selectedRect.adjusted(0, 0, 0, -1)}});
                 }
                 scrollSelectionToView(grow);
@@ -316,7 +310,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             if (selection.isEmpty() || selection.isMultiRegionSelection()) {
                 break;
             }
-            if (isShiftPressed) {    // Extend or shrink the selection.
+            if (isShiftPressed) {  // Extend or shrink the selection.
                 QRect selectedRect = selection.getRectList().first();
                 bool grow = selectedRect.height() == 1 || cursorRow < selectedRect.bottom();
                 int numSequences = ui->getSequenceArea()->getViewRowCount();
@@ -324,7 +318,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
                     if (selectedRect.bottom() <= numSequences) {
                         setSelection({{selectedRect.adjusted(0, 0, 0, 1)}});
                     }
-                } else {    // Shrink.
+                } else {  // Shrink.
                     setSelection({{selectedRect.adjusted(0, 1, 0, 0)}});
                 }
                 scrollSelectionToView(!grow);
@@ -380,7 +374,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     maVersionBeforeMousePress = maObject->getModificationVersion();
     maObject->saveState();
 
-    //FIXME: do not start tracking signal here. Do it when the real dragging starts.
+    // FIXME: do not start tracking signal here. Do it when the real dragging starts.
     if (!maObject->isStateLocked()) {
         U2OpStatus2Log os;
         changeTracker->startTracking(os);
@@ -448,7 +442,7 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent *e) {
         moveSelectedRegion(mouseRow - editor->getCursorPosition().y());
     } else if (isDragSelection) {
         rubberBand->setGeometry(QRect(mousePressPoint, e->pos()).normalized());
-    } else if (isMoveSelection && mouseRow != -1) {    // getViewRowIndexByScreenYPosition returns -1 for out of range 'y' values.
+    } else if (isMoveSelection && mouseRow != -1) {  // getViewRowIndexByScreenYPosition returns -1 for out of range 'y' values.
         moveSelection(mouseRow - editor->getCursorPosition().y(), false);
     }
     QWidget::mouseMoveEvent(e);
@@ -484,7 +478,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != nullptr) {
         // Do nothing. Expand collapse is processed as a part of MousePress.
     } else if (!isClick && dragging) {
-        if (oldSelectedRects.size() == 1) {    // Drag is supported for a trivial selection only.
+        if (oldSelectedRects.size() == 1) {  // Drag is supported for a trivial selection only.
             QRect oldSelectionRect = oldSelectedRects.first();
             int shift;
             if (mouseReleaseRow == 0) {
@@ -519,10 +513,10 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                 }
                 setSelection({{newSelectionRect}});
             }
-        } else if (hasCtrlModifier && !oldSelectedRects.isEmpty()) {    // If old selection is empty -> process like a normal click or drag.
+        } else if (hasCtrlModifier && !oldSelectedRects.isEmpty()) {  // If old selection is empty -> process like a normal click or drag.
             QList<QRect> newSelectedRects;
             // Flip selected state of the clicked row. Keep X range intact.
-            int left = oldSelectedRects.first().left();    // All rects have equal left & right.
+            int left = oldSelectedRects.first().left();  // All rects have equal left & right.
             int right = oldSelectedRects.first().right();
             int top = qMin(mousePressRow, mouseReleaseRow);
             int bottom = qMax(mousePressRow, mouseReleaseRow);
@@ -530,14 +524,14 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             QRect unprocessedFlipRect = flipRect;
             for (const QRect &oldRect : qAsConst(oldSelectedRects)) {
                 QRect intersectedRect = oldRect.intersected(unprocessedFlipRect);
-                if (!intersectedRect.isEmpty()) {    // Check if intersects.
+                if (!intersectedRect.isEmpty()) {  // Check if intersects.
                     if (oldRect.top() < intersectedRect.top()) {
                         newSelectedRects << QRect(oldRect.topLeft(), intersectedRect.topRight() - QPoint(0, 1));
                     }
                     if (oldRect.bottom() > intersectedRect.bottom()) {
                         newSelectedRects << QRect(intersectedRect.bottomLeft() + QPoint(0, 1), oldRect.bottomRight());
                     }
-                    if (unprocessedFlipRect.top() < intersectedRect.top()) {    // Add non-intersected part & crop remaining flip rect.
+                    if (unprocessedFlipRect.top() < intersectedRect.top()) {  // Add non-intersected part & crop remaining flip rect.
                         newSelectedRects << QRect(unprocessedFlipRect.topLeft(), intersectedRect.topRight() - QPoint(0, 1));
                     }
                     unprocessedFlipRect.setTop(oldRect.bottom() + 1);
@@ -550,7 +544,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             }
             QList<QRect> newSafeSelectedRects = MaEditorSelection::buildSafeSelectionRects(newSelectedRects);
             setSelection(newSafeSelectedRects);
-        } else {    // Process like 'No modifiers'.
+        } else {  // Process like 'No modifiers'.
             // Drag or click with no modifiers make a new 1-rect selection.
             int y = qMin(mousePressRow, mouseReleaseRow);
             int width = qMax(mousePressRow, mouseReleaseRow) - y + 1;
@@ -605,8 +599,9 @@ void MaEditorNameList::sl_selectionChanged(const MaEditorSelection &, const MaEd
 void MaEditorNameList::sl_updateActions() {
     copyWholeRowAction->setEnabled(!editor->getSelection().isEmpty());
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
-    editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
+    const MaEditorSelection &selection = editor->getSelection();
+    removeSequenceAction->setEnabled(!maObj->isStateLocked() && !selection.isEmpty());
+    editSequenceNameAction->setEnabled(!maObj->isStateLocked() && selection.isSingleRowSelection());
 }
 
 void MaEditorNameList::sl_vScrollBarActionPerformed() {
@@ -766,7 +761,7 @@ void MaEditorNameList::drawChildSequenceItem(QPainter &painter, const QString &n
 
 void MaEditorNameList::drawBackground(QPainter &p, const QString &, const QRect &rect, bool isReference) {
     if (isReference) {
-        p.fillRect(rect, QColor("#9999CC"));    // SANGER_TODO: create the const, reference  color
+        p.fillRect(rect, QColor("#9999CC"));  // SANGER_TODO: create the const, reference  color
         return;
     }
 
@@ -775,14 +770,14 @@ void MaEditorNameList::drawBackground(QPainter &p, const QString &, const QRect 
 
 void MaEditorNameList::drawText(QPainter &p, const QString &name, const QRect &rect, bool selected) {
     p.setFont(getFont(selected));
-    p.drawText(rect, Qt::AlignTop | Qt::AlignLeft, name);    // SANGER_TODO: check the alignment
+    p.drawText(rect, Qt::AlignTop | Qt::AlignLeft, name);  // SANGER_TODO: check the alignment
 }
 
 void MaEditorNameList::drawCollapsePrimitive(QPainter &p, bool collapsed, const QRect &rect) {
     QStyleOptionViewItem branchOption;
     branchOption.rect = calculateExpandCollapseButtonRect(rect);
     if (collapsed) {
-        branchOption.state = QStyle::State_Children | QStyle::State_Sibling;    // test
+        branchOption.state = QStyle::State_Children | QStyle::State_Sibling;  // test
     } else {
         branchOption.state = QStyle::State_Open | QStyle::State_Children;
     }
@@ -823,19 +818,22 @@ void MaEditorNameList::sl_editSequenceName() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
-    bool ok = false;
-    int n = getSelectedMaRow();
-    CHECK(n >= 0, );
+    const MaEditorSelection &selection = editor->getSelection();
+    CHECK(selection.isSingleRowSelection(), );
 
-    QString curName = maObj->getMultipleAlignment()->getRow(n)->getName();
+    int viewRowIndex = selection.getRectList()[0].top();
+    int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
 
-    bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    QString curName = maObj->getRow(maRowIndex)->getName();
+
+    bool isMca = maObj->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
+    bool ok = false;
     QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
 
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
-        maObj->renameRow(n, newName);
+        maObj->renameRow(maRowIndex, newName);
     }
 }
 
@@ -845,7 +843,7 @@ void MaEditorNameList::moveSelectedRegion(int shift) {
     CHECK(!maObj->isStateLocked(), );
 
     const MaEditorSelection &selection = editor->getSelection();
-    CHECK(selection.getRectList().size() == 1, );    // Multi-selection mode is not supported today.
+    CHECK(selection.getRectList().size() == 1, );  // Multi-selection mode is not supported today.
 
     QRect selectedRect = selection.getRectList().first();
     int numRowsInSelection = selectedRect.height();
@@ -933,4 +931,4 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     return !groupsToToggle.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

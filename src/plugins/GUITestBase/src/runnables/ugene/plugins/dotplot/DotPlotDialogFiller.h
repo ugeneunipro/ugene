@@ -39,6 +39,6 @@ private:
     int minLen, identity;
     bool invertedRepeats, but1kpressed;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

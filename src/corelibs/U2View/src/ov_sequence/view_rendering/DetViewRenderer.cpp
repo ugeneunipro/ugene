@@ -50,4 +50,4 @@ DetViewRenderer *DetViewRendererFactory::createRenderer(DetView *detView, Sequen
     }
 }
 
-}    // namespace U2
+}  // namespace U2

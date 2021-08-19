@@ -40,6 +40,6 @@ public:
     static QString xml2scene(const QDomElement &projectElement, WorkflowScene *scene, QMap<ActorId, ActorId> &remapping, bool ignoreErrors = false, bool select = false);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_SCENE_SERIALIZER_H_
+#endif  // _U2_WORKFLOW_SCENE_SERIALIZER_H_

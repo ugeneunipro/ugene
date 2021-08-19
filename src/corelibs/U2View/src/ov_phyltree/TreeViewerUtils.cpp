@@ -74,4 +74,4 @@ const QFont &TreeViewerUtils::getFont() {
     return *font;
 }
 
-}    // namespace U2
+}  // namespace U2

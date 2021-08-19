@@ -12,4 +12,4 @@ TEST_CLASS_DECLARATION(FilePermissionTest)
 TEST_CLASS_DECLARATION(DirPermissionTest)
 #undef GUI_TEST_SUITE
 
-#endif    // SYSTEMTESTS_H
+#endif  // SYSTEMTESTS_H

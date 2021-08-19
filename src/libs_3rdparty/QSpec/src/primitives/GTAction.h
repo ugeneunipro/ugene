@@ -34,13 +34,13 @@ public:
     // returns first QAbstractButton associated with an action with a given name
     static QAbstractButton *button(GUITestOpStatus &os, const QString &actionName, QObject *parent = NULL, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
-    static QAbstractButton *button(GUITestOpStatus &os, const QAction *a, QObject *parent = NULL);
+    static QAbstractButton *button(GUITestOpStatus &os, const QAction *action);
 
-    static QAction *findAction(GUITestOpStatus &os, const QString &actionName, QObject *parent = NULL, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QAction *findAction(GUITestOpStatus &os, const QString &objectName, QObject *parent = NULL, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     static QAction *findActionByText(GUITestOpStatus &os, const QString &text, QWidget *parent = NULL);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

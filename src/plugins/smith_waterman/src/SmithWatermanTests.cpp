@@ -139,7 +139,7 @@ void GTest_SmithWatermnan::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_SmithWatermnan::prepare() {
-    //get search sequence
+    // get search sequence
     U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
     if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
@@ -148,7 +148,7 @@ void GTest_SmithWatermnan::prepare() {
     searchSeq = searchSeqObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
-    //get pattern sequence
+    // get pattern sequence
     U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
     if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
@@ -157,7 +157,7 @@ void GTest_SmithWatermnan::prepare() {
     patternSeq = patternSeqObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
-    //set subst matrix
+    // set subst matrix
 
     QString pathToCommonData = getEnv()->getVar("COMMON_DATA_DIR");
     if (patternSeqObj == nullptr) {
@@ -189,7 +189,7 @@ void GTest_SmithWatermnan::prepare() {
     s.resultFilter = 0;
 
     if (!machinePath.isEmpty()) { /* run smith-waterman on remote machine */
-        //TODO: BUG-001870
+        // TODO: BUG-001870
         assert(0);
         //         SmithWatermanLocalTaskSettings localTaskSettings( s );
         //         RemoteMachine * machine = NULL;
@@ -266,12 +266,12 @@ Task::ReportResult GTest_SmithWatermnan::report() {
 
     QList<SmithWatermanResult> resultList;
     if (!machinePath.isEmpty()) { /* remote task used */
-        //TODO: BUG-0001870
-        //         RemoteTask * remoteSW = qobject_cast<RemoteTask*>( swAlgorithmTask );
-        //         assert( NULL != remoteSW );
-        //         SmithWatermanLocalTaskResult * result = dynamic_cast<SmithWatermanLocalTaskResult*>( remoteSW->getResult() );
-        //         assert( NULL != result );
-        //         resultList = result->getResult();
+        // TODO: BUG-0001870
+        //          RemoteTask * remoteSW = qobject_cast<RemoteTask*>( swAlgorithmTask );
+        //          assert( NULL != remoteSW );
+        //          SmithWatermanLocalTaskResult * result = dynamic_cast<SmithWatermanLocalTaskResult*>( remoteSW->getResult() );
+        //          assert( NULL != result );
+        //          resultList = result->getResult();
     } else { /* task on local machine */
         resultList = s.resultListener->popResults();
     }
@@ -323,7 +323,7 @@ void GTest_SmithWatermnanPerf::init(XMLTestFormat *tf, const QDomElement &el) {
 }
 
 void GTest_SmithWatermnanPerf::prepare() {
-    //get search sequence
+    // get search sequence
     U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
     if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
@@ -332,7 +332,7 @@ void GTest_SmithWatermnanPerf::prepare() {
     searchSeq = searchSeqObj->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
-    //get pattern sequence
+    // get pattern sequence
     U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
     if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
@@ -343,7 +343,7 @@ void GTest_SmithWatermnanPerf::prepare() {
 
     setTaskName(QString("Test seq size %1").arg(patternSeq.size()));
 
-    //set subst matrix
+    // set subst matrix
 
     QString pathToCommonData = getEnv()->getVar("COMMON_DATA_DIR");
     if (patternSeqObj == nullptr) {
@@ -392,4 +392,4 @@ Task::ReportResult GTest_SmithWatermnanPerf::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

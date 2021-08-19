@@ -227,4 +227,4 @@ void SchemeSimilarityUtils::skipActorBindingsBlockBoundaries(QString &schemeCont
     }
 }
 
-}    // namespace U2
+}  // namespace U2

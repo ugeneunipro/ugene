@@ -38,10 +38,11 @@ const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_a
 MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
     graphOverview = new MaGraphOverview(ui);
-    graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_graph"));
+    graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 
     simpleOverview = new MaSimpleOverview(ui);
-    simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
+    simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_simple");
+    simpleOverview->setVisible(false);  // "Simple Overview" is hidden by default.
 
     addOverview(simpleOverview);
     addOverview(graphOverview);
@@ -81,4 +82,4 @@ void MSAEditorOverviewArea::sl_show() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

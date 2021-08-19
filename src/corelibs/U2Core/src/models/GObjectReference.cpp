@@ -66,14 +66,14 @@ QDataStream &operator>>(QDataStream &in, GObjectReference &myObj) {
 }
 
 QDataStream &operator<<(QDataStream &out, const GObjectRelation &myObj) {
-    QString data;    // for compatibility
+    QString data;  // for compatibility
     out << myObj.ref << GObjectRelationRoleCompatibility::toString(myObj.role) << data;
     return out;
 }
 
 QDataStream &operator>>(QDataStream &in, GObjectRelation &myObj) {
     QString roleString;
-    QString data;    // for compatibility
+    QString data;  // for compatibility
     in >> myObj.ref;
     in >> roleString;
     in >> data;
@@ -104,4 +104,4 @@ static bool registerMetas2() {
 bool GObjectReference::registerMeta = registerMetas1();
 bool GObjectRelation::registerMeta = registerMetas2();
 
-}    // namespace U2
+}  // namespace U2

@@ -90,7 +90,7 @@ void ORFFindAlgorithm::find(
         }
         qint64 end = cfg.searchRegion.endPos();
         for (qint64 i = cfg.searchRegion.startPos; i < end && !stopFlag && !os.isCoR(); i++, leftTillPercent--, ++seqPointer) {
-            if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {    // query to db
+            if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {  // query to db
                 sequence.clear();
                 qint64 regLen = qMin(end - i, (qint64)BLOCK_READ_FROM_DB + 3);
                 sequence.append(dnaSeq.getSequenceData(U2Region(i, regLen), os));
@@ -127,7 +127,7 @@ void ORFFindAlgorithm::find(
         }
 
         if (circularSearch && !stopFlag && !os.isCoR()) {
-            //circular
+            // circular
             addStartCodonsFromJunction(dnaSeq, cfg, ORFAlgorithmStrand_Direct, start);
 
             qint64 regLen = end - cfg.searchRegion.startPos;
@@ -147,7 +147,7 @@ void ORFFindAlgorithm::find(
 
             seqPointer = 0;
             for (qint64 i = cfg.searchRegion.startPos; i < minInitiator && !stopFlag && initiatorsRemain && !os.isCoR(); i++, ++seqPointer) {
-                if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {    // query to db
+                if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {  // query to db
                     sequence.clear();
                     qint64 regLen = qMin((qint64)minInitiator - i, (qint64)BLOCK_READ_FROM_DB + 3);
                     sequence.append(dnaSeq.getSequenceData(U2Region(i, regLen), os));
@@ -180,7 +180,7 @@ void ORFFindAlgorithm::find(
         }
 
         if (!mustFit && !stopFlag && !circularSearch) {
-            //check if non-terminated ORFs remained
+            // check if non-terminated ORFs remained
             for (int i = 0; i < 3; i++) {
                 foreach (int initiator, start[i]) {
                     int len = end - initiator;
@@ -207,7 +207,7 @@ void ORFFindAlgorithm::find(
         qint64 end = cfg.searchRegion.startPos;
         seqPointer = 0;
         for (int i = cfg.searchRegion.endPos() - 1; i >= end && !stopFlag && !os.isCoR(); i--, leftTillPercent--, seqPointer++) {
-            if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {    // query to db
+            if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {  // query to db
                 sequence.clear();
                 QByteArray tmp;
                 qint64 regStart = qMax(end, (qint64)i - (BLOCK_READ_FROM_DB + 3));
@@ -268,7 +268,7 @@ void ORFFindAlgorithm::find(
 
             seqPointer = 0;
             for (qint64 i = cfg.searchRegion.endPos() - 1; i >= maxInitiator && !stopFlag && initiatorsRemain && !os.isCoR(); i--, seqPointer++) {
-                if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {    // query to db
+                if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {  // query to db
                     sequence.clear();
                     QByteArray tmp;
                     qint64 regStart = qMax((qint64)maxInitiator, i - (BLOCK_READ_FROM_DB + 3));
@@ -305,7 +305,7 @@ void ORFFindAlgorithm::find(
         }
 
         if (!mustFit && !stopFlag && !circularSearch) {
-            //check if non-terminated ORFs remained
+            // check if non-terminated ORFs remained
             for (int i = 0; i < 3; i++) {
                 foreach (int initiator, start[i]) {
                     int ind = end + i % 3;
@@ -438,14 +438,14 @@ char *ORFFindAlgorithm::getCodonFromJunction(const U2SequenceObject &dnaSeq, ORF
 
     } else {
         if (symbolsFromEnd == 1) {
-            //complement [Y, X, ... , Z] --> codon XYZ
+            // complement [Y, X, ... , Z] --> codon XYZ
             tmp[0] = dnaSeq.getSequenceData(U2Region(1, 1)).at(0);
             tmp[1] = dnaSeq.getSequenceData(U2Region(0, 1)).at(0);
             tmp[2] = dnaSeq.getSequenceData(U2Region(seqLen - 1, 1)).at(0);
         }
 
         if (symbolsFromEnd == 2) {
-            //complement [X, ... , Z, Y] --> codon XYZ
+            // complement [X, ... , Z, Y] --> codon XYZ
             tmp[0] = dnaSeq.getSequenceData(U2Region(0, 1)).at(0);
             tmp[1] = dnaSeq.getSequenceData(U2Region(seqLen - 1, 1)).at(0);
             tmp[2] = dnaSeq.getSequenceData(U2Region(seqLen - 2, 1)).at(0);
@@ -476,4 +476,4 @@ ORFAlgorithmStrand ORFAlgorithmSettings::getStrandByStringId(const QString &id) 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

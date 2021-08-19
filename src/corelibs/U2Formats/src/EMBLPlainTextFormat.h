@@ -36,10 +36,10 @@ protected:
 
     bool readIdLine(ParserState *);
     bool readEntry(ParserState *, U2SequenceImporter &, int &seqSize, int &fullSeqSize, bool merge, int gapSize, U2OpStatus &);
-    //void readAnnotations(ParserState*, int offset);
+    // void readAnnotations(ParserState*, int offset);
     QMap<QString, QString> tagMap;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

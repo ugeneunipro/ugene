@@ -134,5 +134,5 @@ quint64 BaiReader::readUint32() {
            ((buffer[3] & 0xff) << 24);
 }
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2

@@ -133,57 +133,57 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
     int col = index.column();
 
     switch (role) {
-    case Qt::DisplayRole:    // fallthrough
-    case Qt::ToolTipRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return item->getName();
-        case COLUMN_ID:
-            return item->getId();
-        case COLUMN_DATA_TYPE:
-            return item->delegateForTypes->getDisplayValue(item->getDataType());
-        case COLUMN_FORMAT:
-            return item->delegateForFormats->getDisplayValue(item->getFormat());
-        case COLUMN_DESCRIPTION:
-            return item->getDescription();
+        case Qt::DisplayRole:  // fallthrough
+        case Qt::ToolTipRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return item->getName();
+                case COLUMN_ID:
+                    return item->getId();
+                case COLUMN_DATA_TYPE:
+                    return item->delegateForTypes->getDisplayValue(item->getDataType());
+                case COLUMN_FORMAT:
+                    return item->delegateForFormats->getDisplayValue(item->getFormat());
+                case COLUMN_DESCRIPTION:
+                    return item->getDescription();
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
+                    return QVariant();
+            }
+        case DelegateRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
+                case COLUMN_ID:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
+                case COLUMN_DATA_TYPE:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForTypes);
+                case COLUMN_FORMAT:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForFormats);
+                default:
+                    return QVariant();
+            }
+        case Qt::EditRole:  // fallthrough
+        case ConfigurationEditor::ItemValueRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return item->getName();
+                case COLUMN_ID:
+                    return item->getId();
+                case COLUMN_DATA_TYPE:
+                    return item->getDataType();
+                case COLUMN_FORMAT:
+                    return item->getFormat();
+                case COLUMN_DESCRIPTION:
+                    return item->getDescription();
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
+                    return QVariant();
+            }
         default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
             return QVariant();
-        }
-    case DelegateRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
-        case COLUMN_ID:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
-        case COLUMN_DATA_TYPE:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForTypes);
-        case COLUMN_FORMAT:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForFormats);
-        default:
-            return QVariant();
-        }
-    case Qt::EditRole:    // fallthrough
-    case ConfigurationEditor::ItemValueRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return item->getName();
-        case COLUMN_ID:
-            return item->getId();
-        case COLUMN_DATA_TYPE:
-            return item->getDataType();
-        case COLUMN_FORMAT:
-            return item->getFormat();
-        case COLUMN_DESCRIPTION:
-            return item->getDescription();
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-            return QVariant();
-        }
-    default:
-        return QVariant();
     }
 }
 
@@ -216,51 +216,51 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
     int col = index.column();
     CfgExternalToolItem *item = getItem(index);
     switch (role) {
-    case Qt::EditRole:    // fall through
-    case ConfigurationEditor::ItemValueRole:
-        switch (col) {
-        case COLUMN_NAME:
-            if (item->getName() != value.toString()) {
-                const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
-                const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
-                item->setName(value.toString());
-                if (!wasIdEditedByUser) {
-                    item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+        case Qt::EditRole:  // fall through
+        case ConfigurationEditor::ItemValueRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    if (item->getName() != value.toString()) {
+                        const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
+                        const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
+                        item->setName(value.toString());
+                        if (!wasIdEditedByUser) {
+                            item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+                        }
+                    }
+                    break;
+                case COLUMN_ID:
+                    if (item->getId() != value.toString()) {
+                        item->setId(value.toString());
+                    }
+                    break;
+                case COLUMN_DATA_TYPE: {
+                    QString newType = value.toString();
+                    if (item->getDataType() != newType) {
+                        if (!newType.isEmpty()) {
+                            item->setDataType(newType);
+                            createFormatDelegate(newType, item);
+                        }
+                    }
+                    break;
                 }
+                case COLUMN_FORMAT:
+                    if (item->getFormat() != value.toString() && !value.toString().isEmpty()) {
+                        item->setFormat(value.toString());
+                    }
+                    break;
+                case COLUMN_DESCRIPTION:
+                    if (item->getDescription() != value.toString()) {
+                        item->setDescription(value.toString());
+                    }
+                    break;
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
             }
+            emit dataChanged(index, index);
             break;
-        case COLUMN_ID:
-            if (item->getId() != value.toString()) {
-                item->setId(value.toString());
-            }
-            break;
-        case COLUMN_DATA_TYPE: {
-            QString newType = value.toString();
-            if (item->getDataType() != newType) {
-                if (!newType.isEmpty()) {
-                    item->setDataType(newType);
-                    createFormatDelegate(newType, item);
-                }
-            }
-            break;
-        }
-        case COLUMN_FORMAT:
-            if (item->getFormat() != value.toString() && !value.toString().isEmpty()) {
-                item->setFormat(value.toString());
-            }
-            break;
-        case COLUMN_DESCRIPTION:
-            if (item->getDescription() != value.toString()) {
-                item->setDescription(value.toString());
-            }
-            break;
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-        }
-        emit dataChanged(index, index);
-        break;
-    default:;    // do nothing
+        default:;  // do nothing
     }
     return true;
 }
@@ -268,24 +268,24 @@ bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &val
 QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case COLUMN_NAME:
-            return tr("Display name");
-        case COLUMN_ID:
-            return tr("Argument name");
-        case COLUMN_DATA_TYPE:
-            return tr("Type");
-        case COLUMN_FORMAT:
-            if (isInput) {
-                return tr("Argument value");
-            } else {
-                return tr("Argument value");
-            }
-        case COLUMN_DESCRIPTION:
-            return tr("Description");
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-            return QVariant();
+            case COLUMN_NAME:
+                return tr("Display name");
+            case COLUMN_ID:
+                return tr("Argument name");
+            case COLUMN_DATA_TYPE:
+                return tr("Type");
+            case COLUMN_FORMAT:
+                if (isInput) {
+                    return tr("Argument value");
+                } else {
+                    return tr("Argument value");
+                }
+            case COLUMN_DESCRIPTION:
+                return tr("Description");
+            default:
+                // do nothing, inaccessible code
+                Q_ASSERT(false);
+                return QVariant();
         }
     }
     return QVariant();
@@ -564,57 +564,57 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
     int col = index.column();
 
     switch (role) {
-    case Qt::DisplayRole:    // fallthrough
-    case Qt::ToolTipRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return item->getName();
-        case COLUMN_ID:
-            return item->getId();
-        case COLUMN_DATA_TYPE:
-            return typesDelegate->getDisplayValue(item->getDataType());
-        case COLUMN_DEFAULT_VALUE:
-            return item->delegateForDefaultValues->getDisplayValue(item->getDefaultValue());
-        case COLUMN_DESCRIPTION:
-            return item->getDescription();
+        case Qt::DisplayRole:  // fallthrough
+        case Qt::ToolTipRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return item->getName();
+                case COLUMN_ID:
+                    return item->getId();
+                case COLUMN_DATA_TYPE:
+                    return typesDelegate->getDisplayValue(item->getDataType());
+                case COLUMN_DEFAULT_VALUE:
+                    return item->delegateForDefaultValues->getDisplayValue(item->getDefaultValue());
+                case COLUMN_DESCRIPTION:
+                    return item->getDescription();
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
+                    return QVariant();
+            }
+        case DelegateRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
+                case COLUMN_ID:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
+                case COLUMN_DATA_TYPE:
+                    return qVariantFromValue<PropertyDelegate *>(typesDelegate);
+                case COLUMN_DEFAULT_VALUE:
+                    return qVariantFromValue<PropertyDelegate *>(item->delegateForDefaultValues);
+                default:
+                    return QVariant();
+            }
+        case Qt::EditRole:  // fallthrough
+        case ConfigurationEditor::ItemValueRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    return item->getName();
+                case COLUMN_ID:
+                    return item->getId();
+                case COLUMN_DATA_TYPE:
+                    return item->getDataType();
+                case COLUMN_DEFAULT_VALUE:
+                    return item->getDefaultValue();
+                case COLUMN_DESCRIPTION:
+                    return item->getDescription();
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
+                    return QVariant();
+            }
         default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
             return QVariant();
-        }
-    case DelegateRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
-        case COLUMN_ID:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
-        case COLUMN_DATA_TYPE:
-            return qVariantFromValue<PropertyDelegate *>(typesDelegate);
-        case COLUMN_DEFAULT_VALUE:
-            return qVariantFromValue<PropertyDelegate *>(item->delegateForDefaultValues);
-        default:
-            return QVariant();
-        }
-    case Qt::EditRole:    // fallthrough
-    case ConfigurationEditor::ItemValueRole:
-        switch (col) {
-        case COLUMN_NAME:
-            return item->getName();
-        case COLUMN_ID:
-            return item->getId();
-        case COLUMN_DATA_TYPE:
-            return item->getDataType();
-        case COLUMN_DEFAULT_VALUE:
-            return item->getDefaultValue();
-        case COLUMN_DESCRIPTION:
-            return item->getDescription();
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-            return QVariant();
-        }
-    default:
-        return QVariant();
     }
 }
 
@@ -622,53 +622,53 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
     int col = index.column();
     AttributeItem *item = getItem(index);
     switch (role) {
-    case Qt::EditRole:    // fallthrough
-    case ConfigurationEditor::ItemValueRole:
-        switch (col) {
-        case COLUMN_NAME:
-            if (item->getName() != value.toString()) {
-                const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
-                const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
-                item->setName(value.toString());
-                if (!wasIdEditedByUser) {
-                    item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+        case Qt::EditRole:  // fallthrough
+        case ConfigurationEditor::ItemValueRole:
+            switch (col) {
+                case COLUMN_NAME:
+                    if (item->getName() != value.toString()) {
+                        const QString oldGeneratedId = WorkflowUtils::generateIdFromName(item->getName());
+                        const bool wasIdEditedByUser = (oldGeneratedId != item->getId());
+                        item->setName(value.toString());
+                        if (!wasIdEditedByUser) {
+                            item->setId(WorkflowUtils::generateIdFromName(item->getName()));
+                        }
+                    }
+                    break;
+                case COLUMN_ID:
+                    if (item->getId() != value.toString()) {
+                        item->setId(value.toString());
+                    }
+                    break;
+                case COLUMN_DATA_TYPE: {
+                    QString newType = value.toString();
+                    if (item->getDataType() != newType) {
+                        if (!newType.isEmpty()) {
+                            item->setDataType(newType);
+                            changeDefaultValueDelegate(newType, item);
+                        }
+                    }
+                    break;
                 }
-            }
-            break;
-        case COLUMN_ID:
-            if (item->getId() != value.toString()) {
-                item->setId(value.toString());
-            }
-            break;
-        case COLUMN_DATA_TYPE: {
-            QString newType = value.toString();
-            if (item->getDataType() != newType) {
-                if (!newType.isEmpty()) {
-                    item->setDataType(newType);
-                    changeDefaultValueDelegate(newType, item);
+                case COLUMN_DEFAULT_VALUE: {
+                    if (item->getDefaultValue() != value.toString()) {
+                        item->setDefaultValue(value.toString());
+                    }
+                    break;
                 }
+                case COLUMN_DESCRIPTION:
+                    if (item->getDescription() != value.toString()) {
+                        item->setDescription(value.toString());
+                    }
+                    break;
+                default:
+                    // do nothing, inaccessible code
+                    Q_ASSERT(false);
             }
-            break;
-        }
-        case COLUMN_DEFAULT_VALUE: {
-            if (item->getDefaultValue() != value.toString()) {
-                item->setDefaultValue(value.toString());
-            }
-            break;
-        }
-        case COLUMN_DESCRIPTION:
-            if (item->getDescription() != value.toString()) {
-                item->setDescription(value.toString());
-            }
-            break;
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-        }
 
-        emit dataChanged(index, index);
-        break;
-    default:;    // do nothing
+            emit dataChanged(index, index);
+            break;
+        default:;  // do nothing
     }
     return true;
 }
@@ -676,20 +676,20 @@ bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVa
 QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case COLUMN_NAME:
-            return tr("Display name");
-        case COLUMN_ID:
-            return tr("Argument name");
-        case COLUMN_DATA_TYPE:
-            return tr("Type");
-        case COLUMN_DEFAULT_VALUE:
-            return tr("Default value");
-        case COLUMN_DESCRIPTION:
-            return tr("Description");
-        default:
-            // do nothing, inaccessible code
-            Q_ASSERT(false);
-            return QVariant();
+            case COLUMN_NAME:
+                return tr("Display name");
+            case COLUMN_ID:
+                return tr("Argument name");
+            case COLUMN_DATA_TYPE:
+                return tr("Type");
+            case COLUMN_DEFAULT_VALUE:
+                return tr("Default value");
+            case COLUMN_DESCRIPTION:
+                return tr("Description");
+            default:
+                // do nothing, inaccessible code
+                Q_ASSERT(false);
+                return QVariant();
         }
     }
     return QVariant();
@@ -720,4 +720,4 @@ bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModel
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

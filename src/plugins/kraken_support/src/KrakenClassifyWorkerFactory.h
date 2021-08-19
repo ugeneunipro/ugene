@@ -58,7 +58,7 @@ public:
     static const QString WORKFLOW_CLASSIFY_TOOL_KRAKEN;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#endif  // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_

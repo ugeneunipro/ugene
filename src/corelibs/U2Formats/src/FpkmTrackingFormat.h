@@ -87,11 +87,11 @@ public:
 
 private:
     bool emptyField;
-    bool incorrectNumberOfFields;    // must be equal to the number of columns in the header line
-    bool incorrectCoordinates;    // coordinates are parsed from locus
-    bool emptyTrackingId;    // must be a unique string, but it is only verified that it is not '-'
-    bool incorrectLength;    // must be '-' or an integer value
-    bool incorrectCoverage;    // must be '-' or a double value
+    bool incorrectNumberOfFields;  // must be equal to the number of columns in the header line
+    bool incorrectCoordinates;  // coordinates are parsed from locus
+    bool emptyTrackingId;  // must be a unique string, but it is only verified that it is not '-'
+    bool incorrectLength;  // must be '-' or an integer value
+    bool incorrectCoverage;  // must be '-' or a double value
 };
 
 struct FpkmTrackingLineData {
@@ -102,8 +102,8 @@ struct FpkmTrackingLineData {
     QString geneShortName;
     QString tssId;
     QString locus;
-    QString seqName;    // from locus
-    U2Region region;    // from locus
+    QString seqName;  // from locus
+    U2Region region;  // from locus
     QString length;
     QString coverage;
     QMap<QString, QString> otherFields;
@@ -158,27 +158,27 @@ private:
     static const QString COVERAGE_COLUMN;
 
     /**
-    * Parses and validates the header line.
-    * If the header is appropriate returns true and the columns list contains the columns names.
-    * Otherwise returns "false".
-    */
+     * Parses and validates the header line.
+     * If the header is appropriate returns true and the columns list contains the columns names.
+     * Otherwise returns "false".
+     */
     bool parseHeader(const QString &headerLine, QStringList &columns) const;
 
     /**
-    * Qualifiers from the FIRST FOUND annotation are used to restore names of "additional"
-    * columns in the FPKM Tracking Format file (like "FPKM status", etc.).
-    * Also:
-    * 1) Only qualifiers that contain "FPKM" or that equal to "status" are taken into account,
-    * other values are ignored.
-    * 2) It is verified that a "samplename_FPKM_lo" (or "samplename_FPKM_conf_lo") column
-    * goes before a "samplename_FPKM_hi" (or "samplename_FPKM_conf_hi") column.
-    * The function returns the list of all columns names.
-    */
+     * Qualifiers from the FIRST FOUND annotation are used to restore names of "additional"
+     * columns in the FPKM Tracking Format file (like "FPKM status", etc.).
+     * Also:
+     * 1) Only qualifiers that contain "FPKM" or that equal to "status" are taken into account,
+     * other values are ignored.
+     * 2) It is verified that a "samplename_FPKM_lo" (or "samplename_FPKM_conf_lo") column
+     * goes before a "samplename_FPKM_hi" (or "samplename_FPKM_conf_hi") column.
+     * The function returns the list of all columns names.
+     */
     QStringList writeHeader(QList<GObject *> annotTables, Document *doc, IOAdapter *io, U2OpStatus &os);
 
     void addQualifierIfValuePresent(SharedAnnotationData &annotData, const QString &name, const QString &val);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

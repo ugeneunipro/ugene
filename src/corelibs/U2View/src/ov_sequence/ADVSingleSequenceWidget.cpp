@@ -232,7 +232,7 @@ void ADVSingleSequenceWidget::init() {
 
 #define MIN_SEQUENCE_LEN_TO_USE_FULL_MODE 100
     if (seqCtx->getSequenceLength() < MIN_SEQUENCE_LEN_TO_USE_FULL_MODE) {
-        //sequence is rather small -> show panview only by default
+        // sequence is rather small -> show panview only by default
         setOverviewCollapsed(true);
         setDetViewCollapsed(true);
     }
@@ -371,7 +371,7 @@ void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView *v, QWidget *aft
 void ADVSingleSequenceWidget::removeSequenceView(GSequenceLineView *v, bool deleteView) {
     assert(lineViews.contains(v));
     lineViews.removeOne(v);
-    v->setVisible(false);    // making widget invisible removes it from the splitter automatically
+    v->setVisible(false);  // making widget invisible removes it from the splitter automatically
     v->disconnect(this);
     v->removeEventFilter(this);
     if (deleteView) {
@@ -465,7 +465,7 @@ GSequenceLineView *ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint &
     return nullptr;
 }
 
-int ADVSingleSequenceWidget::getSequenceLength() const {
+qint64 ADVSingleSequenceWidget::getSequenceLength() const {
     return getSequenceContext()->getSequenceLength();
 }
 
@@ -794,7 +794,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
         GSequenceGraphView *graphView = dynamic_cast<GSequenceGraphView *>(view);
         if (nullptr != graphView) {
             graphNames.append(graphView->getGraphViewName());
-            graphView->getLabelPositions(positions);
+            graphView->getSavedLabelsState(positions);
             myData[graphView->getGraphViewName()] = positions;
         }
     }
@@ -920,7 +920,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     connect(ctx->getAnnotatedDNAView(), SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
 
-    //TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
+    // TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
     QHBoxLayout *l = new QHBoxLayout();
     l->setSpacing(4);
@@ -1001,7 +1001,7 @@ void ADVSingleSequenceHeaderWidget::updateActiveState() {
     nameLabel->setEnabled(focused);
     pixLabel->setEnabled(focused);
     ctx->getSelectRangeAction()->setShortcutContext(focused ? Qt::WindowShortcut : Qt::WidgetShortcut);
-    //toolBar->setEnabled(focused); TODO: click on disabled buttons does not switch focus!
+    // toolBar->setEnabled(focused); TODO: click on disabled buttons does not switch focus!
 }
 
 void ADVSingleSequenceHeaderWidget::mouseDoubleClickEvent(QMouseEvent *e) {
@@ -1042,4 +1042,4 @@ QString ADVSingleSequenceHeaderWidget::getShortAlphabetName(const DNAAlphabet *a
     return "?";
 }
 
-}    // namespace U2
+}  // namespace U2

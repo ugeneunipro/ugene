@@ -56,6 +56,6 @@ public:
     QSet<QString> filter;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

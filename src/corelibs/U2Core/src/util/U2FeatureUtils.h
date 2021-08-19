@@ -125,14 +125,14 @@ public:
      * If @scope == Recursive the list contains all the children of child features
      * (representing annotation groups) and so on
      */
-    static QList<U2Feature> getSubAnnotations(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope scope = Recursive, ParentFeatureStatus parentIs = Root);
+    static QList<U2Feature> getSubAnnotations(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope recursive = Recursive, ParentFeatureStatus parentIs = Root);
     /**
      * Returns list of all child annotation groups for parent feature with given id.
      * Parent is to represent annotation group.
      * If @scope == Recursive the list contains all the children of child features
      * (representing annotation groups) and so on
      */
-    static QList<U2Feature> getSubGroups(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope scope = Recursive, ParentFeatureStatus parent = Nonroot);
+    static QList<U2Feature> getSubGroups(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope recursive = Recursive, ParentFeatureStatus parent = Nonroot);
 
     static QList<FeatureAndKey> getSortedSubgroups(QList<FeatureAndKey> &fkList, const U2DataId &parentId);
 
@@ -150,6 +150,6 @@ private:
     static U2FeatureKey createFeatureKeyLocationOperator(U2LocationOperator value);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_FEATURE_UTILS_H_
+#endif  //_U2_FEATURE_UTILS_H_

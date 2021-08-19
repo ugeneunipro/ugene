@@ -77,7 +77,7 @@ public:
     float minE1;
     float maxE2;
     DNATranslation *complTT;
-    bool complOnly;    //FIXME use strand instead
+    bool complOnly;  // FIXME use strand instead
 };
 
 class SiteconSearchTask : public Task, public SequenceWalkerCallback {
@@ -101,6 +101,6 @@ private:
     QByteArray wholeSeq;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

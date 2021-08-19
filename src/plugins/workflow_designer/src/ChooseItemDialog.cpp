@@ -69,4 +69,4 @@ Workflow::ActorPrototype *ChooseItemDialog::select(const QList<Workflow::ActorPr
     }
 }
 
-}    // namespace U2
+}  // namespace U2

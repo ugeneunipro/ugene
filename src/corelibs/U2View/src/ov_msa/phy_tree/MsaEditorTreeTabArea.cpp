@@ -162,4 +162,4 @@ void MsaEditorTreeTabArea::paintEvent(QPaintEvent *) {
     p.fillRect(rect(), Qt::white);
 }
 
-}    // namespace U2
+}  // namespace U2

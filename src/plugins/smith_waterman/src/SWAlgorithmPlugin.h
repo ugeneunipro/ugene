@@ -76,6 +76,6 @@ public:
     bool checkAlphabet(const DNAAlphabet *alphabet) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_SW_ALGORITHM_PLUGIN_H_
+#endif  //_U2_SW_ALGORITHM_PLUGIN_H_

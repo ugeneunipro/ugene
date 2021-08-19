@@ -63,7 +63,7 @@ namespace U2 {
 const QSizeF QueryScene::MAX_SCENE_SIZE(10 * 1000, 10 * 1000);
 const QSizeF QueryScene::DEFAULT_SCENE_SIZE(1000, 1000);
 
-#define MAX_ITEM_SIZE 10000    // max point size for any visual item and whole scene
+#define MAX_ITEM_SIZE 10000  // max point size for any visual item and whole scene
 #define MIN_ROWS_NUMBER 3
 #define DESCRIPTION_TOP_PAD 40
 #define DESCRIPTION_BOTTOM_PAD 20
@@ -157,7 +157,7 @@ void QueryScene::insertRow(int idx) {
         return;
     }
     qreal rowTop = idx * GRID_STEP + annotationsArea().top();
-    //sort items by y-pos
+    // sort items by y-pos
     QList<QGraphicsItem *> units;
     foreach (QGraphicsItem *it, items()) {
         if (it->type() == QDElementType) {
@@ -267,7 +267,7 @@ QRectF QueryScene::rulerArea() const {
 QRectF QueryScene::annotationsArea() const {
     const QRectF &rect = sceneRect();
     assert(rect.width() < MAX_ITEM_SIZE && rect.height() < MAX_ITEM_SIZE);
-    //qreal top = round(rect.top() + dy, GRID_STEP);
+    // qreal top = round(rect.top() + dy, GRID_STEP);
     qreal top = rect.top() + ruler->boundingRect().height();
     if (showSchemeLbl) {
         top += LABEL_HEIGHT;
@@ -756,7 +756,7 @@ void QueryViewController::createActions() {
     deleteAction->setIcon(QIcon(":query_designer/images/delete.png"));
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteItem()));
 
-    {    // Delete shortcut
+    {  // Delete shortcut
         QAction *deleteShortcut = new QAction(sceneView);
         deleteShortcut->setShortcuts(QKeySequence::Delete);
         deleteShortcut->setShortcutContext(Qt::WidgetShortcut);
@@ -797,18 +797,18 @@ void QueryViewController::createActions() {
 
     QDStrandOption strand = scene->getScheme()->getStrand();
     switch (strand) {
-    case QDStrand_Both:
-        bothStrandsAction->setChecked(true);
-        break;
-    case QDStrand_DirectOnly:
-        directStrandAction->setChecked(true);
-        break;
-    case QDStrand_ComplementOnly:
-        complementStrandAction->setChecked(true);
-        break;
-    default:
-        assert(0);
-        break;
+        case QDStrand_Both:
+            bothStrandsAction->setChecked(true);
+            break;
+        case QDStrand_DirectOnly:
+            directStrandAction->setChecked(true);
+            break;
+        case QDStrand_ComplementOnly:
+            complementStrandAction->setChecked(true);
+            break;
+        default:
+            assert(0);
+            break;
     }
     connect(strandActions, SIGNAL(triggered(QAction *)), SLOT(sl_setGlobalStrand(QAction *)));
 }
@@ -971,24 +971,24 @@ void QueryViewController::sl_deleteItem() {
     QList<QGraphicsItem *> selectedItems = scene->selectedItems();
     foreach (QGraphicsItem *item, selectedItems) {
         switch (item->type()) {
-        case QDElementType: {
-            QDElement *uv = qgraphicsitem_cast<QDElement *>(item);
-            assert(uv);
-            QDActor *a = uv->getActor();
-            if (!actors2remove.contains(a)) {
-                actors2remove.append(a);
-            }
-        } break;
-        case FootnoteItemType: {
-            Footnote *fn = qgraphicsitem_cast<Footnote *>(item);
-            assert(fn);
-            QDConstraint *c = fn->getConstraint();
-            if (!constraints2remove.contains(c)) {
-                constraints2remove.append(c);
-            }
-        } break;
-        default:
-            break;
+            case QDElementType: {
+                QDElement *uv = qgraphicsitem_cast<QDElement *>(item);
+                assert(uv);
+                QDActor *a = uv->getActor();
+                if (!actors2remove.contains(a)) {
+                    actors2remove.append(a);
+                }
+            } break;
+            case FootnoteItemType: {
+                Footnote *fn = qgraphicsitem_cast<Footnote *>(item);
+                assert(fn);
+                QDConstraint *c = fn->getConstraint();
+                if (!constraints2remove.contains(c)) {
+                    constraints2remove.append(c);
+                }
+            } break;
+            default:
+                break;
         }
     }
 
@@ -999,7 +999,7 @@ void QueryViewController::sl_deleteItem() {
         }
         QDSchemeUnit *su = c->getSchemeUnits().at(0);
         QDActor *actor = su->getActor();
-        if (!su->getConstraints().contains(c)) {    //param constraint
+        if (!su->getConstraints().contains(c)) {  // param constraint
             actors2remove.removeAll(actor);
             removedConstraints << actor->getConstraints();
             scene->removeActor(actor);
@@ -1151,20 +1151,20 @@ AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kin
 
     QString title = tr("Add Constraint %1");
     switch (kind) {
-    case E2S:
-        setWindowTitle(title.arg("'" + tr("End-Start") + "'"));
-        break;
-    case E2E:
-        setWindowTitle(title.arg("'" + tr("End-End") + "'"));
-        break;
-    case S2E:
-        setWindowTitle(title.arg("'" + tr("Start-End") + "'"));
-        break;
-    case S2S:
-        setWindowTitle(title.arg("'" + tr("Start-Start") + "'"));
-        break;
-    default:
-        break;
+        case E2S:
+            setWindowTitle(title.arg("'" + tr("End-Start") + "'"));
+            break;
+        case E2E:
+            setWindowTitle(title.arg("'" + tr("End-End") + "'"));
+            break;
+        case S2E:
+            setWindowTitle(title.arg("'" + tr("Start-End") + "'"));
+            break;
+        case S2S:
+            setWindowTitle(title.arg("'" + tr("Start-Start") + "'"));
+            break;
+        default:
+            break;
     }
 
     maxSpin->setMaximum(INT_MAX);
@@ -1213,7 +1213,7 @@ QPixmap QDUtils::generateSnapShot(QDDocument *doc, const QRect &rect) {
 }
 
 QPixmap QDUtils::generateSnapShot(QueryScene *scene, const QRect &rect) {
-    //assert(!rect.isNull());
+    // assert(!rect.isNull());
     QRectF bounds;
     foreach (QGraphicsItem *item, scene->items()) {
         if (item->type() == QDElementType || item->type() == FootnoteItemType) {
@@ -1229,7 +1229,7 @@ QPixmap QDUtils::generateSnapShot(QueryScene *scene, const QRect &rect) {
     }
 
     QPixmap pixmap(bounds.size().toSize());
-    if (pixmap.isNull()) {    // failed to allocate
+    if (pixmap.isNull()) {  // failed to allocate
         uiLog.trace(QString("Failed to allocate pixmap for the QD scene, bounds: x:%1 y:%2 w:%3 h:%4")
                         .arg(bounds.x())
                         .arg(bounds.y())
@@ -1248,4 +1248,4 @@ QPixmap QDUtils::generateSnapShot(QueryScene *scene, const QRect &rect) {
     return pixmap;
 }
 
-}    // namespace U2
+}  // namespace U2

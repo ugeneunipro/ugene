@@ -30,7 +30,7 @@ namespace U2 {
 MSADistanceAlgorithmRegistry::MSADistanceAlgorithmRegistry(QObject *p)
     : QObject(p) {
     addAlgorithm(new MSADistanceAlgorithmFactoryHamming());
-    //addAlgorithm(new MSADistanceAlgorithmFactoryHammingRevCompl());
+    // addAlgorithm(new MSADistanceAlgorithmFactoryHammingRevCompl());
     addAlgorithm(new MSADistanceAlgorithmFactorySimilarity());
 }
 
@@ -75,4 +75,4 @@ QList<MSADistanceAlgorithmFactory *> MSADistanceAlgorithmRegistry::getAlgorithmF
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

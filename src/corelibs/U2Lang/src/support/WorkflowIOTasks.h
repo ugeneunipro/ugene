@@ -68,7 +68,7 @@ protected:
     FileFormat format;
     QMap<ActorId, ActorId> remap;
 
-};    // LoadWorkflowTask
+};  // LoadWorkflowTask
 
 class U2LANG_EXPORT SaveWorkflowTask : public Task {
     Q_OBJECT
@@ -81,7 +81,7 @@ private:
     QString rawData;
     QString url;
 
-};    // SaveWorkflowTask
+};  // SaveWorkflowTask
 
-}    // namespace U2
+}  // namespace U2
 #endif

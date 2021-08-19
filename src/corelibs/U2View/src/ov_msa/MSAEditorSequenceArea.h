@@ -249,11 +249,12 @@ class U2VIEW_EXPORT ExportHighlightingTask : public Task {
 public:
     ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
 
-    void run();
-    QString generateReport() const;
-    Task::ReportResult report();
+    void run() override;
+    QString generateReport() const override;
+    Task::ReportResult report() override;
 
-    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
+private:
+    QString generateExportHighlightingReport() const;
 
 private:
     int startPos;
@@ -266,5 +267,5 @@ private:
     MSAEditor *msaEditor;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

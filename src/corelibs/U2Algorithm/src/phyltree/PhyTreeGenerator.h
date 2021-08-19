@@ -42,6 +42,6 @@ public:
     virtual CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHY_TREE_GENERATOR_
+#endif  // _U2_PHY_TREE_GENERATOR_

@@ -74,6 +74,6 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 
-}    // namespace U2
+}  // namespace U2
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

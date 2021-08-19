@@ -358,6 +358,7 @@ void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
 void ScrollController::sl_collapsibleModelChanged() {
     int firstVisibleMaRowOffset = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(savedFirstVisibleMaRow);
     setVScrollbarValue(firstVisibleMaRowOffset + savedFirstVisibleMaRowOffset);
+    updateVerticalScrollBar();
 }
 
 int ScrollController::getAdditionalXOffset() const {
@@ -459,4 +460,4 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint &point, bool repor
     return QPoint(-1, -1);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -73,4 +73,4 @@ QScriptValue ScriptTask::runScript(QScriptEngine *engine, const QMap<QString, QS
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

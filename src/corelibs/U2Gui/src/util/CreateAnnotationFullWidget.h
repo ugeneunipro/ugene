@@ -103,6 +103,6 @@ private:
     bool isValidLocation;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CREATE_ANNOTATION_FULL_WIDGET_H_
+#endif  // _U2_CREATE_ANNOTATION_FULL_WIDGET_H_

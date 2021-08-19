@@ -38,7 +38,7 @@ public:
 protected:
     QString composeRichDoc();
 
-};    // Text2SequencePrompter
+};  // Text2SequencePrompter
 
 class Text2SequenceWorker : public BaseWorker {
     Q_OBJECT
@@ -62,7 +62,7 @@ private:
     IntegralBus *outSeqPort;
     int tickedNum;
 
-};    // Text2SequenceWorker
+};  // Text2SequenceWorker
 
 class Text2SequenceWorkerFactory : public DomainFactory {
 public:
@@ -74,9 +74,9 @@ public:
     static void init();
     virtual Worker *createWorker(Actor *a);
 
-};    // Text2SequenceWorkerFactory
+};  // Text2SequenceWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // __TEXT_2_SEQUENCE_WORKER_H_
+#endif  // __TEXT_2_SEQUENCE_WORKER_H_

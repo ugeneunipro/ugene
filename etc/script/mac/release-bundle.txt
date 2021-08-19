@@ -201,6 +201,7 @@ Unipro UGENE.app/Contents/MacOS/data/cmdline/generate-dna.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm2-build.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm2-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm3-build-and-search.uwl
+Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm3-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/join-quality.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/local-blast+.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/pfm-build.uwl

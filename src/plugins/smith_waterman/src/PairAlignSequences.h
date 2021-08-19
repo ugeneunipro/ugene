@@ -44,6 +44,6 @@ public:
     static const char DIAG = 'd';
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -23,8 +23,8 @@
 
 namespace U2 {
 
-const QString U2VariantTrack::META_INFO_ATTIBUTE = "meta-info";
-const QString U2VariantTrack::HEADER_ATTIBUTE = "header";
+const QString U2VariantTrack::META_INFO_ATTRIBUTE = "meta-info";
+const QString U2VariantTrack::HEADER_ATTRIBUTE = "header";
 
 U2VariantTrack::U2VariantTrack()
     : trackType(TrackType_All) {
@@ -48,4 +48,4 @@ U2Variant::U2Variant()
       endPos(0) {
 }
 
-}    // namespace U2
+}  // namespace U2

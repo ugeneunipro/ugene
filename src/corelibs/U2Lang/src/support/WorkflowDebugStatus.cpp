@@ -274,4 +274,4 @@ QList<ActorId> WorkflowDebugStatus::getActorsWithBreakpoints() const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

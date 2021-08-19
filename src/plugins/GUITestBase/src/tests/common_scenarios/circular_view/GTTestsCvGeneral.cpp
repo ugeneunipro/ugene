@@ -217,5 +217,5 @@ GUI_TEST_CLASS_DEFINITION(general_avail_8) {
     CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seq3Widget), "Unexpected state of CV button on seq3 widget!");
 }
 
-}    // namespace GUITest_common_scenarios_circular_view
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_circular_view
+}  // namespace U2

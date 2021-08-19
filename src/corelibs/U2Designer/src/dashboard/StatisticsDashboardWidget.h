@@ -63,6 +63,6 @@ private:
     QList<StatisticsRow> statisticsRows;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

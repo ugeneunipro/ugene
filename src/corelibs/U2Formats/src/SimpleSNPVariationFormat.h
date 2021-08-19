@@ -34,9 +34,9 @@ public:
     SimpleSNPVariationFormat(QObject *p);
 
 protected:
-    virtual bool checkFormatByColumnCount(int columnCount) const;
+    bool checkFormatByColumnCount(int columnCount) const override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SIMPLE_SNP_VARIATION_FORMAT_H_
+#endif  // _U2_SIMPLE_SNP_VARIATION_FORMAT_H_

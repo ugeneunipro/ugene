@@ -50,10 +50,10 @@ bool TaskStatusBarCon::helpRegistered = false;
 TaskStatusBarCon::TaskStatusBarCon() {
     taskToTrack = nullptr;
 #ifdef Q_OS_WIN32
-    //TO DO: May be use following variant, but it don`t work always
-    //COORD conSize=GetLargestConsoleWindowSize(GetStdHandle(STD_OUTPUT_HANDLE));
-    //printf("X=%d, Y=%d\n",conSize.X,conSize.Y);
-    emptyLine = QString((int)80 - 1, QChar(' '));    //80 spaces
+    // TO DO: May be use following variant, but it don`t work always
+    // COORD conSize=GetLargestConsoleWindowSize(GetStdHandle(STD_OUTPUT_HANDLE));
+    // printf("X=%d, Y=%d\n",conSize.X,conSize.Y);
+    emptyLine = QString((int)80 - 1, QChar(' '));  // 80 spaces
 #endif
 
     if (!helpRegistered) {
@@ -94,14 +94,14 @@ void TaskStatusBarCon::setTSBSettings() {
 }
 
 TaskStatusBarCon::~TaskStatusBarCon() {
-    printf("                                                                               \r");    //80 spaces
+    printf("                                                                               \r");  // 80 spaces
 }
 void TaskStatusBarCon::updateState() {
     if (taskToTrack == nullptr) {
         return;
     }
 
-    int nTasks = AppContext::getTaskScheduler()->getTopLevelTasks().size();    //+1 is hard code
+    int nTasks = AppContext::getTaskScheduler()->getTopLevelTasks().size();  //+1 is hard code
     int nSubTasks = taskToTrack->getSubtasks().size();
     int progress = taskToTrack->getProgress();
     if (progress == -1) {
@@ -144,9 +144,9 @@ void TaskStatusBarCon::updateState() {
         working = 0;
     }
 #ifdef Q_OS_WIN32
-    //TO DO: Need refactoring this place for linux
-    printf("%s\r", emptyLine.toLatin1().constData());    //80 spaces
-    //printf("                                                                               \r");//80 spaces
+    // TO DO: Need refactoring this place for linux
+    printf("%s\r", emptyLine.toLatin1().constData());  // 80 spaces
+    // printf("                                                                               \r");//80 spaces
 #endif
     if (!AppContext::getSettings()->getValue(LOG_SETTINGS_ROOT + "colorOut", false).toBool()) {
         if (nSubTasks <= 1) {
@@ -167,7 +167,7 @@ void TaskStatusBarCon::updateState() {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
             printf("Tasks: %d, SubTs: %d, Info: %s \r", nTasks + 1, nSubTasks, buf);
         }
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0007);    //0x0007 is white color
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0007);  // 0x0007 is white color
 #else
         if (nSubTasks <= 1) {
             printf("\e[31m%c %s %d%% \e[32mTasks: %d, Info: %s \e[0m\r", ch, progressLine, progress, nTasks + 1, buf);
@@ -185,7 +185,7 @@ void TaskStatusBarCon::sl_taskStateChanged(Task *t) {
         return;
     }
     WorkflowRunTask *workflowTask = qobject_cast<WorkflowRunTask *>(t);
-    if (workflowTask == nullptr) {    // track progress only for workflow tasks
+    if (workflowTask == nullptr) {  // track progress only for workflow tasks
         return;
     }
     setTaskToTrack(t);
@@ -225,4 +225,4 @@ void TaskStatusBarCon::sl_update() {
     updateState();
 }
 
-}    // namespace U2
+}  // namespace U2

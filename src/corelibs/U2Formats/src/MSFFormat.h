@@ -65,6 +65,6 @@ private:
     static const int CHARS_IN_WORD;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

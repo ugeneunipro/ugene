@@ -68,6 +68,6 @@ private:
     static UdrSchema::FieldDesc getBlobField(const UdrSchemaId &schemaId, int fieldNum, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SQLITEUDRDBI_H_
+#endif  // _U2_SQLITEUDRDBI_H_

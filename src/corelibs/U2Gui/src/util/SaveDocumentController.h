@@ -35,21 +35,21 @@ class U2GUI_EXPORT SaveDocumentControllerConfig {
 public:
     SaveDocumentControllerConfig();
 
-    QLineEdit *fileNameEdit;    // edit for file name
-    QAbstractButton *fileDialogButton;    // a button to open save file dialog
-    QComboBox *formatCombo;    // combo widget to list formats
-    QCheckBox *compressCheckbox;    // checkbox for the compress option
+    QLineEdit *fileNameEdit;  // edit for file name
+    QAbstractButton *fileDialogButton;  // a button to open save file dialog
+    QComboBox *formatCombo;  // combo widget to list formats
+    QCheckBox *compressCheckbox;  // checkbox for the compress option
 
-    QString defaultFileName;    // filename set by default
-    DocumentFormatId defaultFormatId;    // format selected by default
-    QString defaultDomain;    // domain for the last folder
+    QString defaultFileName;  // filename set by default
+    DocumentFormatId defaultFormatId;  // format selected by default
+    QString defaultDomain;  // domain for the last folder
 
-    QString saveTitle;    // a title for save file dialog
-    QWidget *parentWidget;    // parent widget for file dialog
+    QString saveTitle;  // a title for save file dialog
+    QWidget *parentWidget;  // parent widget for file dialog
 
     QString rollSuffix;
-    bool rollFileName;    // roll filename
-    bool rollOutProjectUrls;    // filename roll policy, that allows to create project-unique URLs
+    bool rollFileName;  // roll filename
+    bool rollOutProjectUrls;  // filename roll policy, that allows to create project-unique URLs
 };
 
 class U2GUI_EXPORT SaveDocumentController : public QObject {
@@ -121,6 +121,6 @@ private:
     bool overwritingConfirmed;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SAVE_DOCUMENT_CONTROLLER_H_
+#endif  // _U2_SAVE_DOCUMENT_CONTROLLER_H_

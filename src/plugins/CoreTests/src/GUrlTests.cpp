@@ -310,8 +310,8 @@ Task::ReportResult GTest_CheckFilesNum::report() {
 }
 
 /*******************************
-* GUrlTests
-*******************************/
+ * GUrlTests
+ *******************************/
 QList<XMLTestFactory *> GUrlTests::createTestFactories() {
     QList<XMLTestFactory *> res;
     res.append(GTest_ConvertPath::createFactory());
@@ -326,4 +326,4 @@ QList<XMLTestFactory *> GUrlTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

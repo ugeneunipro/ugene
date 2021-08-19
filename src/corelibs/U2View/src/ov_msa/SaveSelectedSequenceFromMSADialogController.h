@@ -87,11 +87,11 @@ private:
 
     SaveDocumentInFolderControllerConfig conf;
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
-    //QString                                     currentFormat;
+    // QString                                     currentFormat;
 
     static const QString HOME_DIR_IDENTIFIER;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

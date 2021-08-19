@@ -111,6 +111,6 @@ private:
     static bool match(const U2Region &srcReg, const U2Region &dstReg, const QDDistanceType &type, int min, int max);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -66,7 +66,7 @@ void GTest_ORFMarkerTask::init(XMLTestFormat *tf, const QDomElement &el) {
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));    //may be QRegExp("\\,")
+        QStringList expectedList = expected.split(QRegExp("\\,"));  // may be QRegExp("\\,")
         foreach (QString region, expectedList) {
             QStringList bounds = region.split(QRegExp("\\.."));
             if (bounds.size() != 2) {
@@ -208,4 +208,4 @@ Task::ReportResult GTest_ORFMarkerTask::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

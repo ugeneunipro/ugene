@@ -21,7 +21,7 @@ QWidget *getRecorder() {
 QPoint getWidgetCenter(QWidget *w) {
     return w->mapToGlobal(w->rect().center());
 }
-}    // namespace
+}  // namespace
 
 using namespace HI;
 driversGuiTestsLauncher::driversGuiTestsLauncher()
@@ -51,7 +51,7 @@ TEST_CLASS_DEFINITION(Test2) {
     QLineEdit *line = getTestLine();
     GTMouseDriver::moveTo(getWidgetCenter(line));
     GTMouseDriver::click();
-    //GTGlobals::sleep();
+    // GTGlobals::sleep();
     GTKeyboardDriver::keySequence("0123456789,<.>!@#$%^&*()-_=+[{]};:\'\"/\\|");
     CHECK_SET_ERR(line->text() == "0123456789,<.>!@#$%^&*()-_=+[{]};:\'\"/\\|", "expected: 0123456789,<.>!@#$%^&*()-_=+[{]};:\'\"/\\|, actual: " + line->text())
     GTGlobals::sleep(500);

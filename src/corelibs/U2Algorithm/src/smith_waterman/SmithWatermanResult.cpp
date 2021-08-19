@@ -68,4 +68,4 @@ QList<SmithWatermanResult> SmithWatermanResultListener::getResults() const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

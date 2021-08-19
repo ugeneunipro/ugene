@@ -40,8 +40,8 @@ PopupChooser::PopupChooser(GUITestOpStatus &os, const QStringList &namePath, GTG
 
 #define GT_METHOD_NAME "getMenuPopup"
 QMenu *PopupChooser::getMenuPopup(GUITestOpStatus &os) {
-    GTGlobals::sleep(100);    // TODO: do we need this sleep?
-    GTMouseDriver::release();    // TODO: do we need this release?
+    GTGlobals::sleep(100);  // TODO: do we need this sleep?
+    GTMouseDriver::release();  // TODO: do we need this release?
     return GTWidget::getActivePopupMenu(os);
 }
 #undef GT_METHOD_NAME
@@ -270,4 +270,4 @@ void PopupCheckerByText::commonScenario() {
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
-}    // namespace HI
+}  // namespace HI

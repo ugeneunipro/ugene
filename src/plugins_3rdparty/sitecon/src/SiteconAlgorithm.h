@@ -110,6 +110,6 @@ public:
     static QByteArray generateRandomSequence(const int *actgContent, int seqLen, TaskStateInfo &ts);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

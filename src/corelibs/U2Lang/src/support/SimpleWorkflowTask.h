@@ -111,6 +111,6 @@ private:
     QPointer<StateLock> msaObjectLock;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _RUN_SCHEMA_FOR_TASK_H_
+#endif  // #ifndef _RUN_SCHEMA_FOR_TASK_H_

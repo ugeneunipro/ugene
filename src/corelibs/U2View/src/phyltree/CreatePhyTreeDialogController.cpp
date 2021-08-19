@@ -171,7 +171,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
 
 void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtention(msaObject->getDocument()->getURLString(), msaObject->getGObjectName(), ".nwk", "");
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(msaObject->getDocument()->getURLString(), msaObject->getGObjectName(), ".nwk", "");
     config.defaultFormatId = BaseDocumentFormats::NEWICK;
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
@@ -183,4 +183,4 @@ void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAli
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-}    // namespace U2
+}  // namespace U2

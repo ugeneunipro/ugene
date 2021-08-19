@@ -317,4 +317,4 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Case) {
     CHECK_FALSE(annotation->isCaseAnnotation(), "Unexpected annotation case!");
 }
 
-}    // namespace U2
+}  // namespace U2

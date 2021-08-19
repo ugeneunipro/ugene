@@ -22,10 +22,10 @@
 #ifndef _U2_HMM_IO_WORKER_H_
 #define _U2_HMM_IO_WORKER_H_
 
+#include <U2Core/SaveDocumentTask.h>
+
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
-
-#include <U2Core/SaveDocumentTask.h>
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -45,30 +45,30 @@ public:
 
 class HMMIOProto : public IntegralBusActorPrototype {
 public:
-    HMMIOProto(const Descriptor& desc, const QList<PortDescriptor*>& ports, 
-        const QList<Attribute*>& attrs = QList<Attribute*>());
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const = 0;
-    bool isAcceptableDrop(const QMimeData*, QVariantMap*, const QString&) const;
+    HMMIOProto(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
+    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const = 0;
+    bool isAcceptableDrop(const QMimeData *, QVariantMap *, const QString &) const;
 };
 
 class ReadHMMProto : public HMMIOProto {
 public:
-    ReadHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, 
-        const QList<Attribute*>& _attrs = QList<Attribute*>());
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
+    ReadHMMProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs = QList<Attribute *>());
+    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
 };
 
 class WriteHMMProto : public HMMIOProto {
 public:
-    WriteHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, 
-        const QList<Attribute*>& _attrs = QList<Attribute*>());
-    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
+    WriteHMMProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs = QList<Attribute *>());
+    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
 };
 
 class HMMReadPrompter : public PrompterBase<HMMReadPrompter> {
     Q_OBJECT
 public:
-    HMMReadPrompter(Actor* p = 0) : PrompterBase<HMMReadPrompter>(p) {}
+    HMMReadPrompter(Actor *p = 0)
+        : PrompterBase<HMMReadPrompter>(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
@@ -76,58 +76,67 @@ protected:
 class HMMWritePrompter : public PrompterBase<HMMWritePrompter> {
     Q_OBJECT
 public:
-    HMMWritePrompter(Actor* p = 0) : PrompterBase<HMMWritePrompter>(p) {}
+    HMMWritePrompter(Actor *p = 0)
+        : PrompterBase<HMMWritePrompter>(p) {
+    }
+
 protected:
     QString composeRichDoc();
 };
-
 
 class HMMReader : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR;
-    HMMReader(Actor* a) : BaseWorker(a), output(NULL) {}
+    HMMReader(Actor *a)
+        : BaseWorker(a), output(NULL) {
+    }
     virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {}
+    virtual Task *tick();
+    virtual void cleanup() {
+    }
 private slots:
     void sl_taskFinished();
 
 protected:
     CommunicationChannel *output;
     QStringList urls;
-}; 
+};
 
 class HMMWriter : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR;
-    HMMWriter(Actor* a) : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {}
+    HMMWriter(Actor *a)
+        : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {
+    }
     virtual void init();
-    virtual Task* tick();
-    virtual void cleanup() {}
+    virtual Task *tick();
+    virtual void cleanup() {
+    }
 
 protected:
     CommunicationChannel *input;
     QString url;
-    QMap<QString,int> counter;
+    QMap<QString, int> counter;
     bool done;
     uint fileMode;
-}; 
+};
 
 class HMMIOWorkerFactory : public DomainFactory {
 public:
     static void init();
     static void cleanup();
-    HMMIOWorkerFactory(const Descriptor& d) : DomainFactory(d) {}
-    virtual Worker* createWorker(Actor* a);
+    HMMIOWorkerFactory(const Descriptor &d)
+        : DomainFactory(d) {
+    }
+    virtual Worker *createWorker(Actor *a);
 };
 
-} // Workflow namespace
-} // U2 namespace
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #include <hmmer2/structs.h>
 Q_DECLARE_METATYPE(plan7_s *);
 
 #endif
-

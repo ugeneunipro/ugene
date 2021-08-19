@@ -68,6 +68,6 @@ private:
     int value;
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

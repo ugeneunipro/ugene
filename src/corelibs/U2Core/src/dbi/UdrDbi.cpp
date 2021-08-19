@@ -27,4 +27,4 @@ UdrDbi::UdrDbi(U2Dbi *rootDbi)
     : U2ChildDbi(rootDbi) {
 }
 
-}    // namespace U2
+}  // namespace U2

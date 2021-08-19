@@ -53,7 +53,7 @@ U2::MSAConsensusAlgorithmDefault *MSAConsensusAlgorithmDefault::clone() const {
 char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment &msa, int pos, int &cnt, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
 
-    //TODO: use var-length array!
+    // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
     int ch = U2Msa::GAP_CHAR;
     int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
@@ -79,7 +79,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
         cnt = p1;
     }
 
-    //lowercase alpha chars with < threshold% content
+    // lowercase alpha chars with < threshold% content
     int currentThreshold = getThreshold();
     int cntToUseLowerCase = int(currentThreshold / 100.0 * nSeq);
     if (cnt < cntToUseLowerCase && (ch >= 'A' && ch <= 'Z')) {
@@ -89,4 +89,4 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
     return ch;
 }
 
-}    // namespace U2
+}  // namespace U2

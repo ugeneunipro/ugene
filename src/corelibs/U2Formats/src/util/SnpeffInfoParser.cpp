@@ -263,4 +263,4 @@ QStringList NmdParser::getValues(const QString &entry) const {
     return entry.mid(1, entry.length() - 2).split(VALUES_SEPARATOR);
 }
 
-}    // namespace U2
+}  // namespace U2

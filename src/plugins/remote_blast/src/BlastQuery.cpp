@@ -64,10 +64,10 @@ Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
     const DNASequence &dnaSeq = scheme->getSequence();
 
     settings.dbChoosen = "cdd";
-    settings.params = "db=cdd";    //to do: supply db choice
+    settings.params = "db=cdd";  // to do: supply db choice
 
     int evalue = cfg->getParameter(EXPECT)->getAttributeValueWithoutScript<int>();
-    int maxHits = 500;    //cfg->getParameter(MAX_HITS)->getAttributeValueWithoutScript<int>();
+    int maxHits = 500;  // cfg->getParameter(MAX_HITS)->getAttributeValueWithoutScript<int>();
     addParametr(settings.params, ReqParams::cdd_hits, maxHits);
     addParametr(settings.params, ReqParams::cdd_eValue, evalue);
 
@@ -111,7 +111,7 @@ void QDCDDActor::sl_onAlgorithmTaskFinished() {
         iter.next();
         RemoteBLASTTask *rqt = iter.key();
         QList<SharedAnnotationData> annotations = rqt->getResultedAnnotations();
-        //shift by offset
+        // shift by offset
         int offset = offsetMap.value(rqt);
         QMutableListIterator<SharedAnnotationData> annIter(annotations);
         while (annIter.hasNext()) {
@@ -185,4 +185,4 @@ QDCDDActorPrototype::QDCDDActorPrototype() {
     editor = new DelegateEditor(delegates);
 }
 
-}    // namespace U2
+}  // namespace U2

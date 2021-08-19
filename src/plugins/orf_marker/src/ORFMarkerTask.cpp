@@ -151,4 +151,4 @@ bool ORFAutoAnnotationsUpdater::checkConstraints(const AutoAnnotationConstraints
     return constraints.alphabet->isNucleic();
 }
 
-}    // namespace U2
+}  // namespace U2

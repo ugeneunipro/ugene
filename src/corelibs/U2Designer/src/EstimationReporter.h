@@ -35,6 +35,6 @@ public:
     static QMessageBox *createTimeMessage(const Workflow::EstimationResult &er);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ESTIMATION_REPORTER_H_
+#endif  // _U2_ESTIMATION_REPORTER_H_

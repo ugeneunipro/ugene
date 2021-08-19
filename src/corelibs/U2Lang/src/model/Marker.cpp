@@ -478,4 +478,4 @@ Marker *TextMarker::clone() {
     return new TextMarker(*this);
 }
 
-}    // namespace U2
+}  // namespace U2

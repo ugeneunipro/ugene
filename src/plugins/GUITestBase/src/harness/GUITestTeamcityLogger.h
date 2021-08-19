@@ -32,13 +32,13 @@ public:
     static void testIgnored(const QString &testName, const QString &ignoreReason);
     static void teamCityLogResult(const QString &testName, const QString &testResult, qint64 testTimeMicros);
 
-    //private:
-    static QString escaped(const QString &s);    // returns valid teamcity log string with escaped symbols
+    // private:
+    static QString escaped(const QString &s);  // returns valid teamcity log string with escaped symbols
     static bool isTestFailed(const QString &testOutput);
 
     static const QString successResult;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

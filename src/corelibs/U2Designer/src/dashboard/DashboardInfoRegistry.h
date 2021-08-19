@@ -67,9 +67,9 @@ private:
     QPointer<ScanDashboardsDirTask> scanTask;
 
     QMap<QString, DashboardInfo> registry;
-    QMap<QString, QString> reservedNames;    // dashboards for running workflows are not registered, but they can reserve their name for the correct name rolling
+    QMap<QString, QString> reservedNames;  // dashboards for running workflows are not registered, but they can reserve their name for the correct name rolling
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DASHBOARD_INFO_REGISTRY_H_
+#endif  // _U2_DASHBOARD_INFO_REGISTRY_H_

@@ -32,7 +32,7 @@ public:
     InvalidFormatException(const QString &message);
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_INVALID_FORMAT_EXCEPTION_H_
+#endif  // _U2_BAM_INVALID_FORMAT_EXCEPTION_H_

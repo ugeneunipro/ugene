@@ -80,4 +80,4 @@ ExportReadsDialogModel ExportReadsDialog::getModel() const {
     return ret;
 }
 
-}    // namespace U2
+}  // namespace U2

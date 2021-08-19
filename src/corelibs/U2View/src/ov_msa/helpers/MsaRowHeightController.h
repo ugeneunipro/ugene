@@ -35,6 +35,6 @@ public:
     int getRowHeightByMaIndex(int maRowIndex) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_ROW_HEIGHT_CONTROLLER_H_
+#endif  // _U2_MSA_ROW_HEIGHT_CONTROLLER_H_

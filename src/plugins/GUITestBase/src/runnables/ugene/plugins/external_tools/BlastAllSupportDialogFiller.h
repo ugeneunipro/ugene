@@ -63,6 +63,6 @@ private:
     QWidget *dialog;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BLAST_ALL_SUPPORT_DIALOG_FILLER_H_
+#endif  // _U2_BLAST_ALL_SUPPORT_DIALOG_FILLER_H_

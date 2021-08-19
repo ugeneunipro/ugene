@@ -100,4 +100,4 @@ GTKeyboardDriver::keys GTKeyboardDriver::key;
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

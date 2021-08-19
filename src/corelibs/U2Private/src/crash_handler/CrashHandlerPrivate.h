@@ -48,6 +48,6 @@ protected:
     google_breakpad::ExceptionHandler *breakpadHandler;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CRASH_HANDLER_PRIVATE_H_
+#endif  // _U2_CRASH_HANDLER_PRIVATE_H_

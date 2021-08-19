@@ -61,6 +61,6 @@ private:
     static const QString FAILED_TEST_FILE_ARG;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CRASH_HANDLER_ARGS_HELPER_H_
+#endif  // _U2_CRASH_HANDLER_ARGS_HELPER_H_

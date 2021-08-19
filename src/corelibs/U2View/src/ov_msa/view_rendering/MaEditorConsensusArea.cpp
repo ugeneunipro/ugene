@@ -118,7 +118,7 @@ bool MaEditorConsensusArea::event(QEvent *e) {
         case QEvent::Wheel:
             ui->getSequenceArea()->setFocus(Qt::MouseFocusReason);
             break;
-        default:;    // skip other events
+        default:;  // skip other events
     }
 
     return QWidget::event(e);
@@ -138,8 +138,8 @@ QString MaEditorConsensusArea::createToolTip(QHelpEvent *he) const {
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());
-        //const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
-        //result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
+        // const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+        // result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
         result = getConsensusPercentTip(column, 0, 4);
     }
     return result;
@@ -154,7 +154,7 @@ void MaEditorConsensusArea::paintEvent(QPaintEvent *e) {
     QSize s = size() * devicePixelRatio();
     QSize sas = ui->getSequenceArea()->size() * devicePixelRatio();
 
-    if (sas.width() != s.width()) {    //this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
+    if (sas.width() != s.width()) {  // this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
         return;
     }
 
@@ -257,8 +257,8 @@ void MaEditorConsensusArea::sl_completeRedraw() {
 }
 
 void MaEditorConsensusArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev) {
-    U2Region currentRegion = U2Region::fromXRange(current.toRect());
-    U2Region prevRegion = U2Region::fromXRange(prev.toRect());
+    U2Region currentRegion = current.getColumnRegion();
+    U2Region prevRegion = prev.getColumnRegion();
     if (currentRegion != prevRegion) {
         sl_completeRedraw();
     }
@@ -301,12 +301,12 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory *
     }
     GCounter::increment(QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
 
-    //store threshold for the active algo
+    // store threshold for the active algo
     if (oldAlgo != nullptr && oldAlgo->supportsThreshold()) {
         AppContext::getSettings()->setValue(getThresholdSettingsKey(oldAlgo->getId()), oldAlgo->getThreshold());
     }
 
-    //store current algorithm selection
+    // store current algorithm selection
     AppContext::getSettings()->setValue(getLastUsedAlgoSettingsKey(), algoFactory->getId());
 
     consensusCache->setConsensusAlgorithm(algoFactory);
@@ -322,7 +322,7 @@ void MaEditorConsensusArea::setConsensusAlgorithmConsensusThreshold(int val) {
     if (val == algo->getThreshold()) {
         return;
     }
-    //store threshold as the last value
+    // store threshold as the last value
     AppContext::getSettings()->setValue(getThresholdSettingsKey(algo->getId()), val);
     algo->setThreshold(val);
 }
@@ -343,7 +343,7 @@ void MaEditorConsensusArea::sl_onConsensusThresholdChanged(int /*newValue*/) {
 }
 
 void MaEditorConsensusArea::restoreLastUsedConsensusThreshold() {
-    //restore last used threshold for new algorithm type if found
+    // restore last used threshold for new algorithm type if found
     MSAConsensusAlgorithm *algo = getConsensusAlgorithm();
     int threshold = AppContext::getSettings()->getValue(getThresholdSettingsKey(algo->getId()), algo->getDefaultThreshold()).toInt();
     getConsensusAlgorithm()->setThreshold(threshold);
@@ -410,4 +410,4 @@ void MaEditorConsensusArea::growSelectionUpTo(int xPos) {
     ui->getSequenceArea()->setSelectionRect(selection);
 }
 
-}    // namespace U2
+}  // namespace U2

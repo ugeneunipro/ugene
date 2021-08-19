@@ -85,4 +85,4 @@ void MainThreadRunnableObject::sl_requestAsked(MainThreadRunnable *runnable) {
     runnable->run();
 }
 
-}    // namespace HI
+}  // namespace HI

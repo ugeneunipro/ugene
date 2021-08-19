@@ -48,4 +48,4 @@ void TaskStarter::registerTask() {
     deleteLater();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -210,6 +210,6 @@ void LastReadyScheduler::makeOneTick(const ActorId &actor) {
     requestedActorForNextTick = actor;
 }
 
-}    // namespace LocalWorkflow
+}  // namespace LocalWorkflow
 
-}    // namespace U2
+}  // namespace U2

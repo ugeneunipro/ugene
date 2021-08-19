@@ -20,39 +20,39 @@
  */
 
 /**********************************************************************
-* LICENSE (http://www.opensource.org/licenses/bsd-license.php)
-*
-*   Copyright (c) 2005-2011, Jochen Kalmbach
-*   All rights reserved.
-*
-*   Redistribution and use in source and binary forms, with or without modification,
-*   are permitted provided that the following conditions are met:
-*
-*   Redistributions of source code must retain the above copyright notice,
-*   this list of conditions and the following disclaimer.
-*   Redistributions in binary form must reproduce the above copyright notice,
-*   this list of conditions and the following disclaimer in the documentation
-*   and/or other materials provided with the distribution.
-*   Neither the name of Jochen Kalmbach nor the names of its contributors may be
-*   used to endorse or promote products derived from this software without
-*   specific prior written permission.
-*   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-*   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-*   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-*   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-*   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-*   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-*   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-*   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-*   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-**********************************************************************/
+ * LICENSE (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ *   Copyright (c) 2005-2011, Jochen Kalmbach
+ *   All rights reserved.
+ *
+ *   Redistribution and use in source and binary forms, with or without modification,
+ *   are permitted provided that the following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *   Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *   Neither the name of Jochen Kalmbach nor the names of its contributors may be
+ *   used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ *   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ **********************************************************************/
 
 #include "StackWalker.h"
 #if defined(Q_OS_WIN)
 
-#    pragma comment(lib, "version.lib")    // for "VerQueryValue"
+#    pragma comment(lib, "version.lib")  // for "VerQueryValue"
 
 #    include <dbghelp.h>
 #    include <fstream>
@@ -89,7 +89,7 @@ public:
     }
     ~StackWalkerInternal() {
         if (pSC != nullptr) {
-            pSC(m_hProcess);    // SymCleanup
+            pSC(m_hProcess);  // SymCleanup
         }
         if (m_hDbhHelp != nullptr) {
             FreeLibrary(m_hDbhHelp);
@@ -129,7 +129,7 @@ public:
                 }
             }
         }
-        if (m_hDbhHelp == nullptr) {    // if not already loaded, try to load a default-one
+        if (m_hDbhHelp == nullptr) {  // if not already loaded, try to load a default-one
             m_hDbhHelp = LoadLibrary(TEXT("dbghelp.dll"));
         }
         if (m_hDbhHelp == nullptr) {
@@ -146,7 +146,7 @@ public:
         pSGLFA = (tSGLFA)GetProcAddress(m_hDbhHelp, "SymGetLineFromAddr64");
         pSGMB = (tSGMB)GetProcAddress(m_hDbhHelp, "SymGetModuleBase64");
         pSGMI = (tSGMI)GetProcAddress(m_hDbhHelp, "SymGetModuleInfo64");
-        //pSGMI_V3 = (tSGMI_V3) GetProcAddress(m_hDbhHelp, "SymGetModuleInfo64" );
+        // pSGMI_V3 = (tSGMI_V3) GetProcAddress(m_hDbhHelp, "SymGetModuleInfo64" );
         pSGSFA = (tSGSFA)GetProcAddress(m_hDbhHelp, "SymGetSymFromAddr64");
         pUDSN = (tUDSN)GetProcAddress(m_hDbhHelp, "UnDecorateSymbolName");
         pSLM = (tSLM)GetProcAddress(m_hDbhHelp, "SymLoadModule64");
@@ -169,7 +169,7 @@ public:
             this->m_parent->OnDbgHelpErr("SymInitialize", GetLastError(), 0);
         }
 
-        DWORD symOptions = this->pSGO();    // SymGetOptions
+        DWORD symOptions = this->pSGO();  // SymGetOptions
         symOptions |= SYMOPT_LOAD_LINES;
         symOptions |= SYMOPT_FAIL_CRITICAL_ERRORS;
         // SymSetOptions
@@ -196,16 +196,16 @@ public:
     LPSTR m_szSymPath;
 
     typedef struct _IMAGEHLP_MODULE64_V2 {
-        DWORD SizeOfStruct;    // set to sizeof(IMAGEHLP_MODULE64)
-        DWORD64 BaseOfImage;    // base load address of module
-        DWORD ImageSize;    // virtual size of the loaded module
-        DWORD TimeDateStamp;    // date/time stamp from pe header
-        DWORD CheckSum;    // checksum from the pe header
-        DWORD NumSyms;    // number of symbols in the symbol table
-        SYM_TYPE SymType;    // type of symbols loaded
-        CHAR ModuleName[32];    // module name
-        CHAR ImageName[256];    // image name
-        CHAR LoadedImageName[256];    // symbol file name
+        DWORD SizeOfStruct;  // set to sizeof(IMAGEHLP_MODULE64)
+        DWORD64 BaseOfImage;  // base load address of module
+        DWORD ImageSize;  // virtual size of the loaded module
+        DWORD TimeDateStamp;  // date/time stamp from pe header
+        DWORD CheckSum;  // checksum from the pe header
+        DWORD NumSyms;  // number of symbols in the symbol table
+        SYM_TYPE SymType;  // type of symbols loaded
+        CHAR ModuleName[32];  // module name
+        CHAR ImageName[256];  // image name
+        CHAR LoadedImageName[256];  // symbol file name
     } IMAGEHLP_MODULE64_V2;
 
     // SymCleanup()
@@ -275,13 +275,13 @@ private:
 #    pragma pack(push, 8)
     typedef struct tagMODULEENTRY32 {
         DWORD dwSize;
-        DWORD th32ModuleID;    // This module
-        DWORD th32ProcessID;    // owning process
-        DWORD GlblcntUsage;    // Global usage count on the module
-        DWORD ProccntUsage;    // Module usage count in th32ProcessID's context
-        BYTE *modBaseAddr;    // Base address of module in th32ProcessID's context
-        DWORD modBaseSize;    // Size in bytes of module starting at modBaseAddr
-        HMODULE hModule;    // The hModule of this module in th32ProcessID's context
+        DWORD th32ModuleID;  // This module
+        DWORD th32ProcessID;  // owning process
+        DWORD GlblcntUsage;  // Global usage count on the module
+        DWORD ProccntUsage;  // Module usage count in th32ProcessID's context
+        BYTE *modBaseAddr;  // Base address of module in th32ProcessID's context
+        DWORD modBaseSize;  // Size in bytes of module starting at modBaseAddr
+        HMODULE hModule;  // The hModule of this module in th32ProcessID's context
         char szModule[MAX_MODULE_NAME32 + 1];
         char szExePath[MAX_PATH];
     } MODULEENTRY32;
@@ -319,7 +319,7 @@ private:
             pM32F = (tM32F)GetProcAddress(hToolhelp, "Module32First");
             pM32N = (tM32N)GetProcAddress(hToolhelp, "Module32Next");
             if ((pCT32S != nullptr) && (pM32F != nullptr) && (pM32N != nullptr)) {
-                break;    // found the functions!
+                break;  // found the functions!
             }
             FreeLibrary(hToolhelp);
             hToolhelp = nullptr;
@@ -347,7 +347,7 @@ private:
             return FALSE;
         }
         return TRUE;
-    }    // GetModuleListTH32
+    }  // GetModuleListTH32
 
     // **************************************** PSAPI ************************
     typedef struct _MODULEINFO {
@@ -373,7 +373,7 @@ private:
         tGMI pGMI;
 
         DWORD i;
-        //ModuleEntry e;
+        // ModuleEntry e;
         DWORD cbNeeded;
         MODULEINFO mi;
         HMODULE *hMods = 0;
@@ -428,7 +428,7 @@ private:
             free(hMods);
 
         return cnt != 0;
-    }    // GetModuleListPSAPI
+    }  // GetModuleListPSAPI
 
     DWORD LoadModule(HANDLE hProcess, LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size) {
         CHAR *szImg = _strdup(img);
@@ -490,10 +490,10 @@ private:
                     case SymSym:
                         szSymType = "SYM";
                         break;
-                    case 8:    //SymVirtual:
+                    case 8:  // SymVirtual:
                         szSymType = "Virtual";
                         break;
-                    case 9:    // SymDia:
+                    case 9:  // SymDia:
                         szSymType = "DIA";
                         break;
                 }
@@ -523,7 +523,7 @@ public:
             return FALSE;
         }
         pModuleInfo->SizeOfStruct = sizeof(IMAGEHLP_MODULE64_V2);
-        void *pData = malloc(4096);    // reserve enough memory, so the bug in v6.3.5.1 does not lead to memory-overwrites...
+        void *pData = malloc(4096);  // reserve enough memory, so the bug in v6.3.5.1 does not lead to memory-overwrites...
         if (pData == nullptr) {
             SetLastError(ERROR_NOT_ENOUGH_MEMORY);
             return FALSE;
@@ -621,7 +621,7 @@ BOOL StackWalker::LoadModules() {
                     *p = 0;
                     break;
                 }
-            }    // for (search for path separator...)
+            }  // for (search for path separator...)
             if (strlen(szTemp) > 0) {
                 strcat_s(szSymPath, nSymPathLen, szTemp);
                 strcat_s(szSymPath, nSymPathLen, ";");
@@ -695,7 +695,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
     int frameNum;
 
     if (m_modulesLoaded == FALSE)
-        this->LoadModules();    // ignore the result...
+        this->LoadModules();  // ignore the result...
 
     if (this->m_sw->m_hDbhHelp == nullptr) {
         SetLastError(ERROR_DLL_INIT_FAILED);
@@ -708,7 +708,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
     c = *context;
 
     // init STACKFRAME for first call
-    STACKFRAME64 s;    // in/out stackframe
+    STACKFRAME64 s;  // in/out stackframe
     memset(&s, 0, sizeof(s));
     DWORD imageType;
 #    ifdef _M_IX86
@@ -744,7 +744,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
 
     pSym = (IMAGEHLP_SYMBOL64 *)malloc(sizeof(IMAGEHLP_SYMBOL64) + STACKWALK_MAX_NAMELEN);
     if (!pSym)
-        goto cleanup;    // not enough memory...
+        goto cleanup;  // not enough memory...
     memset(pSym, 0, sizeof(IMAGEHLP_SYMBOL64) + STACKWALK_MAX_NAMELEN);
     pSym->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL64);
     pSym->MaxNameLength = STACKWALK_MAX_NAMELEN;
@@ -794,7 +794,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
             }
 
             // show line number info, NT5.0-method (SymGetLineFromAddr64())
-            if (this->m_sw->pSGLFA != nullptr) {    // yes, we have SymGetLineFromAddr64()
+            if (this->m_sw->pSGLFA != nullptr) {  // yes, we have SymGetLineFromAddr64()
                 if (this->m_sw->pSGLFA(this->m_hProcess, s.AddrPC.Offset, &(csEntry.offsetFromLine), &Line) != FALSE) {
                     csEntry.lineNumber = Line.LineNumber;
                     // TODO: Mache dies sicher...!
@@ -802,10 +802,10 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
                 } else {
                     this->OnDbgHelpErr("SymGetLineFromAddr64", GetLastError(), s.AddrPC.Offset);
                 }
-            }    // yes, we have SymGetLineFromAddr64()
+            }  // yes, we have SymGetLineFromAddr64()
 
             // show module info (SymGetModuleInfo64())
-            if (this->m_sw->GetModuleInfo(this->m_hProcess, s.AddrPC.Offset, &Module) != FALSE) {    // got module info OK
+            if (this->m_sw->GetModuleInfo(this->m_hProcess, s.AddrPC.Offset, &Module) != FALSE) {  // got module info OK
                 switch (Module.SymType) {
                     case SymNone:
                         csEntry.symTypeString = "-nosymbols-";
@@ -833,7 +833,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
                         csEntry.symTypeString = "DIA";
                         break;
 #    endif
-                    case 8:    //SymVirtual:
+                    case 8:  // SymVirtual:
                         csEntry.symTypeString = "Virtual";
                         break;
                     default:
@@ -846,11 +846,11 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
                 strcpy_s(csEntry.moduleName, Module.ModuleName);
                 csEntry.baseOfImage = Module.BaseOfImage;
                 strcpy_s(csEntry.loadedImageName, Module.LoadedImageName);
-            }    // got module info OK
+            }  // got module info OK
             else {
                 this->OnDbgHelpErr("SymGetModuleInfo64", GetLastError(), s.AddrPC.Offset);
             }
-        }    // we seem to have a valid PC
+        }  // we seem to have a valid PC
 
         CallstackEntryType et = nextEntry;
         if (frameNum == 0)
@@ -862,7 +862,7 @@ bool StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
             SetLastError(ERROR_SUCCESS);
             break;
         }
-    }    // for ( frameNum )
+    }  // for ( frameNum )
 
 cleanup:
     if (pSym)
@@ -941,9 +941,9 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry &ent
 }
 
 void StackWalker::OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr) {
-    //CHAR buffer[STACKWALK_MAX_NAMELEN];
+    // CHAR buffer[STACKWALK_MAX_NAMELEN];
     //_snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "ERROR: %s, GetLastError: %d (Address: %p)\n", szFuncName, gle, (LPVOID) addr);
-    //OnOutput("--");
+    // OnOutput("--");
 }
 
 void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName) {
@@ -963,6 +963,6 @@ void StackWalker::OnOutput(LPCSTR _buffer) {
     buffer.append(_buffer);
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

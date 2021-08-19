@@ -163,4 +163,4 @@ void MysqlDbiUtils::upgrade(const U2DbiRef &dbiRef, U2OpStatus &os) {
     mysqlDbi->upgrade(os);
 }
 
-}    // namespace U2
+}  // namespace U2

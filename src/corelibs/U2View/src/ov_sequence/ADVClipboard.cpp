@@ -56,7 +56,7 @@ const qint64 ADVClipboard::MAX_COPY_SIZE_FOR_X86 = 100 * 1024 * 1024;
 
 ADVClipboard::ADVClipboard(AnnotatedDNAView *c)
     : QObject(c), ctx(c) {
-    //TODO: listen seqadded/seqremoved!!
+    // TODO: listen seqadded/seqremoved!!
 
     connect(ctx, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceChanged()));
 
@@ -204,7 +204,7 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
         }
         ADVSequenceObjectContext *seqCtx = ctx->getSequenceContext(annotation->getGObject());
         if (seqCtx == nullptr) {
-            res.append(U2Msa::GAP_CHAR);    // insert gap instead of the sequence, if the sequence is not available.
+            res.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
             continue;
         }
         DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
@@ -322,7 +322,7 @@ void ADVClipboard::updateActions() {
     QList<QAction *> annotationActions = QList<QAction *>() << copyAnnotationSequenceAction << nullptr << copyAnnotationSequenceTranslationAction << nullptr;
     if (!hasSequenceSelection && !hasAnnotationSelection) {
         setActionsEnabled(sequenceActions, false);
-        setActionShortcutsEnabled(sequenceActions, true);    // Assign shortcuts to the currently disabled actions, so they will visually appear in the menu.
+        setActionShortcutsEnabled(sequenceActions, true);  // Assign shortcuts to the currently disabled actions, so they will visually appear in the menu.
         setActionsAndShortcutsEnabled(annotationActions, false);
     } else if (hasSequenceSelection && hasAnnotationSelection) {
         setActionsAndShortcutsEnabled(sequenceActions, true);
@@ -368,4 +368,4 @@ ADVSequenceObjectContext *ADVClipboard::getSequenceContext() const {
 void ADVClipboard::sl_onActiveSequenceChanged() {
     updateActions();
 }
-}    // namespace U2
+}  // namespace U2

@@ -38,6 +38,6 @@ public:
     static void clear(GUITestOpStatus &os);
 };
 
-}    // namespace HI
+}  // namespace HI
 
 #endif

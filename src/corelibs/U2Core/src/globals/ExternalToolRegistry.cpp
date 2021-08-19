@@ -32,11 +32,11 @@
 namespace U2 {
 
 ////////////////////////////////////////
-//ExternalToolValidation
+// ExternalToolValidation
 const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
-//ExternalTool
+// ExternalTool
 ExternalTool::ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path)
     : id(id),
       dirName(dirName),
@@ -215,7 +215,7 @@ bool ExternalTool::isRunner() const {
 }
 
 ////////////////////////////////////////
-//ExternalToolValidationListener
+// ExternalToolValidationListener
 ExternalToolValidationListener::ExternalToolValidationListener(const QString &toolId) {
     toolIds << toolId;
 }
@@ -225,7 +225,7 @@ ExternalToolValidationListener::ExternalToolValidationListener(const QStringList
 }
 
 ////////////////////////////////////////
-//ExternalToolRegistry
+// ExternalToolRegistry
 ExternalToolRegistry::ExternalToolRegistry()
     : manager(nullptr) {
 }
@@ -316,4 +316,4 @@ ExternalToolManager *ExternalToolRegistry::getManager() const {
     return manager;
 }
 
-}    // namespace U2
+}  // namespace U2

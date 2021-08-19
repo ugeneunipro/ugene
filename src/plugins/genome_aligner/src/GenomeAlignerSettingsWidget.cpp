@@ -136,7 +136,7 @@ bool GenomeAlignerSettingsWidget::buildIndexUrl(const GUrl &url, bool prebuiltIn
 }
 
 bool GenomeAlignerSettingsWidget::isParametersOk(QString &error) const {
-    bool gpuOk = (gpuBox->isChecked() == false) || ((gpuBox->isChecked() == true) && (partSlider->value() <= 10));    // 128MB is the minimum size for a buffer, according to CL_DEVICE_MAX_MEM_ALLOC_SIZE OpenCL documentation
+    bool gpuOk = (gpuBox->isChecked() == false) || ((gpuBox->isChecked() == true) && (partSlider->value() <= 10));  // 128MB is the minimum size for a buffer, according to CL_DEVICE_MAX_MEM_ALLOC_SIZE OpenCL documentation
     if ((systemSize < readSlider->value() + 13 * partSlider->value()) || !gpuOk) {
         error = "There is no enough memory for the aligning on your computer. Try to reduce a memory size for short reads or for the reference fragment.";
         return false;
@@ -147,7 +147,7 @@ bool GenomeAlignerSettingsWidget::isParametersOk(QString &error) const {
 
 bool GenomeAlignerSettingsWidget::isIndexOk(const GUrl &refName, QString &error) const {
     GenomeAlignerIndex index;
-    if (indexTab->isEnabled()) {    //prebuiltIndex is not checked
+    if (indexTab->isEnabled()) {  // prebuiltIndex is not checked
         index.baseFileName = indexDirEdit->text() + "/" + refName.baseFileName();
     } else {
         index.baseFileName = refName.dirPath() + "/" + refName.baseFileName();
@@ -156,7 +156,7 @@ bool GenomeAlignerSettingsWidget::isIndexOk(const GUrl &refName, QString &error)
     QByteArray e;
     bool res = index.deserialize(e);
 
-    if (indexTab->isEnabled()) {    //prebuiltIndex is not checked
+    if (indexTab->isEnabled()) {  // prebuiltIndex is not checked
         if (!res) {
             return true;
         }
@@ -206,4 +206,4 @@ void GenomeAlignerSettingsWidget::sl_onReadSliderChanged(int value) {
     totalSizeLabel->setText(QByteArray::number(partSlider->value() * 13 + value) + " Mb");
 }
 
-}    // namespace U2
+}  // namespace U2

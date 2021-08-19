@@ -354,7 +354,7 @@ void AnnotHighlightWidget::connectSlots() {
     connect(annotatedDnaView, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject *)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject *)));
 
     // An annotation has been added/removed/modified
-    QList<AnnotationTableObject *> seqAnnotTableObjs = annotatedDnaView->getAnnotationObjects(true);    // "true" to include auto-annotations
+    QList<AnnotationTableObject *> seqAnnotTableObjs = annotatedDnaView->getAnnotationObjects(true);  // "true" to include auto-annotations
     foreach (const AnnotationTableObject *annotTableObj, seqAnnotTableObjs) {
         connectSlotsForAnnotTableObj(annotTableObj);
     }
@@ -583,4 +583,4 @@ void AnnotHighlightWidget::sl_onAnnotationObjectRemoved(AnnotationTableObject *a
     loadAnnotTypes();
 }
 
-}    // namespace U2
+}  // namespace U2

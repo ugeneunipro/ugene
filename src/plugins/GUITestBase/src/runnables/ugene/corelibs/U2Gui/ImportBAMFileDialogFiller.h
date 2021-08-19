@@ -41,6 +41,6 @@ private:
     const bool importUnmappedReads;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_RUNNABLES_IMPORT_BAM_FILE_DIALOG_FILLER_H_
+#endif  // _U2_GT_RUNNABLES_IMPORT_BAM_FILE_DIALOG_FILLER_H_

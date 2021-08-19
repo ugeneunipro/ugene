@@ -58,7 +58,7 @@ namespace U2 {
 #define DESCR_ELEMENT "Element-description"
 #define DESCR_ID "Description"
 
-//Q_DECLARE_METATYPE(DataTypePtr);
+// Q_DECLARE_METATYPE(DataTypePtr);
 
 class MapForTypesDelegate {
 public:
@@ -156,7 +156,7 @@ private:
     PropertyDelegate *delegate;
     QString dataTypeId;
     QString name;
-    //DataTypePtr dataType;
+    // DataTypePtr dataType;
 };
 
 class CfgListModel : public QAbstractListModel {
@@ -192,7 +192,7 @@ public:
     }
 
     CfgListItem *getItem(const QModelIndex &index) const {
-        //CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
+        // CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
         return items.at(index.row());
     }
 
@@ -204,32 +204,32 @@ public:
         CfgListItem *item = getItem(index);
         PropertyDelegate *dg = item->getDelegate();
         switch (role) {
-        case Qt::DisplayRole:
-        case Qt::ToolTipRole:
-            return dg->getDisplayValue(item->getDataType());
-        case DelegateRole:
-            return qVariantFromValue<PropertyDelegate *>(dg);
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            return item->getDataType();
-        case Qt::SizeHintRole:
-            return QSize(0, itemHeight);
-        default:
-            return QVariant();
+            case Qt::DisplayRole:
+            case Qt::ToolTipRole:
+                return dg->getDisplayValue(item->getDataType());
+            case DelegateRole:
+                return qVariantFromValue<PropertyDelegate *>(dg);
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                return item->getDataType();
+            case Qt::SizeHintRole:
+                return QSize(0, itemHeight);
+            default:
+                return QVariant();
         }
     }
 
     bool setData(const QModelIndex &index, const QVariant &value, int role /* = Qt::EditRole */) {
         switch (role) {
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            CfgListItem *item = getItem(index);
-            if (item->getDataType() != value.toString()) {
-                if (!value.toString().isEmpty()) {
-                    item->setDataType(value.toString());
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                CfgListItem *item = getItem(index);
+                if (item->getDataType() != value.toString()) {
+                    if (!value.toString().isEmpty()) {
+                        item->setDataType(value.toString());
+                    }
                 }
-            }
-            emit dataChanged(index, index);
+                emit dataChanged(index, index);
         }
         return true;
     }
@@ -264,7 +264,7 @@ class CfgTableModel : public QAbstractTableModel {
 public:
     CfgTableModel(QObject *obj = nullptr)
         : QAbstractTableModel(obj) {
-        //attrs.append(new CfgListItem());
+        // attrs.append(new CfgListItem());
     }
 
     int rowCount(const QModelIndex & /* = QModelIndex */) const {
@@ -280,7 +280,7 @@ public:
     }
 
     CfgListItem *getItem(const QModelIndex &index) const {
-        //CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
+        // CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
         return attrs.at(index.row());
     }
 
@@ -294,36 +294,36 @@ public:
         PropertyDelegate *dg = item->getDelegate();
 
         switch (role) {
-        case Qt::DisplayRole:
-            if (col == 0)
-                return item->getName();
-            else
-                return dg->getDisplayValue(item->getDataType());
-        case DelegateRole:
-            if (col == 1)
-                return qVariantFromValue<PropertyDelegate *>(dg);
-            else
+            case Qt::DisplayRole:
+                if (col == 0)
+                    return item->getName();
+                else
+                    return dg->getDisplayValue(item->getDataType());
+            case DelegateRole:
+                if (col == 1)
+                    return qVariantFromValue<PropertyDelegate *>(dg);
+                else
+                    return QVariant();
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                if (col == 1)
+                    return item->getDataType();
+                else
+                    return item->getName();
+            default:
                 return QVariant();
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            if (col == 1)
-                return item->getDataType();
-            else
-                return item->getName();
-        default:
-            return QVariant();
         }
     }
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const {
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
             switch (section) {
-            case 0:
-                return CreateScriptElementDialog::tr("Name");
-            case 1:
-                return CreateScriptElementDialog::tr("Type");
-            default:
-                return QVariant();
+                case 0:
+                    return CreateScriptElementDialog::tr("Name");
+                case 1:
+                    return CreateScriptElementDialog::tr("Type");
+                default:
+                    return QVariant();
             }
         }
         return QVariant();
@@ -333,20 +333,20 @@ public:
         int col = index.column();
         CfgListItem *item = getItem(index);
         switch (role) {
-        case Qt::EditRole:
-        case ConfigurationEditor::ItemValueRole:
-            if (col == 1) {
-                if (item->getDataType() != value.toString()) {
-                    if (!value.toString().isEmpty()) {
-                        item->setDataType(value.toString());
+            case Qt::EditRole:
+            case ConfigurationEditor::ItemValueRole:
+                if (col == 1) {
+                    if (item->getDataType() != value.toString()) {
+                        if (!value.toString().isEmpty()) {
+                            item->setDataType(value.toString());
+                        }
+                    }
+                } else {
+                    if (item->getName() != value.toString()) {
+                        item->setName(value.toString());
                     }
                 }
-            } else {
-                if (item->getName() != value.toString()) {
-                    item->setName(value.toString());
-                }
-            }
-            emit dataChanged(index, index);
+                emit dataChanged(index, index);
         }
         return true;
     }
@@ -620,7 +620,7 @@ void CreateScriptElementDialog::changeDirectoryForActors() {
 
         QDir dir(url);
         if (!dir.exists()) {
-            //coreLog.info(tr("There isn't folder with users workflow elements"));
+            // coreLog.info(tr("There isn't folder with users workflow elements"));
             return;
         }
         dir.setNameFilters(QStringList() << "*.usa");
@@ -723,4 +723,4 @@ const QString CreateScriptElementDialog::getActorFilePath() const {
     return actorFilePath;
 }
 
-}    // namespace U2
+}  // namespace U2

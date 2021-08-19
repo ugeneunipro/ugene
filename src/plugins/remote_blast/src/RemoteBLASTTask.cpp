@@ -81,7 +81,7 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    if (aobj->getDocument() == nullptr && !url.isEmpty()) {    // create new document if object has no document and url is not empty
+    if (aobj->getDocument() == nullptr && !url.isEmpty()) {  // create new document if object has no document and url is not empty
         Document *d = AppContext::getProject()->findDocumentByURL(url);
         if (d == nullptr) {
             IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -172,7 +172,7 @@ void RemoteBlastHttpRequestTask::prepare() {
     connect(&timer, SIGNAL(timeout()), SLOT(sl_timeout()));
     timeout = true;
     timer.setSingleShot(true);
-    int mult = cfg.aminoT ? 6 : 1;    //if 6 requests - 6 times more wait
+    int mult = cfg.aminoT ? 6 : 1;  // if 6 requests - 6 times more wait
     timer.start(cfg.retries * 1000 * 60 * mult);
 }
 
@@ -544,7 +544,7 @@ CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString
                                             os);
     SAFE_POINT_OP(os, );
 
-    QString dbId = "nucleotide";    // protein databases do not contain circular molecules
+    QString dbId = "nucleotide";  // protein databases do not contain circular molecules
 
     loadTask = new LoadRemoteDocumentTask(seqId, dbId, tempUrl, "gb");
     addSubTask(loadTask);
@@ -681,4 +681,4 @@ U2Qualifier Merge::eValueQualifier(int seqLen, const SharedAnnotationData &first
     return U2Qualifier("E-value", QString::number(eValue));
 }
 
-}    // namespace U2
+}  // namespace U2

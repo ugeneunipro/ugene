@@ -32,6 +32,6 @@ public:
     bool askWithModifiableLogin(QString &resourceUrl) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CREDENTIALS_ASKER_CLI_H_
+#endif  // _U2_CREDENTIALS_ASKER_CLI_H_

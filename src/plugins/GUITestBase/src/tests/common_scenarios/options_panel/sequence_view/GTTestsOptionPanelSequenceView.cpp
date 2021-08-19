@@ -55,7 +55,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_options_panel_sequence_view {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //checking 'next' 'prev' buttons functionality
+    // checking 'next' 'prev' buttons functionality
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -76,7 +76,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //checking searching with invalid pattern
+    // checking searching with invalid pattern
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -88,7 +88,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //checking results with diffirent algorithms
+    // checking results with diffirent algorithms
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -104,7 +104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //checking saving annotations after search
+    // checking saving annotations after search
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -119,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //checking searching with different parameter 'match percentage'
+    // checking searching with different parameter 'match percentage'
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -151,7 +151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    //checking results with searching in translation
+    // checking results with searching in translation
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //checking results with searching in translation
+    // checking results with searching in translation
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -183,7 +183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    //checking results with searching in translation
+    // checking results with searching in translation
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    //checking results with searching in translation
+    // checking results with searching in translation
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -221,6 +221,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/99900"), "Results string not match");
 }
 
-}    // namespace GUITest_common_scenarios_options_panel_sequence_view
+}  // namespace GUITest_common_scenarios_options_panel_sequence_view
 
-}    // namespace U2
+}  // namespace U2

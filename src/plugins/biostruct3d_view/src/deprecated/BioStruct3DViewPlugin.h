@@ -69,6 +69,6 @@ protected slots:
     virtual void sl_windowClosing(MWMDIWindow *);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

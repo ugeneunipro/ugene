@@ -39,4 +39,4 @@ QString BaseMessageTranslator::getTranslation() const {
     return source.toString();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -42,4 +42,4 @@ void BreakpointEqualHitCounter::setHitCountParameter(quint32 newParameter) {
     targetHitCount = newParameter;
 }
 
-}    // namespace U2
+}  // namespace U2

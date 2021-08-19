@@ -79,8 +79,8 @@ GUI_TEST_CLASS_DECLARATION(test_0045)
 
 #undef GUI_TEST_SUITE
 
-}    // namespace GUITest_common_scenarios_create_annotation_widget
+}  // namespace GUITest_common_scenarios_create_annotation_widget
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_TESTS_CREATE_ANNOTATION_WIDGET_H_
+#endif  // _U2_GT_TESTS_CREATE_ANNOTATION_WIDGET_H_

@@ -120,4 +120,4 @@ void MysqlUpgraderFrom_1_14_To_1_15::rollNewFolderPath(QString &originalPath, co
     originalPath = resultPath;
 }
 
-}    // namespace U2
+}  // namespace U2

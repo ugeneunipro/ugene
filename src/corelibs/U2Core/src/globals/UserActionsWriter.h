@@ -63,6 +63,6 @@ private:
     QPoint prevWindowSize;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_USER_ACTIONS_WRITER_H_
+#endif  // _U2_USER_ACTIONS_WRITER_H_

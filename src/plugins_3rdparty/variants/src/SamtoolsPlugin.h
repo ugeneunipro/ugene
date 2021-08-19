@@ -32,10 +32,9 @@ namespace U2 {
 class SamtoolsPlugin : public Plugin {
     Q_OBJECT
 public:
-    SamtoolsPlugin  ();
-    
+    SamtoolsPlugin();
 };
 
-} //namespace
+}  // namespace U2
 
-#endif //_U2_SAMTOOLS_PLUGIN_
+#endif  //_U2_SAMTOOLS_PLUGIN_

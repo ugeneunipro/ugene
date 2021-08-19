@@ -128,4 +128,4 @@ DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings()
 void DnaAssemblyToRefTaskSettings::setCustomSettings(const QMap<QString, QVariant> &settings) {
     customSettings = settings;
 }
-}    // namespace U2
+}  // namespace U2

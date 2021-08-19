@@ -106,4 +106,4 @@ QVariantMap TreeViewerState::saveState(TreeViewer *v) {
     return ss.stateData;
 }
 
-}    // namespace U2
+}  // namespace U2

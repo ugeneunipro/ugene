@@ -65,7 +65,7 @@ QList<QPointer<Document>> getAllDocumentsSafely() {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 void ProjectViewFilterModel::updateSettings(const ProjectTreeControllerModeSettings &newSettings) {
     settings = newSettings;
@@ -410,4 +410,4 @@ WrappedObject *ProjectViewFilterModel::toObject(const QModelIndex &index) {
     return qobject_cast<WrappedObject *>(toQObject(index));
 }
 
-}    // namespace U2
+}  // namespace U2

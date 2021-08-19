@@ -31,7 +31,7 @@ typedef QMap<QString, QString> StrMap;
 
 namespace U2 {
 
-//TODO eliminate dependency on object views and move to private??
+// TODO eliminate dependency on object views and move to private??
 
 class U2GUI_EXPORT ProjectParser : public QObject {
     Q_OBJECT
@@ -79,6 +79,6 @@ public:
     static void loadXMLProjectModel(const QString &url, U2OpStatus &si, QDomDocument &doc, QString &version);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

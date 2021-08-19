@@ -204,7 +204,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void MergeBamWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -243,5 +243,5 @@ void MergeBamWorker::sendResult(const QString &url) {
     outputUrlPort->put(message);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

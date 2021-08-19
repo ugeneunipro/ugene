@@ -181,4 +181,4 @@ QDataStream &operator<<(QDataStream &dataStream, const AnnotationData &) {
     //    return dataStream << data.name << data.location << data.qualifiers;
 }
 
-}    //namespace U2
+}  // namespace U2

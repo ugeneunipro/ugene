@@ -91,8 +91,6 @@ protected:
     void focusOutEvent(QFocusEvent *fe) override;
     void focusInEvent(QFocusEvent *fe) override;
     void wheelEvent(QWheelEvent *we) override;
-    //todo context menu?
-    int getSelectedMaRow() const;
 
     /**
      * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
@@ -167,7 +165,7 @@ protected:
 
     virtual int getAvailableWidth() const;
 
-    QObject *labels;    // used in GUI tests
+    QObject *labels;  // used in GUI tests
     MaEditorWgt *ui;
     QScrollBar *nhBar;
     QPoint mousePressPoint;
@@ -199,6 +197,6 @@ protected:
     MaEditor *editor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_NAME_LIST_H_
+#endif  // _U2_MA_EDITOR_NAME_LIST_H_

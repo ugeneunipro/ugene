@@ -44,7 +44,7 @@ public:
     QIcon ico;
     QString data;
     QString content;
-    QString id;    // UWL file name of the sample workflow
+    QString id;  // UWL file name of the sample workflow
 };
 
 class SampleCategory {
@@ -165,6 +165,6 @@ public:
     SamplesWrapper(SamplesWidget *samples, QWidget *parent);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

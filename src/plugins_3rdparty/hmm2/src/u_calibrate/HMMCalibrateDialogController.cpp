@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "HMMCalibrateDialogController.h"
+
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -31,13 +33,12 @@
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include "HMMCalibrateDialogController.h"
 #include "HMMCalibrateTask.h"
 #include "HMMIO.h"
 
 namespace U2 {
 
-HMMCalibrateDialogController::HMMCalibrateDialogController(QWidget* w) 
+HMMCalibrateDialogController::HMMCalibrateDialogController(QWidget *w)
     : QDialog(w),
       saveController(NULL) {
     task = NULL;
@@ -65,76 +66,75 @@ void HMMCalibrateDialogController::sl_hmmFileButtonClicked() {
 
 void HMMCalibrateDialogController::sl_okButtonClicked() {
     if (task != NULL) {
-        accept(); //go to background
+        accept();  // go to background
         return;
     }
 
     // try prepare model
-   UHMMCalibrateSettings s;
-   s.nThreads = AppResourcePool::instance()->getIdealThreadCount();
-   QString errMsg;
+    UHMMCalibrateSettings s;
+    s.nThreads = AppResourcePool::instance()->getIdealThreadCount();
+    QString errMsg;
 
-   QString inFile = hmmFileEdit->text();
-   QString outFile = inFile;
-   if (inFile.isEmpty() && !QFileInfo(inFile).exists()) {
-       errMsg = tr("Incorrect HMM file!");
-       hmmFileEdit->setFocus();
-   }
+    QString inFile = hmmFileEdit->text();
+    QString outFile = inFile;
+    if (inFile.isEmpty() && !QFileInfo(inFile).exists()) {
+        errMsg = tr("Incorrect HMM file!");
+        hmmFileEdit->setFocus();
+    }
 
-   if (expertGroupBox->isChecked() && errMsg.isEmpty()) {
-       if (fixedBox->value() < 0) {
-           errMsg = tr("Illegal fixed length value!");
-           fixedBox->setFocus();
-       } else {
-           s.fixedlen = fixedBox->value();
-       }
+    if (expertGroupBox->isChecked() && errMsg.isEmpty()) {
+        if (fixedBox->value() < 0) {
+            errMsg = tr("Illegal fixed length value!");
+            fixedBox->setFocus();
+        } else {
+            s.fixedlen = fixedBox->value();
+        }
 
-       s.lenmean = meanBox->value();
-       s.nsample = numBox->value();
-       s.lensd  = (float)sdBox->value();
-       if (seedBox->value()!=0) {
-           s.seed = seedBox->value();
-       }
-   }
+        s.lenmean = meanBox->value();
+        s.nsample = numBox->value();
+        s.lensd = (float)sdBox->value();
+        if (seedBox->value() != 0) {
+            s.seed = seedBox->value();
+        }
+    }
 
-   if (outputGroupBox->isChecked() && errMsg.isEmpty()) {
+    if (outputGroupBox->isChecked() && errMsg.isEmpty()) {
         outFile = saveController->getSaveFileName();
         if (outFile.isEmpty()) {
             errMsg = tr("Invalid output file name");
             outFileEdit->setFocus();
         }
-   }
+    }
 
-   if (!errMsg.isEmpty())  {
-       QMessageBox::critical(this, tr("Error"), errMsg);
-       return;
-   }
+    if (!errMsg.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"), errMsg);
+        return;
+    }
 
-   // run task
-   task = new HMMCalibrateToFileTask(inFile, outFile, s);
-   task->setReportingEnabled(true);
-   connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onStateChanged()));
-   connect(task, SIGNAL(si_progressChanged()), SLOT(sl_onProgressChanged()));
-   AppContext::getTaskScheduler()->registerTopLevelTask(task);
-   statusLabel->setText(tr("Starting calibration process"));
+    // run task
+    task = new HMMCalibrateToFileTask(inFile, outFile, s);
+    task->setReportingEnabled(true);
+    connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onStateChanged()));
+    connect(task, SIGNAL(si_progressChanged()), SLOT(sl_onProgressChanged()));
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    statusLabel->setText(tr("Starting calibration process"));
 
-   //update buttons
-   okButton->setText(tr("Hide"));
-   cancelButton->setText(tr("Cancel"));
+    // update buttons
+    okButton->setText(tr("Hide"));
+    cancelButton->setText(tr("Cancel"));
 
-   // new default behavior: hide dialog and use taskview to track the progress and results
-   accept(); //go to background
+    // new default behavior: hide dialog and use taskview to track the progress and results
+    accept();  // go to background
 }
 
-
 void HMMCalibrateDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
-    assert(task!=NULL);
-    if (task!=t || t->getState() != Task::State_Finished) {
+    Task *t = qobject_cast<Task *>(sender());
+    assert(task != NULL);
+    if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
     task->disconnect(this);
-    const TaskStateInfo& si = task->getStateInfo();
+    const TaskStateInfo &si = task->getStateInfo();
     if (si.hasError()) {
         statusLabel->setText(tr("Calibration finished with errors: %1").arg(si.getError()));
     } else if (task->isCanceled()) {
@@ -149,7 +149,7 @@ void HMMCalibrateDialogController::sl_onStateChanged() {
 }
 
 void HMMCalibrateDialogController::sl_onProgressChanged() {
-    assert(task==sender());
+    assert(task == sender());
     statusLabel->setText(tr("Progress: %1%").arg(task->getProgress()));
 }
 
@@ -169,10 +169,10 @@ void HMMCalibrateDialogController::initSaveController() {
 }
 
 void HMMCalibrateDialogController::reject() {
-    if (task!=NULL) {
+    if (task != NULL) {
         task->cancel();
     }
     QDialog::reject();
 }
 
-}//namespace
+}  // namespace U2

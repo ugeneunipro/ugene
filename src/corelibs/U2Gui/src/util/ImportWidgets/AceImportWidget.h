@@ -44,6 +44,6 @@ private:
     static const QString EXTENSION;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ACE_IMPORT_WIDGET_H_
+#endif  // _U2_ACE_IMPORT_WIDGET_H_

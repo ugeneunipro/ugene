@@ -34,7 +34,7 @@
 #    include "CrashHandlerPrivateWin.h"
 
 #    if defined(Q_OS_WIN32)
-#        ifdef UGENE_X86_64    //see http://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/4dc15026-884c-4f8a-8435-09d0111d708d/
+#        ifdef UGENE_X86_64  // see http://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/4dc15026-884c-4f8a-8435-09d0111d708d/
 extern "C" {
 void rollbackStack();
 }
@@ -111,10 +111,10 @@ bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t *dump_path,
 void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS *exinfo) {
     if (exinfo->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW) {
 #    if defined(Q_OS_WIN32)
-#        ifdef UGENE_X86    //see http://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/4dc15026-884c-4f8a-8435-09d0111d708d/
-        _asm add esp, 10240;    //roll back stack and current frame pointer
+#        ifdef UGENE_X86  // see http://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/4dc15026-884c-4f8a-8435-09d0111d708d/
+        _asm add esp, 10240;  // roll back stack and current frame pointer
 #        else
-        rollbackStack();    //TODO:need hack for x86_64
+        rollbackStack();  // TODO:need hack for x86_64
 #        endif
 #    endif
     }
@@ -195,12 +195,12 @@ QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS *exinfo) {
         case CONTROL_C_EXIT:
             exceptionText = "Control C exit";
             break;
-        default:;    // Do nothing
+        default:;  // Do nothing
     }
 
     return "C++ exception|" + exceptionText;
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

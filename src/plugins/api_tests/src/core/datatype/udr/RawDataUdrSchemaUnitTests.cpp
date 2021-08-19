@@ -146,4 +146,4 @@ IMPLEMENT_TEST(RawDataUdrSchemaUnitTests, writeContent_Null) {
     CHECK_TRUE(os.hasError(), "no error");
 }
 
-}    // namespace U2
+}  // namespace U2

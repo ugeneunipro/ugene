@@ -63,7 +63,7 @@ public:
 private:
     SamtoolsBasedDbi &dbi;
     QList<U2DataId> assemblyObjectIds;
-};    // SamtoolsBasedObjectDbi
+};  // SamtoolsBasedObjectDbi
 
 int bamFetchFunction(const bam1_t *b, void *data);
 
@@ -97,7 +97,7 @@ private:
 private:
     void fetchNextChunk();
     void applyNameFilter();
-};    // SamtoolsBasedReadsIterator
+};  // SamtoolsBasedReadsIterator
 
 class SamtoolsBasedAssemblyDbi : public U2SimpleAssemblyDbi {
 public:
@@ -121,7 +121,7 @@ private:
     SamtoolsBasedDbi &dbi;
 
     U2Region getCorrectRegion(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os);
-};    // SamtoolsBasedAssemblyDbi
+};  // SamtoolsBasedAssemblyDbi
 
 class SamtoolsBasedAttributeDbi : public U2SimpleAttributeDbi {
 public:
@@ -139,7 +139,7 @@ public:
 
 private:
     SamtoolsBasedDbi &dbi;
-};    // SamtoolsBasedAttributeDbi
+};  // SamtoolsBasedAttributeDbi
 
 /**
  * This DBI could be initialized to work only with sorted indexed BAM files.
@@ -180,7 +180,7 @@ private:
      *  Returns true if all right
      */
     bool initBamStructures(const GUrl &fileName);
-};    // SamtoolsBasedDbi
+};  // SamtoolsBasedDbi
 
 class SamtoolsBasedDbiFactory : public U2DbiFactory {
 public:
@@ -196,9 +196,9 @@ public:
 
 public:
     static const QString ID;
-};    // SamtoolsBasedDbiFactory
+};  // SamtoolsBasedDbiFactory
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_SAMTOOLS_BASED_DBI_H_
+#endif  // _U2_SAMTOOLS_BASED_DBI_H_

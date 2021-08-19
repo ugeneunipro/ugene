@@ -113,7 +113,7 @@ void checkWrittenDataSchema2(const UdrRecordId &id, const QByteArray &srcData, U
     CHECK_EXT(read == dstData.size(), os.setError("wrong read size"), );
     CHECK_EXT(srcData == dstData, os.setError("wrong data"), );
 }
-}    // namespace
+}  // namespace
 
 TestDbiProvider UdrTestData::dbiProvider = TestDbiProvider();
 const QString &UdrTestData::UDR_DB_URL("udr-dbi.ugenedb");
@@ -154,7 +154,7 @@ void UdrTestData::initTestUdr() {
     }
 
     U2OpStatusImpl os;
-    {    // init test schema
+    {  // init test schema
         UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID);
         schema->addField(UdrSchema::FieldDesc("int", UdrSchema::INTEGER, UdrSchema::INDEXED), os);
         schema->addField(UdrSchema::FieldDesc("double", UdrSchema::DOUBLE), os);
@@ -168,7 +168,7 @@ void UdrTestData::initTestUdr() {
         reg->registerSchema(schema, os);
         SAFE_POINT_OP(os, );
     }
-    {    // init test schema 2
+    {  // init test schema 2
         UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID_2);
         schema->addField(UdrSchema::FieldDesc("url", UdrSchema::STRING), os);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::BLOB, UdrSchema::NOT_INDEXED), os);
@@ -177,7 +177,7 @@ void UdrTestData::initTestUdr() {
         reg->registerSchema(schema, os);
         SAFE_POINT_OP(os, );
     }
-    {    // init test schema 3
+    {  // init test schema 3
         UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID_3, true);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::STRING), os);
         SAFE_POINT_OP(os, );
@@ -192,14 +192,14 @@ void UdrTestData::initTestData() {
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
 
     U2OpStatusImpl os;
-    {    // schema 1
+    {  // schema 1
         id1 = dbi->addRecord(TEST_SCHEMA_ID, getData(20, 30.0, "test str"), os).getRecordId();
         SAFE_POINT_OP(os, );
         id2 = dbi->addRecord(TEST_SCHEMA_ID, getData(48, 37.0, "test str 2"), os).getRecordId();
         SAFE_POINT_OP(os, );
     }
 
-    {    // schema 2
+    {  // schema 2
         dataSchema2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                       "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
                       "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
@@ -210,7 +210,7 @@ void UdrTestData::initTestData() {
         SAFE_POINT_OP(os, );
     }
 
-    {    // schema 3
+    {  // schema 3
         obj1Schema3 = createObjectSchema3(QStringList("data1"), os);
         SAFE_POINT_OP(os, );
         obj2Schema3 = createObjectSchema3(QStringList() << "data2"
@@ -508,4 +508,4 @@ IMPLEMENT_TEST(UdrDbiUnitTests, getObjectRecords_2) {
     CHECK_TRUE(r2.getString(1, os) == "data3", "data 2");
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -54,6 +54,6 @@ private:
     bool objectExists;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ASSEMBLY_IMPORTER_H_
+#endif  // _U2_ASSEMBLY_IMPORTER_H_

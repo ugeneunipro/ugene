@@ -100,7 +100,7 @@ private:
     SearchQuery *lastQuery;
     bool noDataToAlign;
 
-    //statistics
+    // statistics
     qint64 readsCount;
     qint64 readsAligned;
     qint64 shortreadLoadTime;
@@ -115,6 +115,6 @@ private:
     void createGenomeAlignerWriteTask();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOME_ALIGNER_TASK_H_
+#endif  // _U2_GENOME_ALIGNER_TASK_H_

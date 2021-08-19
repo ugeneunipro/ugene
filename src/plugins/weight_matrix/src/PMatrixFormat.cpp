@@ -61,7 +61,7 @@ FormatCheckResult PFMatrixFormat::checkRawData(const QByteArray &rawData, const 
     QString dataStr(rawData);
     QStringList qsl = dataStr.split("\n");
     qsl.removeAll(QString());
-    if (qsl.size() > 5 || qsl.size() < 4) {    //actually can be 4 or 5
+    if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 4 or 5
         return FormatDetection_NotMatched;
     }
     foreach (QString str, qsl) {
@@ -104,7 +104,7 @@ Document *PFMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 }
 
-//Factory
+// Factory
 //////////////////////////////////////////////////////////////////////////
 const PFMatrixViewFactoryId PFMatrixViewFactory::ID("pfm-view-factory");
 
@@ -163,7 +163,7 @@ void OpenPFMatrixViewTask::open() {
     }
 }
 
-///PWM
+/// PWM
 
 PWMatrixFormat::PWMatrixFormat(QObject *p)
     : DocumentFormat(p, DocumentFormatId("PWMatrix"), DocumentFormatFlag_SingleObjectFormat, QStringList("pwm")) {
@@ -182,10 +182,10 @@ FormatCheckResult PWMatrixFormat::checkRawData(const QByteArray &rawData, const 
     QString dataStr(rawData);
     QStringList qsl = dataStr.split("\n");
     qsl.removeAll(QString());
-    if (qsl.size() > 5 || qsl.size() < 4) {    //actually can be 5 or 6
+    if (qsl.size() > 5 || qsl.size() < 4) {  // actually can be 5 or 6
         return FormatDetection_NotMatched;
     }
-    qsl.pop_front();    //skip first line
+    qsl.pop_front();  // skip first line
     foreach (QString str, qsl) {
         QStringList words = str.split(QRegExp("\\s+"));
         CHECK(!words.isEmpty(), FormatDetection_NotMatched);
@@ -232,7 +232,7 @@ Document *PWMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 }
 
-//Factory
+// Factory
 //////////////////////////////////////////////////////////////////////////
 const PWMatrixViewFactoryId PWMatrixViewFactory::ID("pwm-view-factory");
 
@@ -291,4 +291,4 @@ void OpenPWMatrixViewTask::open() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

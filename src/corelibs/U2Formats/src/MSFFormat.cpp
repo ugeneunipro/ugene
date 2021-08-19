@@ -50,7 +50,7 @@ const QByteArray MSFFormat::SECTION_SEPARATOR = "//";
 const int MSFFormat::CHARS_IN_ROW = 50;
 const int MSFFormat::CHARS_IN_WORD = 10;
 
-//TODO: recheck if it does support streaming! Fix isObjectOpSupported if not!
+// TODO: recheck if it does support streaming! Fix isObjectOpSupported if not!
 
 MSFFormat::MSFFormat(QObject *parent)
     : TextDocumentFormat(parent, BaseDocumentFormats::MSF, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("msf")) {
@@ -99,7 +99,7 @@ struct MsfRow {
 void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
     QString objName = reader.getURL().baseFileName();
     MultipleSequenceAlignment al(objName);
-    int lineNumber = 0;    // Current line number from the object start. Used for error reporing.
+    int lineNumber = 0;  // Current line number from the object start. Used for error reporing.
 
     // Skip comments.
     int checkSum = -1;
@@ -190,7 +190,7 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
         os.setProgress(reader.getProgress());
     }
 
-    //checksum
+    // checksum
     U2OpStatus2Log seqCheckOs;
     const int numRows = al->getNumRows();
     for (int i = 0; i < numRows; i++) {
@@ -346,7 +346,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, 
             CHECK_OP(os, );
         }
 
-        //write sequence
+        // write sequence
         QList<QByteArray> sequenceList = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = sequenceList.constBegin();
@@ -392,4 +392,4 @@ FormatCheckResult MSFFormat::checkRawTextData(const QString &dataPrefix, const G
     return FormatDetection_NotMatched;
 }
 
-}    //namespace U2
+}  // namespace U2

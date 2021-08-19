@@ -116,7 +116,7 @@ U2Feature U2FeatureUtils::exportAnnotationGroupToFeature(const QString &name, co
     SAFE_POINT(dbi != nullptr, "Feature DBI is not initialized!", result);
 
     result.featureClass = U2Feature::Group;
-    //store to db to get ID
+    // store to db to get ID
     result.name = name;
     result.parentFeatureId = parentFeatureId;
     result.rootFeatureId = rootFeatureId;
@@ -125,29 +125,25 @@ U2Feature U2FeatureUtils::exportAnnotationGroupToFeature(const QString &name, co
     return result;
 }
 
-namespace {
-
-void addFeatureKeyToAnnotation(const U2FeatureKey &key, SharedAnnotationData &aData, U2OpStatus &os) {
+static void addFeatureKeyToAnnotation(const U2FeatureKey &key, SharedAnnotationData &aData, U2OpStatus &os) {
     CHECK(key.isValid(), );
-
-    if (Q_UNLIKELY(U2FeatureKeyOperation == key.name)) {
-        if (U2FeatureKeyOperationJoin == key.value) {
+    if (key.name == U2FeatureKeyOperation) {
+        if (key.value == U2FeatureKeyOperationJoin) {
             aData->setLocationOperator(U2LocationOperator_Join);
-        } else if (U2FeatureKeyOperationOrder == key.value) {
+        } else if (key.value == U2FeatureKeyOperationOrder) {
             aData->setLocationOperator(U2LocationOperator_Order);
-        } else if (U2FeatureKeyOperationBond == key.value) {
+        } else if (key.value == U2FeatureKeyOperationBond) {
             aData->setLocationOperator(U2LocationOperator_Bond);
         } else {
-            CHECK_EXT(false, os.setError(QObject::tr("Unexpected feature operator value detected.")), );
+            os.setError(QObject::tr("Unexpected feature operator value detected."));
+            return;
         }
-    } else if (Q_UNLIKELY(U2FeatureKeyCase == key.name)) {
+    } else if (key.name == U2FeatureKeyCase) {
         aData->caseAnnotation = true;
     } else {
         aData->qualifiers << U2Qualifier(key.name, key.value);
     }
 }
-
-}    // namespace
 
 void U2FeatureUtils::removeFeature(const U2DataId &featureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
     SAFE_POINT(!featureId.isEmpty(), "Invalid feature detected!", );
@@ -204,17 +200,18 @@ QList<FeatureAndKey> U2FeatureUtils::getSortedSubgroups(QList<FeatureAndKey> &fk
         return result;
     }
     int i = 0;
-    FeatureAndKey fk = fkList[i];
-    while (fk.feature.featureClass == U2Feature::Group) {
-        if (fk.feature.parentFeatureId == parentId) {
-            result.append(fk);
+    FeatureAndKey fkI = fkList[i];
+    while (fkI.feature.featureClass == U2Feature::Group) {
+        if (fkI.feature.parentFeatureId == parentId) {
+            result.append(fkI);
             fkList.removeAt(i);
         } else {
             i++;
         }
-        fk = fkList[i];
+        fkI = fkList[i];
     }
-    foreach (const FeatureAndKey &fk, result) {
+    QList<FeatureAndKey> resultCopy = result;
+    for (const FeatureAndKey &fk : qAsConst(resultCopy)) {
         result.append(getSortedSubgroups(fkList, fk.feature.id));
     }
     return result;
@@ -232,25 +229,27 @@ AnnotationGroup *U2FeatureUtils::loadAnnotationTable(const U2DataId &rootFeature
 
     AnnotationGroup *rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, nullptr, parentObj);
 
-    Annotation *currentAnnotation = nullptr;
     QList<FeatureAndKey> rawData = dbi->getFeatureTable(rootFeatureId, os);
     QList<FeatureAndKey> groups = getSortedSubgroups(rawData, rootFeatureId);
     rawData = groups + rawData;
 
-    foreach (const FeatureAndKey &fnk, rawData) {
-        if (U2Feature::Group == fnk.feature.featureClass) {
+    for (const FeatureAndKey &fnk : qAsConst(rawData)) {
+        if (fnk.feature.featureClass == U2Feature::Group) {
             rootGroup->addSubgroup(fnk.feature);
-        } else if (nullptr != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId))) {
+        } else if (auto parentAnnotation = rootGroup->findAnnotationById(fnk.feature.parentFeatureId)) {
             // add a region to an already fetched annotation
             SAFE_POINT(!fnk.feature.location.region.isEmpty() && !fnk.key.isValid(), "Unexpected feature data fetched from DB", nullptr);
-            const_cast<SharedAnnotationData &>(currentAnnotation->getData())->location->regions.append(fnk.feature.location.region);
-        } else if (nullptr != (currentAnnotation = rootGroup->findAnnotationById(fnk.feature.id))) {
-            // add a qualifier to an already fetched annotation
-            SAFE_POINT(fnk.key.isValid(), "Valid feature key expected", nullptr);
-            addFeatureKeyToAnnotation(fnk.key, const_cast<SharedAnnotationData &>(currentAnnotation->getData()), os);
+            const_cast<SharedAnnotationData &>(parentAnnotation->getData())->location->regions.append(fnk.feature.location.region);
+        } else if (auto currentAnnotation = rootGroup->findAnnotationById(fnk.feature.id)) {
+            // Add a qualifier to the already fetched annotation.
+            SAFE_POINT(fnk.key.isValid(), "Feature key is invalid", nullptr);
+            // TODO: below is a hack to populate annotation data during the loading process.
+            //  A better solution would be is to prepare all 'SharedAnnotationData' first and next create Annotations with that data.
+            SharedAnnotationData &editableData = const_cast<SharedAnnotationData &>(currentAnnotation->getData());
+            addFeatureKeyToAnnotation(fnk.key, editableData, os);
         } else {
             // fetch annotation
-            SharedAnnotationData aData(new AnnotationData);
+            SharedAnnotationData aData(new AnnotationData());
             aData->type = fnk.feature.featureType;
             aData->name = fnk.feature.name;
             aData->location->strand = fnk.feature.location.strand;
@@ -317,8 +316,7 @@ void U2FeatureUtils::updateFeatureLocation(const U2DataId &featureId, const U2Da
 
     dbi->removeFeaturesByParent(featureId, os, NotSelectParentFeature);
 
-    const bool isMultyRegion = location->isMultiRegion();
-    if (isMultyRegion) {
+    if (location->isMultiRegion()) {
         U2FeatureLocation newLocation(location->strand, U2Region());
         dbi->updateLocation(featureId, newLocation, os);
 
@@ -329,13 +327,11 @@ void U2FeatureUtils::updateFeatureLocation(const U2DataId &featureId, const U2Da
         dbi->updateLocation(featureId, newLocation, os);
     }
     // update location operator
-    const QList<U2FeatureKey> keys = dbi->getFeatureKeys(featureId, os);
-    CHECK_OP(os, );
-    U2FeatureKey locationOpKey(U2FeatureKeyOperation, QString());
-    const bool valueFound = dbi->getKeyValue(featureId, locationOpKey, os);
+    U2FeatureKey locationOpKey(U2FeatureKeyOperation, "");
+    bool valueFound = dbi->getKeyValue(featureId, locationOpKey, os);
     SAFE_POINT(valueFound && !locationOpKey.value.isEmpty(), "Invalid annotation's location operator value!", );
 
-    const U2FeatureKey newOpKey = createFeatureKeyLocationOperator(location->op);
+    U2FeatureKey newOpKey = createFeatureKeyLocationOperator(location->op);
     if (newOpKey.value != locationOpKey.value) {
         dbi->updateKeyValue(featureId, newOpKey, os);
         CHECK_OP(os, );
@@ -403,7 +399,7 @@ SharedAnnotationData U2FeatureUtils::getAnnotationDataFromFeature(const U2DataId
         }
     }
 
-    //copy data
+    // copy data
     result->location->strand = annotatingFeature.location.strand;
 
     result->location->regions = regions;
@@ -413,12 +409,16 @@ SharedAnnotationData U2FeatureUtils::getAnnotationDataFromFeature(const U2DataId
     return result;
 }
 
-QList<U2Feature> U2FeatureUtils::getSubAnnotations(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope resursive, ParentFeatureStatus parent) {
-    return (Root == parent) ? getFeaturesByRoot(parentFeatureId, dbiRef, os, resursive, U2Feature::Annotation) : getFeaturesByParent(parentFeatureId, dbiRef, os, resursive, U2Feature::Annotation);
+QList<U2Feature> U2FeatureUtils::getSubAnnotations(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope recursive, ParentFeatureStatus parent) {
+    return parent == Root
+               ? getFeaturesByRoot(parentFeatureId, dbiRef, os, recursive, U2Feature::Annotation)
+               : getFeaturesByParent(parentFeatureId, dbiRef, os, recursive, U2Feature::Annotation);
 }
 
-QList<U2Feature> U2FeatureUtils::getSubGroups(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope resursive, ParentFeatureStatus parent) {
-    return (Root == parent) ? getFeaturesByRoot(parentFeatureId, dbiRef, os, resursive, U2Feature::Group) : getFeaturesByParent(parentFeatureId, dbiRef, os, resursive, U2Feature::Group);
+QList<U2Feature> U2FeatureUtils::getSubGroups(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope recursive, ParentFeatureStatus parent) {
+    return parent == Root
+               ? getFeaturesByRoot(parentFeatureId, dbiRef, os, recursive, U2Feature::Group)
+               : getFeaturesByParent(parentFeatureId, dbiRef, os, recursive, U2Feature::Group);
 }
 
 QList<U2Feature> U2FeatureUtils::getFeaturesByParent(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os, OperationScope scope, const FeatureFlags &featureClass, SubfeatureSelectionMode mode) {
@@ -435,17 +435,17 @@ QList<U2Feature> U2FeatureUtils::getFeaturesByParent(const U2DataId &parentFeatu
     QScopedPointer<U2DbiIterator<U2Feature>> featureIter(dbi->getFeaturesByParent(parentFeatureId, QString(), U2DataId(), os, mode));
     CHECK_OP(os, result);
 
-    QList<U2Feature> subfeatures;
+    QList<U2Feature> subFeatures;
     while (featureIter->hasNext()) {
-        const U2Feature feature = featureIter->next();
+        U2Feature feature = featureIter->next();
         if (featureClass.testFlag(feature.featureClass)) {
             result << feature;
         }
         CHECK_OP(os, result);
-        subfeatures << feature;
+        subFeatures << feature;
     }
-    if (Recursive == scope) {
-        foreach (const U2Feature &feature, subfeatures) {
+    if (scope == Recursive) {
+        for (const U2Feature &feature : qAsConst(subFeatures)) {
             result << getFeaturesByParent(feature.id, dbiRef, os, Recursive, featureClass, NotSelectParentFeature);
             CHECK_OP(os, result);
         }
@@ -468,7 +468,6 @@ QList<U2Feature> U2FeatureUtils::getFeaturesByRoot(const U2DataId &rootFeatureId
     QScopedPointer<U2DbiIterator<U2Feature>> featureIter(dbi->getFeaturesByRoot(rootFeatureId, featureClass, os));
     CHECK_OP(os, result);
 
-    QList<U2Feature> subfeatures;
     while (featureIter->hasNext()) {
         const U2Feature feature = featureIter->next();
         if (featureClass.testFlag(feature.featureClass)) {
@@ -477,8 +476,8 @@ QList<U2Feature> U2FeatureUtils::getFeaturesByRoot(const U2DataId &rootFeatureId
             }
             CHECK_OP(os, result);
         } else {
+            coreLog.error(L10N::internalError("Unexpected feature type is fetched from the DB"));
             assert(false);
-            coreLog.error("Unexpected feature type is fetched from the DB");
         }
     }
 
@@ -503,7 +502,7 @@ U2Feature U2FeatureUtils::getFeatureById(const U2DataId &id, const U2DbiRef &dbi
 
 void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotationData &annotation, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, U2Feature &resFeature, QList<U2FeatureKey> &resFeatureKeys) {
     resFeature.featureClass = U2Feature::Annotation;
-    //copy data
+    // copy data
     resFeature.name = annotation->name;
     resFeature.featureType = annotation->type;
     resFeature.parentFeatureId = parentFeatureId;
@@ -513,12 +512,12 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
         resFeature.location.region = annotation->location->regions.first();
     }
 
-    //add qualifiers
+    // add qualifiers
     for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
         resFeatureKeys.append(U2FeatureKey(qualifier.name, qualifier.value));
     }
 
-    //add operation
+    // add operation
     const U2FeatureKey locationOpKey = createFeatureKeyLocationOperator(annotation->location->op);
     if (locationOpKey.isValid()) {
         resFeatureKeys.append(locationOpKey);
@@ -547,4 +546,4 @@ U2FeatureKey U2FeatureUtils::createFeatureKeyLocationOperator(U2LocationOperator
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

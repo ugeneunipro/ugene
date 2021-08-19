@@ -69,6 +69,6 @@ private:
     static const int MAX_SHOWN_ITEMS_IN_REPORT = 100;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_TO_DATABASE_TASK_H_
+#endif  // _U2_IMPORT_TO_DATABASE_TASK_H_

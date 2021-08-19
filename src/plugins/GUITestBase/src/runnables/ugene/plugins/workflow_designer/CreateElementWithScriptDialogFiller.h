@@ -69,6 +69,6 @@ public:
 private:
     QString text, message;
 };
-}    // namespace U2
+}  // namespace U2
 
-#endif    // CREATEELEMENTWITHSCRIPTDIALOGFILLER_H
+#endif  // CREATEELEMENTWITHSCRIPTDIALOGFILLER_H

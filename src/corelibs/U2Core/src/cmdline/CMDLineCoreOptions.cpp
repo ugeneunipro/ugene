@@ -61,8 +61,8 @@ void CMDLineCoreOptions::initHelp() {
     CMDLineHelpProvider *helpSection = new CMDLineHelpProvider(
         HELP,
         tr("Shows help information."),
-        "",    // No full description
-        "",    // No arguments
+        "",  // No full description
+        "",  // No arguments
         HELP_SHORT);
 
     CMDLineHelpProvider *loadSettingsFileSection = new CMDLineHelpProvider(
@@ -99,4 +99,4 @@ void CMDLineCoreOptions::initHelp() {
     cmdLineRegistry->registerCMDLineHelpProvider(sessionDatabaseSection);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -74,6 +74,6 @@ private slots:
     void sl_showDesignerWindow();
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

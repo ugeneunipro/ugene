@@ -242,5 +242,5 @@ QString Text2SequencePrompter::composeRichDoc() {
     return doc;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -37,6 +37,6 @@ protected:
     static void saveCredentials(const QString &resourceUrl, const QString &password, bool remember);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CREDENTIALS_ASKER_H_
+#endif  // _U2_CREDENTIALS_ASKER_H_

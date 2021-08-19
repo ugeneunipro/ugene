@@ -46,6 +46,6 @@ private:
     static void createRelation(U2OpStatus &os, const DbiConnection &connection, const U2Sequence &sequence, const U2DataId &chromatogramId);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_IMPORTER_H_
+#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_IMPORTER_H_

@@ -21,30 +21,17 @@
 
 #include "GTTestsBookmarks.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 
-#include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MaEditorFactory.h>
-
 #include "GTGlobals.h"
 #include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProject.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "utils/GTUtilsApp.h"
-#include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
 
@@ -94,7 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
-    //2'. Change: Remove the bookmark
+    // 2'. Change: Remove the bookmark
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_REMOVE_BOOKMARK, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
@@ -104,5 +91,5 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 }
-}    // namespace GUITest_common_scenarios_project_bookmarks
-}    // namespace U2
+}  // namespace GUITest_common_scenarios_project_bookmarks
+}  // namespace U2

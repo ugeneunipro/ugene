@@ -74,7 +74,9 @@ QMap<BreakpointConditionParameter, HitCondition>
     BreakpointManagerView::conditionParametertranslations = QMap<BreakpointConditionParameter, HitCondition>();
 
 BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus *initDebugInfo,
-    const QSharedPointer<Schema> &initScheme, QGraphicsScene *scene, QWidget *parent)
+                                             const QSharedPointer<Schema> &initScheme,
+                                             QGraphicsScene *scene,
+                                             QWidget *parent)
     : QWidget(parent),
       debugInfo(initDebugInfo),
       scene(scene),
@@ -360,15 +362,15 @@ void BreakpointManagerView::sl_highlightItem() {
 void BreakpointManagerView::sl_breakpointDoubleClicked(QTreeWidgetItem *item, int column) {
     if (nullptr != item) {
         switch (column) {
-        case BREAKPOINT_LABELS_COLUMN_NUMBER:
-            sl_editLabels();
-            break;
-        case BREAKPOINT_CONDITION_COLUMN_NUMBER:
-            sl_setCondition();
-            break;
-        case BREAKPOINT_HIT_COUNT_COLUMN_NUMBER:
-            sl_hitCount();
-            break;
+            case BREAKPOINT_LABELS_COLUMN_NUMBER:
+                sl_editLabels();
+                break;
+            case BREAKPOINT_CONDITION_COLUMN_NUMBER:
+                sl_setCondition();
+                break;
+            case BREAKPOINT_HIT_COUNT_COLUMN_NUMBER:
+                sl_hitCount();
+                break;
         }
     }
 }
@@ -499,14 +501,14 @@ void BreakpointManagerView::sl_conditionTextChanged(const QString &text) {
         QString conditionLabel = tr(CONDITION_LABEL_BEGIN) + text;
         QString conditionLabelEnd;
         switch (conditionInfo.conditionParameter) {
-        case IS_TRUE:
-            conditionLabelEnd = tr(CONDITION_LABEL_END_IS_TRUE);
-            break;
-        case HAS_CHANGED:
-            conditionLabelEnd = tr(CONDITION_LABEL_END_HAS_CHANGED);
-            break;
-        default:
-            Q_ASSERT(false);
+            case IS_TRUE:
+                conditionLabelEnd = tr(CONDITION_LABEL_END_IS_TRUE);
+                break;
+            case HAS_CHANGED:
+                conditionLabelEnd = tr(CONDITION_LABEL_END_HAS_CHANGED);
+                break;
+            default:
+                Q_ASSERT(false);
         }
         conditionLabel.append(conditionLabelEnd);
         item->setText(BREAKPOINT_CONDITION_COLUMN_NUMBER, conditionLabel);
@@ -600,4 +602,4 @@ void BreakpointManagerView::paintEvent(QPaintEvent * /*event*/) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

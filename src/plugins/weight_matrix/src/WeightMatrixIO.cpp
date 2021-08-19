@@ -329,4 +329,4 @@ void PWMatrixWriteTask::run() {
     WeightMatrixIO::writePWMatrix(iof, url, stateInfo, model);
 }
 
-}    // namespace U2
+}  // namespace U2

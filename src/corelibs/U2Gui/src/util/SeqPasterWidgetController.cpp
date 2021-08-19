@@ -38,7 +38,7 @@ namespace U2 {
 SeqPasterWidgetController::SeqPasterWidgetController(QWidget *p, const QByteArray &initText, bool needWarning)
     : QWidget(p), preferred(0), additionalWarning(needWarning), allowFastaFormatMode(false) {
     ui = new Ui_SeqPasterWidget;
-    //TODO: add not null project checking
+    // TODO: add not null project checking
     ui->setupUi(this);
     ui->symbolToReplaceEdit->setMaximumSize(ui->symbolToReplaceEdit->height(), ui->symbolToReplaceEdit->height());
 
@@ -171,7 +171,7 @@ void SeqPasterWidgetController::disableCustomSettings() {
     ui->groupBox->setChecked(false);
     ui->groupBox->setDisabled(true);
     ui->groupBox->hide();
-    //ui->groupBox->hide();
+    // ui->groupBox->hide();
 }
 
 void SeqPasterWidgetController::setPreferredAlphabet(const DNAAlphabet *alp) {
@@ -198,4 +198,4 @@ void SeqPasterWidgetController::allowFastaFormat(bool allow) {
     allowFastaFormatMode = allow;
 }
 
-}    // namespace U2
+}  // namespace U2

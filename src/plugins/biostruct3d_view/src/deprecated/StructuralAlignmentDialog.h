@@ -50,6 +50,6 @@ private:
     BioStruct3DSubsetEditor *ref, *mob;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // #ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_
+#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_

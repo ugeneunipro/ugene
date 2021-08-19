@@ -51,6 +51,6 @@ private:
     static const QString SETTINGS_PATH;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PASSWORD_STORAGE_H_
+#endif  // _U2_PASSWORD_STORAGE_H_

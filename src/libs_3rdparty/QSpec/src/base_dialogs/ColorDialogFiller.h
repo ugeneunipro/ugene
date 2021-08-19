@@ -38,5 +38,5 @@ private:
     bool setWithQt;
 };
 
-}    // namespace HI
-#endif    // COLORDIALOGFILLER_H
+}  // namespace HI
+#endif  // COLORDIALOGFILLER_H

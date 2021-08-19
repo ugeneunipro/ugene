@@ -183,5 +183,5 @@ Task *ImportPhredQualityWorker::tick() {
 void ImportPhredQualityWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

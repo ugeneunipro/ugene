@@ -67,8 +67,8 @@ GUI_TEST_CLASS_DECLARATION(test_0009_1)
 GUI_TEST_CLASS_DECLARATION(test_0009_2)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_annotations_import
+}  // namespace GUITest_common_scenarios_annotations_import
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTTESTSANNOTATIONSIMPORT_H
+#endif  // GTTESTSANNOTATIONSIMPORT_H

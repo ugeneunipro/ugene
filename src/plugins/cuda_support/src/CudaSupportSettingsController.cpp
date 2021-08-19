@@ -52,17 +52,17 @@ void CudaSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s) {
     QList<CudaGpuModel *> registeredGpus = AppContext::getCudaGpuRegistry()->getRegisteredGpus();
     CudaSupportSettingsPageState *s = qobject_cast<CudaSupportSettingsPageState *>(_s);
 
-    //saving state of enabled/disabled GPUs into registry
+    // saving state of enabled/disabled GPUs into registry
     for (int i = 0, end = s->enabledGpus.size(); i < end; ++i) {
         registeredGpus[i]->setEnabled(s->enabledGpus[i]);
     }
 
-    //increasing/decreasing maxuse of according resource
+    // increasing/decreasing maxuse of according resource
     int totalEnabled = s->enabledGpus.count(true);
     AppResourceSemaphore *gpuResource = dynamic_cast<AppResourceSemaphore *>(AppResourcePool::instance()->getResource(RESOURCE_CUDA_GPU));
     if (gpuResource) {
         gpuResource->setMaxUse(totalEnabled);
-    }    //else - resource was not registered, nothing to do.
+    }  // else - resource was not registered, nothing to do.
 }
 
 AppSettingsGUIPageWidget *CudaSupportSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
@@ -85,7 +85,7 @@ const static char *noGpusDiscoveredText = "No CUDA-enabled GPU detected.";
 CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString &_msg, CudaSupportSettingsPageController * /*ctrl*/)
     : onlyMsg(_msg) {
     if (!onlyMsg.isEmpty()) {
-        //just display the centered warning message
+        // just display the centered warning message
         QHBoxLayout *hLayout = new QHBoxLayout(this);
         QLabel *msgLabel = new QLabel(onlyMsg, this);
         msgLabel->setAlignment(Qt::AlignLeft);
@@ -95,7 +95,7 @@ CudaSupportSettingsPageWidget::CudaSupportSettingsPageWidget(const QString &_msg
         hLayout->addStretch();
         setLayout(hLayout);
     } else {
-        //everything is OK - adding info about all available GPUs
+        // everything is OK - adding info about all available GPUs
 
         QVBoxLayout *vLayout = new QVBoxLayout(this);
 
@@ -140,4 +140,4 @@ AppSettingsGUIPageState *CudaSupportSettingsPageWidget::getState(QString & /*err
     return state;
 }
 
-}    // namespace U2
+}  // namespace U2

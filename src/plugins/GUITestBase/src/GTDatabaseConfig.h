@@ -41,6 +41,6 @@ public:
     static void initTestConnectionInfo(const QString &name, const QString &db = database(), bool withCredentials = true, bool readOnly = false);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GUI_DATABASE_CONFIG_H_
+#endif  // _U2_GUI_DATABASE_CONFIG_H_

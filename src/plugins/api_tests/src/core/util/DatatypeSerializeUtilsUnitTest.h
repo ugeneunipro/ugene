@@ -56,7 +56,7 @@ DECLARE_TEST(DatatypeSerializeUtilsUnitTest, FMatrixSerializer);
 /* FMatrixSerializer 2 */
 DECLARE_TEST(DatatypeSerializeUtilsUnitTest, FMatrixSerializer_failed);
 
-}    // namespace U2
+}  // namespace U2
 
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, DNAChromatogramSerializer_true);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, DNAChromatogramSerializer_false);
@@ -69,4 +69,4 @@ DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, WMatrixSerializer_failed);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, FMatrixSerializer);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, FMatrixSerializer_failed);
 
-#endif    // _U2_DATATYPE_SERIALIZE_UTILS_UNIT_TESTS_H_
+#endif  // _U2_DATATYPE_SERIALIZE_UTILS_UNIT_TESTS_H_

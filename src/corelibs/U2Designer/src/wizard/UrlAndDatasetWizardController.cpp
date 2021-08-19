@@ -64,4 +64,4 @@ void UrlAndDatasetWizardController::sl_datasetsChanged() {
     wc->setAttributeValue(widget->getInfos().at(1), qVariantFromValue<QList<Dataset>>(dsc->getDatasets()));
 }
 
-}    // namespace U2
+}  // namespace U2

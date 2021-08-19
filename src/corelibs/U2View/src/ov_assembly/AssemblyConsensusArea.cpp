@@ -296,4 +296,4 @@ void AssemblyConsensusArea::updateActions() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

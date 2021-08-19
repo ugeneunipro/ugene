@@ -79,7 +79,7 @@ protected:
     // description of entity
     QString desc;
 
-};    // Descriptor
+};  // Descriptor
 
 /**
  * It is a Descriptor with icon
@@ -88,8 +88,8 @@ class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
     VisualDescriptor(const Descriptor &d, const QString &_iconPath = QString());
 
-    //getIcon will create icon from its path (if path exists) on the first call.
-    //This is compatibility issue for congene.
+    // getIcon will create icon from its path (if path exists) on the first call.
+    // This is compatibility issue for congene.
     QIcon getIcon();
     void setIcon(QIcon icon_);
     void setIconPath(const QString &iconPath_);
@@ -100,9 +100,9 @@ private:
     // user defined or taken from iconPath icon
     QIcon icon;
 
-};    // VisualDescriptor
+};  // VisualDescriptor
 
-}    //namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::Descriptor)
 Q_DECLARE_METATYPE(QList<U2::Descriptor>)

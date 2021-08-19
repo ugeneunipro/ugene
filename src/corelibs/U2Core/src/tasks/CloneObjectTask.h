@@ -53,6 +53,6 @@ private:
     GObject *dstObj;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CLONE_OBJECT_TASK_H_
+#endif  // _U2_CLONE_OBJECT_TASK_H_

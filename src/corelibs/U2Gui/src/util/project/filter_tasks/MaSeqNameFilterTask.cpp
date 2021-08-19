@@ -93,4 +93,4 @@ AbstractProjectFilterTask *McaReferenceNameFilterTaskFactory::createNewTask(cons
     return new McaReferenceNameFilterTask(settings, docs);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -52,4 +52,4 @@ void CreateUnrootedBranchesTask::run() {
     root = getBranch(root1, nullptr);
 }
 
-}    // namespace U2
+}  // namespace U2

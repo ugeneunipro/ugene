@@ -106,6 +106,6 @@ private:
     QDSamplePane *glass;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

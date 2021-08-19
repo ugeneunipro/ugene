@@ -143,4 +143,4 @@ QList<SWMulAlignResultNamesTag *> *SWMulAlignResultNamesTagsRegistry::getTagsWit
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

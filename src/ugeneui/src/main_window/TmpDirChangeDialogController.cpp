@@ -64,4 +64,4 @@ void TmpDirChangeDialogController::sl_okButtonClicked() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

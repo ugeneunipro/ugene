@@ -37,4 +37,4 @@ U2ObjectRelationsDbi::U2ObjectRelationsDbi(U2Dbi *rootDbi)
     : U2ChildDbi(rootDbi) {
 }
 
-}    // namespace U2
+}  // namespace U2

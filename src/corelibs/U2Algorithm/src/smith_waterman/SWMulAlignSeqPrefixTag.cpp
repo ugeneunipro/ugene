@@ -37,4 +37,4 @@ QString SWMulAlignSeqPrefixTag::expandTag(const QVariant &argument) const {
     return seqName.left(lastWordEndPositionInPrefix);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -19,26 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef  _NEIGHBORJOIN_PLUGIN_H_
-#define  _NEIGHBORJOIN_PLUGIN_H_
+#ifndef _NEIGHBORJOIN_PLUGIN_H_
+#define _NEIGHBORJOIN_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/PluginModel.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
 
-
 class PhylipPlugin : public Plugin {
-	Q_OBJECT
+    Q_OBJECT
 public:
     static const QString PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY;
     PhylipPlugin();
+
 private:
     void processCmdlineOptions();
 };
 
-
-} //namespace
+}  // namespace U2
 
 #endif

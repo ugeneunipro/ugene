@@ -33,6 +33,6 @@ public:
     void commonScenario();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // ESCAPECLICKER_H
+#endif  // ESCAPECLICKER_H

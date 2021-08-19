@@ -135,5 +135,5 @@ public:
     QString doc2ContextName;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

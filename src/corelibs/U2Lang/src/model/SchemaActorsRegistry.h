@@ -40,7 +40,7 @@ private:
     QMutex mutex;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _SCHEMA_ACTORS_REGISTRY_H_
+#endif  // _SCHEMA_ACTORS_REGISTRY_H_

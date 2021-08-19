@@ -87,7 +87,7 @@ public:
         U2Region *curProcessingSubseq;
     };
 
-    //Smith-Waterman search in sequence viewer
+    // Smith-Waterman search in sequence viewer
     SmithWatermanReportCallbackMAImpl(const QString &resultDirPath,
                                       const QString &mobjectNamesTemplate,
                                       const QString &refSubseqTemplate,
@@ -100,7 +100,7 @@ public:
                                       const DNATranslation *amitoTT = nullptr,
                                       WhatDoYouWantFromMe plan = SequenceView_Search);
 
-    //Smith-Waterman alignment in MSA Editor (in new window)
+    // Smith-Waterman alignment in MSA Editor (in new window)
     SmithWatermanReportCallbackMAImpl(const QString &resultDirPath,
                                       const QString &mobjectName,
                                       const U2EntityRef &firstSequenceRef,
@@ -108,7 +108,7 @@ public:
                                       const U2EntityRef &sourceMsaRef,
                                       WhatDoYouWantFromMe plan = MSA_Alignment_InNewWindow);
 
-    //Smith-Waterman alignment in MSA Editor (in current window)
+    // Smith-Waterman alignment in MSA Editor (in current window)
     SmithWatermanReportCallbackMAImpl(
         const U2EntityRef &firstSequenceRef,
         const U2EntityRef &secondSequenceRef,
@@ -134,7 +134,7 @@ private:
         const QList<SmithWatermanResult> &results);
 
 private:
-    WhatDoYouWantFromMe plan;    //determine actions to be perfomed
+    WhatDoYouWantFromMe plan;  // determine actions to be perfomed
 
     QString resultDirPath;
     QString mobjectNamesTemplate;
@@ -143,7 +143,7 @@ private:
     QByteArray refSequenceData;
     QByteArray ptrnSequenceData;
     const DNAAlphabet *alphabet;
-    const DNATranslation *aminoTT;    // not null if result must be translated.
+    const DNATranslation *aminoTT;  // not null if result must be translated.
     TagExpansionPossibleData expansionInfo;
 
     U2EntityRef firstSequenceRef;
@@ -155,6 +155,6 @@ private:
     static const quint8 countOfSimultLoadedMADocs;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

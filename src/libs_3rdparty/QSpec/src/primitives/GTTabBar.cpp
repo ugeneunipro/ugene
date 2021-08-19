@@ -64,4 +64,4 @@ void GTTabBar::setCurrentIndex(GUITestOpStatus &os, QTabBar *tabBar, int index) 
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

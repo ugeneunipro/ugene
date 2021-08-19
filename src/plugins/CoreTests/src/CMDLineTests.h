@@ -57,13 +57,13 @@ private:
     QStringList tmpFiles;
     QString workingDir;
     bool autoRemoveWorkingDir = false;
-};    // GTest_RunCMDLine
+};  // GTest_RunCMDLine
 
 class CMDLineTests {
 public:
     static QList<XMLTestFactory *> createTestFactories();
-};    // CMDLineTests
+};  // CMDLineTests
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CMDLINE_TESTS_H_
+#endif  // _U2_CMDLINE_TESTS_H_

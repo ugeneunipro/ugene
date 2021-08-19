@@ -63,7 +63,7 @@ Version Version::parseVersion(const QString &text) {
     Version v;
     v.text = text;
 
-    //parse sub-numbers and suffix
+    // parse sub-numbers and suffix
     int versionType = 0;
     QString currentNum;
     int textPos = 0;
@@ -91,7 +91,7 @@ Version Version::parseVersion(const QString &text) {
     }
     v.suffix = v.text.mid(textPos);
     v.isDevVersion = v.suffix.contains(VERSION_DEV_SUFFIX);
-    if (v.suffix.isEmpty()) {    //See issue UGENE-870 (https://ugene.net/tracker/browse/UGENE-870)
+    if (v.suffix.isEmpty()) {  // See issue UGENE-870 (https://ugene.net/tracker/browse/UGENE-870)
         bool ok;
         int val = currentNum.toInt(&ok);
         if (ok) {
@@ -168,4 +168,4 @@ bool Version::checkBuildAndRuntimeVersions() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

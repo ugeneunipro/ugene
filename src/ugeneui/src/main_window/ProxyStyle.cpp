@@ -24,4 +24,4 @@ void ProxyStyle::polish(QWidget *widget) {
 #endif
 }
 
-}    // namespace U2
+}  // namespace U2

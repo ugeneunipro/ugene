@@ -52,6 +52,6 @@ private:
     MsaOpSavableTab savableTab;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_GENERAL_TAB_H_
+#endif  // _U2_MSA_GENERAL_TAB_H_

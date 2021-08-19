@@ -83,4 +83,4 @@ GenbankLocationValidator::~GenbankLocationValidator() {
     okButton->setEnabled(true);
 }
 
-}    // namespace U2
+}  // namespace U2

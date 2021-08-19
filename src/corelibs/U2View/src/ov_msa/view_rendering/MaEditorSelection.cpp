@@ -38,7 +38,7 @@ MaEditorSelection::MaEditorSelection(const QList<QRect> &rects)
 }
 
 QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rectList) {
-    if (rectList.size() <= 1) {    // 0 or 1 result: no need to merge, validate only.
+    if (rectList.size() <= 1) {  // 0 or 1 result: no need to merge, validate only.
         return rectList.isEmpty() || rectList.first().isEmpty() ? QList<QRect>() : rectList;
     }
     int unifiedLeft = INT_MAX;
@@ -47,7 +47,7 @@ QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rect
         unifiedLeft = qMin(unifiedLeft, rect.left());
         unifiedRight = qMax(unifiedRight, rect.right());
     }
-    if (unifiedRight < unifiedLeft) {    // All rects are empty.
+    if (unifiedRight < unifiedLeft) {  // All rects are empty.
         return {};
     }
     // Sort & merge rects if needed. Assign unified left & right.
@@ -91,6 +91,14 @@ bool MaEditorSelection::isMultiRegionSelection() const {
 
 bool MaEditorSelection::isSingleRegionSelection() const {
     return rectList.size() == 1;
+}
+
+bool MaEditorSelection::isSingleRowSelection() const {
+    return rectList.size() == 1 && rectList[0].height() == 1;
+}
+
+bool MaEditorSelection::isSingleColumnSelection() const {
+    return rectList.size() == 1 && rectList[0].width() == 1;
 }
 
 bool MaEditorSelection::isSingleBaseSelection() const {
@@ -156,6 +164,13 @@ QList<int> MaEditorSelection::getSelectedRowIndexes() const {
     return selectedRowIndexes;
 }
 
+U2Region MaEditorSelection::getColumnRegion() const {
+    if (isEmpty()) {
+        return {};
+    }
+    return {rectList[0].x(), rectList[0].width()};
+}
+
 /************************************************************************/
 /* MaEditorSelectionController */
 /************************************************************************/
@@ -203,13 +218,13 @@ void McaEditorSelectionController::clearSelection() {
 }
 
 void McaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
-    QRect selectionRect = newSelection.toRect();
-    if (selectionRect.isEmpty()) {
+    if (newSelection.isEmpty()) {
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();
         return;
     }
-    if (selectionRect.width() == 1 && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
+    QList<QRect> selectedRects = newSelection.getRectList();
+    if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();
@@ -218,4 +233,4 @@ void McaEditorSelectionController::setSelection(const MaEditorSelection &newSele
     MaEditorSelectionController::setSelection(newSelection);
 }
 
-}    // namespace U2
+}  // namespace U2

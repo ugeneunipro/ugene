@@ -79,7 +79,7 @@ private:
     EnzymeGroupTreeItem *findGroupItem(const QString &s, bool create);
 
     static QList<SEnzymeData> loadedEnzymes;
-    //saves selection between calls to getSelectedEnzymes()
+    // saves selection between calls to getSelectedEnzymes()
     static QSet<QString> lastSelection;
 
     int totalEnzymes;
@@ -125,6 +125,6 @@ public:
 
 #define ANY_VALUE -1
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

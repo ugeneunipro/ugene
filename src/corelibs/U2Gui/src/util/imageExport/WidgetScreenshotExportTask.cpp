@@ -126,4 +126,4 @@ Task *WidgetScreenshotImageExportController::getExportToBitmapTask(const ImageEx
     return new WidgetScreenshotExportToBitmapTask(widget, settings);
 }
 
-}    // namespace U2
+}  // namespace U2

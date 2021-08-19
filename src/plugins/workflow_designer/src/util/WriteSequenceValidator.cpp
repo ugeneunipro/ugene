@@ -93,5 +93,5 @@ bool WriteSequencePortValidator::validate(const IntegralBusPort *port, Notificat
     return result;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

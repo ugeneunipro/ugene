@@ -37,7 +37,6 @@
 #include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -46,14 +45,12 @@
 
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Dataset.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include "CoreLib.h"
 #include "GenericReadWorker.h"
 
 namespace U2 {
@@ -184,8 +181,8 @@ void TextReader::processNextLine() {
 }
 
 /*************************************
-* TextWriter
-*************************************/
+ * TextWriter
+ *************************************/
 void TextWriter::data2doc(Document *doc, const QVariantMap &data) {
     QStringList list = data.value(BaseSlots::TEXT_SLOT().getId()).toStringList();
     QString text = list.join("\n");
@@ -249,8 +246,8 @@ static U2SequenceObject *addSeqObject(Document *doc, DNASequence &seq) {
 }
 
 /*************************************
-* FastaWriter
-*************************************/
+ * FastaWriter
+ *************************************/
 void FastaWriter::data2doc(Document *doc, const QVariantMap &data) {
     data2document(doc, data, context, numSplitSequences, currentSplitSequence);
     currentSplitSequence++;
@@ -321,7 +318,7 @@ inline static U2SequenceObject *getCopiedSequenceObject(const QVariantMap &data,
 
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     int refCount = seqId.constData()->getReferenceCount();
-    if (refCount > 2) {    // need to copy because it is used by another worker
+    if (refCount > 2) {  // need to copy because it is used by another worker
         DNASequence seq = seqObj->getSequence(reg, os);
         CHECK_OP(os, nullptr);
         U2EntityRef seqRef = U2SequenceUtils::import(os, context->getDataStorage()->getDbiRef(), seq);
@@ -365,8 +362,8 @@ void FastaWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, con
 }
 
 /*************************************
-* FastQWriter
-*************************************/
+ * FastQWriter
+ *************************************/
 void FastQWriter::data2doc(Document *doc, const QVariantMap &data) {
     data2document(doc, data, context);
 }
@@ -545,7 +542,7 @@ void GenbankWriter::data2document(Document *doc, const QVariantMap &data, Workfl
                     annotationName = QString("unknown features %1").arg(featuresNum);
                 }
                 att = qobject_cast<AnnotationTableObject *>(doc->findGObjectByName(annotationName));
-                if (nullptr == att) {
+                if (att == nullptr) {
                     doc->addObject(att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef()));
                     if (dna) {
                         att->addObjectRelation(dna, ObjectRole_Sequence);
@@ -687,8 +684,8 @@ void GFFWriter::data2document(Document *doc, const QVariantMap &data, WorkflowCo
 }
 
 /*************************************
-* SeqWriter
-*************************************/
+ * SeqWriter
+ *************************************/
 SeqWriter::SeqWriter(Actor *a)
     : BaseDocWriter(a), numSplitSequences(1), currentSplitSequence(0) {
 }
@@ -836,8 +833,8 @@ bool SeqWriter::isStreamingSupport() const {
 }
 
 /*************************************
-* MSAWriter
-*************************************/
+ * MSAWriter
+ *************************************/
 void MSAWriter::data2doc(Document *doc, const QVariantMap &data) {
     data2document(doc, data, context);
 }
@@ -877,8 +874,8 @@ bool MSAWriter::isStreamingSupport() const {
 }
 
 /*************************************
-* DataWorkerFactory
-*************************************/
+ * DataWorkerFactory
+ *************************************/
 Worker *DataWorkerFactory::createWorker(Actor *a) {
     // TODO: wtf is this??
     //  each actor must have own factory
@@ -929,5 +926,5 @@ void DataWorkerFactory::init() {
     localDomain->registerEntry(new DataWorkerFactory(CoreLibConstants::WRITE_FASTQ_PROTO_ID));
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

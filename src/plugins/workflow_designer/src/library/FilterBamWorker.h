@@ -43,7 +43,7 @@ public:
 
 protected:
     QString composeRichDoc();
-};    //FilterBamPrompter
+};  // FilterBamPrompter
 
 class FilterBamWorker : public BaseWorker {
     Q_OBJECT
@@ -65,7 +65,7 @@ private:
     void sendResult(const QString &url);
     QString getTargetName(const QString &fileUrl, const QString &outDir);
 
-};    //FilterBamWorker
+};  // FilterBamWorker
 
 class FilterBamWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -78,7 +78,7 @@ public:
     Worker *createWorker(Actor *a) {
         return new FilterBamWorker(a);
     }
-};    //FilterBamWorkerFactory
+};  // FilterBamWorkerFactory
 
 class BamFilterSetting {
 public:
@@ -122,7 +122,7 @@ private:
     static const QString SAMTOOLS_ID;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_FILTER_BAM_WORKER_H_
+#endif  //_U2_FILTER_BAM_WORKER_H_

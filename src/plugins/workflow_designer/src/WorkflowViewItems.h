@@ -236,7 +236,7 @@ private:
     bool rotating;
     bool sticky;
     bool highlight;
-    bool mouseMoveIsBeingProcessed;    // the field is needed to prevent a recursion during mouse events processing
+    bool mouseMoveIsBeingProcessed;  // the field is needed to prevent a recursion during mouse events processing
     QList<WorkflowPortItem *> bindCandidates;
     QPointF dragPoint;
 };
@@ -277,9 +277,9 @@ public:
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-    //void mousePressEvent ( QGraphicsSceneMouseEvent * event );
-    //void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+    // void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+    // void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+    // void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
@@ -290,8 +290,8 @@ private:
     Link *bus;
     WorkflowPortItem *dst, *src;
     QGraphicsItem *text;
-    //bool dragging;
-    //QPointF dragPoint;
+    // bool dragging;
+    // QPointF dragPoint;
 };
 
 class WorkflowHighlightItem : public StyledItem {
@@ -306,7 +306,7 @@ private:
     quint8 countOfAnimationStepsLeft;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::StyleId);
 

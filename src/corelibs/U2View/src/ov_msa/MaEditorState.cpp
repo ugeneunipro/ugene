@@ -123,4 +123,4 @@ QVariantMap MaEditorState::saveState(MaEditor *v) {
     return ss.stateData;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -91,6 +91,6 @@ public:
     virtual void updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

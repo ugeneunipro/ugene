@@ -30,43 +30,30 @@
 
 namespace U2 {
 
-class PrepareSequenceObjectsTask : public Task {
-    Q_OBJECT
-public:
-    PrepareSequenceObjectsTask(const MultipleSequenceAlignment &msa, const QSet<qint64> &rowIds, bool trimGaps);
-
-    void run();
-
-    const QList<DNASequence> &getSequences() const {
-        return sequences;
-    }
-
-private:
-    MultipleSequenceAlignment msa;
-    QSet<qint64> rowIds;
-    bool trimGaps;
-    QList<DNASequence> sequences;
-};
-
 class ExportSequencesTask : public Task {
     Q_OBJECT
 public:
-    ExportSequencesTask(const MultipleSequenceAlignment &msa, const QSet<qint64> &rowIds, bool trimGaps, bool addToProjectFlag, const QString &dirUrl, const DocumentFormatId &format, const QString &extension, const QString &customFileName = QString());
+    ExportSequencesTask(const MultipleSequenceAlignment &msa,
+                        const QSet<qint64> &rowIds,
+                        bool trimGaps,
+                        bool addToProjectFlag,
+                        const QString &dirUrl,
+                        const DocumentFormatId &format,
+                        const QString &extension,
+                        const QString &customFileName = QString());
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
 
 private:
-    MultipleSequenceAlignment msa;
-    QList<qint64> rowIds;
+    QList<DNASequence> sequences;
     bool addToProjectFlag;
     QString dirUrl;
     DocumentFormatId format;
     QString extension;
     QString customFileName;
-    PrepareSequenceObjectsTask *prepareObjectsTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

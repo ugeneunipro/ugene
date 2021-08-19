@@ -34,6 +34,6 @@ public:
     static void scrollToPosition(HI::GUITestOpStatus &os, int position);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_
+#endif  // _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_

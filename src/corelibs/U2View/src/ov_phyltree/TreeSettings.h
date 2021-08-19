@@ -70,5 +70,5 @@ enum TreeViewOption {
 };
 
 typedef QMap<TreeViewOption, QVariant> OptionsMap;
-}    // namespace U2
+}  // namespace U2
 #endif

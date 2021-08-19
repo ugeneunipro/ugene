@@ -43,6 +43,6 @@ private:
     static const QString GROUP_DOC_PAGE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

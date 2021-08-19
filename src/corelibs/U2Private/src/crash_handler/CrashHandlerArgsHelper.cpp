@@ -132,4 +132,4 @@ void CrashHandlerArgsHelper::shutdownSessionDatabase() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -99,7 +99,7 @@
 
 namespace U2 {
 
-//TODO: sync with SETTINGS in WorkflowSettings.cpp
+// TODO: sync with SETTINGS in WorkflowSettings.cpp
 #define SETTINGS QString("workflowview/")
 
 #define LAST_DIR SETTINGS + "lastdir"
@@ -130,7 +130,7 @@ public:
             input.append(QObject::tr("%"));
         }
     }
-};    // PercentValidator
+};  // PercentValidator
 
 static QComboBox *scaleCombo(WorkflowView *parent) {
     QComboBox *sceneScaleCombo = new QComboBox(parent);
@@ -241,8 +241,8 @@ void DashboardManagerHelper::sl_dashboardsScanningFinished() {
 }
 
 /********************************
-* WorkflowView
-********************************/
+ * WorkflowView
+ ********************************/
 WorkflowView *WorkflowView::createInstance(WorkflowGObject *go) {
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
     SAFE_POINT(nullptr != mdiManager, "NULL MDI manager", nullptr);
@@ -628,7 +628,7 @@ void WorkflowView::createActions() {
     toggleBreakpointManager->setObjectName("Show or hide breakpoint manager");
     connect(toggleBreakpointManager, SIGNAL(triggered()), SLOT(sl_toggleBreakpointManager()));
 
-    {    // toggle dashboard action
+    {  // toggle dashboard action
         toggleDashboard = new QAction(this);
         toggleDashboard->setObjectName("toggleDashboard");
         connect(toggleDashboard, SIGNAL(triggered()), SLOT(sl_toggleDashboard()));
@@ -654,7 +654,7 @@ void WorkflowView::createActions() {
     dmAction->setObjectName("Dashboards manager");
     new DashboardManagerHelper(dmAction, this);
 
-    {    // Delete shortcut
+    {  // Delete shortcut
         deleteShortcut = new QAction(sceneView);
         deleteShortcut->setShortcuts(QKeySequence::Delete);
         deleteShortcut->setShortcutContext(Qt::WidgetShortcut);
@@ -662,7 +662,7 @@ void WorkflowView::createActions() {
         sceneView->addAction(deleteShortcut);
     }
 
-    {    // Ctrl+A shortcut
+    {  // Ctrl+A shortcut
         QAction *selectShortcut = new QAction(sceneView);
         selectShortcut->setShortcuts(QKeySequence::SelectAll);
         selectShortcut->setShortcutContext(Qt::WidgetShortcut);
@@ -713,7 +713,7 @@ void WorkflowView::createActions() {
     connect(pasteAction, SIGNAL(triggered()), SLOT(sl_pasteItems()));
     addAction(pasteAction);
 
-    {    // style
+    {  // style
         QAction *simpleStyle = new QAction(tr("Minimal"), this);
         simpleStyle->setObjectName("Minimal");
         simpleStyle->setData(QVariant(ItemStyles::SIMPLE));
@@ -727,7 +727,7 @@ void WorkflowView::createActions() {
         connect(extStyle, SIGNAL(triggered()), SLOT(sl_setStyle()));
     }
 
-    {    // scripting mode
+    {  // scripting mode
         QAction *notShowScriptAction = new QAction(tr("Hide scripting options"), this);
         notShowScriptAction->setObjectName("Hide scripting options");
         notShowScriptAction->setCheckable(true);
@@ -756,7 +756,7 @@ void WorkflowView::createActions() {
     editScriptAction = new QAction(tr("Edit script of the element..."), this);
     editScriptAction->setObjectName("editScriptAction");
     editScriptAction->setIcon(QIcon(":workflow_designer/images/script_edit.png"));
-    editScriptAction->setEnabled(false);    // because user need to select actor with script to enable it
+    editScriptAction->setEnabled(false);  // because user need to select actor with script to enable it
     connect(editScriptAction, SIGNAL(triggered()), SLOT(sl_editScript()));
 
     createCmdlineBasedWorkerAction = new QAction(tr("Create element with external tool..."), this);
@@ -767,7 +767,7 @@ void WorkflowView::createActions() {
     editExternalToolAction = new QAction(tr("Edit configuration..."), this);
     editExternalToolAction->setObjectName("editConfiguration");
     editExternalToolAction->setIcon(QIcon(":workflow_designer/images/external_cmd_tool.png"));
-    editExternalToolAction->setEnabled(false);    // because user need to select actor with script to enable it
+    editExternalToolAction->setEnabled(false);  // because user need to select actor with script to enable it
     connect(editExternalToolAction, SIGNAL(triggered()), SLOT(sl_editExternalTool()));
 
     appendExternalTool = new QAction(tr("Add element with external tool..."), this);
@@ -851,7 +851,7 @@ QString copyIntoUgene(const QString &url, U2OpStatus &os) {
     }
     return filePath;
 }
-}    // namespace
+}  // namespace
 
 void WorkflowView::sl_appendExternalToolWorker() {
     QString filter = DialogUtils::prepareFileFilter(WorkflowUtils::tr("UGENE workflow element"), QStringList() << "etc", true);
@@ -1080,7 +1080,7 @@ void WorkflowView::sl_changeScriptMode() {
         } else if (a == scriptingActions[1]) {
             scriptingMode = true;
         }
-    }    // else invoked from constructor
+    }  // else invoked from constructor
 
     scriptingActions[0]->setChecked(!scriptingMode);
     scriptingActions[1]->setChecked(scriptingMode);
@@ -2167,7 +2167,7 @@ void WorkflowView::sl_loadScene(const QString &url, bool fromDashboard) {
     if (fromDashboard && !confirmModified()) {
         return;
     }
-    loadWorkflowSceneTask = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard, fromDashboard);    //FIXME unsynchronized meta usage
+    loadWorkflowSceneTask = new LoadWorkflowSceneTask(schema, &meta, scene, url, fromDashboard, fromDashboard);  // FIXME unsynchronized meta usage
     TaskSignalMapper *m = new TaskSignalMapper(loadWorkflowSceneTask.data());
     connect(m, SIGNAL(si_taskFinished(Task *)), SLOT(sl_onSceneLoaded()));
     if (LoadWorkflowTask::detectFormat(IOAdapterUtils::readFileHeader(url)) == LoadWorkflowTask::XML) {
@@ -2864,4 +2864,4 @@ void SceneCreator::createBus(const QMap<Port *, WorkflowPortItem *> &ports, Link
     }
 }
 
-}    // namespace U2
+}  // namespace U2

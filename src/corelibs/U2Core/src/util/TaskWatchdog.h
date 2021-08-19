@@ -59,6 +59,6 @@ private:
     QString errorMessage;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TASK_WATCHDOG_H_
+#endif  // _U2_TASK_WATCHDOG_H_

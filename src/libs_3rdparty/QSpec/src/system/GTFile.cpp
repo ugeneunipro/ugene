@@ -38,17 +38,17 @@
 // In case of a directory, rights to delete files/subfolders are not affected.
 // NB: Only works for NTFS, has no effect on FAT objects.
 static DWORD SetFileWriteACL(
-    LPTSTR pszObjName,    // name of object
-    BOOL allowWrite    // zero to deny file modification
+    LPTSTR pszObjName,  // name of object
+    BOOL allowWrite  // zero to deny file modification
 ) {
     DWORD dwRes = 0;
     PACL pNewDACL = NULL;
     EXPLICIT_ACCESS ea[2];
-    SE_OBJECT_TYPE ObjectType = SE_FILE_OBJECT;    // type of object
-    TRUSTEE_FORM TrusteeForm = TRUSTEE_IS_NAME;    // format of trustee structure
+    SE_OBJECT_TYPE ObjectType = SE_FILE_OBJECT;  // type of object
+    TRUSTEE_FORM TrusteeForm = TRUSTEE_IS_NAME;  // format of trustee structure
 
 #    ifdef UNICODE
-    LPWSTR pszTrustee = const_cast<LPWSTR>(L"CURRENT_USER");    // trustee for new ACE
+    LPWSTR pszTrustee = const_cast<LPWSTR>(L"CURRENT_USER");  // trustee for new ACE
 #    else
     LPSTR pszTrustee = const_cast<LPSTR>("CURRENT_USER");
 #    endif
@@ -264,53 +264,49 @@ void GTFile::copyDir(GUITestOpStatus &os, const QString &dirToCopy, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeDir"
-#ifdef Q_OS_WIN
-void GTFile::removeDir(QString dirName) {
-    QDir dir(dirName);
-    dir.setFilter(QDir::Hidden | QDir::AllDirs | QDir::Files);
+void GTFile::removeDir(const QString &dirPath) {
+    QDir dir(dirPath);
+    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirPath.toLocal8Bit().constData());
 
-    foreach (QFileInfo fileInfo, dir.entryInfoList()) {
-        QString fileName = fileInfo.fileName();
-        QString filePath = fileInfo.filePath();
-        if (fileName != "." && fileName != "..") {
-            QFile file(filePath);
-            file.setPermissions(QFile::ReadOther | QFile::WriteOther);
-            if (!file.remove(filePath)) {
-                QDir dir(filePath);
-                if (!dir.rmdir(filePath)) {
-                    removeDir(filePath);
+    bool isOsWindows;
+#ifdef Q_OS_WIN
+    isOsWindows = true;
+#else
+    isOsWindows = false;
+#endif
+    if (isOsWindows) {
+        dir.setFilter(QDir::Hidden | QDir::AllDirs | QDir::Files);
+        foreach (QFileInfo fileInfo, dir.entryInfoList()) {
+            QString fileName = fileInfo.fileName();
+            QString filePath = fileInfo.filePath();
+            if (fileName != "." && fileName != "..") {
+                QFile file(filePath);
+                file.setPermissions(QFile::ReadOther | QFile::WriteOther);
+                if (!file.remove(filePath)) {
+                    QDir fileDir(dirPath);
+                    if (!fileDir.rmdir(filePath)) {
+                        removeDir(filePath);
+                    }
+                }
+            }
+        }
+    } else {
+        foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+            QString fileName = fileInfo.fileName();
+            QString filePath = fileInfo.filePath();
+            if (fileName != "." && fileName != "..") {
+                if (!QFile::remove(filePath)) {
+                    QDir fileDir(filePath);
+                    if (!fileDir.rmdir(filePath)) {
+                        removeDir(filePath);
+                    }
                 }
             }
         }
     }
-    dir.rmdir(dir.absoluteFilePath(dirName));
+    dir.rmdir(dir.absoluteFilePath(dirPath));
+    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirPath.toLocal8Bit().constData());
 }
-#else
-void GTFile::removeDir(QString dirName) {
-    QDir dir(dirName);
-    qDebug("GT_DEBUG_MESSAGE removing dir: %s", dirName.toLocal8Bit().constData());
-
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
-        QString fileName = fileInfo.fileName();
-        QString filePath = fileInfo.filePath();
-        if (fileName != "." && fileName != "..") {
-            if (QFile::remove(filePath))
-                continue;
-            else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath))
-                    continue;
-                else
-                    removeDir(filePath);
-            }
-        }
-    }
-    dir.rmdir(dir.absoluteFilePath(dirName));
-
-    qDebug("GT_DEBUG_MESSAGE directory removed: %s", dirName.toLocal8Bit().constData());
-}
-#endif
-
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "backup"
@@ -395,4 +391,4 @@ QByteArray GTFile::readAll(GUITestOpStatus &os, const QString &filePath) {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

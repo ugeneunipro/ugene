@@ -80,7 +80,7 @@ public:
     // find schema with 'name' in common folders or from settings
     static QString findPathToSchemaFile(const QString &name);
 
-    static void getLinkedActorsId(Actor *a, QList<QString> &linkedActors);    //get list of ID's of all linked actors
+    static void getLinkedActorsId(Actor *a, QList<QString> &linkedActors);  // get list of ID's of all linked actors
 
     static bool isPathExist(const Port *src, const Port *dest);
 
@@ -178,7 +178,7 @@ public:
 private:
     static QStringList initExtensions();
     static bool validate(const Workflow::Schema &s, NotificationsList &notificationList);
-};    // WorkflowUtils
+};  // WorkflowUtils
 
 class U2LANG_EXPORT WorkflowEntityValidator {
 public:
@@ -229,7 +229,7 @@ protected slots:
 protected:
     QVariantMap map;
 
-};    // PrompterBaseImpl
+};  // PrompterBaseImpl
 
 /**
  * template realization of Prompter and ActorDocument in one entity
@@ -265,8 +265,8 @@ public:
 protected:
     bool listenInputs;
 
-};    // PrompterBase
+};  // PrompterBase
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

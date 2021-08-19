@@ -116,4 +116,4 @@ const QString &SeqNamesConvertor::generateNewAlphabeticId() {
     return lastIdStr;
 }
 
-}    // namespace U2
+}  // namespace U2

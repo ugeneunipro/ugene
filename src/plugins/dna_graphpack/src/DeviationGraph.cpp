@@ -57,14 +57,9 @@ bool DeviationGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> DeviationGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    d->ga = new DeviationGraphAlgorithm(devPair);
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> DeviationGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new DeviationGraphAlgorithm(devPair)))};
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,13 +68,13 @@ QList<QSharedPointer<GSequenceGraphData>> DeviationGraphFactory::createGraphs(GS
 DeviationGraphAlgorithm::DeviationGraphAlgorithm(const QPair<char, char> &_p)
     : p(_p) {
 }
-void DeviationGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seqArr, int startPos, const GSequenceGraphWindowData *d, int nSteps, U2OpStatus &os) {
+void DeviationGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seqArr, qint64 startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus &os) {
     assert(startPos >= 0);
     const char *seq = seqArr.constData();
 
     for (int i = 0; i < nSteps; i++) {
-        int start = startPos + i * d->step;
-        int end = start + d->window;
+        int start = startPos + i * step;
+        int end = start + window;
         assert(end <= seqArr.size());
         int first = 0;
         int second = 0;
@@ -114,18 +109,18 @@ QPair<int, int> DeviationGraphAlgorithm::matchOnStep(const QByteArray &seqArr, i
     }
     return res;
 }
-void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float> &res, const QByteArray &seq, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    int rsize = d->window / d->step;
+void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float> &res, const QByteArray &seq, const U2Region &vr, qint64 window, qint64 step, U2OpStatus &os) {
+    int rsize = window / step;
     RollingArray<int> raF(rsize);
     RollingArray<int> raS(rsize);
     int endPos = vr.endPos();
     int globalCountF = 0;
     int globalCountS = 0;
     int nextI = 0;
-    int firstValue = vr.startPos + d->window - d->step;
+    int firstValue = vr.startPos + window - step;
     for (int i = vr.startPos; i < endPos; i = nextI) {
         CHECK_OP(os, );
-        nextI = i + d->step;
+        nextI = i + step;
         QPair<int, int> result = matchOnStep(seq, i, nextI);
         globalCountF += result.first;
         globalCountS += result.second;
@@ -141,20 +136,20 @@ void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float> &res, 
     }
 }
 
-void DeviationGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != nullptr);
-    int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
+void DeviationGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, qint64 window, qint64 step, U2OpStatus &os) {
+    U2Region vr(0, o->getSequenceLength());
+    int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     res.reserve(nSteps);
 
-    const QByteArray &seq = getSequenceData(o, os);
+    QByteArray seq = o->getWholeSequenceData(os);
     CHECK_OP(os, );
 
     int startPos = vr.startPos;
-    if (d->window % d->step != 0) {
-        windowStrategyWithoutMemorize(res, seq, startPos, d, nSteps, os);
+    if (window % step != 0) {
+        windowStrategyWithoutMemorize(res, seq, startPos, window, step, nSteps, os);
     } else {
-        sequenceStrategyWithMemorize(res, seq, vr, d, os);
+        sequenceStrategyWithMemorize(res, seq, vr, window, step, os);
     }
 }
 
-}    // namespace U2
+}  // namespace U2

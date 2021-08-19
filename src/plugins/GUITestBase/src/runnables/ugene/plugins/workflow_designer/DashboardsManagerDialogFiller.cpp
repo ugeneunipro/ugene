@@ -85,4 +85,4 @@ QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState(HI
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

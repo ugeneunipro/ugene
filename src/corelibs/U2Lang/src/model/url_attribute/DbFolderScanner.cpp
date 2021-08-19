@@ -127,4 +127,4 @@ bool DbFolderScanner::hasNext() {
     return !unusedObjects.isEmpty();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -120,4 +120,4 @@ void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenceWidg
     GraphMenuAction::addGraphAction(sequenceWidget->getActiveSequenceContext(), graphAction);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -447,9 +447,9 @@ void ColorSchemeDialogFiller::commonScenario() {
             return;
         }
     }
-    GTKeyboardDriver::keyClick(Qt::Key_Enter);    //if ok button not found
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);  // if ok button not found
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
-//QDialogButtonBox *buttonBox;
-}    // namespace U2
+// QDialogButtonBox *buttonBox;
+}  // namespace U2

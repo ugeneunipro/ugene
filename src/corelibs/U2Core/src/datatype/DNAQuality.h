@@ -91,6 +91,6 @@ public:
     static const int MIN_PHRED64_VALUE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

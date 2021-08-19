@@ -54,7 +54,7 @@ namespace {
 const QString ALGO_ATTR_ID("algorithm");
 const QString THRESHOLD_ATTR_ID("threshold");
 const QString GAPS_ATTR_ID("keep-gaps");
-}    // namespace
+}  // namespace
 
 ExtractMSAConsensusWorker::ExtractMSAConsensusWorker(Actor *actor)
     : BaseWorker(actor),
@@ -112,7 +112,7 @@ MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus &os) {
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusStringWorker
+// ExtractMSAConsensusStringWorker
 ExtractMSAConsensusStringWorker::ExtractMSAConsensusStringWorker(Actor *actor)
     : ExtractMSAConsensusWorker(actor) {
 }
@@ -147,7 +147,7 @@ ExtractMSAConsensusTaskHelper *ExtractMSAConsensusStringWorker::createTask(const
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusSequenceWorker
+// ExtractMSAConsensusSequenceWorker
 ExtractMSAConsensusSequenceWorker::ExtractMSAConsensusSequenceWorker(Actor *actor)
     : ExtractMSAConsensusWorker(actor) {
 }
@@ -182,7 +182,7 @@ ExtractMSAConsensusTaskHelper *ExtractMSAConsensusSequenceWorker::createTask(con
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusTaskHelper
+// ExtractMSAConsensusTaskHelper
 ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment &msa, const U2DbiRef &targetDbi)
     : Task(ExtractMSAConsensusTaskHelper::tr("Extract consensus"), TaskFlags_NR_FOSCOE),
       algoId(algoId),
@@ -244,7 +244,7 @@ QByteArray ExtractMSAConsensusTaskHelper::getResultAsText() const {
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusWorkerFactory
+// ExtractMSAConsensusWorkerFactory
 ExtractMSAConsensusSequenceWorkerFactory::ExtractMSAConsensusSequenceWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
@@ -327,7 +327,7 @@ void ExtractMSAConsensusSequenceWorkerFactory::init() {
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusStringWorkerFactory
+// ExtractMSAConsensusStringWorkerFactory
 ExtractMSAConsensusStringWorkerFactory::ExtractMSAConsensusStringWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
@@ -407,7 +407,7 @@ void ExtractMSAConsensusStringWorkerFactory::init() {
 }
 
 ///////////////////////////////////////////////////////////////////////
-//ExtractMSAConsensusWorkerPrompter
+// ExtractMSAConsensusWorkerPrompter
 ExtractMSAConsensusWorkerPrompter::ExtractMSAConsensusWorkerPrompter(Actor *actor)
     : PrompterBase<ExtractMSAConsensusWorkerPrompter>(actor) {
 }
@@ -442,5 +442,5 @@ void SpinBoxDelegatePropertyRelation::updateDelegateTags(const QVariant &influen
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

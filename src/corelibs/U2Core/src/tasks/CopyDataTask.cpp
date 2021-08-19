@@ -74,4 +74,4 @@ void CopyDataTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

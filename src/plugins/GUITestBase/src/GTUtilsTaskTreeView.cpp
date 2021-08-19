@@ -177,11 +177,11 @@ QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(HI::GUITestOpStatus &os, con
         QTreeWidgetItem *item = getTreeWidgetItem(os, itemName);
         if (item) {
             QPoint itemCenter = treeWidget->visualItemRect(item).center();
-            itemCenter.setY(itemCenter.y() + treeWidget->visualItemRect(item).height() + 5);    //+ height because of header item; +5 because height is not enough
+            itemCenter.setY(itemCenter.y() + treeWidget->visualItemRect(item).height() + 5);  //+ height because of header item; +5 because height is not enough
             return treeWidget->mapToGlobal(itemCenter);
         }
     }
-    //TODO: report error?
+    // TODO: report error?
     return treeWidget->mapToGlobal(treeWidget->rect().center());
 }
 #undef GT_METHOD_NAME
@@ -235,4 +235,4 @@ void SchedulerListener::sl_taskRegistered() {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -56,29 +56,29 @@ void KalignAdapter::align(const MultipleSequenceAlignment &ma, MultipleSequenceA
 
 namespace {
 
-void cleanupMemory(float **/*submatrix*/, unsigned int /*numseq*/, float **/*dm*/, struct alignment */*aln*/, struct parameters */*param*/) {
-// TODO: investigating crash on Windows. The best solution would be moving KAlign into external tools?
-//    if (NULL != submatrix) {
-//        for (int i = 32; i--;){
-//            free(submatrix[i]);
-//        }
-//        free(submatrix);
-//    }
-//    if (NULL != dm) {
-//        for (int i = numseq; i--;){
-//            free(dm[i]);
-//        }
-//        free(dm);
-//    }
-//    if (NULL != aln) {
-//        free_aln(aln);
-//    }
-//    if (NULL != param) {
-//        free_param(param);
-//    }
+void cleanupMemory(float ** /*submatrix*/, unsigned int /*numseq*/, float ** /*dm*/, struct alignment * /*aln*/, struct parameters * /*param*/) {
+    // TODO: investigating crash on Windows. The best solution would be moving KAlign into external tools?
+    //    if (NULL != submatrix) {
+    //        for (int i = 32; i--;){
+    //            free(submatrix[i]);
+    //        }
+    //        free(submatrix);
+    //    }
+    //    if (NULL != dm) {
+    //        for (int i = numseq; i--;){
+    //            free(dm[i]);
+    //        }
+    //        free(dm);
+    //    }
+    //    if (NULL != aln) {
+    //        free_aln(aln);
+    //    }
+    //    if (NULL != param) {
+    //        free_param(param);
+    //    }
 }
 
-}    // namespace
+}  // namespace
 
 void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti) {
     ti.progress = 0;
@@ -150,9 +150,9 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     int aacode[26] = {0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 9, 10, 11, 12, 23, 13, 14, 15, 16, 17, 17, 18, 19, 20, 21, 22};
     for (quint32 i = 0; i < numseq; i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
-        qstrncpy(aln->sn[i], row->getName().toLatin1(), row->getName().length() + 1);    //+1 to include '\0'
+        qstrncpy(aln->sn[i], row->getName().toLatin1(), row->getName().length() + 1);  //+1 to include '\0'
         QString gapless = QString(row->getCore()).remove('-');
-        qstrncpy(aln->seq[i], gapless.toLatin1(), gapless.length() + 1);    //+1 to include '\0'
+        qstrncpy(aln->seq[i], gapless.toLatin1(), gapless.length() + 1);  //+1 to include '\0'
         for (quint32 j = 0; j < aln->sl[i]; j++) {
             if (isalpha((int)aln->seq[i][j])) {
                 aln->s[i][j] = aacode[toupper(aln->seq[i][j]) - 65];
@@ -170,15 +170,15 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
             printf("%d  ", aln->s[i][j]);
     }*/
 
-    //aln_dump(aln);
+    // aln_dump(aln);
 
-    //aln = detect_and_read_sequences(aln,param);
+    // aln = detect_and_read_sequences(aln,param);
 
     if (param->ntree > (int)numseq) {
         param->ntree = (int)numseq;
     }
 
-    //DETECT DNA
+    // DETECT DNA
     if (param->dna == -1) {
         for (quint32 i = 0; i < numseq; i++) {
             param->dna = byg_detect(aln->s[i], aln->sl[i]);
@@ -187,15 +187,15 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
             }
         }
     }
-    //param->dna = 0;
-    //k_printf("DNA:%d\n",param->dna);
-    //exit(0);
+    // param->dna = 0;
+    // k_printf("DNA:%d\n",param->dna);
+    // exit(0);
 
     if (param->dna == 1) {
-        //brief sanity check...
+        // brief sanity check...
         for (quint32 i = 0; i < numseq; i++) {
             if (aln->sl[i] < 6) {
-                //k_printf("Dna/Rna alignments are only supported for sequences longer than 6.");
+                // k_printf("Dna/Rna alignments are only supported for sequences longer than 6.");
                 free(param);
                 free_aln(aln);
                 throw KalignException("Dna/Rna alignments are only supported for sequences longer than 6.");
@@ -204,25 +204,25 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         aln = make_dna(aln);
     }
 
-    //int j;
+    // int j;
 
-    //fast distance calculation;
+    // fast distance calculation;
     float **submatrix = 0;
-    submatrix = read_matrix(submatrix, param);    // sets gap penalties as well.....
+    submatrix = read_matrix(submatrix, param);  // sets gap penalties as well.....
 
-    //if(byg_start(param->alignment_type,"profPROFprofilePROFILE") != -1){
+    // if(byg_start(param->alignment_type,"profPROFprofilePROFILE") != -1){
     //	profile_alignment_main(aln,param,submatrix);
-    //}
+    // }
 
     if (param->ntree > 1) {
         float **dm = 0;
-        //if(byg_start(param->distance,"pairclustalPAIRCLUSTAL") != -1){
+        // if(byg_start(param->distance,"pairclustalPAIRCLUSTAL") != -1){
         //	if(byg_start(param->tree,"njNJ") != -1){
         //		dm = protein_pairwise_alignment_distance(aln,dm,param,submatrix,1);
         //	}else{
         //		dm = protein_pairwise_alignment_distance(aln,dm,param,submatrix,0);
         //	}
-        //}else if(byg_start("wu",param->alignment_type) != -1){
+        // }else if(byg_start("wu",param->alignment_type) != -1){
         //	dm =  protein_wu_distance2(aln,dm,param);
         //	//	param->feature_type = "wumanber";
         if (param->dna == 1) {
@@ -232,9 +232,9 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
             dm = dna_distance(aln, dm, param, 0);
             //	}
         } else {
-            //if(byg_start(param->tree,"njNJ") != -1){
+            // if(byg_start(param->tree,"njNJ") != -1){
             //	dm =  protein_wu_distance(aln,dm,param,1);
-            //}else{
+            // }else{
             try {
                 dm = protein_wu_distance(aln, dm, param, 0);
             } catch (const KalignException &) {
@@ -255,12 +255,12 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         k_printf("\n");
         }*/
 
-        //if(byg_start(param->tree,"njNJ") != -1){
+        // if(byg_start(param->tree,"njNJ") != -1){
         //	tree2 = real_nj(dm,param->ntree);
-        //}else{
+        // }else{
         tree2 = real_upgma(dm, param->ntree);
         //}
-        //if(param->print_tree){
+        // if(param->print_tree){
         //	print_tree(tree2,aln,param->print_tree);
         //}
     }
@@ -297,13 +297,13 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         free(tree2);
     }
 
-    //get matrices...
-    //struct feature_matrix* fm = 0;
+    // get matrices...
+    // struct feature_matrix* fm = 0;
 
-    //struct ntree_data* ntree_data = 0;
+    // struct ntree_data* ntree_data = 0;
 
     int **map = 0;
-    //if(param->ntree > 2){
+    // if(param->ntree > 2){
     //	ntree_data = (struct ntree_data*)malloc(sizeof(struct ntree_data));
     //	ntree_data->realtree = tree2;
     //	ntree_data->aln = aln;
@@ -375,14 +375,14 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         throw KalignException("Align task has been cancelled");
     }
 
-    //clear up sequence array to be reused as gap array....
+    // clear up sequence array to be reused as gap array....
     for (quint32 i = 0; i < numseq; i++) {
         int *p = aln->s[i];
         for (a = 0; a < aln->sl[i]; a++) {
             p[a] = 0;
         }
     }
-    //clear up
+    // clear up
 
     for (quint32 i = 0; i < (numseq - 1) * 3; i += 3) {
         a = tree[i];
@@ -390,9 +390,9 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         aln = make_seq(aln, a, b, map[tree[i + 2]]);
     }
 
-    //for (int i = 0; i < numseq;i++){
+    // for (int i = 0; i < numseq;i++){
     //	k_printf("%s	%d\n",aln->sn[i],aln->nsip[i]);
-    //}
+    // }
 
     for (quint32 i = 0; i < numseq; i++) {
         aln->nsip[i] = 0;
@@ -400,9 +400,9 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
 
     aln = sort_sequences(aln, tree, param->sort);
 
-    //for (int i = 0; i < numseq;i++){
+    // for (int i = 0; i < numseq;i++){
     //	k_printf("%d	%d	%d\n",i,aln->nsip[i],aln->sip[i][0]);
-    //}
+    // }
 
     /************************************************************************/
     /* Convert aln to MA                                                    */
@@ -418,7 +418,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         res->addRow(QString(aln->sn[f]), seq.toLatin1());
     }
 
-    //output(aln,param);
+    // output(aln,param);
     /*	if(!param->format){
     fasta_output(aln,param->outfile);
     }else{
@@ -435,7 +435,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     free_aln(aln);
     free(map);
     free(tree);
-    //KalignContext* ctx = getKalignContext();
+    // KalignContext* ctx = getKalignContext();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -21,13 +21,11 @@
 
 #include "DNAFlexGraph.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/TextUtils.h>
 
 #include "DNAFlexGraphAlgorithm.h"
-#include "DNAFlexTask.h"
 
 namespace U2 {
 
@@ -61,21 +59,16 @@ bool DNAFlexGraphFactory::isEnabled(const U2SequenceObject *sequenceObject) cons
  * Initializes graph data
  */
 QList<QSharedPointer<GSequenceGraphData>> DNAFlexGraphFactory::createGraphs(GSequenceGraphView *view) {
-    Q_UNUSED(view);
-    QList<QSharedPointer<GSequenceGraphData>> res;
     assert(isEnabled(view->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> data = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    data->ga = new DNAFlexGraphAlgorithm();
-    res.append(data);
-    return res;
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new DNAFlexGraphAlgorithm()))};
 }
 
 /**
  * Initializes the graph drawer
  */
 GSequenceGraphDrawer *DNAFlexGraphFactory::getDrawer(GSequenceGraphView *view) {
-    GSequenceGraphWindowData wd(DEFAULT_WINDOW_STEP, qMin(DEFAULT_WINDOW_SIZE, view->getSequenceLength()));
-    return new GSequenceGraphDrawer(view, wd);
+    qint64 window = qMin(DEFAULT_WINDOW_SIZE, view->getSequenceLength());
+    return new GSequenceGraphDrawer(view, window, DEFAULT_WINDOW_STEP);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -45,7 +45,7 @@ RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, 
     if (maxSize > 1000 * 1000) {
         if (maxWithGapSize > minSize) {
             arrayIsMax = false;
-        } else if (maxWithGapSize * 8 > 128 * 1000 * 1000) {    //too many mem to use max -> using min will reduce mem usage
+        } else if (maxWithGapSize * 8 > 128 * 1000 * 1000) {  // too many mem to use max -> using min will reduce mem usage
             arrayIsMax = false;
         } else {
             double searchK = 1.3;
@@ -74,8 +74,8 @@ RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, 
     } else {
         bitMask = nullptr;
     }
-    //single thread approximation (re-estimated in some algorithms)
-    arrayPercent = int((ARRAY_SIZE / double(ARRAY_SIZE + SEARCH_SIZE)) * 100 / 5);    //array creation time ~5 times faster than search
+    // single thread approximation (re-estimated in some algorithms)
+    arrayPercent = int((ARRAY_SIZE / double(ARRAY_SIZE + SEARCH_SIZE)) * 100 / 5);  // array creation time ~5 times faster than search
 }
 
 void RFSArrayWAlgorithm::prepare() {
@@ -88,7 +88,7 @@ void RFSArrayWAlgorithm::prepare() {
 
     nThreads = qBound(1, getNumParallelSubtasks(), SEARCH_SIZE / (20 * 1000));
 
-    //create index task that must be executed before all other tasks
+    // create index task that must be executed before all other tasks
     int matchSize = getWGap(WINDOW_SIZE);
     int gap = WINDOW_SIZE - matchSize;
 
@@ -169,7 +169,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             reportPos += reportLen;
         }
 
-        //validate edges from prev steps
+        // validate edges from prev steps
         CheckEdge *chain = chains[chainIdx];
         for (CheckEdge *edge = chain->next, *next = nullptr; edge->lastS < posS && edge != chain; edge = next) {
             next = edge->next;
@@ -184,19 +184,19 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             if (len >= W) {
                 int s = edge->posS - dataS;
                 int a = edge->diag + s;
-                addResult(a, s, len, 0, t);    // 0 mismatches
+                addResult(a, s, len, 0, t);  // 0 mismatches
             }
             edgePool.returnEdge(edge);
         }
 
-        //setup iterator
+        // setup iterator
         if (_useBitMask) {
             uchar c = *(posS + wCharsInMask - 1);
             bool bitValueCreated = true;
 
             if (c != unknownChar && posS != dataS) {
                 bitValue = ((bitValue << charBitsNum) | bm[c]) & bitFilter;
-            } else {    //if there are unknown chars -> rebuild mask starting from the first W without unknown chars
+            } else {  // if there are unknown chars -> rebuild mask starting from the first W without unknown chars
                 bitValue = 0;
                 if (posS != dataS) {
                     posS += wCharsInMask;
@@ -221,7 +221,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
                 chainIdx = (posS - dataS) % (GAP + 1);
                 chain = chains[chainIdx];
             }
-            if (bitValueCreated && !index->findBit(t, bitValue, posS)) {    // if there were not unknown chars, bitValue is initialized
+            if (bitValueCreated && !index->findBit(t, bitValue, posS)) {  // if there were not unknown chars, bitValue is initialized
                 continue;
             }
         } else {
@@ -229,7 +229,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
                 continue;
             }
         }
-        //iterate over sarray hits
+        // iterate over sarray hits
         int s = posS - dataS;
         int a = 0;
         while ((a = index->nextArrSeqPos(t)) != -1) {
@@ -237,7 +237,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             if (reflective && s + t->sStart >= a) {
                 continue;
             }
-            //check if this hit can be merged with older one
+            // check if this hit can be merged with older one
             int diag = a - s;
             bool merged = false;
             CheckEdge *edge = chain->next;
@@ -245,17 +245,17 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
                 if (edge->diag != diag) {
                     continue;
                 }
-                if (edge->lastS < posS) {    // gap while passing unknownChar
+                if (edge->lastS < posS) {  // gap while passing unknownChar
                     break;
                 }
                 merged = true;
                 edge->lastS = posS + W_GAP;
                 edge->fromChain();
-                edge->toChain(chain);    //making edge last
+                edge->toChain(chain);  // making edge last
                 break;
             }
             if (!merged) {
-                //extend backward
+                // extend backward
                 const char *edgeS = posS - 1;
                 const char *edgeA = dataA + a - 1;
                 for (; edgeS >= dataS && edgeA >= dataA && PCHAR_MATCHES(edgeS, edgeA); edgeS--, edgeA--) {
@@ -268,7 +268,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
     }
     for (chainIdx = 0; chainIdx < chains.size(); chainIdx++) {
         CheckEdge *chain = chains[chainIdx];
-        for (CheckEdge *edge = chain->next, *next = nullptr; edge != chain; edge = next) {    //expand forward
+        for (CheckEdge *edge = chain->next, *next = nullptr; edge != chain; edge = next) {  // expand forward
             next = edge->next;
             const char *lastS = edge->lastS;
             const char *lastA = dataA + (lastS - dataS) + edge->diag;
@@ -280,7 +280,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             int s = edge->posS - dataS;
             int a = edge->diag + s;
             if (len >= W) {
-                addResult(a, s, len, 0, t);    // 0 mismatches
+                addResult(a, s, len, 0, t);  // 0 mismatches
             }
             delete edge;
         }
@@ -321,11 +321,11 @@ static bool resultsIntrersect(const RFResult &r1, const RFResult &r2) {
 }
 
 void RFSArrayWAlgorithm::processBoundaryResults() {
-    //called after all subtasks finished -> merge boundary results
+    // called after all subtasks finished -> merge boundary results
     RFResult *rs = bresults.data();
     for (int j = 0, n = bresults.size(); j < n; j++) {
         RFResult &rj = rs[j];
-        if (rj.l == -1) {    //was merged
+        if (rj.l == -1) {  // was merged
             continue;
         }
         int dj = rj.x - rj.y;
@@ -334,7 +334,7 @@ void RFSArrayWAlgorithm::processBoundaryResults() {
                 continue;
             }
             RFResult &ri = rs[i];
-            if (ri.l == -1) {    //was merged
+            if (ri.l == -1) {  // was merged
                 continue;
             }
             int di = ri.x - ri.y;
@@ -371,7 +371,7 @@ void RFSArrayWAlgorithm::processBoundaryResults() {
             mergedResults.append(rj);
         }
     }
-    //assert(checkResults(mergedResults));
+    // assert(checkResults(mergedResults));
     addToResults(mergedResults);
 }
 
@@ -390,11 +390,16 @@ void RFSArrayWAlgorithm::addResult(int a, int s, int l, int c, RFSArrayWSubtask 
 }
 
 int RFSArrayWAlgorithm::getWGap(int W) {
-    return W < 8 ? W : W < 10 ? W - 1 : W < 12 ? W - 2 : W < 16 ? W - 3 : W < 20 ? W - 4 : W < 30 ? 16 : W / 2 + 1;
+    return W < 8 ? W : W < 10 ? W - 1
+                   : W < 12   ? W - 2
+                   : W < 16   ? W - 3
+                   : W < 20   ? W - 4
+                   : W < 30   ? 16
+                              : W / 2 + 1;
 }
 
 //////////////////////////////////////////////////////////////////////////
-//Worker
+// Worker
 RFSArrayWSubtask::RFSArrayWSubtask(RFSArrayWAlgorithm *_owner, int _sStart, int _sEnd, int _tid)
     : Task(tr("Find repeats subtask (suffix)"), TaskFlag_None), owner(_owner), sStart(_sStart), sEnd(_sEnd), tid(_tid) {
     tpm = Task::Progress_Manual;
@@ -404,4 +409,4 @@ void RFSArrayWSubtask::run() {
     owner->run(this);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,5 +41,5 @@ ConfigurationEditor *ActorConfigurationEditor::clone() {
     return new ActorConfigurationEditor(*this);
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

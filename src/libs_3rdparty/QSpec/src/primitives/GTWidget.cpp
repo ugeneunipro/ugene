@@ -31,7 +31,10 @@
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
 #include "utils/GTThread.h"
-#include "utils/GTUtilsMac.h"
+
+#ifdef Q_OS_DARWIN
+#    include "utils/GTUtilsMac.h"
+#endif
 
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
@@ -78,7 +81,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
 
-#ifdef Q_OS_DARWIN    // TODO: workaround for MacOS gui tests
+#ifdef Q_OS_DARWIN  // TODO: workaround for MacOS gui tests
     if (!qobject_cast<QComboBox *>(w) &&
         !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
@@ -92,27 +95,19 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findWidget"
-QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     QWidget *widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        if (parentWidget == nullptr) {
-            QList<QWidget *> allWidgetList;
-            for (QWidget *parent : GTMainWindow::getMainWindowsAsWidget(os)) {
-                allWidgetList << parent->findChildren<QWidget *>(widgetName);
-            }
-            int nMatches = allWidgetList.count();
-            GT_CHECK_RESULT(nMatches < 2, QString("There are %1 widgets with name '%2'").arg(nMatches).arg(widgetName), nullptr);
-            widget = nMatches == 1 ? allWidgetList.first() : nullptr;
-        } else {
-            widget = parentWidget->findChild<QWidget *>(widgetName);
-        }
+        QList<QWidget *> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget *w) { return w->objectName() == objectName; });
+        GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
+        widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
             break;
         }
     }
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(widget != nullptr, QString("Widget '%1' not found").arg(widgetName), NULL);
+        GT_CHECK_RESULT(widget != nullptr, QString("Widget '%1' not found").arg(objectName), nullptr);
     }
     return widget;
 }
@@ -138,6 +133,10 @@ QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widget
     return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
 }
 
+QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QPushButton *>(os, widgetName, parentWidget, options);
+}
+
 QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
 }
@@ -151,26 +150,16 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
     QList<QAbstractButton *> resultButtonList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && resultButtonList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QList<QAbstractButton *> allButtonList;
-        if (parentWidget == nullptr) {
-            for (QWidget *mainWidget : GTMainWindow::getMainWindowsAsWidget(os)) {
-                allButtonList << mainWidget->findChildren<QAbstractButton *>();
-            }
-        } else {
-            allButtonList << parentWidget->findChildren<QAbstractButton *>();
-        }
-        for (QAbstractButton *button : allButtonList) {
-            if (button->text().contains(text, Qt::CaseInsensitive)) {
-                resultButtonList << button;
-            }
-        }
+        resultButtonList = findChildren<QAbstractButton>(os,
+                                                         parentWidget,
+                                                         [text](auto button) { return button->text().contains(text, Qt::CaseInsensitive); });
         if (!options.failIfNotFound) {
             break;
         }
     }
-    GT_CHECK_RESULT(resultButtonList.count() <= 1, QString("There are %1 buttons with text '%2'").arg(resultButtonList.count()).arg(text), nullptr);
+    GT_CHECK_RESULT(resultButtonList.size() <= 1, QString("There are %1 buttons with text '%2'").arg(resultButtonList.size()).arg(text), nullptr);
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(resultButtonList.count() != 0, QString("Button with the text <%1> is not found").arg(text), nullptr);
+        GT_CHECK_RESULT(!resultButtonList.isEmpty(), QString("Button with the text <%1> is not found").arg(text), nullptr);
     }
     return resultButtonList.isEmpty() ? nullptr : resultButtonList.first();
 }
@@ -184,22 +173,15 @@ QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
     QList<QLabel *> resultLabelList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS && resultLabelList.isEmpty() : 0);
-        QList<QLabel *> allLabelList;
-        if (parentWidget == nullptr) {
-            foreach (QWidget *windowWidget, GTMainWindow::getMainWindowsAsWidget(os)) {
-                allLabelList << windowWidget->findChildren<QLabel *>();
-            }
-        } else {
-            allLabelList << parentWidget->findChildren<QLabel *>();
-        }
-        foreach (QLabel *label, allLabelList) {
-            if (label->text().contains(text, Qt::CaseInsensitive)) {
-                resultLabelList << label;
-            }
+        resultLabelList = findChildren<QLabel>(os,
+                                               parentWidget,
+                                               [text](auto label) { return label->text().contains(text, Qt::CaseInsensitive); });
+        if (!options.failIfNotFound) {
+            break;
         }
     }
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(resultLabelList.count() > 0, QString("Label with this text <%1> not found").arg(text), QList<QLabel *>());
+        GT_CHECK_RESULT(!resultLabelList.isEmpty(), QString("Label with this text <%1> not found").arg(text), {});
     }
     return resultLabelList;
 }
@@ -405,7 +387,7 @@ void GTWidget::clickWindowTitle(GUITestOpStatus &os, QWidget *window) {
 
 #define GT_METHOD_NAME "moveWidgetTo"
 void GTWidget::moveWidgetTo(GUITestOpStatus &os, QWidget *window, const QPoint &point) {
-    //QPoint(window->width()/2,3) - is hack
+    // QPoint(window->width()/2,3) - is hack
     GTMouseDriver::moveTo(getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3));
     const QPoint p0 = getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3);
     const QPoint p1 = point + QPoint(window->width() / 2, 3);
@@ -489,8 +471,11 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
     GT_CHECK(widget != nullptr, "Widget is NULL");
     GT_CHECK(widget->isVisible(), "Widget is not visible");
     bool actualEnabledState = widget->isEnabled();
-    GT_CHECK(expectedEnabledState == actualEnabledState,
-             QString("Widget state is incorrect: expected '%1', got '%'2")
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && actualEnabledState != expectedEnabledState; time += GT_OP_CHECK_MILLIS) {
+        actualEnabledState = widget->isEnabled();
+    }
+    GT_CHECK(actualEnabledState == expectedEnabledState,
+             QString("Widget state is incorrect: expected '%1', got '%2'")
                  .arg(expectedEnabledState ? "enabled" : "disabled")
                  .arg(actualEnabledState ? "enabled" : "disabled"));
 }
@@ -527,4 +512,4 @@ void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, c
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

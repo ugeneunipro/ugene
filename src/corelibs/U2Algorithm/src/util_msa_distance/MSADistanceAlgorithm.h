@@ -161,6 +161,6 @@ protected:
     bool isSimilarity;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

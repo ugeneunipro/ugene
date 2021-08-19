@@ -96,20 +96,20 @@ GTestSuite::~GTestSuite() {
 
 static QStringList findAllFiles(const QString &dirPath, const QString &ext, bool recursive, int rec) {
     QStringList res;
-    if (rec > 100) {    //symlink or other err
-        //todo: report err?
+    if (rec > 100) {  // symlink or other err
+        // todo: report err?
         return res;
     }
     QDir dir(dirPath);
 
-    //add files first
+    // add files first
     QStringList files = ext.isEmpty() ? dir.entryList(QDir::Files) : dir.entryList(ext.split(":"), QDir::Files);
     foreach (const QString &file, files) {
         QFileInfo fi(dir.absolutePath() + "/" + file);
         res.append(fi.absoluteFilePath());
     }
 
-    //process subdirs if needed
+    // process subdirs if needed
     if (recursive) {
         QStringList subDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         foreach (QString sub, subDirs) {
@@ -161,17 +161,17 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         return nullptr;
     }
 
-    //Name
+    // Name
     QString suiteName = suiteEl.attribute("name");
     if (suiteName.isEmpty()) {
         err = "Suite name is empty: " + url;
         return nullptr;
     }
 
-    //Test timeout
+    // Test timeout
     QString testTimeout = suiteEl.attribute("test-timeout", "0");
 
-    //Env
+    // Env
     GTestEnvironment suiteEnv;
     QDomNodeList envNodes = suiteEl.elementsByTagName("env-var");
     for (int i = 0; i < envNodes.size(); i++) {
@@ -225,14 +225,14 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
             break;
         }
 
-        if (sizeof(void *) == 8) {    // means that it is 64 bit system
+        if (sizeof(void *) == 8) {  // means that it is 64 bit system
             err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_64"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
             }
         }
 
-        if (sizeof(void *) == 4) {    // means that it is 32 bit system
+        if (sizeof(void *) == 4) {  // means that it is 32 bit system
             err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_32"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
@@ -244,15 +244,15 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         QString testExt = testDirEl.attribute("test-ext");
         QStringList testUrls = findAllFiles(fullTestDirPath, testExt, recursive, 0);
         for (const QString &testUrl : qAsConst(testUrls)) {
-            int shortNameLen = testUrl.length() - fullTestDirPath.length() - 1;    // minus '/' char
+            int shortNameLen = testUrl.length() - fullTestDirPath.length() - 1;  // minus '/' char
             assert(shortNameLen > 0);
             QString tShortName = testUrl.right(shortNameLen);
-            //all tests appended
+            // all tests appended
             suiteTests << new GTestRef(testUrl, tShortName, testFormatName);
         }
     }
 
-    //excluded
+    // excluded
     QDomNodeList excludedEls = suiteEl.elementsByTagName("excluded");
     for (int i = 0; i < excludedEls.size(); i++) {
         QDomNode n = excludedEls.item(i);
@@ -273,7 +273,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         }
     }
 
-    //take excluded from all tests
+    // take excluded from all tests
     foreach (GTestRef *test, suiteTests) {
         QMap<GTestRef *, QString>::iterator iter;
         for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
@@ -301,7 +301,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     suite->excluded = excluded;
     // testTimeout format is unchecked, but it will fail to 0 it's ok
     suite->testTimeout = testTimeout.toInt();
-    suite->testTimeout = (suite->testTimeout == 0) ? -1 : suite->testTimeout;    // -1 means timeout check disabled
+    suite->testTimeout = (suite->testTimeout == 0) ? -1 : suite->testTimeout;  // -1 means timeout check disabled
 
     for (GTestRef *r : qAsConst(suiteTests)) {
         r->setSuite(suite);
@@ -330,7 +330,7 @@ QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringLis
             continue;
         }
         suiteName = suiteName.trimmed();
-        if (suiteName.startsWith("#")) {    //this is a comment line
+        if (suiteName.startsWith("#")) {  // this is a comment line
             continue;
         }
         QString absolutePath = QFileInfo(dir + "/" + suiteName).absoluteFilePath();
@@ -398,7 +398,7 @@ GTestLogHelper::~GTestLogHelper() {
 void GTestLogHelper::initMessages(const QStringList &expectedList, const QStringList &unexpectedList) {
     statusWasVerified = false;
     foreach (QString message, expectedList) {
-        expectedMessages[message] = false;    // i.e. not detected yet
+        expectedMessages[message] = false;  // i.e. not detected yet
     }
 
     foreach (QString message, unexpectedList) {
@@ -467,4 +467,4 @@ void GTestLogHelper::onMessage(const LogMessage &logMessage) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

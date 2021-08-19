@@ -115,12 +115,12 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
 
 void CircularViewSplitter::updateState(const QVariantMap &m) {
     Q_UNUSED(m);
-    //TODO:
+    // TODO:
 }
 
 void CircularViewSplitter::saveState(QVariantMap &m) {
     Q_UNUSED(m);
-    //TODO:
+    // TODO:
 }
 
 void CircularViewSplitter::addView(CircularView *view, RestrctionMapWidget *rmapWidget) {
@@ -305,4 +305,4 @@ void CircularViewSplitter::sl_toggleRestrictionMap(bool toggle) {
     }
 }
 
-}    //namespace U2
+}  // namespace U2

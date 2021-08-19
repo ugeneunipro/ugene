@@ -252,7 +252,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
 
 QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     const QList<SmithWatermanResult> &_results) {
-    //There can be only one result: the first maximum. Other results will be ignored.
+    // There can be only one result: the first maximum. Other results will be ignored.
     quint8 countOfLoadedDocs = 0;
     TaskStateInfo stateInfo;
     SWMulAlignResultNamesTagsRegistry *tagsRegistry = AppContext::getSWMulAlignResultNamesTagsRegistry();
@@ -334,7 +334,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
 }
 
 QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow(const QList<SmithWatermanResult> &_results) {
-    //There can be only one result: the first maximum. Other results will be ignored.
+    // There can be only one result: the first maximum. Other results will be ignored.
     CHECK(!_results.isEmpty(), tr("Smith-Waterman pairwise alignment: no results"));
     SmithWatermanResult pairAlignSeqs = _results.first();
     U2OpStatus2Log os;
@@ -495,4 +495,4 @@ void SmithWatermanReportCallbackMAImpl::changeGivenUrlIfDocumentExists(QString &
     }
 }
 
-}    // namespace U2
+}  // namespace U2

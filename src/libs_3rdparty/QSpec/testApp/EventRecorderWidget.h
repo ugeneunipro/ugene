@@ -9,4 +9,4 @@ public:
     EventRecorderWidget(QWidget *parent = 0);
 };
 
-#endif    // EVENTRECORDERWIDGET_H
+#endif  // EVENTRECORDERWIDGET_H

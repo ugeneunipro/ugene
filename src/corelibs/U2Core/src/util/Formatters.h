@@ -19,32 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#include "SaveGraphCutoffsTask.h"
+#ifndef _U2_FORMATTERS_H_
+#define _U2_FORMATTERS_H_
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-SaveCutoffsTask::SaveCutoffsTask(SaveCutoffsTaskSettings _s)
-    : Task("Run saving graph cutoffs as annotations task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported), settings(_s) {
-}
+/** A class used to format any given string according to the formatters domain rules. */
+template<typename ValueType>
+class U2Formatter {
+public:
+    virtual ~U2Formatter() = default;
 
-void SaveCutoffsTask::prepare() {
-    /*
-    int startPos = settings.d->cachedFrom, len = settings.d->cachedLen, step = settings.d->cachedS;
-    PairVector& points = settings.d->cachedData;
-    for (int i = 0, n = nPoints; i < n; i++) {
-        float fy1 = points.firstPoints[i];
-        if (fy1 == UNKNOWN_VAL) {
+    /** Returns formatted text for the given value. */
+    virtual QString format(const ValueType &value) const = 0;
+};
 
-        }
-    }
-    */
-}
+typedef U2Formatter<QString> StringFormatter;
 
-void SaveCutoffsTask::run() {
-}
+/** Interprets property name as document format id and returns the related document format name. */
+class U2CORE_EXPORT DocumentNameByIdFormatter : public StringFormatter {
+public:
+    QString format(const QString &documentFormatId) const override;
+};
 
-Task::ReportResult SaveCutoffsTask::report() {
-    return ReportResult_Finished;
-}
+}  // namespace U2
 
-}    // namespace U2
+#endif  // _U2_FORMATTERS_H_

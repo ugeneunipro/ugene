@@ -44,11 +44,11 @@ namespace U2 {
 namespace GUITest_common_scenarios_sw_dialog {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //Performing Smith-Waterman algorithm with multiple alignment as result
+    // Performing Smith-Waterman algorithm with multiple alignment as result
     //
-    // Steps:
+    //  Steps:
     //
-    // 1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
+    //  1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
     GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "query.txt");
@@ -104,11 +104,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //Performing Smith-Waterman algorithm with annotations as result
+    // Performing Smith-Waterman algorithm with annotations as result
     //
-    // Steps:
+    //  Steps:
     //
-    // 1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
+    //  1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
     GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "query.txt");
@@ -151,6 +151,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_SET_ERR(3 == annotationsCounter, QString("Result count mismatch Expected= %1 Actual= %2").arg(3).arg(annotationsCounter));
 }
 
-}    // namespace GUITest_common_scenarios_sw_dialog
+}  // namespace GUITest_common_scenarios_sw_dialog
 
-}    // namespace U2
+}  // namespace U2

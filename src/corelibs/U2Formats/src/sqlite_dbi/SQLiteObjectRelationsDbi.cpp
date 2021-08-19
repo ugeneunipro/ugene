@@ -125,4 +125,4 @@ void SQLiteObjectRelationsDbi::removeReferencesForObject(const U2DataId &object,
     q.execute();
 }
 
-}    // namespace U2
+}  // namespace U2

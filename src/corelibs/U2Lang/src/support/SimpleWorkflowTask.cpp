@@ -219,4 +219,4 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     return maObj->getMsaCopy();
 }
 
-}    // namespace U2
+}  // namespace U2

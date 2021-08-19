@@ -103,7 +103,7 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
 void WizardPageController::removeLayout(QLayout *l) {
     CHECK(nullptr != l, );
@@ -136,4 +136,4 @@ int WizardPageController::nextId() const {
     return wc->getQtPageId(id);
 }
 
-}    // namespace U2
+}  // namespace U2

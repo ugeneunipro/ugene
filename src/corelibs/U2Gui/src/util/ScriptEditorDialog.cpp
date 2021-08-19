@@ -177,4 +177,4 @@ void ScriptEditorDialog::sl_cursorPositionChanged() {
     ui->lineInfo->setText("Line: " + QString::number(lineNumber + 1));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -34,7 +34,7 @@ void BioStruct3DImageExportToSVGTask::run() {
 
     int opt = GL2PS_NONE;
     glWidget->writeImage2DToFile(GL2PS_SVG, opt, 2, qPrintable(settings.fileName));
-    //TODO: need check on error
+    // TODO: need check on error
 }
 
 void BioStruct3DImageExportToPDFTask::run() {
@@ -45,10 +45,10 @@ void BioStruct3DImageExportToPDFTask::run() {
 
     if (settings.format == "ps") {
         glWidget->writeImage2DToFile(GL2PS_PS, opt, 2, qPrintable(settings.fileName));
-        return;    //TODO: need check on error
+        return;  // TODO: need check on error
     } else if (settings.format == "pdf") {
         glWidget->writeImage2DToFile(GL2PS_PDF, opt, 2, qPrintable(settings.fileName));
-        return;    //TODO: need check on error
+        return;  // TODO: need check on error
     }
     setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName));
 }
@@ -73,4 +73,4 @@ int BioStruct3DImageExportController::getImageHeight() const {
     return glWidget->height();
 }
 
-}    // namespace U2
+}  // namespace U2

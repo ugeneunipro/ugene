@@ -40,7 +40,7 @@ private:
     static void determineWinOsVersionFallbackPost8(OSVERSIONINFO *result);
 };
 
-//QT class copied from 5.4.0 for WIN 10 correct detection
+// QT class copied from 5.4.0 for WIN 10 correct detection
 class QSystemLibrary {
 public:
     explicit QSystemLibrary(const QString &libraryName) {

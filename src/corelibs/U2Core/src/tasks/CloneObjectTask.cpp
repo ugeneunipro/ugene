@@ -89,4 +89,4 @@ Document *CloneObjectTask::getDocument() const {
     return dstDoc.data();
 }
 
-}    // namespace U2
+}  // namespace U2

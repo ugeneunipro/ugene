@@ -60,8 +60,8 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // LoadUnloadedDocumentTask
 
-//TODO: support subtask sharing!
-//TODO: avoid multiple load tasks when opening view for unloaded doc!
+// TODO: support subtask sharing!
+// TODO: avoid multiple load tasks when opening view for unloaded doc!
 
 LoadUnloadedDocumentTask::LoadUnloadedDocumentTask(Document *d, const LoadDocumentTaskConfig &_config)
     : DocumentProviderTask("", TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_CollectChildrenWarnings),
@@ -124,15 +124,15 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
             resName.clear();
         }
     } else if (isCanceled() || (loadTask != nullptr && loadTask->isCanceled())) {
-        //do nothing
+        // do nothing
     } else if (unloadedDoc->isLoaded()) {
-        //do nothing
+        // do nothing
     } else if (p && p->isStateLocked()) {
-        res = ReportResult_CallMeAgain;    //wait until project is unlocked
+        res = ReportResult_CallMeAgain;  // wait until project is unlocked
     } else {
-        assert(unloadedDoc->isStateLocked());    // all unloaded docs are always state locked
+        assert(unloadedDoc->isStateLocked());  // all unloaded docs are always state locked
 
-        //todo: move to utility method?
+        // todo: move to utility method?
         const QList<StateLock *> &locks = unloadedDoc->getStateLocks();
         bool readyToLoad = true;
         foreach (StateLock *lock, locks) {
@@ -141,10 +141,10 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
             }
         }
         if (!readyToLoad) {
-            stateInfo.setError(tr("Document is locked"));    //todo: wait instead?
+            stateInfo.setError(tr("Document is locked"));  // todo: wait instead?
         } else {
             Document *sourceDoc = loadTask->getDocument();
-            unloadedDoc->loadFrom(sourceDoc);    // get all data from source doc;
+            unloadedDoc->loadFrom(sourceDoc);  // get all data from source doc;
             Q_ASSERT(!unloadedDoc->isTreeItemModified());
             Q_ASSERT(unloadedDoc->isLoaded());
             if (sourceDoc->getGHintsMap().value(DocumentReadingMode_LoadAsModified, false).toBool()) {
@@ -225,11 +225,11 @@ LoadDocumentTask::LoadDocumentTask(DocumentFormat *f, const GUrl &u, IOAdapterFa
 }
 
 static bool isLoadFromMultipleFiles(QVariantMap &hints) {
-    if (hints.value(ProjectLoaderHint_MultipleFilesMode_Flag, false).toBool() == true) {    // if that document was/is collected from different files
-        if (!QFile::exists(hints[ProjectLoaderHint_MultipleFilesMode_Flag].toString())) {    // if not exist - load as collected
+    if (hints.value(ProjectLoaderHint_MultipleFilesMode_Flag, false).toBool() == true) {  // if that document was/is collected from different files
+        if (!QFile::exists(hints[ProjectLoaderHint_MultipleFilesMode_Flag].toString())) {  // if not exist - load as collected
             return true;
         }
-        hints.remove(ProjectLoaderHint_MultipleFilesMode_Flag);    // if exist - remove hints indicated that document is collected . Now document is genbank or clustalw
+        hints.remove(ProjectLoaderHint_MultipleFilesMode_Flag);  // if exist - remove hints indicated that document is collected . Now document is genbank or clustalw
         hints[DocumentReadingMode_SequenceMergeGapSize] = -1;
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = false;
     }
@@ -362,7 +362,7 @@ void loadHintsNewDocument(bool saveDoc, IOAdapterFactory *iof, Document *doc, U2
         if (!io->open(url, IOAdapterMode_Write)) {
             os.setError(L10N::errorOpeningFileWrite(url));
         } else {
-            //TODO remove after genbank can storing without getWholeSequence
+            // TODO remove after genbank can storing without getWholeSequence
             try {
                 doc->getDocumentFormat()->storeDocument(doc, io.data(), os);
             } catch (const std::bad_alloc &) {
@@ -502,7 +502,7 @@ void LoadDocumentTask::processObjRef() {
 int LoadDocumentTask::calculateMemory() const {
     int memUseMB = 0;
 
-    if (!format->getFlags().testFlag(DocumentFormatFlag_NoFullMemoryLoad) && isLoadToMem(format->getFormatId())) {    // document is fully loaded to memory
+    if (!format->getFlags().testFlag(DocumentFormatFlag_NoFullMemoryLoad) && isLoadToMem(format->getFormatId())) {  // document is fully loaded to memory
         QFileInfo file(url.getURLString());
         memUseMB = file.size() / (1000 * 1000);
 
@@ -510,12 +510,12 @@ int LoadDocumentTask::calculateMemory() const {
         if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE) {
             qint64 fileSizeInBytes = ZlibAdapter::getUncompressedFileSizeInBytes(url);
             if (fileSizeInBytes < 0) {
-                memUseMB *= DEFAULT_COMPRESS_RATIO;    //Need to calculate compress level
+                memUseMB *= DEFAULT_COMPRESS_RATIO;  // Need to calculate compress level
             } else {
                 memUseMB = fileSizeInBytes / (1000 * 1000);
             }
         } else if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
-            memUseMB *= DEFAULT_COMPRESS_RATIO;    //Need to calculate compress level
+            memUseMB *= DEFAULT_COMPRESS_RATIO;  // Need to calculate compress level
         }
         coreLog.trace(QString("load document:Memory resource %1").arg(memUseMB));
     }
@@ -529,7 +529,7 @@ void LoadDocumentTask::renameObjects(Document *doc, const QStringList &names) {
         return;
     }
 
-    //drop names first
+    // drop names first
     QSet<QString> usedNames;
     QSet<GObject *> notRenamedObjects;
     foreach (GObject *obj, doc->getObjects()) {
@@ -539,7 +539,7 @@ void LoadDocumentTask::renameObjects(Document *doc, const QStringList &names) {
     const QList<GObject *> &objects = doc->getObjects();
     int nObjects = objects.size();
     int maxIters = nObjects;
-    int currentIter = 0;    //to avoid endless loop in case of duplicate names
+    int currentIter = 0;  // to avoid endless loop in case of duplicate names
     while (!notRenamedObjects.isEmpty() && currentIter < maxIters) {
         for (int i = 0; i < nObjects; i++) {
             GObject *obj = objects[i];
@@ -573,4 +573,4 @@ GObject *LDTObjectFactory::create(const GObjectReference &ref) {
     return new AnnotationTableObject(ref.objName, dbiRef);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -270,7 +270,7 @@ void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *tf, const QDomElement 
         }
     }
 
-    //chain index
+    // chain index
     v = el.attribute(VALUE_ATTR);
     if (v.isEmpty()) {
         failMissingValue(VALUE_ATTR);
@@ -349,7 +349,7 @@ void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *tf, const QDomElement
         }
     }
 
-    //residue name
+    // residue name
     v = el.attribute(VALUE_ATTR);
     if (v.isEmpty()) {
         failMissingValue(VALUE_ATTR);
@@ -571,4 +571,4 @@ QList<XMLTestFactory *> BioStruct3DObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -78,5 +78,5 @@ public:
     static QString getSequenceIdsFromSelection(const QList<Annotation *> &selection, bool localBase = false);
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

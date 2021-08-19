@@ -120,7 +120,7 @@ protected:
 
     void addArrowPath(QPainterPath &path, const QRect &rect, bool leftArrow) const;
 
-    qint64 correctCutPos(const qint64 pos) const;
+    qint64 correctCutPos(qint64 pos) const;
 
     AnnotationViewMetrics annMetrics;
 
@@ -138,6 +138,6 @@ protected:
     static const int MAX_VIRTUAL_RANGE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SEQUENCE_VIEW_ANNOTATED_RENDERER_H_
+#endif  // _U2_SEQUENCE_VIEW_ANNOTATED_RENDERER_H_

@@ -280,4 +280,4 @@ void EditFragmentDialog::resetRightOverhang() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

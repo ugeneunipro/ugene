@@ -141,6 +141,6 @@ public:
     static void rerootPhyTree(PhyTree &phyTree, PhyNode *node);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

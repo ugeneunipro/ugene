@@ -110,4 +110,4 @@ void MysqlCrossDatabaseReferenceDbi::updateCrossReference(const U2CrossDatabaseR
     q.execute();
 }
 
-}    // namespace U2
+}  // namespace U2

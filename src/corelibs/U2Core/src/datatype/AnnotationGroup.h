@@ -125,9 +125,9 @@ private:
     static const bool annotationGroupMetaRegistered;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::AnnotationGroup)
 Q_DECLARE_METATYPE(U2::AnnotationGroup *)
 
-#endif    //
+#endif  //

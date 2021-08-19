@@ -39,6 +39,6 @@ public:
     virtual void setAttributeValue(const AttributeInfo &info, const QVariant &value) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SCHEMACONFIG_H_
+#endif  // _U2_SCHEMACONFIG_H_

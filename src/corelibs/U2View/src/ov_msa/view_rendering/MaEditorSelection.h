@@ -52,6 +52,12 @@ public:
     /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
     bool isSingleRegionSelection() const;
 
+    /** Returns true if selection contains only 1 row (any column range). */
+    bool isSingleRowSelection() const;
+
+    /** Returns true if selection contains only 1 column (any rows range). */
+    bool isSingleColumnSelection() const;
+
     /** Returns true if selection contains 1 rect with 1x1 dimension. */
     bool isSingleBaseSelection() const;
 
@@ -68,6 +74,9 @@ public:
 
     /** Returns width of the selection. Note: all rects in the selection have unified width (left & right coordinates). */
     int getWidth() const;
+
+    /** Returns selected X region or an empty region if there is no active selection. */
+    U2Region getColumnRegion() const;
 
     /** Returns list of selected rects. */
     const QList<QRect> &getRectList() const;
@@ -149,6 +158,6 @@ private:
     McaEditor *const mcaEditor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MA_EDITOR_SELECTION_
+#endif  // _U2_MA_EDITOR_SELECTION_

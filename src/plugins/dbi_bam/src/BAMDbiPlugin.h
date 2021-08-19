@@ -91,7 +91,7 @@ private:
     time_t startTime;
 };
 
-}    // namespace BAM
-}    // namespace U2
+}  // namespace BAM
+}  // namespace U2
 
-#endif    // _U2_BAM_DBI_PLUGIN_H_
+#endif  // _U2_BAM_DBI_PLUGIN_H_

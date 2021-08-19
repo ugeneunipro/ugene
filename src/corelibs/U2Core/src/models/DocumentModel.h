@@ -243,9 +243,9 @@ public:
 
 protected:
     /* io - opened IOAdapter.
-    * if document format supports streaming reading it must correctly process DocumentLoadMode
-    * otherwise, it will load all file from starting position ( default )
-    */
+     * if document format supports streaming reading it must correctly process DocumentLoadMode
+     * otherwise, it will load all file from starting position ( default )
+     */
     virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os) = 0;
 
     DocumentFormatId id;
@@ -331,10 +331,10 @@ enum DocumentModLock {
 };
 
 enum DocumentObjectRemovalMode {
-    DocumentObjectRemovalMode_Deallocate,    // ordinary removal: both object and its DB representation are deallocated
-    DocumentObjectRemovalMode_OnlyNotify,    // fake removal: neither object nor its DB representation are deallocated.
+    DocumentObjectRemovalMode_Deallocate,  // ordinary removal: both object and its DB representation are deallocated
+    DocumentObjectRemovalMode_OnlyNotify,  // fake removal: neither object nor its DB representation are deallocated.
     // Only signals about removal are emitted. The object itself remains to belong to the document.
-    DocumentObjectRemovalMode_Release    // fake removal: the same as DocumentObjectRemovalMode_OnlyNotify.
+    DocumentObjectRemovalMode_Release  // fake removal: the same as DocumentObjectRemovalMode_OnlyNotify.
     // Additionally, the object is excluded from the document's child objects list.
     // External code has to handle a proper object deallocation.
 };
@@ -355,16 +355,16 @@ public:
             : stateLocked(TriState_Unknown) {
         }
         TriState stateLocked;
-        QList<DocumentModLock> notAllowedStateLocks;    // if document contains one of these locks -> it's not matched
-        QList<DocumentFormatId> formats;    // document format must be in list to match
-        GObjectType objectTypeToAdd;    // document must be ready to add objects of the specified type
+        QList<DocumentModLock> notAllowedStateLocks;  // if document contains one of these locks -> it's not matched
+        QList<DocumentFormatId> formats;  // document format must be in list to match
+        GObjectType objectTypeToAdd;  // document must be ready to add objects of the specified type
     };
     static const QString UNLOAD_LOCK_NAME;
 
-    //Creates document in unloaded state. Populates it with unloaded objects
+    // Creates document in unloaded state. Populates it with unloaded objects
     Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url, const U2DbiRef &_dbiRef, const QList<UnloadedObjectInfo> &unloadedObjects = QList<UnloadedObjectInfo>(), const QVariantMap &hints = QVariantMap(), const QString &instanceModLockDesc = QString());
 
-    //Creates document in loaded state.
+    // Creates document in loaded state.
     Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url, const U2DbiRef &_dbiRef, const QList<GObject *> &objects, const QVariantMap &hints = QVariantMap(), const QString &instanceModLockDesc = QString());
 
     virtual ~Document();
@@ -509,7 +509,7 @@ protected:
     DocumentFormat *const df;
     IOAdapterFactory *io;
     GUrl url;
-    U2DbiRef dbiRef;    // Default dbi ref for the document
+    U2DbiRef dbiRef;  // Default dbi ref for the document
 
     QString name; /* display name == short pathname, excluding the path */
     QList<GObject *> objects;
@@ -530,7 +530,7 @@ signals:
     void si_loadedStateChanged();
 };
 
-//TODO: decide if to use filters or constraints. May be it worth to remove Document::Constraints at all..
+// TODO: decide if to use filters or constraints. May be it worth to remove Document::Constraints at all..
 
 class U2CORE_EXPORT DocumentFilter {
 public:
@@ -567,7 +567,7 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::Document *)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)

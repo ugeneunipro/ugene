@@ -149,4 +149,4 @@ bool MarkerEditorWidget::checkAddMarkerGroupResult(Marker *newMarker, QString &m
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

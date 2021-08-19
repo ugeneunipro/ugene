@@ -154,4 +154,4 @@ bool SolventExcludedSurfaceFactory::hasConstraints(const BioStruct3D &biostruc) 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

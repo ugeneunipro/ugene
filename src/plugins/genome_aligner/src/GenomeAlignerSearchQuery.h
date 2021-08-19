@@ -84,7 +84,7 @@ public:
     qint64 memoryHint() const;
 
 private:
-    //U2AssemblyRead assRead;
+    // U2AssemblyRead assRead;
     DNAQuality *quality;
     char *seq;
     char *name;
@@ -116,5 +116,5 @@ private:
     static const quint64 reallocSize;
 };
 
-}    // namespace U2
-#endif    //_U2_GENOME_ALIGNER_SEARCH_QUERY_H_
+}  // namespace U2
+#endif  //_U2_GENOME_ALIGNER_SEARCH_QUERY_H_

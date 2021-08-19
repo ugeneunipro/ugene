@@ -60,7 +60,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-///Close project
+/// Close project
 CloseProjectTask::CloseProjectTask()
     : Task(tr("Close project"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel) {
 }
@@ -70,7 +70,7 @@ void CloseProjectTask::prepare() {
         stateInfo.setError(tr("No active project found"));
         return;
     }
-    /* TODO: this is done by project view. Need to cleanup this part! 
+    /* TODO: this is done by project view. Need to cleanup this part!
     addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
     */
     QList<Task *> tasks;
@@ -142,7 +142,7 @@ void SaveProjectTask::prepare() {
     }
     QList<Task *> ssTasks;
     if (url.isEmpty() && (!proj->getGObjectViewStates().isEmpty() || proj->getDocuments().size() > 0)) {
-        //show "save project?" dialog, if needed
+        // show "save project?" dialog, if needed
         int savedSaveProjectState = AppContext::getAppSettings()->getUserAppsSettings()->getAskToSaveProject();
 
         QWidget *mainWindow = AppContext::getMainWindow()->getQMainWindow();
@@ -228,7 +228,7 @@ void SaveOnlyProjectTask::prepare() {
 
     foreach (Document *d, proj->getDocuments()) {
         QStringList urls = d->getGHintsMap().value(ProjectLoaderHint_MultipleFilesMode_URLDocument, QStringList()).toStringList();
-        if (urls.isEmpty()) {    // not merged document
+        if (urls.isEmpty()) {  // not merged document
             if (d->getURL().isLocalFile()) {
                 QFile pathToDoc(d->getURLString());
                 if (pathToDoc.exists()) {
@@ -236,7 +236,7 @@ void SaveOnlyProjectTask::prepare() {
                 }
                 phantomDocs.append(d);
             }
-        } else {    // merged document
+        } else {  // merged document
             foreach (QString url, urls) {
                 QFile pathToDoc(url);
                 if (!pathToDoc.exists()) {
@@ -332,7 +332,7 @@ ExportProjectTask::ExportProjectTask(const QString &_destinationDir, const QStri
 void ExportProjectTask::prepare() {
     Project *pr = AppContext::getProject();
     if (pr->isItemModified()) {
-        //setting url in case of anonymous project
+        // setting url in case of anonymous project
         if (pr->getProjectURL().isEmpty()) {
             QString tempDir = AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath();
             pr->setProjectURL(tempDir + QDir::separator() + projectFile);
@@ -507,7 +507,7 @@ void GTest_ExportProject::cleanup() {
 
 bool GTest_ExportProject::removeDir(const QDir &aDir) {
     bool has_err = false;
-    if (aDir.exists())    //QDir::NoDotAndDotDot
+    if (aDir.exists())  // QDir::NoDotAndDotDot
     {
         QFileInfoList entries = aDir.entryInfoList(QDir::NoDotAndDotDot |
                                                    QDir::Dirs | QDir::Files);
@@ -534,7 +534,7 @@ void GTest_UnloadProject::init(XMLTestFormat *tf, const QDomElement &el) {
 
     QString packedList = el.attribute("documents");
     if (packedList.isEmpty()) {
-        //document list can be empty!
+        // document list can be empty!
         return;
     }
     unloadDocList = packedList.split(",");
@@ -606,4 +606,4 @@ Task::ReportResult GTest_LoadDocumentFromProject::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

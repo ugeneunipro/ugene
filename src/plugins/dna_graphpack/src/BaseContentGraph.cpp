@@ -25,7 +25,6 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/L10n.h>
 
 #include "DNAGraphPackPlugin.h"
 
@@ -54,14 +53,9 @@ bool BaseContentGraphFactory::isEnabled(const U2SequenceObject *o) const {
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView *v) {
-    Q_UNUSED(v);
-    QList<QSharedPointer<GSequenceGraphData>> res;
-    assert(isEnabled(v->getSequenceObject()));
-    QSharedPointer<GSequenceGraphData> d = QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(getGraphName()));
-    d->ga = new BaseContentGraphAlgorithm(map);
-    res.append(d);
-    return res;
+QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView *view) {
+    assert(isEnabled(view->getSequenceObject()));
+    return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new BaseContentGraphAlgorithm(map)))};
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,10 +65,16 @@ BaseContentGraphAlgorithm::BaseContentGraphAlgorithm(const QBitArray &_map)
     : map(_map) {
 }
 
-void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seq, int startPos, const GSequenceGraphWindowData *d, int nSteps, U2OpStatus &os) {
+void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res,
+                                                              const QByteArray &seq,
+                                                              qint64 startPos,
+                                                              qint64 window,
+                                                              qint64 step,
+                                                              qint64 nSteps,
+                                                              U2OpStatus &os) {
     for (int i = 0; i < nSteps; i++) {
-        int start = startPos + i * d->step;
-        int end = start + d->window;
+        int start = startPos + i * step;
+        int end = start + window;
         int base_count = 0;
         for (int x = start; x < end; x++) {
             CHECK_OP(os, );
@@ -83,20 +83,17 @@ void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &re
                 base_count++;
             }
         }
-        res.append((base_count / (float)(d->window)) * 100);
+        res.append((base_count / (float)window) * 100);
     }
 }
 
-void BaseContentGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    SAFE_POINT(d != nullptr, L10N::nullPointerError("window graph"), );
-    SAFE_POINT(o != nullptr, L10N::nullPointerError("sequence object"), );
-
-    int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
-    res.reserve(nSteps);
-    const QByteArray &seq = getSequenceData(o, os);
+void BaseContentGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+    U2Region vr(0, sequenceObject->getSequenceLength());
+    int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
+    result.reserve(nSteps);
+    QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
-    int startPos = vr.startPos;
-    windowStrategyWithoutMemorize(res, seq, startPos, d, nSteps, os);
+    windowStrategyWithoutMemorize(result, seq, vr.startPos, window, step, nSteps, os);
 }
 
-}    // namespace U2
+}  // namespace U2

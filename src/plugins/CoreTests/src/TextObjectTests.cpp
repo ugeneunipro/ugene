@@ -91,4 +91,4 @@ QList<XMLTestFactory *> TextObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

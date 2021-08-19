@@ -32,6 +32,6 @@ public:
     BallPlugin();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // BALLPLUGIN_H
+#endif  // BALLPLUGIN_H

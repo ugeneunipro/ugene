@@ -37,4 +37,4 @@ QString ImportPrimersMultiTask::generateReport() const {
     return report;
 }
 
-}    // namespace U2
+}  // namespace U2

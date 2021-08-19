@@ -51,7 +51,7 @@
 #    pragma GCC diagnostic ignored "-Wunused-parameter"
 #    pragma GCC diagnostic ignored "-Wunused-variable"
 #
-#    ifndef __cplusplus    // The macros below are not valid in C++ context but are needed for plain C files.
+#    ifndef __cplusplus  // The macros below are not valid in C++ context but are needed for plain C files.
 #        pragma GCC diagnostic ignored "-Wclass-memaccess"
 #        pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
 #        pragma GCC diagnostic ignored "-Wimplicit-int"

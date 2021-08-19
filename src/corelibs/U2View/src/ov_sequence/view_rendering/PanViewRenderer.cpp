@@ -37,8 +37,8 @@
 namespace U2 {
 
 const int PanViewRenderer::RULER_NOTCH_SIZE = 2;
-//const int PanViewRenderer::MAX_VISIBLE_ROWS  = 20;
-//const int PanViewRenderer::MAX_VISIBLE_ROWS_ON_START = 10;
+// const int PanViewRenderer::MAX_VISIBLE_ROWS  = 20;
+// const int PanViewRenderer::MAX_VISIBLE_ROWS_ON_START = 10;
 const int PanViewRenderer::LINE_TEXT_OFFSET = 8;
 
 PanViewRenderer::PanViewRenderer(PanView *panView, SequenceObjectContext *ctx)
@@ -82,7 +82,7 @@ QSize PanViewRenderer::getBaseCanvasSize(const U2Region &visibleRange) const {
 
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
-        firstLastWidth--;    // make the end of the ruler visible
+        firstLastWidth--;  // make the end of the ruler visible
     }
 
     PVRowsManager *rm = panView->getRowsManager();
@@ -114,7 +114,7 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
     int lastCharCenter = posToXCoord(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar;
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
-        firstLastWidth--;    // make the end of the ruler visible
+        firstLastWidth--;  // make the end of the ruler visible
     }
     c.notchSize = RULER_NOTCH_SIZE;
     int chunk = GraphUtils::calculateChunk(visibleRange.startPos + 1, visibleRange.endPos(), panView->width(), p);
@@ -155,9 +155,9 @@ void PanViewRenderer::drawAnnotations(QPainter &p, const QSize &canvasSize, cons
     const QPen dotty(Qt::lightGray, 1, Qt::DotLine);
     p.setPen(dotty);
     p.setFont(annMetrics.afSmall);
-    const int cachedViewWidth = canvasSize.width();    // rename the variable
+    const int cachedViewWidth = canvasSize.width();  // rename the variable
 
-    //draw row names
+    // draw row names
     PVRowsManager *rm = panView->getRowsManager();
     const int maxVisibleRows = s->getNumVisibleRows();
     for (int i = 0; i < maxVisibleRows; i++) {
@@ -179,7 +179,7 @@ void PanViewRenderer::drawAnnotations(QPainter &p, const QSize &canvasSize, cons
                 foreach (Annotation *a, rData->annotations) {
                     drawAnnotation(p, canvasSize, visibleRange, a, displaySettings);
                 }
-                //restore pen
+                // restore pen
                 p.setPen(dotty);
                 p.setFont(annMetrics.afSmall);
             }
@@ -236,7 +236,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
     QFontMetrics rfm(commonMetrics.rulerFont);
 
     int lineY = getLineY(s->getSelectionLine());
-    int ly = lineY + commonMetrics.lineHeight / 2;    //ruler line
+    int ly = lineY + commonMetrics.lineHeight / 2;  // ruler line
 
     bool drawRect = showSequenceMode;
     bool drawGraphics = true;
@@ -278,7 +278,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
         }
 
         if (drawGraphics) {
-            //draw line
+            // draw line
             p.setPen(pen2);
             p.drawLine(x1, ly, x2, ly);
             int dArrow = 2 * ARROW_DX;
@@ -301,7 +301,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
                 rtRect.translate(rtx, rty);
                 p.fillRect(rtRect, Qt::white);
                 p.drawText(rtRect, Qt::AlignCenter, rangeText);
-            } else {    //if range text is not in the middle glue it to one of the boundary texts
+            } else {  // if range text is not in the middle glue it to one of the boundary texts
                 QString newT2 = t2 + rangeText;
                 QRect newT2Rect = rfm.boundingRect(newT2).translated(x2 + tOffs, rty);
                 if (newT2Rect.right() < canvasSize.width()) {
@@ -318,7 +318,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
                 }
             }
 
-            //check if regions overlap
+            // check if regions overlap
             int interWidth = t2Rect.left() - t1Rect.right();
             if (interWidth < dArrow) {
                 int deltaW = interWidth > 0 ? dArrow : qAbs(interWidth) + dArrow;
@@ -329,13 +329,13 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
                 }
             }
 
-            //draw regions
+            // draw regions
             p.fillRect(t1Rect, Qt::white);
             p.fillRect(t2Rect, Qt::white);
             p.drawText(t1Rect, Qt::AlignCenter, t1);
             p.drawText(t2Rect, Qt::AlignCenter, t2);
 
-            //draw arrows (after the text -> can overlap with text rect boundaries)
+            // draw arrows (after the text -> can overlap with text rect boundaries)
             if (visibleRange.contains(r.startPos)) {
                 p.drawLine(x1, ly, x1 + ARROW_DX, ly + ARROW_DY);
                 p.drawLine(x1, ly, x1 + ARROW_DX, ly - ARROW_DY);
@@ -396,7 +396,7 @@ void PanViewRenderer::drawCustomRulers(GraphUtils::RulerConfig c, QPainter &p, c
 
         int rulerWidth = lastCharCenter - x;
         if (qRound(halfChar) == 0) {
-            rulerWidth--;    // make the end of the ruler visible
+            rulerWidth--;  // make the end of the ruler visible
         }
 
         int offsetToFirstNotch = (int)(c.predefinedChunk - visibleRange.startPos % c.predefinedChunk);
@@ -425,8 +425,8 @@ PanViewRenderAreaFactory::~PanViewRenderAreaFactory() {
 PanViewRenderArea *PanViewRenderAreaFactory::createRenderArea(PanView *panView) const {
     auto renderer = new PanViewRenderer(panView, panView->getSequenceContext());
     auto renderArea = new PanViewRenderArea(panView, renderer);
-    renderer->setParent(renderArea);    // Delete renderer when render area is deleted.
+    renderer->setParent(renderArea);  // Delete renderer when render area is deleted.
     return renderArea;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -192,4 +192,4 @@ U2Mca MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus &o
     return U2Mca(dbMsa);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -35,6 +35,6 @@ public:
     virtual bool hit();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_BREAKPOINT_GREATER_OR_EQUAL_HIT_COUNTER_H_
+#endif  // _U2_WORKFLOW_BREAKPOINT_GREATER_OR_EQUAL_HIT_COUNTER_H_

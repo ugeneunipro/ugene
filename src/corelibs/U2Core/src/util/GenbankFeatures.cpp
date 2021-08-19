@@ -222,7 +222,7 @@ const QMultiMap<QString, GBFeatureKey> &GBFeatureUtils::getKeyGroups() {
         groups.insert(repeats, GBFeatureKey_repeat_region);
         groups.insert(repeats, GBFeatureKey_repeat_unit);
         groups.insert(repeats, GBFeatureKey_satellite);
-        groups.insert(repeats, GBFeatureKey_transposon);    //TODO: recheck grouping
+        groups.insert(repeats, GBFeatureKey_transposon);  // TODO: recheck grouping
 
         QString rna = QObject::tr("RNA");
         groups.insert(rna, GBFeatureKey_ncRNA);
@@ -246,7 +246,7 @@ const QMultiMap<QString, GBFeatureKey> &GBFeatureUtils::getKeyGroups() {
         groups.insert(misc, GBFeatureKey_misc_structure);
         groups.insert(misc, GBFeatureKey_mobile_element);
         groups.insert(misc, GBFeatureKey_operon);
-        groups.insert(misc, GBFeatureKey_primer);    //TODO: recheck grouping
+        groups.insert(misc, GBFeatureKey_primer);  // TODO: recheck grouping
         groups.insert(misc, GBFeatureKey_source);
         groups.insert(misc, GBFeatureKey_stem_loop);
         groups.insert(misc, GBFeatureKey_telomere);
@@ -265,7 +265,7 @@ const QMultiMap<QString, GBFeatureKey> &GBFeatureUtils::getKeyGroups() {
         groups.insert(spans, GBFeatureKey_V_segment);
 
 #ifdef _DEBUG
-        //check that no feature lost
+        // check that no feature lost
         QVector<bool> featureInGroup(GBFeatureKey_NUM_KEYS, false);
         foreach (const QString &groupName, groups.keys()) {
             QList<GBFeatureKey> values = groups.values(groupName);
@@ -311,4 +311,4 @@ GBFeatureKey GBFeatureUtils::getKey(U2FeatureType featureType) {
     return keysByType.value(featureType, GBFeatureKey_UNKNOWN);
 }
 
-}    // namespace U2
+}  // namespace U2

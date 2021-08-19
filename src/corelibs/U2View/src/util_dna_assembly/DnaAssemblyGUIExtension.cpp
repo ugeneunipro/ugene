@@ -130,4 +130,4 @@ GenomeAssemblyAlgorithmMainWidget::GenomeAssemblyAlgorithmMainWidget(QWidget *pa
     : QWidget(parent) {
 }
 
-}    // namespace U2
+}  // namespace U2

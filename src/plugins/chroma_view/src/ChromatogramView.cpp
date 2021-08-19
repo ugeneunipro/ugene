@@ -131,13 +131,13 @@ void ChromatogramView::pack() {
     layout->addWidget(scaleBar);
     setContentLayout(layout);
 
-    scrollBar->setHidden(true);    //todo: support mode without scrollbar at all??
+    scrollBar->setHidden(true);  // todo: support mode without scrollbar at all??
 
     setMinimumHeight(renderArea->minimumHeight());
 }
 
 void ChromatogramView::setRenderAreaHeight(int k) {
-    //k = chromaMax
+    // k = chromaMax
     ChromatogramViewRenderArea *cvra = static_cast<ChromatogramViewRenderArea *>(renderArea);
     cvra->setAreaHeight(k);
     completeUpdate();
@@ -148,7 +148,7 @@ void ChromatogramView::buildPopupMenu(QMenu &m) {
     if (!renderArea->rect().contains(cpos)) {
         return;
     }
-    //todo: move to submenus?
+    // todo: move to submenus?
     QAction *before = GUIUtils::findActionAfter(m.actions(), ADV_MENU_ZOOM);
 
     m.insertAction(before, showQVAction);
@@ -221,13 +221,13 @@ void ChromatogramView::sl_onPopupMenuCkicked(QAction *a) {
             assert(ok);
             Q_UNUSED(ok);
             QByteArray insData(&newBase, 1);
-            editDNASeq->replaceRegion(U2Region(editSeqIdx, 0), DNASequence(insData), os);    //insert
+            editDNASeq->replaceRegion(U2Region(editSeqIdx, 0), DNASequence(insData), os);  // insert
         } else {
             if (newBase != GAP_CHAR) {
                 QByteArray insData(&newBase, 1);
-                editDNASeq->replaceRegion(U2Region(editSeqIdx, 1), DNASequence(insData), os);    //replace
+                editDNASeq->replaceRegion(U2Region(editSeqIdx, 1), DNASequence(insData), os);  // replace
             } else {
-                editDNASeq->replaceRegion(U2Region(editSeqIdx, 1), DNASequence(), os);    //remove
+                editDNASeq->replaceRegion(U2Region(editSeqIdx, 1), DNASequence(), os);  // remove
                 gapIndexes.append(selIndex);
             }
         }
@@ -489,7 +489,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
         p.setPen(Qt::black);
         p.fillRect(0, 0, pd->width(), heightPD, Qt::white);
         if (pd->width() / charWidth > visible.length / dividerBoolShowBaseCallsChars) {
-            //draw basecalls
+            // draw basecalls
             drawOriginalBaseCalls(0, heightAreaBC - charHeight - addUpIfQVL, width(), charHeight, p, visible, seq);
 
             if (chroma.hasQV && chromaView->showQV()) {
@@ -529,8 +529,8 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
 
     const QVector<U2Region> &sel = seqCtx->getSequenceSelection()->getSelectedRegions();
     if (!sel.isEmpty()) {
-        //draw current selection
-        //selection base on trace transform coef
+        // draw current selection
+        // selection base on trace transform coef
         QPen linePenSelection(Qt::darkGray, 1, Qt::SolidLine);
         p.setPen(linePenSelection);
         p.setRenderHint(QPainter::Antialiasing, false);
@@ -594,24 +594,24 @@ QRectF ChromatogramViewRenderArea::posToRect(int i) const {
     return r;
 }
 
-//draw functions
+// draw functions
 
 void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w, qreal h, QPainter &p, const U2Region &visible, const ChromatogramViewSettings &settings) {
     if (chromaMax == 0) {
-        //nothing to draw
+        // nothing to draw
         return;
     }
-    //founding problems
+    // founding problems
 
-    //areaHeight how to define startValue?
-    //colorForIds to private members
+    // areaHeight how to define startValue?
+    // colorForIds to private members
     static const QColor colorForIds[4] = {
         Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     p.setRenderHint(QPainter::Antialiasing, true);
     p.resetTransform();
     p.translate(x, y + h);
 
-    //drawBoundingRect
+    // drawBoundingRect
     /*  p.drawLine(0,0,w,0);
     p.drawLine(0,-h,w,-h);
     p.drawLine(0,0,0,-h);
@@ -716,7 +716,7 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
     p.resetTransform();
     p.translate(x, y + h);
 
-    //draw grid
+    // draw grid
     p.setPen(linePen);
     p.setRenderHint(QPainter::Antialiasing, false);
     for (int i = 0; i < 5; ++i) {
@@ -843,4 +843,4 @@ QColor ChromatogramViewRenderArea::getBaseColor(char base) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

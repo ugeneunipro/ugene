@@ -84,4 +84,4 @@ bool TmpDirChecker::checkPath(QString &path) {
     return FileAndDirectoryUtils::isDirectoryWritable(path);
 }
 
-}    //namespace U2
+}  // namespace U2

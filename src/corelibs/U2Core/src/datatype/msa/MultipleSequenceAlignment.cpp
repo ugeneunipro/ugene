@@ -84,7 +84,7 @@ QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmen
     return maRows;
 }
 
-}    // namespace
+}  // namespace
 
 MultipleSequenceAlignmentData::MultipleSequenceAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleSequenceAlignmentRow> &rows)
     : MultipleAlignmentData(name, alphabet, convertToMaRows(rows)) {
@@ -621,4 +621,4 @@ MultipleAlignmentRow MultipleSequenceAlignmentData::getEmptyRow() const {
     return MultipleSequenceAlignmentRow();
 }
 
-}    // namespace U2
+}  // namespace U2

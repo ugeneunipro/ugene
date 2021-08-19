@@ -107,7 +107,7 @@ void SecStructDialog::sl_onStartPredictionClicked() {
     SecStructPredictTaskFactory *factory = sspr->getAlgorithm(algorithmComboBox->currentText());
     SAFE_POINT(nullptr != factory, "Unregistered factory name", );
 
-    //Check license
+    // Check license
     QString algorithm = algorithmComboBox->currentText();
     QList<Plugin *> plugins = AppContext::getPluginSupport()->getPlugins();
     foreach (Plugin *plugin, plugins) {
@@ -124,7 +124,7 @@ void SecStructDialog::sl_onStartPredictionClicked() {
         }
     }
 
-    //prepare target sequence
+    // prepare target sequence
     region = regionSelector->getRegion();
     SAFE_POINT(region.length > 0 && region.startPos >= 0 && region.endPos() <= ctx->getSequenceLength(), "Illegal region!", );
 
@@ -145,7 +145,7 @@ void SecStructDialog::sl_onTaskFinished(Task *t) {
     }
     results = task->getResults();
 
-    //shifting results according to startPos
+    // shifting results according to startPos
     for (QMutableListIterator<SharedAnnotationData> it_ad(results); it_ad.hasNext();) {
         SharedAnnotationData &ad = it_ad.next();
         U2Region::shift(region.startPos, ad->location->regions);
@@ -196,4 +196,4 @@ void SecStructDialog::sl_onSaveAnnotations() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

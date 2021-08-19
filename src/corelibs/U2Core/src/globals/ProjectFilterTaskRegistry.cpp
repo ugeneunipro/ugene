@@ -53,4 +53,4 @@ void ProjectFilterTaskRegistry::registerTaskFactory(ProjectFilterTaskFactory *fa
     factories.append(factory);
 }
 
-}    // namespace U2
+}  // namespace U2

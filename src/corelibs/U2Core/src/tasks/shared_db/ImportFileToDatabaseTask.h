@@ -56,6 +56,6 @@ private:
     DocumentFormat *format;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_FILE_TO_DATABASE_TASK_H_
+#endif  // _U2_IMPORT_FILE_TO_DATABASE_TASK_H_

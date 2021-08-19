@@ -54,7 +54,7 @@ RFDiagonalWKSubtask::RFDiagonalWKSubtask(RFDiagonalAlgorithmWK *owner, int tn, i
       owner(owner), threadNum(tn), nThreads(totalThreads), dataX(owner->seqX), dataY(owner->seqY) {
     assert(totalThreads >= 1);
 
-    //progress is approximated by area processed
+    // progress is approximated by area processed
     if ((owner->END_DIAG <= 0 && owner->START_DIAG <= 0) || (owner->END_DIAG >= 0 && owner->START_DIAG >= 0)) {
         int diagRange = owner->START_DIAG - owner->END_DIAG + 1;
         int medDiag = (owner->START_DIAG + owner->END_DIAG) / 2;
@@ -92,19 +92,19 @@ void RFDiagonalWKSubtask::run() {
 }
 
 void RFDiagonalWKSubtask::processDiagonal(int x, int y) {
-    //make stack local copies
+    // make stack local copies
     int W = owner->WINDOW_SIZE;
     int C = owner->C;
     char unknownChar = owner->unknownChar;
 
-    const char *xseq = dataX + x + W - 1;    //point to the last pos in window -> will be checked first
+    const char *xseq = dataX + x + W - 1;  // point to the last pos in window -> will be checked first
     const char *yseq = dataY + y + W - 1;
     const char *xseqMax = dataX + owner->SIZE_X;
     const char *yseqMax = dataY + owner->SIZE_Y;
 
     assert(xseqMax - xseq >= 0 && yseqMax - yseq >= 0);
     while (xseq < xseqMax && yseq < yseqMax) {
-        int c = 0;    //number of mismatches (temporary)
+        int c = 0;  // number of mismatches (temporary)
         for (const char *s = xseq - W; xseq > s && (c += (PCHAR_MATCHES(xseq, yseq) ? 0 : 1)) <= C; xseq--, yseq--) {
         }
         if (c > C) {
@@ -121,17 +121,17 @@ void RFDiagonalWKSubtask::processDiagonal(int x, int y) {
             len--;
             xseq++;
             yseq++;
-        }    //ensure that match with len > W starts with hit
+        }  // ensure that match with len > W starts with hit
         int step = len;
         while (len > W && !PCHAR_MATCHES(xseq + len - 1, yseq + len - 1)) {
             len--;
-        }    //ensure that match with len > W ends with hit
+        }  // ensure that match with len > W ends with hit
         int allMatches = 0;
         const char *xsqS = xseq;
         const char *ysqS = yseq;
         for (int i = len - 1; i >= 0; --i, xsqS++, ysqS++) {
             allMatches += PCHAR_MATCHES(xsqS, ysqS) ? 1 : 0;
-        }    //matches
+        }  // matches
         RFResult r(xseq - dataX, yseq - dataY, len, allMatches);
         assert(owner->checkResult(r));
         diagResults.append(r);
@@ -154,11 +154,11 @@ int RFDiagonalWKSubtask::processMatch(const char *x, const char *y, const char *
         int pushV = PCHAR_MATCHES(xr, yr) ? 1 : 0;
         int popV = PCHAR_MATCHES(xr - W, yr - W) ? 1 : 0;
         k += pushV - popV;
-        if (k < K) {    //end of the match
+        if (k < K) {  // end of the match
             break;
         }
     }
     return xr - x;
 }
 
-}    // namespace U2
+}  // namespace U2

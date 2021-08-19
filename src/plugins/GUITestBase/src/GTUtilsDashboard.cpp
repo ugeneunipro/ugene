@@ -156,7 +156,7 @@ QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os, c
     QString type;
 
     int start = html.indexOf("<img class=\"");
-    int end = html.indexOf("\"", start + 12);    // 12 = length of "<img class=\""
+    int end = html.indexOf("\"", start + 12);  // 12 = length of "<img class=\""
     GT_CHECK_RESULT(start >= 0 && end >= 0, "Dashboard notification type not found", type)
 
     start += 12;
@@ -426,4 +426,4 @@ void GTUtilsDashboard::clickNodeTitle(GUITestOpStatus &os, ExternalToolsTreeNode
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -98,7 +98,7 @@ public:
 
     MsaEditorWgt *getUI() const override;
 
-    //Return alignment row that is displayed on target line in MSAEditor
+    // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings *getPairwiseAlignmentWidgetsSettings() const {
@@ -167,6 +167,9 @@ protected slots:
     /** Converts from RAW to Amino alphabet. Replaces all unknown chars with 'X'. */
     void sl_convertRawToAminoAlphabet();
 
+    /** Shows 'Export Image' dialog. */
+    void sl_exportImage();
+
 protected:
     QWidget *createWidget() override;
     bool eventFilter(QObject *o, QEvent *e) override;
@@ -208,6 +211,9 @@ public:
     QAction *sortByLeadingGapAscendingAction = nullptr;
     QAction *sortByLeadingGapDescendingAction = nullptr;
 
+    /** Initiates a dialog to export the alignment using some image format. */
+    QAction *saveScreenshotAction = nullptr;
+
     /**
      * Sorts collapsing groups by number of sequences in ascending order.
      * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
@@ -217,7 +223,7 @@ public:
     /**
      * Sorts collapsing groups by number of sequences in descending descending order.
      * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
-    */
+     */
     QAction *sortGroupsBySizeDescendingAction = nullptr;
 
     QAction *convertDnaToRnaAction = nullptr;
@@ -237,13 +243,13 @@ private:
 
     /**
      * Set of 'marker' objects from the 'master' components that requested Free ordering mode to be ON are responsible for the 'free' mode ordering.
-    * Free mode can be active only if there is at least one 'marker' in the set.
-    *
-    * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
-    * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
-    *
-    * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
-    */
+     * Free mode can be active only if there is at least one 'marker' in the set.
+     *
+     * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
+     * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
+     *
+     * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
+     */
     QSet<QObject *> freeModeMasterMarkersSet;
 
     /** Selection state controller. */
@@ -260,6 +266,6 @@ public:
     const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MSA_EDITOR_H_
+#endif  // _U2_MSA_EDITOR_H_

@@ -109,10 +109,10 @@ protected:
     WorkflowTasksRegistry *workflowTasksRegistry;
     ActorValidatorRegistry *actorValidatorRegistry;
 
-};    // WorkflowEnv
+};  // WorkflowEnv
 
-}    //namespace Workflow
+}  // namespace Workflow
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_WORKFLOW_ENV_H_
+#endif  // _U2_WORKFLOW_ENV_H_

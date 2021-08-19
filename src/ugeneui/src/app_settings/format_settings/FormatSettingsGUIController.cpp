@@ -96,4 +96,4 @@ AppSettingsGUIPageState *FormatSettingsGUIPageWidget::getState(QString &err) con
     return state;
 }
 
-}    // namespace U2
+}  // namespace U2

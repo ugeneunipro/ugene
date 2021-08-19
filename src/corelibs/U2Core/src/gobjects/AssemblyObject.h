@@ -40,6 +40,6 @@ public:
     static U2EntityRef dbi2dbiExtractRegion(const AssemblyObject *const srcObj, const U2DbiRef &dstDbiRef, U2OpStatus &os, const U2Region &desiredRegion = U2_REGION_MAX, const QVariantMap &hints = QVariantMap());
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

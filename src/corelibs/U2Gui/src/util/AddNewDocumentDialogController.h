@@ -44,6 +44,6 @@ public:
     static void run(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

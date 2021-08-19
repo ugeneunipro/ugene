@@ -52,4 +52,4 @@ MsaHighlightingScheme *MsaHighlightingSchemeGapsFactory::create(QObject *parent,
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

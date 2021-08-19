@@ -34,24 +34,24 @@ bool ProjectTreeControllerModeSettings::isDocumentShown(Document *doc) const {
         return false;
     }
     if (groupMode == ProjectTreeGroupMode_Flat && (doc->isLoaded() || !doc->getObjects().isEmpty())) {
-        return false;    // only unloaded docs without cached object info are shown in flat mode
+        return false;  // only unloaded docs without cached object info are shown in flat mode
     }
     if (excludeDocList.contains(doc)) {
         return false;
     }
 
-    //filter by readonly state
-    //TODO: revise readonly filters;
-    //if the only lock is unloaded state lock -> not show it
+    // filter by readonly state
+    // TODO: revise readonly filters;
+    // if the only lock is unloaded state lock -> not show it
     bool isReadonly = !(doc->getStateLocks().size() == 1 && doc->getDocumentModLock(DocumentModLock_UNLOADED_STATE) != nullptr);
     bool res = readOnlyFilter == TriState_Unknown ? true : (readOnlyFilter == TriState_Yes && !isReadonly) || (readOnlyFilter == TriState_No && isReadonly);
     if (!res) {
         return false;
     }
 
-    //filter by object types
+    // filter by object types
     const QList<GObject *> &docObjs = doc->getObjects();
-    if (!docObjs.isEmpty()) {    //ok we have mapping about document objects -> apply filter to the objects
+    if (!docObjs.isEmpty()) {  // ok we have mapping about document objects -> apply filter to the objects
         bool found = false;
         foreach (GObject *o, docObjs) {
             found = isObjectShown(o);
@@ -84,21 +84,21 @@ bool ProjectTreeControllerModeSettings::isDocumentShown(Document *doc) const {
 }
 
 bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
-    //filter by type
+    // filter by type
     GObjectType t = o->isUnloaded() ? qobject_cast<UnloadedObject *>(o)->getLoadedObjectType() : o->getGObjectType();
     bool res = isTypeShown(t);
     if (!res) {
         return false;
     }
-    //filter by readonly flag
+    // filter by readonly flag
     Document *doc = o->getDocument();
-    //TODO: revise readonly filters -> use isStateLocked or hasReadonlyLock ?
+    // TODO: revise readonly filters -> use isStateLocked or hasReadonlyLock ?
     res = readOnlyFilter == TriState_Unknown ? true : (readOnlyFilter == TriState_Yes && !doc->isStateLocked()) || (readOnlyFilter == TriState_No && doc->isStateLocked());
     if (!res) {
         return false;
     }
 
-    //filter by exclude list
+    // filter by exclude list
     foreach (const QPointer<GObject> &p, excludeObjectList) {
         if (p.isNull()) {
             continue;
@@ -108,7 +108,7 @@ bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
         }
     }
 
-    //filter by internal obj properties
+    // filter by internal obj properties
     if (!objectConstraints.isEmpty()) {
         res = true;
         foreach (const GObjectConstraints *c, objectConstraints) {
@@ -122,7 +122,7 @@ bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
         }
     }
 
-    //filter by name
+    // filter by name
     if (!nameFilterAcceptsString(o->getGObjectName())) {
         return false;
     }
@@ -155,4 +155,4 @@ bool ProjectTreeControllerModeSettings::isObjectFilterActive() const {
     return !tokensToShow.isEmpty() || !objectConstraints.isEmpty() || !excludeObjectList.isEmpty() || !objectTypesToShow.isEmpty() || nullptr != objectFilter;
 }
 
-}    // namespace U2
+}  // namespace U2

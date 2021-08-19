@@ -31,7 +31,7 @@
 #include "../view_rendering/DetViewRenderer.h"
 #include "../view_rendering/PanViewRenderer.h"
 
-#define MAX_ANNOTATIONS_ON_SVG_IMAGE 40000    // ~50 Mb
+#define MAX_ANNOTATIONS_ON_SVG_IMAGE 40000  // ~50 Mb
 
 namespace U2 {
 
@@ -147,4 +147,4 @@ QSharedPointer<ExportImagePainter> SequencePainterFactory::createPainter(ADVSing
     FAIL("Invalid sequence export type", QSharedPointer<ExportImagePainter>());
 }
 
-}    // namespace U2
+}  // namespace U2

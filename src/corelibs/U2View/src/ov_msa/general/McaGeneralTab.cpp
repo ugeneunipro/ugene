@@ -48,4 +48,4 @@ void McaGeneralTab::sl_alignmentChanged() {
     seqNumLabel->setText(QString::number(mca->getNumSequences()));
 }
 
-}    // namespace U2
+}  // namespace U2

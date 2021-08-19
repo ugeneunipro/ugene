@@ -213,6 +213,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
                                             "Read Assembly: Required parameter has no input urls specified: Input file(s)");
 }
 
-}    // namespace GUITest_assembly_extract_consensus
+}  // namespace GUITest_assembly_extract_consensus
 
-}    // namespace U2
+}  // namespace U2

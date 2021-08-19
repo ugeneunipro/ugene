@@ -140,6 +140,6 @@ private:
     static QMap<Tabs, QString> initInnerWidgetNames();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_OPTION_PANEL_MSA_H_
+#endif  // _U2_GT_UTILS_OPTION_PANEL_MSA_H_

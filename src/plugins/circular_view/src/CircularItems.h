@@ -168,6 +168,6 @@ private:
     QString labelText;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _CIRCULAR_ITEMS_H_
+#endif  // _CIRCULAR_ITEMS_H_

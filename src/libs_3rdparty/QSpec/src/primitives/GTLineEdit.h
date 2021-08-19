@@ -66,6 +66,6 @@ public:
     static bool tryToSetText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str);
 };
 
-}    // namespace HI
+}  // namespace HI
 
-#endif    // _HI_GT_LINEEDIT_H_
+#endif  // _HI_GT_LINEEDIT_H_

@@ -56,6 +56,6 @@ private:
     Ui_DeleteGapsDialog *ui;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

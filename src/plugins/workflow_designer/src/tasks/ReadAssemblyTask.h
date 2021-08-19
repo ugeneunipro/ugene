@@ -78,7 +78,7 @@ public:
     virtual ReadDocumentTask *createTask(const QString &url, const QVariantMap &hints, WorkflowContext *ctx);
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_READ_ASSEMBLY_TASK_
+#endif  // _U2_READ_ASSEMBLY_TASK_

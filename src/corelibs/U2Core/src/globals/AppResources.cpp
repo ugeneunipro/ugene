@@ -33,7 +33,7 @@
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #    include <stdio.h>
-#    include <unistd.h>    //for sysconf(3)
+#    include <unistd.h>  //for sysconf(3)
 #endif
 #if defined(Q_OS_LINUX)
 #    include <fstream>
@@ -69,7 +69,7 @@ void process_mem_usage(size_t &vm_usage) {
     // the two fields we want
     unsigned long vsize;
 
-    stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> O >> itrealvalue >> starttime >> vsize;    // don't care about the rest
+    stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> O >> itrealvalue >> starttime >> vsize;  // don't care about the rest
 
     stat_stream.close();
 
@@ -270,4 +270,4 @@ MemoryLocker &MemoryLocker::operator=(MemoryLocker &other) {
     return *this;
 }
 
-}    // namespace U2
+}  // namespace U2

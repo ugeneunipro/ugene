@@ -59,6 +59,6 @@ public:
     static void upgrade(const U2DbiRef &dbiRef, U2OpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_DBI_UTILS_H_
+#endif  // _U2_MYSQL_DBI_UTILS_H_

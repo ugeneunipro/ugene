@@ -118,7 +118,7 @@ void DumpHelpTask::dumpHelp() {
             foreach (const QString &file, entries) {
                 foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
                     if (file.endsWith(ext)) {
-                        dumpTaskName(file.mid(0, file.size() - ext.size() - 1));    // 1 comes from "."
+                        dumpTaskName(file.mid(0, file.size() - ext.size() - 1));  // 1 comes from "."
                         break;
                     }
                 }
@@ -255,4 +255,4 @@ DumpHelpTask::DumpHelpTask()
     : Task(tr("Dump help task"), TaskFlags_NR_FOSCOE) {
 }
 
-}    // namespace U2
+}  // namespace U2

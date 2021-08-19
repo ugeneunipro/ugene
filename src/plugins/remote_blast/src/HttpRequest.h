@@ -84,6 +84,6 @@ private:
     void parseHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession, const QString &hitLen);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -45,8 +45,8 @@
 namespace U2 {
 
 /*******************************************
-* WorkflowRunFromCMDLineBase
-*******************************************/
+ * WorkflowRunFromCMDLineBase
+ *******************************************/
 WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
     : Task(tr("Workflow run from cmdline"), TaskFlag_None),
       schema(nullptr),
@@ -61,7 +61,7 @@ WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
     QStringList pureValues = CMDLineRegistryUtils::getPureValues();
     if (!pureValues.isEmpty()) {
         QString schemaName = pureValues.first();
-        processLoadSchemaTask(schemaName, 1);    // because after program name
+        processLoadSchemaTask(schemaName, 1);  // because after program name
     }
     if (loadTask != nullptr) {
         addSubTask(loadTask);
@@ -107,7 +107,7 @@ static void setSchemaCMDLineOptions(Schema *schema, int optionsStartAtIdx) {
     int sz = parameters.size();
     for (int i = optionsStartAtIdx; i < sz; ++i) {
         const StrStrPair &param = parameters.at(i);
-        if (param.first.isEmpty()) {    // TODO: unnamed parameters not supported yet
+        if (param.first.isEmpty()) {  // TODO: unnamed parameters not supported yet
             continue;
         }
 
@@ -151,7 +151,7 @@ QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
     if (hasError() || isCanceled()) {
         return res;
     }
-    assert(!hasError());    // if error, we won't be here
+    assert(!hasError());  // if error, we won't be here
 
     if (loadTask == subTask) {
         const QSharedPointer<Schema> schema = loadTask->getSchema();
@@ -197,10 +197,10 @@ void WorkflowRunFromCMDLineBase::run() {
 }
 
 /*******************************************
-* WorkflowRunFromCMDLineTask
-*******************************************/
+ * WorkflowRunFromCMDLineTask
+ *******************************************/
 Task *WorkflowRunFromCMDLineTask::getWorkflowRunTask() const {
     return new WorkflowRunTask(*schema, remapping);
 }
 
-}    // namespace U2
+}  // namespace U2

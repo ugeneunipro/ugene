@@ -61,7 +61,7 @@ protected:
 
 private slots:
 
-    //buttons:
+    // buttons:
     void sl_onClearList();
     void sl_onFindAll();
 
@@ -100,6 +100,6 @@ private:
     bool isRegionOk;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

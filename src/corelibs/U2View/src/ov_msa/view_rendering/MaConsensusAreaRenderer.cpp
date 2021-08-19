@@ -85,7 +85,7 @@ QFont getRulerFont(const QFont &font) {
     return rulerFont;
 }
 
-}    // namespace
+}  // namespace
 
 void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     CHECK(!editor->isAlignmentEmpty(), );
@@ -118,10 +118,9 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
-    QRect selectionRect = editor->getSelection().toRect();
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
-    consensusRenderData.selectedRegion = U2Region::fromXRange(selectionRect);
+    consensusRenderData.selectedRegion = editor->getSelection().getColumnRegion();
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
     MSAConsensusAlgorithm *algorithm = area->getConsensusAlgorithm();
@@ -284,7 +283,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRe
     // TODO: move calculations to getYRange method
     U2Region yRange = settings.yRangeToDrawIn[MSAEditorConsElement_HISTOGRAM];
     yRange.startPos++;
-    yRange.length -= 2;    //keep borders
+    yRange.length -= 2;  // keep borders
 
     QBrush brush(color, Qt::Dense4Pattern);
     painter.setBrush(brush);
@@ -307,8 +306,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
     const MaEditorSelection &selection = editor->getSelection();
-    QRect selectionRect = selection.toRect();
-    consensusRenderData.selectedRegion = U2Region(selectionRect.x(), selectionRect.width());
+    consensusRenderData.selectedRegion = selection.getColumnRegion();
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
     consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 
@@ -361,4 +359,4 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

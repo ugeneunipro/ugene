@@ -104,5 +104,5 @@ void DatasetFetcher::cleanup() {
     datasetName.clear();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

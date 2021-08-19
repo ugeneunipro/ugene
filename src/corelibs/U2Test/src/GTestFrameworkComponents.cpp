@@ -90,7 +90,7 @@ void TestFramework::setTRHelpSections() {
     CMDLineHelpProvider *testTimeoutSection = new CMDLineHelpProvider(
         TEST_TIMEOUT_CMD_OPTION,
         GTestFormatRegistry::tr("Sets timeout for the tests."),
-        "",    // No full description
+        "",  // No full description
         "<number_of_seconds>");
 
     CMDLineHelpProvider *testRunnerThreads = new CMDLineHelpProvider(
@@ -104,19 +104,19 @@ void TestFramework::setTRHelpSections() {
     CMDLineHelpProvider *testReport = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_REPORT,
         GTestFormatRegistry::tr("Sets the folder for the test report."),
-        "",    // No full description
+        "",  // No full description
         "<path_to_dir>");
 
     CMDLineHelpProvider *suiteUrlSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::SUITE_URLS,
         GTestFormatRegistry::tr("Loads test suites and runs them."),
-        "",    // No full description
+        "",  // No full description
         "<test_suite1> [<test_suite2> ...]");
 
     CMDLineHelpProvider *teamcityOutputSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEAMCITY_OUTPUT,
         GTestFormatRegistry::tr("Output a test's messages to the TeamCity system."),
-        "");    // No full description
+        "");  // No full description
 
     cmdLineRegistry->registerCMDLineHelpProvider(testRunnerThreads);
     cmdLineRegistry->registerCMDLineHelpProvider(testTimeoutSection);
@@ -138,4 +138,4 @@ void TestFramework::setTestRunnerSettings() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

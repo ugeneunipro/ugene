@@ -27,4 +27,4 @@ TophatSample::TophatSample(const QString &name, const QStringList &datasets)
     : name(name), datasets(datasets) {
 }
 
-}    // namespace U2
+}  // namespace U2

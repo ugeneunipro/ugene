@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-//TODO: remove hard-coded '-' gap symbol. Allow custom gap symbols ?
+// TODO: remove hard-coded '-' gap symbol. Allow custom gap symbols ?
 
 /**
  * Iterator for Next-Gen Sequencing short reads based on CIGAR model
@@ -83,5 +83,5 @@ private:
 
 extern void shortReadIteratorSmokeTest();
 
-}    // namespace U2
+}  // namespace U2
 #endif

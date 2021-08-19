@@ -62,4 +62,4 @@ OPGroupParameters MSAGeneralTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("General"), GROUP_DOC_PAGE);
 }
 
-}    // namespace U2
+}  // namespace U2

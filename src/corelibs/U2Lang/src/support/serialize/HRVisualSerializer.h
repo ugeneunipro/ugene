@@ -69,6 +69,6 @@ private:
     static QString rect2String(const QRectF &rect);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HRVISUALSERIALIZER_H_
+#endif  // _U2_HRVISUALSERIALIZER_H_

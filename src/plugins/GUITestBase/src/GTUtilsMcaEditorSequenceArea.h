@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #ifndef GTUTILSMCAEDITORSEQUENCEAREA_H
 #define GTUTILSMCAEDITORSEQUENCEAREA_H
@@ -60,15 +60,15 @@ public:
     static void clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &clickPointAdjustment = QPoint(0, 0));
     static void moveCursorToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &movePointAdjustment = QPoint(0, 0));
     /**
-    *0 - ViewMode
-    *1 - ReplaceCharMode
-    *2 - InsertCharMode
-    *Return value of this function is not enum "MaMode" to avoid encapsulation violation
-    */
+     *0 - ViewMode
+     *1 - ReplaceCharMode
+     *2 - InsertCharMode
+     *Return value of this function is not enum "MaMode" to avoid encapsulation violation
+     */
     static short getCharacterModificationMode(GUITestOpStatus &os);
     /**
-    *Valid just if one character in sequence area selected
-    */
+     *Valid just if one character in sequence area selected
+     */
     static char getSelectedReadChar(GUITestOpStatus &os);
     static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
     static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
@@ -79,5 +79,5 @@ public:
     static QString getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg);
 };
 
-}    // namespace U2
-#endif    // GTUTILSMSAEDITORSEQUENCEAREA_H
+}  // namespace U2
+#endif  // GTUTILSMSAEDITORSEQUENCEAREA_H

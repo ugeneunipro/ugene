@@ -68,30 +68,30 @@ void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
     QString message("");
     message.append(getDialogInfo());
     message.prepend(typeMap.value(m->type()) + QString(" "));
-    //button type
+    // button type
     message.append(getMouseButtonInfo(m));
 
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
     CHECK_EXT(mainWindow, userActLog.error(QString("Main window is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
 
-    //window size info
+    // window size info
     QPoint p = mainWindow->mapFromGlobal(mainWindow->geometry().bottomRight());
     if (p != prevWindowSize) {
         prevWindowSize = p;
         userActLog.trace(QString("WINDOW SIZE: %1x%2").arg(prevWindowSize.x()).arg(prevWindowSize.y()));
     }
 
-    //coordinates
+    // coordinates
     QPoint windowP = mainWindow->mapFromGlobal(m->globalPos());
     message.append(QString("%1 %2 ").arg(windowP.x()).arg(windowP.y()));
 
-    //widget info
+    // widget info
     QWidget *w = QApplication::widgetAt(m->globalPos());
     if (w) {
         QString className = w->metaObject()->className();
 
-        //tree widget and list widget
-        //sometimes QWidget is on top. it does not give any information, but it's parent does
+        // tree widget and list widget
+        // sometimes QWidget is on top. it does not give any information, but it's parent does
         if (className == "QWidget") {
             QWidget *parent = qobject_cast<QWidget *>(w->parent());
             if (parent) {
@@ -103,7 +103,7 @@ void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
         }
         message.append(" ");
 
-        //additional information
+        // additional information
         message.append(getAdditionalWidgetInfo(m, w));
 
     } else {
@@ -426,4 +426,4 @@ UserActionsWriter::UserActionsWriter() {
     keys.insert(Qt::Key_Z, "z");
 }
 
-}    // namespace U2
+}  // namespace U2

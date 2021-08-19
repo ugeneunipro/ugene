@@ -10,8 +10,8 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 38.0-dev)
-set(UGENE_VER_MAJOR 38)
+set(UGENE_VERSION 40.0-dev)
+set(UGENE_VER_MAJOR 40)
 set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
@@ -46,6 +46,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Wall"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
+#            " -Werror=shadow=local"
             " -Werror=return-type"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"

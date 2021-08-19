@@ -85,6 +85,6 @@ public:
     static U2Region reverseComplementRegion(const U2Region& directRegion, int length);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

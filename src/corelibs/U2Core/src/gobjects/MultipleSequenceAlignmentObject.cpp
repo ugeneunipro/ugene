@@ -42,8 +42,8 @@ MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString &
     : MultipleAlignmentObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, msaRef, hintsMap, alnData) {
 }
 
-const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const {
-    return getMultipleAlignment().dynamicCast<MultipleSequenceAlignment>();
+const MultipleSequenceAlignment &MultipleSequenceAlignmentObject::getMsa() const {
+    return getMultipleAlignment().dynamicCast<const MultipleSequenceAlignment &>();
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
@@ -228,7 +228,7 @@ void MultipleSequenceAlignmentObject::replaceAllCharacters(char oldChar, char ne
         mi.alphabetChanged = true;
     }
     if (!mi.alphabetChanged && mi.modifiedRowIds.isEmpty()) {
-        return;    // Nothing changed.
+        return;  // Nothing changed.
     }
     updateCachedMultipleAlignment(mi);
 }
@@ -255,7 +255,7 @@ void MultipleSequenceAlignmentObject::morphAlphabet(const DNAAlphabet *newAlphab
         mi.alphabetChanged = true;
     }
     if (!mi.alphabetChanged && mi.modifiedRowIds.isEmpty()) {
-        return;    // Nothing changed.
+        return;  // Nothing changed.
     }
     updateCachedMultipleAlignment(mi);
 }
@@ -305,4 +305,4 @@ void MultipleSequenceAlignmentObject::removeRegionPrivate(U2OpStatus &os, const 
     MsaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
-}    // namespace U2
+}  // namespace U2

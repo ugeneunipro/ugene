@@ -44,7 +44,7 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget *p, const ExportConsensusTa
     new HelpButton(this, buttonBox, "65929846");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    //hide for this dialog
+    // hide for this dialog
     variationModeComboBox->hide();
     variationModeLabel->hide();
 
@@ -129,4 +129,4 @@ void ExportConsensusDialog::initSaveController() {
     saveController = new SaveDocumentController(conf, dfc, this);
 }
 
-}    // namespace U2
+}  // namespace U2

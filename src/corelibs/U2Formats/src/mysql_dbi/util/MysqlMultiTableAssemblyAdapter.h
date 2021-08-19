@@ -126,7 +126,7 @@ private:
     /** prow range per table */
     qint32 rowsPerRange;
 
-    //TODO: add read-locks into all methods
+    // TODO: add read-locks into all methods
     QReadWriteLock tablesSyncLock;
 
     static const int DEFAULT_ROWS_PER_TABLE = 5000;
@@ -208,6 +208,6 @@ private:
     QVector<QByteArray> idExtras;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MYSQL_ASSEMBLY_MULTI_TABLE_DBI_H_
+#endif  // _U2_MYSQL_ASSEMBLY_MULTI_TABLE_DBI_H_

@@ -69,4 +69,4 @@ QString AssemblyMessageTranslator::getTranslation() const {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

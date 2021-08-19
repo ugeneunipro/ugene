@@ -51,7 +51,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//CASAVAFilter
+// CASAVAFilter
 const QString CASAVAFilterWorkerFactory::ACTOR_ID("CASAVAFilter");
 
 /************************************************************************/
@@ -157,7 +157,7 @@ Task *CASAVAFilterWorker::getTask(const BaseNGSSetting &settings) const {
 }
 
 //////////////////////////////////////////////////////
-//CASAVAFilterTask
+// CASAVAFilterTask
 CASAVAFilterTask::CASAVAFilterTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:CASAVAFilterTask");
@@ -169,7 +169,7 @@ void CASAVAFilterTask::runStep() {
 
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(settings.outDir + settings.outName, stateInfo, IOAdapterMode_Append));
 
-    //1:N:0:TAAGGG
+    // 1:N:0:TAAGGG
     QRegExp pattern(":Y:[^:]:");
     FASTQIterator iter(settings.inputUrl, stateInfo);
     if (stateInfo.hasError()) {
@@ -200,7 +200,7 @@ QStringList CASAVAFilterTask::getParameters(U2OpStatus & /*os*/) {
 }
 
 ///////////////////////////////////////////////////////////////
-//QualityTrim
+// QualityTrim
 const QString FastqQualityTrimWorkerFactory::ACTOR_ID("QualityTrim");
 
 static const QString QUALITY_ID("qual-id");
@@ -321,7 +321,7 @@ Task *FastqQualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
 }
 
 //////////////////////////////////////////////////////
-//QualityTrimTask
+// QualityTrimTask
 FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:FASTQQualityTrimmerTask");
@@ -357,7 +357,7 @@ DNAQualityType FastqQualityTrimTask::detectQualityType() {
     while (iter_qual.hasNext()) {
         CHECK(!stateInfo.isCoR(), DNAQualityType_Sanger);
 
-        if (counter > 1000) {    // check only first 1000 reads in file
+        if (counter > 1000) {  // check only first 1000 reads in file
             break;
         }
 
@@ -419,7 +419,7 @@ QStringList FastqQualityTrimTask::getParameters(U2OpStatus & /*os*/) {
 }
 
 ///////////////////////////////////////////////////////////////
-//MergeFastq
+// MergeFastq
 const QString MergeFastqWorkerFactory::ACTOR_ID("MergeFastq");
 
 static const QString INPUT_URLS_ID("input-urls");
@@ -552,7 +552,7 @@ Task *MergeFastqWorker::getTask(const BaseNGSSetting &settings) const {
 }
 
 //////////////////////////////////////////////////////
-//MergeFastqTask
+// MergeFastqTask
 MergeFastqTask::MergeFastqTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:FASTQMergeFastqmerTask");
@@ -589,5 +589,5 @@ QStringList MergeFastqTask::getParameters(U2OpStatus & /*os*/) {
     return res;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

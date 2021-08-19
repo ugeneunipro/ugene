@@ -100,11 +100,11 @@ void FilterAnnotationsByQualifierWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
     QList<Attribute *> attribs;
 
-    //accept sequence and annotated regions as input
+    // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
     inputMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
 
-    {    //Create input port descriptors
+    {  // Create input port descriptors
         Descriptor inDesc(BasePorts::IN_ANNOTATIONS_PORT_ID(), FilterAnnotationsByQualifierWorker::tr("Input annotations"), FilterAnnotationsByQualifierWorker::tr("Annotations to be filtered by name."));
         Descriptor outDesc(BasePorts::OUT_ANNOTATIONS_PORT_ID(), FilterAnnotationsByQualifierWorker::tr("Result annotations"), FilterAnnotationsByQualifierWorker::tr("Resulted annotations, filtered by name."));
 
@@ -112,7 +112,7 @@ void FilterAnnotationsByQualifierWorkerFactory::init() {
         portDescs << new PortDescriptor(outDesc, DataTypePtr(new MapDataType("filter.anns", inputMap)), /*input*/ false, /*multi*/ true);
     }
 
-    {    //Create attributes descriptors
+    {  // Create attributes descriptors
         Descriptor qualifierNameDesc(QUALIFER_NAME_ATTR,
                                      FilterAnnotationsByQualifierWorker::tr("Qualifier name"),
                                      FilterAnnotationsByQualifierWorker::tr("Name of the qualifier to use for filtering."));
@@ -141,7 +141,7 @@ void FilterAnnotationsByQualifierWorkerFactory::init() {
 }
 
 void FilterAnnotationsByQualifierTask::run() {
-    //TODO: add reg exp option and tests!
+    // TODO: add reg exp option and tests!
 
     QMutableListIterator<SharedAnnotationData> i(anns);
 
@@ -170,5 +170,5 @@ void FilterAnnotationsByQualifierTask::run() {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

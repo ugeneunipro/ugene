@@ -106,7 +106,7 @@ Document *PhylipFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, 
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
 }
 
-#define MAX_NAME_LEN 10    // max name length for phylip format is 10
+#define MAX_NAME_LEN 10  // max name length for phylip format is 10
 
 #define SEQ_BLOCK_SIZE 100
 #define INT_BLOCK_SIZE 50
@@ -130,14 +130,14 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
-    //write header
+    // write header
     int numberOfSpecies = msa->getNumRows();
     int numberOfCharacters = msa->getLength();
     QByteArray header((QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
     int len = io->writeBlock(header);
     CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
 
-    //write sequences
+    // write sequences
     for (int i = 0; i < numberOfSpecies; i++) {
         QByteArray line = msa->getMsaRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
@@ -250,7 +250,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
-    //write header
+    // write header
     int numberOfSpecies = msa->getNumRows();
     int numberOfCharacters = msa->getLength();
     QByteArray header((QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
@@ -258,7 +258,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
 
-    //write first block with names
+    // write first block with names
     for (int i = 0; i < numberOfSpecies; i++) {
         QByteArray line = msa->getMsaRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
@@ -277,7 +277,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
         io->writeBlock(line);
     }
 
-    //write sequence blockss
+    // write sequence blockss
     int blockCounter = 1;
     QByteArray spacer(MAX_NAME_LEN, ' ');
     while (blockCounter * INT_BLOCK_SIZE <= numberOfCharacters) {
@@ -343,7 +343,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
     resOk = parseHeader(line, numberOfSpecies, numberOfCharacters);
     CHECK_EXT(resOk, os.setError(PhylipInterleavedFormat::tr("Wrong header")), MultipleSequenceAlignment());
 
-    //the first block with the names
+    // the first block with the names
     for (int i = 0; i < numberOfSpecies; i++) {
         CHECK_EXT(!io->isEof(), os.setError(PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         len = io->readBlock(buff, MAX_NAME_LEN);
@@ -404,4 +404,4 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
     return al;
 }
 
-}    // namespace U2
+}  // namespace U2

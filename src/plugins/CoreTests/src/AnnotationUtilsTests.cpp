@@ -71,4 +71,4 @@ Task::ReportResult GTest_ShiftSequence::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

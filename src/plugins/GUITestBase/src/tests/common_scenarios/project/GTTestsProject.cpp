@@ -71,7 +71,6 @@
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
@@ -86,7 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
 
     // 2. Use menu {File->Export Project}
     // Expected state: "Export Project" dialog has appeared
@@ -114,7 +113,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //     1) project view with document "1CF7.pdb" has been opened,
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
     //     2) UGENE window titled with text "proj1 UGENE"
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
 
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
@@ -136,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/proj1.uprj");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
-    GTUtilsApp::checkUGENETitle(os, "proj1 UGENE");
+    GTMainWindow::checkTitle(os, "proj1 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
@@ -151,23 +150,18 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
-    GTUtilsApp::checkUGENETitle(os, "proj2 UGENE");
+    GTMainWindow::checkTitle(os, "proj2 UGENE");
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();    // todo: make checkExistingToolTip wait until tooltip or fail.
+    GTGlobals::sleep();  // todo: make checkExistingToolTip wait until tooltip or fail.
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/pdb/1CF7.pdb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    QString expectedTitle;
-#ifdef Q_OS_DARWIN
-    expectedTitle = "UGENE";
-#else
-    expectedTitle = "UGENE";
-#endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    QString expectedTitle = "UGENE";
+    GTMainWindow::checkTitle(os, expectedTitle);
 
     QMenu *m = GTMenu::showMainMenu(os, MWMENU_FILE);
     QAction *result = GTMenu::getMenuItem(os, m, ACTION_PROJECTSUPPORT__EXPORT_PROJECT, false);
@@ -251,19 +245,19 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
-    //Add "Open project in new window" (0001629)
+    // Add "Open project in new window" (0001629)
 
-    //1. Open project _common_data\scenario\project\proj1.uprj
+    // 1. Open project _common_data\scenario\project\proj1.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj1.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::checkProject(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxOpenAnotherProject(os));
 
-    //2. Do menu {File->Open}. Open project _common_data\scenario\project\proj2.uprj
-    //Expected state: dialog with text "Open project in new window" has appear
+    // 2. Do menu {File->Open}. Open project _common_data\scenario\project\proj2.uprj
+    // Expected state: dialog with text "Open project in new window" has appear
 
-    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");    // TODO: ask Shutov what to do
+    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");  // TODO: ask Shutov what to do
 
     /*
     this test just checking appearing of dialog not its behavior
@@ -517,7 +511,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //select sequence object
+    // select sequence object
     GTUtilsProjectTreeView::click(os, "murine.gb");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
@@ -530,7 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //select 2 objects
+    // select 2 objects
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsProjectTreeView::click(os, "NC_001363");
     GTUtilsProjectTreeView::click(os, "NC_004718");
@@ -546,7 +540,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //select 2 files
+    // select 2 files
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsProjectTreeView::click(os, "murine.gb");
@@ -559,29 +553,29 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //select 1 file
+    // select 1 file
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038) {
-    //test for several alignments in one document
+    // test for several alignments in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE/", "BL060C3.ace");
     GTUtilsDialog::waitAllFinished(os);
 
-    //check for first document
+    // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     QString title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace]", "unexpected title for doc1: " + title1);
 
-    //check for second document
+    // check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 
-    //reopening windows z
+    // reopening windows z
     while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
@@ -589,13 +583,13 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
                                                                         << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
 
-    //check for first document
+    // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     GTThread::waitForMainThread();
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace]", "unexpected title for doc1: " + title1);
 
-    //check for second document
+    // check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     GTThread::waitForMainThread();
     title2 = GTUtilsMdi::activeWindowTitle(os);
@@ -603,22 +597,22 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038_1) {
-    //test for several assembly documents in one document
+    // test for several assembly documents in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3637_1.ugenedb"));
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE/", "BL060C3.ace");
     GTUtilsDialog::waitAllFinished(os);
 
-    //check for first document
+    // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     QString title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
 
-    //check for first document
+    // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 
-    //reopening windows
+    // reopening windows
     while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
@@ -626,12 +620,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
                                                                         << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
 
-    //check for first document
+    // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
 
-    //check for second document
+    // check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
@@ -663,7 +657,7 @@ QString readFileToStr(const QString &path) {
 
 GUI_TEST_CLASS_DEFINITION(test_0040) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check adding document with 2 sequences in separate mode
+    // check adding document with 2 sequences in separate mode
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -680,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 
 GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check shift+insert instead Ctrl+V
+    // check shift+insert instead Ctrl+V
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -693,7 +687,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042) {
-    //check adding schemes (WD QD) in project, it should not appear in project view
+    // check adding schemes (WD QD) in project, it should not appear in project view
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -710,7 +704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
 GUI_TEST_CLASS_DEFINITION(test_0043) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check newick format because there was crash
+    // check newick format because there was crash
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -725,7 +719,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
 GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format cant be saved by UGENE
+    // check document which format cant be saved by UGENE
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -740,7 +734,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
 GUI_TEST_CLASS_DEFINITION(test_0046) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format can't be saved by UGENE has no locked state
+    // check document which format can't be saved by UGENE has no locked state
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -759,7 +753,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
 
 GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format can't be saved by UGENE has no locked state
+    // check document which format can't be saved by UGENE has no locked state
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -774,7 +768,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 
 GUI_TEST_CLASS_DEFINITION(test_0048) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //pasting same data 10 times
+    // pasting same data 10 times
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -800,7 +794,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
 
 GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check no crash after closing project without saving
+    // check no crash after closing project without saving
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -842,7 +836,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
 GUI_TEST_CLASS_DEFINITION(test_0051) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check adding document with 2 sequences in align mode
+    // check adding document with 2 sequences in align mode
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -858,7 +852,7 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 
 GUI_TEST_CLASS_DEFINITION(test_0052) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check adding document with 2 sequences in merge mode
+    // check adding document with 2 sequences in merge mode
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -875,7 +869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
 
 GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check adding document with 2 sequences in separate mode.
+    // check adding document with 2 sequences in separate mode.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -890,7 +884,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
-    //check adding document with 2 sequences in separate mode, with file which cannot be written by UGENE
+    // check adding document with 2 sequences in separate mode, with file which cannot be written by UGENE
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -903,7 +897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0054) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0055) {
-    //check document format dialog cancelling
+    // check document format dialog cancelling
     class CustomScenarioCancel : public CustomScenario {
     public:
         CustomScenarioCancel() {
@@ -925,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0056) {
-    //check opening broken fasta document as text
+    // check opening broken fasta document as text
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -939,7 +933,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0057) {
-    //check adding document with 2 sequences in short reads mode
+    // check adding document with 2 sequences in short reads mode
     class CheckPathScenario : public CustomScenario {
     public:
         CheckPathScenario() {
@@ -967,11 +961,11 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
-    //1. Open a project.
+    // 1. Open a project.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Paste the content of the file "samples/Assembly/chrM.sam".
+    // 2. Paste the content of the file "samples/Assembly/chrM.sam".
     GTUtilsProjectTreeView::click(os, "COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/Assembly/chrM.sam");
     GTClipboard::setText(os, fileContent);
@@ -1098,7 +1092,7 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
 
-//seq
+// seq
 GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1158,11 +1152,11 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     GTUtilsProjectTreeView::findIndex(os, "NC_004718");
 }
 
-//ann
+// ann
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    Q_UNUSED(os);    // TODO: fix the test.
-    //Ctrl+Shift+V в GUI-test?
-    //UGENE-4907
+    Q_UNUSED(os);  // TODO: fix the test.
+    // Ctrl+Shift+V в GUI-test?
+    // UGENE-4907
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");
     //select annotations
@@ -1176,8 +1170,8 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073) {
-    Q_UNUSED(os);    // TODO: fix the test!
-    //Ctrl+Shift+V в GUI-test?
+    Q_UNUSED(os);  // TODO: fix the test!
+    // Ctrl+Shift+V в GUI-test?
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");
 
@@ -1201,6 +1195,6 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     GTUtilsProjectTreeView::findIndex(os, "NC_004718");
 }
 
-}    // namespace GUITest_common_scenarios_project
+}  // namespace GUITest_common_scenarios_project
 
-}    // namespace U2
+}  // namespace U2

@@ -29,7 +29,7 @@ namespace U2 {
 static AppContextImpl appContext;
 
 AppContextImpl::~AppContextImpl() {
-    for (int i = appGlobalObjects.size(); --i >= 0;) {    //remove objects in reverse mode, so the last added deleted first
+    for (int i = appGlobalObjects.size(); --i >= 0;) {  // remove objects in reverse mode, so the last added deleted first
         AppGlobalObject *obj = appGlobalObjects[i];
         delete obj;
     }
@@ -66,4 +66,4 @@ AppGlobalObject *AppContextImpl::_getGlobalObjectById(const QString &id) const {
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

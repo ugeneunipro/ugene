@@ -71,14 +71,14 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject *p)
     sequenceStartPrefix = "SQ";
     fPrefix = "FT";
 
-    tagMap["DT"] = DNAInfo::DATE;    //The DT (DaTe) lines shows the date of creation and last modification of the database entry.
-    tagMap["DE"] = DNAInfo::DEFINITION;    //The DE (DEscription) lines contain general descriptive information about the sequence stored.
-    tagMap["KW"] = DNAInfo::KEYWORDS;    //The KW (KeyWord) lines provide information that can be used to generate indexes of the sequence entries based on functional, structural, or other categories.
-    tagMap["CC"] = DNAInfo::COMMENT;    //The CC lines are free text comments on the entry, and are used to convey any useful information.
+    tagMap["DT"] = DNAInfo::DATE;  // The DT (DaTe) lines shows the date of creation and last modification of the database entry.
+    tagMap["DE"] = DNAInfo::DEFINITION;  // The DE (DEscription) lines contain general descriptive information about the sequence stored.
+    tagMap["KW"] = DNAInfo::KEYWORDS;  // The KW (KeyWord) lines provide information that can be used to generate indexes of the sequence entries based on functional, structural, or other categories.
+    tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
 }
 
 FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    //TODO: improve format checking
+    // TODO: improve format checking
 
     const char *data = rawData.constData();
     int size = rawData.size();
@@ -147,13 +147,13 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
         if (st->hasKey("FH") || st->hasKey("AH")) {
             continue;
         }
-        if (st->hasKey("AC")) {    //The AC (ACcession number) line lists the accession number(s) associated with an entry.
+        if (st->hasKey("AC")) {  // The AC (ACcession number) line lists the accession number(s) associated with an entry.
             QVariant v = st->entry->tags.value(DNAInfo::ACCESSION);
             QStringList l = st->value().split(QRegExp(";\\s*"), QString::SkipEmptyParts);
             st->entry->tags[DNAInfo::ACCESSION] = QVariantUtils::addStr2List(v, l);
             continue;
         }
-        if (st->hasKey("OS")) {    //The OS (Organism Species) line specifies the organism(s) which was (were) the source of the stored sequence.
+        if (st->hasKey("OS")) {  // The OS (Organism Species) line specifies the organism(s) which was (were) the source of the stored sequence.
             DNASourceInfo soi;
             soi.name = st->value();
             soi.organism = soi.name;
@@ -164,7 +164,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
                     break;
                 }
             }
-            if (st->hasKey("OC")) {    //The OC (Organism Classification) lines contain the taxonomic classification of the source organism.
+            if (st->hasKey("OC")) {  // The OC (Organism Classification) lines contain the taxonomic classification of the source organism.
                 soi.taxonomy += st->value();
                 while (st->readNextLine()) {
                     if (st->hasKey("OC")) {
@@ -174,7 +174,7 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
                     }
                 }
             }
-            if (st->hasKey("OG")) {    //The OG (OrGanelle) line indicates if the gene coding for a protein originates from the mitochondria, the chloroplast, a cyanelle, or a plasmid.
+            if (st->hasKey("OG")) {  // The OG (OrGanelle) line indicates if the gene coding for a protein originates from the mitochondria, the chloroplast, a cyanelle, or a plasmid.
                 soi.organelle = st->value();
             } else {
                 hasLine = true;
@@ -182,9 +182,9 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
             st->entry->tags.insertMulti(DNAInfo::SOURCE, qVariantFromValue<DNASourceInfo>(soi));
             continue;
         }
-        if (st->hasKey("RF") || st->hasKey("RN")) {    //The RN (Reference Number) line gives a sequential number to each reference citation in an entry.
+        if (st->hasKey("RF") || st->hasKey("RN")) {  // The RN (Reference Number) line gives a sequential number to each reference citation in an entry.
             while (st->readNextLine() && st->buff[0] == 'R') {
-                //TODO
+                // TODO
             }
             hasLine = true;
             continue;
@@ -198,12 +198,12 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
             hasLine = true;
             continue;
         }
-        //read simple tag;
+        // read simple tag;
         if (st->hasKey("//", 2)) {
             // end of entry
             return true;
         } else if (st->hasKey("SQ", 2)) {
-            //reading sequence
+            // reading sequence
             readSequence(st, seqImporter, sequenceLen, fullSequenceLen, os);
             if (fullSequenceLen != st->entry->seqLen && !si.getWarnings().contains(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE)) {
                 si.addWarning(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE);
@@ -243,7 +243,7 @@ bool SwissProtPlainTextFormat::readSequence(ParserState *st, U2SequenceImporter 
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char *buff = readBuffer.data();
 
-    //reading sequence
+    // reading sequence
     QBuffer writer(&res);
     writer.open(QIODevice::WriteOnly);
     bool ok = true;
@@ -259,7 +259,7 @@ bool SwissProtPlainTextFormat::readSequence(ParserState *st, U2SequenceImporter 
             break;
         }
 
-        if (buff[0] == '/') {    //end of the sequence
+        if (buff[0] == '/') {  // end of the sequence
             break;
         }
 
@@ -267,7 +267,7 @@ bool SwissProtPlainTextFormat::readSequence(ParserState *st, U2SequenceImporter 
         assert(isSeek);
         Q_UNUSED(isSeek);
 
-        //add buffer to result
+        // add buffer to result
         for (int i = 0; i < len; i++) {
             char c = buff[i];
             if (c != ' ' && c != '\t') {
@@ -316,7 +316,7 @@ void SwissProtPlainTextFormat::readAnnotations(ParserState *st, int offset) {
             // end of feature table
             break;
         }
-        //parsing feature;
+        // parsing feature;
         bool isNew = isNewAnnotationFormat(st->entry->tags.value(DNAInfo::DATE), st->si);
         CHECK_OP(st->si, );
 
@@ -365,11 +365,11 @@ bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant &dateList, U
     return result;
 }
 
-//column annotation data starts with
+// column annotation data starts with
 #define A_COL 34
-//column qualifier name starts with
+// column qualifier name starts with
 #define QN_COL 35
-//column annotation key starts with
+// column annotation key starts with
 #define K_COL 5
 
 SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter *io, char *cbuff, int len, int READ_BUFF_SIZE, U2OpStatus &si, int offset) {
@@ -408,8 +408,8 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
 
     const QByteArray &aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
     const QByteArray &nameQ = GBFeatureUtils::QUALIFIER_NAME;
-    //here we have valid key and location;
-    //reading qualifiers
+    // here we have valid key and location;
+    // reading qualifiers
     bool lineOk = true;
     while ((len = io->readUntil(cbuff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0) {
         if (len == 0 || len < QN_COL + 1 || cbuff[K_COL] != ' ' || cbuff[0] != fPrefix[0] || cbuff[1] != fPrefix[1]) {
@@ -424,31 +424,31 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
             si.setError(EMBLGenbankAbstractDocument::tr("Unexpected line format"));
             break;
         }
-        //parse line
-        if (cbuff[A_COL] != '/') {    //continue of description
+        // parse line
+        if (cbuff[A_COL] != '/') {  // continue of description
             valQStr.append(" ");
             valQStr.append(QString::fromLatin1(cbuff).split(QRegExp("\\n")).takeAt(0).mid(34));
         } else {
             for (; QN_COL < len && TextUtils::LINE_BREAKS[(uchar)cbuff[len - 1]]; len--) {
-            };    //remove line breaks
+            };  // remove line breaks
             int flen = len + readMultilineQualifier(io, cbuff, READ_BUFF_SIZE - len, len == maxAnnotationLineLen, len, si);
-            //now the whole feature is in cbuff
+            // now the whole feature is in cbuff
             int valStart = A_COL + 1;
             for (; valStart < flen && cbuff[valStart] != '='; valStart++) {
-            };    //find '==' and valStart
+            };  // find '==' and valStart
             if (valStart < flen) {
-                valStart++;    //skip '=' char
+                valStart++;  // skip '=' char
             }
             const QBitArray &WHITE_SPACES = TextUtils::WHITES;
             for (; valStart < flen && WHITE_SPACES[(uchar)cbuff[flen - 1]]; flen--) {
-            };    //trim value
+            };  // trim value
             const char *qname = cbuff + QN_COL;
             int qnameLen = valStart - (QN_COL + 1);
             const char *qval = cbuff + valStart;
             int qvalLen = flen - valStart;
             if (qnameLen == aminoQ.length() && TextUtils::equals(qname, aminoQ.constData(), qnameLen)) {
-                //a->aminoFrame = qvalLen == aminoQYes.length() && TextUtils::equals(qval, aminoQYes.constData(), qvalLen) ? TriState_Yes
-                //             :  (qvalLen == aminoQNo.length()  && TextUtils::equals(qval, aminoQNo.constData(), qvalLen) ? TriState_No : TriState_Unknown);
+                // a->aminoFrame = qvalLen == aminoQYes.length() && TextUtils::equals(qval, aminoQYes.constData(), qvalLen) ? TriState_Yes
+                //              :  (qvalLen == aminoQNo.length()  && TextUtils::equals(qval, aminoQNo.constData(), qvalLen) ? TriState_No : TriState_Unknown);
             } else if (qnameLen == nameQ.length() && TextUtils::equals(qname, nameQ.constData(), qnameLen)) {
                 a->name = QString::fromLocal8Bit(qval, qvalLen);
             } else {
@@ -544,4 +544,4 @@ void SwissProtPlainTextFormat::processAnnotationRegion(AnnotationData *a, const 
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -68,6 +68,6 @@ private:
 
 bool isLittleEndian();
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_GENOME_ALIGNER_INDEX_PART_H_
+#endif  //_U2_GENOME_ALIGNER_INDEX_PART_H_

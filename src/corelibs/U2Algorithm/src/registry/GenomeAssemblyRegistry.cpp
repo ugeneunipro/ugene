@@ -117,4 +117,4 @@ bool GenomeAssemblyUtils::isLibraryPaired(const QString &libName) {
             libName == LIB_PAIR_MATE_HQ);
 }
 
-}    // namespace U2
+}  // namespace U2

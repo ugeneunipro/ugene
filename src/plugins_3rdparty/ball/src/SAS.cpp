@@ -85,4 +85,4 @@ MolecularSurface *SolventAccessibleSurfaceFactory::createInstance() const {
     return new SolventAccessibleSurface();
 }
 
-}    // namespace U2
+}  // namespace U2

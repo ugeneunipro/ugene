@@ -54,10 +54,10 @@ public:
     static void remapPaths(SlotPathMap &pathsMap, const QMap<ActorId, ActorId> &actorIdsMap);
     static void remapSlotString(QString &slotStr, const QMap<ActorId, ActorId> &actorIdsMap);
 
-};    // IntegralBusType
+};  // IntegralBusType
 
-}    //namespace Workflow
+}  // namespace Workflow
 
-}    //namespace U2
+}  // namespace U2
 
-#endif    // _U2_INTEGRAL_BUS_TYPE_H_
+#endif  // _U2_INTEGRAL_BUS_TYPE_H_

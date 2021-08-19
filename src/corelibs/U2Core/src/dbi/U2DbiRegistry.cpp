@@ -107,7 +107,7 @@ U2DbiRef U2DbiRegistry::attachTmpDbi(const QString &alias, U2OpStatus &os, const
     coreLog.trace("Allocated tmp dbi: " + dbiRef.dbiId);
     TmpDbiRef tmpDbiRef = TmpDbiRef(alias, dbiRef, 1);
 
-    if (alias == SESSION_TMP_DBI_ALIAS && !sessionDbiInitDone) {    //once used -> cache connection
+    if (alias == SESSION_TMP_DBI_ALIAS && !sessionDbiInitDone) {  // once used -> cache connection
         initSessionDbi(tmpDbiRef);
     }
 
@@ -190,9 +190,9 @@ QString getDatabaseFromCMDLine(U2OpStatus &os) {
 }
 
 /**
-     * Returns true if the path to the correct (openable) session database is
-     * supplied with the cmdline argument
-     */
+ * Returns true if the path to the correct (openable) session database is
+ * supplied with the cmdline argument
+ */
 bool useDatabaseFromCMDLine(const QString &alias) {
     if (SESSION_TMP_DBI_ALIAS != alias) {
         return false;
@@ -228,7 +228,7 @@ U2DbiRef getDbiRef(const QString &alias, U2OpStatus &os, const U2DbiFactoryId &f
     }
     return res;
 }
-}    // namespace
+}  // namespace
 
 U2DbiRef U2DbiRegistry::allocateTmpDbi(const QString &alias, U2OpStatus &os, const U2DbiFactoryId &factoryId) {
     QMutexLocker m(&lock);
@@ -434,7 +434,7 @@ void U2DbiPool::sl_checkDbiPoolExpiration() {
 
     U2OpStatus2Log os;
     const qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-    QMap<QString, int> dbUrl2DbiCount;    // count how many connections are in pool that refers to the same DB instance
+    QMap<QString, int> dbUrl2DbiCount;  // count how many connections are in pool that refers to the same DB instance
     foreach (U2Dbi *dbi, dbiSuspendStartTime.keys()) {
         const QString id = suspendedDbis.key(dbi, QString());
         SAFE_POINT(!id.isEmpty(), "Unexpected DBI detected in pool", );
@@ -506,7 +506,7 @@ QString getDbiUrlByRef(const U2DbiRef &ref, U2OpStatus &os) {
     return dbiFactory->id2Url(ref.dbiId).getURLString();
 }
 
-}    // namespace
+}  // namespace
 
 QString U2DbiPool::getId(const U2DbiRef &ref, U2OpStatus &os) {
     const QString url = U2DbiUtils::ref2Url(ref);
@@ -548,4 +548,4 @@ QString U2DbiPool::id2Url(const QString &id) {
     return id.left(id.indexOf(DBI_ID_DELIMETER));
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -114,7 +114,7 @@ QVariant SettingsImpl::getValue(const QString &pathName, const QVariant &default
     QString key = preparePath(path);
 
     if (versionedValue) {
-        //find versioned value in the key path
+        // find versioned value in the key path
         settings->beginGroup(key);
         QStringList allKeys = settings->allKeys();
         settings->endGroup();
@@ -145,9 +145,9 @@ void SettingsImpl::setValue(const QString &pathName, const QVariant &value, bool
     QString key = preparePath(path);
 
     if (versionedValue) {
-        //TODO: delete versioned keys?
+        // TODO: delete versioned keys?
 
-        //create versioned key
+        // create versioned key
         key = toVersionKey(key);
     }
 
@@ -209,4 +209,4 @@ QString SettingsImpl::fileName() const {
     return settings->fileName();
 }
 
-}    // namespace U2
+}  // namespace U2

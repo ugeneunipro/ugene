@@ -108,4 +108,4 @@ bool DirectoryOptions::isRecursive() const {
     return recursiveBox->isChecked();
 }
 
-}    // namespace U2
+}  // namespace U2

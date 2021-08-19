@@ -47,7 +47,7 @@ SiteconSearchTask::SiteconSearchTask(const SiteconModel &m, const QByteArray &se
 }
 
 void SiteconSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
-    //TODO: process border case as if there are 'N' chars before 0 and after seqlen
+    // TODO: process border case as if there are 'N' chars before 0 and after seqlen
     if (cfg->complOnly && !t->isDNAComplemented()) {
         return;
     }
@@ -69,7 +69,7 @@ void SiteconSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
         r.psum = 100 * psum;
         r.err1 = model->err1[r.psum];
         r.err2 = model->err2[r.psum];
-        if (r.psum >= cfg->minPSUM && r.err1 >= cfg->minE1 && r.err2 <= cfg->maxE2) {    //report result
+        if (r.psum >= cfg->minPSUM && r.err1 >= cfg->minE1 && r.err2 <= cfg->maxE2) {  // report result
 
             r.modelInfo = model->modelName;
             r.strand = t->isDNAComplemented() ? U2Strand::Complementary : U2Strand::Direct;
@@ -116,4 +116,4 @@ void SiteconSearchTask::cleanup() {
     lock = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

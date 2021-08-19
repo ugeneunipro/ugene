@@ -245,5 +245,5 @@ bool PeReadsListSplitter::isMain(const QString &candidateSlotId) {
     return (candidateSlotId == GetReadsListWorkerFactory::PE_SLOT().getId());
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

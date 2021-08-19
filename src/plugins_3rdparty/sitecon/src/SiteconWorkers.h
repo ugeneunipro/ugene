@@ -83,7 +83,7 @@ public:
     static void registerProto();
 
     SiteconSearchWorker(Actor *a)
-        : BaseWorker(a, false),    //FIXME??
+        : BaseWorker(a, false),  // FIXME??
           modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
     }
     virtual void init();
@@ -116,7 +116,7 @@ public:
     virtual Worker *createWorker(Actor *a);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

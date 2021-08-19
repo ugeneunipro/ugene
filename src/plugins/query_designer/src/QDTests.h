@@ -34,7 +34,7 @@ class U2SequenceObject;
 class QDScheduler;
 class QDScheme;
 
-//cppcheck-suppress noConstructor
+// cppcheck-suppress noConstructor
 class GTest_QDSchedulerTest : public XmlTest {
     Q_OBJECT
 public:
@@ -78,6 +78,6 @@ private:
     bool equal;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

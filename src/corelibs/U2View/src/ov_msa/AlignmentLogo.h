@@ -130,14 +130,14 @@ protected:
 
 private:
     AlignmentLogoSettings settings;
-    qreal s;    //4||20
+    qreal s;  // 4||20
     qreal error;
     QVector<char> *acceptableChars;
     QVector<char> bases;
     QVector<char> aminoacids;
 
     QVector<QVector<char>> columns;
-    //frequency and height of a particular char at position
+    // frequency and height of a particular char at position
     QVector<qreal> frequencies[256];
     QVector<qreal> heights[256];
 
@@ -165,6 +165,6 @@ private:
     QPainterPath path;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -139,6 +139,6 @@ private:
     ScriptingToolRegistry *str;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _UGENE_CONTEXT_WRAPPER_H_
+#endif  // _UGENE_CONTEXT_WRAPPER_H_

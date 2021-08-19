@@ -44,6 +44,6 @@ private:
     static const QString synchronizeWithMsa;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHY_TREE_DISPLAY_OPTIONS_WIDGET_H_
+#endif  // _U2_PHY_TREE_DISPLAY_OPTIONS_WIDGET_H_

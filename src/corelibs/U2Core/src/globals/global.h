@@ -101,7 +101,7 @@
 #    define U2_APP_VERSION UGENE_VERSION
 #endif
 
-//global
+// global
 #define GLOBAL_SETTINGS QString("global/")
 
 #define ENV_USE_CRASH_HANDLER "UGENE_USE_CRASH_HANDLER"
@@ -128,7 +128,7 @@ enum TriState {
     TriState_No
 };
 
-enum UnloadedObjectFilter {    //used as a separate type but not 'bool' to improve readability
+enum UnloadedObjectFilter {  // used as a separate type but not 'bool' to improve readability
     UOF_LoadedAndUnloaded,
     UOF_LoadedOnly
 };
@@ -138,7 +138,7 @@ enum NavigationDirection {
     Backward
 };
 
-}    // namespace U2
+}  // namespace U2
 
 enum DNAAlphabetType {
     DNAAlphabet_UNDEFINED = 0x0,

@@ -58,6 +58,6 @@ public:
     static uchar getColumnFreqs(const MultipleAlignment &ma, int pos, QVector<int> &freqsByChar, int &nonGapChars, const QVector<int> &seqIdx = QVector<int>());
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

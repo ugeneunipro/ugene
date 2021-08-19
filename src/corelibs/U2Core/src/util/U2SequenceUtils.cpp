@@ -67,7 +67,7 @@ qint64 U2SequenceUtils::length(const U2EntityRef &ref, U2OpStatus &os) {
 
 U2Sequence U2SequenceUtils::copySequence(const DNASequence &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os) {
     U2Sequence res;
-    //TODO: ClustalW format does not assign sequence alphabets!
+    // TODO: ClustalW format does not assign sequence alphabets!
     res.alphabet = srcSeq.alphabet == nullptr ? nullptr : srcSeq.alphabet->getId();
     res.circular = srcSeq.circular;
     res.length = srcSeq.length();
@@ -120,7 +120,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
 
     tmpObjects.objects.append(res.id);
 
-    const qint64 MAX_CHUNK_LENGTH = 4194304;    // 4 MiB chunk
+    const qint64 MAX_CHUNK_LENGTH = 4194304;  // 4 MiB chunk
     for (qint64 pos = 0; pos < seq.length; pos += MAX_CHUNK_LENGTH) {
         const qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, seq.length - pos);
         const U2Region chunkRegion(pos, currentChunkSize);
@@ -490,7 +490,7 @@ void U2SequenceImporter::addSequenceBlock(const U2EntityRef &sequenceRef, const 
     DbiConnection con(sequenceRef.dbiRef, os);
     CHECK_OP(os, );
 
-    //TODO: optimize -> create utility that uses small to copy sequence!
+    // TODO: optimize -> create utility that uses small to copy sequence!
     QByteArray arr = con.dbi->getSequenceDbi()->getSequenceData(sequenceRef.entityId, r, os);
     CHECK_OP(os, );
     addBlock(arr.constData(), arr.size(), os);
@@ -556,7 +556,7 @@ void U2SequenceImporter::_addBlock2Db(const char *data, qint64 len, U2OpStatus &
     CHECK_OP(os, );
     if (committedLength == sequence.length) {
         sequence.length += len;
-    } else {    // because of lazyMode and delayed sequence creation
+    } else {  // because of lazyMode and delayed sequence creation
         sequence.length = committedLength + len;
     }
     committedLength += len;
@@ -674,7 +674,7 @@ U2PseudoCircularization::U2PseudoCircularization(QObject *parent, bool isCircula
 
 QVector<U2Region> U2PseudoCircularization::uncircularizeRegion(const U2Region &region, bool &uncircularized) const {
     uncircularized = false;
-    if ((region.startPos >= seqLen && region.endPos() >= seqLen) || (region.length > seqLen)) {    // dublicate
+    if ((region.startPos >= seqLen && region.endPos() >= seqLen) || (region.length > seqLen)) {  // dublicate
         return QVector<U2Region>();
     }
     if (region.endPos() > seqLen) {
@@ -697,4 +697,4 @@ void U2PseudoCircularization::uncircularizeLocation(U2Location &location) const 
     location->regions = res;
 }
 
-}    // namespace U2
+}  // namespace U2

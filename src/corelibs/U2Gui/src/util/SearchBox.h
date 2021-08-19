@@ -60,5 +60,5 @@ private:
     QToolButton *clearButton;
 };
 
-}    // namespace U2
-#endif    // _U2_SEARCH_BOX_H_
+}  // namespace U2
+#endif  // _U2_SEARCH_BOX_H_

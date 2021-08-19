@@ -149,7 +149,7 @@ namespace {
 
 QString createDeleteObjectQueryStr(int objectCount) {
     static const QString queryStartStr("DELETE FROM Object WHERE id IN (");
-    static const int bindingStrLength = 5;    // five characters for ",?nnn"
+    static const int bindingStrLength = 5;  // five characters for ",?nnn"
 
     QString result(queryStartStr);
     result.reserve(result.length() + bindingStrLength * objectCount);
@@ -161,7 +161,7 @@ QString createDeleteObjectQueryStr(int objectCount) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 bool SQLiteObjectDbi::removeObjects(const QList<U2DataId> &dataIds, bool /*force*/, U2OpStatus &os) {
     CHECK(!dataIds.isEmpty(), true);
@@ -496,7 +496,7 @@ void SQLiteObjectDbi::addObjectsToFolder(const QList<U2DataId> &objectIds, const
         countQ.bindInt64(1, folderId);
         int c = countQ.selectInt64();
         if (c != 0) {
-            continue;    // object is already in folder, skip it
+            continue;  // object is already in folder, skip it
         }
         insertQ.reset();
         insertQ.bindInt64(1, folderId);
@@ -1011,7 +1011,7 @@ U2DbiObjectRank SQLiteObjectDbi::getObjectRank(const U2DataId &objectId, U2OpSta
 }
 
 void SQLiteObjectDbi::onFolderUpdated(const QString &) {
-    //TODO: update local version of the given folder & global for all parents
+    // TODO: update local version of the given folder & global for all parents
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1216,4 +1216,4 @@ void SQLiteObjectDbiUtils::renameObject(SQLiteModificationAction &updateAction, 
     SAFE_POINT_OP(os, );
 }
 
-}    // namespace U2
+}  // namespace U2

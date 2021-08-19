@@ -53,7 +53,7 @@ QString GTClipboard::text(GUITestOpStatus &os) {
             GT_CHECK(mimeData != NULL, "Clipboard MimeData is NULL");
 
             GT_CHECK(mimeData->hasText(), "Clipboard doesn't contain text data");
-            text = QString(mimeData->text());    // make a copy of clipboard text.
+            text = QString(mimeData->text());  // make a copy of clipboard text.
         }
 
     private:
@@ -107,7 +107,7 @@ QList<QUrl> toLocalQUrls(GUITestOpStatus &os, const QList<QString> &urls) {
     }
     return qurls;
 }
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "setUrls"
 void GTClipboard::setUrls(GUITestOpStatus &os, const QList<QString> &urls) {
@@ -157,4 +157,4 @@ void GTClipboard::clear(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

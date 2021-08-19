@@ -101,7 +101,7 @@ private:
     bool isMain(const QString &candidateSlotId);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

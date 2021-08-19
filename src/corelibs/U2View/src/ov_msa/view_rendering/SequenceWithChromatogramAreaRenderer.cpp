@@ -81,11 +81,12 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
 }
 
 void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
-    QRect selectionRect = getSeqArea()->getEditor()->getSelection().toRect();
-    CHECK(!selectionRect.isEmpty(), );
-    U2Region selectedRowsRegion = U2Region::fromYRange(selectionRect);
-    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
-    painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
+    const QList<QRect> &selectedRects = getSeqArea()->getEditor()->getSelection().getRectList();
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        U2Region selectedRowsRegion = U2Region::fromYRange(selectedRect);
+        U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
+        painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
+    }
 }
 
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
@@ -161,11 +162,11 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
     painter.translate(xStart, 0);
 
     const int regionWidth = ui->getBaseWidthController()->getBasesWidth(regionToDraw);
-    const QByteArray seq = row->getCore();    // SANGER_TODO: tmp, get only required region
+    const QByteArray seq = row->getCore();  // SANGER_TODO: tmp, get only required region
 
     // SANGER_TODO:
     //    GSLV_UpdateFlags uf = view->getUpdateFlags();
-    const bool completeRedraw = true;    //uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) || uf.testFlag(GSLV_UF_VisibleRangeChanged);
+    const bool completeRedraw = true;  // uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) || uf.testFlag(GSLV_UF_VisibleRangeChanged);
     bool drawQuality = chroma.hasQV && getSeqArea()->getShowQA();
     const bool baseCallsLinesVisible = seqAreaWgt->getEditor()->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
 
@@ -180,7 +181,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
             }
             drawOriginalBaseCalls(drawQuality * heightQuality, painter, regionToDraw, seq);
         } else {
-            drawQuality = false;    // to avoid shifting in case the base calls and quality was not visible
+            drawQuality = false;  // to avoid shifting in case the base calls and quality was not visible
         }
 
         if (regionWidth / charWidth > regionToDraw.length / TRACE_OR_BC_LINES_DIVIDER) {
@@ -216,9 +217,9 @@ static int getPreviousBaseCallEndPosition(const QVector<ushort> &baseCalls, int 
     int res = 0;
     SAFE_POINT(startPos > 0 && startPos < baseCalls.size(), "Out of array boundary", 0);
     int prevStep = baseCalls[startPos] - baseCalls[startPos - 1];
-    //When many gaps was insered to the single place, the difference between current and previous baceCalls element may be very little.
-    //Because of it, left correct point to draw may be out of the left edge of visible area
-    //If it happends, we need to go to the left while we will find a correct point
+    // When many gaps was insered to the single place, the difference between current and previous baceCalls element may be very little.
+    // Because of it, left correct point to draw may be out of the left edge of visible area
+    // If it happends, we need to go to the left while we will find a correct point
     if (prevStep <= 1) {
         int pos = startPos - 1;
         while (prevStep == 0 && pos > 0) {
@@ -234,7 +235,7 @@ static int getPreviousBaseCallEndPosition(const QVector<ushort> &baseCalls, int 
 }
 
 static int getCorrectPointsCountVariable(const QVector<ushort> &baseCalls, int pointsCount, int endPos, int currentNumBer) {
-    //The same situation as with "getPreviousBaseCallEndPosition" except in this case we look for correct point for right edge
+    // The same situation as with "getPreviousBaseCallEndPosition" except in this case we look for correct point for right edge
     if (currentNumBer != endPos - 1) {
         return pointsCount;
     }
@@ -249,7 +250,7 @@ static int getCorrectPointsCountVariable(const QVector<ushort> &baseCalls, int p
     return res;
 }
 
-}    // namespace
+}  // namespace
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram &chroma,
                                                                  qreal x,
@@ -258,10 +259,10 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
                                                                  QPainter &p,
                                                                  const U2Region &visible) const {
     if (chromaMax == 0) {
-        //nothing to draw
+        // nothing to draw
         return;
     }
-    //founding problems
+    // founding problems
 
     p.setRenderHint(QPainter::Antialiasing, true);
     p.translate(x, h + y);
@@ -324,7 +325,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
 }
 
 void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF &polylineA, QPolygonF &polylineC, QPolygonF &polylineG, QPolygonF &polylineT, const DNAChromatogram &chroma, qreal columnWidth, const U2Region &visible, qreal h) const {
-    //The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
+    // The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int startPos = visible.startPos;
     int endPos = visible.endPos();
@@ -378,7 +379,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
 void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram &chroma, qreal w, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba) const {
     p.translate(0, h);
 
-    //draw grid
+    // draw grid
     p.setPen(linePen);
     p.setRenderHint(QPainter::Antialiasing, false);
     for (int i = 0; i < 5; ++i) {
@@ -483,4 +484,4 @@ bool SequenceWithChromatogramAreaRenderer::hasHighlightedBackground(int columnIn
     return rect.width() == 1 && rect.height() == 1 && rect.contains(columnIndex, viewRowIndex);
 }
 
-}    // namespace U2
+}  // namespace U2

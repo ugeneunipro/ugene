@@ -119,12 +119,11 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 
 void PairAlign::initParameters() {
     const MaEditorSelection &selection = msa->getSelection();
-    QRect selectionRect = selection.toRect();
-    if (selectionRect.height() == 2) {
-        int selectionPos = selectionRect.y();
-        qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
+    QList<int> selectedViewRowIndexes = selection.getSelectedRowIndexes();
+    if (selectedViewRowIndexes.size() == 2) {
+        qint64 firstRowId = msa->getRowByViewRowIndex(selectedViewRowIndexes[0])->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();
+        qint64 secondRowId = msa->getRowByViewRowIndex(selectedViewRowIndexes[1])->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         if (isValidSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId)) {
@@ -139,7 +138,7 @@ void PairAlign::initParameters() {
 
     QString outputFileName = pairwiseAlignmentWidgetsSettings->resultFileName;
     if (outputFileName.isEmpty()) {
-        saveController->setPath(getDefaultFilePath());    // controller will roll file name here
+        saveController->setPath(getDefaultFilePath());  // controller will roll file name here
     } else {
         outputFileLineEdit->setText(outputFileName);
     }
@@ -200,7 +199,7 @@ void PairAlign::initSaveController() {
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::CLUSTAL_ALN;
 
     saveController = new SaveDocumentController(config, formats, this);
-    saveController->setPath(getDefaultFilePath());    // controller will roll file name here
+    saveController->setPath(getDefaultFilePath());  // controller will roll file name here
 }
 
 QString PairAlign::getDefaultFilePath() {
@@ -464,4 +463,4 @@ void PairAlign::sl_selectorTextChanged() {
     checkState();
 }
 
-}    // namespace U2
+}  // namespace U2

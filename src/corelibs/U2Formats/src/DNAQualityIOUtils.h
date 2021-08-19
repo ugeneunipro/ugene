@@ -35,6 +35,6 @@ public:
     static void writeDNAQuality(const QString &seqName, const DNAQuality &quality, const QString &filePath, bool appendData, bool decode, U2OpStatus &op);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DNA_QUALITY_IO_UTILS_H_
+#endif  // _U2_DNA_QUALITY_IO_UTILS_H_

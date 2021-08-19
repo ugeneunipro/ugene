@@ -28,4 +28,4 @@ SqliteUpgrader::SqliteUpgrader(const Version &versionFrom, const Version &versio
       dbi(dbi) {
 }
 
-}    // namespace U2
+}  // namespace U2

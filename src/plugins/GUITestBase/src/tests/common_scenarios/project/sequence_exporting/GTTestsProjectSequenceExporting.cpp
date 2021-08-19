@@ -38,14 +38,11 @@
 
 #include <U2View/ADVConstants.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -57,8 +54,6 @@
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "system/GTFile.h"
-#include "utils/GTUtilsApp.h"
-#include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
 
@@ -66,16 +61,16 @@ namespace GUITest_common_scenarios_project_sequence_exporting {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
@@ -97,9 +92,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 #else
     expectedTitle = "proj4 UGENE";
 #endif
-    GTUtilsApp::checkUGENETitle(os, expectedTitle);
+    GTMainWindow::checkTitle(os, expectedTitle);
 
-    // 2. Double click on "[a] Annotations" sequence object, in project view tree
+    // 2. Double-click on "[a] Annotations" sequence object, in project view tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTMouseDriver::doubleClick();
 
@@ -139,16 +134,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -158,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsDocument::checkDocument(os, "2.gb");
 
-    // 2. Double click on "[a] Annotations" sequence object, in project view tree
+    // 2. Double-click on "[a] Annotations" sequence object, in project view tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTMouseDriver::doubleClick();
 
@@ -194,27 +189,27 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    const QString doc1("1.gb"), doc2("2.gb");
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    QString doc1("1.gb"), doc2("2.gb");
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened
-    GTUtilsProjectTreeView::findIndex(os, doc1);    //checks inside
+    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
 
-    // 2. Double click on "[a] Annotations" sequence object, in project view tree
+    // 2. Double-click on "[a] Annotations" sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
@@ -231,7 +226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Format } FASTA
     //     {Export to file:} _common_data/scenarios/sandbox/exp.fasta
     //     {Add created document to project} set checked
-    //     {Merge sequnces} set selected
+    //     {Merge sequences} set selected
     //     {Gap length} 5
     // 5. Click Export button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT"
@@ -255,16 +250,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
@@ -289,12 +284,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
@@ -514,6 +509,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-}    // namespace GUITest_common_scenarios_project_sequence_exporting
+}  // namespace GUITest_common_scenarios_project_sequence_exporting
 
-}    // namespace U2
+}  // namespace U2

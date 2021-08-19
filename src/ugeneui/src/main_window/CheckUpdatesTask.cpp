@@ -195,4 +195,4 @@ QString VersionMessage::getMessageText(const Version &thisVersion, const Version
     return message;
 }
 
-}    // namespace U2
+}  // namespace U2

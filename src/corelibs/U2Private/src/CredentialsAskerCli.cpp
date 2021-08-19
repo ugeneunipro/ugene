@@ -37,7 +37,7 @@
 
 #include "CredentialsAskerCli.h"
 
-#ifdef Q_OS_UNIX    // source: http://stackoverflow.com/questions/7469139/what-is-equivalent-to-getch-getche-in-linux
+#ifdef Q_OS_UNIX  // source: http://stackoverflow.com/questions/7469139/what-is-equivalent-to-getch-getche-in-linux
 static struct termios oldTerm, newTerm;
 
 /* Initialize new terminal i/o settings */
@@ -144,7 +144,7 @@ static QString askPwd() {
     return pwd;
 }
 
-}    // namespace
+}  // namespace
 
 bool CredentialsAskerCli::askWithFixedLogin(const QString &resourceUrl) const {
     SAFE_POINT(!AppContext::isGUIMode(), "Unexpected application run mode", false);
@@ -188,4 +188,4 @@ bool CredentialsAskerCli::askWithModifiableLogin(QString &resourceUrl) const {
     return true;
 }
 
-}    //namespace U2
+}  // namespace U2

@@ -61,8 +61,8 @@ public:
 
     U2DataType getType() const;
 
-    static const QString META_INFO_ATTIBUTE;
-    static const QString HEADER_ATTIBUTE;
+    static const QString META_INFO_ATTRIBUTE;
+    static const QString HEADER_ATTRIBUTE;
 };
 
 /** Database representation of genomic variations such as snps, indels, etc.  */
@@ -82,6 +82,6 @@ public:
     static const QString VCF4_INFO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VARIANT_H_
+#endif  // _U2_VARIANT_H_

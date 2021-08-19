@@ -57,6 +57,6 @@ public:
     virtual void endCommonUserModStep(const U2DataId &masterObjId, U2OpStatus &os) = 0;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

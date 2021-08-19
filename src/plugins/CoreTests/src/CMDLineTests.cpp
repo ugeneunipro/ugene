@@ -107,7 +107,7 @@ void GTest_RunCMDLine::setArgs(const QDomElement &el) {
         }
         QString argument = "--" + nodeName + "=" + getVal(node.nodeValue());
         if (argument.startsWith("--task")) {
-            argsFromXml.prepend(argument);    // '--task' attribute must go first.
+            argsFromXml.prepend(argument);  // '--task' attribute must go first.
         } else {
             argsFromXml.append(argument);
         }
@@ -205,9 +205,9 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (proc->state() != QProcess::NotRunning) {
         return ReportResult_CallMeAgain;
     }
-    //QProcess::ProcessError err = proc->error();
+    // QProcess::ProcessError err = proc->error();
     QString output(proc->readAllStandardOutput());
-    //QByteArray outputErr = proc->readAllStandardError();
+    // QByteArray outputErr = proc->readAllStandardError();
     cmdLog.trace(output);
 
     if (!expectedMessage.isEmpty()) {
@@ -257,12 +257,12 @@ void GTest_RunCMDLine::cleanup() {
 }
 
 /************************
-* GTest_RunCMDLine
-************************/
+ * GTest_RunCMDLine
+ ************************/
 QList<XMLTestFactory *> CMDLineTests::createTestFactories() {
     QList<XMLTestFactory *> res;
     res.append(GTest_RunCMDLine::createFactory());
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

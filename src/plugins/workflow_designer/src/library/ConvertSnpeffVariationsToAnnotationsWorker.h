@@ -64,7 +64,7 @@ private:
     IntegralBus *input;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_
+#endif  // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_

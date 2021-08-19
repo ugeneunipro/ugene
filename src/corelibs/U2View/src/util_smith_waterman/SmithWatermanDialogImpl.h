@@ -58,11 +58,11 @@ private slots:
     void sl_bttnRun();
     void sl_translationToggled(bool toggled);
 
-    //void sl_remoteRunButtonClicked();
+    // void sl_remoteRunButtonClicked();
     void sl_patternChanged();
     void sl_resultViewChanged(const QString &text);
     void sl_browseAlignFilesDir();
-    void sl_templateButtonPressed();    // suppose that template buttons have the following label: "[tag] tag_name"
+    void sl_templateButtonPressed();  // suppose that template buttons have the following label: "[tag] tag_name"
     void sl_cancelButton();
 
 private:
@@ -118,6 +118,6 @@ private:
     QPushButton *remoteRunPushButton;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

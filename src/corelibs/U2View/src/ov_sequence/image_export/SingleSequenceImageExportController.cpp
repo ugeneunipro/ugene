@@ -121,4 +121,4 @@ void SingleSequenceImageExportController::checkExportSettings() {
     emit si_showMessage("");
 }
 
-}    // namespace U2
+}  // namespace U2

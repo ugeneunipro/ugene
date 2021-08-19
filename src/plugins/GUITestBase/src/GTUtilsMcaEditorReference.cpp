@@ -70,4 +70,4 @@ void GTUtilsMcaEditorReference::scrollToPosition(HI::GUITestOpStatus &os, int po
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

@@ -39,10 +39,10 @@ public:
     }
 
 private:
-    char *data;    // buffer area
-    int size;    // buffer size
-    int len;    // length of buffered data
-    int start;    // start offset
+    char *data;  // buffer area
+    int size;  // buffer size
+    int len;  // length of buffered data
+    int start;  // start offset
 };
 
 int RingBuffer::read(char *dest, int n, int index) const {
@@ -92,6 +92,6 @@ void RingBuffer::append(const char *src, int n) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

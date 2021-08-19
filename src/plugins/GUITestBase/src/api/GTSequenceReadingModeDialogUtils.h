@@ -51,6 +51,6 @@ private:
     QWidget *dialog;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTSEQUENCEREADINGMODEDIALOGUTILS_H
+#endif  // GTSEQUENCEREADINGMODEDIALOGUTILS_H

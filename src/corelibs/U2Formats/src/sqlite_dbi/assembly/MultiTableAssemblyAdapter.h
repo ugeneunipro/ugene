@@ -137,7 +137,7 @@ protected:
     /** prow range per table */
     qint32 rowsPerRange;
 
-    //TODO: add read-locks into all methods
+    // TODO: add read-locks into all methods
     QReadWriteLock tablesSyncLock;
 };
 
@@ -217,6 +217,6 @@ private:
     QVector<QByteArray> idExtras;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

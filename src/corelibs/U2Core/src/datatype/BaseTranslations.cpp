@@ -38,7 +38,6 @@ const QString BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT("NUCL_RNA_DEFAU
 const QString BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT("NUCL_DNA_EXTENDED_COMPLEMENT");
 const QString BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT("NUCL_RNA_EXTENDED_COMPLEMENT");
 
-#define DATA_DIR_KEY QString("back_translation")
 #define DATA_FILE_KEY QString("back_translation/lastFile")
 #define DEFAULT_ORGANISM_FILE QString("tables.xml")
 
@@ -72,7 +71,7 @@ static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QLi
     }
 }
 
-static void fill1To3(BackTranslationRules &map,
+static void fill1To3(BackTranslationRules &translationRules,
                      const DNAAlphabet *srcAl,
                      const DNAAlphabet *dstAl,
                      const char *amino,
@@ -85,28 +84,27 @@ static void fill1To3(BackTranslationRules &map,
     assert(dstAl->isNucleic());
     Q_UNUSED(dstAl);
 
-    TripletP t('N', 'N', 'N', 100);
-    map.map.append(t);
-    map.index['-'] = map.map.size();
-    TripletP dash('-', '-', '-', 100);
-    map.map.append(dash);
+    translationRules.map.append({'N', 'N', 'N', 100});
+    translationRules.index[(int)'-'] = translationRules.map.size();
+    translationRules.map.append({'-', '-', '-', 100});
     int len = strlen(amino);
     assert(len == (int)strlen(n1) && len == (int)strlen(n2) && len == (int)strlen(n3));
 
-    QByteArray alph = srcAl->getAlphabetChars();
-    QList<TripletP> v;
-    foreach (char c, alph) {
-        v.clear();
+    QByteArray alphabetChars = srcAl->getAlphabetChars();
+    QVector<TripletP> triplets;
+    for (char c: qAsConst(alphabetChars)) {
+        triplets.clear();
         int sump = 0;
         for (int i = 0; i < len; i++) {
-            if (amino[i] != c)
+            if (amino[i] != c) {
                 continue;
+            }
             char c1 = n1[i];
             char c2 = n2[i];
             char c3 = n3[i];
             int p = prob[i];
             sump += p;
-#ifdef DEBUG
+#ifdef _DEBUG
             char src = amino[i];
             assert(srcAl->contains(src));
             assert(dstAl->contains(c1));
@@ -114,21 +112,18 @@ static void fill1To3(BackTranslationRules &map,
             assert(dstAl->contains(c3));
             assert((0 <= p) && (p <= 100));
 #endif
-            TripletP t(c1, c2, c3, p);
-            v.append(t);
+            triplets.append({c1, c2, c3, p});
         }
-        if (v.empty()) {
+        if (triplets.empty()) {
             if (c != '-') {
-                map.index[(int)c] = 0;
-                map.index[(int)c] = 1;
+                translationRules.index[(int)c] = 0;
+                translationRules.index[(int)c] = 1;
             }
         } else {
-            map.index[(int)c] = map.map.size();
-            std::sort(v.begin(), v.end());
-            v.first().p += (100 - sump);
-            foreach (TripletP t, v) {
-                map.map.append(t);
-            }
+            translationRules.index[(int)c] = translationRules.map.size();
+            std::sort(triplets.begin(), triplets.end());
+            triplets.first().p += 100 - sump;
+            translationRules.map.append(triplets.constData(), triplets.size());
         }
     }
 }
@@ -190,7 +185,7 @@ void DNAAlphabetRegistryImpl::reg4tables(const char *amino, const char *role, co
         treg->registerDNATranslation(t);
     }
 
-    //extended NUCL DNA to AMINO -> all extended symbols lead to "unknown"
+    // extended NUCL DNA to AMINO -> all extended symbols lead to "unknown"
     {
         const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
         const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
@@ -254,7 +249,7 @@ void DNAAlphabetRegistryImpl::regPtables(const char *amino, const int *prob, con
     }
 
 void DNAAlphabetRegistryImpl::initBaseTranslations() {
-    //default NUCL DNA complement
+    // default NUCL DNA complement
     {
         const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
         const DNAAlphabet *dstAlphabet = srcAlphabet;
@@ -274,7 +269,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         treg->registerDNATranslation(t);
     }
 
-    //default NUCL RNA complement
+    // default NUCL RNA complement
     {
         const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
         const DNAAlphabet *dstAlphabet = srcAlphabet;
@@ -294,9 +289,9 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         treg->registerDNATranslation(t);
     }
 
-    //extended NUCL DNA complement
+    // extended NUCL DNA complement
     {
-        //source: http://www.geneinfinity.org/sp_nucsymbols.html
+        // source: http://www.geneinfinity.org/sp_nucsymbols.html
         const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
         const DNAAlphabet *dstAlphabet = srcAlphabet;
 
@@ -324,9 +319,9 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         treg->registerDNATranslation(t);
     }
 
-    //extended NUCL RNA complement
+    // extended NUCL RNA complement
     {
-        //source: http://www.geneinfinity.org/sp_nucsymbols.html
+        // source: http://www.geneinfinity.org/sp_nucsymbols.html
         const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
         const DNAAlphabet *dstAlphabet = srcAlphabet;
 
@@ -365,7 +360,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(1),
         tr("1. The Standard Genetic Code"));
 
-    //2. The Vertebrate Mitochondrial Code (transl_table=2)
+    // 2. The Vertebrate Mitochondrial Code (transl_table=2)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSS**VVVVAAAADDEEGGGG",
         "--------------------------------LLLM---------------L------------",
@@ -375,7 +370,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(2),
         tr("2. The Vertebrate Mitochondrial Code"));
 
-    //3. The Yeast Mitochondrial Code (transl_table=3)
+    // 3. The Yeast Mitochondrial Code (transl_table=3)
     reg4tables(
         "FFLLSSSSYY**CCWWTTTTPPPPHHQQRRRRIIMMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "----------------------------------LM----------------------------",
@@ -385,7 +380,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(3),
         tr("3. The Yeast Mitochondrial Code"));
 
-    //4. The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma Code (transl_table=4)
+    // 4. The Mold, Protozoan, and Coelenterate Mitochondrial Code and the Mycoplasma/Spiroplasma Code (transl_table=4)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "--LL---------------L------------LLLM---------------L------------",
@@ -395,7 +390,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(4),
         tr("4. The Mold, Protozoan, and Coelenterate Mitochondria and the Mycoplasma Code"));
 
-    //5. The Invertebrate Mitochondrial Code (transl_table=5)
+    // 5. The Invertebrate Mitochondrial Code (transl_table=5)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSSSSVVVVAAAADDEEGGGG",
         "---L----------------------------LLLM---------------L------------",
@@ -405,7 +400,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(5),
         tr("5. The Invertebrate Mitochondrial Code"));
 
-    //6. The Ciliate, Dasycladacean and Hexamita Nuclear Code (transl_table=6)
+    // 6. The Ciliate, Dasycladacean and Hexamita Nuclear Code (transl_table=6)
     reg4tables(
         "FFLLSSSSYYQQCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -415,7 +410,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(6),
         tr("6. The Ciliate, Dasycladacean and Hexamita Nuclear Code"));
 
-    //9. The Echinoderm and Flatworm Mitochondrial Code (transl_table=9)
+    // 9. The Echinoderm and Flatworm Mitochondrial Code (transl_table=9)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNNKSSSSVVVVAAAADDEEGGGG",
         "-----------------------------------M---------------L------------",
@@ -425,7 +420,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(9),
         tr("9. The Echinoderm and Flatworm Mitochondrial Code"));
 
-    //10. The Euplotid Nuclear Code (transl_table=10)
+    // 10. The Euplotid Nuclear Code (transl_table=10)
     reg4tables(
         "FFLLSSSSYY**CCCWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -435,7 +430,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(10),
         tr("10. The Euplotid Nuclear Code"));
 
-    //11. The Bacterial and Plant Plastid Code (transl_table=11)
+    // 11. The Bacterial and Plant Plastid Code (transl_table=11)
     reg4tables(
         "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "---L---------------L------------LLLM---------------L------------",
@@ -445,7 +440,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(11),
         tr("11. The Bacterial and Plant Plastid Code"));
 
-    //12. The Alternative Yeast Nuclear Code (transl_table=12)
+    // 12. The Alternative Yeast Nuclear Code (transl_table=12)
     reg4tables(
         "FFLLSSSSYY**CC*WLLLSPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-------------------L---------------M----------------------------",
@@ -455,7 +450,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(12),
         tr("12. The Alternative Yeast Nuclear Code"));
 
-    //13. The Ascidian Mitochondrial Code (transl_table=13)
+    // 13. The Ascidian Mitochondrial Code (transl_table=13)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNKKSSGGVVVVAAAADDEEGGGG",
         "---L------------------------------LM---------------L------------",
@@ -465,7 +460,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(13),
         tr("13. The Ascidian Mitochondrial Code"));
 
-    //14. The Alternative Flatworm Mitochondrial Code (transl_table=14)
+    // 14. The Alternative Flatworm Mitochondrial Code (transl_table=14)
     reg4tables(
         "FFLLSSSSYYY*CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNNKSSSSVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -475,7 +470,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(14),
         tr("14. The Alternative Flatworm Mitochondrial Code"));
 
-    //15. Blepharisma Nuclear Code (transl_table=15)
+    // 15. Blepharisma Nuclear Code (transl_table=15)
     reg4tables(
         "FFLLSSSSYY*QCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -485,7 +480,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(15),
         tr("15. Blepharisma Nuclear Code"));
 
-    //16. Chlorophycean Mitochondrial Code (transl_table=16)
+    // 16. Chlorophycean Mitochondrial Code (transl_table=16)
     reg4tables(
         "FFLLSSSSYY*LCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -495,7 +490,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(16),
         tr("16. Chlorophycean Mitochondrial Code"));
 
-    //21. Trematode Mitochondrial Code (transl_table=21)
+    // 21. Trematode Mitochondrial Code (transl_table=21)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIMMTTTTNNNKSSSSVVVVAAAADDEEGGGG",
         "-----------------------------------M---------------L------------",
@@ -505,7 +500,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(21),
         tr("21. Trematode Mitochondrial Code"));
 
-    //22. Scenedesmus obliquus mitochondrial Code (transl_table=22)
+    // 22. Scenedesmus obliquus mitochondrial Code (transl_table=22)
     reg4tables(
         "FFLLSS*SYY*LCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "-----------------------------------M----------------------------",
@@ -515,7 +510,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(22),
         tr("22. Scenedesmus obliquus Mitochondrial Code"));
 
-    //23. Thraustochytrium Mitochondrial Code (transl_table=23)
+    // 23. Thraustochytrium Mitochondrial Code (transl_table=23)
     reg4tables(
         "FF*LSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "--------------------------------L--M---------------L------------",
@@ -525,7 +520,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(23),
         tr("23. Thraustochytrium Mitochondrial Code"));
 
-    //24. Pterobranchia Mitochondrial Code (transl_table=24)
+    // 24. Pterobranchia Mitochondrial Code (transl_table=24)
     reg4tables(
         "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSSKVVVVAAAADDEEGGGG",
         "---M------**-------M---------------M---------------M------------",
@@ -535,7 +530,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(24),
         tr("24. Pterobranchia Mitochondrial Code"));
 
-    //25. Candidate Division SR1 and Gracilibacteria Code (transl_table=25)
+    // 25. Candidate Division SR1 and Gracilibacteria Code (transl_table=25)
     reg4tables(
         "FFLLSSSSYY**CCGWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "---M------**-----------------------M---------------M------------",
@@ -545,7 +540,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(25),
         tr("25. Candidate Division SR1 and Gracilibacteria Code"));
 
-    //26. Pachysolen tannophilus Nuclear Code (transl_table=26)
+    // 26. Pachysolen tannophilus Nuclear Code (transl_table=26)
     reg4tables(
         "FFLLSSSSYY**CC*WLLLAPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "----------**--*----M---------------M----------------------------",
@@ -555,7 +550,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(26),
         tr("26. Pachysolen tannophilus Nuclear Code"));
 
-    //27. Karyorelict Nuclear (transl_table=27)
+    // 27. Karyorelict Nuclear (transl_table=27)
     reg4tables(
         "FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "--------------*--------------------M----------------------------",
@@ -565,7 +560,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(27),
         tr("27. Karyorelict Nuclear"));
 
-    //28. Condylostoma Nuclear (transl_table=28)
+    // 28. Condylostoma Nuclear (transl_table=28)
     reg4tables(
         "FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "----------**--*--------------------M----------------------------",
@@ -575,7 +570,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(28),
         tr("28. Condylostoma Nuclear"));
 
-    //29. Mesodinium Nuclear (transl_table=29)
+    // 29. Mesodinium Nuclear (transl_table=29)
     reg4tables(
         "FFLLSSSSYYYYCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "--------------*--------------------M----------------------------",
@@ -585,7 +580,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(29),
         tr("29. Mesodinium Nuclear"));
 
-    //30. Peritrich Nuclear (transl_table=30)
+    // 30. Peritrich Nuclear (transl_table=30)
     reg4tables(
         "FFLLSSSSYYEECC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "--------------*--------------------M----------------------------",
@@ -595,7 +590,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(30),
         tr("30. Peritrich Nuclear"));
 
-    //31. Blastocrithidia Nuclear (transl_table=31)
+    // 31. Blastocrithidia Nuclear (transl_table=31)
     reg4tables(
         "FFLLSSSSYYEECCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
         "----------**-----------------------M----------------------------",
@@ -654,27 +649,27 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
     }
 
     // init codon info
-    regCodon(treg, 'A', "Ala", tr("Alanine"), "http://en.wikipedia.org/wiki/Alanine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'C', "Cys", tr("Cysteine"), "http://en.wikipedia.org/wiki/Cysteine", DNACodonGroup_POLAR);
-    regCodon(treg, 'D', "Asp", tr("Aspartic acid"), "http://en.wikipedia.org/wiki/Aspartic_acid", DNACodonGroup_ACIDIC);
-    regCodon(treg, 'E', "Glu", tr("Glutamic acid"), "http://en.wikipedia.org/wiki/Glutamic_acid", DNACodonGroup_ACIDIC);
-    regCodon(treg, 'F', "Phe", tr("Phenylalanine"), "http://en.wikipedia.org/wiki/Phenylalanine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'G', "Gly", tr("Glycine"), "http://en.wikipedia.org/wiki/Glycine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'H', "His", tr("Histidine"), "http://en.wikipedia.org/wiki/Histidine", DNACodonGroup_BASIC);
-    regCodon(treg, 'I', "Ile", tr("Isoleucine"), "http://en.wikipedia.org/wiki/Isoleucine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'K', "Lys", tr("Lysine"), "http://en.wikipedia.org/wiki/Lysine", DNACodonGroup_BASIC);
-    regCodon(treg, 'L', "Leu", tr("Leucine"), "http://en.wikipedia.org/wiki/Leucine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'M', "Met", tr("Methionine"), "http://en.wikipedia.org/wiki/Methionine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'N', "Asn", tr("Asparagine"), "http://en.wikipedia.org/wiki/Asparagine", DNACodonGroup_POLAR);
-    regCodon(treg, 'P', "Pro", tr("Proline"), "http://en.wikipedia.org/wiki/Proline", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'Q', "Gln", tr("Glutamine"), "http://en.wikipedia.org/wiki/Glutamine", DNACodonGroup_POLAR);
-    regCodon(treg, 'R', "Arg", tr("Arginine"), "http://en.wikipedia.org/wiki/Arginine", DNACodonGroup_BASIC);
-    regCodon(treg, 'S', "Ser", tr("Serine"), "http://en.wikipedia.org/wiki/Serine", DNACodonGroup_POLAR);
-    regCodon(treg, 'T', "Thr", tr("Threonine"), "http://en.wikipedia.org/wiki/Threonine", DNACodonGroup_POLAR);
-    regCodon(treg, 'V', "Val", tr("Valine"), "http://en.wikipedia.org/wiki/Valine", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'W', "Trp", tr("Tryptophan"), "http://en.wikipedia.org/wiki/Tryptophan", DNACodonGroup_NONPOLAR);
-    regCodon(treg, 'Y', "Tyr", tr("Tyrosine"), "http://en.wikipedia.org/wiki/Tyrosine", DNACodonGroup_POLAR);
-    regCodon(treg, '*', "*", tr("Stop codon"), "http://en.wikipedia.org/wiki/Stop_codon", DNACodonGroup_STOP);
+    regCodon(treg, 'A', "Ala", tr("Alanine"), "https://en.wikipedia.org/wiki/Alanine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'C', "Cys", tr("Cysteine"), "https://en.wikipedia.org/wiki/Cysteine", DNACodonGroup_POLAR);
+    regCodon(treg, 'D', "Asp", tr("Aspartic acid"), "https://en.wikipedia.org/wiki/Aspartic_acid", DNACodonGroup_ACIDIC);
+    regCodon(treg, 'E', "Glu", tr("Glutamic acid"), "https://en.wikipedia.org/wiki/Glutamic_acid", DNACodonGroup_ACIDIC);
+    regCodon(treg, 'F', "Phe", tr("Phenylalanine"), "https://en.wikipedia.org/wiki/Phenylalanine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'G', "Gly", tr("Glycine"), "https://en.wikipedia.org/wiki/Glycine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'H', "His", tr("Histidine"), "https://en.wikipedia.org/wiki/Histidine", DNACodonGroup_BASIC);
+    regCodon(treg, 'I', "Ile", tr("Isoleucine"), "https://en.wikipedia.org/wiki/Isoleucine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'K', "Lys", tr("Lysine"), "https://en.wikipedia.org/wiki/Lysine", DNACodonGroup_BASIC);
+    regCodon(treg, 'L', "Leu", tr("Leucine"), "https://en.wikipedia.org/wiki/Leucine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'M', "Met", tr("Methionine"), "https://en.wikipedia.org/wiki/Methionine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'N', "Asn", tr("Asparagine"), "https://en.wikipedia.org/wiki/Asparagine", DNACodonGroup_POLAR);
+    regCodon(treg, 'P', "Pro", tr("Proline"), "https://en.wikipedia.org/wiki/Proline", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'Q', "Gln", tr("Glutamine"), "https://en.wikipedia.org/wiki/Glutamine", DNACodonGroup_POLAR);
+    regCodon(treg, 'R', "Arg", tr("Arginine"), "https://en.wikipedia.org/wiki/Arginine", DNACodonGroup_BASIC);
+    regCodon(treg, 'S', "Ser", tr("Serine"), "https://en.wikipedia.org/wiki/Serine", DNACodonGroup_POLAR);
+    regCodon(treg, 'T', "Thr", tr("Threonine"), "https://en.wikipedia.org/wiki/Threonine", DNACodonGroup_POLAR);
+    regCodon(treg, 'V', "Val", tr("Valine"), "https://en.wikipedia.org/wiki/Valine", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'W', "Trp", tr("Tryptophan"), "https://en.wikipedia.org/wiki/Tryptophan", DNACodonGroup_NONPOLAR);
+    regCodon(treg, 'Y', "Tyr", tr("Tyrosine"), "https://en.wikipedia.org/wiki/Tyrosine", DNACodonGroup_POLAR);
+    regCodon(treg, '*', "*", tr("Stop codon"), "https://en.wikipedia.org/wiki/Stop_codon", DNACodonGroup_STOP);
 }
 
-}    // namespace U2
+}  // namespace U2

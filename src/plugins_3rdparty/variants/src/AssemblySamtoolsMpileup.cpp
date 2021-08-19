@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "AssemblySamtoolsMpileup.h"
+
 #include <QDir>
 
 #include <U2Core/AppContext.h>
@@ -42,20 +44,13 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include "AssemblySamtoolsMpileup.h"
-
 #define CALL_VARIANTS_DIR "variants"
 
 namespace U2 {
-namespace LocalWorkflow{
+namespace LocalWorkflow {
 
-CallVariantsTask::CallVariantsTask( const CallVariantsTaskSettings& _settings, DbiDataStorage* _store )
-:ExternalToolSupportTask(tr("Call variants for %1").arg(_settings.refSeqUrl), TaskFlag_NoRun)
-,settings(_settings)
-,loadTask(nullptr)
-,mpileupTask(nullptr)
-,storage(_store)
-{
+CallVariantsTask::CallVariantsTask(const CallVariantsTaskSettings &_settings, DbiDataStorage *_store)
+    : ExternalToolSupportTask(tr("Call variants for %1").arg(_settings.refSeqUrl), TaskFlag_NoRun), settings(_settings), loadTask(nullptr), mpileupTask(nullptr), storage(_store) {
     GCOUNTER(cvar, "NGS:CallVariantsTask");
     setMaxParallelSubtasks(1);
 }
@@ -79,64 +74,64 @@ bool CallVariantsTask::ensureFileExists(const QString &url, FileType type) {
     return true;
 }
 
-void CallVariantsTask::prepare(){
+void CallVariantsTask::prepare() {
     CHECK(ensureFileExists(settings.refSeqUrl, Reference), );
     foreach (const QString &url, settings.assemblyUrls) {
         CHECK(ensureFileExists(url, Assembly), );
     }
 
-    if (settings.assemblyUrls.size() < 1){
+    if (settings.assemblyUrls.size() < 1) {
         stateInfo.setError(tr("No assembly files"));
         return;
     }
 
-    if (storage == nullptr){
+    if (storage == nullptr) {
         stateInfo.setError(tr("No dbi storage"));
         return;
     }
-    if (settings.refSeqUrl.isEmpty()){
+    if (settings.refSeqUrl.isEmpty()) {
         stateInfo.setError(tr("No sequence URL"));
         return;
     }
 
     mpileupTask = new SamtoolsMpileupTask(settings);
     mpileupTask->addListeners(getListeners());
-    addSubTask(mpileupTask );
+    addSubTask(mpileupTask);
 }
 
-QList<Task*> CallVariantsTask::onSubTaskFinished( Task* subTask ){
-    QList<Task*>res;
+QList<Task *> CallVariantsTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> res;
 
-    if(subTask->hasError()) {
+    if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
     }
-    if(hasError() || isCanceled()) {
+    if (hasError() || isCanceled()) {
         return res;
     }
 
     if (subTask == mpileupTask) {
         const GUrl url(settings.variationsUrl);
-        IOAdapterFactory * iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById( IOAdapterUtils::url2io( url ) );
-        if ( iof == nullptr ) {
+        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        if (iof == nullptr) {
             return res;
         }
         QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
-        if( dfs.isEmpty() ) {
+        if (dfs.isEmpty()) {
             return res;
         }
-        DocumentFormat * df = dfs.first().format;
+        DocumentFormat *df = dfs.first().format;
         QVariantMap cfg;
         cfg.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(storage->getDbiRef()));
-        loadTask =  new LoadDocumentTask( df->getFormatId(), url, iof, cfg );
+        loadTask = new LoadDocumentTask(df->getFormatId(), url, iof, cfg);
         res.append(loadTask);
 
-    } else if(subTask == loadTask){
-        QScopedPointer<Document> doc (loadTask->takeDocument(false));
-        SAFE_POINT(doc!=nullptr, tr("No document loaded"), res);
+    } else if (subTask == loadTask) {
+        QScopedPointer<Document> doc(loadTask->takeDocument(false));
+        SAFE_POINT(doc != nullptr, tr("No document loaded"), res);
         doc->setDocumentOwnsDbiResources(false);
-        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
-            VariantTrackObject *varObj = dynamic_cast<VariantTrackObject*>(go);
+        foreach (GObject *go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
+            VariantTrackObject *varObj = dynamic_cast<VariantTrackObject *>(go);
             CHECK_EXT(nullptr != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
 
             QVariantMap m;
@@ -145,7 +140,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished( Task* subTask ){
             m[BaseSlots::URL_SLOT().getId()] = settings.variationsUrl;
             results.append(m);
         }
-   }
+    }
 
     return res;
 }
@@ -164,26 +159,24 @@ const QString SamtoolsMpileupTask::BCFTOOLS_ID = "USUPP_BCFTOOLS";
 const QString SamtoolsMpileupTask::VCFUTILS_ID = "USUPP_VCFUTILS";
 
 SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings &_settings)
-:ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)),settings(_settings)
-{
-
+    : ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)), settings(_settings) {
 }
 
-void SamtoolsMpileupTask::prepare(){
-    if (settings.refSeqUrl.isEmpty()){
+void SamtoolsMpileupTask::prepare() {
+    if (settings.refSeqUrl.isEmpty()) {
         setError(tr("No reference sequence URL to do pileup"));
-        return ;
+        return;
     }
 
-    if (settings.assemblyUrls.isEmpty()){
+    if (settings.assemblyUrls.isEmpty()) {
         setError(tr("No assembly URL to do pileup"));
-        return ;
+        return;
     }
 
-    foreach(const QString& aUrl, settings.assemblyUrls){
-        if (aUrl.isEmpty()){
+    foreach (const QString &aUrl, settings.assemblyUrls) {
+        if (aUrl.isEmpty()) {
             setError(tr("There is an assembly with an empty path"));
-            return ;
+            return;
         }
     }
 
@@ -229,7 +222,7 @@ void SamtoolsMpileupTask::run() {
     start(vcfutils, "vcfutils");
     CHECK_OP(stateInfo, );
 
-    while(!vcfutils.process->waitForFinished(1000)){
+    while (!vcfutils.process->waitForFinished(1000)) {
         if (isCanceled()) {
             CmdlineTaskRunner::killProcessTree(samtools.process);
             CmdlineTaskRunner::killProcessTree(bcftools.process);
@@ -264,24 +257,24 @@ void SamtoolsMpileupTask::checkExitCode(QProcess *process, const QString &toolNa
 QStringList CallVariantsTaskSettings::getMpiliupArgs() const {
     QStringList result;
     result << "mpileup"
-        << "-uf"
-        << refSeqUrl
-        << "-C"
-        << QString::number(capq_thres)
-        << "-d"
-        << QString::number(max_depth)
-        << "-q"
-        << QString::number(min_mq)
-        << "-Q"
-        << QString::number(min_baseq)
-        << "-e"
-        << QString::number(extq)
-        << "-h"
-        << QString::number(tandemq)
-        << "-L"
-        << QString::number(max_indel_depth)
-        << "-o"
-        << QString::number(openq);
+           << "-uf"
+           << refSeqUrl
+           << "-C"
+           << QString::number(capq_thres)
+           << "-d"
+           << QString::number(max_depth)
+           << "-q"
+           << QString::number(min_mq)
+           << "-Q"
+           << QString::number(min_baseq)
+           << "-e"
+           << QString::number(extq)
+           << "-h"
+           << QString::number(tandemq)
+           << "-L"
+           << QString::number(max_indel_depth)
+           << "-o"
+           << QString::number(openq);
 
     if (illumina13) {
         result << "-6";
@@ -317,21 +310,21 @@ QStringList CallVariantsTaskSettings::getMpiliupArgs() const {
 QStringList CallVariantsTaskSettings::getBcfViewArgs() const {
     QStringList result;
     result << "view"
-        << "-vc"
-        << "-d"
-        << QString::number(min_smpl_frac)
-        << "-i"
-        << QString::number(indel_frac)
-        << "-p"
-        << QString::number(pref)
-        << "-t"
-        << QString::number(theta)
-        << "-1"
-        << QString::number(n1)
-        << "-U"
-        << QString::number(n_perm)
-        << "-X"
-        << QString::number(min_perm_p);
+           << "-vc"
+           << "-d"
+           << QString::number(min_smpl_frac)
+           << "-i"
+           << QString::number(indel_frac)
+           << "-p"
+           << QString::number(pref)
+           << "-t"
+           << QString::number(theta)
+           << "-1"
+           << QString::number(n1)
+           << "-U"
+           << QString::number(n_perm)
+           << "-X"
+           << QString::number(min_perm_p);
 
     if (keepalt) {
         result << "-A";
@@ -343,7 +336,7 @@ QStringList CallVariantsTaskSettings::getBcfViewArgs() const {
         result << "-G";
     }
     if (!bcf_bed.isEmpty()) {
-        result<< "-l";
+        result << "-l";
         result << bcf_bed;
     }
     if (acgt_only) {
@@ -360,11 +353,11 @@ QStringList CallVariantsTaskSettings::getBcfViewArgs() const {
         result << "-g";
     }
     if (!ptype.isEmpty()) {
-        result<< "-P";
+        result << "-P";
         result << ptype;
     }
     if (!ccall.isEmpty()) {
-        result<< "-T";
+        result << "-T";
         result << ccall;
     }
     result << "-";
@@ -374,33 +367,33 @@ QStringList CallVariantsTaskSettings::getBcfViewArgs() const {
 QStringList CallVariantsTaskSettings::getVarFilterArgs() const {
     QStringList result;
     result << "varFilter"
-        << "-Q"
-        << QString::number(minQual)
-        << "-d"
-        << QString::number(minDep)
-        << "-D"
-        << QString::number(maxDep)
-        << "-a"
-        << QString::number(minAlt)
-        << "-w"
-        << QString::number(gapSize)
-        << "-W"
-        << QString::number(window)
-        << "-1"
-        << QString::number(pvalue1)
-        << "-2"
-        << QString::number(pvalue2)
-        << "-3"
-        << QString::number(pvalue3)
-        << "-4"
-        << QString::number(pvalue4)
-        << "-e"
-        << QString::number(pvalueHwe);
+           << "-Q"
+           << QString::number(minQual)
+           << "-d"
+           << QString::number(minDep)
+           << "-D"
+           << QString::number(maxDep)
+           << "-a"
+           << QString::number(minAlt)
+           << "-w"
+           << QString::number(gapSize)
+           << "-W"
+           << QString::number(window)
+           << "-1"
+           << QString::number(pvalue1)
+           << "-2"
+           << QString::number(pvalue2)
+           << "-3"
+           << QString::number(pvalue3)
+           << "-4"
+           << QString::number(pvalue4)
+           << "-e"
+           << QString::number(pvalueHwe);
     if (printFiltered) {
         result << "-p";
     }
     return result;
 }
 
-}
-} //namespace
+}  // namespace LocalWorkflow
+}  // namespace U2

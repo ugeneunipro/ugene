@@ -265,7 +265,7 @@ private:
     static const QString SHOW_CUSTOM_TOOLS;
 };
 
-}    // namespace U2
+}  // namespace U2
 // namespace U2
 
-#endif    // _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_
+#endif  // _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_

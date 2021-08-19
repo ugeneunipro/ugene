@@ -79,7 +79,7 @@ inline uint qHash(const GObjectReference *key) {
     return ::qHash(key->docUrl) + ::qHash(key->objName) + ::qHash(key->objType);
 }
 
-//TODO: add constraints on relation roles
+// TODO: add constraints on relation roles
 
 class U2CORE_EXPORT GObjectRelation {
 public:
@@ -118,7 +118,7 @@ QDataStream &operator>>(QDataStream &in, GObjectReference &myObj);
 QDataStream &operator<<(QDataStream &out, const GObjectRelation &myObj);
 QDataStream &operator>>(QDataStream &in, GObjectRelation &myObj);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::GObjectReference)
 Q_DECLARE_METATYPE(U2::GObjectRelation)

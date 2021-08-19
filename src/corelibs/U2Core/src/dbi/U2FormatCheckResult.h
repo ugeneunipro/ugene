@@ -30,13 +30,13 @@ namespace U2 {
 // Note: High/Very High, Low/Very low selection is the result of the quality of detection algorithm
 // For example if detection algorithm is not advanced enough it must not use VeryHigh rating
 enum FormatDetectionScore {
-    FormatDetection_NotMatched = -10,    // format is not matched and can't be parsed at all
-    FormatDetection_VeryLowSimilarity = 1,    // very low similarity found. Parsing is allowed
-    FormatDetection_LowSimilarity = 2,    // save as very low, but slightly better, used as extra step in cross-formats differentiation
-    FormatDetection_AverageSimilarity = 3,    //see above
-    FormatDetection_HighSimilarity = 4,    //see above
-    FormatDetection_VeryHighSimilarity = 5,    //see above
-    FormatDetection_Matched = 10    // here we 100% sure that we deal with a known and supported format.
+    FormatDetection_NotMatched = -10,  // format is not matched and can't be parsed at all
+    FormatDetection_VeryLowSimilarity = 1,  // very low similarity found. Parsing is allowed
+    FormatDetection_LowSimilarity = 2,  // save as very low, but slightly better, used as extra step in cross-formats differentiation
+    FormatDetection_AverageSimilarity = 3,  // see above
+    FormatDetection_HighSimilarity = 4,  // see above
+    FormatDetection_VeryHighSimilarity = 5,  // see above
+    FormatDetection_Matched = 10  // here we 100% sure that we deal with a known and supported format.
 };
 
 /** The result of the document format detection: score and additional info that was parsed during raw data check */
@@ -55,6 +55,6 @@ public:
     QVariantMap properties;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

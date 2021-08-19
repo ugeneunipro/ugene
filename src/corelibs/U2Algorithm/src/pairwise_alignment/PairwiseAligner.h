@@ -50,6 +50,6 @@ public:
     static const QString NEEDLEMAN_WUNSCH;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PAIRWISE_ALIGNER_H_
+#endif  // _U2_PAIRWISE_ALIGNER_H_

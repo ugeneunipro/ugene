@@ -450,166 +450,166 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
     }
 }
 
-//resize processing
+// resize processing
 #define EDGE_WIDTH 4
 bool QDElement::sceneEvent(QEvent *event) {
     switch (event->type()) {
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverMove: {
-        itemResizeFlags = 0;
-        QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
-        QPointF p = he->pos();
-        int dxRight = qAbs(boundingRect().right() - p.x());
-        int dxLeft = qAbs(boundingRect().left() - p.x());
-        int dyBottom = qAbs(boundingRect().bottom() - p.y());
-        int dyTop = qAbs(boundingRect().top() - p.y());
-        if (dxRight < EDGE_WIDTH) {
-            itemResizeFlags |= ResizeRight;
-            setCursor(Qt::SizeHorCursor);
-        } else if (dxLeft < EDGE_WIDTH) {
-            itemResizeFlags |= ResizeLeft;
-            setCursor(Qt::SizeHorCursor);
-        }
-        if (dyBottom < EDGE_WIDTH) {
-            itemResizeFlags |= ResizeBottom;
-            setCursor(Qt::SizeVerCursor);
-        } else if (dyTop < EDGE_WIDTH) {
-            itemResizeFlags |= ResizeTop;
-            setCursor(Qt::SizeVerCursor);
-        }
-
-        if ((itemResizeFlags & ResizeBottom && itemResizeFlags & ResizeRight) ||
-            (itemResizeFlags & ResizeTop && itemResizeFlags & ResizeLeft)) {
-            setCursor(Qt::SizeFDiagCursor);
-        } else if ((itemResizeFlags & ResizeTop && itemResizeFlags & ResizeRight) ||
-                   (itemResizeFlags & ResizeBottom && itemResizeFlags & ResizeLeft)) {
-            setCursor(Qt::SizeBDiagCursor);
-        }
-        if (!itemResizeFlags && cursor().shape() != Qt::PointingHandCursor) {
-            unsetCursor();
-        }
-        break;
-    }
-    case QEvent::GraphicsSceneHoverLeave:
-    case QEvent::GraphicsSceneMouseRelease:
-        itemResizeFlags = 0;
-        break;
-    case QEvent::GraphicsSceneMouseMove: {
-        if (itemResizeFlags) {
-            QueryScene *qs = qobject_cast<QueryScene *>(scene());
-            QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
-            if (me->buttons() & Qt::LeftButton) {
-                QPointF p = me->pos();
-                p.setY(round(p.y(), GRID_STEP));
-
-                QRectF newBound(bound);
-
-                if (itemResizeFlags & ResizeRight) {
-                    newBound.setRight(p.x());
-                } else if (itemResizeFlags & ResizeLeft && me->scenePos().x() > 0) {
-                    newBound.setWidth(newBound.width() - p.x());
-                }
-                if (itemResizeFlags & ResizeTop && (0 <= (scenePos().y() - GRID_STEP) || 0 <= p.y())) {
-                    newBound.setHeight(newBound.height() - p.y() + newBound.top());
-                } else if (itemResizeFlags & ResizeBottom) {
-                    newBound.setBottom(p.y());
-                }
-
-                //keep minimum size
-                if (newBound.width() < ANNOTATION_MIN_SIZE * 2 || newBound.height() < ANNOTATION_MIN_SIZE) {
-                    break;
-                }
-                //remove empty rows if any
-                if (newBound.bottom() + scenePos().y() < qs->annotationsArea().bottom()) {
-                    qs->sl_adaptRowsNumber();
-                }
-                //expand rows area if necessary
-                if (newBound.bottom() + scenePos().y() > qs->annotationsArea().bottom()) {
-                    int prevRowsNum = qs->getRowsNumber();
-                    qreal bottomEdge = scenePos().y() + boundingRect().height();
-                    int reqRowNum = (bottomEdge - qs->annotationsArea().top()) / GRID_STEP;
-                    int rowNum = qMax(prevRowsNum, reqRowNum);
-                    qs->setRowsNumber(rowNum);
-                }
-
-                //find new position for left|top resize
-                QPointF newPos = scenePos();
-                if (itemResizeFlags & ResizeTop) {
-                    qreal deltaY = newBound.height() - bound.height();
-                    newPos.setY(newPos.y() - deltaY);
-                }
-                if (itemResizeFlags & ResizeLeft) {
-                    newPos.setX(newPos.x() + p.x());
-                }
-
-                //check for collisions
-                QRectF rect = newBound;
-                rect.moveTopLeft(newPos);
-                QPainterPath path;
-                path.addRect(rect);
-                QList<QGraphicsItem *> items = scene()->items(path, Qt::IntersectsItemShape);
-                items.removeAll(this);
-                foreach (QGraphicsItem *item, items) {
-                    if (item->type() != QDElementType) {
-                        items.removeAll(item);
-                    }
-                }
-                if (!items.isEmpty()) {
-                    break;
-                }
-                //check if affected footnotes have positive length
-                if (itemResizeFlags & ResizeRight) {
-                    foreach (Footnote *fn, links) {
-                        if (fn->getDst() == this) {
-                            if (fn->getDistType() == S2E || fn->getDistType() == E2E) {
-                                if (newPos.x() + newBound.width() - fn->getSrcPoint().x() <= 0) {
-                                    return true;
-                                }
-                            }
-                        } else {
-                            if (fn->getDistType() == E2S || fn->getDistType() == E2E) {
-                                if (fn->getDstPoint().x() - newPos.x() - newBound.width() <= 0) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (itemResizeFlags & ResizeLeft) {
-                    foreach (Footnote *fn, links) {
-                        if (fn->getDst() == this) {
-                            if (fn->getDistType() == S2S || fn->getDistType() == E2S) {
-                                if (newPos.x() - fn->getSrcPoint().x() <= 0) {
-                                    return true;
-                                }
-                            }
-                        } else {
-                            if (fn->getDistType() == S2S || fn->getDistType() == S2E) {
-                                if (fn->getDstPoint().x() - newPos.x() <= 0) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                bound.setRect(newBound.x(), newBound.y(), newBound.width(), newBound.height());
-
-                if (itemResizeFlags & (ResizeTop | ResizeLeft)) {
-                    if (newPos != scenePos()) {
-                        setPos(newPos);
-                    }
-                }
-
-                //update
-                updateDescription();
-                updateFootnotes();
-                qs->setModified(true);
-                qs->update();
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverMove: {
+            itemResizeFlags = 0;
+            QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
+            QPointF p = he->pos();
+            int dxRight = qAbs(boundingRect().right() - p.x());
+            int dxLeft = qAbs(boundingRect().left() - p.x());
+            int dyBottom = qAbs(boundingRect().bottom() - p.y());
+            int dyTop = qAbs(boundingRect().top() - p.y());
+            if (dxRight < EDGE_WIDTH) {
+                itemResizeFlags |= ResizeRight;
+                setCursor(Qt::SizeHorCursor);
+            } else if (dxLeft < EDGE_WIDTH) {
+                itemResizeFlags |= ResizeLeft;
+                setCursor(Qt::SizeHorCursor);
             }
+            if (dyBottom < EDGE_WIDTH) {
+                itemResizeFlags |= ResizeBottom;
+                setCursor(Qt::SizeVerCursor);
+            } else if (dyTop < EDGE_WIDTH) {
+                itemResizeFlags |= ResizeTop;
+                setCursor(Qt::SizeVerCursor);
+            }
+
+            if ((itemResizeFlags & ResizeBottom && itemResizeFlags & ResizeRight) ||
+                (itemResizeFlags & ResizeTop && itemResizeFlags & ResizeLeft)) {
+                setCursor(Qt::SizeFDiagCursor);
+            } else if ((itemResizeFlags & ResizeTop && itemResizeFlags & ResizeRight) ||
+                       (itemResizeFlags & ResizeBottom && itemResizeFlags & ResizeLeft)) {
+                setCursor(Qt::SizeBDiagCursor);
+            }
+            if (!itemResizeFlags && cursor().shape() != Qt::PointingHandCursor) {
+                unsetCursor();
+            }
+            break;
         }
-    } break;
-    default:;
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneMouseRelease:
+            itemResizeFlags = 0;
+            break;
+        case QEvent::GraphicsSceneMouseMove: {
+            if (itemResizeFlags) {
+                QueryScene *qs = qobject_cast<QueryScene *>(scene());
+                QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
+                if (me->buttons() & Qt::LeftButton) {
+                    QPointF p = me->pos();
+                    p.setY(round(p.y(), GRID_STEP));
+
+                    QRectF newBound(bound);
+
+                    if (itemResizeFlags & ResizeRight) {
+                        newBound.setRight(p.x());
+                    } else if (itemResizeFlags & ResizeLeft && me->scenePos().x() > 0) {
+                        newBound.setWidth(newBound.width() - p.x());
+                    }
+                    if (itemResizeFlags & ResizeTop && (0 <= (scenePos().y() - GRID_STEP) || 0 <= p.y())) {
+                        newBound.setHeight(newBound.height() - p.y() + newBound.top());
+                    } else if (itemResizeFlags & ResizeBottom) {
+                        newBound.setBottom(p.y());
+                    }
+
+                    // keep minimum size
+                    if (newBound.width() < ANNOTATION_MIN_SIZE * 2 || newBound.height() < ANNOTATION_MIN_SIZE) {
+                        break;
+                    }
+                    // remove empty rows if any
+                    if (newBound.bottom() + scenePos().y() < qs->annotationsArea().bottom()) {
+                        qs->sl_adaptRowsNumber();
+                    }
+                    // expand rows area if necessary
+                    if (newBound.bottom() + scenePos().y() > qs->annotationsArea().bottom()) {
+                        int prevRowsNum = qs->getRowsNumber();
+                        qreal bottomEdge = scenePos().y() + boundingRect().height();
+                        int reqRowNum = (bottomEdge - qs->annotationsArea().top()) / GRID_STEP;
+                        int rowNum = qMax(prevRowsNum, reqRowNum);
+                        qs->setRowsNumber(rowNum);
+                    }
+
+                    // find new position for left|top resize
+                    QPointF newPos = scenePos();
+                    if (itemResizeFlags & ResizeTop) {
+                        qreal deltaY = newBound.height() - bound.height();
+                        newPos.setY(newPos.y() - deltaY);
+                    }
+                    if (itemResizeFlags & ResizeLeft) {
+                        newPos.setX(newPos.x() + p.x());
+                    }
+
+                    // check for collisions
+                    QRectF rect = newBound;
+                    rect.moveTopLeft(newPos);
+                    QPainterPath path;
+                    path.addRect(rect);
+                    QList<QGraphicsItem *> items = scene()->items(path, Qt::IntersectsItemShape);
+                    items.removeAll(this);
+                    foreach (QGraphicsItem *item, items) {
+                        if (item->type() != QDElementType) {
+                            items.removeAll(item);
+                        }
+                    }
+                    if (!items.isEmpty()) {
+                        break;
+                    }
+                    // check if affected footnotes have positive length
+                    if (itemResizeFlags & ResizeRight) {
+                        foreach (Footnote *fn, links) {
+                            if (fn->getDst() == this) {
+                                if (fn->getDistType() == S2E || fn->getDistType() == E2E) {
+                                    if (newPos.x() + newBound.width() - fn->getSrcPoint().x() <= 0) {
+                                        return true;
+                                    }
+                                }
+                            } else {
+                                if (fn->getDistType() == E2S || fn->getDistType() == E2E) {
+                                    if (fn->getDstPoint().x() - newPos.x() - newBound.width() <= 0) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (itemResizeFlags & ResizeLeft) {
+                        foreach (Footnote *fn, links) {
+                            if (fn->getDst() == this) {
+                                if (fn->getDistType() == S2S || fn->getDistType() == E2S) {
+                                    if (newPos.x() - fn->getSrcPoint().x() <= 0) {
+                                        return true;
+                                    }
+                                }
+                            } else {
+                                if (fn->getDistType() == S2S || fn->getDistType() == S2E) {
+                                    if (fn->getDstPoint().x() - newPos.x() <= 0) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    bound.setRect(newBound.x(), newBound.y(), newBound.width(), newBound.height());
+
+                    if (itemResizeFlags & (ResizeTop | ResizeLeft)) {
+                        if (newPos != scenePos()) {
+                            setPos(newPos);
+                        }
+                    }
+
+                    // update
+                    updateDescription();
+                    updateFootnotes();
+                    qs->setModified(true);
+                    qs->update();
+                }
+            }
+        } break;
+        default:;
     }
 
     if (itemResizeFlags) {
@@ -621,113 +621,113 @@ bool QDElement::sceneEvent(QEvent *event) {
 
 QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant &value) {
     switch (change) {
-    case ItemPositionChange: {
-        //value is the new position
-        QPointF newPos = value.toPointF();
-        QueryScene *qs = qobject_cast<QueryScene *>(scene());
-        if (qs == nullptr) {
-            return newPos;
-        }
-        // Adjust position for item to fit in row
-        qreal start = qs->annotationsArea().top();
-        newPos.setY(round(newPos.y() - start, GRID_STEP) + start);
-        QRectF rect = qs->annotationsArea();
-        rect.setHeight(rect.height() - boundingRect().height());
-        rect.setWidth(rect.width() - boundingRect().width());
-        if (!rect.contains(newPos)) {
-            if (newPos.y() > rect.bottom()) {
-                int prevRowsNum = qs->getRowsNumber();
-                qreal bottomEdge = newPos.y() + boundingRect().height();
-                int reqRowNum = (bottomEdge - qs->annotationsArea().top()) / GRID_STEP;
-                int rowNum = qMax(prevRowsNum, reqRowNum);
-                qs->setRowsNumber(rowNum);
-            }
-            // Keep the item inside the annotation area
-            newPos.setX(qBound(rect.left(), newPos.x(), rect.left() + QueryScene::MAX_SCENE_SIZE.width()));
-            newPos.setY(qMax(newPos.y(), rect.top()));
-        }
-
-        //prevent collision
-        QRectF itemRect = boundingRect();
-        const QPointF &topLeft = mapToScene(itemRect.topLeft());
-        itemRect.moveTopLeft(topLeft);
-        itemRect.translate(newPos - scenePos());
-        QPainterPath path;
-        path.addRect(itemRect);
-        QList<QGraphicsItem *> items = scene()->items(path, Qt::IntersectsItemShape);
-        items.removeAll(this);
-        foreach (QGraphicsItem *item, items) {
-            if (item->type() != QDElementType) {
-                items.removeAll(item);
-            }
-        }
-        const QPointF &oldPos = scenePos();
-        if (!items.isEmpty()) {
-            return oldPos;
-        }
-        //check if links have positive length
-        foreach (Footnote *fn, links) {
-            if (fn->from == this) {
-                //future connector position
-                QPointF left = fn->getSrcPoint();
-                left += newPos - scenePos();
-                QPointF right = fn->getDstPoint();
-                if (right.x() - left.x() <= 0) {
-                    return oldPos;
-                }
-            } else {
-                QPointF right = fn->getDstPoint();
-                right += newPos - scenePos();
-                QPointF left = fn->getSrcPoint();
-                if (right.x() - left.x() <= 0) {
-                    return oldPos;
-                }
-            }
-        }
-        return newPos;
-    } break;
-    case ItemPositionHasChanged: {
-        QueryScene *qs = qobject_cast<QueryScene *>(scene());
-        if (qs == nullptr) {
-            return QGraphicsItem::itemChange(change, value);
-        }
-        qs->sl_adaptRowsNumber();
-
-        QRectF rect = qs->sceneRect();
-        qreal rightEdge = mapRectToScene(boundingRect()).right();
-        qreal min = rect.left() + QueryScene::DEFAULT_SCENE_SIZE.width();
-        qreal max = rect.left() + QueryScene::MAX_SCENE_SIZE.width();
-        rightEdge = qBound(min, rightEdge, max);
-        if (rightEdge > rect.right()) {
-            rect.setRight(rightEdge);
-            qs->setSceneRect(rect);
-        }
-
-        updateFootnotes();
-        qs->setModified(true);
-    } break;
-    case ItemSceneChange:
-        if ((value.value<QGraphicsScene *>()) == nullptr) {
-            foreach (Footnote *fn, links) {
-                scene()->removeItem(fn);
-                delete fn;
-            }
-        }
-        break;
-    case ItemSceneHasChanged:
-        if ((value.value<QGraphicsScene *>()) != nullptr) {
-            sl_refresh();
-            adaptSize();
+        case ItemPositionChange: {
+            // value is the new position
+            QPointF newPos = value.toPointF();
             QueryScene *qs = qobject_cast<QueryScene *>(scene());
-            QueryViewController *view = qs->getViewController();
-            if (view) {
-                connect(itemDescription, SIGNAL(linkActivated(const QString &)), view, SLOT(sl_selectEditorCell(const QString &)));
-                connect(itemDescription, SIGNAL(linkHovered(const QString &)), SLOT(sl_onHoverLink(const QString &)));
+            if (qs == nullptr) {
+                return newPos;
             }
-        }
-        break;
-    default:
-        break;
+            // Adjust position for item to fit in row
+            qreal start = qs->annotationsArea().top();
+            newPos.setY(round(newPos.y() - start, GRID_STEP) + start);
+            QRectF rect = qs->annotationsArea();
+            rect.setHeight(rect.height() - boundingRect().height());
+            rect.setWidth(rect.width() - boundingRect().width());
+            if (!rect.contains(newPos)) {
+                if (newPos.y() > rect.bottom()) {
+                    int prevRowsNum = qs->getRowsNumber();
+                    qreal bottomEdge = newPos.y() + boundingRect().height();
+                    int reqRowNum = (bottomEdge - qs->annotationsArea().top()) / GRID_STEP;
+                    int rowNum = qMax(prevRowsNum, reqRowNum);
+                    qs->setRowsNumber(rowNum);
+                }
+                // Keep the item inside the annotation area
+                newPos.setX(qBound(rect.left(), newPos.x(), rect.left() + QueryScene::MAX_SCENE_SIZE.width()));
+                newPos.setY(qMax(newPos.y(), rect.top()));
+            }
+
+            // prevent collision
+            QRectF itemRect = boundingRect();
+            const QPointF &topLeft = mapToScene(itemRect.topLeft());
+            itemRect.moveTopLeft(topLeft);
+            itemRect.translate(newPos - scenePos());
+            QPainterPath path;
+            path.addRect(itemRect);
+            QList<QGraphicsItem *> items = scene()->items(path, Qt::IntersectsItemShape);
+            items.removeAll(this);
+            foreach (QGraphicsItem *item, items) {
+                if (item->type() != QDElementType) {
+                    items.removeAll(item);
+                }
+            }
+            const QPointF &oldPos = scenePos();
+            if (!items.isEmpty()) {
+                return oldPos;
+            }
+            // check if links have positive length
+            foreach (Footnote *fn, links) {
+                if (fn->from == this) {
+                    // future connector position
+                    QPointF left = fn->getSrcPoint();
+                    left += newPos - scenePos();
+                    QPointF right = fn->getDstPoint();
+                    if (right.x() - left.x() <= 0) {
+                        return oldPos;
+                    }
+                } else {
+                    QPointF right = fn->getDstPoint();
+                    right += newPos - scenePos();
+                    QPointF left = fn->getSrcPoint();
+                    if (right.x() - left.x() <= 0) {
+                        return oldPos;
+                    }
+                }
+            }
+            return newPos;
+        } break;
+        case ItemPositionHasChanged: {
+            QueryScene *qs = qobject_cast<QueryScene *>(scene());
+            if (qs == nullptr) {
+                return QGraphicsItem::itemChange(change, value);
+            }
+            qs->sl_adaptRowsNumber();
+
+            QRectF rect = qs->sceneRect();
+            qreal rightEdge = mapRectToScene(boundingRect()).right();
+            qreal min = rect.left() + QueryScene::DEFAULT_SCENE_SIZE.width();
+            qreal max = rect.left() + QueryScene::MAX_SCENE_SIZE.width();
+            rightEdge = qBound(min, rightEdge, max);
+            if (rightEdge > rect.right()) {
+                rect.setRight(rightEdge);
+                qs->setSceneRect(rect);
+            }
+
+            updateFootnotes();
+            qs->setModified(true);
+        } break;
+        case ItemSceneChange:
+            if ((value.value<QGraphicsScene *>()) == nullptr) {
+                foreach (Footnote *fn, links) {
+                    scene()->removeItem(fn);
+                    delete fn;
+                }
+            }
+            break;
+        case ItemSceneHasChanged:
+            if ((value.value<QGraphicsScene *>()) != nullptr) {
+                sl_refresh();
+                adaptSize();
+                QueryScene *qs = qobject_cast<QueryScene *>(scene());
+                QueryViewController *view = qs->getViewController();
+                if (view) {
+                    connect(itemDescription, SIGNAL(linkActivated(const QString &)), view, SLOT(sl_selectEditorCell(const QString &)));
+                    connect(itemDescription, SIGNAL(linkHovered(const QString &)), SLOT(sl_onHoverLink(const QString &)));
+                }
+            }
+            break;
+        default:
+            break;
     }
     return QGraphicsItem::itemChange(change, value);
 }
@@ -783,19 +783,19 @@ void QDElementDescription::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 bool QDElementDescription::sceneEvent(QEvent *event) {
     bool res = QGraphicsTextItem::sceneEvent(event);
     switch (event->type()) {
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverMove:
-    case QEvent::GraphicsSceneMouseRelease:
-    case QEvent::GraphicsSceneMouseMove:
-    case QEvent::GraphicsSceneMousePress: {
-        QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
-        QDElement *parent = qgraphicsitem_cast<QDElement *>(parentItem());
-        assert(parent);
-        me->setPos(mapToParent(me->pos()));
-        res = parent->sceneEvent(me);
-    } break;
-    default:
-        break;
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverMove:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMousePress: {
+            QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
+            QDElement *parent = qgraphicsitem_cast<QDElement *>(parentItem());
+            assert(parent);
+            me->setPos(mapToParent(me->pos()));
+            res = parent->sceneEvent(me);
+        } break;
+        default:
+            break;
     }
     return res;
 }
@@ -844,7 +844,7 @@ void Footnote::updatePos() {
     QueryScene *qs = qobject_cast<QueryScene *>(scene());
     assert(qs);
     const QRectF &area = qs->footnotesArea();
-    //look for vacant position
+    // look for vacant position
     int y;
     for (y = area.top() + FOOTNOTE_MARGIN; y < area.bottom(); y += step) {
         QRectF bound = boundingRect();
@@ -865,7 +865,7 @@ void Footnote::updatePos() {
         }
     }
     y += step;
-    //assert(qs->footnotesArea().contains(QPointF(xPos,y)));
+    // assert(qs->footnotesArea().contains(QPointF(xPos,y)));
     setPos(xPos, y);
     updateLines(QPointF(xPos, y));
 }
@@ -914,7 +914,7 @@ QVariant Footnote::itemChange(GraphicsItemChange change, const QVariant &value) 
 QRectF Footnote::boundingRect() const {
     const QString &text = getText();
     QFontMetricsF fm(font);
-    //fm.boundingRect().width() and fm.width() provide different values
+    // fm.boundingRect().width() and fm.width() provide different values
     QRectF textBound(0, 0, fm.width(text), fm.height());
     textBound.moveTop(ARROW_DELTA);
 
@@ -941,13 +941,13 @@ void Footnote::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
     painter->setPen(pen);
     painter->drawLine(0, 0, arrW, 0);
-    //draw arrow endings
+    // draw arrow endings
     painter->drawLine(0, 0, ARROW_WIDTH, ARROW_DELTA);
     painter->drawLine(0, 0, ARROW_WIDTH, -ARROW_DELTA);
     painter->drawLine(arrW, 0, arrW - ARROW_WIDTH, ARROW_DELTA);
     painter->drawLine(arrW, 0, arrW - ARROW_WIDTH, -ARROW_DELTA);
 
-    //draw text
+    // draw text
     const QString &text = getText();
     QFontMetrics fm(font);
     QRectF textBound(0, 0, fm.width(text), fm.height());
@@ -959,12 +959,12 @@ void Footnote::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 QPointF Footnote::getSrcPoint() const {
     switch (distType) {
-    case E2S:
-    case E2E:
-        return from->getRightConnector();
-    case S2E:
-    case S2S:
-        return from->getLeftConnector();
+        case E2S:
+        case E2E:
+            return from->getRightConnector();
+        case S2E:
+        case S2S:
+            return from->getLeftConnector();
     }
     assert(false);
     return QPointF(0, 0);
@@ -972,12 +972,12 @@ QPointF Footnote::getSrcPoint() const {
 
 QPointF Footnote::getDstPoint() const {
     switch (distType) {
-    case E2S:
-    case S2S:
-        return to->getLeftConnector();
-    case S2E:
-    case E2E:
-        return to->getRightConnector();
+        case E2S:
+        case S2S:
+            return to->getLeftConnector();
+        case S2E:
+        case E2E:
+            return to->getRightConnector();
     }
     assert(false);
     return QPointF(0, 0);
@@ -1053,7 +1053,7 @@ void QDDescriptionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     Q_UNUSED(widget);
     QRectF bound = boundingRect();
     bound.setHeight(bound.height() - 1);
-    //bound.setLeft(bound.left()+1);
+    // bound.setLeft(bound.left()+1);
     bound.setWidth(bound.width() - 1);
     if (!hasFocus()) {
         painter->drawRect(bound);
@@ -1063,50 +1063,50 @@ void QDDescriptionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 bool QDDescriptionItem::sceneEvent(QEvent *event) {
     switch (event->type()) {
-    case QEvent::GraphicsSceneHoverEnter:
-    case QEvent::GraphicsSceneHoverMove: {
-        QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
-        QPointF p = he->pos();
-        qreal dxRight = qAbs(boundingRect().right() - p.x());
-        qreal dxLeft = qAbs(boundingRect().left() - p.x());
-        if (p.y() >= boundingRect().top() && p.y() <= boundingRect().bottom()) {
-            if (dxRight < EDGE_WIDTH) {
-                setCursor(Qt::SizeHorCursor);
-                resize = QDElement::ResizeRight;
-            } else if (dxLeft < EDGE_WIDTH) {
-                setCursor(Qt::SizeHorCursor);
-                resize = QDElement::ResizeLeft;
-            } else {
-                unsetCursor();
-                resize = 0;
-            }
-        }
-        break;
-    }
-    case QEvent::GraphicsSceneHoverLeave:
-    case QEvent::GraphicsSceneMouseRelease:
-        unsetCursor();
-        resize = 0;
-        break;
-    case QEvent::GraphicsSceneMouseMove: {
-        if (resize) {
-            //QueryScene* qs = qobject_cast<QueryScene*>(scene());
-            QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
-            if (me->buttons() & Qt::LeftButton) {
-                QPointF p = me->pos();
-                QPointF oldPos = me->lastPos();
-                if (resize == QDElement::ResizeRight) {
-                    setTextWidth(textWidth() + p.x() - oldPos.x());
-                } else if (resize == QDElement::ResizeLeft) {
-                    QPointF newPos = scenePos();
-                    newPos.setX(me->scenePos().x());
-                    setTextWidth(textWidth() - newPos.x() + scenePos().x());
-                    setPos(newPos);
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverMove: {
+            QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
+            QPointF p = he->pos();
+            qreal dxRight = qAbs(boundingRect().right() - p.x());
+            qreal dxLeft = qAbs(boundingRect().left() - p.x());
+            if (p.y() >= boundingRect().top() && p.y() <= boundingRect().bottom()) {
+                if (dxRight < EDGE_WIDTH) {
+                    setCursor(Qt::SizeHorCursor);
+                    resize = QDElement::ResizeRight;
+                } else if (dxLeft < EDGE_WIDTH) {
+                    setCursor(Qt::SizeHorCursor);
+                    resize = QDElement::ResizeLeft;
+                } else {
+                    unsetCursor();
+                    resize = 0;
                 }
             }
+            break;
         }
-    } break;
-    default:;
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneMouseRelease:
+            unsetCursor();
+            resize = 0;
+            break;
+        case QEvent::GraphicsSceneMouseMove: {
+            if (resize) {
+                // QueryScene* qs = qobject_cast<QueryScene*>(scene());
+                QGraphicsSceneMouseEvent *me = static_cast<QGraphicsSceneMouseEvent *>(event);
+                if (me->buttons() & Qt::LeftButton) {
+                    QPointF p = me->pos();
+                    QPointF oldPos = me->lastPos();
+                    if (resize == QDElement::ResizeRight) {
+                        setTextWidth(textWidth() + p.x() - oldPos.x());
+                    } else if (resize == QDElement::ResizeLeft) {
+                        QPointF newPos = scenePos();
+                        newPos.setX(me->scenePos().x());
+                        setTextWidth(textWidth() - newPos.x() + scenePos().x());
+                        setPos(newPos);
+                    }
+                }
+            }
+        } break;
+        default:;
     }
     return QGraphicsTextItem::sceneEvent(event);
 }
@@ -1250,4 +1250,4 @@ void QDRulerItem::sl_updateText() {
     update();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -65,4 +65,4 @@ void CreateCircularBranchesTask::run() {
     root1->setWidthW(0);
 }
 
-}    // namespace U2
+}  // namespace U2

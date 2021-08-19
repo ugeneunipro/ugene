@@ -41,6 +41,6 @@ private:
     QString groupName;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_REMOVE_ANNOTATIONS_TASK_H_
+#endif  // _U2_REMOVE_ANNOTATIONS_TASK_H_

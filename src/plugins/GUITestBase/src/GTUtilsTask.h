@@ -42,6 +42,6 @@ public:
     static void waitTaskStart(HI::GUITestOpStatus &os, QString taskName, int timeOut = 180000);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GTUTILSTASK_H
+#endif  // GTUTILSTASK_H

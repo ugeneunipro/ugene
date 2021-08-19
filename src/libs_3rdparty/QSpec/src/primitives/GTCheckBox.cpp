@@ -89,4 +89,4 @@ void GTCheckBox::checkState(GUITestOpStatus &os, const QString &checkBoxName, bo
 
 #undef GT_CLASS_NAME
 
-}    // namespace HI
+}  // namespace HI

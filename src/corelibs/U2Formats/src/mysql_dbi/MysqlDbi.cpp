@@ -614,4 +614,4 @@ MysqlChildDbiCommon::MysqlChildDbiCommon(MysqlDbi *dbi)
       db(nullptr == dbi ? nullptr : dbi->getDbRef()) {
 }
 
-}    // namespace U2
+}  // namespace U2

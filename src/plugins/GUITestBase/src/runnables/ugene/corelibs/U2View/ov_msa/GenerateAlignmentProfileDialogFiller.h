@@ -76,6 +76,6 @@ private:
     QString filePath;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GENERATEALIGNMENTPROFILEDIALOGFILLER_H
+#endif  // GENERATEALIGNMENTPROFILEDIALOGFILLER_H

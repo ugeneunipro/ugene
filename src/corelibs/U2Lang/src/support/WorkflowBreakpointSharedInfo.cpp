@@ -51,4 +51,4 @@ BreakpointConditionDump::BreakpointConditionDump(BreakpointConditionParameter _c
       condition(_condition), isEnabled(_isEnabled) {
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -61,6 +61,6 @@ private:
     QList<InSilicoPcrProduct> currentProducts;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IN_SILICO_PCR_PRODUCTS_TABLE_H_
+#endif  // _U2_IN_SILICO_PCR_PRODUCTS_TABLE_H_

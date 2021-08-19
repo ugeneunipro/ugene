@@ -34,5 +34,5 @@ public:
     void commonScenario();
 };
 
-}    // namespace U2
-#endif    // _U2_LICENSE_AGREEMENT_DIALOG_FILLER_H_
+}  // namespace U2
+#endif  // _U2_LICENSE_AGREEMENT_DIALOG_FILLER_H_

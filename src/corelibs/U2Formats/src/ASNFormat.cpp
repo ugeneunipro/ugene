@@ -57,7 +57,7 @@ static QStringList parseMolecules(const QString &comment) {
     if (molIdInd < 0) {
         return ans;
     }
-    const QString molInfos = comment.mid(molIdInd);    // No title at the beginning
+    const QString molInfos = comment.mid(molIdInd);  // No title at the beginning
 
     int start = 0;
     int end = 0;
@@ -83,7 +83,7 @@ static QList<char> parseChains(const QString &mol) {
     if (start < 0) {
         return ans;
     }
-    start += 6;    // "Chain:" length
+    start += 6;  // "Chain:" length
     const int end = mol.indexOf(';', start);
     const QString chains = mol.mid(start, end > start ? end - start : -1);
     for (QString &str : chains.split(',', QString::SkipEmptyParts)) {
@@ -105,7 +105,7 @@ static QString parseMolName(const QString &mol) {
     if (start < 0) {
         return ans;
     }
-    start += 9;    // Length of "Molecule:"
+    start += 9;  // Length of "Molecule:"
     const int end = mol.indexOf(';', start);
     ans = mol.mid(start, end > start ? end - start : -1).trimmed();
     return ans;
@@ -231,14 +231,14 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
         // Load pdb Id
         loadBioStructPdbId(rootNode, struc);
 
-        //Load biostruct molecules
+        // Load biostruct molecules
         AsnNode *graphNode = findFirstNodeByName(rootNode, "chemical-graph");
         if (graphNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
         loadBioStructGraph(graphNode, struc);
 
-        //Load secondary structure
+        // Load secondary structure
         AsnNode *featureSetNode = findFirstNodeByName(rootNode, "features");
         if (featureSetNode != nullptr) {
             loadBioStructSecondaryStruct(featureSetNode, struc);
@@ -251,8 +251,8 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
         }
         loadBioStructModels(modelsNode->children, struc);
 
-        //TODO: implement loading bonds from file
-        //loadIntraResidueBonds(struc);
+        // TODO: implement loading bonds from file
+        // loadIntraResidueBonds(struc);
         PDBFormat::calculateBonds(struc);
 
         stdResidueCache.clear();
@@ -334,16 +334,16 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, Ato
             const StdAtom stdAtom = stdResidue.atoms.value(atomId);
             a->atomicNumber = stdAtom.atomicNum;
             a->name = stdAtom.name;
-            //TODO: add this
-            //a->occupancy = occupancy;
-            //a->temperature = temperature;
+            // TODO: add this
+            // a->occupancy = occupancy;
+            // a->temperature = temperature;
         }
         SharedAtom atom(a);
         coordSet.insert(i + 1, atom);
         if (struc.moleculeMap.contains(chainId)) {
             molModels[chainId].atoms.append(atom);
         }
-        //atomSetCache[index].insert(atomId, atom);
+        // atomSetCache[index].insert(atomId, atom);
     }
 }
 
@@ -912,4 +912,4 @@ AsnNode *AsnNode::getChildById(int id) {
     return children.at(id);
 }
 
-}    // namespace U2
+}  // namespace U2

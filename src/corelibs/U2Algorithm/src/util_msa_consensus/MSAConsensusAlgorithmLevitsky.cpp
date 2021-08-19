@@ -142,7 +142,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment &ma
         registerHit(freqsData, c);
     }
 
-    //find all symbols with freq > threshold, select one with the lowest global freq
+    // find all symbols with freq > threshold, select one with the lowest global freq
     char selectedChar = U2Msa::GAP_CHAR;
     int selectedGlobalFreq = nSeq * ma->getLength();
     int thresholdScore = getThreshold();
@@ -165,4 +165,4 @@ MSAConsensusAlgorithmLevitsky *MSAConsensusAlgorithmLevitsky::clone() const {
     return new MSAConsensusAlgorithmLevitsky(*this);
 }
 
-}    // namespace U2
+}  // namespace U2

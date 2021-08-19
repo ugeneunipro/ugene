@@ -53,8 +53,8 @@ public:
     static const QString U2_INFO;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_METATYPE(U2::WorkflowNotification)
 
-#endif    // _U2_SUPPORT_CLASS_H_
+#endif  // _U2_SUPPORT_CLASS_H_

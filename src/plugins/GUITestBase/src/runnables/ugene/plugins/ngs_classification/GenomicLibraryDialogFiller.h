@@ -36,6 +36,6 @@ private:
     const QStringList urls;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GENOMIC_LIBRARY_DIALOG_FILLER_H_
+#endif  // _U2_GENOMIC_LIBRARY_DIALOG_FILLER_H_

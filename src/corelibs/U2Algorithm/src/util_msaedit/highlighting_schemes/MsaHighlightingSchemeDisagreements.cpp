@@ -45,4 +45,4 @@ MsaHighlightingScheme *MsaHighlightingSchemeDisagreementsFactory::create(QObject
     return new MsaHighlightingSchemeDisagreements(parent, this, maObj);
 }
 
-}    // namespace U2
+}  // namespace U2

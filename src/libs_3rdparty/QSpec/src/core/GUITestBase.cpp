@@ -45,4 +45,4 @@ QList<GUITest *> GUITestBase::takeTests() {
     return testList;
 }
 
-}    // namespace HI
+}  // namespace HI

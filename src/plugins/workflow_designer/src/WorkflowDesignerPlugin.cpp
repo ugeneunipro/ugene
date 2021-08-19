@@ -88,18 +88,18 @@ WorkflowDesignerPlugin::WorkflowDesignerPlugin()
 
     // xml workflow tests removed. commented for future uses
 
-    //GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    //XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    //assert(xmlTestFormat!=NULL);
+    // GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    // XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    // assert(xmlTestFormat!=NULL);
 
-    //GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
-    //l->qlist = WorkflowTests::createTestFactories();
+    // GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+    // l->qlist = WorkflowTests::createTestFactories();
 
-    //foreach(XMLTestFactory* f, l->qlist) {
-    //    bool res = xmlTestFormat->registerTestFactory(f);
-    //    assert(res);
-    //    Q_UNUSED(res);
-    //}
+    // foreach(XMLTestFactory* f, l->qlist) {
+    //     bool res = xmlTestFormat->registerTestFactory(f);
+    //     assert(res);
+    //     Q_UNUSED(res);
+    // }
 
     registerCMDLineHelp();
     processCMDLineOptions();
@@ -130,7 +130,7 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
         WorkflowSettings::setWorkflowOutputDirectory(FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKFLOW_OUTPUT_DIR)));
     }
 
-    bool consoleMode = !AppContext::isGUIMode();    // only in console mode we run workflows by default. Otherwise we show them
+    bool consoleMode = !AppContext::isGUIMode();  // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter(RUN_WORKFLOW) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty())) {
         Task *t = new WorkflowRunFromCMDLineTask();
         connect(AppContext::getTaskScheduler(), SIGNAL(si_ugeneIsReadyToWork()), new TaskStarter(t), SLOT(registerTask()));
@@ -186,11 +186,11 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
 
     cmdLineRegistry->registerCMDLineHelpProvider(galaxyConfigSection);
 
-    //CMDLineHelpProvider * remoteMachineSectionArguments = new CMDLineHelpProvider( REMOTE_MACHINE, "<path-to-machine-file>");
-    //CMDLineHelpProvider * remoteMachineSection = new CMDLineHelpProvider( REMOTE_MACHINE, tr("run provided tasks on given remote machine") );
-    //TODO: bug UGENE-23
-    //cmdLineRegistry->registerCMDLineHelpProvider( remoteMachineSectionArguments );
-    //cmdLineRegistry->registerCMDLineHelpProvider( remoteMachineSection );
+    // CMDLineHelpProvider * remoteMachineSectionArguments = new CMDLineHelpProvider( REMOTE_MACHINE, "<path-to-machine-file>");
+    // CMDLineHelpProvider * remoteMachineSection = new CMDLineHelpProvider( REMOTE_MACHINE, tr("run provided tasks on given remote machine") );
+    // TODO: bug UGENE-23
+    // cmdLineRegistry->registerCMDLineHelpProvider( remoteMachineSectionArguments );
+    // cmdLineRegistry->registerCMDLineHelpProvider( remoteMachineSection );
 }
 
 void WorkflowDesignerPlugin::sl_initWorkers() {
@@ -313,7 +313,7 @@ bool WorkflowDesignerService::checkServiceState() const {
 
 void WorkflowDesignerService::sl_showDesignerWindow() {
     CHECK(checkServiceState(), );
-    WorkflowView::openWD(nullptr);    //FIXME
+    WorkflowView::openWD(nullptr);  // FIXME
 }
 
 void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction &action) {
@@ -406,4 +406,4 @@ void WorkflowWelcomePageAction::perform() {
     service->sl_showDesignerWindow();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -27,4 +27,4 @@ PwmSearchDialogFiller::PwmSearchDialogFiller(HI::GUITestOpStatus &os, CustomScen
     : Filler(os, "PWMSearchDialog", scenario) {
 }
 
-}    // namespace U2
+}  // namespace U2

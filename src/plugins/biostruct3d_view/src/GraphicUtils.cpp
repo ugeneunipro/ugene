@@ -72,7 +72,7 @@ float &Color4f::operator[](unsigned int i) {
 }
 
 bool Color4f::operator==(const Color4f &a) const {
-    //Do not affect alpha channel
+    // Do not affect alpha channel
     if (color[0] == a.color[0] && color[1] == a.color[1] && color[2] == a.color[2]) {
         return true;
     } else {
@@ -180,8 +180,8 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
             *pNx = nullptr, *pNy = nullptr, *pNz = nullptr, *pCx = nullptr, *pCy = nullptr, *pCz = nullptr, *tmp;
 
     /*
-    * The Hermite matrix Mh.
-    */
+     * The Hermite matrix Mh.
+     */
     static double Mh[4][4] = {
         {2, -2, 1, 1},
         {-3, 3, -2, -1},
@@ -189,9 +189,9 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
         {1, 0, 0, 0}};
 
     /*
-    * Variables that affect the curve shape
-    *   a=b=0 = Catmull-Rom
-    */
+     * Variables that affect the curve shape
+     *   a=b=0 = Catmull-Rom
+     */
     double a = tension, /* tension    (adjustable)  */
         c = 0, /* continuity (should be 0) */
         b = 0; /* bias       (should be 0) */
@@ -209,15 +209,15 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
     GLfloat *fblock = nullptr;
 
     /* First, calculate the coordinate points of the center of the worm,
-    * using the Kochanek-Bartels variant of the Hermite curve.
-    */
+     * using the Kochanek-Bartels variant of the Hermite curve.
+     */
     R1 = 0.5 * (1 - a) * (1 + b) * (1 + c) * (p1 - p0) + 0.5 * (1 - a) * (1 - b) * (1 - c) * (p2 - p1);
     R2 = 0.5 * (1 - a) * (1 + b) * (1 - c) * (p2 - p1) + 0.5 * (1 - a) * (1 - b) * (1 + c) * (p3 - p2);
 
     /*
-    * Multiply MG=Mh.Gh, where Gh = [ P(1) P(2) R(1) R(2) ]. This
-    * 4x1 matrix of vectors is constant for each segment.
-    */
+     * Multiply MG=Mh.Gh, where Gh = [ P(1) P(2) R(1) R(2) ]. This
+     * 4x1 matrix of vectors is constant for each segment.
+     */
     for (i = 0; i < 4; ++i) { /* calculate Mh.Gh */
         MG[i][0] = Mh[i][0] * p1.x + Mh[i][1] * p2.x + Mh[i][2] * R1.x + Mh[i][3] * R2.x;
         MG[i][1] = Mh[i][0] * p1.y + Mh[i][1] * p2.y + Mh[i][2] * R1.y + Mh[i][3] * R2.y;
@@ -229,12 +229,12 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
         and the function Q(t) defines the curve of this segment. */
         t = (0.5 / wormSegments) * i;
         /*
-        * Q(t)=T.(Mh.Gh), where T = [ t^3 t^2 t 1 ]
-        */
+         * Q(t)=T.(Mh.Gh), where T = [ t^3 t^2 t 1 ]
+         */
         T[0] = t * t * t;
         T[1] = t * t;
         T[2] = t;
-        //T[3] = 1;
+        // T[3] = 1;
         Qt.x = T[0] * MG[0][0] + T[1] * MG[1][0] + T[2] * MG[2][0] + MG[3][0] /* *T[3] */;
         Qt.y = T[0] * MG[0][1] + T[1] * MG[1][1] + T[2] * MG[2][1] + MG[3][1] /* *T[3] */;
         Qt.z = T[0] * MG[0][2] + T[1] * MG[1][2] + T[2] * MG[2][2] + MG[3][2] /* *T[3] */;
@@ -272,13 +272,13 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
             }
 
             /*
-            * The first derivative of Q(t), d(Q(t))/dt, is the slope
-            * (tangent) at point Q(t); now T = [ 3t^2 2t 1 0 ]
-            */
+             * The first derivative of Q(t), d(Q(t))/dt, is the slope
+             * (tangent) at point Q(t); now T = [ 3t^2 2t 1 0 ]
+             */
             T[0] = t * t * 3;
             T[1] = t * 2;
-            //T[2] = 1;
-            //T[3] = 0;
+            // T[2] = 1;
+            // T[3] = 0;
             dQt.x = T[0] * MG[0][0] + T[1] * MG[1][0] + MG[2][0] /* *T[2] + T[3]*MG[3][0] */;
             dQt.y = T[0] * MG[0][1] + T[1] * MG[1][1] + MG[2][1] /* *T[2] + T[3]*MG[3][1] */;
             dQt.z = T[0] * MG[0][2] + T[1] * MG[1][2] + MG[2][2] /* *T[2] + T[3]*MG[3][2] */;
@@ -405,7 +405,7 @@ void glDrawAtom(GLUquadric *pObj, const Vector3D &pos, double r, float renderDet
 static void least_squares(int n, const float *x, float *a, float *b) {
     float sum = 0;
     int i;
-    for (i = 0; i < n; i++) {    // find the sum of x
+    for (i = 0; i < n; i++) {  // find the sum of x
         sum += x[i];
     }
     float d = (float(n) - 1.0f) / 2.0f;
@@ -490,33 +490,33 @@ void glCreateArrowPrimitive(float width, float height, float length) {
 
     glNormal3fv(n02);
     glVertex3fv(b05);
-    glVertex3fv(b06);    //glNormal3fv(n02);
-    glVertex3fv(b02);    //glNormal3fv(n02);
-    glVertex3fv(b01);    //glNormal3fv(n02);
+    glVertex3fv(b06);  // glNormal3fv(n02);
+    glVertex3fv(b02);  // glNormal3fv(n02);
+    glVertex3fv(b01);  // glNormal3fv(n02);
 
     glNormal3fv(n01);
     glVertex3fv(b04);
-    glVertex3fv(b05);    //glNormal3fv(n01);
-    glVertex3fv(b01);    //glNormal3fv(n01);
-    glVertex3fv(b00);    //glNormal3fv(n01);
+    glVertex3fv(b05);  // glNormal3fv(n01);
+    glVertex3fv(b01);  // glNormal3fv(n01);
+    glVertex3fv(b00);  // glNormal3fv(n01);
 
     glNormal3fv(n03);
     glVertex3fv(b07);
-    glVertex3fv(b04);    //glNormal3fv(n03);
-    glVertex3fv(b00);    //glNormal3fv(n03);
-    glVertex3fv(b03);    //glNormal3fv(n03);
+    glVertex3fv(b04);  // glNormal3fv(n03);
+    glVertex3fv(b00);  // glNormal3fv(n03);
+    glVertex3fv(b03);  // glNormal3fv(n03);
 
     glNormal3fv(n00);
     glVertex3fv(b06);
-    glVertex3fv(b07);    //glNormal3fv(n00);
-    glVertex3fv(b03);    //glNormal3fv(n00);
-    glVertex3fv(b02);    //glNormal3fv(n00);
+    glVertex3fv(b07);  // glNormal3fv(n00);
+    glVertex3fv(b03);  // glNormal3fv(n00);
+    glVertex3fv(b02);  // glNormal3fv(n00);
 
     glNormal3fv(n05);
     glVertex3fv(b00);
-    glVertex3fv(b01);    //glNormal3fv(n05);
-    glVertex3fv(b02);    //glNormal3fv(n05);
-    glVertex3fv(b03);    //glNormal3fv(n05);
+    glVertex3fv(b01);  // glNormal3fv(n05);
+    glVertex3fv(b02);  // glNormal3fv(n05);
+    glVertex3fv(b03);  // glNormal3fv(n05);
 
     // Draw arrow head
 
@@ -546,13 +546,13 @@ void glCreateArrowPrimitive(float width, float height, float length) {
 
     glNormal3fv(n02);
     glVertex3fv(b08);
-    glVertex3fv(b12);    //glNormal3fv(n02);
-    glVertex3fv(b10);    //glNormal3fv(n02);
+    glVertex3fv(b12);  // glNormal3fv(n02);
+    glVertex3fv(b10);  // glNormal3fv(n02);
 
     glNormal3fv(n03);
     glVertex3fv(b13);
-    glVertex3fv(b09);    //glNormal3fv(n03);
-    glVertex3fv(b11);    //glNormal3fv(n03);
+    glVertex3fv(b09);  // glNormal3fv(n03);
+    glVertex3fv(b11);  // glNormal3fv(n03);
 
     glEnd();
 }
@@ -589,4 +589,4 @@ void accPerspective(GLdouble fovy, GLdouble aspect, GLdouble _near, GLdouble _fa
     accFrustum(left, right, bottom, top, _near, _far, pixdx, pixdy, eyedx, eyedy, focus);
 }
 
-}    // namespace U2
+}  // namespace U2

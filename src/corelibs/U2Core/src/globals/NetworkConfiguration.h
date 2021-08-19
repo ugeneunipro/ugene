@@ -40,8 +40,8 @@ public:
     ProxyConfig()
         : excepted_addr_enabled(false) {
     }
-    QMap<Proxy_t, QNetworkProxy> proxyz;    //only one proxy for each type
-    QMap<Proxy_t, bool> proxyz_usage;    //true if proxy is used
+    QMap<Proxy_t, QNetworkProxy> proxyz;  // only one proxy for each type
+    QMap<Proxy_t, bool> proxyz_usage;  // true if proxy is used
     QStringList excepted_addr;
     bool excepted_addr_enabled;
 };
@@ -78,7 +78,7 @@ public:
     QNetworkProxy getProxy(Proxy_t prtype) const;
     bool isProxyUsed(Proxy_t prtype) const;
     void removeProxy(Proxy_t prtype);
-    int addProxy(const QNetworkProxy &p_);    //returns non-zero if replacing
+    int addProxy(const QNetworkProxy &p_);  // returns non-zero if replacing
     void setProxyUsed(Proxy_t prtype, bool val);
     void setExceptionsList(const QStringList &exc_addr);
     QStringList getExceptionsList() const {
@@ -112,6 +112,6 @@ private:
     RemoteRequestConfig rrConfig;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

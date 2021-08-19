@@ -58,4 +58,4 @@ void ElementSelectorController::sl_valueChanged(const QVariant &newValue) {
     wc->setSelectorValue(widget, newValue);
 }
 
-}    // namespace U2
+}  // namespace U2

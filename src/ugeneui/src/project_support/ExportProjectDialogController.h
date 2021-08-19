@@ -46,10 +46,10 @@ private slots:
     void sl_onFileSelectButton();
 
 private:
-    //canonical representation of the dir
+    // canonical representation of the dir
     QString projectFilePath;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

@@ -52,6 +52,6 @@ public:
     static bool isGapInRead(HI::GUITestOpStatus &os);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_MCA_EDITOR_STATUS_WIDGET_H_
+#endif  // _U2_GT_UTILS_MCA_EDITOR_STATUS_WIDGET_H_

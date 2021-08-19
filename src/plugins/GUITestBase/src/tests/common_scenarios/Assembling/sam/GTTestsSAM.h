@@ -35,7 +35,7 @@ GUI_TEST_CLASS_DECLARATION(test_0003)
 GUI_TEST_CLASS_DECLARATION(test_0004)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_SAM
-}    // namespace U2
+}  // namespace GUITest_SAM
+}  // namespace U2
 
-#endif    // _U2_GUITEST_SAM_H_
+#endif  // _U2_GUITEST_SAM_H_

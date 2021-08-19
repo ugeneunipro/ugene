@@ -153,4 +153,4 @@ void URLAttribute::setCompatibleObjectTypes(const QSet<GObjectType> &types) {
     compatibleObjectTypes = types;
 }
 
-}    // namespace U2
+}  // namespace U2

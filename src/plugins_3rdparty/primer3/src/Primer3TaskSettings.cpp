@@ -509,4 +509,4 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_PAIR_WT_TEMPLATE_MISPRIMING", &primerArgs.pr_pair_weights.template_mispriming);
 }
 
-}    // namespace U2
+}  // namespace U2

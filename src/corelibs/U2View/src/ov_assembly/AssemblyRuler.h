@@ -71,10 +71,10 @@ private:
     bool redraw;
     QPixmap cachedView;
 
-    int cursorPos;    //x-coord of the cursor on the widget
+    int cursorPos;  // x-coord of the cursor on the widget
 
-    //cached ruler labels. Rendered once in paintEvent,
-    //used on each cursor redraw
+    // cached ruler labels. Rendered once in paintEvent,
+    // used on each cursor redraw
     QList<QRect> cachedLabelsRects;
     QList<QImage> cachedLabels;
 
@@ -83,6 +83,6 @@ private:
     QObject *startPositionObject;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

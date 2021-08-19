@@ -77,6 +77,6 @@ public:
     bool checkConstraints(const AutoAnnotationConstraints &constraints);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ORF_MARKER_TASK_
+#endif  // _U2_ORF_MARKER_TASK_

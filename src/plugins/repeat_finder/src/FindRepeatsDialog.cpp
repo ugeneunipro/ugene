@@ -362,7 +362,7 @@ int FindRepeatsDialog::estimateResultsCount() const {
     assert(identityBox->value() == 100);
     int len = minLenBox->value();
 
-    quint64 nVariations = areaSize();    //max possible results
+    quint64 nVariations = areaSize();  // max possible results
     double variationsPerLen = pow(double(4), double(len));
     quint64 res = quint64(nVariations / variationsPerLen);
     res = (res > 20) ? (res / 10) * 10 : res;
@@ -405,4 +405,4 @@ void FindRepeatsDialog::sl_hundredPercent() {
     identityBox->setValue(100);
 }
 
-}    // namespace U2
+}  // namespace U2

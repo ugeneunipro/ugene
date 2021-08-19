@@ -58,6 +58,6 @@ protected:
     bool widgetStateSaved;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SAVABLE_WIDGET_H_
+#endif  // _U2_SAVABLE_WIDGET_H_

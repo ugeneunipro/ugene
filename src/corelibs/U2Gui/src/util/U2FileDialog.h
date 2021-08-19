@@ -29,9 +29,9 @@
 namespace U2 {
 
 /** A workaround for the issue: UGENE-3443 (part 1)
-  * https://bugreports.qt-project.org/browse/QTBUG-25295
-  * This class should be removed after switching to Qt 5.1 or newer
-  */
+ * https://bugreports.qt-project.org/browse/QTBUG-25295
+ * This class should be removed after switching to Qt 5.1 or newer
+ */
 class U2GUI_EXPORT U2FileDialog {
 public:
     static QString getOpenFileName(QWidget *parent = 0,
@@ -64,6 +64,6 @@ private:
     static void activateWindow();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FILE_DIALOG_H_
+#endif  // _U2_FILE_DIALOG_H_

@@ -139,4 +139,4 @@ QList<XMLTestFactory *> ClarkTests::createTestFactories() {
     return {GTest_CompareClarkDatabaseMetafiles::createFactory()};
 }
 
-}    // namespace U2
+}  // namespace U2

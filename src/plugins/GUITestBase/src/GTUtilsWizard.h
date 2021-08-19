@@ -52,6 +52,6 @@ private:
     static QMap<QString, WizardButton> initButtonMap();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_GT_UTILS_WIZARD_H_
+#endif  // _U2_GT_UTILS_WIZARD_H_

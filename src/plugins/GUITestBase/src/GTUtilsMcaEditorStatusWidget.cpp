@@ -185,4 +185,4 @@ bool GTUtilsMcaEditorStatusWidget::isGapInRead(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2

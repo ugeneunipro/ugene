@@ -51,6 +51,6 @@ private:
     QAction *delTextAction;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // GUITESTRUNNER_H
+#endif  // GUITESTRUNNER_H

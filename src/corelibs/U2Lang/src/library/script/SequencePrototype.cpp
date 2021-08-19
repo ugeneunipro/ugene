@@ -176,4 +176,4 @@ WorkflowScriptEngine *SequenceScriptClass::workflowEngine() const {
     return ScriptEngineUtils::workflowEngine(engine());
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -85,7 +85,7 @@ private:
     bool accept;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_FILTER_ANNOTATIONS_BY_QUALIFIER_WORKER_H_
+#endif  //_U2_FILTER_ANNOTATIONS_BY_QUALIFIER_WORKER_H_

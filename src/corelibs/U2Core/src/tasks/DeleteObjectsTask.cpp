@@ -54,7 +54,7 @@ public:
     }
 };
 
-}    // namespace
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////
 // DeleteObjectsTask
@@ -117,4 +117,4 @@ void DeleteFoldersTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

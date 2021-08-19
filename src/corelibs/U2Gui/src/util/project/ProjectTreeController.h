@@ -188,6 +188,6 @@ private:
     QHash<Task *, QHash<Document *, QSet<QString>>> task2FoldersBeingDeleted;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PROJECTTREECONTROLLER_H_
+#endif  // _U2_PROJECTTREECONTROLLER_H_

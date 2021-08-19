@@ -60,7 +60,7 @@ const QString BaseNGSWorker::OUT_NAME_ID = "out-name";
 const QString BaseNGSWorker::DEFAULT_NAME = "Default";
 
 //////////////////////////////////////////////////////////////////////////
-//BaseNGSWorker
+// BaseNGSWorker
 BaseNGSWorker::BaseNGSWorker(Actor *a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
@@ -108,7 +108,7 @@ QString getTargetUrl(Task *task) {
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
 void BaseNGSWorker::sl_taskFinished(Task *task) {
     CHECK(!task->hasError(), );
@@ -151,7 +151,7 @@ void BaseNGSWorker::sendResult(const QString &url) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BaseNGSParser
+// BaseNGSParser
 BaseNGSParser::BaseNGSParser()
     : ExternalToolLogParser() {
 }
@@ -172,7 +172,7 @@ void BaseNGSParser::parseErrOutput(const QString &partOfLog) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BaseNGSTask
+// BaseNGSTask
 BaseNGSTask::BaseNGSTask(const BaseNGSSetting &settings)
     : Task(QString("NGS for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC), settings(settings) {
 }
@@ -228,5 +228,5 @@ ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolId, Ext
     return etTask;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

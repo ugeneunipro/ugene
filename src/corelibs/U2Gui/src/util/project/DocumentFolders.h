@@ -38,9 +38,9 @@ class DocumentFoldersUpdate {
 public:
     DocumentFoldersUpdate();
     DocumentFoldersUpdate(const U2DbiRef &dbiRef, U2OpStatus &os);
-    QStringList folders;    // all folders
-    QHash<U2DataId, QString> objectIdFolders;    // objectId -> path
-    QHash<U2Object, QString> u2objectFolders;    // U2Object -> path
+    QStringList folders;  // all folders
+    QHash<U2DataId, QString> objectIdFolders;  // objectId -> path
+    QHash<U2Object, QString> u2objectFolders;  // U2Object -> path
 };
 
 /**
@@ -77,7 +77,7 @@ public:
 protected:
     void setLastUpdate(const DocumentFoldersUpdate &value);
     const QStringList &allFolders() const;
-    void addFolderToStorage(const QString &path);    // insert sorted
+    void addFolderToStorage(const QString &path);  // insert sorted
     void removeFolderFromStorage(const QString &path);
     bool hasFolderInfo(const U2DataId &id) const;
     bool hasFolderInfo(GObject *obj) const;
@@ -96,9 +96,9 @@ private:
      * can be only simultaneously modified! Support the consistency for them!
      */
     DocumentFoldersUpdate lastUpdate;
-    QHash<U2DataId, GObject *> objectsIds;    // objectId -> GObject
-    QHash<GObject *, QString> objectFolders;    // GObject -> path
-    QHash<QString, QList<GObject *>> folderObjects;    // path -> GObject
+    QHash<U2DataId, GObject *> objectsIds;  // objectId -> GObject
+    QHash<GObject *, QString> objectFolders;  // GObject -> path
+    QHash<QString, QList<GObject *>> folderObjects;  // path -> GObject
 
     // these objects and folders won't be affected during merge
     QSet<U2DataId> ignoredObjects;
@@ -127,21 +127,21 @@ public:
 private:
     QStringList calculateSubFoldersNames(const QString &parentPath) const;
     QList<Folder *> &cacheSubFoldersNames(const QString &parentPath, const QStringList &subFoldersNames) const;
-    void onFolderAdded(const QString &path);    // updates caches
-    void onFolderRemoved(Folder *folder);    // updates caches
-    QList<Folder *> getSubFoldersNatural(const QString &path) const;    // without recycle bin rules
+    void onFolderAdded(const QString &path);  // updates caches
+    void onFolderRemoved(Folder *folder);  // updates caches
+    QList<Folder *> getSubFoldersNatural(const QString &path) const;  // without recycle bin rules
     void addFolderToCache(const QString &path);
 
 private:
     Document *doc;
 
-    mutable QHash<QString, Folder *> foldersMap;    // path -> Folder
+    mutable QHash<QString, Folder *> foldersMap;  // path -> Folder
 
     mutable QHash<QString, bool> hasCachedSubFolders;
-    mutable QHash<QString, QStringList> cachedSubFoldersNames;    // sorted
+    mutable QHash<QString, QStringList> cachedSubFoldersNames;  // sorted
     mutable QHash<QString, QList<Folder *>> cachedSubFolders;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_DOCUMENTFOLDERS_H_
+#endif  // _U2_DOCUMENTFOLDERS_H_

@@ -55,6 +55,6 @@ private:
     QList<CudaGpuModel *> gpus;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //__CUDA_SUPPORT_PLUGIN_H__
+#endif  //__CUDA_SUPPORT_PLUGIN_H__

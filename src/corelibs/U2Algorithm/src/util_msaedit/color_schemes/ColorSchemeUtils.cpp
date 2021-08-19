@@ -71,7 +71,7 @@ QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteA
     return unitedAlphabetChars;
 }
 
-}    // namespace
+}  // namespace
 
 bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
     QMap<char, QColor> &alphColors = customScheme.alpColors;
@@ -214,10 +214,10 @@ void ColorSchemeUtils::getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QC
         alphColors['K'] = "#0000ff";
         alphColors['R'] = "#0000ff";
     } else if (type == DNAAlphabet_NUCL) {
-        alphColors['A'] = "#FCFF92";    // yellow
-        alphColors['C'] = "#70F970";    // green
-        alphColors['T'] = "#FF99B1";    // light red
-        alphColors['G'] = "#4EADE1";    // light blue
+        alphColors['A'] = "#FCFF92";  // yellow
+        alphColors['C'] = "#70F970";  // green
+        alphColors['T'] = "#FF99B1";  // light red
+        alphColors['G'] = "#4EADE1";  // light blue
         alphColors['U'] = alphColors['T'].lighter(120);
         alphColors['N'] = "#FCFCFC";
     }
@@ -226,7 +226,7 @@ void ColorSchemeUtils::getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QC
 QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type, bool defaultAlpType) {
     QList<const DNAAlphabet *> alphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
     QMap<DNAAlphabetType, QByteArray> alphabetChars;
-    foreach (const DNAAlphabet *alphabet, alphabets) {    // default initialization
+    foreach (const DNAAlphabet *alphabet, alphabets) {  // default initialization
         if (defaultAlpType == alphabet->isDefault()) {
             alphabetChars[alphabet->getType()] = uniteAlphabetChars(alphabetChars.value(alphabet->getType()), alphabet->getAlphabetChars());
         }
@@ -269,4 +269,4 @@ void ColorSchemeUtils::fillEmptyColorScheme(QVector<QColor> &colorsPerChar) {
     colorsPerChar.fill(QColor(), 256);
 }
 
-}    // namespace U2
+}  // namespace U2

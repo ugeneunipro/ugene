@@ -370,7 +370,7 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget *paren
     QList<int> s;
     s = splitter->sizes();
 
-    if (s.first() == 0) {    //expands tabs if collapsed
+    if (s.first() == 0) {  // expands tabs if collapsed
         QPoint p;
         p.setX(splitter->geometry().left() + 2);
         p.setY(splitter->geometry().center().y());
@@ -683,7 +683,7 @@ QList<WorkflowPortItem *> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus 
 
 #define GT_METHOD_NAME "getItemRect"
 QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, const QString &itemName) {
-    //TODO: support finding items when there are several similar workers in scheme
+    // TODO: support finding items when there are several similar workers in scheme
     WorkflowProcessItem *w = getWorker(os, itemName);
     QRect result = GTGraphicsItem::getGraphicsItemRect(os, w);
     result.setTop(result.top() + verticalShift);
@@ -1048,7 +1048,7 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
 
     GTGlobals::sleep();
 
-    //SET VALUE
+    // SET VALUE
     setCellValue(os, table, value, type, method);
 }
 #undef GT_METHOD_NAME
@@ -1096,7 +1096,7 @@ void GTUtilsWorkflowDesigner::setTableValue(HI::GUITestOpStatus &os, QString par
     GTMouseDriver::click();
     GTGlobals::sleep(500);
 
-    //SET VALUE
+    // SET VALUE
     setCellValue(os, table, value, type, method);
 }
 #undef GT_METHOD_NAME
@@ -1110,7 +1110,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget *par
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
             GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
 #ifdef Q_OS_WIN
-            //added to fix UGENE-3597
+            // added to fix UGENE-3597
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif
             break;
@@ -1269,7 +1269,7 @@ QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpSta
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", wdWindow));
     GT_CHECK_RESULT(table, "tableView not found", QStringList());
 
-    //FIND CELL
+    // FIND CELL
     QAbstractItemModel *model = table->model();
     int iMax = model->rowCount();
     int row = -1;
@@ -1340,7 +1340,7 @@ bool equalStrings(const QString &where, const QString &what, bool exactMatch) {
         return where.contains(what, Qt::CaseInsensitive);
     }
 }
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "getParameter"
 QString GTUtilsWorkflowDesigner::getParameter(HI::GUITestOpStatus &os, QString parameter, bool exactMatch) {
@@ -1392,7 +1392,7 @@ bool GTUtilsWorkflowDesigner::isParameterEnabled(HI::GUITestOpStatus &os, QStrin
     QWidget *w = QApplication::widgetAt(GTMouseDriver::getMousePosition());
     QString s = w->metaObject()->className();
 
-    bool result = !(s == "QWidget");    //if parameter is disabled QWidget is under cursor
+    bool result = !(s == "QWidget");  // if parameter is disabled QWidget is under cursor
     return result;
 }
 #undef GT_METHOD_NAME
@@ -1435,7 +1435,7 @@ int getParameterRow(QTableView *table, const QString &parameter) {
     return -1;
 }
 
-}    // namespace
+}  // namespace
 
 #define GT_METHOD_NAME "clickParameter"
 void GTUtilsWorkflowDesigner::clickParameter(HI::GUITestOpStatus &os, const QString &parameter) {
@@ -1443,7 +1443,7 @@ void GTUtilsWorkflowDesigner::clickParameter(HI::GUITestOpStatus &os, const QStr
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", wdWindow));
     GT_CHECK_RESULT(table, "tableView not found", );
 
-    //FIND CELL
+    // FIND CELL
     const int row = getParameterRow(table, parameter);
     GT_CHECK_RESULT(row != -1, "parameter not found", );
 
@@ -1477,7 +1477,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QSt
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", wdWindow));
     CHECK_SET_ERR(table, "tableView not found");
 
-    //FIND CELL
+    // FIND CELL
     QAbstractItemModel *model = table->model();
     int row = -1;
     for (int i = 0; i < model->rowCount(); i++) {
@@ -1506,7 +1506,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QSt
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 2, row));
     GTMouseDriver::click();
 
-    //SET VALUE
+    // SET VALUE
     QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK(box != nullptr, "QComboBox not found. Scripting might be unavaluable for this parameter");
     GTComboBox::selectItemByText(os, box, scriptMode);
@@ -1540,4 +1540,4 @@ QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus &os) {
 
 #undef GT_CLASS_NAME
 
-}    // namespace U2
+}  // namespace U2
