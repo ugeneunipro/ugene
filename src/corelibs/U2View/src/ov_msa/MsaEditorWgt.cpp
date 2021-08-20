@@ -134,7 +134,7 @@ void MsaEditorWgt::initConsensusArea() {
 }
 
 void MsaEditorWgt::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(editor->getMaObject(), sequenceArea);
+    statusBar = new MsaEditorStatusBar(getEditor());
 }
 
 MSAEditorTreeViewer *MsaEditorWgt::getCurrentTree() const {

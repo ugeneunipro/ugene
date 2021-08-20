@@ -23,14 +23,12 @@
 
 #include <QApplication>
 
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/Settings.h>
 
 #include "MSAEditorOffsetsView.h"
 #include "MaConsensusMismatchController.h"
@@ -132,7 +130,7 @@ void McaEditorWgt::initConsensusArea() {
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, refCharController);
+    statusBar = new McaEditorStatusBar(getEditor(), refCharController);
 }
 
 McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {

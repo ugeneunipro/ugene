@@ -29,8 +29,7 @@ class QHBoxLayout;
 
 namespace U2 {
 
-class MultipleAlignmentObject;
-class MaEditorSequenceArea;
+class MaEditor;
 class MaEditorSelection;
 
 class MaEditorStatusBar : public QFrame {
@@ -38,11 +37,11 @@ class MaEditorStatusBar : public QFrame {
 protected:
     class TwoArgPatternLabel : public QLabel {
     public:
-        TwoArgPatternLabel(QString textPattern, QString tooltipPattern, QString objectName, QWidget *parent = nullptr);
-        void setPatterns(QString textPattern, QString tooltipPattern);
+        TwoArgPatternLabel(const QString &textPattern, const QString &tooltipPattern, const QString &objectName, QWidget *parent = nullptr);
+        void setPatterns(const QString &textPattern, const QString &tooltipPattern);
 
-        void update(QString firstArg, int minWidth);
-        void update(QString firstArg, QString secondArg);
+        void update(const QString& firstArg, int minWidth);
+        void update(const QString& firstArg, const QString& secondArg);
 
         void updateMinWidth(QString maxLenArg);
 
@@ -53,7 +52,7 @@ protected:
     };
 
 public:
-    MaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea);
+    MaEditorStatusBar(MaEditor *editor);
 
 private slots:
     void sl_update();
@@ -73,8 +72,7 @@ protected:
     void setStatusBarStyle();
 
 protected:
-    MultipleAlignmentObject *aliObj;
-    MaEditorSequenceArea *seqArea;
+    MaEditor *editor;
     QPixmap lockedIcon;
     QPixmap unlockedIcon;
 

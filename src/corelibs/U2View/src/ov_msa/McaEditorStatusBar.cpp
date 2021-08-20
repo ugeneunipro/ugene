@@ -44,10 +44,9 @@ namespace U2 {
 const QMap<bool, const char *> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = {{true, QT_TR_NOOP("Mutations mode: alternative")},
                                                                                      {false, QT_TR_NOOP("Mutations mode: normal")}};
 
-McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
-                                       MaEditorSequenceArea *seqArea,
+McaEditorStatusBar::McaEditorStatusBar(McaEditor *editor,
                                        McaReferenceCharController *refCharController)
-    : MaEditorStatusBar(mobj, seqArea),
+    : MaEditorStatusBar(editor),
       refCharController(refCharController) {
     setObjectName("mca_editor_status_bar");
     setStatusBarStyle();
@@ -60,7 +59,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                tr("Read position %1 of %2"));
     selectionLabel->hide();
 
-    connect(seqArea->getEditor()->getSelectionController(),
+    connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_update()));
 
@@ -87,9 +86,9 @@ void McaEditorStatusBar::updateLabels() {
     updatePositionLabel();
     updateMutationsLabel();
 
-    McaEditor *editor = qobject_cast<McaEditor *>(seqArea->getEditor());
-    SAFE_POINT(editor->getReferenceContext() != nullptr, "Reference context is NULL", );
-    DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
+    auto mcaEditor = qobject_cast<McaEditor *>(editor);
+    SAFE_POINT(mcaEditor->getReferenceContext() != nullptr, "Reference context is NULL", );
+    DNASequenceSelection *selection = mcaEditor->getReferenceContext()->getSequenceSelection();
     SAFE_POINT(selection != nullptr, "Reference selection is NULL", );
 
     QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
@@ -103,14 +102,13 @@ void McaEditorStatusBar::updateLabels() {
 }
 
 void McaEditorStatusBar::updateLineLabel() {
-    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.getRectList().first().top() + 1),
-                      QString::number(aliObj->getNumRows()));
+                      QString::number(editor->getNumSequences()));
 }
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    MaEditor *editor = seqArea->getEditor();
     const MaEditorSelection &selection = editor->getSelection();
     if (selection.getWidth() == 1) {
         positions = getGappedPositionInfo();
@@ -121,19 +119,20 @@ void McaEditorStatusBar::updatePositionLabel() {
         positions = QPair<QString, QString>(NONE_MARK, QString::number(ungappedLength));
     }
     positionLabel->update(positions.first, positions.second);
-    positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
+    positionLabel->updateMinWidth(QString::number(editor->getAlignmentLen()));
 }
 
 void McaEditorStatusBar::updateMutationsLabel() {
     U2OpStatus2Log os;
-    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(aliObj->getEntityRef().dbiRef, os));
+    MultipleAlignmentObject *maObject = editor->getMaObject();
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(maObject->getEntityRef().dbiRef, os));
     CHECK_OP(os, );
 
     auto attributeDbi = con->dbi->getAttributeDbi();
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
     auto attributeId = McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId();
-    auto objectAttributes = attributeDbi->getObjectAttributes(aliObj->getEntityRef().entityId, attributeId, os);
+    auto objectAttributes = attributeDbi->getObjectAttributes(maObject->getEntityRef().entityId, attributeId, os);
     CHECK_OP(os, );
     SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1,
                QString("Unexpected %1 objectAttributes size").arg(attributeId), );

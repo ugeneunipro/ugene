@@ -26,14 +26,13 @@
 
 namespace U2 {
 
-class McaEditorNameList;
+class McaEditor;
 class McaReferenceCharController;
 
 class McaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
-    McaEditorStatusBar(MultipleAlignmentObject *mobj,
-                       MaEditorSequenceArea *seqArea,
+    McaEditorStatusBar(McaEditor *editor,
                        McaReferenceCharController *refCharController);
 
     void setMutationStatus(bool isAlternativeMutationsEnabled);

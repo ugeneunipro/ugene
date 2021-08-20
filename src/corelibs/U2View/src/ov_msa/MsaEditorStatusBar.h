@@ -26,10 +26,12 @@
 
 namespace U2 {
 
+class MSAEditor;
+
 class MsaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
-    MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea);
+    MsaEditorStatusBar(MSAEditor *msaEditor);
 
 private:
     /** Set ups initial layout of the status bar. Called as a part of the constructor. */
