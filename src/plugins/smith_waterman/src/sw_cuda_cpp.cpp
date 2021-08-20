@@ -21,6 +21,7 @@
 
 #ifdef SW2_BUILD_WITH_CUDA
 
+#    include <algorithm>
 #    include <cuda_runtime.h>
 #    include <stdio.h>
 #    include <stdlib.h>
@@ -177,30 +178,30 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     //************************** declare arrays on device
 
-    char *g_seqLib = nullptr;
-    ScoreType *g_queryProfile = nullptr;
-    ScoreType *g_HdataMax = nullptr;
-    ScoreType *g_HdataUp = nullptr;
-    ScoreType *g_HdataRec = nullptr;
+    char      *g_seqLib           = nullptr;
+    ScoreType *g_queryProfile     = nullptr;
+    ScoreType *g_HdataMax         = nullptr;
+    ScoreType *g_HdataUp          = nullptr;
+    ScoreType *g_HdataRec         = nullptr;
     ScoreType *g_HdataTmp;
-    ScoreType *g_FdataUp = nullptr;
-    ScoreType *g_directionsUp = nullptr;
-    ScoreType *g_directionsMax = nullptr;
-    ScoreType *g_directionsRec = nullptr;
-    int *g_directionsMatrix = nullptr;
-    int *g_backtraceBegins = nullptr;
+    ScoreType *g_FdataUp          = nullptr;
+    ScoreType *g_directionsUp     = nullptr;
+    ScoreType *g_directionsMax    = nullptr;
+    ScoreType *g_directionsRec    = nullptr;
+    int       *g_directionsMatrix = nullptr;
+    int       *g_backtraceBegins  = nullptr;
 
     //************************** allocate global memory on device
 
-    QList<cudaError> errors = { cudaMalloc((void**)&g_seqLib, sizeL),
-                                cudaMalloc((void**)&g_queryProfile, sizeP),
-                                cudaMalloc((void**)&g_HdataMax, sizeQ),
-                                cudaMalloc((void**)&g_HdataUp, sizeQ),
-                                cudaMalloc((void**)&g_FdataUp, sizeQ),
-                                cudaMalloc((void**)&g_directionsUp, sizeQ),
-                                cudaMalloc((void**)&g_directionsMax, sizeQ),
-                                cudaMalloc((void**)&g_HdataRec, sizeQ),
-                                cudaMalloc((void**)&g_directionsRec, sizeQ) };
+    QList<cudaError> errors = { cudaMalloc((void **)&g_seqLib, sizeL),
+                                cudaMalloc((void **)&g_queryProfile, sizeP),
+                                cudaMalloc((void **)&g_HdataMax, sizeQ),
+                                cudaMalloc((void **)&g_HdataUp, sizeQ),
+                                cudaMalloc((void **)&g_FdataUp, sizeQ),
+                                cudaMalloc((void **)&g_directionsUp, sizeQ),
+                                cudaMalloc((void **)&g_directionsMax, sizeQ),
+                                cudaMalloc((void **)&g_HdataRec, sizeQ),
+                                cudaMalloc((void **)&g_directionsRec, sizeQ) };
 
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
         cudaError errorMatrix = cudaMalloc(reinterpret_cast<void **>(&g_directionsMatrix), directionMatrixSize);
@@ -208,15 +209,8 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
         errors << errorMatrix << errorBacktrace;
     }
 
-    bool isError = false;
-    for (cudaError error : errors) {
-        if (error != cudaError::cudaSuccess) {
-            isError = true;
-            break;
-        }
-    }
-
-    if (isError) {
+    if (std::find_if(errors.constBegin(), errors.constEnd(), [](const cudaError error) {
+            return error != cudaError::cudaSuccess; }) != errors.constEnd()) {
         u2log.error(QObject::tr("CUDA malloc error"));
         cudaFree(g_seqLib);
         cudaFree(g_queryProfile);

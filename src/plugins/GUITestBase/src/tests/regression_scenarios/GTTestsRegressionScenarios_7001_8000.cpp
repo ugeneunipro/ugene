@@ -26,6 +26,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
