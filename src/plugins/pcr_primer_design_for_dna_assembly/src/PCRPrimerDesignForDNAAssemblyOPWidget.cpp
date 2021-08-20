@@ -391,6 +391,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_annotationCreationTaskFinished() 
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
+    CHECK(t->getResultAnnotations().size() > 0, );
     productsTable->setAnnotationGroup(t->getResultAnnotations().at(0)->getGroup());
 }
 
@@ -418,7 +419,11 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
     AnnotationTableObject *resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
-    QString newDocUrl = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/PCRPrimers.gb", "_");
+    QSet<QString> excludeList;
+    for (Document* d : AppContext::getProject()->getDocuments()) {
+        excludeList.insert(d->getURLString());
+    }
+    QString newDocUrl = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/PCRPrimers.gb", "_", excludeList);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     Document *d = df->createNewLoadedDocument(iof, newDocUrl, os);

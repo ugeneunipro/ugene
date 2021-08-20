@@ -87,13 +87,16 @@ private slots:
      */
     void sl_loadOtherSequenceInPcr();
     /*
-    * Associate created resultannotations with result table.
+    * Associate created result annotations with result table.
     */
     void sl_onFindTaskFinished();
     /*
     * Extract result product to file.
     */
     void sl_extractProduct();
+    /*
+     * Create genbank file with result annotations/
+     */
     void sl_annotationCreationTaskFinished();
 
 private:
