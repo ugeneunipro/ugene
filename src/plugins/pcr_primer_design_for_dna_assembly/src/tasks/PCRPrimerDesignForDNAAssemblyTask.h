@@ -52,6 +52,19 @@ public:
     static const QStringList FRAGMENT_INDEX_TO_NAME;
 
 private:
+    enum class UserPrimer {
+        Forward,
+        Reverse
+    };
+    // Sequences for finding unwanted connections with user primers.
+    enum class SeqToSearchInThem {
+        ForwardUser,
+        ReverseUser,
+        Sequence,
+        RevComplSeq,
+        OtherSeq
+    };
+
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
     void findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence);
     enum class SecondaryPrimer {
@@ -65,7 +78,27 @@ private:
     void updatePrimerRegion(int& primerEnd, int& primerLength) const;
 
     QString regionToString(const U2Region& region, bool isComplement) const;
-    QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
+
+    /**
+     * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and add them
+     * to @userPrimersUnwantedConnections. Includes homodimers, heterodimers.
+     */
+    void saveUnwantedConnectionsReports();
+    /**
+     * Helper method for @saveUnwantedConnectionsReports. Find all unwanted connections in user primer and add them to
+     * @userPrimersUnwantedConnections.
+     */
+    void saveUnwantedConnections(const QByteArray& primer, UserPrimer primerType);
+    /**
+     * Helper methods for @generateReport. Return html with result sequences for primer pair.
+     * Called when there are no unwanted connections.
+     */
+    QString getPairReport(U2Region forward, U2Region reverse, const QString& primerName) const;
+    QString getPairReportForUserPrimers() const;
+    /**
+     * Return html report of unwanted connections in user primers (summary table and each connection).
+     */
+    QString getUserPrimersUnwantedConnectionsReport() const;
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
@@ -83,6 +116,8 @@ private:
     QByteArray backboneSequence;
     QList<U2Region> regionsBetweenIslandsForward;
     QList<U2Region> regionsBetweenIslandsReverse;
+    // User primer and sequence analyzed for unwanted connections -> Reports of unwanted connections.
+    QMap<QPair<UserPrimer, SeqToSearchInThem>, QStringList> userPrimersUnwantedConnections;
 
     //Results
     U2Region aForward;
