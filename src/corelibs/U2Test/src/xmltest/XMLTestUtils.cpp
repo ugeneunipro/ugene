@@ -140,8 +140,8 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
     int prefixSize = prefix.size();
     QStringList relativePaths = path.mid(prefixSize).split(";");
 
-    foreach (const QString &path, relativePaths) {
-        QString fullPath = prefixPath + path;
+    for (const QString &releativePath : qAsConst(relativePaths)) {
+        QString fullPath = prefixPath + releativePath;
         result += fullPath + ";";
     }
 

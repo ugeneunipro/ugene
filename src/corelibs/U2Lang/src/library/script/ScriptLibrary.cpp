@@ -599,7 +599,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
     align->addRow(seq.getName(), seq.seq);
 
     for (int i = 1; i < ctx->argumentCount(); i++) {
-        DNASequence seq = getSequence(ctx, engine, i);
+        seq = getSequence(ctx, engine, i);
         if (seq.seq.isEmpty()) {
             return ctx->throwError(QObject::tr("Empty or invalid sequence"));
         }

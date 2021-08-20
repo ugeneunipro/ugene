@@ -38,7 +38,7 @@ void SArrayBasedFindTask::run() {
 }
 
 void SArrayBasedFindTask::runSearch() {
-    bool haveResults = true;
+    bool haveResults;
     SArrayIndex::SAISearchContext context;
     const char *querySeq = config->query.constData();
     if (config->useBitMask) {
@@ -63,7 +63,7 @@ void SArrayBasedFindTask::runSearch() {
     }
 
     if (haveResults) {
-        int pos = -1;
+        int pos;
         while ((pos = index->nextArrSeqPos(&context)) != -1) {
             results.append(pos + 1);
         }
@@ -74,12 +74,8 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
     const char *querySeq = config->query.constData();
     const char *arraySeq = index->getIndexedSequence();
     char unknownChar = config->unknownChar;
-    int CMAX = 0;
-    if (config->absMismatches) {
-        CMAX = config->nMismatches;
-    } else {
-        CMAX = (config->query.length() * config->ptMismatches) / MAX_PERCENTAGE;
-    }
+    int CMAX = config->absMismatches ? config->nMismatches
+                                     : (config->query.length() * config->ptMismatches) / MAX_PERCENTAGE;
     int W = config->query.size();
     int q = W / (CMAX + 1);
     int prefixSize = index->getPrefixSize();
@@ -93,14 +89,13 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
     for (int i = 0; i < W - prefixSize + 1; ++i) {
         const char *seq = querySeq + i;
         SArrayIndex::SAISearchContext context;
-        bool haveResults = false;
+        bool haveResults;
         if (config->useBitMask) {
             const quint32 *bm = config->bitMask;
             int charBitsNum = config->bitMaskCharBitsNum;
             quint32 bitValue = 0;
             int wCharsInMask = index->getCharsInMask();
             const char *posS = querySeq;
-            char unknownChar = config->unknownChar;
             for (int cleanChars = 0; cleanChars < wCharsInMask; posS++) {
                 if (*posS == unknownChar) {
                     cleanChars = 0;
@@ -117,7 +112,7 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
         if (!haveResults) {
             continue;
         }
-        int pos = -1;
+        int pos;
         const char *endS = querySeq + W;
         const char *endA = arraySeq + index->getSequenceLength();
         while ((pos = index->nextArrSeqPos(&context)) != -1) {
@@ -127,7 +122,7 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
             const char *posA = arraySeq + pos + prefixSize;
             for (; (posS < endS) && (c <= CMAX); posS++, posA++) {
                 if (posA >= endA) {
-                    // out of arrraySeq boundaries - > do not need to continue
+                    // out of arraySeq boundaries - > do not need to continue
                     c = CMAX + 1;
                     break;
                 }
@@ -140,7 +135,7 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
 
             for (; (posS >= querySeq) && (c <= CMAX); posS--, posA--) {
                 if (posA < arraySeq) {
-                    // out of arrraySeq boundaries - > do not need to continue
+                    // out of arraySeq boundaries - > do not need to continue
                     c = CMAX + 1;
                     break;
                 }

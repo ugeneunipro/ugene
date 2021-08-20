@@ -19,8 +19,8 @@ void CompareMSA(const MSA_QScore &msaTest, const MSA_QScore &msaRef, double *ptr
 		{
 		const char *pstrSeqNameA = msaRef.GetSeqName(uRefSeqIndexA);
 		unsigned uTestSeqIndexA;
-		bool bFound = msaTest.GetSeqIndex(pstrSeqNameA, &uTestSeqIndexA);
-		if (!bFound)
+		bool aFound = msaTest.GetSeqIndex(pstrSeqNameA, &uTestSeqIndexA);
+		if (!aFound)
 			{
 			Quit_Qscore("Sequence '%s' not found in test alignment", pstrSeqNameA);
 			continue;

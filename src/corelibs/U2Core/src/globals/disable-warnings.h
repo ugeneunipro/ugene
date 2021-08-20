@@ -42,6 +42,7 @@
 #    pragma GCC diagnostic ignored "-Wparentheses"
 #    pragma GCC diagnostic ignored "-Wpointer-compare"
 #    pragma GCC diagnostic ignored "-Wreturn-type"
+#    pragma GCC diagnostic ignored "-Wshadow=local"
 #    pragma GCC diagnostic ignored "-Wsign-compare"
 #    pragma GCC diagnostic ignored "-Wsizeof-pointer-memaccess"
 #    pragma GCC diagnostic ignored "-Wswitch"

@@ -22,11 +22,9 @@
 #include "ORFFinder.h"
 #include <assert.h>
 
-#include <U2Algorithm/DynTable.h>
 #include <U2Algorithm/RollingArray.h>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/Log.h>
 #include <U2Core/Task.h>
@@ -88,11 +86,11 @@ void ORFFindAlgorithm::find(
                 start[frame].append(cfg.searchRegion.startPos + i);
             }
         }
-        qint64 end = cfg.searchRegion.endPos();
-        for (qint64 i = cfg.searchRegion.startPos; i < end && !stopFlag && !os.isCoR(); i++, leftTillPercent--, ++seqPointer) {
+        qint64 searchRegionEndPos = cfg.searchRegion.endPos();
+        for (qint64 i = cfg.searchRegion.startPos; i < searchRegionEndPos && !stopFlag && !os.isCoR(); i++, leftTillPercent--, ++seqPointer) {
             if ((seqPointer % BLOCK_READ_FROM_DB) == 0) {  // query to db
                 sequence.clear();
-                qint64 regLen = qMin(end - i, (qint64)BLOCK_READ_FROM_DB + 3);
+                qint64 regLen = qMin(searchRegionEndPos - i, (qint64)BLOCK_READ_FROM_DB + 3);
                 sequence.append(dnaSeq.getSequenceData(U2Region(i, regLen), os));
                 SAFE_POINT_OP(os, );
                 seqPointer = 0;
@@ -130,8 +128,7 @@ void ORFFindAlgorithm::find(
             // circular
             addStartCodonsFromJunction(dnaSeq, cfg, ORFAlgorithmStrand_Direct, start);
 
-            qint64 regLen = end - cfg.searchRegion.startPos;
-            qint64 minInitiator = end;
+            qint64 minInitiator = searchRegionEndPos;
             bool initiatorsRemain = false;
             for (int i = 0; i < 3; i++) {
                 foreach (int initiator, start[i]) {
@@ -160,15 +157,14 @@ void ORFFindAlgorithm::find(
                 QList<int> *initiators = start + startFrame;
                 if (!initiators->isEmpty() && aTT->isStopCodon(sequence.data() + seqPointer)) {
                     foreach (int initiator, *initiators) {
-                        int len = regLen + i - initiator;
+                        int len = cfg.searchRegion.length + i - initiator;
                         if (len >= minLen && !os.isCoR()) {
                             if (i == cfg.searchRegion.startPos && !cfg.includeStopCodon) {
                                 // stop codon is on junction, not included
-                                rl->onResult(ORFFindResult(U2Region(initiator, end - initiator), frame), os);
+                                rl->onResult(ORFFindResult(U2Region(initiator, searchRegionEndPos - initiator), frame), os);
                             } else {
-                                rl->onResult(ORFFindResult(U2Region(initiator, end - initiator),
-                                                           U2Region(cfg.searchRegion.startPos,
-                                                                    i + 3 * cfg.includeStopCodon),
+                                rl->onResult(ORFFindResult(U2Region(initiator, searchRegionEndPos - initiator),
+                                                           U2Region(cfg.searchRegion.startPos, i + 3 * cfg.includeStopCodon),
                                                            frame),
                                              os);
                             }
@@ -183,7 +179,7 @@ void ORFFindAlgorithm::find(
             // check if non-terminated ORFs remained
             for (int i = 0; i < 3; i++) {
                 foreach (int initiator, start[i]) {
-                    int len = end - initiator;
+                    int len = searchRegionEndPos - initiator;
                     len -= len % 3;
                     if (len >= minLen && !os.isCoR()) {
                         rl->onResult(ORFFindResult(U2Region(initiator, len), i + 1), os);
@@ -252,7 +248,6 @@ void ORFFindAlgorithm::find(
         if (circularSearch && !stopFlag && !os.isCoR()) {
             addStartCodonsFromJunction(dnaSeq, cfg, ORFAlgorithmStrand_Complement, start);
 
-            int regLen = cfg.searchRegion.endPos() - cfg.searchRegion.startPos;
             int maxInitiator = -1;
             bool initiatorsRemain = false;
             for (int i = 0; i < 3; i++) {
@@ -286,7 +281,7 @@ void ORFFindAlgorithm::find(
                 QList<int> *initiators = start + startFrame;
                 if (!initiators->isEmpty() && aTT->isStopCodon(sequence.data() + seqPointer)) {
                     foreach (int initiator, *initiators) {
-                        int len = regLen + initiator - i;
+                        int len = cfg.searchRegion.length + initiator - i;
                         if (len >= minLen && !os.isCoR()) {
                             if (cfg.searchRegion.endPos() == i + 1 && !cfg.includeStopCodon) {
                                 rl->onResult(ORFFindResult(U2Region(end, initiator + 1), frame - 3), os);

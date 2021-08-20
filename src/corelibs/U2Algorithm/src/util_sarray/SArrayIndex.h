@@ -106,8 +106,6 @@ public:
 
     /** x1 and x2 is bitMask*/
     int compareBit(const quint32 *x1, const quint32 *x2) const;
-    /** x1 and x2 is sArray*/
-    int compareBitByPos(const quint32 *x1, const quint32 *x2) const;
     /**compares only after bits chars*/
     int compareAfterBits(quint32 bitMaskPos, const char *afterBitsSeq) const;
 

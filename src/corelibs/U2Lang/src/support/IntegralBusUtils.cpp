@@ -43,12 +43,12 @@ void IntegralBusUtils::remapBus(StrStrMap &busMap, const ActorId &oldId, const A
         U2OpStatus2Log os;
         QList<IntegralBusSlot> slotList = IntegralBusSlot::listFromString(busMap[key], os);
         QList<IntegralBusSlot> newSlots;
-        foreach (const IntegralBusSlot &slot, slotList) {
+        for (const IntegralBusSlot &slot : qAsConst(slotList)) {
             IntegralBusSlot newSlot = slot;
             if (slot.actorId() == oldId) {
-                U2OpStatusImpl os;
-                QString newSlotId = mapping.getDstSlotId(slot.getId(), os);
-                if (!os.hasError()) {
+                U2OpStatusImpl os2;
+                QString newSlotId = mapping.getDstSlotId(slot.getId(), os2);
+                if (!os2.hasError()) {
                     newSlot = IntegralBusSlot(newSlotId, "", newId);
                 }
             }

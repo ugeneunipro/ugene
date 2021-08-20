@@ -122,48 +122,50 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
         bitFilter = wAfterBits = wCharsInMask = 0;
     }
 
-    quint32 *arunner = sArray;
-    seqStart = seq;
-    const char *seqEnd = seqStart + seqSize - w + 1;
-    if (unknownChar == 0) {
-        quint32 step = 1 + skipGap;
-        for (const char *crunner = seqStart + gapOffset; crunner < seqEnd; arunner++, crunner += step) {
-            *arunner = seq2val(crunner);
-        }
-    } else {  // filter suffixes with unknown char from result
-        int oldLen = arrLen;
-        const char *crunner = seqStart;
-        int lastErrDist = 0;
-        for (; crunner < seqEnd && lastErrDist < w - 1; crunner++) {
-            if (*crunner != unknownChar) {
-                lastErrDist++;
-                continue;
+    {
+        quint32 *arunner = sArray;
+        seqStart = seq;
+        const char *seqEnd = seqStart + seqSize - w + 1;
+        if (unknownChar == 0) {
+            quint32 step = 1 + skipGap;
+            for (const char *crunner = seqStart + gapOffset; crunner < seqEnd; arunner++, crunner += step) {
+                *arunner = seq2val(crunner);
             }
-            lastErrDist = 0;
-        }
-        const char *cpos = crunner - w;
-        int gapLeft = _gapOffset;
-        quint32 w1 = w - 1;
-        if (arrLen != 0) {
-            while (++cpos < seqEnd) {
-                if (*(cpos + w1) != unknownChar) {
+        } else {  // filter suffixes with unknown char from result
+            int oldLen = arrLen;
+            const char *crunner = seqStart;
+            int lastErrDist = 0;
+            for (; crunner < seqEnd && lastErrDist < w - 1; crunner++) {
+                if (*crunner != unknownChar) {
                     lastErrDist++;
-                    if (lastErrDist >= w && gapLeft-- == 0) {
-                        *arunner = seq2val(cpos);
-                        arunner++;
-                        gapLeft = skipGap;
-                    }
                     continue;
                 }
                 lastErrDist = 0;
-                gapLeft = _gapOffset;
             }
+            const char *cpos = crunner - w;
+            int gapLeft = _gapOffset;
+            quint32 w1 = w - 1;
+            if (arrLen != 0) {
+                while (++cpos < seqEnd) {
+                    if (*(cpos + w1) != unknownChar) {
+                        lastErrDist++;
+                        if (lastErrDist >= w && gapLeft-- == 0) {
+                            *arunner = seq2val(cpos);
+                            arunner++;
+                            gapLeft = skipGap;
+                        }
+                        continue;
+                    }
+                    lastErrDist = 0;
+                    gapLeft = _gapOffset;
+                }
+            }
+            arrLen = arunner - sArray;
+            algoLog.trace(QString("filtered len %1, percent %2\n").arg(oldLen - arrLen).arg((arrLen / (float)(oldLen != 0 ? oldLen : 1))));
         }
+        // here sArray is initialized with default values and is not sorted
         arrLen = arunner - sArray;
-        algoLog.trace(QString("filtered len %1, percent %2\n").arg(oldLen - arrLen).arg((arrLen / (float)(oldLen != 0 ? oldLen : 1))));
     }
-    // here sArray is initialized with default values and is not sorted
-    arrLen = arunner - sArray;
 
     if (bitTable != nullptr) {
         // mask all prefixes in sArray with 32-bit values
@@ -179,19 +181,19 @@ SArrayIndex::SArrayIndex(const char *seq, quint32 seqSize, quint32 _len, TaskSta
 
         quint32 wCharsInMask1 = wCharsInMask - 1;
         for (quint32 *end = mrunner + arrLen; mrunner < end; arunner++, mrunner++) {
-            const char *seq = sarr2seq(arunner);
+            const char *aSeq = sarr2seq(arunner);
             if (*arunner == expectedNext && expectedNext != 0) {  // pop first bit, push wCharsInMask1 char to the mask
-                bitValue = ((bitValue << bitCharLen) | bitTable[uchar(*(seq + wCharsInMask1))]) & bitFilter;
+                bitValue = ((bitValue << bitCharLen) | bitTable[uchar(*(aSeq + wCharsInMask1))]) & bitFilter;
 #ifdef _DEBUG
                 // double check that optimization doesn't break anything
-                quint32 bitValue2 = getBitValue(seq);
+                quint32 bitValue2 = getBitValue(aSeq);
                 assert(bitValue == bitValue2);
 #endif
             } else {
                 // recompute the mask if we have some symbols skipped
-                bitValue = getBitValue(seq);
+                bitValue = getBitValue(aSeq);
             }
-            expectedNext = seq2val(seq + 1);
+            expectedNext = seq2val(aSeq + 1);
             *mrunner = bitValue;
         }
     }
@@ -461,25 +463,8 @@ int SArrayIndex::compareBit(const quint32 *x1, const quint32 *x2) const {
 int SArrayIndex::compareAfterBits(quint32 bitMaskPos, const char *seq) const {
     const char *b1 = sarr2seq(sArray + bitMaskPos) + wCharsInMask;
     const char *b2 = seq;
-    int rc = 0;
     for (const char *end = b1 + wAfterBits; b1 < end; b1++, b2++) {
-        rc = *b1 - *b2;
-        if (rc != 0) {
-            return rc;
-        }
-    }
-    return 0;
-}
-
-int SArrayIndex::compareBitByPos(const quint32 *x1, const quint32 *x2) const {
-    int rc = bitMask[x1 - sArray] - bitMask[x2 - sArray];
-    if (rc != 0) {
-        return rc;
-    }
-    const char *b1 = sarr2seq(x1) + wCharsInMask;
-    const char *b2 = sarr2seq(x2) + wCharsInMask;
-    for (const char *end = b1 + wAfterBits; b1 < end; b1++, b2++) {
-        rc = *b1 - *b2;
+        int rc = *b1 - *b2;
         if (rc != 0) {
             return rc;
         }
@@ -655,19 +640,4 @@ void SArrayIndex::debugCheck(char unknownChar) {
     }
 }
 
-template<typename T>
-inline void writeNum(T n, QFile &file) {
-    n = qToBigEndian(n);
-    char *num = (char *)&n;
-    file.write(num, 4);
-}
-
-template<typename T>
-inline T readNum(char *num, QFile &file) {
-    file.read(num, 4);
-    T n = *((T *)num);
-    n = qFromBigEndian(n);
-
-    return n;
-}
 }  // namespace U2

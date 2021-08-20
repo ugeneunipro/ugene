@@ -182,22 +182,6 @@ QList<QDConstraint *> QDActor::getConstraints() const {
     return res;
 }
 
-// QDSchemeUnit
-//////////////////////////////////////////////////////////////////////////
-QString QDSchemeUnit::getPersonalName() const {
-    const QList<QDSchemeUnit *> &units = actor->getSchemeUnits();
-    if (units.size() == 1) {
-        return actor->getParameters()->getLabel();
-    }
-    QDSchemeUnit *s = const_cast<QDSchemeUnit *>(this);
-    assert(units.contains(s));
-    int idx = units.indexOf(s) + 1;
-    QString result = QString("%1_%2")
-                         .arg(actor->getParameters()->getLabel())
-                         .arg(QString::number(idx));
-    return result;
-}
-
 QList<QDDistanceConstraint *> QDSchemeUnit::getDistanceConstraints() const {
     QList<QDDistanceConstraint *> res;
     foreach (QDConstraint *c, schemeConstraints) {
@@ -288,7 +272,7 @@ QList<QDConstraint *>
     QList<QDConstraint *> sharedConstraints;
     const QList<QDConstraint *> &su1Cons = su1->getConstraints();
     const QList<QDConstraint *> &su2Cons = su2->getConstraints();
-    foreach (QDConstraint *con, su1Cons) {
+    for (QDConstraint *con : qAsConst(su1Cons)) {
         if (su2Cons.contains(con)) {
             sharedConstraints.append(con);
         }
@@ -299,49 +283,42 @@ QList<QDConstraint *>
 void QDScheme::clear() {
     // delete dna;
     dna = DNASequence();
-    foreach (QDActor *a, actors) {
+    QList<QDActor *> actorsCopy = actors;
+    for (QDActor *a : qAsConst(actorsCopy)) {
         removeActor(a);
     }
     actorGroups.clear();
     emit si_schemeChanged();
 }
 
-QList<QDSchemeUnit *> currentRoute;
-QList<QList<QDSchemeUnit *>> routes;
-QDSchemeUnit *routeDst = nullptr;
-
 QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
-    assert(currentRoute.isEmpty());
-    assert(routes.isEmpty());
-    assert(!routeDst);
-    routeDst = dst;
-    currentRoute.append(src);
-    findRoute(src);
+    QList<QDSchemeUnit *> currentRoute = {src};
+    QList<QList<QDSchemeUnit *>> routes;
+    findRoute(src, dst, currentRoute, routes);
     QList<QDPath *> res;
-    foreach (const QList<QDSchemeUnit *> &route, routes) {
+    for (const QList<QDSchemeUnit *> &route : qAsConst(routes)) {
         QList<QDPath *> paths;
-        for (int i = 0, m = route.size() - 1; i < m; i++) {
-            QDSchemeUnit *src = route.at(i);
-            QDSchemeUnit *dst = route.at(i + 1);
-            QList<QDConstraint *> joint = getConstraints(src, dst);
+        for (int routeIndex = 0, m = route.size() - 1; routeIndex < m; routeIndex++) {
+            QDSchemeUnit *routeSrc = route.at(routeIndex);
+            QDSchemeUnit *routeDst = route.at(routeIndex + 1);
+            QList<QDConstraint *> joint = getConstraints(routeSrc, routeDst);
 
             // include "parameter" constraints
-            foreach (QDConstraint *con, src->getActor()->getParamConstraints()) {
-                if (con->getSchemeUnits().contains(src) && con->getSchemeUnits().contains(dst)) {
+            foreach (QDConstraint *con, routeSrc->getActor()->getParamConstraints()) {
+                if (con->getSchemeUnits().contains(routeSrc) && con->getSchemeUnits().contains(routeDst)) {
                     joint.append(con);
                 }
             }
             QList<QDDistanceConstraint *> jointCons;
-            foreach (QDConstraint *con, joint) {
-                QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(con);
-                if (dc) {
+            for (QDConstraint *con : qAsConst(joint)) {
+                if (auto dc = static_cast<QDDistanceConstraint *>(con)) {
                     jointCons.append(dc);
                 }
             }
             assert(!jointCons.isEmpty());
 
             if (paths.isEmpty()) {
-                foreach (QDDistanceConstraint *dc, jointCons) {
+                for (QDDistanceConstraint *dc : qAsConst(jointCons)) {
                     QDPath *newPath = new QDPath;
                     bool ok = newPath->addConstraint(dc);
                     assert(ok);
@@ -350,16 +327,16 @@ QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
                 }
             } else {
                 QList<QDPath *> newPaths;
-                for (int i = 1, n = jointCons.size(); i < n; i++) {
-                    foreach (QDPath *path, paths) {
+                for (int jointConstraintIndex = 1, n = jointCons.size(); jointConstraintIndex < n; jointConstraintIndex++) {
+                    for (QDPath *path : qAsConst(paths)) {
                         QDPath *newPath = path->clone();
-                        bool ok = newPath->addConstraint(jointCons.at(i));
+                        bool ok = newPath->addConstraint(jointCons.at(jointConstraintIndex));
                         assert(ok);
                         Q_UNUSED(ok);
                         newPaths.append(newPath);
                     }
                 }
-                foreach (QDPath *path, paths) {
+                for (QDPath *path : qAsConst(paths)) {
                     bool ok = path->addConstraint(jointCons.at(0));
                     assert(ok);
                     Q_UNUSED(ok);
@@ -371,11 +348,10 @@ QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
     }
     currentRoute.clear();
     routes.clear();
-    routeDst = nullptr;
     return res;
 }
 
-void QDScheme::findRoute(QDSchemeUnit *curSu) {
+void QDScheme::findRoute(QDSchemeUnit *curSu, QDSchemeUnit *routeDst, QList<QDSchemeUnit *> &currentRoute, QList<QList<QDSchemeUnit *>> routes) {
     if (curSu == routeDst) {
         routes.append(currentRoute);
     } else {
@@ -392,10 +368,10 @@ void QDScheme::findRoute(QDSchemeUnit *curSu) {
             }
         }
 
-        foreach (QDDistanceConstraint *dc, dcList) {
-            QDSchemeUnit *adj = nullptr;
+        for (QDDistanceConstraint *dc : qAsConst(dcList)) {
             QDSchemeUnit *dcSrc = dc->getSource();
             QDSchemeUnit *dcDst = dc->getDestination();
+            QDSchemeUnit *adj;
             if (curSu == dcSrc) {
                 adj = dcDst;
             } else {
@@ -406,10 +382,10 @@ void QDScheme::findRoute(QDSchemeUnit *curSu) {
                 adjacentList.append(adj);
             }
         }
-        foreach (QDSchemeUnit *adj, adjacentList) {
+        for (QDSchemeUnit *adj : qAsConst(adjacentList)) {
             if (!currentRoute.contains(adj)) {
                 currentRoute.append(adj);
-                findRoute(adj);
+                findRoute(adj, routeDst, currentRoute, routes);
                 currentRoute.removeOne(adj);
             }
         }
@@ -565,7 +541,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
     QList<QDSchemeUnit *> units;
     units << pathSrc << pathDst;
 
-    QDDistanceType distType = E2S;
+    QDDistanceType distType;
     if (pathSrc == firstDc->getSource()) {
         if (pathDst == lastDc->getSource()) {
             if (firstDc->distanceType() == S2S || firstDc->distanceType() == S2E) {

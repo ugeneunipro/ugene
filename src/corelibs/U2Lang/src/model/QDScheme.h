@@ -269,7 +269,6 @@ public:
     QDActor *getActor() const {
         return actor;
     }
-    QString getPersonalName() const;
     QString getId() const {
         QDSchemeUnit *thisPtr = const_cast<QDSchemeUnit *>(this);
         return actor->getUnitId(thisPtr);
@@ -378,7 +377,7 @@ signals:
     void si_schemeChanged();
 
 private:
-    void findRoute(QDSchemeUnit *curSu);
+    void findRoute(QDSchemeUnit *curSu, QDSchemeUnit *routeDst, QList<QDSchemeUnit *>& currentRoute, QList<QList<QDSchemeUnit *>> routes);
 
 private:
     QList<QDActor *> actors;
