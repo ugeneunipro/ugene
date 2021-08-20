@@ -19,39 +19,42 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LINE_EDIT_H_
-#define _U2_PRIMER_LINE_EDIT_H_
+#ifndef _U2_GENERATED_SEQUENCES_TABLE_H_
+#define _U2_GENERATED_SEQUENCES_TABLE_H_
 
-#include <QLineEdit>
-
-#include <U2Core/global.h>
-
-#include <U2Core/global.h>
+#include <QTableWidget>
 
 namespace U2 {
 
 /**
- * @PrimerLineEdit
- * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
- * Promote @QLineEdit to @PrimerLineEdit to make it work.
+ * @GeneratedSequencesTable class
+ * This class is aimed to visualize a set of pre-generated sequence from the resource "generated_sequnces.txt" file
  */
-class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
-    Q_OBJECT
+class GeneratedSequencesTable : public QTableWidget {
 public:
-    PrimerLineEdit(QWidget *parent, bool allowExtendedDna = true);
+    GeneratedSequencesTable(QWidget* parent = nullptr);
 
     /**
-     * Set text if it's valid. If not set empty string.
+     * Update the sequence list with the corresponding filter
+     * Fill the table with sequences from @sequences, which contain @filter
      */
-    void setInvalidatedText(const QString &text);
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
+    void updateSequenceList(const QString& filter);
 
 private:
-    QRect getPlaceHolderRect() const;
+    /**
+     * Fill the table with data from the "generated_sequnces.txt" file
+     */
+    void fillTable();
+    /**
+     * Fill the table with sequences from @data
+     */
+    void updateTable(QList<QString> data);
+
+    QList<QString> sequences;
+
+    static constexpr int SEQUENCE_SIZE = 8;
 };
 
-}    // namespace U2
+}
 
-#endif  // _U2_PRIMER_LINE_EDIT_H_
+#endif

@@ -23,13 +23,16 @@
 #include "tasks/ExtractPrimerTask.h"
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerValidator.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -79,6 +82,10 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                   { sbRightAreaStart, sbRightAreaEnd } };
 
     userPrimersShowHideGroup->init(USER_PRIMERS_SHOW_HIDE_ID, tr("User primers"), wgtUserPrimers, true);
+    generateSequenceShowHideGroup->init(GENERATE_SEQUENCE_SHOW_HIDE_ID,
+                                        tr("Choose generated sequences as user primer's end"),
+                                        wgtGenerateSequence,
+                                        true);
     parametersOfPrimingSequencesShowHideGroup->init(PARAMETERS_OF_PRIMING_SEQUENCES_SHOW_HIDE_ID,
                                                     tr("Parameters of priming sequences"),
                                                     wgtParametersOfPrimingSequences,
@@ -95,10 +102,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                             tr("Open the backbone sequence"),
                                             wgtOpenBackboneSequence,
                                             true);
-    generateSequenceShowHideGroup->init(GENERATE_SEQUENCE_SHOW_HIDE_ID,
-                                        tr("Generate a sequence"),
-                                        wgtGenerateSequence,
-                                        true);
     otherSequencesInPCRShowHideGroup->init(OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID,
                                            tr("Other sequences in PCR reaction"),
                                            wgtOtherSequencesInPcr,
@@ -133,7 +136,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
         connect(maxSb, &QSpinBox::editingFinished, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_maxValueChanged);
     }
     connect(tbLoadBackbone, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone);
-    connect(tbsaveRandomSequences, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_saveRandomSequences);
     connect(tbLoadOtherSequencesInPcr, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr);
     connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
     connect(annDnaView, &AnnotatedDNAView::si_sequenceModified, this,
@@ -141,6 +143,15 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
         &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
+
+    connect(pbFindReverseComplement, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectReverseComplementInTable);
+    connect(pbAddToForward5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ForwardSequence);
+    connect(pbAddToForward3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ForwardSequence);
+    connect(pbAddToReverse5, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ReverseSequence);
+    connect(pbAddToReverse3, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ReverseSequence);
+
+    leFilter->setValidator(new PrimerValidator(this, false));
+    connect(leFilter, &QLineEdit::textEdited, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
@@ -204,8 +215,6 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.rightArea.length = (int)sbRightAreaEnd->value() - (int)sbRightAreaStart->value();
 
     settings.backboneSequenceUrl = leBackboneFilePath->text();
-
-    settings.generateSequenceUrl = leRandomSequencesFilePath->text();
 
     settings.otherSequencesInPcrUrl = leOtherSequencesInPcrFilePath->text();
 
@@ -319,15 +328,6 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone() {
     leBackboneFilePath->setText(file);
 }
 
-void PCRPrimerDesignForDNAAssemblyOPWidget::sl_saveRandomSequences() {
-    QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
-    LastUsedDirHelper lod;
-    QString file = U2FileDialog::getSaveFileName(nullptr, tr("Save a random sequences file"), lod.dir, filter);
-    CHECK(!file.isEmpty(), );
-
-    leRandomSequencesFilePath->setText(file);
-}
-
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
     const QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
@@ -378,6 +378,43 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
         settings.fragmentName = selectedAnnotation->getName();
         AppContext::getTaskScheduler()->registerTopLevelTask(new ExtractPrimerAndOpenDocumentTask(settings));
     }
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectReverseComplementInTable() {
+    auto sequence = getSelectedSequence();
+    auto dnaAlphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    SAFE_POINT(dnaAlphabet != nullptr, L10N::nullPointerError("DNAAlphabet"), );
+
+    auto reverseComplementSequence = DNASequenceUtils::reverseComplement(sequence.toLocal8Bit(), dnaAlphabet);
+    for (int i = 0; i < twGeneratedSequences->rowCount(); i++) {
+        auto txt = twGeneratedSequences->item(i, 0)->text();
+        CHECK_CONTINUE(txt == reverseComplementSequence);
+
+        twGeneratedSequences->selectRow(i);
+        twGeneratedSequences->setFocus();
+        break;
+    }
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ForwardSequence() {
+    leForwardPrimer->setLeftEnd(getSelectedSequence());
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ForwardSequence() {
+    leForwardPrimer->setRightEnd(getSelectedSequence());
+
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_add5ReverseSequence() {
+    leReversePrimer->setRightEnd(getSelectedSequence());
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_add3ReverseSequence() {
+    leReversePrimer->setLeftEnd(getSelectedSequence());
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList(const QString& text) {
+    twGeneratedSequences->updateSequenceList(text);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
@@ -456,5 +493,15 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, U2Region 
     start->setValue(region.startPos + 1);
     end->setValue(region.endPos());
     sl_updateParametersRanges();
+}
+QString PCRPrimerDesignForDNAAssemblyOPWidget::getSelectedSequence() const {
+    auto selecteItems = twGeneratedSequences->selectedItems();
+    CHECK(!selecteItems.isEmpty(), QString());
+    SAFE_POINT(selecteItems.size() == 1, L10N::nullPointerError("Unexpected selection"), QString());
+
+    auto sequence = selecteItems.first()->text();
+    SAFE_POINT(sequence.size() == 8, L10N::nullPointerError("Unexpected sequence size"), QString());
+
+    return sequence;
 }
 }
