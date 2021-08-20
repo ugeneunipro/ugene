@@ -23,12 +23,10 @@
 
 #include <QColorDialog>
 #include <QHBoxLayout>
-#include <QLabel>
 #include <QMessageBox>
 #include <QProxyStyle>
 #include <QPushButton>
 #include <QStyleFactory>
-#include <QVBoxLayout>
 
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
@@ -37,8 +35,6 @@
 
 #include "ADVGraphModel.h"
 #include "WindowStepSelectorWidget.h"
-
-#define BACKGROUND_COLOR "QPushButton { background-color : %1;}"
 
 namespace U2 {
 
@@ -54,10 +50,9 @@ void setButtonColor(QPushButton *button, const QColor &color) {
 
 GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer *d, const U2Region &range, QWidget *parent)
     : QDialog(parent), colorMap(d->getColors()) {
-    const GSequenceGraphWindowData &windowData = d->getWindowData();
-    const GSequenceGraphMinMaxCutOffData &cutOffData = d->getCutOffData();
-    wss = new WindowStepSelectorWidget(this, range, windowData.window, windowData.step);
-    mms = new MinMaxSelectorWidget(this, cutOffData.minEdge, cutOffData.maxEdge, cutOffData.enableCuttoff);
+    const GSequenceGraphMinMaxCutOffState &cutOffData = d->getCutOffState();
+    wss = new WindowStepSelectorWidget(this, range, d->getWindow(), d->getStep());
+    mms = new MinMaxSelectorWidget(this, cutOffData.min, cutOffData.max, cutOffData.isEnabled);
 
     QFormLayout *form = wss->getFormLayout();
     foreach (const QString &key, colorMap.keys()) {
@@ -110,13 +105,19 @@ void GraphSettingsDialog::sl_onPickColorButtonClicked() {
     QString colorName = colorButton->objectName();
     QColor initial = colorMap.value(colorName);
 
-    QObjectScopedPointer<QColorDialog> CD = new QColorDialog(initial, this);
-    CD->setOption(QColorDialog::DontUseNativeDialog, qgetenv(ENV_GUI_TEST) == "1");
-    CD->exec();
-    CHECK(!CD.isNull(), );
+    QObjectScopedPointer<QColorDialog> colorDialog = new QColorDialog(initial, this);
 
-    if (CD->result() == QDialog::Accepted) {
-        QColor newColor = CD->selectedColor();
+    // Disable use of native dialog here.
+    // Reason: the native dialog will not be shown (tested on Ubuntu 20.04) if we have at least 1 graph-label visible (QT bug?).
+    // The problem is caused by GSequenceGraphDrawer::draw() method that calls graphLabel->setVisible().
+    // One possible solution here could be an optimization of GSequenceGraphViewRA::drawAll method: avoid full redraw when it is not needed.
+    // Another solution is to make 'TextLabel' not a QLabel (which causes the problem), but a QWidget that draws the label text manually.
+    colorDialog->setOption(QColorDialog::DontUseNativeDialog, true);
+    colorDialog->exec();
+    CHECK(!colorDialog.isNull(), );
+
+    if (colorDialog->result() == QDialog::Accepted) {
+        QColor newColor = colorDialog->selectedColor();
         colorMap[colorName] = newColor;
         setButtonColor(colorButton, newColor);
     }

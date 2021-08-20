@@ -61,7 +61,6 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
@@ -1752,23 +1751,30 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0057) {
-    // Uses processor core!!!
-    //     Open human_T1.fa
+    // Check that graph shows expected min/max label count.
+
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Open any graph
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
-    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
-    GSequenceGraphView *graphView = GTUtilsSequenceView::getGraphView(os);
 
-    //    Use context menu {graph->Select all extremum points}
-    GTUtilsDialog::waitForDialog(os, new GraphLabelsSelectDialogFiller(os, 5000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Graph"
-                                                                        << "select_all_extremum_points"));
+    // Open GC Content (%).
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Zoom in, so we have a readable picture for the label tests.
+    QAction *zoomInAction = GTAction::findActionByText(os, "Zoom In");
+    for (int i = 0; i < 5; i++) {
+        GTWidget::click(os, GTAction::button(os, zoomInAction));
+    }
+
+    // Use context menu {graph->Select all extremum points}.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Graph", "show_labels_for_min_max_points"}));
+    GSequenceGraphView *graphView = GTUtilsSequenceView::getGraphView(os);
     GTWidget::click(os, graphView, Qt::RightButton);
-    //    In dialog select any value
-    int labelsNum = GTUtilsSequenceView::getGraphLabels(os, graphView).size();
-    CHECK_SET_ERR(labelsNum == 81, QString("unexpected labels number: %1").arg(labelsNum))
+
+    // Check labels count match the expected value.
+    int labelCount = GTUtilsSequenceView::getGraphLabels(os, graphView).size();
+    CHECK_SET_ERR(labelCount == 8, QString("Unexpected labels number: %1").arg(labelCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
@@ -1778,7 +1784,6 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAction *zoomIn = GTAction::findAction(os, "action_zoom_in_A1#berezikov");
-    CHECK_SET_ERR(zoomIn != nullptr, "Cannot find action_zoom_in_A1#berezikov");
 
     GTWidget::click(os, GTAction::button(os, zoomIn));
     GTWidget::click(os, GTAction::button(os, zoomIn));
@@ -1790,7 +1795,6 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     QImage image = GTWidget::getImage(os, chromView);
 
     QAction *bars = GTAction::findActionByText(os, "Show quality bars");
-    CHECK_SET_ERR(bars, "Cannot find 'Show quality bars' action");
     GTWidget::click(os, GTAction::button(os, bars));
 
     CHECK_SET_ERR(image != GTWidget::getImage(os, chromView), "Nothing changed on Chromatogram View after Bars adding");
@@ -1798,7 +1802,6 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     image = GTWidget::getImage(os, chromView);
 
     QAction *traces = GTAction::findActionByText(os, "Show/hide trace");
-    CHECK_SET_ERR(traces != nullptr, "Cannot find 'Show/hide trace' action");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "A"));
     GTWidget::click(os, GTAction::button(os, traces));

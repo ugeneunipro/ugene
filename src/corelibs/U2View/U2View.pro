@@ -180,14 +180,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/GSequenceLineView.h \
            src/ov_sequence/GSequenceLineViewAnnotated.h \
            src/ov_sequence/GraphLabelModel.h \
-           src/ov_sequence/GraphLabelsSelectDialog.h \
            src/ov_sequence/GraphMenu.h \
            src/ov_sequence/GraphSettingsDialog.h \
            src/ov_sequence/Overview.h \
            src/ov_sequence/PanView.h \
            src/ov_sequence/PanViewRows.h \
            src/ov_sequence/SaveGraphCutoffsDialogController.h \
-           src/ov_sequence/SaveGraphCutoffsTask.h \
            src/ov_sequence/SearchQualifierDialog.h \
            src/ov_sequence/SequenceObjectContext.h \
            src/ov_sequence/WindowStepSelectorWidget.h \
@@ -457,14 +455,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/GSequenceLineView.cpp \
            src/ov_sequence/GSequenceLineViewAnnotated.cpp \
            src/ov_sequence/GraphLabelModel.cpp \
-           src/ov_sequence/GraphLabelsSelectDialog.cpp \
            src/ov_sequence/GraphMenu.cpp \
            src/ov_sequence/GraphSettingsDialog.cpp \
            src/ov_sequence/Overview.cpp \
            src/ov_sequence/PanView.cpp \
            src/ov_sequence/PanViewRows.cpp \
            src/ov_sequence/SaveGraphCutoffsDialogController.cpp \
-           src/ov_sequence/SaveGraphCutoffsTask.cpp \
            src/ov_sequence/SearchQualifierDialog.cpp \
            src/ov_sequence/SequenceObjectContext.cpp \
            src/ov_sequence/WindowStepSelectorWidget.cpp \

@@ -22,30 +22,26 @@
 #include "SaveGraphCutoffsDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U1AnnotationUtils.h>
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2View/ADVAnnotationCreation.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
 
-SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d,
-                                                                   QSharedPointer<GSequenceGraphData> &_gd,
+SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData> &_graph,
+                                                                   const GSequenceGraphMinMaxCutOffState &cutOffState,
                                                                    QWidget *parent,
                                                                    SequenceObjectContext *ctx)
-    : QDialog(parent),
-      ctx(ctx),
-      d(_d),
-      gd(_gd) {
+    : QDialog(parent), ctx(ctx), graph(_graph) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929579");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
@@ -58,9 +54,9 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
     m.useUnloadedObjects = false;
     m.useAminoAnnotationTypes = ctx->getAlphabet()->isAmino();
     m.sequenceLen = ctx->getSequenceObject()->getSequenceLength();
-    ac = new CreateAnnotationWidgetController(m, this);
+    createAnnotationController = new CreateAnnotationWidgetController(m, this);
 
-    QWidget *caw = ac->getWidget();
+    QWidget *caw = createAnnotationController->getWidget();
     QVBoxLayout *l = new QVBoxLayout();
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->setMargin(0);
@@ -69,7 +65,14 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
 
     betweenRadioButton->setChecked(true);
 
-    float min = d->getGlobalMin(), max = d->getGlobalMax();
+    float min = cutOffState.min;
+    float max = cutOffState.max;
+    if (!cutOffState.isEnabled) {
+        // Automatically set some meaningful value between min and max visible values.
+        float delta = graph->visibleMax - graph->visibleMin;
+        min = graph->visibleMin + delta / 3;
+        max = graph->visibleMax - delta / 3;
+    }
 
     if (max < 1) {
         maxCutoffBox->setDecimals(4);
@@ -101,63 +104,58 @@ void SaveGraphCutoffsDialogController::accept() {
     if (!validate()) {
         return;
     }
-    bool objectPrepared = ac->prepareAnnotationObject();
+    bool objectPrepared = createAnnotationController->prepareAnnotationObject();
     if (!objectPrepared) {
-        QMessageBox::critical(this, tr("Error!"), "Cannot create an annotation object. Please check settings");
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Cannot create an annotation object. Please check settings"));
         return;
     }
-    const CreateAnnotationModel &mm = ac->getModel();
-    int startPos = gd->cachedFrom, step = gd->cachedS, window = gd->cachedW;
-    PairVector &points = gd->cachedData;
-
-    int curPos = (startPos < window) ? (window / 2 - 1) : startPos, startOffset = window / 2, prevAccepetedPos = 0;
-    curPos++;
-    for (int i = 0, n = points.cutoffPoints.size(); i < n; i++) {
-        if (isAcceptableValue(points.cutoffPoints[i])) {
-            if (resultRegions.isEmpty()) {
-                resultRegions.append(U2Region(curPos - startOffset, window));
-            } else {
-                QList<U2Region>::iterator it = resultRegions.end();
-                it--;
-                if ((prevAccepetedPos + step) == curPos) {  // expand if accepted values in a row
-                    it->length += step;
-                } else {  // remove previous empty region, and add new region to list
-                    resultRegions.append(U2Region(curPos - startOffset, window));
-                }
-            }
-            prevAccepetedPos = curPos;
+    QList<U2Region> resultRegions;
+    U2Region currentRegion;
+    for (int i = 0, n = graph->dataPoints.size(); i < n; i++) {
+        float value = graph->dataPoints[i];
+        if (isAcceptableValue(value)) {
+            U2Region dataPointRegion(i * graph->step, graph->window);
+            currentRegion = currentRegion.isEmpty() ? dataPointRegion : U2Region::containingRegion(currentRegion, dataPointRegion);
+        } else if (!currentRegion.isEmpty()) {
+            resultRegions.append(currentRegion);
+            currentRegion = {};
         }
-        curPos += step;
+    }
+    if (!currentRegion.isEmpty()) {
+        resultRegions.append(currentRegion);
     }
 
-    QList<SharedAnnotationData> data;
-    foreach (const U2Region &r, resultRegions) {
-        SharedAnnotationData d(new AnnotationData);
-        d->location->regions.append(r);
-        d->type = mm.data->type;
-        d->name = mm.data->name;
-        U1AnnotationUtils::addDescriptionQualifier(d, mm.description);
-        data.append(d);
+    if (resultRegions.isEmpty()) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("No regions to cutoff. Try change the cutoff range."));
+        return;
     }
-    AnnotationTableObject *aobj = mm.getAnnotationObject();
-    tryAddObject(aobj);
-    Task *t = new CreateAnnotationsTask(aobj, data, mm.groupName);
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+
+    const CreateAnnotationModel &annotationModel = createAnnotationController->getModel();
+    QList<SharedAnnotationData> data;
+    for (const U2Region &r : qAsConst(resultRegions)) {
+        SharedAnnotationData annotationData(new AnnotationData());
+        annotationData->location->regions.append(r);
+        annotationData->type = annotationModel.data->type;
+        annotationData->name = annotationModel.data->name;
+        U1AnnotationUtils::addDescriptionQualifier(annotationData, annotationModel.description);
+        data.append(annotationData);
+    }
+    auto annotationObject = annotationModel.getAnnotationObject();
+    tryAddObject(annotationObject);
+
+    auto task = new CreateAnnotationsTask(annotationObject, data, annotationModel.groupName);
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
     QDialog::accept();
 }
 
-bool SaveGraphCutoffsDialogController::isAcceptableValue(float val) {
-    return (val > minCutoffBox->value() &&
-            val < maxCutoffBox->value() &&
-            betweenRadioButton->isChecked()) ||
-           (val < minCutoffBox->value() &&
-            val > maxCutoffBox->value() &&
-            outsideRadioButton->isChecked());
+bool SaveGraphCutoffsDialogController::isAcceptableValue(float val) const {
+    bool isOutside = val <= minCutoffBox->value() || val <= maxCutoffBox->value();
+    return outsideRadioButton->isChecked() ? isOutside : !isOutside;
 }
 
 bool SaveGraphCutoffsDialogController::validate() {
     if (minCutoffBox->value() >= maxCutoffBox->value()) {
-        QMessageBox::critical(this, tr("Error!"), "Minimum cutoff value greater or equal maximum!");
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid cutoff range."));
         return false;
     }
     return true;
@@ -165,7 +163,7 @@ bool SaveGraphCutoffsDialogController::validate() {
 
 void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
     ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
-    CHECK(nullptr != advContext, );
+    CHECK(advContext != nullptr, );
     advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 

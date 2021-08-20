@@ -50,11 +50,11 @@ class DeviationGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
     DeviationGraphAlgorithm(const QPair<char, char> &_p);
 
-    void calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &r, const GSequenceGraphWindowData *d, U2OpStatus &os);
+    void calculate(QVector<float> &res, U2SequenceObject *o, qint64 window, qint64 step, U2OpStatus &os) override;
 
 private:
-    void windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seq, int startPos, const GSequenceGraphWindowData *d, int nSteps, U2OpStatus &os);
-    void sequenceStrategyWithMemorize(QVector<float> &res, const QByteArray &seq, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os);
+    void windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seq, qint64 startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus &os);
+    void sequenceStrategyWithMemorize(QVector<float> &res, const QByteArray &seq, const U2Region &vr, qint64 window, qint64 step, U2OpStatus &os);
     QPair<int, int> matchOnStep(const QByteArray &seq, int begin, int end);
 
     QPair<char, char> p;

@@ -22,6 +22,7 @@
 #include <GTGlobals.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
@@ -33,7 +34,6 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDialogButtonBox>
-#include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QPushButton>
 
@@ -560,21 +560,38 @@ GSequenceGraphView *GTUtilsSequenceView::getGraphView(HI::GUITestOpStatus &os) {
 QList<QVariant> GTUtilsSequenceView::getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
     Q_UNUSED(os);
     QList<QVariant> list;
-    graph->getLabelPositions(list);
+    graph->getSavedLabelsState(list);
     return list;
 }
 
-QList<TextLabel *> GTUtilsSequenceView::getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
+QList<GraphLabelTextBox *> GTUtilsSequenceView::getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView *graph) {
     Q_UNUSED(os);
-    QList<TextLabel *> result = graph->findChildren<TextLabel *>();
+    QList<GraphLabelTextBox *> result = graph->findChildren<GraphLabelTextBox *>();
     return result;
 }
 
 QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenceGraphView *graph) {
-    ColorMap map = graph->getGSequenceGraphDrawer()->getColors();
+    ColorMap map = graph->getGraphDrawer()->getColors();
     QColor result = map.value("Default color");
     return result;
 }
+
+#define GT_METHOD_NAME "toggleGraphByName"
+void GTUtilsSequenceView::toggleGraphByName(HI::GUITestOpStatus &os, const QString &graphName, int sequenceViewIndex) {
+    QWidget *sequenceWidget = getSeqWidgetByNumber(os, sequenceViewIndex);
+    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {graphName}));
+    GTWidget::click(os, graphAction);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomIn"
+void GTUtilsSequenceView::zoomIn(HI::GUITestOpStatus &os, int sequenceViewIndex) {
+    QWidget *sequenceWidget = getSeqWidgetByNumber(os, sequenceViewIndex);
+    QAction *zoomInAction = GTAction::findActionByText(os, "Zoom In", sequenceWidget);
+    GTWidget::click(os, GTAction::button(os, zoomInAction));
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "enableEditingMode"
 void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, int sequenceNumber) {
