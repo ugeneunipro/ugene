@@ -1487,7 +1487,7 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
     CHECK(!selection.isEmpty(), );
 
     MaCollapseModel *collapseModel = editor->getCollapseModel();
-    const QList<QRect> &selectedRects = selection.getRectList();
+    QList<QRect> selectedRects = selection.getRectList();  // Get a copy of rect to avoid parallel modification.
 
     if (newCharacter == U2Msa::GAP_CHAR) {  // Do not allow to replace all chars in any row with a gap.
         bool hasEmptyRowsAsResult = false;
@@ -1503,6 +1503,7 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
         if (hasEmptyRowsAsResult) {
             uiLog.info(tr("Can't replace selected characters. The result row will have only gaps."));
             exitFromEditCharacterMode();
+            return;
         }
     }
     U2OpStatusImpl os;

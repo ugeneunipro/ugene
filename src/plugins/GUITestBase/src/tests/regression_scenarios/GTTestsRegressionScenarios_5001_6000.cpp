@@ -3345,7 +3345,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
 
 GUI_TEST_CLASS_DEFINITION(test_5752) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -3358,14 +3358,14 @@ GUI_TEST_CLASS_DEFINITION(test_5752) {
 
             // Expected state : "Add to project" option is checked by default
             bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            CHECK_SET_ERR(addToProject, "Incorrect addToProject state: expected true, got false");
 
             // Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3379,12 +3379,8 @@ GUI_TEST_CLASS_DEFINITION(test_5752) {
                 name += ".ab1";
                 reads << name;
             }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger/", reads));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3393,34 +3389,29 @@ GUI_TEST_CLASS_DEFINITION(test_5752) {
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 5. Select any symbol
+    // 5. Select any symbol.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
 
     // 6. Press Trim left end
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Trim left end");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Trim left end"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 7. Press Trim right end
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Trim right end");
+    // 7. Press Trim right end.
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Trim right end"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     int readNum = GTUtilsMcaEditor::getReadsNames(os).size();
-    // 8. Press Replace symbol / character and press space
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace character/gap");
+    // 8. Press Replace symbol / character and press space.
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace character/gap"});
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    // Expected : the read must be deleted.If this read is last this option must be blocked
+    // Expected : Can't replace with GAP the last non-gap symbol in the read.
+    // UGENE does not support empty reads today.
     int newReadNum = GTUtilsMcaEditor::getReadsNames(os).size();
-    CHECK_SET_ERR(newReadNum == 15 && 16 == readNum, QString("Incorrect reads num, expected 20 and 19, current %1 and %2").arg(QString::number(readNum)).arg(QString::number(newReadNum)));
+    CHECK_SET_ERR(newReadNum == 16 && readNum == 16, QString("Incorrect reads num, expected 16, got %1 and %2").arg(readNum).arg(newReadNum));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5753) {
