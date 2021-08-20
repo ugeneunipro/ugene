@@ -24,18 +24,24 @@
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/PrimerValidator.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -417,6 +423,15 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList(const QString&
     twGeneratedSequences->updateSequenceList(text);
 }
 
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_annotationCreationTaskFinished() {
+    CreateAnnotationsTask *t = qobject_cast<CreateAnnotationsTask *>(sender());
+    if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
+        return;
+    }
+    CHECK(t->getResultAnnotations().size() > 0, );
+    productsTable->setAnnotationGroup(t->getResultAnnotations().at(0)->getGroup());
+}
+
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     QList<SharedAnnotationData> annotations;
     int index = 0;
@@ -437,36 +452,28 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         return;
     }
 
-    AnnotationTableObject *resultsTableObject = nullptr;
-    const QList<AnnotationTableObject *> atoList = annDnaView->getAnnotationObjects();
-    for (auto *ato : atoList) {
-        if (ato->getGObjectName() == PCR_TABLE_OBJECT_NAME) {
-            resultsTableObject = ato;
-            break;
-        }
+    U2OpStatusImpl os;
+    const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+    SAFE_POINT_OP(os, );
+    AnnotationTableObject *resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
+    QSet<QString> excludeList;
+    for (Document* d : AppContext::getProject()->getDocuments()) {
+        excludeList.insert(d->getURLString());
     }
-    if (resultsTableObject == nullptr) {
-        U2OpStatusImpl os;
-        const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-        SAFE_POINT_OP(os, );
-        resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
-    }
-    //roll group name if already exists
-    QStringList usedNames;
-    auto subgroups = resultsTableObject->getRootGroup()->getSubgroups();
-    for (auto subgroup : qAsConst(subgroups)) {
-        usedNames.append(subgroup->getName());
-    }
-    int counter = 1;
-    QString rolledName = PCR_TABLE_OBJECT_NAME;
-    while (usedNames.contains(rolledName)) {
-        rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
-        counter++;
-    }
-    auto addedAnnotations = resultsTableObject->addAnnotations(annotations, rolledName);
-    resultsTableObject->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
-    annDnaView->addObject(resultsTableObject);
-    productsTable->setAnnotationGroup(addedAnnotations.at(0)->getGroup());
+    QString newDocUrl = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/PCRPrimers.gb", "_", excludeList);
+    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+    Document *d = df->createNewLoadedDocument(iof, newDocUrl, os);
+    CHECK_OP(os, );
+    const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+    SAFE_POINT_OP(os, );
+    resultsTableObject->addObjectRelation(GObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence));
+    d->addObject(resultsTableObject);
+    AppContext::getProject()->addDocument(d);
+    annDnaView->tryAddObject(resultsTableObject);
+    Task *createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, annotations, "Primers");
+    connect(createAnnotationsTask, SIGNAL(si_stateChanged()), SLOT(sl_annotationCreationTaskFinished()));
+    AppContext::getTaskScheduler()->registerTopLevelTask(createAnnotationsTask);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {

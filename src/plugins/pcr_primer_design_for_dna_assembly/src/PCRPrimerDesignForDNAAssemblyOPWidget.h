@@ -82,11 +82,18 @@ private slots:
      * Show the "Open file" dialog, choose a file with other PCR sequences and set path to the corresponding line edit.
      */
     void sl_loadOtherSequenceInPcr();
+    /*
+    * Associate created result annotations with result table.
+    */
     void sl_onFindTaskFinished();
     /*
     * Extract result product to file.
     */
     void sl_extractProduct();
+    /*
+     * Create genbank file with result annotations/
+     */
+    void sl_annotationCreationTaskFinished();
     /**
      * Select the sequence in the @twGeneratedSequences, which is reverse-complement to the selected one
      */
