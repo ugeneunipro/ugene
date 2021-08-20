@@ -19,15 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <cctype>
-
 #include "GTKeyboardDriver.h"
 
 #if defined __linux__
-#    define XK_LATIN1  // for latin symbol
-#    define XK_MISCELLANY  // for action keys
 #    include <X11/extensions/XTest.h>
-#    include <X11/keysymdef.h>
+#    include <X11/keysym.h>
 #endif
 
 namespace HI {
