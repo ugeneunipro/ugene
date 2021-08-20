@@ -27,12 +27,12 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#include "PCRPrimerProductTable.h"
+#include "ResultTable.h"
 #include "src/tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 namespace U2 {
 
-PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
+ResultTable::ResultTable(QWidget *parent)
     : QTableWidget(parent) {
     for (int i = 0; i < MAXIMUM_ROW_COUNT; i++) {
         currentProducts.append(U2Region());
@@ -45,7 +45,7 @@ PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
     connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
 }
 
-void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &_currentProducts, AnnotatedDNAView *_associatedView) {
+void ResultTable::setCurrentProducts(const QList<U2Region> &_currentProducts, AnnotatedDNAView *_associatedView) {
     SAFE_POINT(_currentProducts.size() == MAXIMUM_ROW_COUNT, "Should be 8 results", );
     currentProducts = _currentProducts;
     int index = 0;
@@ -63,11 +63,11 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &_currentPr
     associatedView = _associatedView;
 }
 
-void PCRPrimerProductTable::setAnnotationGroup(AnnotationGroup *_associatedGroup) {
+void ResultTable::setAnnotationGroup(AnnotationGroup *_associatedGroup) {
     associatedGroup = _associatedGroup;
 }
 
-Annotation* PCRPrimerProductTable::getSelectedAnnotation() const {
+Annotation* ResultTable::getSelectedAnnotation() const {
     Annotation *selectedAnnotation = nullptr;
     QModelIndexList selectedIndexesList = selectedIndexes();
     if (selectedIndexesList.isEmpty()) {
@@ -88,15 +88,15 @@ Annotation* PCRPrimerProductTable::getSelectedAnnotation() const {
     return selectedAnnotation;
 }
 
-PCRPrimerProductTableData PCRPrimerProductTable::getPCRPrimerProductTableData() const {
-    PCRPrimerProductTableData data;
+ResultTableData ResultTable::getPCRPrimerProductTableData() const {
+    ResultTableData data;
     data.associatedGroup = associatedGroup;
     data.associatedView = associatedView;
     data.currentProducts = currentProducts;
     return data;
 }
 
-void PCRPrimerProductTable::sl_selectionChanged() {
+void ResultTable::sl_selectionChanged() {
     Annotation *selectedAnnotation = getSelectedAnnotation();
     if (selectedAnnotation != nullptr) {
         for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
