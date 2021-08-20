@@ -79,10 +79,6 @@ private slots:
      */
     void sl_loadBackbone();
     /**
-     * Show the "Save file" dialog, choose a place to save file with random sequences and set path to the corresponding line edit.
-     */
-    void sl_saveRandomSequences();
-    /**
      * Show the "Open file" dialog, choose a file with other PCR sequences and set path to the corresponding line edit.
      */
     void sl_loadOtherSequenceInPcr();
@@ -98,6 +94,30 @@ private slots:
      * Create genbank file with result annotations/
      */
     void sl_annotationCreationTaskFinished();
+    /**
+     * Select the sequence in the @twGeneratedSequences, which is reverse-complement to the selected one
+     */
+    void sl_selectReverseComplementInTable();
+    /**
+     * Add the selected in @twGeneratedSequences to the forvard user primer as 5' end
+     */
+    void sl_add5ForwardSequence();
+    /**
+     * Add the selected in @twGeneratedSequences to the forward user primer as 3' end
+     */
+    void sl_add3ForwardSequence();
+    /**
+     * Add the selected in @twGeneratedSequences to the reverse user primer as 5' end
+     */
+    void sl_add5ReverseSequence();
+    /**
+     * Add the selected in @twGeneratedSequences to the reverse user primer as 3' end
+     */
+    void sl_add3ReverseSequence();
+    /**
+     * Update sequences in @twGeneratedSequences, corresponding to the filter from @leFilter
+     */
+    void sl_updateSequenceList(const QString&);
 
 private:
     void createResultAnnotations();
@@ -112,6 +132,11 @@ private:
      * start must be non-null.
      */
     void setRegion(QSpinBox *start, U2Region region);
+
+    /**
+     * Return the selected in @twGeneratedSequences sequence
+     */
+    QString getSelectedSequence() const;
 
     AnnotatedDNAView *annDnaView = nullptr;
 
