@@ -103,7 +103,11 @@ void SaveDocumentTask::run() {
     DocumentFormat *df = doc->getDocumentFormat();
 
     QString originalFilePath = url.getURLString();
-    bool isOriginalFileExist = url.isLocalFile() && QFileInfo::exists(originalFilePath);
+    QFile originalFile(originalFilePath);
+
+    // If we do not check for 0 size here XML tests (cmd-line/bedtools) fail on Windows.
+    // TODO: understand &  document why this size() != 0 is needed here for Windows.
+    bool isOriginalFileExist = url.isLocalFile() && originalFile.exists() && originalFile.size() != 0;
 
     if (isOriginalFileExist && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
         // Changes are already applied, the file shouldn't be saved
