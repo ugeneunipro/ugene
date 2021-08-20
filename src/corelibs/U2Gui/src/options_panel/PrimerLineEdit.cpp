@@ -28,9 +28,9 @@
 
 namespace U2 {
 
-PrimerLineEdit::PrimerLineEdit(QWidget* parent)
+PrimerLineEdit::PrimerLineEdit(QWidget *parent, bool allowExtendedDna)
     : QLineEdit(parent) {
-    setValidator(new PrimerValidator(this));
+    setValidator(new PrimerValidator(this, allowExtendedDna));
 }
 
 void PrimerLineEdit::setInvalidatedText(const QString& text) {
