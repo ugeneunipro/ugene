@@ -92,7 +92,6 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 14, "Wrong length");
@@ -107,7 +106,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 12, "Wrong length");
@@ -122,10 +120,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    // GTUtilsMdi::click(os, GTGlobals::Maximize);
-    GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 14, "Wrong length");
@@ -140,10 +134,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "revcompl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
-    // GTUtilsMdi::click(os, GTGlobals::Minimize);
-    GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 6, "Wrong length");
@@ -158,10 +148,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
 GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "translations_nucl.aln", GTFileDialog::Cancel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "translations_nucl.aln", GTFileDialog::Open);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 3, "Wrong length");
@@ -176,79 +165,59 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
+    CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == true, "Offsets are not visible");
+    CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
-    // GTUtilsMdi::click(os, GTGlobals::Maximize);
-    GTGlobals::sleep();
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
+    CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == true, "Offsets are not visible");
+    CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-
-    // GTUtilsMdi::click(os, GTGlobals::Maximize);
-    GTGlobals::sleep();
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Appearance"
                                                 << "Show offsets");
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
+    CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == true, "Offsets are not visible");
+    CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_3) {
@@ -257,16 +226,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Appearance"
                                                 << "Show offsets");
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
-
+    CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     mdiWindow = GTUtilsMdi::activeWindow(os, false);
     CHECK_SET_ERR(mdiWindow == nullptr, "There is an MDI window");
@@ -274,48 +241,37 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "revcompl");
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Appearance"
                                                 << "Show offsets");
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == true, "Offsets are not visible");
+    CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "revcompl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
-    CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
+    CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "revcompl");
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // GTUtilsMdi::click(os, GTGlobals::Maximize);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
-
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(offsetsVisible, "Offsets are not visible");
@@ -384,24 +340,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
-
     GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
@@ -409,178 +361,115 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
-
     GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    // Check maligniment view status bar coordinates
+    // Check alignment view status bar coordinates
 
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Alignment length 14, left offset 1, right offset 14
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
+    QLabel *line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    QLabel *column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
+    QLabel *selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
 
-    QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
-    QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
-
-    // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
+    //  Select 1 base.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-    // Expected state: coordinates in status bar Seq 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
+    CHECK_SET_ERR(column->text() == "Col 5 / 14", "1. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "1. Sequence is " + line->text());
 
-    // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
+    //  Select another base.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-    // Expected state: coordinates in status bar Seq 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
+    CHECK_SET_ERR(column->text() == "Col 2 / 14", "2. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "2. Sequence is " + line->text());
 
-    // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
+    // Select a vertical 1D range.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(7, 7));
+    CHECK_SET_ERR(column->text() == "Col 8 / 14", "3. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq - / 10", "3. Sequence is " + line->text());
+
+    // Select a horizontal 1D range.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 3));
+    CHECK_SET_ERR(column->text() == "Col - / 14", "4. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "4. Sequence is " + line->text());
+
+    // Select a 2D range.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-    // Expected state: coordinates in status bar Seq 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
+    CHECK_SET_ERR(column->text() == "Col - / 14", "5. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq - / 10", "5. Sequence is " + line->text());
+
+    // Select multi-selection.
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::selectRowsByName(os, {"Phaneroptera_falcata", "Tettigonia_viridissima"});
+    CHECK_SET_ERR(column->text() == "Col - / 14", "6. Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq - / 10", "6. Sequence is " + line->text());
+    CHECK_SET_ERR(selection->text() == "Sel 14 x 2 regions", "6. Selection is " + selection->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
-    // Check maligniment view status bar coordinates
-
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Alignment length 14, left offset 1, right offset 14
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
+    QLabel *line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    QLabel *column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
 
-    QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
-    QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
-
-    // CHANGES: click order changed
-    // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-    // Expected state: coordinates in status bar Seq 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
-
-    // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-    // Expected state: coordinates in status bar Seq 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
-
-    // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-    // Expected state: coordinates in status bar Seq 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0005_2) {
-    // Check maligniment view status bar coordinates
-
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Expected state: Alignment length 14, left offset 1, right offset 14
-    GTGlobals::sleep();
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
-
-    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
-
-    QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
-    QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
-
-    // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-    // Expected state: coordinates in status bar Seq 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "1. Sequence is " + line->text());
+    CHECK_SET_ERR(column->text() == "Col 5 / 14", "1. Column is " + column->text());
 
     // CHANGES: close and open MDI window, hide projectTreeView
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gapped"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::toggleView(os);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
 
-    line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
-    column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
+    line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
 
-    // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-    // Expected state: coordinates in status bar Seq 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
-
-    // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-    // Expected state: coordinates in status bar Seq 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "2. Sequence is " + line->text());
+    CHECK_SET_ERR(column->text() == "Col 2 / 14", "2. Column is " + column->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
-
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
+    // Expected state: Alignment length 14, left offset 1, right offset 14
 
     // 2. Do double click on Tettigonia_viridissima sequence name.
     // Expected state: Rename dialog appears
@@ -614,10 +503,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     // Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -652,12 +537,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
-
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
+    // Expected state: Alignment length 14, left offset 1, right offset 14
 
     // 2. Do double click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
     // Expected state: Rename dialog appears
@@ -716,14 +597,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007_4) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
+    // Expected state: Alignment length 14, left offset 1, right offset 14
 
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-
-    // 2. Do double click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
+    // 2. Do double-click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
     // Expected state: Rename dialog appears
     // 3. Put "Sequence_a" into text field. Click OK.
 
@@ -1866,7 +1743,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     // 1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
@@ -1887,7 +1763,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021_1) {
     // 1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
@@ -1908,7 +1783,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021_2) {
     // 1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
@@ -3341,7 +3215,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     // Expected state: the buffer contatin the sequence in CLUSTALW format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
@@ -3418,7 +3291,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_3) {
     // Expected state: the buffer contatin the sequences in CLUSTALW format
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/100_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(!names.isEmpty(), "the alignment is empty");
@@ -3440,7 +3312,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_4) {
     // Expected state: the action is disabled
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QWidget *w = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
     CHECK_SET_ERR(w != nullptr, "no copy action on the toolbar");
@@ -3456,7 +3327,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     // Expected state: the buffer contatin the sequence in RTF format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTGlobals::sleep(200);

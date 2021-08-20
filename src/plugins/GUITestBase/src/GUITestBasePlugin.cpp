@@ -2220,7 +2220,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0005_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0005_2);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0007_1);
