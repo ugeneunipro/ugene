@@ -278,28 +278,6 @@ GUI_TEST_CLASS_DEFINITION(test_3035) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3052) {
-    //    1. Open "_common_data/bam/chrM.sorted.bam".
-    //    Expected state: an "Import BAM file" dialog appears.
-
-    //    2. Import the assembly somewhere to the "1.ugenedb" file.
-    //    Expected state: the assembly is imported, a view opens.
-
-    //    3. Close the view.
-    //    4. Open "_common_data/bam/scerevisiae.bam".
-    //    Expected state: an "Import BAM file" dialog appears.
-
-    //    5. Select the same file as for "chrM.sorted.bam". Try to start import.
-    //    Expected state: a message box appears, it allows to replace the file, to append appent to the file or to cancel operation.
-
-    //    6. Select the "Append" option.
-    //    Expected state: the assembly is imported, a view opens.
-
-    //    7. Remove the the first assembly object from the document in the project view.
-    //    Expected state: the object is removed, there is no errors in the log.
-
-    //    8. Remove the document from the project view (or just unload it - test_3052_1). Open it again.
-    //    Expected state: there is one assembly object in it.
-
     GTLogTracer l;
 
     QString ugenedbFileName = testDir + "_common_data/scenarios/sandbox/test_3052.ugenedb";
@@ -309,7 +287,6 @@ GUI_TEST_CLASS_DEFINITION(test_3052) {
     GTFileDialog::openFile(os, testDir + "_common_data/bam", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMdi::closeWindow(os, "chrM [test_3052.ugenedb]");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Append"));
@@ -319,11 +296,17 @@ GUI_TEST_CLASS_DEFINITION(test_3052) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "chrM"));
     GTMouseDriver::click();
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::removeDocument(os, docName);
+
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox", "test_3052.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QList<GObject *> objects = GTUtilsDocument::getDocument(os, docName)->getObjects();
+    CHECK_SET_ERR(objects.size() == 1, "Expected 1 object, got: " + QString::number(objects.size()));
+    CHECK_SET_ERR(objects[0]->getGObjectName() == "Scmito", "Expected 'Scmito' object name, got: " + objects[0]->getGObjectName());
 
     GTUtilsLog::check(os, l);
 }
@@ -2237,16 +2220,13 @@ GUI_TEST_CLASS_DEFINITION(test_3344) {
     Runnable *tDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_3344.gb", false, 10);
     GTUtilsDialog::waitForDialog(os, tDialog);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find repeats...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "Annotations [test_3344.gb] *"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "repeat_unit  (0, 3486)"));
 
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     GTUtilsLog::check(os, l);
 }
@@ -3727,8 +3707,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
-                                                                        << "Sequence region"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
@@ -3748,9 +3727,8 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
-    Runnable *filler = new ReplaceSubsequenceDialogFiller(os, new Scenario);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE));
+    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
@@ -4855,13 +4833,12 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     // 1. Open "_common_data/clustal/fungal - all.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(3000);
 
     // 2. Align with ClustalW.
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with ClustalW"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: task started.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
@@ -4875,7 +4852,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     // 4. Delete the document from the project.
     GTUtilsProjectTreeView::click(os, "fungal - all.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: task is cancelled.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
@@ -4885,22 +4862,21 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     // 1. Open "_common_data/clustal/fungal - all.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(3000);
 
     // 2. Align with ClustalW.
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with ClustalW"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
     GTGlobals::sleep(1000);
 
     // Expected: task started.
-    CHECK_SET_ERR(1 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task did not started");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
 
     // 3. Close the alignment view.
     GTUtilsMdi::closeWindow(os, GTUtilsMdi::activeWindow(os)->objectName());
 
     // Expected: task is still running.
-    CHECK_SET_ERR(1 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task is cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task is cancelled");
 
     // 4. Delete the object from the document.
     GTUtilsProjectTreeView::click(os, "fungal - all");

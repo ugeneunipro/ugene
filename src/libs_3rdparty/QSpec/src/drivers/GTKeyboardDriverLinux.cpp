@@ -34,9 +34,6 @@ namespace HI {
 
 #if defined __linux__
 
-#    define GT_CLASS_NAME "GTKeyboardDriverLinux"
-
-#    define GT_METHOD_NAME "keyPress"
 bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
     DRIVER_CHECK(key != 0, "key = 0");
 
@@ -144,9 +141,7 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "keyRelease"
 bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
     DRIVER_CHECK(key != 0, "key = ");
 
@@ -285,23 +280,24 @@ bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
 bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     modifiersToKeys(modifiers);
-    QByteArray display_name = qgetenv("DISPLAY");
-    DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
+    QByteArray displayName = qgetenv("DISPLAY");
+    DRIVER_CHECK(!displayName.isEmpty(), "Environment variable 'DISPLAY' not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
-    DRIVER_CHECK(display != 0, "display is NULL");
+    Display *display = XOpenDisplay(displayName.constData());
+    DRIVER_CHECK(display != nullptr, "display is NULL");
 
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modifierKeys) {
-        XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[mod]), 1, 0);
+    for (const Qt::Key &mod : qAsConst(modifierKeys)) {
+        KeyCode modCode = XKeysymToKeycode(display, GTKeyboardDriver::key[mod]);
+        DRIVER_CHECK(XTestFakeKeyEvent(display, modCode, 1, 0) != 0, "keyPress modifier failed");
     }
 
-    XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[key]), 1, 0);
-    XFlush(display);
+    KeyCode keyCode = XKeysymToKeycode(display, GTKeyboardDriver::key[key]);
+    DRIVER_CHECK(XTestFakeKeyEvent(display, keyCode, 1, 0) != 0, "keyPress failed");
+    DRIVER_CHECK(XFlush(display) != 0, "keyPress flush failed");
 
     XCloseDisplay(display);
 
@@ -362,8 +358,6 @@ GTKeyboardDriver::keys::keys() {
     // feel free to add other keys
     // macro XK_* defined in X11/keysymdef.h
 }
-
-#    undef GT_CLASS_NAME
 
 #endif
 

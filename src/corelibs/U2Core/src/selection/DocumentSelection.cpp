@@ -31,6 +31,17 @@ DocumentSelection::DocumentSelection(QObject *p)
     : GSelection(GSelectionTypes::DOCUMENTS, p) {
     connect(this, SIGNAL(si_selectionChanged(DocumentSelection *, QList<Document *>, QList<Document *>)), SLOT(sl_selectionChanged()));
 }
+const QList<Document *> &DocumentSelection::getSelectedDocuments() const {
+    return selectedDocs;
+}
+
+bool DocumentSelection::isEmpty() const {
+    return selectedDocs.isEmpty();
+}
+
+bool DocumentSelection::contains(Document *doc) const {
+    return selectedDocs.contains(doc);
+}
 
 void DocumentSelection::clear() {
     QList<Document *> tmpRemoved = selectedDocs;
@@ -49,63 +60,56 @@ void DocumentSelection::setSelection(const QList<Document *> &docs) {
         addToSelection(docs);
         return;
     }
-    QList<Document *> tmpAdded;
-    QList<Document *> tmpRemoved;
 
-    foreach (Document *d, docs) {
-        if (!selectedDocs.contains(d)) {
-            tmpAdded.push_back(d);
-        }
-    }
-    foreach (Document *d, selectedDocs) {
-        if (!docs.contains(d)) {
-            tmpRemoved.push_back(d);
-        }
-    }
-    foreach (Document *d, tmpRemoved) {
-        selectedDocs.removeAll(d);
-    }
-    foreach (Document *d, tmpAdded) {
-        selectedDocs.push_back(d);
-    }
-    emit si_selectionChanged(this, tmpAdded, tmpRemoved);
-}
+    QList<Document *> addedDocuments;
+    QList<Document *> removedDocuments;
 
-void DocumentSelection::addToSelection(const QList<Document *> &docs) {
-    QList<Document *> tmpAdded;
-    int sBefore = selectedDocs.size();
-    foreach (Document *d, docs) {
-        if (!selectedDocs.contains(d)) {
-            tmpAdded.push_back(d);
-            selectedDocs.push_back(d);
+    for (Document *document : qAsConst(docs)) {
+        if (!selectedDocs.contains(document)) {
+            addedDocuments.append(document);
         }
     }
-    if (selectedDocs.size() != sBefore) {
-        emit si_selectionChanged(this, tmpAdded, emptyDocs);
+    for (Document *document : qAsConst(selectedDocs)) {
+        if (!docs.contains(document)) {
+            removedDocuments.append(document);
+        }
+    }
+    for (Document *document : qAsConst(removedDocuments)) {
+        selectedDocs.removeAll(document);
+    }
+    for (Document *document : qAsConst(addedDocuments)) {
+        selectedDocs.append(document);
+    }
+    if (!addedDocuments.isEmpty() || !removedDocuments.isEmpty()) {
+        emit si_selectionChanged(this, addedDocuments, removedDocuments);
     }
 }
 
-void DocumentSelection::removeFromSelection(const QList<Document *> &docs) {
-    QList<Document *> tmpRemoved;
-    int sBefore = selectedDocs.size();
-    foreach (Document *d, docs) {
-        if (selectedDocs.removeAll(d) != 0) {
-            tmpRemoved.push_back(d);
+void DocumentSelection::addToSelection(const QList<Document *> &documentsToAdd) {
+    QList<Document *> addedDocuments;
+    int documentCountBefore = selectedDocs.size();
+    for (Document *document : qAsConst(documentsToAdd)) {
+        if (!selectedDocs.contains(document)) {
+            addedDocuments.append(document);
+            selectedDocs.append(document);
         }
     }
-    if (selectedDocs.size() != sBefore) {
-        emit si_selectionChanged(this, emptyDocs, tmpRemoved);
+    if (selectedDocs.size() != documentCountBefore) {
+        emit si_selectionChanged(this, addedDocuments, emptyDocs);
     }
 }
 
-/*
-ProjectDocumentSelection::ProjectDocumentSelection(QObject* parent) : DocumentSelection(parent) {
-    Project* p = AppContext::getProject();
-    connect(p, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_onDocumentRemoved(Document*)));
+void DocumentSelection::removeFromSelection(const QList<Document *> &documentsToRemove) {
+    QList<Document *> removedDocuments;
+    int documentCountBefore = selectedDocs.size();
+    for (Document *document : qAsConst(documentsToRemove)) {
+        if (selectedDocs.removeAll(document) != 0) {
+            removedDocuments.append(document);
+        }
+    }
+    if (selectedDocs.size() != documentCountBefore) {
+        emit si_selectionChanged(this, emptyDocs, removedDocuments);
+    }
 }
-
-void ProjectDocumentSelection::sl_onDocumentRemoved(Document* d) {
-    remove(QList<Document*>()<<d);
-}*/
 
 }  // namespace U2

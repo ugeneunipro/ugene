@@ -6708,7 +6708,7 @@ GUI_TEST_CLASS_DEFINITION(test_1680) {
         CHECK_SET_ERR(8 == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(8).arg(currentSelectionSize));
     }
 
-    GTKeyboardDriver::keyClick(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681) {

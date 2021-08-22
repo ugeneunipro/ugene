@@ -35,25 +35,19 @@ class U2CORE_EXPORT DocumentSelection : public GSelection {
 public:
     DocumentSelection(QObject *p = nullptr);
 
-    const QList<Document *> &getSelectedDocuments() const {
-        return selectedDocs;
-    }
+    bool isEmpty() const override;
 
-    virtual bool isEmpty() const {
-        return selectedDocs.isEmpty();
-    }
+    void clear() override;
 
-    virtual void clear();
+    const QList<Document *> &getSelectedDocuments() const;
 
     void setSelection(const QList<Document *> &docs);
 
-    void addToSelection(const QList<Document *> &docs);
+    void addToSelection(const QList<Document *> &documentsToAdd);
 
-    void removeFromSelection(const QList<Document *> &docs);
+    void removeFromSelection(const QList<Document *> &documentsToRemove);
 
-    bool contains(Document *doc) const {
-        return selectedDocs.contains(doc);
-    }
+    bool contains(Document *doc) const;
 
 signals:
     void si_selectionChanged(DocumentSelection *thiz, const QList<Document *> &docsAdded, const QList<Document *> &docsRemoved);

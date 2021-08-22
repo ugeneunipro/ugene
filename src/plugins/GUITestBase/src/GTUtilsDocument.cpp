@@ -87,24 +87,26 @@ void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &docu
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "removeDocument"
 void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &documentName, GTGlobals::UseMethod method) {
     switch (method) {
         case GTGlobals::UseMouse: {
-            Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED, method);
-            GTUtilsDialog::waitForDialog(os, popupChooser);
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}, method));
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName));
             GTMouseDriver::click(Qt::RightButton);
             break;
         }
         case GTGlobals::UseKey:
         default:
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName));
             GTMouseDriver::click();
-            GTKeyboardDriver::keyClick(Qt::Key_Delete);
+            GTKeyboardDriver::keyPress(Qt::Key_Delete);
+            GTKeyboardDriver::keyRelease(Qt::Key_Delete);
             break;
     }
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDocumentGObjectView"
 GObjectView *GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus &os, Document *d) {
