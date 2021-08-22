@@ -46,7 +46,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Wall"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
-            " -Werror=shadow=local"
+            " -Werror=shadow=local" # Requires GCC 7+
             " -Werror=return-type"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
