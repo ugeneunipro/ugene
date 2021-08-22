@@ -83,7 +83,7 @@ QString Wizard::getResult(const QMap<QString, Variable> &vars) const {
     foreach (const QString &result, results.keys()) {
         const QList<Predicate> &preds = results[result];
         bool match = true;
-        foreach (const Predicate &p, preds) {
+        for (const Predicate &p : qAsConst(preds)) {
             match &= p.isTrue(vars);
         }
         if (match) {

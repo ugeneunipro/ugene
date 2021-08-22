@@ -344,7 +344,7 @@ QString QualifierMarker::getMarkingResult(const QVariant &object) {
         anns << ann.value<SharedAnnotationData>();
     }
 
-    foreach (const SharedAnnotationData &ann, anns) {
+    for (const SharedAnnotationData &ann : qAsConst(anns)) {
         foreach (const U2Qualifier &qual, ann->qualifiers) {
             if (qual.name == qualName) {
                 bool ok = false;

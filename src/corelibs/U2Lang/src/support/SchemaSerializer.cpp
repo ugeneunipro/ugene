@@ -189,7 +189,8 @@ QDomElement SchemaSerializer::savePort(const Port *port, QDomElement &owner) {
 void SchemaSerializer::schema2xml(const Schema &schema, QDomDocument &xml) {
     QDomElement projectElement = xml.createElement(WORKFLOW_EL);
     xml.appendChild(projectElement);
-    foreach (Actor *a, schema.getProcesses()) {
+    QList<Actor *> processes = schema.getProcesses();
+    for (Actor *a : qAsConst(processes)) {
         QDomElement el = saveActor(a, projectElement);
         foreach (Port *p, a->getPorts()) {
             savePort(p, el);
@@ -251,7 +252,7 @@ QString SchemaSerializer::readMeta(Workflow::Metadata *meta, const QDomElement &
 }
 
 static Port *findPort(const QList<Actor *> &procs, const ActorId &actorId, const QString &portId) {
-    foreach (Actor *a, procs) {
+    for (Actor *a : qAsConst(procs)) {
         if (a->getId() == actorId) {
             foreach (Port *p, a->getPorts()) {
                 if (p->getId() == portId) {
@@ -265,9 +266,10 @@ static Port *findPort(const QList<Actor *> &procs, const ActorId &actorId, const
 }
 
 void SchemaSerializer::updatePortBindings(const QList<Actor *> &procs) {
-    foreach (Actor *actor, procs) {
-        foreach (Port *p, actor->getEnabledInputPorts()) {
-            IntegralBusPort *port = qobject_cast<IntegralBusPort *>(p);
+    for (Actor *actor : qAsConst(procs)) {
+        QList<Port *> enabledInputPorts = actor->getEnabledInputPorts();
+        for (Port *p : qAsConst(enabledInputPorts)) {
+            auto port = qobject_cast<IntegralBusPort *>(p);
             StrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             foreach (const QString &key, busMap.uniqueKeys()) {
                 QString val = busMap.value(key);

@@ -301,8 +301,8 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 
     QList<U2Region> lowerCaseRegs;
     QList<U2Region> upperCaseRegs;
-    foreach (GObject *o, aos) {
-        AnnotationTableObject *ato = dynamic_cast<AnnotationTableObject *>(o);
+    for (GObject *o : qAsConst(aos)) {
+        auto ato = dynamic_cast<AnnotationTableObject *>(o);
         foreach (Annotation *a, ato->getAnnotations()) {
             if (a->getName() == lowerCaseAnnotationName) {
                 lowerCaseRegs << a->getRegions().toList();
@@ -413,10 +413,10 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, cons
 
 QList<AnnotatedRegion> U1AnnotationUtils::getAnnotatedRegionsByStartPos(QList<AnnotationTableObject *> annotationObjects, qint64 startPos) {
     QList<AnnotatedRegion> result;
-    foreach (AnnotationTableObject *annObject, annotationObjects) {
+    for (AnnotationTableObject *annObject : qAsConst(annotationObjects)) {
         QList<Annotation *> annots = annObject->getAnnotationsByRegion(U2Region(startPos, 1));
-        foreach (Annotation *a, annots) {
-            QVector<U2Region> regions = a->getRegions();
+        for (Annotation *a : qAsConst(annots)) {
+            const QVector<U2Region> &regions = a->getRegions();
             for (int i = 0; i < regions.size(); i++) {
                 if (regions[i].startPos == startPos) {
                     AnnotatedRegion ar(a, i);
@@ -586,9 +586,9 @@ void FixAnnotationsUtils::fixAnnotations() {
     if (AppContext::getProject() != nullptr) {
         annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
     } else {
-        foreach (Document *d, docs) {
+        for (Document *d : qAsConst(docs)) {
             QList<GObject *> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            foreach (GObject *table, allAnnotationTables) {
+            for (GObject *table : qAsConst(allAnnotationTables)) {
                 if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
                     annotationTablesList.append(table);
                 }
@@ -596,12 +596,13 @@ void FixAnnotationsUtils::fixAnnotations() {
         }
     }
 
-    foreach (GObject *table, annotationTablesList) {
-        AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-        if (nullptr != ato) {
+    for (GObject *table : qAsConst(annotationTablesList)) {
+        auto ato = qobject_cast<AnnotationTableObject *>(table);
+        if (ato != nullptr) {
             QMap<QString, QList<SharedAnnotationData>> group2AnnotationsToAdd;
             QList<Annotation *> annotationToRemove;
-            foreach (Annotation *an, ato->getAnnotations()) {
+            QList<Annotation *> annotations = ato->getAnnotations();
+            for (Annotation *an : qAsConst(annotations)) {
                 bool annIsToBeRemoved = false;
                 QMap<QString, QList<SharedAnnotationData>> newAnnotations = fixAnnotation(an, annIsToBeRemoved);
                 foreach (const QString &groupName, newAnnotations.keys()) {
@@ -674,7 +675,7 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
 
                 if (!newRegions.isEmpty() && !newRegions[0].empty()) {
                     QString newRegionsStr;
-                    foreach (const U2Region &region, newRegions[0]) {
+                    for (const U2Region &region : qAsConst(newRegions[0])) {
                         newRegionsStr += QString("%1..%2,").arg(region.startPos + 1).arg(region.endPos());  // position starts with 1
                     }
                     newRegionsStr.chop(1);  // remove last comma

@@ -80,7 +80,7 @@ void DbFolderScanner::initTargetObjectList(const QSet<QString> &paths, const QSt
             objNames = oDbi->getObjectNames(U2DbiOptions::U2_DBI_NO_LIMIT, U2DbiOptions::U2_DBI_NO_LIMIT, os);
             CHECK_OP(os, );
         }
-        foreach (const U2DataId &objId, objIds) {
+        for (const U2DataId &objId : qAsConst(objIds)) {
             const bool passedNameFilter = nameFilterApplied && (!objNames.contains(objId) || objNames[objId] != objNameFilter);
             const bool passedTypeFilter = typeFilter != U2DbiUtils::toType(objId);
             if (passedNameFilter || passedTypeFilter) {

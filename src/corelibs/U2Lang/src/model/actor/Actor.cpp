@@ -78,7 +78,8 @@ void Actor::sl_labelChanged() {
 }
 
 void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
-    foreach (const PortDescriptor *descr, proto->getPortDesciptors()) {
+    QList<PortDescriptor *> portDesciptors = proto->getPortDesciptors();
+    for (const PortDescriptor *descr : qAsConst(portDesciptors)) {
         QString prefix;
         if (descr->isInput()) {
             prefix = "in_";
@@ -390,11 +391,12 @@ void Actor::replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMappi
 }
 
 void Actor::updateDelegateTags() {
-    CHECK(nullptr != editor, );
+    CHECK(editor != nullptr, );
     foreach (Attribute *influencing, getAttributes()) {
-        foreach (const AttributeRelation *rel, influencing->getRelations()) {
+        QVector<const AttributeRelation *> relations = influencing->getRelations();
+        for (const AttributeRelation *rel : qAsConst(relations)) {
             PropertyDelegate *dependentDelegate = editor->getDelegate(rel->getRelatedAttrId());
-            if (nullptr == dependentDelegate) {
+            if (dependentDelegate == nullptr) {
                 continue;
             }
             rel->updateDelegateTags(influencing->getAttributePureValue(), dependentDelegate->tags());

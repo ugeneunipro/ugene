@@ -45,7 +45,7 @@ bool ActorPrototypeRegistry::registerProto(const Descriptor &group, ActorPrototy
 ActorPrototype *ActorPrototypeRegistry::unregisterProto(const QString &id) {
     foreach (const Descriptor &desc, groups.keys()) {
         QList<ActorPrototype *> &l = groups[desc];
-        foreach (ActorPrototype *p, l) {
+        for (ActorPrototype *p : qAsConst(l)) {
             if (p->getId() == id) {
                 l.removeAll(p);
                 if (l.isEmpty()) {
@@ -61,7 +61,7 @@ ActorPrototype *ActorPrototypeRegistry::unregisterProto(const QString &id) {
 
 ActorPrototype *ActorPrototypeRegistry::getProto(const QString &id) const {
     foreach (QList<ActorPrototype *> l, groups.values()) {
-        foreach (ActorPrototype *p, l) {
+        for (ActorPrototype *p : qAsConst(l)) {
             if (p->getId() == id) {
                 return p;
             }

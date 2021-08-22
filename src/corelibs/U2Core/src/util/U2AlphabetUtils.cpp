@@ -179,9 +179,9 @@ QList<const DNAAlphabet *> U2AlphabetUtils::findAllAlphabets(const char *seq, qi
 QList<const DNAAlphabet *> U2AlphabetUtils::findAllAlphabets(const char *seq, qint64 len, const QVector<U2Region> &regionsToProcess) {
     QList<const DNAAlphabet *> res;
     QList<const DNAAlphabet *> alphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
-    foreach (const DNAAlphabet *al, alphabets) {
+    for (const DNAAlphabet *al : qAsConst(alphabets)) {
         bool err = false;
-        foreach (const U2Region &r, regionsToProcess) {
+        for (const U2Region &r : qAsConst(regionsToProcess)) {
             if (!matches(al, seq, len, r)) {
                 err = true;
                 break;
@@ -196,9 +196,9 @@ QList<const DNAAlphabet *> U2AlphabetUtils::findAllAlphabets(const char *seq, qi
 
 const DNAAlphabet *U2AlphabetUtils::findBestAlphabet(const char *seq, qint64 len, const QVector<U2Region> &regionsToProcess) {
     QList<const DNAAlphabet *> alphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
-    foreach (const DNAAlphabet *al, alphabets) {
+    for (const DNAAlphabet *al : qAsConst(alphabets)) {
         bool err = false;
-        foreach (const U2Region &r, regionsToProcess) {
+        for (const U2Region &r : qAsConst(regionsToProcess)) {
             if (!matches(al, seq, len, r)) {
                 err = true;
                 break;

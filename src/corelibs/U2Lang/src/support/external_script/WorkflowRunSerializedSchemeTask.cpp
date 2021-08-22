@@ -59,7 +59,7 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &
 }
 
 QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) {
-    Q_ASSERT(nullptr != subtask);
+    Q_ASSERT(subtask != nullptr);
     QList<Task *> res;
 
     propagateSubtaskError();
@@ -67,7 +67,7 @@ QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) 
         return res;
     }
 
-    if (loadTask == subtask) {
+    if (subtask == loadTask) {
         Q_ASSERT(scheme == loadTask->getSchema());
         QMap<ActorId, ActorId> remapping = loadTask->getRemapping();
 
@@ -88,9 +88,9 @@ QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) 
         // AppContext::getScriptContext( )->setWorkflowScheduler( scheduler );
         runTask = new WorkflowRunTask(*scheme, remapping);
         res.append(runTask);
-    } else if (runTask == subtask) {
+    } else if (subtask == runTask) {
         const QList<Workflow::WorkflowMonitor *> workflowMonitors = runTask->getMonitors();
-        foreach (Workflow::WorkflowMonitor *monitor, workflowMonitors) {
+        for (Workflow::WorkflowMonitor *monitor : qAsConst(workflowMonitors)) {
             foreach (Workflow::Monitor::FileInfo file, monitor->getOutputFiles()) {
                 workflowResultFiles.append(file.url);
             }

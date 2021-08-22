@@ -72,7 +72,7 @@ QStringList SubstMatrixRegistry::selectMatrixNamesByAlphabet(const DNAAlphabet *
         if (al->getType() == mAlpha->getType() && al->getNumAlphabetChars() <= mAlpha->getNumAlphabetChars()) {
             QByteArray aChars = al->getAlphabetChars(), mChars = mAlpha->getAlphabetChars();
             bool addToResult = true;
-            foreach (char c, aChars) {
+            for (char c: qAsConst(aChars)) {
                 if (!mChars.contains(c)) {
                     addToResult = false;
                     break;

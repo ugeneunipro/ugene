@@ -184,12 +184,12 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
         }
         DbiConnection con(dbiRef, os);
         U2ObjectRelationsDbi *relationsDbi = con.dbi->getObjectRelationsDbi();
-        SAFE_POINT(nullptr != relationsDbi, "Invalid object relations DBI", res);
+        SAFE_POINT(relationsDbi != nullptr, "Invalid object relations DBI", res);
 
         const QList<U2DataId> relatedIds = relationsDbi->getReferenceRelatedObjects(obj.entityRef.entityId, role, os);
         SAFE_POINT_OP(os, res);
 
-        foreach (const U2DataId &objId, relatedIds) {
+        for (const U2DataId &objId : qAsConst(relatedIds)) {
             GObject *object = doc->getObjectById(objId);
             if (fromObjects.contains(object)) {
                 res.append(object);
@@ -240,9 +240,9 @@ QList<GObject *> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRef
 
 QList<GObject *> GObjectUtils::selectObjectsWithRelation(const QList<GObject *> &objs, GObjectType type, GObjectRelationRole relationRole, UnloadedObjectFilter f, bool availableObjectsOnly) {
     QList<GObject *> res;
-    foreach (GObject *obj, objs) {
+    for (GObject *obj : qAsConst(objs)) {
         QList<GObjectRelation> relations = obj->getObjectRelations();
-        foreach (const GObjectRelation &r, relations) {
+        for (const GObjectRelation &r : qAsConst(relations)) {
             if (r.role != relationRole || (!type.isEmpty() && r.ref.objType != type)) {
                 continue;
             }

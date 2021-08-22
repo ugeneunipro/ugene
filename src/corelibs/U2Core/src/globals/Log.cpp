@@ -42,7 +42,7 @@ LogServer *LogServer::getInstance() {
 QStringList LogServer::getCategories() const {
     QSet<QString> uniqueNames;
     QStringList result;
-    foreach (const Logger *l, loggers) {
+    for (const Logger *l : qAsConst(loggers)) {
         foreach (const QString &category, l->getCategories()) {
             if (uniqueNames.contains(category)) {
                 continue;

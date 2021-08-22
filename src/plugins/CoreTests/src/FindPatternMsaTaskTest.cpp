@@ -214,7 +214,7 @@ Task::ReportResult GTest_FindPatternMsa::report() {
     }
     const QList<FindPatternInMsaResult> &results = findPatternTask->getResults();
     int resultsCounter = 0;
-    foreach (const FindPatternInMsaResult &result, results) {
+    for (const FindPatternInMsaResult &result : qAsConst(results)) {
         resultsCounter += result.regions.size();
     }
     if (resultsCounter != expectedResultsSize) {
@@ -223,7 +223,7 @@ Task::ReportResult GTest_FindPatternMsa::report() {
                                .arg(results.size()));
         return ReportResult_Finished;
     }
-    foreach (const FindPatternInMsaResult &result, results) {
+    for (const FindPatternInMsaResult &result : qAsConst(results)) {
         foreach (const U2Region &region, result.regions) {
             if (regionsToCheck.contains(region)) {
                 regionsToCheck.removeOne(region);

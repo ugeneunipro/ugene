@@ -625,8 +625,8 @@ void subtitudeGap(QMutableListIterator<U2MsaGap> &minuendIterator, QMutableListI
 
 U2MsaRowGapModel MsaRowUtils::mergeGapModels(const U2MsaListGapModel &gapModels) {
     U2MsaRowGapModel mergedGapModel;
-    foreach (const U2MsaRowGapModel &gapModel, gapModels) {
-        foreach (const U2MsaGap &gap, gapModel) {
+    for (const U2MsaRowGapModel &gapModel : qAsConst(gapModels)) {
+        for (const U2MsaGap &gap : qAsConst(gapModel)) {
             insertGap(mergedGapModel, gap);
         }
     }

@@ -750,7 +750,7 @@ QScriptValue WorkflowScriptLibrary::getAnnotationRegion(QScriptContext *ctx, QSc
 
             // extend regions
             U2Region sequenceRange(0, sequence.size());
-            foreach (const U2Region &reg, location) {
+            for (const U2Region &reg : qAsConst(location)) {
                 U2Region ir = reg.intersect(sequenceRange);
                 extendedRegions << ir;
             }

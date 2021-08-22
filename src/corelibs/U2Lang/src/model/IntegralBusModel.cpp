@@ -48,11 +48,13 @@ static Actor *getLinkedActor(ActorId id, Port *output, QList<Actor *> visitedAct
     if (output->owner()->getId() == id) {
         return output->owner();
     }
-    foreach (Port *transit, output->owner()->getInputPorts()) {
+    QList<Port *> nextInputPorts = output->owner()->getInputPorts();
+    for (Port *transit : qAsConst(nextInputPorts)) {
         foreach (Port *p, transit->getLinks().uniqueKeys()) {
             Actor *a = getLinkedActor(id, p, visitedActors);
-            if (a)
+            if (a) {
                 return a;
+            }
         }
     }
     return nullptr;
@@ -228,13 +230,14 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
         QList<IntegralBusSlot> srcs = IntegralBusSlot::listFromString(busMap.value(dstSlot), os);
         QList<IntegralBusSlot> validSrcs;
 
-        foreach (const IntegralBusSlot srcSlot, srcs) {
+        for (const IntegralBusSlot &srcSlot : qAsConst(srcs)) {
             SlotPair slotPair(dstSlot, srcSlot.toString());
             bool hasOneValidPath = false;
 
             if (pathMap.contains(slotPair)) {
                 QList<QStringList> validPaths;
-                foreach (const QStringList &path, pathMap.values(slotPair)) {
+                QList<QStringList> allPaths = pathMap.values(slotPair);
+                for (const QStringList &path : qAsConst(allPaths)) {
                     QString slotStr = srcSlot.toString() + ">" + path.join(",");
                     bool valid = WorkflowUtils::isBindingValid(slotStr, incomingType, dstSlot, getOwnTypeMap());
                     if (valid) {
@@ -243,7 +246,7 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
                     }
                 }
                 pathMap.remove(slotPair);
-                foreach (const QStringList &p, validPaths) {
+                for (const QStringList &p : qAsConst(validPaths)) {
                     pathMap.insertMulti(slotPair, p);
                 }
             } else {
@@ -374,7 +377,7 @@ void IntegralBusPort::setupBusMap() {
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
     StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
-    foreach (const Descriptor &key, keys) {
+    for (const Descriptor &key : qAsConst(keys)) {
         // FIXME: hack for not binding 'Location' slot
         // 'Location' slot should NOT be binded for any writers to avoid writing to source of data
         // If there is only one slot - there are no objections for binding URL
@@ -403,7 +406,7 @@ void IntegralBusPort::setupBusMap() {
             if (ptr->isMap()) {
                 foreach (const Descriptor &desc, ptr->getAllDescriptors()) {
                     if (key.getId() == desc.getId()) {
-                        foreach (const Descriptor &d, candidates) {
+                        for (const Descriptor &d : qAsConst(candidates)) {
                             IntegralBusSlot slot = IntegralBusSlot::fromString(d.getId(), os);
                             if (slot.actorId() == port->owner()->getId()) {
                                 busMap.insert(key.getId(), d.getId());
@@ -459,12 +462,14 @@ bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const Int
         int busWidth = bm.size();
         QMap<QString, QStringList> listMap = getListSlotsMappings(bm, vport);
         // iterate over all producers and exclude valid mappings from bus bindings
-        foreach (Port *p, vport->getLinks().uniqueKeys()) {
+        QList<Port *> linkKeys = vport->getLinks().uniqueKeys();
+        for (Port *p : qAsConst(linkKeys)) {
             assert(qobject_cast<IntegralBusPort *>(p));  // TBD?
             DataTypePtr t = p->getType();
             assert(t->isMap());
             {
-                foreach (Descriptor d, t->getAllDescriptors()) {
+                QList<Descriptor> portDataDescriptors = t->getAllDescriptors();
+                for (const Descriptor &d : qAsConst(portDataDescriptors)) {
                     foreach (QString key, bm.keys(d.getId())) {
                         // log.debug("reducing bus from key="+ikey+" to="+rkey);
                         assert(!key.isEmpty());

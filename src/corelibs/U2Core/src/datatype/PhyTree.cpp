@@ -259,15 +259,15 @@ PhyNode *PhyNode::clone() const {
 
     QSet<PhyBranch *> allBranches;
     QMap<const PhyNode *, PhyNode *> nodeTable;
-    foreach (const PhyNode *n, track) {
+    for (const PhyNode *n : qAsConst(track)) {
         PhyNode *n2 = new PhyNode();
         n2->name = n->name;
         nodeTable[n] = n2;
-        foreach (PhyBranch *b, n->branches) {
+        for (PhyBranch *b : qAsConst(n->branches)) {
             allBranches.insert(b);
         }
     }
-    foreach (PhyBranch *b, allBranches) {
+    for (PhyBranch *b : qAsConst(allBranches)) {
         PhyNode *node1 = nodeTable[b->node1];
         PhyNode *node2 = nodeTable[b->node2];
         assert(node1 != nullptr && node2 != nullptr);

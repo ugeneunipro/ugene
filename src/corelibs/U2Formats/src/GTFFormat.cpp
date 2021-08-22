@@ -294,7 +294,8 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
         ++iter;
     }
 
-    foreach (AnnotationTableObject *ato, annTable2Annotations.keys()) {
+    QList<AnnotationTableObject *> annTable2AnnotationsKeys = annTable2Annotations.keys();
+    for (AnnotationTableObject *ato : qAsConst(annTable2AnnotationsKeys)) {
         foreach (const QString &groupName, annTable2Annotations[ato].keys()) {
             ato->addAnnotations(annTable2Annotations[ato][groupName], groupName);
         }
@@ -538,7 +539,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             }
         }
 
-        foreach (Annotation *annot, annotationsList) {
+        for (Annotation *annot : qAsConst(annotationsList)) {
             QString annotName = annot->getName();
             if (annotName == U1AnnotationUtils::lowerCaseAnnotationName || annotName == U1AnnotationUtils::upperCaseAnnotationName) {
                 continue;
@@ -552,7 +553,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isCompementary() ? "-" : "+");
 
             // Joined annotations are currently stored as other annotations (we do not store that they are joined)
-            foreach (const U2Region &region, annotRegions) {
+            for (const U2Region &region : qAsConst(annotRegions)) {
                 lineFields[GTF_FEATURE_INDEX] = annotName;
 
                 lineFields[GTF_START_INDEX] = QString::number(region.startPos + 1);
@@ -561,23 +562,23 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 QString geneIdAttributeStr;
                 QString transcriptIdAttributeStr;
                 QString otherAttributesStr;
-                foreach (const U2Qualifier &qualifier, annotQualifiers) {
-                    if (SOURCE_QUALIFIER_NAME == qualifier.name) {
+                for (const U2Qualifier &qualifier : qAsConst(annotQualifiers)) {
+                    if (qualifier.name == SOURCE_QUALIFIER_NAME) {
                         lineFields[GTF_SOURCE_INDEX] = qualifier.value;
-                    } else if (SCORE_QUALIFIER_NAME == qualifier.name) {
+                    } else if (qualifier.name == SCORE_QUALIFIER_NAME) {
                         lineFields[GTF_SCORE_INDEX] = qualifier.value;
-                    } else if (FRAME_QUALIFIER_NAME == qualifier.name) {
+                    } else if (qualifier.name == FRAME_QUALIFIER_NAME) {
                         lineFields[GTF_FRAME_INDEX] = qualifier.value;
                     } else {
                         // All other qualifiers are saved as attributes
                         QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
-                        if (GENE_ID_QUALIFIER_NAME != qualifier.name) {
+                        if (qualifier.name != GENE_ID_QUALIFIER_NAME) {
                             attrStr = " " + attrStr;  // Exactly one space char between different attributes
                         }
 
-                        if (GENE_ID_QUALIFIER_NAME == qualifier.name) {
+                        if (qualifier.name == GENE_ID_QUALIFIER_NAME) {
                             geneIdAttributeStr = attrStr;
-                        } else if (TRANSCRIPT_ID_QUALIFIER_NAME == qualifier.name) {
+                        } else if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
                             transcriptIdAttributeStr = attrStr;
                         } else {
                             otherAttributesStr += attrStr;

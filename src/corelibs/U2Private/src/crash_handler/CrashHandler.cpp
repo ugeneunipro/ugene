@@ -181,7 +181,7 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
     QString taskList;
     TaskScheduler *ts = AppContext::getTaskScheduler();
     QList<Task *> topTasks = ts != nullptr ? ts->getTopLevelTasks() : QList<Task *>();
-    foreach (Task *t, topTasks) {
+    for (Task *t : qAsConst(topTasks)) {
         if (t->getState() != Task::State_Finished) {
             QString state;
             if (t->getState() == Task::State_Running) {

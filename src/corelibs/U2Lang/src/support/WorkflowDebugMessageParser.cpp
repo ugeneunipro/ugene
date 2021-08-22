@@ -56,7 +56,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
         possibleMessageTypes << BaseSlots::ASSEMBLY_SLOT().getId();
         possibleMessageTypes << BaseSlots::DATASET_SLOT().getId();
     }
-    foreach (const Message &message, initSource) {
+    for (const Message &message : qAsConst(initSource)) {
         QVariantMap data = message.getData().toMap();
         foreach (const QString &key, data.keys()) {
             if (key.contains(MESSAGE_PATH_DELIMETER)) {

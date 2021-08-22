@@ -269,9 +269,9 @@ QString VectorNtiSequenceFormat::parseDate(int date) {
 
 QList<SharedAnnotationData> VectorNtiSequenceFormat::prepareAnnotations(const QList<GObject *> &tablesList, bool isAmino, U2OpStatus &os) const {
     QMap<AnnotationGroup *, QList<SharedAnnotationData>> annotationsByGroups;
-    foreach (GObject *object, tablesList) {
-        AnnotationTableObject *atObject = qobject_cast<AnnotationTableObject *>(object);
-        CHECK_EXT(nullptr != atObject, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
+    for (GObject *object : qAsConst(tablesList)) {
+        auto atObject = qobject_cast<AnnotationTableObject *>(object);
+        CHECK_EXT(atObject != nullptr, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
         foreach (Annotation *annotation, atObject->getAnnotations()) {
             annotationsByGroups[annotation->getGroup()] << annotation->getData();
         }
@@ -345,12 +345,12 @@ void VectorNtiSequenceFormat::prepareQualifiersToWrite(QMap<AnnotationGroup *, Q
             bool labelExists = false;
             QVector<U2Qualifier> qualifiers;
 
-            foreach (const U2Qualifier &qualifier, annotation->qualifiers) {
-                if (VNTIFKEY_QUALIFIER_NAME == qualifier.name || GBFeatureUtils::QUALIFIER_NAME == qualifier.name || GBFeatureUtils::QUALIFIER_GROUP == qualifier.name) {
+            for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
+                if (qualifier.name == VNTIFKEY_QUALIFIER_NAME || qualifier.name == GBFeatureUtils::QUALIFIER_NAME || qualifier.name == GBFeatureUtils::QUALIFIER_GROUP) {
                     continue;
                 }
 
-                if (QUALIFIER_LABEL == qualifier.name) {
+                if (qualifier.name == QUALIFIER_LABEL) {
                     if (!labelExists) {
                         labelExists = true;
                         U2Qualifier labelQualifier(qualifier);

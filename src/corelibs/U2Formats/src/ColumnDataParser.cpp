@@ -116,9 +116,9 @@ ColumnDataParser::ColumnDataParser(const QList<Column> &_formatColumns, const QS
 
 void ColumnDataParser::init(const QString &headerLine, U2OpStatus &os) {
     QStringList names = headerLine.split(separator, QString::SkipEmptyParts);
-    foreach (const QString &name, names) {
+    for (const QString &name : qAsConst(names)) {
         if (formatColumns.contains(Column(name))) {
-            foreach (const Column &c, formatColumns) {
+            for (const Column &c : qAsConst(formatColumns)) {
                 if (name == c.name) {
                     currentColumns << c;
                     break;

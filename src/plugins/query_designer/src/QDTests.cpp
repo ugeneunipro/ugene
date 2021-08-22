@@ -167,8 +167,10 @@ QList<XMLTestFactory *> QDTests::createTestFactories() {
 }
 
 static bool containsRegion(AnnotationGroup *g, const U2Region &subj) {
-    foreach (Annotation *a, g->getAnnotations()) {
-        foreach (const U2Region &r, a->getRegions()) {
+    QList<Annotation *> annotations = g->getAnnotations();
+    for (Annotation *a : qAsConst(annotations)) {
+        const QVector<U2Region> &regions = a->getRegions();
+        for (const U2Region &r : qAsConst(regions)) {
             if (r == subj) {
                 return true;
             }
@@ -179,7 +181,8 @@ static bool containsRegion(AnnotationGroup *g, const U2Region &subj) {
 
 static bool compareGroups(AnnotationGroup *g1, AnnotationGroup *g2) {
     foreach (Annotation *a1, g1->getAnnotations()) {
-        foreach (const U2Region &r1, a1->getRegions()) {
+        const QVector<U2Region> &regions = a1->getRegions();
+        for (const U2Region &r1 : qAsConst(regions)) {
             if (!containsRegion(g2, r1)) {
                 return false;
             }

@@ -31,23 +31,23 @@ namespace U2 {
 
 static quint8 cigarOp2samtools(U2CigarOp op, U2OpStatus &os) {
     switch (op) {
-        case U2CigarOp_M:    // alignment match
+        case U2CigarOp_M:  // alignment match
             return 0;
-        case U2CigarOp_I:    // inserted
+        case U2CigarOp_I:  // inserted
             return 1;
-        case U2CigarOp_D:    // deleted
+        case U2CigarOp_D:  // deleted
             return 2;
-        case U2CigarOp_N:    // skipped
+        case U2CigarOp_N:  // skipped
             return 3;
-        case U2CigarOp_S:    // soft-clipped
+        case U2CigarOp_S:  // soft-clipped
             return 4;
-        case U2CigarOp_H:    // hard-clipped
+        case U2CigarOp_H:  // hard-clipped
             return 5;
-        case U2CigarOp_P:    // padded
+        case U2CigarOp_P:  // padded
             return 6;
-        case U2CigarOp_EQ:    // sequence match
+        case U2CigarOp_EQ:  // sequence match
             return 7;
-        case U2CigarOp_X:    // sequence mismatch
+        case U2CigarOp_X:  // sequence mismatch
             return 8;
         default:
             os.setError(SamtoolsAdapter::tr("Invalid cigar operation %1, cannot convert to samtools").arg(op));
@@ -142,7 +142,7 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
         aux.tag[0] = str[0];
         aux.tag[1] = str[1];
         aux.type = str[3];
-        if (aux.type == 'A' || aux.type == 'a' || aux.type == 'c' || aux.type == 'C') {    // c and C for backward compatibility
+        if (aux.type == 'A' || aux.type == 'a' || aux.type == 'c' || aux.type == 'C') {  // c and C for backward compatibility
             aux.type = 'A';
             aux.value.append(str[5]);
         } else if (aux.type == 'I' || aux.type == 'i') {
@@ -187,7 +187,7 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             float leX = qToLittleEndian<float>(num.toFloat());
             aux.value.append((char *)&leX, 4);
         } else if (aux.type == 'Z' || aux.type == 'H') {
-            if (aux.type == 'H') {    // check whether the hex string is valid
+            if (aux.type == 'H') {  // check whether the hex string is valid
                 if ((str.length() - 5) % 2 == 1) {
                     coreLog.error("Samtools: length of the hex string not even.");
                     return result;
@@ -208,7 +208,7 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             }
             aux.subType = str[5];
             QList<QByteArray> nums = str.mid(7).split(',');
-            foreach (const QByteArray &num, nums) {
+            for (const QByteArray &num : qAsConst(nums)) {
                 if (aux.subType == 'c')
                     addNum<char>((char)num.toShort(), 1, aux.value);
                 else if (aux.subType == 'C')
@@ -285,7 +285,7 @@ QList<U2AuxData> SamtoolsAdapter::string2aux(const QByteArray &auxString) {
             aux.subType = *(s++);
             qint32 n;
             memcpy(&n, s, 4);
-            s += 4;    // no point to the start of the array
+            s += 4;  // no point to the start of the array
             for (qint32 i = 0; i < n; ++i) {
                 if ('c' == aux.subType || 'c' == aux.subType) {
                     aux.value.append(s, 1);
@@ -468,4 +468,4 @@ int ReadsContext::getAssemblyNum(const QString &assemblyName) const {
     return assemblyNumMap.value(assemblyName, -1);
 }
 
-}    // namespace U2
+}  // namespace U2

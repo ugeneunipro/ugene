@@ -36,7 +36,7 @@ void GHints::setAll(const QVariantMap &newMap) {
 void GHints::dump(const QVariantMap &map) {
     foreach (QString k, map.keys()) {
         QList<QVariant> l = map.values(k);
-        foreach (QVariant v, l) {
+        for (const QVariant &v : qAsConst(l)) {
             coreLog.trace(QString("Hint: %1=%2").arg(k).arg(v.toString()));
         }
     }

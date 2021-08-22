@@ -309,7 +309,7 @@ void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actor
         U2OpStatus2Log os;
         rfs.addItem("report", true, os);
     }
-    foreach (Workflow::Actor *actor, actors) {
+    for (Workflow::Actor *actor : qAsConst(actors)) {
         foreach (Attribute *attr, actor->getParameters()) {
             bool dir = false;
             if (!isOutUrlAttribute(attr, actor, dir)) {

@@ -89,7 +89,7 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
     foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
         QList<QAction *> list = parent->findChildren<QAction *>();
         bool isContainMenu = false;
-        foreach (QAction *act, list) {
+        for (QAction *act : qAsConst(list)) {
             QString name = act->text().replace('&', "");
             if (name == menuName) {
                 resultList << act;

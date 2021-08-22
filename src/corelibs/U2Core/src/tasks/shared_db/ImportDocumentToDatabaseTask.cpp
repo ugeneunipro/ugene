@@ -151,7 +151,7 @@ void ImportDocumentToDatabaseTask::propagateObjectsRelations(QStringList &errors
         dstObject->setObjectRelations(QList<GObjectRelation>());
 
         QList<GObjectRelation> relations = srcObject->getObjectRelations();
-        foreach (const GObjectRelation &relation, relations) {
+        for (const GObjectRelation &relation : qAsConst(relations)) {
             if (srcDocUrl != relation.getDocURL()) {
                 // skip this relation: target object is not imported to the database
                 continue;

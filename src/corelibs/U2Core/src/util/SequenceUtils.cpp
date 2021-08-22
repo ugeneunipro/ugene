@@ -164,7 +164,7 @@ static void shiftAnnotations(AnnotationTableObject *newAnnObj, QList<AnnotationT
     ad->location->regions << contigReg;
     newAnnObj->addAnnotations(QList<SharedAnnotationData>() << ad);
 
-    foreach (AnnotationTableObject *annObj, annObjects) {
+    for (AnnotationTableObject *annObj : qAsConst(annObjects)) {
         foreach (Annotation *a, annObj->getAnnotations()) {
             SharedAnnotationData newAnnotation(new AnnotationData(*a->getData()));
             U2Location newLocation = newAnnotation->location;

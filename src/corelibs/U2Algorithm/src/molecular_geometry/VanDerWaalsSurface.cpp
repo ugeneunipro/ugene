@@ -44,12 +44,12 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
         detaillevel = 1;
     }
 
-    foreach (const SharedAtom &a, atoms) {
+    for (const SharedAtom &a : qAsConst(atoms)) {
         QList<SharedAtom> neighbors = findAtomNeighbors(a, atoms);
         GeodesicSphere surface = getAtomSurfaceDots(a, detaillevel);
         QVector<Vector3D> surfaceDots = surface.getVertices();
         QVector<Vector3D> reducedVertices;
-        foreach (const Vector3D &v, surfaceDots) {
+        for (const Vector3D &v : qAsConst(surfaceDots)) {
             if (vertexNeighboursOneOf(v, neighbors)) {
                 continue;
             } else {
@@ -57,7 +57,7 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
             }
         }
         QVector<Face> surfaceFaces = surface.getFaces();
-        foreach (const Face &face, surfaceFaces) {
+        for (const Face &face : qAsConst(surfaceFaces)) {
             if (reducedVertices.contains(face.v[0]) || reducedVertices.contains(face.v[1]) || reducedVertices.contains(face.v[2])) {
                 faces.append(face);
             }

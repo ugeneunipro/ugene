@@ -199,7 +199,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }
-        const QList<Annotation *> anns = ag->getAnnotations();
+        QList<Annotation *> anns = ag->getAnnotations();
         if (anns.size() != regions.size()) {
             stateInfo.setError(QString("Number of results not matched for :%1, results: %2, expected %3")
                                    .arg(enzymeId)
@@ -207,8 +207,8 @@ Task::ReportResult GTest_FindEnzymes::report() {
                                    .arg(regions.size()));
             break;
         }
-        foreach (Annotation *a, anns) {
-            const U2Region r = a->getRegions().first();
+        for (Annotation *a: qAsConst(anns)) {
+            U2Region r = a->getRegions().first();
             if (!regions.contains(r)) {
                 stateInfo.setError(QString("Illegal region! Enzyme :%1, region %2..%3").arg(enzymeId).arg(r.startPos + 1).arg(r.endPos()));
                 break;
@@ -413,7 +413,7 @@ void GTest_LigateFragments::prepare() {
 void GTest_LigateFragments::prepareFragmentsList() {
     QList<DNAFragment> fragments = DNAFragment::findAvailableFragments(aObjs, sObjs);
 
-    foreach (const QString &searchedName, fragmentNames) {
+    for (const QString &searchedName : qAsConst(fragmentNames)) {
         QStringList nameData = searchedName.split(":");
         QString fName = nameData.at(1);
         QString fDoc = nameData.at(0);

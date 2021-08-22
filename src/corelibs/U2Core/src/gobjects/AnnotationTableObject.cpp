@@ -132,7 +132,7 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     QStringList subgroupPaths;
     rootGroup->getSubgroupPaths(subgroupPaths);
     AnnotationGroup *clonedRootGroup = cln->getRootGroup();
-    foreach (const QString &groupPath, subgroupPaths) {
+    for (const QString &groupPath : qAsConst(subgroupPaths)) {
         AnnotationGroup *originalGroup = rootGroup->getSubgroup(groupPath, false);
         SAFE_POINT(originalGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
 
@@ -213,16 +213,18 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureT
 }
 
 bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const {
-    const AnnotationTableObjectConstraints *ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
-    SAFE_POINT(nullptr != ac, "Invalid feature constraints", false);
+    auto ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
+    SAFE_POINT(ac != nullptr, "Invalid feature constraints", false);
 
     ensureDataLoaded();
 
-    const int fitSize = ac->sequenceSizeToFit;
-    SAFE_POINT(0 < fitSize, "Invalid sequence length provided!", false);
-    foreach (const Annotation *a, getAnnotations()) {
-        foreach (const U2Region &region, a->getRegions()) {
-            SAFE_POINT(0 <= region.startPos, "Invalid annotation region", false);
+    int fitSize = ac->sequenceSizeToFit;
+    SAFE_POINT(fitSize > 0, "Invalid sequence length provided!", false);
+    QList<Annotation *> annotations = getAnnotations();
+    for (const Annotation *a : qAsConst(annotations)) {
+        const QVector<U2Region> &regions = a->getRegions();
+        for (const U2Region &region : qAsConst(regions)) {
+            SAFE_POINT(region.startPos >= 0, "Invalid annotation region", false);
             if (region.endPos() > fitSize) {
                 return false;
             }

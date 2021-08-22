@@ -56,10 +56,10 @@ const QMap<QString, QList<SharedAnnotationData>> &ConvertSnpeffVariationsToAnnot
 }
 
 void ConvertSnpeffVariationsToAnnotationsTask::run() {
-    foreach (VariantTrackObject *variantTrackObject, variantTrackObjects) {
+    for (VariantTrackObject *variantTrackObject : qAsConst(variantTrackObjects)) {
         QList<SharedAnnotationData> annotationTableData;
 
-        const U2VariantTrack variantTrack = variantTrackObject->getVariantTrack(stateInfo);
+        U2VariantTrack variantTrack = variantTrackObject->getVariantTrack(stateInfo);
         CHECK_OP(stateInfo, );
 
         QScopedPointer<U2DbiIterator<U2Variant>> variantsIterator(variantTrackObject->getVariants(U2_REGION_MAX, stateInfo));
@@ -71,7 +71,7 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
 
         SnpeffInfoParser infoParser;
         while (variantsIterator.data()->hasNext()) {
-            const U2Variant variant = variantsIterator.data()->next();
+            U2Variant variant = variantsIterator.data()->next();
 
             SharedAnnotationData entryAnnotationData = tableAnnotationData;
             entryAnnotationData->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_variation).text;
@@ -85,12 +85,12 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
             }
 
             U2OpStatusImpl os;
-            const QList<QList<U2Qualifier>> qualifiersList = infoParser.parse(os, variant.additionalInfo[U2Variant::VCF4_INFO]);
+            QList<QList<U2Qualifier>> qualifiersList = infoParser.parse(os, variant.additionalInfo[U2Variant::VCF4_INFO]);
             CHECK_OP(os, );
             CHECK_OP(stateInfo, );
             stateInfo.addWarnings(os.getWarnings());
 
-            foreach (const QList<U2Qualifier> &qualifiers, qualifiersList) {
+            for (const QList<U2Qualifier> &qualifiers : qAsConst(qualifiersList)) {
                 if (qualifiers.isEmpty()) {
                     continue;
                 }

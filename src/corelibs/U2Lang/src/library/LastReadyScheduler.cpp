@@ -44,7 +44,8 @@ LastReadyScheduler::~LastReadyScheduler() {
 void LastReadyScheduler::init() {
     foreach (Actor *a, schema->getProcesses()) {
         BaseWorker *w = a->castPeer<BaseWorker>();
-        foreach (IntegralBus *bus, w->getPorts().values()) {
+        QList<IntegralBus *> portBuses = w->getPorts().values();
+        for (IntegralBus *bus : qAsConst(portBuses)) {
             bus->setWorkflowContext(context);
         }
         w->setContext(context);

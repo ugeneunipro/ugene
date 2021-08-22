@@ -430,7 +430,7 @@ void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode *> modelNodes
 
     Q_ASSERT(modelNodes.count() != 0);
 
-    foreach (AsnNode *modelNode, modelNodes) {
+    for (AsnNode *modelNode : qAsConst(modelNodes)) {
         // Load model id
         AsnNode *idNode = modelNode->getChildById(0);
         int modelId = idNode->value.toInt();
@@ -518,7 +518,7 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode,
 
    */
 
-    foreach (AsnNode *featureSet, setsNode->children) {
+    for (AsnNode *featureSet : qAsConst(setsNode->children)) {
         QByteArray descr = featureSet->findChildByName("descr")->getChildById(0)->value;
         if (descr != "PDB secondary structure") {
             continue;
@@ -526,7 +526,7 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode,
 
         AsnNode *features = featureSet->getChildById(2);
         Q_ASSERT(features->name == "features");
-        foreach (AsnNode *featureNode, features->children) {
+        for (AsnNode *featureNode : qAsConst(features->children)) {
             loadBioStructFeature(featureNode, struc);
         }
     }
@@ -587,7 +587,7 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
 }
 
 bool containsAtom(const SharedAtom &atom, const BioStruct3D &struc) {
-    foreach (const SharedMolecule mol, struc.moleculeMap) {
+    for (const SharedMolecule mol : qAsConst(struc.moleculeMap)) {
         foreach (const Molecule3DModel model, mol->models.values()) {
             if (model.atoms.contains(atom)) {
                 return true;
@@ -603,7 +603,8 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
         SharedMolecule &mol = struc.moleculeMap[chainId];
         int numModels = mol->models.count();
         for (int modelId = 0; modelId < numModels; ++modelId) {
-            foreach (ResidueIndex resId, mol->residueMap.keys()) {
+            QList<ResidueIndex> residueKeys = mol->residueMap.keys();
+            for (const ResidueIndex &resId : qAsConst(residueKeys)) {
                 quint64 index = calcStdResidueIndex(chainId, resId.toInt());
                 if (!stdResidueCache.contains(index)) {
                     continue;
@@ -614,8 +615,8 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
                 }
                 const AtomCoordSet &atomSet = atomSetCache.value(index);
                 Q_ASSERT(!atomSet.isEmpty());
-                foreach (const StdBond &bond, residue.bonds) {
-                    if ((atomSet.contains(bond.atom1Id)) && (atomSet.contains(bond.atom2Id))) {
+                for (const StdBond &bond : qAsConst(residue.bonds)) {
+                    if (atomSet.contains(bond.atom1Id) && atomSet.contains(bond.atom2Id)) {
                         const SharedAtom a1 = atomSet.value(bond.atom1Id);
                         const SharedAtom a2 = atomSet.value(bond.atom2Id);
                         mol->models[modelId].bonds.append(Bond(a1, a2));

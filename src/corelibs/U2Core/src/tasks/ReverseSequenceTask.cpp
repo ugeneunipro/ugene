@@ -127,7 +127,7 @@ Task::ReportResult ReverseSequenceTask::report() {
     }
 
     // fix annotation locations
-    foreach (AnnotationTableObject *aObj, aObjs) {
+    for (AnnotationTableObject *aObj : qAsConst(aObjs)) {
         foreach (Annotation *a, aObj->getAnnotations()) {
             U2Location location = a->getLocation();
             U2Region::mirror(len, location->regions);
@@ -171,7 +171,7 @@ Task::ReportResult ComplementSequenceTask::report() {
     }
 
     // fix annotation locations
-    foreach (AnnotationTableObject *aObj, aObjs) {
+    for (AnnotationTableObject *aObj : qAsConst(aObjs)) {
         foreach (Annotation *a, aObj->getAnnotations()) {
             U2Strand strand = a->getStrand();
             a->setStrand(strand == U2Strand::Direct ? U2Strand::Complementary : U2Strand::Direct);

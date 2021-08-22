@@ -323,11 +323,11 @@ QVariant UrlTypeValueFactory::getValueFromString(const QString &str, bool *ok) c
     QStringList datasetStrs = str.split(splitter + splitter, QString::SkipEmptyParts);
     QList<Dataset> sets;
     int count = 0;
-    foreach (const QString &datasetStr, datasetStrs) {
+    for (const QString &datasetStr : qAsConst(datasetStrs)) {
         QStringList urls = datasetStr.split(splitter, QString::SkipEmptyParts);
         count++;
         Dataset dSet(QString("Dataset %1").arg(count));
-        foreach (const QString url, urls) {
+        for (const QString &url : qAsConst(urls)) {
             dSet.addUrl(URLContainerFactory::createUrlContainer(url));
         }
         sets << dSet;

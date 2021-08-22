@@ -974,7 +974,7 @@ Task::ReportResult GTest_FindAnnotationByLocation::report() {
     }
     const QList<Annotation *> annList = anntbl->getAnnotations();
     result = nullptr;
-    foreach (Annotation *a, annList) {
+    for(Annotation *a : qAsConst(annList)) {
         if (a->getStrand() != strand) {
             continue;
         }

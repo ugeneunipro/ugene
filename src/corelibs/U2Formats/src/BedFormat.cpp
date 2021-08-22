@@ -126,7 +126,7 @@ void BedFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
     foreach (const QString &sequenceName, annotationsHash.keys()) {
         const QString annotTableName = sequenceName + FEATURES_TAG;
         AnnotationTableObject *annotTable = nullptr;
-        foreach (GObject *object, objects) {
+        for (GObject *object : qAsConst(objects)) {
             if (object->getGObjectName() == annotTableName) {
                 annotTable = dynamic_cast<AnnotationTableObject *>(object);
             }
@@ -431,7 +431,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
 
         QList<Annotation *> annotationsList = annotTable->getAnnotations();
 
-        foreach (Annotation *annot, annotationsList) {
+        for (Annotation *annot : qAsConst(annotationsList)) {
             QString annotName = annot->getName();
             if (annotName == U1AnnotationUtils::lowerCaseAnnotationName ||
                 annotName == U1AnnotationUtils::upperCaseAnnotationName) {
@@ -444,7 +444,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 coreLog.info(tr("You are trying to save joined annotation to BED format! The joining will be lost"));
             }
 
-            foreach (const U2Region &region, annotRegions) {
+            for (const U2Region &region : qAsConst(annotRegions)) {
                 lineFields << chromName;
 
                 // chromStart and chromEnd

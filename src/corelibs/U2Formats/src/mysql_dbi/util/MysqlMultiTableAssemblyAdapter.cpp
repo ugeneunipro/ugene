@@ -302,9 +302,9 @@ void MysqlMultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds,
 }
 
 void MysqlMultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
-    foreach (QVector<MysqlMtaSingleTableAdapter *> adaptersVector, adaptersGrid) {
-        foreach (MysqlMtaSingleTableAdapter *adapter, adaptersVector) {
-            if (nullptr != adapter) {
+    for (const QVector<MysqlMtaSingleTableAdapter *> &adaptersVector : qAsConst(adaptersGrid)) {
+        for (MysqlMtaSingleTableAdapter *adapter : qAsConst(adaptersVector)) {
+            if (adapter != nullptr) {
                 adapter->singleTableAdapter->dropReadsTables(os);
             }
         }
@@ -792,7 +792,7 @@ void MysqlMultiTablePackAlgorithmAdapter::migrate(MysqlMtaSingleTableAdapter *ne
             CHECK_OP(os, );
 
             static const QString insertQuery = "INSERT INTO %1(id, prow) VALUES(:id, :prow)";
-            foreach (const MysqlReadTableMigrationData &d, migData) {
+            for (const MysqlReadTableMigrationData &d : qAsConst(migData)) {
                 U2SqlQuery insertIds(insertQuery.arg(idsTable), db, os);
                 insertIds.bindInt64(":id", d.readId);
                 insertIds.bindInt32(":prow", d.newProw);

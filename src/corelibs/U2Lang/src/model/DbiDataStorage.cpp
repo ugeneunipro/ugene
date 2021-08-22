@@ -371,7 +371,7 @@ QList<SharedAnnotationData> StorageUtils::getAnnotationTable(DbiDataStorage *sto
     QList<SharedAnnotationData> result;
     const QList<SharedDbiDataHandler> handlers = getAnnotationTableHandlers(annObjList);
 
-    foreach (const SharedDbiDataHandler &annTableId, handlers) {
+    for (const SharedDbiDataHandler &annTableId : qAsConst(handlers)) {
         // U2Object *dbObject = storage->getObject(annTableId, U2Type::AnnotationTable);
         U2Object *dbObject = storage->getObject(annTableId, 10);
         QScopedPointer<U2AnnotationTable> table(dynamic_cast<U2AnnotationTable *>(dbObject));

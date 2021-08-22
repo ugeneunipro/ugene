@@ -720,7 +720,7 @@ QList<GenbankPlainTextFormat::StrPair> GenbankPlainTextFormat::formatKeywords(co
                 }
 
                 res << qMakePair(key, l.takeFirst());
-                foreach (const QString &s, l) {
+                for (const QString &s : qAsConst(l)) {
                     res << qMakePair(QString(), s);
                 }
             } else {

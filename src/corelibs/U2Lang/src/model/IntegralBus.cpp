@@ -69,9 +69,9 @@ inline bool equalPaths(const SlotPathMap &allPaths, const QStringList &ipath, co
         return ipath.isEmpty();
     }
 
-    foreach (const QStringList &path, paths) {
+    for (const QStringList &path : qAsConst(paths)) {
         if (path.size() == ipath.size()) {
-            foreach (const QString &id, ipath) {
+            for (const QString &id : qAsConst(ipath)) {
                 if (!path.contains(id)) {
                     return false;
                 }
@@ -105,7 +105,8 @@ QVariantMap BusMap::getMessageData(const Message &m) const {
     QString ikey;
 
     QVariantMap result;
-    foreach (QString src, imap.uniqueKeys()) {
+    const QList<QString> &dataMapKeys = imap.uniqueKeys();
+    for (const QString &src : qAsConst(dataMapKeys)) {
         QVariant ival = imap.value(src);
 
         parseSource(src, ikey, ipath);
@@ -442,10 +443,10 @@ int IntegralBus::hasRoom(const DataType *) const {
 }
 
 bool IntegralBus::isEnded() const {
-    foreach (CommunicationChannel *ch, outerChannels) {
+    for (CommunicationChannel *ch : qAsConst(outerChannels)) {
         if (ch->isEnded()) {
 #ifdef _DEBUG
-            foreach (CommunicationChannel *dbg, outerChannels) {
+            for (CommunicationChannel *dbg : qAsConst(outerChannels)) {
                 assert(dbg->isEnded());
             }
 #endif

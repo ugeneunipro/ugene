@@ -137,11 +137,11 @@ QString FormatUtils::prepareFileFilter(const QMap<QString, QStringList> &formatN
 
 QString FormatUtils::prepareFileFilter(const QString &name, const QStringList &exts, bool any, const QStringList &extra) {
     QString line = name + " (";
-    foreach (QString ext, exts) {
+    for (const QString &ext : qAsConst(exts)) {
         line += " *." + ext;
     }
-    foreach (QString ext, exts) {
-        foreach (QString s, extra) {
+    for (const QString &ext : qAsConst(exts)) {
+        for (const QString &s : qAsConst(extra)) {
             line += " *." + ext + s;
         }
     }

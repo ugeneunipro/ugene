@@ -470,7 +470,7 @@ void GFFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     // add annotation data to annotation table
     foreach (const QString &key, annotationGroups.keys()) {
         QList<AnnotationData *> data = annotationGroups.value(key);
-        foreach (AnnotationData *ann, data) {
+        for (AnnotationData *ann : qAsConst(data)) {
             SAFE_POINT(data.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
 
             annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), key);
@@ -609,11 +609,11 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     for (int i = 0; i != 9; i++) {
         cleanRow.append(".");
     }
-    foreach (GObject *ato, atos) {
+    for (GObject *ato : qAsConst(atos)) {
         AnnotationTableObject *annotationTable = dynamic_cast<AnnotationTableObject *>(ato);
         QList<Annotation *> aList = annotationTable->getAnnotations();
         // retrieving known IDs
-        foreach (Annotation *ann, aList) {
+        for (Annotation *ann : qAsConst(aList)) {
             if (Annotation::isValidQualifierName("ID")) {
                 knownIDs.insert(ann->findFirstQualifierValue("ID"));
             }
@@ -635,7 +635,7 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             name = "chr";
         }
 
-        foreach (Annotation *ann, aList) {
+        for (Annotation *ann : qAsConst(aList)) {
             QString aName = ann->getName();
             if (aName == U1AnnotationUtils::lowerCaseAnnotationName || aName == U1AnnotationUtils::upperCaseAnnotationName) {
                 continue;
@@ -662,7 +662,7 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 row[2] = ann->getGroup()->getName();
                 QString additionalQuals = "name=" + escapeBadCharacters(aName);
                 // filling fields with qualifiers data
-                foreach (U2Qualifier q, qualVec) {
+                for (const U2Qualifier &q : qAsConst(qualVec)) {
                     if (q.name == "source") {
                         row[1] = normalizeQualifier(q.value);
                     } else if (q.name == "score") {

@@ -143,7 +143,7 @@ bool SelectionUtils::isDocumentInSelection(const Document *doc, const MultiGSele
         } else if (st == GSelectionTypes::GOBJECTS && deriveDocsFromObjectSelection) {
             const GObjectSelection *os = qobject_cast<const GObjectSelection *>(s);
             const QList<GObject *> &objects = os->getSelectedObjects();
-            foreach (GObject *o, objects) {
+            for (GObject *o : qAsConst(objects)) {
                 if (o->getDocument() == doc) {
                     return true;
                 }

@@ -439,10 +439,10 @@ static DataTypePtr getDatatypeOfSlotDesc(const Descriptor &dt) {
 }
 
 void CreateScriptElementDialog::fillFields(ActorPrototype *proto) {
-    proto->getPortDesciptors();
     int inputInd = 0;
     int outputInd = 0;
-    foreach (const PortDescriptor *desc, proto->getPortDesciptors()) {
+    QList<PortDescriptor *> portDescriptors = proto->getPortDesciptors();
+    for (const PortDescriptor *desc : qAsConst(portDescriptors)) {
         if (desc->isInput()) {
             inputList->model()->insertRows(0, desc->getType()->getAllDescriptors().size() - 1, QModelIndex());
             foreach (const Descriptor &d, desc->getType()->getAllDescriptors()) {
@@ -552,14 +552,14 @@ void CreateScriptElementDialog::sl_okClicked() {
     CfgTableModel *attrTableModel = static_cast<CfgTableModel *>(attributeTable->model());
     QList<CfgListItem *> attributes = attrTableModel->getItems();
     attrs.clear();
-    foreach (CfgListItem *item, attributes) {
+    for (CfgListItem *item : qAsConst(attributes)) {
         QString itemName = item->getName();
         if (itemName.isEmpty()) {
             QMessageBox::critical(this, tr("error"), tr("Name for some attributes is empty"));
             coreLog.error(tr("Name for some attributes is empty"));
             return;
         }
-        foreach (const Attribute *attr, attrs) {
+        for (const Attribute *attr : qAsConst(attrs)) {
             if (attr->getId() == itemName) {
                 QMessageBox::critical(this, tr("error"), tr("Two attributes with name %1").arg(itemName));
                 coreLog.error(tr("Two attributes with name %1").arg(itemName));

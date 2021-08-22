@@ -127,9 +127,9 @@ QString ImportToDatabaseTask::sayAboutImportedFilesAndDirs() const {
 QString ImportToDatabaseTask::sayAboutImportedDirs() const {
     QString result;
 
-    foreach (ImportDirToDatabaseTask *dirSubtask, dirSubtasks) {
+    for (ImportDirToDatabaseTask *dirSubtask : qAsConst(dirSubtasks)) {
         const QStringList importedFiles = dirSubtask->getImportedFiles();
-        foreach (const QString &importedFile, importedFiles) {
+        for (const QString &importedFile : qAsConst(importedFiles)) {
             result += importedFile + "<br>";
         }
     }
@@ -177,7 +177,7 @@ QString ImportToDatabaseTask::sayAboutImportedDocuments() const {
 
         result += tr("Document ") + document->getName() + ":<br>";
 
-        foreach (const QString &importedObjectName, importedObjectNames) {
+        for (const QString &importedObjectName : qAsConst(importedObjectNames)) {
             result += "    " + importedObjectName + "<br>";
         }
 
@@ -218,7 +218,7 @@ QString ImportToDatabaseTask::sayAboutSkippedFilesAndDirs() const {
 QString ImportToDatabaseTask::sayAboutSkippedDirs() const {
     QString result;
 
-    foreach (ImportDirToDatabaseTask *dirSubtask, dirSubtasks) {
+    for (ImportDirToDatabaseTask *dirSubtask : qAsConst(dirSubtasks)) {
         const StrStrMap skippedFiles = dirSubtask->getSkippedFiles();
         foreach (const QString &skippedFile, skippedFiles.keys()) {
             result += skippedFile + ": " + skippedFiles[skippedFile] + "<br>";
@@ -268,7 +268,7 @@ QString ImportToDatabaseTask::sayAboutSkippedDocuments() const {
 
         result += tr("Document ") + document->getName() + ":<br>";
 
-        foreach (const QString &skippedObjectName, skippedObjectNames) {
+        for (const QString &skippedObjectName : qAsConst(skippedObjectNames)) {
             result += "    " + skippedObjectName + "<br>";
         }
 

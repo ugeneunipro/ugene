@@ -269,7 +269,7 @@ const QMultiMap<QString, GBFeatureKey> &GBFeatureUtils::getKeyGroups() {
         QVector<bool> featureInGroup(GBFeatureKey_NUM_KEYS, false);
         foreach (const QString &groupName, groups.keys()) {
             QList<GBFeatureKey> values = groups.values(groupName);
-            foreach (GBFeatureKey k, values) {
+            for (const GBFeatureKey &k : qAsConst(values)) {
                 featureInGroup[k] = true;
             }
         }

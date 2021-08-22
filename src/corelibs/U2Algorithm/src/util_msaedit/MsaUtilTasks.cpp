@@ -145,9 +145,9 @@ void AlignInAminoFormTask::run() {
     const QList<MultipleSequenceAlignmentRow> rows = newMsa->getMsaRows();
 
     // Create gap map from amino-acid alignment
-    foreach (const MultipleSequenceAlignmentRow &row, rows) {
-        const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
-        const MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
+    for (const MultipleSequenceAlignmentRow &row : qAsConst(rows)) {
+        int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
+        MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())), );
 
         QList<U2MsaGap> gapsList;

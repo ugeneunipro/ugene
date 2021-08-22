@@ -73,7 +73,8 @@ void IntegralBusType::remapSlotString(QString &slotStr, const QMap<ActorId, Acto
 }
 
 void IntegralBusType::remap(StrStrMap &busMap, const QMap<ActorId, ActorId> &m) {
-    foreach (QString key, busMap.uniqueKeys()) {
+    QList<QString> busKeys = busMap.uniqueKeys();
+    for (const QString &key : qAsConst(busKeys)) {
         QStringList newValList;
         foreach (QString val, busMap.value(key).split(";")) {
             remapSlotString(val, m);
@@ -88,7 +89,7 @@ void IntegralBusType::remapPaths(SlotPathMap &pathsMap, const QMap<ActorId, Acto
     foreach (const SlotPair &slotsPair, pathsMap.keys()) {
         QStringList oldPath = pathsMap.value(slotsPair, QStringList());
         QStringList newPath;
-        foreach (const QString &idStr, oldPath) {
+        for (const QString &idStr : qAsConst(oldPath)) {
             ActorId oldId = str2aid(idStr);
             if (actorIdsMap.contains(oldId)) {
                 const ActorId &newId = actorIdsMap[oldId];
@@ -130,7 +131,8 @@ void IntegralBusType::addInputs(const Port *p, bool addPaths) {
             grouperSlot = GrouperOutSlot::readable2busMap(slotStr);
         }
 
-        foreach (Port *peer, p->getLinks().uniqueKeys()) {
+        QList<Port *> linkKeys = p->getLinks().uniqueKeys();
+        for (Port *peer : qAsConst(linkKeys)) {
             DataTypePtr pt = peer->getType();
             if (qobject_cast<IntegralBusPort *>(peer)) {
                 assert(pt->isMap());

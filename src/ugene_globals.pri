@@ -90,9 +90,7 @@ linux-g++ {
         # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loop.
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtScript"
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtXml"
     }
 
     # build with coverage (gcov) support, now for Linux only

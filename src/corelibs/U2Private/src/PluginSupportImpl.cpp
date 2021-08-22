@@ -236,7 +236,7 @@ PluginRef::~PluginRef() {
 
 void PluginSupportImpl::sl_registerServices() {
     ServiceRegistry *sr = AppContext::getServiceRegistry();
-    foreach (PluginRef *ref, plugRefs) {
+    for (PluginRef *ref : qAsConst(plugRefs)) {
         foreach (Service *s, ref->plugin->getServices()) {
             AppContext::getTaskScheduler()->registerTopLevelTask(sr->registerServiceTask(s));
         }

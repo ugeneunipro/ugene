@@ -102,14 +102,14 @@ Service *ServiceRegistryImpl::findServiceReadyToEnable() const {
     // TODO: recheck circular tasks too
 
     // look for new + parent_disabled services and check if a service can be run
-    foreach (Service *s, services) {
+    for (Service *s : qAsConst(services)) {
         if (s->getState() == ServiceState_Disabled_New || s->getState() == ServiceState_Disabled_ParentDisabled) {
             bool allParentsEnabled = true;
             QList<ServiceType> parentTypes = s->getParentServiceTypes();
-            foreach (ServiceType t, parentTypes) {
+            for (const ServiceType &t : qAsConst(parentTypes)) {
                 QList<Service *> parentServices = findServices(t);
                 bool parentIsEnabled = false;
-                foreach (Service *ps, parentServices) {
+                for (Service *ps : qAsConst(parentServices)) {
                     if (ps->isEnabled()) {
                         parentIsEnabled = true;
                         break;
@@ -181,7 +181,7 @@ static bool findCircular(ServiceRegistryImpl *sr, Service *s, int currentDepth) 
     }
     foreach (ServiceType st, s->getParentServiceTypes()) {
         QList<Service *> parents = sr->findServices(st);
-        foreach (Service *p, parents) {
+        for (Service *p : qAsConst(parents)) {
             bool circular = findCircular(sr, p, currentDepth);
             if (circular) {
                 return true;

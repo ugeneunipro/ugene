@@ -531,9 +531,9 @@ void MultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
     // remove prepared queries to finalize them and prevent SQLite errors on table drop
     db->preparedQueries.clear();
 
-    foreach (QVector<MTASingleTableAdapter *> adaptersVector, adaptersGrid) {
-        foreach (MTASingleTableAdapter *adapter, adaptersVector) {
-            if (nullptr != adapter) {
+    for (QVector<MTASingleTableAdapter *> adaptersVector : qAsConst(adaptersGrid)) {
+        for (MTASingleTableAdapter *adapter : qAsConst(adaptersVector)) {
+            if (adapter != nullptr) {
                 adapter->singleTableAdapter->dropReadsTables(os);
             }
         }
@@ -668,7 +668,7 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter *newA, const 
 
             SQLiteWriteQuery(QString("CREATE TEMPORARY TABLE %1(id INTEGER PRIMARY KEY, prow INTEGER NOT NULL)").arg(idsTable), db, os).execute();
             SQLiteWriteQuery insertIds(QString("INSERT INTO %1(id, prow) VALUES(?1, ?2)").arg(idsTable), db, os);
-            foreach (const SQLiteReadTableMigrationData &d, migData) {
+            for (const SQLiteReadTableMigrationData &d : qAsConst(migData)) {
                 insertIds.reset(false);
                 insertIds.bindInt64(1, d.readId);
                 insertIds.bindInt32(2, d.newProw);

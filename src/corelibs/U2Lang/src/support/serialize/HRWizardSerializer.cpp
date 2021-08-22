@@ -164,7 +164,8 @@ void HRWizardParser::parseResult(U2OpStatus &os) {
     ParsedPairs pairs(tokenizer);
     foreach (const QString &result, pairs.equalPairs.keys()) {
         QList<Predicate> preds;
-        foreach (const QString &predStr, pairs.equalPairs[result].split(" ")) {
+        QStringList tokens = pairs.equalPairs[result].split(" ");
+        for (const QString &predStr : qAsConst(tokens)) {
             preds << Predicate::fromString(predStr, os);
             CHECK_OP(os, );
         }
@@ -675,7 +676,8 @@ QString HRWizardSerializer::serializeResults(const QMap<QString, QList<Predicate
 
     foreach (const QString &result, results.keys()) {
         QStringList preds;
-        foreach (const Predicate &p, results[result]) {
+        const QList<Predicate> &predicates = results[result];
+        for (const Predicate &p : qAsConst(predicates)) {
             preds << p.toString();
         }
         QString predsStr = preds.join(" ");

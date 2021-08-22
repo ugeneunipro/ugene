@@ -246,9 +246,9 @@ void ReadAnnotationsTask::run() {
 
     QList<SharedAnnotationData> dataList;
 
-    foreach (GObject *go, annsObjList) {
-        AnnotationTableObject *annsObj = dynamic_cast<AnnotationTableObject *>(go);
-        CHECK_EXT(nullptr != annsObj, stateInfo.setError("NULL annotations object"), );
+    for (GObject *go : qAsConst(annsObjList)) {
+        auto annsObj = dynamic_cast<AnnotationTableObject *>(go);
+        CHECK_EXT(annsObj != nullptr, stateInfo.setError("NULL annotations object"), );
 
         if (!mergeAnnotations || annsObjList.size() == 1) {
             doc->removeObject(go, DocumentObjectRemovalMode_Release);

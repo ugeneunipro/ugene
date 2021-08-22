@@ -115,9 +115,9 @@ bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, Acto
         if (attrList.size() != regAttrList.size()) {
             return false;
         }
-        foreach (Attribute *attr, attrList) {
+        for (Attribute *attr : qAsConst(attrList)) {
             bool found = false;
-            foreach (Attribute *regAttr, regAttrList) {
+            for (Attribute *regAttr : qAsConst(regAttrList)) {
                 if (*attr == *regAttr) {
                     found = true;
                     break;
@@ -136,9 +136,9 @@ bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, Acto
         if (portList.size() != regPortList.size()) {
             return false;
         }
-        foreach (PortDescriptor *port, portList) {
+        for (PortDescriptor *port : qAsConst(portList)) {
             bool found = false;
-            foreach (PortDescriptor *regPort, regPortList) {
+            for (PortDescriptor *regPort : qAsConst(regPortList)) {
                 if (*port == *regPort) {
                     found = true;
                     break;

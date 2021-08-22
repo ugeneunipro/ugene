@@ -215,8 +215,10 @@ void QDScheme::addActor(QDActor *a) {
 
 bool QDScheme::removeActor(QDActor *a) {
     if (actors.contains(a)) {
-        foreach (QDSchemeUnit *su, a->getSchemeUnits()) {
-            foreach (QDConstraint *c, su->getConstraints()) {
+        QList<QDSchemeUnit *> schemaUnits = a->getSchemeUnits();
+        for (QDSchemeUnit *schemaUnit : qAsConst(schemaUnits)) {
+            QList<QDConstraint *> constraints = schemaUnit->getConstraints();
+            for (QDConstraint *c : qAsConst(constraints)) {
                 removeConstraint(c);
             }
         }
@@ -255,9 +257,11 @@ void QDScheme::removeConstraint(QDConstraint *constraint) {
 
 QList<QDConstraint *> QDScheme::getConstraints() const {
     QList<QDConstraint *> res;
-    foreach (QDActor *actor, actors) {
-        foreach (QDSchemeUnit *su, actor->getSchemeUnits()) {
-            foreach (QDConstraint *c, su->getConstraints()) {
+    for (QDActor *actor : qAsConst(actors)) {
+        QList<QDSchemeUnit *> schemeUnits = actor->getSchemeUnits();
+        for (QDSchemeUnit *su : qAsConst(schemeUnits)) {
+            const QList<QDConstraint *> &constraints = su->getConstraints();
+            for (QDConstraint *c : qAsConst(constraints)) {
                 if (!res.contains(c)) {
                     res.append(c);
                 }
@@ -631,7 +635,7 @@ bool QDScheme::isValid() const {
         NotificationsList notificationList;
         if (!cfg->validate(notificationList)) {
             res = false;
-            foreach (const WorkflowNotification &notification, notificationList) {
+            for (const WorkflowNotification &notification : qAsConst(notificationList)) {
                 coreLog.error(QObject::tr("%1. %2").arg(cfg->getLabel()).arg(notification.message));
             }
         }

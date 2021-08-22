@@ -510,7 +510,7 @@ void Document::loadFrom(Document *sourceDoc) {
 
     QList<GObject *> sourceObjects = sourceDoc->getObjects();
     sourceDoc->unload(false);
-    foreach (GObject *obj, sourceObjects) {
+    for (GObject *obj: qAsConst(sourceObjects)) {
         // TODO: add constrains to ObjectRelations!!
         UnloadedObjectInfo info = unloadedInfo.value(obj->getGObjectName());
         if (info.type == obj->getGObjectType()) {

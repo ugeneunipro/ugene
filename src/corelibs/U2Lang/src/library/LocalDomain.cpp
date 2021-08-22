@@ -55,7 +55,8 @@ BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
     if (autoTransitBus) {
         foreach (Port *p, a->getInputPorts()) {
             IntegralBus *bus = p->castPeer<IntegralBus>();
-            foreach (Port *op, a->getOutputPorts()) {
+            QList<Port *> outputPorts = a->getOutputPorts();
+            for (Port *op : qAsConst(outputPorts)) {
                 if (p->isInput() != op->isInput()) {
                     IntegralBus *ob = op->castPeer<IntegralBus>();
                     ob->addComplement(bus);

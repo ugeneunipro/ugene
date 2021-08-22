@@ -335,7 +335,7 @@ QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList
             blockPairs.removeOne(pair);
         }
     }
-    foreach (const QString &block, setBlocks) {
+    for (const QString &block : qAsConst(setBlocks)) {
         Tokenizer tokenizer;
         tokenizer.tokenize(block);
 
@@ -361,13 +361,13 @@ QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList
                 throw ReadFailed(tr("Url definition does not contain dataset name"));
             }
         } catch (const ReadFailed &ex) {
-            foreach (URLContainer *url, urls) {
+            for (URLContainer *url : qAsConst(urls)) {
                 delete url;
             }
             throw ReadFailed(ex.what);
         }
         Dataset dSet(name);
-        foreach (URLContainer *url, urls) {
+        for (URLContainer *url : qAsConst(urls)) {
             dSet.addUrl(url);
         }
         sets << dSet;

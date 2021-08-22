@@ -208,7 +208,7 @@ bool Schema::recursiveExpand(QList<QString> &schemaIds) {
     }
 
     // Everything is all right after expanding. So replace expanded processes
-    foreach (Actor *proc, procs) {
+    for (Actor *proc : qAsConst(procs)) {
         if (!proc->getProto()->isSchemaFlagSet()) {
             continue;
         }
@@ -280,7 +280,8 @@ void Schema::replaceInLinksAndSlots(Actor *proc, const PortAlias &portAlias) {
     Actor *subProc = portAlias.getSourcePort()->owner();
     Port *subPort = subProc->getPort(portAlias.getSourcePort()->getId());
 
-    foreach (Link *link, this->getFlows()) {
+    const QList<Link *> &links = this->getFlows();
+    for (Link *link: qAsConst(links)) {
         if (link->destination() == port) {
             // replace ports link
             removeFlow(link);
@@ -295,10 +296,12 @@ void Schema::replaceInLinksAndSlots(Actor *proc, const PortAlias &portAlias) {
             StrStrMap subBusMap;
             SlotPathMap subPathMap;
 
-            foreach (const SlotAlias &slotAlias, portAlias.getSlotAliases()) {
+            QList<SlotAlias> portSlotAliases = portAlias.getSlotAliases();
+            for (const SlotAlias &slotAlias : qAsConst(portSlotAliases)) {
                 subBusMap[slotAlias.getSourceSlotId()] = busMap[slotAlias.getAlias()];
 
-                foreach (const SlotPair &slotPair, pathMap.keys()) {
+                QList<SlotPair> pathMapKeys = pathMap.keys();
+                for (const SlotPair &slotPair : qAsConst(pathMapKeys)) {
                     if (slotAlias.getAlias() == slotPair.first) {
                         SlotPair subPair(slotAlias.getSourceSlotId(), slotPair.second);
                         foreach (const QStringList &p, pathMap.values(slotPair)) {

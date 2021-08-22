@@ -151,11 +151,11 @@ bool PhyTreeObject::treesAreAlike(const PhyTree &tree1, const PhyTree &tree2) {
         return false;
     }
 
-    foreach (const PhyNode *n1, track1) {
+    for (const PhyNode *n1 : qAsConst(track1)) {
         if (n1->getName().isEmpty()) {
             continue;
         }
-        foreach (const PhyNode *n2, track2) {
+        for (const PhyNode *n2 : qAsConst(track2)) {
             if (n2->getName() != n1->getName()) {
                 continue;
             }
