@@ -197,30 +197,30 @@ void DigestSequenceDialog::addAnnotationWidget() {
 }
 
 void DigestSequenceDialog::searchForAnnotatedEnzymes(ADVSequenceObjectContext *ctx) {
-    QSet<AnnotationTableObject *> relatedAnns = ctx->getAnnotationObjects(true);
+    QSet<AnnotationTableObject *> relatedAnnotationObjects = ctx->getAnnotationObjects(true);
 
-    foreach (AnnotationTableObject *a, relatedAnns) {
-        AnnotationGroup *grp = a->getRootGroup()->getSubgroup(ANNOTATION_GROUP_ENZYME, false);
-        if (nullptr == grp) {
+    for (AnnotationTableObject *relatedAnnotationObject : qAsConst(relatedAnnotationObjects)) {
+        AnnotationGroup *grp = relatedAnnotationObject->getRootGroup()->getSubgroup(ANNOTATION_GROUP_ENZYME, false);
+        if (grp == nullptr) {
             continue;
         }
-        sourceObj = a;
-        QList<Annotation *> reSites;
-        grp->findAllAnnotationsInGroupSubTree(reSites);
-        foreach (Annotation *a, reSites) {
-            QString enzymeId = a->getName();
+        sourceObj = relatedAnnotationObject;
+        QList<Annotation *> subTreeAnnotations;
+        grp->findAllAnnotationsInGroupSubTree(subTreeAnnotations);
+        for (Annotation *subTreeAnnotation : qAsConst(subTreeAnnotations)) {
+            QString enzymeId = subTreeAnnotation->getName();
             bool isDublicate = false;
             if (annotatedEnzymes.contains(enzymeId)) {
                 QList<U2Region> regions = annotatedEnzymes.values(enzymeId);
-                foreach (const U2Region &region, regions) {
-                    if (region == a->getRegions().first()) {
+                for (const U2Region &region : qAsConst(regions)) {
+                    if (region == subTreeAnnotation->getRegions().first()) {
                         isDublicate = true;
                         break;
                     }
                 }
             }
             if (!isDublicate) {
-                annotatedEnzymes.insertMulti(enzymeId, a->getRegions().first());
+                annotatedEnzymes.insertMulti(enzymeId, subTreeAnnotation->getRegions().first());
                 availableEnzymes.insert(enzymeId);
             }
         }

@@ -479,13 +479,13 @@ QDSchemeUnit *QDSchemeSerializer::findSchemeUnit(const QString &id, QDDocument *
         }
         return actor->getSchemeUnit(unitId);
     }
-    foreach (QDDocument *doc, docs) {
-        if (doc->getName() == docName) {
+    for (QDDocument *qdDocument : qAsConst(docs)) {
+        if (qdDocument->getName() == docName) {
             const QString &elStr = QDDocument::getLocalName(id);
             int lastPointIdx = elStr.lastIndexOf('.');
             const QString &actorId = elStr.mid(0, lastPointIdx);
             const QString &unitId = elStr.mid(lastPointIdx + 1);
-            QDActor *actor = stmt2actor.value(doc->getElement(actorId));
+            QDActor *actor = stmt2actor.value(qdDocument->getElement(actorId));
             if (actor->getSchemeUnits().size() == 1) {
                 return actor->getSchemeUnit(unitId);
             }

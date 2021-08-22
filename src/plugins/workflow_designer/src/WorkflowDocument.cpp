@@ -131,9 +131,9 @@ void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) 
     int nWritten = 0;
     int nTotal = rawData.size();
     while (nWritten < nTotal) {
-        int d = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
-        assert(d > 0);
-        nWritten += d;
+        int bytesWritten = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
+        assert(bytesWritten > 0);
+        nWritten += bytesWritten;
     }
     wo->getView()->getScene()->setModified(false);
     wo->setSceneRawData(rawData);

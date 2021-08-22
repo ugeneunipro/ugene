@@ -323,8 +323,8 @@ Object3D *WormsGLRenderer::createHelix3D(int startId, int endId, const BioPolyme
 
         // getting "average" color
         const Color4f c = colorScheme->getAtomColor(bpModel.monomerMap.value(i).alphaCarbon);
-        for (int i = 0; i < 4; ++i) {
-            color[i] += c[i];
+        for (int colorIndex = 0; colorIndex < 4; ++colorIndex) {
+            color[colorIndex] += c[colorIndex];
         }
     }
     QPair<Vector3D, Vector3D> axis = calcBestAxisThroughPoints(helixPoints);
@@ -348,8 +348,8 @@ Object3D *WormsGLRenderer::createStrand3D(int startId, int endId, const BioPolym
 
         // getting "average" color
         const Color4f c = colorScheme->getAtomColor(bpModel.monomerMap.value(i).alphaCarbon);
-        for (int i = 0; i < 4; ++i) {
-            color[i] += c[i];
+        for (int colorIndex = 0; colorIndex < 4; ++colorIndex) {
+            color[colorIndex] += c[colorIndex];
         }
     }
     QPair<Vector3D, Vector3D> axis = calcBestAxisThroughPoints(arrowPoints);

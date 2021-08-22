@@ -22,9 +22,9 @@
 #ifndef _U2_DOT_PLOT_FILTER_DIALOG_H_
 #define _U2_DOT_PLOT_FILTER_DIALOG_H_
 
-#include <ui_DotPlotFilterDialog.h>
-
 #include <QDialog>
+
+#include <ui_DotPlotFilterDialog.h>
 
 namespace U2 {
 

@@ -70,13 +70,13 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
                 item = new GraphicsRectangularBranchItem(node->getBranchesDistance(ind), node->getBranch(ind), parentBranch->nodeValue);
             }
         }
-        SAFE_POINT_EXT(nullptr != item, setError(tr("An internal error: a tree is in an incorrect state, can't create a branch")), nullptr);
-        int size = items.size();
-        assert(size > 0);
+        SAFE_POINT_EXT(item != nullptr, setError(tr("An internal error: a tree is in an incorrect state, can't create a branch")), nullptr);
+        int itemSize = items.size();
+        assert(itemSize > 0);
 
         {
             int xmin = 0, ymin = items[0] ? items[0]->pos().y() : items[1]->pos().y(), ymax = 0;
-            for (int i = 0; i < size; ++i) {
+            for (int i = 0; i < itemSize; ++i) {
                 if (items[i] == nullptr) {
                     continue;
                 }
@@ -93,7 +93,7 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
             int y = (ymax + ymin) / 2;
             item->setPos(xmin, y);
 
-            for (int i = 0; i < size; ++i) {
+            for (int i = 0; i < itemSize; ++i) {
                 if (items[i] == nullptr) {
                     continue;
                 }
@@ -135,12 +135,12 @@ void CreateRectangularBranchesTask::run() {
     }
     minDistance = -2;
     maxDistance = 0;
-    GraphicsRectangularBranchItem *item = getBranch(node);  // modifies minDistance and maxDistance
-    CHECK(item != nullptr, );
-    item->setWidthW(0);
-    item->setDist(0);
-    item->setHeightW(0);
-    root = item;
+    GraphicsRectangularBranchItem *branchItem = getBranch(node);  // modifies minDistance and maxDistance
+    CHECK(branchItem != nullptr, );
+    branchItem->setWidthW(0);
+    branchItem->setDist(0);
+    branchItem->setHeightW(0);
+    root = branchItem;
 
     if (minDistance == 0) {
         minDistance = GraphicsRectangularBranchItem::EPSILON;
@@ -154,7 +154,7 @@ void CreateRectangularBranchesTask::run() {
     scale = qMin(minDistScale, maxDistScale);
 
     QStack<GraphicsRectangularBranchItem *> stack;
-    stack.push(item);
+    stack.push(branchItem);
     while (!stack.empty()) {
         GraphicsRectangularBranchItem *item = stack.pop();
         item->setWidth(item->getWidth() * scale);

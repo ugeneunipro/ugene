@@ -70,12 +70,11 @@ CircularAnnotationItem::~CircularAnnotationItem() {
     regions.clear();
 }
 
-void CircularAnnotationItem::paint(QPainter *p, const QStyleOptionGraphicsItem *item, QWidget *widget) {
-    Q_UNUSED(item);
+void CircularAnnotationItem::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *widget) {
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings *as = asr->getAnnotationSettings(annotation->getData());
     this->color = as->color;
-    foreach (CircularAnnotationRegionItem *item, regions) {
+    for (CircularAnnotationRegionItem *item : qAsConst(regions)) {
         item->paint(p, nullptr, widget);
     }
 }

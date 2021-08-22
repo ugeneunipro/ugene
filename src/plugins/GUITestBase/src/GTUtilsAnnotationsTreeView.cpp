@@ -367,8 +367,8 @@ bool GTUtilsAnnotationsTreeView::findRegion(HI::GUITestOpStatus &os, const QStri
 
     bool found = false;
     QVector<U2Region> regions = ann->getRegions();
-    foreach (const U2Region &r, regions) {
-        if (r.contains(neededRegion)) {
+    for (const U2Region &annotationRegion : qAsConst(regions)) {
+        if (annotationRegion.contains(neededRegion)) {
             found = true;
             break;
         }
@@ -436,14 +436,14 @@ void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const 
 void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QStringList &items) {
     GT_CHECK_RESULT(items.size() != 0, "List of items to select is empty", );
     // remove previous selection
-    QPoint p = getItemCenter(os, items.first());
-    GTMouseDriver::moveTo(p);
+    QPoint firstItemCenterPoint = getItemCenter(os, items.first());
+    GTMouseDriver::moveTo(firstItemCenterPoint);
     GTMouseDriver::click();
     GTKeyboardDriver::keyPress(Qt::Key_Control);
 
-    foreach (const QString &item, items) {
-        QPoint p = getItemCenter(os, item);
-        GTMouseDriver::moveTo(p);
+    for (const QString &item : qAsConst(items)) {
+        QPoint centerPoint = getItemCenter(os, item);
+        GTMouseDriver::moveTo(centerPoint);
 
         QTreeWidgetItem *treeItem = findItem(os, item);
         GT_CHECK_RESULT(treeItem != nullptr, "Tree item is NULL", );
@@ -460,15 +460,15 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QStr
 void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items) {
     GT_CHECK_RESULT(items.size() != 0, "List of items to select is empty", );
 
-    // remove previous selection
-    QPoint p = GTTreeWidget::getItemCenter(os, items.first());
-    GTMouseDriver::moveTo(p);
+    // Remove previous selection.
+    QPoint firstItemCenterPoint = GTTreeWidget::getItemCenter(os, items.first());
+    GTMouseDriver::moveTo(firstItemCenterPoint);
     GTMouseDriver::click();
     GTKeyboardDriver::keyPress(Qt::Key_Control);
 
-    foreach (QTreeWidgetItem *item, items) {
-        const QPoint p = GTTreeWidget::getItemCenter(os, item);
-        GTMouseDriver::moveTo(p);
+    for (QTreeWidgetItem *item : qAsConst(items)) {
+        QPoint itemCenterPoint = GTTreeWidget::getItemCenter(os, item);
+        GTMouseDriver::moveTo(itemCenterPoint);
 
         GT_CHECK_RESULT(item != nullptr, "Tree item is NULL", );
         if (!item->isSelected()) {

@@ -155,13 +155,13 @@ Task *TrimmomaticWorker::createTask(const QList<Message> &messages) const {
     return processTrimmomatic;
 }
 
-QVariantMap TrimmomaticWorker::getResult(Task *task, U2OpStatus &os) const {
-    MultiTask *multiTask = qobject_cast<MultiTask *>(task);
-    CHECK_EXT(nullptr != multiTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
+QVariantMap TrimmomaticWorker::getResult(Task *workerTask, U2OpStatus &os) const {
+    MultiTask *multiTask = qobject_cast<MultiTask *>(workerTask);
+    CHECK_EXT(multiTask != nullptr, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
     QVariantMap result;
-    foreach (Task *task, multiTask->getTasks()) {
-        TrimmomaticTask *trimTask = qobject_cast<TrimmomaticTask *>(task);
+    foreach (Task *childTask, multiTask->getTasks()) {
+        TrimmomaticTask *trimTask = qobject_cast<TrimmomaticTask *>(childTask);
         CHECK_CONTINUE(trimTask != nullptr);
 
         if (!pairedReadsInput) {
@@ -244,5 +244,5 @@ TrimmomaticTaskSettings TrimmomaticWorker::getSettings(const Message &message, c
     return settings;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

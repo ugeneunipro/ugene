@@ -339,20 +339,15 @@ void AttributeDbiUnitTests_removeAttributes::Test() {
 
     const U2DataId &objectId = AttributeTestData::getObjects()->first();
     U2OpStatusImpl os;
-    const QList<U2DataId> &attrs = attributeDbi->getObjectAttributes(objectId, "", os);
+    const QList<U2DataId> &attrs1 = attributeDbi->getObjectAttributes(objectId, "", os);
     CHECK_NO_ERROR(os);
 
-    {
-        U2OpStatusImpl os;
-        attributeDbi->removeAttributes(attrs, os);
-        CHECK_NO_ERROR(os);
-    }
-    {
-        U2OpStatusImpl os;
-        const QList<U2DataId> &attrs = attributeDbi->getObjectAttributes(objectId, "", os);
-        CHECK_NO_ERROR(os);
-        CHECK_TRUE(attrs.isEmpty(), "attribute list should be empty");
-    }
+    attributeDbi->removeAttributes(attrs1, os);
+    CHECK_NO_ERROR(os);
+
+    const QList<U2DataId> &attrs2 = attributeDbi->getObjectAttributes(objectId, "", os);
+    CHECK_NO_ERROR(os);
+    CHECK_TRUE(attrs2.isEmpty(), "attribute list should be empty");
 }
 
 void AttributeDbiUnitTests_removeObjectAttributes::Test() {

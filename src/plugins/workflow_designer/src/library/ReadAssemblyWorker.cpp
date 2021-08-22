@@ -84,20 +84,21 @@ Task *ReadAssemblyWorker::createReadTask(const QString &url, const QString &data
 }
 
 void ReadAssemblyWorker::onTaskFinished(Task *task) {
-    ReadDocumentTask *t = qobject_cast<ReadDocumentTask *>(task);
-    QList<SharedDbiDataHandler> result = t->takeResult();
-    QString url = t->getUrl();
-    MessageMetadata metadata(t->getUrl(), t->getDatasetName());
+    auto readDocumentTask = qobject_cast<ReadDocumentTask *>(task);
+    QList<SharedDbiDataHandler> result = readDocumentTask->takeResult();
+    QString documentUrl = readDocumentTask->getUrl();
+    QString datasetName = readDocumentTask->getDatasetName();
+    MessageMetadata metadata(documentUrl, datasetName);
     context->getMetadataStorage().put(metadata);
-    foreach (const SharedDbiDataHandler &handler, result) {
+    for (const SharedDbiDataHandler &handler : qAsConst(result)) {
         QVariantMap m;
-        m[BaseSlots::URL_SLOT().getId()] = url;
-        m[BaseSlots::DATASET_SLOT().getId()] = t->getDatasetName();
+        m[BaseSlots::URL_SLOT().getId()] = documentUrl;
+        m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
         m[BaseSlots::ASSEMBLY_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
 
         cache.append(Message(mtype, m, metadata.getId()));
     }
-    foreach (const QString &url, t->getProducedFiles()) {
+    foreach (const QString &url, readDocumentTask->getProducedFiles()) {
         context->getMonitor()->addOutputFile(url, getActor()->getId());
     }
 }

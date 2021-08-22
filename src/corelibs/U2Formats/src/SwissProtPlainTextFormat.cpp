@@ -403,7 +403,6 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
     processAnnotationRegion(a, startInt, endInt, offset);
 
     QString valQStr = QString::fromLatin1(cbuff).split(QRegExp("\\n")).first().mid(34);
-    QString nameQStr = "Description";
     bool isDescription = true;
 
     const QByteArray &aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
@@ -416,7 +415,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
             io->skip(-len);
             if (isDescription && !valQStr.isEmpty()) {
                 isDescription = false;
-                a->qualifiers.append(U2Qualifier(nameQStr, valQStr));
+                a->qualifiers.append(U2Qualifier("Description", valQStr));
             }
             break;
         }
@@ -452,9 +451,9 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
             } else if (qnameLen == nameQ.length() && TextUtils::equals(qname, nameQ.constData(), qnameLen)) {
                 a->name = QString::fromLocal8Bit(qval, qvalLen);
             } else {
-                QString nameQStr = QString::fromLocal8Bit(qname, qnameLen);
-                QString valQStr = QString::fromLocal8Bit(qval, qvalLen);
-                a->qualifiers.append(U2Qualifier(nameQStr, valQStr));
+                QString qualifierName = QString::fromLocal8Bit(qname, qnameLen);
+                QString qualifierValue = QString::fromLocal8Bit(qval, qvalLen);
+                a->qualifiers.append(U2Qualifier(qualifierName, qualifierValue));
             }
         }
     }

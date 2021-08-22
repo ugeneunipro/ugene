@@ -512,15 +512,13 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
     Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
     // Check attribute relations
     Attribute *attr = getAttribute(info);
-    CHECK(nullptr != attr, );
+    CHECK(attr != nullptr, );
     foreach (const AttributeRelation *relation, attr->getRelations()) {
         if (!relation->valueChangingRelation()) {
             continue;
         }
         AttributeInfo related(info.actorId, relation->getRelatedAttrId());
         QVariant newValue = relation->getAffectResult(value, getAttributeValue(related), getTags(info), getTags(related, true));
-        Attribute *attr = getAttribute(info);
-
         bool canSetValue = false;
         bool dir = false;
         bool isOutUrlAttr = RFSUtils::isOutUrlAttribute(attr, actor, dir);

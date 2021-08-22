@@ -63,6 +63,13 @@ macx {
 }
 
 linux-g++ {
+    # We use strict Werror= flags. The -system level for includes supresses warnings that come from QT.
+    QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
+    QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
+    QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtScript"
+    QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
+    QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtXml"
+
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
@@ -76,6 +83,7 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses
     QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=shadow=local
     QMAKE_CXXFLAGS += -Werror=uninitialized
     QMAKE_CXXFLAGS += -Werror=unused-parameter
     QMAKE_CXXFLAGS += -Werror=unused-variable

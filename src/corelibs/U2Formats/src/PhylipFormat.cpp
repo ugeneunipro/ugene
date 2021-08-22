@@ -217,13 +217,13 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
         QByteArray name = QByteArray(buff, len).trimmed();
         // get sequence
         QByteArray value;
-        while ((value.size() != numberOfCharacters) && (!io->isEof())) {
+        while (numberOfCharacters != value.size() && !io->isEof()) {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
             CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
 
-            QByteArray line = QByteArray(buff, len);
-            removeSpaces(line);
-            value.append(line);
+            QByteArray sequenceLine(buff, len);
+            removeSpaces(sequenceLine);
+            value.append(sequenceLine);
         }
         al->addRow(name, value);
 

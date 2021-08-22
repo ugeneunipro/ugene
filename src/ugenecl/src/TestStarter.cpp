@@ -153,12 +153,9 @@ void TestStarter::readBuiltInVars() {
 
 void TestStarter::readSavedSuites() {
     // TODO: do it in in service startup task!!!
-
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    QString err;
-    QMap<QString, QString> env;
-    QString url;
-    foreach (const QString &url, suiteUrls) {
+    for (const QString &url : qAsConst(suiteUrls)) {
+        QString err;
         GTestSuite *ts = GTestSuite::readTestSuite(url, err);
         if (ts == nullptr) {
             ioLog.error(tr("error_reading_ts_%1_error_%2").arg(url).arg(err));

@@ -46,9 +46,7 @@
 namespace U2 {
 
 ABIFormat::ABIFormat(QObject *p)
-    : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, QStringList() << "ab1"
-                                                                                                      << "abi"
-                                                                                                      << "abif") {
+    : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, {"ab1", "abi", "abif"}) {
     formatName = tr("ABIF");
     formatDescription = tr("A chromatogram file format");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
@@ -784,19 +782,19 @@ skip_bases:
             //                     runt_s >> 24, (runt_s >> 16) & 0xff, (runt_s >> 8) & 0xff,
             //                     rund_e >> 16, (rund_e >> 8) & 0xff, rund_e & 0xff,
             //                     runt_e >> 24, (runt_e >> 16) & 0xff, (runt_e >> 8) & 0xff);
-            QString buffer = QString("%1%2%3.%4%5%6 - %7%8%9.%10%11%12")
-                                 .arg((rund_s >> 16), 4, 10, QLatin1Char('0'))
-                                 .arg((rund_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg((rund_s & 0xff), 2, 10, QLatin1Char('0'))
-                                 .arg(runt_s >> 24, 2, 10, QLatin1Char('0'))
-                                 .arg((runt_s >> 16) & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg((runt_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg(rund_e >> 16, 4, 10, QLatin1Char('0'))
-                                 .arg((rund_e >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg(rund_e & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg(runt_e >> 24, 2, 10, QLatin1Char('0'))
-                                 .arg((runt_e >> 16) & 0xff, 2, 10, QLatin1Char('0'))
-                                 .arg((runt_e >> 8) & 0xff, 2, 10, QLatin1Char('0'));
+            QString rundBuffer = QString("%1%2%3.%4%5%6 - %7%8%9.%10%11%12")
+                                     .arg((rund_s >> 16), 4, 10, QLatin1Char('0'))
+                                     .arg((rund_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg((rund_s & 0xff), 2, 10, QLatin1Char('0'))
+                                     .arg(runt_s >> 24, 2, 10, QLatin1Char('0'))
+                                     .arg((runt_s >> 16) & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg((runt_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg(rund_e >> 16, 4, 10, QLatin1Char('0'))
+                                     .arg((rund_e >> 8) & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg(rund_e & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg(runt_e >> 24, 2, 10, QLatin1Char('0'))
+                                     .arg((runt_e >> 16) & 0xff, 2, 10, QLatin1Char('0'))
+                                     .arg((runt_e >> 8) & 0xff, 2, 10, QLatin1Char('0'));
 
             memset(&t, 0, sizeof(t));
             t.tm_mday = rund_s & 0xff;
@@ -829,7 +827,7 @@ skip_bases:
             mktime(&t);
             strftime(buffer_e, 1024, "%a %d %b %H:%M:%S %Y", &t);
 
-            sequenceComment.append(QString("DATE=%1 to %2\nRUND=%3\n").arg(buffer_s).arg(buffer_e).arg(buffer));
+            sequenceComment.append(QString("DATE=%1 to %2\nRUND=%3\n").arg(buffer_s).arg(buffer_e).arg(rundBuffer));
         }
 
         /* Get Dye Primer Offset */

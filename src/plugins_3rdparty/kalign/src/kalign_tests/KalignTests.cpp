@@ -311,7 +311,6 @@ void GTest_Kalign_Load_Align_QScore::init(XMLTestFormat*, const QDomElement& el)
 
     QString str_dqscore = el.attribute(QSCORE_DELTA_ATTR);
     if(!str_dqscore.isEmpty()) {
-        bool ok = false;
         dqscore = str_dqscore.toFloat(&ok);
         if(!ok) {
             failMissingValue(QSCORE_DELTA_ATTR);

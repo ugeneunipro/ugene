@@ -1200,22 +1200,22 @@ QVariant ProjectViewModel::data(GObject *obj, int role) const {
 }
 
 QVariant ProjectViewModel::getObjectDisplayData(GObject *obj, Document *parentDoc) const {
-    GObjectType t = obj->getGObjectType();
-    const bool unloaded = t == GObjectTypes::UNLOADED;
-    if (unloaded) {
-        t = qobject_cast<UnloadedObject *>(obj)->getLoadedObjectType();
+    GObjectType objectType = obj->getGObjectType();
+    bool isUnloaded = objectType == GObjectTypes::UNLOADED;
+    if (isUnloaded) {
+        objectType = qobject_cast<UnloadedObject *>(obj)->getLoadedObjectType();
     }
     QString text;
-    const GObjectTypeInfo &ti = GObjectTypes::getTypeInfo(t);
+    const GObjectTypeInfo &ti = GObjectTypes::getTypeInfo(objectType);
     text += "[" + ti.treeSign + "] ";
 
-    if (unloaded && parentDoc->getObjects().size() < ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS) {
-        LoadUnloadedDocumentTask *t = LoadUnloadedDocumentTask::findActiveLoadingTask(parentDoc);
-        if (t != nullptr) {
-            if (t->getProgress() == -1) {
+    if (isUnloaded && parentDoc->getObjects().size() < ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS) {
+        LoadUnloadedDocumentTask *loadTask = LoadUnloadedDocumentTask::findActiveLoadingTask(parentDoc);
+        if (loadTask != nullptr) {
+            if (loadTask->getProgress() == -1) {
                 text += ProjectViewModel::tr("[loading] ");
             } else {
-                text += ProjectViewModel::tr("[loading %1%] ").arg(t->getProgress());
+                text += ProjectViewModel::tr("[loading %1%] ").arg(loadTask->getProgress());
             }
         }
     }

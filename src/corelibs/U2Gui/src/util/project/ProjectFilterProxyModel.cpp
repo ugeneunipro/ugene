@@ -92,8 +92,8 @@ bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder *folder) const {
         }
     }
 
-    foreach (Folder *folder, srcModel->getSubfolders(doc, path)) {
-        if (filterAcceptsFolder(folder)) {
+    foreach (Folder *subFolder, srcModel->getSubfolders(doc, path)) {
+        if (filterAcceptsFolder(subFolder)) {
             return true;
         }
     }

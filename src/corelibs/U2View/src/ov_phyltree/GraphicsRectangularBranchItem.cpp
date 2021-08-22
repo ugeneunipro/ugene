@@ -50,9 +50,9 @@ void GraphicsRectangularBranchItem::collapse() {
     do {
         GraphicsBranchItem *branchItem = graphicsItems.pop();
 
-        QList<QGraphicsItem *> items = branchItem->childItems();
+        QList<QGraphicsItem *> childItems = branchItem->childItems();
 
-        foreach (QGraphicsItem *graphItem, items) {
+        foreach (QGraphicsItem *graphItem, childItems) {
             if (dynamic_cast<QGraphicsRectItem *>(graphItem) && !branchItem->isCollapsed()) {
                 graphItem->setParentItem(nullptr);
                 scene()->removeItem(graphItem);

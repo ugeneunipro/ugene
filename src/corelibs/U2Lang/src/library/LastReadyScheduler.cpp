@@ -155,43 +155,43 @@ WorkerState LastReadyScheduler::getWorkerState(const Actor *a) {
 }
 
 WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
-    Actor *a = schema->actorById(id);
-    if (nullptr == a) {
-        QList<Actor *> actors = schema->actorsByOwnerId(id);
-        assert(actors.size() > 0);
+    Actor *actor1 = schema->actorById(id);
+    if (actor1 != nullptr) {
+        return getWorkerState(actor1);
+    }
+    QList<Actor *> actors = schema->actorsByOwnerId(id);
+    assert(actors.size() > 0);
 
-        bool someWaiting = false;
-        bool someDone = false;
-        bool someReady = false;
-        foreach (Actor *a, actors) {
-            WorkerState state = getWorkerState(a);
-            switch (state) {
-                case WorkerRunning:
-                    return WorkerRunning;
-                case WorkerWaiting:
-                    someWaiting = true;
-                    break;
-                case WorkerDone:
-                    someDone = true;
-                    break;
-                case WorkerReady:
-                    someReady = true;
-                    break;
-                default:
-                    break;
-            }
+    bool someWaiting = false;
+    bool someDone = false;
+    bool someReady = false;
+    for (Actor *actor2 : qAsConst(actors)) {
+        WorkerState state = getWorkerState(actor2);
+        switch (state) {
+            case WorkerRunning:
+                return WorkerRunning;
+            case WorkerWaiting:
+                someWaiting = true;
+                break;
+            case WorkerDone:
+                someDone = true;
+                break;
+            case WorkerReady:
+                someReady = true;
+                break;
+            default:
+                break;
         }
-        if (someWaiting) {
-            return WorkerWaiting;
-        } else if (someReady) {
-            return WorkerReady;
-        } else {
-            assert(someDone);
-            Q_UNUSED(someDone);
-            return WorkerDone;
-        }
+    }
+    if (someWaiting) {
+        return WorkerWaiting;
+    }
+    if (someReady) {
+        return WorkerReady;
     } else {
-        return getWorkerState(a);
+        assert(someDone);
+        Q_UNUSED(someDone);
+        return WorkerDone;
     }
 }
 

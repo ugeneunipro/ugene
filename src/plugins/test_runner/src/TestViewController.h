@@ -22,8 +22,6 @@
 #ifndef _U2_TEST_VIEW_CONTROLLER_H_
 #define _U2_TEST_VIEW_CONTROLLER_H_
 
-#include <ui_TestView.h>
-
 #include <QMainWindow>
 #include <QTime>
 #include <QTreeWidgetItem>
@@ -31,6 +29,8 @@
 #include <U2Core/CMDLineRegistry.h>
 
 #include <U2Gui/MainWindow.h>
+
+#include <ui_TestView.h>
 
 namespace U2 {
 

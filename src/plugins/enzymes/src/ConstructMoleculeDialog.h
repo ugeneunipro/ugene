@@ -22,11 +22,11 @@
 #ifndef _U2_CONSTRUCT_MOLECULE_DIALOG_H_
 #define _U2_CONSTRUCT_MOLECULE_DIALOG_H_
 
-#include <ui_ConstructMoleculeDialog.h>
-
 #include <QList>
 
 #include "CloningUtilTasks.h"
+
+#include <ui_ConstructMoleculeDialog.h>
 
 namespace U2 {
 

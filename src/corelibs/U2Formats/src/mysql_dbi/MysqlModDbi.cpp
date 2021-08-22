@@ -414,17 +414,15 @@ void MysqlModDbi::endCommonUserModStep(const U2DataId &userMasterObjId, U2OpStat
     CHECK_OP(os, );
     SAFE_POINT(modStepsByObject.contains(userMasterObjId), QString("There are not modification steps for object with id %1").arg(userMasterObjId.toLong()), );
 
-    MysqlTransaction t(db, os);
-    Q_UNUSED(t);
+    MysqlTransaction t1(db, os);
 
     qint64 userModStepId = modStepsByObject[userMasterObjId].userModStepId;
     qint64 multiModStepId = modStepsByObject[userMasterObjId].multiModStepId;
 
     modStepsByObject.remove(userMasterObjId);
 
-    if (-1 == multiModStepId) {
-        MysqlTransaction t(db, os);
-        Q_UNUSED(t);
+    if (multiModStepId == -1) {
+        MysqlTransaction t2(db, os);
 
         // Get multiple steps IDs
         static const QString qSelectMultiStepsString = "SELECT id FROM MultiModStep WHERE userStepId = :userStepId LIMIT 1";

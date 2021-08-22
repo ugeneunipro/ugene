@@ -204,12 +204,12 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(selectRangeAction1, hStandardBar);
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
-    QAction *shotScreenAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
-    shotScreenAction->setObjectName("export_image");
-    connect(shotScreenAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
+    auto exportImageAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
+    exportImageAction->setObjectName("export_image");
+    connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
 
-    addButtonWithActionToToolbar(shotScreenAction, hStandardBar);
-    buttonTabOrederedNames->append(shotScreenAction->objectName());
+    addButtonWithActionToToolbar(exportImageAction, hStandardBar);
+    buttonTabOrederedNames->append(exportImageAction->objectName());
 
     panView->addActionToLocalToolbar(zoomToRangeAction);
 
@@ -714,7 +714,6 @@ void ADVSingleSequenceWidget::sl_zoomToRange() {
 #define CUSTOM_R_COLORS "CUSTOMR_COLORS"
 #define CUSTOM_R_OFFSETS "CUSTOMR_OFFSETS"
 #define SEQUENCE_GRAPH_NAME "GRAPH_NAME"
-#define GRAPH_LABELS_POSITIONS "LABELS_POSITIONS"
 
 void ADVSingleSequenceWidget::updateState(const QVariantMap &m) {
     QVariantMap map = m.value(SPLITTER_STATE_MAP_NAME).toMap();
@@ -788,18 +787,15 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
     myData[CUSTOM_R_COLORS] = rcolors;
 
     QStringList graphNames;
-    QList<QVariant> positions;
-    foreach (GSequenceLineView *view, lineViews) {
-        QList<QVariant> positions;
-        GSequenceGraphView *graphView = dynamic_cast<GSequenceGraphView *>(view);
-        if (nullptr != graphView) {
+    for (GSequenceLineView *view : qAsConst(lineViews)) {
+        if (auto graphView = dynamic_cast<GSequenceGraphView *>(view)) {
+            QList<QVariant> graphLabelPositions;
             graphNames.append(graphView->getGraphViewName());
-            graphView->getSavedLabelsState(positions);
-            myData[graphView->getGraphViewName()] = positions;
+            graphView->getSavedLabelsState(graphLabelPositions);
+            myData[graphView->getGraphViewName()] = graphLabelPositions;
         }
     }
     myData[SEQUENCE_GRAPH_NAME] = graphNames;
-    myData[GRAPH_LABELS_POSITIONS] = positions;
 
     QString sequenceInProjectId = getActiveSequenceContext()->getSequenceObject()->getGHints()->get(GObjectHint_InProjectId).toString();
     map[sequenceInProjectId] = myData;

@@ -53,13 +53,13 @@ void MaOverviewImageExportToBitmapTask::run() {
     QPainter p(&pixmap);
 
     if (overviewSettings.exportSimpleOverview) {
-        const QPixmap pixmap = simpleOverview->getView();
-        p.drawPixmap(simpleOverview->rect(), pixmap);
+        QPixmap simpleOverviewPixmap = simpleOverview->getView();
+        p.drawPixmap(simpleOverview->rect(), simpleOverviewPixmap);
         p.translate(0, simpleOverview->height());
     }
     if (overviewSettings.exportGraphOverview) {
-        const QPixmap pixmap = graphOverview->getView();
-        p.drawPixmap(graphOverview->rect(), pixmap);
+        QPixmap graphOverviewPixmap = graphOverview->getView();
+        p.drawPixmap(graphOverview->rect(), graphOverviewPixmap);
     }
     p.end();
 

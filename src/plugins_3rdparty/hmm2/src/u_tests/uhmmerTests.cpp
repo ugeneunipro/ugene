@@ -524,7 +524,6 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
     nCalibrates = 1;
     QString nCalibrates_str = el.attribute(RUN_N_CALIBRATES);
     if (!nCalibrates_str.isEmpty()) {
-        bool ok = false;
         nCalibrates = nCalibrates_str.toInt(&ok);
         if (!ok) {
             failMissingValue(RUN_N_CALIBRATES);
@@ -535,7 +534,6 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
 
     QString seed_str = el.attribute(SEED_ATTR);
     if (!seed_str.isEmpty()) {
-        bool ok = false;
         int seed = seed_str.toInt(&ok);
         if (!ok) {
             failMissingValue(SEED_ATTR);

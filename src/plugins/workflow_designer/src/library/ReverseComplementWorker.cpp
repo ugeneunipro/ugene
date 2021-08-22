@@ -163,8 +163,8 @@ Task *RCWorker::tick() {
         }
 
         if (output) {
-            const SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
-            const QVariant v = qVariantFromValue<SharedDbiDataHandler>(seqId);
+            SharedDbiDataHandler newSequenceId = context->getDataStorage()->putSequence(seq);
+            QVariant v = qVariantFromValue<SharedDbiDataHandler>(newSequenceId);
             output->put(Message(BaseTypes::DNA_SEQUENCE_TYPE(), v));
             if (input->isEnded()) {
                 output->setEnded();

@@ -160,8 +160,8 @@ Task *QDWorker::tick() {
     QString schemaUri = actor->getParameter(SCHEMA_ATTR)->getAttributePureValue().toString();
     QDDocument doc;
 
-    QFileInfo fi(schemaUri);
-    if (!fi.exists()) {
+    QFileInfo schemeFi(schemaUri);
+    if (!schemeFi.exists()) {
         QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + QUERY_SAMPLES_PATH;
         QDir dir(defaultDir);
         QStringList names(QString("*.%1").arg(QUERY_SCHEME_EXTENSION));

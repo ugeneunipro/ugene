@@ -1185,11 +1185,10 @@ QString TVTestItem::getTestContent() {
     QString text;
 
     QFile myFile(testState->getTestRef()->getURL());
-    QTextStream t(&myFile);
     if (myFile.open(QIODevice::ReadOnly)) {
-        QTextStream t(&myFile);
-        while (!t.atEnd()) {
-            QString tempString = t.readLine();
+        QTextStream textStream(&myFile);
+        while (!textStream.atEnd()) {
+            QString tempString = textStream.readLine();
             tempString.replace("<", "&lt;");
             tempString.replace(">", "&gt;");
             text += tempString + "<br>";

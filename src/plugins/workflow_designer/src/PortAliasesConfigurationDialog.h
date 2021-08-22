@@ -22,10 +22,10 @@
 #ifndef _PORT_ALIASES_DIALOG_CONTROLLER_H_
 #define _PORT_ALIASES_DIALOG_CONTROLLER_H_
 
-#include <ui_PortAliasesConfigurationDialog.h>
-
 #include <U2Lang/Aliasing.h>
 #include <U2Lang/Schema.h>
+
+#include <ui_PortAliasesConfigurationDialog.h>
 
 namespace U2 {
 namespace Workflow {

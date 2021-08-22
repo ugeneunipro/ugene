@@ -445,8 +445,8 @@ void SWResultsPostprocessingTask::prepare() {
 }
 
 void SWResultsPostprocessingTask::run() {
-    SmithWatermanResult r;
     for (QList<PairAlignSequences>::const_iterator i = resPAS.constBegin(); i != resPAS.constEnd(); ++i) {
+        SmithWatermanResult r;
         r.strand = (*i).isDNAComplemented ? U2Strand::Complementary : U2Strand::Direct;
         r.trans = (*i).isAminoTranslated;
 
@@ -466,11 +466,11 @@ void SWResultsPostprocessingTask::run() {
         resultList.append(r);
     }
 
-    if (0 != sWatermanConfig.resultFilter) {
+    if (sWatermanConfig.resultFilter != 0) {
         SmithWatermanResultFilter *rf = sWatermanConfig.resultFilter;
         rf->applyFilter(&resultList);
     }
-    foreach (const SmithWatermanResult &r, resultList) { /* push results after filters */
+    for (const SmithWatermanResult &r : qAsConst(resultList)) { /* push results after filters */
         sWatermanConfig.resultListener->pushResult(r);
     }
 }
@@ -948,8 +948,8 @@ PairwiseAlignmentSWResultsPostprocessingTask::PairwiseAlignmentSWResultsPostproc
 }
 
 void PairwiseAlignmentSWResultsPostprocessingTask::run() {
-    SmithWatermanResult r;
     for (QList<PairAlignSequences>::const_iterator i = resPAS.constBegin(); i != resPAS.constEnd(); ++i) {
+        SmithWatermanResult r;
         r.strand = (*i).isDNAComplemented ? U2Strand::Complementary : U2Strand::Direct;
         r.trans = (*i).isAminoTranslated;
         r.refSubseq = (*i).refSubseqInterval;
@@ -961,7 +961,7 @@ void PairwiseAlignmentSWResultsPostprocessingTask::run() {
         resultList.append(r);
     }
 
-    if (0 != rf) {
+    if (rf != 0) {
         rf->applyFilter(&resultList);
     }
     foreach (const SmithWatermanResult &r, resultList) { /* push results after filters */

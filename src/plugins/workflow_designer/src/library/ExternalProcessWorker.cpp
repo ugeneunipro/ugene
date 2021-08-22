@@ -474,7 +474,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         }
     }
 
-    CHECK(nullptr != output, );
+    CHECK(output != nullptr, );
 
     /* This variable and corresponded code parts with it
      * are temporary created for merging sequences.
@@ -508,7 +508,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 QList<GObject *> seqObjects = d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
                 DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
                 QString slotId = WorkflowUtils::getSlotDescOfDatatype(dataType).getId();
-                if (1 == seqObjects.size()) {
+                if (seqObjects.size() == 1) {
                     GObject *obj = seqObjects.first();
                     Workflow::SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(obj->getEntityRef());
                     v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
@@ -538,8 +538,6 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                     SharedDbiDataHandler seqId = context->getDataStorage()->putSequence(seq);
                     v[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
                 }
-                U2OpStatusImpl os;
-
                 const SharedDbiDataHandler annTableId = getAnnotations(d.data(), context, os);
                 if (!os.hasError()) {
                     DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
@@ -561,7 +559,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 
     if (seqsForMergingBySlotId.isEmpty()) {
         output->put(Message(dataType, v));
-    } else if (1 == seqsForMergingBySlotId.size()) {
+    } else if (seqsForMergingBySlotId.size() == 1) {
         // create a message for every sequence
         QString slotId = seqsForMergingBySlotId.keys().first();
         const QList<U2EntityRef> &refs = seqsForMergingBySlotId.value(slotId);

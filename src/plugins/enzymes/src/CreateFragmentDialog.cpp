@@ -77,8 +77,8 @@ CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject *obj, const U2Region
     QList<GObject *> aObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
     QList<GObject *> related = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, aObjects, UOF_LoadedOnly);
 
-    foreach (GObject *obj, related) {
-        AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(obj);
+    for (GObject *relatedObject : qAsConst(related)) {
+        auto aObj = qobject_cast<AnnotationTableObject *>(relatedObject);
         assert(aObj != nullptr);
         relatedAnnotations.append(aObj);
     }

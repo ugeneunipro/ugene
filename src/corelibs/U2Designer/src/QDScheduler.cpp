@@ -676,15 +676,15 @@ void QDStep::initTotalMap() {
                 // use only paths containing no linked units except source(destination)
                 QList<QDPath *> allowedPaths = paths;
                 // remove paths containing optional items
-                QMutableListIterator<QDPath *> i(allowedPaths);
-                while (i.hasNext()) {
-                    QDPath *p = i.next();
+                QMutableListIterator<QDPath *> allowedPathIterator(allowedPaths);
+                while (allowedPathIterator.hasNext()) {
+                    QDPath *p = allowedPathIterator.next();
                     foreach (QDSchemeUnit *su, p->getSchemeUnits()) {
                         if (su != srcSu && su != dstSu) {
                             QDActor *a = su->getActor();
                             QString group = scheme->getActorGroup(a);
                             if (!group.isEmpty()) {
-                                i.remove();
+                                allowedPathIterator.remove();
                             }
                         }
                     }
@@ -694,8 +694,8 @@ void QDStep::initTotalMap() {
                     QDDistanceConstraint *overallConstraint = allowedPaths.first()->toConstraint();
                     int min = overallConstraint->getMin();
                     int max = overallConstraint->getMax();
-                    for (int i = 1, n = allowedPaths.size(); i < n; i++) {
-                        QDPath *curPath = allowedPaths.at(i);
+                    for (int allowedPathIndex = 1, n = allowedPaths.size(); allowedPathIndex < n; allowedPathIndex++) {
+                        QDPath *curPath = allowedPaths.at(allowedPathIndex);
                         QDDistanceConstraint *curDc = curPath->toConstraint();
 
                         if (curDc->getSource() != overallConstraint->getSource()) {

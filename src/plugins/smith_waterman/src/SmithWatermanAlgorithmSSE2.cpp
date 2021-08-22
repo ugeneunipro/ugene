@@ -135,32 +135,32 @@ void SmithWatermanAlgorithmSSE2::launch(const SMatrix &_substitutionMatrix, cons
 }
 
 void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithShort() {
-    int i, j, n, k, max1;
+    int i, j, alphaCharSize, k, max1;
     __m128i f1 = _mm_setzero_si128(), f2 = _mm_setzero_si128(), f3 = _mm_setzero_si128(), f4 = _mm_setzero_si128(), e1 = _mm_setzero_si128();
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
     unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
     unsigned int iter = (pat_n + 7) >> 3;
 
-    n = iter * 2;
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc((n + iter * 0x80) * 16 + iter * 8 * 4 + matrixLength * iter * 8, 16);
-    short *score, *score1 = (short *)(matrix + n);
+    alphaCharSize = iter * 2;
+    __m128i *buf, *matrix = (__m128i *)_mm_malloc((alphaCharSize + iter * 0x80) * 16 + iter * 8 * 4 + matrixLength * iter * 8, 16);
+    short *score, *score1 = (short *)(matrix + alphaCharSize);
     int *map = (int *)(score1 + iter * 0x80 * 8);
     char *dir, *dir2, *dir1 = (char *)(map + iter * 8);
-    memset(matrix, 0, n * sizeof(__m128i));
+    memset(matrix, 0, alphaCharSize * sizeof(__m128i));
     memset(dir1, 0, iter * 8);
     dir = dir1 + iter * 8;
     dir2 = dir1 + matrixLength * iter * 8;
 
     for (i = 0, j = 0; j < static_cast<int>(iter); j++) {
-        for (k = j, n = 0; n < 8; n++, k += iter) {
+        for (k = j, alphaCharSize = 0; alphaCharSize < 8; alphaCharSize++, k += iter) {
             map[k] = i++;
         }
     }
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
     char *alphaCharsData = alphaChars.data();
-    n = alphaChars.size();
-    for (i = 0; i < n; i++) {
+    alphaCharSize = alphaChars.size();
+    for (i = 0; i < alphaCharSize; i++) {
         int n;
         unsigned char ch = alphaCharsData[i];
         score = score1 + ch * iter * 8;
@@ -280,19 +280,19 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
         printf("\n");
     */
         max1 = *((short *)(&xMax));
-        n = 0;
+        alphaCharSize = 0;
         k = 1;
         do {
             j = ((short *)(&xMax))[k];
             if (j >= max1) {
                 max1 = j;
-                n = k;
+                alphaCharSize = k;
             }
         } while (++k < 8);
 
         if (max1 >= minScore) {
             QByteArray pairAlign;
-            int xpos = 1 + n * iter + iter - ((unsigned short *)(&xPos))[n];
+            int xpos = 1 + alphaCharSize * iter + iter - ((unsigned short *)(&xPos))[alphaCharSize];
             j = i;
             int xend = xpos;
             char *xdir = dir - iter * 8;
@@ -355,11 +355,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     char *alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
-        int n;
+        int n2;
         unsigned char ch = alphaCharsData[i];
         score = score1 + ch * iter * 8;
         for (j = 0; j < static_cast<int>(iter); j++) {
-            for (k = j, n = 0; n < 8; n++, k += iter) {
+            for (k = j, n2 = 0; n2 < 8; n2++, k += iter) {
                 int a = -0x8000;
                 if (k < static_cast<int>(pat_n)) {
                     a = substitutionMatrix.getScore(ch, pat[k]);
@@ -552,11 +552,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
     char *alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
-        int n;
+        int n2;
         unsigned char ch = alphaCharsData[i];
         score = score1 + ch * iter * 4;
         for (j = 0; j < static_cast<int>(iter); j++) {
-            for (k = j, n = 0; n < 4; n++, k += iter) {
+            for (k = j, n2 = 0; n2 < 4; n2++, k += iter) {
                 int a = -0x8000;
                 if (k < static_cast<int>(pat_n)) {
                     a = substitutionMatrix.getScore(ch, pat[k]);
@@ -591,15 +591,13 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
             f2 = _mm_add_epi32(f1, *((__m128i *)score));
             score += 4; /* subst */
 
-            QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-            char *alphaCharsData = alphaChars.data();
             n = alphaChars.size();
             for (i = 0; i < n; i++) {
-                int n;
+                int n2;
                 unsigned char ch = alphaCharsData[i];
                 score = score1 + ch * iter * 4;
                 for (j = 0; j < static_cast<int>(iter); j++) {
-                    for (k = j, n = 0; n < 4; n++, k += iter) {
+                    for (k = j, n2 = 0; n2 < 4; n2++, k += iter) {
                         int a = -0x8000;
                         if (k < static_cast<int>(pat_n)) {
                             a = substitutionMatrix.getScore(ch, pat[k]);
@@ -785,11 +783,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     char *alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
-        int n;
+        int n2;
         unsigned char ch = alphaCharsData[i];
         score = score1 + ch * iter * 4;
         for (j = 0; j < static_cast<int>(iter); j++) {
-            for (k = j, n = 0; n < 4; n++, k += iter) {
+            for (k = j, n2 = 0; n2 < 4; n2++, k += iter) {
                 int a = -0x8000;
                 if (k < static_cast<int>(pat_n)) {
                     a = substitutionMatrix.getScore(ch, pat[k]);

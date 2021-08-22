@@ -1112,7 +1112,7 @@ static void parseMeta(WorkflowSchemaReaderData &data) {
 
     data.tokenizer.assertToken(Constants::BLOCK_START);
     while (data.tokenizer.look() != Constants::BLOCK_END) {
-        QString tok = data.tokenizer.take();
+        tok = data.tokenizer.take();
         if (Constants::PARAM_ALIASES_START == tok) {
             data.tokenizer.assertToken(Constants::BLOCK_START);
             HRSchemaSerializer::parseParameterAliases(data.tokenizer, data.actorMap);

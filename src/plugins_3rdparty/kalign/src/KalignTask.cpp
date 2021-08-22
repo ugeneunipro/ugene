@@ -217,13 +217,8 @@ Task::ReportResult KalignGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        U2OpStatus2Log os;
-        U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
-        Q_UNUSED(userModStep);
-        if (os.hasError()) {
-            stateInfo.setError("Failed to apply the result of the alignment!");
-            return ReportResult_Finished;
-        }
+        U2UseCommonUserModStep userModStep(obj->getEntityRef(), stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
 
         obj->updateGapModel(stateInfo, rowsGapModel);
         SAFE_POINT_OP(stateInfo, ReportResult_Finished);

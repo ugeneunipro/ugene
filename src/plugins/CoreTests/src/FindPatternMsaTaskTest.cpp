@@ -158,20 +158,22 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     QString expected = el.attribute(EXPECTED_REGIONS_IN_RESULTS);
     if (!expected.isEmpty()) {
         QStringList expectedList = expected.split(QRegExp("\\,"));
-        foreach (QString region, expectedList) {
-            QStringList bounds = region.split(QRegExp("\\.."));
-            if (bounds.size() != 2) {
+        for (const QString &expectedRegionText : qAsConst(expectedList)) {
+            QStringList expectedBoundsToken = expectedRegionText.split(QRegExp("\\.."));
+            if (expectedBoundsToken.size() != 2) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_REGIONS_IN_RESULTS));
                 return;
             }
-            bool startOk, finishOk;
-            int start = bounds.first().toInt(&startOk), finish = bounds.last().toInt(&finishOk);
-            if (!startOk || !finishOk) {
+            bool expectedStartOk;
+            int expectedStart = expectedBoundsToken.first().toInt(&expectedStartOk);
+            bool expectedFinishOk;
+            int expectedFinish = expectedBoundsToken.last().toInt(&expectedFinishOk);
+            if (!expectedStartOk || !expectedFinishOk) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_REGIONS_IN_RESULTS));
                 return;
             }
-            start--;
-            regionsToCheck.append(U2Region(start, finish - start));
+            expectedStart--;
+            regionsToCheck.append(U2Region(expectedStart, expectedFinish - expectedStart));
         }
     }
 }

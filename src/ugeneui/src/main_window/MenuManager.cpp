@@ -104,14 +104,14 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
 
 static void touchMenu(QMenu *menu) {
     QList<QMenu *> menus = menu->findChildren<QMenu *>();
-    foreach (QMenu *menu, menus) {
-        if (!menu->isEnabled()) {
+    for (QMenu *childMenu : qAsConst(menus)) {
+        if (!childMenu->isEnabled()) {
             continue;
         }
-        menu->setEnabled(false);
+        childMenu->setEnabled(false);
         // coreLog.trace("Touched menu" + menu->menuAction()->text());
-        touchMenu(menu);
-        menu->setEnabled(true);
+        touchMenu(childMenu);
+        childMenu->setEnabled(true);
     }
 }
 

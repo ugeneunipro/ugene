@@ -389,8 +389,8 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     // check mid range includes
     if (!settings.midRegionsToInclude.isEmpty()) {
         bool checkOk = false;
-        foreach (const U2Region &r, settings.midRegionsToInclude) {
-            if (r.startPos >= x2 && r.endPos() <= y1) {
+        for (const U2Region &regionToInclude : qAsConst(settings.midRegionsToInclude)) {
+            if (regionToInclude.startPos >= x2 && regionToInclude.endPos() <= y1) {
                 checkOk = true;
                 break;
             }
@@ -402,8 +402,8 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
 
     // check mid range excludes
     if (!settings.midRegionsToExclude.isEmpty()) {
-        foreach (const U2Region &r, settings.midRegionsToExclude) {
-            if (r.intersects(U2Region(x1, y2 - x1))) {
+        for (const U2Region &regionToExclude : qAsConst(settings.midRegionsToExclude)) {
+            if (regionToExclude.intersects(U2Region(x1, y2 - x1))) {
                 return true;
             }
         }
@@ -412,8 +412,8 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     // check allowed regions
     if (!settings.allowedRegions.isEmpty()) {
         bool checkOk = false;
-        foreach (const U2Region &r, settings.allowedRegions) {
-            if (r.startPos <= x1 && r.endPos() >= y2) {
+        for (const U2Region &allowedRegion : qAsConst(settings.allowedRegions)) {
+            if (allowedRegion.startPos <= x1 && allowedRegion.endPos() >= y2) {
                 checkOk = true;
                 break;
             }

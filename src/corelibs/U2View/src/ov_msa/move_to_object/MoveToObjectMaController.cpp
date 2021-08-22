@@ -90,11 +90,11 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
         QString menuItemText = object->getGObjectName() + " [" + fileName + "] ";
         QAction *action = menu->addAction(objectMenuIcon, menuItemText, [this, reference]() {
             GCounter::increment("MoveSelectedMsaRowsToNewObject");
-            GObject *object = GObjectUtils::selectObjectByReference(reference, UOF_LoadedOnly);
-            CHECK_EXT(object != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
-            CHECK_EXT(!object->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
+            GObject *referenceObject = GObjectUtils::selectObjectByReference(reference, UOF_LoadedOnly);
+            CHECK_EXT(referenceObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
+            CHECK_EXT(!referenceObject->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
 
-            auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject *>(object);
+            auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject *>(referenceObject);
             CHECK_EXT(targetMsaObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::nullPointerError(reference.objName)), );
 
             QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();

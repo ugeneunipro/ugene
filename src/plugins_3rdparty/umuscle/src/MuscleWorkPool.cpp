@@ -75,10 +75,10 @@ unsigned MuscleWorkPool::getNextJob(unsigned uNodeIndex) {
 
         unsigned uNodeCount = GuideTree.GetNodeCount();
         for (unsigned k = 0; k < uNodeCount; k++) {
-            unsigned uNodeIndex = treeNodeIndexes[k];
-            if (treeNodeStatus[uNodeIndex] == TreeNodeStatus_Available) {
-                treeNodeStatus[uNodeIndex] = TreeNodeStatus_Processing;
-                return uNodeIndex;
+            unsigned treeNodeIndex = treeNodeIndexes[k];
+            if (treeNodeStatus[treeNodeIndex] == TreeNodeStatus_Available) {
+                treeNodeStatus[treeNodeIndex] = TreeNodeStatus_Processing;
+                return treeNodeIndex;
             }
         }
     }

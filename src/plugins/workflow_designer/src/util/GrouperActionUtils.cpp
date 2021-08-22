@@ -106,7 +106,6 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
             if (name1 != name2) {
                 return false;
             }
-            U2OpStatusImpl os;
             QByteArray seq1 = seqObj1->getWholeSequenceData(os);
             CHECK_OP(os, false);
             QByteArray seq2 = seqObj2->getWholeSequenceData(os);

@@ -282,21 +282,20 @@ bool WorkflowMonitor::containsOutputFile(const QString &url) const {
 }
 
 void WorkflowMonitor::addNotification(const WorkflowNotification &notification) {
-    const bool firstNotification = notifications.isEmpty();
-    notifications << notification;
+    bool isFirstNotification = notifications.isEmpty();
+    notifications.append(notification);
 
-    if (firstNotification) {
+    if (isFirstNotification) {
         emit si_firstNotification();
     }
-    foreach (const WorkflowNotification &notification, notifications) {
-        if (WorkflowNotification::U2_ERROR == notification.type || WorkflowNotification::U2_WARNING == notification.type) {
+    if (!hasErrors() && !hasWarnings()) {
+        if (notification.type == WorkflowNotification::U2_ERROR || notification.type == WorkflowNotification::U2_WARNING) {
             emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
-            break;
         }
     }
     int count = 0;
-    foreach (const WorkflowNotification &info, notifications) {
-        if (notification == info) {
+    for (const WorkflowNotification &n : qAsConst(notifications)) {
+        if (n == notification) {
             count++;
         }
     }
@@ -304,15 +303,19 @@ void WorkflowMonitor::addNotification(const WorkflowNotification &notification) 
 }
 
 bool WorkflowMonitor::hasWarnings() const {
-    foreach (WorkflowNotification notification, notifications) {
-        CHECK(notification.type != WorkflowNotification::U2_WARNING, true);
+    for (const WorkflowNotification &notification : qAsConst(notifications)) {
+        if (notification.type == WorkflowNotification::U2_WARNING) {
+            return true;
+        }
     }
     return false;
 }
 
 bool WorkflowMonitor::hasErrors() const {
-    foreach (WorkflowNotification notification, notifications) {
-        CHECK(notification.type != WorkflowNotification::U2_ERROR, true);
+    for (const WorkflowNotification &notification : qAsConst(notifications)) {
+        if (notification.type == WorkflowNotification::U2_ERROR) {
+            return true;
+        }
     }
     return false;
 }

@@ -67,14 +67,14 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//ClassificationFilter
+// ClassificationFilter
 
-//const QString ClassificationFilterSettings::SPECIES("species");
-//const QString ClassificationFilterSettings::GENUS("genus");
-//const QString ClassificationFilterSettings::FAMILY("family");
-//const QString ClassificationFilterSettings::ORDER("order");
-//const QString ClassificationFilterSettings::CLASS("class");
-//const QString ClassificationFilterSettings::PHYLUM("phylum");
+// const QString ClassificationFilterSettings::SPECIES("species");
+// const QString ClassificationFilterSettings::GENUS("genus");
+// const QString ClassificationFilterSettings::FAMILY("family");
+// const QString ClassificationFilterSettings::ORDER("order");
+// const QString ClassificationFilterSettings::CLASS("class");
+// const QString ClassificationFilterSettings::PHYLUM("phylum");
 
 QString ClassificationFilterPrompter::composeRichDoc() {
     return tr("Put input sequences that belong to the specified taxonomic group(s) to separate file(s).");
@@ -187,11 +187,11 @@ void ClassificationFilterWorkerFactory::init() {
         Descriptor outSlot2Descriptor(PAIRED_OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
 
         QMap<Descriptor, DataTypePtr> outM;
-        //outM[Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL(s)"), ClassificationFilterWorker::tr("Output URL(s)"))] = BaseTypes::STRING_TYPE();
+        // outM[Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL(s)"), ClassificationFilterWorker::tr("Output URL(s)"))] = BaseTypes::STRING_TYPE();
         outM[outSlot1Descriptor] = BaseTypes::STRING_TYPE();
         outM[outSlot2Descriptor] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("filter.output-url", outM)), false, true);
-        //p << new PortDescriptor(outD2, DataTypePtr(new MapDataType("filter.output-url", outM)), false, true);
+        // p << new PortDescriptor(outD2, DataTypePtr(new MapDataType("filter.output-url", outM)), false, true);
     }
 
     QList<Attribute *> a;
@@ -263,7 +263,7 @@ void ClassificationFilterWorker::init() {
 
     output->addComplement(input);
     input->addComplement(output);
-    //FIXME pairedOutput looses complement context
+    // FIXME pairedOutput looses complement context
 
     cfg.paired = (getValue<QString>(ClassificationFilterWorkerFactory::SEQUENCING_READS) == ClassificationFilterWorkerFactory::PAIRED_END);
     //    cfg.rank = getValue<QString>(TAXONOMY_RANK);
@@ -288,7 +288,7 @@ void ClassificationFilterWorker::init() {
         return;
     }
     algoLog.trace(QString("Filter taxa num: %1").arg(cfg.taxons.size()));
-    //TODO validate ids relations
+    // TODO validate ids relations
 
     cfg.workingDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
 }
@@ -322,8 +322,8 @@ Task *ClassificationFilterWorker::tick() {
 }
 
 void ClassificationFilterWorker::sl_taskFinished(Task *t) {
-    ClassificationFilterTask *task = qobject_cast<ClassificationFilterTask *>(t);
-    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
+    auto task = qobject_cast<ClassificationFilterTask *>(t);
+    SAFE_POINT(task != nullptr, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }
@@ -336,25 +336,24 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
     while (it1.hasNext()) {
         {
             QVariantMap m;
-            const QString url = it1.next();
-            algoLog.trace(QString("Classification filter produced SE: %1").arg(url));
-            m[ClassificationFilterWorkerFactory::INPUT_SLOT] = url;
+            QString url1 = it1.next();
+            algoLog.trace(QString("Classification filter produced SE: %1").arg(url1));
+            m[ClassificationFilterWorkerFactory::INPUT_SLOT] = url1;
             //            QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
             //            m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
             //            MessageMetadata metadata(url, datasetName);
             //            context->getMetadataStorage().put(metadata);
-            context->getMonitor()->addOutputFile(url, getActor()->getId());
+            context->getMonitor()->addOutputFile(url1, getActor()->getId());
             if (cfg.paired && it2.hasNext()) {
-                //                QVariantMap m;
-                const QString url = it2.next();
-                QString datasetName = "Dataset 1";    //TODO use input url or dataset name???
-                m[ClassificationFilterWorkerFactory::PAIRED_INPUT_SLOT] = url;
+                QString url2 = it2.next();
+                QString datasetName = "Dataset 1";  // TODO use input url or dataset name???
+                m[ClassificationFilterWorkerFactory::PAIRED_INPUT_SLOT] = url2;
                 //                m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
                 //                MessageMetadata metadata(url, datasetName);
                 //                context->getMetadataStorage().put(metadata);
                 //                pairedOutput->put(Message(output->getBusType(), m, metadata.getId()));
-                context->getMonitor()->addOutputFile(url, getActor()->getId());
-                algoLog.trace(QString("Classification filter produced PE: %1").arg(url));
+                context->getMonitor()->addOutputFile(url2, getActor()->getId());
+                algoLog.trace(QString("Classification filter produced PE: %1").arg(url2));
             }
             output->put(Message(output->getBusType(), m /*, metadata.getId()*/));
         }
@@ -481,10 +480,10 @@ QString ClassificationFilterTask::filter(DNASequence *seq, QString inputName) {
             QString taxName = TaxonomyTree::getInstance()->getName(id);
             return QString("%1_%2").arg(id).arg(GUrlUtils::fixFileName(taxName));
         }
-        foundIDs.insertMulti(inputName, 0);    // save anyway to track inputs for dashboard
+        foundIDs.insertMulti(inputName, 0);  // save anyway to track inputs for dashboard
     } else {
         // Unclassified
-        foundIDs.insertMulti(inputName, 0);    // save anyway to track inputs for dashboard
+        foundIDs.insertMulti(inputName, 0);  // save anyway to track inputs for dashboard
         if (cfg.saveUnspecificSequences) {
             return QString("0_unclassified");
         }
@@ -506,7 +505,7 @@ bool ClassificationFilterTask::write(DNASequence *seq, QString fileName, const S
     }
     if (format->getFormatId() == BaseDocumentFormats::FASTA) {
         FastaFormat::storeSequence(*seq, io, stateInfo);
-        //if (stateInfo.hasError())
+        // if (stateInfo.hasError())
     } else if (format->getFormatId() == BaseDocumentFormats::FASTQ) {
         QString err = tr("Failed writing sequence to ‘%1’.").arg(io->getURL().getURLString());
         FastqFormat::writeEntry(seq->getName(), *seq, io, err, stateInfo, false);
@@ -520,5 +519,5 @@ ClassificationFilterSettings::ClassificationFilterSettings()
     : /*rank(ClassificationFilterSettings::SPECIES),*/ saveUnspecificSequences(false), paired(false) {
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

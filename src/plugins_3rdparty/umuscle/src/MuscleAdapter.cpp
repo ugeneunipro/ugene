@@ -401,24 +401,26 @@ static void addSequenceToMSA(MultipleSequenceAlignment &ma, const QByteArray &pa
     QVector<int> insCoords;  // coords of gaps to be added to model
     QByteArray alignedSeq;  // a sequence to be added to model
     int pathLen = path.size();
-    int seqPos = 0;
-    int seqLen = seq.length();
-    Q_UNUSED(seqLen);
-    for (int pathPos = 0; pathPos < pathLen; pathPos++) {
-        char c = path[pathPos];
-        if (c == 'D') {  // gap in seq
-            alignedSeq.append((char)U2Msa::GAP_CHAR);
-            continue;
+    {
+        int seqPos = 0;
+        int seqLen = seq.length();
+        Q_UNUSED(seqLen);
+        for (int pathPos = 0; pathPos < pathLen; pathPos++) {
+            char c = path[pathPos];
+            if (c == 'D') {  // gap in seq
+                alignedSeq.append((char)U2Msa::GAP_CHAR);
+                continue;
+            }
+            // for 'M' or 'I' insert original char to seq
+            char sc = seq[seqPos];
+            alignedSeq.append(sc);
+            seqPos++;
+            if (c == 'I') {  // insert gap to MSA
+                insCoords.append(pathPos);
+            }
         }
-        // for 'M' or 'I' insert original char to seq
-        char sc = seq[seqPos];
-        alignedSeq.append(sc);
-        seqPos++;
-        if (c == 'I') {  // insert gap to MSA
-            insCoords.append(pathPos);
-        }
+        assert(seqPos == seqLen);  // all seq symbols used
     }
-    assert(seqPos == seqLen);  // all seq symbols used
     int aseqLen = alignedSeq.length();
     Q_UNUSED(aseqLen);
     int numIns = insCoords.size();

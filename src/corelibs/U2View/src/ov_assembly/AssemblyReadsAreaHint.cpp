@@ -34,9 +34,9 @@ namespace U2 {
 const QPoint AssemblyReadsAreaHint::OFFSET_FROM_CURSOR(13, 13);
 static const int HINT_MAX_WIDTH = 200;
 
-AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget *p)
-    : QFrame(p), label(new QLabel(this)) {
-    QBoxLayout *top = new QVBoxLayout(this);
+AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget *parent)
+    : QFrame(parent), label(new QLabel(this)) {
+    auto top = new QVBoxLayout(this);
     top->setMargin(2);
     setLayout(top);
     top->addWidget(label);
@@ -52,9 +52,9 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget *p)
     label->setObjectName("hintLabel");
 
     {
-        QPalette p(palette());
-        p.setColor(QPalette::Background, QColor(245, 245, 206));
-        setPalette(p);
+        QPalette backgroundPalette = palette();
+        backgroundPalette.setColor(QPalette::Background, QColor(245, 245, 206));
+        setPalette(backgroundPalette);
     }
 
     setWindowFlags(Qt::ToolTip);

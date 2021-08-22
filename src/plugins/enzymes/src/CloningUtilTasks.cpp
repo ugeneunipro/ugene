@@ -243,14 +243,14 @@ void DigestSequenceTask::run() {
         bool rightStrandDirect = current.key().directStrand;
         int rightCutDirect = rightStrandDirect ? enzyme2->cutDirect : len2 - enzyme2->cutDirect;
         int rightCutCompl = rightStrandDirect ? len2 - enzyme2->cutComplement : enzyme2->cutComplement;
-        int rightCutPos = correctPos(pos2 + qMin(rightCutDirect, rightCutCompl));
-        int rightOverhangStart = correctPos(pos2 + qMax(rightCutDirect, rightCutCompl));
+        qint64 rightCutPos = correctPos(pos2 + qMin(rightCutDirect, rightCutCompl));
+        qint64 rightOverhangStart = correctPos(pos2 + qMax(rightCutDirect, rightCutCompl));
         rightTerm.overhang = getOverhang(U2Region(rightCutPos, rightOverhangStart - rightCutPos));
         rightTerm.enzymeId = enzyme2->id.toLatin1();
         rightTerm.isDirect = rightStrandDirect ? rightCutDirect > rightCutCompl : rightCutDirect < rightCutCompl;
         if (rightOverhangStart > seqLen) {
-            int leftCutPos = rightOverhangStart - seqLen;
-            rightTerm.overhang += getOverhang(U2Region(0, leftCutPos));
+            qint64 leftCutPosWithOverhang = rightOverhangStart - seqLen;
+            rightTerm.overhang += getOverhang(U2Region(0, leftCutPosWithOverhang));
         }
         SharedAnnotationData ad = createFragment(leftCutPos, leftTerm, rightCutPos, rightTerm);
         results.append(ad);

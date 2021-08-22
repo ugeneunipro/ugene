@@ -2066,9 +2066,9 @@ void AnnotationsTreeView::editQualifierItem(AVQualifierItem *qi) {
         Annotation *a = (static_cast<AVAnnotationItem *>(qi->parent()))->annotation;
         a->removeQualifier(U2Qualifier(qi->qName, qi->qValue));
         a->addQualifier(q);
-        AVQualifierItem *qi = ai->findQualifierItem(q.name, q.value);
-        tree->setCurrentItem(qi);
-        tree->scrollToItem(qi);
+        AVQualifierItem *newQualifierItem = ai->findQualifierItem(q.name, q.value);
+        tree->setCurrentItem(newQualifierItem);
+        tree->scrollToItem(newQualifierItem);
     }
 }
 

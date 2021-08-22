@@ -468,7 +468,7 @@ void AssemblyReadsArea::drawReads(QPainter &p) {
 
                 int basesPainted = 0;
                 for (int x_pix_offset = 0; cigarIt.hasNext() && basesPainted++ < readVisibleBases.length; x_pix_offset += cachedReads.letterWidth) {
-                    GTIMER(c2, t2, "AssemblyReadsArea::drawReads -> cycle through one read");
+                    GTIMER(cOneReadCycle, tOneReadCycle, "AssemblyReadsArea::drawReads -> cycle through one read");
                     char c = cigarIt.nextLetter();
 
                     QPoint cellStart(x_pix_start + x_pix_offset, y_pix_start);

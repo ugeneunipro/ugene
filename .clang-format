@@ -83,6 +83,8 @@ IncludeCategories:
     Priority: 13
   - Regex: '^".*'
     Priority: 14
+  - Regex: '^(<|")ui_*'
+    Priority: 15
   - Regex: '<Q.*'
     Priority: 1
   - Regex: '<.*'

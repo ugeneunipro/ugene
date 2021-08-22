@@ -100,7 +100,7 @@ DataTypePtr TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE() {
 
 TaxonomyTree *TaxonomyTree::getInstance() {
     if (the_tree == nullptr) {
-        //fixme data race???
+        // fixme data race???
         the_tree = load(new TaxonomyTree);
     }
     return the_tree;
@@ -156,17 +156,19 @@ TaxID TaxonomyTree::match(TaxID id, QSet<TaxID> filter) {
     }
     // then go searching by hierarchy
     QList<TaxID> parents;
-    TaxID parent = id;
-    while (parent > 1) {
-        if (unsigned(nodes.size()) > parent) {
-            parents << parent;
-            parent = getParent(parent);
-        } else {
-            algoLog.error(QString("Broken taxonomy tree: %1").arg(id));
-            break;
+    {
+        TaxID parent = id;
+        while (parent > 1) {
+            if (unsigned(nodes.size()) > parent) {
+                parents << parent;
+                parent = getParent(parent);
+            } else {
+                algoLog.error(TaxonomySupport::tr("Broken taxonomy tree: %1").arg(id));
+                break;
+            }
         }
     }
-    foreach (TaxID parent, parents) {
+    for (const TaxID &parent : qAsConst(parents)) {
         if (filter.contains(parent)) {
             return parent;
         }
@@ -234,7 +236,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree) {
                             assert(rankID == tree->ranks.indexOf(rank));
                         }
 
-                        //Hack to skip "cellular organisms" node, "to follow NCBI taxonomy browser"
+                        // Hack to skip "cellular organisms" node, "to follow NCBI taxonomy browser"
                         const TaxID CELL_ORGMS_ID = 131567;
                         if (parentID == CELL_ORGMS_ID) {
                             parentID = 1;
@@ -322,19 +324,19 @@ bool taxIdLessThan(const TaxID a, const TaxID b) {
     return TaxonomyTree::getInstance()->getName(a) < TaxonomyTree::getInstance()->getName(b);
 }
 
-}    // namespace
+}  // namespace
 
 TaxonomyTreeModel::TaxonomyTreeModel(const QString &data, QObject *parent)
     : QAbstractItemModel(parent), tree(TaxonomyTree::getInstance()) {
     QStringList taxons = data.split(";", QString::SkipEmptyParts);
-    foreach (const QString &idStr, taxons) {
+    for (const QString &idStr : qAsConst(taxons)) {
         selected.insert(idStr.toInt());
     }
-    foreach (TaxID id, selected) {
-        TaxID parent = tree->getParent(id);
-        while (parent > 1) {
-            tristate.insert(parent, id);
-            parent = tree->getParent(parent);
+    for (const TaxID &id : qAsConst(selected)) {
+        TaxID parentTaxId = tree->getParent(id);
+        while (parentTaxId > 1) {
+            tristate.insert(parentTaxId, id);
+            parentTaxId = tree->getParent(parentTaxId);
         }
     }
 }
@@ -342,7 +344,7 @@ TaxonomyTreeModel::TaxonomyTreeModel(const QString &data, QObject *parent)
 QList<TaxID> TaxonomyTreeModel::getChildrenSorted(TaxID id) const {
     QList<TaxID> values = tree->getChildren(id);
     if (values.size() > 1) {
-        //std::sort(values.begin(), values.end(), TaxonNameComparator(tree));
+        // std::sort(values.begin(), values.end(), TaxonNameComparator(tree));
         std::sort(values.begin(), values.end(), taxIdLessThan);
     }
     return values;
@@ -424,12 +426,12 @@ QVariant TaxonomyTreeModel::data(const QModelIndex &index, int role) const {
     }
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
-        case 0:
-            return tree->getName(item);
-        case 1:
-            return tree->getRank(item);
-        case 2:
-            return item;
+            case 0:
+                return tree->getName(item);
+            case 1:
+                return tree->getRank(item);
+            case 2:
+                return item;
         }
     }
     return QVariant();
@@ -463,12 +465,12 @@ Qt::ItemFlags TaxonomyTreeModel::flags(const QModelIndex &index) const {
 QVariant TaxonomyTreeModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0:
-            return TaxonomySupport::tr("Taxon name");
-        case 1:
-            return TaxonomySupport::tr("Rank");
-        case 2:
-            return TaxonomySupport::tr("Taxon ID");
+            case 0:
+                return TaxonomySupport::tr("Taxon name");
+            case 1:
+                return TaxonomySupport::tr("Rank");
+            case 2:
+                return TaxonomySupport::tr("Taxon ID");
         }
     }
 
@@ -508,7 +510,7 @@ QModelIndex TaxonomyTreeModel::parent(const QModelIndex &index) const {
     int row = siblings.indexOf(parentItem);
     if (row >= 0)
         return createIndex(row, 0, parentItem);
-    //else todo assert
+    // else todo assert
 
     return QModelIndex();
 }
@@ -629,7 +631,7 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     treeView = new QTreeView(this);
-    treeModel = new TaxonomyTreeModel(value);    //fixme delete
+    treeModel = new TaxonomyTreeModel(value);  // fixme delete
     treeView->setModel(treeModel);
     for (int column = 0; column < treeModel->columnCount(); ++column) {
         treeView->resizeColumnToContents(column);
@@ -664,5 +666,5 @@ QString TaxonSelectionDialog::getValue() const {
     return treeModel->getSelected();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

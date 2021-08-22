@@ -1848,7 +1848,7 @@ void DotPlotWidget::sl_filter() {
     d->exec();
     CHECK(!d.isNull(), );
 
-    if (QDialog::Accepted == d->result()) {
+    if (d->result() == QDialog::Accepted) {
         SAFE_POINT(dpDirectResultListener, "dpDirectResultListener is NULL", );
         SAFE_POINT(sequenceX, "sequenceX is NULL", );
         SAFE_POINT(sequenceY, "sequenceY is NULL", );

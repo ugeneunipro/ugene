@@ -289,16 +289,16 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, i);
 
         qreal pxPerPoint = columnWidth / pointsCount;
-        for (int j = 0; j < pointsCount; j++) {
-            double x = columnWidth * (i - startPos) + columnWidth / 2 - (pointsCount - j) * pxPerPoint;
-            qreal yA = -qMin(static_cast<qreal>(chroma.A[prev + j]) * areaHeight / chromaMax, h);
-            qreal yC = -qMin(static_cast<qreal>(chroma.C[prev + j]) * areaHeight / chromaMax, h);
-            qreal yG = -qMin(static_cast<qreal>(chroma.G[prev + j]) * areaHeight / chromaMax, h);
-            qreal yT = -qMin(static_cast<qreal>(chroma.T[prev + j]) * areaHeight / chromaMax, h);
-            polylineA.append(QPointF(x, yA));
-            polylineC.append(QPointF(x, yC));
-            polylineG.append(QPointF(x, yG));
-            polylineT.append(QPointF(x, yT));
+        for (int pointIndex = 0; pointIndex < pointsCount; pointIndex++) {
+            double pointX = columnWidth * (i - startPos) + columnWidth / 2 - (pointsCount - pointIndex) * pxPerPoint;
+            qreal yA = -qMin(static_cast<qreal>(chroma.A[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yC = -qMin(static_cast<qreal>(chroma.C[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yG = -qMin(static_cast<qreal>(chroma.G[prev + pointIndex]) * areaHeight / chromaMax, h);
+            qreal yT = -qMin(static_cast<qreal>(chroma.T[prev + pointIndex]) * areaHeight / chromaMax, h);
+            polylineA.append(QPointF(pointX, yA));
+            polylineC.append(QPointF(pointX, yC));
+            polylineG.append(QPointF(pointX, yG));
+            polylineT.append(QPointF(pointX, yT));
         }
         prev = chroma.baseCalls[i];
     }

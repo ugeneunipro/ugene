@@ -43,6 +43,7 @@
 namespace U2 {
 
 #define SAVE_LINE_LEN 70  // line length for
+
 #define DEFAULT_EMPTY_FASTA_SEQUENCE_NAME "EMPTY_NAME"  // line length for
 
 const int GFFFormat::LOCAL_READ_BUFFER_SIZE = 32768;
@@ -73,12 +74,15 @@ Document *GFFFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
 
 int readLongLine(QString &buffer, IOAdapter *io, QScopedArrayPointer<char> &charbuff, int readBufferSize, U2OpStatus &os) {
     int len;
+
     buffer.clear();
     do {
         len = io->readLine(charbuff.data(), readBufferSize - 1);
+
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), -1);
 
         charbuff.data()[len] = '\0';
+
         buffer.append(QString(charbuff.data()));
     } while (readBufferSize - 1 == len);
 
@@ -128,12 +132,12 @@ static QString escapeBadCharacters(const QString &val) {
     return ret;
 }
 
-static QString fromEscapedString(const QString &val) {
-    QString ret(val);
+static QString fromEscapedString(const QString &text) {
+    QString resultText = text;
     foreach (const QString &val, escapeCharacters.values()) {
-        ret.replace(val, escapeCharacters.key(val));
+        resultText.replace(val, escapeCharacters.key(val));
     }
-    return ret;
+    return resultText;
 }
 
 U2SequenceObject *importSequence(DNASequence &sequence,
@@ -146,6 +150,7 @@ U2SequenceObject *importSequence(DNASequence &sequence,
     seqImporter.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
     CHECK_OP(os, nullptr);
     seqImporter.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
+
     CHECK_OP(os, nullptr);
     U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(os);
     TmpDbiObjects dbiObjects(dbiRef, os);
@@ -186,6 +191,7 @@ static QStringList splitGffAttributes(const QString &line, char sep) {
     QStringList result;
     QString buf;
     int len = line.length();
+
     bool insideOfQuotes = false;
 
     for (int i = 0; i < len; ++i) {
@@ -225,13 +231,14 @@ static QStringList splitGffAttributes(const QString &line, char sep) {
 void GFFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
 
     QScopedArrayPointer<char> buff(new char[LOCAL_READ_BUFFER_SIZE]);
     int len = io->readLine(buff.data(), LOCAL_READ_BUFFER_SIZE);
+
     CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
 
     buff.data()[len] = '\0';
+
     QString qstrbuf(buff.data());
     QStringList words = qstrbuf.split(QRegExp("\\s+"));
     bool isOk;
@@ -256,7 +263,8 @@ void GFFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     bool fastaSectionStarts = false;
     bool anyNamelessSequence = false;
     bool isNameModified = false;
-    QString fastaHeaderName(DEFAULT_EMPTY_FASTA_SEQUENCE_NAME), objName;
+    QString fastaHeaderName(DEFAULT_EMPTY_FASTA_SEQUENCE_NAME);
+    QString objName;
     QByteArray seq;
     QSet<QString> names;
     TmpDbiObjects dbiObjects(dbiRef, os);
@@ -266,6 +274,7 @@ void GFFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
         CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
 
         len = readLongLine(qstrbuf, io, buff, GFFFormat::LOCAL_READ_BUFFER_SIZE, os);
+
         CHECK_OP(os, );
 
         // skip empty lines
@@ -491,13 +500,13 @@ void GFFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     }
 
     // linking annotation tables with corresponding sequences
-    foreach (AnnotationTableObject *ob, atoSet) {
-        QString objName = ob->getGObjectName();
-        objName.replace(FEATURES_TAG, SEQUENCE_TAG);
-        if (seqMap.contains(objName)) {
+    for (AnnotationTableObject *annotationObject : qAsConst(atoSet)) {
+        QString annotationObjectName = annotationObject->getGObjectName();
+        annotationObjectName.replace(FEATURES_TAG, SEQUENCE_TAG);
+        if (seqMap.contains(annotationObjectName)) {
             GObjectReference sequenceRef(GObjectReference(io->getURL().getURLString(), "", GObjectTypes::SEQUENCE));
-            sequenceRef.objName = objName;
-            ob->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
+            sequenceRef.objName = annotationObjectName;
+            annotationObject->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
         }
     }
 
@@ -587,6 +596,7 @@ QString normalizeQualifier(QString qual) {
 void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     QByteArray header("##gff-version\t3\n");
     qint64 len = io->writeBlock(header);
+
     if (len != header.size()) {
         os.setError(L10N::errorWritingFile(doc->getURL()));
         return;
@@ -665,7 +675,7 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 }
                 row[8] = additionalQuals;
                 qbaRow = row.join("\t").toLatin1() + "\n";
-                qint64 len = io->writeBlock(qbaRow);
+                len = io->writeBlock(qbaRow);
                 if (len != qbaRow.size()) {
                     os.setError(L10N::errorWritingFile(doc->getURL()));
                     return;
@@ -699,9 +709,9 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             DNASequence wholeSeq = dnaso->getWholeSequence(os);
             CHECK_OP(os, );
             const char *seq = U1AnnotationUtils::applyLowerCaseRegions(wholeSeq.seq.data(), 0, wholeSeq.length(), 0, lowerCaseRegs);
-            int len = wholeSeq.length();
-            for (int i = 0; i < len; i += SAVE_LINE_LEN) {
-                int chunkSize = qMin(SAVE_LINE_LEN, len - i);
+            int sequenceLength = wholeSeq.length();
+            for (int i = 0; i < sequenceLength; i += SAVE_LINE_LEN) {
+                int chunkSize = qMin(SAVE_LINE_LEN, sequenceLength - i);
                 if (io->writeBlock(seq + i, chunkSize) != chunkSize || !io->writeBlock("\n", 1)) {
                     os.setError(L10N::errorWritingFile(doc->getURL()));
                     return;

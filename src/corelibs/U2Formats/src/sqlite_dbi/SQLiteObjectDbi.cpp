@@ -353,10 +353,10 @@ QHash<U2Object, QString> SQLiteObjectDbi::getObjectFolders(U2OpStatus &os) {
 }
 
 void SQLiteObjectDbi::renameFolder(const QString &oldPath, const QString &newPath, U2OpStatus &os) {
-    const QString oldCPath = U2DbiUtils::makeFolderCanonical(oldPath);
-    const QString newCPath = U2DbiUtils::makeFolderCanonical(newPath);
+    QString oldCPath = U2DbiUtils::makeFolderCanonical(oldPath);
+    QString newCPath = U2DbiUtils::makeFolderCanonical(newPath);
 
-    const QStringList allFolders = getFolders(os);
+    QStringList allFolders = getFolders(os);
     CHECK_OP(os, );
 
     static const QString renameFolderQueryStr = "UPDATE Folder SET path = ?1 where path = ?2";
@@ -370,11 +370,11 @@ void SQLiteObjectDbi::renameFolder(const QString &oldPath, const QString &newPat
 
     QString parent = oldCPath + PATH_SEP;
     QString newParent = newCPath + PATH_SEP;
-    foreach (const QString &path, allFolders) {
+    for (const QString &path : qAsConst(allFolders)) {
         if (path.startsWith(parent)) {
-            QString newPath = newParent + path.mid(parent.size());
+            QString newParentPath = newParent + path.mid(parent.size());
             SQLiteWriteQuery q(renameFolderQueryStr, db, os);
-            q.bindString(1, newPath);
+            q.bindString(1, newParentPath);
             q.bindString(2, path);
             q.update();
             CHECK_OP(os, );
@@ -722,10 +722,9 @@ void SQLiteObjectDbi::redo(const U2DataId &objId, U2OpStatus &os) {
         return;
     }
 
-    foreach (QList<U2SingleModStep> multiStepSingleSteps, modSteps) {
-        QSet<U2DataId> objectIds;
-
-        foreach (U2SingleModStep modStep, multiStepSingleSteps) {
+    for (const QList<U2SingleModStep> &multiStepSingleSteps : qAsConst(modSteps)) {
+        QSet<U2DataId> modStepObjectIds;
+        for (const U2SingleModStep &modStep : qAsConst(multiStepSingleSteps)) {
             if (U2ModType::isUdrModType(modStep.modType)) {
                 dbi->getSQLiteUdrDbi()->redo(modStep, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
@@ -733,7 +732,7 @@ void SQLiteObjectDbi::redo(const U2DataId &objId, U2OpStatus &os) {
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
                 dbi->getSQLiteSequenceDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isObjectModType(modStep.modType)) {
-                if (U2ModType::objUpdatedName == modStep.modType) {
+                if (modStep.modType == U2ModType::objUpdatedName) {
                     redoUpdateObjectName(modStep.objectId, modStep.details, os);
                     CHECK_OP(os, );
                 } else {
@@ -743,12 +742,12 @@ void SQLiteObjectDbi::redo(const U2DataId &objId, U2OpStatus &os) {
                 }
             }
 
-            objectIds.insert(modStep.objectId);
+            modStepObjectIds.insert(modStep.objectId);
         }
-        objectIds.insert(objId);
+        modStepObjectIds.insert(objId);
 
-        foreach (U2DataId objId, objectIds) {
-            incrementVersion(objId, os);
+        for (const U2DataId &modStepObjectId : qAsConst(modStepObjectIds)) {
+            incrementVersion(modStepObjectId, os);
             if (os.hasError()) {
                 coreLog.trace("Can't increment an object version!");
                 os.setError(errorDescr);

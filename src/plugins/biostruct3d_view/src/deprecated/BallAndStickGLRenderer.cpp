@@ -21,6 +21,7 @@
 
 #include <time.h>
 
+#include <QObject>
 #include <QtOpenGL>
 
 #include <U2Core/BioStruct3D.h>

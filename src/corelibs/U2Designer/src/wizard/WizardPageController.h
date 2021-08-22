@@ -50,7 +50,7 @@ private:
     QList<WidgetController *> controllers;
 
 private:
-    void removeLayout(QLayout *l);
+    void removeLayout(QLayout *layoutToRemove);
     void setError(WDWizardPage *wPage);
 };
 

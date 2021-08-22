@@ -22,6 +22,7 @@
 #ifndef _U2_EDIT_SEQUENCE_TESTS_H_
 #define _U2_EDIT_SEQUENCE_TESTS_H_
 
+#include <QObject>
 #include <QDomElement>
 
 #include <U2Core/DNASequenceObject.h>

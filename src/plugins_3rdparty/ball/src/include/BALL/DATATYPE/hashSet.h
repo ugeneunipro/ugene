@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 // -*- Mode: C++; tab-width: 2; -*-
 // vi: set ts=2:
 //
@@ -49,7 +52,7 @@ namespace BALL
 		/**
 		*/
 		typedef Key ValueType;
-			
+
 		/**
 		*/
 		typedef Key KeyType;
@@ -72,7 +75,7 @@ namespace BALL
 		};
 
 		typedef Node* IteratorPosition;
-	
+
 		class IteratorTraits
 		{
 
@@ -85,27 +88,27 @@ namespace BALL
 					bucket_(0)
 			{
 			}
-			
+
 			IteratorTraits(const HashSet& hash_set)
 				:	bound_(const_cast<HashSet*>(&hash_set)),
 					position_(0),
 					bucket_(0)
 			{
 			}
-			
+
 			IteratorTraits(const IteratorTraits& traits)
 				:	bound_(traits.bound_),
 					position_(traits.position_),
 					bucket_(traits.bucket_)
 			{
 			}
-			
+
 			IteratorTraits& operator = (const IteratorTraits& traits)
 			{
 				bound_ = traits.bound_;
 				position_ = traits.position_;
 				bucket_ = traits.bucket_;
-		
+
 				return *this;
 			}
 
@@ -113,17 +116,17 @@ namespace BALL
 			{
 				return bound_;
 			}
-			
+
 			const HashSet* getContainer() const
 			{
 				return bound_;
 			}
-			
+
 			bool isSingular() const
 			{
 				return (bound_ == 0);
 			}
-			
+
 			IteratorPosition& getPosition()
 			{
 				return position_;
@@ -143,7 +146,7 @@ namespace BALL
 			{
 				return (position_ != traits.position_);
 			}
-			
+
 			bool isValid() const
 			{
 				return ((bound_ != 0) && (position_ != 0)
@@ -156,7 +159,7 @@ namespace BALL
 				position_ = 0;
 				bucket_ = INVALID_POSITION;
 			}
-			
+
 			void toBegin()
 			{
 				for (bucket_ = 0;  bucket_ < (Position)bound_->bucket_.size();  ++bucket_)
@@ -179,8 +182,8 @@ namespace BALL
 						if (position_ == bound_->bucket_[bucket_])
 						{
 							return true;
-						} 
-						else 
+						}
+						else
 						{
 							return false;
 						}
@@ -194,12 +197,12 @@ namespace BALL
 			{
 				position_ = 0;
 			}
-			
+
 			bool isEnd() const
 			{
 				return (position_ == 0);
 			}
-			
+
 			ValueType& getData()
 			{
 				return position_->value;
@@ -228,7 +231,7 @@ namespace BALL
 						return;
 					}
 				}
-			} 
+			}
 
 			protected:
 
@@ -275,7 +278,7 @@ namespace BALL
 		/**	@name	Type definitions
 		*/
 		//@{
-			
+
 		///
 		typedef ForwardIterator<HashSet<Key>, ValueType, PointerType, IteratorTraits> Iterator;
 
@@ -302,17 +305,17 @@ namespace BALL
 		///
 		typedef Size				size_type;
 		///
-		typedef Index				difference_type;			
+		typedef Index				difference_type;
 		//@}
 
-		/**	@name Constructors and Destructors 
+		/**	@name Constructors and Destructors
 		*/
 		//@{
 
 		/**	Default Constructor.
 		*/
 		HashSet(Size initial_capacity = INITIAL_CAPACITY, Size number_of_buckets = INITIAL_NUMBER_OF_BUCKETS);
-			
+
 		/**	Copy Constructor.
 		*/
 		HashSet(const HashSet& hash_set);
@@ -330,7 +333,7 @@ namespace BALL
 				The capacity and the number of buckets remain unchanged.
 		*/
 		virtual void clear();
-	
+
 		/**	Clear the hash set.
 				Remove all nodes from all buckets.
 				The capacity and the number of buckets remain unchanged.
@@ -340,7 +343,7 @@ namespace BALL
 
 		//@}
 
-		/**	@name Assignment 
+		/**	@name Assignment
 		*/
 		//@{
 
@@ -380,7 +383,7 @@ namespace BALL
 		/**	Return the number of elements in the hash set.
 		*/
 		Size getSize() const;
-			
+
 		/**	Return the number of elements in the hash set.
 		*/
 		Size size() const;
@@ -388,7 +391,7 @@ namespace BALL
     /** Find the element whose key is <tt>key</tt>.
     */
  		Iterator find(const Key& key);
-	
+
     /** Find the element whose key is <tt>key</tt>.
     */
 		ConstIterator find(const Key& key) const;
@@ -430,19 +433,19 @@ namespace BALL
 				its intersection with <tt>rhs</tt>.
 		*/
 		const HashSet& operator &= (const HashSet& rhs);
-		
+
 		/**	Union operator.
 				Replace the contents of the current hash set by
 				its union with <tt>rhs</tt>.
 		*/
 		const HashSet& operator |= (const HashSet& rhs);
-		
+
 		/**	Intersection operator.
 				Compute the intersection of the two hash sets.
 				The left-hand set is not modified.
 		*/
 		HashSet operator & (const HashSet& rhs) const;
-		
+
 		/**	Union operator.
 				Compute the union of the two hash sets.
 				The left-hand set is not modified.
@@ -507,7 +510,7 @@ namespace BALL
 		//@{
 
 		/**	Return true if the hash set is consistent.
-				Condition: the number of entries in all buckets has to be equal the 
+				Condition: the number of entries in all buckets has to be equal the
 				stored number of entries (getSize()).
 		*/
 		bool isValid() const;
@@ -565,7 +568,7 @@ namespace BALL
 		virtual Node* newNode_(const ValueType& value, Node* next) const;
 
 		virtual void deleteNode_(Node* node) const;
-	
+
 		virtual HashIndex hash(const Key& key) const;
 
 		virtual bool needRehashing_() const;
@@ -590,7 +593,7 @@ namespace BALL
 		*/
 		Size	capacity_;
 
-		/*_	Buckets are stored as a vector of linked lists of Nodes 
+		/*_	Buckets are stored as a vector of linked lists of Nodes
 		*/
 		vector<Node*>	bucket_;
 	};
@@ -615,7 +618,7 @@ namespace BALL
 			bucket_(hash_set.bucket_.size())
 	{
 		Node* item = 0;
-		
+
 		for (Position bucket = 0; bucket < (Position)bucket_.size(); ++bucket)
 		{
 			bucket_[bucket] = 0;
@@ -636,7 +639,7 @@ namespace BALL
 		}
 
 		destroy();
-		
+
 		deleteBuckets_();
 
 		size_ = hash_set.size_;
@@ -644,7 +647,7 @@ namespace BALL
 		bucket_.resize(hash_set.bucket_.size());
 
 		Node* item = 0;
-		
+
 		for (Position bucket = 0; bucket < (Position)bucket_.size(); ++bucket)
 		{
 			bucket_[bucket] = 0;
@@ -661,7 +664,7 @@ namespace BALL
 	{
 		Node* node = 0;
 		Node* next_node = 0;
-		
+
 		for (Position bucket = 0; bucket < (Position)bucket_.size(); ++bucket)
 		{
 			for (node = bucket_[bucket]; node != 0; node = next_node)
@@ -669,7 +672,7 @@ namespace BALL
 				next_node = node->next;
 				deleteNode_(node);
 			}
-			
+
 			bucket_[bucket] = 0;
 		}
 
@@ -677,14 +680,14 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::destroy()
 	{
 		clear();
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	const HashSet<Key>& HashSet<Key>::operator = (const HashSet& hash_set)
 	{
 		set(hash_set);
@@ -692,7 +695,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::get(HashSet& hash_set) const
 
 	{
@@ -700,7 +703,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::swap(HashSet& hash_set)
 	{
 		std::swap(size_, hash_set.size_);
@@ -709,7 +712,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	const HashSet<Key>& HashSet<Key>::operator &= (const HashSet& rhs)
 	{
 		// Store all elements that are not part of the intersection
@@ -734,7 +737,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	const HashSet<Key>& HashSet<Key>::operator |= (const HashSet<Key>& rhs)
 	{
 		// Compute the union of both sets by inserting every element of the
@@ -748,20 +751,20 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	const HashSet<Key>& HashSet<Key>::operator += (const HashSet<Key>& rhs)
 	{
 		return operator |= (rhs);
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashSet<Key> HashSet<Key>::operator & (const HashSet<Key>& rhs) const
 	{
 		// Create an empty hash set...
 		HashSet<Key> tmp;
 		ConstIterator it = begin();
-		
+
 		// ...and copy all the elements contained in the rhs hash set.
 		for (; +it; ++it)
 		{
@@ -775,13 +778,13 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashSet<Key> HashSet<Key>::operator - (const HashSet<Key>& rhs) const
 	{
 		// Create an empty hash set...
 		HashSet<Key> tmp;
 		ConstIterator it = begin();
-		
+
 		// ...and copy all the elements contained in this set and not in the rhs hash set.
 		for (; +it; ++it)
 		{
@@ -795,8 +798,8 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
-	const HashSet<Key>& HashSet<Key>::operator -= (const HashSet<Key>& hash_set) 
+	BALL_INLINE
+	const HashSet<Key>& HashSet<Key>::operator -= (const HashSet<Key>& hash_set)
 	{
 		// avoid memory corruption caused by iterating over freed space when
 		// deleting myself
@@ -806,7 +809,7 @@ namespace BALL
 		}
 		else
 		{
-			// erase all elements which are contained in this and hash_set 
+			// erase all elements which are contained in this and hash_set
 			typename HashSet<Key>::ConstIterator it = hash_set.begin();
 			for (; it != hash_set.end(); ++it)
 			{
@@ -820,7 +823,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashSet<Key> HashSet<Key>::operator | (const HashSet<Key>& rhs) const
 	{
 		HashSet<Key> tmp(*this);
@@ -830,35 +833,35 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashSet<Key> HashSet<Key>::operator + (const HashSet<Key>& rhs) const
 	{
 		return operator | (rhs);
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	Size HashSet<Key>::getBucketSize() const
 	{
 		return (Size)bucket_.size();
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	Size HashSet<Key>::getCapacity() const
 	{
 		return capacity_;
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	Size HashSet<Key>::getSize() const
 	{
 		return size_;
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	Size HashSet<Key>::size() const
 	{
 		return size_;
@@ -883,9 +886,9 @@ namespace BALL
 
 		return it;
 	}
-		
+
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	typename HashSet<Key>::ConstIterator HashSet<Key>::find(const Key& key) const
 	{
 		return (const_cast<HashSet*>(this))->find(key);
@@ -902,12 +905,12 @@ namespace BALL
 			{
 				rehash_();
 			}
-			
+
 			Position bucket = hashBucket_(item);
 
 			Node* next = bucket_[bucket];
 			bucket_[bucket] = newNode_(item, next);
-			
+
 			++size_;
 			it.getTraits().position_ = bucket_[bucket];
 			it.getTraits().bucket_ = bucket;
@@ -929,7 +932,7 @@ namespace BALL
 		Position	bucket = hashBucket_(key);
 		Node*			previous = 0;
 		Node*			node_ptr = bucket_[bucket];
-		
+
 		while (node_ptr != 0 && node_ptr->value != key)
 		{
 			previous = node_ptr;
@@ -944,8 +947,8 @@ namespace BALL
 		if (node_ptr == bucket_[bucket])
 		{
 			bucket_[bucket] = node_ptr->next;
-		} 
-		else 
+		}
+		else
 		{
 			previous->next = node_ptr->next;
 		}
@@ -968,12 +971,12 @@ namespace BALL
 		{
 			return;
 		}
-				
+
 		if (pos.getTraits().position_ == bucket_[pos.getTraits().bucket_])
 		{
 			bucket_[pos.getTraits().bucket_] = pos.getTraits().position_->next;
-		} 
-		else 
+		}
+		else
 		{
 			// walk over all nodes in this bucket and identify the predecessor
 			// of the node refered to by the iterator pos
@@ -984,7 +987,7 @@ namespace BALL
 				// remove the node and reconnect the list
 				prev->next = pos.getTraits().position_->next;
 			}
-			else 
+			else
 			{
 				throw Exception::InvalidIterator(__FILE__, __LINE__);
 			}
@@ -1002,7 +1005,7 @@ namespace BALL
 		{
 			throw Exception::IncompatibleIterators(__FILE__, __LINE__);
 		}
-		
+
 		if (f == end())
 		{
 			return;
@@ -1039,7 +1042,7 @@ namespace BALL
 				Node* n = bucket_[bucket];
 				Node* next;
 				for (; (n->next != f.getTraits().position_) && (n->next != 0); n = n->next) {};
-				
+
 				if (bucket == last_bucket)
 				{
 					// delete everything from f to l in this bucket
@@ -1072,7 +1075,7 @@ namespace BALL
 						}
 					}
 				}
-			} 
+			}
 			// if the current bucket lies between the first and the last bucket...
 			else if (bucket < last_bucket)
 			{
@@ -1109,21 +1112,21 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::host(Visitor<HashSet<Key> >& visitor)
 	{
 		visitor.visit(*this);
 	}
-		
+
 	template <class Key>
-	BALL_INLINE 
-	bool HashSet<Key>::has(const Key& key) const	
+	BALL_INLINE
+	bool HashSet<Key>::has(const Key& key) const
 	{
 		return (find(key) != end());
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	bool HashSet<Key>::isEmpty() const
 	{
 		return (size_ == 0);
@@ -1178,7 +1181,7 @@ namespace BALL
 		}
 
 		return (size_ == size);
-	}      
+	}
 
 	template <class Key>
 	void HashSet<Key>::dump(std::ostream& s, Size depth) const
@@ -1211,8 +1214,8 @@ namespace BALL
 		}
 
 		BALL_DUMP_STREAM_SUFFIX(s);
-	} 
- 
+	}
+
 	template <class Key>
 	bool HashSet<Key>::apply(UnaryProcessor<ValueType>& processor)
 	{
@@ -1238,14 +1241,14 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashIndex HashSet<Key>::hash(const Key& key) const
 	{
 		return (HashIndex)Hash(key);
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::rehash()
 	{
 		capacity_ = (Size)getNextPrime((Size)bucket_.size() << 1);
@@ -1271,7 +1274,7 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	typename HashSet<Key>::Node* HashSet<Key>::newNode_
 		(const ValueType& value, typename HashSet<Key>::Node* next) const
 	{
@@ -1279,21 +1282,21 @@ namespace BALL
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	void HashSet<Key>::deleteNode_(typename HashSet<Key>::Node* node) const
 	{
 		delete node;
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	bool HashSet<Key>::needRehashing_() const
 	{
 		return (size_ >= capacity_);
 	}
 
 	template <class Key>
-	BALL_INLINE 
+	BALL_INLINE
 	HashIndex HashSet<Key>::hashBucket_(const Key& key) const
 	{
 		return (Position)((HashIndex)hash(key) % (HashIndex)bucket_.size());

@@ -50,7 +50,7 @@ BgzfWriter::~BgzfWriter() {
 }
 
 void BgzfWriter::write(const char *buff, qint64 size) {
-    if (0 == size) {
+    if (size == 0) {
         return;
     }
     assert(!finished);
@@ -60,26 +60,26 @@ void BgzfWriter::write(const char *buff, qint64 size) {
             deflateReset(&stream);
             blockEnd = false;
         }
-        qint64 toWrite = qMin(size - bytesWritten, BLOCK_SIZE - (qint64)stream.total_in);
+        qint64 bytesToWrite1 = qMin(size - bytesWritten, BLOCK_SIZE - (qint64)stream.total_in);
         stream.next_in = (Bytef *)&buff[bytesWritten];
-        stream.avail_in = (uInt)toWrite;
+        stream.avail_in = (uInt)bytesToWrite1;
         while (stream.avail_in > 0) {
             stream.next_out = (Bytef *)buffer;
             stream.avail_out = sizeof(buffer);
-            if (Z_OK != deflate(&stream, Z_NO_FLUSH)) {
+            if (deflate(&stream, Z_NO_FLUSH) != Z_OK) {
                 throw Exception(BAMDbiPlugin::tr("Can't compress data"));
             } else {
-                qint64 toWrite = sizeof(buffer) - stream.avail_out;
-                if (ioAdapter.writeBlock(buffer, toWrite) != toWrite) {
+                qint64 bytesToWrite2 = sizeof(buffer) - stream.avail_out;
+                if (ioAdapter.writeBlock(buffer, bytesToWrite2) != bytesToWrite2) {
                     throw IOException(BAMDbiPlugin::tr("Can't write output"));
                 }
             }
         }
-        if (BLOCK_SIZE == (int)stream.total_in) {
+        if ((int)stream.total_in == BLOCK_SIZE) {
             finishBlock();
             headerOffset = ioAdapter.bytesRead();
         }
-        bytesWritten += toWrite;
+        bytesWritten += bytesToWrite1;
     }
 }
 

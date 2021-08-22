@@ -151,9 +151,9 @@ void TophatSamplesWidgetController::initSamplesMap() {
     // prepare samples
     U2OpStatus2Log os;
     samples = WorkflowUtils::unpackSamples(wc->getAttributeValue(tsw->samplesAttr).toString(), os);
+    CHECK_OP(os, );
     removeMissedDatasets();
     while (samples.size() < 2) {
-        U2OpStatusImpl os;
         insertSample(samples.size(), os);
         CHECK_OP(os, );
     }
@@ -166,7 +166,7 @@ void TophatSamplesWidgetController::initSamplesMap() {
     }
 
     // 2 unsampled datasets can be divided into 2 samples
-    if ((2 == unsampledDatasets.size()) && (sampledDatasets.isEmpty())) {
+    if (unsampledDatasets.size() == 2 && sampledDatasets.isEmpty()) {
         samples[0].datasets << unsampledDatasets[0];
         samples[1].datasets << unsampledDatasets[1];
         return;

@@ -51,14 +51,14 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
         if (getScore('U', 'U') == DEFAULT_FILL_VALUE) {  // no score for 'U' symbol, use score value for 'C' (Cysteine)
             copyCharValues('C', 'U');
         }
-        if (getScore('O', 'O') == DEFAULT_FILL_VALUE) {  // no score for 'U' symbol, use score value for 'K' (Lysine)
+        if (getScore('O', 'O') == DEFAULT_FILL_VALUE) {  // no score for 'O' symbol, use score value for 'K' (Lysine)
             copyCharValues('K', 'O');
         }
     }
 
     // now for all symbols in alphabet without score set the minimal score
-    foreach (char c1, validCharacters) {
-        foreach (char c2, validCharacters) {
+    for (char c1: qAsConst(validCharacters)) {
+        for (char c2: qAsConst(validCharacters)) {
             float score = getScore(c1, c2);
             if (score == DEFAULT_FILL_VALUE) {
                 setScore(c1, c2, minScore);

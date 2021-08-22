@@ -196,34 +196,33 @@ void EditMarkerGroupDialog::sl_onTypeChanged(int newTypeIndex) {
         return;
     }
 
-    MarkerDataType oldType = MarkerTypes::getDataTypeById(marker->getType());
-    MarkerDataType newType = MarkerTypes::getDataTypeById(typeIds.at(newTypeIndex));
+    MarkerDataType oldMarkerType = MarkerTypes::getDataTypeById(marker->getType());
+    QString newTypeId = typeIds.at(newTypeIndex);
+    MarkerDataType newMarkerType = MarkerTypes::getDataTypeById(newTypeId);
 
     bool changeMarker = false;
-    if (1 == marker->getValues().size()) {  // contains only "rest"
+    if (marker->getValues().size() == 1) {  // contains only "rest"
+        changeMarker = true;
+    } else if (oldMarkerType == newMarkerType) {
         changeMarker = true;
     } else {
-        if (oldType == newType) {
-            changeMarker = true;
-        } else {
-            changeMarker = (QMessageBox::Ok == QMessageBox::question(this, tr("Warning"), tr("Are you really want to change marker's type? Some data can be lost!"), QMessageBox::Ok | QMessageBox::Cancel));
-        }
+        auto rc = QMessageBox::question(this,
+                                        tr("Warning"),
+                                        tr("Are you really want to change marker's type? Some data can be lost!"),
+                                        QMessageBox::Ok | QMessageBox::Cancel);
+        changeMarker = rc == QMessageBox::Ok;
     }
 
     if (changeMarker) {
         Marker *oldMarker = marker;
-        marker = MarkerFactory::createInstanse(typeIds.at(newTypeIndex), addParamEdit->text());
-        {
-            marker->setName(oldMarker->getName());
-            MarkerDataType oldType = MarkerTypes::getDataTypeById(oldMarker->getType());
-            MarkerDataType newType = MarkerTypes::getDataTypeById(marker->getType());
-            if (oldType == newType) {
-                foreach (const QString &key, oldMarker->getValues().keys()) {
-                    marker->addValue(key, oldMarker->getValues().value(key));
-                }
-            } else {
-                marker->addValue(MarkerUtils::REST_OPERATION, oldMarker->getValues().value(MarkerUtils::REST_OPERATION));
+        marker = MarkerFactory::createInstanse(newTypeId, addParamEdit->text());
+        marker->setName(oldMarker->getName());
+        if (oldMarkerType == newMarkerType) {
+            foreach (const QString &key, oldMarker->getValues().keys()) {
+                marker->addValue(key, oldMarker->getValues().value(key));
             }
+        } else {
+            marker->addValue(MarkerUtils::REST_OPERATION, oldMarker->getValues().value(MarkerUtils::REST_OPERATION));
         }
         updateUi();
         currentTypeIndex = newTypeIndex;

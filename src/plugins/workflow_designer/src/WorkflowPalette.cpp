@@ -538,8 +538,9 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
 
 void WorkflowPaletteElements::editElement() {
     ActorPrototype *proto = currentAction->data().value<ActorPrototype *>();
-    ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
-    QMap<Descriptor, QList<ActorPrototype *>> categories = reg->getProtos();
+    ActorPrototypeRegistry *prototypeRegistry = WorkflowEnv::getProtoRegistry();
+
+    QMap<Descriptor, QList<ActorPrototype *>> categories = prototypeRegistry->getProtos();
 
     if (categories.value(BaseActorCategories::CATEGORY_SCRIPT()).contains(proto)) {
         QString oldName = proto->getDisplayName();
@@ -548,9 +549,6 @@ void WorkflowPaletteElements::editElement() {
         CHECK(!dlg.isNull(), );
 
         if (dlg->result() == QDialog::Accepted) {
-            ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
-            assert(reg);
-
             QList<DataTypePtr> input = dlg->getInput();
             QList<DataTypePtr> output = dlg->getOutput();
             QList<Attribute *> attrs = dlg->getAttributes();
@@ -561,7 +559,7 @@ void WorkflowPaletteElements::editElement() {
                 removeElement();
             } else {
                 emit si_prototypeIsAboutToBeRemoved(proto);
-                reg->unregisterProto(proto->getId());
+                prototypeRegistry->unregisterProto(proto->getId());
             }
             LocalWorkflow::ScriptWorkerFactory::init(input, output, attrs, name, desc, dlg->getActorFilePath());
         }

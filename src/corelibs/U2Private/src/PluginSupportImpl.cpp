@@ -361,13 +361,13 @@ void AddPluginTask::prepare() {
     }
 
     // check that plugin we depends on is already loaded
-    foreach (const DependsInfo &di, desc.dependsList) {
-        PluginRef *ref = ps->findRefById(di.id);
-        if (ref == nullptr) {
+    for (const DependsInfo &di : qAsConst(desc.dependsList)) {
+        PluginRef *depRef = ps->findRefById(di.id);
+        if (depRef == nullptr) {
             stateInfo.setError(tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id));
             return;
         }
-        if (ref->pluginDesc.pluginVersion < di.version) {
+        if (depRef->pluginDesc.pluginVersion < di.version) {
             stateInfo.setError(tr("Plugin %1 depends on %2 which is available, but the version is too old").arg(desc.id).arg(di.id));
             return;
         }
@@ -389,11 +389,11 @@ void AddPluginTask::prepare() {
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
-        verificationIsEnabled = false;
+    if (isOsMac()) {
+        if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
+            verificationIsEnabled = false;
+        }
     }
-#endif
 
     if (verificationIsEnabled) {
         PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));

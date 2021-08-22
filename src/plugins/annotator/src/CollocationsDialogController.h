@@ -22,8 +22,6 @@
 #ifndef _U2_COLLOCATION_DIALOG_CONTROLLER_H_
 #define _U2_COLLOCATION_DIALOG_CONTROLLER_H_
 
-#include <ui_FindAnnotationCollocationsDialog.h>
-
 #include <QDialog>
 #include <QMutex>
 #include <QTimer>
@@ -34,6 +32,8 @@
 #include <U2Core/U2Region.h>
 
 #include "CollocationsSearchAlgorithm.h"
+
+#include <ui_FindAnnotationCollocationsDialog.h>
 
 namespace U2 {
 

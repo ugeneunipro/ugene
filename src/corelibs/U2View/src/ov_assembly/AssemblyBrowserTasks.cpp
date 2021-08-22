@@ -64,7 +64,7 @@ void OpenAssemblyBrowserTask::open() {
     }
 
     if (selectedObjects.isEmpty()) {
-        assert(1 == documentsToLoad.size());
+        assert(documentsToLoad.size() == 1);
         Document *doc = documentsToLoad.first();
         QList<GObject *> objects;
         if (unloadedObjRef.isValid()) {
@@ -81,9 +81,9 @@ void OpenAssemblyBrowserTask::open() {
                 selectedObjects.append(qobject_cast<AssemblyObject *>(obj));
             }
         } else {
-            QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::ASSEMBLY, UOF_LoadedAndUnloaded);
-            if (!objects.isEmpty()) {
-                selectedObjects.append(qobject_cast<AssemblyObject *>(objects.first()));
+            QList<GObject *> assemblyObjects = doc->findGObjectByType(GObjectTypes::ASSEMBLY, UOF_LoadedAndUnloaded);
+            if (!assemblyObjects.isEmpty()) {
+                selectedObjects.append(qobject_cast<AssemblyObject *>(assemblyObjects.first()));
             }
         }
         if (selectedObjects.isEmpty()) {

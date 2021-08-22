@@ -188,10 +188,10 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
     }
 
     QObjectScopedPointer<NewGrouperSlotDialog> dlg = new NewGrouperSlotDialog(this, descs, names);
-    const int dialogResult = dlg->exec();
+    int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
 
-    if (QDialog::Accepted == dialogResult) {
+    if (dialogResult == QDialog::Accepted) {
         QString inSlotId = dlg->getInSlotId();
         QString outSlotName = dlg->getOutSlotName();
         DataTypePtr type = busMap.value(inSlotId);
@@ -199,10 +199,10 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
 
         QObjectScopedPointer<ActionDialog> aDlg = ActionDialog::getActionDialog(this, nullptr, type, grouperModel);
         CHECK(!aDlg.isNull(), );
-        const int dialogResult = aDlg->exec();
+        dialogResult = aDlg->exec();
         CHECK(!aDlg.isNull(), );
 
-        if (QDialog::Accepted == dialogResult) {
+        if (dialogResult == QDialog::Accepted) {
             GrouperSlotAction action = aDlg->getAction();
             GrouperOutSlot newSlot(outSlotName, inSlotId);
             newSlot.setAction(action);
@@ -219,27 +219,27 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
 void GrouperEditorWidget::sl_onEditButtonClicked() {
     QItemSelectionModel *m = slotsTable->selectionModel();
     QModelIndexList selected = m->selectedRows();
-    if (1 != selected.size()) {
+    if (selected.size() != 1) {
         return;
     }
     QModelIndex leftIdx = selected.first();
     QModelIndex rightIdx = leftIdx.child(leftIdx.row(), 1);
 
     GrouperSlotsCfgModel *model = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
-    assert(nullptr != model);
+    SAFE_POINT(model != nullptr, "GrouperSlotsCfgModel is null", );
     QString outSlotName = model->data(leftIdx).toString();
     QString inSlotId = GrouperOutSlot::readable2busMap(model->data(rightIdx).toString());
-    GrouperSlotAction *action = model->getSlotAction(outSlotName);
+    GrouperSlotAction *outSlotAction = model->getSlotAction(outSlotName);
 
     QMap<Descriptor, DataTypePtr> busMap = getBusMap(inPort);
     DataTypePtr type = busMap.value(inSlotId);
 
-    QObjectScopedPointer<ActionDialog> aDlg = ActionDialog::getActionDialog(this, action, type, model);
+    QObjectScopedPointer<ActionDialog> aDlg = ActionDialog::getActionDialog(this, outSlotAction, type, model);
     CHECK(!aDlg.isNull(), );
-    const int dialogResult = aDlg->exec();
+    int dialogResult = aDlg->exec();
     CHECK(!aDlg.isNull(), );
 
-    if (QDialog::Accepted == dialogResult) {
+    if (dialogResult == QDialog::Accepted) {
         GrouperSlotAction action = aDlg->getAction();
         model->setNewAction(outSlotName, action);
     }
@@ -250,7 +250,7 @@ void GrouperEditorWidget::sl_onEditButtonClicked() {
 void GrouperEditorWidget::sl_onRemoveButtonClicked() {
     QItemSelectionModel *m = slotsTable->selectionModel();
     QModelIndexList selected = m->selectedRows();
-    if (1 != selected.size()) {
+    if (selected.size() != 1) {
         return;
     }
 

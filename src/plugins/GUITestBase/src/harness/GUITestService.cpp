@@ -387,8 +387,8 @@ void GUITestService::removeDir(QString dirName) {
             if (QFile::remove(filePath))
                 continue;
             else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath))
+                QDir childDir(filePath);
+                if (childDir.rmdir(filePath))
                     continue;
                 else
                     removeDir(filePath);

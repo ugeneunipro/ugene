@@ -182,13 +182,13 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
 
             QStringList groupNames;
             QMap<QString, QList<SharedAnnotationData>> groupName2Annotations;
-            for (int i = 0, n = data.features.size(); i < n; ++i) {
-                SharedAnnotationData &d = data.features[i];
+            for (int featureIndex = 0, featureCount = data.features.size(); featureIndex < featureCount; featureIndex++) {
+                SharedAnnotationData &d = data.features[featureIndex];
                 if (!d->location->regions.isEmpty()) {
-                    for (int i = 0, n = d->location->regions.size(); i < n; ++i) {
+                    for (int regionIndex = 0, regionCount = d->location->regions.size(); regionIndex < regionCount; regionIndex++) {
                         // for some reason larger numbers cannot be stored within rtree SQLite tables
-                        if (d->location->regions[i].endPos() > 9223371036854775807LL) {
-                            d->location->regions[i].length = 9223371036854775807LL - d->location->regions[i].startPos;
+                        if (d->location->regions[regionIndex].endPos() > 9223371036854775807LL) {
+                            d->location->regions[regionIndex].length = 9223371036854775807LL - d->location->regions[regionIndex].startPos;
                         }
                     }
                 }

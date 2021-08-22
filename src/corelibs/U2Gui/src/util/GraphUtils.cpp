@@ -57,7 +57,7 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
     assert(c.drawArrow ? c.drawAxis : true);
 
     p.setFont(font);
-    QFontMetrics fm = p.fontMetrics();
+    QFontMetrics fm(font);
     int cw = fm.size(Qt::TextSingleLine, "0").width();
     int ch = fm.height();
     QString st = FormatUtils::splitThousands(start);
@@ -98,7 +98,6 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
     } else if (c.direction == TopToBottom) {
         int notchDX1 = c.notchSize;
         int notchDX2 = c.notchSize;
-        QFontMetrics fm(font);
         int fontHeight = fm.height();
         qint64 fontCenteringOffset = fontHeight / 2 - 2;  // -2 is for baseline offset
         if (c.drawAxis) {

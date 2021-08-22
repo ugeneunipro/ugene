@@ -798,9 +798,9 @@ Task::ReportResult GTest_CheckAnnotationsQualifiersInTwoObjects::report() {
             const QList<Annotation *> annList = myAnnotation->getAnnotations();
             QList<Annotation *> annList2 = myAnnotation2->getAnnotations();
 
-            for (int i = 0; i < annList.size(); ++i) {
+            for (int annotationIndex = 0; annotationIndex < annList.size(); ++annotationIndex) {
                 bool qualsMatched = false;
-                const QVector<U2Qualifier> refQuals = annList[i]->getQualifiers();
+                const QVector<U2Qualifier> refQuals = annList[annotationIndex]->getQualifiers();
                 for (int j = 0; j < annList2.size(); ++j) {
                     if (annList2[j]->getQualifiers() == refQuals) {
                         qualsMatched = true;
@@ -809,7 +809,7 @@ Task::ReportResult GTest_CheckAnnotationsQualifiersInTwoObjects::report() {
                     }
                 }
                 if (!qualsMatched) {
-                    stateInfo.setError(tr("annotations qualifiers  in position %1 not matched").arg(i));
+                    stateInfo.setError(tr("annotations qualifiers  in position %1 not matched").arg(annotationIndex));
                     return ReportResult_Finished;
                 }
             }
@@ -883,16 +883,16 @@ Task::ReportResult GTest_CheckAnnotationsNamesInTwoObjects::report() {
             const QList<Annotation *> annList = myAnnotation->getAnnotations();
             const QList<Annotation *> annList2 = myAnnotation2->getAnnotations();
 
-            for (int i = 0; i != annList.size(); i++) {
+            for (int annotationIndex1 = 0; annotationIndex1 != annList.size(); annotationIndex1++) {
                 bool matched = false;
-                for (int j = 0; j != annList2.size(); ++j) {
-                    if (annList.at(i)->getName() == annList2.at(j)->getName()) {
+                for (int annotationIndex2 = 0; annotationIndex2 != annList2.size(); ++annotationIndex2) {
+                    if (annList.at(annotationIndex1)->getName() == annList2.at(annotationIndex2)->getName()) {
                         matched = true;
                         break;
                     }
                 }
                 if (!matched) {
-                    stateInfo.setError(QString("annotations names  in position %1 not matched").arg(i));
+                    stateInfo.setError(QString("annotations names  in position %1 not matched").arg(annotationIndex1));
                     return ReportResult_Finished;
                 }
             }

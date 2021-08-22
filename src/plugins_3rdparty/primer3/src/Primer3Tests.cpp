@@ -314,8 +314,8 @@ void GTest_Primer3::init(XMLTestFormat *tf, const QDomElement &el) {
             QVector<int> qualityVecor;
             QStringList qualityList = buf.split(' ', QString::SkipEmptyParts);
             n_quality = qualityList.size();
-            for (int i = 0; i < n_quality; i++) {
-                qualityVecor.append(qualityList.at(i).toInt());
+            for (int qualityIndex = 0; qualityIndex < n_quality; qualityIndex++) {
+                qualityVecor.append(qualityList.at(qualityIndex).toInt());
             }
             settings.setSequenceQuality(qualityVecor);
         }
@@ -348,8 +348,8 @@ void GTest_Primer3::init(XMLTestFormat *tf, const QDomElement &el) {
             pairsCount = buf.toInt();
         }
 
-        for (int i = 0; i < pairsCount; i++) {
-            expectedBestPairs.append(readPrimerPair(elOutput, (i > 0) ? ("_" + QString::number(i)) : QString()));
+        for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
+            expectedBestPairs.append(readPrimerPair(elOutput, (pairIndex > 0) ? ("_" + QString::number(pairIndex)) : QString()));
         }
     }
 

@@ -105,12 +105,12 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
 }
 }  // namespace
 
-void WizardPageController::removeLayout(QLayout *l) {
-    CHECK(nullptr != l, );
+void WizardPageController::removeLayout(QLayout *layoutToRemove) {
+    CHECK(layoutToRemove != nullptr, );
     QList<QLayout *> layouts;
     QList<QLayout *> layoutStack;
-    layouts << l;
-    layoutStack << l;
+    layouts << layoutToRemove;
+    layoutStack << layoutToRemove;
 
     while (!layouts.isEmpty()) {
         QLayout *current = layouts.takeFirst();

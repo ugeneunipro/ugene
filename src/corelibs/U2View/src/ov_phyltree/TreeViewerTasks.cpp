@@ -83,8 +83,8 @@ void OpenTreeViewerTask::open() {
                 phyObject = qobject_cast<PhyTreeObject *>(obj);
             }
         } else {
-            QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
-            phyObject = objects.isEmpty() ? nullptr : qobject_cast<PhyTreeObject *>(objects.first());
+            QList<GObject *> phyTreeObjects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
+            phyObject = phyTreeObjects.isEmpty() ? nullptr : qobject_cast<PhyTreeObject *>(phyTreeObjects.first());
         }
         if (phyObject.isNull()) {
             stateInfo.setError(tr("Phylogenetic tree object not found"));

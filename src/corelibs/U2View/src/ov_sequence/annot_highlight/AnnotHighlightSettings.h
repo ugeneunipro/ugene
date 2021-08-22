@@ -22,6 +22,8 @@
 #ifndef _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
 #define _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
 
+#include <QObject>
+
 #include <ui_AnnotHighlightSettings.h>
 
 namespace U2 {

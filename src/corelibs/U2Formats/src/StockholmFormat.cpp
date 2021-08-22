@@ -688,7 +688,6 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
     // write sequences
     int name_max_len = getMaxNameLen(msa);
     int seq_len = msa->getLength();
-    int cur_seq_pos = 0;
     MultipleSequenceAlignmentWalker walker(msa);
     CHECK_OP(os, );
     while (0 < seq_len) {
@@ -697,17 +696,16 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
         CHECK_OP(os, );
 
         // write block
-        U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
         const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray name = row->getName().toLatin1();
-            TextUtils::replace(name.data(), name.length(), TextUtils::WHITES, '_');
-            name += getNameSeqGap(name_max_len - row->getName().size());
-            ret = io->writeBlock(name);
-            checkValThrowException<int>(true, name.size(), ret, StockholmFormat::WriteError(io->getURL()));
+            QByteArray rowName = row->getName().toLatin1();
+            TextUtils::replace(rowName.data(), rowName.length(), TextUtils::WHITES, '_');
+            rowName += getNameSeqGap(name_max_len - row->getName().size());
+            ret = io->writeBlock(rowName);
+            checkValThrowException<int>(true, rowName.size(), ret, StockholmFormat::WriteError(io->getURL()));
             QByteArray seq = *si + NEW_LINE;
             ret = io->writeBlock(seq);
             checkValThrowException<int>(true, seq.size(), ret, StockholmFormat::WriteError(io->getURL()));
@@ -715,7 +713,6 @@ static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString na
         ret = io->writeBlock(QByteArray("\n\n"));
         checkValThrowException<int>(true, 2, ret, StockholmFormat::WriteError(io->getURL()));
         seq_len -= block_len;
-        cur_seq_pos += block_len;
     }
     // write eof
     ret = io->writeBlock(QByteArray("//\n"));

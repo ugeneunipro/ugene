@@ -163,11 +163,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
-    const GTLogTracer lt;
-    const QString dashboardErrMsg = "Unsupported document format: ";
+    GTLogTracer lt;
+    QString dashboardErrMsg = "Unsupported document format: ";
 
-    const auto hasDashboardNotification = [](HI::GUITestOpStatus &os, const QString &errMsg) {
-        QWidget *const notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
+    auto hasDashboardNotification = [&](const QString &errMsg) {
+        QWidget *notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
         return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
     };
 
@@ -176,28 +176,24 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "samples/Assembly/chrM.sorted.bam" and "samples/Assembly/chrM.fa" as an input
     //  3. Click "Run"
-    const auto wrongInputScenario = new ExtractConsensusWizardScenario(QStringList()
-                                                                       << dataDir + "samples/Assembly/chrM.sorted.bam"
-                                                                       << dataDir + "samples/Assembly/chrM.fa");
+    auto wrongInputScenario = new ExtractConsensusWizardScenario({dataDir + "samples/Assembly/chrM.sorted.bam", dataDir + "samples/Assembly/chrM.fa"});
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", wrongInputScenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Extract consensus from assemblies...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  4. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
     //  Expected state: There should be an error about unsupported format in the log
     GTUtilsLog::checkContainsError(os, lt, dashboardErrMsg);
     //  There should be a notification about this error in the dashboard
-    CHECK_SET_ERR(hasDashboardNotification(os, dashboardErrMsg),
+    CHECK_SET_ERR(hasDashboardNotification(dashboardErrMsg),
                   "Expected dashboard notification \"" + dashboardErrMsg + "\"");
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
     //  6. Clear input assemblies
     //  7. Click "Run"
-    const auto emptyInputScenario = new ExtractConsensusWizardScenario();
+    auto emptyInputScenario = new ExtractConsensusWizardScenario();
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", emptyInputScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 

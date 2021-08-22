@@ -462,7 +462,6 @@ void GTest_Muscle_Load_Align_QScore::init(XMLTestFormat *tf, const QDomElement& 
     this->dqscore = 0.01;
     QString str_dqscore = el.attribute(QSCORE_DELTA_ATTR);
     if (!str_dqscore.isEmpty()) {
-        bool ok = false;
         dqscore = str_dqscore.toFloat(&ok);
         if (!ok) {
             failMissingValue(QSCORE_DELTA_ATTR);

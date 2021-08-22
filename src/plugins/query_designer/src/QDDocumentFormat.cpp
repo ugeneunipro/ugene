@@ -86,20 +86,20 @@ Document *QDDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb,
     return new Document(this, io->getFactory(), io->getURL(), targetDb, objects, hints);
 }
 
-void QDDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) {
-    assert(d->getDocumentFormat() == this);
-    assert(d->getObjects().size() == 1);
+void QDDocFormat::storeDocument(Document *document, IOAdapter *io, U2OpStatus &) {
+    assert(document->getDocumentFormat() == this);
+    assert(document->getObjects().size() == 1);
 
-    QDGObject *wo = qobject_cast<QDGObject *>(d->getObjects().first());
+    QDGObject *wo = qobject_cast<QDGObject *>(document->getObjects().first());
     assert(wo && wo->getScene());
 
     QByteArray rawData = QDSceneSerializer::scene2doc(wo->getScene())->toByteArray();
     int nWritten = 0;
     int nTotal = rawData.size();
     while (nWritten < nTotal) {
-        int d = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
-        assert(d > 0);
-        nWritten += d;
+        int bytesWritten = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
+        assert(bytesWritten > 0);
+        nWritten += bytesWritten;
     }
     wo->setSceneRawData(rawData);
 }

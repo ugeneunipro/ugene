@@ -437,10 +437,8 @@ void GenbankPlainTextFormat::storeDocument(Document *doc, IOAdapter *io, U2OpSta
 
         QMap<GObjectType, QList<GObject *>> objectsMap;
         {
-            if (nullptr != so) {
-                QList<GObject *> seqs;
-                seqs << so;
-                objectsMap[GObjectTypes::SEQUENCE] = seqs;
+            if (so != nullptr) {
+                objectsMap[GObjectTypes::SEQUENCE] = {so};
             }
             if (!aos.isEmpty()) {
                 objectsMap[GObjectTypes::ANNOTATION_TABLE] = aos;
@@ -471,7 +469,6 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     QString locusFromAttributes;
     QString gbHeader;
     if (seq) {
-        U2OpStatus2Log os;
         DbiConnection con(seq->getSequenceRef().dbiRef, os);
         CHECK_OP(os, );
         U2AttributeDbi *attributeDbi = con.dbi->getAttributeDbi();

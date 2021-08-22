@@ -113,8 +113,8 @@ void DocumentUpdater::sl_update() {
 static bool hasActiveDialogs(QObject *o) {
     const QObjectList &childObjects = o->children();
 
-    foreach (QObject *o, childObjects) {
-        if (hasActiveDialogs(o)) {
+    for (QObject *childObject : qAsConst(childObjects)) {
+        if (hasActiveDialogs(childObject)) {
             return true;
         }
     }

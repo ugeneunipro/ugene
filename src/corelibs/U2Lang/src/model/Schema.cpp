@@ -288,10 +288,10 @@ void Schema::replaceInLinksAndSlots(Actor *proc, const PortAlias &portAlias) {
             addFlow(link);
 
             // replace slots links and paths
-            Attribute *b = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
-            Attribute *p = port->getParameter(IntegralBusPort::PATHS_ATTR_ID);
-            StrStrMap busMap = b->getAttributeValueWithoutScript<StrStrMap>();
-            SlotPathMap pathMap = p->getAttributeValueWithoutScript<SlotPathMap>();
+            Attribute *busMapAttr = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
+            Attribute *pathsAttr = port->getParameter(IntegralBusPort::PATHS_ATTR_ID);
+            StrStrMap busMap = busMapAttr->getAttributeValueWithoutScript<StrStrMap>();
+            SlotPathMap pathMap = pathsAttr->getAttributeValueWithoutScript<SlotPathMap>();
             StrStrMap subBusMap;
             SlotPathMap subPathMap;
 

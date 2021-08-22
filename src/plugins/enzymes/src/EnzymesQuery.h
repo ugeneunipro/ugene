@@ -22,8 +22,6 @@
 #ifndef _U2_ENZYMES_QUERY_H_
 #define _U2_ENZYMES_QUERY_H_
 
-#include <ui_EnzymesSelectorDialog.h>
-
 #include <U2Algorithm/EnzymeModel.h>
 
 #include <U2Core/Task.h>
@@ -34,6 +32,8 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 
 #include "FindEnzymesDialog.h"
+
+#include <ui_EnzymesSelectorDialog.h>
 
 namespace U2 {
 

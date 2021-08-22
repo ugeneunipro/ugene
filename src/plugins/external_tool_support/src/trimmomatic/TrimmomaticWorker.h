@@ -43,7 +43,7 @@ protected:
     void onPrepared(Task *task, U2OpStatus &os) override;
 
     Task *createTask(const QList<Message> &messages) const override;
-    QVariantMap getResult(Task *task, U2OpStatus &os) const override;
+    QVariantMap getResult(Task *workerTask, U2OpStatus &os) const override;
     MessageMetadata generateMetadata(const QString &datasetName) const override;
 
 private:
