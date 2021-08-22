@@ -141,6 +141,10 @@ QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, co
     return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
 }
 
+QLabel *GTWidget::findLabel(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QLabel *>(os, widgetName, parentWidget, options);
+}
+
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
