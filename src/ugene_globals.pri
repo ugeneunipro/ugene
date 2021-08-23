@@ -63,13 +63,18 @@ macx {
 }
 
 linux-g++ {
+    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
+    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
+
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
     # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
-    # TODO: Fix UGENE code and remove the suppression.
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    # TODO: Fix UGENE code and remove all suppressions.
+    greaterThan(COMPILER_MAJOR_VERSION, 9): {
+        QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    }
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
     # These warnings must be errors (all entries must be added to disable-warnings.h):
@@ -80,8 +85,6 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Werror=unused-parameter
     QMAKE_CXXFLAGS += -Werror=unused-variable
 
-    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
-    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
     greaterThan(COMPILER_MAJOR_VERSION, 6): {
         QMAKE_CXXFLAGS += -Werror=shadow=local
 
