@@ -39,8 +39,6 @@
 #include "FindUnwantedIslandsTask.h"
 #include "UnwantedStructuresInBackboneDialog.h"
 
-#include <U2Core/PrimerStatistics.h>
-
 namespace U2 {
 
 const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
