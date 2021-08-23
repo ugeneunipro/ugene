@@ -56,8 +56,6 @@ clang {
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     QMAKE_CXXFLAGS += -Wno-char-subscripts
-    # Older GCC may not know about all warning options.
-    QMAKE_CXXFLAGS += -Wno-unknown-warning
 }
 
 macx {
