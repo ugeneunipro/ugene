@@ -42,7 +42,7 @@ public:
     virtual U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os) = 0;
 
     /** Returns the number of rows in the MSA */
-    virtual qint64 getNumOfRows(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual int getNumOfRows(const U2DataId &msaId, U2OpStatus &os) = 0;
 
     /** Returns all MSA rows */
     virtual QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os) = 0;
@@ -99,15 +99,15 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) = 0;
+    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, int insertRowIndex, U2OpStatus &os) = 0;
 
     /**
      * Adds a row to the MSA
-     * If 'posInMsa' equals to '-1' the row is appended to the end of the MSA,
+     * If 'rowIndex' equals to '-1' the row is appended to the end of the MSA,
      * otherwise it is inserted to the specified position and all positions are updated.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os) = 0;
+    virtual void addRow(const U2DataId &msaId, int rowIndex, U2MsaRow &row, U2OpStatus &os) = 0;
 
     /**
      * Removes rows from MSA

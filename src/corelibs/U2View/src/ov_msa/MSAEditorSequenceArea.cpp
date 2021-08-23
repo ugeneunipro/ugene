@@ -582,10 +582,10 @@ void MSAEditorSequenceArea::sl_pasteTaskFinished(Task *_pasteTask) {
     const QList<Document *> &docs = pasteTask->getDocuments();
 
     const MaEditorSelection &selection = editor->getSelection();
-    QRect selectionRect = selection.toRect();
-    int insertRowIndex = isPasteBefore ? (selectionRect.isEmpty() ? 0 : selectionRect.y())
-                                       : (selectionRect.isEmpty() ? -1 : selectionRect.y() + selectionRect.height());
-    auto task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs, insertRowIndex, true);
+    int insertViewRowIndex = isPasteBefore ? (selection.isEmpty() ? 0 : selection.getRectList().first().y())
+                                           : (selection.isEmpty() ? -1 : selection.getRectList().last().bottom() + 1);
+    int insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(insertViewRowIndex);
+    auto task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs, insertMaRowIndex, true);
     task->setErrorNotificationSuppression(true);  // we manually show warning message if needed when task is finished.
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task *)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
@@ -628,9 +628,9 @@ void MSAEditorSequenceArea::sl_addSeqFromFile() {
         lod.url = urls.first();
         editor->getSelectionController()->clearSelection();
         const MaEditorSelection &selection = editor->getSelection();
-        QRect selectionRect = selection.toRect();
-        int insertRowIndex = selection.isEmpty() ? -1 : selectionRect.bottom() + 1;
-        auto task = new AddSequencesFromFilesToAlignmentTask(msaObject, urls, insertRowIndex);
+        int insertViewRowIndex = selection.isEmpty() ? -1 : selection.getRectList().last().bottom() + 1;
+        int insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(insertViewRowIndex);
+        auto task = new AddSequencesFromFilesToAlignmentTask(msaObject, urls, insertMaRowIndex);
         TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }

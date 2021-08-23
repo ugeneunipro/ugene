@@ -40,7 +40,7 @@ public:
     U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os) override;
 
     /** Returns the number of rows of the MSA (value cached in Msa table) */
-    qint64 getNumOfRows(const U2DataId &msaId, U2OpStatus &os) override;
+    int getNumOfRows(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns all rows of a MSA with the specified IDs */
     QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os) override;
@@ -82,7 +82,7 @@ public:
      */
     void updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &alphabet, U2OpStatus &os) override;
 
-    void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) override;
+    void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, int insertRowIndex, U2OpStatus &os) override;
 
     /**
      * Creates a new row and gap model records in the database.
@@ -97,7 +97,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    void addRow(const U2DataId &msaId, qint64 insertRowIndex, U2MsaRow &row, U2OpStatus &os) override;
+    void addRow(const U2DataId &msaId, int insertRowIndex, U2MsaRow &row, U2OpStatus &os) override;
 
     /**
      * Removes rows for the specified alignment and with the specified ids
@@ -224,8 +224,8 @@ private:
     // Core methods
     void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
     void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
-    void addRowCore(const U2DataId &msaId, qint64 insertRowIndex, U2MsaRow &row, U2OpStatus &os);
-    void addRowsCore(const U2DataId &msaId, const QList<qint64> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os);
+    void addRowCore(const U2DataId &msaId, int insertRowIndex, U2MsaRow &row, U2OpStatus &os);
+    void addRowsCore(const U2DataId &msaId, const QList<int> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os);
     void removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os);
     void removeRowCore(const U2DataId &msaId, qint64 rowId, bool removeSequence, U2OpStatus &os);
     void removeRowsCore(const U2DataId &msaId, const QList<qint64> &rowIds, bool removeSequence, U2OpStatus &os);
