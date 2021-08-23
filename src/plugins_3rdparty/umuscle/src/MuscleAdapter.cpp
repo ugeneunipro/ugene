@@ -33,7 +33,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MuscleConstants.h"
 #include "MuscleUtils.h"
 
 namespace U2 {
@@ -75,7 +74,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     SeqVect v;
     convertMAlignment2SecVect(v, ma, true);
     const unsigned uSeqCount = v.Length();
-    if (0 == uSeqCount) {
+    if (uSeqCount == 0) {
         ti.setError(tr("No sequences in input file"));
         return;
     }
@@ -104,12 +103,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         v.SetSeqId(uSeqIndex, uSeqIndex);
     }
 
-    if (0 == uSeqCount) {
-        ti.setError(tr("Alignment is empty"));
-        return;
-    }
-
-    if (1 == uSeqCount) {
+    if (uSeqCount == 1) {
         res = ma;
         return;
     }
@@ -139,7 +133,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
 
     ValidateMuscleIds(msa);
 
-    if (1 == ctx->params.g_uMaxIters || 2 == uSeqCount) {
+    if (ctx->params.g_uMaxIters == 1 || uSeqCount == 2) {
         assert(int(msa.GetSeqCount()) == ma->getNumRows());
         prepareAlignResults(msa, ma->getAlphabet(), res, mhack);
         return;
@@ -574,13 +568,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
 }
 
 QString MuscleAdapter::getBadAllocError() {
-    static const QString errorX86 = tr("Not enough memory to do this alignment. You can try the 64-bit version of UGENE. In this case, more available memory will be used for aligning.");
-    static const QString errorX64 = tr("Not enough memory to do this alignment.");
-#ifdef UGENE_X86
-    return errorX86;
-#else
-    return errorX64;
-#endif
+    return L10N::outOfMemory();
 }
 
 }  // namespace U2

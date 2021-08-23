@@ -99,19 +99,10 @@ void ConstructMoleculeDialog::accept() {
     }
 
     QList<DNAFragment> toLigate;
-    qint64 resultSequenceSize = 0;
     foreach (int idx, selected) {
         const DNAFragment &fragment = fragments[idx];
-        foreach (const U2Region &region, fragment.getFragmentRegions()) {
-            resultSequenceSize += region.length;
-        }
         toLigate.append(fragment);
     }
-    if (AppResourcePool::is32BitBuild() && resultSequenceSize > MAX_MOLECULE_SEQUENCE_LENGTH_32_BIT_OS) {
-        QMessageBox::warning(this->window(), L10N::warningTitle(), tr("Selected region is too large to proceed!"));
-        return;
-    }
-
     LigateFragmentsTaskConfig cfg;
     cfg.checkOverhangs = !makeBluntBox->isChecked();
     cfg.makeCircular = makeCircularBox->isChecked();

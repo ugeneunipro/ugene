@@ -18,10 +18,6 @@ CONFIG += c++14
 #  use -Wl,-rpath to locate dependencies for own libraries.
 unix:!macx: CONFIG += unversioned_libname unversioned_soname
 
-# NGS package
-_UGENE_NGS = $$(UGENE_NGS)
-contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
-
 #win32 : CONFIG -= flat  #group the files within the source/header group depending on the directory they reside in file system
 win32 : QMAKE_CXXFLAGS += /MP # use parallel build with nmake
 win32 : DEFINES+= _WINDOWS
@@ -120,22 +116,7 @@ isEmpty( UGENE_INSTALL_DIR )     : UGENE_INSTALL_DIR     = $$INSTALL_LIBDIR/ugen
 isEmpty( UGENE_INSTALL_BINDIR )  : UGENE_INSTALL_BINDIR  = $$INSTALL_BINDIR
 isEmpty( UGENE_INSTALL_MAN )     : UGENE_INSTALL_MAN     = $$INSTALL_MANDIR/man1
 
-CONFIG(x86) {
-    DEFINES += UGENE_X86
-} else {
-    DEFINES += UGENE_X86_64
-    win32 : QMAKE_LFLAGS *= /MACHINE:X64
-}
-
-macx : DEFINES += RUN_WORKFLOW_IN_THREADS
-
-# Checking if processor is SSE2 capable.
-# On Windows UGENE relies on run-time check.
-#
-# Needed for:
-#  1) adding -msse2 compilation flag if needed (currently uhmmer and smith_waterman2)
-#  2) performing run-time check using cpuid instruction on intel proccessors.
-
+win32 : QMAKE_LFLAGS *= /MACHINE:X64
 
 # CUDA environment
 UGENE_NVCC         = nvcc

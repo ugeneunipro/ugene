@@ -5,9 +5,9 @@ isEmpty(QT_VERSION) {
     error("QT_VERSION not defined. QScore does not work with Qt 3.")
 }
 
-!minQtVersion(5, 0, 0) {
+!minQtVersion(5, 12, 0) {
     message("Cannot build QScore with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.0.0.")
+    error("Use at least Qt 5.12.0.")
 }
 
 # Input

@@ -663,16 +663,6 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
     sequenceX = d->getXSeq();
     sequenceY = d->getYSeq();
 
-    if (AppResourcePool::is32BitBuild()) {
-        quint64 sumSeqLen = sequenceX->getSequenceLength() + sequenceY->getSequenceLength();
-        bool wkMode = identity < 100;
-        if ((wkMode && sumSeqLen > MAX_DOT_PLOT_WK_SUM_SEQUENCE_LENGTH_32_BIT_OS) ||
-            (!wkMode && sumSeqLen > MAX_DOT_PLOT_W_SUM_SEQUENCE_LENGTH_32_BIT_OS)) {
-            QMessageBox::warning(this, L10N::warningTitle(), tr("Sequence size is too large!"));
-            return false;
-        }
-    }
-
     if (res) {
         resetZooming();
     }

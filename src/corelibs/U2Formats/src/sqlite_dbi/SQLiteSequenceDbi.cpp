@@ -112,12 +112,7 @@ QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId &sequenceId, const 
         }
         return res;
     } catch (const std::bad_alloc &) {
-#ifdef UGENE_X86
-        os.setError("UGENE ran out of memory during the sequence processing. "
-                    "The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.");
-#else
         os.setError("Out of memory during the sequence processing.");
-#endif
         return QByteArray();
     } catch (...) {
         os.setError("Internal error occurred during the sequence processing.");

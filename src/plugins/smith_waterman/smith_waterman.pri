@@ -33,11 +33,7 @@ use_cuda() {
         COMPILER_OPT_EXT = "--compiler-options -fPIC"
     }
 
-    contains(DEFINES, UGENE_X86_64) {
-        SW2_NVCC_ARCH_FLAG = -m 64
-    } else {
-        SW2_NVCC_ARCH_FLAG = -m 32
-    }
+    SW2_NVCC_ARCH_FLAG = -m 64
 
     SW2_NVCC_FLAGS = $${SW2_NVCC_ARCH_FLAG} -g -G "$${XCOMPILER_OPT}" "$${XLINKER_OPT}"
 

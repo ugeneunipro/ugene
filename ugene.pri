@@ -4,9 +4,9 @@ isEmpty(QT_VERSION) {
     error("QT_VERSION is not defined.")
 }
 
-!minQtVersion(5, 3, 2) {
+!minQtVersion(5, 12, 0) {
     message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.3.2.")
+    error("Use at least Qt 5.12.0.")
 }
 
 TEMPLATE = subdirs

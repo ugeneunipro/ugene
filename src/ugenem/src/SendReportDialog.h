@@ -39,7 +39,7 @@ public:
     }
     int getTotalPhysicalMemory();
     QString getCPUInfo();
-    QString getUgeneBitCount() const;
+    QString getArchSuffix() const;
     void setFailedTest(const QString &failedTestStr);
 
 private slots:

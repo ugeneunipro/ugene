@@ -52,8 +52,6 @@ namespace U2 {
 
 const QString ADVClipboard::COPY_FAILED_MESSAGE = QApplication::translate("ADVClipboard", "Cannot put sequence data into the clipboard buffer.\n"
                                                                                           "Probably, the data are too big.");
-const qint64 ADVClipboard::MAX_COPY_SIZE_FOR_X86 = 100 * 1024 * 1024;
-
 ADVClipboard::ADVClipboard(AnnotatedDNAView *c)
     : QObject(c), ctx(c) {
     // TODO: listen seqadded/seqremoved!!
@@ -149,7 +147,7 @@ void ADVClipboard::sl_onAnnotationSelectionChanged(AnnotationSelection *, const 
     updateActions();
 }
 
-void ADVClipboard::copySequenceSelection(const bool complement, const bool amino) {
+void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
     ADVSequenceObjectContext *seqCtx = getSequenceContext();
     if (seqCtx == nullptr) {
         QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), "No sequence selected!");
@@ -158,17 +156,6 @@ void ADVClipboard::copySequenceSelection(const bool complement, const bool amino
 
     QString res;
     QVector<U2Region> regions = seqCtx->getSequenceSelection()->getSelectedRegions();
-#ifdef UGENE_X86
-    int totalLen = 0;
-    foreach (const U2Region &r, regions) {
-        totalLen += r.length;
-    }
-    if (totalLen > MAX_COPY_SIZE_FOR_X86) {
-        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), COPY_FAILED_MESSAGE);
-        return;
-    }
-#endif
-
     if (!regions.isEmpty()) {
         U2SequenceObject *seqObj = seqCtx->getSequenceObject();
         DNATranslation *complTT = complement ? seqCtx->getComplementTT() : nullptr;
@@ -186,17 +173,6 @@ void ADVClipboard::copySequenceSelection(const bool complement, const bool amino
 
 void ADVClipboard::copyAnnotationSelection(const bool amino) {
     const QList<Annotation *> &selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
-#ifdef UGENE_X86
-    qint64 totalLen = 0;
-    foreach (const Annotation *a, selectedAnnotationList) {
-        totalLen += a->getRegionsLen();
-    }
-    if (totalLen > MAX_COPY_SIZE_FOR_X86) {
-        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), COPY_FAILED_MESSAGE);
-        return;
-    }
-#endif
-
     QByteArray res;
     for (auto annotation : qAsConst(selectedAnnotationList)) {
         if (!res.isEmpty()) {
@@ -219,12 +195,6 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
 
 void ADVClipboard::putIntoClipboard(const QString &data) {
     CHECK(!data.isEmpty(), );
-#ifdef UGENE_X86
-    if (data.size() > MAX_COPY_SIZE_FOR_X86) {
-        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), COPY_FAILED_MESSAGE);
-        return;
-    }
-#endif
     try {
         QApplication::clipboard()->setText(data);
     } catch (...) {

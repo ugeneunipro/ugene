@@ -32,9 +32,7 @@ extern "C" {
 // http://sourceforge.net/p/predef/wiki/Compilers/
 
 #ifdef _MSC_VER
-#    if UGENE_X86_64
 #        define LAME_MSC
-#    endif
 #endif
 
 #if defined(LAME_MSC) || defined(Q_OS_DARWIN)

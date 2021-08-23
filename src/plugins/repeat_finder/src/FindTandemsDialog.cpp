@@ -200,14 +200,6 @@ void FindTandemsDialog::accept() {
         return;
     }
 
-    if (AppResourcePool::is32BitBuild()) {
-        qint64 sequenceLen = sc->getSequenceObject()->getSequenceLength();
-        if (sequenceLen > MAX_TANDEM_REPEAT_SEQUENCE_LENGTH_32_BIT_OS) {
-            QMessageBox::warning(this, L10N::warningTitle(), tr("Sequence size is too large!"));
-            return;
-        }
-    }
-
     U2OpStatusImpl os;
     DNASequence seq = sc->getSequenceObject()->getSequence(range, os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
