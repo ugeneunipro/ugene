@@ -4835,9 +4835,9 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with ClustalW"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: task started.
+    GTGlobals::sleep(1000);
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
 
     // 3. Close the alignment view.
