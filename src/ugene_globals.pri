@@ -63,16 +63,14 @@ macx {
 }
 
 linux-g++ {
-    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
-    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
-
+    GCC_VERSION = $$system($$QMAKE_CXX " -dumpfullversion -dumpversion")
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
     # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
     # TODO: Fix UGENE code and remove all suppressions.
-    greaterThan(COMPILER_MAJOR_VERSION, 9): {
+    versionAtLeast(GCC_VERSION, 9.1): {
         QMAKE_CXXFLAGS += -Wno-deprecated-copy
     }
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
@@ -85,12 +83,12 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Werror=unused-parameter
     QMAKE_CXXFLAGS += -Werror=unused-variable
 
-    greaterThan(COMPILER_MAJOR_VERSION, 6): {
+    versionAtLeast(GCC_VERSION, 7.1): {
         QMAKE_CXXFLAGS += -Werror=shadow=local
 
         # We use strict Werror= flags. The -system level for includes supresses warnings that come from QT.
         # Today we have only warning when multiple 'foreach' loops used in the same method.
-        # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loop.
+        # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loops.
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
         QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
