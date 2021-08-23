@@ -31,19 +31,33 @@
  */
 
 #ifdef __GNUC__
+#    include <features.h>
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpragmas"
+// All warnings in the list below should be sorted by name.
+// Warnings that require gcc compiler > 5.4 should be enabled with a gcc version check.
 #    pragma GCC diagnostic ignored "-Wbool-compare"
+#    if __GNUC_PREREQ(8, 1)
+#        pragma GCC diagnostic ignored "-Wclass-memaccess"
+#    endif
 #    pragma GCC diagnostic ignored "-Wdeprecated"
-#    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#    if __GNUC_PREREQ(7, 1)
+#        pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#    endif
 #    pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
 #    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#    pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#    if __GNUC_PREREQ(6, 1)
+#        pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#    endif
 #    pragma GCC diagnostic ignored "-Wparentheses"
-#    pragma GCC diagnostic ignored "-Wpointer-compare"
+#    if __GNUC_PREREQ(7, 1)
+#        pragma GCC diagnostic ignored "-Wpointer-compare"
+#    endif
 #    pragma GCC diagnostic ignored "-Wreturn-type"
-#    pragma GCC diagnostic ignored "-Wshadow=compatible-local"
-#    pragma GCC diagnostic ignored "-Wshadow=local"
+#    if __GNUC_PREREQ(7, 1)
+#        pragma GCC diagnostic ignored "-Wshadow=compatible-local"
+#        pragma GCC diagnostic ignored "-Wshadow=local"
+#    endif
 #    pragma GCC diagnostic ignored "-Wsign-compare"
 #    pragma GCC diagnostic ignored "-Wsizeof-pointer-memaccess"
 #    pragma GCC diagnostic ignored "-Wswitch"
@@ -54,7 +68,6 @@
 #    pragma GCC diagnostic ignored "-Wunused-variable"
 #
 #    ifndef __cplusplus  // The macros below are not valid in C++ context but are needed for plain C files.
-#        pragma GCC diagnostic ignored "-Wclass-memaccess"
 #        pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
 #        pragma GCC diagnostic ignored "-Wimplicit-int"
 #    endif
