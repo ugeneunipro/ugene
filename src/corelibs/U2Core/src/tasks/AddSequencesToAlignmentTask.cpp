@@ -38,11 +38,11 @@ const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
 AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
                                                                      const QList<DNASequence> &sequenceList,
-                                                                     int insertRowIndex,
+                                                                     int insertMaRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
     : Task(tr("Add sequences to alignment task"), TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
       sequenceList(sequenceList),
-      insertRowIndex(insertRowIndex),
+      insertMaRowIndex(insertMaRowIndex),
       maObj(obj),
       msaAlphabet(maObj->getAlphabet()),
       recheckNewSequenceAlphabetOnMismatch(recheckNewSequenceAlphabetOnMismatch) {
@@ -144,7 +144,7 @@ qint64 AddSequenceObjectsToAlignmentTask::createMsaRowsFromResultSequenceList(co
 void AddSequenceObjectsToAlignmentTask::addRowsToAlignment(U2MsaDbi *msaDbi, QList<U2MsaRow> &rows, qint64 maxLength) {
     CHECK(!rows.isEmpty(), );
     const U2EntityRef &entityRef = maObj->getEntityRef();
-    msaDbi->addRows(entityRef.entityId, rows, insertRowIndex, stateInfo);
+    msaDbi->addRows(entityRef.entityId, rows, insertMaRowIndex, stateInfo);
     CHECK_OP(stateInfo, );
 
     mi.rowListChanged = true;
@@ -224,9 +224,9 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
 // AddSequencesFromDocumentsToAlignmentTask
 AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
                                                                                    const QList<Document *> &docs,
-                                                                                   int insertRowIndex,
+                                                                                   int insertMaRowIndex,
                                                                                    bool recheckNewSequenceAlphabets)
-    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, recheckNewSequenceAlphabets), docs(docs) {
+    : AddSequenceObjectsToAlignmentTask(obj, {}, insertMaRowIndex, recheckNewSequenceAlphabets), docs(docs) {
 }
 
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {

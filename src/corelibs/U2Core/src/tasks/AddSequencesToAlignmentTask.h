@@ -69,7 +69,7 @@ protected:
     QList<DNASequence> sequenceList;
 
     /** Insert location for the sequence list. */
-    int insertRowIndex;
+    int insertMaRowIndex;
 
     QPointer<MultipleSequenceAlignmentObject> maObj;
 
@@ -108,7 +108,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex);
+    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertMaRowIndex);
 
     void prepare() override;
     QList<Task *> onSubTaskFinished(Task *subTask) override;
@@ -124,7 +124,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, int insertRowIndex, bool recheckNewSequenceAlphabets);
+    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, int insertMaRowIndex, bool recheckNewSequenceAlphabets);
 
     void prepare() override;
 

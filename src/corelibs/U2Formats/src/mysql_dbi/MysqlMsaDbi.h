@@ -43,7 +43,7 @@ public:
     U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os) override;
 
     /** Returns the number of rows of the MSA (value cached in Msa table) */
-    qint64 getNumOfRows(const U2DataId &msaId, U2OpStatus &os) override;
+    int getNumOfRows(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns all rows of a MSA with the specified IDs */
     QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os) override;
@@ -85,14 +85,14 @@ public:
      */
     void updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &alphabet, U2OpStatus &os) override;
 
-    void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) override;
+    void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, int insertRowIndex, U2OpStatus &os) override;
 
     /**
      * Creates a new row and gap model records in the database.
      * Enlarges msa length, if 'row.length' is greater than current msa length.
      * Ignores 'row.rowId'.
      * Recalculates 'row.length' and and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
-     * If 'posInMsa' equals to '-1' the row is appended to the end of the MSA,
+     * If 'rowIndex' equals to '-1' the row is appended to the end of the MSA,
      * otherwise it is inserted to the specified position and all positions are updated.
      * Assigns MSA as a parent for the sequence.
      * Updates the number of rows of the MSA.
@@ -100,7 +100,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    void addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os) override;
+    void addRow(const U2DataId &msaId, int rowIndex, U2MsaRow &row, U2OpStatus &os) override;
 
     /**
      * Removes rows for the specified alignment and with the specified ids
@@ -153,7 +153,7 @@ public:
     void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os) override;
 
     /** Updates a part of the Msa object info - the length */
-    void updateMsaLength(const U2DataId &msaId, qint64 length, U2OpStatus &os);
+    void updateMsaLength(const U2DataId &msaId, qint64 length, U2OpStatus &os) override;
 
     /**
      * Updates positions of the rows in the database according to the order in the list
@@ -223,7 +223,7 @@ private:
     void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
     void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
     void addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os);
-    void addRowsCore(const U2DataId &msaId, const QList<qint64> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os);
+    void addRowsCore(const U2DataId &msaId, const QList<int> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os);
     void removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os);
     void removeRowCore(const U2DataId &msaId, qint64 rowId, bool removeSequence, U2OpStatus &os);
     void removeRowsCore(const U2DataId &msaId, const QList<qint64> &rowIds, bool removeSequence, U2OpStatus &os);
