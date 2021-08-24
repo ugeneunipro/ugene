@@ -45,8 +45,7 @@ QList<XMLTestFactory *> PhyMLToolTests::createTestFactories() {
     return res;
 }
 
-void GTest_PhyML::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_PhyML::init(XMLTestFormat *, const QDomElement &el) {
     treeObjFromDoc = nullptr;
     task = nullptr;
     input = nullptr;

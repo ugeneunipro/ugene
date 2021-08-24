@@ -236,7 +236,6 @@ void SQLiteAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus 
 
 void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
     CHECK_OP(os, );
 
     removeTables(assemblyId, os);
@@ -246,7 +245,6 @@ void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatu
 
 void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
 
     SQLiteWriteQuery q("UPDATE Assembly SET reference = ?1 WHERE object = ?2", db, os);
     q.bindDataId(1, assembly.referenceId);

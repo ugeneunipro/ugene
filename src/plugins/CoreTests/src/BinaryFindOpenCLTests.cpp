@@ -40,9 +40,7 @@ QList<XMLTestFactory *> BinaryFindOpenCLTests::createTestFactories() {
     return res;
 }
 
-void GTest_BinaryFindOpenCL::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_BinaryFindOpenCL::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
 
     buf = el.attribute(NUMBERS);

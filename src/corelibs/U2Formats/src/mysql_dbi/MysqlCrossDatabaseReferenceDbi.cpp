@@ -35,7 +35,6 @@ MysqlCrossDatabaseReferenceDbi::MysqlCrossDatabaseReferenceDbi(MysqlDbi *dbi)
 
 void MysqlCrossDatabaseReferenceDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // cross database reference object
     // factory - remote dbi factory
@@ -52,7 +51,6 @@ void MysqlCrossDatabaseReferenceDbi::initSqlSchema(U2OpStatus &os) {
 
 void MysqlCrossDatabaseReferenceDbi::createCrossReference(U2CrossDatabaseReference &reference, const QString &folder, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     dbi->getMysqlObjectDbi()->createObject(reference, folder, U2DbiObjectRank_TopLevel, os);
     CHECK_OP(os, );
@@ -69,7 +67,6 @@ void MysqlCrossDatabaseReferenceDbi::createCrossReference(U2CrossDatabaseReferen
 
 void MysqlCrossDatabaseReferenceDbi::removeCrossReferenceData(const U2DataId &referenceId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "DELETE FROM CrossDatabaseReference WHERE object = :object";
     U2SqlQuery q(queryString, db, os);
@@ -98,7 +95,6 @@ U2CrossDatabaseReference MysqlCrossDatabaseReferenceDbi::getCrossReference(const
 
 void MysqlCrossDatabaseReferenceDbi::updateCrossReference(const U2CrossDatabaseReference &reference, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE CrossDatabaseReference SET factory = :factory, dbi = :dbi, rid = :rid, version = :version WHERE object = :object";
     U2SqlQuery q(queryString, db, os);

@@ -50,9 +50,7 @@ namespace U2 {
 #define UNKNOWN_AMINO_2_GAP "unknown-amino-to-gap"
 #define TRANSLATION_FRAME "translation-frame"
 
-void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf = el.attribute(SEQLIST_ATTR);
     if (buf.isEmpty()) {
         failMissingValue(SEQLIST_ATTR);
@@ -100,9 +98,7 @@ void GTest_ImportPhredQualityScoresTask::prepare() {
     addSubTask(importTask);
 }
 
-void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
 
     buf = el.attribute(NUCL_ALIGN_URL_ATTR);

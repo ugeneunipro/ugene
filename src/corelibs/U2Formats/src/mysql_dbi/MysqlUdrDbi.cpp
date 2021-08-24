@@ -53,7 +53,6 @@ void MysqlUdrDbi::undo(const U2SingleModStep &modStep, U2OpStatus &os) {
     SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     QByteArray oldData;
     QByteArray newData;
@@ -67,7 +66,6 @@ void MysqlUdrDbi::redo(const U2SingleModStep &modStep, U2OpStatus &os) {
     SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     QByteArray oldData;
     QByteArray newData;
@@ -84,7 +82,6 @@ UdrRecordId MysqlUdrDbi::addRecord(const UdrSchemaId &schemaId, const QList<UdrV
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), result);
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery q(insertDef(schema, os), db, os);
     CHECK_OP(os, result);
@@ -102,7 +99,6 @@ void MysqlUdrDbi::updateRecord(const UdrRecordId &recordId, const QList<UdrValue
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery q(updateDef(schema, os), db, os);
     CHECK_OP(os, );
@@ -195,7 +191,6 @@ QList<UdrRecord> MysqlUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatus
 
 void MysqlUdrDbi::removeRecord(const UdrRecordId &recordId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery q("DELETE FROM " + tableName(recordId.getSchemaId()) + " WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = :id", db, os);
     q.bindDataId(":id", recordId.getRecordId());
@@ -237,7 +232,6 @@ void MysqlUdrDbi::initSqlSchema(U2OpStatus &os) {
     SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     foreach (const UdrSchemaId &id, udrRegistry->getRegisteredSchemas()) {
         const UdrSchema *schema = udrSchema(id, os);
@@ -249,7 +243,6 @@ void MysqlUdrDbi::initSqlSchema(U2OpStatus &os) {
 
 void MysqlUdrDbi::initSchema(const UdrSchema *schema, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
     createTable(schema, os);
@@ -277,7 +270,6 @@ void MysqlUdrDbi::createTable(const UdrSchema *schema, U2OpStatus &os) {
     query += ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery(query, db, os).execute();
 }
@@ -286,7 +278,6 @@ void MysqlUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &fi
     QString query = "CREATE INDEX " + tableName(schemaId) + "_" + fields.join("_") + " " + "on " + tableName(schemaId) + "(" + fields.join(", ") + ")";
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery(query, db, os).execute();
 }

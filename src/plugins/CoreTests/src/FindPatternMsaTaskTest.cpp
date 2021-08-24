@@ -37,9 +37,7 @@ namespace U2 {
 #define EXPECTED_RESULTS_SIZE "resultsSize"
 #define EXPECTED_REGIONS_IN_RESULTS "expectedRegionsInResults"
 
-void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindPatternMsa::init(XMLTestFormat *, const QDomElement &el) {
     settings.findSettings.maxRegExpResultLength = 10000;
     settings.findSettings.maxResult2Find = 100000;
 

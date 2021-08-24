@@ -38,9 +38,7 @@ namespace U2 {
 #define END_ATTR "seqend"
 #define OBJ_ATTR "obj"
 //---------------------------------------------------------------------
-void GTest_DNATranslation3to1Test::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNATranslation3to1Test::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);

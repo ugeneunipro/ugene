@@ -80,9 +80,7 @@ class GObject;
 
 /* TRANSLATOR U2::GTest */
 
-void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_uHMMERSearch::init(XMLTestFormat *, const QDomElement &el) {
     evalueCutoff = 10;
     number_of_seq = 1;
     domEvalueCutoff = 0.9999999;
@@ -300,9 +298,7 @@ void GTest_uHMMERSearch::cleanup() {
 //**********uHMMER Build*******************************************************
 //*****************************************************************************
 
-void GTest_uHMMERBuild::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_uHMMERBuild::init(XMLTestFormat *, const QDomElement &el) {
     QString inFile = el.attribute(IN_FILE_NAME_ATTR);
     if (inFile.isEmpty()) {
         failMissingValue(IN_FILE_NAME_ATTR);
@@ -378,9 +374,7 @@ void GTest_uHMMERBuild::cleanup() {
     XmlTest::cleanup();
 }
 
-void GTest_hmmCompare::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_hmmCompare::init(XMLTestFormat *, const QDomElement &el) {
     file1Name = el.attribute(IN_FILE1_NAME_ATTR);
     if (file1Name.isEmpty()) {
         failMissingValue(IN_FILE1_NAME_ATTR);
@@ -478,9 +472,7 @@ Task::ReportResult GTest_hmmCompare::report() {
 //**********uHMMER Calibrate***************************************************
 //*****************************************************************************
 
-void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_uHMMERCalibrate::init(XMLTestFormat *, const QDomElement &el) {
     calibrateTask = NULL;
 
     QString hmmFile = el.attribute(HMM_FILE_ATTR);

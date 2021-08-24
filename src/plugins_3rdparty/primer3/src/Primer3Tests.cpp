@@ -125,9 +125,7 @@ PrimerPair readPrimerPair(QDomElement element, QString suffix) {
 }
 }  // namespace
 
-void GTest_Primer3::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_Primer3::init(XMLTestFormat *, const QDomElement &el) {
     settings.setIncludedRegion(U2Region(0, -1));
 
     QString buf;

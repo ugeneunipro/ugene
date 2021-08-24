@@ -797,7 +797,6 @@ QHash<QByteArray, int> PDBFormat::createAtomNumMap() {
 Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioStruct3D &bioStruct, DocumentFormat *format, IOAdapterFactory *iof, const GUrl &url, U2OpStatus &os, const QVariantMap &fs) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     QList<GObject *> objects;
     QSet<QString> uniqueNames;

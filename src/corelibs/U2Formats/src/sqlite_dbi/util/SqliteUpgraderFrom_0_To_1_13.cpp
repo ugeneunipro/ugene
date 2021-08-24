@@ -38,7 +38,6 @@ SqliteUpgraderFrom_0_To_1_13::SqliteUpgraderFrom_0_To_1_13(SQLiteDbi *dbi)
 
 void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus &os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     upgradeObjectDbi(os);
     CHECK_OP(os, );

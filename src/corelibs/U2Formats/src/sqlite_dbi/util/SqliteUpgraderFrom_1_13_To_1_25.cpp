@@ -41,7 +41,6 @@ SqliteUpgraderFrom_1_13_To_1_25::SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi *dbi)
 
 void SqliteUpgraderFrom_1_13_To_1_25::upgrade(U2OpStatus &os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );

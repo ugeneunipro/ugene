@@ -77,9 +77,7 @@ U2Region GTest_FindSingleSequenceRepeatsTask::parseRegion(const QString &n, cons
     return res;
 }
 
-void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindSingleSequenceRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
     seq = el.attribute(SEQ_ATTR);
     if (seq.isEmpty()) {
         stateInfo.setError(QString("Value not found '%1'").arg(SEQ_ATTR));
@@ -302,9 +300,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
 
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
-void GTest_FindTandemRepeatsTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindTandemRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
     minD = el.attribute(MIND_ATTR, "-1").toInt();
     maxD = el.attribute(MAXD_ATTR, "-1").toInt();
 
@@ -439,9 +435,7 @@ U2Region GTest_FindRealTandemRepeatsTask::parseRegion(const QString &n, const QD
     return res;
 }
 
-void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindRealTandemRepeatsTask::init(XMLTestFormat *, const QDomElement &el) {
     minD = el.attribute(MIND_ATTR, "-1").toInt();
     maxD = el.attribute(MAXD_ATTR, "-1").toInt();
 
@@ -566,9 +560,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 
-void GTest_SArrayBasedFindTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_SArrayBasedFindTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf = el.attribute(RESULT_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(QString("Value not found: '%1'").arg(RESULT_ATTR));

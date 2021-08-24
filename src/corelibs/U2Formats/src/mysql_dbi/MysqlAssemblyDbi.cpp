@@ -48,7 +48,6 @@ MysqlAssemblyDbi::~MysqlAssemblyDbi() {
 
 void MysqlAssemblyDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // assembly object
     // reference            - reference sequence id
@@ -205,7 +204,6 @@ void MysqlAssemblyDbi::createAssemblyObject(U2Assembly &assembly,
                                             U2AssemblyReadsImportInfo &importInfo,
                                             U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2Object fakeObject;
     fakeObject.visualName = assembly.visualName;
@@ -265,7 +263,6 @@ void MysqlAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus &
 
 void MysqlAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
     CHECK_OP(os, );
 
     removeTables(assemblyId, os);
@@ -275,7 +272,6 @@ void MysqlAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus
 
 void MysqlAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery q("UPDATE Assembly SET reference = :reference WHERE object = :object", db, os);
     q.bindDataId(":reference", assembly.referenceId);
@@ -314,7 +310,6 @@ void MysqlAssemblyDbi::addReads(MysqlAssemblyAdapter *a, U2DbiIterator<U2Assembl
 
 void MysqlAssemblyDbi::removeTables(const U2DataId &assemblyId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
     CHECK_OP(os, );
 
     AssemblyAdapter *adapter = getAdapter(assemblyId, os);
@@ -324,7 +319,6 @@ void MysqlAssemblyDbi::removeTables(const U2DataId &assemblyId, U2OpStatus &os) 
 
 void MysqlAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
     CHECK_OP(os, );
 
     static const QString queryString("DELETE FROM Assembly WHERE object = :object");

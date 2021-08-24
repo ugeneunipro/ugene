@@ -67,8 +67,7 @@ private:
     QMap<QString, QStringList> tests;
 };
 
-void UnitTestSuite::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void UnitTestSuite::init(XMLTestFormat *, const QDomElement &el) {
     GTestBuilder builder;
 
     passed = 0;

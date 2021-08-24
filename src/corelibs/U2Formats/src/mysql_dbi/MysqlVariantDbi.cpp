@@ -89,7 +89,6 @@ MysqlVariantDbi::MysqlVariantDbi(MysqlDbi *dbi)
 
 void MysqlVariantDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // Variant track object
     U2SqlQuery(" CREATE TABLE VariantTrack (object BIGINT PRIMARY KEY, sequence BIGINT, sequenceName TEXT NOT NULL,"
@@ -147,7 +146,6 @@ U2VariantTrack MysqlVariantDbi::getVariantTrack(const U2DataId &variantTrackId, 
     U2VariantTrack res;
     DBI_TYPE_CHECK(variantTrackId, U2Type::VariantTrack, os, res);
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     dbi->getMysqlObjectDbi()->getObject(res, variantTrackId, os);
     CHECK_OP(os, res);
@@ -175,7 +173,6 @@ U2VariantTrack MysqlVariantDbi::getVariantTrackofVariant(const U2DataId &variant
     U2VariantTrack res;
     DBI_TYPE_CHECK(variantId, U2Type::VariantType, os, res);
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "SELECT track FROM Variant WHERE id = :id";
     U2SqlQuery q(queryString, db, os);
@@ -192,7 +189,6 @@ U2VariantTrack MysqlVariantDbi::getVariantTrackofVariant(const U2DataId &variant
 void MysqlVariantDbi::addVariantsToTrack(const U2VariantTrack &track, U2DbiIterator<U2Variant> *it, U2OpStatus &os) {
     CHECK_EXT(!track.sequenceName.isEmpty(), os.setError(U2DbiL10n::tr("Sequence name is not set")), );
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "INSERT INTO Variant(track, startPos, endPos, refData, obsData, publicId, additionalInfo) "
                                        "VALUES(:track, :startPos, :endPos, :refData, :obsData, :publicId, :additionalInfo)";
@@ -215,7 +211,6 @@ void MysqlVariantDbi::addVariantsToTrack(const U2VariantTrack &track, U2DbiItera
 
 void MysqlVariantDbi::createVariationsIndex(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery("CREATE INDEX IF NOT EXISTS VariantIndex ON Variant(track)", db, os).execute();
     CHECK_OP(os, );
@@ -225,7 +220,6 @@ void MysqlVariantDbi::createVariationsIndex(U2OpStatus &os) {
 void MysqlVariantDbi::createVariantTrack(U2VariantTrack &track, VariantTrackType trackType, const QString &folder, U2OpStatus &os) {
     CHECK_EXT(!track.sequenceName.isEmpty(), os.setError(U2DbiL10n::tr("Sequence name is not set")), );
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     dbi->getMysqlObjectDbi()->createObject(track, folder, U2DbiObjectRank_TopLevel, os);
     CHECK_OP(os, );
@@ -245,7 +239,6 @@ void MysqlVariantDbi::createVariantTrack(U2VariantTrack &track, VariantTrackType
 
 void MysqlVariantDbi::updateVariantTrack(U2VariantTrack &track, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE VariantTrack SET sequence = :sequence, sequenceName = :sequenceName, trackType = :trackType, fileHeader = :fileHeader WHERE object = :object";
     U2SqlQuery q(queryString, db, os);
@@ -308,7 +301,6 @@ int MysqlVariantDbi::getVariantCount(const U2DataId &trackId, U2OpStatus &os) {
 
 void MysqlVariantDbi::removeTrack(const U2DataId &trackId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString variantString = "DELETE FROM Variant WHERE track = :track";
     U2SqlQuery variantQuery(variantString, db, os);
@@ -328,7 +320,6 @@ void MysqlVariantDbi::updateVariantPublicId(const U2DataId &track, const U2DataI
     CHECK_EXT(!newId.isEmpty(), os.setError(U2DbiL10n::tr("New variant public ID is empty")), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static QString qvString("UPDATE Variant SET publicId = :publicId WHERE track = :track AND id = :id");
     U2SqlQuery qv(qvString, db, os);
@@ -344,7 +335,6 @@ void MysqlVariantDbi::updateTrackIDofVariant(const U2DataId &variant, const U2Da
     CHECK_EXT(!newTrackId.isEmpty(), os.setError(U2DbiL10n::tr("New variant track ID is empty")), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static QString qvString("UPDATE Variant SET track = :track WHERE id = :id");
     U2SqlQuery qv(qvString, db, os);

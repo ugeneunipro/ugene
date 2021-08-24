@@ -149,7 +149,6 @@ static QString readHeader(IOAdapterReader &reader, U2OpStatus &os) {
 static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, QList<GObject *> &objects, int gapSize, QString &writeLockReason, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
 
     MemoryLocker memoryLocker(os, 1);
     CHECK_OP(os, );

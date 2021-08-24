@@ -61,8 +61,7 @@ U2Region stringToRegion(const QString &regionStr) {
     return U2Region(region[0], region[1] - region[0]);
 }
 
-void GTest_FindAlgorithmTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_FindAlgorithmTest::init(XMLTestFormat *, const QDomElement &el) {
     QString buf = el.attribute(STRAND_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(GTest::tr("value not set %1").arg(STRAND_ATTR));

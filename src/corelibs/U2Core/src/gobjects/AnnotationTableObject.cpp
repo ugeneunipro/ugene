@@ -123,7 +123,6 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     gHints.setAll(hints);
 
     DbiOperationsBlock opBlock(ref, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     AnnotationTableObject *cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());

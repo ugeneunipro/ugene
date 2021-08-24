@@ -432,7 +432,6 @@ static void replace_nl(char *string) {
 Document *ABIFormat::parseABI(const U2DbiRef &dbiRef, SeekableBuf *fp, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
     DNASequence dna;
     DNAChromatogram cd;
 

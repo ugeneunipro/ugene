@@ -44,7 +44,6 @@ public:
     virtual Task *getTaskInstance(const SmithWatermanSettings &config, const QString &taskName) const;
 
 private:
-    bool isValidParameters(const SmithWatermanSettings &sWatermanConfig, SequenceWalkerSubtask *t) const;  // not realized
     SW_AlgType algType;
 };
 

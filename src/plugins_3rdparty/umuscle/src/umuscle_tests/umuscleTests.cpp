@@ -81,9 +81,7 @@ struct GTestBoolProperty {
     failMissingValue((ATTR));\
     return;}
 
-void GTest_uMuscle::init(XMLTestFormat *tf, const QDomElement& el) {
-    Q_UNUSED(tf);
-
+void GTest_uMuscle::init(XMLTestFormat *, const QDomElement& el) {
     ctxAdded = false;
     ma_result = nullptr;
     refineOnly = false;
@@ -215,9 +213,7 @@ void GTest_uMuscle::cleanup() {
     XmlTest::cleanup();
 }
 
-void GTest_CompareMAlignment::init(XMLTestFormat *tf, const QDomElement& el) {
-    Q_UNUSED(tf);
-
+void GTest_CompareMAlignment::init(XMLTestFormat *, const QDomElement& el) {
     doc1CtxName = el.attribute(DOC1_ATTR);
     if (doc1CtxName.isEmpty()) {
         failMissingValue(DOC1_ATTR);
@@ -427,8 +423,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
     return ReportResult_Finished;
 }
 
-void GTest_Muscle_Load_Align_QScore::init(XMLTestFormat *tf, const QDomElement& el) {
-    Q_UNUSED(tf);
+void GTest_Muscle_Load_Align_QScore::init(XMLTestFormat *, const QDomElement& el) {
     inFileURL = el.attribute(IN_FILE_NAME_ATTR);
     stateInfo.progress = 0;
     loadTask1 = nullptr;
@@ -837,8 +832,7 @@ Task::ReportResult GTest_Muscle_Load_Align_Compare::report() {
 GTest_Muscle_Load_Align_Compare::~GTest_Muscle_Load_Align_Compare() {
 }
 
-void GTest_uMusclePacketTest::init(U2::XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_uMusclePacketTest::init(U2::XMLTestFormat *, const QDomElement &el) {
     int nThread = qMax(0, getEnv()->getVar("NUM_THREADS").toInt());
     setMaxParallelSubtasks(nThread);
 

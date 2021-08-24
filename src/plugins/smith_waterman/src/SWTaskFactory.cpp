@@ -45,12 +45,6 @@ Task *SWTaskFactory::getTaskInstance(const SmithWatermanSettings &config, const 
     return new SWAlgorithmTask(config, taskName, algType);
 }
 
-bool SWTaskFactory::isValidParameters(const SmithWatermanSettings &sWatermanConfig, SequenceWalkerSubtask *t) const {
-    Q_UNUSED(sWatermanConfig);
-    Q_UNUSED(t);
-    return true;  // not realized
-}
-
 PairwiseAlignmentSmithWatermanTaskFactory::PairwiseAlignmentSmithWatermanTaskFactory(SW_AlgType _algType)
     : AbstractAlignmentTaskFactory(), algType(_algType) {
 }
@@ -67,7 +61,7 @@ AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
     SAFE_POINT(false == settings->inNewWindow || false == settings->resultFileName.isEmpty(),
                "Pairwise alignment: incorrect settings, empty output file name",
                nullptr);
-    if (settings->inNewWindow == true) {
+    if (settings->inNewWindow) {
         settings->reportCallback = new SmithWatermanReportCallbackMAImpl(settings->resultFileName.dirPath() + "/",
                                                                          settings->resultFileName.baseFileName(),
                                                                          settings->firstSequenceRef,

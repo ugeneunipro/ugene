@@ -38,9 +38,7 @@ public:
 
     ReportResult report();
 
-    void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
-        Q_UNUSED(t);
-        Q_UNUSED(ti);
+    void onRegion(SequenceWalkerSubtask *, TaskStateInfo &) {
     }
 
 private:

@@ -28,9 +28,7 @@
 
 namespace U2 {
 
-void GTest_RemoteBLAST::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_RemoteBLAST::init(XMLTestFormat *, const QDomElement &el) {
     ao = nullptr;
     task = nullptr;
     sequence = el.attribute(SEQUENCE_ATTR);

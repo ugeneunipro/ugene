@@ -216,7 +216,6 @@ QString MysqlDbi::getProperty(const QString &name, const QString &defaultValue, 
 
 void MysqlDbi::setProperty(const QString &name, const QString &value, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery q1("DELETE FROM Meta WHERE name = :name", db, os);
     q1.bindString(":name", name);

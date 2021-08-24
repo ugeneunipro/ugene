@@ -399,7 +399,6 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     MaDbiUtils::splitBytesToCharsAndGaps(ptrnSequenceData, notUsedOutputParam, ptrnRow->gaps);
 
     U2UseCommonUserModStep userModStep(sourceMsaRef, os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, QString());
     msaDbi->updateGapModel(sourceMsaRef.entityId, refRow->rowId, refRow->gaps, os);
     CHECK_OP(os, tr("Failed to update row gap model"));

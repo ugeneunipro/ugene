@@ -176,9 +176,7 @@ void GTest_DnaAssemblyToReferenceTask::cleanup() {
 }
 
 //----------------------------------------------------------
-void GTest_AssemblycompareTwoSAMbyLength::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_AssemblycompareTwoSAMbyLength::init(XMLTestFormat *, const QDomElement &el) {
     file1Url = el.attribute(FILE1_ATTR);
     if (file1Url.isEmpty()) {
         failMissingValue(FILE1_ATTR);

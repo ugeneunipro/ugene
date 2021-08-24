@@ -34,7 +34,6 @@ MysqlObjectRelationsDbi::MysqlObjectRelationsDbi(MysqlDbi *dbi)
 
 void MysqlObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery("CREATE TABLE ObjectRelation (object BIGINT NOT NULL, "
                "reference BIGINT NOT NULL, role INTEGER NOT NULL, "
@@ -52,7 +51,6 @@ void MysqlObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
 
 void MysqlObjectRelationsDbi::createObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString("INSERT INTO ObjectRelation (object, reference, role) VALUES(:object, :reference, :role)");
     U2SqlQuery q(queryString, db, os);
@@ -110,7 +108,6 @@ QList<U2DataId> MysqlObjectRelationsDbi::getReferenceRelatedObjects(const U2Data
 
 void MysqlObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString("DELETE FROM ObjectRelation "
                                      "WHERE object = :object AND reference = :reference");
@@ -123,7 +120,6 @@ void MysqlObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, U
 
 void MysqlObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = :object OR reference = :reference");
     U2SqlQuery q(queryString, db, os);
@@ -135,7 +131,6 @@ void MysqlObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, U
 
 void MysqlObjectRelationsDbi::removeReferencesForObject(const U2DataId &object, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = :object");
     U2SqlQuery q(queryString, db, os);

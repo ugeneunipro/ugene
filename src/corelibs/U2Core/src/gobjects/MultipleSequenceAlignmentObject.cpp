@@ -52,7 +52,6 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() co
 
 MultipleSequenceAlignmentObject *MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     QScopedPointer<GHintsDefaultImpl> gHints(new GHintsDefaultImpl(getGHintsMap()));

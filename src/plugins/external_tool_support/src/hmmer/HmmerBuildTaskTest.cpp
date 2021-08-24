@@ -233,9 +233,7 @@ static void setEvalueCalibrationOption(HmmerBuildSettings &settings, TaskStateIn
     settings.eft = l[4].toDouble();
 }
 
-void GTest_UHMMER3Build::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UHMMER3Build::init(XMLTestFormat *, const QDomElement &el) {
     inFile = el.attribute(INPUT_FILE_TAG);
     outFile = el.attribute(OUTPUT_FILE_TAG);
     outputDir = el.attribute(OUTPUT_DIR_TAG);
@@ -319,9 +317,7 @@ const QByteArray DATE_STR = "DATE";
 const QByteArray NAME_STR = "NAME";
 const QByteArray HEADER_STR = "HMMER3/";
 
-void GTest_CompareHmmFiles::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CompareHmmFiles::init(XMLTestFormat *, const QDomElement &el) {
     filename1 = el.attribute(FILE1_NAME_TAG);
     filename2 = el.attribute(FILE2_NAME_TAG);
 

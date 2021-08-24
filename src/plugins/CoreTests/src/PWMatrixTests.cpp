@@ -47,9 +47,7 @@ namespace U2 {
 #define EXPECTED "expected-values"
 
 //---------------------------------------------------------------------
-void GTest_PFMtoPWMConvertTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_PFMtoPWMConvertTest::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -61,9 +59,7 @@ Task::ReportResult GTest_PFMtoPWMConvertTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_PFMCreateTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_PFMCreateTest::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -212,9 +208,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_PWMCreateTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_PWMCreateTest::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);

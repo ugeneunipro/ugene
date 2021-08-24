@@ -211,11 +211,7 @@ bool useDatabaseFromCMDLine(const QString &alias) {
     // Check if the connection can be established
     U2OpStatus2Log os;
     DbiConnection con(ref, true, os);
-    Q_UNUSED(con);
-    if (os.hasError()) {
-        return false;
-    }
-    return true;
+    return !os.hasError();
 }
 
 U2DbiRef getDbiRef(const QString &alias, U2OpStatus &os, const U2DbiFactoryId &factoryId) {
@@ -239,7 +235,6 @@ U2DbiRef U2DbiRegistry::allocateTmpDbi(const QString &alias, U2OpStatus &os, con
     if (SQLITE_DBI_ID == factoryId) {
         // Create a tmp dbi file (the DbiConnection is opened with "bool create = true", and released)
         DbiConnection con(res, true, os);
-        Q_UNUSED(con);
     }
     CHECK_OP(os, U2DbiRef());
 
