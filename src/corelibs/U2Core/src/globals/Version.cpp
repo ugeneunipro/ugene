@@ -40,8 +40,12 @@ namespace U2 {
 const QString Version::buildDate = __DATE__;
 const int Version::appArchitecture = QT_POINTER_SIZE * 8;
 
-Version::Version(int _major, int _minor, int _patch)
-    : major(_major), minor(_minor), patch(_patch) {
+Version::Version(int _major, int _minor, int _patch) {
+    // Note: can't use in-place initialization like major(_major) because on some Linux systems
+    // major()/minor() is an indirectly included macro. See https://stackoverflow.com/questions/20024722/c-error-constructor-parameter.
+    major = _major;
+    minor = _minor;
+    patch = _patch;
 }
 
 Version Version::parseVersion(const QString &text) {
