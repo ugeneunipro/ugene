@@ -35,6 +35,14 @@ class FindUnwantedIslandsTask;
 class PCRPrimerDesignForDNAAssemblyTask : public Task {
     Q_OBJECT
 public:
+    //Stores reports of unwanted connections for one user primer.
+    struct UserPrimerReports {
+        QString     selfdimer;
+        QString     fileSeq;
+        QString     fileRevComplSeq;
+        QStringList other;
+    };
+
     PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
     void prepare() override;
@@ -52,19 +60,6 @@ public:
     static const QStringList FRAGMENT_INDEX_TO_NAME;
 
 private:
-    enum class UserPrimer {
-        Forward,
-        Reverse
-    };
-    // Sequences for finding unwanted connections with user primers.
-    enum class SeqToSearchInThem {
-        ForwardUser,
-        ReverseUser,
-        Sequence,
-        RevComplSeq,
-        OtherSeq
-    };
-
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
     void findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence);
     enum class SecondaryPrimer {
@@ -80,25 +75,10 @@ private:
     QString regionToString(const U2Region& region, bool isComplement) const;
 
     /**
-     * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and add them
-     * to @userPrimersUnwantedConnections. Includes homodimers, heterodimers.
+     * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and store
+     * them in @forwardReports, @reverseReports, @userHeterodimer.
      */
-    void saveUnwantedConnectionsReports();
-    /**
-     * Helper method for @saveUnwantedConnectionsReports. Find all unwanted connections in user primer and add them to
-     * @userPrimersUnwantedConnections.
-     */
-    void saveUnwantedConnections(const QByteArray& primer, UserPrimer primerType);
-    /**
-     * Helper methods for @generateReport. Return html with result sequences for primer pair.
-     * Called when there are no unwanted connections.
-     */
-    QString getPairReport(U2Region forward, U2Region reverse, const QString& primerName) const;
-    QString getPairReportForUserPrimers() const;
-    /**
-     * Return html report of unwanted connections in user primers (summary table and each connection).
-     */
-    QString getUserPrimersUnwantedConnectionsReport() const;
+    void saveUserPrimersReports();
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
@@ -116,8 +96,6 @@ private:
     QByteArray backboneSequence;
     QList<U2Region> regionsBetweenIslandsForward;
     QList<U2Region> regionsBetweenIslandsReverse;
-    // User primer and sequence analyzed for unwanted connections -> Reports of unwanted connections.
-    QMap<QPair<UserPrimer, SeqToSearchInThem>, QStringList> userPrimersUnwantedConnections;
 
     //Results
     U2Region aForward;
@@ -128,6 +106,11 @@ private:
     U2Region b2Reverse;
     U2Region b3Forward;
     U2Region b3Reverse;
+
+    //For report.
+    UserPrimerReports forwardReports;
+    UserPrimerReports reverseReports;
+    QString           userHeterodimer;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
     static constexpr int SECOND_PRIMER_OFFSET = 4;
