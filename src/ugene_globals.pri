@@ -3,8 +3,9 @@ include (ugene_version.pri)
 UGENE_GLOBALS_DEFINED=1
 
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
-DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
-DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
+# Separate minor/major version tokens are used in .rc resource.
+win32:DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
+win32:DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
 # Use of any Qt API marked as deprecated before 5.7 will cause compile time errors.
 # The goal is to increase this value gradually up to the current version used in UGENE

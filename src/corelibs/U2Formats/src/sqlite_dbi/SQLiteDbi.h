@@ -27,6 +27,7 @@
 #include <U2Core/U2AbstractDbi.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SqlHelpers.h>
+#include <U2Core/Version.h>
 
 struct sqlite3;
 
@@ -47,27 +48,29 @@ class SQLiteVariantDbi;
 
 /** Name of the init property used to indicate assembly reads storage method for all new assemblies */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY "sqlite-assembly-reads-elen-method"
+
 /** Stores all reads in a single table. Not optimal if read effective length varies */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE "single-table"
+
 /** Store all reads in N tables sorted by effective read length */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1 "multi-table-v1"
+
 /** Uses RTree index to store reads. This method is simple but not very efficient in terms of space/insert time */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE "rtree2d"
 
-/** Name of the property used to indicate compression algorithm for reads data */
-#define SQLITE_DBI_ASSEMBLY_READ_COMPRESSION_METHOD_KEY "sqlite-assembly-reads-compression-method"
 /** No compression is applied. Best for manual DB browsing  (default)*/
 #define SQLITE_DBI_ASSEMBLY_READ_COMPRESSION_METHOD_NO_COMPRESSION "no-compression"
-/** CIGAR and sequence are packed using bits compression and stored as a single BLOB */
-#define SQLITE_DBI_ASSEMBLY_READ_COMPRESSION_METHOD_BITS_1 "compress-bits-1"
-
-// Values of SQLiteDbi flags
-#define SQLITE_DBI_VALUE_MEMORY_DB_URL ":memory:"
 
 class U2FORMATS_EXPORT SQLiteDbi : public U2AbstractDbi {
 public:
     SQLiteDbi();
     ~SQLiteDbi();
+
+    /**
+     * Minimal version of UGENE that is compatible with the current SQLite DBI implementation.
+     * if (MIN_COMPATIBLE_UGENE_VERSION < active UGENE version ) UGENE will be able to open ".ugenedb" file.
+     */
+    static const Version MIN_COMPATIBLE_UGENE_VERSION;
 
     /**
     Boots the database up to functional state.

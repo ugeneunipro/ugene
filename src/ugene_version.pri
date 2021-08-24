@@ -1,11 +1,5 @@
 # This file contains UGENE version info
 
-# minimum UGENE version whose SQLite databases are compatible with this version
-UGENE_MIN_VERSION_SQLITE=1.25.0
-
-# minimum UGENE version whose MySQL databases are compatible with this version
-UGENE_MIN_VERSION_MYSQL=1.25.0
-
 # int version levels for executables
 UGENE_VER_MAJOR=40
 UGENE_VER_MINOR=0

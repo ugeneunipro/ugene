@@ -29,19 +29,13 @@ namespace U2 {
 class U2CORE_EXPORT Version {
 public:
     // creates empty version structure
-    Version();
+    Version(int major = 0, int minor = 0, int patch = 0);
 
     // Current UGENE instance version
     static Version appVersion();
 
     // Current QT version
     static Version qtVersion();
-
-    // Minimum UGENE version whose SQLite databases are compatible with this version
-    static Version minVersionForSQLite();
-
-    // minimum UGENE version whose MySQL databases are compatible with this version
-    static Version minVersionForMySQL();
 
     static Version parseVersion(const QString &text);
 
@@ -65,13 +59,12 @@ public:
     int minor;
     int patch;
 
-    bool debug;
-    QString text;
+    bool debug = false;
+    QString text = "unknown";
     QString suffix;
-    bool isDevVersion;
+    bool isDevVersion = false;
     const static int appArchitecture;
     const static QString buildDate;
-    const static QString distributionInfo;
 };
 
 }  // namespace U2

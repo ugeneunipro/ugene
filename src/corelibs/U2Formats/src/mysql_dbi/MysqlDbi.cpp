@@ -50,6 +50,8 @@ namespace U2 {
 
 const int MysqlDbi::BIND_PARAMETERS_LIMIT = USHRT_MAX;
 
+const Version MysqlDbi::MIN_COMPATIBLE_UGENE_VERSION = Version(1, 25);
+
 MysqlDbi::MysqlDbi()
     : U2AbstractDbi(MysqlDbiFactory::ID), tablesAreCreated(false) {
     db = new MysqlDbRef;
@@ -314,7 +316,7 @@ void MysqlDbi::setState(U2DbiState s) {
 }
 
 #define CHECK_DB_INIT(os) \
-    if (os.hasError()) { \
+    if ((os).hasError()) { \
         db->handle.close(); \
         setState(U2DbiState_Void); \
         return; \
@@ -351,7 +353,7 @@ void MysqlDbi::populateDefaultSchema(U2OpStatus &os) {
     variantDbi->initSqlSchema(os);
     CHECK_DB_INIT(os);
 
-    setVersionProperties(Version::minVersionForMySQL(), os);
+    setVersionProperties(MIN_COMPATIBLE_UGENE_VERSION, os);
     CHECK_DB_INIT(os);
 }
 
@@ -495,7 +497,7 @@ void MysqlDbi::setupTransactions(U2OpStatus &os) {
 
 void MysqlDbi::init(const QHash<QString, QString> &props, const QVariantMap &, U2OpStatus &os) {
     createHandle(props);
-    QMutexLocker(&db->mutex);
+    QMutexLocker initLock(&db->mutex);
 
     CHECK_EXT(state == U2DbiState_Void, os.setError(U2DbiL10n::tr("Illegal database state: %1").arg(state)), );
 
@@ -531,7 +533,7 @@ QVariantMap MysqlDbi::shutdown(U2OpStatus &os) {
         return QVariantMap();
     }
 
-    QMutexLocker(&db->mutex);
+    QMutexLocker shutdownLock(&db->mutex);
 
     assemblyDbi->shutdown(os);
     attributeDbi->shutdown(os);
