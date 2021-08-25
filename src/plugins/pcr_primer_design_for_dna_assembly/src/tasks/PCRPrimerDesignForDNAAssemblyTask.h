@@ -25,6 +25,7 @@
 #include <U2Core/Task.h>
 
 #include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
+#include "utils/PCRPrimerDesignTaskReportUtils.h"
 
 namespace U2 {
 
@@ -35,14 +36,6 @@ class FindUnwantedIslandsTask;
 class PCRPrimerDesignForDNAAssemblyTask : public Task {
     Q_OBJECT
 public:
-    //Stores reports of unwanted connections for one user primer.
-    struct UserPrimerReports {
-        QString     selfdimer;
-        QString     fileSeq;
-        QString     fileRevComplSeq;
-        QStringList other;
-    };
-
     PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
     void prepare() override;
@@ -108,8 +101,8 @@ private:
     U2Region b3Reverse;
 
     //For report.
-    UserPrimerReports forwardReports;
-    UserPrimerReports reverseReports;
+    PCRPrimerDesignTaskReportUtils::UserPrimerReports forwardReports;
+    PCRPrimerDesignTaskReportUtils::UserPrimerReports reverseReports;
     QString           userHeterodimer;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;

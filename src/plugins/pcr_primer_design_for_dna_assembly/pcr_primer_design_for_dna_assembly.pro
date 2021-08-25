@@ -5,6 +5,7 @@ HEADERS += src/tasks/ExtractPrimerTask.h \
            src/tasks/FindUnwantedIslandsTask.h \
            src/tasks/PCRPrimerDesignForDNAAssemblyTask.h \
            src/tasks/UnwantedStructuresInBackboneDialog.h \
+           src/utils/PCRPrimerDesignTaskReportUtils.h \
            src/utils/UnwantedConnectionsUtils.h \
            src/PCRPrimerDesignForDNAAssemblyOPSavableTab.h \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.h \
@@ -18,6 +19,7 @@ SOURCES += src/tasks/ExtractPrimerTask.cpp \
            src/tasks/FindUnwantedIslandsTask.cpp \
            src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp \
            src/tasks/UnwantedStructuresInBackboneDialog.cpp \
+           src/utils/PCRPrimerDesignTaskReportUtils.cpp \
            src/utils/UnwantedConnectionsUtils.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPSavableTab.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp \

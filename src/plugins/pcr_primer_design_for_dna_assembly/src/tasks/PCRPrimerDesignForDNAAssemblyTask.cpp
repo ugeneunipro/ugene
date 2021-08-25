@@ -45,244 +45,6 @@
 
 namespace U2 {
 
-//To generate a PCRPrimerDesignForDNAAssemblyTask report.
-namespace ReportUtils {
-using PcrTask = PCRPrimerDesignForDNAAssemblyTask;
-using Reports = PcrTask::UserPrimerReports;
-
-static QString forwardUserPrimerStr();
-static QString reverseUserPrimerStr();
-
-//No validation of columns number when adding rows.
-class UserPrimersTable {
-    const QString name;
-    const QStringList headers;
-    QList<bool> forwardRow;
-    QList<bool> reverseRow;
-
-    QString getHeader() const {
-        QString ans;
-        for (const QString& h : headers) {
-            ans += "<th>" + h + "</th>";
-        }
-        return ans;
-    }
-    QString getRow(const QList<bool>& row) const {
-        QString ans;
-        for (const bool cell : row) {
-            ans += "<td align='center'>" + (cell ? QObject::tr("Yes") : QObject::tr("No")) + "</td>";
-        }
-        return ans;
-    }
-
-public:
-    UserPrimersTable(const QString& name, const QStringList& headers) : name(name), headers(headers) {}
-
-    void addForwardRow(const QList<bool>& row) {
-        forwardRow = row;
-    }
-    void addReverseRow(const QList<bool>& row) {
-        reverseRow = row;
-    }
-    QString getTable() const {
-        return QString("<h3>%1:</h3>"             //Table name
-            "<table border='1' cellpadding='4'>"
-              "<tr>"
-                "<td></td>"
-                "%2"                              //Column headers.
-              "</tr>"
-              "<tr>"
-                "<th>%3</th>"                     //Forward user primer str.
-                "%4"                              //Unwanted connections of forward user primer.
-              "</tr>"
-              "<tr>"
-                "<th>%5</th>"                     //Reverse user primer str.
-                "%6"                              //Unwanted connections of reverse user primer.
-              "</tr>"
-            "</table>").arg(name).arg(getHeader()).arg(forwardUserPrimerStr()).arg(getRow(forwardRow))
-                       .arg(reverseUserPrimerStr()).arg(getRow(reverseRow));
-    }
-};
-
-static QString errMsg() {
-    return QObject::tr("<p>Error, see log.</p>");
-}
-
-static QString forwardUserPrimerStr() {
-    return QObject::tr("Forward user primer");
-}
-
-static QString reverseUserPrimerStr() {
-    return QObject::tr("Reverse user primer");
-}
-
-static QString sequenceStr() {
-    return QObject::tr("File sequence");
-}
-
-static QString revComplSeqStr() {
-    return QObject::tr("Reverse complementary file sequence");
-}
-
-static QString otherSequencesStr() {
-    return QObject::tr("Other sequences in PCR reaction");
-}
-
-static QString primerHeader(const QString& primerName) {
-    return "<h2>" + primerName + ":</h2>";
-}
-
-static QString primerToHtml(QString primer) {
-    return "<b>" + primer + "</b>";
-}
-
-static bool areUserPrimers(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings) {
-    return !settings.forwardUserPrimer.isEmpty() && !settings.reverseUserPrimer.isEmpty();
-}
-
-static bool hasHeterodimer(const Reports& reports) {
-    return !reports.fileSeq.isEmpty() || !reports.fileRevComplSeq.isEmpty() || !reports.other.isEmpty();
-}
-
-static bool hasUserPrimersUnwantedConnections(const Reports& forward, const Reports& reverse,
-                                              const QString& userHeterodimer) {
-    const auto hasConnections = [](const Reports& reports) {
-        return !reports.selfdimer.isEmpty() || hasHeterodimer(reports);
-    };
-    return hasConnections(forward) || hasConnections(reverse) || !userHeterodimer.isEmpty();
-}
-
-static QString checkPrimerAndGetInfo(const U2Region region, const QString& primerName, const bool isForward,
-                                     const QByteArray& sequence, const QString& backbone) {
-    QString ans;
-    if (!region.isEmpty()) {
-        ans += primerHeader(primerName);
-        SAFE_POINT(region.startPos > 0 && region.startPos < sequence.length() && region.length > 0,
-                   QObject::tr("Invalid region %1 for sequence length %2 (%3 primer)").arg(region.toString()).
-                               arg(sequence.length()).arg(primerName),
-                   ans += errMsg())
-
-        const QString res = "<p>%1%2</p>";
-        const QString primer = primerToHtml(QString(sequence.mid(region.startPos, region.length)));
-        if (isForward) {
-            ans += res.arg(backbone, primer);
-        } else {
-            ans += res.arg(primer, backbone);
-        }
-    }
-    return ans;
-}
-
-//All found primers + backbone in html format. User primers are good if both are specified and both have no unwanted
-//connections.
-static QString primersInfo(const PcrTask& task, const QByteArray& sequence, const bool areUserPrimersGood) {
-    const PCRPrimerDesignForDNAAssemblyTaskSettings& settings = task.getSettings();
-    const QList<U2Region> regions = task.getResults();
-    SAFE_POINT(regions.size() == PcrTask::FRAGMENT_INDEX_TO_NAME.size(),
-               QObject::tr("The number of resulting primers (%1) isn't equal to the number of primer names (%2)").
-                           arg(regions.size()).arg(PcrTask::FRAGMENT_INDEX_TO_NAME.size()),
-               errMsg())
-
-    const bool primersNotFound = std::all_of(regions.begin(), regions.end(), [](U2Region r) { return r.isEmpty(); });
-    if (primersNotFound && !areUserPrimersGood) {
-        return QObject::tr("<p>There are no primers that meet the specified parameters.</p>");
-    }
-
-    QString ans;
-    //Desciption.
-    ans += QObject::tr("<h3>Details:</h3>"
-                       "<p>"
-                         "<u>Underlined</u>&#8211;backbone sequence&#59;<br>"
-                         "<b>Bold</b>&#8211;primer sequence."
-                       "</p>");
-
-    QString backbone = task.getBackboneSequence();
-    backbone = backbone.isEmpty() ? backbone : "<u>" + backbone + "</u>";
-
-    //Result primers.
-    for (int i = 0; i + 1 < regions.size(); i += 2) {
-        ans += checkPrimerAndGetInfo(regions[i],     PcrTask::FRAGMENT_INDEX_TO_NAME[i],     true,  sequence, backbone);
-        ans += checkPrimerAndGetInfo(regions[i + 1], PcrTask::FRAGMENT_INDEX_TO_NAME[i + 1], false, sequence, backbone);
-    }
-    //User primers.
-    if (areUserPrimersGood) {
-        ans += primerHeader("C Forward");
-        ans += primerToHtml(settings.forwardUserPrimer);
-        ans += primerHeader("C Reverse");
-        ans += primerToHtml(settings.reverseUserPrimer);
-    }
-    return ans;
-}
-
-static QString selfdimerTable(const QString& forwardSelfdimer, const QString& reverseSelfdimer) {
-    const QString selfdimerStr = QObject::tr("Selfdimers");
-    UserPrimersTable table(selfdimerStr, { selfdimerStr });
-    table.addForwardRow({ !forwardSelfdimer.isEmpty() });
-    table.addReverseRow({ !reverseSelfdimer.isEmpty() });
-    return table.getTable();
-}
-
-QString returnReportIfAny(const QString& header, const QString& report) {
-    if (report.isEmpty()) {
-        return {};
-    }
-    return QString("<p><u>%1:</u></p><p>%2</p>").arg(header, report);
-}
-
-static QString userSelfdimersInfo(const QString& forwardSelfdimer, const QString& reverseSelfdimer) {
-    QString ans = returnReportIfAny(forwardUserPrimerStr(), forwardSelfdimer);
-    return ans += returnReportIfAny(reverseUserPrimerStr(), reverseSelfdimer);
-}
-
-static QString heterodimersTable(const Reports& forward, const Reports& reverse, const QString& userHeterodimer) {
-    const auto getRow = [&userHeterodimer](const Reports& reports) -> QList<bool> {
-        return { !userHeterodimer.isEmpty(), !reports.fileSeq.isEmpty(), !reports.fileRevComplSeq.isEmpty(),
-                 !reports.other.isEmpty() };
-    };
-    UserPrimersTable table(QObject::tr("Heterodimers"), {QObject::tr("Another user primer"), sequenceStr(),
-                                                         revComplSeqStr(), otherSequencesStr()});
-    table.addForwardRow(getRow(forward));
-    table.addReverseRow(getRow(reverse));
-    return table.getTable();
-}
-
-static QString concatenatePrimerNames(const QString& primer, const QString& sequence) {
-    return primer + QObject::tr(" and ") + sequence;
-}
-
-static QString heterodimerInfoForOnePrimer(const QString& primerName, const Reports& reports) {
-    QString ans = returnReportIfAny(concatenatePrimerNames(primerName, sequenceStr()), reports.fileSeq);
-    ans += returnReportIfAny(concatenatePrimerNames(primerName, revComplSeqStr()), reports.fileRevComplSeq);
-    return ans += returnReportIfAny(concatenatePrimerNames(primerName, otherSequencesStr()), reports.other.join("<br>"));
-}
-
-static QString userHeterodimersInfo(const Reports& forward, const Reports& reverse, const QString& userHeterodimer) {
-    QString ans = heterodimerInfoForOnePrimer(forwardUserPrimerStr(), forward) +
-                  heterodimerInfoForOnePrimer(reverseUserPrimerStr(), reverse);
-    return ans += returnReportIfAny(concatenatePrimerNames(forwardUserPrimerStr(), reverseUserPrimerStr()),
-                                    userHeterodimer);
-}
-
-//Unwanted connections of user primers in html format.
-static QString userPrimersUnwantedConnectionsInfo(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings,
-                                                  const Reports& forward, const Reports& reverse,
-                                                  const QString& userHeterodimer) {
-    QString ans;
-    if (areUserPrimers(settings) && hasUserPrimersUnwantedConnections(forward, reverse, userHeterodimer)) {
-        ans += QObject::tr("<h2>Unwanted connections of user primers</h2>");
-        if (!forward.selfdimer.isEmpty() || !reverse.selfdimer.isEmpty()) {
-            ans += selfdimerTable(forward.selfdimer, reverse.selfdimer);
-            ans += userSelfdimersInfo(forward.selfdimer, reverse.selfdimer);
-        }
-        if (hasHeterodimer(forward) || hasHeterodimer(reverse) || !userHeterodimer.isEmpty()) {
-            ans += heterodimersTable(forward, reverse, userHeterodimer);
-            ans += userHeterodimersInfo(forward, reverse, userHeterodimer);
-        }
-    }
-    return ans;
-}
-}
-
 const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
     QObject::tr("A Forward"),
     QObject::tr("A Reverse"),
@@ -484,13 +246,13 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
-    using namespace ReportUtils;
-    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), errMsg())
+    using ReportUtils = PCRPrimerDesignTaskReportUtils;
+    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), ReportUtils::errMsg())
 
-    const bool areUserPrimersGood = areUserPrimers(settings) &&
-                                    !hasUserPrimersUnwantedConnections(forwardReports, reverseReports, userHeterodimer);
-    return "<br><br>" + primersInfo(*this, sequence, areUserPrimersGood) +
-           userPrimersUnwantedConnectionsInfo(settings, forwardReports, reverseReports, userHeterodimer);
+    const bool areUserPrimersGood = ReportUtils::areUserPrimers(settings) &&
+        !ReportUtils::hasUserPrimersUnwantedConnections(forwardReports, reverseReports, userHeterodimer);
+    return "<br><br>" + ReportUtils::primersInfo(*this, sequence, areUserPrimersGood) +
+        ReportUtils::userPrimersUnwantedConnectionsInfo(settings, forwardReports, reverseReports, userHeterodimer);
 }
 
 QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
@@ -744,7 +506,8 @@ void PCRPrimerDesignForDNAAssemblyTask::saveUserPrimersReports() {
     const int deltaG   = settings.gibbsFreeEnergyExclude,
               meltingT = settings.meltingPointExclude,
               dimerLen = settings.complementLengthExclude;
-    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer, UserPrimerReports& reports) {
+    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer,
+            PCRPrimerDesignTaskReportUtils::UserPrimerReports& reports) {
         QString report_;
         if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, deltaG, meltingT, dimerLen, report_)) {
             reports.selfdimer = report_;
