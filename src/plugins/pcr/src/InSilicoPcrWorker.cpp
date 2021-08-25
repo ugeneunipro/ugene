@@ -188,6 +188,7 @@ void InSilicoPcrWorker::onPrepared(Task *task, U2OpStatus &os) {
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
     CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
+    doc->setDocumentOwnsDbiResources(false);
 
     QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), os.setError(tr("No primer sequences in the file: ") + loadTask->getURLString()), );

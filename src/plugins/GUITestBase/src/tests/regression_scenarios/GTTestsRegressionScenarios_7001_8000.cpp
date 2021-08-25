@@ -487,6 +487,34 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7234) {
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            GTWidget::getActiveModalWidget(os);
+
+            GTUtilsWizard::setInputFiles(os, {{ QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath() }});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(dataDir + "primer3/drosophila.w.transposons.txt").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    //1. Open WD and choose the "In Silico PCR" sample.
+    //2. Select "Read Sequence", add data\samples\fasta\human_T1.fa
+    //3. Select "In Silico PCR" item, add "add "\data\primer3\drosophila.w.transposons"
+    //4. Run
+    //Expected state: no crash
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7246) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/RAW.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
