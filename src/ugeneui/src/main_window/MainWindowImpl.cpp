@@ -279,6 +279,10 @@ void MainWindowImpl::createActions() {
     welcomePageAction->setObjectName("welcome_page");
     connect(welcomePageAction, SIGNAL(triggered()), SIGNAL(si_showWelcomePage()));
 
+    showWhatsNewAction = new QAction(tr("What's New in UGENE"), this);
+    showWhatsNewAction->setObjectName("show_whats_new");
+    connect(showWhatsNewAction, SIGNAL(triggered()), SLOT(sl_showWhatsNew()));
+
     crashUgeneAction = new QAction(tr("Crash UGENE"), this);
     crashUgeneAction->setObjectName("crash_ugene");
     connect(crashUgeneAction, SIGNAL(triggered()), SLOT(sl_crashUgene()));
@@ -297,6 +301,10 @@ void MainWindowImpl::sl_aboutAction() {
     QWidget *p = qobject_cast<QWidget *>(getQMainWindow());
     QObjectScopedPointer<AboutDialogController> d = new AboutDialogController(visitWebAction, p);
     d->exec();
+}
+
+void MainWindowImpl::sl_showWhatsNew() {
+    Shtirlitz::showWhatsNewDialog();
 }
 
 void MainWindowImpl::sl_checkUpdatesAction() {
@@ -349,6 +357,7 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(viewOnlineDocumentation);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
+    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(showWhatsNewAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
@@ -358,7 +367,7 @@ void MainWindowImpl::prepareGUI() {
 #endif
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
-    if ("1" == qgetenv(ENV_TEST_CRASH_HANDLER)) {
+    if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
         menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
         menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(crashUgeneAction);
     }

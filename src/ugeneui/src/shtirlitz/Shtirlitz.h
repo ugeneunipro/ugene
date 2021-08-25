@@ -36,10 +36,15 @@ class Shtirlitz {
 public:
     // Sends all of the reports, if needed.
     static QList<Task *> wakeup();
+
     // Sends custom reports, created by somebody other than Shtirlitz.
     static Task *sendCustomReport(const QString &customReport);
+
     // Saves to settings gathered during the current launch info
     static void saveGatheredInfo();
+
+    /** Shows Whats New dialog wrapped into StatisticalReportController. */
+    static void showWhatsNewDialog();
 
 private:
     // Creates and sends counters info (statistics about UGENE main tasks usage)

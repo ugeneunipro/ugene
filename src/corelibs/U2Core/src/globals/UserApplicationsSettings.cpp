@@ -212,7 +212,7 @@ void UserAppsSettings::setDefaultDataDirPath(const QString &newPath) {
 }
 
 bool UserAppsSettings::isStatisticsCollectionEnabled() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + COLLECTING_STATISTICS).toBool();
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + COLLECTING_STATISTICS, true).toBool();
 }
 
 void UserAppsSettings::setEnableCollectingStatistics(bool b) {

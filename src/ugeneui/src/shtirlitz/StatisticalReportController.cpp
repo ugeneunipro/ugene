@@ -21,6 +21,9 @@
 
 #include "StatisticalReportController.h"
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/Version.h>
 
 namespace U2 {
@@ -29,12 +32,19 @@ StatisticalReportController::StatisticalReportController(const QString &htmlCont
     : QDialog(parent) {
     setupUi(this);
     lblStat->setText(tr("<b>Optional:</b> Help make UGENE better by automatically sending anonymous usage statistics."));
+    chkStat->setChecked(AppContext::getAppSettings()->getUserAppsSettings()->isStatisticsCollectionEnabled());
 
     Version v = Version::appVersion();
     setWindowTitle(tr("Welcome to UGENE %1.%2").arg(v.major).arg(v.minor));
 
     htmlView = new ContentSizeHtmlViewer(this, htmlContent);
     htmlView->document()->setDocumentMargin(15);
+    // Initial vertical dialog position depends on minimum height & the height
+    // is not available from ContentSizeHtmlViewer until it is rendered (is visible).
+    // Setting a reasonable height here will improve dialog centering.
+    // Otherwise the dialog will be centered as 0-height first an will only grow at bottom
+    //  when ContentSizeHtmlViewer renders HTML.
+    htmlView->setMinimumHeight(500);
     dialogLayout->insertWidget(0, htmlView);
 
     connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));

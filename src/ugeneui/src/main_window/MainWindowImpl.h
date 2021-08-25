@@ -111,6 +111,7 @@ private slots:
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
     void sl_show();
+    void sl_showWhatsNew();
     void sl_crashUgene();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
@@ -141,6 +142,7 @@ private:
     QAction *viewOnlineDocumentation;
     QAction *welcomePageAction;
     QAction *crashUgeneAction;
+    QAction *showWhatsNewAction;
 #ifdef _INSTALL_TO_PATH_ACTION
     QAction *installToPathAction;
 #endif
