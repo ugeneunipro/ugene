@@ -139,11 +139,6 @@ defineTest( use_opencl ) {
     return (false)
 }
 
-# establishing binary-independet data directory for *nix installation
-unix {
-    DEFINES *= UGENE_DATA_DIR=\\\"$$UGENE_INSTALL_DATA\\\"
-}
-
 # new conditional function for case 'unix but not macx'
 defineTest( unix_not_mac ) {
     unix : !macx {
