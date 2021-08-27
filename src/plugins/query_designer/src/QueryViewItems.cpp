@@ -62,9 +62,7 @@ QDElement::QDElement(QDSchemeUnit *_unit)
     : highlighted(false), unit(_unit), font(QFont()), bound(0, 0, 3 * ANNOTATION_MIN_SIZE, ANNOTATION_MIN_SIZE),
       dragging(false), extendedHeight(ANNOTATION_MIN_SIZE), itemResizeFlags(0) {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
-#if (QT_VERSION >= QT_VERSION_CHECK(4, 6, 0))
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-#endif
     setAcceptHoverEvents(true);
     setZValue(1);
 
@@ -806,9 +804,7 @@ bool QDElementDescription::sceneEvent(QEvent *event) {
 
 Footnote::Footnote(QDElement *_from, QDElement *_to, QDDistanceType _distType, QDConstraint *parent, const QFont &_font)
     : from(_from), to(_to), distType(_distType), constraint(parent), font(_font), draging(false) {
-#if (QT_VERSION >= QT_VERSION_CHECK(4, 6, 0))
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-#endif
     connect(constraint->getParameters(), SIGNAL(si_modified()), SLOT(sl_update()));
     init();
 }

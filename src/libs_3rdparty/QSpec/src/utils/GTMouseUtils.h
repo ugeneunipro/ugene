@@ -22,12 +22,9 @@
 #ifndef HI_GUI_GTMOUSE_H_
 #define HI_GUI_GTMOUSE_H_
 
+#include <QtWidgets/QWidget>
+
 #include "GTGlobals.h"
-#if (QT_VERSION < 0x050000)  // Qt 5
-#    include <QtGui/QWidget>
-#else
-#    include <QtWidgets/QWidget>
-#endif
 
 namespace HI {
 

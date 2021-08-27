@@ -207,21 +207,6 @@ void MysqlAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRead
         os.setError(err);
     }
 }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-namespace {
-int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
-    const QVector<U2CigarOp>::const_iterator ce = vector->cend(), cit = std::find(vector->cbegin(), ce, t);
-    if (cit == ce)
-        return 0;
-    // next operation detaches, so ce, cit may become invalidated:
-    const int firstFoundIdx = std::distance(vector->cbegin(), cit);
-    const QVector<U2CigarOp>::iterator e = vector->end(), it = std::remove(vector->begin() + firstFoundIdx, e, t);
-    const int result = std::distance(it, e);
-    vector->erase(it, e);
-    return result;
-}
-}  // namespace
-#endif
 
 void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
     int csize = coverage.size();
@@ -249,15 +234,9 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-        removeAll(&cigarVector, U2CigarOp_I);
-        removeAll(&cigarVector, U2CigarOp_S);
-        removeAll(&cigarVector, U2CigarOp_P);
-#else
         cigarVector.removeAll(U2CigarOp_I);
         cigarVector.removeAll(U2CigarOp_S);
         cigarVector.removeAll(U2CigarOp_P);
-#endif
         if (r.startPos > startPos) {
             cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
         }
@@ -287,15 +266,9 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-    removeAll(&cigarVector, U2CigarOp_I);
-    removeAll(&cigarVector, U2CigarOp_S);
-    removeAll(&cigarVector, U2CigarOp_P);
-#else
     cigarVector.removeAll(U2CigarOp_I);
     cigarVector.removeAll(U2CigarOp_S);
     cigarVector.removeAll(U2CigarOp_P);
-#endif
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);

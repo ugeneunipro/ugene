@@ -1,15 +1,5 @@
 include (QSpec.pri)
 
-# Check the Qt version. If QT_VERSION is not set, it is probably Qt 3.
-isEmpty(QT_VERSION) {
-    error("QT_VERSION not defined. QScore does not work with Qt 3.")
-}
-
-!minQtVersion(5, 12, 0) {
-    message("Cannot build QScore with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.12.0.")
-}
-
 # Input
 HEADERS += \
             src/GTGlobals.h \
