@@ -36,9 +36,7 @@ public:
     BAMInfo()
         : _hasIndex(false), unmappedSelected(false) {
     }
-    BAMInfo(const BAMInfo &src)
-        : header(src.header), selected(src.selected), index(src.index), _hasIndex(src._hasIndex), unmappedSelected(src.unmappedSelected) {
-    }
+    BAMInfo(const BAMInfo &src) = default;
 
     inline QList<bool> &getSelected() {
         return selected;
@@ -58,7 +56,7 @@ public:
     inline const Header &getHeader() {
         return header;
     }
-    inline bool isUnmappedSelected() {
+    inline bool isUnmappedSelected() const {
         return unmappedSelected;
     }
     void setIndex(Index &index) {

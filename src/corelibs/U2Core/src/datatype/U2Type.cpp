@@ -31,20 +31,8 @@ U2Entity::U2Entity(const U2DataId &id)
     : id(id) {
 }
 
-U2Entity::U2Entity(const U2Entity &other)
-    : id(other.id) {
-}
-
-U2Entity::~U2Entity() {
-}
-
 bool U2Entity::hasValidId() const {
     return !id.isEmpty();
-}
-
-U2Entity U2Entity::operator=(const U2Entity &other) {
-    id = other.id;
-    return *this;
 }
 
 bool U2Entity::operator==(const U2Entity &other) const {

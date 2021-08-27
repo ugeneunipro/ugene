@@ -33,19 +33,6 @@ Vector3D::Vector3D(double xi, double yi, double zi) {
     z = zi;
 }
 
-Vector3D::Vector3D(const Vector3D &v) {
-    x = v.x;
-    y = v.y;
-    z = v.z;
-}
-
-Vector3D &Vector3D::operator=(const Vector3D &v) {
-    x = v.x;
-    y = v.y;
-    z = v.z;
-    return *this;
-}
-
 void Vector3D::set(double xs, double ys, double zs) {
     x = xs;
     y = ys;

@@ -65,33 +65,39 @@ linux-g++ {
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
-    # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
-    # TODO: Fix UGENE code and remove all suppressions.
-    versionAtLeast(GCC_VERSION, 9.1): {
-        QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    # To enable 'ugene-warnings-as-errors' block below add the following qmake params:
+    # QMAKE_DEFAULT_INCDIRS+="<path-to>/gcc_64/include" QMAKE_PROJECT_DEPTH=0 CONFIG+=ugene-warnings-as-errors
+    #
+    # Where:
+    # QMAKE_DEFAULT_INCDIRS: makes Qt paths to be included with -isystem. This way we have no warnings from QT sources.
+    # QMAKE_PROJECT_DEPTH=0: forces qmake do not generate relative paths, so QMAKE_DEFAULT_INCDIRS is matched correctly.
+    # CONFIG+=ugene-warnings-as-errors: enables the block below.
+    #
+    # Also add "CPLUS_INCLUDE_PATH=<path-to>/gcc_64/include" to the environment to let GCC know about new isystem paths.
+    #
+    # To work in this mode in QtCreator:
+    # Add "CPATH=<path-to>/gcc_64/include" to the current 'Kit' environment to make QTCreator's code parser work.
+
+    ugene-warnings-as-errors {
+        # These warnings are processed as errors.
+        # All entries must be added to "disable-warnings.h" to ignore problems in 3rd-party code.
+
+        QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
+        QMAKE_CXXFLAGS += -Werror=parentheses
+        QMAKE_CXXFLAGS += -Werror=return-type
+        QMAKE_CXXFLAGS += -Werror=uninitialized
+        QMAKE_CXXFLAGS += -Werror=unused-parameter
+        QMAKE_CXXFLAGS += -Werror=unused-variable
+
+        versionAtLeast(GCC_VERSION, 7.1) {
+            QMAKE_CXXFLAGS += -Werror=shadow=local
+        }
+        versionAtLeast(GCC_VERSION, 9.1) {
+            QMAKE_CXXFLAGS += -Werror=deprecated-copy
+        }
     }
-    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
-    # These warnings must be errors (all entries must be added to disable-warnings.h):
-    QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
-    QMAKE_CXXFLAGS += -Werror=parentheses
-    QMAKE_CXXFLAGS += -Werror=return-type
-    QMAKE_CXXFLAGS += -Werror=uninitialized
-    QMAKE_CXXFLAGS += -Werror=unused-parameter
-    QMAKE_CXXFLAGS += -Werror=unused-variable
-
-    versionAtLeast(GCC_VERSION, 7.1): {
-        QMAKE_CXXFLAGS += -Werror=shadow=local
-
-        # We use strict Werror= flags. The -system level for includes supresses warnings that come from QT.
-        # Today we have only warning when multiple 'foreach' loops used in the same method.
-        # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loops.
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
-    }
-
-    # build with coverage (gcov) support, now for Linux only
+    # Build with coverage (gcov) support, now for Linux only.
     equals(UGENE_GCOV_ENABLE, 1) {
         message("Build with gcov support. See gcov/lcov doc for generating coverage info")
         QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage

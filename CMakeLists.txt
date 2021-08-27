@@ -40,10 +40,11 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
+            " -Werror=deprecated-copy" # Requires GCC 9.1+
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
-            " -Werror=shadow=local" # Requires GCC 7+
             " -Werror=return-type"
+            " -Werror=shadow=local" # Requires GCC 7.1+
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
             " -Werror=unused-variable"

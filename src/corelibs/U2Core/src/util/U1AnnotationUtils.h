@@ -43,7 +43,7 @@ class U2CORE_EXPORT AnnotatedRegion {
 public:
     AnnotatedRegion();
     AnnotatedRegion(Annotation *annotation, int regionIdx);
-    AnnotatedRegion(const AnnotatedRegion &annRegion);
+    AnnotatedRegion(const AnnotatedRegion &annRegion) = default;
 
 public:
     Annotation *annotation;

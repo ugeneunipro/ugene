@@ -37,7 +37,7 @@ class U2CORE_EXPORT AnnotationData : public QSharedData {
 public:
     AnnotationData();
 
-    AnnotationData &operator=(const AnnotationData &a);
+    AnnotationData(const AnnotationData &) = default;
 
     bool operator==(const AnnotationData &other) const;
     bool operator!=(const AnnotationData &other) const;

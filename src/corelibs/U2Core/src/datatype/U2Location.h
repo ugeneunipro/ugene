@@ -133,6 +133,7 @@ public:
     U2Location(U2LocationData *l)
         : d(l) {
     }
+    U2Location(const U2Location &) = default;
 
     U2LocationData &operator*() {
         return *d;

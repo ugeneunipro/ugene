@@ -34,10 +34,11 @@
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wpragmas"  // Ignore all unknown (for example when an old GCC is used) pragmas below.
 // All warnings in the list below should be sorted by name.
-// Warnings that require gcc compiler > 5.4 should be enabled with a gcc version check.
+// Warnings that require GCC compiler > 5.4 should be enabled in qmake file with a GCC version check.
 #    pragma GCC diagnostic ignored "-Wbool-compare"
 #    pragma GCC diagnostic ignored "-Wclass-memaccess"
 #    pragma GCC diagnostic ignored "-Wdeprecated"
+#    pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #    pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
 #    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"

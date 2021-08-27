@@ -57,12 +57,6 @@ Color4f::Color4f(const QColor &qc) {
     color[3] = qc.alphaF();
 }
 
-Color4f::Color4f(const Color4f &c) {
-    for (int i = 0; i < 4; ++i) {
-        color[i] = c.color[i];
-    }
-}
-
 float Color4f::operator[](unsigned int i) const {
     assert(i < 4);
     return color[i];

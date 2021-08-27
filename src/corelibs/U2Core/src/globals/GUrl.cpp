@@ -125,17 +125,12 @@ GUrl::GUrl(const QString &_urlString) {
 }
 
 // constructs url specified by string. The type provided as param
-GUrl::GUrl(const QString &_urlString, const GUrlType _type) {
+GUrl::GUrl(const QString &_urlString, const GUrlType& _type) {
     urlString = _urlString;
     type = _type;
     if (type == GUrl_File) {
         urlString = makeFilePathCanonical(urlString);
     }
-}
-
-GUrl::GUrl(const GUrl &anotherUrl) {
-    urlString = anotherUrl.getURLString();
-    type = anotherUrl.getType();
 }
 
 bool GUrl::operator==(const GUrl &url) const {

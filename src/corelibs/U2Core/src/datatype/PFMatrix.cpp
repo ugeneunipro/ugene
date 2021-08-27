@@ -67,7 +67,7 @@ QMap<QString, QString> JasparInfo::getProperties() const {
     return properties;
 }
 
-PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, PFMatrixType _type)
+PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, const PFMatrixType& _type)
     : type(_type) {
     assert(align->hasEqualLength());
     const int sequenceLength = align->getMsaRows().first()->getUngappedLength();
@@ -97,7 +97,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, PFMatrixType _type)
     }
 }
 
-PFMatrix::PFMatrix(const QList<DNASequence *> &seq, PFMatrixType _type)
+PFMatrix::PFMatrix(const QList<DNASequence *> &seq, const PFMatrixType& _type)
     : type(_type) {
     assert(seq.length() > 0);
 

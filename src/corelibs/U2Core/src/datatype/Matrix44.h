@@ -32,11 +32,8 @@ class U2CORE_EXPORT Matrix44 {
 public:
     Matrix44();
     Matrix44(const float *data);
-    Matrix44(const Matrix44 &other);
+    Matrix44(const Matrix44 &) = default;
 
-    Matrix44 &operator=(const Matrix44 &other);
-
-    void loadZero();
     void loadIdentity();
 
     void transpose();

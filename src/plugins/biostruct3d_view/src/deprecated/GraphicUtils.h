@@ -51,7 +51,7 @@ private:
 public:
     Color4f();
     Color4f(float r, float g, float b, float a = 1.0);
-    Color4f(const Color4f &c);
+    Color4f(const Color4f &c) = default;
     Color4f(const QColor &qc);
 
     float operator[](unsigned int i) const;
