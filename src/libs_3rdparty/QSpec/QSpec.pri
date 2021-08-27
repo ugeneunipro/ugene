@@ -40,8 +40,6 @@ unix {
         QMAKE_RPATHDIR += @executable_path
         QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
     }
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
 }
 
 win32 {

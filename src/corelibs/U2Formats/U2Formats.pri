@@ -34,7 +34,3 @@ win32 {
 INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
 DESTDIR = ../../$$out_dir()
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}

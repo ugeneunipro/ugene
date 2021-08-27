@@ -26,7 +26,3 @@ win32-msvc2013 {
     DEFINES += NOMINMAX
 }
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}

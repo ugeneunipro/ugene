@@ -25,11 +25,6 @@ win32 {
     LIBS += psapi.lib
 }
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/plugins
-    INSTALLS += target
-}
-
 unix: {
     macx: {
         QMAKE_RPATHDIR += @executable_path/plugins/

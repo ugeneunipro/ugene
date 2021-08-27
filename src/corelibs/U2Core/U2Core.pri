@@ -15,8 +15,3 @@ DESTDIR = ../../$$out_dir()
 win32 {
     LIBS += User32.lib
 }
-
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}

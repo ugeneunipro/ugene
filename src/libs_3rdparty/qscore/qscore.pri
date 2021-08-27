@@ -48,8 +48,3 @@ unix: {
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
 }
-
-#unix {
-#    target.path = $$UGENE_INSTALL_DIR/
-#    INSTALLS += target
-#}

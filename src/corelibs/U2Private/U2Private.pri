@@ -8,11 +8,6 @@ LIBS += -lU2Core$$D -lU2Formats$$D -lbreakpad$$D
 INCLUDEPATH += ../../libs_3rdparty/breakpad/src
 DESTDIR = ../../$$out_dir()
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}
-
 freebsd {
     LIBS += -lexecinfo
 }

@@ -22,8 +22,3 @@ LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Lang$$D -lU2Private$$D -
 LIBS += $$add_sqlite_lib()
 
 DESTDIR = ../../$$out_dir()
-
-unix {
-    target.path =   $$UGENE_INSTALL_DIR/
-    INSTALLS +=     target
-}
