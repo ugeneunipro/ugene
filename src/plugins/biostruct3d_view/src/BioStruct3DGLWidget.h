@@ -98,8 +98,6 @@ public:
     static bool checkShaderPrograms();
     static void tryGL();
 
-    static const double MINIMUM_ACCEPTABLE_VERSION;
-
 public:
     /*!
      * Constructor.
@@ -139,7 +137,7 @@ public:
     /*!
      * Restores default widget settings (viewMatrix, glRenderer, color scheme)
      */
-    void restoreDefaultSettigns();
+    void restoreDefaultSettings();
     /*!
      * @param delta Positive value: zoom in, negative value: zoom out.
      */
@@ -215,7 +213,7 @@ private:
     void loadColorSchemes();
 
     //! Creates actions for structural alignment
-    void createStrucluralAlignmentActions();
+    void createStructuralAlignmentActions();
 
     //! Creates menu for structural alignment
     QMenu *createStructuralAlignmentMenu();
@@ -243,13 +241,6 @@ private:
      */
     void updateAllRenderers();
 
-    //! Show/hide selected model for first biostruct
-    //! @param modelId - key from BioStruct3D::modelMap
-    void showModel(int modelId, bool show);
-
-    //! Show/hide all models for first biostruct
-    void showAllModels(bool show);
-
     /** Setup frame settings: camera clip, camera position */
     void setupFrame();
 
@@ -258,7 +249,6 @@ private:
     void connectExternalSignals();
 
     Vector3D getTrackballMapping(int x, int y);
-    static int getWidgetCount(QString objectName);
     bool isSyncModeOn();
 
     // Checks if this widget can render and creates a label with a text error if it cannot
@@ -335,12 +325,12 @@ private slots:
     void sl_selectColorScheme(QAction *action);
     void sl_selectGLRenderer(QAction *action);
     void sl_updateRenderSettings(const QStringList &list);
-    void sl_acitvateSpin();
-    void sl_updateAnnimation();
+    void sl_activateSpin();
+    void sl_updateAnimation();
     void sl_settings();
     void sl_exportImage();
 
-    // structural alignment relalated slots
+    // structural alignment related slots
     void sl_alignWith();
     void sl_resetAlignment();
     void sl_onAlignmentDone(Task *);
@@ -351,7 +341,7 @@ private slots:
     void sl_onSequenceSelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed);
 
     // slots for select/deselect shown models actions
-    // they affects only first biostruct
+    // they affect only first biostruct
     void sl_selectModels();
 
     // slots for surface renderers
@@ -366,7 +356,6 @@ private slots:
 public:
     static const QString BACKGROUND_COLOR_NAME;
 
-    static const QString PRODUCT_NAME;
     static const QString PLUGIN_NAME;
     static const QString COLOR_SCHEME_NAME;
     static const QString RENDERER_NAME;
@@ -380,4 +369,4 @@ public:
 
 }  // namespace U2
 
-#endif  // _U2_OPENGL_WIDGET_H
+#endif  // _U2_OPENGL_WIDGET_H_
