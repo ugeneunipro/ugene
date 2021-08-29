@@ -77,7 +77,7 @@ cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 # This way it will use 'opengl32.dll' (aka 'opengl32sw.dll') copied by us.
 # This is enough for UI testing on remote desktops with no native OpenGL support, but the library must not be included
 # into the release bundle, because it will override the native one.
-cp "${QT_DIR}/opengl32sw.dll" "${BUNDLE_DIR}/opengl32.dll"
+cp "${QT_DIR}/bin/opengl32sw.dll" "${BUNDLE_DIR}/opengl32.dll"
 
 mkdir "${BUNDLE_DIR}/styles"
 cp "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
