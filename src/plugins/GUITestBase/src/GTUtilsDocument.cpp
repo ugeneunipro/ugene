@@ -48,13 +48,11 @@ const QString GTUtilsDocument::DocumentUnloaded = "Unloaded";
 
 #define GT_METHOD_NAME "getDocument"
 Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &documentName, const GTGlobals::FindOptions &options) {
+    Project *project = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
-        Project *project = AppContext::getProject();
-        GT_CHECK_RESULT(project != nullptr || !options.failIfNotFound, "Project does not exist", nullptr);
-        if (project == nullptr && !options.failIfNotFound) {
-            return nullptr;
-        }
-        if (project == nullptr) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        project = AppContext::getProject();
+        if (project == nullptr) {  // Wait up to 'GT_OP_WAIT_MILLIS' before failing.
             continue;
         }
         QList<Document *> documents = project->getDocuments();
@@ -66,6 +64,9 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
         if (!options.failIfNotFound) {
             return nullptr;
         }
+    }
+    if (project == nullptr) {
+        GT_FAIL("There is no project to check if document is present or not: " + documentName, nullptr);
     }
     GT_FAIL("Document is not found: " + documentName, nullptr);
 }

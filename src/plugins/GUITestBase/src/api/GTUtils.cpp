@@ -55,7 +55,7 @@ void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serv
 bool GTUtils::matchText(HI::GUITestOpStatus &os, const QString &textInTest, const QString &textInUi, const Qt::MatchFlags &matchFlags) {
     Qt::CaseSensitivity caseSensitivity = matchFlags.testFlag(Qt::MatchCaseSensitive) ? Qt::CaseSensitive : Qt::CaseInsensitive;
     if (matchFlags.testFlag(Qt::MatchExactly)) {
-        return QString::compare(textInUi, textInTest, caseSensitivity);
+        return QString::compare(textInTest, textInUi, caseSensitivity) == 0;
     } else if (matchFlags.testFlag(Qt::MatchContains)) {
         return textInUi.contains(textInTest, caseSensitivity);
     } else if (matchFlags.testFlag(Qt::MatchStartsWith)) {
