@@ -22,7 +22,6 @@
 #include <math.h>
 #include <time.h>
 
-#include <QColorDialog>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMouseEvent>
@@ -36,7 +35,6 @@
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BioStruct3D.h>
 #include <U2Core/BioStruct3DObject.h>
@@ -44,7 +42,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -658,9 +655,9 @@ void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
     GLenum error = glGetError();
     bool canRender = error == GL_NO_ERROR;
     if (!canRender) {
-        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
-                     QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
-        lblGlError = new QLabel("Failed to initialize OpenGL", this);
+        QString errorDetails = QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error)));
+        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") + errorDetails);
+        lblGlError = new QLabel("Failed to initialize OpenGL: " + errorDetails, this);
         lblGlError->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
         lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
     }
