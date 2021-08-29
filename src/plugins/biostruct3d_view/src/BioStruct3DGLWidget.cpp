@@ -658,6 +658,7 @@ void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
         QString errorDetails = QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error)));
         coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") + errorDetails);
         lblGlError = new QLabel("Failed to initialize OpenGL: " + errorDetails, this);
+        lblGlError->setObjectName("opengl_initialization_error_label");
         lblGlError->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
         lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
     }

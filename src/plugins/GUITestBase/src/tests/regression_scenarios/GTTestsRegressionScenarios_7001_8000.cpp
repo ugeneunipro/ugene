@@ -26,7 +26,6 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
@@ -162,26 +161,24 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7043) {
-    // 1. Open data/samples/PDB/1CF7.pdb
-    // 2. Check that you see 3D struct or black screen with text "Failed to initialize OpenGL"
+    // Check that you see 3D struct is rendered correctly.
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto biostructWidget = GTWidget::findWidget(os, "1-1CF7");
-    const QImage image1 = GTWidget::getImage(os, biostructWidget, true);
+    QImage image1 = GTWidget::getImage(os, biostructWidget, true);
     QSet<QRgb> colors;
     for (int i = 0; i < image1.width(); i++) {
         for (int j = 0; j < image1.height(); j++) {
             colors << image1.pixel(i, j);
         }
     }
-    bool isPicture = colors.size() > 100;  // Usually 875 colors are drawn for 1CF7.pdb
+    // Usually 875 colors are drawn for 1CF7.pdb.
+    CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed");
 
-    auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
-    bool isError = errorLbl.size() > 0;
-
-    // There must be one thing: either a picture or an error
-    CHECK_SET_ERR(isPicture != isError, "Biostruct was not drawn or error label wasn't displayed");
+    // There must be no error message on the screen.
+    QLabel* errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
+    CHECK_SET_ERR(errorLabel == nullptr, "Found 'Failed to initialize OpenGL' label");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7044) {
@@ -494,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
         void run(HI::GUITestOpStatus &os) {
             GTWidget::getActiveModalWidget(os);
 
-            GTUtilsWizard::setInputFiles(os, {{ QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath() }});
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(dataDir + "primer3/drosophila.w.transposons.txt").absoluteFilePath());
@@ -504,11 +501,11 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
         }
     };
 
-    //1. Open WD and choose the "In Silico PCR" sample.
-    //2. Select "Read Sequence", add data\samples\fasta\human_T1.fa
-    //3. Select "In Silico PCR" item, add "add "\data\primer3\drosophila.w.transposons"
-    //4. Run
-    //Expected state: no crash
+    // 1. Open WD and choose the "In Silico PCR" sample.
+    // 2. Select "Read Sequence", add data\samples\fasta\human_T1.fa
+    // 3. Select "In Silico PCR" item, add "add "\data\primer3\drosophila.w.transposons"
+    // 4. Run
+    // Expected state: no crash
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
