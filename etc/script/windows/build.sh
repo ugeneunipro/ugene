@@ -70,15 +70,6 @@ cp "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
-# Software mode fallback impl of OpenGL.
-# When OpenGL initialization is managed by QT 'opengl32sw.dll' is used as a fallback in case if no system
-# implementation of OpenGL is available.
-# UGENE today does delegate OpenGL initialization to QT and uses the first 'opengl32.dll' found by the library loader.
-# This way it will use 'opengl32.dll' (aka 'opengl32sw.dll') copied by us.
-# This is enough for UI testing on remote desktops with no native OpenGL support, but the library must not be included
-# into the release bundle, because it will override the native one.
-cp "${QT_DIR}/bin/opengl32sw.dll" "${BUNDLE_DIR}/opengl32.dll"
-
 mkdir "${BUNDLE_DIR}/styles"
 cp "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
 
