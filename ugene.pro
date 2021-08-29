@@ -80,10 +80,6 @@ use_opencl() {
     SUBDIRS += src/plugins/opencl_support
 }
 
-without_non_free() {
-    SUBDIRS -= src/plugins_3rdparty/psipred
-}
-
 #foreach 'language'
 for( i, UGENE_TRANSL_IDX ) {
     UGENE_TRANSLATIONS =

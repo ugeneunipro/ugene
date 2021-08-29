@@ -217,34 +217,3 @@ D=
 is_debug_build() {
     D=d
 }
-
-#Variable enabling exclude list for ugene non-free modules
-defineTest( without_non_free ) {
-    contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
-    return (false)
-}
-
-#Check minimal Qt version
-# Taken from Qt Creator project files
-defineTest(minQtVersion) {
-    maj = $$1
-    min = $$2
-    patch = $$3
-    isEqual(QT_MAJOR_VERSION, $$maj) {
-        isEqual(QT_MINOR_VERSION, $$min) {
-            isEqual(QT_PATCH_VERSION, $$patch) {
-                return(true)
-            }
-            greaterThan(QT_PATCH_VERSION, $$patch) {
-                return(true)
-            }
-        }
-        greaterThan(QT_MINOR_VERSION, $$min) {
-            return(true)
-        }
-    }
-    greaterThan(QT_MAJOR_VERSION, $$maj) {
-        return(true)
-    }
-    return(false)
-}

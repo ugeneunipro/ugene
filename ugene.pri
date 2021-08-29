@@ -1,14 +1,5 @@
 include( src/ugene_globals.pri )
 
-isEmpty(QT_VERSION) {
-    error("QT_VERSION is not defined.")
-}
-
-!minQtVersion(5, 12, 0) {
-    message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.12.0.")
-}
-
 TEMPLATE = subdirs
 
 CONFIG += ordered debug_and_release
@@ -18,6 +9,8 @@ use_opencl() {
 }
 
 message("Qt version is $${QT_VERSION}")
+!versionAtLeast(QT_VERSION, 5.12.0):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
+!versionAtMost(QT_VERSION, 5.15.99):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
 
 # create target build & plugin folders (to copy licenses/descriptors to)
 mkpath($$OUT_PWD/src/_debug/plugins)

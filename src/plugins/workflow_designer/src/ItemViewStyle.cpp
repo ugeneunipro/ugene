@@ -523,9 +523,7 @@ void ExtendedProcStyle::linkHovered(const QString &url) {
 HintItem::HintItem(const QString &text, QGraphicsItem *parent)
     : QGraphicsTextItem(text, parent), dragging(false) {
     setFlag(QGraphicsItem::ItemIsSelectable);
-#if (QT_VERSION >= QT_VERSION_CHECK(4, 6, 0))
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-#endif
     document()->setDefaultTextOption(QTextOption(Qt::AlignCenter));
     setTextWidth(qMin(3 * R, document()->idealWidth()));
     QRectF tb = boundingRect();

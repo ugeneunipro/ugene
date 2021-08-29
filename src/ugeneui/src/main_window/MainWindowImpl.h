@@ -61,7 +61,6 @@ public slots:
 private slots:
     // Workaround for QTBUG-17428
     void sysContextMenuAction(QAction *);
-    void closeSubWindow(int);
 };
 
 class MainWindowImpl : public MainWindow {

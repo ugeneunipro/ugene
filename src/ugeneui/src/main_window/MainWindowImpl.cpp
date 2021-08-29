@@ -511,16 +511,6 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
     }
 }
 
-void FixedMdiArea::closeSubWindow(int idx) {
-    Q_UNUSED(idx);
-    // We use Qt greater than 4.8.0
-    // this workaround can be removed
-    // do it accurately
-#if QT_VERSION < 0x040800  // In Qt version 4.8.0 was added default behavior for closing tab.
-    subWindowList().at(idx)->close();
-#endif
-}
-
 // Workaround for QTBUG-17428: Superfluous RestoreAction for tabbed QMdiSubWindows
 void FixedMdiArea::sysContextMenuAction(QAction *action) {
     if (viewMode() == QMdiArea::TabbedView && activeSubWindow()) {
