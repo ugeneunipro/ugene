@@ -2435,7 +2435,6 @@ GUI_TEST_CLASS_DEFINITION(test_3398_1) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2455,7 +2454,6 @@ GUI_TEST_CLASS_DEFINITION(test_3398_2) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2475,7 +2473,6 @@ GUI_TEST_CLASS_DEFINITION(test_3398_3) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.
@@ -2495,7 +2492,6 @@ GUI_TEST_CLASS_DEFINITION(test_3398_4) {
     //    Expected state: an unloaded document appears, there are no objects within.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Document *doc = GTUtilsDocument::getDocument(os, "data_in_the_name_line.fa");
-    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(!doc->isLoaded(), "Document is unexpectedly loaded");
 
     //    3. Call context menu on the document.

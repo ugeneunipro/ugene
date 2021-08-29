@@ -20,6 +20,7 @@
  */
 
 #include "GTUtilsDocument.h"
+#include <api/GTUtils.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -46,29 +47,33 @@ const QString GTUtilsDocument::DocumentUnloaded = "Unloaded";
 #define GT_CLASS_NAME "GTUtilsDocument"
 
 #define GT_METHOD_NAME "getDocument"
-Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &documentName) {
-    Project *p = AppContext::getProject();
-    GT_CHECK_RESULT(p != nullptr, "Project does not exist", nullptr);
-
-    QList<Document *> docs = p->getDocuments();
-    foreach (Document *d, docs) {
-        if (d && (d->getName() == documentName)) {
-            return d;
+Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &documentName, const GTGlobals::FindOptions &options) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        Project *project = AppContext::getProject();
+        GT_CHECK_RESULT(project != nullptr || !options.failIfNotFound, "Project does not exist", nullptr);
+        if (project == nullptr && !options.failIfNotFound) {
+            return nullptr;
+        }
+        if (project == nullptr) {
+            continue;
+        }
+        QList<Document *> documents = project->getDocuments();
+        for (Document *document : qAsConst(documents)) {
+            if (GTUtils::matchText(os, documentName, document->getName(), options.matchPolicy)) {
+                return document;
+            }
+        }
+        if (!options.failIfNotFound) {
+            return nullptr;
         }
     }
-
-    return nullptr;
+    GT_FAIL("Document is not found: " + documentName, nullptr);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkDocument"
 void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &documentName, const GObjectViewFactoryId &id) {
-    Document *document = nullptr;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && document == nullptr; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        document = getDocument(os, documentName);
-    }
-    GT_CHECK(document != nullptr, "There is no document with name " + documentName);
+    Document *document = getDocument(os, documentName);
     if (id.isEmpty()) {
         return;
     }

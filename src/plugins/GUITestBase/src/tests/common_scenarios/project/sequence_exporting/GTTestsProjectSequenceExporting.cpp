@@ -81,7 +81,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
     Document *doc1 = GTUtilsDocument::getDocument(os, "1.gb");
     Document *doc2 = GTUtilsDocument::getDocument(os, "2.gb");
-    CHECK_SET_ERR(doc1 != nullptr && doc2 != nullptr, "there are no documents 1.gb and 2.gb");
 
     CHECK_SET_ERR(!doc1->isLoaded(), "1.gb is loaded");
     CHECK_SET_ERR(!doc2->isLoaded(), "2.gb is loaded");

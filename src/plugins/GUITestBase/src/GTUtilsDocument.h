@@ -41,7 +41,11 @@ public:
 
     static void removeDocument(HI::GUITestOpStatus &os, const QString &documentName, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
-    static Document *getDocument(HI::GUITestOpStatus &os, const QString &documentName);
+    /**
+     * Finds document with the given name in the project.
+     * Waits until document is found or fails unless options.failIfNotFound is false.
+     */
+    static Document *getDocument(HI::GUITestOpStatus &os, const QString &documentName, const GTGlobals::FindOptions &options = {});
 
     static bool isDocumentLoaded(HI::GUITestOpStatus &os, const QString &documentName);
 

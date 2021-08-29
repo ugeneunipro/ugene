@@ -51,6 +51,22 @@ void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serv
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "matchText"
+bool GTUtils::matchText(HI::GUITestOpStatus &os, const QString &textInTest, const QString &textInUi, const Qt::MatchFlags &matchFlags) {
+    Qt::CaseSensitivity caseSensitivity = matchFlags.testFlag(Qt::MatchCaseSensitive) ? Qt::CaseSensitive : Qt::CaseInsensitive;
+    if (matchFlags.testFlag(Qt::MatchExactly)) {
+        return QString::compare(textInUi, textInTest, caseSensitivity);
+    } else if (matchFlags.testFlag(Qt::MatchContains)) {
+        return textInUi.contains(textInTest, caseSensitivity);
+    } else if (matchFlags.testFlag(Qt::MatchStartsWith)) {
+        return textInUi.startsWith(textInTest, caseSensitivity);
+    } else if (matchFlags.testFlag(Qt::MatchEndsWith)) {
+        return textInUi.endsWith(textInTest, caseSensitivity);
+    }
+    GT_FAIL("Unsupported match method: " + QString::number(matchFlags), false);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2
