@@ -41,6 +41,13 @@ public:
     static void checkExportServiceIsEnabled(HI::GUITestOpStatus &os) {
         checkServiceIsEnabled(os, "DNA export service");
     }
+
+    /**
+     * Match text from test with an actual text from UI according to the flag. Returns true if texts are matched.
+     * For all 'contains'-line matchers 'textInUi' is checked to contain 'textInTest'.
+     * If some match flag from the flags is not supported an error is set to 'os'.
+     */
+    static bool matchText(HI::GUITestOpStatus &os, const QString &textInTest, const QString &textInUi, const Qt::MatchFlags &matchFlags);
 };
 
 }  // namespace U2

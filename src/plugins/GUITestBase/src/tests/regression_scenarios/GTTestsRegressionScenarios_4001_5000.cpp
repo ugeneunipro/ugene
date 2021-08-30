@@ -2890,7 +2890,6 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
     Document *doc = GTUtilsDocument::getDocument(os, "murine.gb");
-    CHECK_SET_ERR(nullptr != doc, "Document is NULL");
     CHECK_SET_ERR(doc->isLoaded(), "Document is unexpectedly unloaded");
 }
 
