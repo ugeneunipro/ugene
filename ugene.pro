@@ -4,7 +4,7 @@ use_bundled_zlib() {
     SUBDIRS += src/libs_3rdparty/zlib
 }
 
-use_bundled_sqlite() {
+!use_system_sqlite() {
     SUBDIRS += src/libs_3rdparty/sqlite3
 }
 
