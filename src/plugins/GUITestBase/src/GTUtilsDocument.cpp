@@ -106,8 +106,7 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
         default:
             GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName));
             GTMouseDriver::click();
-            GTKeyboardDriver::keyPress(Qt::Key_Delete);
-            GTKeyboardDriver::keyRelease(Qt::Key_Delete);
+            GTKeyboardDriver::keyClick(Qt::Key_Delete);
             break;
     }
     GTUtilsTaskTreeView::waitTaskFinished(os);
