@@ -139,24 +139,25 @@ defineTest( unix_not_mac ) {
 
 
 # By default, UGENE uses bundled zlib.
-# To use system version on any platform set UGENE_USE_SYSTEM_ZLIB = 1
+# To use system version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
+# Note: on Linux libpng depends on the current zlib version, so use of the system zlib is recommended.
 
-defineTest( use_system_zlib ) {
-    contains( UGENE_USE_SYSTEM_ZLIB, 1 ) : return (true)
-    !win32: return (true)
+defineTest( use_bundled_zlib ) {
+    contains( UGENE_USE_BUNDLED_ZLIB, 1 ) : return (true)
+    win32: return (true)
     return (false)
 }
 
-use_system_zlib() {
-    DEFINES+=UGENE_USE_SYSTEM_ZLIB
+use_bundled_zlib() {
+    DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
 # A function to add zlib library to the list of libraries
 defineReplace(add_z_lib) {
-    use_system_zlib() {
-        RES = -lz
-    } else {
+    use_bundled_zlib() {
         RES = -lzlib$$D
+    } else {
+        RES = -lz
     }
     return ($$RES)
 }
