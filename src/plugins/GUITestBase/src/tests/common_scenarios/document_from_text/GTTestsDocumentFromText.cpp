@@ -1134,14 +1134,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
@@ -1166,14 +1165,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
@@ -1198,13 +1196,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
