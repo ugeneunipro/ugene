@@ -4,10 +4,6 @@ PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
 
-use_bundled_zlib() {
-    INCLUDEPATH += ../../libs_3rdparty/zlib/src
-}
-
 LIBS += $$add_z_lib()
 LIBS += -lsamtools$$D -lU2Script$$D
 

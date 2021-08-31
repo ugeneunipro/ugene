@@ -14,14 +14,6 @@ win32 {
     }
 }
 
-use_bundled_zlib() {
-    INCLUDEPATH += ../../libs_3rdparty/zlib/src
-}
-
-
-win32 : LIBS += -lwsock32
-
-
 INCLUDEPATH += src ../../include
 INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools
 INCLUDEPATH += ../../libs_3rdparty/samtools/src
