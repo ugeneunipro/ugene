@@ -129,7 +129,7 @@ echo " ##teamcity[blockClosed name='Check sign']"
 echo "##teamcity[blockOpened name='Pack']"
 cd ${APP_BUNDLE_DIR_NAME} || exit 1
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
-ditto -c -k --sequesterRsrc --keepParent Unipro\ UGENE.app ../"${RELEASE_FILE_NAME}"
+ditto -c -k --sequesterRsrc --keepParent "${APP_NAME}" ../"${RELEASE_FILE_NAME}"
 cd "${TEAMCITY_WORK_DIR}" || exit 1
 echo " ##teamcity[blockClosed name='Pack']"
 
