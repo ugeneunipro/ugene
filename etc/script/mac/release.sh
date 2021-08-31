@@ -27,6 +27,7 @@ rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
 rm -rf *.tar.gz
 rm -rf *.dmg
+rm -rf *.zip
 
 mkdir "${SYMBOLS_DIR}"
 
@@ -47,32 +48,41 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
-
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 
-# These tools can't be signed as is today and require some pre-processing.
-mv "${APP_EXE_DIR}/tools/python2/lib/python2.7" "${APP_CONTENTS_DIR}/Resources/"
-cd "${APP_EXE_DIR}/tools/python2/lib"
-ln -s "../../../../Resources/python2.7" .
-cd "${TEAMCITY_WORK_DIR}"
+# These tools can't be notarized today:
+#diamond:  "The binary uses an SDK older than the 10.9 SDK."
+rm -rf "${APP_EXE_DIR}/tools/diamond"
+#java8: "The executable does not have the hardened runtime enabled."
+rm -rf "${APP_EXE_DIR}/tools/java8"
+#kraken:  "The binary uses an SDK older than the 10.9 SDK."
+rm -rf "${APP_EXE_DIR}/tools/kraken"
+#python2.7: "The signature does not include a secure timestamp."
+rm -rf "${APP_EXE_DIR}/tools/python2"
+#stringtie:  "The binary uses an SDK older than the 10.9 SDK."
+rm -rf "${APP_EXE_DIR}/tools/stringtie"
+#tcoffee:  "The signature does not include a secure timestamp."
+rm -rf "${APP_EXE_DIR}/tools/tcoffee"
+#tophat2: "The binary uses an SDK older than the 10.9 SDK."
+rm -rf "${APP_EXE_DIR}/tools/tophat2"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
-REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
+# TODO REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
-  echo 'Bundle content validated successfully.'
-else
-  echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
-  diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
-  exit 1
-fi
+#TODO: if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
+#TODO:   echo 'Bundle content validated successfully.'
+#TODO: else
+#TODO:   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
+#TODO:   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
+#TODO:   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
+#TODO:   exit 1
+#TODO: fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
 
 echo "##teamcity[blockOpened name='Dump symbols']"
@@ -102,20 +112,27 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
-echo "##teamcity[blockOpened name='Sign app bundle']"
+echo "##teamcity[blockOpened name='Sign bundle']"
 codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
   "${APP_EXE_DIR}/ugeneui" || exit 1
-echo "##teamcity[blockClosed name='Sign app bundle']"
+echo "##teamcity[blockClosed name='Sign bundle']"
 
-echo "##teamcity[blockOpened name='Create DMG']"
-echo pkg-dmg running...
-RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
-"${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
-  --target "${RELEASE_FILE_NAME}" \
-  --volname "Unipro UGENE ${VERSION}" --symlink /Applications || exit 1
-echo "##teamcity[blockClosed name='Create DMG']"
+echo "##teamcity[blockOpened name='Check sign']"
+echo "------------------ codesign:"
+codesign -dv --verbose=4 "${APP_DIR}"
+echo "------------------- pkgutil:"
+pkgutil --check-signature "${APP_DIR}
+#TODO: check exit codes!
+echo " ##teamcity[blockClosed name='Check sign']"
 
-echo "##teamcity[blockOpened name='Notarize DMG']"
+echo "##teamcity[blockOpened name='Pack']"
+cd ${APP_BUNDLE_DIR_NAME} || exit 1
+RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
+ditto -c -k --sequesterRsrc --keepParent Unipro\ UGENE.app ../"${RELEASE_FILE_NAME}"
+cd "${TEAMCITY_WORK_DIR}" || exit 1
+echo " ##teamcity[blockClosed name='Pack']"
+
+echo "##teamcity[blockOpened name='Notarize']"
 bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
-echo "##teamcity[blockClosed name='Notarize DMG']"
+echo "##teamcity[blockClosed name='Notarize']"
