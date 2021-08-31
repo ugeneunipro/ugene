@@ -122,7 +122,7 @@ echo "##teamcity[blockOpened name='Check sign']"
 echo "------------------ codesign:"
 codesign -dv --verbose=4 "${APP_DIR}"
 echo "------------------- pkgutil:"
-pkgutil --check-signature "${APP_DIR}
+pkgutil --check-signature "${APP_DIR}"
 #TODO: check exit codes!
 echo " ##teamcity[blockClosed name='Check sign']"
 
