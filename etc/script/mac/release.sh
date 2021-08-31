@@ -75,14 +75,14 @@ echo "##teamcity[blockOpened name='Validate bundle content']"
 # TODO REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-#TODO: if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
-#TODO:   echo 'Bundle content validated successfully.'
-#TODO: else
-#TODO:   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
-#TODO:   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-#TODO:   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
-#TODO:   exit 1
-#TODO: fi
+if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
+  echo 'Bundle content validated successfully.'
+else
+  echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
+  diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
+  exit 1
+fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
 
 echo "##teamcity[blockOpened name='Dump symbols']"
