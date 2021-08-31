@@ -68,6 +68,8 @@ rm -rf "${APP_EXE_DIR}/tools/stringtie"
 rm -rf "${APP_EXE_DIR}/tools/tcoffee"
 #tophat2: "The binary uses an SDK older than the 10.9 SDK."
 rm -rf "${APP_EXE_DIR}/tools/tophat2"
+#wevote: "The binary uses an SDK older than the 10.9 SDK."
+rm -rf "${APP_EXE_DIR}/tools/wevote
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
