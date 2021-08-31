@@ -143,6 +143,7 @@ defineTest( unix_not_mac ) {
 
 defineTest( use_system_zlib ) {
     contains( UGENE_USE_SYSTEM_ZLIB, 1 ) : return (true)
+    !win32: return (true)
     return (false)
 }
 
