@@ -1,5 +1,5 @@
-#ifdef UGENE_USE_BUNDLED_ZLIB
-#    include "../../../libs_3rdparty/zlib/src/zlib.h"
-#else
+#ifdef UGENE_USE_SYSTEM_ZLIB
 #    include <zlib.h>
+#else
+#    include "../../../libs_3rdparty/zlib/src/zlib.h"
 #endif

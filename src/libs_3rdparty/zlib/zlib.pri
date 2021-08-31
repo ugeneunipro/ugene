@@ -3,7 +3,7 @@ include( ../../ugene_globals.pri )
 TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib
 DEFINES+= _CRT_SECURE_NO_WARNINGS
-INCLUDEPATH += src
+INCLUDEPATH += src ../../include
 
 TARGET = zlib$$D
 DESTDIR = ../../$$out_dir()

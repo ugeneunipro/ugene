@@ -1,6 +1,6 @@
 include(ugene.pri)
 
-use_bundled_zlib() {
+!use_system_zlib() {
     SUBDIRS += src/libs_3rdparty/zlib
 }
 

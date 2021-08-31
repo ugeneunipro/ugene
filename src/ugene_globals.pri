@@ -138,28 +138,24 @@ defineTest( unix_not_mac ) {
 }
 
 
-# By default, UGENE uses bundled zlib on Windows (libs_3rdparty/zlib) and OS version on Linux.
-# To use bundled version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
+# By default, UGENE uses bundled zlib.
+# To use system version on any platform set UGENE_USE_SYSTEM_ZLIB = 1
 
-defineTest( use_bundled_zlib ) {
-    contains( UGENE_USE_BUNDLED_ZLIB, 1 ) : return (true)
-    contains( UGENE_USE_BUNDLED_ZLIB, 0 ) : return (false)
-    win32 {
-        return (true)
-    }
+defineTest( use_system_zlib ) {
+    contains( UGENE_USE_SYSTEM_ZLIB, 1 ) : return (true)
     return (false)
 }
 
-use_bundled_zlib() {
-    DEFINES+=UGENE_USE_BUNDLED_ZLIB
+use_system_zlib() {
+    DEFINES+=UGENE_USE_SYSTEM_ZLIB
 }
 
 # A function to add zlib library to the list of libraries
 defineReplace(add_z_lib) {
-    use_bundled_zlib() {
-        RES = -lzlib$$D
-    } else {
+    use_system_zlib() {
         RES = -lz
+    } else {
+        RES = -lzlib$$D
     }
     return ($$RES)
 }
