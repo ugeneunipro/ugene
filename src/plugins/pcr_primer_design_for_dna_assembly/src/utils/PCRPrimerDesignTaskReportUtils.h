@@ -100,6 +100,6 @@ public:
     QString getTable() const;
 };
 
-}
+}  //namespace U2
 
 #endif  // _U2_PCR_PRIMER_DESIGN_TASK_REPORT_UTILS_H_
