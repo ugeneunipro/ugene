@@ -27,7 +27,6 @@
 #include <QMouseEvent>
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
-#include <QOpenGLShaderProgram>
 #include <QTime>
 
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
@@ -72,23 +71,6 @@
 namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
-
-bool BioStruct3DGLWidget::checkShaderPrograms() {
-    QOffscreenSurface surf;
-    surf.create();
-
-    QOpenGLContext ctx;
-    ctx.create();
-    ctx.makeCurrent(&surf);
-
-    bool opgl = QOpenGLShaderProgram::hasOpenGLShaderPrograms(&ctx);
-    if (!opgl) {
-        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. "
-                         "Please try to update drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
-    }
-
-    return opgl;
-}
 
 void BioStruct3DGLWidget::tryGL() {
     volatile QOpenGLWidget wgt;

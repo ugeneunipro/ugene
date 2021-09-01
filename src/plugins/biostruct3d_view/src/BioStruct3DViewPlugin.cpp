@@ -24,19 +24,16 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -72,15 +69,10 @@ namespace U2 {
  */
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    if (AppContext::getMainWindow()) {
-        BioStruct3DViewPlugin *plug = new BioStruct3DViewPlugin();
-        return plug;
-    }
-    return nullptr;
+    return AppContext::getMainWindow() != nullptr ? new BioStruct3DViewPlugin() : nullptr;
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
-    BioStruct3DGLWidget::checkShaderPrograms();
     BioStruct3DGLWidget::tryGL();
     return true;
 }
@@ -93,11 +85,8 @@ extern "C" Q_DECL_EXPORT QString *U2_PLUGIN_FAIL_MASSAGE_FUNC() {
 
 BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules.")) {
-    // Init plugin view context
-    if (BioStruct3DGLWidget::checkShaderPrograms()) {
-        viewContext = new BioStruct3DViewContext(this);
-        viewContext->init();
-    }
+    viewContext = new BioStruct3DViewContext(this);
+    viewContext->init();
 }
 
 BioStruct3DViewPlugin::~BioStruct3DViewPlugin() {
