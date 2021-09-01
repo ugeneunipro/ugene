@@ -295,30 +295,30 @@
         <translation>Открыть второй файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="143"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="142"/>
         <source>Select a file with a sequence to build dotplot!</source>
         <translation>Выберите файл с последовательностью!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="145"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="142"/>
         <source>Select first file with a sequence to build dotplot!</source>
         <translation>Выберите первый файл с последовательностью!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="146"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="143"/>
         <source>Input the second sequence or check the &apos;Compare sequence against itself&apos; option.</source>
         <translation>Выберите вторую последовательность или выберите опцию &apos;Сравнить последовательность саму с собой&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="155"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="163"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="152"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="160"/>
         <source>Unable to detect file format %1.</source>
         <translation>Невозможно определить формат файла %1.</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="147"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="155"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="163"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="144"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="152"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="160"/>
         <source>Select files</source>
         <translation>Выберите файлы</translation>
     </message>
@@ -565,58 +565,57 @@
         <translation>Текущая и загружаемая последовательность различаются. Продолжить загрузку?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="671"/>
         <source>Sequence size is too large!</source>
-        <translation>Последовательность слишком большая!</translation>
+        <translation type="vanished">Последовательность слишком большая!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="705"/>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
+        <location filename="../src/DotPlotWidget.cpp" line="700"/>
         <source>Invalid sequence</source>
         <translation>Некорректная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="705"/>
+        <location filename="../src/DotPlotWidget.cpp" line="695"/>
         <source>First selected sequence is invalid</source>
         <translation>Первая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="710"/>
+        <location filename="../src/DotPlotWidget.cpp" line="700"/>
         <source>Second selected sequence is invalid</source>
         <translation>Вторая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="718"/>
+        <location filename="../src/DotPlotWidget.cpp" line="708"/>
         <source>Wrong alphabet types</source>
         <translation>Неправильные типы алфавитов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="718"/>
+        <location filename="../src/DotPlotWidget.cpp" line="708"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Обе последовательности должны иметь одинаковый алфавит</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="795"/>
+        <location filename="../src/DotPlotWidget.cpp" line="785"/>
         <source>Save dot-plot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="795"/>
+        <location filename="../src/DotPlotWidget.cpp" line="785"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Сохранить данные dotplot перед закрытием?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="933"/>
+        <location filename="../src/DotPlotWidget.cpp" line="923"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Некорректные параметры!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="984"/>
+        <location filename="../src/DotPlotWidget.cpp" line="974"/>
         <source>Dotplot is calculating...</source>
         <translation>Выполняется расчёт...</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1031"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1021"/>
         <source> (min length %1, identity %2%)</source>
         <translation>(мин. длина %1, идентичность %2%)</translation>
     </message>

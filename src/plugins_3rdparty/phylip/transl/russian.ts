@@ -82,12 +82,12 @@ It could cause an error. Do you want to continue?</source>
 <context>
     <name>U2::PhylipCmdlineTask</name>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="54"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="53"/>
         <source>PHYLIP command line wrapper task</source>
         <translation>PHYLIP command line wrapper task</translation>
     </message>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="76"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="75"/>
         <source>No tree objects found.</source>
         <translation>No tree objects found.</translation>
     </message>
@@ -108,7 +108,7 @@ It could cause an error. Do you want to continue?</source>
 <context>
     <name>U2::PhylipTask</name>
     <message>
-        <location filename="../src/PhylipTask.cpp" line="33"/>
+        <location filename="../src/PhylipTask.cpp" line="34"/>
         <source>PHYLIP task</source>
         <translation>PHYLIP task</translation>
     </message>

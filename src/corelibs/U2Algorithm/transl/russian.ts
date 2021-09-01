@@ -92,47 +92,47 @@
 <context>
     <name>U2::AlignInAminoFormTask</name>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="93"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="94"/>
         <source>Align in amino form</source>
         <translation>Выравнивание в амино форму</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="102"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="103"/>
         <source>Invalid MSA object detected</source>
         <translation>Обнаружен некорректный MSA объект</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="103"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
         <source>AlignInAminoFormTask: Input alphabet is not nucleic!</source>
         <translation>AlignInAminoFormTask: Входной алфавит не является нуклеотидным!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="104"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="105"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignInAminoFormTask: Входное выравнивание пустое!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="111"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="112"/>
         <source>Invalid applications settings detected</source>
         <translation>Обнаружены некорректные настройки приложений</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="114"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="115"/>
         <source>Invalid users applications settings detected</source>
         <translation>Обнаружены некорректные настройки приложений</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="121"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="122"/>
         <source>Invalid MSA document detected</source>
         <translation>Обнаружен некорректный MSA документ</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="141"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="142"/>
         <source>NULL clonedObj in AlignInAminoFormTask::prepare!</source>
         <translation>NULL clonedObj in AlignInAminoFormTask::prepare!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="150"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="151"/>
         <source>Can not find row %1 in original alignment.</source>
         <translation>Строка %1 не может быть найдена в исходном выравнивании.</translation>
     </message>
@@ -197,12 +197,12 @@
 <context>
     <name>U2::CreateSubalignmentTask</name>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="49"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="58"/>
         <source>Create sub-alignment: %1</source>
         <translation>Создание участка выравнивания: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="80"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="103"/>
         <source>Document is locked: %1</source>
         <translation>Документ заблокирован: %1</translation>
     </message>
@@ -711,8 +711,8 @@ For every column selects the most rare symbol in the whole alignment with percen
         <translation>Неудачная попытка получения msa из dbi</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="405"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="407"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="404"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="406"/>
         <source>Failed to update row gap model</source>
         <translation>Неудачная попытка обновить модель пробелов строк</translation>
     </message>

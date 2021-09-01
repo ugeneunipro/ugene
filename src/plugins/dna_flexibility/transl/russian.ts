@@ -99,7 +99,7 @@
 <context>
     <name>U2::DNAFlexGraphFactory</name>
     <message>
-        <location filename="../src/DNAFlexGraph.cpp" line="42"/>
+        <location filename="../src/DNAFlexGraph.cpp" line="40"/>
         <source>DNA Flexibility</source>
         <translation>ДНК гибкость</translation>
     </message>
@@ -117,19 +117,16 @@
         <translation>Позволяет искать в ДНК районы высокой флексибильности.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="68"/>
         <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
-        <translation>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</translation>
+        <translation type="vanished">UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="71"/>
         <source>Out of memory during the DNA flexibility calculating.</source>
-        <translation>Out of memory during the DNA flexibility calculating.</translation>
+        <translation type="vanished">Out of memory during the DNA flexibility calculating.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="74"/>
         <source>Internal error occurred during the DNA flexibility calculating.</source>
-        <translation>Internal error occurred during the DNA flexibility calculating.</translation>
+        <translation type="vanished">Internal error occurred during the DNA flexibility calculating.</translation>
     </message>
 </context>
 <context>

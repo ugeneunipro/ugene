@@ -1644,22 +1644,22 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="812"/>
         <source>The path %1 does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь %1 не существует.</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="813"/>
         <source>The path %1 is not readable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно прочитать путь %1.</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="815"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="815"/>
         <source>Remove From List</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить из списка</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="958"/>
@@ -2018,12 +2018,12 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::StatisticalReportController</name>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="31"/>
+        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="34"/>
         <source>&lt;b&gt;Optional:&lt;/b&gt; Help make UGENE better by automatically sending anonymous usage statistics.</source>
         <translation>&lt;b&gt;Опционально:&lt;/b&gt; Помогите сделать UGENE лучше, автоматически отправляя анонимную статистику использования.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="34"/>
+        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="38"/>
         <source>Welcome to UGENE %1.%2</source>
         <translation>Добро пожаловать в UGENE %1.%2</translation>
     </message>

@@ -426,6 +426,10 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <source>Taxon ID</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Broken taxonomy tree: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::NgsReadsClassificationPlugin</name>

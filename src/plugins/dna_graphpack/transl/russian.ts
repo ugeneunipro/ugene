@@ -4,12 +4,12 @@
 <context>
     <name>U2::BaseContentGraphFactory</name>
     <message>
-        <location filename="../src/BaseContentGraph.cpp" line="38"/>
+        <location filename="../src/BaseContentGraph.cpp" line="37"/>
         <source>AG Content (%)</source>
         <translation>AG содержание (%)</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentGraph.cpp" line="40"/>
+        <location filename="../src/BaseContentGraph.cpp" line="39"/>
         <source>GC Content (%)</source>
         <translation>GC содержание (%)</translation>
     </message>
