@@ -73,8 +73,10 @@ namespace U2 {
 int BioStruct3DGLWidget::widgetCount = 0;
 
 void BioStruct3DGLWidget::tryGL() {
-    volatile QOpenGLWidget wgt;
-    Q_UNUSED(wgt);
+    // Basic OpenGL support must be provided for all platforms.
+    // If there is no vendor specific OpenGL driver UGENE must fall back to the software impl (see opengl32sw in Qt).
+    //    volatile QOpenGLWidget wgt;
+    //    Q_UNUSED(wgt);
 }
 
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
