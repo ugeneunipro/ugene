@@ -69,9 +69,9 @@ private:
 
     /**
      * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and store
-     * them in @forwardReports, @reverseReports, @userHeterodimer.
+     * them in userPrimersReports.
      */
-    void saveUserPrimersReports();
+    void generateUserPrimersReports();
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
@@ -100,10 +100,8 @@ private:
     U2Region b3Forward;
     U2Region b3Reverse;
 
-    //For report.
-    PCRPrimerDesignTaskReportUtils::UserPrimerReports forwardReports;
-    PCRPrimerDesignTaskReportUtils::UserPrimerReports reverseReports;
-    QString           userHeterodimer;
+    //Unwanted connections reports of user primers.
+    PCRPrimerDesignTaskReportUtils::UserPrimersReports userPrimersReports;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
     static constexpr int SECOND_PRIMER_OFFSET = 4;

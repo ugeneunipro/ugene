@@ -34,14 +34,10 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include <algorithm>
-
 #include "utils/UnwantedConnectionsUtils.h"
 #include "FindPresenceOfUnwantedParametersTask.h"
 #include "FindUnwantedIslandsTask.h"
 #include "UnwantedStructuresInBackboneDialog.h"
-
-#include <U2Core/PrimerStatistics.h>
 
 namespace U2 {
 
@@ -191,7 +187,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             break;
         }
     }
-    saveUserPrimersReports();
+    generateUserPrimersReports();
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
@@ -246,13 +242,7 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
-    using ReportUtils = PCRPrimerDesignTaskReportUtils;
-    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), ReportUtils::errMsg())
-
-    const bool areUserPrimersGood = ReportUtils::areUserPrimers(settings) &&
-        !ReportUtils::hasUserPrimersUnwantedConnections(forwardReports, reverseReports, userHeterodimer);
-    return "<br><br>" + ReportUtils::primersInfo(*this, sequence, areUserPrimersGood) +
-        ReportUtils::userPrimersUnwantedConnectionsInfo(settings, forwardReports, reverseReports, userHeterodimer);
+    return PCRPrimerDesignTaskReportUtils::generateReport(*this, sequence, userPrimersReports);
 }
 
 QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
@@ -489,7 +479,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
     }
 }
 
-void PCRPrimerDesignForDNAAssemblyTask::saveUserPrimersReports() {
+void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     if (settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty()) {
         if (settings.forwardUserPrimer.isEmpty() && settings.reverseUserPrimer.isEmpty()) {
             taskLog.details(tr("No user primers"));
@@ -507,22 +497,22 @@ void PCRPrimerDesignForDNAAssemblyTask::saveUserPrimersReports() {
               meltingT = settings.meltingPointExclude,
               dimerLen = settings.complementLengthExclude;
     const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer,
-            PCRPrimerDesignTaskReportUtils::UserPrimerReports& reports) {
+            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports& saveTo) {
         QString report_;
         if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, deltaG, meltingT, dimerLen, report_)) {
-            reports.selfdimer = report_;
+            saveTo.selfdimer = report_;
         }
         if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence, deltaG, meltingT, dimerLen, report_)) {
-            reports.fileSeq = report_;
+            saveTo.fileSeq = report_;
         }
         if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence, deltaG, meltingT,
                                                             dimerLen, report_)) {
-            reports.fileRevComplSeq = report_;
+            saveTo.fileRevComplSeq = report_;
         }
         for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
             if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, otherSeqInPcr, deltaG, meltingT, dimerLen,
                                                                 report_)) {
-                reports.other << report_;
+                saveTo.other << report_;
             }
         }
 
@@ -530,12 +520,12 @@ void PCRPrimerDesignForDNAAssemblyTask::saveUserPrimersReports() {
 
     const QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
     const QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
-    saveOnePrimerReports(forward, forwardReports);
-    saveOnePrimerReports(reverse, reverseReports);
+    saveOnePrimerReports(forward, userPrimersReports.forward);
+    saveOnePrimerReports(reverse, userPrimersReports.reverse);
 
     QString report_;
     if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, deltaG, meltingT, dimerLen, report_)) {
-        userHeterodimer = report_;
+        userPrimersReports.heterodimer = report_;
     }
 }
 

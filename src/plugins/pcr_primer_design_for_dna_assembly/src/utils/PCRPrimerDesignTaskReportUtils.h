@@ -22,10 +22,7 @@
 #ifndef _U2_PCR_PRIMER_DESIGN_TASK_REPORT_UTILS_H_
 #define _U2_PCR_PRIMER_DESIGN_TASK_REPORT_UTILS_H_
 
-#include <QString>
 #include <QStringList>
-
-#include <U2Core/U2Region.h>
 
 namespace U2 {
 
@@ -33,67 +30,74 @@ class PCRPrimerDesignForDNAAssemblyTask;
 struct PCRPrimerDesignForDNAAssemblyTaskSettings;
 
 struct PCRPrimerDesignTaskReportUtils {
-    //Stores reports of unwanted connections for one user primer.
-    struct UserPrimerReports {
-        QString     selfdimer;
-        QString     fileSeq;
-        QString     fileRevComplSeq;
+    //Saves all unwanted connection reports of both user primers.
+    struct UserPrimersReports;
+
+    //Returns PCRPrimerDesignForDNAAssemblyTask report. fileSequence must not be empty.
+    static QString generateReport(const PCRPrimerDesignForDNAAssemblyTask& task, const QByteArray& fileSequence,
+                                  const UserPrimersReports& reports);
+private:
+    /**
+     * To build a user primer unwanted connection table. Includes a header row, a forward user primer row, and a reverse
+     * user primer row. Number of columns varies.
+     * No validation of columns number when adding rows.
+     */
+    class UserPrimersTable;
+
+    /**
+     * Checks for unwanted user primer connections.
+     * If there are no connections, an empty string is returned.
+     * If so, information about them is returned:
+     *   selfdimer table and list of selfdimer reports,
+     *   heterodimer table and list of heterodimer reports.
+     */
+    static QString userPrimersUnwantedConnectionsInfo(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings,
+                                                      const UserPrimersReports& reports);
+};
+
+struct PCRPrimerDesignTaskReportUtils::UserPrimersReports {
+    /**
+     * Stores reports of unwanted connections of a single user primer. Includes selfdimer report and heterodimer
+     * reports with sequence from file, reverse complementary sequence from file, and other sequences in PCR reaction.
+     */
+    struct PrimerReports {
+        QString     selfdimer,
+                    fileSeq,
+                    fileRevComplSeq;
         QStringList other;
     };
 
-    //No validation of columns number when adding rows.
-    class UserPrimersTable {
-        const QString name;
-        const QStringList headers;
-        QList<bool> forwardRow;
-        QList<bool> reverseRow;
+    PrimerReports forward,      //Reports of unwanted connections of forward user primer.
+                  reverse;      //Reports of unwanted connections of reverse user primer.
+    QString       heterodimer;  //User primers heterodimer report.
 
-        QString getHeader() const;
-        QString getRow(const QList<bool>& row) const;
+    //Are there selfdimers?
+    bool hasSelfdimers() const;
+    //Are there heterodimers?
+    bool hasHeterodimers() const;
+    //Are there unwanted user primer connections?
+    bool hasUnwantedConnections() const;
+};
 
-    public:
-        UserPrimersTable(const QString& name, const QStringList& headers);
+class PCRPrimerDesignTaskReportUtils::UserPrimersTable {
+    const QString     name;        //Name of table.
+    const QStringList headers;     //Table column headers.
+    QList<bool>       forwardRow,  //Forward user primer row cell values.
+                      reverseRow;  //Reverse user primer row cell values.
 
-        void addForwardRow(const QList<bool>& row);
-        void addReverseRow(const QList<bool>& row);
-        QString getTable() const;
-    };
+    //Converts bool to string, wraps it in <td> tag, concatenates and returns cells of row.
+    QString getRow(const QList<bool>& row) const;
 
-    static QString errMsg();
-    static QString forwardUserPrimerStr();
-    static QString reverseUserPrimerStr();
-    static QString sequenceStr();
-    static QString revComplSeqStr();
-    static QString otherSequencesStr();
+public:
+    //Parameters must not be empty.
+    UserPrimersTable(const QString& name, const QStringList& headers);
 
-    static bool areUserPrimers(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings);
-    static bool hasHeterodimer(const UserPrimerReports& reports);
-    static bool hasUserPrimersUnwantedConnections(const UserPrimerReports& forward, const UserPrimerReports& reverse,
-                                                  const QString& userHeterodimer);
-
-    static QString primerHeader(const QString& primerName);
-    static QString primerToHtml(QString primer);
-    static QString checkPrimerAndGetInfo(const U2Region region, const QString& primerName, const bool isForward,
-                                         const QByteArray& sequence, const QString& backbone);
-    //All found primers + backbone in html format. User primers are good if both are specified and both have no unwanted
-    //connections.
-    static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask& task, const QByteArray& sequence,
-                               const bool areUserPrimersGood);
-
-    static QString selfdimerTable(const QString& forwardSelfdimer, const QString& reverseSelfdimer);
-    static QString returnReportIfAny(const QString& header, const QString& report);
-    static QString userSelfdimersInfo(const QString& forwardSelfdimer, const QString& reverseSelfdimer);
-    static QString heterodimersTable(const UserPrimerReports& forward, const UserPrimerReports& reverse,
-                                     const QString& userHeterodimer);
-    static QString concatenatePrimerNames(const QString& primer, const QString& sequence);
-    static QString heterodimerInfoForOnePrimer(const QString& primerName, const UserPrimerReports& reports);
-    static QString userHeterodimersInfo(const UserPrimerReports& forward, const UserPrimerReports& reverse,
-                                        const QString& userHeterodimer);
-    //Unwanted connections of user primers in html format.
-    static QString userPrimersUnwantedConnectionsInfo(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings,
-                                                      const UserPrimerReports& forward,
-                                                      const UserPrimerReports& reverse,
-                                                      const QString& userHeterodimer);
+    //Adds cell values to forward user primer row. List size must be equal to the number of columns (headers size).
+    void addForwardRow(const QList<bool>& row);
+    //Adds cell values to reverse user primer row. List size must be equal to the number of columns (headers size).
+    void addReverseRow(const QList<bool>& row);
+    //Builds table and returns non-empty html string.
+    QString getTable() const;
 };
 
 }
