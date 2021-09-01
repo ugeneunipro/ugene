@@ -322,6 +322,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             break;
         }
     }
+    generateUserPrimersReports();
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
@@ -376,24 +377,7 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
-    QString report("<br>"
-                   "<br>"
-                   "<h3>%1</h3>");
-    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), report.arg(tr("Error, see log.")))
-    if (aForward.isEmpty() && aReverse.isEmpty() && b1Forward.isEmpty() && b1Reverse.isEmpty() && b2Forward.isEmpty() &&
-        b2Reverse.isEmpty() && b3Forward.isEmpty() && b3Reverse.isEmpty()) {
-        return report.arg(tr("There are no primers that meet the specified parameters."));
-    }
-
-    report = report.arg(tr("Details:"));
-    report += tr("<div>"
-                 "<p><u>Underlined</u>&#8211;backbone sequence<br><b>Bold</b>&#8211;primer sequence</p>"
-                 "</div>");
-    report += getPairReport(aForward, aReverse, "A");
-    report += getPairReport(b1Forward, b1Reverse, "B1");
-    report += getPairReport(b2Forward, b2Reverse, "B2");
-    report += getPairReport(b3Forward, b3Reverse, "B3");
-    return report;
+    return PCRPrimerDesignTaskReportUtils::generateReport(*this, sequence, userPrimersReports);
 }
 
 QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
@@ -630,6 +614,56 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
     }
 }
 
+void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
+    if (settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty()) {
+        if (settings.forwardUserPrimer.isEmpty() && settings.reverseUserPrimer.isEmpty()) {
+            taskLog.details(tr("No user primers"));
+        }
+        else if (settings.forwardUserPrimer.isEmpty()) {
+            taskLog.error(tr("No forward user primer. Reverse user primer ignored"));
+        }
+        else if (settings.reverseUserPrimer.isEmpty()) {
+            taskLog.error(tr("No reverse user primer. Forward user primer ignored"));
+        }
+        return;
+    }
+
+    const int deltaG   = settings.gibbsFreeEnergyExclude,
+              meltingT = settings.meltingPointExclude,
+              dimerLen = settings.complementLengthExclude;
+    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer,
+            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports& saveTo) {
+        QString report_;
+        if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, deltaG, meltingT, dimerLen, report_)) {
+            saveTo.selfdimer = report_;
+        }
+        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence, deltaG, meltingT, dimerLen, report_)) {
+            saveTo.fileSeq = report_;
+        }
+        if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence, deltaG, meltingT,
+                                                            dimerLen, report_)) {
+            saveTo.fileRevComplSeq = report_;
+        }
+        for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
+            if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, otherSeqInPcr, deltaG, meltingT, dimerLen,
+                                                                report_)) {
+                saveTo.other << report_;
+            }
+        }
+
+    };
+
+    const QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
+    const QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
+    saveOnePrimerReports(forward, userPrimersReports.forward);
+    saveOnePrimerReports(reverse, userPrimersReports.reverse);
+
+    QString report_;
+    if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, deltaG, meltingT, dimerLen, report_)) {
+        userPrimersReports.heterodimer = report_;
+    }
+}
+
 bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteArray& primer) const {
     auto candidatePrimerDeltaG = PrimerStatistics::getDeltaG(primer);
     auto candidatePrimerMeltingTemp = PrimerStatistics::getMeltingTemperature(primer);
@@ -670,35 +704,6 @@ void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& 
 QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const {
     U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
     return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos());
-}
-
-QString PCRPrimerDesignForDNAAssemblyTask::getPairReport(U2Region forward,
-                                                         U2Region reverse,
-                                                         const QString &primerName) const {
-    QString report;
-    if (!forward.isEmpty()) {
-        report += tr("<h2>%1 Forward:</h2>").arg(primerName);
-
-        QString error = tr("Invalid region %1 for %2 forward sequence of length %3").
-            arg(forward.toString(), primerName).arg(sequence.length());
-        SAFE_POINT(forward.startPos > 0 && forward.startPos < sequence.length() && forward.length > 0, error,
-            report += tr("<h3>Error, see log.</h3>"))
-
-        report += QString("<div class=\"seq\"><u>%1</u><b>%2</b></div>").arg(QString(backboneSequence)).
-            arg(QString(sequence.mid(forward.startPos, forward.length)));
-    }
-    if (!reverse.isEmpty()) {
-        report += tr("<h2>%1 Reverse:</h2>").arg(primerName);
-
-        QString error = tr("Invalid region %1 for %2 reverse sequence of length %3").
-            arg(reverse.toString(), primerName).arg(sequence.length());
-        SAFE_POINT(reverse.startPos > 0 && reverse.startPos < sequence.length() && reverse.length > 0, error,
-            report += tr("<h3>Error, see log.</h3>"))
-
-        report += QString("<div class=\"seq\"><b>%1</b><u>%2</u></div>").
-            arg(QString(sequence.mid(reverse.startPos, reverse.length))).arg(QString(backboneSequence));
-    }
-    return report;
 }
 
 

@@ -25,6 +25,7 @@
 #include <U2Core/Task.h>
 
 #include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
+#include "utils/PCRPrimerDesignTaskReportUtils.h"
 
 namespace U2 {
 
@@ -65,7 +66,12 @@ private:
     void updatePrimerRegion(int& primerEnd, int& primerLength) const;
 
     QString regionToString(const U2Region& region, bool isComplement) const;
-    QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
+
+    /**
+     * Check user primers: if they aren't specified, write to log, otherwise find all unwanted connections and store
+     * them in userPrimersReports.
+     */
+    void generateUserPrimersReports();
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
@@ -93,6 +99,9 @@ private:
     U2Region b2Reverse;
     U2Region b3Forward;
     U2Region b3Reverse;
+
+    //Unwanted connections reports of user primers.
+    PCRPrimerDesignTaskReportUtils::UserPrimersReports userPrimersReports;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
     static constexpr int SECOND_PRIMER_OFFSET = 4;
