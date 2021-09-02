@@ -1581,7 +1581,7 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
     GTUtilsAnnotHighlightingTreeView::click(os, "CDS");
-    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(90, 0));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(165, 0));
     GTMouseDriver::click();
 
     QColor final = GTUtilsAnnotHighlightingTreeView::getItemColor(os, "CDS");

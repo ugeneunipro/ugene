@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     QPoint point = GTMouseDriver::getMousePosition();
 
-    GTMouseDriver::moveTo(point - QPoint(15, 0));  // move 15 pix left
+    GTMouseDriver::moveTo(point - QPoint(115, 0));  // move 15 pix left
     GTMouseDriver::press();
 
     GTMouseDriver::moveTo(point + QPoint(80, 0));  // move 80 pix right
