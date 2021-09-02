@@ -841,13 +841,6 @@
     </message>
 </context>
 <context>
-    <name>U2::ExportDNAChromatogramTask</name>
-    <message>
-        <source>Export chromatogram to SCF</source>
-        <translation type="vanished">Экспорт хроматограммы в SCF</translation>
-    </message>
-</context>
-<context>
     <name>U2::ExportMSA2MSADialog</name>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
@@ -980,10 +973,6 @@
     <message>
         <source>Export alignment to alignment: %1</source>
         <translation type="vanished">Экспортировать выравнивание в выравнивание: %1</translation>
-    </message>
-    <message>
-        <source>Nothing to export: multiple alignment is empty</source>
-        <translation type="vanished">Nothing to export: multiple alignment is empty</translation>
     </message>
     <message>
         <source>Out of memory</source>
