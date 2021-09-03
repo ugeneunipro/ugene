@@ -5,7 +5,6 @@ Qt5Gui.dll
 Qt5Multimedia.dll
 Qt5MultimediaWidgets.dll
 Qt5Network.dll
-Qt5OpenGL.dll
 Qt5Positioning.dll
 Qt5PrintSupport.dll
 Qt5Qml.dll
