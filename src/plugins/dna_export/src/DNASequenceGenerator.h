@@ -110,7 +110,7 @@ public:
 
     static QString prepareReferenceFileFilter();
 
-    static void generateSequence(const QMap<char, qreal> &charFreqs, int length, QByteArray &result);
+    static void generateSequence(const QMap<char, qreal> &charFreqs, int length, QByteArray &result, U2OpStatus& os);
 
     static void evaluateBaseContent(const DNASequence &sequence, QMap<char, qreal> &result);
 

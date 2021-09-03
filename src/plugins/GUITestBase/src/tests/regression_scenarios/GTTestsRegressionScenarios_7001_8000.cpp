@@ -758,6 +758,20 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7403) {
+    // Check that there is no crash when generating very large (2Gb) sequences.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7403.fa");
+    model.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    model.length = 2147483647;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    // Give the generator's task some time to warm up & cancel it.
+    GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::cancelTask(os, "Generate sequence task");
+    GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7404_1) {
     // Check sequence generator can produce a sequence percents set to 100 or 0: one non-zero value.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7404_1.fa");
