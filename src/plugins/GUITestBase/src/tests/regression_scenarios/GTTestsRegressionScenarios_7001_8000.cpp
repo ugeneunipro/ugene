@@ -776,10 +776,6 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
 
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7405.fa");
     model.referenceUrl = "/some-wrong-url";
-    model.percentA = 10;
-    model.percentC = 20;
-    model.percentG = 30;
-    model.percentT = 40;
     model.length = 100 * 1000 * 1000;
 
     GTLogTracer logTracer;
