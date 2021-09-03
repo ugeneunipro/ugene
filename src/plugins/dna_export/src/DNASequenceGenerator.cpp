@@ -183,9 +183,9 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
         const QString &docUrl = cfg.getReferenceUrl();
-        Project *prj = AppContext::getProject();
-        if (prj) {
-            Document *doc = prj->findDocumentByURL(docUrl);
+        Project *project = AppContext::getProject();
+        if (project) {
+            Document *doc = project->findDocumentByURL(docUrl);
             if (doc && doc->isLoaded()) {
                 QString err;
                 evalTask = createEvaluationTask(doc, err);
@@ -198,14 +198,11 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
             }
         }
 
-        loadRefTask = LoadDocumentTask::getDefaultLoadDocTask(GUrl(docUrl));
+        loadRefTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, GUrl(docUrl));
+        CHECK_OP(stateInfo, );
+        SAFE_POINT_EXT(loadRefTask != nullptr, stateInfo.setError(tr("Incorrect reference file: %1").arg(docUrl)), );
         loadRefTask->setSubtaskProgressWeight(getTaskProgressWeightPerPhase(cfg));
-        if (loadRefTask) {
-            addSubTask(loadRefTask);
-        } else {
-            stateInfo.setError(tr("Incorrect reference file"));
-            return;
-        }
+        addSubTask(loadRefTask);
     } else {
         generateTask = new GenerateDNASequenceTask(cfg.getContent(), cfg.getLength(), cfg.window, cfg.getNumberOfSequences(), cfg.seed);
         generateTask->setSubtaskProgressWeight(getTaskProgressWeightPerPhase(cfg));

@@ -48,11 +48,15 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
     GTSpinBox::setValue(os, "lengthSpin", model.length, dialog);
     GTSpinBox::setValue(os, "windowSpinBox", model.window, dialog);
 
-    GTRadioButton::click(os, "baseContentRadioButton", dialog);
-    GTSpinBox::setValue(os, "percentASpin", model.percentA, dialog);
-    GTSpinBox::setValue(os, "percentCSpin", model.percentC, dialog);
-    GTSpinBox::setValue(os, "percentGSpin", model.percentG, dialog);
-    GTSpinBox::setValue(os, "percentTSpin", model.percentT, dialog);
+    if (model.referenceUrl.isEmpty()) {
+        GTRadioButton::click(os, "baseContentRadioButton", dialog);
+        GTSpinBox::setValue(os, "percentASpin", model.percentA, dialog);
+        GTSpinBox::setValue(os, "percentCSpin", model.percentC, dialog);
+        GTSpinBox::setValue(os, "percentGSpin", model.percentG, dialog);
+        GTSpinBox::setValue(os, "percentTSpin", model.percentT, dialog);
+    } else {
+        GTLineEdit::setText(os, "inputEdit", model.referenceUrl, dialog);
+    };
 
     GTLineEdit::setText(os, "outputEdit", model.url, dialog);
 

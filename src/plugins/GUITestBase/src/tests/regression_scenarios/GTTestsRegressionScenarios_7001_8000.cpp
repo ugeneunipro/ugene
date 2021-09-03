@@ -494,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
         void run(HI::GUITestOpStatus &os) {
             GTWidget::getActiveModalWidget(os);
 
-            GTUtilsWizard::setInputFiles(os, {{ QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath() }});
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(dataDir + "primer3/drosophila.w.transposons.txt").absoluteFilePath());
@@ -504,11 +504,11 @@ GUI_TEST_CLASS_DEFINITION(test_7234) {
         }
     };
 
-    //1. Open WD and choose the "In Silico PCR" sample.
-    //2. Select "Read Sequence", add data\samples\fasta\human_T1.fa
-    //3. Select "In Silico PCR" item, add "add "\data\primer3\drosophila.w.transposons"
-    //4. Run
-    //Expected state: no crash
+    // 1. Open WD and choose the "In Silico PCR" sample.
+    // 2. Select "Read Sequence", add data\samples\fasta\human_T1.fa
+    // 3. Select "In Silico PCR" item, add "add "\data\primer3\drosophila.w.transposons"
+    // 4. Run
+    // Expected state: no crash
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
@@ -769,6 +769,26 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
         GTUtilsSequenceView::zoomIn(os);
         GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7405) {
+    // Check that UGENE does not crash when incorrect reference sequence name is used.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7405.fa");
+    model.referenceUrl = "/some-wrong-url";
+    model.percentA = 10;
+    model.percentC = 20;
+    model.percentG = 30;
+    model.percentT = 40;
+    model.length = 100 * 1000 * 1000;
+
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString error = logTracer.getJoinedErrorString();
+    CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
 }
 
 }  // namespace GUITest_regression_scenarios
