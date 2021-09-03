@@ -71,8 +71,10 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, 
         SAFE_POINT(percent >= 0 && percent <= 1, "Invalid frequency: " + QString::number(percent), );
         qint64 expectedCharCount = length * percent;
         quotaByChar[(uchar)ch] = expectedCharCount;
-        availableChars.append(ch);
-        total += expectedCharCount;
+        if (expectedCharCount > 0) {
+            availableChars.append(ch);
+            total += expectedCharCount;
+        }
     }
     SAFE_POINT(total >= 0 && total <= length, "Invalid total checksum", );
     quotaByChar[(uchar)chars[0]] += length - total;  // Fill the remaining (rounding error) with the first char.
@@ -442,8 +444,7 @@ void GenerateDNASequenceTask::run() {
         seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, QString("default"), false);
         CHECK_OP_BREAK(stateInfo);
 
-        for (int chunkCount = 0; chunkCount < length / window && !isCanceled();
-             chunkCount++) {
+        for (int chunkCount = 0; chunkCount < length / window && !isCanceled(); chunkCount++) {
             DNASequenceGenerator::generateSequence(baseContent, window, sequenceChunk);
             seqImporter.addBlock(sequenceChunk.constData(), sequenceChunk.length(), stateInfo);
             CHECK_OP_BREAK(stateInfo);

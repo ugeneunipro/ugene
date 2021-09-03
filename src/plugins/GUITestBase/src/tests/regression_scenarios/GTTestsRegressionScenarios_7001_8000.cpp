@@ -689,29 +689,16 @@ GUI_TEST_CLASS_DEFINITION(test_7367) {
 
     QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
     CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
-    qint64 a = 0, c = 0, g = 0, t = 0;
-    for (const QChar &ch : qAsConst(sequence)) {
-        switch (ch.toLatin1()) {
-            case 'A':
-                a++;
-                break;
-            case 'C':
-                c++;
-                break;
-            case 'G':
-                g++;
-                break;
-            case 'T':
-                t++;
-                break;
-            default:
-                CHECK_SET_ERR(false, QString("Got invalid character: ") + ch);
-        }
-    }
-    qint64 percentA = a * 100 / sequence.length();
-    qint64 percentC = c * 100 / sequence.length();
-    qint64 percentG = g * 100 / sequence.length();
-    qint64 percentT = t * 100 / sequence.length();
+    qint64 countA = sequence.count('A');
+    qint64 countC = sequence.count('C');
+    qint64 countG = sequence.count('G');
+    qint64 countT = sequence.count('T');
+    CHECK_SET_ERR(countA + countC + countG + countT == model.length,
+                  QString("A+C+G+T != sequence length, %1 != %2").arg(countA + countC + countG + countT).arg(sequence.length()));
+    qint64 percentA = countA * 100 / sequence.length();
+    qint64 percentC = countC * 100 / sequence.length();
+    qint64 percentG = countG * 100 / sequence.length();
+    qint64 percentT = countT * 100 / sequence.length();
 
     int diff = 2;  // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
     CHECK_SET_ERR(percentA >= model.percentA - diff && percentA <= model.percentA + diff, "Invalid percent of A: " + QString::number(percentA));
@@ -769,6 +756,51 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
         GTUtilsSequenceView::zoomIn(os);
         GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7404_1) {
+    // Check sequence generator can produce a sequence percents set to 100 or 0: one non-zero value.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7404_1.fa");
+    model.percentA = 100;
+    model.percentC = 0;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.length = 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(sequence.count('A') == model.length, "Percent of A is not equal to 100%");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7404_2) {
+    // Check sequence generator can produce a sequence percents set to 100 or 0: two non-zero values.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7404_1.fa");
+    model.url = sandBoxDir + "/test_7404_2.fa";
+    model.percentA = 50;
+    model.percentC = 50;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.length = 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+    int countA = sequence.count('A');
+    int countC = sequence.count('C');
+    int countG = sequence.count('G');
+    int countT = sequence.count('T');
+
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    CHECK_SET_ERR(countA == model.length / 2, "Invalid count of A: " + QString::number(countA));
+    CHECK_SET_ERR(countC == model.length / 2, "Invalid count of C: " + QString::number(countC));
+    CHECK_SET_ERR(countG == 0, "Invalid count of G: " + QString::number(countG));
+    CHECK_SET_ERR(countT == 0, "Invalid count of T: " + QString::number(countT));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7405) {
