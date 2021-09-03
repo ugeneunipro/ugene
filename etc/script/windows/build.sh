@@ -11,6 +11,9 @@ SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 BUILD_DIR="${SOURCE_DIR}/src/_release"
 
+# Include CUDA by default into the release build
+if [ -z "${UGENE_CUDA_DETECTED}" ]; then UGENE_CUDA_DETECTED="1"; fi
+
 rm -rf "${BUILD_DIR}"
 
 cd "${SOURCE_DIR}" || {
