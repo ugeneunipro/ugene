@@ -83,8 +83,8 @@ void GUITestThread::sl_testTimeOut() {
 QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
-    // Start all tests with some common mouse position.
-    GTMouseDriver::moveTo(QPoint(400, 300));
+    // Start all tests with some common mouse position. 'Click' ensures that UGENE app has the focus.
+    GTMouseDriver::click({100, 100});
 
     HI::GUITestOpStatus os;
     try {
@@ -95,7 +95,7 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
         }
     } catch (HI::GUITestOpStatus *) {
     }
-    // Run post checks if has error
+    // Run post checks if there is an error.
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
