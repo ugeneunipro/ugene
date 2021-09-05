@@ -51,36 +51,40 @@ namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view 
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileName = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsDocument::checkDocument(os, "1.gb", GTUtilsDocument::DocumentUnloaded);
-    GTUtilsDocument::checkDocument(os, "2.gb", GTUtilsDocument::DocumentUnloaded);
+    GTUtilsDocument::checkDocument(os, firstAnnFileName, GTUtilsDocument::DocumentUnloaded);
+    GTUtilsDocument::checkDocument(os, secondAnnFileName, GTUtilsDocument::DocumentUnloaded);
 
-    // 2. Double click on [a] Annotations sequence object, in project view tree
+    // 2. Double-click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+
+    // Check that export service was already loaded & is enabled.
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequences}
     // Expected state: Export sequences dialog open
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}, GTGlobals::UseMouse));
 
     // 4. Fill the next field in dialog:
     //     {Export to file:} _common_data/scenarios/sandbox/exp.fasta
@@ -88,57 +92,58 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //     {Add created document to project} set checked
     //
     // 5. Click Export button.
-    Runnable *filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
-                                                                     testDir + "_common_data/scenarios/sandbox/exp.fasta",
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(
+                                     os,
+                                     testDir + "_common_data/scenarios/sandbox/exp.fasta",
+                                     ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                     ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate));
 
-    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
+    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence view NC_001363 sequence has been opened, with sequence same as in 1.gb document
     GTUtilsDocument::checkDocument(os, "exp.fasta", AnnotatedDNAViewFactory::ID);
-
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileName = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsDocument::checkDocument(os, "1.gb", GTUtilsDocument::DocumentUnloaded);
-    GTUtilsDocument::checkDocument(os, "2.gb", GTUtilsDocument::DocumentUnloaded);
+    GTUtilsDocument::checkDocument(os, firstAnnFileName, GTUtilsDocument::DocumentUnloaded);
+    GTUtilsDocument::checkDocument(os, secondAnnFileName, GTUtilsDocument::DocumentUnloaded);
 
-    // 2. Double click on [a] Annotations sequence object, in project view tree
+    // 2. Double-click on the first annotations file, in project view tree.
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
     // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequence as alignment}
     // Expected state: Export sequences dialog open
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT, GTGlobals::UseMouse));
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}, GTGlobals::UseMouse));
 
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.aln and set 'file format to use' to CLUSTALW,
-    // Than to uncheck the 'add document to the project' checkbox and click Save button.
+    // Next to uncheck the 'add document to the project' checkbox and click Save button.
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os,
                                                            testDir + "_common_data/scenarios/sandbox/",
                                                            "exp2.aln",
@@ -151,9 +156,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/exp2.aln");
     GTUtilsDocument::checkDocument(os, "exp2.aln");
-
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -161,12 +163,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtils::checkExportServiceIsEnabled(os);
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
     GTMouseDriver::click();
 
     GTKeyboardUtils::selectAll();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}, GTGlobals::UseMouse));
 
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os,
                                                            testDir + "_common_data/scenarios/sandbox/",
@@ -209,16 +213,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtils::checkExportServiceIsEnabled(os);
+
     // 3. Right click [m] COI object, in project view tree. Use context menu item {Export->Export to FASTA}
     //    Expected state: Export alignment dialog open
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION}));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, false));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "Open New View",
-                                                      GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTThread::waitForMainThread();
 
@@ -234,17 +238,23 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtils::checkExportServiceIsEnabled(os);
+
     // 3. Right click [m] COI object, in project view tree. Use context menu item {Export->Export to FASTA}
     //    Expected state: Export alignment dialog open
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
-    GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION}));
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportToSequenceFormatFiller(os,
+                                                                  dataDir + " _common_data/scenarios/sandbox/",
+                                                                  "export1.fa",
+                                                                  ExportToSequenceFormatFiller::FASTA,
+                                                                  true,
+                                                                  true));
 
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "Open New View",
-                                                      GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
@@ -261,17 +271,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtils::checkExportServiceIsEnabled(os);
+
     // 3. Right click [m] COI object, in project view tree. Use context menu item {Export->Export to FASTA}
     //    Expected state: Export alignment dialog open
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION}));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, false));
 
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "Open New View",
-                                                      GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
@@ -284,30 +294,29 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    QString doc1 = "1.gb";
-    QString doc2 = "2.gb";
-    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    QString fileName = "proj4.uprj";
-    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileName = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
     QString firstAnnFileName = "1.gb";
-    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // Expected state: project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::click(os, doc1);
-    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
-    GTUtilsProjectTreeView::findIndex(os, doc2);
-    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, doc1), "Documents is not unloaded: " + doc1);
-    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, doc2), "Documents is not unloaded: " + doc2);
+    GTUtilsProjectTreeView::click(os, firstAnnFileName);
+    GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);  // checks inside
+    GTUtilsProjectTreeView::findIndex(os, secondAnnFileName);
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, firstAnnFileName), "Documents is not unloaded: " + firstAnnFileName);
+    CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, secondAnnFileName), "Documents is not unloaded: " + secondAnnFileName);
 
-    // Double click on [a] Annotations sequence object, in project view tree
+    // Double-click on [a] Annotations sequence object, in project view tree
     GTUtilsProjectTreeView::click(os, "Annotations");
     GTMouseDriver::doubleClick();
 
@@ -318,12 +327,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Use context menu item {Export->Export sequence as alignment}
     // Expected state: Export sequences dialog open
     // Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
-    // Than to uncheck the 'add document to the project' checkbox and click Save button.
+    // Next to uncheck the 'add document to the project' checkbox and click Save button.
     GTUtils::checkExportServiceIsEnabled(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
     GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.msf", ExportSequenceAsAlignmentFiller::Msf));
-    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
+    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
     GTMouseDriver::click(Qt::RightButton);
@@ -338,32 +347,32 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    const QString doc1("1.gb"), doc2("2.gb");
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileName = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
-    GTUtilsProjectTreeView::findIndex(os, doc2);
-    if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
+    GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);  // checks inside
+    GTUtilsProjectTreeView::findIndex(os, secondAnnFileName);
+    if (GTUtilsDocument::isDocumentLoaded(os, firstAnnFileName) || GTUtilsDocument::isDocumentLoaded(os, secondAnnFileName)) {
         os.setError("Documents is not unload");
         return;
     }
 
-    // 2. Double click on [a] Annotations sequence object, in project view tree
+    // 2. Double-click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
@@ -379,8 +388,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequence as alignment}
     // Expected state: Export sequences dialog open
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
-    // Than to uncheck the 'add document to the project' checkbox and click Save button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
+    // Next to uncheck the 'add document to the project' checkbox and click Save button.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.sto", ExportSequenceAsAlignmentFiller::Stockholm);
     GTUtilsDialog::waitForDialog(os, filler);
@@ -400,45 +409,41 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
     }
-
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
-    const QString doc1("1.gb"), doc2("2.gb");
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileName = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
-    GTUtilsProjectTreeView::findIndex(os, doc2);
-    if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
+    GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);  // checks inside
+    GTUtilsProjectTreeView::findIndex(os, secondAnnFileName);
+    if (GTUtilsDocument::isDocumentLoaded(os, firstAnnFileName) || GTUtilsDocument::isDocumentLoaded(os, secondAnnFileName)) {
         os.setError("Documents is not unload");
         return;
     }
 
-    // 2. Double click on [a] Annotations sequence object, in project view tree
+    // 2. Double-click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
+    auto activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;
@@ -447,8 +452,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequence as alignment}
     // Expected state: Export sequences dialog open
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
-    // Than to uncheck the 'add document to the project' check box and click Save button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
+    // Next to uncheck the 'add document to the project' check box and click Save button.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa", ExportSequenceAsAlignmentFiller::Fasta);
     GTUtilsDialog::waitForDialog(os, filler);
@@ -457,55 +462,52 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
-    GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
     }
-
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
-GUI_TEST_CLASS_DEFINITION(test_0007_2) {
-    const QString doc1("1.gb"), doc2("2.gb");
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
+GUI_TEST_CLASS_DEFINITION(test_0007_2) {
+    QString projectFilePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString projectFileNAme = "proj4.uprj";
+    QString firstAnnFilePath = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
+
+    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileNAme);
+    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTFileDialog::openFile(os, sandBoxDir, projectFileNAme);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    GTUtilsProjectTreeView::findIndex(os, doc1);  // checks inside
-    GTUtilsProjectTreeView::findIndex(os, doc2);
-    if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
+    GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);  // checks inside
+    GTUtilsProjectTreeView::findIndex(os, secondAnnFileName);
+    if (GTUtilsDocument::isDocumentLoaded(os, firstAnnFileName) || GTUtilsDocument::isDocumentLoaded(os, secondAnnFileName)) {
         os.setError("Documents is not unload");
         return;
     }
 
-    // 2. Double click on [a] Annotations sequence object, in project view tree
+    // 2. Double-click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
+    auto activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;
@@ -514,8 +516,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequence as alignment}
     // Expected state: Export sequences dialog open
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
-    // Than to uncheck the 'add document to the project' check box and click Save button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
+    // Next to uncheck the 'add document to the project' check box and click Save button.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg", ExportSequenceAsAlignmentFiller::Mega);
     GTUtilsDialog::waitForDialog(os, filler);
@@ -524,35 +526,33 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
-    GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
     }
-
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
     Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, true, true, true);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
@@ -560,7 +560,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
     Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, false);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
