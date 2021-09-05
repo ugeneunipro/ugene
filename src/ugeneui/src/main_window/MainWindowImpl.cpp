@@ -354,22 +354,42 @@ void MainWindowImpl::prepareGUI() {
 
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(viewOnlineDocumentation);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(showWhatsNewAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+    QMenu *helpMenu = menuManager->getTopLevelMenu(MWMENU_HELP);
+    helpMenu->addAction(viewOnlineDocumentation);
+    helpMenu->addSeparator();
+    helpMenu->addAction(visitWebAction);
+    helpMenu->addAction(showWhatsNewAction);
+    helpMenu->addAction(checkUpdateAction);
+    helpMenu->addSeparator();
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
     // TODO: re-test support for MAC OS before enabling.
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+    helpMenu->addAction(createDesktopShortcutAction);
+    helpMenu->addSeparator();
 #endif
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
+    helpMenu->addAction(welcomePageAction);
+    helpMenu->addAction(aboutAction);
     if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
-        menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
-        menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(crashUgeneAction);
+        helpMenu->addSeparator();
+        helpMenu->addAction(crashUgeneAction);
+    }
+
+    if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
+        helpMenu->addSeparator();
+
+        static int testNotificationCounter = 0;
+        auto addUniqueNotificationAction = new QAction(tr("Add unique notification"), this);
+        addUniqueNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_N);
+        connect(addUniqueNotificationAction, &QAction::triggered, [=]() {
+            testNotificationCounter++;
+            QString text = "Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4);
+            addNotification(text, Info_Not);
+        });
+        helpMenu->addAction(addUniqueNotificationAction);
+
+        auto addRepeatingNotificationAction = new QAction(tr("Add repeating notification"), this);
+        addRepeatingNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_M);
+        connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { addNotification("Repeating notification", Info_Not); });
+        helpMenu->addAction(addRepeatingNotificationAction);
     }
 
     mdiManager = new MWMDIManagerImpl(this, mdi);

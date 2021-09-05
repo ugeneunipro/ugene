@@ -32,6 +32,7 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPoint>
+#include <QPointer>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QTextEdit>
@@ -47,20 +48,22 @@
 
 namespace U2 {
 
-#define MAX_NOTIFICATION 100
+class NotificationStack;
 
 class U2GUI_EXPORT Notification : public QLabel {
     Q_OBJECT
 
 public:
-    Notification(const QString &message, NotificationType _type, QAction *_action = 0);
+    Notification(const QString &message, const NotificationType &type, QAction *action = nullptr);
 
-    void showNotification(int x, int y);
+    /** Start on-screen timer. The notification must be positioned & shown by the external controller. */
+    void startOnScreenTimer();
 
     const QString &getText() const;
 
-    NotificationType getType() const;
+    const NotificationType &getType() const;
 
+    /** Increments counter of the notification and re-sets on-screen timeout. */
     bool eventFilter(QObject *watched, QEvent *event) override;
 
     void incrementCounter();
@@ -71,8 +74,27 @@ public:
      */
     void switchEmbeddedVisualState();
 
+    /** Time to show notification popover in milliseconds. */
+    static constexpr int ON_SCREEN_TIMEOUT_MILLIS = 10 * 1000;
+
+    /**
+     * Returns timestamp in millis when the notification was shown on screen.
+     * Returns 0 for notifications not on screen.
+     */
+    qint64 getOnScreenStartTimeMillis() const;
+
+    /** Returns true if notification is shown on the screen. */
+    bool isOnScreen() const;
+
+    /** Registers notification state for the notification. Notification will notify the stack on some events like resize. */
+    void setNotificationStack(NotificationStack *newStack);
+
 private slots:
-    void sl_timeout();
+    /**
+     * Adjusts notification geometry or even hides it if it was on-screen longer than ON_SCREEN_TIMEOUT_MILLIS.
+     * Geometry of the notification may be changed if internal content (like 'counter') is updated.
+     */
+    void sl_updateNotificationState();
 
 private:
     void hideNotification();
@@ -82,7 +104,12 @@ private:
 signals:
     /** The signal is emitted after the notification is hidden. */
     void si_notificationHideEvent();
-    void si_delete();
+
+    /**
+     * The signal is emitted when notification wants to be removed/closed.
+     * The code must be processed by the original creator of the notification. Usually this is NotificationStack.
+     */
+    void si_deleteRequested();
 
 protected:
     bool event(QEvent *e) override;
@@ -90,13 +117,25 @@ protected:
 
 private:
     QAction *action;
-    QLabel *close;
-    QTimer timer;
+    QLabel *closeLabel;
+    QTimer onScreenTimer;
+
+    /** The stack this notification belongs too. */
+    QPointer<NotificationStack> stack;
+
+    /**
+     * Last recorded height in on-screen stack.
+     * The widget dynamically adapts to a new height and uses this field to track changes.
+     */
+    int lastOnScreenHeight = TT_HEIGHT;
 
     QString text;
     NotificationType type;
-    int timeCounter = 0;
-    // counter for duplicate notifications
+
+    /** Timestamp in millis (Unix epoch) when the notification was shown on the screen. */
+    qint64 onScreenStartTimeMillis = 0;
+
+    /** Counter for duplicate notifications. */
     int counter = 0;
 };
 
@@ -107,37 +146,52 @@ public:
     NotificationStack(QObject *o = nullptr);
     ~NotificationStack();
 
-    void addNotification(Notification *t);
+    /** Adds thr notification. Makes it floating on-screen. */
+    void addNotification(Notification *newNotification);
+
+    /** Returns number of notifications in the stack. */
     int count() const;
-    Notification *getNotification(int row) const;
-    QList<Notification *> getItems() const;
+
+    /** Shows stack widget with all notifications inside. */
     void showStack();
+
+    /** Returns true if there is at least 1 notification with error state. */
     bool hasError() const;
+
+    /** Toggles 'fixed' flag of notification stack widget. */
     void setFixed(bool val);
 
     /** Adds instance of Notification to the notification stack. */
-    static void addNotification(const QString &message, NotificationType type, QAction *action = 0);
+    static void addNotification(const QString &message, const NotificationType &type, QAction *action = 0);
+
+    /** Updates on-screen notifications positions. Compacts the onscreen stack. */
+    void updateOnScreenNotificationPositions();
+
+    /** Maximum notifications to keep in the stack. The stack includes all kind of notifications: both on screen and not. */
+    static constexpr int MAX_STACK_SIZE = 100;
 
 private slots:
-    /** Called when notification is hidden. The called is the 'Notification' instance. */
+    /** Called when notification is hidden. The caller is an instance of 'Notification'. */
     void sl_onNotificationHidden();
-    void sl_delete();
+
+    /** Called when notification wants to be deleted. The caller is an instance of 'Notification'. */
+    void sl_onNotificationDeleteRequest();
 
 signals:
+    /** Emitted when a new notification is added or removed from the stack. */
     void si_changed();
 
 private:
-    static QPoint getBottomRightOfMainWindow();  // because of Mac's strange behavior
+    /** Returns bottom position of the stack widget & on-screen floating notifications. */
+    static QPoint getBottomRightOfMainWindow();
 
     // Adds notification as a child to notification widget
-    void addToNotificationWidget(Notification *n);
+    void moveToNotificationWidget(Notification *t);
 
+    /** Container with all notifications. Shown when user clicks on notification icon in status bar. */
     NotificationWidget *notificationWidget;
 
     QList<Notification *> notifications;
-    QList<Notification *> notificationsOnScreen;
-    int notificationPosition;
-    int notificationNumber;
 };
 
 /**
