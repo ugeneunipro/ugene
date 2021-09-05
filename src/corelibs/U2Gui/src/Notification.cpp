@@ -35,40 +35,48 @@
 
 namespace U2 {
 
-/** Approximated status bar height. */
-static constexpr int STATUS_BAR_HEIGHT = 50;
+Notification::Notification(NotificationStack *_stack, const QString &_text, const NotificationType &_type, QAction *_action)
+    : action(_action), stack(_stack), text(_text), type(_type) {
+    SAFE_POINT(stack != nullptr, "Stack must be defined", );
 
-Notification::Notification(const QString &message, const NotificationType &_type, QAction *_action)
-    : action(_action), type(_type) {
     setFixedWidth(TT_WIDTH);
     setMinimumHeight(TT_HEIGHT);
 
-    QString time = "[" + QTime::currentTime().toString() + "] ";
-    text = time + message;
+    timestamp = QDateTime::currentMSecsSinceEpoch();
 
     setFrameStyle(QFrame::StyledPanel);
-    closeLabel = new QLabel(this);
+    closeButton = new QLabel(this);
     QBoxLayout *h = new QHBoxLayout(this);
     setLayout(h);
-    counter = 1;
 
-    QFontMetrics metrics(font(), this);
-    setText(metrics.elidedText(text, Qt::ElideRight, width() - 50));
-    setToolTip(text);
+    updateDisplayText();
 
     updateStyle(false);
     updateCloseButtonStyle(false);
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
 
-    closeLabel->installEventFilter(this);
+    closeButton->installEventFilter(this);
     h->addStretch();
-    h->addWidget(closeLabel);
-    closeLabel->hide();
+    h->addWidget(closeButton);
+    closeButton->hide();
     setMouseTracking(true);
 
-    closeLabel->setAttribute(Qt::WA_Hover);
-    closeLabel->setFixedSize(16, 16);
+    closeButton->setAttribute(Qt::WA_Hover);
+    closeButton->setFixedSize(16, 16);
+}
+
+void Notification::updateDisplayText() {
+    QFontMetrics metrics(font(), this);
+
+    QString counterText = counter == 0 ? "" : "(" + QString::number(counter + 1) + ") ";
+    int counterTextWidth = counter == 0 ? 0 : metrics.width(counterText);
+
+    QString timestampText = "[" + QDateTime::fromMSecsSinceEpoch(timestamp).time().toString() + "] ";
+    QString displayText = timestampText + text;
+
+    setText(metrics.elidedText(timestampText + text, Qt::ElideRight, width() - 50 - counterTextWidth) + counterText);
+    setToolTip(displayText);
 }
 
 void Notification::updateStyle(bool isHovered) {
@@ -135,7 +143,7 @@ void Notification::updateCloseButtonStyle(bool isHovered) {
     css.append("padding: 2px 2px 2px 2px;");
     css.append(background);
     css.append("background-image: url(':core/images/close.png');");
-    closeLabel->setStyleSheet(css);
+    closeButton->setStyleSheet(css);
 }
 
 bool Notification::event(QEvent *e) {
@@ -147,8 +155,7 @@ bool Notification::event(QEvent *e) {
     }
     if (e->type() == QEvent::HoverEnter) {
         updateStyle(true);
-    }
-    if (e->type() == QEvent::HoverLeave) {
+    } else if (e->type() == QEvent::HoverLeave) {
         updateStyle(false);
     }
     return QLabel::event(e);
@@ -159,7 +166,7 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
         return;
     }
     if (isOnScreen()) {
-        hideNotification();
+        hideFloatingOnScreen();
     }
     if (action) {
         action->trigger();
@@ -192,13 +199,9 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
 
     dlg->setWindowTitle(tr("Detailed message"));
 
-    if (!stack.isNull()) {
-        stack->setFixed(true);
-    }
+    stack->setFixed(true);
     int dialogResult = dlg->exec();
-    if (!stack.isNull()) {
-        stack->setFixed(false);
-    }
+    stack->setFixed(false);
     CHECK(!dlg.isNull(), );
 
     if (dialogResult == QDialog::Accepted) {
@@ -209,7 +212,7 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
 }
 
 bool Notification::eventFilter(QObject *, QEvent *event) {
-    if (event->type() == QEvent::MouseButtonPress) { // Close button clicked.
+    if (event->type() == QEvent::MouseButtonPress) {  // Close button clicked.
         if (auto mouseEvent = dynamic_cast<QMouseEvent *>(event)) {
             if (mouseEvent->button() == Qt::LeftButton) {
                 emit si_deleteRequested();
@@ -224,20 +227,21 @@ bool Notification::eventFilter(QObject *, QEvent *event) {
     return false;
 }
 
-void Notification::startOnScreenTimer() {
-    SAFE_POINT(!isOnScreen(), "Notification was already shown", );
+void Notification::showFloatingOnScreen() {
     onScreenStartTimeMillis = QDateTime::currentMSecsSinceEpoch();
-    onScreenTimer.setInterval(20);
-    connect(&onScreenTimer, SIGNAL(timeout()), SLOT(sl_updateNotificationState()));
-    onScreenTimer.start();
+    if (!onScreenTimer.isActive()) {
+        onScreenTimer.setInterval(20);
+        connect(&onScreenTimer, SIGNAL(timeout()), SLOT(sl_updateNotificationState()));
+        onScreenTimer.start();
+    }
 }
 
 void Notification::switchEmbeddedVisualState() {
-    closeLabel->show();
+    closeButton->show();
     setAttribute(Qt::WA_Hover);
 }
 
-void Notification::hideNotification() {
+void Notification::hideFloatingOnScreen() {
     hide();
     lastOnScreenHeight = TT_HEIGHT;
     onScreenTimer.stop();
@@ -245,18 +249,13 @@ void Notification::hideNotification() {
     emit si_notificationHideEvent();
 }
 
-void Notification::setNotificationStack(NotificationStack *newStack) {
-    SAFE_POINT(stack.isNull() || newStack == nullptr, "Notification is already in the stack", );
-    stack = newStack;
-}
-
 void Notification::sl_updateNotificationState() {
     qint64 onScreenTimeMillis = QDateTime::currentMSecsSinceEpoch() - onScreenStartTimeMillis;
     if (onScreenTimeMillis >= ON_SCREEN_TIMEOUT_MILLIS) {
-        hideNotification();
+        hideFloatingOnScreen();
         return;
     }
-    if (!stack.isNull()) {
+    if (isOnScreen()) {
         QRect rect = geometry();
         if (rect.height() != lastOnScreenHeight) {
             lastOnScreenHeight = rect.height();
@@ -273,13 +272,15 @@ const NotificationType &Notification::getType() const {
     return type;
 }
 
+QAction *Notification::getAction() const {
+    return action;
+}
+
 void Notification::incrementCounter() {
     counter++;
+    timestamp = QDateTime::currentMSecsSinceEpoch();
 
-    QFontMetrics metrics(font(), this);
-    QString counterText = "(" + QString::number(counter) + ")";
-    int counterTextWidth = metrics.width(counterText);
-    setText(metrics.elidedText(text, Qt::ElideRight, width() - 50 - counterTextWidth) + counterText);
+    updateDisplayText();
 
     // Re-set on-screen time timeout.
     onScreenStartTimeMillis = QDateTime::currentMSecsSinceEpoch();
@@ -293,9 +294,11 @@ bool Notification::isOnScreen() const {
     return onScreenTimer.isActive();
 }
 
-NotificationStack::NotificationStack(QObject *parent)
-    : QObject(parent) {
-    notificationWidget = new NotificationWidget(AppContext::getMainWindow()->getQMainWindow());
+NotificationStack::NotificationStack(QWidget *_parentWidget)
+    : QObject(_parentWidget), parentWidget(_parentWidget) {
+    SAFE_POINT(parentWidget, "Parent widget is null!", );
+    notificationWidget = new NotificationWidget(parentWidget);
+    parentWidget->installEventFilter(this);
 }
 
 NotificationStack::~NotificationStack() {
@@ -314,11 +317,20 @@ bool NotificationStack::hasError() const {
     return false;
 }
 
-void NotificationStack::addNotification(Notification *newNotification) {
+void NotificationStack::addNotification(const QString &text, const NotificationType &type, QAction *action) {
+    auto stack = AppContext::getMainWindow()->getNotificationStack();
+    if (stack != nullptr) {
+        stack->addNotification(text, type, action);
+    }
+}
+
+void NotificationStack::add(const QString &text, const NotificationType &type, QAction *action) {
     for (Notification *notification : qAsConst(notifications)) {
-        if (notification->isOnScreen() && notification->getText().split("]")[1] == newNotification->getText().split("]")[1]) {  // there is always minimum one ']' symbol
+        if (notification->getText() == text && notification->getType() == type && notification->getAction() == action) {
             notification->incrementCounter();
-            delete newNotification;
+            notification->showFloatingOnScreen();
+            updateOnScreenNotificationPositions();
+            emit si_changed();
             return;
         }
     }
@@ -334,14 +346,14 @@ void NotificationStack::addNotification(Notification *newNotification) {
         notificationToRemove->deleteLater();
     }
 
+    auto newNotification = new Notification(this, text, type, action);
+
     connect(newNotification, SIGNAL(si_deleteRequested()), this, SLOT(sl_onNotificationDeleteRequest()));
     connect(newNotification, SIGNAL(si_notificationHideEvent()), SLOT(sl_onNotificationHidden()));
+
     notifications.append(newNotification);
-    newNotification->setNotificationStack(this);
-
-    newNotification->startOnScreenTimer();
+    newNotification->showFloatingOnScreen();
     updateOnScreenNotificationPositions();
-
     emit si_changed();
 }
 
@@ -349,8 +361,8 @@ void NotificationStack::updateOnScreenNotificationPositions() {
     // Compact all notifications.
     // Move the most recent notifications on top.
     // Make the new notifications visible.
-    QPoint bottomRight = getBottomRightOfMainWindow();
-    int yBottomOffset = STATUS_BAR_HEIGHT;
+    QPoint bottomRight = getStackBottomRightPoint();
+    int yBottomOffset = 0;
     for (Notification *notification : qAsConst(notifications)) {
         if (notification->isOnScreen()) {
             if (!notification->isVisible()) {
@@ -404,9 +416,9 @@ int NotificationStack::count() const {
 }
 
 void NotificationStack::showStack() {
-    QPoint pos = getBottomRightOfMainWindow();
+    QPoint pos = getStackBottomRightPoint();
 
-    notificationWidget->move(pos.x() - notificationWidget->width(), pos.y() - notificationWidget->height() - STATUS_BAR_HEIGHT);
+    notificationWidget->move(pos.x() - notificationWidget->width(), pos.y() - notificationWidget->height());
     notificationWidget->show();
     notificationWidget->setWindowState(Qt::WindowActive);
 }
@@ -415,26 +427,22 @@ void NotificationStack::setFixed(bool val) {
     notificationWidget->setFixed(val);
 }
 
-void NotificationStack::addNotification(const QString &message, const NotificationType &type, QAction *action) {
-    NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-    if (notificationStack != nullptr) {
-        notificationStack->addNotification(new Notification(message, type, action));
-    }
+QPoint NotificationStack::getStackBottomRightPoint() const {
+    QPoint parentTopLeft = parentWidget->mapToGlobal(QPoint(0, 0));
+    QPoint parentBottomRight = parentTopLeft + QPoint(parentWidget->width(), parentWidget->height());
+
+    // Offset from the bottom right point if the parent widget: stack is shown inside with no overlap with borders/status bar.
+    QPoint bottomRightOffset(10, 50);
+    return parentBottomRight - bottomRightOffset;
 }
 
-QPoint NotificationStack::getBottomRightOfMainWindow() {
-    QPoint pos;
-    if (isOsMac()) {
-        // Widget's rect doesn't know its real position on the screen. Let's calculate it manually.
-        QPoint topLeft = AppContext::getMainWindow()->getQMainWindow()->mapToGlobal(QPoint(0, 0));
-        QSize mainWindowSize = AppContext::getMainWindow()->getQMainWindow()->geometry().size();
-        pos = QPoint(topLeft.x() + mainWindowSize.width(), topLeft.y() + mainWindowSize.height());  // bottom right
-        pos -= QPoint(4, 27);  // Some space for the statusbar and window's edge.
-    } else {
-        // This behavior is correct.
-        pos = AppContext::getMainWindow()->getQMainWindow()->geometry().bottomRight();
+bool NotificationStack::eventFilter(QObject *target, QEvent *event) {
+    if (target == parentWidget) {
+        if (event->type() == QEvent::Resize || event->type() == QEvent::Move) {
+            QTimer::singleShot(100, [=]() { updateOnScreenNotificationPositions(); });
+        }
     }
-    return pos;
+    return false;
 }
 
 }  // namespace U2

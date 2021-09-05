@@ -41,7 +41,7 @@ namespace U2 {
 NotificationChecker::NotificationChecker(HI::GUITestOpStatus &_os)
     : os(_os) {
     t = new QTimer(this);
-    t->connect(t, SIGNAL(timeout()), this, SLOT(sl_checkNotification()));
+    connect(t, SIGNAL(timeout()), this, SLOT(sl_checkNotification()));
     t->start(100);
 }
 

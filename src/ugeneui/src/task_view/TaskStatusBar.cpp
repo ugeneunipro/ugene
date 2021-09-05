@@ -20,7 +20,6 @@
  */
 
 #include "TaskStatusBar.h"
-#include <math.h>
 
 #include <QEvent>
 #include <QIcon>
@@ -115,28 +114,24 @@ NotificationType getNotificationType(const U2OpStatus &os) {
 }  // namespace
 
 void TaskStatusBar::sl_newReport(Task *task) {
-    Notification *t = nullptr;
     if (task->isReportingEnabled()) {
         NotificationType nType = getNotificationType(task->getStateInfo());
         if (task->isNotificationReport()) {
-            t = new Notification(tr("The task '%1' has been finished").arg(task->getTaskName()), nType);
+            NotificationStack::addNotification(tr("The task '%1' has been finished").arg(task->getTaskName()), nType);
         } else {
             QAction *action = new QAction("action", this);
             action->setData(QVariant(task->getTaskName() + "|" + QString::number(task->getTaskId()) + "|" + TVReportWindow::prepareReportHTML(task)));
             connect(action, SIGNAL(triggered()), SLOT(sl_showReport()));
-            t = new Notification(tr("Report for task: '%1'").arg(task->getTaskName()), nType, action);
+            NotificationStack::addNotification(tr("Report for task: '%1'").arg(task->getTaskName()), nType, action);
         }
     } else if (task->hasError() && !task->isErrorNotificationSuppressed()) {
-        t = new Notification(tr("'%1' task failed: %2").arg(task->getTaskName()).arg(task->getError()), Error_Not);
+        NotificationStack::addNotification(tr("'%1' task failed: %2").arg(task->getTaskName()).arg(task->getError()), Error_Not);
     } else if (task->getStateInfo().hasWarnings()) {
         QStringList warnings = task->getWarnings();
-        t = new Notification(tr("There %1:\n")
-                                     .arg(warnings.size() == 1 ? "was 1 warning" : QString("were %1 warnings").arg(warnings.size())) +
-                                 warnings.join("\n"),
-                             Warning_Not);
-    }
-    if (nullptr != t) {
-        nStack->addNotification(t);
+        NotificationStack::addNotification(tr("There %1:\n")
+                                                   .arg(warnings.size() == 1 ? "was 1 warning" : QString("were %1 warnings").arg(warnings.size())) +
+                                               warnings.join("\n"),
+                                           Warning_Not);
     }
 }
 

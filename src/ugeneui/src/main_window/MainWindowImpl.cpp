@@ -200,7 +200,6 @@ MainWindowImpl::~MainWindowImpl() {
 }
 
 void MainWindowImpl::prepare() {
-    nStack = new NotificationStack();
     createActions();
     prepareGUI();
 }
@@ -352,6 +351,8 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_FILE)->addAction(installToPathAction);
 #endif
 
+    nStack = new NotificationStack(mw);
+
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
     QMenu *helpMenu = menuManager->getTopLevelMenu(MWMENU_HELP);
@@ -381,14 +382,13 @@ void MainWindowImpl::prepareGUI() {
         addUniqueNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_N);
         connect(addUniqueNotificationAction, &QAction::triggered, [=]() {
             testNotificationCounter++;
-            QString text = "Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4);
-            addNotification(text, Info_Not);
+            nStack->add("Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4));
         });
         helpMenu->addAction(addUniqueNotificationAction);
 
         auto addRepeatingNotificationAction = new QAction(tr("Add repeating notification"), this);
         addRepeatingNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_M);
-        connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { addNotification("Repeating notification", Info_Not); });
+        connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { nStack->add("Repeating notification"); });
         helpMenu->addAction(addRepeatingNotificationAction);
     }
 
@@ -598,9 +598,6 @@ void MainWindowImpl::sl_show() {
     foreach (Task *t, startupTasklist) {
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
-    foreach (Notification *notification, startupNotificationsList) {
-        nStack->addNotification(notification);
-    }
     startupTasklist.clear();
     emit si_show();
 }
@@ -613,13 +610,10 @@ void MainWindowImpl::sl_crashUgene() {
 void MainWindowImpl::registerStartupChecks(QList<Task *> tasks) {
     startupTasklist << tasks;
 }
+
 void MainWindowImpl::addNotification(const QString &message, NotificationType type) {
-    Notification *notification = new Notification(message, type);
-    if (mw->isVisible()) {
-        nStack->addNotification(notification);
-    } else {
-        startupNotificationsList << notification;
-    }
+    SAFE_POINT(nStack != nullptr, "Notification stack is null", );
+    nStack->add(message, type);
 }
 
 }  // namespace U2

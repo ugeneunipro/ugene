@@ -32,7 +32,6 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPoint>
-#include <QPointer>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QTextEdit>
@@ -54,18 +53,24 @@ class U2GUI_EXPORT Notification : public QLabel {
     Q_OBJECT
 
 public:
-    Notification(const QString &message, const NotificationType &type, QAction *action = nullptr);
-
-    /** Start on-screen timer. The notification must be positioned & shown by the external controller. */
-    void startOnScreenTimer();
+    Notification(NotificationStack *stack, const QString &message, const NotificationType &type, QAction *action = nullptr);
 
     const QString &getText() const;
 
     const NotificationType &getType() const;
 
-    /** Increments counter of the notification and re-sets on-screen timeout. */
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    QAction *getAction() const;
 
+    /** Increments counter of the notification and re-sets on-screen timeout. */
+    bool eventFilter(QObject *target, QEvent *event) override;
+
+    /** Start on-screen timer. The notification must be positioned & shown by the external controller. */
+    void showFloatingOnScreen();
+
+    /** Hides on-screen notification. Emits si_notificationHideEvent. */
+    void hideFloatingOnScreen();
+
+    /** Increments counter 'duplicate notification' counter. */
     void incrementCounter();
 
     /**
@@ -74,11 +79,8 @@ public:
      */
     void switchEmbeddedVisualState();
 
-    /** Time to show notification popover in milliseconds. */
-    static constexpr int ON_SCREEN_TIMEOUT_MILLIS = 10 * 1000;
-
     /**
-     * Returns timestamp in millis when the notification was shown on screen.
+     * Returns timestamp in UNIX epoch millis when the notification was shown on screen.
      * Returns 0 for notifications not on screen.
      */
     qint64 getOnScreenStartTimeMillis() const;
@@ -86,8 +88,8 @@ public:
     /** Returns true if notification is shown on the screen. */
     bool isOnScreen() const;
 
-    /** Registers notification state for the notification. Notification will notify the stack on some events like resize. */
-    void setNotificationStack(NotificationStack *newStack);
+    /** Time to show floating on-screen notification popover in milliseconds. */
+    static constexpr int ON_SCREEN_TIMEOUT_MILLIS = 10 * 1000;
 
 private slots:
     /**
@@ -97,8 +99,10 @@ private slots:
     void sl_updateNotificationState();
 
 private:
-    void hideNotification();
+    /** Updates notification style. The style is based on the notification type & hovered state. */
     void updateStyle(bool isHovered);
+
+    /** Updates 'closeButton' when hovered / un-hovered. */
     void updateCloseButtonStyle(bool isHovered);
 
 signals:
@@ -112,16 +116,33 @@ signals:
     void si_deleteRequested();
 
 protected:
+    /** Shows tooltip & update hovered styles. */
     bool event(QEvent *e) override;
+
+    /**
+     * Triggers notification action.
+     * TODO: replace all MousePress with MouseRelease events around notifications code.
+     */
     void mousePressEvent(QMouseEvent *ev) override;
 
 private:
+    /** Updates display text. Display text is a timestamp + original text.  */
+    void updateDisplayText();
+
+    /**
+     * Action to execute when notification is activated (clicked).
+     * If action is null a popup dialog with notification text is shown.
+     */
     QAction *action;
-    QLabel *closeLabel;
+
+    /** A button to remove the notification. Visible only for notifications inside of the notification stack widget. */
+    QLabel *closeButton;
+
+    /** On screen timer. Updates notification geometry & size. */
     QTimer onScreenTimer;
 
-    /** The stack this notification belongs too. */
-    QPointer<NotificationStack> stack;
+    /** The stack this notification belongs too. Not null.*/
+    NotificationStack *stack;
 
     /**
      * Last recorded height in on-screen stack.
@@ -129,8 +150,12 @@ private:
      */
     int lastOnScreenHeight = TT_HEIGHT;
 
-    QString text;
-    NotificationType type;
+    const QString text;
+
+    /** Time the notification is created/updated. Unix epoch millis. */
+    qint64 timestamp;
+
+    const NotificationType type;
 
     /** Timestamp in millis (Unix epoch) when the notification was shown on the screen. */
     qint64 onScreenStartTimeMillis = 0;
@@ -143,11 +168,9 @@ class U2GUI_EXPORT NotificationStack : public QObject {
     Q_OBJECT
 
 public:
-    NotificationStack(QObject *o = nullptr);
+    /** Instantiates notification stack that will work inside of the parentWidget. */
+    NotificationStack(QWidget *parentWidget);
     ~NotificationStack();
-
-    /** Adds thr notification. Makes it floating on-screen. */
-    void addNotification(Notification *newNotification);
 
     /** Returns number of notifications in the stack. */
     int count() const;
@@ -161,14 +184,20 @@ public:
     /** Toggles 'fixed' flag of notification stack widget. */
     void setFixed(bool val);
 
-    /** Adds instance of Notification to the notification stack. */
-    static void addNotification(const QString &message, const NotificationType &type, QAction *action = 0);
+    /** Adds a new instance of Notification to the notification stack. Handles duplicates (repeating notifications). */
+    void add(const QString &text, const NotificationType &type = NotificationType::Info_Not, QAction *action = nullptr);
+
+    /** Adds notification to the default UGENE's notification stack. */
+    static void addNotification(const QString &text, const NotificationType &type = NotificationType::Info_Not, QAction *action = nullptr);
 
     /** Updates on-screen notifications positions. Compacts the onscreen stack. */
     void updateOnScreenNotificationPositions();
 
     /** Maximum notifications to keep in the stack. The stack includes all kind of notifications: both on screen and not. */
     static constexpr int MAX_STACK_SIZE = 100;
+
+    /** Updates on-screen notifications & stack widget position on main window move/resize events. */
+    bool eventFilter(QObject *target, QEvent *event) override;
 
 private slots:
     /** Called when notification is hidden. The caller is an instance of 'Notification'. */
@@ -182,11 +211,14 @@ signals:
     void si_changed();
 
 private:
-    /** Returns bottom position of the stack widget & on-screen floating notifications. */
-    static QPoint getBottomRightOfMainWindow();
+    /** Returns bottom position of the stack widget & on-screen floating notifications. Uses screen global coordinates. */
+    QPoint getStackBottomRightPoint() const;
 
     // Adds notification as a child to notification widget
     void moveToNotificationWidget(Notification *t);
+
+    /** The widget this stack is created for. */
+    QWidget *parentWidget;
 
     /** Container with all notifications. Shown when user clicks on notification icon in status bar. */
     NotificationWidget *notificationWidget;
