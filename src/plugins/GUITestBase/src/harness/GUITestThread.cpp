@@ -83,8 +83,8 @@ void GUITestThread::sl_testTimeOut() {
 QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
-    // Start all tests with some common mouse position. 'Click' ensures that UGENE app has the focus.
-    GTMouseDriver::click({100, 100});
+    // Start all tests with some common mouse position.
+    GTMouseDriver::moveTo({400, 300});
 
     HI::GUITestOpStatus os;
     try {
