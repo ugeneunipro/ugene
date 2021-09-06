@@ -325,10 +325,10 @@ void NotificationStack::addNotification(const QString &text, const NotificationT
 }
 
 void NotificationStack::add(const QString &text, const NotificationType &type, QAction *action) {
-    for (Notification *notification : qAsConst(notifications)) {
-        if (notification->getText() == text && notification->getType() == type && notification->getAction() == action) {
-            notification->incrementCounter();
-            notification->showFloatingOnScreen();
+    for (Notification *n : qAsConst(notifications)) {
+        if (n->isOnScreen() && n->getText() == text && n->getType() == type && n->getAction() == action) {
+            n->incrementCounter();
+            n->showFloatingOnScreen();
             updateOnScreenNotificationPositions();
             emit si_changed();
             return;
@@ -368,6 +368,7 @@ void NotificationStack::updateOnScreenNotificationPositions() {
             if (!notification->isVisible()) {
                 notification->show();
             }
+            notification->raise();  // Ensure that notification window is still on top of the all windows stack.
             int height = qMax(notification->height(), TT_HEIGHT);
             QPoint newTopLeft(bottomRight.x() - TT_WIDTH, bottomRight.y() - yBottomOffset - height);
             if (newTopLeft != notification->pos()) {
