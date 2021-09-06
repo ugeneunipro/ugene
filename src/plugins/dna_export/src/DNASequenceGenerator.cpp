@@ -79,6 +79,9 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, 
     }
     SAFE_POINT(total >= 0 && total <= length, "Invalid total checksum", );
     quotaByChar[(uchar)chars[0]] += length - total;  // Fill the remaining (rounding error) with the first char.
+    if (availableChars.isEmpty()) {
+        availableChars.append(chars[0]);
+    }
 
     result.resize(length);
     CHECK_EXT(result.size() == length, os.setError(GenerateDNASequenceTask::tr("Failed to allocate memory for the result sequence.")), )

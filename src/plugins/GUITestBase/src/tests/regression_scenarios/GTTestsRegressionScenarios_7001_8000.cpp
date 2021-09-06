@@ -830,6 +830,31 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
     CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7407) {
+    // Check that UGENE generates single line sequence.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7407.fa");
+    model.length = 1;
+    model.window = 1;
+    model.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, { "Tools", "Random sequence generator..." });
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+    int countA = sequence.count('A');
+    int countC = sequence.count('C');
+    int countG = sequence.count('G');
+    int countT = sequence.count('T');
+
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()))
+    CHECK_SET_ERR(countA + countC + countG + countT == model.length, "Invalid sequence symbol: " + sequence)
+    GTUtilsLog::check(os, lt);
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
