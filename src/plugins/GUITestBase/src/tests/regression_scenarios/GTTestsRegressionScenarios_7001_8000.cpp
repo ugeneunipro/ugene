@@ -177,7 +177,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
     CHECK_SET_ERR(colors.size() > 100, "Biostruct was not drawn or error label wasn't displayed");
 
     // There must be no error message on the screen.
-    QLabel* errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
+    QLabel *errorLabel = GTWidget::findLabel(os, "opengl_initialization_error_label", nullptr, {false});
     CHECK_SET_ERR(errorLabel == nullptr, "Found 'Failed to initialize OpenGL' label");
 }
 
@@ -831,8 +831,7 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7407) {
-    // Check that UGENE generates single line sequence.
-
+    // Check that UGENE can generate a single character sequence.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7407.fa");
     model.length = 1;
     model.window = 1;
@@ -840,18 +839,13 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
 
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
-    GTMenu::clickMainMenuItem(os, { "Tools", "Random sequence generator..." });
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
 
-    int countA = sequence.count('A');
-    int countC = sequence.count('C');
-    int countG = sequence.count('G');
-    int countT = sequence.count('T');
-
-    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()))
-    CHECK_SET_ERR(countA + countC + countG + countT == model.length, "Invalid sequence symbol: " + sequence)
+    CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
+    CHECK_SET_ERR(sequence[0] == 'T', "Invalid sequence symbol: " + sequence[0]);
     GTUtilsLog::check(os, lt);
 }
 
