@@ -320,7 +320,7 @@ bool NotificationStack::hasError() const {
 void NotificationStack::addNotification(const QString &text, const NotificationType &type, QAction *action) {
     auto stack = AppContext::getMainWindow()->getNotificationStack();
     if (stack != nullptr) {
-        stack->addNotification(text, type, action);
+        stack->add(text, type, action);
     }
 }
 
