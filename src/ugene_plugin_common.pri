@@ -12,11 +12,9 @@ LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -lU2View$$D -lU2T
 DESTDIR=../../$$out_dir()/plugins
 PLUGIN_ID=$$join(PLUGIN_ID, "", "", $$D)
 
-!debug_and_release|build_pass {
-    # Plugin output dir must exist before *.plugin/*.license files generation
-    mkpath($$OUT_PWD)
-    include (./ugene_plugin_descriptor.pri)
-}
+# Plugin output dir must exist before *.plugin/*.license files generation
+mkpath($$OUT_PWD)
+include (./ugene_plugin_descriptor.pri)
 
 DEFINES += PLUGIN_ID=\\\"$${PLUGIN_ID}\\\"
 

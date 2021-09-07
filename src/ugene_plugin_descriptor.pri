@@ -100,10 +100,8 @@ write("    <library>$${PLUGIN_LIBRARY}</library>", >>)
 write("    <platform name=$${QQ}$${PLATFORM_NAME}$${QQ} arch=$${QQ}$${PLATFORM_ARCH}$${QQ}/>", >>)
 
 
-!debug_and_release|build_pass {
-    CONFIG(debug, debug|release) {
-        write("    <debug-build>true</debug-build>", >>)
-    }
+CONFIG(debug, debug|release) {
+    write("    <debug-build>true</debug-build>", >>)
 }
 
 write("</ugene-plugin>",  >>)

@@ -12,22 +12,18 @@ DEFINES += QT_DLL
 
 DESTDIR = ../../$$out_dir()
 
-!debug_and_release|build_pass {
-
-    CONFIG(debug, debug|release) {
-        DEFINES += _DEBUG
-        CONFIG +=console
-        MOC_DIR=_tmp/moc/debug
-        OBJECTS_DIR=_tmp/obj/debug
-    }
-
-    CONFIG(release, debug|release) {
-        DEFINES+=NDEBUG
-        MOC_DIR=_tmp/moc/release
-        OBJECTS_DIR=_tmp/obj/release
-    }
+CONFIG(debug, debug|release) {
+    DEFINES += _DEBUG
+    CONFIG +=console
+    MOC_DIR=_tmp/moc/debug
+    OBJECTS_DIR=_tmp/obj/debug
 }
 
+CONFIG(release, debug|release) {
+    DEFINES+=NDEBUG
+    MOC_DIR=_tmp/moc/release
+    OBJECTS_DIR=_tmp/obj/release
+}
 
 unix {
     !macx {

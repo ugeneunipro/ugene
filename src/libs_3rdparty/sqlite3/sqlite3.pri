@@ -16,20 +16,16 @@ LIBS += -L../../$$out_dir()
 DESTDIR = ../../$$out_dir()
 TARGET = ugenedb$$D
 
-!debug_and_release|build_pass {
-
-    CONFIG(debug, debug|release) {
-        DEFINES+=_DEBUG
-        CONFIG +=console
-        OBJECTS_DIR=_tmp/obj/debug
-    }
-
-    CONFIG(release, debug|release) {
-        DEFINES+=NDEBUG
-        OBJECTS_DIR=_tmp/obj/release
-    }
+CONFIG(debug, debug|release) {
+    DEFINES+=_DEBUG
+    CONFIG +=console
+    OBJECTS_DIR=_tmp/obj/debug
 }
 
+CONFIG(release, debug|release) {
+    DEFINES+=NDEBUG
+    OBJECTS_DIR=_tmp/obj/release
+}
 
 win32 {
     DEF_FILE=$$PWD/src/sqlite3.def
