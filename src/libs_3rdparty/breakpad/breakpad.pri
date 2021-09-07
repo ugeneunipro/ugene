@@ -8,13 +8,13 @@ DESTDIR = ../../$$out_dir()
 QMAKE_PROJECT_NAME = breakpad
 QT -= gui
 
-CONFIG(debug, debug|release) {
+CONFIG(debug) {
     DEFINES += _DEBUG
     CONFIG += console
     OBJECTS_DIR = _tmp/obj/debug
 }
 
-CONFIG(release, debug|release) {
+CONFIG(release) {
     DEFINES += NDEBUG
     OBJECTS_DIR = _tmp/obj/release
 }

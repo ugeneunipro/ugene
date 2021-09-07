@@ -31,14 +31,14 @@ DESTDIR = ../$$out_dir()
 TARGET = ugeneui$$D
 QMAKE_PROJECT_NAME = ugeneui
 
-CONFIG(debug, debug|release) {
+CONFIG(debug) {
     DEFINES+=_DEBUG
     CONFIG +=console
     MOC_DIR=_tmp/moc/debug
     OBJECTS_DIR=_tmp/obj/debug
 }
 
-CONFIG(release, debug|release) {
+CONFIG(release) {
     DEFINES+=NDEBUG
     MOC_DIR=_tmp/moc/release
     OBJECTS_DIR=_tmp/obj/release

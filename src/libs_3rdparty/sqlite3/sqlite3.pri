@@ -16,13 +16,13 @@ LIBS += -L../../$$out_dir()
 DESTDIR = ../../$$out_dir()
 TARGET = ugenedb$$D
 
-CONFIG(debug, debug|release) {
+CONFIG(debug) {
     DEFINES+=_DEBUG
     CONFIG +=console
     OBJECTS_DIR=_tmp/obj/debug
 }
 
-CONFIG(release, debug|release) {
+CONFIG(release) {
     DEFINES+=NDEBUG
     OBJECTS_DIR=_tmp/obj/release
 }
