@@ -191,7 +191,7 @@ defineReplace(add_sqlite_lib) {
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineReplace(out_dir) {
-    CONFIG(debug) {
+    CONFIG(debug, debug|release) {
         RES = _debug
     } else {
         RES = _release
@@ -201,7 +201,7 @@ defineReplace(out_dir) {
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineTest(is_debug_build) {
-    CONFIG(debug) {
+    CONFIG(debug, debug|release) {
         RES = true
     } else {
         RES = false

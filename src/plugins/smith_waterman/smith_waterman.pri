@@ -18,11 +18,11 @@ use_cuda() {
     INCLUDEPATH += $$UGENE_CUDA_INC_DIR
 
     win32 {
-        CONFIG(debug) {
+        CONFIG(debug, debug|release) {
             SW2_NVCC_LIBS_TYPE_FLAG = -MDd
         }
 
-        CONFIG(release) {
+        CONFIG(release, debug|release) {
             SW2_NVCC_LIBS_TYPE_FLAG = -MD
         }
         XCOMPILER_OPT = "-Xcompiler -Zi,$${SW2_NVCC_LIBS_TYPE_FLAG}"

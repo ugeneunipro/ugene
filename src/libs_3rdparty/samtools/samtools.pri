@@ -18,14 +18,14 @@ macx {
     LIBS += -lcurses
 }
 
-CONFIG(debug) {
+CONFIG(debug, debug|release) {
     DEFINES+=_DEBUG
     CONFIG +=console
     MOC_DIR=_tmp/moc/debug
     OBJECTS_DIR=_tmp/obj/debug
 }
 
-CONFIG(release) {
+CONFIG(release, debug|release) {
     DEFINES+=NDEBUG
     MOC_DIR=_tmp/moc/release
     OBJECTS_DIR=_tmp/obj/release

@@ -8,14 +8,14 @@ INCLUDEPATH += src ../../include
 TARGET = zlib$$D
 DESTDIR = ../../$$out_dir()
 
-CONFIG(debug) {
+CONFIG(debug, debug|release) {
     DEFINES+=_DEBUG
     CONFIG +=console
     OBJECTS_DIR=_tmp/obj/debug
     MOC_DIR=_tmp/moc/debug
 }
 
-CONFIG(release) {
+CONFIG(release, debug|release) {
     DEFINES+=NDEBUG
     OBJECTS_DIR=_tmp/obj/release
     MOC_DIR=_tmp/moc/release

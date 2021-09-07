@@ -100,7 +100,7 @@ write("    <library>$${PLUGIN_LIBRARY}</library>", >>)
 write("    <platform name=$${QQ}$${PLATFORM_NAME}$${QQ} arch=$${QQ}$${PLATFORM_ARCH}$${QQ}/>", >>)
 
 
-CONFIG(debug) {
+CONFIG(debug, debug|release) {
     write("    <debug-build>true</debug-build>", >>)
 }
 
