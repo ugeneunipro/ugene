@@ -57,7 +57,10 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
     } else {
         GTLineEdit::setText(os, "inputEdit", model.referenceUrl, dialog);
     };
-
+    if (model.seed >= 0) {
+        GTCheckBox::setChecked(os, "seedCheckBox", true, dialog);
+        GTSpinBox::setValue(os, "seedSpinBox", model.seed, dialog);
+    }
     GTLineEdit::setText(os, "outputEdit", model.url, dialog);
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Generate", dialog));
