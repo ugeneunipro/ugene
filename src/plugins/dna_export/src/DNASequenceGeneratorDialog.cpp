@@ -142,7 +142,7 @@ void DNASequenceGeneratorDialog::sl_generate() {
     cfg.useRef = referenceButton->isChecked();
     cfg.refUrl = inputEdit->text();
     cfg.outUrl = saveController->getSaveFileName();
-    cfg.sequenceName = "Sequence ";
+    cfg.sequenceName = "Sequence";
     cfg.formatId = saveController->getFormatIdToSave();
     cfg.window = windowSpinBox->value();
     cfg.alphabet = cfg.useRef ? nullptr : AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
