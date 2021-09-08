@@ -10,10 +10,11 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 40.0-dev)
+set(UGENE_VERSION 41.0-dev)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
+        -DSW2_BUILD_WITH_CUDA
         -DQT_FATAL_ASSERT
         -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
 )

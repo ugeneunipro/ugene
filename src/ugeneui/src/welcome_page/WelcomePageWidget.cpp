@@ -199,7 +199,7 @@ QWidget *WelcomePageWidget::createFooterWidget() {
                                         "<td width=33></td>"
                                         "<td><a href='https://www.facebook.com/groups/ugene'><img src=':/ugene/images/welcome_page/social_icon_facebook.png'></a></td>"
                                         "<td><a href='https://twitter.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_twitter.png'></a></td>"
-                                        "<td><a href='https://www.linkedin.com/profile/view?id=200543736'><img src=':/ugene/images/welcome_page/social_icon_linkedin.png'></a></td>"
+                                        "<td><a href='https://www.linkedin.com/in/unipro-ugene-4a01b357/'><img src=':/ugene/images/welcome_page/social_icon_linkedin.png'></a></td>"
                                         "<td><a href='http://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
                                         "<td><a href='http://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
                                         "<td><a href='http://feeds2.feedburner.com/NewsOfUgeneProject'><img src=':/ugene/images/welcome_page/social_icon_rss.png'></a></td>"

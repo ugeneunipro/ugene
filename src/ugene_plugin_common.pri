@@ -25,8 +25,8 @@ win32 {
     LIBS += psapi.lib
 }
 
-unix: {
-    macx: {
+unix {
+    macx {
         QMAKE_RPATHDIR += @executable_path/plugins/
     } else {
         # Make plugins to look for unloaded libraries (Qt*/U2*) in the app folder when loading.

@@ -24,6 +24,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QTreeWidgetItem>
@@ -36,7 +37,6 @@
 #include "GTGlobals.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 
 namespace U2 {
@@ -58,6 +58,8 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
         QList<Document *> documents = project->getDocuments();
         for (Document *document : qAsConst(documents)) {
             if (GTUtils::matchText(os, documentName, document->getName(), options.matchPolicy)) {
+                // Wait, so we 100% sure that document is not only in the project model but on the project view model too.
+                GTThread::waitForMainThread();
                 return document;
             }
         }
@@ -74,6 +76,7 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
 
 #define GT_METHOD_NAME "checkDocument"
 void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &documentName, const GObjectViewFactoryId &id) {
+    // TODO: rework the whole method to use ProjectTreeView to check if document is available.
     Document *document = getDocument(os, documentName);
     if (id.isEmpty()) {
         return;

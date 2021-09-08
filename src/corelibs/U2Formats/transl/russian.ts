@@ -1264,7 +1264,7 @@
     <message>
         <location filename="../src/tasks/ExportTasks.cpp" line="58"/>
         <source>Nothing to export: multiple alignment is empty</source>
-        <translation>Нечего экспортировать: выраснивание пустое</translation>
+        <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
 </context>
 <context>
@@ -1285,7 +1285,7 @@
     <message>
         <location filename="../src/tasks/ExportTasks.cpp" line="145"/>
         <source>Nothing to export: multiple alignment is empty</source>
-        <translation>Нечего экспортировать: выраснивание пустое</translation>
+        <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExportTasks.cpp" line="147"/>

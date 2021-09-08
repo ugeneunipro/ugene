@@ -1255,7 +1255,6 @@ libQt5Core.so.5
 libQt5DBus.so.5
 libQt5Gui.so.5
 libQt5Network.so.5
-libQt5OpenGL.so.5
 libQt5PrintSupport.so.5
 libQt5Script.so.5
 libQt5ScriptTools.so.5

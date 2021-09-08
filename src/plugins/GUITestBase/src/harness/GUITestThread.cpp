@@ -84,7 +84,7 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
     // Start all tests with some common mouse position.
-    GTMouseDriver::moveTo(QPoint(400, 300));
+    GTMouseDriver::moveTo({400, 300});
 
     HI::GUITestOpStatus os;
     try {
@@ -95,7 +95,7 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
         }
     } catch (HI::GUITestOpStatus *) {
     }
-    // Run post checks if has error
+    // Run post checks if there is an error.
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
