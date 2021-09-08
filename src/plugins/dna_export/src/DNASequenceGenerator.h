@@ -22,6 +22,8 @@
 #ifndef _U2_DNA_SEQUENCE_GENERATOR_H_
 #define _U2_DNA_SEQUENCE_GENERATOR_H_
 
+#include <QRandomGenerator>
+
 #include <U2Core/DNASequence.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
@@ -111,12 +113,16 @@ public:
     static QString prepareReferenceFileFilter();
 
     /**
-     * Generates random sequence with the given character frequencies and the given random generator seed.
+     * Generates random sequence with the given character frequencies and the given random generator.
      * Character frequencies are values from 0 to 1 that ideally should sum up to 1. (=100%)
      * This way if an 'A' character has frequency '0.4' the result sequence will have around 40% of 'A' characters.
      * The frequency values precision is supported up the 3rd fractional digit: 0.123 and rounded up after that.
      */
-    static void generateSequence(const QMap<char, qreal> &charFreqs, int length, QByteArray &result, int seed, U2OpStatus &os);
+    static void generateSequence(const QMap<char, qreal> &charFreqs,
+                                 int length,
+                                 QByteArray &result,
+                                 QRandomGenerator &randomGenerator,
+                                 U2OpStatus &os);
 
     static void evaluateBaseContent(const DNASequence &sequence, QMap<char, qreal> &result);
 
@@ -165,7 +171,6 @@ public:
     }
 
 private:
-
     QMap<char, qreal> baseContent;
     int length;
     int window;

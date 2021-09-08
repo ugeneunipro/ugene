@@ -58,7 +58,11 @@ QString DNASequenceGenerator::prepareReferenceFileFilter() {
     return filter;
 }
 
-void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, int length, QByteArray &result, int seed, U2OpStatus &os) {
+void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,
+                                            int length,
+                                            QByteArray &result,
+                                            QRandomGenerator &randomGenerator,
+                                            U2OpStatus &os) {
     GTIMER(cvar, tvar, "DNASequenceGenerator::generateSequence");
     SAFE_POINT(!charFreqs.isEmpty(), "charFreqs is empty", );
     SAFE_POINT(length >= 0, "Invalid sequence length: " + QString::number(length), );
@@ -79,7 +83,6 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, 
     result.resize(length);
     CHECK_EXT(result.size() == length, os.setError(GenerateDNASequenceTask::tr("Failed to allocate memory for the result sequence.")), )
 
-    QRandomGenerator randomGenerator((quint32)seed);
     for (int idx = 0; idx < length; idx++) {
         int randomCharIndex = randomGenerator.generate() % characterBySlotIndex.length();
         char ch = characterBySlotIndex[randomCharIndex];
@@ -89,9 +92,9 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs, 
 
 static void evaluate(const QByteArray &seq, QMap<char, qreal> &result) {
     QMap<char, int> occurrencesMap;
-    foreach (char ch, seq) {
-        if (!occurrencesMap.keys().contains(ch)) {
-            occurrencesMap.insertMulti(ch, 1);
+    for (char ch : qAsConst(seq)) {
+        if (!occurrencesMap.contains(ch)) {
+            occurrencesMap.insert(ch, 1);
         } else {
             ++occurrencesMap[ch];
         }
@@ -127,7 +130,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
             mapIter.next();
             char ch = mapIter.key();
             qreal freq = mapIter.value();
-            if (!result.keys().contains(ch)) {
+            if (!result.contains(ch)) {
                 result.insertMulti(ch, freq);
             } else {
                 result[ch] += freq;
@@ -417,6 +420,8 @@ void GenerateDNASequenceTask::run() {
     CHECK_OP(stateInfo, );
 
     results.reserve(count);
+
+    QRandomGenerator generator(seed >= 0 ? (quint32)seed : QRandomGenerator::system()->generate());
     for (int seqCount = 0; seqCount < count; seqCount++) {
         U2SequenceImporter seqImporter(QVariantMap(), true);
 
@@ -428,11 +433,8 @@ void GenerateDNASequenceTask::run() {
         seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, QString("default"), false);
         CHECK_OP_BREAK(stateInfo);
 
-        QRandomGenerator *seedGenerator = QRandomGenerator::system();
-        auto getSeed = [=]() { return seed >= 0 ? (quint32)seed : seedGenerator->generate(); };
-
         for (int chunkCount = 0; chunkCount < length / window && !isCanceled(); chunkCount++) {
-            DNASequenceGenerator::generateSequence(baseContent, window, sequenceChunk, getSeed(), stateInfo);
+            DNASequenceGenerator::generateSequence(baseContent, window, sequenceChunk, generator, stateInfo);
             CHECK_OP_BREAK(stateInfo);
             seqImporter.addBlock(sequenceChunk.constData(), sequenceChunk.length(), stateInfo);
             CHECK_OP_BREAK(stateInfo);
@@ -443,7 +445,7 @@ void GenerateDNASequenceTask::run() {
 
         // Add the last chunk.
         if (length % window > 0) {
-            DNASequenceGenerator::generateSequence(baseContent, length % window, sequenceChunk, getSeed(), stateInfo);
+            DNASequenceGenerator::generateSequence(baseContent, length % window, sequenceChunk, generator, stateInfo);
             CHECK_OP_BREAK(stateInfo);
             seqImporter.addBlock(sequenceChunk.constData(), sequenceChunk.length(), stateInfo);
             CHECK_OP_BREAK(stateInfo);
