@@ -105,7 +105,7 @@ linux-g++ {
     }
 }
 
-isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = dist/ugene-$${UGENE_VERSION}
+isEmpty(PREFIX): PREFIX  = dist/ugene-$${UGENE_VERSION}
 
 
 win32 : QMAKE_LFLAGS *= /MACHINE:X64

@@ -48,10 +48,10 @@ system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_D
 unix {
     # Rules how to copy files on make install.
     ugene_build_dir.files = ./src/_release/*
-    ugene_build_dir.path = $${INSTALL_PREFIX}
+    ugene_build_dir.path = $${PREFIX}
 
     data.files += data/*
-    data.path = $${INSTALL_PREFIX}/data
+    data.path = $${PREFIX}/data
 
     resources.files += LICENSE.3rd_party.txt
     resources.files += LICENSE.txt
@@ -60,7 +60,7 @@ unix {
     resources.files += etc/shared/ugene.1.gz
     resources.files += etc/shared/ugene.desktop
     resources.files += etc/shared/ugene.png etc/shared/ugene.xpm
-    resources.path = $${INSTALL_PREFIX}
+    resources.path = $${PREFIX}
 
     INSTALLS += ugene_build_dir data resources
 }
