@@ -60,6 +60,8 @@ void FindUnwantedIslandsTask::run() {
     int lengthBetweenIslands = 0;
     int startNucleotideNumber = leftNucleotide;
     regionsBetweenIslands.clear();
+    stateInfo.setProgress(0);
+    int progressZeroPoint = startNucleotideNumber;
     while (leftNucleotide /*+ ISLAND_LENGTH*/ <= rightNucleotide) {
         U2Region islandCandidate(leftNucleotide, ISLAND_LENGTH);
         bool isIsland = hasUnwantedConnections(islandCandidate);
@@ -76,7 +78,9 @@ void FindUnwantedIslandsTask::run() {
             lengthBetweenIslands++;
         }
         leftNucleotide++;
+        stateInfo.setProgress(100 - (double(rightNucleotide - leftNucleotide) / double(rightNucleotide - progressZeroPoint)) * 100);
     }
+    stateInfo.setProgress(100);
     U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
     text2LogAboutFoundRegion(newRegion);
     regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
