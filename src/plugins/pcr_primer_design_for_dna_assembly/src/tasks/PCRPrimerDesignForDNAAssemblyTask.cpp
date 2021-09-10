@@ -58,6 +58,8 @@ PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPr
       sequence(_sequence),
       reverseComplementSequence(DNASequenceUtils::reverseComplement(sequence)) {
     GCOUNTER(cvar, "PCRPrimerDesignForDNAAssemblyTask");
+
+    tpm = ProgressManagement::Progress_Manual;
 }
 
 void PCRPrimerDesignForDNAAssemblyTask::prepare() {
@@ -102,6 +104,11 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
     // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3
     bool aWasNotFoundYet = true;
     for (const auto& regionBetweenIslandsForward : regionsBetweenIslandsForward) {
+        stateInfo.setProgress(((double)regionsBetweenIslandsForward.indexOf(regionBetweenIslandsForward) / (double)regionsBetweenIslandsForward.size()) * 100);
+        int progressStage = 100 / regionsBetweenIslandsForward.size();
+        //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+        CHECK_OP(stateInfo, );
+
         if (regionBetweenIslandsForward.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
             continue;
         }
@@ -109,13 +116,25 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         int b1ForwardCandidatePrimerEnd = regionBetweenIslandsForward.endPos();
         int b1ForwardPrimerLength = settings.overlapLength.minValue;
 
+        // For progress state
+        int iterationsNumber = (settings.overlapLength.maxValue - settings.overlapLength.minValue) * regionBetweenIslandsForward.length;
+        int currentIteration = 0;
+        int stateProgress = getProgress();
+
         //While the primer start position is in the region between islands
         while (b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength > regionBetweenIslandsForward.startPos) {
+            //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+            stateInfo.setProgress(stateProgress + (((double)currentIteration / (double)iterationsNumber)) * progressStage);
+            currentIteration++;
+            CHECK_OP(stateInfo, );
+
             const U2Region b1ForwardCandidatePrimerRegion(b1ForwardCandidatePrimerEnd - b1ForwardPrimerLength, b1ForwardPrimerLength);
             // The amplified fragment shouldn't contain the all primer
             // So move the primer untill at least one character out of the amplified fragment
             if (amplifiedFragmentLeftEdge < b1ForwardCandidatePrimerRegion.startPos) {
                 b1ForwardCandidatePrimerEnd--;
+                // For progress state
+                iterationsNumber -= (settings.overlapLength.maxValue - settings.overlapLength.minValue);
                 continue;
             }
 
@@ -188,6 +207,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         }
     }
     generateUserPrimersReports();
+    stateInfo.setProgress(100);
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
@@ -242,6 +262,8 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
+    CHECK_OP(stateInfo, stateInfo.getError());
+
     return PCRPrimerDesignTaskReportUtils::generateReport(*this, sequence, userPrimersReports);
 }
 
@@ -284,6 +306,9 @@ QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(Load
 void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence) {
     // Very the same algorithm, but for reverse regions etween islands
     for (const auto& regionBetweenIslandsReverse : regionsBetweenIslandsReverse) {
+        //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+        CHECK_OP(stateInfo, );
+
         if (regionBetweenIslandsReverse.length < MINIMUM_LENGTH_BETWEEN_ISLANDS) {
             continue;
         }
@@ -293,6 +318,9 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
         int b1ReversePrimerLength = settings.overlapLength.minValue;
 
         while (b1ReverseCandidatePrimerEnd - b1ReversePrimerLength > regionBetweenIslandsReverse.startPos) { //While we are in the region between islands
+            //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+            CHECK_OP(stateInfo, );
+
             const U2Region b1ReverseCandidatePrimerRegion(b1ReverseCandidatePrimerEnd - b1ReversePrimerLength, b1ReversePrimerLength);
             // The amplified fragment shouldn't contain the all primer
             // So move the primer untill at least one character out of the amplified fragment
@@ -359,6 +387,9 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryForwardReversePrimers(Secon
     int forwardCandidatePrimerEnd = defaultForwardCandidatePrimerEnd;
     int forwardPrimerLength = settings.overlapLength.minValue;
     while (forwardCandidatePrimerEnd == defaultForwardCandidatePrimerEnd) { //While we are in the region between islands
+        //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+        CHECK_OP(stateInfo, );
+
         const U2Region forwardCandidatePrimerRegion(forwardCandidatePrimerEnd - forwardPrimerLength, forwardPrimerLength);
         QByteArray forwardCandidatePrimerSequence = sequence.mid(forwardCandidatePrimerRegion.startPos, forwardCandidatePrimerRegion.length);
 
@@ -435,6 +466,9 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
     int reverseCandidatePrimerEnd = defaultReverseCandidatePrimerEnd;
     int reversePrimerLength = settings.overlapLength.minValue;
     while (reverseCandidatePrimerEnd == defaultReverseCandidatePrimerEnd) { //While we are in the region between islands
+        //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
+        CHECK_OP(stateInfo, );
+
         const U2Region reverseCandidatePrimerRegion(reverseCandidatePrimerEnd - reversePrimerLength, reversePrimerLength);
         QByteArray reverseCandidatePrimerSequence = reverseComplementSequence.mid(reverseCandidatePrimerRegion.startPos, reverseCandidatePrimerRegion.length);
 

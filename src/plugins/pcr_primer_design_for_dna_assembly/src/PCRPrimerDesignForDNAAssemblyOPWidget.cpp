@@ -240,6 +240,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
 
     ts->registerTopLevelTask(pcrTask);
+    pbStart->setEnabled(false);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
@@ -348,13 +349,14 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     CHECK(sender() == pcrTask, );
     SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
-    setEnabled(true);
     if (pcrTask->isCanceled() || pcrTask->hasError()) {
+        pbStart->setEnabled(true);
         disconnect(pcrTask, SIGNAL(si_stateChanged()));
         pcrTask = nullptr;
         return;
     }
     CHECK(pcrTask->isFinished(), );
+    pbStart->setEnabled(true);
     productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
     createResultAnnotations();
     backboneSequence = pcrTask->getBackboneSequence();
