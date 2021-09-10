@@ -148,7 +148,6 @@ private:
     bool shutDownInProcess;
 
     QList<Task *> startupTasklist;
-    QList<Notification *> startupNotificationsList;
 };
 
 class MainWindowDragNDrop {

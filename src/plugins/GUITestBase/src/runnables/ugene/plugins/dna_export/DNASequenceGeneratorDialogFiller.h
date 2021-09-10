@@ -42,6 +42,8 @@ public:
     int percentC = 25;
     int percentG = 25;
     int percentT = 25;
+
+    int seed = -1;
 };
 
 class DNASequenceGeneratorDialogFiller : public Filler {

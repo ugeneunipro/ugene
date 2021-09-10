@@ -85,6 +85,7 @@ CircularViewPlugin::CircularViewPlugin()
 
 CircularViewContext::CircularViewContext(QObject *p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
+    ;
 }
 
 CircularViewSettings *CircularViewContext::getSettings(AnnotatedDNAView *view) {

@@ -68,7 +68,7 @@ void CuffmergeWorkerFactory::init() {
                                                        " known isoforms and maximize overall assembly quality."));
 
     QList<Attribute *> attributes;
-    {    // Define parameters of the element
+    {  // Define parameters of the element
         Descriptor outDir(OUT_DIR,
                           CuffmergeWorker::tr("Output folder"),
                           CuffmergeWorker::tr("The base name of output folder. It could be modified with a suffix."));
@@ -111,7 +111,7 @@ void CuffmergeWorkerFactory::init() {
     }
 
     QList<PortDescriptor *> portDescriptors;
-    {    // Define ports of the element
+    {  // Define ports of the element
         Descriptor inDesc(BasePorts::IN_ANNOTATIONS_PORT_ID(),
                           CuffmergeWorker::tr("Set of annotations"),
                           CuffmergeWorker::tr("Annotations for merging"));
@@ -155,7 +155,7 @@ void CuffmergeWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CuffmergePrompter());
 
-    {    // external tools
+    {  // external tools
         proto->addExternalTool(CufflinksSupport::ET_CUFFMERGE_ID, EXT_TOOL_PATH);
         proto->addExternalTool(CufflinksSupport::ET_CUFFCOMPARE_ID, CUFFCOMPARE_TOOL_PATH);
     }
@@ -202,17 +202,24 @@ Task *CuffmergeWorker::tick() {
     while (input->hasMessage()) {
         takeAnnotations();
     }
-    if (input->isEnded()) {
-        Task *t = createCuffmergeTask();
-        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
-        return t;
+    if (!input->isEnded()) {
+        return nullptr;  // Continue waiting for more input.
     }
-    return nullptr;
+    Task *cuffmergeTask = createCuffmergeTask();
+    if (cuffmergeTask == nullptr) {
+        setDone();
+        return nullptr;
+    }
+    connect(cuffmergeTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
+    return cuffmergeTask;
 }
 
 void CuffmergeWorker::sl_taskFinished() {
-    CuffmergeSupportTask *task = dynamic_cast<CuffmergeSupportTask *>(sender());
-    if (!task->isFinished() || task->isCanceled() || task->hasError()) {
+    auto task = dynamic_cast<CuffmergeSupportTask *>(sender());
+    SAFE_POINT_EXT(task, setDone(), );
+    CHECK(task->isFinished(), );
+    if (task->isCanceled() || task->hasError()) {
+        setDone();
         return;
     }
 
@@ -242,24 +249,23 @@ void CuffmergeWorker::takeAnnotations() {
     annTableHandlers << StorageUtils::getAnnotationTableHandlers(annsVar);
 }
 
-CuffmergeSettings CuffmergeWorker::scanParameters() const {
+Task *CuffmergeWorker::createCuffmergeTask() {
+    if (annTableHandlers.isEmpty()) {
+        return nullptr;  // Nothing to merge, no task is needed.
+    }
     CuffmergeSettings result;
     result.outDir = getValue<QString>(OUT_DIR);
     result.minIsoformFraction = getValue<double>(MIN_ISOFORM_FRACTION);
     result.refAnnsUrl = getValue<QString>(REF_ANNOTATION);
     result.refSeqUrl = getValue<QString>(REF_SEQ);
     result.workingDir = getValue<QString>(TMP_DIR_PATH);
-    return result;
-}
-
-Task *CuffmergeWorker::createCuffmergeTask() {
-    CuffmergeSettings result = scanParameters();
     result.storage = context->getDataStorage();
     result.annotationTables = annTableHandlers;
-    CuffmergeSupportTask *supportTask = new CuffmergeSupportTask(result);
-    supportTask->addListeners(createLogListeners());
-    return supportTask;
+
+    auto cuffmergeTask = new CuffmergeSupportTask(result);
+    cuffmergeTask->addListeners(createLogListeners());
+    return cuffmergeTask;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

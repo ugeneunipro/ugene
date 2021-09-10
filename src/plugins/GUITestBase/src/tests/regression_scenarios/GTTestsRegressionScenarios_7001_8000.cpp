@@ -807,9 +807,13 @@ GUI_TEST_CLASS_DEFINITION(test_7404_2) {
     int countG = sequence.count('G');
     int countT = sequence.count('T');
 
+    int deviation = 100;  // +- 100 bases (10%).
+
+    int minValue = model.length / 2 - deviation;
+    int maxValue = model.length / 2 + deviation;
     CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
-    CHECK_SET_ERR(countA == model.length / 2, "Invalid count of A: " + QString::number(countA));
-    CHECK_SET_ERR(countC == model.length / 2, "Invalid count of C: " + QString::number(countC));
+    CHECK_SET_ERR(countA >= minValue && countA <= maxValue, "Invalid count of A: " + QString::number(countA));
+    CHECK_SET_ERR(countC >= minValue && countC <= maxValue, "Invalid count of C: " + QString::number(countC));
     CHECK_SET_ERR(countG == 0, "Invalid count of G: " + QString::number(countG));
     CHECK_SET_ERR(countT == 0, "Invalid count of T: " + QString::number(countT));
 }
@@ -845,8 +849,94 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
     QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
 
     CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
-    CHECK_SET_ERR(sequence[0] == 'T', "Invalid sequence symbol: " + sequence[0]);
+    char c = sequence[0].toLatin1();
+    CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
     GTUtilsLog::check(os, lt);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7414) {
+    // Check that 1 char window selects a random char from the origin.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7414.fa");
+    model.length = 1000;
+    model.window = 1;
+    model.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    CHECK_SET_ERR(sequence.count('A') > 0, "No 'A' char in the reuslt");
+    CHECK_SET_ERR(sequence.count('C') > 0, "No 'C' char in the reuslt");
+    CHECK_SET_ERR(sequence.count('G') > 0, "No 'G' char in the reuslt");
+    CHECK_SET_ERR(sequence.count('T') > 0, "No 'T' char in the reuslt");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7415_1) {
+    // Check that by default Random Sequence generator uses random seed: produces different results on different runs.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7415_1_1.fa");
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence1 = GTUtilsSequenceView::getSequenceAsString(os);
+
+    model.url = sandBoxDir + "/test_7415_1_2.fa";
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence2 = GTUtilsSequenceView::getSequenceAsString(os);
+
+    CHECK_SET_ERR(sequence1.length() == model.length, "Invalid sequence1 length: " + QString::number(sequence1.length()));
+    CHECK_SET_ERR(sequence2.length() == model.length, "Invalid sequence2 length: " + QString::number(sequence2.length()));
+    CHECK_SET_ERR(sequence1 != sequence2, "Sequences are equal");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7415_2) {
+    // Check that by default Random Sequence generator uses random seed: produces different results on different runs.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7415_2_1.fa");
+    model.seed = 0;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence1 = GTUtilsSequenceView::getSequenceAsString(os);
+
+    model.url = sandBoxDir + "/test_7415_2_2.fa";
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence2 = GTUtilsSequenceView::getSequenceAsString(os);
+
+    CHECK_SET_ERR(sequence1.length() == model.length, "Invalid sequence1 length: " + QString::number(sequence1.length()));
+    CHECK_SET_ERR(sequence2.length() == model.length, "Invalid sequence2 length: " + QString::number(sequence2.length()));
+    CHECK_SET_ERR(sequence1 == sequence2, "Sequences are not equal");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7415_3) {
+    // Check that by default Random Sequence generator does not generate identical windows.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7415_3.fa");
+    model.seed = 10;
+    model.window = 50;
+    model.length = 2 * model.window;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    QString window1Sequence = sequence.mid(0, model.window);
+    QString window2Sequence = sequence.mid(model.window, model.window);
+
+    CHECK_SET_ERR(window1Sequence != window2Sequence, "Sequences are equal");
 }
 
 }  // namespace GUITest_regression_scenarios

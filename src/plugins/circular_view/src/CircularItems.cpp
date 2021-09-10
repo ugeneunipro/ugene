@@ -436,7 +436,13 @@ bool CircularAnnotationLabel::tryPushClockwise() {
     const int engagedIndex = ra->engagedLabelPositionToLabel.key(this, -1);
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
-    SAFE_POINT(-1 != numberOfEngagedIndex, "Unexpected label position index", false);
+
+    // Not all label are expected to have suitable size/position for
+    // drawing algorithm, so some of them are not in the list.
+    // If we did not find them, then just return false (ignore these labels)
+    if (numberOfEngagedIndex == -1) {
+        return false;
+    }
 
     if ((suitableLabelPositionIndexes.size() - 1) == numberOfEngagedIndex) {
         return false;
@@ -456,7 +462,13 @@ bool CircularAnnotationLabel::tryPushCounterclockwise() {
     const int engagedIndex = ra->engagedLabelPositionToLabel.key(this, -1);
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
-    SAFE_POINT(-1 != numberOfEngagedIndex, "Unexpected label position index", false);
+
+    // Not all label are expected to have suitable size/position for
+    // drawing algorithm, so some of them are not in the list.
+    // If we did not find them, then just return false (ignore these labels)
+    if (numberOfEngagedIndex == -1) {
+        return false;
+    }
 
     if (0 == numberOfEngagedIndex) {
         return false;

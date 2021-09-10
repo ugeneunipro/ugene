@@ -2866,12 +2866,13 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
         Test_4356(HI::GUITestOpStatus &os)
             : Filler(os, "DotPlotDialog") {
         }
-        virtual void run() {
+
+        void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank", "murine.gb"));
-            GTWidget::click(os, dialog->findChild<QPushButton *>("loadSequenceButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
             QPushButton *button = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(button != nullptr, "Ok button is NULL");
             GTWidget::click(os, button);

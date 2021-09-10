@@ -104,6 +104,7 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
     outerLayout->setContentsMargins(0, 0, 0, 0);
 
     horScroll = new QScrollBar(Qt::Horizontal, this);
+    horScroll->setObjectName("CircularViewSplitter_horScroll");
     horScroll->setMinimum(0);
     horScroll->setMaximum(360);
     horScroll->setSingleStep(5);

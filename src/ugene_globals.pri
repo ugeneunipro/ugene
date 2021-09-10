@@ -2,6 +2,9 @@ include (ugene_version.pri)
 
 UGENE_GLOBALS_DEFINED=1
 
+# Generate only 2 separate Makefiles: Debug & Release. Do not generate a common one that builds both targets.
+CONFIG -= debug_and_release debug_and_release_target
+
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 # Separate minor/major version tokens are used in .rc resource.
 win32:DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
@@ -187,24 +190,20 @@ defineReplace(add_sqlite_lib) {
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineReplace(out_dir) {
-    !debug_and_release|build_pass {
-        CONFIG(debug, debug|release) {
-            RES = _debug
-        } else {
-            RES = _release
-        }
+    CONFIG(debug, debug|release) {
+        RES = _debug
+    } else {
+        RES = _release
     }
     return ($$RES)
 }
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineTest(is_debug_build) {
-    !debug_and_release|build_pass {
-        CONFIG(debug, debug|release) {
-            RES = true
-        } else {
-            RES = false
-        }
+    CONFIG(debug, debug|release) {
+        RES = true
+    } else {
+        RES = false
     }
     return ($$RES)
 }

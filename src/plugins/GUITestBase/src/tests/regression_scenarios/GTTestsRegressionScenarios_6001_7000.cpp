@@ -31,6 +31,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTScrollBar.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -61,6 +62,8 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 #include <U2View/DetView.h>
 #include <U2View/McaEditorReferenceArea.h>
 
@@ -68,6 +71,7 @@
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
@@ -96,11 +100,13 @@
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -5592,7 +5598,60 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+GUI_TEST_CLASS_DEFINITION(test_6759)
+{
+    GTLogTracer l;
 
+    // The test just check that there are no crash hile rotating circular view
+    //    1. Open sequence
+    //    2. Open annotation file
+    //    3. Add annotation file to sequence
+    //    4. Find splitter
+    //    5. Find scroll in splitter
+    //    6. Scroll to end, then to begin
+
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "sequence.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "annotations.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "Unknown features"),
+                  "No 'Unknown features' object!");
+
+    //    Use context menu on annotation in tree view
+    GTUtilsDialog::waitForDialog(os,
+                                 new ProjectTreeItemSelectorDialogFiller(os,
+                                                                         "annotations.gb",
+                                                                         "Unknown features"));
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os,
+                                 new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    //    Check {add-> Objects with annotations} action
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count: %1").arg(seqNum));
+
+    QScrollBar *horScroll = GTWidget::findExactWidget<QScrollBar *>(os, "CircularViewSplitter_horScroll");
+
+    // We use sleep as scrolling is executing too fast without sleep
+    // Also, we don't want to break different scrolls by some optimizations (if any)
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 13);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 39);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 13);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
+
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
