@@ -29,7 +29,7 @@
 namespace U2 {
 /**
  * @PrimerValidator
- * QRegExpValidator improving for primers. Make possible to type nucleotide or amino charaters only.
+ * QRegExpValidator improving for primers. Make possible to type nucleotide or nucleotide-extended characters.
  */
 class U2CORE_EXPORT PrimerValidator : public QRegExpValidator {
 public:

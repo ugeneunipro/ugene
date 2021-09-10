@@ -57,23 +57,6 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const Q
     return message;
 }
 
-double PrimerStatistics::getDeltaG(const QByteArray& sequence) {
-    CHECK(validate(sequence), Primer::INVALID_TM);
-
-    double freeEnergy = 0.0;
-    for (int i = 0; i < sequence.size() - 1; i++) {
-        QByteArray curArray;
-        curArray.append(sequence.at(i));
-        curArray.append(sequence.at(i + 1));
-        bool homologousRegionEnded = !BaseDimersFinder::ENERGY_MAP.contains(curArray);
-        if (!homologousRegionEnded) {
-            freeEnergy += BaseDimersFinder::ENERGY_MAP[curArray];
-        }
-    }
-
-    return freeEnergy;
-}
-
 double PrimerStatistics::getMeltingTemperature(const QByteArray &sequence) {
     CHECK(validate(sequence), Primer::INVALID_TM);
     PrimerStatisticsCalculator calc(sequence);
