@@ -2448,7 +2448,6 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     // Check 'as a sequence' mode.
     GTLogTracer l1;
-    GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2463,7 +2462,6 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     // Check 'as an alignment' mode.
     GTLogTracer l2;
-    GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
