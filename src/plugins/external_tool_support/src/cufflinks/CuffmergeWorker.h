@@ -60,7 +60,6 @@ protected:
     QList<SharedDbiDataHandler> annTableHandlers;
 
 private:
-    CuffmergeSettings scanParameters() const;
     Task *createCuffmergeTask();
     void takeAnnotations();
 };
