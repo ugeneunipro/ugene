@@ -177,7 +177,7 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
     invertedColorButton->setEnabled(isInvertModeAvailable);
     invertedDefaultColorButton->setEnabled(isInvertModeAvailable);
 
-    int defaultWindow = qMax((int)qMin(objX->getSequenceLength(), objY->getSequenceLength()), 100);
+    int defaultWindow = qMin((int)qMin(objX->getSequenceLength(), objY->getSequenceLength()), 100);
     minLenBox->setValue(qMin(defaultWindow, minLenBox->value()));
 }
 
