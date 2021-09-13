@@ -1928,7 +1928,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
                       .arg(EXPECTED_COLOR_COLUMN_WIDTH)
                       .arg(colorColumnWidth));
 
-    CHECK_SET_ERR(static_cast<double>(colorColumnWidth) / totalTableWidth >= 0.13,
+    CHECK_SET_ERR(static_cast<double>(colorColumnWidth) / totalTableWidth >= 0.2,
                   QString("Color column is too narrow: it's width is %1, the table width is %2")
                       .arg(colorColumnWidth)
                       .arg(totalTableWidth));
