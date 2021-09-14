@@ -65,14 +65,11 @@ double PrimerStatistics::getDeltaG(const QByteArray& sequence) {
     CHECK(validate(sequence), Primer::INVALID_TM);
 
     double freeEnergy = 0.0;
+    QByteArray curArray(2, ' ');
     for (int i = 0; i < sequence.size() - 1; i++) {
-        QByteArray curArray;
-        curArray.append(sequence.at(i));
-        curArray.append(sequence.at(i + 1));
-        bool homologousRegionEnded = !BaseDimersFinder::ENERGY_MAP.contains(curArray);
-        if (!homologousRegionEnded) {
-            freeEnergy += BaseDimersFinder::ENERGY_MAP[curArray];
-        }
+        curArray[0] = sequence.at(i);
+        curArray[1] = sequence.at(i + 1);
+        freeEnergy += BaseDimersFinder::ENERGY_MAP.value(curArray, 0.0);
     }
 
     return freeEnergy;
