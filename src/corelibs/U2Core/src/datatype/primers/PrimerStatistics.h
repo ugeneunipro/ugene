@@ -34,6 +34,10 @@ class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
     static QString checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError);
+    /**
+     * Get the Gibbs energy value of the corresponding sequence
+     * @sequence the sequence you need to calculate deltaG for
+     */
     static double getDeltaG(const QByteArray& sequence);
     static double getMeltingTemperature(const QByteArray &sequence);
     static double getMeltingTemperature(const QByteArray &initialPrimer, const QByteArray &alternativePrimer);
