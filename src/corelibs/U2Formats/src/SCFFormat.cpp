@@ -529,7 +529,6 @@ static uchar getMaxProb(uchar probA, uchar probC, uchar probG, uchar probT) {
 Document *SCFFormat::parseSCF(const U2DbiRef &dbiRef, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     DNASequence dna;
     DNAChromatogram cd;

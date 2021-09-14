@@ -22,6 +22,7 @@
 #include <typeinfo>
 
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Log.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>

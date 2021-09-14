@@ -38,7 +38,6 @@ MysqlUpgraderFrom_1_24_To_1_25::MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi *dbi)
 
 void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     dropOldPrecedure(os, dbi->getDbRef());
     CHECK_OP(os, );

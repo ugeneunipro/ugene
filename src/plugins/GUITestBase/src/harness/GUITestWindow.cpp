@@ -33,6 +33,7 @@
 #include <QRadioButton>
 #include <QToolButton>
 
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
 #define CLASS_NAME_CN 0

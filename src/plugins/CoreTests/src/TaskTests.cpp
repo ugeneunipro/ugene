@@ -149,9 +149,7 @@ StateOrderTestTask::~StateOrderTestTask() {
     callback->func(this, StateOrder_Done);
 }
 
-void GTest_TaskCreateTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_TaskCreateTest::init(XMLTestFormat *, const QDomElement &el) {
     deleteTask = false;
 
     resultContextName = el.attribute(INDEX_ATTR);
@@ -218,8 +216,7 @@ void GTest_TaskCreateTest::cleanup() {
     XmlTest::cleanup();
 }
 
-void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *, const QDomElement &el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -258,9 +255,7 @@ Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCancelTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_TaskCancelTest::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -284,8 +279,7 @@ Task::ReportResult GTest_TaskCancelTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCheckFlag::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_TaskCheckFlag::init(XMLTestFormat *, const QDomElement &el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -319,9 +313,7 @@ Task::ReportResult GTest_TaskCheckFlag::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskCheckState::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_TaskCheckState::init(XMLTestFormat *, const QDomElement &el) {
     checkState = false;
     checkProgress = false;
     checkCancelFlag = false;
@@ -394,8 +386,7 @@ Task::ReportResult GTest_TaskCheckState::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskExec::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_TaskExec::init(XMLTestFormat *, const QDomElement &el) {
     taskContextName = el.attribute(OBJ_ATTR);
     if (taskContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -416,9 +407,7 @@ Task::ReportResult GTest_TaskExec::report() {
     return ReportResult_Finished;
 }
 
-void GTest_TaskStateOrder::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_TaskStateOrder::init(XMLTestFormat *, const QDomElement &el) {
     serial_flag = true;
     subtask_num = 0;
     cancel_flag = false;
@@ -553,8 +542,7 @@ Task::ReportResult GTest_TaskStateOrder::report() {
     return ReportResult_Finished;
 }
 
-void GTest_Wait::init(U2::XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_Wait::init(U2::XMLTestFormat *, const QDomElement &el) {
     waitOk = false;
     condition = WaitCond_None;
     QString ms_str = el.attribute(DELAY_ATTR);

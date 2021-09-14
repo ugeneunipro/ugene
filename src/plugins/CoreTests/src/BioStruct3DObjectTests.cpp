@@ -41,9 +41,7 @@ namespace U2 {
 #define CHAIN_IND_ATTR "chain-index"
 #define MOL_NAME_ATTR "molecule-name"
 
-void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -87,9 +85,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfAtoms::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_BioStruct3DNumberOfChains::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -133,8 +129,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfChains::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *, const QDomElement &el) {
     modelId = -1;
 
     objContextName = el.attribute(OBJ_ATTR);
@@ -237,8 +232,7 @@ Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *, const QDomElement &el) {
     modelId = -1;
 
     objContextName = el.attribute(OBJ_ATTR);
@@ -314,8 +308,7 @@ Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *, const QDomElement &el) {
     // default model id
     modelId = -1;
 
@@ -448,10 +441,7 @@ Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
 
 #define PDB_DIR_NAME_ENV "DIR_WITH_PDB_FILES"
 
-void GTest_PDBFormatStressTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-    Q_UNUSED(el);
-
+void GTest_PDBFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
     QString dirName = getEnv()->getVar(PDB_DIR_NAME_ENV);
 
     QDir dir(dirName);
@@ -500,10 +490,7 @@ QList<Task *> GTest_PDBFormatStressTest::onSubTaskFinished(Task *subTask) {
 
 #define ASN_DIR_NAME_ENV "DIR_WITH_ASN_FILES"
 
-void GTest_ASNFormatStressTest::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-    Q_UNUSED(el);
-
+void GTest_ASNFormatStressTest::init(XMLTestFormat *, const QDomElement &) {
     QString dirName = getEnv()->getVar(ASN_DIR_NAME_ENV);
 
     if (dirName.isEmpty()) {

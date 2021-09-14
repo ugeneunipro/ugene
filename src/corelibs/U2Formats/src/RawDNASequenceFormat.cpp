@@ -59,7 +59,6 @@ static void finishSequenceImport(QList<GObject *> &objects, const QString &url, 
 static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
 
     U2SequenceImporter seqImporter(hints, true);
     QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();

@@ -33,9 +33,7 @@ namespace U2 {
 #define MUST_EXIST "must_exist"
 #define NEWLINES "newlines"
 
-void GTest_CheckStringExists::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckStringExists::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);

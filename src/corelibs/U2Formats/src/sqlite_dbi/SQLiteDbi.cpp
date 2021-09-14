@@ -47,6 +47,8 @@ namespace U2 {
 
 const int SQLiteDbi::BIND_PARAMETERS_LIMIT = 999;
 
+const Version SQLiteDbi::MIN_COMPATIBLE_UGENE_VERSION = Version(1, 25);
+
 SQLiteDbi::SQLiteDbi()
     : U2AbstractDbi(SQLiteDbiFactory::ID) {
     db = new DbRef();
@@ -230,7 +232,7 @@ bool SQLiteDbi::isInitialized(U2OpStatus &os) {
 #define CT(table, fields) \
     { \
         char *err = nullptr; \
-        QByteArray query = QByteArray("CREATE TABLE ") + table + " (" + fields + ");"; \
+        QByteArray query = QByteArray("CREATE TABLE ") + (table) + " (" + (fields) + ");"; \
         int rc = sqlite3_exec(db->handle, query, nullptr, nullptr, &err); \
         if (rc != SQLITE_OK) { \
             os.setError(U2DbiL10n::tr("Error creating table: %1, error: %2").arg(table).arg(err)); \
@@ -255,7 +257,7 @@ void SQLiteDbi::populateDefaultSchema(U2OpStatus &os) {
     modDbi->initSqlSchema(os);
     udrDbi->initSqlSchema(os);
 
-    setVersionProperties(Version::minVersionForSQLite(), os);
+    setVersionProperties(MIN_COMPATIBLE_UGENE_VERSION, os);
 }
 
 void SQLiteDbi::internalInit(const QHash<QString, QString> &props, U2OpStatus &os) {

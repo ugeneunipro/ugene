@@ -33,17 +33,17 @@
         <translation>Максимальное расстояние</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="659"/>
+        <location filename="../src/model/QDScheme.cpp" line="639"/>
         <source>%1. %2</source>
         <translation>%1. %2</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="667"/>
+        <location filename="../src/model/QDScheme.cpp" line="647"/>
         <source>Invalid distance values</source>
         <translation>Некорректные значения расстояния</translation>
     </message>
     <message>
-        <location filename="../src/model/QDScheme.cpp" line="674"/>
+        <location filename="../src/model/QDScheme.cpp" line="654"/>
         <source>Constraints can not be placed between elements of the same group</source>
         <translation>Ограничения не могут быть размещены между элементами той же группы</translation>
     </message>
@@ -63,21 +63,21 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="481"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="499"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="551"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="587"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="614"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="648"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="674"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="690"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="706"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="722"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="778"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="808"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="847"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="873"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="900"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="927"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="954"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="981"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="590"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="617"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="651"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="677"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="693"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="709"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="725"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="781"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="811"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="850"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="876"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="903"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="930"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="957"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="984"/>
         <source>Incorrect number of arguments</source>
         <translation>Некорректное число аргументов</translation>
     </message>
@@ -94,10 +94,10 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="448"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="486"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="568"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="593"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="601"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="620"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="727"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="596"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="604"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="623"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="730"/>
         <source>Empty or invalid sequence</source>
         <translation>Пустая или некорректная последовательность</translation>
     </message>
@@ -122,8 +122,8 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="321"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="438"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="511"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="660"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="858"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="663"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="861"/>
         <source>Second argument must be a number</source>
         <translation>Второй аргумент должен быть числовым</translation>
     </message>
@@ -150,16 +150,16 @@
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="504"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="558"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="653"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="679"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="695"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="711"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="656"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="682"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="698"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="714"/>
         <source>Invalid alignment</source>
         <translation>Некорректное выравнивание</translation>
     </message>
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="514"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="664"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="667"/>
         <source>Row is out of range</source>
         <translation>Строка выходит за рамки допустимого региона</translation>
     </message>
@@ -179,52 +179,52 @@
         <translation>Длина выходит за рамки допустимого региона</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="604"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="607"/>
         <source>Alphabets of each sequence must be the same</source>
         <translation>Алфавиты всех последовательностей должны быть одинаковыми</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="628"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="631"/>
         <source>Alphabets don&apos;t match</source>
         <translation>Алфавиты не совпадают</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="882"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="885"/>
         <source>Empty annotation name</source>
         <translation>Имя аннотации пусто</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="905"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="932"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="959"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="908"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="935"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="962"/>
         <source>Invalid file path</source>
         <translation>Некорректный путь до файла</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="910"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="937"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="913"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="940"/>
         <source>No data to write</source>
         <translation>Нет данных для записи</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="915"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="942"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="964"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="918"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="945"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="967"/>
         <source>Cannot open the file by given path</source>
         <translation>Невозможно открыть файл по указанному пути</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="986"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="989"/>
         <source>Empty file path</source>
         <translation>Empty file path</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="991"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="994"/>
         <source>Can&apos;t detect the sequence file format: </source>
         <translation>Can&apos;t detect the sequence file format: </translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="1007"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="1010"/>
         <source>There are no sequences in the file: </source>
         <translation>There are no sequences in the file: </translation>
     </message>
@@ -232,43 +232,43 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="191"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="444"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="525"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="634"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="637"/>
         <source>Third argument must be a number</source>
         <translation>Третий аргумент должен быть числовым</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="732"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="783"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="813"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="852"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="878"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="735"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="786"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="816"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="855"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="881"/>
         <source>Invalid annotations</source>
         <translation>Некорректные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="736"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="739"/>
         <source>Empty name</source>
         <translation>Имя пусто</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="787"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="817"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="790"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="820"/>
         <source>Empty qualifier name</source>
         <translation>Имя квалификатора пусто</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="791"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="821"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="794"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="824"/>
         <source>Empty qualifier value</source>
         <translation>Значение квалификатора пусто</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="827"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="830"/>
         <source>forth argument must be a string</source>
         <translation>Четвертый аргумент должен быть строкой</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="862"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="865"/>
         <source>Index is out of range</source>
         <translation>Индекс выходит за рамки допустимого региона</translation>
     </message>
@@ -434,12 +434,12 @@
         <translation>Внешняя ошибка UGENE. Пожалуйста попробуйте снова</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="525"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="526"/>
         <source>Wrong label size value: %1</source>
         <translation>Wrong label size value: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="566"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="567"/>
         <source>The variable is already defined: %1</source>
         <translation>The variable is already defined: %1</translation>
     </message>
@@ -474,7 +474,7 @@
         <translation>Это не является файлом: </translation>
     </message>
     <message>
-        <location filename="../src/model/Schema.cpp" line="502"/>
+        <location filename="../src/model/Schema.cpp" line="505"/>
         <source>Duplicate alias &apos;%1&apos;. It has been removed</source>
         <translation>Повторяющийся псевдоним &apos;%1&apos;. Был удален</translation>
     </message>
@@ -1808,19 +1808,19 @@
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="453"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="487"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="456"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="492"/>
         <source>No input data supplied</source>
         <translation>Не обеспечен входными данными</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="500"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="505"/>
         <source>Empty input slot: %1</source>
         <translation>Пустой входной слот: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="503"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="516"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="508"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="521"/>
         <source>Bad slot binding: %1 to %2</source>
         <translation>Неправильная привязка слота: %1 к %2</translation>
     </message>
@@ -1846,33 +1846,33 @@
 <context>
     <name>U2::Workflow::SchemaSerializer</name>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="250"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="251"/>
         <source>no metadata</source>
         <translation>Нет описания схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="320"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="322"/>
         <source>Invalid content: duplicate process %1</source>
         <translation>Обнаружен дублирующий идентификатор задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="327"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="329"/>
         <source>Invalid content: unknown process type %1</source>
         <translation>Неизвестный тип задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="358"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="360"/>
         <source>Invalid content: unknown port %1 requested for %2</source>
         <translation>Неизвестный порт %1 для задачи %2</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="387"/>
-        <location filename="../src/support/SchemaSerializer.cpp" line="394"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="389"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="396"/>
         <source>Invalid content: no such process %1 to bind</source>
         <translation>Соединение с несуществующей задачей: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="406"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="408"/>
         <source>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</source>
         <translation>Не удалось соединить порты задач:  [%1 : %2] к [%3 : %4]</translation>
     </message>
@@ -1939,7 +1939,7 @@
 <context>
     <name>U2::WorkflowRunSerializedSchemeTask</name>
     <message>
-        <location filename="../src/support/external_script/WorkflowRunSerializedSchemeTask.cpp" line="109"/>
+        <location filename="../src/support/external_script/WorkflowRunSerializedSchemeTask.cpp" line="105"/>
         <source>Cannot find workflow: %1</source>
         <translation>Невозможно найти схему: %1</translation>
     </message>
@@ -1965,78 +1965,78 @@
         <translation>Several wizard pages have equal ids: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="227"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="228"/>
         <source>Page&apos;s id and next id are equal: %1</source>
         <translation>Page&apos;s id and next id are equal: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="231"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="232"/>
         <source>Double definition of next id in the page with id: %1</source>
         <translation>Double definition of next id in the page with id: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="303"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="304"/>
         <source>Element id is undefined in the element selector</source>
         <translation>Element id is undefined in the element selector</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="308"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="309"/>
         <source>Undefined actor id: %1</source>
         <translation>Undefined actor id: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="318"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="319"/>
         <source>Unknown block name in element selector definition: %1</source>
         <translation>Unknown block name in element selector definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="427"/>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="431"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="428"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="432"/>
         <source>Not enough attributes for Tophat samples widget</source>
         <translation>Not enough attributes for Tophat samples widget</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="441"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="442"/>
         <source>Not enough attributes for the label widget</source>
         <translation>Not enough attributes for the label widget</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="457"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="458"/>
         <source>Id is undefined in some selector value definition</source>
         <translation>Id is undefined in some selector value definition</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="462"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="463"/>
         <source>Prototype is undefined in the selector value definition: %1</source>
         <translation>Prototype is undefined in the selector value definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="470"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="471"/>
         <source>The same prototype could not be mapped: %1</source>
         <translation>The same prototype could not be mapped: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="476"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="477"/>
         <source>Unknown block name in selector value definition: %1</source>
         <translation>Unknown block name in selector value definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="489"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="490"/>
         <source>Undefined source port id for some port mapping</source>
         <translation>Undefined source port id for some port mapping</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="493"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="494"/>
         <source>Undefined destination port id for some port mapping</source>
         <translation>Undefined destination port id for some port mapping</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="501"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="502"/>
         <source>Unknown block name in port mapping definition: %1</source>
         <translation>Unknown block name in port mapping definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="575"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="576"/>
         <source>Unknown widget name: %1</source>
         <translation>Unknown widget name: %1</translation>
     </message>
@@ -2057,7 +2057,7 @@
         <translation>Не указан обязательный параметр &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="564"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="569"/>
         <source>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</source>
         <translation>Необходимо указать значение для параметра &quot;%1&quot; либо связать входной слот &quot;%2&quot;</translation>
     </message>

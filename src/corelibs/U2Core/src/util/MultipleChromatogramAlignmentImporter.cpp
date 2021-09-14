@@ -25,10 +25,10 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignmentRow.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>

@@ -100,9 +100,9 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
         report += "UGENE version: ";
 #ifdef UGENE_VERSION_SUFFIX
         // Example of usage on linux: DEFINES+='UGENE_VERSION_SUFFIX=\\\"-ppa\\\"'
-        report += list.takeFirst() + QString(UGENE_VERSION_SUFFIX) + getUgeneBitCount() + "\n\n";
+        report += list.takeFirst() + QString(UGENE_VERSION_SUFFIX) + getArchSuffix() + "\n\n";
 #else
-        report += list.takeFirst() + getUgeneBitCount() + "\n\n";
+        report += list.takeFirst() + getArchSuffix() + "\n\n";
 #endif
         report += "UUID: ";
         report += list.takeFirst() + "\n\n";
@@ -431,22 +431,10 @@ void cpuID(unsigned i, unsigned regs[4]) {
     __cpuid((int *)regs, (int)i);
 
 #    else
-#        if !defined(UGENE_X86_64) && defined(__PIC__)
-    asm volatile(
-        "mov %%ebx, %%edi;"
-        "cpuid;"
-        "xchgl %%ebx, %%edi;"
-        : "=a"(regs[0]),
-          "=D"(regs[1]), /* edi */
-          "=c"(regs[2]),
-          "=d"(regs[3])
-        : "0"(i));
-#        else
     asm volatile("cpuid"
                  : "=a"(regs[0]), "=b"(regs[1]), "=c"(regs[2]), "=d"(regs[3])
                  : "a"(i), "c"(0));
     // ECX is set to zero for CPUID function 4
-#        endif
 #    endif
 }
 #endif
@@ -503,10 +491,6 @@ void ReportSender::setFailedTest(const QString &failedTestStr) {
     failedTest = failedTestStr;
 }
 
-QString ReportSender::getUgeneBitCount() const {
-#if defined(UGENE_X86_64)
+QString ReportSender::getArchSuffix() const {
     return " x64";
-#else
-    return " x86";
-#endif
 }

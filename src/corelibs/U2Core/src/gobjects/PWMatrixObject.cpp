@@ -84,7 +84,6 @@ const PWMatrix &PWMatrixObject::getMatrix() const {
 
 GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());

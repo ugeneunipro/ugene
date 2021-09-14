@@ -74,7 +74,7 @@
         <translation>Хроматограмма (приближайте масштаб)</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="707"/>
+        <location filename="../src/ChromatogramView.cpp" line="708"/>
         <source>original sequence</source>
         <translation>Исходная последовательность</translation>
     </message>

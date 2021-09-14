@@ -28,12 +28,12 @@ Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
 <context>
     <name>U2::SecStructPredictPlugin</name>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV</source>
         <translation>GORIV</translation>
     </message>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="51"/>
+        <location filename="../src/GorIVPlugin.cpp" line="56"/>
         <source>GORIV protein secondary structure prediction</source>
         <translation>Предсказание вторичной структуры протеинов GORIV</translation>
     </message>
@@ -41,17 +41,17 @@ Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
 <context>
     <name>U2::SecStructPredictTask</name>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="50"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="49"/>
         <source>seq database not found</source>
         <translation>Sequence database not found</translation>
     </message>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="56"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="55"/>
         <source>observed structures database not found</source>
         <translation>observed structures database not found</translation>
     </message>
     <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="63"/>
+        <location filename="../src/GorIVAlgTask.cpp" line="62"/>
         <source>sequence is too long, max seq size is 10000</source>
         <translation>Too long input sequence: maximum allowed length is 10000</translation>
     </message>

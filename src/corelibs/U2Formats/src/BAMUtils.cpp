@@ -69,7 +69,7 @@ BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString &referenceUr
 
 namespace {
 void closeFiles(samfile_t *in, samfile_t *out) {
-    if (nullptr != in) {
+    if (in != nullptr) {
         samclose(in);
     }
 

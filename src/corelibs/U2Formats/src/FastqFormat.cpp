@@ -242,7 +242,6 @@ static bool errorLoggingBreak(U2OpStatus &os, QMap<QString, QString> &skippedLin
 static void load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, QList<GObject *> &objects, U2OpStatus &os, int gapSize, int predictedSize, QString &writeLockReason, QMap<QString, QString> &skippedLines) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
     writeLockReason.clear();
 
     bool merge = gapSize != -1;

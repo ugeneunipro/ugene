@@ -225,9 +225,6 @@ bool FindRepeatsDialog::getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Regio
     return true;
 }
 
-// This is maximum sequence size we allow to use on 32bit OS to search for repeats.
-#define MAX_REPEAT_SEQUENCE_LENGTH_32_BIT_OS (300 * 1000 * 1000)
-
 void FindRepeatsDialog::accept() {
     int minLen = minLenBox->value();
     int identPerc = identityBox->value();
@@ -243,13 +240,6 @@ void FindRepeatsDialog::accept() {
     int minDist = minDistCheck->isChecked() ? minDistBox->value() : 0;
     int maxDist = maxDistCheck->isChecked() ? maxDistBox->value() : sequenceLenAsInt;
     bool inverted = invertCheck->isChecked();
-
-    if (AppResourcePool::is32BitBuild()) {
-        if (sequenceLen > MAX_REPEAT_SEQUENCE_LENGTH_32_BIT_OS) {
-            QMessageBox::warning(this, L10N::warningTitle(), tr("Sequence size is too large!"));
-            return;
-        }
-    }
 
     bool isRegionOk = false;
     U2Region range = rs->getRegion(&isRegionOk);

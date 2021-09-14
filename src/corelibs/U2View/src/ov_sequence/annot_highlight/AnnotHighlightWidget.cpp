@@ -225,7 +225,7 @@ bool AnnotHighlightWidget::findFirstAnnotatedRegionAfterPos(AnnotatedRegion &ann
 
     QList<AnnotatedRegion> regionsAtTheSamePosition = getAllAnnotatedRegionsByStartPos(pos);
     if (!regionsAtTheSamePosition.isEmpty()) {
-        annRegion = regionsAtTheSamePosition[isForward ? 0 : (regionsAtTheSamePosition.size() - 1)];
+        annRegion = regionsAtTheSamePosition[isForward ? 0 : regionsAtTheSamePosition.size() - 1];
         return true;
     }
 

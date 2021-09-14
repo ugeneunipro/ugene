@@ -46,9 +46,7 @@ namespace U2 {
 #define RES_ATTR "result"
 #define CIRCULAR_ATTR "circular"
 
-void GTest_AnnotatorSearch::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_AnnotatorSearch::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -176,9 +174,7 @@ Task::ReportResult GTest_AnnotatorSearch::report() {
 //////////////////////////////////////////////////////////////////////////
 // GTest_PlasmidAutoAnnotation
 
-void GTest_CustomAutoAnnotation::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CustomAutoAnnotation::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -277,9 +273,7 @@ Task::ReportResult GTest_CustomAutoAnnotation::report() {
 #define ANN_NAME_ATTR "ann_name"
 #define EXPECTED_RESULT "exp_result"
 
-void GTest_GeneByGeneApproach::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_GeneByGeneApproach::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);

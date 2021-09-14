@@ -37,8 +37,7 @@ namespace U2 {
 #define EXPECTED_ANNOTATION_STRATEGY_ATTR "annotation_processing"
 #define LENGTH_ATTR "length"
 
-void GTest_AddPartToSequenceTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_AddPartToSequenceTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
     buf = el.attribute(DOC_NAME_ATTR);
     if (!buf.isEmpty()) {
@@ -176,8 +175,7 @@ GTest_AddPartToSequenceTask::~GTest_AddPartToSequenceTask() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_RemovePartFromSequenceTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_RemovePartFromSequenceTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
     buf = el.attribute(DOC_NAME_ATTR);
     if (!buf.isEmpty()) {
@@ -296,8 +294,7 @@ GTest_RemovePartFromSequenceTask::~GTest_RemovePartFromSequenceTask() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_ReplacePartOfSequenceTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_ReplacePartOfSequenceTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
     buf = el.attribute(DOC_NAME_ATTR);
     if (!buf.isEmpty()) {

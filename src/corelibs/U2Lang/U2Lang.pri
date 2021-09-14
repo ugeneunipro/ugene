@@ -8,7 +8,3 @@ LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D
 DESTDIR = ../../$$out_dir()
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}

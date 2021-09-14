@@ -24,7 +24,7 @@
         <translation>The unsupported format was provided</translation>
     </message>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="430"/>
+        <location filename="../src/UgeneContextWrapper.cpp" line="426"/>
         <source>%1-bit version of UGENE started</source>
         <translation>%1-bit version of UGENE started</translation>
     </message>
@@ -37,7 +37,7 @@
         <translation>Добавленный путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="169"/>
+        <location filename="../src/UgeneContextWrapper.cpp" line="165"/>
         <source>UGENE script environment initialization started</source>
         <translation>UGENE script environment initialization started</translation>
     </message>

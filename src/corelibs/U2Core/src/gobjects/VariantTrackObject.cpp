@@ -78,7 +78,6 @@ U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus &os) const {
 
 GObject *VariantTrackObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     DbiConnection srcCon(entityRef.dbiRef, true, os);

@@ -40,7 +40,6 @@ void MysqlBlobOutputStream::write(const char *buffer, int length, U2OpStatus &os
     SAFE_POINT_EXT(nullptr != buffer, os.setError("Invalid data buffer detected!"), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     QByteArray blobData;
     if (Q_LIKELY(wasUsed)) {

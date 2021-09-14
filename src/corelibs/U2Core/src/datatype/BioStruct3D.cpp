@@ -47,15 +47,6 @@ BioStruct3D::BioStruct3D()
     transform.loadIdentity();
 }
 
-BioStruct3D::BioStruct3D(const BioStruct3D &other)
-    : moleculeMap(other.moleculeMap), modelMap(other.modelMap),
-      secondaryStructures(other.secondaryStructures),
-      interMolecularBonds(other.interMolecularBonds),
-      descr(other.descr), pdbId(other.pdbId),
-      radius(other.radius), rotationCenter(other.rotationCenter),
-      transform(other.transform) {
-}
-
 void BioStruct3D::calcCenterAndMaxDistance() {
     Vector3D siteSum;
     Vector3D center;

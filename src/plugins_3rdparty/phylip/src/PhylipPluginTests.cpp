@@ -48,8 +48,7 @@ QList<XMLTestFactory *> PhylipPluginTests::createTestFactories() {
     return res;
 }
 
-void GTest_NeighborJoin::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_NeighborJoin::init(XMLTestFormat *, const QDomElement &el) {
     treeObjFromDoc = nullptr;
     task = nullptr;
     input = nullptr;

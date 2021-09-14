@@ -21,6 +21,9 @@
 
 #include <core/MainThreadRunnable.h>
 
+#include <QCoreApplication>
+#include <QThread>
+
 #include "GTGlobals.h"
 #include "core/MainThreadTimer.h"
 #include "utils/GTThread.h"
@@ -65,6 +68,12 @@ void GTThread::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
     qDebug("Run in the main thread is finished");
 }
 #undef GT_METHOD_NAME
+
+bool GTThread::isMainThread() {
+    QThread *currentThread = QThread::currentThread();
+    QThread *mainThread = QCoreApplication::instance()->thread();
+    return currentThread == mainThread;
+}
 
 #undef GT_CLASS_NAME
 

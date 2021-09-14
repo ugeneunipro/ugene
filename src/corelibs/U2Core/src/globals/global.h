@@ -107,6 +107,7 @@
 #define ENV_USE_CRASH_HANDLER "UGENE_USE_CRASH_HANDLER"
 #define ENV_TEST_CRASH_HANDLER "UGENE_TEST_CRASH_HANDLER"
 #define ENV_SEND_CRASH_REPORTS "UGENE_SEND_CRASH_REPORTS"
+#define ENV_TEST_NOTIFICATIONS "UGENE_TEST_NOTIFICATIONS"
 #define ENV_UGENE_DEV "UGENE_DEV"
 #define ENV_GUI_TEST "UGENE_GUI_TEST"
 #define ENV_USE_NATIVE_DIALOGS "UGENE_USE_NATIVE_DIALOGS"
@@ -119,6 +120,9 @@
 
 #define PATH_PREFIX_DATA "data"
 #define PATH_PREFIX_SCRIPTS "scripts"
+
+#define U2_STRINGIFY(x) #x
+#define U2_TOSTRING(x) U2_STRINGIFY(x)
 
 namespace U2 {
 
@@ -200,15 +204,5 @@ inline bool isOsUnix() {
     return false;
 #endif
 }
-
-/** Backport of qAsConst for QT < 5.7.0. */
-#if (QT_VERSION < QT_VERSION_CHECK(5, 7, 0))
-template<typename T>
-Q_DECL_CONSTEXPR typename std::add_const<T>::type &qAsConst(T &t) noexcept {
-    return t;
-}
-template<typename T>
-void qAsConst(const T &&) = delete;
-#endif
 
 #endif

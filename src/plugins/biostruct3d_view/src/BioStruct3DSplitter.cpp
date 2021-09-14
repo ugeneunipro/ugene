@@ -512,7 +512,7 @@ void SplitterHeaderWidget::sl_zoomOut() {
 
 void SplitterHeaderWidget::sl_restoreDefaults() {
     BioStruct3DGLWidget *w = getActiveWidget();
-    w->restoreDefaultSettigns();
+    w->restoreDefaultSettings();
 }
 
 void SplitterHeaderWidget::sl_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget *glWidget) {

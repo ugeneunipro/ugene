@@ -59,17 +59,17 @@
         <translation>Все файлы</translation>
     </message>
     <message>
-        <location filename="../src/util/SequenceUtils.cpp" line="276"/>
+        <location filename="../src/util/SequenceUtils.cpp" line="262"/>
         <source>Loaded sequences have different alphabets. That&apos;s why several sequence objects are created, each for specified alphabet. All sequences at one object have the same alphabet and sequences from different objects have different alphabets.</source>
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="638"/>
+        <location filename="../src/datatype/Annotation.cpp" line="635"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="643"/>
+        <location filename="../src/datatype/Annotation.cpp" line="640"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -79,12 +79,12 @@
         <translation>Внутренняя ошибка UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="505"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="500"/>
         <source>Invalid database type: %1</source>
         <translation>Неверный тип базы: %1</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectUtils.cpp" line="424"/>
+        <location filename="../src/gobjects/GObjectUtils.cpp" line="428"/>
         <source>Unsupported object type: %1</source>
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
@@ -529,7 +529,7 @@
         <translation>Диапазоны</translation>
     </message>
     <message>
-        <location filename="../src/util/U2FeatureUtils.cpp" line="141"/>
+        <location filename="../src/util/U2FeatureUtils.cpp" line="138"/>
         <source>Unexpected feature operator value detected.</source>
         <translation>Unexpected feature operator value detected.</translation>
     </message>
@@ -641,22 +641,22 @@
 <context>
     <name>U2::AppResourcePool</name>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="85"/>
+        <location filename="../src/globals/AppResources.cpp" line="87"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="96"/>
+        <location filename="../src/globals/AppResources.cpp" line="94"/>
         <source>Memory</source>
         <translation>Память</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="96"/>
+        <location filename="../src/globals/AppResources.cpp" line="94"/>
         <source>Mb</source>
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="99"/>
+        <location filename="../src/globals/AppResources.cpp" line="97"/>
         <source>Project</source>
         <translation>Проект</translation>
     </message>
@@ -672,7 +672,7 @@
 <context>
     <name>U2::AutoAnnotationsUpdateTask</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="286"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="281"/>
         <source>Empty auto-annotation object</source>
         <translation>Объект автоаннотации пуст</translation>
     </message>
@@ -813,32 +813,32 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Run UGENE command line: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="270"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="271"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation>Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="340"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="341"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="345"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="346"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="349"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="350"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation>Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="352"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="353"/>
         <source>Unknown error occurred</source>
         <translation>Unknown error occurred</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="397"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="398"/>
         <source>An error occurred. Process is not finished successfully.</source>
         <translation>An error occurred. Process is not finished successfully.</translation>
     </message>
@@ -939,7 +939,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Annotation table has been removed unexpectedly</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="110"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="109"/>
         <source>Annotation object &apos;%1&apos; not found in active project: %2</source>
         <translation>Таблица аннотаций &quot;%1&quot; не найдена в проекте: %2</translation>
     </message>
@@ -967,22 +967,22 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="70"/>
         <source>Standard DNA</source>
-        <translation>Стандартный ДНК</translation>
+        <translation>Стандартный DNA</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="78"/>
         <source>Standard RNA</source>
-        <translation>Стандартный РНК</translation>
+        <translation>Стандартный RNA</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="86"/>
         <source>Extended DNA</source>
-        <translation>Расширенный ДНК</translation>
+        <translation>Расширенный DNA</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="94"/>
         <source>Extended RNA</source>
-        <translation>Расширенный РНК</translation>
+        <translation>Расширенный RNA</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="108"/>
@@ -995,252 +995,252 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Расширенный амино</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="270"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="265"/>
         <source>Complement for standard DNA</source>
         <translation>Комплeментарная трансляция к стандартному ДНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="290"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="285"/>
         <source>Complement for standard RNA</source>
         <translation>Комплeментарная трансляция к стандартному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="320"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="315"/>
         <source>Complement for extended DNA</source>
         <translation>Комплeментарная траснсляция для расширенного алфавита ДНК</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="350"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="345"/>
         <source>Complement for extended RNA</source>
         <translation>Комплeментарная трансляция к расширенному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="366"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="361"/>
         <source>1. The Standard Genetic Code</source>
         <translation>1. Стандартный генетический код</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="376"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="371"/>
         <source>2. The Vertebrate Mitochondrial Code</source>
         <translation>2. Митохондриальный код позвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="386"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="381"/>
         <source>3. The Yeast Mitochondrial Code</source>
         <translation>3. Митохондриальный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="396"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="391"/>
         <source>4. The Mold, Protozoan, and Coelenterate Mitochondria and the Mycoplasma Code</source>
         <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="406"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="401"/>
         <source>5. The Invertebrate Mitochondrial Code</source>
         <translation>5. Митохондриальный код беспозвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="416"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="411"/>
         <source>6. The Ciliate, Dasycladacean and Hexamita Nuclear Code</source>
         <translation>6. Митохондриальный код инфузорий, Dasycladacean и Hexamita</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="426"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="421"/>
         <source>9. The Echinoderm and Flatworm Mitochondrial Code</source>
         <translation>9. Митохондриальный код иглокожих и плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="436"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="431"/>
         <source>10. The Euplotid Nuclear Code</source>
         <translation>10. Ядерный код Euplotid</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="446"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="441"/>
         <source>11. The Bacterial and Plant Plastid Code</source>
         <translation>11. Код пластид бактерий и растений</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="456"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="451"/>
         <source>12. The Alternative Yeast Nuclear Code</source>
         <translation>12. Альтернативный ядерный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="466"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="461"/>
         <source>13. The Ascidian Mitochondrial Code</source>
         <translation>13. Митохондриальный код асцидии</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="476"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="471"/>
         <source>14. The Alternative Flatworm Mitochondrial Code</source>
         <translation>14. Альтернативный митохондриальный код плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="486"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="481"/>
         <source>15. Blepharisma Nuclear Code</source>
         <translation>15. Ядерный код блефаризмы</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="496"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="491"/>
         <source>16. Chlorophycean Mitochondrial Code</source>
         <translation>16. Митохондриальный код водоросли Chlorophycean</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="506"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="501"/>
         <source>21. Trematode Mitochondrial Code</source>
         <translation>21. Митохондриальный код трематоды</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="516"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="511"/>
         <source>22. Scenedesmus obliquus Mitochondrial Code</source>
         <translation>22. Митохондриальный код водоросли Scenedesmus obliquus</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="526"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="521"/>
         <source>23. Thraustochytrium Mitochondrial Code</source>
         <translation>23. Митохондриальный код Thraustochytrium</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="536"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="531"/>
         <source>24. Pterobranchia Mitochondrial Code</source>
         <translation>24. Митохондриальный код перистожаберных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="546"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="541"/>
         <source>25. Candidate Division SR1 and Gracilibacteria Code</source>
         <translation>25. Candidate Division SR1 and Gracilibacteria Code</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="556"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="551"/>
         <source>26. Pachysolen tannophilus Nuclear Code</source>
         <translation>26. Pachysolen tannophilus Nuclear Code</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="566"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="561"/>
         <source>27. Karyorelict Nuclear</source>
         <translation>27. Karyorelict Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="576"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="571"/>
         <source>28. Condylostoma Nuclear</source>
         <translation>28. Condylostoma Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="586"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="581"/>
         <source>29. Mesodinium Nuclear</source>
         <translation>29. Mesodinium Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="596"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="591"/>
         <source>30. Peritrich Nuclear</source>
         <translation>30. Peritrich Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="606"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="601"/>
         <source>31. Blastocrithidia Nuclear</source>
         <translation>31. Blastocrithidia Nuclear</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="657"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="652"/>
         <source>Alanine</source>
         <translation>Аланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="658"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="653"/>
         <source>Cysteine</source>
         <translation>Цистеин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="659"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="654"/>
         <source>Aspartic acid</source>
         <translation>Аспарагиновая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="660"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="655"/>
         <source>Glutamic acid</source>
         <translation>Глутаминовая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="661"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="656"/>
         <source>Phenylalanine</source>
         <translation>Фенилаланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="662"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="657"/>
         <source>Glycine</source>
         <translation>Глицин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="663"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="658"/>
         <source>Histidine</source>
         <translation>Гистидин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="664"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="659"/>
         <source>Isoleucine</source>
         <translation>Изолейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="665"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="660"/>
         <source>Lysine</source>
         <translation>Лизин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="666"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="661"/>
         <source>Leucine</source>
         <translation>Лейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="667"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="662"/>
         <source>Methionine</source>
         <translation>Метионин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="668"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="663"/>
         <source>Asparagine</source>
         <translation>Аспарагин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="669"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="664"/>
         <source>Proline</source>
         <translation>Пролин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="670"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="665"/>
         <source>Glutamine</source>
         <translation>Глютамин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="671"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="666"/>
         <source>Arginine</source>
         <translation>Аргинин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="672"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="667"/>
         <source>Serine</source>
         <translation>Серин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="673"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="668"/>
         <source>Threonine</source>
         <translation>Треонин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="674"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="669"/>
         <source>Valine</source>
         <translation>Валин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="675"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="670"/>
         <source>Tryptophan</source>
         <translation>Триптофан</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="676"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="671"/>
         <source>Tyrosine</source>
         <translation>Тирозин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="677"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="672"/>
         <source>Stop codon</source>
         <translation>Стоп-кодон</translation>
     </message>
@@ -1256,57 +1256,67 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DatatypeSerializers</name>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="312"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="213"/>
+        <source>Invalid tree topology</source>
+        <translation>Invalid tree topology</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="319"/>
         <source>Incorrect tree parsing state</source>
         <translation>Incorrect tree parsing state</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="315"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="322"/>
         <source>Unexpected weight: %1</source>
         <translation>Неожиданный вес: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="319"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="326"/>
         <source>Error parsing weight: %1</source>
         <translation>Ошибка парсинга веса: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="326"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="347"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="333"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="354"/>
         <source>Tree node stack is empty</source>
         <translation>Tree node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="338"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="345"/>
         <source>Error parsing nodeValue: %1</source>
         <translation>Error parsing nodeValue: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="348"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="366"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="355"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="373"/>
         <source>Branch node stack is empty</source>
         <translation>Branch node stack is empty</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="350"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="357"/>
         <source>Unexpected new sibling %1</source>
         <translation>Неожиданный новый родственник %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="363"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="370"/>
         <source>Unexpected closing bracket :%1</source>
         <translation>Неожиданные закрывающие скобки: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="371"/>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="397"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="378"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="401"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="409"/>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="413"/>
         <source>Empty file</source>
         <translation>Пустой файл</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DatatypeSerializeUtils.cpp" line="435"/>
+        <source>Unexpected count of trees objects in input: %1</source>
+        <translation>Unexpected count of trees objects in input: %1</translation>
     </message>
 </context>
 <context>
@@ -1341,27 +1351,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="550"/>
+        <location filename="../src/models/DocumentModel.cpp" line="549"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="563"/>
+        <location filename="../src/models/DocumentModel.cpp" line="562"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="569"/>
+        <location filename="../src/models/DocumentModel.cpp" line="568"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="637"/>
+        <location filename="../src/models/DocumentModel.cpp" line="636"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="661"/>
+        <location filename="../src/models/DocumentModel.cpp" line="660"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1369,8 +1379,8 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DocumentFormat</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="122"/>
-        <location filename="../src/models/DocumentModel.cpp" line="127"/>
+        <location filename="../src/models/DocumentModel.cpp" line="121"/>
+        <location filename="../src/models/DocumentModel.cpp" line="126"/>
         <source>Writing is not supported for this format (%1). Feel free to send a feature request though.</source>
         <translation>Запись в этот формат (%1) сейчас не поддерживается. Пожалуйста, сделайте запрос разработчикам.</translation>
     </message>
@@ -1386,12 +1396,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DocumentUtils</name>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="251"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="252"/>
         <source>Format does not support writing of alignments</source>
         <translation>Формат не поддерживает запись выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="261"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="262"/>
         <source>File content was merged</source>
         <translation>Содержимое файла было соединено</translation>
     </message>
@@ -1614,72 +1624,72 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GUrlUtils</name>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="154"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="117"/>
         <source>Renamed %1 to %2</source>
         <translation>Старый файл %1 переименован  в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="158"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="121"/>
         <source>Failed to rename %1 to %2</source>
         <translation>Не удалось переименовать %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="312"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="258"/>
         <source>Folder is not specified</source>
         <translation>Папка не указана</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="314"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="260"/>
         <source>Folder is a regular file.</source>
         <translation>Указанная папка является файлом.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="321"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="267"/>
         <source>Folder can&apos;t be created: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="326"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="272"/>
         <source>Folder can&apos;t be read: %1</source>
         <translation>Файлы папки %1 невозможно открыть на чтение</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="330"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="276"/>
         <source>Folder is read-only: %1</source>
         <translation>Эта папка только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="368"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="314"/>
         <source>File path is not specified</source>
         <translation>Путь до файла не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="371"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="317"/>
         <source>Folder path instead of file path</source>
         <translation>Путь до папки вместо пути до файла</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="428"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="365"/>
         <source>Can not create a folder: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="478"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="415"/>
         <source>%1 is not a local file [%2].</source>
         <translation>%1 is not a local file [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="487"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="424"/>
         <source>Can not create a folder [%1].</source>
         <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="492"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="429"/>
         <source>%1 is a folder [%2].</source>
         <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.h" line="138"/>
+        <location filename="../src/util/GUrlUtils.h" line="133"/>
         <source>Output URL</source>
         <translation>Выходной путь</translation>
     </message>
@@ -1713,7 +1723,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Downloading from %1</translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="314"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="313"/>
         <source>Redirecting to %1</source>
         <translation>Redirecting to %1</translation>
     </message>
@@ -2042,28 +2052,38 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="128"/>
+        <location filename="../src/globals/L10n.h" line="129"/>
+        <source>Object not found: %1</source>
+        <translation>Объект не найден: &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/globals/L10n.h" line="133"/>
+        <source>Object is read only: %1</source>
+        <translation>Объект только для чтения: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/globals/L10n.h" line="137"/>
         <source> bp</source>
         <translatorcomment>пара остатков</translatorcomment>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="136"/>
+        <location filename="../src/globals/L10n.h" line="145"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="139"/>
+        <location filename="../src/globals/L10n.h" line="148"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="143"/>
+        <location filename="../src/globals/L10n.h" line="152"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="152"/>
+        <location filename="../src/globals/L10n.h" line="161"/>
         <source>ugene-active-translation-language-code</source>
         <translation>ru</translation>
     </message>
@@ -2223,18 +2243,23 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MSAUtils</name>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="274"/>
-        <location filename="../src/util/MSAUtils.cpp" line="279"/>
+        <location filename="../src/util/MSAUtils.cpp" line="243"/>
+        <source>Invalid column region</source>
+        <translation>Неверный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MSAUtils.cpp" line="268"/>
+        <location filename="../src/util/MSAUtils.cpp" line="273"/>
         <source>Alignment is empty!</source>
         <translation>Выравнивание пусто!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="285"/>
+        <location filename="../src/util/MSAUtils.cpp" line="279"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Последовательности в выравнивании имеют разный размер!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="413"/>
+        <location filename="../src/util/MSAUtils.cpp" line="406"/>
         <source>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</source>
         <translation>Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2</translation>
     </message>
@@ -2242,76 +2267,108 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="152"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="132"/>
         <source>Can&apos;t rename an alignment to an empty name!</source>
         <translation>Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="203"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="172"/>
         <source>Can&apos;t rename a row to an empty name!</source>
         <translation>Не удалось переименовать строку, т.к. имя пустое!</translation>
     </message>
 </context>
 <context>
+    <name>U2::McaDbiUtils</name>
+    <message>
+        <location filename="../src/util/McaDbiUtils.cpp" line="296"/>
+        <source>Invalid range: %1 %2</source>
+        <translation>Неверный диапазон: %1 %2</translation>
+    </message>
+</context>
+<context>
     <name>U2::ModifySequenceContentTask</name>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="51"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="49"/>
         <source>Modify sequence task</source>
         <translation>Задача изменения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="60"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="58"/>
         <source>Document is locked</source>
         <translation>Документ заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="64"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="62"/>
         <source>Region to delete is larger than the whole sequence</source>
         <translation>Регион для удаления больше чем вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="122"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="117"/>
         <source>Some annotations have qualifiers referring a sequence region that has been removed during the sequence editing. You might want to change the qualifiers manually. Find them in the table below</source>
         <translation>Некоторые аннотации имеют квалификаторы, которые ссылаются на регионы последовательности, которые были удалены в процессе редактирования</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="126"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="121"/>
         <source>Annotation Name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="128"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="123"/>
         <source>Annotation Location</source>
         <translation>Расположение аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="130"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="125"/>
         <source>Qualifier Name</source>
         <translation>Имя квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="132"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="127"/>
         <source>Referenced Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="137"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="132"/>
         <source>Unexpected qualifiers count</source>
         <translation>Unexpected qualifiers count</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="165"/>
+        <source>Failed to add sequence object to document!</source>
+        <translation>Не удалось добавить последовательность в документ!</translation>
     </message>
 </context>
 <context>
     <name>U2::MsaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="907"/>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="914"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="864"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="871"/>
         <source>Failed to insert gaps into an alignment!</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1151"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="991"/>
+        <source>Invalid range: %1 %2</source>
+        <translation>Неверный диапазон: %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1105"/>
+        <source>Invalid crop column range: %1..%2</source>
+        <translation>Неверный диапазон столбцов: %1..%2</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1110"/>
+        <source>List of ids to crop is empty</source>
+        <translation>Список пуст</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1115"/>
+        <source>Invalid crop row ids</source>
+        <translation>Неверные названия строк</translation>
+    </message>
+    <message>
         <source>Failed to crop an alignment!</source>
-        <translation>Не удалось обрезать выравнивание!</translation>
+        <translation type="vanished">Не удалось обрезать выравнивание!</translation>
     </message>
 </context>
 <context>
@@ -2358,22 +2415,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="363"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="361"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="367"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="373"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="371"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="382"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="380"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2431,22 +2488,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="324"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="322"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="342"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="340"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="346"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="344"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2486,32 +2543,35 @@ The session database file is removed after closing of UGENE.</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="126"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="129"/>
         <source>Can&apos;t create tmp file</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="131"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="134"/>
         <source>Can&apos;t copy file to tmp file while trying to save document by append</source>
         <translation>Невозможно скопировать скопировать файл во временный файл при попытке сохранения файла при добавлении</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="148"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="150"/>
+        <source>Can&apos;t rename saved tmp file to original file: %1</source>
+        <translation>Невозможно переименовать временный файл в исходный файл: %1</translation>
+    </message>
+    <message>
         <source>Can&apos;t remove original file to place tmp file instead</source>
-        <translation>Невозможно удалить оригинальный файл чтобы заменить его временным</translation>
+        <translation type="vanished">Невозможно удалить оригинальный файл чтобы заменить его временным</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="151"/>
         <source>Can&apos;t rename saved tmp file to original file</source>
-        <translation>Невозможно переименовать сохраненный временный файл в оригинальный</translation>
+        <translation type="vanished">Невозможно переименовать сохраненный временный файл в оригинальный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="189"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="189"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
         <source>unexpected error</source>
         <translation>неожиданная ошибка</translation>
     </message>
@@ -2519,34 +2579,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="216"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="215"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="227"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="226"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="228"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="227"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="284"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="282"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="285"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="283"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="299"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="297"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
@@ -2658,7 +2718,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2BitCompression</name>
     <message>
-        <location filename="../src/util/U2Bits.cpp" line="90"/>
+        <location filename="../src/util/U2Bits.cpp" line="92"/>
         <source>Bit compression: illegal character in text &apos;%1&apos;</source>
         <translation>Сжатие: недопустимый символ в тексте &apos;%1&apos;</translation>
     </message>
@@ -2725,23 +2785,23 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiPool</name>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="287"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="282"/>
         <source>Invalid database type: %1</source>
         <translation>Неверный тип базы: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="313"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="308"/>
         <source>Invalid database id</source>
         <translation>Неверный идентификатор базы данных</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="348"/>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="364"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="343"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="359"/>
         <source>DbiPool: DBI not found! Dbi ID: %1</source>
         <translation>DbiPool: DBI не найден! Dbi ID: %1</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiRegistry.cpp" line="513"/>
+        <location filename="../src/dbi/U2DbiRegistry.cpp" line="508"/>
         <source>Invalid dbi reference</source>
         <translation>Неверный референс dbi</translation>
     </message>
@@ -2765,12 +2825,12 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2SequenceObject</name>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="196"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="195"/>
         <source>Internal error, sequence alphabet id &apos;%1&apos; is invalid</source>
         <translation>Внутренняя ошибка, неверный алфавит последовательности &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="209"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="208"/>
         <source>Modified sequence &amp; region have different alphabet</source>
         <translation>Измененная последовательность и регион имеют разные алфавиты</translation>
     </message>

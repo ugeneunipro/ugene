@@ -24,19 +24,16 @@
 #include <QScopedArrayPointer>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
-
-#include "DocumentFormatUtils.h"
 
 namespace U2 {
 
@@ -250,7 +247,6 @@ QMap<QString, QList<SharedAnnotationData>> GTFFormat::parseDocument(IOAdapter *i
 void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
 
     QMultiMap<QString, QList<SharedAnnotationData>> annotationsMap = parseDocument(io, os);
 

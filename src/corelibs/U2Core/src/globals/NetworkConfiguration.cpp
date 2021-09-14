@@ -156,11 +156,7 @@ QSsl::SslProtocol NetworkConfiguration::getSslProtocol() const {
     } else if (sslConfig.currentProtocol == SslConfig::SSLV3) {
         return QSsl::SslV3;
     } else if (sslConfig.currentProtocol == SslConfig::TLSV1) {
-#    if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
         return QSsl::TlsV1_0;
-#    else
-        return QSsl::TlsV1;
-#    endif
     } else {
         return QSsl::SslV3;
     }

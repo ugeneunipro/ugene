@@ -43,9 +43,7 @@ namespace U2 {
 #define QUALITY_ATTR "quality"
 #define POSITION_ATTR "pos"
 
-void GTest_DNASequenceSize::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceSize::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -83,9 +81,7 @@ Task::ReportResult GTest_DNASequenceSize::report() {
     return ReportResult_Finished;
 }
 
-void GTest_DNASequenceAlphabet::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceAlphabet::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -122,9 +118,7 @@ Task::ReportResult GTest_DNASequenceAlphabet::report() {
     return ReportResult_Finished;
 }
 
-void GTest_DNASequencePart::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequencePart::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -175,9 +169,7 @@ Task::ReportResult GTest_DNASequencePart::report() {
     }
     return ReportResult_Finished;
 }
-void GTest_DNASequenceAlphabetType::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceAlphabetType::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -222,9 +214,7 @@ Task::ReportResult GTest_DNASequenceAlphabetType::report() {
     }
     return ReportResult_Finished;
 }
-void GTest_DNASequenceAlphabetId::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceAlphabetId::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -258,9 +248,7 @@ Task::ReportResult GTest_DNASequenceAlphabetId::report() {
 }
 
 //----------------------------------------------------------
-void GTest_DNAcompareSequencesNamesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareSequencesNamesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -327,9 +315,7 @@ Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
 }
 
 //----------------------------------------------------------
-void GTest_DNAcompareSequencesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareSequencesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -398,9 +384,7 @@ Task::ReportResult GTest_DNAcompareSequencesInTwoObjects::report() {
 }
 
 //----------------------------------------------------------
-void GTest_DNAcompareSequencesAlphabetsInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareSequencesAlphabetsInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -467,9 +451,7 @@ Task::ReportResult GTest_DNAcompareSequencesAlphabetsInTwoObjects::report() {
 }
 
 //-----------------------------------------------------------------------------
-void GTest_DNAMulSequenceAlphabetId::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAMulSequenceAlphabetId::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -504,9 +486,7 @@ Task::ReportResult GTest_DNAMulSequenceAlphabetId::report() {
 
 //-----------------------------------------------------------------------------
 
-void GTest_DNAMulSequenceSize::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAMulSequenceSize::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -546,9 +526,7 @@ Task::ReportResult GTest_DNAMulSequenceSize::report() {
 
 //-----------------------------------------------------------------------------
 
-void GTest_DNAMulSequencePart::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAMulSequencePart::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -621,9 +599,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
 
 //-----------------------------------------------------------------------------
 
-void GTest_DNAMulSequenceName::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAMulSequenceName::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -661,9 +637,7 @@ Task::ReportResult GTest_DNAMulSequenceName::report() {
 
 //-----------------------------------------------------------------------------
 
-void GTest_DNAMulSequenceQuality::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAMulSequenceQuality::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -717,9 +691,7 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
 
 //-----------------------------------------------------------------------------
 
-void GTest_DNASequencInMulSequence::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequencInMulSequence::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -757,9 +729,7 @@ Task::ReportResult GTest_DNASequencInMulSequence::report() {
     return ReportResult_Finished;
 }
 //----------------------------------------------------------
-void GTest_DNAcompareMulSequencesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareMulSequencesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -848,9 +818,7 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 }
 
 //----------------------------------------------------------
-void GTest_DNAcompareMulSequencesNamesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareMulSequencesNamesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -934,9 +902,7 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
     return ReportResult_Finished;
 }
 //----------------------------------------------------------
-void GTest_DNASequenceQualityScores::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceQualityScores::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -978,9 +944,7 @@ Task::ReportResult GTest_DNASequenceQualityScores::report() {
 
 //----------------------------------------------------------
 
-void GTest_DNASequenceQualityValue::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNASequenceQualityValue::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -1043,9 +1007,7 @@ Task::ReportResult GTest_DNASequenceQualityValue::report() {
 }
 
 //----------------------------------------------------------
-void GTest_CompareDNASequenceQualityInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CompareDNASequenceQualityInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     doc1CtxName = el.attribute("doc1");
     if (doc1CtxName.isEmpty()) {
         failMissingValue("doc1");
@@ -1099,9 +1061,7 @@ Task::ReportResult GTest_CompareDNASequenceQualityInTwoObjects::report() {
 }
 
 //----------------------------------------------------------
-void GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);

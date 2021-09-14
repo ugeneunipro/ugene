@@ -49,7 +49,6 @@ Document *PlainTextFormat::loadTextDocument(IOAdapterReader &reader, const U2Dbi
 
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     QVariantMap textObjectHints;
     textObjectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));

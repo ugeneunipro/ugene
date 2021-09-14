@@ -38,8 +38,7 @@ QList<XMLTestFactory *> MrBayesToolTests::createTestFactories() {
     return res;
 }
 
-void GTest_MrBayes::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_MrBayes::init(XMLTestFormat *, const QDomElement &el) {
     treeObjFromDoc = nullptr;
     task = nullptr;
     input = nullptr;

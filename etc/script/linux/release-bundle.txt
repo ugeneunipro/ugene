@@ -923,6 +923,8 @@ data/samples/PDB/1CRN.PDB
 data/samples/PDB/3INS.PDB
 data/samples/Raw
 data/samples/Raw/raw.seq
+data/samples/Sanger
+data/samples/Sanger/alignment.ugenedb
 data/samples/SCF
 data/samples/SCF/90-JRI-07.scf
 data/samples/Stockholm
@@ -1253,7 +1255,6 @@ libQt5Core.so.5
 libQt5DBus.so.5
 libQt5Gui.so.5
 libQt5Network.so.5
-libQt5OpenGL.so.5
 libQt5PrintSupport.so.5
 libQt5Script.so.5
 libQt5ScriptTools.so.5

@@ -135,7 +135,6 @@ static QList<GObject *> parseTrees(IOAdapterReader &reader, const U2DbiRef &dbiR
     QList<GObject *> objects;
     DbiOperationsBlock opBlock(dbiRef, si);
     CHECK_OP(si, objects);
-    Q_UNUSED(opBlock);
     QList<PhyTree> trees = NewickPhyTreeSerializer::parseTrees(reader, si);
     CHECK_OP(si, objects);
 

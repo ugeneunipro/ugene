@@ -37,8 +37,7 @@ QList<XMLTestFactory *> AnnotationUtilsTests::createTestFactories() {
     return res;
 }
 
-void GTest_ShiftSequence::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_ShiftSequence::init(XMLTestFormat *, const QDomElement &el) {
     bool isOk;
     locationStringBefore = el.attribute("location-before");
     locationStringAfter = el.attribute("location-after");

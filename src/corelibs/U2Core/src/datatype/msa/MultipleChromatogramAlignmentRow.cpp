@@ -26,6 +26,7 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Log.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleAlignmentRowInfo.h>
 #include <U2Core/U2OpStatus.h>

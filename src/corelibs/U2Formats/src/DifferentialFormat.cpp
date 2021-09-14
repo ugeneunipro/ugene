@@ -164,7 +164,6 @@ QList<SharedAnnotationData> DifferentialFormat::parseAnnotations(const ColumnDat
 Document *DifferentialFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     QList<SharedAnnotationData> anns = parseAnnotations(reader, os);
     CHECK_OP(os, nullptr);

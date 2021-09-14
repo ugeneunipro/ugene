@@ -125,18 +125,12 @@ QList<Task *> Shtirlitz::wakeup() {
     // Check if this version of UGENE is launched for the first time
     // and user did not enabled stats before -> ask to enable
     // Do not ask to enable it twice for different versions!
+    UserAppsSettings *userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
     if (minorVersionFirstLaunch) {
-        MainWindow *mainWindow = AppContext::getMainWindow();
-        CHECK(nullptr != mainWindow, result);
-        QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(getWhatsNewHtml(), mainWindow->getQMainWindow());
-        dialog->exec();
-        CHECK(!dialog.isNull(), result);
-
-        if (!dialog->isInfoSharingAccepted()) {
-            AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(false);
+        showWhatsNewDialog();
+        if (!userAppSettings->isStatisticsCollectionEnabled()) {
             return result;
         }
-        AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(true);
         coreLog.details(ShtirlitzTask::tr("Shtirlitz is sending the first-time report"));
         result << sendSystemReport();
         bSentSystemReport = true;
@@ -144,7 +138,7 @@ QList<Task *> Shtirlitz::wakeup() {
     }
 
     // Check if previous report was sent more than a week ago
-    if (!allVersionsFirstLaunch && AppContext::getAppSettings()->getUserAppsSettings()->isStatisticsCollectionEnabled()) {
+    if (!allVersionsFirstLaunch && userAppSettings->isStatisticsCollectionEnabled()) {
         QVariant prevDateQvar = AppContext::getSettings()->getValue(SETTINGS_PREVIOUS_REPORT_DATE);
         QDate prevDate = prevDateQvar.toDate();
         int daysPassed = prevDate.isValid() ? prevDate.daysTo(QDate::currentDate()) : 0;
@@ -311,6 +305,15 @@ void Shtirlitz::getFirstLaunchInfo(bool &allVersions, bool &minorVersions) {
 
 QString Shtirlitz::tr(const char *str) {
     return ShtirlitzTask::tr(str);
+}
+
+void Shtirlitz::showWhatsNewDialog() {
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    CHECK(mainWindow != nullptr, );
+    QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(getWhatsNewHtml(), mainWindow->getQMainWindow());
+    dialog->exec();
+    CHECK(!dialog.isNull(), );
+    AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(dialog->isInfoSharingAccepted());
 }
 
 //////////////////////////////////////////////////////////////////////////

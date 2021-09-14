@@ -70,8 +70,7 @@ namespace U2 {
 #define BEST_ATTR "best"
 #define ALL_ATTR "all"
 
-void GTest_Bowtie::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_Bowtie::init(XMLTestFormat *, const QDomElement &el) {
     bowtieTask = nullptr;
     indexName = "";
     readsFileName = "";

@@ -107,8 +107,8 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
 }
 
 void InSilicoPcrTask::prepare() {
-    if (!PrimerStatistics::validatePrimerMinLength(settings.forwardPrimer) || !PrimerStatistics::validatePrimerMinLength(settings.reversePrimer)) {
-        algoLog.details(tr("One of the given primers is too short. Task cancelled."));
+    if (!PrimerStatistics::validatePrimerLength(settings.forwardPrimer) || !PrimerStatistics::validatePrimerLength(settings.reversePrimer)) {
+        algoLog.details(tr("One of the given do not fits acceptable length. Task cancelled."));
         stateInfo.setCanceled(true);
         return;
     }

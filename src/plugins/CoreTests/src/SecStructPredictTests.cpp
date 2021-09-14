@@ -41,8 +41,7 @@ namespace U2 {
 #define OUTPUT_SEQ_ATTR "output-seq"
 #define ALG_NAME_ATTR "algorithm-name"
 
-void GTest_SecStructPredictAlgorithm::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_SecStructPredictAlgorithm::init(XMLTestFormat *, const QDomElement &el) {
     inputSeq = el.attribute(SEQ_ATTR);
     if (inputSeq.isEmpty()) {
         failMissingValue(SEQ_ATTR);
@@ -86,9 +85,7 @@ Task::ReportResult GTest_SecStructPredictAlgorithm::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_SecStructPredictTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_SecStructPredictTask::init(XMLTestFormat *, const QDomElement &el) {
     seqName = el.attribute(SEQ_NAME_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQ_NAME_ATTR);

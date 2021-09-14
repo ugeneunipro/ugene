@@ -225,7 +225,6 @@ void U2SequenceObject::removeRegion(U2OpStatus &os, const U2Region &region) {
 
 GObject *U2SequenceObject::clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     DbiConnection srcCon(this->entityRef.dbiRef, os);

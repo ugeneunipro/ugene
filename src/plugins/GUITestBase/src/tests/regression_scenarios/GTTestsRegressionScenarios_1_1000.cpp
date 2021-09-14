@@ -472,21 +472,18 @@ GUI_TEST_CLASS_DEFINITION(test_0567) {
         Test_0567(HI::GUITestOpStatus &os)
             : Filler(os, "DotPlotDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
             GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/dp_view/dpm1.fa"));
-            GTWidget::click(os, dialog->findChild<QPushButton *>("loadSequenceButton"));
-            GTGlobals::sleep();
+            GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
 
             GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/dp_view/dpm2.fa"));
-            GTWidget::click(os, dialog->findChild<QPushButton *>("loadSequenceButton"));
-            GTGlobals::sleep();
+            GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            auto box = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(button != nullptr, "cancel button is NULL");
             GTWidget::click(os, button);
@@ -495,11 +492,11 @@ GUI_TEST_CLASS_DEFINITION(test_0567) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new Test_0567(os));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
-    GTGlobals::sleep(1000);
+
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0574) {
@@ -2451,7 +2448,6 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     // Check 'as a sequence' mode.
     GTLogTracer l1;
-    GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2466,7 +2462,6 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     // Check 'as an alignment' mode.
     GTLogTracer l2;
-    GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);

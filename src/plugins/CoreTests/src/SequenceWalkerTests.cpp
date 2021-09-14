@@ -36,9 +36,7 @@ namespace U2 {
 #define REVERSE_ATTR "reverse"
 #define RESULT_ATTR "result"
 
-void GTest_SW_CheckRegion::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_SW_CheckRegion::init(XMLTestFormat *, const QDomElement &el) {
     QString stepStr = el.attribute(CHUNK_ATTR);
     if (stepStr.isEmpty()) {
         failMissingValue(CHUNK_ATTR);

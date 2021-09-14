@@ -37,19 +37,6 @@ Matrix44::Matrix44(const float *data)
     }
 }
 
-Matrix44::Matrix44(const Matrix44 &other)
-    : m(other.m) {
-}
-
-Matrix44 &Matrix44::operator=(const Matrix44 &other) {
-    m = other.m;
-    return *this;
-}
-
-void Matrix44::loadZero() {
-    m.fill(0.0);
-}
-
 void Matrix44::loadIdentity() {
     m.fill(0.0);
     for (int i = 0; i < 4; ++i) {

@@ -39,7 +39,7 @@ namespace U2 {
 #define TT_WIDTH 500
 
 #define TS_HEIGHT 350
-#define TS_WIDTH TT_WIDTH + 27
+#define TS_WIDTH (TT_WIDTH + 27)
 
 class Header : public QFrame {
     Q_OBJECT

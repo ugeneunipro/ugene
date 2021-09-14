@@ -33,11 +33,7 @@ use_cuda() {
         COMPILER_OPT_EXT = "--compiler-options -fPIC"
     }
 
-    contains(DEFINES, UGENE_X86_64) {
-        SW2_NVCC_ARCH_FLAG = -m 64
-    } else {
-        SW2_NVCC_ARCH_FLAG = -m 32
-    }
+    SW2_NVCC_ARCH_FLAG = -m 64
 
     SW2_NVCC_FLAGS = $${SW2_NVCC_ARCH_FLAG} -g -G "$${XCOMPILER_OPT}" "$${XLINKER_OPT}"
 
@@ -52,7 +48,7 @@ use_cuda() {
 #manually convert INCLUDEPATH:
     SW2_CUDA_INCLUDEPATH =
     for(path, INCLUDEPATH) {
-        SW2_CUDA_INCLUDEPATH += -I$${path}
+        SW2_CUDA_INCLUDEPATH += -I$$shell_quote($$path)
     }
     for(path, QMAKE_INCDIR) {
         SW2_CUDA_INCLUDEPATH += -I$${path}
@@ -61,8 +57,8 @@ use_cuda() {
     nvzz.input = SW2_CUDA_FILES
     nvzz.output = $$OBJECTS_DIR/${QMAKE_FILE_BASE}$$QMAKE_EXT_OBJ
     nvzz.name = CUDA compiler
-    nvzz.commands = $$UGENE_NVCC $$SW2_NVCC_FLAGS -I$$UGENE_CUDA_INC_DIR $$SW2_CUDA_INCLUDEPATH \
-                    -L$$UGENE_CUDA_LIB_DIR $$SW2_CUDA_LIBS \
+    nvzz.commands = $$UGENE_NVCC $$SW2_NVCC_FLAGS -I$$shell_quote($$UGENE_CUDA_INC_DIR) $$SW2_CUDA_INCLUDEPATH \
+                    -L$$shell_quote($$UGENE_CUDA_LIB_DIR) $$SW2_CUDA_LIBS \
                     -c $${COMPILER_OPT_EXT} ${QMAKE_FILE_IN} \
                     -o ${QMAKE_FILE_OUT}
 

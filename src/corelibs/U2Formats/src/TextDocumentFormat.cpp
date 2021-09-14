@@ -98,7 +98,7 @@ Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef
     CHECK_OP(os, nullptr);
     IOAdapterReader reader(io);  // TODO: store codec in the result document hints.
     Document *document = loadTextDocument(reader, dbiRef, hints, os);
-    SAFE_POINT(document != nullptr || os.hasError(), "Either document must not be null or there must be an error!", document);
+    SAFE_POINT(document != nullptr || os.hasError() || os.isCanceled(), "Either document must not be null or there must be an error/cancel flag!", document);
     return document;
 }
 

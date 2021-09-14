@@ -415,9 +415,6 @@ int GTUtilsMdi::getCurrentTab(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "clickTab"
 void GTUtilsMdi::clickTab(HI::GUITestOpStatus &os, int tabIndex) {
     QTabBar *tabBar = getTabBar(os);
-    GT_CHECK_RESULT(tabBar != nullptr, "tabBar == NULL", );
-
-    coreLog.info(QString("Try to click tab %1(%2)").arg(tabIndex).arg(tabBar->tabText(tabIndex)));
     QPoint tabCenter = tabBar->mapToGlobal(tabBar->tabRect(tabIndex).center());
     GTMouseDriver::moveTo(tabCenter);
     GTMouseDriver::click();

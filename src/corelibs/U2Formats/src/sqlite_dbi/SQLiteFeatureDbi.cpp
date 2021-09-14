@@ -478,7 +478,6 @@ QString getFeatureKeyInsertQuery(int keyCount) {
 
 void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, DbRef *db, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
 
     const int keyCount = keys.count();
     CHECK(keyCount > 0, );
@@ -705,7 +704,6 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, DbRef
 
 void SQLiteFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
 
     int parentsNumber = parentIds.count();
     if (parentsNumber <= SQLiteDbi::BIND_PARAMETERS_LIMIT) {

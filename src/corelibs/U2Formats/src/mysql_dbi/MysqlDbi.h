@@ -49,6 +49,12 @@ public:
     ~MysqlDbi();
 
     /**
+     * Minimal version of UGENE that is compatible with the current MySQL DBI implementation.
+     * if (MIN_COMPATIBLE_UGENE_VERSION < active UGENE version ) UGENE will be able to connect to the MySQL database.
+     */
+    static const Version MIN_COMPATIBLE_UGENE_VERSION;
+
+    /**
     Boots the database up to functional state.
     Can be called again after successful shutdown, to re-load the database.
     */
@@ -137,8 +143,6 @@ private:
     void setupTransactions(U2OpStatus &os);
 
     void checkUserPermissions(U2OpStatus &os);
-
-    static QString getConnectionName();
 
     MysqlDbRef *db;
 

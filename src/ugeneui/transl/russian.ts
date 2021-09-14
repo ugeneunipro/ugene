@@ -438,24 +438,19 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="541"/>
+        <location filename="../src/Main.cpp" line="543"/>
         <source>Translation file not found: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="855"/>
+        <location filename="../src/Main.cpp" line="857"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="856"/>
+        <location filename="../src/Main.cpp" line="858"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
-    </message>
-    <message>
-        <location filename="../src/Main.cpp" line="857"/>
-        <source>UGENE distribution: %1</source>
-        <translation>Распределение UGENE: %1</translation>
     </message>
     <message>
         <location filename="../src/main_window/ShutdownTask.cpp" line="193"/>
@@ -649,17 +644,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddDocumentsToProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="961"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1012"/>
         <source>Loading documents</source>
         <translation>Loading documents</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1022"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1069"/>
         <source>No active project found!</source>
         <translation>No active project found!</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1058"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1105"/>
         <source>Load document and add to project: %1</source>
         <translation>Load document and add to project: %1</translation>
     </message>
@@ -667,7 +662,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="590"/>
+        <location filename="../src/Main.cpp" line="592"/>
         <source>Style not available %1</source>
         <translation>Стиль не доступен: %1</translation>
     </message>
@@ -761,17 +756,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateDesktopShortcutTask</name>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="60"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="59"/>
         <source>Create desktop shortcut</source>
         <translation>Добавление иконки на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="179"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="178"/>
         <source>Desktop shortcut</source>
         <translation>Ярлык на рабочем столе</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="180"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="179"/>
         <source>A new shortcut to the UGENE application was created on the desktop.</source>
         <translation>На рабочем столе был создан новый ярлык для приложения UGENE.</translation>
     </message>
@@ -813,7 +808,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DisableProjectViewTask</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1217"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1211"/>
         <source>Disable project viewer</source>
         <translation>Disable project viewer</translation>
     </message>
@@ -821,77 +816,77 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentFormatSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="62"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="60"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="63"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="75"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="73"/>
         <source>Options for %1</source>
         <translation>Опции для %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="92"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="86"/>
         <source>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; формат. Счет: %2 &lt;i&gt;(%3)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="96"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="90"/>
         <source>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</source>
         <translation>&lt;b&gt;&lt;font color=#A6392E&gt;Импорт: &lt;/font&gt;%1&lt;/b&gt;. Счет: %2 (&lt;i&gt;%3&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="114"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="108"/>
         <source>more..</source>
         <translation>подробнее..</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="128"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="122"/>
         <source>Choose format manually</source>
         <translation>Выбрать формат</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
         <source>Not matched</source>
         <translation>Не соответствует</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
         <source>Very low similarity</source>
         <translation>Очень низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
         <source>Low similarity</source>
         <translation>Низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
         <source>Average similarity</source>
         <translation>Средняя схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="197"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
         <source>High similarity</source>
         <translation>Высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="200"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>Very high similarity</source>
         <translation>Очень высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="202"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
         <source>Perfect match</source>
         <translation>Идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="210"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Детали для формата &apos;%1&apos;</translation>
     </message>
@@ -970,7 +965,7 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::EnableProjectViewTask</name>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1207"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1201"/>
         <source>Enable ProjectView</source>
         <translation>Enable ProjectView</translation>
     </message>
@@ -993,7 +988,7 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ExportProjectDialogController.cpp" line="95"/>
+        <location filename="../src/project_support/ExportProjectDialogController.cpp" line="94"/>
         <source>Project files</source>
         <translation>Файлы проекта</translation>
     </message>
@@ -1050,17 +1045,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_ExportProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="476"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="474"/>
         <source>GTest_ExportProject::prepare unable to clean folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to clean folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="481"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="479"/>
         <source>GTest_ExportProject::prepare unable to create folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to create folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="501"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="499"/>
         <source>GTest_ExportProject::cleanup unable to delete exported files</source>
         <translation>GTest_ExportProject::cleanup unable to delete exported files</translation>
     </message>
@@ -1068,17 +1063,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadDocumentFromProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="563"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="557"/>
         <source>No project loaded</source>
         <translation>No project loaded</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="567"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="561"/>
         <source>Document name to load is empty</source>
         <translation>Document name to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="582"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="576"/>
         <source>File %1 not found in project</source>
         <translation>File %1 not found in project</translation>
     </message>
@@ -1140,22 +1135,22 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>&lt;&lt; все &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="206"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="207"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="206"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="207"/>
         <source>Unable to open log file for writing, log writing to file disabled</source>
         <translation>Невозможно открыть файл логирования для записи, запись лога в файл недоступна</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="295"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="296"/>
         <source>Sample text</source>
         <translation>образец</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="304"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="305"/>
         <source>Save to...</source>
         <translation>Сохранить в...</translation>
     </message>
@@ -1261,17 +1256,17 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Добавить ярлык на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="378"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="387"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Программа уже в процессе выключения. Закрыть немедленно?</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="379"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="388"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="380"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="389"/>
         <source>Wait</source>
         <translation>Подождать</translation>
     </message>
@@ -1307,43 +1302,48 @@ Note that reloading may cause closing of some views associated with objects from
     </message>
     <message>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="282"/>
+        <source>What&apos;s New in UGENE</source>
+        <translation type="unfinished">Что нового в UGENE</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="286"/>
         <source>Crash UGENE</source>
         <translation>Падение UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="287"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="291"/>
         <source>Enable Terminal Usage...</source>
         <translation>Разрешить использование терминала...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="446"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="451"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="459"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="455"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="460"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="446"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="455"/>
         <source>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</source>
         <translation>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="451"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="460"/>
         <source>Failed to enable terminal usage: not authorized</source>
         <translation>Failed to enable terminal usage: not authorized</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="459"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
         <source>Failed to enable terminal usage: authorization failure</source>
         <translation>Failed to enable terminal usage: authorization failure</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="464"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
         <source>Installation successful</source>
         <translation>Installation successful</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="464"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
         <source>Terminal usage successfully enabled.
 
 Now you can type ugene in command line to start UGENE.</source>
@@ -1408,12 +1408,12 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::OpenWithProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1087"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1134"/>
         <source>Opening document: %1</source>
         <translation>Opening document: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1089"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1136"/>
         <source>Opening %1 documents</source>
         <translation>Opening %1 documents</translation>
     </message>
@@ -1498,27 +1498,27 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ProjectDialogController</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="830"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="881"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="831"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="882"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="885"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="936"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="885"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="936"/>
         <source>Project files</source>
         <translation>Файлы проекта</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="924"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="975"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Проект уже существует.&lt;br&gt;Переписать его?&lt;body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1565,144 +1565,164 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ProjectLoaderImpl</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="234"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="232"/>
         <source>UGENE project file</source>
         <translation>Файл проекта</translation>
     </message>
     <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="237"/>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="239"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="241"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="940"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="991"/>
         <source>Select files to open</source>
         <translation>Открыть файлы</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="487"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="510"/>
         <source>Project file &apos;%1&apos; ignored</source>
         <translation>Project file &apos;%1&apos; ignored</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="493"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="516"/>
         <source>The document with the same URL is already added to the project</source>
         <translation>Этот документ уже добавлен в проект</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="502"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="525"/>
         <source>The document is already loaded and added to project: %1</source>
         <translation>Документ уже загружен и добавлен в проект: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="507"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="530"/>
         <source>The document with the same URL is already loading</source>
         <translation>The document with the same URL is already loading</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="580"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="603"/>
         <source>Failed to detect file format: %1</source>
         <translation>Невозможно определить формат файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="583"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="606"/>
         <source>File doesn&apos;t exist: %1</source>
         <translation>Файл не существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="585"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="608"/>
         <source>File is empty: %1</source>
         <translation>Файл пуст: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="620"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="643"/>
         <source>Project is already opened</source>
         <translation>Проект уже открыт</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="626"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="649"/>
         <source>New project can either be opened in a new window or replace the project in the existing. How would you like to open the project?</source>
         <translation>Новый проект может быть открыт в новом окне или текущий проект может быть переписан. Как открыть проект?</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="627"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="650"/>
         <source>New Window</source>
         <translation>В новом окне</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="629"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="652"/>
         <source>This Window</source>
         <translation>В текущем окне</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="640"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="663"/>
         <source>Failed to open new instance of UGENE</source>
         <translation>Failed to open new instance of UGENE</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="646"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="669"/>
         <source>Stopped loading project: %1. Reason: active project found</source>
         <translation>Загрузка проекта остановлена: %1, поскольку активен другой проект</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="907"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="812"/>
+        <source>The path %1 does not exist.</source>
+        <translation>Путь %1 не существует.</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="813"/>
+        <source>The path %1 is not readable.</source>
+        <translation>Невозможно прочитать путь %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="815"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="815"/>
+        <source>Remove From List</source>
+        <translation>Удалить из списка</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="958"/>
         <source>New Project</source>
         <translation>Новый проект</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="126"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="124"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="109"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="107"/>
         <source>Open as...</source>
         <translation>Открыть как...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="120"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="118"/>
         <source>Open from clipboard...</source>
         <translation>Открыть из буфера обмена...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="137"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="135"/>
         <source>Connect to UGENE shared database...</source>
         <translation>Подключиться к базе данных UGENE...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="838"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="889"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="839"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="890"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="151"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="149"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="103"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="101"/>
         <source>&amp;New project...</source>
         <translation>&amp;Новый проект...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="115"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="113"/>
         <source>New document from text...</source>
         <translation>Новый документ из текста...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="132"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="130"/>
         <source>Access remote database...</source>
         <translation>Запрос к удаленной базе данных...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="142"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="140"/>
         <source>Search NCBI GenBank...</source>
         <translation>Поиск в NCBI GenBank...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="155"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="153"/>
         <source>Recent files</source>
         <translation>Недавние файлы</translation>
     </message>
@@ -1835,12 +1855,12 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>Добавить в окно</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1149"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1147"/>
         <source>Select new file location</source>
         <translation>Выбор нового адреса</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1107"/>
+        <location filename="../src/project_view/ProjectViewImpl.cpp" line="1105"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1885,17 +1905,17 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::SaveProjectDialogController</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="812"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="863"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="813"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="864"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="814"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="865"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1916,7 +1936,7 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="367"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="371"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1924,32 +1944,32 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="139"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="134"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Отправляется отчет о системе</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="152"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="147"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="323"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="327"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="344"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="348"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="348"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="352"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="361"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="365"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>
@@ -1998,12 +2018,12 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::StatisticalReportController</name>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="31"/>
+        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="34"/>
         <source>&lt;b&gt;Optional:&lt;/b&gt; Help make UGENE better by automatically sending anonymous usage statistics.</source>
         <translation>&lt;b&gt;Опционально:&lt;/b&gt; Помогите сделать UGENE лучше, автоматически отправляя анонимную статистику использования.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="34"/>
+        <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="38"/>
         <source>Welcome to UGENE %1.%2</source>
         <translation>Добро пожаловать в UGENE %1.%2</translation>
     </message>
@@ -2034,32 +2054,32 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>Отменена</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="447"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="447"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
         <source>Status</source>
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="449"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="450"/>
         <source>Error:</source>
         <translation>Ошибка:</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="454"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="455"/>
         <source>Time</source>
         <translation>Время выполнения</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="513"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="514"/>
         <source>Open containing folder</source>
         <translation>Открыть папку, содержащую документ</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="520"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="521"/>
         <source>Open by operating system</source>
         <translation>Открыть при помощи операционной системы</translation>
     </message>
@@ -2146,12 +2166,12 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>Activating task report: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="592"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="593"/>
         <source>finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="574"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="575"/>
         <source>Canceling...</source>
         <translation>Отмена задачи...</translation>
     </message>
@@ -2191,7 +2211,7 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>Операции</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskViewController.cpp" line="572"/>
+        <location filename="../src/task_view/TaskViewController.cpp" line="573"/>
         <source>Canceled</source>
         <translation>Отменена</translation>
     </message>
@@ -2289,7 +2309,7 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="539"/>
+        <location filename="../src/Main.cpp" line="541"/>
         <source>UGENE initialization started</source>
         <translation>Инициализация UGENE</translation>
     </message>
@@ -2388,7 +2408,7 @@ Would you like to download and install it?</source>
         <translation>Нет открытых проектов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="337"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="333"/>
         <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
         <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
     </message>

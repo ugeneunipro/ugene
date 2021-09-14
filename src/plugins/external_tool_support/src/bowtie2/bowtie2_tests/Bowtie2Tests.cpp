@@ -30,9 +30,7 @@ namespace U2 {
 #define FILE3_ATTR "file3"
 #define IS_BAM_ATTR "isbam"
 
-void GTest_Bowtie2::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_Bowtie2::init(XMLTestFormat *, const QDomElement &el) {
     file1Url = el.attribute(FILE1_ATTR);
     if (file1Url.isEmpty()) {
         failMissingValue(FILE1_ATTR);

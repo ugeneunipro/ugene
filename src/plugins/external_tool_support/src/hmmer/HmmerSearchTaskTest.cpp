@@ -153,9 +153,7 @@ void GTest_UHMM3Search::setSearchTaskSettings(HmmerSearchSettings &settings, con
     setUseBitCutoffsOption(settings.useBitCutoffs, el, GTest_UHMM3Search::USE_BIT_CUTOFFS_OPTION_TAG, si);
 }
 
-void GTest_UHMM3Search::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UHMM3Search::init(XMLTestFormat *, const QDomElement &el) {
     hmmFilename = el.attribute(HMM_FILENAME_TAG);
 
     searchTask = nullptr;
@@ -344,9 +342,7 @@ static bool compareNumbers(T f1, T f2) {
     return ret;
 }
 
-void GTest_UHMM3SearchCompare::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UHMM3SearchCompare::init(XMLTestFormat *, const QDomElement &el) {
     trueOutFilename = el.attribute(TRUE_OUT_FILE_TAG);
     actualOutFilename = el.attribute(ACTUAL_OUT_FILE_TAG);
 }

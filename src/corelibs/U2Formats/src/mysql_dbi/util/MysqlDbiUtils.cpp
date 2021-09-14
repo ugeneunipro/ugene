@@ -122,7 +122,6 @@ void MysqlDbiUtils::renameObject(MysqlDbi *dbi, U2Object &object, const QString 
     CHECK_OP(os, );
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     MysqlModificationAction updateAction(dbi, object.id);
     updateAction.prepare(os);
@@ -139,7 +138,6 @@ void MysqlDbiUtils::renameObject(MysqlModificationAction &updateAction, MysqlDbi
     CHECK_OP(os, );
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     QByteArray modDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {

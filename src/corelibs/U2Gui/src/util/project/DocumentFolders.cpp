@@ -23,6 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Folder.h>
+#include <U2Core/Log.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 

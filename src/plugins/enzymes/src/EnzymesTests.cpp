@@ -40,8 +40,7 @@
 
 namespace U2 {
 
-void GTest_FindEnzymes::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_FindEnzymes::init(XMLTestFormat *, const QDomElement &el) {
     loadTask = nullptr;
     contextIsAdded = false;
 
@@ -235,8 +234,7 @@ void GTest_FindEnzymes::cleanup() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_DigestIntoFragments::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_DigestIntoFragments::init(XMLTestFormat *, const QDomElement &el) {
     loadTask = nullptr;
 
     seqObjCtx = el.attribute("sequence");
@@ -246,7 +244,7 @@ void GTest_DigestIntoFragments::init(XMLTestFormat *tf, const QDomElement &el) {
     }
 
     QString isCircularBuf = el.attribute("circular");
-    isCircular = isCircularBuf == "true" ? true : false;
+    isCircular = isCircularBuf == "true";
 
     aObjCtx = el.attribute("annotation-table");
     if (aObjCtx.isEmpty()) {
@@ -327,9 +325,7 @@ QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_LigateFragments::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_LigateFragments::init(XMLTestFormat *, const QDomElement &el) {
     ligateTask = nullptr;
     contextAdded = false;
 

@@ -21,7 +21,7 @@
 
 #include "SQLiteAttributeDbi.h"
 
-#include <U2Core/Timer.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
 

@@ -33,9 +33,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_LoadRemoteDocumentTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_LoadRemoteDocumentTask::init(XMLTestFormat *, const QDomElement &el) {
     dbName.clear();
     docId.clear();
     expectedDoc.clear();

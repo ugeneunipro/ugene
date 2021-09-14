@@ -25,38 +25,24 @@
 #    error U2_APP_VERSION is not set!
 #endif
 
-#ifndef UGENE_MIN_VERSION_SQLITE
-#    error UGENE_MIN_VERSION_SQLITE is not set!
-#else
-#    define U2_APP_MIN_VERSION_SQLITE_STRING TOSTRING(UGENE_MIN_VERSION_SQLITE)
-#endif
-
-#ifndef UGENE_MIN_VERSION_MYSQL
-#    error UGENE_MIN_VERSION_MYSQL is not set!
-#else
-#    define U2_APP_MIN_VERSION_MYSQL_STRING TOSTRING(UGENE_MIN_VERSION_MYSQL)
-#endif
-
 #ifndef U2_DISTRIBUTION_INFO
 #    define U2_DISTRIBUTION_INFO "sources"
 #endif
 
 namespace U2 {
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-
-#define U2_APP_VERSION_STRING TOSTRING(U2_APP_VERSION)
+#define U2_APP_VERSION_STRING U2_TOSTRING(U2_APP_VERSION)
 #define VERSION_DEV_SUFFIX "dev"
 
 const QString Version::buildDate = __DATE__;
 const int Version::appArchitecture = QT_POINTER_SIZE * 8;
-const QString Version::distributionInfo = QString(TOSTRING(U2_DISTRIBUTION_INFO)).replace("_", " ");
 
-Version::Version() {
-    major = minor = patch = 0;
-    debug = false;
-    text = "unknown";
+Version::Version(int _major, int _minor, int _patch) {
+    // Note: can't use in-place initialization like major(_major) because on some Linux systems
+    // major()/minor() is an indirectly included macro. See https://stackoverflow.com/questions/20024722/c-error-constructor-parameter.
+    major = _major;
+    minor = _minor;
+    patch = _patch;
 }
 
 Version Version::parseVersion(const QString &text) {
@@ -101,10 +87,7 @@ Version Version::parseVersion(const QString &text) {
 
 #ifdef _DEBUG
     v.debug = true;
-#else
-    v.debug = false;
 #endif
-
     return v;
 }
 
@@ -114,14 +97,6 @@ Version Version::appVersion() {
 
 Version Version::qtVersion() {
     return parseVersion(QT_VERSION_STR);
-}
-
-Version Version::minVersionForSQLite() {
-    return parseVersion(U2_APP_MIN_VERSION_SQLITE_STRING);
-}
-
-Version Version::minVersionForMySQL() {
-    return parseVersion(U2_APP_MIN_VERSION_MYSQL_STRING);
 }
 
 bool Version::operator>(const Version &v) const {

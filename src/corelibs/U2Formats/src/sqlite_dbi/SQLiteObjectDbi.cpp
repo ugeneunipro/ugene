@@ -21,6 +21,7 @@
 
 #include "SQLiteObjectDbi.h"
 
+#include <U2Core/Log.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2FeatureUtils.h>

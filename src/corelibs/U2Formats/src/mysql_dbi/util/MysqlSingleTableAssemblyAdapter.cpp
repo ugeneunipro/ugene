@@ -60,7 +60,6 @@ MysqlSingleTableAssemblyAdapter::MysqlSingleTableAssemblyAdapter(MysqlDbi *dbi,
 
 void MysqlSingleTableAssemblyAdapter::createReadsTables(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // id - id of the read
     // name - read name hash
@@ -97,7 +96,6 @@ static const QString CREATE_INDEX_IF_NOT_EXISTS_QUERY =
 
 void MysqlSingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery(CREATE_INDEX_IF_NOT_EXISTS_QUERY.arg(db->handle.databaseName())
                    .arg(readsTable)
@@ -179,7 +177,6 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByName(c
 
 void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     if (!inited) {
         createReadsTables(os);
@@ -225,7 +222,6 @@ void MysqlSingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead> *it
 
 void MysqlSingleTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // TODO: add transaction per pack or reads
     // TODO: remove multiple reads in 1 SQL at once
@@ -287,7 +283,6 @@ QString MysqlSingleTableAssemblyAdapter::getReadsTableName(const U2DataId &assem
 
 void MysqlSingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString q1 = "DROP INDEX IF EXISTS %1_gstart";
     U2SqlQuery(q1.arg(readsTable), db, os).execute();

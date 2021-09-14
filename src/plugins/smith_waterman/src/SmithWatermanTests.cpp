@@ -295,9 +295,7 @@ Task::ReportResult GTest_SmithWatermnan::report() {
     return ReportResult_Finished;
 }
 
-void GTest_SmithWatermnanPerf::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_SmithWatermnanPerf::init(XMLTestFormat *, const QDomElement &el) {
     searchSeqDocName = el.attribute(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);
     if (searchSeqDocName.isEmpty()) {
         failMissingValue(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);

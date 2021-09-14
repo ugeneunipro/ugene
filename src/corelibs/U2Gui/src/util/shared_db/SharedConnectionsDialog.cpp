@@ -22,7 +22,6 @@
 #include "SharedConnectionsDialog.h"
 
 #include <QListWidget>
-#include <QListWidgetItem>
 #include <QMessageBox>
 
 #include <U2Core/AddDocumentTask.h>
@@ -41,6 +40,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/Version.h>
 
+#include <U2Formats/MysqlDbi.h>
 #include <U2Formats/MysqlDbiUtils.h>
 #include <U2Formats/MysqlUpgradeTask.h>
 
@@ -492,13 +492,13 @@ bool SharedConnectionsDialog::checkDbIsTooNew(const U2DbiRef &ref) {
 
 bool SharedConnectionsDialog::checkDbShouldBeUpgraded(const U2DbiRef &ref) {
     U2OpStatusImpl os;
-    const bool upgradeDatabase = U2DbiUtils::isDatabaseTooOld(ref, Version::minVersionForMySQL(), os);
+    const bool upgradeDatabase = U2DbiUtils::isDatabaseTooOld(ref, MysqlDbi::MIN_COMPATIBLE_UGENE_VERSION, os);
     CHECK_OP(os, false);
 
     if (upgradeDatabase) {
         QObjectScopedPointer<QMessageBox> question = new QMessageBox(QMessageBox::Question, tr(DATABASE_UPGRADE_TITLE), tr(DATABASE_UPGRADE_TEXT), QMessageBox::Ok | QMessageBox::Cancel | QMessageBox::Help, this);
         question->button(QMessageBox::Ok)->setText(tr("Upgrade"));
-        HelpButton(question.data(), question->button(QMessageBox::Help), "65930942");
+        new HelpButton(question.data(), question->button(QMessageBox::Help), "65930942");
         question->setDefaultButton(QMessageBox::Cancel);
         const int dialogResult = question->exec();
         CHECK(!question.isNull(), true);

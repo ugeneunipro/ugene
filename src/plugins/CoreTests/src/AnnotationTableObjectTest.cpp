@@ -47,9 +47,7 @@ namespace U2 {
 #define LOCATION_ATTR "location"
 #define INDEX_ATTR "index"
 
-void GTest_CheckNumAnnotations::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckNumAnnotations::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -85,9 +83,7 @@ Task::ReportResult GTest_CheckNumAnnotations::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_FindAnnotationByNum::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindAnnotationByNum::init(XMLTestFormat *, const QDomElement &el) {
     result = nullptr;
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
@@ -146,9 +142,7 @@ void GTest_FindAnnotationByNum::cleanup() {
 
 //---------------------------------------------------------------
 
-void GTest_FindAnnotationByName::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindAnnotationByName::init(XMLTestFormat *, const QDomElement &el) {
     result = nullptr;
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
@@ -228,9 +222,7 @@ void GTest_FindAnnotationByName::cleanup() {
 
 //---------------------------------------------------------------
 
-void GTest_CheckAnnotationName::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationName::init(XMLTestFormat *, const QDomElement &el) {
     annCtxName = el.attribute(ANNOTATION_ATTR);
     if (annCtxName.isEmpty()) {
         failMissingValue(ANNOTATION_ATTR);
@@ -259,9 +251,7 @@ Task::ReportResult GTest_CheckAnnotationName::report() {
 
 //---------------------------------------------------------------
 
-void GTest_CheckAnnotationSequence::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationSequence::init(XMLTestFormat *, const QDomElement &el) {
     aCtxName = el.attribute(ANNOTATION_ATTR);
     if (aCtxName.isEmpty()) {
         failMissingValue(ANNOTATION_ATTR);
@@ -309,9 +299,7 @@ Task::ReportResult GTest_CheckAnnotationSequence::report() {
 
 //---------------------------------------------------------------
 
-void GTest_CheckAnnotationLocation::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationLocation::init(XMLTestFormat *, const QDomElement &el) {
     annCtxName = el.attribute(ANNOTATION_ATTR);
     if (annCtxName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -388,9 +376,7 @@ Task::ReportResult GTest_CheckAnnotationLocation::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CheckAnnotationQualifier::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationQualifier::init(XMLTestFormat *, const QDomElement &el) {
     annCtxName = el.attribute(ANNOTATION_ATTR);
     if (annCtxName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -436,9 +422,7 @@ Task::ReportResult GTest_CheckAnnotationQualifier::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CheckAnnotationQualifierIsAbsent::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationQualifierIsAbsent::init(XMLTestFormat *, const QDomElement &el) {
     annCtxName = el.attribute(ANNOTATION_ATTR);
     if (annCtxName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -468,9 +452,7 @@ Task::ReportResult GTest_CheckAnnotationQualifierIsAbsent::report() {
 }
 
 //---------------------------------------------------------------
-void GTest_CheckAnnotationsNumInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationsNumInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -563,9 +545,7 @@ Task::ReportResult GTest_CheckAnnotationsNumInTwoObjects::report() {
 }
 
 //---------------------------------------------------------------
-void GTest_CheckAnnotationsLocationsInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationsLocationsInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -671,9 +651,7 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
 }
 
 //---------------------------------------------------------------
-void GTest_CheckAnnotationsLocationsAndNumReorderdered::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationsLocationsAndNumReorderdered::init(XMLTestFormat *, const QDomElement &el) {
     doc1CtxName = el.attribute(DOC_ATTR);
     if (doc1CtxName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -745,9 +723,7 @@ Task::ReportResult GTest_CheckAnnotationsLocationsAndNumReorderdered::report() {
 }
 
 //---------------------------------------------------------------
-void GTest_CheckAnnotationsQualifiersInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationsQualifiersInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -830,9 +806,7 @@ Task::ReportResult GTest_CheckAnnotationsQualifiersInTwoObjects::report() {
 }
 
 //---------------------------------------------------------------
-void GTest_CheckAnnotationsNamesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckAnnotationsNamesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -911,9 +885,7 @@ Task::ReportResult GTest_CheckAnnotationsNamesInTwoObjects::report() {
     return ReportResult_Finished;
 }
 
-void GTest_FindAnnotationByLocation::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_FindAnnotationByLocation::init(XMLTestFormat *, const QDomElement &el) {
     result = nullptr;
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
@@ -1008,9 +980,7 @@ void GTest_FindAnnotationByLocation::cleanup() {
 
 //---------------------------------------------------------------
 
-void GTest_CreateTmpAnnotationObject::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CreateTmpAnnotationObject::init(XMLTestFormat *, const QDomElement &el) {
     aobj = nullptr;
     objContextName = el.attribute(NAME_ATTR);
     if (objContextName.isEmpty()) {

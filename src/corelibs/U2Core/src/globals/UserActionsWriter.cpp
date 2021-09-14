@@ -44,7 +44,6 @@ namespace U2 {
 
 bool UserActionsWriter::eventFilter(QObject *obj, QEvent *event) {
     QMutexLocker locker(&guard);
-    Q_UNUSED(locker);
 
     if (event->type() == QEvent::MouseButtonPress ||
         event->type() == QEvent::MouseButtonRelease ||

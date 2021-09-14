@@ -54,9 +54,7 @@ namespace U2 {
 #define STRAND_ATTR "strand"
 #define TRESH_ATTR "treshhold"
 
-void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CalculateACGTContent::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -124,9 +122,7 @@ Task::ReportResult GTest_CalculateACGTContent::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *, const QDomElement &el) {
     QStringList propsList = el.attribute(PROPERTIES_INDEXES).split(QRegExp("\\,")),
                 diPosStrList = el.attribute(DINUCLEOTIDE_POSITIONS).split(QRegExp("\\,")),
                 expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
@@ -236,9 +232,7 @@ Task::ReportResult GTest_CalculateDispersionAndAverage::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CalculateFirstTypeError::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -317,9 +311,7 @@ Task::ReportResult GTest_CalculateFirstTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CalculateSecondTypeError::init(XMLTestFormat *, const QDomElement &el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -406,9 +398,7 @@ Task::ReportResult GTest_CalculateSecondTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_SiteconSearchTask::init(XMLTestFormat *, const QDomElement &el) {
     seqName = el.attribute(SEQNAME_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQNAME_ATTR);

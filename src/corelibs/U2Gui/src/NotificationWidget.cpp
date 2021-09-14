@@ -51,8 +51,8 @@ Header::Header(QWidget *w)
     close->installEventFilter(this);
 
     QLabel *label = new QLabel(this);
-    label->setText("Notifications");
-    w->setWindowTitle("Notifications");
+    label->setText(tr("Notifications"));
+    w->setWindowTitle(tr("Notifications"));
 
     QHBoxLayout *hbox = new QHBoxLayout(this);
 

@@ -79,8 +79,8 @@ public slots:
 
 private:
     void updateActions();
-    void copySequenceSelection(const bool complement, const bool amino);
-    void copyAnnotationSelection(const bool amino);
+    void copySequenceSelection(bool complement, bool amino);
+    void copyAnnotationSelection(bool amino);
     void putIntoClipboard(const QString &data);
 
     AnnotatedDNAView *ctx;
@@ -97,7 +97,6 @@ private:
     QAction *pasteSequenceAction;
 
     static const QString COPY_FAILED_MESSAGE;
-    static const qint64 MAX_COPY_SIZE_FOR_X86;
 };
 
 }  // namespace U2

@@ -67,8 +67,7 @@ public:
     /* implement this to give SequenceWalkerSubtask required resources
      * here are resources for ONE(!) SequenceWalkerSubtask execution e.g. for one execution of onRegion function
      */
-    virtual QList<TaskResourceUsage> getResources(SequenceWalkerSubtask *t) {
-        Q_UNUSED(t);
+    virtual QList<TaskResourceUsage> getResources(SequenceWalkerSubtask *) {
         return QList<TaskResourceUsage>();
     }
 };

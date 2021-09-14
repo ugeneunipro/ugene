@@ -35,7 +35,6 @@ MysqlUpgraderFrom_1_16_To_1_17::MysqlUpgraderFrom_1_16_To_1_17(MysqlDbi *dbi)
 
 void MysqlUpgraderFrom_1_16_To_1_17::upgrade(U2OpStatus &os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     upgradeFeatureDbi(os, dbi->getDbRef());
     CHECK_OP(os, );

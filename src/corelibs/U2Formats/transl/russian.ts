@@ -74,7 +74,7 @@
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="484"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="485"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Установлены неверные права пользователя базы данных, таким образом UGENE не может использовать эту базу данных. Свяжитесь с вашим администратором для устранения проблемы.</translation>
     </message>
@@ -89,20 +89,20 @@
         <translation>Невозможно записать данные. База данных закрыта или данные были изменены.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="786"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="773"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="271"/>
-        <location filename="../src/FastaFormat.cpp" line="301"/>
-        <location filename="../src/FastqFormat.cpp" line="415"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="270"/>
+        <location filename="../src/FastaFormat.cpp" line="300"/>
+        <location filename="../src/FastqFormat.cpp" line="414"/>
         <source>Document sequences were merged</source>
         <translation>Последовательности были соединены</translation>
     </message>
     <message>
-        <location filename="../src/PDWFormat.cpp" line="166"/>
-        <location filename="../src/StockholmFormat.cpp" line="741"/>
+        <location filename="../src/PDWFormat.cpp" line="165"/>
+        <location filename="../src/StockholmFormat.cpp" line="738"/>
         <source>The document is not created by UGENE</source>
         <translation>Документ создан не в UGENE</translation>
     </message>
@@ -110,27 +110,27 @@
 <context>
     <name>U2::ABIFormat</name>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="52"/>
+        <location filename="../src/ABIFormat.cpp" line="50"/>
         <source>ABIF</source>
         <translation>ABIF</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="53"/>
+        <location filename="../src/ABIFormat.cpp" line="51"/>
         <source>A chromatogram file format</source>
         <translation>Формат типа хромотограмма</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="94"/>
+        <location filename="../src/ABIFormat.cpp" line="92"/>
         <source>Not a valid ABIF file: %1</source>
         <translation>Некорректный ABIF файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="121"/>
+        <location filename="../src/ABIFormat.cpp" line="119"/>
         <source>Failed to load sequence from ABI file %1</source>
         <translation>Невозможно загрузить последоватлеьность из ABI файла %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="452"/>
+        <location filename="../src/ABIFormat.cpp" line="451"/>
         <source>Undefined sequence alphabet</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -281,22 +281,22 @@
     </message>
     <message>
         <location filename="../src/ASNFormat.cpp" line="264"/>
-        <location filename="../src/ASNFormat.cpp" line="672"/>
+        <location filename="../src/ASNFormat.cpp" line="662"/>
         <source>Unknown error occurred</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="658"/>
+        <location filename="../src/ASNFormat.cpp" line="648"/>
         <source>no root element</source>
         <translation>Отсутствует корневой элемент</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="664"/>
+        <location filename="../src/ASNFormat.cpp" line="654"/>
         <source>states stack is not empty</source>
         <translation>Стек состояний не пуст</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="687"/>
+        <location filename="../src/ASNFormat.cpp" line="677"/>
         <source>First line is too long</source>
         <translation>Первая строка слишком длинная</translation>
     </message>
@@ -309,12 +309,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="64"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="60"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP форматы используются для сохранения полиморфизма однонуклеотидных данных</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="140"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="117"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Строка %1: Слишком мало столбцов в этой строке. Строка была проигнорирована.</translation>
     </message>
@@ -486,17 +486,17 @@
         <translation>BED (Browser Extensible Data) формат был разработан UCSC для отображения транскриптных структур в геномном браузере.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="136"/>
+        <location filename="../src/BedFormat.cpp" line="135"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="863"/>
+        <location filename="../src/BedFormat.cpp" line="862"/>
         <source>BED parsing error: incorrect format of the &apos;track&apos; header line!</source>
         <translation>BED parsing error: incorrect format of the &apos;track&apos; header line!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="655"/>
+        <location filename="../src/BedFormat.cpp" line="654"/>
         <source>BED parsing error: unexpected number of fields in the first annotations line!</source>
         <translation>BED parsing error: unexpected number of fields in the first annotations line!</translation>
     </message>
@@ -506,97 +506,97 @@
         <translation>BED</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="696"/>
+        <location filename="../src/BedFormat.cpp" line="695"/>
         <source>The file does not contain valid annotations!</source>
         <translation>Файл не содержит корректных аннотаций!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="932"/>
+        <location filename="../src/BedFormat.cpp" line="931"/>
         <source>BED parsing error: incorrect number of fields at line %1!</source>
         <translation>BED parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="936"/>
+        <location filename="../src/BedFormat.cpp" line="935"/>
         <source>BED parsing error: a field at line %1 is empty!</source>
         <translation>BED parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="940"/>
+        <location filename="../src/BedFormat.cpp" line="939"/>
         <source>BED parsing error: incorrect coordinates at line %1!</source>
         <translation>BED parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="944"/>
+        <location filename="../src/BedFormat.cpp" line="943"/>
         <source>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="951"/>
+        <location filename="../src/BedFormat.cpp" line="950"/>
         <source>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="958"/>
+        <location filename="../src/BedFormat.cpp" line="957"/>
         <source>BED parsing error: incorrect thick coordinates at line %1!</source>
         <translation>BED parsing error: incorrect thick coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="962"/>
+        <location filename="../src/BedFormat.cpp" line="961"/>
         <source>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="969"/>
+        <location filename="../src/BedFormat.cpp" line="968"/>
         <source>BED parsing error: incorrect value of the block parameters at line %1!</source>
         <translation>BED parsing error: incorrect value of the block parameters at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="403"/>
+        <location filename="../src/BedFormat.cpp" line="402"/>
         <source>Starting BED saving: &apos;%1&apos;</source>
         <translation>Сохранение BED: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="414"/>
+        <location filename="../src/BedFormat.cpp" line="413"/>
         <source>Can not convert GObject to AnnotationTableObject</source>
         <translation>Can not convert GObject to AnnotationTableObject</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="428"/>
+        <location filename="../src/BedFormat.cpp" line="427"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="444"/>
+        <location filename="../src/BedFormat.cpp" line="443"/>
         <source>You are trying to save joined annotation to BED format! The joining will be lost</source>
         <translation>Вы пытаетесь сохранить связанные аннотации в BED формат! Соединения будут потеряны</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="507"/>
+        <location filename="../src/BedFormat.cpp" line="506"/>
         <source>BED saving error: incorrect thick coordinates in the first annotation!</source>
         <translation>BED saving error: incorrect thick coordinates in the first annotation!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="521"/>
+        <location filename="../src/BedFormat.cpp" line="520"/>
         <source>BED saving error: incorrect block fields in the first annotation!</source>
         <translation>BED saving error: incorrect block fields in the first annotation!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="529"/>
+        <location filename="../src/BedFormat.cpp" line="528"/>
         <source>BED saving: detected %1 fields per line for file &apos;%2&apos;</source>
         <translation>BED saving: detected %1 fields per line for file &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="538"/>
+        <location filename="../src/BedFormat.cpp" line="537"/>
         <source>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</source>
         <translation>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="592"/>
+        <location filename="../src/BedFormat.cpp" line="591"/>
         <source>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</source>
         <translation>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="614"/>
+        <location filename="../src/BedFormat.cpp" line="613"/>
         <source>Finished BED saving: &apos;%1&apos;</source>
         <translation>Сохранение BED закончено: &apos;%1&apos;</translation>
     </message>
@@ -887,17 +887,42 @@
 <context>
     <name>U2::DifferentialFormat</name>
     <message>
-        <location filename="../src/DifferentialFormat.cpp" line="43"/>
+        <location filename="../src/DifferentialFormat.cpp" line="44"/>
         <source>Differential</source>
         <translation>Дифференциальный</translation>
     </message>
     <message>
-        <location filename="../src/DifferentialFormat.cpp" line="45"/>
+        <location filename="../src/DifferentialFormat.cpp" line="46"/>
         <source>Differential format is a text-based format for representing Cuffdiff differential output files: expression, splicing, promoters and cds.</source>
         <translation>Дифференциальный формат это текстовый формат для представления выходных файлов Cuffdiff.</translation>
     </message>
     <message>
-        <location filename="../src/DifferentialFormat.cpp" line="279"/>
+        <location filename="../src/DifferentialFormat.cpp" line="103"/>
+        <source>Can not parse locus string: %1</source>
+        <translation>Can not parse locus string: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DifferentialFormat.cpp" line="200"/>
+        <source>Annotation has not regions</source>
+        <translation>У аннотации нет регионов</translation>
+    </message>
+    <message>
+        <location filename="../src/DifferentialFormat.cpp" line="204"/>
+        <source>Annotation has more than one region</source>
+        <translation>У аннотации более одного региона</translation>
+    </message>
+    <message>
+        <location filename="../src/DifferentialFormat.cpp" line="224"/>
+        <source>Required value is missed: %1</source>
+        <translation>Не задан необходимый параметр: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/DifferentialFormat.cpp" line="238"/>
+        <source>Annotation object not found</source>
+        <translation>Аннотация не найдена</translation>
+    </message>
+    <message>
+        <location filename="../src/DifferentialFormat.cpp" line="261"/>
         <source>Required column is missed: %1</source>
         <translation>Пропущен необходимый столбец: %1</translation>
     </message>
@@ -905,10 +930,10 @@
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="265"/>
-        <location filename="../src/FastaFormat.cpp" line="277"/>
-        <location filename="../src/FastqFormat.cpp" line="401"/>
-        <location filename="../src/PDWFormat.cpp" line="153"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
+        <location filename="../src/FastaFormat.cpp" line="276"/>
+        <location filename="../src/FastqFormat.cpp" line="400"/>
+        <location filename="../src/PDWFormat.cpp" line="152"/>
         <source>Document is empty.</source>
         <translation>Документ не содержит данных.</translation>
     </message>
@@ -1111,80 +1136,80 @@
 <context>
     <name>U2::EMBLGenbankAbstractDocument</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="575"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="574"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="380"/>
         <source>Annotation name is empty</source>
         <translation>Не указано имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="586"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="585"/>
         <source>Error parsing location</source>
         <translation>Не указан регион аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="682"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="681"/>
         <source>Error parsing sequence: unexpected empty line</source>
         <translation>Ошибка чтения последовательности: пустая строка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="614"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="424"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="613"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="423"/>
         <source>Unexpected line format</source>
         <translation>Слишком длинная строка или неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="127"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="126"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="144"/>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="314"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="143"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="313"/>
         <source>Reading entry header</source>
         <translation>Чтение заголовка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="222"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="221"/>
         <source>Merge error: found annotations without sequence</source>
         <translation>Ошибка слияния: обнаружена таблица аннотаций без соотв последовательности</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="470"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="469"/>
         <source>The file contains an incorrect data that describes a qualifier value. </source>
         <translation>Файл содержит некорректные данные, которые описываются value. </translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="471"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="470"/>
         <source>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</source>
         <translation>Значение не может содержать одиночные кавычки. Квалификатор &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="672"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="671"/>
         <source>Reading sequence %1</source>
         <translation>Чтение последовательности: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="697"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="696"/>
         <source>Sequence is truncated</source>
         <translation>Последовательность повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="703"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="702"/>
         <source>Reading annotations %1</source>
         <translation>Чтение аннотаций: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="713"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="712"/>
         <source>Invalid format of feature table</source>
         <translation>Таблица аннотаций повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="810"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="809"/>
         <source>Line is too long.</source>
         <translation>Слишком длинная строка.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="812"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="811"/>
         <source>IO error.</source>
         <translation>Ошибка чтения.</translation>
     </message>
@@ -1230,6 +1255,58 @@
     </message>
 </context>
 <context>
+    <name>U2::ExportAlignmentTask</name>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="54"/>
+        <source>Export alignment to %1</source>
+        <translation>Экспортировать выравнивание в %1</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="58"/>
+        <source>Nothing to export: multiple alignment is empty</source>
+        <translation>Нечего экспортировать: выравнивание пустое</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportDNAChromatogramTask</name>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="206"/>
+        <source>Export chromatogram to SCF</source>
+        <translation>Экспортировать хроматограмму а SCF</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMSA2MSATask</name>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="139"/>
+        <source>Export alignment as alignment to %1</source>
+        <translation>Экспортировать выравнивание в выравнивание в %1</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="145"/>
+        <source>Nothing to export: multiple alignment is empty</source>
+        <translation>Нечего экспортировать: выравнивание пустое</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="147"/>
+        <source>Illegal translation frame offset: %1</source>
+        <translation>Illegal translation frame offset: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="148"/>
+        <source>Invalid amino translation: %1</source>
+        <translation>Invalid amino translation: %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportMSA2SequencesTask</name>
+    <message>
+        <location filename="../src/tasks/ExportTasks.cpp" line="89"/>
+        <source>Export alignment as sequence to %1</source>
+        <translation>Экспортировать выравнивание в последовательность в %1</translation>
+    </message>
+</context>
+<context>
     <name>U2::FastaFormat</name>
     <message>
         <location filename="../src/FastaFormat.cpp" line="52"/>
@@ -1242,43 +1319,43 @@
         <translation>Неправильный заголовок FASTA</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="241"/>
+        <location filename="../src/FastaFormat.cpp" line="240"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="269"/>
+        <location filename="../src/FastaFormat.cpp" line="268"/>
         <source>Sequence #%1 is processed</source>
         <translation>Sequence #%1 is processed</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="273"/>
+        <location filename="../src/FastaFormat.cpp" line="272"/>
         <source>The file format is invalid.</source>
         <translation>The file format is invalid.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="283"/>
+        <location filename="../src/FastaFormat.cpp" line="282"/>
         <source>Loaded sequences: %1. 
 </source>
         <translation>Loaded sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="284"/>
+        <location filename="../src/FastaFormat.cpp" line="283"/>
         <source>Skipped sequences: %1. 
 </source>
         <translation>Skipped sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="285"/>
+        <location filename="../src/FastaFormat.cpp" line="284"/>
         <source>The following sequences are empty: 
 %1</source>
         <translation>The following sequences are empty: 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="466"/>
+        <location filename="../src/FastaFormat.cpp" line="467"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Неиспользуемая последовательность в начале образцов: %1</translation>
     </message>
@@ -1313,27 +1390,27 @@
         <translation>Ошибка чтения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="339"/>
+        <location filename="../src/FastqFormat.cpp" line="338"/>
         <source>Sequence name differs from quality scores name: %1 and %2</source>
         <translation>Sequence name differs from quality scores name: %1 and %2</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="358"/>
+        <location filename="../src/FastqFormat.cpp" line="357"/>
         <source>Bad quality scores: inconsistent size.</source>
         <translation>Bad quality scores: inconsistent size.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="373"/>
+        <location filename="../src/FastqFormat.cpp" line="372"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="568"/>
+        <location filename="../src/FastqFormat.cpp" line="567"/>
         <source>Not a valid FASTQ file, sequence name differs from quality scores name</source>
         <translation>Некорректный FASTQ файл, имя последовательности отличается от имени показателей качества</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="576"/>
+        <location filename="../src/FastqFormat.cpp" line="575"/>
         <source>Not a valid FASTQ file. Bad quality scores: inconsistent size.</source>
         <translation>Некорректный FASTQ файл. Плохие показатели качества: несовместимый размер.</translation>
     </message>
@@ -1391,27 +1468,27 @@
         <translation>FPKM Tracking Format parsing error: incorrect coverage value at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="495"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="496"/>
         <source>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</source>
         <translation>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="561"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="562"/>
         <source>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</source>
         <translation>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="585"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="586"/>
         <source>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</source>
         <translation>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="593"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="594"/>
         <source>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</source>
         <translation>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="626"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="627"/>
         <source>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</source>
         <translation>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</translation>
     </message>
@@ -1419,102 +1496,102 @@
 <context>
     <name>U2::GFFFormat</name>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="52"/>
+        <location filename="../src/GFFFormat.cpp" line="53"/>
         <source>GFF</source>
         <translation>GFF</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="53"/>
+        <location filename="../src/GFFFormat.cpp" line="54"/>
         <source>GFF is a format used for storing features and annotations</source>
         <translation>GFF это формат используемый для хранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="94"/>
+        <location filename="../src/GFFFormat.cpp" line="98"/>
         <source>Parsing error: invalid header</source>
         <translation>Parsing error: invalid header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="98"/>
+        <location filename="../src/GFFFormat.cpp" line="102"/>
         <source>Parsing error: file does not contain version header</source>
         <translation>Parsing error: file does not contain version header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="102"/>
+        <location filename="../src/GFFFormat.cpp" line="106"/>
         <source>Parsing error: format version is not an integer</source>
         <translation>Parsing error: format version is not an integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="106"/>
+        <location filename="../src/GFFFormat.cpp" line="110"/>
         <source>Parsing error: GFF version %1 is not supported</source>
         <translation>Parsing error: GFF version %1 is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="218"/>
+        <location filename="../src/GFFFormat.cpp" line="224"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="273"/>
+        <location filename="../src/GFFFormat.cpp" line="282"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="313"/>
+        <location filename="../src/GFFFormat.cpp" line="322"/>
         <source>Parsing error: sequence in FASTA sequence has whitespaces at line %1</source>
         <translation>Parsing error: sequence in FASTA sequence has whitespaces at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="320"/>
+        <location filename="../src/GFFFormat.cpp" line="329"/>
         <source>Parsing error: too few fields at line %1</source>
         <translation>Parsing error: too few fields at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="326"/>
+        <location filename="../src/GFFFormat.cpp" line="335"/>
         <source>Parsing error: start position at line %1 is not integer</source>
         <translation>Parsing error: start position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="332"/>
+        <location filename="../src/GFFFormat.cpp" line="341"/>
         <source>Parsing error: end position at line %1 is not integer</source>
         <translation>Parsing error: end position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="337"/>
+        <location filename="../src/GFFFormat.cpp" line="346"/>
         <source>Parsing error: incorrect annotation region at line %1</source>
         <translation>Parsing error: incorrect annotation region at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="388"/>
+        <location filename="../src/GFFFormat.cpp" line="397"/>
         <source>Parsing error: incorrect attributes field %1 at line %2</source>
         <translation>Parsing error: incorrect attributes field %1 at line %2</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="427"/>
+        <location filename="../src/GFFFormat.cpp" line="436"/>
         <source>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="437"/>
+        <location filename="../src/GFFFormat.cpp" line="446"/>
         <source>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="447"/>
+        <location filename="../src/GFFFormat.cpp" line="456"/>
         <source>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</source>
         <translation>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="505"/>
+        <location filename="../src/GFFFormat.cpp" line="514"/>
         <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
         <translation>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="624"/>
+        <location filename="../src/GFFFormat.cpp" line="634"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="378"/>
+        <location filename="../src/GFFFormat.cpp" line="387"/>
         <source>Wrong location for joined annotation at line %1. Line was skipped.</source>
         <translation>Wrong location for joined annotation at line %1. Line was skipped.</translation>
     </message>
@@ -1567,7 +1644,7 @@
         <translation>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="275"/>
+        <location filename="../src/GTFFormat.cpp" line="274"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
@@ -1653,14 +1730,14 @@
     <name>U2::GenbankPlainTextFormat</name>
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="408"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="645"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="650"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="656"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="802"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="831"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="838"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="845"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="855"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="642"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="647"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="653"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="799"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="828"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="835"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="842"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="852"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>
@@ -1690,22 +1767,22 @@
         <translation>Данные повреждены: запись SOURCE</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="542"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="539"/>
         <source>There is no IOAdapter registry yet</source>
         <translation>There is no IOAdapter registry yet</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="544"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="541"/>
         <source>IOAdapterFactory is NULL</source>
         <translation>IOAdapterFactory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="546"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="543"/>
         <source>IOAdapter is NULL</source>
         <translation>IOAdapter is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="814"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="811"/>
         <source>Invalid annotation table!</source>
         <translation>Invalid annotation table!</translation>
     </message>
@@ -1824,17 +1901,32 @@
         <translation>MSF формат используется для множественных выравниваний. Файлы включают имя последовательности и последовательность, которая выровнена с другими последовательностями в файле.</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="160"/>
+        <location filename="../src/MSFFormat.cpp" line="154"/>
         <source>File check sum is incorrect: expected value: %1, current value %2</source>
         <translation>Контрольная сумма некорректна: ожидается значение %1, текущее значение %2</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="232"/>
+        <location filename="../src/MSFFormat.cpp" line="177"/>
+        <source>MSF: too many rows in the block, line: %1</source>
+        <translation>MSF: too many rows in the block, line: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/MSFFormat.cpp" line="180"/>
+        <source>MSF: can&apos;t find name and value separator spacing, line: %1</source>
+        <translation>MSF: can&apos;t find name and value separator spacing, line: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/MSFFormat.cpp" line="184"/>
+        <source>MSF: row names do not match: %1 vs %2, line: %3</source>
+        <translation>MSF: row names do not match: %1 vs %2, line: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/MSFFormat.cpp" line="201"/>
         <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
         <translation>Некорректная контрольная сумма в ряду %1, имя: %2; ожидается значение: %3, текущее значение %4</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="239"/>
+        <location filename="../src/MSFFormat.cpp" line="208"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -1962,7 +2054,7 @@
         <translation>Nexus формат файла для множественных выравниваний и филогенетических деревьев</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="727"/>
+        <location filename="../src/NEXUSFormat.cpp" line="726"/>
         <source>#NEXUS header missing</source>
         <translation>Отсутствует заголовок #NEXUS</translation>
     </message>
@@ -1970,12 +2062,12 @@
 <context>
     <name>U2::NewickFormat</name>
     <message>
-        <location filename="../src/NewickFormat.cpp" line="44"/>
+        <location filename="../src/NewickFormat.cpp" line="38"/>
         <source>Newick Standard</source>
         <translation>Стандарт Newick</translation>
     </message>
     <message>
-        <location filename="../src/NewickFormat.cpp" line="45"/>
+        <location filename="../src/NewickFormat.cpp" line="39"/>
         <source>Newick is a simple format used to write out trees in a text file</source>
         <translation>Newick iэто формат используемый для записи деревьев в текстовый файл</translation>
     </message>
@@ -2031,8 +2123,8 @@
         <translation>pDRAW это формат файла для хранения последовательности используемый инструментом pDRAW</translation>
     </message>
     <message>
-        <location filename="../src/PDWFormat.cpp" line="97"/>
-        <location filename="../src/PDWFormat.cpp" line="187"/>
+        <location filename="../src/PDWFormat.cpp" line="96"/>
+        <location filename="../src/PDWFormat.cpp" line="186"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
@@ -2140,12 +2232,12 @@
 <context>
     <name>U2::PlainTextFormat</name>
     <message>
-        <location filename="../src/PlainTextFormat.cpp" line="38"/>
+        <location filename="../src/PlainTextFormat.cpp" line="37"/>
         <source>Plain text</source>
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="../src/PlainTextFormat.cpp" line="40"/>
+        <location filename="../src/PlainTextFormat.cpp" line="39"/>
         <source>A simple plain text file.</source>
         <translation>Текстовый файл.</translation>
     </message>
@@ -2153,17 +2245,17 @@
 <context>
     <name>U2::RawDNASequenceFormat</name>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="47"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="43"/>
         <source>Raw sequence</source>
         <translation>Произвольная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="51"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="45"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.</source>
         <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="130"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="111"/>
         <source>Sequence is empty</source>
         <translation>Последовательность пуста</translation>
     </message>
@@ -2204,7 +2296,7 @@
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1238"/>
+        <location filename="../src/SCFFormat.cpp" line="1235"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Невозможно загрузить последовательность из SCF файла %1</translation>
     </message>
@@ -2220,18 +2312,18 @@
 <context>
     <name>U2::StockholmFormat</name>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="728"/>
+        <location filename="../src/StockholmFormat.cpp" line="725"/>
         <source>Stockholm</source>
         <translation>Stockholm</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="729"/>
+        <location filename="../src/StockholmFormat.cpp" line="726"/>
         <source>A multiple sequence alignments file format</source>
         <translation>Формат файла для множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="747"/>
-        <location filename="../src/StockholmFormat.cpp" line="764"/>
+        <location filename="../src/StockholmFormat.cpp" line="744"/>
+        <location filename="../src/StockholmFormat.cpp" line="761"/>
         <source>unknown error occurred</source>
         <translation>Ошибка</translation>
     </message>
@@ -2369,33 +2461,33 @@
     </message>
     <message>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="398"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="486"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="485"/>
         <source>The annotation start position is unexpected.</source>
         <translation>The annotation start position is unexpected.</translation>
     </message>
     <message>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="401"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="491"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="490"/>
         <source>The annotation end position is unexpected.</source>
         <translation>The annotation end position is unexpected.</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="474"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="473"/>
         <source>Unexpected annotation strings.</source>
         <translation>Unexpected annotation strings.</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="481"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="480"/>
         <source>The annotation name is empty.</source>
         <translation>The annotation name is empty.</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="504"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="503"/>
         <source>Annotation qualifier is corrupted</source>
         <translation>Annotation qualifier is corrupted</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="516"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="515"/>
         <source>Unexpected qulifiers values.</source>
         <translation>Unexpected qulifiers values.</translation>
     </message>
@@ -2411,17 +2503,17 @@
 <context>
     <name>U2::TextDocumentFormat</name>
     <message>
-        <location filename="../src/TextDocumentFormat.cpp" line="110"/>
+        <location filename="../src/TextDocumentFormat.cpp" line="116"/>
         <source>The document format does not support streaming reading mode: %1</source>
         <translation>Формат документа не позволяет чтение в потоковом режиме: %1</translation>
     </message>
     <message>
-        <location filename="../src/TextDocumentFormat.cpp" line="120"/>
+        <location filename="../src/TextDocumentFormat.cpp" line="127"/>
         <source>The document format does not support writing of documents: %1</source>
         <translation>Формат документа не поддерживает запись документов: %1</translation>
     </message>
     <message>
-        <location filename="../src/TextDocumentFormat.cpp" line="129"/>
+        <location filename="../src/TextDocumentFormat.cpp" line="136"/>
         <source>The document format does not support writing of documents in streaming mode: %1</source>
         <translation>Формат документа не позволяет запись в потоковом режиме: %1</translation>
     </message>
@@ -2429,77 +2521,77 @@
 <context>
     <name>U2::U2DbiL10n</name>
     <message>
-        <location filename="../src/mysql_dbi/MysqlAssemblyDbi.cpp" line="89"/>
+        <location filename="../src/mysql_dbi/MysqlAssemblyDbi.cpp" line="88"/>
         <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="81"/>
         <source>There is no assembly object with the specified id.</source>
         <translation>Не найден объект сборки с указанным идентификатором.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="224"/>
+        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="222"/>
         <location filename="../src/sqlite_dbi/SQLiteAttributeDbi.cpp" line="237"/>
         <source>Unsupported attribute type: %1</source>
         <translation>Неподдерживаемый тип атрибута: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="357"/>
+        <location filename="../src/mysql_dbi/MysqlAttributeDbi.cpp" line="349"/>
         <source>Required attribute is not found</source>
         <translation>Требуемый атрибут не найдет</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="272"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="273"/>
         <source>Database url is incorrect</source>
         <translation>Неправильный путь базы данных</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="278"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="279"/>
         <source>User login is not specified</source>
         <translation>Не указано имя пользователя</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="284"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="285"/>
         <source>Host is not specified</source>
         <translation>Не указан хост</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="290"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="291"/>
         <source>Database name is not specified</source>
         <translation>Не указано имя базы данных</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="306"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="307"/>
         <source>Error opening MySQL database: %1</source>
         <translation>Ошибка открытия базы данных MySQL: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="387"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="388"/>
         <source>Not a %1 MySQL database: %2, %3</source>
         <translation>Не %1 MySQL база данных: %2, %3</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="395"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="396"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Предупреждение! База данных была создана с более новой %1 версией: %2. Не все возможности базы данных могут быть выполнены! Текущая %1 версия: %3.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="500"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="501"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="332"/>
         <source>Illegal database state: %1</source>
         <translation>Неправильное состояние базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="530"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="531"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="414"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Невозможно синхронизовать состояние базы данных</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="155"/>
+        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="153"/>
         <source>Annotation table object is not found.</source>
         <translation>Не найдена таблица аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="186"/>
+        <location filename="../src/mysql_dbi/MysqlFeatureDbi.cpp" line="183"/>
         <source>Feature is not found.</source>
         <translation>Аннотация не найдена.</translation>
     </message>
@@ -2524,204 +2616,204 @@
         <translation>Невозможно создать новую единичную модификацию, т.к. прошлая модификация еще не завершена</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="464"/>
+        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="462"/>
         <source>Can&apos;t create a common multiple modifications step, previous one is not complete</source>
         <translation>Невозможно создать новые модификации, т.к. прошлая модификация еще не завершена</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="500"/>
+        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="498"/>
         <source>Failed to create a common user modifications step</source>
         <translation>Не удалось создать новую единичную модификацию</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="521"/>
+        <location filename="../src/mysql_dbi/MysqlModDbi.cpp" line="519"/>
         <source>Failed to create a common multiple modifications step</source>
         <translation>Не удалось создать новые модификации</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="111"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="127"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="226"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="648"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="109"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="125"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="222"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="630"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="390"/>
         <source>Msa object not found</source>
         <translation>Объект msa не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="187"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="824"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="864"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="183"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="797"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="835"/>
         <source>Msa row not found</source>
         <translation>Столбец msa не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="609"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="634"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1141"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1150"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="591"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="616"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1116"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1125"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="699"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="679"/>
         <source>Invalid row position: %1</source>
         <translation>Неправильное расположение столбца: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1071"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1202"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1032"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1154"/>
         <source>An error occurred during updating an alignment alphabet</source>
         <translation>Возникла ошибка во время обновления алфавита выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1089"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1217"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1049"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1169"/>
         <source>An error occurred during reverting adding of rows</source>
         <translation>Возникла ошибка во время отмены добавления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1107"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1066"/>
         <source>An error occurred during reverting addition of a row</source>
         <translation>Возникла ошибка во время отмены добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1120"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1237"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1078"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1189"/>
         <source>An error occurred during reverting removing of rows</source>
         <translation>Возникла ошибка во время отмены удаления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1133"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1252"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1090"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1204"/>
         <source>An error occurred during reverting removing of a row</source>
         <translation>Возникла ошибка во время отмены удаления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1147"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1263"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1103"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1215"/>
         <source>An error occurred during updating an alignment gaps</source>
         <translation>Возникла ошибка во время обновления пробелов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1160"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1273"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1115"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1225"/>
         <source>An error occurred during updating an alignment row order</source>
         <translation>Возникла ошибка во время обновления порядка столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1174"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1283"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1128"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1235"/>
         <source>An error occurred during updating a row info</source>
         <translation>Возникла ошибка во время обновления информации о столбце</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1189"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1298"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1324"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1334"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1142"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1249"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1319"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1329"/>
         <source>An error occurred during updating an msa length</source>
         <translation>An error occurred during updating an msa length</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1227"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1179"/>
         <source>An error occurred during addition of a row</source>
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="607"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="596"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="670"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="658"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="811"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="917"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="798"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="901"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="865"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="851"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1073"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="302"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1117"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1132"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1107"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1163"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1137"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1181"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="79"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="77"/>
         <source>Sequence object not found</source>
         <translation>Последовательность не найдена</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="131"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="124"/>
         <source>Internal error occurred during the sequence processing</source>
         <translation>Internal error occurred during the sequence processing</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="132"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="125"/>
         <source>An exception was thrown during reading sequence data from dbi</source>
         <translation>An exception was thrown during reading sequence data from dbi</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="395"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="383"/>
         <source>An error occurred during reverting replacing sequence data</source>
         <translation>An error occurred during reverting replacing sequence data</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="410"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="398"/>
         <source>An error occurred during replacing sequence data</source>
         <translation>An error occurred during replacing sequence data</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="164"/>
+        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="162"/>
         <source>Invalid variant track type: %1</source>
         <translation>Invalid variant track type: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="193"/>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="226"/>
+        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="190"/>
+        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="221"/>
         <source>Sequence name is not set</source>
         <translation>Sequence name is not set</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="328"/>
+        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="320"/>
         <source>New variant public ID is empty</source>
         <translation>New variant public ID is empty</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="344"/>
+        <location filename="../src/mysql_dbi/MysqlVariantDbi.cpp" line="335"/>
         <source>New variant track ID is empty</source>
         <translation>New variant track ID is empty</translation>
     </message>
@@ -2732,37 +2824,37 @@
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="131"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="459"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="457"/>
         <source>Packing method prefix is not supported: %1</source>
         <translation>Packing method prefix is not supported: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="139"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="467"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="465"/>
         <source>Data are corrupted, no name end marker found: %1</source>
         <translation>Data are corrupted, no name end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="148"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="474"/>
         <source>Data are corrupted, no sequence end marker found: %1</source>
         <translation>Data are corrupted, no sequence end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="157"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="485"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="483"/>
         <source>Data are corrupted, no CIGAR end marker found: %1</source>
         <translation>Data are corrupted, no CIGAR end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="176"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="504"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="502"/>
         <source>Data are corrupted, no rnext end marker found: %1</source>
         <translation>Data are corrupted, no rnext end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="191"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="519"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="517"/>
         <source>Can not convert pnext to a number: %1</source>
         <translation>Can not convert pnext to a number: %1</translation>
     </message>
@@ -2803,62 +2895,62 @@
         <translation>Unsupported reads storage type: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="364"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="362"/>
         <source>Packing method is not supported: %1</source>
         <translation>Packing method is not supported: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="452"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
         <source>Packed data are empty!</source>
         <translation>Packed data are empty!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="223"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="225"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Error checking SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="236"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="238"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="268"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="270"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="326"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
         <source>Database is already opened!</source>
         <translation>База данных уже открыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="336"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="338"/>
         <source>URL is not specified</source>
         <translation>Не задан путь</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="350"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="352"/>
         <source>Error opening SQLite database: %1!</source>
         <translation>Error opening SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="402"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="404"/>
         <source>Database is already closed!</source>
         <translation>База данных уже закрыта!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="406"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="408"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="433"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteFeatureDbi.cpp" line="153"/>
+        <location filename="../src/sqlite_dbi/SQLiteFeatureDbi.cpp" line="146"/>
         <source>Annotation table object not found.</source>
         <translation>Annotation table object not found.</translation>
     </message>
@@ -2868,16 +2960,16 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="543"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="558"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="750"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="542"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="557"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="747"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="641"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="809"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="846"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="640"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="805"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="842"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>
@@ -2897,24 +2989,24 @@
         <translation>Can&apos;t redo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="869"/>
         <source>Object not found!</source>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="1004"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="1003"/>
         <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
         <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="823"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="810"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="929"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="941"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="979"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="978"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>
@@ -2935,8 +3027,8 @@
         <translation>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="61"/>
-        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="75"/>
+        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="60"/>
+        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="73"/>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="54"/>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="65"/>
         <source>An error occurred during updating UDR</source>

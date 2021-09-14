@@ -46,9 +46,7 @@ namespace U2 {
 
 #define EPS 0.0001
 
-void GTest_CalculateTreeFromAligment::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CalculateTreeFromAligment::init(XMLTestFormat *, const QDomElement &el) {
     task = nullptr;
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
@@ -119,9 +117,7 @@ Task::ReportResult GTest_CalculateTreeFromAligment::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_CheckPhyNodeHasSibling::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CheckPhyNodeHasSibling::init(XMLTestFormat *, const QDomElement &el) {
     treeContextName = el.attribute(OBJ_ATTR);
     if (treeContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -179,8 +175,7 @@ Task::ReportResult GTest_CheckPhyNodeHasSibling::report() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_CheckPhyNodeBranchDistance::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_CheckPhyNodeBranchDistance::init(XMLTestFormat *, const QDomElement &el) {
     treeContextName = el.attribute(OBJ_ATTR);
     if (treeContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -234,9 +229,7 @@ Task::ReportResult GTest_CheckPhyNodeBranchDistance::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_CompareTreesInTwoObjects::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_CompareTreesInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);

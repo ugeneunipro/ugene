@@ -83,7 +83,6 @@ FormatCheckResult PFMatrixFormat::checkRawData(const QByteArray &rawData, const 
 Document *PFMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     QList<GObject *> objs;
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io->getAdapterId());
@@ -211,7 +210,6 @@ FormatCheckResult PWMatrixFormat::checkRawData(const QByteArray &rawData, const 
 Document *PWMatrixFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     QList<GObject *> objs;
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io->getAdapterId());

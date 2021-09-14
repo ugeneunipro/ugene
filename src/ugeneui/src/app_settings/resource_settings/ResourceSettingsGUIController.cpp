@@ -61,11 +61,7 @@ const QString ResourceSettingsGUIPageController::helpPageId = QString("65929347"
 ResourceSettingsGUIPageWidget::ResourceSettingsGUIPageWidget(ResourceSettingsGUIPageController *) {
     setupUi(this);
 
-    int maxMem = AppResourcePool::x32MaxMemoryLimitMb;
-#if defined(Q_OS_DARWIN) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
-    maxMem = AppResourcePool::x64MaxMemoryLimitMb;
-#endif
-
+    int maxMem = AppResourcePool::x64MaxMemoryLimitMb;
     memBox->setMaximum(maxMem);
     connect(threadBox, SIGNAL(valueChanged(int)), SLOT(sl_threadsCountChanged(int)));
     connect(cpuBox, SIGNAL(valueChanged(int)), SLOT(sl_cpuCountChanged(int)));

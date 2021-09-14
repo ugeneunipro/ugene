@@ -304,7 +304,7 @@ void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
     bool is_ppc = output.contains("Mach-O executable ppc");
     bool is_i386 = output.contains("Mach-O executable i386");
     bool is_x86_64 = output.contains("Mach-O 64-bit executable x86_64");
-    if (Q_UNLIKELY(AppResourcePool::isSystem64bit() && is_ppc && !is_i386 && !is_x86_64)) {
+    if (is_ppc && !is_i386 && !is_x86_64) {
         setError("This external tool has unsupported architecture");
     }
 #endif

@@ -73,7 +73,6 @@ FormatCheckResult PDWFormat::checkRawTextData(const QByteArray &rawData, const G
 void PDWFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, const GUrl &docUrl, QList<GObject *> &objects, U2OpStatus &os, U2SequenceObject *&seqObj, AnnotationTableObject *&annObj) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
-    Q_UNUSED(opBlock);
 
     QByteArray readBuff(READ_BUFF_SIZE + 1, 0);
     char *buff = readBuff.data();

@@ -359,6 +359,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/globals/ServiceModel.cpp \
            src/globals/Task.cpp \
            src/globals/Timer.cpp \
+           src/globals/U2SafePoints.cpp \
            src/globals/UserActionsWriter.cpp \
            src/globals/UserApplicationsSettings.cpp \
            src/globals/Version.cpp \

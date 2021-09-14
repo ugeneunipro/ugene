@@ -586,17 +586,6 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
     struc.secondaryStructures.append(SharedSecondaryStructure(ssData));
 }
 
-bool containsAtom(const SharedAtom &atom, const BioStruct3D &struc) {
-    for (const SharedMolecule mol : qAsConst(struc.moleculeMap)) {
-        foreach (const Molecule3DModel model, mol->models.values()) {
-            if (model.atoms.contains(atom)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
     Q_ASSERT(!stdResidueCache.isEmpty());
     foreach (int chainId, struc.moleculeMap.keys()) {

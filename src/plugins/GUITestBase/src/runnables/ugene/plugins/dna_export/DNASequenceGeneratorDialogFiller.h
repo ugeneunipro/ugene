@@ -32,12 +32,18 @@ public:
     DNASequenceGeneratorDialogFillerModel(const QString &url);
 
     QString url;
+
+    /** When referenceUrl is set it overrides percentage values. */
+    QString referenceUrl;
+
     qint64 length = 1000;
     qint64 window = 1000;
     int percentA = 25;
     int percentC = 25;
     int percentG = 25;
     int percentT = 25;
+
+    int seed = -1;
 };
 
 class DNASequenceGeneratorDialogFiller : public Filler {

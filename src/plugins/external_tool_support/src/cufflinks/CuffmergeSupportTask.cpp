@@ -50,8 +50,8 @@ CuffmergeSupportTask::CuffmergeSupportTask(const CuffmergeSettings &_settings)
       fileNum(0),
       mergeTask(nullptr),
       loadResultTask(nullptr) {
-    SAFE_POINT_EXT(nullptr != settings.storage, setError(tr("Workflow data storage is NULL")), );
-    SAFE_POINT_EXT(!settings.annotationTables.isEmpty(), setError(tr("There are no annotations to process")), );
+    SAFE_POINT_EXT(settings.storage != nullptr, setError(tr("Workflow data storage is NULL")), );
+    CHECK_EXT(!settings.annotationTables.isEmpty(), setError(tr("There are no annotations to process")), );
 }
 
 CuffmergeSupportTask::~CuffmergeSupportTask() {

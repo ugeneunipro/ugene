@@ -42,15 +42,24 @@ using namespace HI;
 
 const QString GTUtilsTaskTreeView::widgetName = DOCK_TASK_TREE_VIEW;
 
+#define GT_METHOD_NAME "waitTaskFinished"
 void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis) {
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    if (scheduler->getTopLevelTasks().isEmpty() && !GTThread::isMainThread()) {
+        // Give QT a chance to process all events first.
+        // The result of this processing may be new tasks we will wait for.
+        GTThread::waitForMainThread();
+    }
+
+    // Wait up to 'timeoutMillis' for all tasks to finish.
     for (int time = 0; time < timeoutMillis && !scheduler->getTopLevelTasks().isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(GT_OP_CHECK_MILLIS);
     }
-    if (!scheduler->getTopLevelTasks().isEmpty()) {
-        os.setError(os.getError() + getTasksInfo(scheduler->getTopLevelTasks(), 0));
-    }
+
+    GT_CHECK_RESULT(scheduler->getTopLevelTasks().isEmpty(),
+                    "waitTaskFinished failed, there are active tasks: " + getTasksInfo(scheduler->getTopLevelTasks(), 0), );
 }
+#undef GT_METHOD_NAME
 
 QString GTUtilsTaskTreeView::getTasksInfo(QList<Task *> tasks, int level) {
     QString result;

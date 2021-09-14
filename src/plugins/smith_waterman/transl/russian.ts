@@ -92,6 +92,16 @@
         <source>Finish cleanup OpenCL resources</source>
         <translation>Finish cleanup OpenCL resources</translation>
     </message>
+    <message>
+        <location filename="../src/sw_cuda_cpp.cpp" line="122"/>
+        <source>Pattern length (%1) is longer than search sequence length (%2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/sw_cuda_cpp.cpp" line="214"/>
+        <source>CUDA malloc error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::AlignmentAlgorithmsRegistry</name>
@@ -419,157 +429,157 @@
 <context>
     <name>U2::QDSWActor</name>
     <message>
-        <location filename="../src/SWQuery.cpp" line="93"/>
+        <location filename="../src/SWQuery.cpp" line="92"/>
         <source>matches with &lt;u&gt;at least %1 score&lt;/u&gt;</source>
         <translation>с оценкой не менее %1</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="94"/>
+        <location filename="../src/SWQuery.cpp" line="92"/>
         <source>exact matches</source>
         <translation>точным совпадением</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="99"/>
+        <location filename="../src/SWQuery.cpp" line="97"/>
         <source>both strands</source>
         <translation>все</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="102"/>
+        <location filename="../src/SWQuery.cpp" line="100"/>
         <source>direct strand</source>
         <translation>только прямые</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="105"/>
+        <location filename="../src/SWQuery.cpp" line="103"/>
         <source>complement strand</source>
         <translation>только комплементарные</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="111"/>
+        <location filename="../src/SWQuery.cpp" line="109"/>
         <source>Finds pattern &lt;u&gt;%1&lt;/u&gt;.&lt;br&gt;Looks for &lt;u&gt;%2&lt;/u&gt; in &lt;u&gt;%3&lt;/u&gt;.</source>
         <translation>Искать паттерн &lt;u&gt;%1&lt;/u&gt;.&lt;br&gt;Искать совпадения &lt;u&gt;%2&lt;/u&gt; в &lt;u&gt;%3&lt;/u&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="139"/>
+        <location filename="../src/SWQuery.cpp" line="137"/>
         <source>%1: percent of score out of bounds.</source>
         <translation>%1: percent of score out of bounds.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="149"/>
+        <location filename="../src/SWQuery.cpp" line="147"/>
         <source>%1: incorrect result filter.</source>
         <translation>%1: incorrect result filter.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="154"/>
+        <location filename="../src/SWQuery.cpp" line="152"/>
         <source>%1: pattern is empty.</source>
         <translation>%1: pattern is empty.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="160"/>
+        <location filename="../src/SWQuery.cpp" line="158"/>
         <source>%1: can not find %2.</source>
         <translation>%1: can not find %2.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="203"/>
+        <location filename="../src/SWQuery.cpp" line="201"/>
         <source>SSearch</source>
         <translation>SSearch</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="215"/>
+        <location filename="../src/SWQuery.cpp" line="213"/>
         <source>smith_waterman_task</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="245"/>
+        <location filename="../src/SWQuery.cpp" line="243"/>
         <source>Smith-Waterman</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="246"/>
+        <location filename="../src/SWQuery.cpp" line="244"/>
         <source>Finds regions of similarity to the specified pattern in each input sequence (nucleotide or protein one). &lt;p&gt;Under the hood is the well-known Smith-Waterman algorithm for performing local sequence alignment.</source>
         <translation> Поиск подпоследовательностей, похожих на указанный паттерн, в каждой входной последовательности (нуклеотидной или протеиновой), с учётом выбранной матрицы весов. Используется реализация широко известного алгоритма Смита-Ватермана для локального выравнивания пар последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="255"/>
+        <location filename="../src/SWQuery.cpp" line="253"/>
         <source>Pattern</source>
         <translation>Паттерн</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="255"/>
+        <location filename="../src/SWQuery.cpp" line="253"/>
         <source>A subsequence pattern to look for.</source>
         <translation>Паттерн для поиска интересующих подпоследовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="256"/>
+        <location filename="../src/SWQuery.cpp" line="254"/>
         <source>Min score</source>
         <translation>Мин оценка</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="256"/>
+        <location filename="../src/SWQuery.cpp" line="254"/>
         <source>The search stringency.</source>
         <translation>Строгость поиска.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="257"/>
+        <location filename="../src/SWQuery.cpp" line="255"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="257"/>
+        <location filename="../src/SWQuery.cpp" line="255"/>
         <source>Algorithm version.</source>
         <translation>Выбор версии алгоритма.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="258"/>
+        <location filename="../src/SWQuery.cpp" line="256"/>
         <source>Search in translation</source>
         <translation>Искать в трансляции</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="258"/>
+        <location filename="../src/SWQuery.cpp" line="256"/>
         <source>Translate a supplied nucleotide sequence to protein then search in the translated sequence.</source>
         <translation>Транслировать входную нуклеотидную последовательность в протеиновую, искать указанный паттерн в последней.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="259"/>
+        <location filename="../src/SWQuery.cpp" line="257"/>
         <source>Scoring matrix</source>
         <translation>Матрица</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="259"/>
+        <location filename="../src/SWQuery.cpp" line="257"/>
         <source>The scoring matrix.</source>
         <translation> Матрица весов для алгоритма.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="260"/>
+        <location filename="../src/SWQuery.cpp" line="258"/>
         <source>Filter results</source>
         <translation>Фильтр результатов</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="260"/>
+        <location filename="../src/SWQuery.cpp" line="258"/>
         <source>Result filtering strategy.</source>
         <translation> Дополнительная фильтрация результатов.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="261"/>
+        <location filename="../src/SWQuery.cpp" line="259"/>
         <source>Gap open score</source>
         <translation>Вес открытия пробела</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="261"/>
+        <location filename="../src/SWQuery.cpp" line="259"/>
         <source>Gap open score.</source>
         <translation>Вес открытия пробела.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="262"/>
+        <location filename="../src/SWQuery.cpp" line="260"/>
         <source>Gap ext score</source>
         <translation>Вес продления пробела</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="262"/>
+        <location filename="../src/SWQuery.cpp" line="260"/>
         <source>Gap extension score.</source>
         <translation>Вес продления пробела.</translation>
     </message>
     <message>
-        <location filename="../src/SWQuery.cpp" line="299"/>
+        <location filename="../src/SWQuery.cpp" line="297"/>
         <source>Auto</source>
         <translation>Авто</translation>
     </message>

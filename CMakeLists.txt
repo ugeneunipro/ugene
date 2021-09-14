@@ -10,21 +10,11 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 40.0-dev)
-set(UGENE_VER_MAJOR 40)
-set(UGENE_VER_MINOR 0)
-
-set(UGENE_MIN_VERSION_SQLITE 1.25.0)
-set(UGENE_MIN_VERSION_MYSQL 1.25.0)
+set(UGENE_VERSION 41.0-dev)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
-        -DUGENE_VER_MAJOR=${UGENE_VER_MAJOR}
-        -DUGENE_VER_MINOR=${UGENE_VER_MINOR}
-
-        -DUGENE_USE_BUNDLED_ZLIB
-        -DUGENE_USE_BUNDLED_SQLITE
-
+        -DSW2_BUILD_WITH_CUDA
         -DQT_FATAL_ASSERT
         -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
 )
@@ -47,10 +37,11 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
+            " -Werror=deprecated-copy" # Requires GCC 9.1+
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
-            " -Werror=shadow=local" # Requires GCC 7+
             " -Werror=return-type"
+            " -Werror=shadow=local" # Requires GCC 7.1+
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
             " -Werror=unused-variable"

@@ -739,7 +739,6 @@ void MultipleAlignmentObject::releaseState() {
 
 void MultipleAlignmentObject::loadDataCore(U2OpStatus &os) {
     DbiConnection con(entityRef.dbiRef, os);
-    Q_UNUSED(con);
     CHECK_OP(os, );
     loadAlignment(os);
 }

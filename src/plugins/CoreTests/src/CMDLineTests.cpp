@@ -49,8 +49,7 @@ namespace U2 {
 /************************
  * GTest_RunCMDLine
  ************************/
-void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_RunCMDLine::init(XMLTestFormat *, const QDomElement &el) {
     setUgeneclPath();
     setArgs(el);
     proc = new QProcess(this);

@@ -32,7 +32,21 @@
 
 #include <assert.h>
 
-#include <U2Core/Log.h>
+#include <U2Core/global.h>
+
+namespace U2 {
+/** Safe points related utility methods. */
+class U2CORE_EXPORT U2SafePoints {
+public:
+    /**
+     * Prints error message into the core-log & calls 'assert(false)'.
+     * If UGENE runs in release mode with asserts disabled this function will not stop the control flow,
+     * but if GUI or XML tests mode is enabled the function will make UGENE to stop (call std::abort)
+     * after printing the message.
+     */
+    static void fail(const QString &message);
+};
+}  // namespace U2
 
 /**
     Recover utility. Must be used when code tries to recover from invalid internal state
@@ -44,8 +58,7 @@
 */
 #define SAFE_POINT(condition, message, result) \
     if (Q_UNLIKELY(!(condition))) { \
-        U2::coreLog.error(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
-        assert(condition); \
+        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
         return result; \
     }
 
@@ -60,8 +73,7 @@
 */
 #define SAFE_POINT_OP(os, result) \
     if (Q_UNLIKELY(os.hasError())) { \
-        U2::coreLog.error(QString("Trying to recover from error: %1 at %2:%3").arg(os.getError()).arg(__FILE__).arg(__LINE__)); \
-        assert(0); \
+        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(os.getError()).arg(__FILE__).arg(__LINE__)); \
         return result; \
     }
 
@@ -75,7 +87,8 @@
 */
 #define SAFE_POINT_EXT(condition, extraOp, result) \
     if (Q_UNLIKELY(!(condition))) { \
-        assert(condition); \
+        QString message = U2_TOSTRING(condition); \
+        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
         extraOp; \
         return result; \
     }
@@ -85,8 +98,7 @@
     Can be used in code that must be unreachable
 */
 #define FAIL(message, result) \
-    U2::coreLog.error(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
-    assert(0); \
+    U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
     return result;
 
 /**

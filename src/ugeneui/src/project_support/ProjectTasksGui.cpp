@@ -147,12 +147,12 @@ void SaveProjectTask::prepare() {
 
         QWidget *mainWindow = AppContext::getMainWindow()->getQMainWindow();
         int code;
-        if (silentSave == true) {
+        if (silentSave) {
             code = QDialogButtonBox::Yes;
         } else {
             code = savedSaveProjectState;
             if (QDialogButtonBox::NoButton == savedSaveProjectState) {
-                // QMessageBox::NoButton is a special invalid button state, represents that no saved choise was made
+                // QMessageBox::NoButton is a special invalid button state, represents that no saved choice was made
                 QObjectScopedPointer<SaveProjectDialogController> saveProjectDialog = new SaveProjectDialogController(mainWindow);
                 code = saveProjectDialog->exec();
                 CHECK_EXT(!saveProjectDialog.isNull(), setError("dialog is NULL"), );
@@ -161,7 +161,7 @@ void SaveProjectTask::prepare() {
                     code = QDialogButtonBox::Cancel;
                 }
 
-                if (QDialogButtonBox::Cancel != code && true == saveProjectDialog->dontAskCheckBox->isChecked()) {
+                if (QDialogButtonBox::Cancel != code && saveProjectDialog->dontAskCheckBox->isChecked()) {
                     AppContext::getAppSettings()->getUserAppsSettings()->setAskToSaveProject(code);
                 }
             }
@@ -462,9 +462,7 @@ QList<XMLTestFactory *> ProjectTests::createTestFactories() {
     return res;
 }
 
-void GTest_ExportProject::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_ExportProject::init(XMLTestFormat *, const QDomElement &el) {
     exportTask = nullptr;
     url = env->getVar("TEMP_DATA_DIR") + el.attribute("url");
 }
@@ -529,9 +527,7 @@ bool GTest_ExportProject::removeDir(const QDir &aDir) {
     }
     return (has_err);
 }
-void GTest_UnloadProject::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UnloadProject::init(XMLTestFormat *, const QDomElement &el) {
     QString packedList = el.attribute("documents");
     if (packedList.isEmpty()) {
         // document list can be empty!
@@ -550,9 +546,7 @@ void GTest_UnloadProject::prepare() {
     }
 }
 
-void GTest_LoadDocumentFromProject::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_LoadDocumentFromProject::init(XMLTestFormat *, const QDomElement &el) {
     documentFileName = el.attribute("document");
     contextAdded = false;
 }

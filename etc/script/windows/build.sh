@@ -21,7 +21,7 @@ cd "${SOURCE_DIR}" || {
 echo "##teamcity[blockOpened name='qmake']"
 echo "Running qmake"
 #"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
-"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc || {
+"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc ${UGENE_QMAKE_PARAMS} || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake failed']"
   exit 1
 }
@@ -41,8 +41,10 @@ rm -rf "${BUNDLE_DIR}"
 cp -r "${BUILD_DIR}" "${BUNDLE_DIR}"
 rm "${BUNDLE_DIR}/"*.lib
 rm "${BUNDLE_DIR}/"*.pdb
+rm "${BUNDLE_DIR}/"*.exp
 rm "${BUNDLE_DIR}/plugins/"*.lib
 rm "${BUNDLE_DIR}/plugins/"*.pdb
+rm "${BUNDLE_DIR}/plugins/"*.exp
 
 echo "Copy resources"
 cp "${SOURCE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
@@ -56,7 +58,6 @@ cp "${QT_DIR}/bin/Qt5Gui.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Network.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5OpenGL.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Positioning.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
 cp "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"

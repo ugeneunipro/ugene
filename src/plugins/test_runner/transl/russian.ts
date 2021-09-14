@@ -45,22 +45,30 @@
 <context>
     <name>U2::TestRunnerPlugin</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
         <source>test_runner_plug_name</source>
-        <translation>Test runner</translation>
+        <translation type="vanished">Test runner</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="55"/>
         <source>test_runner_desc</source>
-        <translation>Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
+        <translation type="vanished">Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="96"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
+        <source>Test Runner</source>
+        <translation type="unfinished">Test Runner</translation>
+    </message>
+    <message>
+        <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
+        <source>Support for running runs XML tests from GUI &amp; console interfaces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TestRunnerPlugin.cpp" line="103"/>
         <source>Can&apos;t load suite %1</source>
         <translation>Can&apos;t load suite %1</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="108"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="115"/>
         <source>Can&apos;t load suite %1, errors: %2</source>
         <translation>Can&apos;t load suite %1, errors: %2</translation>
     </message>
@@ -68,18 +76,22 @@
 <context>
     <name>U2::TestRunnerService</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="168"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="146"/>
         <source>Test runner</source>
         <translation>Test runner</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="146"/>
         <source>Service to support UGENE embedded testing</source>
         <translation>Service to support UGENE embedded testing</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="280"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="175"/>
+        <source>XML Test runner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TestRunnerPlugin.cpp" line="287"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>Error reading test suite from %1. Error: %2</translation>
     </message>

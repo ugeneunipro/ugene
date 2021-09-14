@@ -1,14 +1,5 @@
 include( src/ugene_globals.pri )
 
-isEmpty(QT_VERSION) {
-    error("QT_VERSION is not defined.")
-}
-
-!minQtVersion(5, 3, 2) {
-    message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.3.2.")
-}
-
 TEMPLATE = subdirs
 
 CONFIG += ordered debug_and_release
@@ -18,6 +9,8 @@ use_opencl() {
 }
 
 message("Qt version is $${QT_VERSION}")
+!versionAtLeast(QT_VERSION, 5.12.0):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
+!versionAtMost(QT_VERSION, 5.15.99):error("UGENE requires Qt version between 5.12.0 and 5.15.x")
 
 # create target build & plugin folders (to copy licenses/descriptors to)
 mkpath($$OUT_PWD/src/_debug/plugins)
@@ -53,44 +46,22 @@ system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_D
 }
 
 unix {
-    system( chmod a+x ./src/gen_bin_script.cmd && ./src/gen_bin_script.cmd $$UGENE_INSTALL_DIR ugene > ugene; chmod a+x ugene )
-    binscript.files += ugene
-    binscript.path = $$UGENE_INSTALL_BINDIR
-
-# to copy ugene executable to /usr/lib/ugene folder
-    ugene_starter.files = ./src/_release/ugene
-    ugene_starter.path = $$UGENE_INSTALL_DIR
-
-    transl.files = ./src/_release/transl_en.qm
-    transl.files += ./src/_release/transl_ru.qm
-    transl.files += ./src/_release/transl_tr.qm
-    transl.path = $$UGENE_INSTALL_DIR
-
-    plugins.files = ./src/_release/plugins/*
-    plugins.path = $$UGENE_INSTALL_DIR/plugins
-
-    scripts.files += scripts/*
-    scripts.path = $$UGENE_INSTALL_DIR/scripts
+    # Rules how to copy files on make install.
+    ugene_build_dir.files = ./src/_release/*
+    ugene_build_dir.path = $${PREFIX}
 
     data.files += data/*
-    data.path = $$UGENE_INSTALL_DATA
+    data.path = $${PREFIX}/data
 
-    desktop.files += etc/share/ugene.desktop
-    desktop.path = $$UGENE_INSTALL_DESKTOP
+    resources.files += LICENSE.3rd_party.txt
+    resources.files += LICENSE.txt
+    resources.files += etc/shared/application-x-ugene-ext.png
+    resources.files += etc/shared/application-x-ugene.xml
+    resources.files += etc/shared/ugene.1.gz
+    resources.files += etc/shared/ugene.desktop
+    resources.files += etc/shared/ugene.png etc/shared/ugene.xpm
+    resources.path = $${PREFIX}
 
-    pixmaps.files += etc/shared/ugene.png etc/shared/ugene.xpm
-    pixmaps.path = $$UGENE_INSTALL_PIXMAPS
-
-    manual.files += etc/shared/ugene.1.gz
-    manual.path = $$UGENE_INSTALL_MAN
-
-    mime.files += etc/shared/application-x-ugene.xml
-    mime.path = $$UGENE_INSTALL_MIME
-
-    icons.files += etc/shared/application-x-ugene-ext.png
-    icons.path = $$UGENE_INSTALL_ICONS/hicolor/32x32/mimetypes/
-
-
-    INSTALLS += binscript ugene_starter transl plugins scripts data desktop pixmaps mime icons manual
+    INSTALLS += ugene_build_dir data resources
 }
 

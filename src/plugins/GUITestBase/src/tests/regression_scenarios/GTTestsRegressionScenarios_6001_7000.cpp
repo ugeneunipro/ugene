@@ -31,6 +31,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTScrollBar.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -61,6 +62,8 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 #include <U2View/DetView.h>
 #include <U2View/McaEditorReferenceArea.h>
 
@@ -68,6 +71,7 @@
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
@@ -96,11 +100,13 @@
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -4490,24 +4496,67 @@ GUI_TEST_CLASS_DEFINITION(test_6677_1) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 13, 1, 2));
 }
 GUI_TEST_CLASS_DEFINITION(test_6684) {
-    // UTEST-38
-    class Custom : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+    class BuildDotPlotScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
+            QSpinBox *minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match: " + QString::number(minLenBox->value()));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom()));
-    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsDialog::waitForDialog(os, filler2);
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new BuildDotPlotScenario()));
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, testDir + "_common_data/fasta/AMINO.fa", testDir + "_common_data/fasta/AMINO.fa"));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
     GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6684_1) {
+    class BuildDotPlot100Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QSpinBox *minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            CHECK_SET_ERR(minLenBox->value() == 100, "1. Min lengths value doesn't match: " + QString::number(minLenBox->value()));
+
+            QCheckBox *invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
+            CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    class BuildDotPlot70Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QSpinBox *minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+            CHECK_SET_ERR(minLenBox->value() == 70, "2. Min lengths value doesn't match: " + QString::number(minLenBox->value()));
+
+            QCheckBox *invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
+            CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new BuildDotPlot100Scenario()));
+    GTUtilsDialog::waitForDialog(os,
+                                 new BuildDotPlotFiller(os,
+                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
+                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa"));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new BuildDotPlot70Scenario()));
+    GTUtilsDialog::waitForDialog(os,
+                                 new BuildDotPlotFiller(os,
+                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
+                                                        testDir + "_common_data/fasta/AMINO.fa"));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_1) {
@@ -4716,54 +4765,6 @@ GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "RR", QString("Unexpected sequence, expected: RR, current: %1").arg(clipText));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_6684_1) {
-    // UTEST-40
-    class Custom100 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 100, "Min lengths value doesn't match");
-
-            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
-            CHECK_SET_ERR(invertedCheckBox->isEnabled(), "Inverted checkbox should be enabled");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    class Custom70 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
-            CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
-
-            QCheckBox *invertedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertedCheckBox", dialog));
-            CHECK_SET_ERR(!invertedCheckBox->isEnabled(), "Inverted checkbox should be disabled");
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom100()));
-    Runnable *filler2 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa");
-    GTUtilsDialog::waitForDialog(os, filler2);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
-
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
-
-    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, new Custom70()));
-    Runnable *filler3 = new BuildDotPlotFiller(os, testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa", testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsDialog::waitForDialog(os, filler3);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6691_1) {
@@ -5592,7 +5593,59 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+GUI_TEST_CLASS_DEFINITION(test_6759) {
+    GTLogTracer l;
 
+    // The test just check that there are no crash hile rotating circular view
+    //    1. Open sequence
+    //    2. Open annotation file
+    //    3. Add annotation file to sequence
+    //    4. Find splitter
+    //    5. Find scroll in splitter
+    //    6. Scroll to end, then to begin
+
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "sequence.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "annotations.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "Unknown features"),
+                  "No 'Unknown features' object!");
+
+    //    Use context menu on annotation in tree view
+    GTUtilsDialog::waitForDialog(os,
+                                 new ProjectTreeItemSelectorDialogFiller(os,
+                                                                         "annotations.gb",
+                                                                         "Unknown features"));
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os,
+                                 new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
+    //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    //    Check {add-> Objects with annotations} action
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count: %1").arg(seqNum));
+
+    QScrollBar *horScroll = GTWidget::findExactWidget<QScrollBar *>(os, "CircularViewSplitter_horScroll");
+
+    // We use sleep as scrolling is executing too fast without sleep
+    // Also, we don't want to break different scrolls by some optimizations (if any)
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 13);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 39);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 13);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
+
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");

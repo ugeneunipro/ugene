@@ -70,7 +70,6 @@ void CreateAnnotationsTask::run() {
     CHECK_EXT(annotationTableObject != nullptr, setError(tr("Annotation table has been removed unexpectedly")), );
 
     DbiOperationsBlock opBlock(annotationTableObject->getEntityRef().dbiRef, stateInfo);
-    Q_UNUSED(opBlock);
     CHECK_OP(stateInfo, );
 
     const U2DataId rootFeatureId = annotationTableObject->getRootFeatureId();

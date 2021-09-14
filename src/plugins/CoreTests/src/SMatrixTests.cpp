@@ -43,8 +43,7 @@ QList<XMLTestFactory *> SMatrixTests::createTestFactories() {
     return res;
 }
 
-void GTest_SubstMatrix::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_SubstMatrix::init(XMLTestFormat *, const QDomElement &el) {
     QString buf;
     bool isOk;
     buf = el.attribute(FILE_ATTR);

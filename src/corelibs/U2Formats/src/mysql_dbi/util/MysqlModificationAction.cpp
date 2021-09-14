@@ -37,7 +37,6 @@ MysqlModificationAction::MysqlModificationAction(MysqlDbi *_dbi, const U2DataId 
 U2TrackModType MysqlModificationAction::prepare(U2OpStatus &os) {
     CHECK_OP(os, NoTrack);
     MysqlTransaction t(getDbi()->getDbRef(), os);
-    Q_UNUSED(t);
 
     trackMod = dbi->getObjectDbi()->getTrackModType(masterObjId, os);
     if (os.hasError()) {
@@ -99,7 +98,6 @@ void MysqlModificationAction::complete(U2OpStatus &os) {
     // TODO: rewrite it with another U2UseCommonMultiModStep
     CHECK_OP(os, );
     MysqlTransaction t(getDbi()->getDbRef(), os);
-    Q_UNUSED(t);
 
     // Save modification tracks, if required
     if (TrackOnUpdate == trackMod) {

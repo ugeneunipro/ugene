@@ -170,13 +170,11 @@ public:
 class U2CORE_EXPORT U2Entity {
 public:
     U2Entity(const U2DataId &id = U2DataId());
-    U2Entity(const U2Entity &other);
+    U2Entity(const U2Entity &) = default;
 
-    virtual ~U2Entity();
+    virtual ~U2Entity() = default;
 
     bool hasValidId() const;
-
-    U2Entity operator=(const U2Entity &other);
 
     bool operator==(const U2Entity &other) const;
     bool operator!=(const U2Entity &other) const;

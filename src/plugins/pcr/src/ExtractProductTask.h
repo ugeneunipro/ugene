@@ -71,9 +71,9 @@ private:
 private:
     InSilicoPcrProduct product;
     ExtractProductSettings settings;
-    qint64 wholeSequenceLength;
+    qint64 wholeSequenceLength = 0;
 
-    Document *result;
+    Document *result = nullptr;
 };
 
 class ExtractProductWrapperTask : public Task {
@@ -90,7 +90,7 @@ private:
     void prepareUrl(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength);
 
 private:
-    ExtractProductTask *extractTask;
+    ExtractProductTask *extractTask = nullptr;
     ExtractProductSettings settings;
 };
 

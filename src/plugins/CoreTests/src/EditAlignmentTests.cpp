@@ -38,8 +38,7 @@ namespace U2 {
 #define REGION_HEIGHT "height"
 #define REGION_WIDTH "width"
 
-void GTest_CreateSubalignimentTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_CreateSubalignimentTask::init(XMLTestFormat *, const QDomElement &el) {
     QString buf = el.attribute(DOC_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(GTest::tr("value not set %1").arg(DOC_ATTR));
@@ -161,9 +160,7 @@ Task::ReportResult GTest_CreateSubalignimentTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_RemoveAlignmentRegion::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_RemoveAlignmentRegion::init(XMLTestFormat *, const QDomElement &el) {
     // Doc name
 
     QString buf = el.attribute(DOC_ATTR);
@@ -288,8 +285,7 @@ Task::ReportResult GTest_RemoveAlignmentRegion::report() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_AddSequenceToAlignment::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_AddSequenceToAlignment::init(XMLTestFormat *, const QDomElement &el) {
     // Doc before name
 
     QString buf = el.attribute(DOC_ATTR);

@@ -203,7 +203,7 @@ public:
 public:
     BioStruct3D();
     /** This is not deep copy constructor */
-    BioStruct3D(const BioStruct3D &other);
+    BioStruct3D(const BioStruct3D &other) = default;
 
     QMap<int, SharedMolecule> moleculeMap;
     QMap<int, AtomCoordSet> modelMap;

@@ -162,25 +162,23 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
     int yIdx = yAxisCombo->currentIndex();
 
     QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
-    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
+    // 'sl_sequenceSelectorIndexChanged' is called twice: when the first and when the second index is set.
+    // Process only valid callbacks, ignore non-valid ones.
+    CHECK(xIdx >= 0 && xIdx < sequenceObjects.length(), );
+    CHECK(yIdx >= 0 && yIdx < sequenceObjects.length(), );
 
-    U2SequenceObject *objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
-    U2SequenceObject *objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
-    if (!objX->getAlphabet()->isNucleic() || !objY->getAlphabet()->isNucleic()) {
-        invertedCheckBox->setDisabled(true);
-        invertedColorButton->setDisabled(true);
-        invertedDefaultColorButton->setDisabled(true);
-    } else {
-        invertedCheckBox->setDisabled(false);
-        invertedColorButton->setDisabled(false);
-        invertedDefaultColorButton->setDisabled(false);
-    }
-    int defaultWindow = qMin(objX->getSequenceLength(), objY->getSequenceLength());
-    defaultWindow = defaultWindow < 100 ? defaultWindow : 100;
-    if (minLenBox->value() > defaultWindow) {
-        minLenBox->setValue(defaultWindow);
-    }
+    auto objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
+    auto objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
+    SAFE_POINT(objX != nullptr, "First object is not a sequence object", )
+    SAFE_POINT(objY != nullptr, "Second object is not a sequence object", )
+
+    bool isInvertModeAvailable = objX->getAlphabet()->isNucleic() && objY->getAlphabet()->isNucleic();
+    invertedCheckBox->setEnabled(isInvertModeAvailable);
+    invertedColorButton->setEnabled(isInvertModeAvailable);
+    invertedDefaultColorButton->setEnabled(isInvertModeAvailable);
+
+    int defaultWindow = qMin((int)qMin(objX->getSequenceLength(), objY->getSequenceLength()), 100);
+    minLenBox->setValue(qMin(defaultWindow, minLenBox->value()));
 }
 
 void DotPlotDialog::accept() {

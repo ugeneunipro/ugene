@@ -173,14 +173,6 @@ static void setDataSearchPaths() {
 #endif
     }
 
-#if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
-    // using folder which is set during installation process on linux
-    QString ugene_data_dir(UGENE_DATA_DIR);
-    if (QDir(ugene_data_dir).exists()) {
-        dataSearchPaths.push_back(QString(UGENE_DATA_DIR));
-    }
-#endif
-
     if (dataSearchPaths.empty()) {
         dataSearchPaths.push_back("/");
     }

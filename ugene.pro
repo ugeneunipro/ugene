@@ -4,7 +4,7 @@ use_bundled_zlib() {
     SUBDIRS += src/libs_3rdparty/zlib
 }
 
-use_bundled_sqlite() {
+!use_system_sqlite() {
     SUBDIRS += src/libs_3rdparty/sqlite3
 }
 
@@ -78,10 +78,6 @@ use_cuda() {
 
 use_opencl() {
     SUBDIRS += src/plugins/opencl_support
-}
-
-without_non_free() {
-    SUBDIRS -= src/plugins_3rdparty/psipred
 }
 
 #foreach 'language'

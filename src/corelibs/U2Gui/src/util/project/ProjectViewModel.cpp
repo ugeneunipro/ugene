@@ -521,7 +521,6 @@ void ProjectViewModel::moveObject(Document *doc, GObject *obj, const QString &ne
 
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, );
 
     DbiConnection con(doc->getDbiRef(), os);
@@ -560,7 +559,6 @@ bool ProjectViewModel::restoreObjectItemFromRecycleBin(Document *doc, GObject *o
 
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, false);
 
     const QString oldFolder = folders[doc]->getObjectFolder(obj);
@@ -592,7 +590,6 @@ bool ProjectViewModel::restoreObjectItemFromRecycleBin(Document *doc, GObject *o
 bool ProjectViewModel::restoreFolderItemFromRecycleBin(Document *doc, const QString &oldPath) {
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, false);
 
     ConnectionHelper con(doc->getDbiRef(), os);
@@ -670,7 +667,6 @@ void ProjectViewModel::createFolder(Document *doc, QString &path) {
 bool ProjectViewModel::renameFolderInDb(Document *doc, const QString &oldPath, QString &newPath) const {
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, false);
     DbiConnection con(doc->getDbiRef(), os);
     CHECK_OP(os, false);

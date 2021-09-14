@@ -61,9 +61,10 @@ QString ExtractProductTask::getProductName(const QString &sequenceName, qint64 s
         .arg(endPos);
 }
 
-ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct &product, const ExtractProductSettings &settings)
-    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(product), settings(settings), wholeSequenceLength(0), result(nullptr) {
+ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct &_product, const ExtractProductSettings &_settings)
+    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(_product), settings(_settings) {
     GCOUNTER(cvar, "ExtractProductTask");
+    SAFE_POINT(settings.targetDbiRef.isValid() || !settings.outputFile.isEmpty(), "Invalid ExtractProductSettings", );
 }
 
 ExtractProductTask::~ExtractProductTask() {
@@ -78,35 +79,35 @@ DNASequence ExtractProductTask::getProductSequence() {
 }
 
 DNASequence ExtractProductTask::extractTargetSequence() {
-    DNASequence result("", "");
+    DNASequence resultSequence("", "");
     DbiConnection connection(settings.sequenceRef.dbiRef, stateInfo);
-    CHECK_OP(stateInfo, result);
-    SAFE_POINT_EXT(nullptr != connection.dbi, setError(L10N::nullPointerError("DBI")), result);
+    CHECK_OP(stateInfo, resultSequence);
+    SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("DBI")), resultSequence);
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != sequenceDbi, setError(L10N::nullPointerError("Sequence DBI")), result);
+    SAFE_POINT_EXT(sequenceDbi != nullptr, setError(L10N::nullPointerError("Sequence DBI")), resultSequence);
 
     U2Sequence sequence = sequenceDbi->getSequenceObject(settings.sequenceRef.entityId, stateInfo);
-    CHECK_OP(stateInfo, result);
+    CHECK_OP(stateInfo, resultSequence);
     wholeSequenceLength = sequence.length;
 
-    result.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, product.region, stateInfo);
-    CHECK_OP(stateInfo, result);
+    resultSequence.seq = sequenceDbi->getSequenceData(settings.sequenceRef.entityId, product.region, stateInfo);
+    CHECK_OP(stateInfo, resultSequence);
     if (product.region.endPos() > sequence.length) {
         U2Region tail(0, product.region.endPos() % sequence.length);
-        const int ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
-        if (tail.length == ledgeSize) {
-            result.seq = result.seq.insert(0, product.forwardPrimerLedge);
-            result.seq = result.seq.insert(result.seq.size(), DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
+        int ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+        if (ledgeSize == tail.length) {
+            resultSequence.seq = resultSequence.seq.insert(0, product.forwardPrimerLedge);
+            resultSequence.seq = resultSequence.seq.insert(resultSequence.seq.size(), DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
             sequence.length += ledgeSize;
             wholeSequenceLength = sequence.length;
         } else {
-            result.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
-            CHECK_OP(stateInfo, result);
+            resultSequence.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
+            CHECK_OP(stateInfo, resultSequence);
         }
     }
 
-    result.setName(getProductName(sequence.visualName, sequence.length, product.region));
-    return result;
+    resultSequence.setName(getProductName(sequence.visualName, sequence.length, product.region));
+    return resultSequence;
 }
 
 QByteArray ExtractProductTask::toProductSequence(const QByteArray &targetSequence) const {
@@ -201,7 +202,7 @@ void ExtractProductTask::addProductAnnotations(AnnotationTableObject *targetObje
 SharedAnnotationData ExtractProductTask::getPrimerAnnotation(int matchLengh, U2Strand::Direction strand, int sequenceLength) {
     SharedAnnotationData result(new AnnotationData);
     U2Region region;
-    if (U2Strand::Direct == strand) {
+    if (strand == U2Strand::Direct) {
         region = U2Region(0, matchLengh);
     } else {
         region = U2Region(sequenceLength - matchLengh, matchLengh);
@@ -216,18 +217,21 @@ SharedAnnotationData ExtractProductTask::getPrimerAnnotation(int matchLengh, U2S
 
 void ExtractProductTask::run() {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("IOAdapterFactory")), );
+    SAFE_POINT_EXT(iof != nullptr, setError(L10N::nullPointerError("IOAdapterFactory")), );
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
-    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("Genbank Format")), );
+    SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("Genbank Format")), );
+    QString outputFileUrl = settings.outputFile;
     QVariantMap hints;
     if (settings.targetDbiRef.isValid()) {
         hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(settings.targetDbiRef);
+        SAFE_POINT_EXT(settings.outputFile.isEmpty(), stateInfo.setError(L10N::internalError("Both dbiRef & fileUrl are set as the result destination")), );
+        outputFileUrl = settings.targetDbiRef.dbiId;
     }
-    QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, settings.outputFile, stateInfo, hints));
+    QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, outputFileUrl, stateInfo, hints));
     CHECK_OP(stateInfo, );
 
-    U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+    U2DbiRef dbiRef = settings.targetDbiRef.isValid() ? settings.targetDbiRef : AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
     CHECK_OP(stateInfo, );
 
     DNASequence productSequence = getProductSequence();
@@ -235,16 +239,17 @@ void ExtractProductTask::run() {
     U2EntityRef productRef = U2SequenceUtils::import(stateInfo, dbiRef, productSequence);
     CHECK_OP(stateInfo, );
 
-    U2SequenceObject *sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
+    auto sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
     doc->addObject(sequenceObject);
-    AnnotationTableObject *annotations = new AnnotationTableObject(productSequence.getName() + " features", dbiRef);
+
+    auto annotations = new AnnotationTableObject(productSequence.getName() + " features", dbiRef);
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.forwardPrimerMatchLength, U2Strand::Direct, productSequence.length()));
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimerMatchLength, U2Strand::Complementary, productSequence.length()));
     annotations->addObjectRelation(GObjectRelation(GObjectReference(sequenceObject), ObjectRole_Sequence));
     doc->addObject(annotations);
 
-    if (ExtractProductSettings::None != settings.annotationsExtraction) {
-        foreach (const U2EntityRef &annsRef, settings.annotationRefs) {
+    if (settings.annotationsExtraction != ExtractProductSettings::None) {
+        for (const U2EntityRef &annsRef: qAsConst(settings.annotationRefs)) {
             addProductAnnotations(annotations, annsRef);
         }
     }
@@ -253,7 +258,7 @@ void ExtractProductTask::run() {
 }
 
 Document *ExtractProductTask::takeResult() {
-    CHECK(nullptr != result, nullptr);
+    CHECK(result != nullptr, nullptr);
     if (result->thread() != QCoreApplication::instance()->thread()) {
         result->moveToThread(QCoreApplication::instance()->thread());
     }
@@ -269,11 +274,11 @@ const InSilicoPcrProduct &ExtractProductTask::getProduct() const {
 /************************************************************************/
 /* ExtractProductWrapperTask */
 /************************************************************************/
-ExtractProductWrapperTask::ExtractProductWrapperTask(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength, const ExtractProductSettings &settings)
-    : Task(tr("Extract PCR product and open document"), TaskFlags_NR_FOSE_COSC), extractTask(nullptr), settings(settings) {
+ExtractProductWrapperTask::ExtractProductWrapperTask(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength, const ExtractProductSettings &_settings)
+    : Task(tr("Extract PCR product and open document"), TaskFlags_NR_FOSE_COSC), settings(_settings) {
     prepareUrl(product, sequenceName, sequenceLength);
     CHECK_OP(stateInfo, );
-    extractTask = new ExtractProductTask(product, this->settings);
+    extractTask = new ExtractProductTask(product, settings);
 }
 
 void ExtractProductWrapperTask::prepare() {
@@ -282,7 +287,7 @@ void ExtractProductWrapperTask::prepare() {
 
 QList<Task *> ExtractProductWrapperTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    CHECK(extractTask == subTask, result);
+    CHECK(subTask == extractTask, result);
     SaveDocFlags flags;
     flags |= SaveDoc_OpenAfter;
     flags |= SaveDoc_DestroyAfter;
@@ -309,7 +314,8 @@ void ExtractProductWrapperTask::prepareUrl(const InSilicoPcrProduct &product, co
     QString url = GUrlUtils::prepareDirLocation(outputDir, stateInfo) + QDir::separator() + fileName;
     CHECK_OP(stateInfo, );
 
-    settings.outputFile = GUrlUtils::rollFileName(url, "_", QSet<QString>());
+    settings.outputFile = GUrlUtils::rollFileName(url, "_");
+    SAFE_POINT(!settings.outputFile.isEmpty(), "Output file url is empty!", );
 
     // reserve file
     QFile file(settings.outputFile);

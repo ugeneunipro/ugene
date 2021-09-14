@@ -63,9 +63,9 @@ public:
     GUrl(const QString &urlString);
 
     // constructs url specified by string. The type provided as param
-    GUrl(const QString &urlString, const GUrlType type);
+    GUrl(const QString &urlString, const GUrlType& type);
 
-    GUrl(const GUrl &anotherUrl);
+    GUrl(const GUrl &url) = default;
 
     bool operator==(const GUrl &url) const;
 

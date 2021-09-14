@@ -56,9 +56,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 "result",
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
 
     GTUtilsDialog::waitAllFinished(os);
 
@@ -81,9 +79,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -106,9 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -130,9 +124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -154,9 +146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
                                                 false);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -178,9 +168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -202,9 +190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
                                                  true);
     GTUtilsDialog::waitForDialog(os, filler1);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
 
     GTUtilsDocument::checkDocument(os, "result_new.gb");
 
@@ -226,9 +212,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -251,9 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -275,9 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
                                                 false);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -299,9 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -323,9 +301,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -347,9 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -371,9 +345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -395,9 +367,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -419,9 +389,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -442,9 +410,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -466,9 +432,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -490,9 +454,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
 
     GTUtilsDocument::checkDocument(os, "result");
 
@@ -513,9 +475,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -537,9 +497,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -561,9 +519,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -584,9 +540,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
                                                 "result",
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -609,9 +563,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -633,9 +585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -657,9 +607,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -681,9 +629,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
@@ -705,9 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result");
@@ -741,9 +685,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -784,9 +726,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -828,9 +768,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
                                                 GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -870,9 +808,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -913,9 +849,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -956,9 +890,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
                                                 GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //  3. Click Create button
@@ -986,16 +918,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.fa");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1015,16 +944,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.gb");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1044,16 +970,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
                                                 true);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "result.fa");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1074,9 +997,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "result.fa");
 
@@ -1099,9 +1020,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "result.gb");
 
@@ -1124,9 +1043,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "result.fa");
 
@@ -1150,9 +1067,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
@@ -1173,9 +1088,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
@@ -1196,9 +1109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::Exists);
@@ -1219,22 +1130,19 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 }
 
@@ -1253,22 +1161,19 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 }
 
@@ -1287,22 +1192,19 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...",
-                              GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *complement = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
+    CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
-    CHECK_SET_ERR(complement1->isEnabled() == true, "button is not enabled");
+    CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 }
 
@@ -1317,8 +1219,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, ">seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0016.fa", CreateDocumentFiller::FASTA, "test_0016", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...");
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1326,7 +1227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsProjectTreeView::findIndex(os, "seq_name");
     const QString sequenceData = GTUtilsSequenceView::getSequenceAsString(os);
     const QString expectedSequenceData = "ACGT";
-    CHECK_SET_ERR(expectedSequenceData == sequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
+    CHECK_SET_ERR(sequenceData == expectedSequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -1341,8 +1242,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, ";just a comment\n>seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0017.fa", CreateDocumentFiller::FASTA, "test_0017", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...");
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1350,7 +1250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsProjectTreeView::findIndex(os, "seq_name");
     const QString sequenceData = GTUtilsSequenceView::getSequenceAsString(os);
     const QString expectedSequenceData = "ACGT";
-    CHECK_SET_ERR(expectedSequenceData == sequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
+    CHECK_SET_ERR(sequenceData == expectedSequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0018) {
@@ -1369,8 +1269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, data, false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0018.fa", CreateDocumentFiller::FASTA, "test_0018", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...");
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1387,9 +1286,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     const QString expectedSequenceData2 = "CCCC";
     const QString expectedSequenceData3 = "TTTT";
 
-    CHECK_SET_ERR(expectedSequenceData1 == sequenceData1, QString("Incorrect first sequence data: expect '%1', got '%2'").arg(expectedSequenceData1).arg(sequenceData1));
-    CHECK_SET_ERR(expectedSequenceData2 == sequenceData2, QString("Incorrect sequence sequence data: expect '%1', got '%2'").arg(expectedSequenceData2).arg(sequenceData2));
-    CHECK_SET_ERR(expectedSequenceData3 == sequenceData3, QString("Incorrect third sequence data: expect '%1', got '%2'").arg(expectedSequenceData3).arg(sequenceData3));
+    CHECK_SET_ERR(sequenceData1 == expectedSequenceData1, QString("Incorrect first sequence data: expect '%1', got '%2'").arg(expectedSequenceData1).arg(sequenceData1));
+    CHECK_SET_ERR(sequenceData2 == expectedSequenceData2, QString("Incorrect sequence sequence data: expect '%1', got '%2'").arg(expectedSequenceData2).arg(sequenceData2));
+    CHECK_SET_ERR(sequenceData3 == expectedSequenceData3, QString("Incorrect third sequence data: expect '%1', got '%2'").arg(expectedSequenceData3).arg(sequenceData3));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
@@ -1399,7 +1298,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Input nucleotide sequences in the dialog appeared in FASTA format:
             //    >seq_name1
@@ -1421,9 +1320,8 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "New document from text...");
+    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

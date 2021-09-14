@@ -53,10 +53,6 @@ AnnotatedRegion::AnnotatedRegion(Annotation *annotation, int regionIdx)
     : annotation(annotation), regionIdx(regionIdx) {
 }
 
-AnnotatedRegion::AnnotatedRegion(const AnnotatedRegion &annRegion)
-    : annotation(annRegion.annotation), regionIdx(annRegion.regionIdx) {
-}
-
 QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const U2Region &region2Remove, qint64 region2InsertLength, const QVector<U2Region> &original, AnnotationStrategyForResize s) {
     QList<QVector<U2Region>> res;
     const qint64 dLen = region2InsertLength - region2Remove.length;

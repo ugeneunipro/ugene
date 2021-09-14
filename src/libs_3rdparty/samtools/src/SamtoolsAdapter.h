@@ -25,25 +25,34 @@
 extern "C" {
 #include <bam.h>
 }
+#include <QVector>
+
+#include <U2Core/Log.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2Type.h>
-#include <QVector>
 
 namespace U2 {
 class U2OpStatus;
 
 class ReadsContainer {
 public:
-    void append(const bam1_t & item) { vector.append(item); }
+    void append(const bam1_t &item) {
+        vector.append(item);
+    }
 
-    const bam1_t & operator [](int i) const { return vector[i]; }
-    int size() const { return vector.size(); }
+    const bam1_t &operator[](int i) const {
+        return vector[i];
+    }
+    int size() const {
+        return vector.size();
+    }
 
     void sortByStartPos();
 
     // Destructor is required to free var-length fields (bam1_t::data)
     ~ReadsContainer();
+
 private:
     QVector<bam1_t> vector;
 };
@@ -51,7 +60,7 @@ private:
 class ReadsContext {
 public:
     ReadsContext(const QString &assemblyName,
-        const QMap<QString, int> &assemblyNumMap);
+                 const QMap<QString, int> &assemblyNumMap);
 
     int getReadAssemblyNum() const;
     int getAssemblyNum(const QString &assemblyName) const;
@@ -85,9 +94,8 @@ public:
     static QByteArray aux2string(const QList<U2AuxData> &aux);
     static QList<U2AuxData> string2aux(const QByteArray &auxString);
     static QList<U2AuxData> samString2aux(const QByteArray &auxString);
-
 };
 
-} // namespace
+}  // namespace U2
 
 #endif

@@ -57,9 +57,7 @@ static void setDoubleOption(double &to, const QString &str, TaskStateInfo &ti) {
     }
 }
 
-void GTest_UHMM3Phmmer::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UHMM3Phmmer::init(XMLTestFormat *, const QDomElement &el) {
     phmmerTask = nullptr;
     queryFilename = el.attribute(QUERY_FILENAME_TAG);
     dbFilename = el.attribute(DB_FILENAME_TAG);
@@ -211,9 +209,7 @@ Task::ReportResult GTest_UHMM3Phmmer::report() {
 const QString GTest_UHMM3PhmmerCompare::ACTUAL_OUT_FILE_TAG = "actualOut";
 const QString GTest_UHMM3PhmmerCompare::TRUE_OUT_FILE_TAG = "trueOut";
 
-void GTest_UHMM3PhmmerCompare::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_UHMM3PhmmerCompare::init(XMLTestFormat *, const QDomElement &el) {
     trueOutFilename = el.attribute(TRUE_OUT_FILE_TAG);
     actualOutFilename = el.attribute(ACTUAL_OUT_FILE_TAG);
 }

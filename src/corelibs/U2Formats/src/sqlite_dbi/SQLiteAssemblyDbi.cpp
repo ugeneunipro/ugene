@@ -236,7 +236,6 @@ void SQLiteAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus 
 
 void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
     CHECK_OP(os, );
 
     removeTables(assemblyId, os);
@@ -246,7 +245,6 @@ void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatu
 
 void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    Q_UNUSED(t);
 
     SQLiteWriteQuery q("UPDATE Assembly SET reference = ?1 WHERE object = ?2", db, os);
     q.bindDataId(1, assembly.referenceId);
@@ -371,11 +369,7 @@ QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const 
             nBytes += 1 + aux.length();
         }
     }
-#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
     QByteArray res(nBytes, Qt::Uninitialized);
-#else
-    QByteArray res(nBytes, char(0));
-#endif
     char *data = res.data();
     int pos = 0;
 
@@ -535,21 +529,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRea
         os.setError(err);
     }
 }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-namespace {
-int removeAll(QVector<U2CigarOp> *vector, const U2CigarOp &t) {
-    const QVector<U2CigarOp>::const_iterator ce = vector->cend(), cit = std::find(vector->cbegin(), ce, t);
-    if (cit == ce)
-        return 0;
-    // next operation detaches, so ce, cit may become invalidated:
-    const int firstFoundIdx = std::distance(vector->cbegin(), cit);
-    const QVector<U2CigarOp>::iterator e = vector->end(), it = std::remove(vector->begin() + firstFoundIdx, e, t);
-    const int result = std::distance(it, e);
-    vector->erase(it, e);
-    return result;
-}
-}  // namespace
-#endif
+
 void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
@@ -576,15 +556,9 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-        removeAll(&cigarVector, U2CigarOp_I);
-        removeAll(&cigarVector, U2CigarOp_S);
-        removeAll(&cigarVector, U2CigarOp_P);
-#else
         cigarVector.removeAll(U2CigarOp_I);
         cigarVector.removeAll(U2CigarOp_S);
         cigarVector.removeAll(U2CigarOp_P);
-#endif
 
         if (r.startPos > startPos) {
             cigarVector = cigarVector.mid(r.startPos - startPos);  // cut unneeded cigar string
@@ -614,15 +588,9 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
-#if (QT_VERSION < 0x050400)  // Qt 5.4
-    removeAll(&cigarVector, U2CigarOp_I);
-    removeAll(&cigarVector, U2CigarOp_S);
-    removeAll(&cigarVector, U2CigarOp_P);
-#else
     cigarVector.removeAll(U2CigarOp_I);
     cigarVector.removeAll(U2CigarOp_S);
     cigarVector.removeAll(U2CigarOp_P);
-#endif
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;

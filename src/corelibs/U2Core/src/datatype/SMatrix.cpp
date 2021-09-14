@@ -22,6 +22,7 @@
 #include "SMatrix.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 
 namespace U2 {
@@ -57,8 +58,8 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
     }
 
     // now for all symbols in alphabet without score set the minimal score
-    for (char c1: qAsConst(validCharacters)) {
-        for (char c2: qAsConst(validCharacters)) {
+    for (char c1 : qAsConst(validCharacters)) {
+        for (char c2 : qAsConst(validCharacters)) {
             float score = getScore(c1, c2);
             if (score == DEFAULT_FILL_VALUE) {
                 setScore(c1, c2, minScore);

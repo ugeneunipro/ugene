@@ -74,8 +74,7 @@ namespace U2 {
 #define NON_ITERATIVE_MODE_ATTR "non-iterative-mode"
 #define ALG_NAME_ATTR "alg"
 
-void GTest_Bwa::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_Bwa::init(XMLTestFormat *, const QDomElement &el) {
     bwaTask = nullptr;
     indexName = "";
     readsFileName = "";

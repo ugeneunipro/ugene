@@ -56,9 +56,7 @@ WorkflowProcessItem::WorkflowProcessItem(Actor *prc)
     setToolTip(process->getProto()->getDocumentation());
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-#if (QT_VERSION >= QT_VERSION_CHECK(4, 6, 0))
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-#endif
     setAcceptHoverEvents(true);
 
     styles[ItemStyles::SIMPLE] = new SimpleProcStyle(this);

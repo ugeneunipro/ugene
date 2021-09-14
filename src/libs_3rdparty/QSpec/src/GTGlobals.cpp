@@ -19,20 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTGlobals.h"
+
 #include <QtCore/QEventLoop>
+#include <QtGui/QScreen>
 #include <QtTest/QSpontaneKeyEvent>
 #include <QtTest>
-#if (QT_VERSION < 0x050000)  // Qt 5
-#    include <QtGui/QApplication>
-#    include <QtGui/QDesktopWidget>
-#    include <QtGui/QPixmap>
-#else
-#    include <QtGui/QScreen>
-#    include <QtWidgets/QApplication>
-#    include <QtWidgets/QDesktopWidget>
-#endif
-
-#include "GTGlobals.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 
 #ifdef Q_OS_WIN
 #    include <windows.h>

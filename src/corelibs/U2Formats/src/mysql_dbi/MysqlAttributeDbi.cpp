@@ -33,7 +33,6 @@ MysqlAttributeDbi::MysqlAttributeDbi(MysqlDbi *dbi)
 
 void MysqlAttributeDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // object attribute main table
     // object -> object id this attribute is for
@@ -194,7 +193,6 @@ Requires U2DbiFeature_WriteAttribute feature support
 */
 void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString mainQueryStr("DELETE FROM Attribute WHERE id = :attribute");
     static const QString secQueryStr("DELETE FROM %1 WHERE attribute = :attribute");
@@ -239,7 +237,6 @@ void MysqlAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2
 
 void MysqlAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     QList<U2DataId> attributes = getObjectAttributes(objectId, "", os);
     CHECK_OP(os, );
@@ -254,7 +251,6 @@ void MysqlAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpSta
  */
 void MysqlAttributeDbi::createIntegerAttribute(U2IntegerAttribute &a, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     qint64 id = createAttribute(a, U2Type::AttributeInteger, os);
     CHECK_OP(os, );
@@ -273,7 +269,6 @@ Requires U2DbiFeature_WriteAttribute feature support
 */
 void MysqlAttributeDbi::createRealAttribute(U2RealAttribute &a, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     qint64 id = createAttribute(a, U2Type::AttributeReal, os);
     CHECK_OP(os, );
@@ -292,7 +287,6 @@ Requires U2DbiFeature_WriteAttribute feature support
 */
 void MysqlAttributeDbi::createStringAttribute(U2StringAttribute &a, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     qint64 id = createAttribute(a, U2Type::AttributeString, os);
     CHECK_OP(os, );
@@ -311,7 +305,6 @@ Requires U2DbiFeature_WriteAttribute feature support
 */
 void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     qint64 id = createAttribute(a, U2Type::AttributeByteArray, os);
     CHECK_OP(os, );
@@ -326,7 +319,6 @@ void MysqlAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpSt
 
 qint64 MysqlAttributeDbi::createAttribute(U2Attribute &attr, U2DataType type, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString("INSERT INTO Attribute(type, object, child, otype, ctype, oextra, cextra, version, name) "
                                      " VALUES(:type, :object, :child, :otype, :ctype, :oextra, :cextra, :version, :name)");

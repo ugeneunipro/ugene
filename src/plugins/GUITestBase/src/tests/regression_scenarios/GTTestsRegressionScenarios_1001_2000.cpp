@@ -737,7 +737,6 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
 
     // get the list of sequences in file and read names in assembly
     Document *seqDoc = GTUtilsDocument::getDocument(os, "test_1038_seq");
-    CHECK_SET_ERR(seqDoc != nullptr, "Document is NULL");
     QList<GObject *> seqList = seqDoc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
     CHECK_SET_ERR(!seqList.isEmpty(), "The list of sequences is empty");
     QList<QByteArray> seqNames;

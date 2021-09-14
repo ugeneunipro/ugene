@@ -166,8 +166,7 @@ Task::ReportResult GTest_CheckTmpFile::report() {
 /************************************************************************/
 /* GTest_CheckStorageFile */
 /************************************************************************/
-void GTest_CheckStorageFile::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
+void GTest_CheckStorageFile::init(XMLTestFormat *, const QDomElement &el) {
     storageUrl = AppContext::getAppFileStorage()->getStorageDir();
     fileName = el.attribute(URL_ATTR);
     exists = bool(el.attribute(EXISTS_ATTR).toInt());
@@ -207,8 +206,7 @@ bool GTest_CheckStorageFile::findRecursive(const QString &currentDirUrl) {
 #define URL_ATTR "url"
 #define LESS_ATTR "lessThen"
 #define MORE_ATTR "moreThen"
-void GTest_CheckCreationTime::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf)
+void GTest_CheckCreationTime::init(XMLTestFormat *, const QDomElement &el) {
     url = el.attribute(URL_ATTR);
     XMLTestUtils::replacePrefix(env, url);
 
@@ -277,8 +275,7 @@ Task::ReportResult GTest_CheckCreationTime::report() {
 /************************************************************************/
 #define FOLDER_ATTR "folder"
 #define EXP_NUM "expected"
-void GTest_CheckFilesNum::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf)
+void GTest_CheckFilesNum::init(XMLTestFormat *, const QDomElement &el) {
     folder = el.attribute(FOLDER_ATTR);
     QString num_string = el.attribute(EXP_NUM);
     if (num_string.isEmpty()) {

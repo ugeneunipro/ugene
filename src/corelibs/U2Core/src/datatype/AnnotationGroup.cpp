@@ -111,7 +111,6 @@ QList<Annotation *> AnnotationGroup::addAnnotations(const QList<SharedAnnotation
 
     U2OpStatusImpl os;
     DbiOperationsBlock opBlock(parentObject->getEntityRef().dbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, result);
 
     foreach (const SharedAnnotationData &d, anns) {

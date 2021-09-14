@@ -21,6 +21,7 @@
 
 #include "MysqlUpgraderFrom_1_16_To_1_24.h"
 
+#include <U2Core/Log.h>
 #include <U2Core/U2AttributeUtils.h>
 
 #include "mysql_dbi/MysqlDbi.h"
@@ -39,7 +40,6 @@ MysqlUpgraderFrom_1_16_To_1_24::MysqlUpgraderFrom_1_16_To_1_24(MysqlDbi *dbi)
 
 void MysqlUpgraderFrom_1_16_To_1_24::upgrade(U2OpStatus &os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     upgradeVariantDbi(os);
     CHECK_OP(os, );
@@ -51,7 +51,6 @@ void MysqlUpgraderFrom_1_16_To_1_24::upgradeVariantDbi(U2OpStatus &os) const {
     coreLog.trace("Variant DBI upgrading");
 
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     QMap<U2DataId, QStringList> trackId2header;
 
@@ -101,7 +100,6 @@ void MysqlUpgraderFrom_1_16_To_1_24::repackInfo(U2OpStatus &os, const QMap<U2Dat
     coreLog.trace("Additional info repacking");
 
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     const qint64 variantsCount = U2SqlQuery("SELECT count(*) from Variant", dbi->getDbRef(), os).selectInt64();
 

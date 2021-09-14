@@ -153,9 +153,6 @@ void SpideySupportContext::sl_align_with_Spidey() {
     settings.allowMultipleSelection = false;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
     QScopedPointer<U2SequenceObjectConstraints> seqConstraints(new U2SequenceObjectConstraints());
-    if (AppResourcePool::is32BitBuild()) {
-        seqConstraints->sequenceSize = MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS;
-    }
     seqConstraints->alphabetType = DNAAlphabet_NUCL;
     settings.objectConstraints.insert(seqConstraints.data());
 

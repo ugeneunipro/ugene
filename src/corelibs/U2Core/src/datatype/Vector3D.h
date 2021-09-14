@@ -35,8 +35,8 @@ public:
     double x, y, z;
 
     explicit Vector3D(double xi = 0.0, double yi = 0.0, double zi = 0.0);
-    Vector3D(const Vector3D &v);
-    Vector3D &operator=(const Vector3D &v);
+    Vector3D(const Vector3D &) = default;
+
     bool operator==(const Vector3D &other) const;
     bool operator!=(const Vector3D &other) const;
     double &operator[](unsigned int i);

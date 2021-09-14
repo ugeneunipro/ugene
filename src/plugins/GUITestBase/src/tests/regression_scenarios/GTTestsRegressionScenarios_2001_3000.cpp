@@ -4029,30 +4029,28 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
 
     class DotplotLoadSequenceFiller : public Filler {
     public:
-        DotplotLoadSequenceFiller(HI::GUITestOpStatus &os, const QString seqPath, const QString seqName)
-            : Filler(os, "DotPlotDialog"), seqPath(seqPath), seqName(seqName) {
+        DotplotLoadSequenceFiller(HI::GUITestOpStatus &os, const QString &_seqPath, const QString &_seqName)
+            : Filler(os, "DotPlotDialog"), seqPath(_seqPath), seqName(_seqName) {
         }
-        virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QPushButton *loadSeq = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "loadSequenceButton", dialog));
-            CHECK_SET_ERR(loadSeq != nullptr, "Load sequence button no found");
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, seqPath, seqName));
-            GTWidget::click(os, loadSeq);
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+        void run() override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, seqPath, seqName));
+            GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
+
+            auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
             GTWidget::click(os, button);
         }
 
-    private:
         QString seqPath;
         QString seqName;
     };
 
     GTUtilsDialog::waitForDialog(os, new DotplotLoadSequenceFiller(os, testDir + "_common_data/fasta", "empty_2.fa"));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
-    GTThread::waitForMainThread();
+    GTUtilsDialog::waitAllFinished(os);
 
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }

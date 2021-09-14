@@ -200,7 +200,6 @@ MainWindowImpl::~MainWindowImpl() {
 }
 
 void MainWindowImpl::prepare() {
-    nStack = new NotificationStack();
     createActions();
     prepareGUI();
 }
@@ -279,6 +278,10 @@ void MainWindowImpl::createActions() {
     welcomePageAction->setObjectName("welcome_page");
     connect(welcomePageAction, SIGNAL(triggered()), SIGNAL(si_showWelcomePage()));
 
+    showWhatsNewAction = new QAction(tr("What's New in UGENE"), this);
+    showWhatsNewAction->setObjectName("show_whats_new");
+    connect(showWhatsNewAction, SIGNAL(triggered()), SLOT(sl_showWhatsNew()));
+
     crashUgeneAction = new QAction(tr("Crash UGENE"), this);
     crashUgeneAction->setObjectName("crash_ugene");
     connect(crashUgeneAction, SIGNAL(triggered()), SLOT(sl_crashUgene()));
@@ -297,6 +300,10 @@ void MainWindowImpl::sl_aboutAction() {
     QWidget *p = qobject_cast<QWidget *>(getQMainWindow());
     QObjectScopedPointer<AboutDialogController> d = new AboutDialogController(visitWebAction, p);
     d->exec();
+}
+
+void MainWindowImpl::sl_showWhatsNew() {
+    Shtirlitz::showWhatsNewDialog();
 }
 
 void MainWindowImpl::sl_checkUpdatesAction() {
@@ -344,23 +351,45 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_FILE)->addAction(installToPathAction);
 #endif
 
+    nStack = new NotificationStack(mw);
+
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(viewOnlineDocumentation);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+    QMenu *helpMenu = menuManager->getTopLevelMenu(MWMENU_HELP);
+    helpMenu->addAction(viewOnlineDocumentation);
+    helpMenu->addSeparator();
+    helpMenu->addAction(visitWebAction);
+    helpMenu->addAction(showWhatsNewAction);
+    helpMenu->addAction(checkUpdateAction);
+    helpMenu->addSeparator();
 #if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
     // TODO: re-test support for MAC OS before enabling.
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+    helpMenu->addAction(createDesktopShortcutAction);
+    helpMenu->addSeparator();
 #endif
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
-    if ("1" == qgetenv(ENV_TEST_CRASH_HANDLER)) {
-        menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
-        menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(crashUgeneAction);
+    helpMenu->addAction(welcomePageAction);
+    helpMenu->addAction(aboutAction);
+    if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
+        helpMenu->addSeparator();
+        helpMenu->addAction(crashUgeneAction);
+    }
+
+    if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
+        helpMenu->addSeparator();
+
+        static int testNotificationCounter = 0;
+        auto addUniqueNotificationAction = new QAction(tr("Add unique notification"), this);
+        addUniqueNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_N);
+        connect(addUniqueNotificationAction, &QAction::triggered, [=]() {
+            testNotificationCounter++;
+            nStack->add("Notification: " + QString::number(testNotificationCounter) + QString("\n...").repeated(testNotificationCounter % 4));
+        });
+        helpMenu->addAction(addUniqueNotificationAction);
+
+        auto addRepeatingNotificationAction = new QAction(tr("Add repeating notification"), this);
+        addRepeatingNotificationAction->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_M);
+        connect(addRepeatingNotificationAction, &QAction::triggered, [=]() { nStack->add("Repeating notification"); });
+        helpMenu->addAction(addRepeatingNotificationAction);
     }
 
     mdiManager = new MWMDIManagerImpl(this, mdi);
@@ -491,25 +520,14 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
     if (mode == QMdiArea::TabbedView) {
         // FIXME QTBUG-9293, Adding a close button to tabbed QMdiSubWindows
         QList<QTabBar *> tb = findChildren<QTabBar *>();
-        foreach (QTabBar *t, tb) {
+        for (QTabBar *t : qAsConst(tb)) {
             if (t->parentWidget() == this) {
                 t->setTabsClosable(true);
-                connect(t, SIGNAL(tabCloseRequested(int)), SLOT(closeSubWindow(int)));
             }
         }
     } else {
         // TODO QTBUG-3269: switching between TabbedView and SubWindowView does not preserve maximized window state
     }
-}
-
-void FixedMdiArea::closeSubWindow(int idx) {
-    Q_UNUSED(idx);
-    // We use Qt greater than 4.8.0
-    // this workaround can be removed
-    // do it accurately
-#if QT_VERSION < 0x040800  // In Qt version 4.8.0 was added default behavior for closing tab.
-    subWindowList().at(idx)->close();
-#endif
 }
 
 // Workaround for QTBUG-17428: Superfluous RestoreAction for tabbed QMdiSubWindows
@@ -542,7 +560,7 @@ void FixedMdiArea::tileSubWindows() {
     }
 
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    SAFE_POINT_EXT(nullptr != mainWindow, QMdiArea::tileSubWindows(), );
+    SAFE_POINT_EXT(mainWindow != nullptr, QMdiArea::tileSubWindows(), );
 
     QPoint topLeft = mainWindow->mapToGlobal(QPoint(0, 0));
     static QPoint compensationOffset = QPoint(0, -22);  // I think, it is a menu bar. I'm not sure that it has constant height.
@@ -580,9 +598,6 @@ void MainWindowImpl::sl_show() {
     foreach (Task *t, startupTasklist) {
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
-    foreach (Notification *notification, startupNotificationsList) {
-        nStack->addNotification(notification);
-    }
     startupTasklist.clear();
     emit si_show();
 }
@@ -595,13 +610,10 @@ void MainWindowImpl::sl_crashUgene() {
 void MainWindowImpl::registerStartupChecks(QList<Task *> tasks) {
     startupTasklist << tasks;
 }
+
 void MainWindowImpl::addNotification(const QString &message, NotificationType type) {
-    Notification *notification = new Notification(message, type);
-    if (mw->isVisible()) {
-        nStack->addNotification(notification);
-    } else {
-        startupNotificationsList << notification;
-    }
+    SAFE_POINT(nStack != nullptr, "Notification stack is null", );
+    nStack->add(message, type);
 }
 
 }  // namespace U2

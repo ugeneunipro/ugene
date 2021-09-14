@@ -59,15 +59,6 @@ const QVector<U2Region> &AnnotationData::getRegions() const {
     return location->regions;
 }
 
-AnnotationData &AnnotationData::operator=(const AnnotationData &a) {
-    type = a.type;
-    name = a.name;
-    location = a.location;
-    qualifiers = a.qualifiers;
-    caseAnnotation = a.caseAnnotation;
-    return *this;
-}
-
 bool AnnotationData::operator==(const AnnotationData &other) const {
     if (this->type != other.type) {
         return false;

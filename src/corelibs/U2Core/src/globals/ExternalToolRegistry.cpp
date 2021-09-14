@@ -24,7 +24,6 @@
 #include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
@@ -194,12 +193,7 @@ bool ExternalTool::isChecked() const {
 }
 
 bool ExternalTool::isMuted() const {
-#ifdef UGENE_NGS
-    // Tool cannot be muted in the NGS pack
-    return false;
-#else
     return muted;
-#endif
 }
 
 bool ExternalTool::isModule() const {
@@ -271,9 +265,7 @@ void ExternalToolRegistry::unregisterEntry(const QString &id) {
     emit si_toolIsAboutToBeRemoved(id);
 
     ExternalTool *et = toolByLowerCaseIdMap.take(lowerCaseId);
-    if (et != nullptr) {
-        delete et;
-    }
+    delete et;
 }
 
 QList<ExternalTool *> ExternalToolRegistry::getAllEntries() const {
@@ -284,7 +276,7 @@ QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits
     QMap<QString, QList<ExternalTool *>> toolListByToolKitNameMap;
     const QList<ExternalTool *> toolList = toolByLowerCaseIdMap.values();
     for (ExternalTool *tool : qAsConst(toolList)) {
-        QString toolKitName = tool->getToolKitName();
+        const QString& toolKitName = tool->getToolKitName();
         if (!toolListByToolKitNameMap.contains(toolKitName)) {
             toolListByToolKitNameMap.insert(toolKitName, QList<ExternalTool *>() << tool);
         } else {

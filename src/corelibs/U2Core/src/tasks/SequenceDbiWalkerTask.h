@@ -49,8 +49,7 @@ public:
     /* implement this to give SequenceDbiWalkerSubtask required resources
      * here are resources for ONE(!) SequenceDbiWalkerSubtask execution e.g. for one execution of onRegion function
      */
-    virtual QList<TaskResourceUsage> getResources(SequenceDbiWalkerSubtask *t) {
-        Q_UNUSED(t);
+    virtual QList<TaskResourceUsage> getResources(SequenceDbiWalkerSubtask *) {
         return QList<TaskResourceUsage>();
     }
 };

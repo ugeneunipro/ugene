@@ -2,9 +2,13 @@ include (ugene_version.pri)
 
 UGENE_GLOBALS_DEFINED=1
 
+# Generate only 2 separate Makefiles: Debug & Release. Do not generate a common one that builds both targets.
+CONFIG -= debug_and_release debug_and_release_target
+
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
-DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
-DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
+# Separate minor/major version tokens are used in .rc resource.
+win32:DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
+win32:DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
 # Use of any Qt API marked as deprecated before 5.7 will cause compile time errors.
 # The goal is to increase this value gradually up to the current version used in UGENE
@@ -17,10 +21,6 @@ CONFIG += c++14
 # Reason: we do not support multiple versions of UGENE in the same folder and
 #  use -Wl,-rpath to locate dependencies for own libraries.
 unix:!macx: CONFIG += unversioned_libname unversioned_soname
-
-# NGS package
-_UGENE_NGS = $$(UGENE_NGS)
-contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
 
 #win32 : CONFIG -= flat  #group the files within the source/header group depending on the directory they reside in file system
 win32 : QMAKE_CXXFLAGS += /MP # use parallel build with nmake
@@ -63,37 +63,44 @@ macx {
 }
 
 linux-g++ {
+    GCC_VERSION = $$system($$QMAKE_CXX " -dumpfullversion -dumpversion")
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
-    # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
-    # TODO: Fix UGENE code and remove the suppression.
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
-    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
+    # To enable 'ugene-warnings-as-errors' block below add the following qmake params:
+    # QMAKE_DEFAULT_INCDIRS+="<path-to>/gcc_64/include" QMAKE_PROJECT_DEPTH=0 CONFIG+=ugene-warnings-as-errors
+    #
+    # Where:
+    # QMAKE_DEFAULT_INCDIRS: makes Qt paths to be included with -isystem. This way we have no warnings from QT sources.
+    # QMAKE_PROJECT_DEPTH=0: forces qmake do not generate relative paths, so QMAKE_DEFAULT_INCDIRS is matched correctly.
+    # CONFIG+=ugene-warnings-as-errors: enables the block below.
+    #
+    # Also add "CPLUS_INCLUDE_PATH=<path-to>/gcc_64/include" to the environment to let GCC know about new isystem paths.
+    #
+    # To work in this mode in QtCreator:
+    # Add "CPATH=<path-to>/gcc_64/include" to the current 'Kit' environment to make QTCreator's code parser work.
 
-    # These warnings must be errors (all entries must be added to disable-warnings.h):
-    QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
-    QMAKE_CXXFLAGS += -Werror=parentheses
-    QMAKE_CXXFLAGS += -Werror=return-type
-    QMAKE_CXXFLAGS += -Werror=uninitialized
-    QMAKE_CXXFLAGS += -Werror=unused-parameter
-    QMAKE_CXXFLAGS += -Werror=unused-variable
+    ugene-warnings-as-errors {
+        # These warnings are processed as errors.
+        # All entries must be added to "disable-warnings.h" to ignore problems in 3rd-party code.
 
-    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
-    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
-    greaterThan(COMPILER_MAJOR_VERSION, 6): {
-        QMAKE_CXXFLAGS += -Werror=shadow=local
+        QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
+        QMAKE_CXXFLAGS += -Werror=parentheses
+        QMAKE_CXXFLAGS += -Werror=return-type
+        QMAKE_CXXFLAGS += -Werror=uninitialized
+        QMAKE_CXXFLAGS += -Werror=unused-parameter
+        QMAKE_CXXFLAGS += -Werror=unused-variable
 
-        # We use strict Werror= flags. The -system level for includes supresses warnings that come from QT.
-        # Today we have only warning when multiple 'foreach' loops used in the same method.
-        # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loop.
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
-        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
+        versionAtLeast(GCC_VERSION, 7.1) {
+            QMAKE_CXXFLAGS += -Werror=shadow=local
+        }
+        versionAtLeast(GCC_VERSION, 9.1) {
+            QMAKE_CXXFLAGS += -Werror=deprecated-copy
+        }
     }
 
-    # build with coverage (gcov) support, now for Linux only
+    # Build with coverage (gcov) support, now for Linux only.
     equals(UGENE_GCOV_ENABLE, 1) {
         message("Build with gcov support. See gcov/lcov doc for generating coverage info")
         QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
@@ -101,41 +108,10 @@ linux-g++ {
     }
 }
 
-isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = /usr
+isEmpty(PREFIX): PREFIX  = dist/ugene-$${UGENE_VERSION}
 
-isEmpty( INSTALL_BINDIR )  : INSTALL_BINDIR  = $$INSTALL_PREFIX/bin
-isEmpty( INSTALL_LIBDIR )  {
-    INSTALL_LIBDIR  = $$INSTALL_PREFIX/lib
-}
 
-isEmpty( INSTALL_MANDIR )  : INSTALL_MANDIR  = $$INSTALL_PREFIX/share/man
-isEmpty( INSTALL_DATADIR ) : INSTALL_DATADIR = $$INSTALL_PREFIX/share
-
-isEmpty( UGENE_INSTALL_DESKTOP ) : UGENE_INSTALL_DESKTOP = $$INSTALL_DATADIR/applications
-isEmpty( UGENE_INSTALL_PIXMAPS ) : UGENE_INSTALL_PIXMAPS = $$INSTALL_DATADIR/pixmaps
-isEmpty( UGENE_INSTALL_DATA )    : UGENE_INSTALL_DATA    = $$INSTALL_DATADIR/ugene/data
-isEmpty( UGENE_INSTALL_ICONS )   : UGENE_INSTALL_ICONS   = $$INSTALL_DATADIR/icons
-isEmpty( UGENE_INSTALL_MIME )    : UGENE_INSTALL_MIME    = $$INSTALL_DATADIR/mime/packages
-isEmpty( UGENE_INSTALL_DIR )     : UGENE_INSTALL_DIR     = $$INSTALL_LIBDIR/ugene
-isEmpty( UGENE_INSTALL_BINDIR )  : UGENE_INSTALL_BINDIR  = $$INSTALL_BINDIR
-isEmpty( UGENE_INSTALL_MAN )     : UGENE_INSTALL_MAN     = $$INSTALL_MANDIR/man1
-
-CONFIG(x86) {
-    DEFINES += UGENE_X86
-} else {
-    DEFINES += UGENE_X86_64
-    win32 : QMAKE_LFLAGS *= /MACHINE:X64
-}
-
-macx : DEFINES += RUN_WORKFLOW_IN_THREADS
-
-# Checking if processor is SSE2 capable.
-# On Windows UGENE relies on run-time check.
-#
-# Needed for:
-#  1) adding -msse2 compilation flag if needed (currently uhmmer and smith_waterman2)
-#  2) performing run-time check using cpuid instruction on intel proccessors.
-
+win32 : QMAKE_LFLAGS *= /MACHINE:X64
 
 # CUDA environment
 UGENE_NVCC         = nvcc
@@ -156,11 +132,6 @@ defineTest( use_opencl ) {
     return (false)
 }
 
-# establishing binary-independet data directory for *nix installation
-unix {
-    DEFINES *= UGENE_DATA_DIR=\\\"$$UGENE_INSTALL_DATA\\\"
-}
-
 # new conditional function for case 'unix but not macx'
 defineTest( unix_not_mac ) {
     unix : !macx {
@@ -170,15 +141,13 @@ defineTest( unix_not_mac ) {
 }
 
 
-# By default, UGENE uses bundled zlib on Windows (libs_3rdparty/zlib) and OS version on Linux.
-# To use bundled version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
+# By default, UGENE uses bundled zlib.
+# To use system version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
+# Note: on Linux libpng depends on the current zlib version, so use of the system zlib is recommended.
 
 defineTest( use_bundled_zlib ) {
     contains( UGENE_USE_BUNDLED_ZLIB, 1 ) : return (true)
-    contains( UGENE_USE_BUNDLED_ZLIB, 0 ) : return (false)
-    win32 {
-        return (true)
-    }
+    win32: return (true)
     return (false)
 }
 
@@ -197,48 +166,44 @@ defineReplace(add_z_lib) {
 }
 
 
-# By default, UGENE uses bundled sqlite library built with special flags (see sqlite3.pri)
-# To use locally installed sqlite library use UGENE_USE_BUNDLED_SQLITE = 0
+# By default, UGENE uses a bundled sqlite library built with special flags (see sqlite3.pri)
+# To use an sqlite library from the OS use UGENE_USE_SYSTEM_SQLITE = 1
 
-defineTest( use_bundled_sqlite ) {
-    contains( UGENE_USE_BUNDLED_SQLITE, 0 ) : return (false)
-    return (true)
+defineTest( use_system_sqlite ) {
+    contains( UGENE_USE_SYSTEM_SQLITE, 1 ) : return (true)
+    return (false)
 }
 
-use_bundled_sqlite() {
-    DEFINES += UGENE_USE_BUNDLED_SQLITE
+use_system_sqlite() {
+    DEFINES += UGENE_USE_SYSTEM_SQLITE
 }
 
 # A function to add SQLite library to the list of libraries
 defineReplace(add_sqlite_lib) {
-    use_bundled_sqlite() {
-        RES = -lugenedb$$D
-    } else {
+    use_system_sqlite() {
         RES = -lsqlite3
+    } else {
+        RES = -lugenedb$$D
     }
     return ($$RES)
 }
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineReplace(out_dir) {
-    !debug_and_release|build_pass {
-        CONFIG(debug, debug|release) {
-            RES = _debug
-        } else {
-            RES = _release
-        }
+    CONFIG(debug, debug|release) {
+        RES = _debug
+    } else {
+        RES = _release
     }
     return ($$RES)
 }
 
 # Returns active UGENE output dir name for core libs and executables used by build process: _debug or _release.
 defineTest(is_debug_build) {
-    !debug_and_release|build_pass {
-        CONFIG(debug, debug|release) {
-            RES = true
-        } else {
-            RES = false
-        }
+    CONFIG(debug, debug|release) {
+        RES = true
+    } else {
+        RES = false
     }
     return ($$RES)
 }
@@ -248,35 +213,4 @@ defineTest(is_debug_build) {
 D=
 is_debug_build() {
     D=d
-}
-
-#Variable enabling exclude list for ugene non-free modules
-defineTest( without_non_free ) {
-    contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
-    return (false)
-}
-
-#Check minimal Qt version
-# Taken from Qt Creator project files
-defineTest(minQtVersion) {
-    maj = $$1
-    min = $$2
-    patch = $$3
-    isEqual(QT_MAJOR_VERSION, $$maj) {
-        isEqual(QT_MINOR_VERSION, $$min) {
-            isEqual(QT_PATCH_VERSION, $$patch) {
-                return(true)
-            }
-            greaterThan(QT_PATCH_VERSION, $$patch) {
-                return(true)
-            }
-        }
-        greaterThan(QT_MINOR_VERSION, $$min) {
-            return(true)
-        }
-    }
-    greaterThan(QT_MAJOR_VERSION, $$maj) {
-        return(true)
-    }
-    return(false)
 }

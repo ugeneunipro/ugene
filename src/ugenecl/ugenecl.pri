@@ -21,20 +21,16 @@ DESTDIR = ../$$out_dir()
 TARGET = ugenecl$$D
 QMAKE_PROJECT_NAME = ugenecl
 
-!debug_and_release|build_pass {
+CONFIG(debug, debug|release) {
+    DEFINES+=_DEBUG
+    MOC_DIR=_tmp/moc/debug
+    OBJECTS_DIR=_tmp/obj/debug
+}
 
-    CONFIG(debug, debug|release) {
-        DEFINES+=_DEBUG
-        MOC_DIR=_tmp/moc/debug
-        OBJECTS_DIR=_tmp/obj/debug
-    }
-
-    CONFIG(release, debug|release) {
-        DEFINES+=NDEBUG
-        MOC_DIR=_tmp/moc/release
-        OBJECTS_DIR=_tmp/obj/release
-    }
-
+CONFIG(release, debug|release) {
+    DEFINES+=NDEBUG
+    MOC_DIR=_tmp/moc/release
+    OBJECTS_DIR=_tmp/obj/release
 }
 
 UI_DIR=_tmp/ui
@@ -54,7 +50,5 @@ macx {
 }
 
 unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
     !macx: QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }

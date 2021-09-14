@@ -37,7 +37,6 @@ MysqlFeatureDbi::MysqlFeatureDbi(MysqlDbi *dbi)
 
 void MysqlFeatureDbi::initSqlSchema(U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     // nameHash is used for better indexing
     U2SqlQuery("CREATE TABLE Feature (id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT, "
@@ -126,7 +125,6 @@ void MysqlFeatureDbi::createAnnotationTableObject(U2AnnotationTable &table,
                                                   const QString &folder,
                                                   U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     dbi->getMysqlObjectDbi()->createObject(table, folder, U2DbiObjectRank_TopLevel, os);
     CHECK_OP(os, );
@@ -163,7 +161,6 @@ void MysqlFeatureDbi::removeAnnotationTableData(const U2DataId &tableId, U2OpSta
     DBI_TYPE_CHECK(tableId, U2Type::AnnotationTable, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery removeFeaturesQuery("DELETE F.* FROM Feature AS F INNER JOIN AnnotationTable AS A "
                                    "ON A.rootId = F.root OR A.rootId = F.id WHERE A.object = :object",
@@ -499,7 +496,6 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     CHECK(!keys.isEmpty(), );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     const QString insertQueryStr = getFeatureKeyInsertQuery(keys.size());
 
@@ -518,7 +514,6 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
 
 void MysqlFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey> &keys, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryStringf("INSERT INTO Feature(class, type, parent, root, name, sequence, strand, start, len, end, nameHash) "
                                       "VALUES(:class, :type, :parent, :root, :name, :sequence, :strand, :start, :len, :end, :nameHash)");
@@ -542,7 +537,6 @@ void MysqlFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey
 
 void MysqlFeatureDbi::addKey(const U2DataId &featureId, const U2FeatureKey &key, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "INSERT INTO FeatureKey(feature, name, value) VALUES(:feature, :name, :value)";
     U2SqlQuery qk(queryString, db, os);
@@ -553,7 +547,6 @@ void MysqlFeatureDbi::removeAllKeys(const U2DataId &featureId, const QString &ke
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "DELETE FROM FeatureKey WHERE feature = :feature AND name = :name";
     U2SqlQuery q(queryString, db, os);
@@ -566,7 +559,6 @@ void MysqlFeatureDbi::removeKey(const U2DataId &featureId, const U2FeatureKey &k
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "DELETE FROM FeatureKey WHERE feature = :feature AND name = :name AND value = :value LIMIT 1";
     U2SqlQuery q(queryString, db, os);
@@ -595,7 +587,6 @@ void MysqlFeatureDbi::updateParentId(const U2DataId &featureId, const U2DataId &
     DBI_TYPE_CHECK(parentId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE Feature SET parent = :parent WHERE id = :id";
     U2SqlQuery qf(queryString, db, os);
@@ -609,7 +600,6 @@ void MysqlFeatureDbi::updateSequenceId(const U2DataId &featureId, const U2DataId
     DBI_TYPE_CHECK(seqId, U2Type::Sequence, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE Feature SET sequence = :sequence WHERE id = :id";
     U2SqlQuery qf(queryString, db, os);
@@ -622,7 +612,6 @@ void MysqlFeatureDbi::updateKeyValue(const U2DataId &featureId, const U2FeatureK
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE FeatureKey SET value = :value WHERE feature = :feature AND name = :name";
     U2SqlQuery q(queryString, db, os);
@@ -653,7 +642,6 @@ bool MysqlFeatureDbi::getKeyValue(const U2DataId &featureId, U2FeatureKey &key, 
 void MysqlFeatureDbi::updateLocation(const U2DataId &featureId, const U2FeatureLocation &location, U2OpStatus &os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString updFeatureString = "UPDATE Feature SET strand = :strand, start = :start, len = :len, end = :end WHERE id = :id";
     U2SqlQuery qf(updFeatureString, db, os);
@@ -669,7 +657,6 @@ void MysqlFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newTyp
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     static const QString queryString = "UPDATE Feature SET type = :type WHERE id = :id";
     U2SqlQuery qf(queryString, db, os);
@@ -681,7 +668,6 @@ void MysqlFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newTyp
 void MysqlFeatureDbi::removeFeature(const U2DataId &featureId, U2OpStatus &os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     QSharedPointer<U2DbiIterator<U2Feature>> subfeaturesIter(getFeaturesByParent(featureId,
                                                                                  QString(),
@@ -705,7 +691,6 @@ void MysqlFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStatu
     const bool includeParent = SelectParentFeature == mode;
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery qf("DELETE FROM Feature WHERE parent = :parent" + (includeParent ? QString(" OR id = :id") : ""), db, os);
     qf.bindDataId(":parent", parentId);
@@ -738,7 +723,6 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, Mysql
 
 void MysqlFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, U2OpStatus &os) {
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     int parentsNumber = parentIds.count();
     if (parentsNumber <= MysqlDbi::BIND_PARAMETERS_LIMIT) {
@@ -760,7 +744,6 @@ void MysqlFeatureDbi::removeFeaturesByRoot(const U2DataId &rootId, U2OpStatus &o
     const bool includeParent = SelectParentFeature == mode;
 
     MysqlTransaction t(db, os);
-    Q_UNUSED(t);
 
     U2SqlQuery qf("DELETE FROM Feature WHERE root = :root" + (includeParent ? QString(" OR id = :id") : ""), db, os);
     qf.bindDataId(":root", rootId);

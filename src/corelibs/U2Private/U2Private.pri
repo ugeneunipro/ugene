@@ -8,11 +8,6 @@ LIBS += -lU2Core$$D -lU2Formats$$D -lbreakpad$$D
 INCLUDEPATH += ../../libs_3rdparty/breakpad/src
 DESTDIR = ../../$$out_dir()
 
-unix {
-    target.path = $$UGENE_INSTALL_DIR/
-    INSTALLS += target
-}
-
 freebsd {
     LIBS += -lexecinfo
 }
@@ -20,14 +15,12 @@ freebsd {
 win32 {
     LIBS += Advapi32.lib -lUser32
 
-    contains(DEFINES, UGENE_X86_64) {
-        ASM += src/crash_handler/StackRollbackX64.asm
-        masm.name = MASM compiler
-        masm.input = ASM
-        masm.output = ${QMAKE_FILE_BASE}.obj
-        masm.commands = ml64 /Fo ${QMAKE_FILE_OUT} /c ${QMAKE_FILE_IN}
-        QMAKE_EXTRA_COMPILERS += masm
-    }
+    ASM += src/crash_handler/StackRollbackX64.asm
+    masm.name = MASM compiler
+    masm.input = ASM
+    masm.output = ${QMAKE_FILE_BASE}.obj
+    masm.commands = ml64 /Fo ${QMAKE_FILE_OUT} /c ${QMAKE_FILE_IN}
+    QMAKE_EXTRA_COMPILERS += masm
 }
 
 win32-msvc2013 {

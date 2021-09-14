@@ -40,7 +40,6 @@ MysqlUpgraderFrom_1_14_To_1_15::MysqlUpgraderFrom_1_14_To_1_15(MysqlDbi *dbi)
 
 void MysqlUpgraderFrom_1_14_To_1_15::upgrade(U2OpStatus &os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
-    Q_UNUSED(t);
 
     upgradeObjectDbi(os, dbi->getDbRef());
     CHECK_OP(os, );
@@ -64,7 +63,6 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef
     }
 
     MysqlTransaction t(dbRef, os);
-    Q_UNUSED(t);
 
     const QStringList folders = dbi->getObjectDbi()->getFolders(os);
     const QString recycleBinPrefix = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER + U2ObjectDbi::PATH_SEP;

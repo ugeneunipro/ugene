@@ -89,11 +89,7 @@ AppResourcePool::AppResourcePool() {
 
     int totalPhysicalMemory = getTotalPhysicalMemory();
     int maxMem = s->getValue(SETTINGS_ROOT + "maxMem", totalPhysicalMemory).toInt();
-#if defined(Q_OS_DARWIN) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
     maxMem = maxMem > x64MaxMemoryLimitMb ? x64MaxMemoryLimitMb : maxMem;
-#else
-    maxMem = maxMem > x32MaxMemoryLimitMb ? x32MaxMemoryLimitMb : maxMem;
-#endif
 
     memResource = new AppResourceSemaphore(RESOURCE_MEMORY, maxMem, tr("Memory"), tr("Mb"));
     registerResource(memResource);
@@ -149,30 +145,6 @@ int AppResourcePool::getTotalPhysicalMemory() {
 #endif
 
     return totalPhysicalMemory;
-}
-
-bool AppResourcePool::is32BitBuild() {
-    bool result = false;
-#ifdef Q_PROCESSOR_X86_32
-    result = true;
-#endif
-    return result;
-}
-
-bool AppResourcePool::isSystem64bit() {
-#ifdef Q_OS_DARWIN
-    QProcess p;
-    p.start("sysctl", QStringList() << "-n"
-                                    << "hw.optional.x86_64");
-    p.waitForFinished();
-    const QString system_info = p.readAllStandardOutput();
-    p.close();
-    bool ok = false;
-    int is64bit = system_info.toInt(&ok);
-    return is64bit != 0;
-#endif
-
-    return false;
 }
 
 void AppResourcePool::setIdealThreadCount(int n) {

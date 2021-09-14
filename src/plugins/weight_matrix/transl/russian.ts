@@ -756,12 +756,12 @@
         <translation>Файл частотной матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="93"/>
+        <location filename="../src/PMatrixFormat.cpp" line="92"/>
         <source>The file format is not PFM</source>
         <translation>The file format is not PFM</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="96"/>
+        <location filename="../src/PMatrixFormat.cpp" line="95"/>
         <source>Zero length or corrupted model
 Maybe model data are not enough for selected algorithm</source>
         <translation>Zero length or corrupted model
@@ -779,7 +779,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="126"/>
+        <location filename="../src/PMatrixFormat.cpp" line="125"/>
         <source>Open multiple views</source>
         <translation>Открыть несколько окон</translation>
     </message>
@@ -1071,22 +1071,22 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixFormat</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="170"/>
+        <location filename="../src/PMatrixFormat.cpp" line="169"/>
         <source>Position weight matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="172"/>
+        <location filename="../src/PMatrixFormat.cpp" line="171"/>
         <source>Position weight matrix file.</source>
         <translation>Файл весовой матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="221"/>
+        <location filename="../src/PMatrixFormat.cpp" line="219"/>
         <source>The file format is not PWM</source>
         <translation>The file format is not PWM</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="224"/>
+        <location filename="../src/PMatrixFormat.cpp" line="222"/>
         <source>Zero length or corrupted model.
 Maybe model data are not enough for selected algorithm</source>
         <translation>Zero length or corrupted model
@@ -1104,7 +1104,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixViewFactory</name>
     <message>
-        <location filename="../src/PMatrixFormat.cpp" line="254"/>
+        <location filename="../src/PMatrixFormat.cpp" line="252"/>
         <source>Open multiple views</source>
         <translation>Открыть несколько окон</translation>
     </message>

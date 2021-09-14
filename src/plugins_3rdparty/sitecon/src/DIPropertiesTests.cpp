@@ -30,9 +30,7 @@ namespace U2 {
 #define EXPECTED_AVE_ATTR "exp_ave"
 #define EXPECTED_SDEV_ATTR "exp_sdev"
 
-void GTest_DiPropertySiteconCheckAttribs::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_DiPropertySiteconCheckAttribs::init(XMLTestFormat *, const QDomElement &el) {
     key = el.attribute(DI_KEY_ATTR);
     if (key.isEmpty()) {
         failMissingValue(DI_KEY_ATTR);

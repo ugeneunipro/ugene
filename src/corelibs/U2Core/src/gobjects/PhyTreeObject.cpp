@@ -117,7 +117,6 @@ const PhyTree &PhyTreeObject::getTree() const {
 
 GObject *PhyTreeObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
-    Q_UNUSED(opBlock);
     CHECK_OP(os, nullptr);
 
     ensureDataLoaded();

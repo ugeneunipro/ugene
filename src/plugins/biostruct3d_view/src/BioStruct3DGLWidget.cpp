@@ -22,13 +22,11 @@
 #include <math.h>
 #include <time.h>
 
-#include <QColorDialog>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
-#include <QOpenGLShaderProgram>
 #include <QTime>
 
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
@@ -36,7 +34,6 @@
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BioStruct3D.h>
 #include <U2Core/BioStruct3DObject.h>
@@ -44,7 +41,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -76,29 +72,12 @@ namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
 
-bool BioStruct3DGLWidget::checkShaderPrograms() {
-    QOffscreenSurface surf;
-    surf.create();
-
-    QOpenGLContext ctx;
-    ctx.create();
-    ctx.makeCurrent(&surf);
-
-    bool opgl = QOpenGLShaderProgram::hasOpenGLShaderPrograms(&ctx);
-    if (!opgl) {
-        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. "
-                         "Please try to update drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
-    }
-
-    return opgl;
-}
-
 void BioStruct3DGLWidget::tryGL() {
-    volatile QOpenGLWidget wgt;
-    Q_UNUSED(wgt);
+    // Basic OpenGL support must be provided for all platforms.
+    // If there is no vendor specific OpenGL driver UGENE must fall back to the software impl (see opengl32sw in Qt).
+    //    volatile QOpenGLWidget wgt;
+    //    Q_UNUSED(wgt);
 }
-
-const double BioStruct3DGLWidget::MINIMUM_ACCEPTABLE_VERSION = 2.0f;
 
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;
@@ -107,7 +86,6 @@ static float DEFAULT_RENDER_DETAIL_LEVEL = 1.0;
 static int DEFAULT_SHADING_LEVEL = 50;
 
 const QString BioStruct3DGLWidget::BACKGROUND_COLOR_NAME("BackgroundColor");
-const QString BioStruct3DGLWidget::PRODUCT_NAME("Unipro Ugene");
 const QString BioStruct3DGLWidget::PLUGIN_NAME("BioStruct3D Viewer Plugin");
 const QString BioStruct3DGLWidget::COLOR_SCHEME_NAME("ColorScheme");
 const QString BioStruct3DGLWidget::RENDERER_NAME("GLRenderer");
@@ -545,7 +523,7 @@ void BioStruct3DGLWidget::saveDefaultSettings() {
     defaultsSettings[RENDERER_NAME] = QVariant::fromValue(currentGLRendererName);
 }
 
-void BioStruct3DGLWidget::restoreDefaultSettigns() {
+void BioStruct3DGLWidget::restoreDefaultSettings() {
     assert(!defaultsSettings.isEmpty());
     bool syncLock = isSyncModeOn();
     QList<GLFrame *> frames = frameManager->getActiveGLFrameList(glFrame.data(), syncLock);
@@ -555,36 +533,6 @@ void BioStruct3DGLWidget::restoreDefaultSettigns() {
         frame->updateViewPort();
         frame->updateGL();
     }
-}
-
-void BioStruct3DGLWidget::showModel(int modelId, bool show) {
-    BioStruct3DRendererContext &ctx = contexts.first();
-
-    // this function uses modelId - key from BioStruct3D::modelMap
-    int idx = ctx.biostruct->modelMap.keys().indexOf(modelId);
-    assert(idx != -1);
-
-    QList<int> shownModelsIndexes = ctx.renderer->getShownModelsIndexes();
-
-    if (show && !shownModelsIndexes.contains(idx)) {
-        shownModelsIndexes.append(idx);
-    } else if (!show) {
-        shownModelsIndexes.removeAll(idx);
-    }
-    ctx.renderer->setShownModelsIndexes(shownModelsIndexes);
-}
-
-void BioStruct3DGLWidget::showAllModels(bool show) {
-    BioStruct3DRendererContext &ctx = contexts.first();
-
-    QList<int> shownModelsIndexes;
-    if (show) {
-        int numModels = ctx.biostruct->modelMap.size();
-        for (int i = 0; i < numModels; ++i) {
-            shownModelsIndexes.append(i);
-        }
-    }
-    ctx.renderer->setShownModelsIndexes(shownModelsIndexes);
 }
 
 void BioStruct3DGLWidget::sl_selectModels() {
@@ -691,9 +639,10 @@ void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
     GLenum error = glGetError();
     bool canRender = error == GL_NO_ERROR;
     if (!canRender) {
-        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
-                     QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
-        lblGlError = new QLabel("Failed to initialize OpenGL", this);
+        QString errorDetails = QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error)));
+        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") + errorDetails);
+        lblGlError = new QLabel("Failed to initialize OpenGL: " + errorDetails, this);
+        lblGlError->setObjectName("opengl_initialization_error_label");
         lblGlError->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
         lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
     }
@@ -752,7 +701,7 @@ void BioStruct3DGLWidget::createActions() {
 
     animationTimer = new QTimer(this);
     animationTimer->setInterval(20);  // fixed interval
-    connect(animationTimer, SIGNAL(timeout()), this, SLOT(sl_updateAnnimation()));
+    connect(animationTimer, SIGNAL(timeout()), this, SLOT(sl_updateAnimation()));
 
     rendererActions = new QActionGroup(this);
     connect(rendererActions, SIGNAL(triggered(QAction *)), this, SLOT(sl_selectGLRenderer(QAction *)));
@@ -803,7 +752,7 @@ void BioStruct3DGLWidget::createActions() {
 
     spinAction = new QAction(tr("Spin"), this);
     spinAction->setCheckable(true);
-    connect(spinAction, SIGNAL(triggered()), this, SLOT(sl_acitvateSpin()));
+    connect(spinAction, SIGNAL(triggered()), this, SLOT(sl_activateSpin()));
 
     settingsAction = new QAction(tr("Settings..."), this);
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(sl_settings()));
@@ -814,12 +763,12 @@ void BioStruct3DGLWidget::createActions() {
     exportImageAction = new QAction(tr("Export Image..."), this);
     connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_exportImage()));
 
-    createStrucluralAlignmentActions();
+    createStructuralAlignmentActions();
 
     connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_onTaskFinished(Task *)));
 }
 
-void BioStruct3DGLWidget::createStrucluralAlignmentActions() {
+void BioStruct3DGLWidget::createStructuralAlignmentActions() {
     alignWithAction = new QAction(tr("Align With..."), this);
     alignWithAction->setObjectName("align_with");
     connect(alignWithAction, SIGNAL(triggered()), this, SLOT(sl_alignWith()));
@@ -840,11 +789,11 @@ void BioStruct3DGLWidget::createMenus() {
     selectColorSchemeMenu->menuAction()->setObjectName("Coloring Scheme");
 
     // Molecular surface
-    QMenu *surfaceMenu = new QMenu(tr("Molecular Surface Render Style"));
-    surfaceMenu->addActions(molSurfaceRenderActions->actions());
-    surfaceMenu->menuAction()->setObjectName("Molecular Surface Render Style");
+    auto surfaceRenderingStyleMenu = new QMenu(tr("Molecular Surface Render Style"));
+    surfaceRenderingStyleMenu->addActions(molSurfaceRenderActions->actions());
+    surfaceRenderingStyleMenu->menuAction()->setObjectName("Molecular Surface Render Style");
 
-    QMenu *surfaceTypeMenu = new QMenu(tr("Molecular Surface"));
+    auto surfaceTypeMenu = new QMenu(tr("Molecular Surface"));
     surfaceTypeMenu->addActions(molSurfaceTypeActions->actions());
     surfaceTypeMenu->menuAction()->setObjectName("Molecular Surface");
 
@@ -853,8 +802,10 @@ void BioStruct3DGLWidget::createMenus() {
     displayMenu->addMenu(selectRendererMenu);
     displayMenu->addMenu(selectColorSchemeMenu);
 
-    displayMenu->addMenu(surfaceMenu);
+    displayMenu->addSeparator();
     displayMenu->addMenu(surfaceTypeMenu);
+    displayMenu->addMenu(surfaceRenderingStyleMenu);
+    displayMenu->addSeparator();
 
     if (selectModelsAction) {
         displayMenu->addAction(selectModelsAction);
@@ -864,8 +815,8 @@ void BioStruct3DGLWidget::createMenus() {
     displayMenu->addAction(settingsAction);
     displayMenu->addAction(exportImageAction);
 
-    QMenu *saMenu = createStructuralAlignmentMenu();
-    displayMenu->addMenu(saMenu);
+    auto structuralAlignmentMenu = createStructuralAlignmentMenu();
+    displayMenu->addMenu(structuralAlignmentMenu);
 }
 
 QMenu *BioStruct3DGLWidget::createStructuralAlignmentMenu() {
@@ -925,7 +876,7 @@ void BioStruct3DGLWidget::sl_updateRenderSettings(const QStringList &list) {
     sl_selectColorScheme(colorSchemeActions->checkedAction());
 }
 
-void BioStruct3DGLWidget::sl_acitvateSpin() {
+void BioStruct3DGLWidget::sl_activateSpin() {
     if (spinAction->isChecked()) {
         animationTimer->start();
     } else {
@@ -935,7 +886,7 @@ void BioStruct3DGLWidget::sl_acitvateSpin() {
     update();
 }
 
-void BioStruct3DGLWidget::sl_updateAnnimation() {
+void BioStruct3DGLWidget::sl_updateAnimation() {
     static float velocity = 0.05f;
     spinAngle = velocity * animationTimer->interval();
     Vector3D rotAxis(0, 1, 0);

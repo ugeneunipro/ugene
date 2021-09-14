@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /* inflate.c -- zlib decompression
  * Copyright (C) 1995-2005 Mark Adler
  * For conditions of distribution and use, see copyright notice in zlib.h

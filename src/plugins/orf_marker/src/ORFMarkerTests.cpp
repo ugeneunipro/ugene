@@ -55,9 +55,7 @@ Translator::Translator(const U2SequenceObject *s, const QString &tid)
     }
 }
 
-void GTest_ORFMarkerTask::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_ORFMarkerTask::init(XMLTestFormat *, const QDomElement &el) {
     seqName = el.attribute(SEQ_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQ_ATTR);
@@ -75,7 +73,7 @@ void GTest_ORFMarkerTask::init(XMLTestFormat *tf, const QDomElement &el) {
             }
             bool startOk, finishOk;
             int start = bounds.first().toInt(&startOk), finish = bounds.last().toInt(&finishOk);
-            if (startOk && finishOk != true) {
+            if (startOk && !finishOk) {
                 stateInfo.setError(QString("wrong value for %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }

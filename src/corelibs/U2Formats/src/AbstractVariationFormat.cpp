@@ -25,6 +25,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>

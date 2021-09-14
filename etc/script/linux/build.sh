@@ -51,7 +51,7 @@ if [ "${UGENE_BUILD_AND_TEST_SKIP_QMAKE}" -ne "1" ]; then
   echo "##teamcity[blockOpened name='qmake -r ugene.pro']"
   if
     # shellcheck disable=SC2086
-    "${QT_DIR}/bin/qmake" -r ugene.pro
+    "${QT_DIR}/bin/qmake" -r ugene.pro ${UGENE_QMAKE_PARAMS}
   then
     echo
   else

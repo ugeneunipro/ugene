@@ -94,7 +94,6 @@ Document *DocumentFormat::loadDocument(IOAdapterFactory *iof, const GUrl &url, c
     if (dbiRef.isValid()) {
         DbiConnection con(dbiRef, os);
         CHECK_OP(os, nullptr);
-        Q_UNUSED(con);
 
         res = loadDocument(io.data(), dbiRef, hints, os);
         CHECK_OP(os, nullptr);
@@ -782,7 +781,6 @@ void Document::removeObjectsDataFromDbi(QList<GObject *> objects) {
         U2OpStatus2Log os;
         DbiOperationsBlock opBlock(dbiRef, os);
         CHECK_OP(os, );
-        Q_UNUSED(opBlock);
 
         DbiConnection con(dbiRef, os);
         CHECK_OP(os, );

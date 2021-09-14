@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="../src/VanDerWaalsGLRenderer.cpp" line="36"/>
-        <location filename="../src/deprecated/VanDerWaalsGLRenderer.cpp" line="38"/>
+        <location filename="../src/deprecated/VanDerWaalsGLRenderer.cpp" line="39"/>
         <source>Space Fill</source>
         <translation>Заполнение</translation>
     </message>
@@ -62,7 +62,7 @@
         <translation>Выпуклая структура</translation>
     </message>
     <message>
-        <location filename="../src/deprecated/BallAndStickGLRenderer.cpp" line="38"/>
+        <location filename="../src/deprecated/BallAndStickGLRenderer.cpp" line="39"/>
         <source>Ball-and-Stick</source>
         <translation>Шаростержневая модель</translation>
     </message>

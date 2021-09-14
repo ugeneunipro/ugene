@@ -33,9 +33,7 @@ namespace U2 {
 #define ROWS_LIST_ATTR "rows"
 #define FORCE_USE_UGENE_ALIGNER_ATTR "useUgeneAligner"
 
-void GTest_Realign::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_Realign::init(XMLTestFormat *, const QDomElement &el) {
     forceUseUgeneAligner = false;
 
     inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);

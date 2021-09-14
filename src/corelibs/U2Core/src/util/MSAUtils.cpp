@@ -339,7 +339,6 @@ MultipleSequenceAlignmentObject *MSAUtils::seqObjs2msaObj(const QList<GObject *>
 
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, nullptr);
-    Q_UNUSED(opBlock);
 
     const bool useGenbankHeader = hints.value(ObjectConvertion_UseGenbankHeader, false).toBool();
     MultipleSequenceAlignment ma = seq2ma(objects, os, useGenbankHeader, recheckAlphabetFromDataIfRaw);

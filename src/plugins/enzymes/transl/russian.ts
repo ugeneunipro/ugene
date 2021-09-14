@@ -588,7 +588,7 @@ p, li { white-space: pre-wrap; }
         <translation>Выберите фрагменты, составляющие новую молекулу.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="282"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="273"/>
         <source>Set new molecule file name</source>
         <translation>Задайте имя файла</translation>
     </message>
@@ -598,14 +598,14 @@ p, li { white-space: pre-wrap; }
         <translation>длина ядра</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="212"/>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="219"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="203"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
         <source>Blunt</source>
         <translation>&quot;Срез&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="217"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="201"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
         <source>Fwd</source>
         <translation>Прям</translation>
     </message>
@@ -620,38 +620,37 @@ p, li { white-space: pre-wrap; }
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="111"/>
         <source>Selected region is too large to proceed!</source>
-        <translation>Регион последовательности слишком большой!</translation>
+        <translation type="vanished">Регион последовательности слишком большой!</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="217"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="201"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
         <source>Rev</source>
         <translation>Обр</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="205"/>
         <source>Left end</source>
         <translation>Левый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="221"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="212"/>
         <source>Right end</source>
         <translation>Правый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="224"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
         <source>Make fragment reverse complement</source>
         <translation>Сделать фрагмент обратно-комплементарным</translation>
     </message>
@@ -760,32 +759,32 @@ Choose another region.</translation>
         <translation>Не удалость разбить на фрагменты перескающиеся сайты рестрикции  %1 (%2..%3) и %4 (%5..%6)</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="327"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="325"/>
         <source>circular</source>
         <translation>круговая</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="327"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="325"/>
         <source>linear</source>
         <translation>линейная</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="328"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="326"/>
         <source>&lt;h3&gt;&lt;br&gt;Digest into fragments %1 (%2)&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;&lt;br&gt;Разбиение на фрагменты %1 (%2)&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="329"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="327"/>
         <source>&lt;br&gt;Generated %1 fragments.</source>
         <translation>&lt;br&gt;Создано %1 фрагментов.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="338"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="336"/>
         <source>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;From %3 (%2) To %5 (%4) - %6 bp </source>
         <translation>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;От %3 (%2) До %5 (%4) - %6 bp </translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="359"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="357"/>
         <source>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</source>
         <translation>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</translation>
     </message>
@@ -982,102 +981,102 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::EnzymesSelectorWidget</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="149"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="146"/>
         <source>File not exists: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="156"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="194"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="153"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="191"/>
         <source>Error</source>
         <translation>Проблема</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="200"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="197"/>
         <source>New enzymes database has been saved.</source>
         <translation>Новая база ферментов рестрикции создана.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="200"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="197"/>
         <source>Do you want to work with new database?</source>
         <translation>Хотите ли вы работать с новой базой ферментов рестрикции?</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="298"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="492"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="295"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="489"/>
         <source>Select enzyme database file</source>
         <translation>Выбор базы ферментов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="334"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="331"/>
         <source>Minimum length</source>
         <translation>Минимальная длина</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="334"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="331"/>
         <source>Enter minimum length of recognition sites</source>
         <translation>Введите минимальную длину сайта распознавания</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="374"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="371"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="380"/>
         <source>Save selection</source>
         <translation>Сохранить выделение</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="374"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="371"/>
         <source>Can not save empty selection!</source>
         <translation>Невозможно сохранить пустое выделение!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="379"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="442"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="376"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="439"/>
         <source>Select enzymes selection</source>
         <translation>Выбрать ферменты</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="380"/>
         <source>Failed to open %1 for writing</source>
         <translation>Невозможно открыть %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="395"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="395"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>No enzyme selected!</source>
         <translation>Фермент не выбран!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="400"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="397"/>
         <source>Selected enzyme has no ID!</source>
         <translation>Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="442"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="439"/>
         <source>Selection files</source>
         <translation>Файлы с выделением</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="446"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="461"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="443"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="458"/>
         <source>Load selection</source>
         <translation>Загрузить выделение</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="446"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="443"/>
         <source>Failed to open selection file %1</source>
         <translation>Невозможно открыть файл %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="461"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="458"/>
         <source>Enzymes selection is empty!</source>
         <translation>Выделение пусто!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="485"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="482"/>
         <source>Failed to load %1 from selection.</source>
         <translation>Невозможно загрузить %1 из выделения.</translation>
     </message>
@@ -1093,47 +1092,47 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="502"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="499"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="503"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="500"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="531"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="528"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="538"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="535"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="546"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="543"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="563"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="563"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="571"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="568"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
         <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="572"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="569"/>
         <source>Warning!</source>
         <translation>Предупреждение!</translation>
     </message>
@@ -1221,22 +1220,22 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::LigateFragmentsTask</name>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="400"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="398"/>
         <source>Fragments %1 and  %2 are inconsistent. Blunt and sticky ends incompatibility</source>
         <translation>Фрагменты %1 и  %2 несопоставимы. Липкий конец и срез невозможно соединить</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="411"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="409"/>
         <source>Right overhang from %1 and left overhang from %2 are inconsistent.</source>
         <translation>Правый липкий конец фрагмента %1 несовместим с левым липким концом фрагмента %2.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="461"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="459"/>
         <source>Unknown DNA alphabet in fragment %1 of %2</source>
         <translation>Неизвестный алфавит у фрагмента %1 последовательности %2</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="535"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="533"/>
         <source>Add constructed molecule</source>
         <translation>Добавить созданную молекулу</translation>
     </message>

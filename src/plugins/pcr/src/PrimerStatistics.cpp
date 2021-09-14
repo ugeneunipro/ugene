@@ -45,10 +45,10 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const Q
         message = tr("The forward primer contains a character from the Extended DNA alphabet.");
     } else if (!reverseIsValid) {
         message = tr("The reverse primer contains a character from the Extended DNA alphabet.");
-    } else if(!validatePrimerMinLength(forward)) {
-        message = tr("The forward primer length should be %1 bp or longer.").arg(QString::number(MINIMUM_PRIMER_LENGTH));
-    } else if (!validatePrimerMinLength(reverse)) {
-        message = tr("The reverse primer length should be %1 bp or longer.").arg(QString::number(MINIMUM_PRIMER_LENGTH));
+    } else if(!validatePrimerLength(forward)) {
+        message = tr("The forward primer length should be between %1 and %2 bp.").arg(QString::number(MINIMUM_PRIMER_LENGTH)).arg(QString::number(MAXIMUM_PRIMER_LENGTH));
+    } else if (!validatePrimerLength(reverse)) {
+        message = tr("The reverse primer length should be between %1 and %2 bp.").arg(QString::number(MINIMUM_PRIMER_LENGTH)).arg(QString::number(MAXIMUM_PRIMER_LENGTH));
     }
     if (!message.isEmpty()) {
         message += tr(" Unable to calculate primer statistics.");
@@ -100,8 +100,8 @@ bool PrimerStatistics::validate(QString primer) {
     return pv.validate(primer, pos) == QValidator::Acceptable;
 }
 
-bool PrimerStatistics::validatePrimerMinLength(const QByteArray &primer) {
-    return primer.size() >= MINIMUM_PRIMER_LENGTH;
+bool PrimerStatistics::validatePrimerLength(const QByteArray &primer) {
+    return primer.size() >= MINIMUM_PRIMER_LENGTH && primer.size() <= MAXIMUM_PRIMER_LENGTH;
 }
 
 QString PrimerStatistics::getDoubleStringValue(double value) {
