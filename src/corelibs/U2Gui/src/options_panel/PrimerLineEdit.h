@@ -23,30 +23,33 @@
 #define _U2_PRIMER_LINE_EDIT_H_
 
 #include <QLineEdit>
-#include <QValidator>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class PrimerLineEdit : public QLineEdit {
+/**
+ * @PrimerLineEdit
+ * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
+ * Promote @QLineEdit to @PrimerLineEdit to make it work.
+ */
+class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
     Q_OBJECT
 public:
     PrimerLineEdit(QWidget *parent);
 
+    /**
+     * Set text if it's valid. If not set empty string.
+     */
     void setInvalidatedText(const QString &text);
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QRect placeHolderRect() const;
+    QRect getPlaceHolderRect() const;
 };
 
-class PrimerValidator : public QRegExpValidator {
-public:
-    PrimerValidator(QObject *parent, bool allowExtended = true);
-    State validate(QString &input, int &pos) const;
-};
-
-}  // namespace U2
+}    // namespace U2
 
 #endif  // _U2_PRIMER_LINE_EDIT_H_

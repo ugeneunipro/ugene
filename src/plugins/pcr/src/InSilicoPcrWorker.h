@@ -22,11 +22,12 @@
 #ifndef _U2_INSILICO_PCR_WORKER_H_
 #define _U2_INSILICO_PCR_WORKER_H_
 
+#include <U2Core/Primer.h>
+
 #include <U2Lang/BaseThroughWorker.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "InSilicoPcrTask.h"
-#include "Primer.h"
 
 namespace U2 {
 namespace LocalWorkflow {

@@ -79,6 +79,10 @@ public:
     static void crop(DNASequence &sequence, int startPos, int length);
 
     static U2Region trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds);
+
+    static int reverseComplementPos(int directPos, int length);
+
+    static U2Region reverseComplementRegion(const U2Region& directRegion, int length);
 };
 
 }  // namespace U2

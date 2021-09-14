@@ -19,37 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
-#define _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+#include "PrimerValidator.h"
 
-#include <U2Core/GUrl.h>
-#include <U2Core/Primer.h>
-#include <U2Core/Task.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/U2AlphabetUtils.h>
 
 namespace U2 {
 
-class Document;
-class DocumentFormat;
-class U2DbiRef;
-class ExportPrimersToDatabaseTask;
+PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
+    : QRegExpValidator(parent) {
+    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(
+        allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    QByteArray alphabetChars = alphabet->getAlphabetChars(true);
+    // Gaps are not allowed
+    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
+    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+}
 
-class ExportPrimersToLocalFileTask : public Task {
-    Q_OBJECT
-public:
-    ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
+QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
+    input = input.simplified();
+    input = input.toUpper();
+    input.remove(" ");
+    return QRegExpValidator::validate(input, pos);
+}
 
-    void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
-
-private:
-    Document *prepareDocument();
-    void addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask);
-
-    const QList<Primer> primers;
-    DocumentFormat *format;
-    const GUrl url;
-};
-
-}  // namespace U2
-
-#endif  // _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+}    // namespace U2

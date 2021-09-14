@@ -26,6 +26,7 @@
 
 #include <U2Core/Counter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerValidator.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>

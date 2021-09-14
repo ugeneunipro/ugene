@@ -22,7 +22,8 @@
 #ifndef _U2_EXPORT_PRIMERS_DIALOG_H_
 #define _U2_EXPORT_PRIMERS_DIALOG_H_
 
-#include "Primer.h"
+#include <U2Core/Primer.h>
+
 #include "ui_ExportPrimersDialog.h"
 
 namespace U2 {
