@@ -24,7 +24,6 @@
 #include <QMenu>
 
 #include <U2Core/L10n.h>
-#include <U2Core/PrimerLibrary.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -35,6 +34,7 @@
 #include "FindPrimerPairsWorker.h"
 #include "InSilicoPcrOPWidgetFactory.h"
 #include "InSilicoPcrWorker.h"
+#include "PrimerLibrary.h"
 #include "PrimerLibraryMdiWindow.h"
 #include "PrimersGrouperWorker.h"
 

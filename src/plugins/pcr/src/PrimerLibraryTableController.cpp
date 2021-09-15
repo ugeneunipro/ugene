@@ -21,10 +21,10 @@
 
 #include "PrimerLibraryTableController.h"
 
-#include <U2Core/PrimerLibrary.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "PrimerLibrary.h"
 #include "PrimerLibraryTable.h"
 
 namespace U2 {
