@@ -34,7 +34,7 @@ namespace U2 {
 class DbiConnection;
 class UdrDbi;
 
-class U2CORE_EXPORT PrimerLibrary : public QObject {
+class PrimerLibrary : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(PrimerLibrary)
 public:
