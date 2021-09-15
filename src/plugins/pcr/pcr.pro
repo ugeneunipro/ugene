@@ -12,6 +12,7 @@ HEADERS += src/EditPrimerDialog.h \
            src/PcrOptionsPanelSavableTab.h \
            src/PcrPlugin.h \
            src/PrimerGroupBox.h \
+           src/PrimerLibrary.h \
            src/PrimerLibraryMdiWindow.h \
            src/PrimerLibrarySelector.h \
            src/PrimerLibraryTable.h \
@@ -49,6 +50,7 @@ SOURCES += src/EditPrimerDialog.cpp \
            src/PcrOptionsPanelSavableTab.cpp \
            src/PcrPlugin.cpp \
            src/PrimerGroupBox.cpp \
+           src/PrimerLibrary.cpp \
            src/PrimerLibraryMdiWindow.cpp \
            src/PrimerLibrarySelector.cpp \
            src/PrimerLibraryTable.cpp \
