@@ -141,7 +141,19 @@ bool SmithWatermanAlgorithm::isValidParams() {
     if (gapOpen >= 0 || gapExtension >= 0) {
         return false;
     }
-    if (matrixLength > 100000 && resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
+    unsigned int memory = 0;
+    quint64 quint_memory = 0;
+    if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
+        int pat_n = patternSeq.length();
+        unsigned int dirn = (4 + pat_n + 3) >> 2;
+        memory = pat_n * 2 * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
+        quint_memory = (quint64)pat_n * 2 * sizeof(int) + (quint64)pat_n * 0x80 + (quint64)matrixLength * (quint64)dirn;
+    } else if (resultView == SmithWatermanSettings::ANNOTATIONS) {
+        int pat_n = patternSeq.length();
+        memory = pat_n * 3 * sizeof(int) + pat_n * 0x80;
+        quint_memory = (quint64)pat_n * 3 * sizeof(int) + (quint64)pat_n * (quint64)0x80;
+    }
+    if (quint_memory != memory) {
         return false;
     }
     return true;
@@ -189,6 +201,7 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     unsigned char *dir, *dir2, *dir1 = (unsigned char *)score1 + pat_n * 0x80;
     memset(matrix, 0, n * sizeof(int));
     memset(dir1, 0, dirn);
+    //std::fill(dir1, dir1 + dirn, 0);
     dir = dir1 + dirn;
     dir2 = dir1 + matrixLength * dirn;
 
@@ -247,7 +260,9 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
         e1 = 0;
         max1 = 0;
         subst = 0;
-
+        if (i == 28113 /* && j == 84730*/) {
+            printf("\n");
+        }
         if (dir == dir2) {
             dir = dir1;
         }
