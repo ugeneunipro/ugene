@@ -55,13 +55,11 @@
 #include <QTableWidget>
 #include <QWizard>
 
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -3440,8 +3438,7 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click "Align sequence to this alignment" button on the toolbarand select attached sequence "Sequence.txt".
-    auto rawFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::RAW_DNA_SEQUENCE, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt", GTGlobals::UseMouse, GTFileDialogUtils::Open, rawFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3956,8 +3953,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
-    auto fastaFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastaFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);

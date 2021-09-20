@@ -100,9 +100,8 @@ void AlignSequencesToAlignmentAction::sl_activate() {
         QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
         QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
         QString filter = f2 + "\n" + f1;
-        auto selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
         LastUsedDirHelper lod;
-        QStringList urls = U2FileDialog::getOpenFileNames(nullptr, tr("Open file with sequences"), lod.dir, filter, &selectedFilter);
+        QStringList urls = U2FileDialog::getOpenFileNames(nullptr, tr("Open file with sequences"), lod.dir, filter);
 
         if (!urls.isEmpty()) {
             lod.url = urls.first();

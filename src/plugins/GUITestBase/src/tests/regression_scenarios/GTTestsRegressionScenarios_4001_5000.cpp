@@ -65,7 +65,6 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/ADVConstants.h>
@@ -2690,7 +2689,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click "Align sequence(s) to this alignment" and select "_common_data/database.ini".
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/database.ini", GTGlobals::UseMouse, GTFileDialogUtils::Open, "All files ( * )"));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/database.ini"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: load task fails, safe point doesn't trigger.
@@ -2704,8 +2703,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
-    auto pdbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_PDB, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB", GTGlobals::UseMouse, GTFileDialogUtils::Open, pdbFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2730,8 +2728,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
-    auto pdbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_PDB, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB", GTGlobals::UseMouse, GTFileDialogUtils::Open, pdbFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2750,13 +2747,12 @@ GUI_TEST_CLASS_DEFINITION(test_4323_4) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
 
     //    3. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/FASTQ/eas.fastq".
-    auto fastqFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTQ, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastqFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    4. Do it again.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastqFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3082,8 +3078,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
     GTUtilsProjectTreeView::rename(os, "COI", "C O I");
 
     //    3. Click "Align sequence(s) to this alignment" and select any file with sequence.
-    auto fastqFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTQ, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq", GTGlobals::UseMouse, GTFileDialogUtils::Open, fastqFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4081,8 +4076,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
-    auto gbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_GENBANK, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb", GTFileDialogUtils::Open, GTGlobals::UseMouse, gbFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4762,8 +4756,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click "Align sequence(s) to this alignment" and select "data/samples/Genbank/PBR322.gb".
-    auto gbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_GENBANK, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/PBR322.gb", GTGlobals::UseMouse, GTFileDialogUtils::Open, gbFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/PBR322.gb"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5459,8 +5452,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_6) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto fastaFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa", GTFileDialogUtils::Open, GTGlobals::UseMouse, fastaFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
@@ -5472,8 +5464,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_7) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto fastaFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa", GTFileDialogUtils::Open, GTGlobals::UseMouse, fastaFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
@@ -5484,8 +5475,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_8) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto fastaFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa", GTFileDialogUtils::Open, GTGlobals::UseMouse, fastaFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align alignment to alignment with MUSCLE");
     GTUtilsDialog::waitAllFinished(os);
@@ -5798,8 +5788,7 @@ GUI_TEST_CLASS_DEFINITION(test_4918_1) {
     // 3. Select file "_common_data\genbank\DNA.gen"
     // Current state : UGENE crashes
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align profile to profile with MUSCLE"));
-    auto gbFormatFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_GENBANK, false);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/genbank", "DNA.gen", GTFileDialogUtils::Open, GTGlobals::UseMouse, gbFormatFilter));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/genbank", "DNA.gen"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
