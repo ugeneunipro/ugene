@@ -760,15 +760,10 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
     // 2. Select any part of sequence.
-    auto panView = GTUtilsSequenceView::getPanViewByNumber(os);
-    CHECK_SET_ERR(panView != nullptr, "No pan view found!");
-
+    PanView* panView = GTUtilsSequenceView::getPanViewByNumber(os);
     auto startPoint = panView->mapToGlobal(panView->rect().center());
     auto endPoint = QPoint(startPoint.x() + 150, startPoint.y());
-    GTMouseDriver::moveTo(startPoint);
-    GTMouseDriver::press();
-    GTMouseDriver::moveTo(endPoint);
-    GTMouseDriver::release();
+    GTMouseDriver::dragAndDrop(startPoint, endPoint);
 
     // 3. Move mouse a bit upper
     endPoint = QPoint(endPoint.x(), endPoint.y() - 20);
