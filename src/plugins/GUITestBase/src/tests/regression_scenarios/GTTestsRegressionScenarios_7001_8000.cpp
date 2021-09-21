@@ -755,6 +755,37 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7401) {
+    // 1. Open human_T1.fa.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
+    // 2. Select any part of sequence.
+    auto panView = GTUtilsSequenceView::getPanViewByNumber(os);
+    CHECK_SET_ERR(panView != nullptr, "No pan view found!");
+
+    auto startPoint = panView->mapToGlobal(panView->rect().center());
+    auto endPoint = QPoint(startPoint.x() + 150, startPoint.y());
+    GTMouseDriver::moveTo(startPoint);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(endPoint);
+    GTMouseDriver::release();
+
+    // 3. Move mouse a bit upper
+    endPoint = QPoint(endPoint.x(), endPoint.y() - 20);
+    GTMouseDriver::moveTo(endPoint);
+
+    // 4. Double click and move the cursor to the right (or to the left).
+    GTMouseDriver::click();
+    GTMouseDriver::press();
+    endPoint = QPoint(endPoint.x() + 150, endPoint.y());
+    GTMouseDriver::moveTo(endPoint);
+    GTMouseDriver::release();
+
+    // Only one selection is presented
+    auto selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, QString("Expected selections: 1, current: %1").arg(selection.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7403) {
     // Check that there is no crash when generating very large (2Gb) sequences.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7403.fa");
