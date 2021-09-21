@@ -41,11 +41,11 @@ public:
                      CopyPaste };
 
 #ifdef Q_OS_DARWIN
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, const QString& filter = QString(), TextInput = CopyPaste);
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, const QString& filter = QString(), TextInput = CopyPaste);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste, const QString& filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste, const QString& filter = QString());
 #else
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, const QString& filter = QString(), TextInput = Typing);
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, const QString& filter = QString(), TextInput = Typing);
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing, const QString& filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing, const QString& filter = QString());
 #endif
 
     GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *customScenario);
@@ -66,8 +66,12 @@ protected:
     QString path, fileName;
     Button button;
     GTGlobals::UseMethod method;
-    QString filter;
     TextInput textInput;
+    /**
+     * The filter to be selected in operation on this file dialog.
+     * The "filter" string could be got by the @DialogUtils::prepareDocumentsFileFilter function.
+     */
+    QString filter;
 };
 
 class GTFileDialogUtils_list : public GTFileDialogUtils {

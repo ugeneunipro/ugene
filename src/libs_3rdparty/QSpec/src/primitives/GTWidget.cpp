@@ -125,6 +125,10 @@ QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName
     return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
 }
 
+QComboBox* GTWidget::findComboBox(GUITestOpStatus& os, const QString& widgetName, const QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QComboBox*>(os, widgetName, parentWidget, options);
+}
+
 QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
 }

@@ -47,22 +47,22 @@
 namespace HI {
 #define GT_CLASS_NAME "GTFileDialogUtils"
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path, const QString &_fileName, Button _button, GTGlobals::UseMethod _method, const QString& _filter, TextInput textInput)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path, const QString &_fileName, Button _button, GTGlobals::UseMethod _method, TextInput textInput, const QString& _filter)
     : Filler(_os, "QFileDialog"),
       fileName(_fileName),
       button(_button),
       method(_method),
-      filter(_filter),
-      textInput(textInput) {
+      textInput(textInput),
+      filter(_filter) {
     init(_path + "/" + fileName);
 }
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method, Button b, const QString& _filter, TextInput textInput)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method, Button b, TextInput textInput, const QString& _filter)
     : Filler(os, "QFileDialog"),
       button(b),
       method(method),
-      filter(_filter),
-      textInput(textInput) {
+      textInput(textInput),
+      filter(_filter) {
     init(filePath);
 }
 
@@ -103,7 +103,6 @@ void GTFileDialogUtils::commonScenario() {
     // opening file or getting size
     GTGlobals::sleep(300);
     setViewMode(Detail);
-    GTGlobals::sleep(300);
     applyFilter();
     GTGlobals::sleep(300);
     selectFile();
@@ -335,9 +334,8 @@ void GTFileDialogUtils::applyFilter() {
         return;
     }
 
-    QComboBox* comboBox = fileDialog->findChild<QComboBox*>(FILE_TYPE_COMBO_BOX);
-    GT_CHECK_RESULT(comboBox != nullptr, QString("combo box \"%1\" not found").arg(FILE_TYPE_COMBO_BOX), );
-
+    GTGlobals::sleep(300);
+    QComboBox* comboBox = GTWidget::findComboBox(os, FILE_TYPE_COMBO_BOX, fileDialog);
     GTComboBox::selectItemByText(os, comboBox, filter, GTGlobals::UseMouse);
 }
 #undef GT_METHOD_NAME
