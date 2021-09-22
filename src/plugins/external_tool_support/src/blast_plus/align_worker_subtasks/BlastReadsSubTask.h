@@ -30,6 +30,7 @@
 namespace U2 {
 
 class AbstractAlignmentTaskFactory;
+class AbstractAlignmentTask;
 class BlastNPlusSupportTask;
 class PairwiseAlignmentTaskSettings;
 
@@ -122,6 +123,7 @@ private:
     DbiDataStorage *storage;
 
     BlastNPlusSupportTask *blastTask;
+    AbstractAlignmentTask *alignTask;
     QString blastResultDir;
 
     U2MsaRowGapModel referenceGaps;

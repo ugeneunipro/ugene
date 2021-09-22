@@ -77,7 +77,7 @@ bool SmithWatermanAlgorithm::calculateMatrixLength() {
     for (int i = 0; i < patternSeq.length(); i++) {
         int max = 0;
         for (int j = 0; j < nCharsInAlphabet; j++) {
-            // TODO: cache pattern seq raw pointer and alphaChars row pointer out of the loop
+            //TODO: cache pattern seq raw pointer and alphaChars row pointer out of the loop
             int substValue = substitutionMatrix.getScore(patternSeq.at(i), alphaChars.at(j));
             max = qMax(max, substValue);
         }
@@ -117,38 +117,32 @@ void SmithWatermanAlgorithm::launch(const SMatrix &_substitutionMatrix,
                                     int _minScore,
                                     SmithWatermanSettings::SWResultView _resultView) {
     setValues(_substitutionMatrix, _patternSeq, _searchSeq, _gapOpen, _gapExtension, _minScore, _resultView);
-    if (calculateMatrixLength() && isValidParams()) {
+    if (isValidParams() && calculateMatrixLength()) {
         switch (resultView) {
-            case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
-                calculateMatrixForMultipleAlignmentResult();
-                break;
-            case SmithWatermanSettings::ANNOTATIONS:
-                calculateMatrixForAnnotationsResult();
-                break;
-            default:
-                assert(false);
+        case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
+            calculateMatrixForMultipleAlignmentResult();
+            break;
+        case SmithWatermanSettings::ANNOTATIONS:
+            calculateMatrixForAnnotationsResult();
+            break;
+        default:
+            assert(false);
         }
     }
 }
 
 bool SmithWatermanAlgorithm::isValidParams() {
-    if (searchSeq.length() <= 0 || patternSeq.length() <= 0) {
+    if (searchSeq.length() <= 0 || patternSeq.length() <= 0)
         return false;
-    }
-    if (searchSeq.length() < patternSeq.length()) {
+    if (searchSeq.length() < patternSeq.length())
         return false;
-    }
-    if (gapOpen >= 0 || gapExtension >= 0) {
+    if (gapOpen >= 0 || gapExtension >= 0)
         return false;
-    }
-    if (matrixLength > 100000 && resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
-        return false;
-    }
     return true;
 }
 
-// Get results
-// countResults - count of results will be return
+//Get results
+//countResults - count of results will be return
 QList<PairAlignSequences> SmithWatermanAlgorithm::getResults() {
     return pairAlignmentStrings;
 }
@@ -180,8 +174,9 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     n = pat_n * 2;
     unsigned int dirn = (4 + pat_n + 3) >> 2;
     unsigned int memory = n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
-    int *buf, *matrix = (int *)malloc(memory);
-    if (matrix == nullptr) {
+    quint64 quint_memory = (quint64)n * sizeof(int) + (quint64)pat_n * (quint64)0x80 + (quint64)matrixLength * (quint64)dirn;
+    int* buf, * matrix = (int*)malloc(memory);
+    if (matrix == nullptr || quint_memory != memory) {
         std::bad_alloc e;
         throw e;
     }
@@ -328,8 +323,10 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
 
     n = pat_n * 3;
-    int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80);
-    if (matrix == nullptr) {
+    unsigned int memory = n * sizeof(int) + pat_n * 0x80;
+    int *buf, *matrix = (int *)malloc(memory);
+    quint64 quint_memory = (quint64)n * (quint64)sizeof(int) + (quint64)pat_n * (quint64)0x80;
+    if (matrix == nullptr || quint_memory != memory) {
         std::bad_alloc e;
         throw e;
     }
@@ -432,4 +429,4 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     free(matrix);
 }
 
-}  // namespace U2
+}    // namespace U2

@@ -506,7 +506,7 @@ bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
 }
 
 PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings *_settings, SW_AlgType _algType)
-    : PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings) {
+    : PairwiseAlignmentTask(TaskFlags_NR_FOSE_COSC), settings(_settings) {
     GCOUNTER(cvar, "SWAlgorithmTask");
 
     assert(settings != nullptr);
@@ -843,7 +843,7 @@ Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
 
     if (0 != settings->reportCallback) {
         QString res = settings->reportCallback->report(resultList);
-        if (!res.isEmpty()) {
+        if (!res.isEmpty() && !stateInfo.hasError()) {
             stateInfo.setError(res);
         }
     }

@@ -6092,13 +6092,13 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     //1. Open "Trim and Map Sanger reads" sample in workflow.
     //2. Set human_T1.fa as input files on first and second wizard pages.
     //3. Run schema.
-    //Expected state: workflow stopped work with "No read satisfy minimum similarity criteria" error message in the log.
+    //Expected state: workflow stopped work with "Not enouch memory to finish the task." error message in the log.
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("No read satisfy minimum similarity criteria"), "No expected message in the log");
+    CHECK_SET_ERR(l.checkMessage("Not enough memory"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6875) {

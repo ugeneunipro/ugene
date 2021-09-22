@@ -50,7 +50,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const int minIdentityPercent,
                                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                                      DbiDataStorage *storage)
-    : Task(tr("Map reads with BLAST & SW task"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
+    : Task(tr("Map reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       reads(reads),
       readsNames(readsNames),
@@ -115,6 +115,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readShift(0),
       storage(storage),
       blastTask(nullptr),
+      alignTask(nullptr),
       readName(readName),
       complement(false),
       skipped(false) {
@@ -133,10 +134,14 @@ void BlastAndSwReadTask::prepare() {
 
 QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    if (subTask->hasError() && subTask == blastTask) {
+    if (subTask->hasError() && (subTask == blastTask || subTask == alignTask)) {
         QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
         CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), result);
-        setError(tr("A problem occurred while mapping \"%1\" to \"%2\".").arg(readName).arg(refObject->getGObjectName()));
+        if (subTask == alignTask) {
+            setError(tr("A problem occurred while mapping \"%1\" to \"%2\", %3").arg(readName).arg(refObject->getGObjectName()).arg(alignTask->getError()));
+        } else {
+            setError(tr("A problem occurred while mapping \"%1\" to \"%2\".").arg(readName).arg(refObject->getGObjectName()));
+        }
     }
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
@@ -160,7 +165,8 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         settings->setCustomValue("SW_gapExtd", -1);
         settings->setCustomValue("SW_scoringMatrix", "dna");
 
-        result << factory->getTaskInstance(settings.take());
+        alignTask = factory->getTaskInstance(settings.take());
+        result << alignTask;
     } else if (qobject_cast<AbstractAlignmentTask *>(subTask) != nullptr) {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
         CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), result);
