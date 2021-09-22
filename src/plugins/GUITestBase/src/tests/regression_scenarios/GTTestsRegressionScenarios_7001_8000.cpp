@@ -758,6 +758,7 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
 GUI_TEST_CLASS_DEFINITION(test_7401) {
     // 1. Open human_T1.fa.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select any part of sequence.
     PanView* panView = GTUtilsSequenceView::getPanViewByNumber(os);
