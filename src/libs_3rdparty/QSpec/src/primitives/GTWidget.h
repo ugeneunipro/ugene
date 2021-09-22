@@ -27,6 +27,7 @@
 #include <QAbstractButton>
 #include <QAbstractItemView>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
