@@ -115,7 +115,6 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readShift(0),
       storage(storage),
       blastTask(nullptr),
-      alignTask(nullptr),
       readName(readName),
       complement(false),
       skipped(false) {

@@ -123,7 +123,7 @@ private:
     DbiDataStorage *storage;
 
     BlastNPlusSupportTask *blastTask;
-    AbstractAlignmentTask *alignTask;
+    AbstractAlignmentTask *alignTask = nullptr;
     QString blastResultDir;
 
     U2MsaRowGapModel referenceGaps;

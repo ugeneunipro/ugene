@@ -6070,9 +6070,6 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     class FillTrimAndMapWizardWithHumanT1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            GTWidget::clickWindowTitle(os, wizard);
-
             GTUtilsWizard::setParameter(os, "Reference", QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
