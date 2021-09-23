@@ -244,8 +244,9 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent *me) {
         ctx->emitClearSelectedAnnotationRegions();
     }
     const QVector<U2Region> annotationRegions = annotation->getRegions();
+    int renderAreaPos = renderArea->coordToPos(renderAreaPoint);
     foreach (const U2Region &region, annotationRegions) {
-        CHECK_CONTINUE(region.contains(renderArea->coordToPos(renderAreaPoint)));
+        CHECK_CONTINUE(region.contains(renderAreaPos));
 
         ctx->emitAnnotationDoubleClicked(annotation, annotationRegions.indexOf(region));
         break;

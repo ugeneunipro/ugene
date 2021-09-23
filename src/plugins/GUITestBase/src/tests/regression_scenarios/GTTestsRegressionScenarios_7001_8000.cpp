@@ -770,6 +770,10 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     endPoint = QPoint(endPoint.x(), endPoint.y() - 20);
     GTMouseDriver::moveTo(endPoint);
 
+    // Only one selection is presented
+    auto firstSelection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(firstSelection.size() == 1, QString("Expected first selections: 1, current: %1").arg(firstSelection.size()));
+
     // 4. Double click and move the cursor to the right (or to the left).
     GTMouseDriver::click();
     GTMouseDriver::press();
@@ -777,9 +781,14 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     GTMouseDriver::moveTo(endPoint);
     GTMouseDriver::release();
 
-    // Only one selection is presented
-    auto selection = GTUtilsSequenceView::getSelection(os);
-    CHECK_SET_ERR(selection.size() == 1, QString("Expected selections: 1, current: %1").arg(selection.size()));
+    // Only one selection is presented and it's been expanded to the right
+    auto secondSelection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(secondSelection.size() == 1, QString("Expected second selections: 1, current: %1").arg(secondSelection.size()));
+
+    int firstSelectionEndPos = firstSelection.first().endPos();
+    int secondSelectionEndPos = secondSelection.first().endPos();
+    CHECK_SET_ERR(firstSelectionEndPos < secondSelectionEndPos,
+        QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7403) {
