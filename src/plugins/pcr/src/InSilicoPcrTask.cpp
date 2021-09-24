@@ -49,9 +49,9 @@ bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
 
-InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &settings)
+InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &_settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
-      settings(settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
+      settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
 }
@@ -116,14 +116,8 @@ void InSilicoPcrTask::prepare() {
     FindAlgorithmTaskSettings reverseSettings = getFindPatternSettings(U2Strand::Complementary);
     CHECK_OP(stateInfo, );
     bool intConversionIsOk = false;
-    const int MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV = qgetenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND").toInt(&intConversionIsOk);
-    if (intConversionIsOk) {
-        forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV;
-        reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV;
-    } else {
-        forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
-        reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
-    }
+    forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
+    reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
     forwardSearch = new FindAlgorithmTask(forwardSettings);
     reverseSearch = new FindAlgorithmTask(reverseSettings);
     addSubTask(forwardSearch);

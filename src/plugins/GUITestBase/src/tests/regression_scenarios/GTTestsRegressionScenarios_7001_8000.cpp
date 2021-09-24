@@ -461,9 +461,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193_1) {
-    qputenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND", "30");
     GTUtilsPcr::clearPcrDir(os);
-    //WARNING: this test required UGENE_GUI_TEST environment variable set to 10
     //1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -478,7 +476,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
     //5. Set 3' perfect match to 3
-    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox *>(GTWidget::findWidget(os, "perfectSpinBox"));
+    QSpinBox *perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
     GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
 
     //6. Click the find button.
@@ -486,7 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: one result found
-    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 19, QString("Expected 19 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 19 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193_2) {
