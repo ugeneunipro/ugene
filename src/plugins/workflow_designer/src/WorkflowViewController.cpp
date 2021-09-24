@@ -1399,6 +1399,10 @@ void WorkflowView::localHostLaunch() {
         GCounter::increment(meta.name, "WDSample:run");
     }
 
+    if (WorkflowSettings::isDebuggerEnabled()) {
+        GCOUNTER(cvar, "Worklow started with enabled debugger");
+    }
+
     foreach (const Actor *actor, schema->getProcesses()) {
         if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
             GCOUNTER(cvar, "Element(s) with command line tool is present in the launched workflow");

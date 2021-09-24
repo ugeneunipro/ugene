@@ -22,6 +22,7 @@
 #include "WorkflowDebugMessageParser.h"
 
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/Log.h>
 
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/Descriptor.h>
@@ -60,6 +61,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
         QVariantMap data = message.getData().toMap();
         foreach (const QString &key, data.keys()) {
             if (key.contains(MESSAGE_PATH_DELIMETER)) {
+                coreLog.trace(QObject::tr("WorkflowDebugMessageParser.cpp:64 'key' = %1").arg(key));
                 data[key.left(key.indexOf(MESSAGE_PATH_DELIMETER))] = data[key];
                 data.remove(key);
             }
