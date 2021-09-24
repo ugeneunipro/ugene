@@ -46,8 +46,8 @@ public:
 
 private:
     //Length bounds of a typical primer
-    static constexpr int MAXIMUM_PRIMER_LENGTH = 30;
-    static constexpr int MINIMUM_PRIMER_LENGTH = 18;
+    static constexpr int MAXIMUM_PRIMER_LENGTH = 50;
+    static constexpr int MINIMUM_PRIMER_LENGTH = 15;
 };
 
 class U2CORE_EXPORT PrimerStatisticsCalculator {
