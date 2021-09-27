@@ -243,7 +243,7 @@
            <item>
             <widget class="QPushButton" name="pbAddToForward3">
              <property name="text">
-              <string>Forevard 3'</string>
+              <string>Forward 3'</string>
              </property>
             </widget>
            </item>
