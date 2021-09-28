@@ -248,9 +248,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
         return;
     assert(!obj->isStateLocked());
 
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
-    QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    QString filter = f2 + "\n" + f1;
+    QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({ GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE }, true);
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, filter);
 

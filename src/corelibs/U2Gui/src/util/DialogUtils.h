@@ -51,6 +51,14 @@ public:
 
     static QString prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any);
 
+    /**
+     * Create a list, separated by ";;" of the supported formats.
+     * @types the list of types, which format should be supported.
+     * @any contain the "All files" filter if true.
+     * @return the ";;" separated list of filters.
+     */
+    static QString prepareDocumentsFileFilterByObjTypes(const QList<GObjectType>& types, bool any);
+
     static void setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize = QSize());
 };
 

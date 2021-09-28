@@ -62,6 +62,15 @@ QString DialogUtils::prepareDocumentsFileFilterByObjType(const GObjectType &t, b
     return FormatUtils::prepareDocumentsFileFilterByObjType(t, any);
 }
 
+QString DialogUtils::prepareDocumentsFileFilterByObjTypes(const QList<GObjectType>& types, bool any) {
+    DocumentFormatConstraints c;
+    c.allowPartialTypeMapping = true;
+    for (const auto& t : types) {
+        c.supportedObjectTypes.insert(t);
+    }
+    return FormatUtils::prepareDocumentsFileFilter(c, any);
+}
+
 void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
     QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
