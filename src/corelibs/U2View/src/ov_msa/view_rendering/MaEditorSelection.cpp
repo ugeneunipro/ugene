@@ -23,6 +23,7 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/McaEditor.h"
 #include "ov_msa/McaEditorReferenceArea.h"
@@ -191,9 +192,28 @@ void MaEditorSelectionController::clearSelection() {
 void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
     CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
     CHECK(newSelection != selection, );
+    CHECK(validateSelectionGeometry(newSelection), );
     MaEditorSelection oldSelection = selection;
     selection = newSelection;
     emit si_selectionChanged(selection, oldSelection);
+}
+
+bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelection &selection, bool useSafePoint) const {
+    CHECK(!selection.isEmpty(), true);
+
+    // Check column range.
+    int length = editor->getAlignmentLen();
+    U2Region columnRegion = selection.getColumnRegion();
+    bool hasValidColumnRange = columnRegion.startPos >= 0 && columnRegion.endPos() <= length;
+    SAFE_POINT(!useSafePoint || hasValidColumnRange, "Invalid column range in MSA selection", false);
+    CHECK(hasValidColumnRange, false);
+
+    // Check row range.
+    int viewRowCount = editor->getCollapseModel()->getViewRowCount();
+    U2Region rowRange = U2Region::fromStartAndEnd(selection.getRectList().first().top(), selection.getRectList().last().bottom() + 1);
+    bool hasValidRowRange = rowRange.startPos >= 0 && rowRange.endPos() <= viewRowCount;
+    SAFE_POINT(!useSafePoint || hasValidRowRange, "Invalid row range in MSA selection", false);
+    return hasValidRowRange;
 }
 
 int MaEditorSelection::getCountOfSelectedRows() const {

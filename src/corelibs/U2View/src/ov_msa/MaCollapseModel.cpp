@@ -127,6 +127,7 @@ QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region &view
         }
         if (includeChildRowsForCollapsedGroups) {
             const MaCollapsibleGroup *group = getCollapsibleGroupByViewRow(viewRow);
+            SAFE_POINT(group, "Group info not found", {});
             bool isGroupHeader = group->maRows.first() == maRow;
             if (isGroupHeader && group->isCollapsed) {
                 for (int i = 1; i < group->maRows.length(); i++) {

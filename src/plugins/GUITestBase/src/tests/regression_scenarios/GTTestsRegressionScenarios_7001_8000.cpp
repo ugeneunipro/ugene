@@ -761,7 +761,7 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select any part of sequence.
-    PanView* panView = GTUtilsSequenceView::getPanViewByNumber(os);
+    PanView *panView = GTUtilsSequenceView::getPanViewByNumber(os);
     auto startPoint = panView->mapToGlobal(panView->rect().center());
     auto endPoint = QPoint(startPoint.x() + 150, startPoint.y());
     GTMouseDriver::dragAndDrop(startPoint, endPoint);
@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     int firstSelectionEndPos = firstSelection.first().endPos();
     int secondSelectionEndPos = secondSelection.first().endPos();
     CHECK_SET_ERR(firstSelectionEndPos < secondSelectionEndPos,
-        QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
+                  QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7403) {
@@ -973,6 +973,24 @@ GUI_TEST_CLASS_DEFINITION(test_7415_3) {
     QString window2Sequence = sequence.mid(model.window, model.window);
 
     CHECK_SET_ERR(window1Sequence != window2Sequence, "Sequences are equal");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7438) {
+    // Checks that selection with Shift does not cause a crash.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // There are 18 sequences in the list and we are trying to select with SHIFT+KeyDown beyond this range.
+    GTUtilsMsaEditor::clickSequence(os, 15);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    for (int i = 0; i < 5; i++) {
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
+    }
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect.top() == 15, "Illegal start of the selection: " + QString::number(selectedRect.top()));
+    CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
 }
 
 }  // namespace GUITest_regression_scenarios
