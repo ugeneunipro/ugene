@@ -69,7 +69,7 @@ private:
     QVBoxLayout *mainLayout;
 
     static const int TITLE_HEIGHT = 30;
-    static const int MIN_WIDGET_WIDTH = 480;
+    static const int MIN_WIDGET_WIDTH = 480;  // Minimum for the tab of sequence viewer "PCR Primer Design".
     static const int MAX_WIDGET_WIDTH = 500;
 };
 

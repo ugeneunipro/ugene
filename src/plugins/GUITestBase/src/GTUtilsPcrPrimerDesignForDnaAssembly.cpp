@@ -41,303 +41,51 @@
 namespace U2 {
 using namespace HI;
 
-static void setRange(GUITestOpStatus& os, const QString& minSbName, const QString& maxSbName, U2Range<int> range,
-                     const QWidget* parent) {
-    if (QSpinBox* min = GTWidget::findSpinBox(os, minSbName, parent)) {
-        QSpinBox* max = GTWidget::findSpinBox(os, maxSbName, parent);
-        if (range.minValue <= min->maximum()) {
-            GTSpinBox::setValue(os, min, range.minValue);
-            GTWidget::click(os, max);
-            GTSpinBox::setValue(os, max, range.maxValue);
-        } else {
-            GTSpinBox::setValue(os, max, range.maxValue);
-            GTWidget::click(os, min);
-            GTSpinBox::setValue(os, min, range.minValue);
-        }
-    }
+#define GT_CLASS_NAME "GTUtilsPcrPrimerDesign"
+
+static const QString badBackboneDialogName = "UnwantedStructuresInBackboneDialog";
+
+// Parent of most widgets used in this class. Doesn't open the tab. Returns nullptr in case of an error.
+static QWidget* getTabWgt(GUITestOpStatus& os) {
+    const QWidget* inner = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign],
+        GTUtilsSequenceView::getActiveSequenceViewWindow(os));
+    return GTWidget::findWidget(os, "runPcrPrimerDesignWidget", inner);
 }
 
-#define GT_CLASS_NAME "GTUtilsPcrPrimerDesignForDnaAssembly"
-
-#define GT_METHOD_NAME "setUserPrimer"
-void GTUtilsPcrPrimerDesignForDnaAssembly::setUserPrimer(GUITestOpStatus& os, const QString& primer,
-                                                         U2Strand::Direction direction) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QLineEdit* const lePrimer = GTWidget::findLineEdit(os,
-        direction == U2Strand::Direct ? "leForwardPrimer" : "leReversePrimer",
-        GTWidget::findWidget(os, "wgtUserPrimers", tab));
-    scrollToWidget(os, lePrimer, tab);
-    GTLineEdit::setText(os, lePrimer, primer);
+// Return the sequence generator widget. Doesn't open the tab. Returns nullptr in case of an error.
+static QWidget* getGenSeqWgt(GUITestOpStatus& os, const QWidget* tab) {
+    return GTWidget::findWidget(os, "wgtGenerateSequence", tab == nullptr ? getTabWgt(os) : tab);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "filterGeneratedSequences"
-void GTUtilsPcrPrimerDesignForDnaAssembly::filterGeneratedSequences(GUITestOpStatus& os, const QString& filter) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QLineEdit* const leFilter = GTWidget::findLineEdit(os, "leFilter", getGenerateSequenceWgt(os, tab));
-    scrollToWidget(os, leFilter, tab);
-    GTLineEdit::setText(os, leFilter, filter);
+// Return the generated sequence table. Doesn't open the tab. Returns nullptr in case of an error.
+static QTableWidget* getGenSeqTable(GUITestOpStatus& os, const QWidget* tab) {
+    return GTWidget::findExactWidget<QTableWidget*>(os, "twGeneratedSequences", getGenSeqWgt(os, tab));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectGeneratedSequence"
-void GTUtilsPcrPrimerDesignForDnaAssembly::selectGeneratedSequence(GUITestOpStatus& os, int i) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    if (QTableWidget* const table = getGeneratedSequenceTableWgt(os, tab)) {
-        const int tableRowCount = table->rowCount();
-        GT_CHECK(0 <= i && i < tableRowCount, QString("Invalid index of the current generated sequence table: "
-                                                      "expected 0<=num<%1, current num=%2").arg(tableRowCount).arg(i))
-        selectGeneratedSequence(os, i, table, tab);
-    }
+// Return the table of result sequences. Doesn't open the tab. Returns nullptr in case of an error.
+static QTableWidget* getResultTable(GUITestOpStatus& os, const QWidget* tab) {
+    return GTWidget::findExactWidget<QTableWidget*>(os, "productsTable", tab);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectGeneratedSequence"
-void GTUtilsPcrPrimerDesignForDnaAssembly::selectGeneratedSequence(GUITestOpStatus& os, const QString& sequence,
-                                                                   const GTGlobals::FindOptions& options) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    if (QTableWidget* const table = getGeneratedSequenceTableWgt(os, tab)) {
-        QList<QTableWidgetItem*> result = table->findItems(sequence, options.matchPolicy);
-        if (options.failIfNotFound) {
-            GT_CHECK(!result.isEmpty(), QString("Sequence '%1' not found in generated sequence table").arg(sequence))
-        } else if (result.isEmpty()) {
-            return;
-        }
-        const QTableWidgetItem* item = result.first();
-        GT_CHECK(item != nullptr, "The first element of the generated sequences table is nullptr")
-        selectGeneratedSequence(os, item->row(), table, tab);
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "findReverseComplement"
-void GTUtilsPcrPrimerDesignForDnaAssembly::findReverseComplement(GUITestOpStatus& os) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QAbstractButton* const revComplButton = GTWidget::findButtonByText(os, "Find reverse-complement",
-                                                                       getGenerateSequenceWgt(os, tab));
-    scrollToWidget(os, revComplButton, tab);
-    GTWidget::click(os, revComplButton);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "addUserPrimerEnd"
-void GTUtilsPcrPrimerDesignForDnaAssembly::addUserPrimerEnd(GUITestOpStatus& os, UserPrimerEndButton buttonType) {
-    QString buttonText;
-    switch (buttonType) {
-        case UserPrimerEndButton::Forward5:
-            buttonText = "Forward 5'";
-            break;
-        case UserPrimerEndButton::Forward3:
-            buttonText = "Forward 3'";
-            break;
-        case UserPrimerEndButton::Reverse5:
-            buttonText = "Reverse 5'";
-            break;
-        default:
-            buttonText = "Reverse 3'";
-    }
-    QWidget* const tab = openTabAndReturnIt(os);
-    QAbstractButton* const button = GTWidget::findButtonByText(os, buttonText, getGenerateSequenceWgt(os, tab));
-    scrollToWidget(os, button, tab);
-    GTWidget::click(os, button);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setParamsOfPrimingSeqs"
-void GTUtilsPcrPrimerDesignForDnaAssembly::setParamsOfPrimingSeqs(GUITestOpStatus& os,
-                                                                  const ParamsOfPrimingSeqs& params) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QWidget* const parent = GTWidget::findWidget(os, "wgtParametersOfPrimingSequences", tab);
-    scrollToWidget(os, parent, tab);
-    setRange(os, "sbMinRequireGibbs",         "sbMaxRequireGibbs",         params.gibbsFreeEnergy, parent);
-    setRange(os, "spMinRequireMeltingTeml",   "spMaxRequireMeltingTeml",   params.meltingPoint,    parent);
-    setRange(os, "spMinRequireOverlapLength", "spMaxRequireOverlapLength", params.overlapLength,   parent);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setParamsToExcludeInWholePrimers"
-void GTUtilsPcrPrimerDesignForDnaAssembly::setParamsToExcludeInWholePrimers(GUITestOpStatus& os,
-                                                                            ParamsToExcludeInWholePrimers params) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QWidget* const parent = GTWidget::findWidget(os, "wgtParameters2ExcludeInWholePrimers", tab);
-    scrollToWidget(os, parent, tab);
-    GTSpinBox::setValue(os, "sbExcludeGibbs",            params.gibbsFreeEnergy, parent);
-    GTSpinBox::setValue(os, "spExcludeMeltingTeml",      params.meltingPoint,    parent);
-    GTSpinBox::setValue(os, "spExcludeComplementLength", params.motifLen,        parent);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setInsertToBackbone"
-void GTUtilsPcrPrimerDesignForDnaAssembly::setInsertToBackbone(GUITestOpStatus& os, InsertToBackboneBearings params) {
-    const QString rbInsertTo = (params.insertTo5 ? "backbone5" : "backbone3");
-    QWidget* const tab = openTabAndReturnIt(os);
-    const auto gbInsertToBackbone = GTWidget::findExactWidget<QGroupBox*>(os, "groupBox",
-                                                                          getAreasForPrimingSearchWgt(os, tab));
-    scrollToWidget(os, gbInsertToBackbone, tab);
-    GTRadioButton::click(os, rbInsertTo, gbInsertToBackbone);
-    GTSpinBox::setValue(os, "sbBackbone5Length", params.backbone5Len, gbInsertToBackbone);
-    GTSpinBox::setValue(os, "sbBackbone3Length", params.backbone3Len, gbInsertToBackbone);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "setPrimerSearchArea"
-void GTUtilsPcrPrimerDesignForDnaAssembly::setPrimerSearchArea(GUITestOpStatus& os, bool isLeft, U2Range<int> area,
-                                                               bool selectManually) {
-    const QString startName = (isLeft ? "sbLeftAreaStart" : "sbRightAreaStart"),
-                  endName   = (isLeft ? "sbLeftAreaEnd"   : "sbRightAreaEnd");
-    QWidget* const tab = openTabAndReturnIt(os);
-    const auto gbAreas = GTWidget::findExactWidget<QGroupBox*>(os, "groupBox_2", getAreasForPrimingSearchWgt(os, tab));
-    scrollToWidget(os, gbAreas, tab);
-    if (selectManually) {
-        QToolButton* selectManuallyButton = GTWidget::findToolButton(os,
-            isLeft ? "tbLeftAreaSelectManually" : "tbRightAreaSelectManually", gbAreas);
-        GTWidget::click(os, selectManuallyButton);
-        GTUtilsSequenceView::selectSequenceRegion(os, area.minValue, area.maxValue);
-        GTWidget::click(os, selectManuallyButton);
-    } else {
-        setRange(os, startName, endName, area, gbAreas);
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "openBackbone"
-void GTUtilsPcrPrimerDesignForDnaAssembly::openBackbone(GUITestOpStatus& os, const QString& path, bool useDialog) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QWidget* const openBackboneWgt = GTWidget::findWidget(os, "wgtOpenBackboneSequence", tab);
-    scrollToWidget(os, openBackboneWgt, tab);
-    if (useDialog) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path));
-        GTWidget::click(os, GTWidget::findToolButton(os, "tbLoadBackbone", openBackboneWgt));
-    } else {
-        GTLineEdit::setText(os, "leBackboneFilePath", path, openBackboneWgt);
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "openOtherSequences"
-void GTUtilsPcrPrimerDesignForDnaAssembly::openOtherSequences(GUITestOpStatus& os, const QString& path,
-                                                              bool useDialog) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QWidget* const otherSequencesWgt = GTWidget::findWidget(os, "wgtOtherSequencesInPcr", tab);
-    scrollToWidget(os, otherSequencesWgt, tab);
-    if (useDialog) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path));
-        GTWidget::click(os, GTWidget::findToolButton(os, "tbLoadOtherSequencesInPcr", otherSequencesWgt));
-    } else {
-        GTLineEdit::setText(os, "leOtherSequencesInPcrFilePath", path, otherSequencesWgt);
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "start"
-void GTUtilsPcrPrimerDesignForDnaAssembly::start(GUITestOpStatus& os) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    QAbstractButton* const strtBtn = GTWidget::findButtonByText(os, "Start", openTabAndReturnIt(os));
-    scrollToWidget(os, strtBtn, tab);
-    GTWidget::click(os, strtBtn);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "clickResultTable"
-void GTUtilsPcrPrimerDesignForDnaAssembly::clickResultTable(GUITestOpStatus& os, int i, bool isDoubleClick) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    if (QTableWidget* const table = getResultTableWgt(os, tab)) {
-        const int tableRowCount = table->rowCount();
-        GT_CHECK(0 <= i && i < tableRowCount, QString("Invalid index of the current result table: expected 0<=num<%1, "
-                                                      "current num=%2").arg(tableRowCount).arg(i))
-        scrollToWidget(os, table, tab);
-        if (isDoubleClick) {
-            GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, i, 0));
-            GTMouseDriver::doubleClick();
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-        } else {
-            GTMouseDriver::click(GTTableView::getCellPoint(os, table, i, 0));
-        }
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkResultTable"
-void GTUtilsPcrPrimerDesignForDnaAssembly::checkResultTable(GUITestOpStatus& os, int i, U2Range<int> expected) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    if (QTableWidget* const table = getResultTableWgt(os, tab)) {
-        const int tableRowCount = table->rowCount();
-        GT_CHECK(0 <= i && i < tableRowCount, QString("Invalid index of the current result table: expected 0<=num<%1, "
-                                                      "current num=%2").arg(tableRowCount).arg(i))
-        scrollToWidget(os, table, tab);
-        const QString expectedStr = QString::number(expected.minValue) + '-' + QString::number(expected.maxValue);
-        const QString current = GTTableView::data(os, table, i, 1);
-        GT_CHECK(expectedStr == current, QString("Invalid %1 result: expected '%2', current '%3'").
-                                             arg(GTTableView::data(os, table, i, 0), expectedStr, current))
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getUserPrimer"
-QLineEdit* GTUtilsPcrPrimerDesignForDnaAssembly::getUserPrimer(GUITestOpStatus& os, U2Strand::Direction direction) {
-    QWidget* const tab = openTabAndReturnIt(os);
-    return GTWidget::findLineEdit(os,
-        direction == U2Strand::Direct ? "leForwardPrimer" : "leReversePrimer",
-        GTWidget::findWidget(os, "wgtUserPrimers", tab));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getGeneratedSequenceTableWgt"
-QTableWidget* GTUtilsPcrPrimerDesignForDnaAssembly::getGeneratedSequenceTableWgt(GUITestOpStatus& os,
-    const QWidget* tab) {
-    return GTWidget::findExactWidget<QTableWidget*>(os, "twGeneratedSequences", getGenerateSequenceWgt(os,
-        tab == nullptr ? openTabAndReturnIt(os) : tab));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getAreaSpinboxes"
-QPair<QSpinBox*, QSpinBox*> GTUtilsPcrPrimerDesignForDnaAssembly::getAreaSpinboxes(GUITestOpStatus& os, bool isLeft) {
-    const QString startName = (isLeft ? "sbLeftAreaStart" : "sbRightAreaStart"),
-        endName = (isLeft ? "sbLeftAreaEnd" : "sbRightAreaEnd");
-    QWidget* const tab = openTabAndReturnIt(os);
-    const auto gbAreas = GTWidget::findExactWidget<QGroupBox*>(os, "groupBox_2", getAreasForPrimingSearchWgt(os, tab));
-    return { GTWidget::findSpinBox(os, startName, gbAreas), GTWidget::findSpinBox(os, endName, gbAreas) };
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "openTabAndReturnIt"
-QWidget* GTUtilsPcrPrimerDesignForDnaAssembly::openTabAndReturnIt(GUITestOpStatus& os) {
-    const GTUtilsOptionPanelSequenceView::Tabs tab = GTUtilsOptionPanelSequenceView::PcrPrimerDesign;
-    GTUtilsOptionPanelSequenceView::openTab(os, tab);
-    return GTWidget::findWidget(os, GTUtilsOptionPanelSequenceView::innerWidgetNames[tab],
-                                GTUtilsSequenceView::getActiveSequenceViewWindow(os));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getGenerateSequenceWgt"
-QWidget* GTUtilsPcrPrimerDesignForDnaAssembly::getGenerateSequenceWgt(GUITestOpStatus& os, const QWidget* tab) {
-    return GTWidget::findWidget(os, "wgtGenerateSequence", tab == nullptr ? openTabAndReturnIt(os) : tab);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getAreasForPrimingSearchWgt"
-QWidget* GTUtilsPcrPrimerDesignForDnaAssembly::getAreasForPrimingSearchWgt(GUITestOpStatus& os, const QWidget* tab) {
-    return GTWidget::findWidget(os, "wgtAreasForPriming", tab == nullptr ? openTabAndReturnIt(os) : tab);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getResultTableWgt"
-QTableWidget* GTUtilsPcrPrimerDesignForDnaAssembly::getResultTableWgt(GUITestOpStatus& os, const QWidget* tab) {
-    return GTWidget::findExactWidget<QTableWidget*>(os, "productsTable", tab == nullptr ? openTabAndReturnIt(os) : tab);
-}
-#undef GT_METHOD_NAME
-
+/**
+ * Moves the mouse pointer over a label, then scrolls in the required direction so that the specified
+ * widget ('scrollTo') is displayed in full. If the widget isn't displayed after scrolling, sets an operation error.
+ * scrollTo should not be nullptr.
+ *
+ * At the moment the scroll doesn't work if the tasks/log are open.
+ */
 #define GT_METHOD_NAME "scrollToWidget"
-void GTUtilsPcrPrimerDesignForDnaAssembly::scrollToWidget(GUITestOpStatus& os, const QWidget* scrollTo,
-                                                          const QWidget* tab) {
+static void scrollToWidget(GUITestOpStatus& os, const QWidget* scrollTo, const QWidget* tab) {
     GT_CHECK(scrollTo != nullptr, "Can't scroll to nullptr")
-    const auto isWidgetFullyVisible = [] (const QWidget* w) {
+    const auto isWidgetFullyVisible = [](const QWidget* w) {
         const QRegion visibleRegion = w->visibleRegion();
         return !visibleRegion.isEmpty() && visibleRegion.boundingRect().height() == w->height();
     };
     const auto moveMouseAndScroll = [](QWidget* moveMouseTo, bool scrollUp) {
         GTMouseDriver::moveTo(GTWidget::getWidgetCenter(moveMouseTo));
-        GTMouseDriver::scroll(scrollUp ? 20 : -20);
+        const int scrollCoef = 20;
+        GTMouseDriver::scroll(scrollUp ? scrollCoef : -scrollCoef);
         GTGlobals::sleep(200);
     };
 
@@ -345,7 +93,7 @@ void GTUtilsPcrPrimerDesignForDnaAssembly::scrollToWidget(GUITestOpStatus& os, c
         return;  // Nothing to do.
     }
 
-    tab = (tab == nullptr ? openTabAndReturnIt(os) : tab);
+    tab = (tab == nullptr ? getTabWgt(os) : tab);
     QLabel* tabTop = GTWidget::findLabel(os, "ArrowHeader_Choose generated sequences as user primer's end", tab);
     if (tabTop == nullptr) {  // Bad.
         return;
@@ -364,14 +112,256 @@ void GTUtilsPcrPrimerDesignForDnaAssembly::scrollToWidget(GUITestOpStatus& os, c
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectGeneratedSequence"
-void GTUtilsPcrPrimerDesignForDnaAssembly::selectGeneratedSequence(GUITestOpStatus& os, int i,
-                                                                   QTableWidget* table, const QWidget* tab) {
-    scrollToWidget(os, table, tab == nullptr ? openTabAndReturnIt(os) : tab);
-    GTMouseDriver::click(GTTableView::getCellPoint(os, table, i, 0));
-        // GTWidget::scrollToIndex(os, table, table->model()->index(i, 0)); TODO: NEED???
+/**
+ * Checks if row index is correct for table. Indices are numbered starting from 0. If the table is empty, returns false,
+ * if the index is non-negative and less than the number of rows in the table, returns true. The table should not be
+ * nullptr.
+ */
+#define GT_METHOD_NAME "isTableIndexCorrect"
+static bool isTableIndexCorrect(GUITestOpStatus& os, int ind, const QTableWidget* table) {
+    GT_CHECK_RESULT(table != nullptr, "Table is nullptr", false)
+    const int tableRowCount = table->rowCount();
+    GT_CHECK_RESULT(0 <= ind && ind < tableRowCount, QString("Invalid index of '%1': expected 0<=i<%2, current i=%3").
+                                                         arg(table->objectName()).arg(tableRowCount).arg(ind), false)
+    return true;
 }
 #undef GT_METHOD_NAME
+
+/**
+ * Clicks generated sequence at given index. Checks validity of the index before clicking. Indices are numbered starting
+ * from 0. The table should not be nullptr.
+ */
+static void selectGenSeq(GUITestOpStatus& os, int ind, QTableWidget* table, const QWidget* tab) {
+    if (isTableIndexCorrect(os, ind, table)) {
+        scrollToWidget(os, table, tab == nullptr ? getTabWgt(os) : tab);
+        GTMouseDriver::click(GTTableView::getCellPoint(os, table, ind, 0));
+    }
+}
+
+// Clicks on button named btnName which is child of the generated sequences widget. Doesn't open the tab.
+static void clickButtonInGenSeqWgt(GUITestOpStatus& os, const QString& btnName) {
+    const QWidget* tab = getTabWgt(os);
+    QAbstractButton* const btn = GTWidget::findButtonByText(os, btnName, getGenSeqWgt(os, tab));
+    scrollToWidget(os, btn, tab);
+    GTWidget::click(os, btn);
+}
+
+/**
+ * Searches for 2 paired spinboxes and sets their values according to range. Parent is needed to refine the search for
+ * spinboxes. Doesn't open the tab.
+ */
+static void setRange(GUITestOpStatus& os, const QString& minSbName, const QString& maxSbName, U2Range<int> range,
+                     const QWidget* parent) {
+    if (QSpinBox* min = GTWidget::findSpinBox(os, minSbName, parent)) {
+        QSpinBox* max = GTWidget::findSpinBox(os, maxSbName, parent);
+        if (range.minValue <= min->maximum()) {
+            GTSpinBox::setValue(os, min, range.minValue);
+            GTWidget::click(os, max);
+            GTSpinBox::setValue(os, max, range.maxValue);
+        } else {
+            GTSpinBox::setValue(os, max, range.maxValue);
+            GTWidget::click(os, min);
+            GTSpinBox::setValue(os, min, range.minValue);
+        }
+    }
+}
+
+///////////////////////////////////////////////////////SearchArea///////////////////////////////////////////////////////
+GTUtilsPcrPrimerDesign::SearchArea::SearchArea(U2Range<int> r, bool selectManually) : region(r),
+                                                                                      selectManually(selectManually) {
+}
+
+////////////////////////////////////////////////////BadBackboneFiller///////////////////////////////////////////////////
+GTUtilsPcrPrimerDesign::BadBackboneFiller::BadBackboneFiller(GUITestOpStatus& os, Button btn) : DefaultDialogFiller(os,
+    badBackboneDialogName, btn == Button::No ? QDialogButtonBox::No : QDialogButtonBox::Yes) {
+}
+
+GTUtilsPcrPrimerDesign::BadBackboneFiller::BadBackboneFiller(GUITestOpStatus& os, CustomScenario* scenario) :
+        DefaultDialogFiller(os, badBackboneDialogName, QDialogButtonBox::Yes, scenario) {
+}
+
+/////////////////////////////////////////////////GTUtilsPcrPrimerDesign/////////////////////////////////////////////////
+void GTUtilsPcrPrimerDesign::openTab(GUITestOpStatus& os) {
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
+}
+
+void GTUtilsPcrPrimerDesign::setUserPrimer(GUITestOpStatus& os, const QString& primer, U2Strand::Direction direction) {
+    const QWidget* tab = getTabWgt(os);
+    const QWidget* parent = GTWidget::findWidget(os, "wgtUserPrimers", tab);
+    scrollToWidget(os, parent, tab);
+    GTLineEdit::setText(os, direction == U2Strand::Direct ? "leForwardPrimer" : "leReversePrimer", primer, parent);
+}
+
+void GTUtilsPcrPrimerDesign::filterGeneratedSequences(GUITestOpStatus& os, const QString& filter) {
+    const QWidget* tab = getTabWgt(os);
+    QLineEdit* const filterLe = GTWidget::findLineEdit(os, "leFilter", getGenSeqWgt(os, tab));
+    scrollToWidget(os, filterLe, tab);
+    GTLineEdit::setText(os, filterLe, filter);
+}
+
+void GTUtilsPcrPrimerDesign::selectGeneratedSequence(GUITestOpStatus& os, int num) {
+    const QWidget* tab = getTabWgt(os);
+    selectGenSeq(os, num, getGenSeqTable(os, tab), tab);
+}
+
+#define GT_METHOD_NAME "selectGeneratedSequenceBySequence"
+void GTUtilsPcrPrimerDesign::selectGeneratedSequence(GUITestOpStatus& os, const QString& sequence,
+                                                     const GTGlobals::FindOptions& options) {
+    const QWidget* tab = getTabWgt(os);
+    if (QTableWidget* const table = getGenSeqTable(os, tab)) {
+        const QList<QTableWidgetItem*> result = table->findItems(sequence, options.matchPolicy);
+        if (options.failIfNotFound) {
+            GT_CHECK(!result.isEmpty(), QString("Sequence '%1' not found in generated sequence table").arg(sequence))
+        } else if (result.isEmpty()) {
+            return;
+        }
+        const QTableWidgetItem* item = result.first();
+        GT_CHECK(item != nullptr, "The first element among the sequences found is nullptr")
+        selectGenSeq(os, item->row(), table, tab);
+    }
+}
+#undef GT_METHOD_NAME
+
+void GTUtilsPcrPrimerDesign::findReverseComplement(GUITestOpStatus& os) {
+    clickButtonInGenSeqWgt(os, "Find reverse-complement");
+}
+
+void GTUtilsPcrPrimerDesign::addToUserPrimer(GUITestOpStatus& os, UserPrimer userPrimer) {
+    QString buttonText;
+    switch (userPrimer) {
+        case UserPrimer::Forward5:
+            buttonText = "Forward 5'";
+            break;
+        case UserPrimer::Forward3:
+            buttonText = "Forward 3'";
+            break;
+        case UserPrimer::Reverse5:
+            buttonText = "Reverse 5'";
+            break;
+        default:
+            buttonText = "Reverse 3'";
+    }
+    clickButtonInGenSeqWgt(os, buttonText);
+}
+
+void GTUtilsPcrPrimerDesign::setParametersOfPrimingSequences(GUITestOpStatus& os,
+                                                             const ParametersOfPrimingSequences& params) {
+    const QWidget* tab = getTabWgt(os);
+    const QWidget* parent = GTWidget::findWidget(os, "wgtParametersOfPrimingSequences", tab);
+    scrollToWidget(os, parent, tab);
+    setRange(os, "sbMinRequireGibbs",         "sbMaxRequireGibbs",         params.gibbsFreeEnergy, parent);
+    setRange(os, "spMinRequireMeltingTeml",   "spMaxRequireMeltingTeml",   params.meltingPoint,    parent);
+    setRange(os, "spMinRequireOverlapLength", "spMaxRequireOverlapLength", params.overlapLength,   parent);
+}
+
+void GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(GUITestOpStatus& os,
+                                                                  ParametersToExcludeInWholePrimers params) {
+    const QWidget* tab = getTabWgt(os);
+    QWidget* const parent = GTWidget::findWidget(os, "wgtParameters2ExcludeInWholePrimers", tab);
+    scrollToWidget(os, parent, tab);
+    GTSpinBox::setValue(os, "sbExcludeGibbs",            params.gibbsFreeEnergy, parent);
+    GTSpinBox::setValue(os, "spExcludeMeltingTeml",      params.meltingPoint,    parent);
+    GTSpinBox::setValue(os, "spExcludeComplementLength", params.motifLen,        parent);
+}
+
+void GTUtilsPcrPrimerDesign::configureInsertToBackboneBearings(GUITestOpStatus& os, InsertToBackboneBearings params) {
+    const QWidget* tab = getTabWgt(os);
+    const QWidget* parent = GTWidget::findWidget(os, "wgtAreasForPriming", tab);
+    scrollToWidget(os, parent, tab);
+
+    auto currentGb = GTWidget::findExactWidget<QGroupBox*>(os, "groupBox", parent);
+    GTRadioButton::click(os, params.insertTo == InsertToBackboneBearings::InsertTo::Backbone5 ? "backbone5" :
+                                                                                                "backbone3", currentGb);
+    GTSpinBox::setValue(os, "sbBackbone5Length", params.backbone5Len, currentGb);
+    GTSpinBox::setValue(os, "sbBackbone3Length", params.backbone3Len, currentGb);
+}
+
+void GTUtilsPcrPrimerDesign::setSearchArea(GUITestOpStatus& os, SearchArea params, AreaType areaType) {
+    const QWidget* tab = getTabWgt(os);
+    const QWidget* parent = GTWidget::findWidget(os, "wgtAreasForPriming", tab);
+    scrollToWidget(os, parent, tab);
+
+    auto currentGb = GTWidget::findExactWidget<QGroupBox*>(os, "groupBox_2", parent);
+    if (params.selectManually) {
+        QToolButton* selectManuallyButton = GTWidget::findToolButton(os, areaType == AreaType::Left ?
+            "tbLeftAreaSelectManually" : "tbRightAreaSelectManually", currentGb);
+        GTWidget::click(os, selectManuallyButton);
+        GTUtilsSequenceView::selectSequenceRegion(os, params.region.minValue, params.region.maxValue);
+        GTWidget::click(os, selectManuallyButton);
+    } else {
+        setRange(os, areaType == AreaType::Left ? "sbLeftAreaStart" : "sbRightAreaStart",
+            areaType == AreaType::Left ? "sbLeftAreaEnd" : "sbRightAreaEnd", params.region, currentGb);
+    }
+}
+
+void GTUtilsPcrPrimerDesign::setBackbone(GUITestOpStatus& os, const QString& path, bool useButton) {
+    const QWidget* tab = getTabWgt(os);
+    QWidget* const parent = GTWidget::findWidget(os, "wgtOpenBackboneSequence", tab);
+    scrollToWidget(os, parent, tab);
+    if (useButton) {
+        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path));
+        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
+    } else {
+        GTLineEdit::setText(os, "leBackboneFilePath", path, parent);
+    }
+}
+
+void GTUtilsPcrPrimerDesign::setOtherSequences(GUITestOpStatus& os, const QString& path, bool useButton) {
+    const QWidget* tab = getTabWgt(os);
+    QWidget* const parent = GTWidget::findWidget(os, "wgtOtherSequencesInPcr", tab);
+    scrollToWidget(os, parent, tab);
+    if (useButton) {
+        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path));
+        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
+    } else {
+        GTLineEdit::setText(os, "leOtherSequencesInPcrFilePath", path, parent);
+    }
+}
+
+void GTUtilsPcrPrimerDesign::clickInResultsTable(GUITestOpStatus& os, int num, ClickType clickType) {
+    const QWidget* tab = getTabWgt(os);
+    if (QTableWidget* const table = getResultTable(os, tab)) {
+        if (isTableIndexCorrect(os, num, table)) {
+            scrollToWidget(os, table, tab);
+            const QPoint cell = GTTableView::getCellPoint(os, table, num, 0);
+            if (clickType == ClickType::Single) {
+                GTMouseDriver::click(cell);
+            } else {
+                GTMouseDriver::moveTo(cell);
+                GTMouseDriver::doubleClick();
+                GTUtilsTaskTreeView::waitTaskFinished(os);
+            }
+        }
+    }
+}
+
+#define GT_METHOD_NAME "checkEntryInResultsTable"
+void GTUtilsPcrPrimerDesign::checkEntryInResultsTable(GUITestOpStatus& os, int num, const QString& expectedFragment,
+                                                      U2Range<int> expectedRegion) {
+    const QWidget* tab = getTabWgt(os);
+    if (QTableWidget* const table = getResultTable(os, tab)) {
+        if (isTableIndexCorrect(os, num, table)) {
+            scrollToWidget(os, table, tab);
+            QString current = GTTableView::data(os, table, num, 0);
+            GT_CHECK(expectedFragment == current, QString("Incorrect name of the %1 row: expected '%2', current '%3'").
+                                                      arg(num).arg(expectedFragment, current))
+
+            const QString expected = QString::number(expectedRegion.minValue) + '-' +
+                                     QString::number(expectedRegion.maxValue);
+            current = GTTableView::data(os, table, num, 1);
+            GT_CHECK(expected == current, QString("Incorrect result of the %1 row: expected '%2', current '%3'").
+                                              arg(num).arg(expected, current))
+        }
+    }
+}
+#undef GT_METHOD_NAME
+
+void GTUtilsPcrPrimerDesign::clickStart(GUITestOpStatus& os) {
+    QWidget* const tab = getTabWgt(os);
+    QAbstractButton* const strtBtn = GTWidget::findButtonByText(os, "Start", tab);
+    scrollToWidget(os, strtBtn, tab);
+    GTWidget::click(os, strtBtn);
+}
 
 #undef GT_CLASS_NAME
 }  // namespace U2

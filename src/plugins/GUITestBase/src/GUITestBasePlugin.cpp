@@ -3458,14 +3458,20 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr_primer_design_for_dna_assembly
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0001)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0002)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0003)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0004)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0005)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0006)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0007)
-    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_for_dna_assembly::test_0008)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0001)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0002)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0003)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0004)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0005)
+
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0001)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0002)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0003)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0004)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0005)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0006)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0007)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0008)
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/phyml

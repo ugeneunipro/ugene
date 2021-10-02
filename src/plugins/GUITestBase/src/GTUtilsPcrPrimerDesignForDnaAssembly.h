@@ -27,65 +27,145 @@
 #include <U2Core/U2Range.h>
 #include <U2Core/U2Type.h>
 
-class QLineEdit;
-class QSpinBox;
-class QTableWidget;
+#include "base_dialogs/DefaultDialogFiller.h"
 
 namespace U2 {
 using namespace HI;
 
-// Methods for testing PCR Primer Design tab.
-class GTUtilsPcrPrimerDesignForDnaAssembly {
+// Methods for testing PCR Primer Design tab. Before calling all methods, open the tab by calling openTab.
+class GTUtilsPcrPrimerDesign {
 public:
-    enum class UserPrimerEndButton {
+    // Buttons "Add sequence to a user primer's end".
+    enum class UserPrimer {
         Forward5,
         Forward3,
         Reverse5,
         Reverse3
     };
-    struct ParamsOfPrimingSeqs {
-        U2Range<int> gibbsFreeEnergy{ -40, -30 };
-        U2Range<int> meltingPoint   {  57,  65 };
-        U2Range<int> overlapLength  {  18,  25 };
+    // For paired spinboxes with correspond names.
+    struct ParametersOfPrimingSequences {
+        U2Range<int> gibbsFreeEnergy{ -40, -30 },
+                     meltingPoint   {  57,  65 },
+                     overlapLength  {  18,  25 };
     };
-    struct ParamsToExcludeInWholePrimers {
-        int gibbsFreeEnergy = -7;
-        int meltingPoint = 20;
-        int motifLen = 3;
+    // For paired spinboxes with correspond names.
+    struct ParametersToExcludeInWholePrimers {
+        int gibbsFreeEnergy = -7,
+            meltingPoint    = 20,
+            motifLen        = 3;
     };
+    // Groupbox "Insert to backbone bearings" setting.
     struct InsertToBackboneBearings {
-        bool insertTo5 = true;
-        int  backbone5Len = 0;
-        int  backbone3Len = 0;
+        enum class InsertTo {
+            Backbone5,
+            Backbone3
+        };
+        InsertTo insertTo     = InsertTo::Backbone5;
+        int      backbone5Len = 0,
+                 backbone3Len = 0;
     };
-    static void setUserPrimer(GUITestOpStatus& os, const QString& primer,
-                              U2Strand::Direction direction = U2Strand::Direct);
+    // Primer search areas for insert.
+    struct SearchArea {
+        SearchArea(U2Range<int> r, bool selectManually = false);
+
+        U2Range<int> region;
+        bool         selectManually = false;
+    };
+    // Primer search areas for insert.
+    enum class AreaType {
+        Left,
+        Right
+    };
+    // Number of mouse clicks on resulting sequence.
+    enum class ClickType {
+        Single = 1,
+        Double
+    };
+
+    // Filler for "The unwanted structures have been found in the following backbone sequence candidate".
+    class BadBackboneFiller : public DefaultDialogFiller {
+    public:
+        enum class Button {
+            No,
+            Yes
+        };
+        BadBackboneFiller(GUITestOpStatus& os, Button btn);
+        BadBackboneFiller(GUITestOpStatus& os, CustomScenario* scenario);
+    };
+
+    static void openTab(GUITestOpStatus& os);
+
+    // Sets forward (if direction=Direct) or reverse (if direction=Complementary) user primer.
+    static void setUserPrimer(GUITestOpStatus& os, const QString& primer, U2Strand::Direction direction);
+
+    // Sets filter.
     static void filterGeneratedSequences(GUITestOpStatus& os, const QString& filter);
-    static void selectGeneratedSequence(GUITestOpStatus& os, int i);
+
+    /**
+     * Clicks once generated sequence with a specific sequence number in generated sequence table. Fails, if
+     * the table is empty. The indices are numbered starting from 0. Checks that the number is correct before clicking.
+     * The number must be non-negative and less than the number of rows in the table.
+     */
+    static void selectGeneratedSequence(GUITestOpStatus& os, int num);
+
+    /**
+     * Searches the table of generated sequences for given sequence and clicks it. Search parameters are configured by
+     * options (depth is ignored).
+     */
     static void selectGeneratedSequence(GUITestOpStatus& os, const QString& sequence,
         const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
-    static void findReverseComplement(GUITestOpStatus& os);
-    static void addUserPrimerEnd(GUITestOpStatus& os, UserPrimerEndButton buttonType);
-    static void setParamsOfPrimingSeqs(GUITestOpStatus& os, const ParamsOfPrimingSeqs& params);
-    static void setParamsToExcludeInWholePrimers(GUITestOpStatus& os, ParamsToExcludeInWholePrimers params);
-    static void setInsertToBackbone(GUITestOpStatus& os, InsertToBackboneBearings params);
-    static void setPrimerSearchArea(GUITestOpStatus& os, bool isLeft, U2Range<int> area, bool selectManually = false);
-    static void openBackbone(GUITestOpStatus& os, const QString& path, bool useDialog = false);
-    static void openOtherSequences(GUITestOpStatus& os, const QString& path, bool useDialog = false);
-    static void start(GUITestOpStatus& os);
-    static void clickResultTable(GUITestOpStatus& os, int i, bool isDoubleClick = false);
-    static void checkResultTable(GUITestOpStatus& os, int i, U2Range<int> expected);
 
-    static QLineEdit* getUserPrimer(GUITestOpStatus& os, U2Strand::Direction direction);
-    static QTableWidget* getGeneratedSequenceTableWgt(GUITestOpStatus& os, const QWidget* tab = nullptr);
-    static QPair<QSpinBox*, QSpinBox*> getAreaSpinboxes(GUITestOpStatus& os, bool isLeft);
-    static QTableWidget* getResultTableWgt(GUITestOpStatus& os, const QWidget* tab = nullptr);
-private:
-    static QWidget* openTabAndReturnIt(GUITestOpStatus& os);
-    static QWidget* getGenerateSequenceWgt(GUITestOpStatus& os, const QWidget* tab);
-    static QWidget* getAreasForPrimingSearchWgt(GUITestOpStatus& os, const QWidget* tab);
-    static void scrollToWidget(GUITestOpStatus& os, const QWidget* scrollTo, const QWidget* tab);
-    static void selectGeneratedSequence(GUITestOpStatus& os, int i, QTableWidget* table, const QWidget* tab);
+    // Clicks Find reverse-complement button from the 'Generate sequence' widget.
+    static void findReverseComplement(GUITestOpStatus& os);
+
+    // Clicks one of 4 buttons that add a sequence fragment to the user primer.
+    static void addToUserPrimer(GUITestOpStatus& os, UserPrimer userPrimer);
+
+    // Sets Parameters of priming sequences.
+    static void setParametersOfPrimingSequences(GUITestOpStatus& os, const ParametersOfPrimingSequences& params);
+
+    // Sets Parameters to exclude in whole primers.
+    static void setParametersToExcludeInWholePrimers(GUITestOpStatus& os, ParametersToExcludeInWholePrimers params);
+
+    // Sets settings for backbone bearings (doesn't set backbone path).
+    static void configureInsertToBackboneBearings(GUITestOpStatus& os, InsertToBackboneBearings params);
+
+    /**
+     * Sets a range in two spinboxes for left (if areaType=Left) or right (if areaType=Right) primer search area for
+     * insert.
+     */
+    static void setSearchArea(GUITestOpStatus& os, SearchArea params, AreaType areaType);
+
+    /**
+     * Sets path to the backbone sequence. Fills in line editor if useButton=false, otherwise uses the file selection
+     * dialog.
+     */
+    static void setBackbone(GUITestOpStatus& os, const QString& path, bool useButton = false);
+
+    /**
+     * Sets path to other sequences in PCR reaction. Fills in line editor if useButton=false, otherwise uses the file
+     * selection dialog.
+     */
+    static void setOtherSequences(GUITestOpStatus& os, const QString& path, bool useButton = false);
+
+    /**
+     * Clicks single (if clickType=Single) or double (if clickType=Double) on a resulting sequence with a given sequence
+     * number in result table. Fails, if the table is empty. The indices are numbered starting from 0. Checks that
+     * the number is correct before clicking. The number must be non-negative and less than the number of rows in
+     * the table.
+     */
+    static void clickInResultsTable(GUITestOpStatus& os, int num, ClickType clickType = ClickType::Single);
+
+    /**
+     * Checks that the (num+1)th row of the result table contains a given fragment with a given region. Fails, if
+     * the table is empty. The indices are numbered starting from 0. Checks that the number is correct before clicking.
+     * The number must be non-negative and less than the number of rows in the table.
+     */
+    static void checkEntryInResultsTable(GUITestOpStatus& os, int num, const QString& expectedFragment,
+                                         U2Range<int> expectedRegion);
+
+    // Clicks "Start" button. Launches the PCR Primer Design For DNA Assembly Task with the current parameters.
+    static void clickStart(GUITestOpStatus& os);
 };
 
 }  // namespace U2
