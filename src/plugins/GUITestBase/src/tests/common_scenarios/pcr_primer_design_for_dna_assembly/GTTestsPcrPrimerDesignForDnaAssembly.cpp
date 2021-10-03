@@ -420,7 +420,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     GTUtilsPcrPrimerDesign::setUserPrimer(os, "AGGAGAAGA", U2Strand::Direct);
-    GTLogTracer lt = "No reverse user primer";
+    GTLogTracer lt("No reverse user primer");
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsLog::checkContainsMessage(os, lt);
 }
