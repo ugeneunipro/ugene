@@ -42,35 +42,6 @@ public:
         Reverse5,
         Reverse3
     };
-    // For paired spinboxes with correspond names.
-    struct ParametersOfPrimingSequences {
-        U2Range<int> gibbsFreeEnergy{ -40, -30 },
-                     meltingPoint   {  57,  65 },
-                     overlapLength  {  18,  25 };
-    };
-    // For paired spinboxes with correspond names.
-    struct ParametersToExcludeInWholePrimers {
-        int gibbsFreeEnergy = -7,
-            meltingPoint    = 20,
-            motifLen        = 3;
-    };
-    // Groupbox "Insert to backbone bearings" setting.
-    struct InsertToBackboneBearings {
-        enum class InsertTo {
-            Backbone5,
-            Backbone3
-        };
-        InsertTo insertTo     = InsertTo::Backbone5;
-        int      backbone5Len = 0,
-                 backbone3Len = 0;
-    };
-    // Primer search areas for insert.
-    struct SearchArea {
-        SearchArea(U2Range<int> r, bool selectManually = false);
-
-        U2Range<int> region;
-        bool         selectManually = false;
-    };
     // Primer search areas for insert.
     enum class AreaType {
         Left,
@@ -80,6 +51,35 @@ public:
     enum class ClickType {
         Single = 1,
         Double
+    };
+    // For paired spinboxes with correspond names.
+    struct ParametersOfPrimingSequences {
+        U2Range<int> gibbsFreeEnergy{ -40, -30 },  // Min -999999999, max seq_len.
+                     meltingPoint   {  57,  65 },  // Min 0, max seq_len.
+                     overlapLength  {  18,  25 };  // Min 0, max seq_len.
+    };
+    // For paired spinboxes with correspond names.
+    struct ParametersToExcludeInWholePrimers {
+        int gibbsFreeEnergy = -7,  // Min -999999999, max 0.
+            meltingPoint    = 20,  // Min 0, max 999999999.
+            motifLen        = 3;   // Min 0, max 999999999.
+    };
+    // Groupbox "Insert to backbone bearings" setting.
+    struct InsertToBackboneBearings {
+        enum class InsertTo {
+            Backbone5,
+            Backbone3
+        };
+        InsertTo insertTo     = InsertTo::Backbone5;
+        int      backbone5Len = 0,  // Min 0, max 99.
+                 backbone3Len = 0;  // Min 0, max 99.
+    };
+    // Primer search areas for insert.
+    struct SearchArea {
+        SearchArea(U2Range<int> r, bool selectManually = false);
+
+        U2Range<int> region;  // Min 1, max seq_len.
+        bool selectManually = false;
     };
 
     // Filler for "The unwanted structures have been found in the following backbone sequence candidate".
