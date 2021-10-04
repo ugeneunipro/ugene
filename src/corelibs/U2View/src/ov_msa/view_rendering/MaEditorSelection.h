@@ -120,6 +120,12 @@ public:
     /** Sets new selection instance. Emits si_selectionChanged signal. */
     virtual void setSelection(const MaEditorSelection &selection);
 
+    /**
+     * Checks thats selection geometry is correct: all rects are within the alignment.
+     * Returns 'true' if the selection is correct. Returns false and calls SAFE_POINT if the selection is not safe.
+     * */
+    bool validateSelectionGeometry(const MaEditorSelection &selection, bool useSafePoint = true) const;
+
 signals:
 
     /** Signal emitted every time selection is changed. */

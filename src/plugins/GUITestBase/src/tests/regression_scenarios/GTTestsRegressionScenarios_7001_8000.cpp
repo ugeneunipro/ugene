@@ -922,6 +922,24 @@ GUI_TEST_CLASS_DEFINITION(test_7415_2) {
     CHECK_SET_ERR(sequence1 == sequence2, "Sequences are not equal");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7438) {
+    // Checks that selection with Shift does not cause a crash.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // There are 18 sequences in the list and we are trying to select with SHIFT+KeyDown beyond this range.
+    GTUtilsMsaEditor::clickSequence(os, 15);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    for (int i = 0; i < 5; i++) {
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
+    }
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect.top() == 15, "Illegal start of the selection: " + QString::number(selectedRect.top()));
+    CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

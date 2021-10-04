@@ -313,9 +313,9 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             if (isShiftPressed) {  // Extend or shrink the selection.
                 QRect selectedRect = selection.getRectList().first();
                 bool grow = selectedRect.height() == 1 || cursorRow < selectedRect.bottom();
-                int numSequences = ui->getSequenceArea()->getViewRowCount();
+                int numRows = editor->getCollapseModel()->getViewRowCount();
                 if (grow) {
-                    if (selectedRect.bottom() <= numSequences) {
+                    if (selectedRect.bottom() + 1 < numRows) {
                         setSelection({{selectedRect.adjusted(0, 0, 0, 1)}});
                     }
                 } else {  // Shrink.
