@@ -765,68 +765,27 @@ skip_bases:
             getABIIndexEntryLW(fp, indexO, RUNDLabel, 2, 5, &offset2) &&
             getABIIndexEntryLW(fp, indexO, RUNTLabel, 1, 5, &offset3) &&
             getABIIndexEntryLW(fp, indexO, RUNTLabel, 2, 5, &offset4)) {
-            // char buffer[1025];
-            char buffer_s[1025];
-            char buffer_e[1025];
-            struct tm t;
-            uint rund_s, rund_e, runt_s, runt_e;
+            quint32 rund_s = offset;
+            quint32 rund_e = offset2;
+            quint32 runt_s = offset3;
+            quint32 runt_e = offset4;
 
-            rund_s = offset;
-            rund_e = offset2;
-            runt_s = offset3;
-            runt_e = offset4;
+            QLatin1Char zeroFillChar('0');
+            QString rundBuffer = QString("%1-%2-%3 %4:%5:%6 - %7-%8-%9 %10:%11:%12")
+                                     .arg(rund_s >> 16, 4, 10, zeroFillChar)
+                                     .arg(rund_s >> 8 & 0xff, 2, 10, zeroFillChar)
+                                     .arg(rund_s & 0xff, 2, 10, zeroFillChar)
+                                     .arg(runt_s >> 24, 2, 10, zeroFillChar)
+                                     .arg(runt_s >> 16 & 0xff, 2, 10, zeroFillChar)
+                                     .arg(runt_s >> 8 & 0xff, 2, 10, zeroFillChar)
+                                     .arg(rund_e >> 16, 4, 10, zeroFillChar)
+                                     .arg(rund_e >> 8 & 0xff, 2, 10, zeroFillChar)
+                                     .arg(rund_e & 0xff, 2, 10, zeroFillChar)
+                                     .arg(runt_e >> 24, 2, 10, zeroFillChar)
+                                     .arg(runt_e >> 16 & 0xff, 2, 10, zeroFillChar)
+                                     .arg(runt_e >> 8 & 0xff, 2, 10, zeroFillChar);
 
-            //                 sprintf(buffer, "%04d%02d%02d.%02d%02d%02d - %04d%02d%02d.%02d%02d%02d",
-            //                     rund_s >> 16, (rund_s >> 8) & 0xff, rund_s & 0xff,
-            //                     runt_s >> 24, (runt_s >> 16) & 0xff, (runt_s >> 8) & 0xff,
-            //                     rund_e >> 16, (rund_e >> 8) & 0xff, rund_e & 0xff,
-            //                     runt_e >> 24, (runt_e >> 16) & 0xff, (runt_e >> 8) & 0xff);
-            QString rundBuffer = QString("%1%2%3.%4%5%6 - %7%8%9.%10%11%12")
-                                     .arg((rund_s >> 16), 4, 10, QLatin1Char('0'))
-                                     .arg((rund_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg((rund_s & 0xff), 2, 10, QLatin1Char('0'))
-                                     .arg(runt_s >> 24, 2, 10, QLatin1Char('0'))
-                                     .arg((runt_s >> 16) & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg((runt_s >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg(rund_e >> 16, 4, 10, QLatin1Char('0'))
-                                     .arg((rund_e >> 8) & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg(rund_e & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg(runt_e >> 24, 2, 10, QLatin1Char('0'))
-                                     .arg((runt_e >> 16) & 0xff, 2, 10, QLatin1Char('0'))
-                                     .arg((runt_e >> 8) & 0xff, 2, 10, QLatin1Char('0'));
-
-            memset(&t, 0, sizeof(t));
-            t.tm_mday = rund_s & 0xff;
-            t.tm_mon = ((rund_s >> 8) & 0xff) - 1;
-            t.tm_year = (rund_s >> 16) - 1900;
-            t.tm_hour = runt_s >> 24;
-            t.tm_min = (runt_s >> 16) & 0xff;
-            t.tm_sec = (runt_s >> 8) & 0xff;
-            t.tm_isdst = -1;
-            /*
-             * Convert struct tm to time_t. We ignore the time_t value, but
-             * the conversion process will update the tm_wday element of
-             * struct tm.
-             */
-            mktime(&t);
-            strftime(buffer_s, 1024, "%a %d %b %H:%M:%S %Y", &t);
-
-            t.tm_mday = rund_e & 0xff;
-            t.tm_mon = ((rund_e >> 8) & 0xff) - 1;
-            t.tm_year = (rund_e >> 16) - 1900;
-            t.tm_hour = runt_e >> 24;
-            t.tm_min = (runt_e >> 16) & 0xff;
-            t.tm_sec = (runt_e >> 8) & 0xff;
-            t.tm_isdst = -1;
-            /*
-             * Convert struct tm to time_t. We ignore the time_t value, but
-             * the conversion process will update the tm_wday element of
-             * struct tm.
-             */
-            mktime(&t);
-            strftime(buffer_e, 1024, "%a %d %b %H:%M:%S %Y", &t);
-
-            sequenceComment.append(QString("DATE=%1 to %2\nRUND=%3\n").arg(buffer_s).arg(buffer_e).arg(rundBuffer));
+            sequenceComment.append(QString("RUND/RUNT=%1\n").arg(rundBuffer));
         }
 
         /* Get Dye Primer Offset */

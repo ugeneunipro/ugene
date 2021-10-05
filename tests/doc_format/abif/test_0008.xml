@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Check that ABI file with date/time (RUND/RUNT) overflow does not crash UGENE. -->
+
+    <load-document index="doc" url="abif/datetime_overflow.ab1" io="local_file" format="abi"/>
+
+    <check-num-objects doc="doc" value="3"/>
+    <check-document-object-names doc="doc" value="M85-XCNE_2-2198-P190423094A,Chromatogram,Info"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_CHROMATOGRAM,OT_TEXT"/>
+
+    <find-object-by-name index="obj" doc="doc" name="Info" type="OT_TEXT"/>
+    <check-string-exists obj="obj" string="RUND/RUNT=2019-04-88 114:07:146 - 2019-04-88 04:33:19" must_exist="true" whole_line="true"/>
+
+</multi-test>
