@@ -500,10 +500,9 @@ GUI_TEST_CLASS_DEFINITION(test_7193_2) {
 
     //Expected state: there is a warning about forward primer length
     QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
-    CHECK_SET_ERR(warningLabel != nullptr, "Cannot find warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be between"), "Incorrect warning message");
 
-    const GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
+    GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
     //4. Click the find button.
     //Expected state: task cancelled with corresponding log message
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
