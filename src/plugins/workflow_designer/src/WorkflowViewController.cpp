@@ -1400,7 +1400,7 @@ void WorkflowView::localHostLaunch() {
     }
 
     if (WorkflowSettings::isDebuggerEnabled()) {
-        GCOUNTER(cvar, "Worklow started with enabled debugger");
+        GCounter::increment(meta.name, "Worklow started with enabled debugger");
     }
 
     foreach (const Actor *actor, schema->getProcesses()) {

@@ -61,7 +61,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
         QVariantMap data = message.getData().toMap();
         foreach (const QString &key, data.keys()) {
             if (key.contains(MESSAGE_PATH_DELIMETER)) {
-                coreLog.trace(QObject::tr("WorkflowDebugMessageParser.cpp:64 'key' = %1").arg(key));
+                coreLog.trace(QString("WorkflowDebugMessageParser.cpp:%1 'key' = %2").arg(QString::number(__LINE__)).arg(key));
                 data[key.left(key.indexOf(MESSAGE_PATH_DELIMETER))] = data[key];
                 data.remove(key);
             }
