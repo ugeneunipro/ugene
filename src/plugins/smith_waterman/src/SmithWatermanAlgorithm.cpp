@@ -176,7 +176,8 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     unsigned int memory = n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
     quint64 quint_memory = (quint64)n * sizeof(int) + (quint64)pat_n * (quint64)0x80 + (quint64)matrixLength * (quint64)dirn;
     int* buf, * matrix = (int*)malloc(memory);
-    if (matrix == nullptr || quint_memory != memory) {
+    //check memory was allocated, check no overflow, check check matrix size excess
+    if (matrix == nullptr || quint_memory != memory || memory > MATRIX_SIZE_LIMIT) {
         std::bad_alloc e;
         throw e;
     }
@@ -326,7 +327,8 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     unsigned int memory = n * sizeof(int) + pat_n * 0x80;
     int *buf, *matrix = (int *)malloc(memory);
     quint64 quint_memory = (quint64)n * (quint64)sizeof(int) + (quint64)pat_n * (quint64)0x80;
-    if (matrix == nullptr || quint_memory != memory) {
+    //check memory was allocated, check no overflow, check check matrix size excess
+    if (matrix == nullptr || quint_memory != memory || memory > MATRIX_SIZE_LIMIT) {
         std::bad_alloc e;
         throw e;
     }

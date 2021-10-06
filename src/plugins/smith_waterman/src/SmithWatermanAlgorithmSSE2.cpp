@@ -143,7 +143,8 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
     size_t memory = (n + iter * 0x80) * 16 + iter * 8 * 4 + matrixLength * iter * 8;
     quint64 quint_memory = ((quint64)n + (quint64)iter * (quint64)0x80) * (quint64)16 + (quint64)iter * (quint64)8 * (quint64)4 + (quint64)matrixLength * (quint64)iter * (quint64)8;
     __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
-    if (matrix == nullptr || quint_memory != memory) {
+    //check memory was allocated, check no overflow, check check matrix size excess
+    if (matrix == nullptr || quint_memory != memory || memory > MATRIX_SIZE_LIMIT) {
         std::bad_alloc e;
         throw e;
     }
@@ -354,7 +355,8 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     size_t memory = (n + iter * 0x80) * sizeof(__m128i);
     quint64 quint_memory = ((quint64)n + (quint64)iter * (quint64)0x80) * (quint64)sizeof(__m128i);
     __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
-    if (matrix == nullptr || quint_memory != memory) {
+    //check memory was allocated, check no overflow, check check matrix size excess
+    if (matrix == nullptr || quint_memory != memory || memory > MATRIX_SIZE_LIMIT) {
         std::bad_alloc e;
         throw e;
     }
