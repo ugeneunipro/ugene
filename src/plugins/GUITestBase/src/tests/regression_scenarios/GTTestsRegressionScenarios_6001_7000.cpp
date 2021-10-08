@@ -1922,7 +1922,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
     int colorColumnWidth = table->columnWidth(COLOR_COLUMN_NUMBER);
     int totalTableWidth = table->width();
 
-    const int EXPECTED_COLOR_COLUMN_WIDTH = 97;
+    const int EXPECTED_COLOR_COLUMN_WIDTH = 60;
     CHECK_SET_ERR(EXPECTED_COLOR_COLUMN_WIDTH == colorColumnWidth,
                   QString("Color column width is incorrect: expected %1, got %2")
                       .arg(EXPECTED_COLOR_COLUMN_WIDTH)
