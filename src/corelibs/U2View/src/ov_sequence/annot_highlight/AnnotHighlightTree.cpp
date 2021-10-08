@@ -24,8 +24,6 @@
 #include <QColorDialog>
 #include <QHeaderView>
 
-#include <U2Gui/GroupOptionsWidget.h>
-
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -36,7 +34,7 @@ namespace U2 {
 const int AnnotHighlightTree::COL_NUM_ANNOT_NAME = 0;
 const int AnnotHighlightTree::COL_NUM_COLOR = 1;
 
-const int AnnotHighlightTree::COLOR_COLUMN_WIDTH = GroupOptionsWidget::getMinWidgetWidth() * 0.2 + 1;
+const int AnnotHighlightTree::COLOR_COLUMN_WIDTH = 60;
 const int AnnotHighlightTree::INITIAL_TREE_HEIGHT = 25;
 
 AnnotHighlightTree::AnnotHighlightTree() {

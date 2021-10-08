@@ -81,6 +81,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
       annDnaView(_annDnaView),
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
     setupUi(this);
+    setMinimumWidth(460);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength },

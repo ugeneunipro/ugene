@@ -76,7 +76,7 @@ public:
     };
     // Primer search areas for insert.
     struct SearchArea {
-        SearchArea(U2Range<int> r, bool selectManually = false);
+        SearchArea(const U2Range<int>& r, bool selectManually = false);
 
         U2Range<int> region;  // Min 1, max seq_len.
         bool selectManually = false;
@@ -89,14 +89,14 @@ public:
             No,
             Yes
         };
-        BadBackboneFiller(GUITestOpStatus& os, Button btn);
+        BadBackboneFiller(GUITestOpStatus& os, const Button& btn);
         BadBackboneFiller(GUITestOpStatus& os, CustomScenario* scenario);
     };
 
     static void openTab(GUITestOpStatus& os);
 
     // Sets forward (if direction=Direct) or reverse (if direction=Complementary) user primer.
-    static void setUserPrimer(GUITestOpStatus& os, const QString& primer, U2Strand::Direction direction);
+    static void setUserPrimer(GUITestOpStatus& os, const QString& primer, const U2Strand::Direction& direction);
 
     // Sets filter.
     static void filterGeneratedSequences(GUITestOpStatus& os, const QString& filter);
@@ -119,22 +119,23 @@ public:
     static void findReverseComplement(GUITestOpStatus& os);
 
     // Clicks one of 4 buttons that add a sequence fragment to the user primer.
-    static void addToUserPrimer(GUITestOpStatus& os, UserPrimer userPrimer);
+    static void addToUserPrimer(GUITestOpStatus& os, const UserPrimer& userPrimer);
 
     // Sets Parameters of priming sequences.
     static void setParametersOfPrimingSequences(GUITestOpStatus& os, const ParametersOfPrimingSequences& params);
 
     // Sets Parameters to exclude in whole primers.
-    static void setParametersToExcludeInWholePrimers(GUITestOpStatus& os, ParametersToExcludeInWholePrimers params);
+    static void setParametersToExcludeInWholePrimers(GUITestOpStatus& os,
+                                                     const ParametersToExcludeInWholePrimers& params);
 
     // Sets settings for backbone bearings (doesn't set backbone path).
-    static void configureInsertToBackboneBearings(GUITestOpStatus& os, InsertToBackboneBearings params);
+    static void configureInsertToBackboneBearings(GUITestOpStatus& os, const InsertToBackboneBearings& params);
 
     /**
      * Sets a range in two spinboxes for left (if areaType=Left) or right (if areaType=Right) primer search area for
      * insert.
      */
-    static void setSearchArea(GUITestOpStatus& os, SearchArea params, AreaType areaType);
+    static void setSearchArea(GUITestOpStatus& os, const SearchArea& params, const AreaType& areaType);
 
     /**
      * Sets path to the backbone sequence. Fills in line editor if useButton=false, otherwise uses the file selection
@@ -154,7 +155,7 @@ public:
      * the number is correct before clicking. The number must be non-negative and less than the number of rows in
      * the table.
      */
-    static void clickInResultsTable(GUITestOpStatus& os, int num, ClickType clickType = ClickType::Single);
+    static void clickInResultsTable(GUITestOpStatus& os, int num, const ClickType& clickType = ClickType::Single);
 
     /**
      * Checks that the (num+1)th row of the result table contains a given fragment with a given region. Fails, if
@@ -162,7 +163,7 @@ public:
      * The number must be non-negative and less than the number of rows in the table.
      */
     static void checkEntryInResultsTable(GUITestOpStatus& os, int num, const QString& expectedFragment,
-                                         U2Range<int> expectedRegion);
+                                         const U2Range<int>& expectedRegion);
 
     // Clicks "Start" button. Launches the PCR Primer Design For DNA Assembly Task with the current parameters.
     static void clickStart(GUITestOpStatus& os);

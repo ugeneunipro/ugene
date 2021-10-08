@@ -49,7 +49,7 @@ static int getRowCount(GUITestOpStatus& os, const QString& tableName) {
 
 // Checks if the annotation table has an annotation with a given name and if its region matches an expected one.
 static void checkAnnotation(GUITestOpStatus& os, const QString& annotationName, const QString& expectedRegion) {
-    const QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, annotationName);
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, annotationName);
     CHECK_SET_ERR(expectedRegion == region, QString("Invalid region for '%1' annotation: expected '%2', current '%3'").
                                                 arg(annotationName, expectedRegion, region))
 }
@@ -64,7 +64,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     GTUtilsPcrPrimerDesign::filterGeneratedSequences(os, "AAACACA");
-    const int currentRowCount = getRowCount(os, "twGeneratedSequences");
+    int currentRowCount = getRowCount(os, "twGeneratedSequences");
     CHECK_SET_ERR(currentRowCount == 2, QString("Number of sequences after filtration: expected 2, current %1").
                                             arg(currentRowCount))
 }
@@ -80,7 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     Expected: reverse user primer = AAACACCCAAACACCT.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
-    const QWidget* sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget* sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
 
     GTUtilsPcrPrimerDesign::selectGeneratedSequence(os, 0);
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Forward5);
@@ -155,11 +155,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     using Op = GTUtilsOptionPanelSequenceView;
     auto checkExpectedTabs = [&os](const QSet<Op::Tabs>& tabs) {
         // Tabs that should be.
-        for (const auto tab : qAsConst(tabs)) {
+        for (auto tab : qAsConst(tabs)) {
             GTWidget::findWidget(os, Op::tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os));
         }
         // Tabs that shouldn't be.
-        for (const auto tab : Op::tabsNames.keys().toSet() - tabs) {
+        for (auto tab : Op::tabsNames.keys().toSet() - tabs) {
             auto opWidget = GTWidget::findWidget(os, Op::tabsNames[tab],
                 GTUtilsSequenceView::getActiveSequenceViewWindow(os), GTGlobals::FindOptions(false));
             CHECK_SET_ERR(opWidget == nullptr, QString("Expected: there is no %1 tab").arg(Op::tabsNames[tab]))
@@ -178,9 +178,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Aminos: _common_data/fasta/amino_multy_ext.fa.
     //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
 
-    const QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
-    const QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
-    const QSet<Op::Tabs> three = { Op::Search, Op::AnnotationsHighlighting, Op::Statistics };
+    QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
+    QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
+    QSet<Op::Tabs> three = { Op::Search, Op::AnnotationsHighlighting, Op::Statistics };
 
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
     checkExpectedTabs(all);

@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -489,10 +488,10 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
 GUI_TEST_CLASS_DEFINITION(test_7234) {
     class InSilicoWizardScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus &os) {
             GTWidget::getActiveModalWidget(os);
 
-            GTUtilsWizard::setInputFiles(os, { {QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath()} });
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(dataDir + "primer3/drosophila.w.transposons.txt").absoluteFilePath());
