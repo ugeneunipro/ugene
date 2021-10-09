@@ -43,6 +43,7 @@
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
+#include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -721,6 +722,20 @@ GUI_TEST_CLASS_DEFINITION(test_7368) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
     GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7380) {
+    // Check that "Remove character/gap" and "Trim left end" are disabled when whole sequence is selected.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Remove character/gap"}, PopupChecker::IsDisabled));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Trim left end"}, PopupChecker::IsDisabled));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7371) {
