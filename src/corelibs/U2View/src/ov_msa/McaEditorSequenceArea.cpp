@@ -325,16 +325,16 @@ void McaEditorSequenceArea::sl_updateActions() {
     const MaEditorSelection &selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
 
-    const bool readOnly = maObj->isStateLocked();
-    const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    const bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
-    const bool isEditing = (maMode != ViewMode);
-    const bool isSingleSymbolSelected = (selectionRect.width() == 1 && selectionRect.height() == 1);
-    const bool hasGapBeforeSelection = !selection.isEmpty() && selectionRect.x() > 0 &&
-                                       maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
+    bool readOnly = maObj->isStateLocked();
+    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
+    bool isEditing = maMode != ViewMode;
+    bool isSingleSymbolSelected = selectionRect.width() == 1 && selectionRect.height() == 1;
+    bool hasGapBeforeSelection = isSingleSymbolSelected && !readOnly &&
+                                 maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
 
-    ui->delSelectionAction->setEnabled(canEditSelectedArea);
-    updateTrimActions(canEditSelectedArea);
+    ui->delSelectionAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
+    updateTrimActions(canEditSelectedArea && isSingleSymbolSelected);
     insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
