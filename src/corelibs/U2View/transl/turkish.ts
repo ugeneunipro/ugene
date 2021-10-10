@@ -6933,7 +6933,7 @@ Basit bir genel bakış kullanılamaz.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorWgt.cpp" line="122"/>
-        <source>Remove character/gap</source>
+        <source>Remove selection</source>
         <translation>Karakteri / boşluğu kaldır</translation>
     </message>
     <message>

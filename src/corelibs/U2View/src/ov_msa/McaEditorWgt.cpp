@@ -110,7 +110,7 @@ QAction *McaEditorWgt::getToggleColumnsAction() const {
 void McaEditorWgt::initActions() {
     MaEditorWgt::initActions();
 
-    delSelectionAction->setText(tr("Remove character/gap"));
+    delSelectionAction->setText(tr("Remove selection"));
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {

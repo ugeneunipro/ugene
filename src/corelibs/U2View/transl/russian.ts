@@ -6913,8 +6913,8 @@ Simple overview is unavailable.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorWgt.cpp" line="113"/>
-        <source>Remove character/gap</source>
-        <translation>Удалить символ/пробел</translation>
+        <source>Remove selection</source>
+        <translation>Удалить выделение</translation>
     </message>
 </context>
 <context>
