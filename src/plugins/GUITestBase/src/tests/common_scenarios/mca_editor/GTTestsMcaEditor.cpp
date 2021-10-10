@@ -2709,7 +2709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     // 3. Press "Remove selection" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Remove character/gap"));
+                                                                              << "Remove selection"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2787,10 +2787,10 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
 
-    // 3. Press "Remove character/gap" from main
+    // 3. Press "Remove selection" from main
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"
-                                                << "Remove character/gap");
+                                                << "Remove selection");
 
     // Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);

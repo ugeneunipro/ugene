@@ -725,17 +725,17 @@ GUI_TEST_CLASS_DEFINITION(test_7368) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7380) {
-    // Check that "Remove character/gap" and "Trim left end" are disabled when whole sequence is selected.
+    // Check that "Remove selection" is enabled when whole sequence is selected.
     GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Remove character/gap"}, PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Remove selection"}, PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
+    // Check that "Trim left end" is disabled when whole sequence is selected.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Trim left end"}, PopupChecker::IsDisabled));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7371) {

@@ -333,7 +333,7 @@ void McaEditorSequenceArea::sl_updateActions() {
     bool hasGapBeforeSelection = isSingleSymbolSelected && !readOnly &&
                                  maObj->getMultipleAlignment()->isGap(selectionRect.y(), selectionRect.x() - 1);
 
-    ui->delSelectionAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
+    ui->delSelectionAction->setEnabled(canEditSelectedArea);
     updateTrimActions(canEditSelectedArea && isSingleSymbolSelected);
     insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
