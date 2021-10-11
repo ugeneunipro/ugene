@@ -81,7 +81,13 @@ Version Version::parseVersion(const QString &text) {
         bool ok;
         int val = currentNum.toInt(&ok);
         if (ok) {
-            v.patch = val;
+            if (versionType == 0) {
+                v.major = val;
+            } else if (versionType == 1) {
+                v.minor = val;
+            } else {
+                v.patch = val;
+            }
         }
     }
 
