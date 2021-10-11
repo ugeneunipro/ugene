@@ -106,13 +106,14 @@ void MaEditorWgt::initWidgets() {
     initSeqArea(shBar, cvBar);
     scrollController->init(shBar, cvBar);
     sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    initOverviewArea();
 
     initNameList(nameListHorizontalScrollBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
-    initStatusBar();
+
+    initOverviewArea(overviewArea);
+    initStatusBar(statusBar);
 
     offsetsViewController = new MSAEditorOffsetsViewController(this, editor, sequenceArea);
     offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
@@ -197,9 +198,15 @@ void MaEditorWgt::initWidgets() {
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
-    mainSplitter->addWidget(overviewArea);
-    mainSplitter->setCollapsible(1, false);
-    MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
+    if (overviewArea != nullptr) {
+        if (overviewArea->isResizable()) {
+            mainSplitter->addWidget(overviewArea);
+            mainSplitter->setCollapsible(1, false);
+            MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
+        } else {
+            maContainerLayout->addWidget(overviewArea);
+        }
+    }
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
