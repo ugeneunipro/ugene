@@ -713,43 +713,52 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     c.lastChunkExtraLen = partsNumber - 1;
 
     // acquiring memory resources for computations
+    quint64 neededRam = 0;
     switch (algType) {
         case SW_cuda:
 #ifdef SW2_BUILD_WITH_CUDA
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                              true));
+            neededRam = SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(settings->sMatrix,
+                                                                            *ptrn,
+                                                                            sqnc->left(c.chunkSize * c.nThreads),
+                                                                            SmithWatermanSettings::MULTIPLE_ALIGNMENT);
 #endif
             break;
         case SW_opencl:
 #ifdef SW2_BUILD_WITH_OPENCL
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                              true));
+            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(settings->sMatrix,
+                                                                              *ptrn,
+                                                                              sqnc->left(c.chunkSize * c.nThreads),
+                                                                              SmithWatermanSettings::MULTIPLE_ALIGNMENT);
 #endif
             break;
         case SW_classic:
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen, settings->gapExtd, minScore, maxScore, *ptrn, sqnc->left(c.chunkSize * c.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                              true));
+            neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen, 
+                                                                        settings->gapExtd, 
+                                                                        minScore, 
+                                                                        maxScore, 
+                                                                        *ptrn, 
+                                                                        sqnc->left(c.chunkSize * c.nThreads), 
+                                                                        SmithWatermanSettings::MULTIPLE_ALIGNMENT);
             break;
         case SW_sse2:
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
-                                                                                                  sqnc->left(c.chunkSize * c.nThreads),
-                                                                                                  settings->gapOpen,
-                                                                                                  settings->gapExtd,
-                                                                                                  minScore,
-                                                                                                  maxScore,
-                                                                                                  SmithWatermanSettings::MULTIPLE_ALIGNMENT),
-                                              true));
+            neededRam = SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
+                                                                            sqnc->left(c.chunkSize * c.nThreads),
+                                                                            settings->gapOpen,
+                                                                            settings->gapExtd,
+                                                                            minScore,
+                                                                            maxScore,
+                                                                            SmithWatermanSettings::MULTIPLE_ALIGNMENT);
             break;
         default:
             assert(0);
     }
-
-    t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
-    addSubTask(t);
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT) {
+        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT)));
+    } else {
+        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
+        t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
+        addSubTask(t);
+    }
 }
 
 int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray &searchSeq, const QByteArray &patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore) {

@@ -6095,7 +6095,7 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("Not enough memory"), "No expected message in the log");
+    CHECK_SET_ERR(l.checkMessage("Needed amount of memory for this task is"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6875) {

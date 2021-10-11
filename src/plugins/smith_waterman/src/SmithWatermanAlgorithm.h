@@ -48,7 +48,7 @@ public:
     static const char UP;
     static const char LEFT;
     static const char DIAG;
-    static constexpr unsigned int MATRIX_SIZE_LIMIT = 1073741824;  //1GB
+    static constexpr unsigned int MEMORY_SIZE_LIMIT = 1024;  //1GB
 
 protected:
     bool calculateMatrixLength();
