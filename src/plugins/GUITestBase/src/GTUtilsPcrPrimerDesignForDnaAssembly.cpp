@@ -41,7 +41,7 @@
 namespace U2 {
 using namespace HI;
 
-#define GT_CLASS_NAME "GTUtilsPcrPrimerDesign"
+#define GT_CLASS_NAME "GTUtilsPcrPrimerDesignStaticFuncs"
 
 static const QString badBackboneDialogName = "UnwantedStructuresInBackboneDialog";
 
@@ -165,6 +165,8 @@ static void setRange(GUITestOpStatus& os, const QString& minSbName, const QStrin
     }
 }
 
+#undef GT_CLASS_NAME
+
 ///////////////////////////////////////////////////////SearchArea///////////////////////////////////////////////////////
 GTUtilsPcrPrimerDesign::SearchArea::SearchArea(const U2Range<int>& r, bool selectManually) : region(r),
         selectManually(selectManually) {
@@ -181,6 +183,9 @@ GTUtilsPcrPrimerDesign::BadBackboneFiller::BadBackboneFiller(GUITestOpStatus& os
 }
 
 /////////////////////////////////////////////////GTUtilsPcrPrimerDesign/////////////////////////////////////////////////
+
+#define GT_CLASS_NAME "GTUtilsPcrPrimerDesign"
+
 void GTUtilsPcrPrimerDesign::openTab(GUITestOpStatus& os) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
 }
