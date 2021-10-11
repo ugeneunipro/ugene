@@ -58,7 +58,7 @@ public:
     }
 
     MultipleChromatogramAlignmentObject *getMaObject() const override;
-    McaEditorWgt *getUI() const override;
+    McaEditorWgt *getUI(uint index = 0) const override;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController *getSelectionController() const override;
@@ -94,7 +94,9 @@ private slots:
 
 protected:
     QWidget *createWidget() override;
-    void initActions() override;
+    QWidget *createChildWidget(uint index = 0);
+    void initActions(uint index) override;
+    void updateActions() override;
 
     QAction *showChromatogramsAction;
     QAction *showGeneralTabAction;

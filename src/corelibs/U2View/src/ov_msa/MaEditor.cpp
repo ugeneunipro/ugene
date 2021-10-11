@@ -178,7 +178,7 @@ int MaEditor::getRowContentIndent(int) const {
 }
 
 int MaEditor::getSequenceRowHeight() const {
-    QFontMetrics fm(font, ui);
+    QFontMetrics fm(font, getUI());
     return fm.height() * zoomMult;
 }
 
@@ -272,7 +272,7 @@ void MaEditor::sl_zoomOut() {
 
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
-    int seqAreaWidth = ui->getSequenceArea()->width();
+    int seqAreaWidth = getUI()->getSequenceArea()->width();
     const MaEditorSelection &selection = getSelection();
     CHECK(!selection.isEmpty(), )
     QRect selectionRect = selection.getRectList()[0];  // We need width (equal on all rects) + top-left of the first rect.
@@ -292,8 +292,8 @@ void MaEditor::sl_zoomToSelection() {
         setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
         resizeMode = ResizeMode_OnlyContent;
     }
-    ui->getScrollController()->setFirstVisibleBase(selectionRect.x());
-    ui->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
+    getUI()->getScrollController()->setFirstVisibleBase(selectionRect.x());
+    getUI()->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
 
     updateActions();
 
@@ -326,7 +326,7 @@ void MaEditor::sl_saveAlignmentAs() {
         return;
     }
 
-    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, ui);
+    QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, getUI());
     dialog->setAddToProjectFlag(true);
     dialog->setWindowTitle(tr("Save Alignment"));
     ExportObjectUtils::export2Document(dialog);
@@ -350,7 +350,7 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget *)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getUI(), (QWidget *)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -363,20 +363,25 @@ void MaEditor::sl_resetColumnWidthCache() {
     cachedColumnWidth = 0;
 }
 
-void MaEditor::initActions() {
+void MaEditor::initActions(uint index) {
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
+<<<<<<< HEAD
     connect(showOverviewAction, &QAction::triggered, ui->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
+=======
+    connect(showOverviewAction, SIGNAL(triggered()), getUI(index)->getOverviewArea(), SLOT(sl_show()));
+    getUI(index)->addAction(showOverviewAction);
+>>>>>>> The init commit for UGENE-7042
 
     MaEditorSelectionController *selectionController = getSelectionController();
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
-    ui->addAction(clearSelectionAction);
+    getUI(index)->addAction(clearSelectionAction);
 
     connect(selectionController,
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
@@ -419,7 +424,7 @@ void MaEditor::addExportMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
     em->addAction(exportHighlightedAction);
-    if (!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
+    if (!getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
         getReferenceRowId() != U2MsaRow::INVALID_ROW_ID) {
         exportHighlightedAction->setEnabled(true);
     } else {
@@ -476,9 +481,9 @@ void MaEditor::updateFontMetrics() {
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
-    if (ui->getSequenceArea()->isPosInRange(firstPos)) {
-        ui->getScrollController()->setFirstVisibleBase(firstPos);
-        ui->getScrollController()->setFirstVisibleMaRow(firstSeq);
+    if (getUI()->getSequenceArea()->isPosInRange(firstPos)) {
+        getUI()->getScrollController()->setFirstVisibleBase(firstPos);
+        getUI()->getScrollController()->setFirstVisibleMaRow(firstSeq);
     }
 }
 
@@ -519,11 +524,11 @@ QList<qint64> MaEditor::getMaRowIds() const {
 }
 
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
-    ui->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
+    getUI()->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
-    QFontMetrics fontMetrics(sequenceFont, ui);
+    QFontMetrics fontMetrics(sequenceFont, getUI());
     return fontMetrics.boundingRect('W');
 }
 
@@ -536,7 +541,7 @@ void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
 }
 
 void MaEditor::sl_onClearActionTriggered() {
-    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    MaEditorSequenceArea *sequenceArea = getUI()->getSequenceArea();
     if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
         sequenceArea->exitFromEditCharacterMode();
         return;

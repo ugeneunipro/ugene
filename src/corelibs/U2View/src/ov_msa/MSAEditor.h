@@ -27,6 +27,7 @@
 
 #include "MaEditor.h"
 #include "MsaEditorWgt.h"
+#include "MsaEditorMultilineWgt.h"
 #include "phy_tree/MSAEditorTreeManager.h"
 
 namespace U2 {
@@ -95,7 +96,7 @@ public:
 
     void buildMenu(QMenu *m, const QString &type) override;
 
-    MsaEditorWgt *getUI() const override;
+    MsaEditorWgt *getUI(uint index = 0) const override;
 
     // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
@@ -182,7 +183,13 @@ protected slots:
 
 protected:
     QWidget *createWidget() override;
+<<<<<<< HEAD
     void initActions() override;
+=======
+    MsaEditorWgt *createChildWidget(uint index,
+                                    MaEditorOverviewArea *overview = nullptr,
+                                    MaEditorStatusBar *statusbar = nullptr);
+>>>>>>> The init commit for UGENE-7042
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
     void onObjectRenamed(GObject *obj, const QString &oldName) override;
