@@ -27,6 +27,7 @@
 
 #include "MaEditor.h"
 #include "MsaEditorWgt.h"
+#include "MsaEditorMultilineWgt.h"
 #include "phy_tree/MSAEditorTreeManager.h"
 
 namespace U2 {
@@ -95,7 +96,7 @@ public:
 
     void buildMenu(QMenu* m, const QString& type) override;
 
-    MsaEditorWgt* getUI() const override;
+    MsaEditorWgt *getUI(uint index = 0) const override;
 
     // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
@@ -181,23 +182,26 @@ protected slots:
     void sl_exportImage();
 
 protected:
-    QWidget* createWidget() override;
-    bool eventFilter(QObject* o, QEvent* e) override;
-    bool onObjectRemoved(GObject* obj) override;
-    void onObjectRenamed(GObject* obj, const QString& oldName) override;
+    QWidget *createWidget() override;
+    MsaEditorWgt *createChildWidget(uint index,
+                                    MaEditorOverviewArea *overview = nullptr,
+                                    MaEditorStatusBar *statusbar = nullptr);
+    bool eventFilter(QObject *o, QEvent *e) override;
+    bool onObjectRemoved(GObject *obj) override;
+    void onObjectRenamed(GObject *obj, const QString &oldName) override;
 
-    void addCopyPasteMenu(QMenu* m) override;
-    void addEditMenu(QMenu* m) override;
-    void addSortMenu(QMenu* m);
-    void addAlignMenu(QMenu* m);
-    void addExportMenu(QMenu* m) override;
-    void addAppearanceMenu(QMenu* m);
-    void addColorsMenu(QMenu* m);
-    void addHighlightingMenu(QMenu* m);
-    void addNavigationMenu(QMenu* m);
-    void addTreeMenu(QMenu* m);
-    void addAdvancedMenu(QMenu* m);
-    void addStatisticsMenu(QMenu* m);
+    void addCopyPasteMenu(QMenu *m) override;
+    void addEditMenu(QMenu *m) override;
+    void addSortMenu(QMenu *m);
+    void addAlignMenu(QMenu *m);
+    void addExportMenu(QMenu *m) override;
+    void addAppearanceMenu(QMenu *m);
+    void addColorsMenu(QMenu *m);
+    void addHighlightingMenu(QMenu *m);
+    void addNavigationMenu(QMenu *m);
+    void addTreeMenu(QMenu *m);
+    void addAdvancedMenu(QMenu *m);
+    void addStatisticsMenu(QMenu *m);
 
     void updateActions() override;
 

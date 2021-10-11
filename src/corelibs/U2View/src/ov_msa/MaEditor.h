@@ -55,7 +55,9 @@ namespace U2 {
 #define MOBJECT_DEFAULT_FONT_SIZE 10
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
-class MaCollapseModel;
+class MaEditorWgt;
+class MaEditorOverviewArea;
+class MultipleAlignmentObject;
 class MaEditorSelection;
 class MaEditorSelectionController;
 class MaEditorWgt;
@@ -124,8 +126,12 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual MaEditorWgt* getUI() const {
-        return ui;
+    virtual MaEditorWgt *getUI(uint index = 0) const
+    {
+        if (index < uiChildCount && index < uiChildLength) {
+            return uiChild[index];
+        }
+        return nullptr;
     }
 
     virtual OptionsPanel* getOptionsPanel() {
@@ -246,8 +252,8 @@ private slots:
     void sl_resetColumnWidthCache();
 
 protected:
-    virtual QWidget* createWidget() = 0;
-    virtual void initActions();
+    virtual QWidget *createWidget() = 0;
+    virtual void initActions(uint index);
     virtual void initZoom();
     virtual void initFont();
     void updateResizeMode();
@@ -267,8 +273,15 @@ protected:
 
     virtual void updateActions();
 
+<<<<<<< HEAD
     MultipleAlignmentObject* maObject;
     MaEditorWgt* ui;
+=======
+    MultipleAlignmentObject *maObject;
+    QWidget *ui = nullptr;
+    MaEditorWgt **uiChild = nullptr;
+    uint uiChildLength = 0;
+    uint uiChildCount = 0;
 
     QFont font;
     ResizeMode resizeMode;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_OVERVIEW_H_
-#define _U2_MA_OVERVIEW_H_
+#ifndef _U2_MA_MULTILINE_OVERVIEW_H_
+#define _U2_MA_MULTILINE_OVERVIEW_H_
 
 #include <QWidget>
 
@@ -29,24 +29,23 @@
 namespace U2 {
 
 class MaEditor;
-class MaEditorWgt;
-class MaEditorSequenceArea;
+class MaEditorMultilineWgt;
 
 #define VISIBLE_RANGE_COLOR QColor(230, 230, 230, 180)
 #define SELECTION_COLOR QColor(80, 160, 200, 180)
 #define VISIBLE_RANGE_CRITICAL_SIZE 5
 
-class U2VIEW_EXPORT MaOverview : public QWidget {
+class U2VIEW_EXPORT MaMultilineOverview : public QWidget {
     Q_OBJECT
 public:
-    MaOverview(MaEditorWgt* _ui);
+    MaMultilineOverview(MaEditorMultilineWgt *_ui);
     virtual bool isValid() const {
         return false;
     }
     virtual QPixmap getView() {
         return QPixmap();
     }
-    MaEditor* getEditor() const;
+    MaEditor *getEditor() const;
 
 public slots:
     void sl_visibleRangeChanged();
@@ -55,15 +54,15 @@ public slots:
     virtual void sl_redraw();
 
 protected:
-    void mousePressEvent(QMouseEvent*) override;
-    void mouseMoveEvent(QMouseEvent*) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 
-    virtual void drawOverview(QPainter&) {
+    virtual void drawOverview(QPainter &) {
     }
-    virtual void drawVisibleRange(QPainter&) {
+    virtual void drawVisibleRange(QPainter &) {
     }
-    virtual void drawSelection(QPainter&) {
+    virtual void drawSelection(QPainter &) {
     }
 
     void setVisibleRangeForEmptyAlignment();
@@ -76,8 +75,8 @@ protected:
     virtual int getContentWidgetWidth() const;
     virtual int getContentWidgetHeight() const;
 
-    MaEditor* editor;
-    MaEditorWgt* ui;
+    MaEditor *editor;
+    MaEditorMultilineWgt *ui;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;
@@ -90,4 +89,4 @@ protected:
 
 }  // namespace U2
 
-#endif  // _U2_MA_OVERVIEW_H_
+#endif  // _U2_MA_MULTILINE_OVERVIEW_H_

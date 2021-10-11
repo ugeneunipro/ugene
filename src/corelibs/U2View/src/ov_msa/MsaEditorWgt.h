@@ -31,6 +31,7 @@ class MSADistanceMatrix;
 class MSAEditor;
 class MsaEditorAlignmentDependentWidget;
 class MSAEditorMultiTreeViewer;
+class MSAEditorOverviewArea;
 class MsaEditorSimilarityColumn;
 class MSAEditorTreeViewer;
 class SimilarityStatisticsSettings;
@@ -42,7 +43,9 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MsaEditorWgt(MSAEditor* editor);
+    MsaEditorWgt(MSAEditor *editor,
+                 MaEditorOverviewArea *overview = nullptr,
+                 MaEditorStatusBar *statusbar = nullptr);
 
     MSAEditor* getEditor() const;
 
@@ -65,6 +68,9 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
+    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr);
+    void initStatusBar(MaEditorStatusBar *statusBar = nullptr);
+
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
 signals:
@@ -72,11 +78,9 @@ signals:
     void si_hideTreeOP();
 
 protected:
-    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
-    void initOverviewArea();
-    void initNameList(QScrollBar* nhBar);
+    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar);
+    void initNameList(QScrollBar *nhBar);
     void initConsensusArea();
-    void initStatusBar();
 
 private:
     MsaEditorSimilarityColumn* dataList;

@@ -21,6 +21,9 @@
 
 #include "McaEditor.h"
 
+#include <QGroupBox>
+#include <QVBoxLayout>
+
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
@@ -71,8 +74,8 @@ MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
     return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
-McaEditorWgt* McaEditor::getUI() const {
-    return qobject_cast<McaEditorWgt*>(ui);
+McaEditorWgt *McaEditor::getUI(uint index) const {
+    return uiChild == nullptr ? nullptr : qobject_cast<McaEditorWgt *>(uiChild[index]);
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
@@ -160,9 +163,25 @@ void McaEditor::sl_showConsensusTab() {
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
-QWidget* McaEditor::createWidget() {
-    Q_ASSERT(ui == nullptr);
-    ui = new McaEditorWgt(this);
+QWidget *McaEditor::createWidget()
+{
+    QWidget *child = createChildWidget(0);
+    Q_ASSERT(child != nullptr);
+
+    ui = new QGroupBox(tr("MSA vertical child layout"));
+    QVBoxLayout *layout = new QVBoxLayout;
+
+    QString objName = "msa_editor_vertical_childs_layout_" + maObject->getGObjectName();
+    ui->setObjectName(objName);
+    layout->addWidget(child);
+    ui->setLayout(layout);
+
+    return ui;
+}
+
+QWidget *McaEditor::createChildWidget(uint index) {
+    Q_ASSERT(uiChild[index] == nullptr);
+    uiChild[index] = new McaEditorWgt(this);
 
     collapseModel->reset(getMaRowIds());
 
@@ -171,11 +190,11 @@ QWidget* McaEditor::createWidget() {
     GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
 
     QString objName = "mca_editor_" + maObject->getGObjectName();
-    ui->setObjectName(objName);
+    uiChild[index]->setObjectName(objName);
 
-    connect(ui, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_onContextMenuRequested(const QPoint&)));
+    connect(uiChild[index], SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
-    initActions();
+    initActions(index);
 
     optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -192,11 +211,11 @@ QWidget* McaEditor::createWidget() {
 
     updateActions();
 
-    return ui;
+    return uiChild[index];
 }
 
-void McaEditor::initActions() {
-    MaEditor::initActions();
+void McaEditor::initActions(uint index) {
+    MaEditor::initActions(index);
 
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
@@ -204,39 +223,39 @@ void McaEditor::initActions() {
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
     GUIUtils::updateActionToolTip(zoomInAction);
-    ui->addAction(zoomInAction);
+    getUI(index)->addAction(zoomInAction);
 
     zoomOutAction->setText(tr("Zoom out"));
     zoomOutAction->setShortcut(QKeySequence::ZoomOut);
     GUIUtils::updateActionToolTip(zoomOutAction);
-    ui->addAction(zoomOutAction);
+    getUI(index)->addAction(zoomOutAction);
 
     resetZoomAction->setText(tr("Reset zoom"));
     resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
     GUIUtils::updateActionToolTip(resetZoomAction);
-    ui->addAction(resetZoomAction);
+    getUI(index)->addAction(resetZoomAction);
 
     showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
     showChromatogramsAction->setChecked(s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool());
-    ui->addAction(showChromatogramsAction);
+    getUI(index)->addAction(showChromatogramsAction);
 
     showGeneralTabAction = new QAction(tr("Open \"General\" tab on the options panel"), this);
     connect(showGeneralTabAction, SIGNAL(triggered()), SLOT(sl_showGeneralTab()));
-    ui->addAction(showGeneralTabAction);
+    getUI(index)->addAction(showGeneralTabAction);
 
     showConsensusTabAction = new QAction(tr("Open \"Consensus\" tab on the options panel"), this);
     connect(showConsensusTabAction, SIGNAL(triggered()), SLOT(sl_showConsensusTab()));
-    ui->addAction(showConsensusTabAction);
+    getUI(index)->addAction(showConsensusTabAction);
 
     showOverviewAction->setText(tr("Show overview"));
     showOverviewAction->setObjectName("overview");
     connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
-    ui->getOverviewArea()->setVisible(overviewVisible);
+    getUI(index)->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -340,7 +359,19 @@ void McaEditor::addEditMenu(QMenu* menu) {
     editMenu->addAction(redoAction);
 }
 
-MaEditorSelectionController* McaEditor::getSelectionController() const {
+void McaEditor::sl_gotoSelectedRead() {
+    GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
+    MaEditorSelection selection = getSelection();
+    QRect selectionRect = selection.toRect();
+    int rowIndex = selectionRect.y();
+    CHECK(selectionRect.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
+
+    MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
+    int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();
+    getUI()->getSequenceArea()->centerPos(rowStartPos);
+}
+
+MaEditorSelectionController *McaEditor::getSelectionController() const {
     return selectionController;
 }
 }  // namespace U2
