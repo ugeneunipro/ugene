@@ -438,17 +438,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="543"/>
+        <location filename="../src/Main.cpp" line="535"/>
         <source>Translation file not found: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="857"/>
+        <location filename="../src/Main.cpp" line="849"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="858"/>
+        <location filename="../src/Main.cpp" line="850"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
@@ -662,7 +662,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="592"/>
+        <location filename="../src/Main.cpp" line="584"/>
         <source>Style not available %1</source>
         <translation>Стиль не доступен: %1</translation>
     </message>
@@ -1246,104 +1246,114 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::MainWindowImpl</name>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="251"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="250"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="274"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="273"/>
         <source>Create desktop shortcut</source>
         <translation>Добавить ярлык на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="387"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="407"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Программа уже в процессе выключения. Закрыть немедленно?</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="388"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="408"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="389"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="409"/>
         <source>Wait</source>
         <translation>Подождать</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="255"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="254"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="244"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="243"/>
         <source>Application paste shortcut is triggered</source>
         <translation>Application paste shortcut is triggered</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="262"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="261"/>
         <source>Visit UGENE Web Site</source>
         <translation>Перейти на сайт UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="266"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="265"/>
         <source>View UGENE Documentation Online</source>
         <translation>Открыть документацию UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="270"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="269"/>
         <source>Check for Updates</source>
         <translation>Проверить обновления</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="278"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="277"/>
         <source>Open Start Page</source>
         <translation>Открыть стартовую страницу</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="282"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="281"/>
         <source>What&apos;s New in UGENE</source>
         <translation type="unfinished">Что нового в UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="286"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="285"/>
         <source>Crash UGENE</source>
         <translation>Падение UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="291"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="290"/>
         <source>Enable Terminal Usage...</source>
         <translation>Разрешить использование терминала...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="455"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="460"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="381"/>
+        <source>Add unique notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="389"/>
+        <source>Add repeating notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="475"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="480"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="488"/>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="455"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="475"/>
         <source>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</source>
         <translation>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="460"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="480"/>
         <source>Failed to enable terminal usage: not authorized</source>
         <translation>Failed to enable terminal usage: not authorized</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="488"/>
         <source>Failed to enable terminal usage: authorization failure</source>
         <translation>Failed to enable terminal usage: authorization failure</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="493"/>
         <source>Installation successful</source>
         <translation>Installation successful</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="493"/>
         <source>Terminal usage successfully enabled.
 
 Now you can type ugene in command line to start UGENE.</source>
@@ -2087,68 +2097,68 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::TaskStatusBar</name>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="122"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="120"/>
         <source>The task &apos;%1&apos; has been finished</source>
         <translation>Задача &apos;%1&apos; была завершена</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="127"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="125"/>
         <source>Report for task: &apos;%1&apos;</source>
         <translation>Отчет для задачи: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="130"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="128"/>
         <source>&apos;%1&apos; task failed: %2</source>
         <translation>&apos;%1&apos; задача завершилась неудачно: %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="133"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="131"/>
         <source>There %1:
 </source>
         <translation>Есть %1:</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="168"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="163"/>
         <source>Reports: %1</source>
         <translation>Отчеты: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="173"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="168"/>
         <source>No active tasks</source>
         <translation>Нет активных задач</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="182"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="177"/>
         <source>Running task: %1</source>
         <translation>Запуск задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="191"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="186"/>
         <source>: %1</source>
         <translation>: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="196"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="191"/>
         <source>Tasks: %1, Reports %2</source>
         <translation>Задачи: %1, Отчеты %2</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="198"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="193"/>
         <source>Tasks: %1</source>
         <translation>Задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="274"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="269"/>
         <source>%1 notification(s)</source>
         <translation>%1 уведомлений</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="317"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="312"/>
         <source>Wrong signal sender!</source>
         <translation>Wrong signal sender!</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="184"/>
+        <location filename="../src/task_view/TaskStatusBar.cpp" line="179"/>
         <source>canceling...</source>
         <translation>отменяется...</translation>
     </message>
@@ -2309,7 +2319,7 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="541"/>
+        <location filename="../src/Main.cpp" line="533"/>
         <source>UGENE initialization started</source>
         <translation>Инициализация UGENE</translation>
     </message>

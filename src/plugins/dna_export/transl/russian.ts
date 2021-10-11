@@ -501,6 +501,16 @@
         <translation>Загрузить по &apos;db_xref&apos; %1</translation>
     </message>
     <message>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="330"/>
+        <source>Export Sequence of Selected Annotations</source>
+        <translation>Экспорт последовательностей выбранных аннотаций</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="394"/>
+        <source>Export Selected Sequence Region</source>
+        <translation>Экспорт выбранных участков последовательности</translation>
+    </message>
+    <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="470"/>
         <location filename="../src/ExportSequenceViewItems.cpp" line="523"/>
         <source>Illegal parameter: input alignment is not empty!</source>
@@ -743,12 +753,16 @@
         <translation>Generate sequence task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="206"/>
-        <source>Incorrect reference file</source>
-        <translation>Incorrect reference file</translation>
+        <location filename="../src/DNASequenceGenerator.cpp" line="203"/>
+        <source>Incorrect reference file: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="322"/>
+        <source>Incorrect reference file</source>
+        <translation type="vanished">Incorrect reference file</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGenerator.cpp" line="317"/>
         <source>Generated MSA</source>
         <translation>Сгенерированное выравнивание</translation>
     </message>
@@ -756,12 +770,12 @@
 <context>
     <name>U2::EvaluateBaseContentTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="389"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="381"/>
         <source>Evaluate base content task</source>
         <translation>Evaluate base content task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="402"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="394"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Base content can be evaluated for sequence or sequence alignment</translation>
     </message>
@@ -1532,7 +1546,12 @@
 <context>
     <name>U2::GenerateDNASequenceTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="412"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="84"/>
+        <source>Failed to allocate memory for the result sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGenerator.cpp" line="404"/>
         <source>Generate DNA sequence task</source>
         <translation>Generate DNA sequence task</translation>
     </message>

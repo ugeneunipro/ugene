@@ -2413,6 +2413,94 @@ The session database file is removed after closing of UGENE.</source>
     </message>
 </context>
 <context>
+    <name>U2::PrimerStatistics</name>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="43"/>
+        <source>The primers contain a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="45"/>
+        <source>The forward primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="47"/>
+        <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="50"/>
+        <source> Unable to calculate primer statistics.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="142"/>
+        <source>Unexpected symbol: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="235"/>
+        <source>low GC-content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="236"/>
+        <source>high GC-content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="242"/>
+        <source>low melting temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="243"/>
+        <source>high melting temperature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="249"/>
+        <source>low GC clamp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="255"/>
+        <source>high base runs value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="262"/>
+        <source>forward primer has %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="264"/>
+        <source>reverse primer has %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="336"/>
+        <source>Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="337"/>
+        <source>Valid Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="338"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="339"/>
+        <source>Reverse</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::RelocateDocumentTask</name>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="361"/>

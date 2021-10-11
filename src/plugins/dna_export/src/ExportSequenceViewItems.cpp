@@ -327,7 +327,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
                                                                               fileBaseName,
                                                                               BaseDocumentFormats::FASTA,
                                                                               AppContext::getMainWindow()->getQMainWindow());
-    d->setWindowTitle("Export Sequence of Selected Annotations");
+    d->setWindowTitle(tr("Export Sequence of Selected Annotations"));
     d->disableAllFramesOption(true);  // only 1 frame is suitable
     d->disableStrandOption(true);  // strand is already recorded in annotation
     d->disableAnnotationsOption(true);  // here we do not export annotations for sequence under another annotations
@@ -391,7 +391,7 @@ void ADVExportContext::sl_saveSelectedSequences() {
                                                                               fileBaseName,
                                                                               BaseDocumentFormats::FASTA,
                                                                               AppContext::getMainWindow()->getQMainWindow());
-    d->setWindowTitle("Export Selected Sequence Region");
+    d->setWindowTitle(tr("Export Selected Sequence Region"));
     const int rc = d->exec();
     CHECK(!d.isNull(), );
     CHECK(rc != QDialog::Rejected, );

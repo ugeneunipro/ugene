@@ -543,8 +543,7 @@
         <translation>Выбор файла последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="254"/>
-        <location filename="../src/MusclePlugin.cpp" line="257"/>
+        <location filename="../src/MusclePlugin.cpp" line="253"/>
         <source>Select file with alignment</source>
         <translation>Выбор файла выравнивания</translation>
     </message>

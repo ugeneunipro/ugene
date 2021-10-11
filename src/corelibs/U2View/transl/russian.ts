@@ -5334,9 +5334,14 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="260"/>
+        <source>Unable to create output folder for result assembly.<byte value="xd"/>
+Directory Path: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
-        <translation>Unable to create output folder for result assembly.
+        <translation type="vanished">Unable to create output folder for result assembly.
         Directory Path: %1</translation>
     </message>
     <message>
@@ -8452,8 +8457,8 @@ Please, load the corresponding plugins.</source>
         <translation>Фон рассчитывается...</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/ZoomableAssemblyOverview.cpp" line="299"/>
-        <location filename="../src/ov_assembly/ZoomableAssemblyOverview.cpp" line="321"/>
+        <location filename="../src/ov_assembly/ZoomableAssemblyOverview.cpp" line="295"/>
+        <location filename="../src/ov_assembly/ZoomableAssemblyOverview.cpp" line="317"/>
         <source>%1 to %2 (%3 bp)</source>
         <translation>%1 в %2 (%3 нукл.)</translation>
     </message>

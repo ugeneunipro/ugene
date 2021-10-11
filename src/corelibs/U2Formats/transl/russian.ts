@@ -89,7 +89,7 @@
         <translation>Невозможно записать данные. База данных закрыта или данные были изменены.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="773"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="774"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -309,12 +309,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="60"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="61"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP форматы используются для сохранения полиморфизма однонуклеотидных данных</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="117"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="118"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Строка %1: Слишком мало столбцов в этой строке. Строка была проигнорирована.</translation>
     </message>
@@ -1418,77 +1418,77 @@
 <context>
     <name>U2::FpkmTrackingFormat</name>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="86"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="85"/>
         <source>FPKM Tracking Format</source>
         <translation>FPKM Tracking Format</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="87"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="86"/>
         <source>The FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format is a native Cufflinks format to output estimated expression values.</source>
         <translation>FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format это внутренний Cufflinks формат для выходных значений оценки выражений.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="120"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="119"/>
         <source>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</source>
         <translation>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="151"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="150"/>
         <source>FPKM Tracking Format parsing error: incorrect number of fields at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="156"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="155"/>
         <source>FPKM Tracking Format parsing error: a field at line %1 is empty!</source>
         <translation>FPKM Tracking Format parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="161"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="160"/>
         <source>FPKM Tracking Format parsing error: incorrect coordinates at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="173"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="172"/>
         <source>FPKM Tracking Format parsing error: different sequence names were detected in an input file. Sequence name &apos;%1&apos; is used.</source>
         <translation>FPKM Tracking Format parsing error: different sequence names were detected in an input file. Sequence name &apos;%1&apos; is used.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="189"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="188"/>
         <source>FPKM Tracking Format parsing error: tracking ID value is empty at line %1!</source>
         <translation>FPKM Tracking Format parsing error: tracking ID value is empty at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="213"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="212"/>
         <source>FPKM Tracking Format parsing error: incorrect length value at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect length value at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="219"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="218"/>
         <source>FPKM Tracking Format parsing error: incorrect coverage value at line %1!</source>
         <translation>FPKM Tracking Format parsing error: incorrect coverage value at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="496"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="495"/>
         <source>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</source>
         <translation>Skipped qualifier &apos;%1&apos; while saving a FPKM header.</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="562"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="561"/>
         <source>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</source>
         <translation>FPKM Tracking Format saving error: tracking ID shouldn&apos;t be empty!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="586"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="585"/>
         <source>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</source>
         <translation>FPKM Tracking Format saving error: failed to parse locus qualifier &apos;%1&apos;, writing it to the output file anyway!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="594"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="593"/>
         <source>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</source>
         <translation>FPKM Tracking Format saving error: an annotation region (%1, %2) differs from the information stored in the &apos;locus&apos; qualifier (%3, %4). Writing the &apos;locus&apos; qualifier to output!</translation>
     </message>
     <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="627"/>
+        <location filename="../src/FpkmTrackingFormat.cpp" line="626"/>
         <source>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</source>
         <translation>FPKM Tracking Format saving error: one or more errors occurred while saving a file, see TRACE log for details!</translation>
     </message>
@@ -1599,52 +1599,52 @@
 <context>
     <name>U2::GTFFormat</name>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="100"/>
+        <location filename="../src/GTFFormat.cpp" line="97"/>
         <source>GTF</source>
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="101"/>
+        <location filename="../src/GTFFormat.cpp" line="98"/>
         <source>The Gene transfer format (GTF) is a file format used to hold information about gene structure.</source>
         <translation>The Gene transfer format (GTF) это формат используемый для хранения информации о структуре гена.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="155"/>
+        <location filename="../src/GTFFormat.cpp" line="152"/>
         <source>GTF parsing error: incorrect number of fields at line %1!</source>
         <translation>GTF parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="160"/>
+        <location filename="../src/GTFFormat.cpp" line="157"/>
         <source>GTF parsing error: a field at line %1 is empty!</source>
         <translation>GTF parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="165"/>
+        <location filename="../src/GTFFormat.cpp" line="162"/>
         <source>GTF parsing error: incorrect coordinates at line %1!</source>
         <translation>GTF parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="189"/>
+        <location filename="../src/GTFFormat.cpp" line="186"/>
         <source>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect score value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="198"/>
+        <location filename="../src/GTFFormat.cpp" line="195"/>
         <source>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect frame value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="219"/>
+        <location filename="../src/GTFFormat.cpp" line="216"/>
         <source>GTF parsing error: invalid attributes format at line %1!</source>
         <translation>GTF parsing error: invalid attributes format at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="227"/>
+        <location filename="../src/GTFFormat.cpp" line="224"/>
         <source>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</source>
         <translation>GTF parsing error: incorrect strand value &quot;%1&quot; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="274"/>
+        <location filename="../src/GTFFormat.cpp" line="271"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
@@ -2649,8 +2649,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="591"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="616"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1116"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1125"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1117"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1126"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
@@ -2720,79 +2720,79 @@
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="596"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="597"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="658"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="659"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="798"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="901"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="799"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="902"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="851"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="852"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1027"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="302"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1051"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="303"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1093"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1107"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1108"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1137"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1138"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1155"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="77"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="78"/>
         <source>Sequence object not found</source>
         <translation>Последовательность не найдена</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="124"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="125"/>
         <source>Internal error occurred during the sequence processing</source>
         <translation>Internal error occurred during the sequence processing</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="125"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="126"/>
         <source>An exception was thrown during reading sequence data from dbi</source>
         <translation>An exception was thrown during reading sequence data from dbi</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="383"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="384"/>
         <source>An error occurred during reverting replacing sequence data</source>
         <translation>An error occurred during reverting replacing sequence data</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="398"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="399"/>
         <source>An error occurred during replacing sequence data</source>
         <translation>An error occurred during replacing sequence data</translation>
     </message>
@@ -2824,37 +2824,37 @@
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="131"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="457"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="453"/>
         <source>Packing method prefix is not supported: %1</source>
         <translation>Packing method prefix is not supported: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="139"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="465"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="461"/>
         <source>Data are corrupted, no name end marker found: %1</source>
         <translation>Data are corrupted, no name end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="148"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="474"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="470"/>
         <source>Data are corrupted, no sequence end marker found: %1</source>
         <translation>Data are corrupted, no sequence end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="157"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="483"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="479"/>
         <source>Data are corrupted, no CIGAR end marker found: %1</source>
         <translation>Data are corrupted, no CIGAR end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="176"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="502"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="498"/>
         <source>Data are corrupted, no rnext end marker found: %1</source>
         <translation>Data are corrupted, no rnext end marker found: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/util/MysqlAssemblyUtils.cpp" line="191"/>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="517"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="513"/>
         <source>Can not convert pnext to a number: %1</source>
         <translation>Can not convert pnext to a number: %1</translation>
     </message>
@@ -2900,7 +2900,7 @@
         <translation>Packing method is not supported: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="446"/>
         <source>Packed data are empty!</source>
         <translation>Packed data are empty!</translation>
     </message>
@@ -2974,44 +2974,44 @@
         <translation>Msa row not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="278"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="279"/>
         <source>Not an object! Id: %1, type: %2</source>
         <translation>Not an object! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="616"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="617"/>
         <source>Can&apos;t undo an operation for the object!</source>
         <translation>Can&apos;t undo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="699"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="700"/>
         <source>Can&apos;t redo an operation for the object!</source>
         <translation>Can&apos;t redo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="869"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
         <source>Object not found!</source>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="1003"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="1004"/>
         <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
         <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="810"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="929"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="941"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="811"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="978"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="979"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteSequenceDbi.cpp" line="73"/>
+        <location filename="../src/sqlite_dbi/SQLiteSequenceDbi.cpp" line="74"/>
         <source>Sequence object not found.</source>
         <translation>Sequence object not found.</translation>
     </message>

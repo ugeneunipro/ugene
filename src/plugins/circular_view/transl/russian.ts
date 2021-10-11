@@ -144,7 +144,7 @@
 <context>
     <name>U2::CircularViewAction</name>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="346"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="347"/>
         <source>Show circular view</source>
         <translation>Показать круговой вид</translation>
     </message>
@@ -152,27 +152,27 @@
 <context>
     <name>U2::CircularViewContext</name>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="100"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="101"/>
         <source>Save circular view as image...</source>
         <translation>Сохранить круговой вид как изображение...</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="105"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="106"/>
         <source>Set new sequence origin...</source>
         <translation>Установить последовательность отсчета...</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="117"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="118"/>
         <source>Toggle circular views</source>
         <translation>Переключить круговые виды</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="272"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="273"/>
         <source>Remove circular view</source>
         <translation>Удалить круговой вид</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="282"/>
+        <location filename="../src/CircularViewPlugin.cpp" line="283"/>
         <source>Show circular view</source>
         <translation>Показать круговой вид</translation>
     </message>
@@ -329,27 +329,27 @@
         <translation>Показать/скрыть карту сайтов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="166"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="167"/>
         <source>Circular View is NULL</source>
         <translation>Circular View is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="168"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="169"/>
         <source>Circular View viewport is NULL</source>
         <translation>Circular View viewport is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="170"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="171"/>
         <source>Scroll area is NULL</source>
         <translation>Scroll area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="225"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="226"/>
         <source>Sequence context is NULL</source>
         <translation>Sequence context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="227"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="228"/>
         <source>Sequence obejct is NULL</source>
         <translation>Sequence obejct is NULL</translation>
     </message>

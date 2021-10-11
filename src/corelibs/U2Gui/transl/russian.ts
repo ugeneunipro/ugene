@@ -2193,8 +2193,8 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="89"/>
-        <location filename="../src/util/DialogUtils.cpp" line="95"/>
+        <location filename="../src/util/DialogUtils.cpp" line="98"/>
+        <location filename="../src/util/DialogUtils.cpp" line="104"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -2282,6 +2282,12 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/NotificationWidget.cpp" line="48"/>
         <source>Always on top</source>
         <translation>Всегда сверху</translation>
+    </message>
+    <message>
+        <location filename="../src/NotificationWidget.cpp" line="54"/>
+        <location filename="../src/NotificationWidget.cpp" line="55"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2580,17 +2586,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::Notification</name>
     <message>
-        <location filename="../src/Notification.cpp" line="170"/>
+        <location filename="../src/Notification.cpp" line="183"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="171"/>
+        <location filename="../src/Notification.cpp" line="184"/>
         <source>Remove notification after closing</source>
         <translation>Удалить уведомление после закрытия</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="187"/>
+        <location filename="../src/Notification.cpp" line="200"/>
         <source>Detailed message</source>
         <translation>Детальное сообщение</translation>
     </message>

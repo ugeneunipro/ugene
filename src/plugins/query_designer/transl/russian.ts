@@ -397,37 +397,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDElement</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="359"/>
+        <location filename="../src/QueryViewItems.cpp" line="357"/>
         <source>Set order</source>
         <translation>Задать порядок</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="377"/>
+        <location filename="../src/QueryViewItems.cpp" line="375"/>
         <source>Remove from group</source>
         <translation>Удалить из группы</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="379"/>
+        <location filename="../src/QueryViewItems.cpp" line="377"/>
         <source>Add to group</source>
         <translation>Добавить к группе</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="385"/>
+        <location filename="../src/QueryViewItems.cpp" line="383"/>
         <source>Up</source>
         <translation>Повысить</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="386"/>
+        <location filename="../src/QueryViewItems.cpp" line="384"/>
         <source>Down</source>
         <translation>Понизить</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="397"/>
+        <location filename="../src/QueryViewItems.cpp" line="395"/>
         <source>Add &apos;%1&apos; to group</source>
         <translation>Добавить &apos;%1&apos; к группе</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="398"/>
+        <location filename="../src/QueryViewItems.cpp" line="396"/>
         <source>Group:</source>
         <translation>Группа:</translation>
     </message>
@@ -747,7 +747,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRulerItem</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="1214"/>
+        <location filename="../src/QueryViewItems.cpp" line="1210"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
