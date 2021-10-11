@@ -1058,6 +1058,34 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7448) {
+    // 1. Open "murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click on any annotation.
+    GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 2);
+
+    GTLogTracer lt;
+    // 3. Click right mouse button, choose "Export -> Export sequence of selected annotations...".
+    // 4. In the appeared dialog check "Translate to amino acid" and click "Export".
+    GTUtilsDialog::waitForDialog(os,
+        new ExportSequenceOfSelectedAnnotationsFiller(os,
+            sandBoxDir + "test_7448.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Export", "Export sequence of selected annotations..." }));
+    GTMouseDriver::click(Qt::RightButton);
+
+    // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
+    lt.checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7451) {
     // Check that a right click on a recent item on the Welcome Screen does not crash UGENE.
 
@@ -1117,14 +1145,14 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
-    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTMenu::clickMainMenuItem(os, { "Tools", "Random sequence generator..." });
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 
-    QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
+    QWidget* overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
 }

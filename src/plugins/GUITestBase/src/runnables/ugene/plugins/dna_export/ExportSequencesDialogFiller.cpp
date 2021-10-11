@@ -100,9 +100,9 @@ void ExportSelectedRegionFiller::setName(const QString &value) {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
-ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_path, FormatToUse _format, MergeOptions _options, int _gapLength, bool _addDocToProject, bool _exportWithAnnotations, GTGlobals::UseMethod method)
+ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_path, FormatToUse _format, MergeOptions _options, int _gapLength, bool _addDocToProject, bool _exportWithAnnotations, GTGlobals::UseMethod method, bool _translate)
     : Filler(_os, "U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
-      exportWithAnnotations(false), options(_options), useMethod(method) {
+      exportWithAnnotations(false), options(_options), useMethod(method), translate(_translate) {
     exportWithAnnotations = _exportWithAnnotations;
     path = GTFileDialog::toAbsoluteNativePath(_path);
 
@@ -146,6 +146,12 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     if (annotationsCheckBox->isEnabled()) {
         GTCheckBox::setChecked(os, annotationsCheckBox, exportWithAnnotations);
     }
+
+    GTGlobals::sleep(200);
+
+    QCheckBox* translateButton = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "translateButton"));
+    CHECK_SET_ERR(translateButton != nullptr, "translateButton not found!");
+    GTCheckBox::setChecked(os, translateButton, translate);
 
     GTGlobals::sleep(200);
 

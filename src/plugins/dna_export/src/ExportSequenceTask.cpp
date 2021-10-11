@@ -553,7 +553,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
     importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ad->name, false);
     CHECK_OP(os, U2Sequence());
 
-    foreach (const U2Region &annotatedRegion, ad->location->regions) {
+    for (const U2Region &annotatedRegion : qAsConst(ad->location->regions)) {
         qint64 currentRegionLength = 0;
         for (qint64 pos = annotatedRegion.startPos; pos < annotatedRegion.endPos(); pos += MAX_CHUNK_LENGTH) {
             const qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotatedRegion.endPos() - pos);
@@ -580,7 +580,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
             CHECK_OP(os, U2Sequence());
             currentRegionLength += chunkContent.length();
         }
-        CHECK_EXT(currentRegionLength == annotatedRegion.length,
+        CHECK_EXT(currentRegionLength == (nullptr != ei.aminoTT ? annotatedRegion.length / 3 : annotatedRegion.length),
                   os.setError(tr("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries")),
                   U2Sequence());
         resultRegions.append(U2Region(resultRegions.isEmpty() ? 0 : resultRegions.last().endPos(), currentRegionLength));
