@@ -36,10 +36,13 @@
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor* editor)
+MsaEditorWgt::MsaEditorWgt(MSAEditor *editor, MaEditorOverviewArea *overview, MaEditorStatusBar *statusbar)
     : MaEditorWgt(editor),
       multiTreeViewer(nullptr),
-      similarityStatistics(nullptr) {
+      similarityStatistics(nullptr)
+{
+    overviewArea = overview;
+    statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
@@ -122,8 +125,15 @@ void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
-void MsaEditorWgt::initOverviewArea() {
-    overviewArea = new MSAEditorOverviewArea(this);
+void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
+    if (_overviewArea == nullptr) {
+        // TODO:ichebyki
+        // overviewArea = new MSAEditorOverviewArea(this);
+        // Q_ASSERT(_overviewArea);
+        _overviewArea = nullptr;
+    } else {
+        overviewArea = _overviewArea;
+    }
 }
 
 void MsaEditorWgt::initNameList(QScrollBar* nhBar) {
@@ -134,8 +144,12 @@ void MsaEditorWgt::initConsensusArea() {
     consensusArea = new MSAEditorConsensusArea(this);
 }
 
-void MsaEditorWgt::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(getEditor());
+void MsaEditorWgt::initStatusBar(MaEditorStatusBar *statusbar) {
+    if (statusbar == nullptr) {
+        statusBar = new MsaEditorStatusBar(getEditor());
+    } else {
+        statusBar = statusbar;
+    }
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {

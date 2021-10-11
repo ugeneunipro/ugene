@@ -57,8 +57,8 @@ public:
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject* getMaObject() const override;
-    McaEditorWgt* getUI() const override;
+    MultipleChromatogramAlignmentObject *getMaObject() const override;
+    McaEditorWgt *getUI(uint index = 0) const override;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;
@@ -93,8 +93,10 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget* createWidget() override;
-    void initActions() override;
+    QWidget *createWidget() override;
+    QWidget *createChildWidget(uint index = 0);
+    void initActions(uint index) override;
+    void updateActions() override;
 
     QAction* showChromatogramsAction;
     QAction* showGeneralTabAction;
