@@ -29,9 +29,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-
 #include "base_dialogs/MessageBoxFiller.h"
-
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTSpinBox.h"
 #include "primitives/GTTableView.h"
@@ -42,13 +40,13 @@ namespace U2 {
 using namespace HI;
 
 // Searches for a table with a given name and returns its current row count.
-static int getRowCount(GUITestOpStatus& os, const QString& tableName) {
-    return GTTableView::rowCount(os, GTWidget::findExactWidget<QTableView*>(os, tableName,
+static int getRowCount(GUITestOpStatus &os, const QString &tableName) {
+    return GTTableView::rowCount(os, GTWidget::findExactWidget<QTableView *>(os, tableName,
         GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
 }
 
 // Checks if the annotation table has an annotation with a given name and if its region matches an expected one.
-static void checkAnnotation(GUITestOpStatus& os, const QString& annotationName, const QString& expectedRegion) {
+static void checkAnnotation(GUITestOpStatus &os, const QString &annotationName, const QString &expectedRegion) {
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, annotationName);
     CHECK_SET_ERR(expectedRegion == region, QString("Invalid region for '%1' annotation: expected '%2', current '%3'").
                                                 arg(annotationName, expectedRegion, region))
@@ -80,7 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     Expected: reverse user primer = AAACACCCAAACACCT.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
-    QWidget* sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
 
     GTUtilsPcrPrimerDesign::selectGeneratedSequence(os, 0);
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Forward5);
@@ -106,26 +104,34 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     Expected: right area values have changed to 100-200.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
-    QWidget* sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
 
     int expectedStart = 1,
-        expectedEnd   = 100;
+        expectedEnd = 100;
     GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
     GTWidget::click(os, GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence));
     GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
     int currentStart = GTSpinBox::getValue(os, "sbLeftAreaStart", sequence),
-        currentEnd   = GTSpinBox::getValue(os, "sbLeftAreaEnd", sequence);
+        currentEnd = GTSpinBox::getValue(os, "sbLeftAreaEnd", sequence);
     CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Left area spinbox: "
-        "expected %1-%2, current %3-%4").arg(expectedStart).arg(expectedEnd).arg(currentStart).arg(currentEnd))
+                                                                                      "expected %1-%2, current %3-%4")
+                                                                                  .arg(expectedStart)
+                                                                                  .arg(expectedEnd)
+                                                                                  .arg(currentStart)
+                                                                                  .arg(currentEnd))
 
     expectedStart = 100,
-    expectedEnd   = 200;
+    expectedEnd = 200;
     GTWidget::click(os, GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence));
     GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
     currentStart = GTSpinBox::getValue(os, "sbRightAreaStart", sequence),
-    currentEnd   = GTSpinBox::getValue(os, "sbRightAreaEnd", sequence);
+    currentEnd = GTSpinBox::getValue(os, "sbRightAreaEnd", sequence);
     CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Right area spinbox: "
-        "expected %1-%2, current %3-%4").arg(expectedStart).arg(expectedEnd).arg(currentStart).arg(currentEnd))
+                                                                                      "expected %1-%2, current %3-%4")
+                                                                                  .arg(expectedStart)
+                                                                                  .arg(expectedEnd)
+                                                                                  .arg(currentStart)
+                                                                                  .arg(currentEnd))
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -135,12 +141,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    Expected: all settings on the tab are disabled, a warning is displayed.
     // Select Nucl sequence.
     //    Expected: all settings on the tab are enabled, no warning.
-    QList<ADVSingleSequenceWidget*> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                 testDir + "_common_data/fasta/", "alphabet.fa", { "Amino", "Nucl" });
+    QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
+                                                  testDir + "_common_data/fasta/", "alphabet.fa", {"Amino", "Nucl"});
     GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
     auto mainWidget = GTWidget::findWidget(os, "runPcrPrimerDesignWidget");
     auto warnLabel = GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").
-                                         first();
+        first();
 
     GTWidget::click(os, seqWidgets.first());
     GTWidget::checkEnabled(os, mainWidget, false);
@@ -153,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     using Op = GTUtilsOptionPanelSequenceView;
-    auto checkExpectedTabs = [&os](const QSet<Op::Tabs>& tabs) {
+    auto checkExpectedTabs = [&os](const QSet<Op::Tabs> &tabs) {
         // Tabs that should be.
         for (auto tab : qAsConst(tabs)) {
             GTWidget::findWidget(os, Op::tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os));
@@ -180,7 +186,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
     QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
-    QSet<Op::Tabs> three = { Op::Search, Op::AnnotationsHighlighting, Op::Statistics };
+    QSet<Op::Tabs> three = {Op::Search, Op::AnnotationsHighlighting, Op::Statistics};
 
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
     checkExpectedTabs(all);
@@ -257,14 +263,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     const int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 8, QString("Result table size: expected 8, current %1").arg(currentRowCount))
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", { 67, 87 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", { 337, 357 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 2, "B1 Forward", { 67, 87 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 3, "B1 Reverse", { 337, 357 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 4, "B2 Forward", { 48, 70 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 5, "B2 Reverse", { 354, 376 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 6, "B3 Forward", { 44, 66 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 7, "B3 Reverse", { 358, 380 });
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {67, 87});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 357});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 2, "B1 Forward", {67, 87});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 3, "B1 Reverse", {337, 357});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 4, "B2 Forward", {48, 70});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 5, "B2 Reverse", {354, 376});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 6, "B3 Forward", {44, 66});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 7, "B3 Reverse", {358, 380});
 
     checkAnnotation(os, "A Forward", "67..87");
     checkAnnotation(os, "A Reverse", "complement(337..357)");
@@ -275,14 +281,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     checkAnnotation(os, "B3 Forward", "44..66");
     checkAnnotation(os, "B3 Reverse", "complement(358..380)");
 
-    GTUtilsNotifications::checkNotificationReportText(os, { "A Forward",  "AATGGGCACAAATTTTCTGTC",
-                                                            "A Reverse",  "AAGGGTATCACCTTCAAACTT",
-                                                            "B1 Forward", "AATGGGCACAAATTTTCTGTC",
-                                                            "B1 Reverse", "AAGGGTATCACCTTCAAACTT",
-                                                            "B2 Forward", "TGAATTAGATGGTGATGTTAATG",
-                                                            "B2 Reverse", "TTAACTCGATTCTATTAACAAGG",
-                                                            "B3 Forward", "TTGTTGAATTAGATGGTGATGTT",
-                                                            "B3 Reverse", "CCTTTTAACTCGATTCTATTAAC" });
+    GTUtilsNotifications::checkNotificationReportText(os, {"A Forward", "AATGGGCACAAATTTTCTGTC",
+                                                           "A Reverse", "AAGGGTATCACCTTCAAACTT",
+                                                           "B1 Forward", "AATGGGCACAAATTTTCTGTC",
+                                                           "B1 Reverse", "AAGGGTATCACCTTCAAACTT",
+                                                           "B2 Forward", "TGAATTAGATGGTGATGTTAATG",
+                                                           "B2 Reverse", "TTAACTCGATTCTATTAACAAGG",
+                                                           "B3 Forward", "TTGTTGAATTAGATGGTGATGTT",
+                                                           "B3 Reverse", "CCTTTTAACTCGATTCTATTAAC"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -318,12 +324,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     const int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 6, QString("Result table size: expected 6, current %1").arg(currentRowCount))
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", { 59, 80 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", { 337, 357 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 2, "B1 Forward", { 58, 78 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 3, "B1 Reverse", { 346, 366 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 4, "B2 Forward", { 39, 61 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 5, "B2 Reverse", { 363, 385 });
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {59, 80});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 357});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 2, "B1 Forward", {58, 78});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 3, "B1 Reverse", {346, 366});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 4, "B2 Forward", {39, 61});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 5, "B2 Reverse", {363, 385});
 
     checkAnnotation(os, "A Forward", "59..80");
     checkAnnotation(os, "A Reverse", "complement(337..357)");
@@ -344,15 +350,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         "B2 Forward", "<span style=\" text-decoration: underline;\">GACAGA</span>"
                       "<span style=\" font-weight:600;\">AATTCTTGTTGAATTAGATGGTG</span>",
         "B2 Reverse", "<span style=\" font-weight:600;\">CAATACCTTTTAACTCGATTCTA</span>"
-                      "<span style=\" text-decoration: underline;\">GACAGA</span>" });
+                      "<span style=\" text-decoration: underline;\">GACAGA</span>"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     class CheckTextBadBackboneDialog : public CustomScenario {
-        void run(GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::findLabelByText(os, "The unwanted structures have been found in the following backbone sequence "
-                                          "candidate:", dialog);
+                                          "candidate:",
+                                      dialog);
             GTTextEdit::containsString(os, GTWidget::findTextEdit(os, "unwantedTextEdit", dialog),
                                        "Delta G: -20.7 kcal/mole Base Pairs: 12 Melting temperature: 36°C");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::No);
@@ -380,10 +387,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     class CheckTextBadBackboneDialog : public CustomScenario {
-        void run(GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::findLabelByText(os, "The unwanted structures have been found in the following backbone sequence "
-                                          "candidate:", dialog);
+                                          "candidate:",
+                                      dialog);
             GTTextEdit::containsString(os, GTWidget::findTextEdit(os, "unwantedTextEdit", dialog),
                                        "Delta G: -11.7 kcal/mole Base Pairs: 6 Melting temperature: 20°C");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::No);
@@ -463,8 +471,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 2, QString("Result table size: expected 2, current %1").arg(currentRowCount))
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", { 29, 50 });
-    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", { 337, 358 });
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {29, 50});
+    GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 358});
 }
 
 }  // namespace GUITest_common_scenarios_pcr_primer_design_algo
