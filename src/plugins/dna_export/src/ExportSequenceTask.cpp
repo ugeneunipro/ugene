@@ -580,7 +580,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
             CHECK_OP(os, U2Sequence());
             currentRegionLength += chunkContent.length();
         }
-        CHECK_EXT(currentRegionLength == (nullptr != ei.aminoTT ? annotatedRegion.length / 3 : annotatedRegion.length),
+        CHECK_EXT(currentRegionLength == (ei.aminoTT != nullptr ? annotatedRegion.length / 3 : annotatedRegion.length),
                   os.setError(tr("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries")),
                   U2Sequence());
         resultRegions.append(U2Region(resultRegions.isEmpty() ? 0 : resultRegions.last().endPos(), currentRegionLength));
