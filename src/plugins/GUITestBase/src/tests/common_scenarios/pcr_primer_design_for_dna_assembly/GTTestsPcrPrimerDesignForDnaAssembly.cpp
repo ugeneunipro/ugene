@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsPcrPrimerDesign::openTab(os);
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const int currentRowCount = getRowCount(os, "productsTable");
+    int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 0, QString("Result table size: expected 0, current %1").arg(currentRowCount))
     GTUtilsNotifications::checkNotificationReportText(os, "There are no primers that meet the specified parameters");
 }
@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const int currentRowCount = getRowCount(os, "productsTable");
+    int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 8, QString("Result table size: expected 8, current %1").arg(currentRowCount))
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {67, 87});
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 357});
@@ -322,7 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const int currentRowCount = getRowCount(os, "productsTable");
+    int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 6, QString("Result table size: expected 6, current %1").arg(currentRowCount))
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {59, 80});
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 357});
@@ -469,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPcrPrimerDesign::setOtherSequences(os, testDir + "_common_data/pcr_primer_design/other_in_pcr.fa");
     GTUtilsPcrPrimerDesign::clickStart(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const int currentRowCount = getRowCount(os, "productsTable");
+    int currentRowCount = getRowCount(os, "productsTable");
     CHECK_SET_ERR(currentRowCount == 2, QString("Result table size: expected 2, current %1").arg(currentRowCount))
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 0, "A Forward", {29, 50});
     GTUtilsPcrPrimerDesign::checkEntryInResultsTable(os, 1, "A Reverse", {337, 358});
