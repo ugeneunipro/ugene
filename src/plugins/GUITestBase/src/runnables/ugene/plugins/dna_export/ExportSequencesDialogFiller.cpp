@@ -149,11 +149,8 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     GTGlobals::sleep(200);
 
-    QCheckBox* translateButton = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "translateButton"));
-    CHECK_SET_ERR(translateButton != nullptr, "translateButton not found!");
+    QCheckBox* translateButton = GTWidget::findCheckBox(os, "translateButton");
     GTCheckBox::setChecked(os, translateButton, translate);
-
-    GTGlobals::sleep(200);
 
     QRadioButton *mergeButton = dialog->findChild<QRadioButton *>(mergeRadioButtons[options]);
 

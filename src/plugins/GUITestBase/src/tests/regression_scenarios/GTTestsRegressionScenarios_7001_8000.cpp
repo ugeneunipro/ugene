@@ -1081,6 +1081,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448) {
             true));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Export", "Export sequence of selected annotations..." }));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
     lt.checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
