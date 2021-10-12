@@ -499,7 +499,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193_2) {
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
 
     //Expected state: there is a warning about forward primer length
-    QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
+    QLabel *warningLabel = GTWidget::findLabel(os, "warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be between"), "Incorrect warning message");
 
     GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
