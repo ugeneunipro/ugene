@@ -42,12 +42,6 @@ public:
 
     /** Ensures that the scroll area would have an appropriate width */
     virtual QSize sizeHint() const;
-
-    /** Set the minimum width of a child. */
-    void setMinWidth(int w);
-
-private:
-    int minWidthFromChild = 0;
 };
 
 /** Options Panel Widget state */

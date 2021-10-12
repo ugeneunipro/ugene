@@ -42,17 +42,12 @@ OptionsScrollArea::OptionsScrollArea(QWidget *parent)
                   " }");
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     setMaximumWidth(GroupOptionsWidget::getMaxWidgetWidth());
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     hide();
 }
 
 QSize OptionsScrollArea::sizeHint() const {
     int BORDERS_APPROX_SIZE = 15;
-    return QSize(std::max(GroupOptionsWidget::getMinWidgetWidth(), minWidthFromChild) + BORDERS_APPROX_SIZE, 0);
-}
-
-void OptionsScrollArea::setMinWidth(int w) {
-    minWidthFromChild = w;
+    return QSize(GroupOptionsWidget::getMinWidgetWidth() + BORDERS_APPROX_SIZE, 0);
 }
 
 OptionsPanelWidget::OptionsPanelWidget() {
@@ -168,9 +163,6 @@ GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &group
     optionsLayout->insertWidget(0, groupWidget);
 
     optionsWidgets.insert(0, groupWidget);
-
-    optionsScrollArea->setMinWidth(mainWidget->minimumWidth() + 20);
-    optionsScrollArea->updateGeometry();
 
     groupWidget->setFocus();
 
