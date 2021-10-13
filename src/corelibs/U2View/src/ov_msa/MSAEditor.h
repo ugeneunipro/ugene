@@ -184,7 +184,7 @@ protected slots:
 protected:
     QWidget *createWidget() override;
     MsaEditorWgt *createChildWidget(uint index,
-                                    MaEditorOverviewArea *overview = nullptr,
+                                    MaEditorMultilineOverviewArea *overview = nullptr,
                                     MaEditorStatusBar *statusbar = nullptr);
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
