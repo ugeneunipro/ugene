@@ -32,6 +32,7 @@ class MSAEditor;
 class MsaEditorAlignmentDependentWidget;
 class MSAEditorMultiTreeViewer;
 class MSAEditorMultilineOverviewArea;
+class MsaEditorStatusBar;
 class MsaEditorSimilarityColumn;
 class MSAEditorTreeViewer;
 class SimilarityStatisticsSettings;
@@ -50,7 +51,8 @@ private slots:
 
 protected:
     void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr);
-    void initStatusBar();
+    void initStatusBar(MaEditorStatusBar *_statusBar = nullptr);
+    void initChildrenArea();
 
 private:
 

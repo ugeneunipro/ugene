@@ -187,7 +187,7 @@ protected:
     void initActions() override;
 =======
     MsaEditorWgt *createChildWidget(uint index,
-                                    MaEditorOverviewArea *overview = nullptr,
+                                    MaEditorMultilineOverviewArea *overview = nullptr,
                                     MaEditorStatusBar *statusbar = nullptr);
 >>>>>>> The init commit for UGENE-7042
     bool eventFilter(QObject *o, QEvent *e) override;

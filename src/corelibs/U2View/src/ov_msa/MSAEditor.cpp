@@ -21,9 +21,6 @@
 
 #include "MSAEditor.h"
 
-#include <QGroupBox>
-#include <QVBoxLayout>
-
 #include <QDropEvent>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
@@ -51,7 +48,8 @@
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "MSAEditorOffsetsView.h"
-#include "MSAEditorOverviewArea.h"
+#include "MSAEditorMultilineOverviewArea.h"
+#include "MsaEditorStatusBar.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorConsensusArea.h"
 #include "MaEditorFactory.h"
@@ -64,6 +62,10 @@
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "overview/MaEditorMultilineOverviewArea.h"
+#include "view_rendering/MaEditorConsensusArea.h"
+#include "view_rendering/MaEditorSelection.h"
+#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -201,9 +203,11 @@ void MSAEditor::sl_buildTree() {
 bool MSAEditor::onObjectRemoved(GObject *obj) {
     bool result = GObjectView::onObjectRemoved(obj);
 
-    obj->disconnect(getUI()->getSequenceArea());
-    obj->disconnect(getUI()->getConsensusArea());
-    obj->disconnect(getUI()->getEditorNameList());
+    for (uint i = 0; i < uiChildCount; i++) {
+        obj->disconnect(getUI(i)->getSequenceArea());
+        obj->disconnect(getUI(i)->getConsensusArea());
+        obj->disconnect(getUI(i)->getEditorNameList());
+    }
     return result;
 }
 
@@ -213,8 +217,8 @@ void MSAEditor::onObjectRenamed(GObject *, const QString &) {
 }
 
 bool MSAEditor::onCloseEvent() {
-    if (getUI()->getOverviewArea() != nullptr) {
-        getUI()->getOverviewArea()->cancelRendering();
+    if (ui->getOverviewArea() != nullptr) {
+        ui->getOverviewArea()->cancelRendering();
     }
     return true;
 }
@@ -229,7 +233,9 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar *tb) {
-    tb->addAction(getUI()->copyFormattedSelectionAction);
+    for (uint i = 0; i < uiChildCount; i++) {
+        tb->addAction(getUI(i)->copyFormattedSelectionAction);
+    }
 
     tb->addAction(saveAlignmentAction);
     tb->addAction(saveAlignmentAsAction);
@@ -460,40 +466,34 @@ QWidget *MSAEditor::createWidget()
 {
     Q_ASSERT(ui == nullptr && uiChild == nullptr && uiChildCount == 0 && uiChildLength == 0);
 
-    MsaEditorMultilineWgt *uiX = new MsaEditorMultilineWgt(this);
-    uiX->setObjectName("msa_editor_vertical_childs_layout_" + maObject->getGObjectName());
-
-    ui = new QGroupBox(tr("MSA vertical child layout"));
+    ui = new MsaEditorMultilineWgt(this);
     ui->setObjectName("msa_editor_vertical_childs_layout_" + maObject->getGObjectName());
-    QVBoxLayout *layout = new QVBoxLayout;
-    ui->setLayout(layout);
 
-    uiChildLength = 2;
-    uiChild = new MaEditorWgt *[2];
-    MSAEditorOverviewArea *overviewArea = nullptr;
+    uiChildLength = 1;
+    uiChild = new MaEditorWgt *[uiChildLength];
+    MaEditorMultilineOverviewArea *overviewArea = ui->getOverviewArea(); // new MSAEditorMultilineOverviewArea(ui);
+    MaEditorStatusBar *statusBar = ui->getStatusBar(); // new MsaEditorStatusBar(this);
 
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < uiChildLength; i++) {
         uiChild[i] = nullptr;
-        MsaEditorWgt *child = createChildWidget(i);
+        MsaEditorWgt *child = createChildWidget(i, overviewArea, statusBar);
         Q_ASSERT(child != nullptr);
-        layout->addWidget(child);
+        if (overviewArea != nullptr) {
+            // TODO:ichebyki
+            // child->initOverviewArea(overviewArea);
+        }
+        ui->addChild(child);
         uiChildCount++;
-//        if (overviewArea == nullptr) {
-//            overviewArea = new MSAEditorOverviewArea(child);
-//        }
-//        child->initOverviewArea(overviewArea);
     }
-    layout->addWidget(overviewArea);
 
-    return uiX;
+    return ui;
 }
 
 MsaEditorWgt *MSAEditor::createChildWidget(uint index,
-                                           MaEditorOverviewArea *overview,
+                                           MaEditorMultilineOverviewArea *overview,
                                            MaEditorStatusBar *statusbar) {
     Q_ASSERT(uiChild[index] == nullptr);
-    uiChild[index] = new MsaEditorWgt(this, overview, statusbar);
-
+    uiChild[index] = new MsaEditorWgt(this, nullptr, statusbar);
 
     QString objName = QString("msa_editor_" + maObject->getGObjectName() + "%1").arg(index);
     uiChild[index]->setObjectName(objName);
