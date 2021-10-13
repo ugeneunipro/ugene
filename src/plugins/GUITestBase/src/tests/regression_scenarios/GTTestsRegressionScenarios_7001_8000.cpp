@@ -1059,8 +1059,11 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448) {
+    QString filePath = sandBoxDir + "test_7448.fa";
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", filePath);
+
     // 1. Open "murine.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click on any annotation.
@@ -1071,14 +1074,14 @@ GUI_TEST_CLASS_DEFINITION(test_7448) {
     // 4. In the appeared dialog check "Translate to amino acid" and click "Export".
     GTUtilsDialog::waitForDialog(os,
         new ExportSequenceOfSelectedAnnotationsFiller(os,
-            sandBoxDir + "test_7448.fa",
-            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-            0,
-            true,
-            false,
-            GTGlobals::UseMouse,
-            true));
+                                                      sandBoxDir + "test_7448_out.fa",
+                                                      ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                      ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                      0,
+                                                      true,
+                                                      false,
+                                                      GTGlobals::UseMouse,
+                                                      true));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Export", "Export sequence of selected annotations..." }));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
