@@ -57,8 +57,20 @@ void MsaEditorMultilineWgt::initOverviewArea(MaEditorMultilineOverviewArea *_ove
     }
 }
 
-void MsaEditorMultilineWgt::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(getEditor());
+void MsaEditorMultilineWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
+    if (_statusBar == nullptr) {
+        statusBar = new MsaEditorStatusBar(getEditor());
+        //statusBar = nullptr;
+    } else {
+        statusBar = _statusBar;
+    }
+}
+
+void MsaEditorMultilineWgt::initChildrenArea() {
+    uiChildrenArea = new QGroupBox(tr("MSA vertical child layout"));
+    uiChildrenArea->setObjectName("msa_editor_children_vertical_layout");
+    QVBoxLayout *layout = new QVBoxLayout;
+    uiChildrenArea->setLayout(layout);
 }
 
 }  // namespace U2

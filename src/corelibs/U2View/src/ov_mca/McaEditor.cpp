@@ -168,7 +168,9 @@ QWidget *McaEditor::createWidget()
     QWidget *child = createChildWidget(0);
     Q_ASSERT(child != nullptr);
 
-    ui = new QGroupBox(tr("MSA vertical child layout"));
+    // TODO:ichebyki
+    //ui = new QGroupBox(tr("MSA vertical child layout"));
+    ui = nullptr;
     QVBoxLayout *layout = new QVBoxLayout;
 
     QString objName = "msa_editor_vertical_childs_layout_" + maObject->getGObjectName();
