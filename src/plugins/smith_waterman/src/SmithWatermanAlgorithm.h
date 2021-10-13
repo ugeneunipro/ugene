@@ -42,13 +42,18 @@ public:
     virtual void launch(const SMatrix &m, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView);
 
     QList<PairAlignSequences> getResults();
+    
+    const QString& getCalculationError() const;
+    void setMemoryLimitError();
+
     static void sortByScore(QList<PairAlignSequences> &pairAlignmentStrings);
     static quint64 estimateNeededRamAmount(const qint32 gapOpen, const qint32 gapExtension, const quint32 minScore, const quint32 maxScore, const QByteArray &patternSeq, const QByteArray &searchSeq, const SmithWatermanSettings::SWResultView resultView);
     static const char STOP;
     static const char UP;
     static const char LEFT;
     static const char DIAG;
-    static constexpr unsigned int MEMORY_SIZE_LIMIT = 1024;  //1GB
+    static constexpr unsigned int MEMORY_SIZE_LIMIT_MB = 1024;  //1GB
+    static constexpr unsigned int MB_TO_BYTES_FACTOR = 1048576;
 
 protected:
     bool calculateMatrixLength();
@@ -61,6 +66,7 @@ protected:
                    int _minScore,
                    SmithWatermanSettings::SWResultView _resultView);
 
+    QString calculationError = QString();
     QList<PairAlignSequences> pairAlignmentStrings;
 
     SMatrix substitutionMatrix;

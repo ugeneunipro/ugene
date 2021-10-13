@@ -140,7 +140,16 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
     unsigned int iter = (pat_n + 7) >> 3;
 
     alphaCharSize = iter * 2;
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc((alphaCharSize + iter * 0x80) * 16 + iter * 8 * 4 + matrixLength * iter * 8, 16);
+    unsigned long memory = (alphaCharSize + iter * 0x80) * 16 + iter * 8 * 4 + matrixLength * iter * 8;
+    if (memory > MEMORY_SIZE_LIMIT_MB * MB_TO_BYTES_FACTOR) {
+        setMemoryLimitError();
+        return;
+    }
+    __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
+    if (matrix == nullptr) {
+        std::bad_alloc e;
+        throw e;
+    }
     short *score, *score1 = (short *)(matrix + alphaCharSize);
     int *map = (int *)(score1 + iter * 0x80 * 8);
     char *dir, *dir2, *dir1 = (char *)(map + iter * 8);
@@ -345,7 +354,16 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     unsigned int iter = (pat_n + 7) >> 3;
 
     n = (iter + 1) * 5;
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc((n + iter * 0x80) * sizeof(__m128i), 16);
+    unsigned long memory = (n + iter * 0x80) * sizeof(__m128i);
+    if (memory > MEMORY_SIZE_LIMIT_MB * MB_TO_BYTES_FACTOR) {
+        setMemoryLimitError();
+        return;
+    }
+    __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
+    if (matrix == nullptr) {
+        std::bad_alloc e;
+        throw e;
+    }
     short *score, *score1 = (short *)(matrix + n);
     memset(matrix, 0, n * sizeof(__m128i));
 

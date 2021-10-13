@@ -158,49 +158,48 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     c.lastChunkExtraLen = partsNumber - 1;
 
     // acquiring memory resources for computations
+    quint64 neededRam = 0;
     switch (algType) {
         case SW_cuda:
 #ifdef SW2_BUILD_WITH_CUDA
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
-                                              true));
+            neededRam = SmithWatermanAlgorithmCUDA::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView);
 #endif
             break;
         case SW_opencl:
 #ifdef SW2_BUILD_WITH_OPENCL
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), sWatermanConfig.resultView),
-                                              true));
+            neededRam = SmithWatermanAlgorithmOPENCL::estimateNeededRamAmount(  sWatermanConfig.pSm, sWatermanConfig.ptrn, 
+                                                                                sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads), 
+                                                                                sWatermanConfig.resultView);
 #endif
             break;
         case SW_classic:
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
-                                                                                              sWatermanConfig.gapModel.scoreGapExtd,
-                                                                                              minScore,
-                                                                                              maxScore,
-                                                                                              sWatermanConfig.ptrn,
-                                                                                              sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
-                                                                                              sWatermanConfig.resultView),
-                                              true));
+            neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
+                                                                        sWatermanConfig.gapModel.scoreGapExtd,
+                                                                        minScore,
+                                                                        maxScore,
+                                                                        sWatermanConfig.ptrn,
+                                                                        sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
+                                                                        sWatermanConfig.resultView);
             break;
         case SW_sse2:
-            addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                              SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
-                                                                                                  sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
-                                                                                                  sWatermanConfig.gapModel.scoreGapOpen,
-                                                                                                  sWatermanConfig.gapModel.scoreGapExtd,
-                                                                                                  minScore,
-                                                                                                  maxScore,
-                                                                                                  sWatermanConfig.resultView),
-                                              true));
+            neededRam = SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
+                                                                            sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
+                                                                            sWatermanConfig.gapModel.scoreGapOpen,
+                                                                            sWatermanConfig.gapModel.scoreGapExtd,
+                                                                            minScore,
+                                                                            maxScore,
+                                                                            sWatermanConfig.resultView);
             break;
         default:
             assert(0);
     }
-
-    t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
-    addSubTask(t);
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && !(algType == SW_cuda || algType == SW_opencl)) {
+        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
+    } else {
+        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
+        t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
+        addSubTask(t);
+    }
 }
 
 void SWAlgorithmTask::prepare() {
@@ -308,29 +307,32 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
         testName = "SW alg";
     }
     perfLog.details(QString("\n%1 %2 run time is %3\n").arg(testName).arg(algName).arg(GTimer::secsBetween(t1, GTimer::currentTimeMicros())));
+    if (sw->getCalculationError().isEmpty()) {
+        QList<PairAlignSequences> res = sw->getResults();
 
-    QList<PairAlignSequences> res = sw->getResults();
+        for (int i = 0; i < res.size(); i++) {
+            res[i].isDNAComplemented = t->isDNAComplemented();
+            res[i].isAminoTranslated = t->isAminoTranslated();
 
-    for (int i = 0; i < res.size(); i++) {
-        res[i].isDNAComplemented = t->isDNAComplemented();
-        res[i].isAminoTranslated = t->isAminoTranslated();
+            if (t->isAminoTranslated()) {
+                res[i].refSubseqInterval.startPos *= 3;
+                res[i].refSubseqInterval.length *= 3;
+            }
 
-        if (t->isAminoTranslated()) {
-            res[i].refSubseqInterval.startPos *= 3;
-            res[i].refSubseqInterval.length *= 3;
+            if (t->isDNAComplemented()) {
+                const U2Region &wr = t->getGlobalRegion();
+                res[i].refSubseqInterval.startPos =
+                    wr.endPos() - res[i].refSubseqInterval.endPos() - sWatermanConfig.globalRegion.startPos;
+            } else {
+                res[i].refSubseqInterval.startPos +=
+                    (t->getGlobalRegion().startPos - sWatermanConfig.globalRegion.startPos);
+            }
         }
 
-        if (t->isDNAComplemented()) {
-            const U2Region &wr = t->getGlobalRegion();
-            res[i].refSubseqInterval.startPos =
-                wr.endPos() - res[i].refSubseqInterval.endPos() - sWatermanConfig.globalRegion.startPos;
-        } else {
-            res[i].refSubseqInterval.startPos +=
-                (t->getGlobalRegion().startPos - sWatermanConfig.globalRegion.startPos);
-        }
+        addResult(res);
+    } else {
+        stateInfo.setError(sw->getCalculationError());
     }
-
-    addResult(res);
 
     /////////////////////
     delete sw;
@@ -614,30 +616,33 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask *t, Task
         testName = "SW alg";
     }
     perfLog.details(QString("\n%1 %2 run time is %3\n").arg(testName).arg(algName).arg(GTimer::secsBetween(t1, GTimer::currentTimeMicros())));
+    if (sw->getCalculationError().isEmpty()) {
+        QList<PairAlignSequences> res = sw->getResults();
+        res = expandResults(res);
 
-    QList<PairAlignSequences> res = sw->getResults();
-    res = expandResults(res);
+        for (int i = 0; i < res.size(); i++) {
+            res[i].isDNAComplemented = t->isDNAComplemented();
+            res[i].isAminoTranslated = t->isAminoTranslated();
 
-    for (int i = 0; i < res.size(); i++) {
-        res[i].isDNAComplemented = t->isDNAComplemented();
-        res[i].isAminoTranslated = t->isAminoTranslated();
+            if (t->isAminoTranslated()) {
+                res[i].refSubseqInterval.startPos *= 3;
+                res[i].refSubseqInterval.length *= 3;
+            }
 
-        if (t->isAminoTranslated()) {
-            res[i].refSubseqInterval.startPos *= 3;
-            res[i].refSubseqInterval.length *= 3;
+            if (t->isDNAComplemented()) {
+                const U2Region &wr = t->getGlobalRegion();
+                res[i].refSubseqInterval.startPos =
+                    wr.endPos() - res[i].refSubseqInterval.endPos();
+            } else {
+                res[i].refSubseqInterval.startPos +=
+                    (t->getGlobalRegion().startPos);
+            }
         }
 
-        if (t->isDNAComplemented()) {
-            const U2Region &wr = t->getGlobalRegion();
-            res[i].refSubseqInterval.startPos =
-                wr.endPos() - res[i].refSubseqInterval.endPos();
-        } else {
-            res[i].refSubseqInterval.startPos +=
-                (t->getGlobalRegion().startPos);
-        }
+        addResult(res);
+    } else {
+        stateInfo.setError(sw->getCalculationError());
     }
-
-    addResult(res);
 
     /////////////////////
     delete sw;
@@ -752,8 +757,8 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
         default:
             assert(0);
     }
-    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT) {
-        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT)));
+    if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB && !(algType == SW_cuda || algType == SW_opencl)) {
+        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, neededRam, true));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));

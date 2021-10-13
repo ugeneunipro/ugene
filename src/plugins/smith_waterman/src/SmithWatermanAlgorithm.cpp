@@ -147,6 +147,15 @@ QList<PairAlignSequences> SmithWatermanAlgorithm::getResults() {
     return pairAlignmentStrings;
 }
 
+const QString &SmithWatermanAlgorithm::getCalculationError() const {
+    return calculationError;
+}
+
+void SmithWatermanAlgorithm::setMemoryLimitError() {
+    calculationError = QObject::tr("Smith-Waterman algorithm trying to allocate more memory than it was limited (%1 Mb). Calculation stopped.")
+                        .arg(QString::number(MEMORY_SIZE_LIMIT_MB));
+}
+
 void SmithWatermanAlgorithm::sortByScore(QList<PairAlignSequences> &res) {
     QList<PairAlignSequences> buf;
     QVector<int> pos;
@@ -173,7 +182,11 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
 
     n = pat_n * 2;
     unsigned int dirn = (4 + pat_n + 3) >> 2;
-    unsigned int memory = n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
+    unsigned long memory = n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
+    if (memory > MEMORY_SIZE_LIMIT_MB * MB_TO_BYTES_FACTOR) {
+        setMemoryLimitError();
+        return;
+    }
     int *buf, *matrix = (int *)malloc(memory);
     if (matrix == nullptr) {
         std::bad_alloc e;
@@ -322,7 +335,12 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
 
     n = pat_n * 3;
-    int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80);
+    unsigned long memory = n * sizeof(int) + pat_n * 0x80;
+    if (memory > MEMORY_SIZE_LIMIT_MB * MB_TO_BYTES_FACTOR) {
+        setMemoryLimitError();
+        return;
+    }
+    int *buf, *matrix = (int *)malloc(memory);
     if (matrix == nullptr) {
         std::bad_alloc e;
         throw e;
