@@ -82,13 +82,12 @@ void MaEditorMultilineWgt::initWidgets() {
 
     initOverviewArea();
     initStatusBar();
+    initChildrenArea();
 
     QVBoxLayout *maContainerLayout = new QVBoxLayout();
     maContainerLayout->setContentsMargins(0, 0, 0, 0);
     maContainerLayout->setSpacing(0);
-
     maContainerLayout->setStretch(0, 1);
-    maContainerLayout->addWidget(statusBar);
 
     QWidget *maContainer = new QWidget(this);
     maContainer->setLayout(maContainerLayout);
@@ -102,11 +101,18 @@ void MaEditorMultilineWgt::initWidgets() {
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
+    maContainerLayout->addWidget(uiChildrenArea);
     maContainerLayout->addWidget(overviewArea);
+    maContainerLayout->addWidget(statusBar);
+
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
+}
+
+void MaEditorMultilineWgt::addChild(MaEditorWgt *child) {
+    uiChildrenArea->layout()->addWidget(child);
 }
 
 void MaEditorMultilineWgt::initActions() {

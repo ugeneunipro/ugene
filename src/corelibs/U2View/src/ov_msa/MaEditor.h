@@ -56,6 +56,7 @@ namespace U2 {
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
 class MaEditorWgt;
+class MaEditorMultilineWgt;
 class MaEditorOverviewArea;
 class MultipleAlignmentObject;
 class MaEditorSelection;
@@ -278,7 +279,7 @@ protected:
     MaEditorWgt* ui;
 =======
     MultipleAlignmentObject *maObject;
-    QWidget *ui = nullptr;
+    MaEditorMultilineWgt *ui = nullptr;
     MaEditorWgt **uiChild = nullptr;
     uint uiChildLength = 0;
     uint uiChildCount = 0;
