@@ -22,6 +22,8 @@
 #ifndef _U2_MA_EDITOR_MULTILINE_WGT_H_
 #define _U2_MA_EDITOR_MULTILINE_WGT_H_
 
+#include <QVBoxLayout>
+#include <QGroupBox>
 #include <QWidget>
 
 #include <U2Core/global.h>
@@ -29,6 +31,7 @@
 #include "MaEditorUtils.h"
 
 class QGridLayout;
+class QGroupBox;
 class QScrollBar;
 class QVBoxLayout;
 
@@ -79,14 +82,15 @@ public:
     }
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
-    bool isCollapsingOfSingleRowGroupsEnabled() const {
-        return enableCollapsingOfSingleRowGroups;
-    }
+    bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
 
-    int getSequenceAreaWidth() {
+    int getSequenceAreaWidth()
+    {
         // Need to override in subclass
         return 100;
     }
+
+    void addChild(MaEditorWgt *child);
 
 signals:
     void si_startMaChanging();
@@ -100,10 +104,12 @@ protected:
     virtual void initActions();
 
     virtual void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) = 0;
-    virtual void initStatusBar() = 0;
+    virtual void initStatusBar(MaEditorStatusBar *statusbar = nullptr) = 0;
+    virtual void initChildrenArea() = 0;
 
 protected:
     MaEditor *const editor;
+    QGroupBox *uiChildrenArea;
     MaEditorMultilineOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
 
