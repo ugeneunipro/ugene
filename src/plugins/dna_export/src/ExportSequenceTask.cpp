@@ -45,7 +45,7 @@
 
 #include "ExportUtils.h"
 
-static const qint64 MAX_CHUNK_LENGTH = 4194305;  // (4 MiB + 1) chunk. Remainder of the division by 3 is 2.
+static const qint64 MAX_CHUNK_LENGTH = 4194303;  // (4 MiB + 1) chunk. Remainder of the division by 3 is 0.
 
 static QMutex seqRefGuard(QMutex::NonRecursive);
 
