@@ -59,6 +59,7 @@
 #include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -1058,12 +1059,9 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7448) {
-    QString filePath = sandBoxDir + "test_7448.fa";
-    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", filePath);
-
+GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     // 1. Open "murine.gb".
-    GTFileDialog::openFile(os, filePath);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click on any annotation.
@@ -1074,7 +1072,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448) {
     // 4. In the appeared dialog check "Translate to amino acid" and click "Export".
     GTUtilsDialog::waitForDialog(os,
         new ExportSequenceOfSelectedAnnotationsFiller(os,
-                                                      sandBoxDir + "test_7448_out.fa",
+                                                      sandBoxDir + "murine_out.fa",
                                                       ExportSequenceOfSelectedAnnotationsFiller::Fasta,
                                                       ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
                                                       0,
@@ -1088,6 +1086,39 @@ GUI_TEST_CLASS_DEFINITION(test_7448) {
 
     // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
     lt.checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_2) {
+    // 1. Copy "5mbf.fa.gz" and open the copy.
+    QString filePath = sandBoxDir + "test_7448_2.fa.gz";
+    GTFile::copy(os, testDir + "_common_data/fasta/5mbf.fa.gz", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Create an annotation covering the whole file.
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..5000000"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 3. Export translation of the annotation.
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+        new ExportSequenceOfSelectedAnnotationsFiller(os,
+            sandBoxDir + "test_7448_2_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Export", "Export sequence of selected annotations..." }));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: last 3 symbols are RAG
+    QString currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "RAG", QString("Last 3 symbols expected: RAG, current: %1").arg(currentString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7451) {
