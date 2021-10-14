@@ -21,6 +21,8 @@
 
 #include "WelcomePageMdiController.h"
 
+#include <QTimer>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
@@ -71,11 +73,15 @@ void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
 }
 
 void WelcomePageMdiController::sl_onRecentChanged() {
-    CHECK(welcomePage != nullptr, );
-    auto settings = AppContext::getSettings();
-    QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
-    QStringList recentFiles = settings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
-    welcomePage->updateRecent(recentProjects, recentFiles);
+    // Update recent list asynchronously: sl_onRecentChanged may be called within 'label->click'
+    // event processing and welcomePage->updateRecent deletes the labels for missed files.
+    QTimer::singleShot(0, [this]() {
+        CHECK(welcomePage != nullptr, );
+        auto settings = AppContext::getSettings();
+        QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
+        QStringList recentFiles = settings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
+        welcomePage->updateRecent(recentProjects, recentFiles);
+    });
 }
 
 }  // namespace U2

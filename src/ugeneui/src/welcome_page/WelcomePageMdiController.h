@@ -39,7 +39,9 @@ public slots:
     void sl_showPage();
 
 private slots:
+    /** Triggers recent files list update. */
     void sl_onRecentChanged();
+
     void sl_onMdiClose(MWMDIWindow *mdi);
 
 private:

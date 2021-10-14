@@ -50,6 +50,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -66,6 +67,7 @@
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 namespace U2 {
 
@@ -1006,6 +1008,39 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect.top() == 15, "Illegal start of the selection: " + QString::number(selectedRect.top()));
     CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7451) {
+    // Check that a right click on a recent item on the Welcome Screen does not crash UGENE.
+
+    // Copy the test file first to a tmp location: we will need to remove it later.
+    GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", testDir + "_common_data/scenarios/sandbox/test_7451.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/test_7451.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", true);
+
+    // Test a right click on the Welcome Screen for a valid file.
+    GTWidget::click(os, GTWidget::findLabelByText(os, "test_7451.fa").first(), Qt::RightButton);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", true);
+
+    // Test a right click on the Welcome Screen for a removed file.
+    // Close the project first to avoid 'missed file' popups.
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    QFile::remove(testDir + "_common_data/scenarios/sandbox/test_7451.fa");
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Remove From List"));
+    GTWidget::click(os, GTWidget::findLabelByText(os, "test_7451.fa").first(), Qt::RightButton);
+
+    // Check that there is no removed item in the recent files list and UGENE does not crash.
+    GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
 }
 
 }  // namespace GUITest_regression_scenarios
