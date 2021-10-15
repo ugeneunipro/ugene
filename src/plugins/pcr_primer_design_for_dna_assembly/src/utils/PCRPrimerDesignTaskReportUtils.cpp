@@ -98,7 +98,9 @@ static QString checkPrimerAndGetInfo(const U2Region region, const QString& prime
 }
 
 //Returns non-empty html report of found primers A, B1, B2, B3 in sequence and user primers. sequence must not be empty.
-static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask& task, const QByteArray& sequence,
+static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask& task,
+                           const QByteArray& sequence,
+                           const QByteArray& revComplSeq,
                            const PCRPrimerDesignTaskReportUtils::UserPrimersReports& reports) {
     SAFE_POINT(!sequence.isEmpty(), QObject::tr("Empty sequence"), errMsg())
 
@@ -128,8 +130,10 @@ static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask& task, const 
 
     //Result primers.
     for (int i = 0; i + 1 < regions.size(); i += 2) {
-        ans += checkPrimerAndGetInfo(regions[i],     primersNames[i],     true,  sequence, backbone);
-        ans += checkPrimerAndGetInfo(regions[i + 1], primersNames[i + 1], false, sequence, backbone);
+        QVector<U2Region> reverseRegion = {regions[i + 1]};
+        U2Region::mirror(sequence.size(), reverseRegion);
+        ans += checkPrimerAndGetInfo(regions[i],            primersNames[i],     true,  sequence,    backbone);
+        ans += checkPrimerAndGetInfo(reverseRegion.first(), primersNames[i + 1], false, revComplSeq, backbone);
     }
     //User primers.
     if (!areUserPrimersBad) {
@@ -161,8 +165,9 @@ static QString heterodimerInfoForOnePrimer(const QString& primerName,
 /////////////////////////////////////////////PCRPrimerDesignTaskReportUtils/////////////////////////////////////////////
 QString PCRPrimerDesignTaskReportUtils::generateReport(const PCRPrimerDesignForDNAAssemblyTask& task,
                                                        const QByteArray& fileSequence,
+                                                       const QByteArray& revComplSeq,
                                                        const UserPrimersReports& reports) {
-    return "<br><br>" + primersInfo(task, fileSequence, reports) +
+    return "<br><br>" + primersInfo(task, fileSequence, revComplSeq, reports) +
            userPrimersUnwantedConnectionsInfo(task.getSettings(), reports);
 }
 
