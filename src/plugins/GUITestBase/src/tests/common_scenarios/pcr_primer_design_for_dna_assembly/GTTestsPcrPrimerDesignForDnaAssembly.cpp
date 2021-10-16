@@ -138,9 +138,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Open _common_data/fasta/alphabet.fa.
     // Click the PCR Primer Design tab of the Options Panel.
     // Select Amino sequence.
-    //    Expected: all settings on the tab are disabled, a warning is displayed.
+    //     Expected: all settings on the tab are disabled, a warning is displayed.
     // Select Nucl sequence.
-    //    Expected: all settings on the tab are enabled, no warning.
+    //     Expected: all settings on the tab are enabled, no warning.
     QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
                                                   testDir + "_common_data/fasta/", "alphabet.fa", {"Amino", "Nucl"});
     GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
@@ -172,17 +172,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         }
     };
     // DNA: _common_data/fasta/fa1.fa.
-    //    Expected: all option panel tabs (6) are present.
+    //     Expected: all option panel tabs (6) are present.
     // RNA: _common_data/fasta/RNA_1_seq.fa.
-    //    Expected: all option panel tabs without PCR Primer Design are present.
+    //     Expected: all option panel tabs without PCR Primer Design are present.
     // Amino: _common_data/fasta/AMINO.fa.
-    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+    //     Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
     // All alphabets: _common_data/fasta/all_and_raw_alphabets.fa.
-    //    Expected: all option panel tabs.
+    //     Expected: all option panel tabs.
     // 2 RNA: _common_data/fasta/RNA.fa.
-    //    Expected: all option panel tabs without PCR Primer Design.
+    //     Expected: all option panel tabs without PCR Primer Design.
     // Aminos: _common_data/fasta/amino_multy_ext.fa.
-    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+    //     Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
     QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
     QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
     QSet<Op::Tabs> three = {Op::Search, Op::AnnotationsHighlighting, Op::Statistics};
