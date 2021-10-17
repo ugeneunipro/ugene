@@ -50,7 +50,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const int minIdentityPercent,
                                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                                      DbiDataStorage *storage)
-    : Task(tr("Map reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Map reads with BLAST & SW task"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
       dbPath(dbPath),
       reads(reads),
       readsNames(readsNames),
