@@ -524,6 +524,9 @@ void FindPatternMsaWidget::sl_onSearchPatternChanged() {
 }
 
 void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges) {
+    stopCurrentSearchTask();
+    clearResults();
+
     setCorrectPatternsString();
     enableDisableMatchSpin();
     checkStateAndUpdateStatus();
@@ -534,8 +537,6 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     U2OpStatusImpl os;
     QStringList newPatterns = getPatternsFromTextPatternField(os);
     CHECK_OP(os, )
-    stopCurrentSearchTask();
-    clearResults();
     currentResultIndex = -1;
     if (isSearchInNamesMode) {
         runSearchInSequenceNames(newPatterns);

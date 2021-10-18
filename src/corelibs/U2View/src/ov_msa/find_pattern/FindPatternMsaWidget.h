@@ -98,6 +98,10 @@ private slots:
     void sl_onShiftEnterPressed();
     void sl_collapseModelChanged();
 
+    /**
+     * Clears current search results first, validations the new pattern
+     * and runs a new search if the were no validation errors.
+     */
     void sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges = false);
 
 private:

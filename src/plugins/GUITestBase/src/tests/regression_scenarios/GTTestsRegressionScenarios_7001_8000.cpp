@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+#include <api/GTUtils.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -1008,6 +1009,53 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect.top() == 15, "Illegal start of the selection: " + QString::number(selectedRect.top()));
     CHECK_SET_ERR(selectedRect.bottom() == 17, "Illegal end of the selection: " + QString::number(selectedRect.bottom()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7447) {
+    // Check that search results in MSA Editor are reset when user enters incorrect search pattern.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Enter a valid search pattern: 'ATG'
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::enterPattern(os, "ATG");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
+                  QString("Illegal first result coordinates: " + GTUtils::rectToString(selectedRect)));
+
+    // Press 'Next', move to the next result.
+    GTUtilsOptionPanelMsa::clickNext(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(21, 0, 3, 1),
+                  QString("Illegal second result coordinates: " + GTUtils::rectToString(selectedRect)));
+
+    // Enter illegal 'M' character: check that there is a warning and no results in the list.
+    QTextEdit *patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    GTWidget::click(os, patternEdit);
+
+    GTKeyboardDriver::keyClick('M');
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString pattern = GTUtilsOptionPanelMsa::getPattern(os);
+    CHECK_SET_ERR(pattern == "ATGM", "Unexpected pattern, expected: ATGM, got: " + pattern);
+
+    auto nextButton = GTWidget::findPushButton(os, "nextPushButton");
+    CHECK_SET_ERR(!nextButton->isEnabled(), "Next button must be disabled");
+    GTUtilsOptionPanelMsa::checkResultsText(os, "No results");
+
+    // Delete the last 'M' character. Check that the first 'ATG' result is selected.
+    GTWidget::click(os, patternEdit);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    pattern = GTUtilsOptionPanelMsa::getPattern(os);
+    CHECK_SET_ERR(pattern == "ATG", "Illegal pattern, expected: 'ATG', got: " + pattern);
+
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
+                  QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7451) {

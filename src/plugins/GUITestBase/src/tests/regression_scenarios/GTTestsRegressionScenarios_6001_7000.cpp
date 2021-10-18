@@ -4271,13 +4271,6 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
-static QString qRectToString(const QRect &rect) {
-    return QString::number(rect.topLeft().x()) + ", " +
-           QString::number(rect.topLeft().y()) + ", " +
-           QString::number(rect.bottomRight().x()) + ", " +
-           QString::number(rect.bottomRight().y());
-}
-
 GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
@@ -4297,21 +4290,30 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
 
     QRect expectedSelection(7, 2, 5, 1);
     QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    CHECK_SET_ERR(expectedSelection == actualSelection,
+                  QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+                      .arg(GTUtils::rectToString(expectedSelection))
+                      .arg(GTUtils::rectToString(actualSelection)));
 
     // 6. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
 
     expectedSelection = QRect(4, 4, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    CHECK_SET_ERR(expectedSelection == actualSelection,
+                  QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+                      .arg(GTUtils::rectToString(expectedSelection))
+                      .arg(GTUtils::rectToString(actualSelection)));
 
     // 7. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
 
     expectedSelection = QRect(7, 2, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
-    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2").arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    CHECK_SET_ERR(expectedSelection == actualSelection,
+                  QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+                      .arg(GTUtils::rectToString(expectedSelection))
+                      .arg(GTUtils::rectToString(actualSelection)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6672) {
@@ -6139,10 +6141,10 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
-    //1. Open "Trim and Map Sanger reads" sample in workflow.
-    //2. Set human_T1.fa as input files on first and second wizard pages.
-    //3. Run schema.
-    //Expected state: workflow stopped work with "Not enouch memory to finish the task." error message in the log.
+    // 1. Open "Trim and Map Sanger reads" sample in workflow.
+    // 2. Set human_T1.fa as input files on first and second wizard pages.
+    // 3. Run schema.
+    // Expected state: workflow stopped work with "Not enouch memory to finish the task." error message in the log.
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
