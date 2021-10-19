@@ -285,7 +285,6 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
 GUI_TEST_CLASS_DEFINITION(test_4013) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10), GTGlobals::UseMouse);
@@ -297,7 +296,8 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTKeyboardDriver::keySequence("ACCCTATTTTATACCAACAAACTare");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, oldRect);
 }
 

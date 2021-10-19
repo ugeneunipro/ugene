@@ -528,6 +528,11 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     clearResults();
 
     setCorrectPatternsString();
+    if (searchTask != nullptr) {
+        // A new search task was started as the result of the recursive
+        // 'setCorrectPatternsString' method call.
+        return;
+    }
     enableDisableMatchSpin();
     checkStateAndUpdateStatus();
     if (!messageFlagMap.isEmpty()) {
