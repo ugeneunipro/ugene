@@ -724,7 +724,7 @@ Probably, the data are too big.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="433"/>
         <source>Strand</source>
-        <translation>Прямая</translation>
+        <translation>Цепь</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="446"/>
@@ -1990,22 +1990,22 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="172"/>
         <source>Strand</source>
-        <translation>Направление</translation>
+        <translation>Цепь</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="181"/>
         <source>Both</source>
-        <translation>Оба</translation>
+        <translation>Обе</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="191"/>
         <source>Direct</source>
-        <translation>Прямое</translation>
+        <translation>Прямая</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="201"/>
         <source>Complement</source>
-        <translation>Комплементарное</translation>
+        <translation>Комплементарная</translation>
     </message>
 </context>
 <context>
@@ -5013,7 +5013,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="371"/>
         <source>Both</source>
-        <translation>Оба</translation>
+        <translation>Обе</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="191"/>
@@ -5023,12 +5023,12 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="372"/>
         <source>Direct</source>
-        <translation>Прямое</translation>
+        <translation>Прямая</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="373"/>
         <source>Reverse-coml.</source>
-        <translation>Обратно-компл.</translation>
+        <translation>Обратно-комплементарная</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="377"/>
