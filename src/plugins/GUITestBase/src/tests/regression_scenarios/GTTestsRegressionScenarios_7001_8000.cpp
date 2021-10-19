@@ -950,7 +950,7 @@ GUI_TEST_CLASS_DEFINITION(test_7415_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7415_2) {
-    // Check that by default Random Sequence generator uses random seed: produces different results on different runs.
+    // Check that for given seed, Random Sequence generator produces same results on different runs.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7415_2_1.fa");
     model.seed = 0;
 
