@@ -569,7 +569,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                             continue;
                         }
                         AD2P_DocumentInfo info;
-                        if (hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true) {
+                        if (hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool()) {
                             info.openView = false;
                         } else {
                             info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
@@ -578,7 +578,9 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                         info.url = url;
                         info.hints = dr.rawDataCheckResult.properties;
                         if (!info.hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
-                            info.hints[DocumentReadingMode_MaxObjectsInDoc] = getMaxObjectsInSingleDocument();
+                            if (!info.hints.contains(DocumentReadingMode_SequenceAsAlignmentHint)) {
+                                info.hints[DocumentReadingMode_MaxObjectsInDoc] = getMaxObjectsInSingleDocument();
+                            }
                         }
                         info.formatId = dr.format->getFormatId();
                         info.iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -586,7 +588,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                     } else {
                         assert(dr.importer != nullptr);
                         AD2P_ProviderInfo info;
-                        if (hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true) {
+                        if (hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool()) {
                             info.openView = false;
                         } else {
                             info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;

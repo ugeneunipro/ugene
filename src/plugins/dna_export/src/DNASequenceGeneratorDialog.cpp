@@ -149,7 +149,7 @@ void DNASequenceGeneratorDialog::sl_generate() {
     cfg.seed = seedCheckBox->isChecked() ? seedSpinBox->value() : -1;
 
     if (cfg.window > cfg.length) {
-        QMessageBox::critical(this, tr("DNA Sequence Generator"), tr("Windows size bigger than sequence length"));
+        QMessageBox::critical(this, tr("DNA Sequence Generator"), tr("Windows size is bigger than the sequence length"));
         return;
     }
 

@@ -84,7 +84,7 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,
     CHECK_EXT(result.size() == length, os.setError(GenerateDNASequenceTask::tr("Failed to allocate memory for the result sequence.")), )
 
     for (int idx = 0; idx < length; idx++) {
-        int randomCharIndex = randomGenerator.generate() % characterBySlotIndex.length();
+        int randomCharIndex = (int)(randomGenerator.generate() % characterBySlotIndex.length());
         char ch = characterBySlotIndex[randomCharIndex];
         result[idx] = ch;
     }
@@ -150,7 +150,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
 //////////////////////////////////////////////////////////////////////////
 
 /** Returns estimated progress weight per phase in DNASequenceGeneratorTask. */
-static qreal getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig &config) {
+static float getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig &config) {
     int nPhases = 2;  // Generate + Save.
     if (config.useReference()) {
         nPhases += 2;  // Load + Evaluate.
@@ -158,7 +158,7 @@ static qreal getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig &con
     if (config.addToProj) {
         nPhases += 1;  // Add to project.
     }
-    return 1.0 / nPhases;
+    return (float)(1.0 / nPhases);
 }
 
 EvaluateBaseContentTask *DNASequenceGeneratorTask::createEvaluationTask(Document *doc, QString &err) {
@@ -383,11 +383,11 @@ EvaluateBaseContentTask::EvaluateBaseContentTask(GObject *obj)
 
 void EvaluateBaseContentTask::run() {
     if (_obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-        U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(_obj);
+        auto dnaObj = qobject_cast<U2SequenceObject *>(_obj);
         alp = dnaObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(dnaObj->getWholeSequence(stateInfo), result);
     } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-        MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(_obj);
+        auto maObj = qobject_cast<MultipleSequenceAlignmentObject *>(_obj);
         alp = maObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(maObj->getMultipleAlignment(), result);
     } else {
@@ -404,10 +404,11 @@ GenerateDNASequenceTask::GenerateDNASequenceTask(const QMap<char, qreal> &baseCo
     : Task(tr("Generate DNA sequence task"), TaskFlag_None), baseContent(baseContent_),
       length(length_), window(window_), count(count_), seed(seed_), dbiRef() {
     tpm = Progress_Manual;
+    window = qMin(window, length);
 }
 
 void GenerateDNASequenceTask::prepare() {
-    qint64 memUseMB = window / MBYTE_TO_BYTE;
+    int memUseMB = window / MBYTE_TO_BYTE;
     coreLog.trace(QString("Generate DNA sequence task: Memory resource %1").arg(memUseMB));
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB));
 }
@@ -422,15 +423,11 @@ void GenerateDNASequenceTask::run() {
     results.reserve(count);
 
     QRandomGenerator generator(seed >= 0 ? (quint32)seed : QRandomGenerator::system()->generate());
-    for (int seqCount = 0; seqCount < count; seqCount++) {
+    for (int sequenceIndex = 0; sequenceIndex < count; sequenceIndex++) {
         U2SequenceImporter seqImporter(QVariantMap(), true);
 
         QByteArray sequenceChunk;
-        if (window > length) {
-            window = length;
-        }
-
-        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, QString("default"), false);
+        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, "sequence_" + QString::number(sequenceIndex + 1), false);
         CHECK_OP_BREAK(stateInfo);
 
         for (int chunkCount = 0; chunkCount < length / window && !isCanceled(); chunkCount++) {
@@ -438,7 +435,7 @@ void GenerateDNASequenceTask::run() {
             CHECK_OP_BREAK(stateInfo);
             seqImporter.addBlock(sequenceChunk.constData(), sequenceChunk.length(), stateInfo);
             CHECK_OP_BREAK(stateInfo);
-            int currentProgress = int(100 * (seqCount + chunkCount * double(window) / double(length)) / double(count));
+            int currentProgress = int(100 * (sequenceIndex + chunkCount * (double)window / length) / count);
             stateInfo.setProgress(currentProgress);
         }
         CHECK_OP_BREAK(stateInfo);
@@ -455,7 +452,7 @@ void GenerateDNASequenceTask::run() {
         CHECK_OP_BREAK(stateInfo);
         results.append(seq);
 
-        stateInfo.setProgress(seqCount / count * 100);
+        stateInfo.setProgress(int(100 * (double)sequenceIndex / count));
     }
 }
 

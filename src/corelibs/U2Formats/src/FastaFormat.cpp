@@ -171,8 +171,8 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
     DbiConnection con(dbiRef, os);
     QStringList emptySeqNames;
 
-    const int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
-    const bool makeUniqueSequenceNames = !hints.value(DocumentReadingMode_DontMakeUniqueNames, false).toBool();
+    int objectsCountLimit = hints.contains(DocumentReadingMode_MaxObjectsInDoc) ? hints[DocumentReadingMode_MaxObjectsInDoc].toInt() : INT_MAX;
+    bool makeUniqueSequenceNames = !hints.value(DocumentReadingMode_DontMakeUniqueNames, false).toBool();
     while (!os.isCoR() && !reader.atEnd()) {
         skipLeadingWhitesAndComments(reader, os);
         CHECK_OP(os, );
@@ -322,7 +322,7 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
     qint64 sequenceLength = sequence->getSequenceLength();
     // Reading DBI line-by-line is very expensive. Read by bigger chunks and split them into lines in memory.
     qint64 maxChunkSize = 1000 * FastaFormat::FASTA_SEQUENCE_LINE_LENGTH;
-    for (int i = 0; i < sequenceLength; i += maxChunkSize) {
+    for (qint64 i = 0; i < sequenceLength; i += maxChunkSize) {
         qint64 chunkSize = qMin(maxChunkSize, sequenceLength - i);
         U2Region region(i, chunkSize);
         QByteArray chunkContent = sequence->getSequenceData(region, os);
@@ -374,7 +374,7 @@ void FastaFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType
     const QList<GObject *> &sequenceObjects = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(sequenceObjects.size() == 1, "Fasta entry storing: expecting 1 sequence object", );
 
-    U2SequenceObject *sequenceObject = dynamic_cast<U2SequenceObject *>(sequenceObjects.first());
+    auto sequenceObject = dynamic_cast<U2SequenceObject *>(sequenceObjects.first());
     SAFE_POINT(sequenceObject != nullptr, "Fasta entry storing: sequence object is null", );
     saveSequenceObject(writer, sequenceObject, os);
 }

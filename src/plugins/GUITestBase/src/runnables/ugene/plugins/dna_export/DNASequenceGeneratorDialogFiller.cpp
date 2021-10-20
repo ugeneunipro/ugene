@@ -20,7 +20,6 @@
  */
 
 #include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
@@ -47,6 +46,9 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
 
     GTSpinBox::setValue(os, "lengthSpin", model.length, dialog);
     GTSpinBox::setValue(os, "windowSpinBox", model.window, dialog);
+    if (model.numberOfSequences > 1) {
+        GTSpinBox::setValue(os, "seqNumSpin", model.numberOfSequences, dialog);
+    }
 
     if (model.referenceUrl.isEmpty()) {
         GTRadioButton::click(os, "baseContentRadioButton", dialog);
@@ -56,7 +58,7 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
         GTSpinBox::setValue(os, "percentTSpin", model.percentT, dialog);
     } else {
         GTLineEdit::setText(os, "inputEdit", model.referenceUrl, dialog);
-    };
+    }
     if (model.seed >= 0) {
         GTCheckBox::setChecked(os, "seedCheckBox", true, dialog);
         GTSpinBox::setValue(os, "seedSpinBox", model.seed, dialog);

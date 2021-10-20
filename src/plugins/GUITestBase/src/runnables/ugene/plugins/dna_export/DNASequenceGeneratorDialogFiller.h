@@ -36,8 +36,12 @@ public:
     /** When referenceUrl is set it overrides percentage values. */
     QString referenceUrl;
 
-    qint64 length = 1000;
-    qint64 window = 1000;
+    int length = 1000;
+    int window = 1000;
+
+    /** Count of sequences in the result file. */
+    int numberOfSequences = 1;
+
     int percentA = 25;
     int percentC = 25;
     int percentG = 25;

@@ -28,17 +28,23 @@ namespace U2 {
 using namespace HI;
 class SequenceReadingModeSelectorDialogFiller : public Filler {
 public:
-    enum ReadingMode { Separate,
-                       Merge,
-                       Join,
-                       Align };
+    enum ReadingMode {
+        /** Opens as separate sequences. */
+        Separate,
+        /** Merges sequences into a single sequence. */
+        Merge,
+        /** Joins sequences into an alignment. */
+        Join,
+        /** Aligns sequences to a reference. */
+        Align
+    };
 
     SequenceReadingModeSelectorDialogFiller(HI::GUITestOpStatus &_os, ReadingMode _mode = Separate, int _bases = 10, bool cancel = false)
         : Filler(_os, "SequenceReadingModeSelectorDialog"), readingMode(_mode), bases(_bases), cancel(cancel) {
     }
     SequenceReadingModeSelectorDialogFiller(HI::GUITestOpStatus &_os, CustomScenario *c);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     ReadingMode readingMode;

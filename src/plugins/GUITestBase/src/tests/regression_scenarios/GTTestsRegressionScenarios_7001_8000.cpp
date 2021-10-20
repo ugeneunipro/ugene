@@ -392,8 +392,8 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsProject::closeProject(os);
 
-    const QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
-    CHECK_SET_ERR(labels.size() > 0, "Expected recent files BL060C3.ace on Start Page")
+    QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
+    CHECK_SET_ERR(!labels.isEmpty(), "Expected recent files BL060C3.ace on Start Page")
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -492,7 +492,7 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
 GUI_TEST_CLASS_DEFINITION(test_7234) {
     class InSilicoWizardScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTWidget::getActiveModalWidget(os);
 
             GTUtilsWizard::setInputFiles(os, {{QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath()}});
@@ -799,12 +799,12 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
     GTMouseDriver::moveTo(endPoint);
     GTMouseDriver::release();
 
-    // Only one selection is presented and it's been expanded to the right
+    // Only one selection is presented, and it's been expanded to the right
     auto secondSelection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(secondSelection.size() == 1, QString("Expected second selections: 1, current: %1").arg(secondSelection.size()));
 
-    int firstSelectionEndPos = firstSelection.first().endPos();
-    int secondSelectionEndPos = secondSelection.first().endPos();
+    qint64 firstSelectionEndPos = firstSelection.first().endPos();
+    qint64 secondSelectionEndPos = secondSelection.first().endPos();
     CHECK_SET_ERR(firstSelectionEndPos < secondSelectionEndPos,
                   QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
 }
@@ -922,10 +922,10 @@ GUI_TEST_CLASS_DEFINITION(test_7414) {
     QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
 
     CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
-    CHECK_SET_ERR(sequence.count('A') > 0, "No 'A' char in the reuslt");
-    CHECK_SET_ERR(sequence.count('C') > 0, "No 'C' char in the reuslt");
-    CHECK_SET_ERR(sequence.count('G') > 0, "No 'G' char in the reuslt");
-    CHECK_SET_ERR(sequence.count('T') > 0, "No 'T' char in the reuslt");
+    CHECK_SET_ERR(sequence.count('A') > 0, "No 'A' char in the result");
+    CHECK_SET_ERR(sequence.count('C') > 0, "No 'C' char in the result");
+    CHECK_SET_ERR(sequence.count('G') > 0, "No 'G' char in the result");
+    CHECK_SET_ERR(sequence.count('T') > 0, "No 'T' char in the result");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7415_1) {
@@ -998,7 +998,7 @@ GUI_TEST_CLASS_DEFINITION(test_7438) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // There are 18 sequences in the list and we are trying to select with SHIFT+KeyDown beyond this range.
+    // There are 18 sequences in the list, and we are trying to select with SHIFT+KeyDown beyond this range.
     GTUtilsMsaEditor::clickSequence(os, 15);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     for (int i = 0; i < 5; i++) {
@@ -1089,6 +1089,23 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
 
     // Check that there is no removed item in the recent files list and UGENE does not crash.
     GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7456) {
+    // Check that UGENE can open a FASTA file with a 100k small sequences as an alignment.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7456.fa");
+    model.length = 5;
+    model.window = 5;
+    model.numberOfSequences = 100 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 }
 
 }  // namespace GUITest_regression_scenarios
