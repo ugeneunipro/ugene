@@ -42,6 +42,13 @@ public:
 
     /** Ensures that the scroll area would have an appropriate width */
     virtual QSize sizeHint() const;
+
+    /** Set the width returned by sizeHint. This width is used if the optionsWidget current width is insufficient. */
+    void setSizeHintWidthFromChild(int w);
+
+private:
+    /** Sufficient width to display OPMainWidget completely. Cannot exceed GroupOptionsWidget::MAX_WIDGET_WIDTH. */
+    int sizeHintWidthFromChild = 0;
 };
 
 /** Options Panel Widget state */
