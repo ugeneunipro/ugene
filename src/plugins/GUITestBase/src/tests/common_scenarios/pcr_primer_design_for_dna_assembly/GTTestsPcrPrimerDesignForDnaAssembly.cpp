@@ -138,9 +138,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Open _common_data/fasta/alphabet.fa.
     // Click the PCR Primer Design tab of the Options Panel.
     // Select Amino sequence.
-    //    Expected: all settings on the tab are disabled, a warning is displayed.
+    //     Expected: all settings on the tab are disabled, a warning is displayed.
     // Select Nucl sequence.
-    //    Expected: all settings on the tab are enabled, no warning.
+    //     Expected: all settings on the tab are enabled, no warning.
     QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
                                                   testDir + "_common_data/fasta/", "alphabet.fa", {"Amino", "Nucl"});
     GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
@@ -172,18 +172,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         }
     };
     // DNA: _common_data/fasta/fa1.fa.
-    //    Expected: all option panel tabs (6) are present.
+    //     Expected: all option panel tabs (6) are present.
     // RNA: _common_data/fasta/RNA_1_seq.fa.
-    //    Expected: all option panel tabs without PCR Primer Design are present.
+    //     Expected: all option panel tabs without PCR Primer Design are present.
     // Amino: _common_data/fasta/AMINO.fa.
-    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+    //     Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
     // All alphabets: _common_data/fasta/all_and_raw_alphabets.fa.
-    //    Expected: all option panel tabs.
+    //     Expected: all option panel tabs.
     // 2 RNA: _common_data/fasta/RNA.fa.
-    //    Expected: all option panel tabs without PCR Primer Design.
+    //     Expected: all option panel tabs without PCR Primer Design.
     // Aminos: _common_data/fasta/amino_multy_ext.fa.
-    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
-
+    //     Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
     QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
     QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
     QSet<Op::Tabs> three = {Op::Search, Op::AnnotationsHighlighting, Op::Statistics};
@@ -206,6 +205,36 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
     checkExpectedTabs(three);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0006) {
+    // Open any sequence.
+    // Open each Options Panel tab.
+    // Check that each tab doesn't have the horizontal scroll.
+    // Check that each tab except "PCR Primer Design for DNA assembly" has a width of 315.
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
+
+    auto splitter = GTWidget::findExactWidget<QSplitter *>(os, "OPTIONS_PANEL_SPLITTER",
+                                                           GTUtilsSequenceView::getActiveSequenceViewWindow(os));
+    {
+        int splitterCount = splitter->count();
+        CHECK_SET_ERR(splitterCount == 2, QString("Expected: 2 widgets separated by splitter, current: %1 widget(s)").
+                                              arg(splitterCount))
+    }
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    auto scroll = GTWidget::findExactWidget<QAbstractScrollArea *>(os, "OP_SCROLL_AREA", splitter);
+    QScrollBar *horScroll = scroll->horizontalScrollBar();
+    CHECK_SET_ERR(horScroll != nullptr, "horScroll is nullptr")
+
+    for (const GTUtilsOptionPanelSequenceView::Tabs &tab : GTUtilsOptionPanelSequenceView::tabsNames.keys()) {
+        GTUtilsOptionPanelSequenceView::openTab(os, tab);
+        CHECK_SET_ERR(!horScroll->isVisible(), "Expected: horScroll is invisible");
+        if (tab != GTUtilsOptionPanelSequenceView::PcrPrimerDesign) {
+            int curWidth = splitter->sizes()[1];
+            CHECK_SET_ERR(curWidth == 315, QString("'%1' width: expected 315, current %2").
+                arg(GTUtilsOptionPanelSequenceView::tabsNames[tab]).arg(curWidth))
+        }
+    }
 }
 
 }  // namespace GUITest_common_scenarios_pcr_primer_design_tab

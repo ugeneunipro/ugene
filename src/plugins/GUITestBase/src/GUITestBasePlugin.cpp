@@ -3456,6 +3456,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0003)
     REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0004)
     REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0005)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0006)
 
     REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0001)
     REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0002)
