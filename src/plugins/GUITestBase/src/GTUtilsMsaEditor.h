@@ -36,8 +36,6 @@ class MaEditorNameList;
 class MSAEditorSequenceArea;
 class MSAEditorTreeViewerUI;
 class MsaEditorWgt;
-class MaGraphOverview;
-class MaSimpleOverview;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
 class GTUtilsMsaEditor {
