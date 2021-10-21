@@ -33,7 +33,6 @@
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorConsensusCache.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
@@ -261,14 +260,18 @@ void MaGraphOverview::sl_stopRendering() {
 }
 
 void MaGraphOverview::sl_blockRendering() {
-    disconnect(editor->getMaObject(), 0, this, 0);
+    disconnect(editor->getMaObject(), nullptr, this, nullptr);
     isBlocked = true;
 }
 
 void MaGraphOverview::sl_unblockRendering(bool update) {
     isBlocked = false;
+    if (!isVisible()) {
+        return;
+    }
 
-    if (update && lastDrawnVersion != editor->getMaObject()->getModificationVersion()) {
+    int currentMaObjectVersion = editor->getMaObject()->getModificationVersion();
+    if (update && lastDrawnVersion != currentMaObjectVersion) {
         sl_drawGraph();
     } else {
         this->update();

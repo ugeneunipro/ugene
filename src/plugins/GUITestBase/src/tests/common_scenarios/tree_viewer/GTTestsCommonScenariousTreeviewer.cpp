@@ -237,57 +237,50 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
-    // Rebuilding tree after removing tree file
+    // Rebuilding tree after removing the tree file.
+    // DIFFERENCE from 0002_1: main menu is used for building tree.
     // 1. Open file samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click on "Build tree" button on toolbar "Build Tree"
-    // Expected state: "Create Philogenetic Tree" dialog appears
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
-
-    // DIFFERENCE: Main menu is used for building tree
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Tree"
-                                                << "Build Tree");
+    // Expected state: "Create Phylogenetic Tree" dialog appears
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_0002_2.nwk"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree", "Build Tree"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
-    // Expected state: philogenetic tree appears
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click OK button.
+    // Expected state: phylogenetic tree appears
+    auto treeView = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
     // 4. Remove document "COI.nwk" from project view.
-    // GTUtilsDialog::waitForDialog(os,new MessageBoxDialogFiller(os,QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.nwk"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "test_0002_2.nwk"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
-    QWidget *w = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(w == nullptr, "treeView not deleted")
+    treeView = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(treeView == nullptr, "treeView not deleted")
 
-    GTUtilsProjectTreeView::findIndex(os, "COI.nwk", GTGlobals::FindOptions(false));
+    GTUtilsProjectTreeView::checkNoItem(os, "test_0002_2.nwk");
 
-    // 5. Double click on COI object.
+    // 5. Double-click on COI object.
     // Expected state: MSA editor view window opens
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
     GTMouseDriver::doubleClick();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 6. Click on "Build tree" button on toolbar
-    // Expected state: "Create Philogenetic Tree" dialog appears
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
-
-    // DIFFERENCE: Main menu is used for building tree
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Tree"
-                                                << "Build Tree");
+    // Expected state: "Create Phylogenetic Tree" dialog appears
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_0002_2.nwk"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Tree", "Build Tree"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 7. Click  OK button
-    // Expected state: philogenetic tree appears
-    QWidget *w1 = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w1 != nullptr, "treeView not found");
+    // Expected state: phylogenetic tree appears.
+    GTWidget::findWidget(os, "treeView");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -298,7 +291,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTLogTracer l;
 
     //    2. Click on "Build tree" button on toolbar
-    //    Expected state: "Create Philogenetic Tree" dialog appears
+    //    Expected state: "Create Phylogenetic Tree" dialog appears
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 2, 52));
 
@@ -313,7 +306,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     //    4. Click  OK button
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
-    //    Expected state: no crash, philogenetic tree not appears
+    //    Expected state: no crash, phylogenetic tree not appears
     //    Error message in the log: "Calculated weight matrix is invalid"
 }
 

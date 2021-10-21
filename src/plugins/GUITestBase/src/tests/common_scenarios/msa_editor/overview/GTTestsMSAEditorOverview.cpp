@@ -69,15 +69,21 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // Wait until overview rendering is finished.
+    // Overview is hidden: the alignment is too big.
+    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
+    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
+    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
+
+    // Show overview and wait until overview rendering is finished.
+    GTWidget::click(os, showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: simple overview is hidden, graph overview is visible.
     QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(!simple->isVisible(), "simple overview is visiable");
+    CHECK_SET_ERR(!simple->isVisible(), "simple overview is visible");
 
     QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_SET_ERR(graph->isVisible(), "graph overview is visiable");
+    CHECK_SET_ERR(graph->isVisible(), "graph overview is visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {

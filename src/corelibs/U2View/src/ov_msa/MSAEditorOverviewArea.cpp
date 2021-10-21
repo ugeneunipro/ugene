@@ -72,13 +72,13 @@ void MSAEditorOverviewArea::cancelRendering() {
 }
 
 void MSAEditorOverviewArea::setVisible(bool isVisible) {
+    MaEditorOverviewArea::setVisible(isVisible);
     if (isVisible) {
         graphOverview->sl_unblockRendering(true);
     } else {
         graphOverview->sl_blockRendering();
         cancelRendering();
     }
-    MaEditorOverviewArea::setVisible(isVisible);
 }
 
 }  // namespace U2

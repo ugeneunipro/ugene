@@ -573,46 +573,54 @@ GUI_TEST_CLASS_DEFINITION(test_3103) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3112) {
-    //    1. Open big alignment, e.g. "_common_data/clustal/big.aln"
+    // Open big alignment, e.g. "_common_data/clustal/big.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QToolButton *button = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(button->isChecked(), "Overview button is not pressed");
+    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
+    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
+    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
 
-    //    2. Modify the alignment
-    //    Expected state: the task starts
+    // Enable "Overview" widget.
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
+
+    // Modify the alignment.
+    // Expected state: the overview task starts.
     GTUtilsMsaEditor::removeColumn(os, 5);
-    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "1: There are no active tasks ");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "1: There are no active tasks ");
 
-    //    3. Click the "Overview" button on the main toolbar
-    //    Expected state: the task is canceled, the overview is hidden
-    GTWidget::click(os, button);
-    GTGlobals::sleep(500);  // wait for task to be canceled
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "2: There are unfinished tasks");
+    // Click the "Overview" button on the main toolbar
+    // Expected state: the task is canceled, the overview is hidden.
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 2000);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "2: There are unfinished tasks");
 
-    //    4. Click the "Overview" button again and wait till overview calculation and rendering ends
-    GTWidget::click(os, button);
-    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "3: There are no active tasks");
+    // Click the "Overview" button again and wait till overview calculation and rendering ends.
+    GTWidget::click(os, showOverviewButton);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "3: There are no active tasks");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    5. Hide the overview
-    //    6. Open the overview
-    //    Expected state: no task starts because nothing have been changed
-    GTWidget::click(os, button);
-    GTWidget::click(os, button);
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "4: There are unfinished tasks");
+    // Hide the overview.
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 2000);
+    // Open the overview.
+    GTWidget::click(os, showOverviewButton);
+    // Expected state: no task starts because nothing have been changed.
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "4: There are unfinished tasks");
 
-    //    7. Hide the overview
-    GTWidget::click(os, button);
+    // Hide the overview.
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 2000);
 
-    //    8. Edit the alignment
+    // Edit the alignment.
     GTUtilsMsaEditor::removeColumn(os, 5);
 
-    //    9. Open the overview
-    //    Expected state: overview calculation task starts
-    GTWidget::click(os, button);
-    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "5: There are no active tasks");
+    // Open the overview.
+    // Expected state: overview calculation task starts.
+    GTWidget::click(os, showOverviewButton);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "5: There are no active tasks");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3124) {
@@ -842,32 +850,44 @@ GUI_TEST_CLASS_DEFINITION(test_3139) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3140) {
-    //    1. Open "_common_data/clustal/big.aln".
+    // Open "_common_data/clustal/big.aln".
     GTUtilsTaskTreeView::openView(os);
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Select the first symbol of the first line.
+    // By default, the overview is hidden - the sequence is too large.
+    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
+    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
+    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
+
+    // Enable "Overview" widget.
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
+
+    // Select the first symbol of the first line.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
 
-    //    3. Press the Space button and do not unpress it.
-    //    Expected: the alignment changes on every button press. UGENE does not crash.
-    //    4. Unpress the button.
-    //    Expected: the overview rendereing task is finished. The overview is shown.
+    // Press the Space button and do not unpress it.
+    // Expected: the alignment changes on every button press. UGENE does not crash.
+    // Unpress the button.
+    // Expected: the overview rendering task is finished. The overview is shown.
     for (int i = 0; i < 100; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);
     }
 
     int renderTasksCount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
-    CHECK_SET_ERR(1 == renderTasksCount, QString("An unexpected overview render tasks count: expect %1, got %2").arg(1).arg(renderTasksCount));
+    CHECK_SET_ERR(renderTasksCount == 1, QString("An unexpected overview render tasks count: expect %1, got %2").arg(1).arg(renderTasksCount));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QColor currentColor = GTUtilsMsaEditor::getGraphOverviewPixelColor(os, QPoint(1, 1));
-    const QColor expectedColor = QColor("white");
-    const QString currentColorString = QString("(%1, %2, %3)").arg(currentColor.red()).arg(currentColor.green()).arg(currentColor.blue());
-    const QString expectedColorString = QString("(%1, %2, %3)").arg(expectedColor.red()).arg(expectedColor.green()).arg(expectedColor.blue());
-    CHECK_SET_ERR(expectedColor == currentColor, QString("An unexpected color, maybe overview was not rendered: expected %1, got %2").arg(expectedColorString).arg(currentColorString));
+    QColor currentColor = GTUtilsMsaEditor::getGraphOverviewPixelColor(os, QPoint(1, 1));
+    QColor expectedColor = QColor("white");
+    QString currentColorString = QString("(%1, %2, %3)").arg(currentColor.red()).arg(currentColor.green()).arg(currentColor.blue());
+    QString expectedColorString = QString("(%1, %2, %3)").arg(expectedColor.red()).arg(expectedColor.green()).arg(expectedColor.blue());
+    CHECK_SET_ERR(expectedColor == currentColor,
+                  QString("An unexpected color, maybe overview was not rendered: expected %1, got %2")
+                      .arg(expectedColorString)
+                      .arg(currentColorString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3142) {
@@ -3266,21 +3286,26 @@ GUI_TEST_CLASS_DEFINITION(test_3545) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3552) {
-    // 1. Open "_common_data\clustal\fungal - all.aln"
+    // Open a large alignment.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln", GTFileDialog::Open, GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *taskInfoLabel = GTWidget::findExactWidget<QLabel *>(os, "taskInfoLabel");
+    // By default, the overview is hidden - the sequence is too large.
+    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
+    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
+    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
+
+    // Enable "Overview" widget.
+    GTWidget::click(os, showOverviewButton);
+
+    auto taskInfoLabel = GTWidget::findLabel(os, "taskInfoLabel");
     while (!taskInfoLabel->text().contains("Render")) {
         uiLog.trace("actual text: " + taskInfoLabel->text());
     }
-    QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
     QString text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_task_view"));
-    //    GTGlobals::sleep(300);os
-    //    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_task_view"));
-    // Expected state: render view task started, progress is correct
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
