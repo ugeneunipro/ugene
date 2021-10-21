@@ -66,6 +66,7 @@
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
 #include "tests/common_scenarios/pcr/GTTestsInSilicoPcr.h"
 #include "tests/common_scenarios/pcr/GTTestsPrimerLibrary.h"
+#include "tests/common_scenarios/pcr_primer_design_for_dna_assembly/GTTestsPcrPrimerDesignForDnaAssembly.h"
 #include "tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h"
 #include "tests/common_scenarios/project/GTTestsProject.h"
 #include "tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h"
@@ -1770,8 +1771,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7183);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7212);
-    REGISTER_TEST(GUITest_regression_scenarios::test_7325);
-    REGISTER_TEST(GUITest_regression_scenarios::test_7325_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_7234);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
     REGISTER_TEST(GUITest_regression_scenarios::test_7247);
@@ -3455,6 +3454,24 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/pcr_primer_design_for_dna_assembly
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0001)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0002)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0003)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0004)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_tab::test_0005)
+
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0001)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0002)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0003)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0004)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0005)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0006)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0007)
+    REGISTER_TEST(GUITest_common_scenarios_pcr_primer_design_algo::test_0008)
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/phyml
