@@ -21,7 +21,6 @@
 
 #include "MSAEditorOverviewArea.h"
 
-#include <QActionGroup>
 #include <QContextMenuEvent>
 #include <QVBoxLayout>
 
@@ -60,7 +59,7 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)), graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
     connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)), graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
 
-    setMaximumHeight(graphOverview->FIXED_HEIGHT + simpleOverview->FIXED_HEIGTH + 5);
+    setMaximumHeight(U2::MaGraphOverview::FIXED_HEIGHT + U2::MaSimpleOverview::FIXED_HEIGTH + 5);
 }
 
 void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
@@ -72,14 +71,14 @@ void MSAEditorOverviewArea::cancelRendering() {
     MaEditorOverviewArea::cancelRendering();
 }
 
-void MSAEditorOverviewArea::sl_show() {
-    MaEditorOverviewArea::sl_show();
-    if (graphOverview->isVisible()) {
+void MSAEditorOverviewArea::setVisible(bool isVisible) {
+    if (isVisible) {
         graphOverview->sl_unblockRendering(true);
     } else {
         graphOverview->sl_blockRendering();
         cancelRendering();
     }
+    MaEditorOverviewArea::setVisible(isVisible);
 }
 
 }  // namespace U2

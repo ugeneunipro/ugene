@@ -1108,6 +1108,27 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7460) {
+    // Check that UGENE can open an alignment of [1_000 x 10_000] and no MSA overview is shown for a such big alignment.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7460.fa");
+    model.length = 1000;
+    model.window = 1000;
+    model.numberOfSequences = 10000;
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
+
+    QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
+    CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
+    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

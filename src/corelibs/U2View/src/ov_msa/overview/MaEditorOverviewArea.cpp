@@ -49,10 +49,6 @@ bool MaEditorOverviewArea::isResizable() const {
     return isWidgetResizable;
 }
 
-void MaEditorOverviewArea::sl_show() {
-    setVisible(!isVisible());
-}
-
 void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
     layout->addWidget(overviewWgt);
 }

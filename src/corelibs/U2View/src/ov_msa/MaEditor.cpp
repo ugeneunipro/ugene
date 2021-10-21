@@ -360,7 +360,7 @@ void MaEditor::initActions() {
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
-    connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
+    connect(showOverviewAction, &QAction::triggered, ui->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
 
     MaEditorSelectionController *selectionController = getSelectionController();

@@ -41,9 +41,6 @@ public:
 
     bool isResizable() const;
 
-protected slots:
-    virtual void sl_show();
-
 protected:
     void addOverview(QWidget *overviewWgt);
 
