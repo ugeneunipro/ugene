@@ -35,7 +35,7 @@ struct PCRPrimerDesignTaskReportUtils {
 
     //Returns PCRPrimerDesignForDNAAssemblyTask report. fileSequence must not be empty.
     static QString generateReport(const PCRPrimerDesignForDNAAssemblyTask& task, const QByteArray& fileSequence,
-                                  const UserPrimersReports& reports);
+                                  const QByteArray& revComplSeq, const UserPrimersReports& reports);
 private:
     /**
      * To build a user primer unwanted connection table. Includes a header row, a forward user primer row, and a reverse

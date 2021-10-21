@@ -264,7 +264,8 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
     CHECK_OP(stateInfo, stateInfo.getError());
 
-    return PCRPrimerDesignTaskReportUtils::generateReport(*this, sequence, userPrimersReports);
+    return PCRPrimerDesignTaskReportUtils::generateReport(*this, sequence, reverseComplementSequence,
+                                                          userPrimersReports);
 }
 
 QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
