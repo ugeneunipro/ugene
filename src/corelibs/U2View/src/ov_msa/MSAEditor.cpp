@@ -526,7 +526,7 @@ void MSAEditor::initActions() {
     // Disable overview for very large alignments by default.
     // UGENE's MSA overview calculation is too slow and having the overview ON when multiple large files
     // are opened can lead to 100% CPU block.
-    quint64 maxAlignmentSizeToHaveOverviewByDefault = 1000 * 1000;
+    static constexpr quint64 maxAlignmentSizeToHaveOverviewByDefault = 1000 * 1000;
     quint64 alignmentSize = getAlignmentLen() * getNumSequences();
     if (alignmentSize > maxAlignmentSizeToHaveOverviewByDefault) {
         showOverviewAction->setChecked(false);
