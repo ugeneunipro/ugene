@@ -23,10 +23,6 @@
 #define _U2_MSA_EDITOR_OVERVIEW_H_
 
 #include <QAction>
-#include <QWidget>
-
-#include <U2Core/global.h>
-
 #include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {

@@ -39,6 +39,7 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
 

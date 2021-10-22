@@ -24,6 +24,8 @@
 
 #include <QWidget>
 
+#include <U2Core/global.h>
+
 class QVBoxLayout;
 
 namespace U2 {
@@ -32,7 +34,7 @@ class MaEditorWgt;
 class MaGraphOverview;
 class MaOverviewContextMenu;
 
-class MaEditorOverviewArea : public QWidget {
+class U2VIEW_EXPORT MaEditorOverviewArea : public QWidget {
     Q_OBJECT
 public:
     MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName);
