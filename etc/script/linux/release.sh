@@ -97,6 +97,6 @@ mv "${APP_BUNDLE_DIR}" "${RELEASE_UNPACKED_DIR_NAME}"
 tar cfz "${RELEASE_BASE_FILE_NAME}.tar.gz" "${RELEASE_UNPACKED_DIR_NAME}"
 
 echo Compressing symbols...
-tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}.tar.gz" "${SYMBOLS_DIR_NAME}"
+tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-linux-x86-64.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Build archive']"
