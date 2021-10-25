@@ -68,7 +68,7 @@ echo "##teamcity[blockClosed name='Validate bundle content']"
 echo "##teamcity[blockOpened name='Dump symbols']"
 
 function dump_symbols() {
-  echo "Dumping symbols for $1"
+  echo "Dumping symbols for ${1}"
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
@@ -76,7 +76,7 @@ function dump_symbols() {
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
-  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r")
+  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | tr -d ".pdb")
 
   DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}/${FILE_HASH}"
   mkdir -p "${DEST_PATH}"

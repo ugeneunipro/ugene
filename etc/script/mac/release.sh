@@ -110,7 +110,7 @@ find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e li
 done
 
 echo Compressing symbols...
-tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
+tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
