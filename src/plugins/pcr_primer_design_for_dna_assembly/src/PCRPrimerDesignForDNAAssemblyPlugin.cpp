@@ -28,7 +28,10 @@
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
+#include <U2Test/GTestFrameworkComponents.h>
+
 #include "PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h"
+#include "tasks/PCRPrimerDesignForDNAAssemblyTaskTest.h"
 
 namespace U2 {
 
@@ -45,6 +48,10 @@ PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
 
         opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
     }
+    
+    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    xmlTestFormat->registerTestFactories(PCRPrimerDesignForDNAAssemblyTaskTest::createTestFactories());
 }
 
 }    // namespace U2

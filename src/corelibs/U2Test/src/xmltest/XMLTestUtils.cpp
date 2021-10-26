@@ -88,6 +88,66 @@ double XmlTest::getDouble(const QDomElement &element, const QString &attribute) 
     return result;
 }
 
+U2Range<int> XmlTest::getU2RangeInt(const QDomElement &element, const QString &attribute, const QString &splitter) {
+    U2Range<int> result;
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, result);
+
+    QString buf = element.attribute(attribute);
+    QStringList splittedList = buf.split(splitter);
+    if (splittedList.size() != 2) {
+        wrongListSize(attribute, splittedList.size(), 2);
+        return result;
+    }
+    bool ok0 = true;
+    bool ok1 = true;
+    result = U2Range<int>(splittedList[0].toInt(&ok0), splittedList[1].toInt(&ok1));
+    if (!ok0) {
+        stateInfo.setError(QString("Error parsing line %1, first value is not integer.").arg(buf));
+    }
+    if (!ok1) {
+        stateInfo.setError(QString("Error parsing line %1, second value is not integer.").arg(buf));
+    }
+    return result;
+}
+
+U2Region XmlTest::getU2Region(const QDomElement &element, const QString &attribute) {
+    const U2Range<int> range = getU2RangeInt(element, attribute, "..");
+    return U2Region(range.minValue, range.maxValue);
+}
+
+QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QString &attribute, const QString &splitter, int sizeToCheck) {
+    QList<U2Region> result;
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, result);
+
+    QString buf = element.attribute(attribute);
+    QStringList splittedList = buf.split(splitter);
+    if (sizeToCheck > 0) {
+        if (splittedList.size() != sizeToCheck) {
+            wrongListSize(attribute, splittedList.size(), 2);
+            return result;
+        }
+    }
+    
+    for (const QString &regionStr : splittedList) {
+        QStringList regionValues = regionStr.split("..");
+        if (regionValues.size() != 2) {
+            stateInfo.setError(QString("Wrong list size at region values, there are %1, but expected 2.").arg(QString::number(regionValues.size())));
+        }
+        bool ok0 = true;
+        bool ok1 = true;
+        result << U2Region(regionValues[0].toLongLong(&ok0), regionValues[1].toLongLong(&ok1));
+        if (!ok0) {
+            stateInfo.setError(QString("Error parsing line %1, first value is not longlong.").arg(regionStr));
+        }
+        if (!ok1) {
+            stateInfo.setError(QString("Error parsing line %1, second value is not longlong.").arg(regionStr));
+        }
+    }
+    return result;
+}
+
 const QString XMLTestUtils::TMP_DATA_DIR_PREFIX = "!tmp_data_dir!";
 const QString XMLTestUtils::COMMON_DATA_DIR_PREFIX = "!common_data_dir!";
 const QString XMLTestUtils::LOCAL_DATA_DIR_PREFIX = "!input!";

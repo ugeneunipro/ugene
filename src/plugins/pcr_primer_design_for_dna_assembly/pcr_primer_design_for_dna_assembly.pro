@@ -7,6 +7,7 @@ HEADERS += src/options_panel/GeneratedSequencesTable.h \
            src/tasks/FindPresenceOfUnwantedParametersTask.h \
            src/tasks/FindUnwantedIslandsTask.h \
            src/tasks/PCRPrimerDesignForDNAAssemblyTask.h \
+           src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.h \
            src/tasks/UnwantedStructuresInBackboneDialog.h \
            src/utils/PCRPrimerDesignTaskReportUtils.h \
            src/utils/UnwantedConnectionsUtils.h \
@@ -23,6 +24,7 @@ SOURCES += src/options_panel/GeneratedSequencesTable.cpp \
            src/tasks/FindPresenceOfUnwantedParametersTask.cpp \
            src/tasks/FindUnwantedIslandsTask.cpp \
            src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp \
+           src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp \
            src/tasks/UnwantedStructuresInBackboneDialog.cpp \
            src/utils/PCRPrimerDesignTaskReportUtils.cpp \
            src/utils/UnwantedConnectionsUtils.cpp \
