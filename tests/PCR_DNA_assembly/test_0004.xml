@@ -20,8 +20,8 @@ ATGAACTATACAAATAA"
     insertTo="5"
     leftArea="0..70"
     rightArea="354..71"
-    backboneSequenceUrl="pcr_primer_design/backbone.fa"
-    expectedResultsList="58..22;336..21;57..21;345..21;38..23;362..23;0..0;0..0"
+    backboneSequenceUrl="pcr_primer_design/backbone_for_user_primers.fa"
+    expectedResultsList="66..21;338..20;0..0;0..0;0..0;0..0;0..0;0..0"
     />
 
 </multi-test>

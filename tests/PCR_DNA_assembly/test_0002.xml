@@ -20,7 +20,7 @@ ATGAACTATACAAATAA"
     insertTo="5"
     leftArea="0..70"
     rightArea="354..71"
-    expectedResultsList="54..21;336..22;0..0;0..0;0..0;0..0;0..0;0..0"
+    expectedResultsList="28..22;336..22;0..0;0..0;0..0;0..0;0..0;0..0"
     />
 
 </multi-test>
