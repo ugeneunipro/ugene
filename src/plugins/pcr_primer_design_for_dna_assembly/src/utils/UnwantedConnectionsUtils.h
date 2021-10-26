@@ -69,4 +69,4 @@ private:
 
 }
 
-#endif
+#endif // _U2_UNWANTED_CONNECTIONS_UTILS_H_
