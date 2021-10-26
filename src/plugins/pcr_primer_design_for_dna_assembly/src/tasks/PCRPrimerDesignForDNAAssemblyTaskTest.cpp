@@ -97,7 +97,7 @@ Task::ReportResult GTest_PCRPrimerDesignForDNAAssemblyTaskTest::report() {
     if (actualResults != result) {
         QString actualResultsStr;
         for (const U2Region &region : qAsConst(actualResults)) {
-            actualResultsStr.append(region.toString(U2Region::FormatDots));
+            actualResultsStr.append(QString::number(region.startPos) + ".." + QString::number(region.length));
             if (region != actualResults[7]) {
                 actualResultsStr.append(";");
             }
