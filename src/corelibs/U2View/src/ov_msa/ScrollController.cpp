@@ -416,6 +416,9 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
+    // don't show horz scrollbar in multiline mode
+    // TODO:ichebyki temporary disabled
+    // CHECK_EXT(maEditor->getMultilineMode(), hScrollBar->setVisible(false), );
 
     const int alignmentLength = maEditor->getAlignmentLen();
     const int columnWidth = maEditor->getColumnWidth();

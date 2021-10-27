@@ -40,7 +40,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorMultilineOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/UndoRedoFramework.h>
 
@@ -363,25 +363,20 @@ void MaEditor::sl_resetColumnWidthCache() {
     cachedColumnWidth = 0;
 }
 
-void MaEditor::initActions(uint index) {
+void MaEditor::initActions(MaEditorWgt *wgt) {
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
-<<<<<<< HEAD
-    connect(showOverviewAction, &QAction::triggered, ui->getOverviewArea(), &QWidget::setVisible);
-    ui->addAction(showOverviewAction);
-=======
     connect(showOverviewAction, SIGNAL(triggered()), getUI(index)->getOverviewArea(), SLOT(sl_show()));
     getUI(index)->addAction(showOverviewAction);
->>>>>>> The init commit for UGENE-7042
 
     MaEditorSelectionController *selectionController = getSelectionController();
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
-    getUI(index)->addAction(clearSelectionAction);
+    wgt->addAction(clearSelectionAction);
 
     connect(selectionController,
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
@@ -415,7 +410,7 @@ void MaEditor::updateResizeMode() {
     resizeMode = font.pointSize() >= minimumFontPointSize && zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
-void MaEditor::addCopyPasteMenu(QMenu *m) {
+void MaEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
     QMenu *cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
@@ -573,8 +568,20 @@ MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
-    return undoRedoFramework;
+void MaEditor::setMultilineMode(bool multilinemode) {
+    multilineMode = multilinemode;
+}
+
+MaEditorWgt *MaEditor::getActiveChild() {
+    return activeChild;
+}
+
+void MaEditor::setActiveChild(MaEditorWgt *child) {
+    if (child == nullptr) {
+        activeChild = getUI(0);
+    } else {
+        activeChild = child;
+    }
 }
 
 }  // namespace U2

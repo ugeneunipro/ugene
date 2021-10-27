@@ -195,8 +195,11 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     Q_UNUSED(v);
 
-    t->addAction(editor->undoAction);
-    t->addAction(editor->redoAction);
+    if (editor->getActiveChild() != ui) {
+        return;
+    }
+    t->addAction(ui->getUndoAction());
+    t->addAction(ui->getRedoAction());
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 
@@ -206,6 +209,9 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
 }
 
 void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
+    if (editor->getActiveChild() != ui) {
+        return;
+    }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
     bool isMainMenu = menuType == MsaEditorMenuType::STATIC;
     if (isContextMenu || isMainMenu) {
@@ -217,14 +223,17 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
-    QList<QAction *> actions;
-    actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
-            << reverseAction << complementAction << delColAction << removeAllGapsAction;
-
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(),
+                           ui->delSelectionAction);
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
+        QList<QAction *> actions;
+        actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
+                << reverseAction << complementAction << delColAction << removeAllGapsAction;
+
         editMenu->addActions(actions);
+        coreLog.info("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n");
     }
+    coreLog.error("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\n");
 
     m->setObjectName("msa sequence area context menu");
 }
@@ -243,7 +252,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
     QList<QAction *> actions = {
-        getEditor()->getUI()->getEditorNameList()->getEditSequenceNameAction(),
+        ui->getEditorNameList()->getEditSequenceNameAction(),
         fillWithGapsinsSymAction,
         replaceCharacterAction,
         reverseComplementAction,
@@ -254,7 +263,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     };
 
     editMenu->insertActions(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), actions);
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), ui->delSelectionAction);
 
     QMenu *exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
