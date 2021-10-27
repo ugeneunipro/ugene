@@ -84,28 +84,26 @@ void MaEditorMultilineWgt::initWidgets() {
     initStatusBar();
     initChildrenArea();
 
-    QVBoxLayout *maContainerLayout = new QVBoxLayout();
-    maContainerLayout->setContentsMargins(0, 0, 0, 0);
-    maContainerLayout->setSpacing(0);
-    maContainerLayout->setStretch(0, 1);
+    uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
+    uiChildrenArea->layout()->setSpacing(0);
+    uiChildrenArea->layout()->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QWidget *maContainer = new QWidget(this);
-    maContainer->setLayout(maContainerLayout);
+    QScrollArea *maContainer = new QScrollArea(this);
+    maContainer->setWidgetResizable(true);
+    maContainer->setWidget(uiChildrenArea);
+
+    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    mainSplitter->addWidget(maContainer);
+    mainSplitter->addWidget(overviewArea);
+    mainSplitter->addWidget(statusBar);
+    mainSplitter->setStretchFactor(0, 2);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-
-    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
-    mainSplitter->addWidget(maContainer);
-    mainSplitter->setStretchFactor(0, 2);
-
-    maContainerLayout->addWidget(uiChildrenArea);
-    maContainerLayout->addWidget(overviewArea);
-    maContainerLayout->addWidget(statusBar);
-
     mainLayout->addWidget(mainSplitter);
+
     setLayout(mainLayout);
 
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));

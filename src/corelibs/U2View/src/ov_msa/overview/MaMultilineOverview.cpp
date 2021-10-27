@@ -110,7 +110,7 @@ void MaMultilineOverview::setVisibleRangeForEmptyAlignment() {
 
 void MaMultilineOverview::recalculateScale() {
     // TODO:ichebyki
-    // stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
+    //stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
     stepY = static_cast<double>(editor->getUI()->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }
 

@@ -47,8 +47,8 @@
 
 namespace U2 {
 
-MoveToObjectMaController::MoveToObjectMaController(MaEditor* maEditor)
-    : QObject(maEditor), MaEditorContext(maEditor) {
+MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor, MaEditorWgt *wgt)
+    : QObject(maEditor), MaEditorContext(maEditor, wgt) {
     moveSelectionToAnotherObjectAction = new QAction(tr("Move selected rows to another alignment"));
     moveSelectionToAnotherObjectAction->setObjectName("move_selection_to_another_object");
     connect(moveSelectionToAnotherObjectAction, &QAction::triggered, this, &MoveToObjectMaController::showMoveSelectedRowsToAnotherObjectMenu);

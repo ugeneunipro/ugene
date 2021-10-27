@@ -33,30 +33,30 @@
 
 namespace U2 {
 
-DrawHelper::DrawHelper(MaEditor* _editor)
-    : editor(_editor) {
+DrawHelper::DrawHelper(MaEditorWgt *_ui)
+    : ui(_ui) {
 }
 
 U2Region DrawHelper::getVisibleBases(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
-    auto scrollController = editor->getUI()->getScrollController();
+    auto scrollController = ui->getScrollController();
     const int firstVisibleBase = scrollController->getFirstVisibleBase(countFirstClippedBase);
     const int lastVisibleBase = scrollController->getLastVisibleBase(widgetWidth, countLastClippedBase);
     return U2Region(firstVisibleBase, lastVisibleBase - firstVisibleBase + 1);
 }
 
 U2Region DrawHelper::getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    auto scrollController = editor->getUI()->getScrollController();
+    auto scrollController = ui->getScrollController();
     const int firstVisibleRowNumber = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
     const int lastVisibleRowNumber = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
     return U2Region(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
 }
 
 QList<int> DrawHelper::getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    auto scrollController = editor->getUI()->getScrollController();
+    auto scrollController = ui->getScrollController();
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
     int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
     U2Region viewRowsRegion(firstVisibleViewRow, lastVisibleViewRow - firstVisibleViewRow + 1);
-    return editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
+    return ui->getEditor()->getCollapseModel()->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
 }
 
 int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
@@ -66,8 +66,8 @@ int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase
 QRect DrawHelper::getScreenRect(const QRect& columnsAndRowsRect) const {
     CHECK(!columnsAndRowsRect.isEmpty(), QRect());
 
-    U2Region xRange = editor->getUI()->getBaseWidthController()->getBasesScreenRange(U2Region::fromXRange(columnsAndRowsRect));
-    U2Region yRange = editor->getUI()->getRowHeightController()->getScreenYRegionByViewRowsRegion(U2Region::fromYRange(columnsAndRowsRect));
+    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(U2Region::fromXRange(columnsAndRowsRect));
+    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(U2Region::fromYRange(columnsAndRowsRect));
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 

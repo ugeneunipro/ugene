@@ -49,8 +49,9 @@ private slots:
 private:
     void updateOffsets();
 
-    MaEditorSequenceArea* seqArea;
-    MaEditor* editor;
+    MaEditorSequenceArea *seqArea;
+    MaEditor *editor;
+    MaEditorWgt *ui;
 
 public:
     MSAEditorOffsetsViewWidget* leftWidget;
@@ -78,8 +79,9 @@ protected:
 private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
-    MaEditorSequenceArea* seqArea;
-    MaEditor* editor;
+    MaEditorSequenceArea *seqArea;
+    MaEditor *editor;
+    MaEditorWgt *ui;
     bool showStartPos;
     bool completeRedraw;
     QPixmap cachedView;

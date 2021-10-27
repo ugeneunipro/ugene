@@ -36,7 +36,9 @@
 
 namespace U2 {
 
-MsaEditorWgt::MsaEditorWgt(MSAEditor *editor, MaEditorOverviewArea *overview, MaEditorStatusBar *statusbar)
+MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
+                           MaEditorMultilineOverviewArea *overview,
+                           MaEditorStatusBar *statusbar)
     : MaEditorWgt(editor),
       multiTreeViewer(nullptr),
       similarityStatistics(nullptr)
@@ -125,15 +127,9 @@ void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
-void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
-    if (_overviewArea == nullptr) {
-        // TODO:ichebyki
-        // overviewArea = new MSAEditorOverviewArea(this);
-        // Q_ASSERT(_overviewArea);
-        _overviewArea = nullptr;
-    } else {
-        overviewArea = _overviewArea;
-    }
+void MsaEditorWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
+    Q_ASSERT(_overviewArea);
+    overviewArea = _overviewArea;
 }
 
 void MsaEditorWgt::initNameList(QScrollBar* nhBar) {
@@ -144,12 +140,9 @@ void MsaEditorWgt::initConsensusArea() {
     consensusArea = new MSAEditorConsensusArea(this);
 }
 
-void MsaEditorWgt::initStatusBar(MaEditorStatusBar *statusbar) {
-    if (statusbar == nullptr) {
-        statusBar = new MsaEditorStatusBar(getEditor());
-    } else {
-        statusBar = statusbar;
-    }
+void MsaEditorWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
+    Q_ASSERT(_statusBar);
+    statusBar = _statusBar;
 }
 
 MSAEditorTreeViewer* MsaEditorWgt::getCurrentTree() const {
