@@ -44,7 +44,7 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
 
 public:
     MsaEditorWgt(MSAEditor *editor,
-                 MaEditorOverviewArea *overview = nullptr,
+                 MaEditorMultilineOverviewArea *overview = nullptr,
                  MaEditorStatusBar *statusbar = nullptr);
 
     MSAEditor* getEditor() const;
@@ -68,7 +68,7 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
-    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr);
+    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr);
     void initStatusBar(MaEditorStatusBar *statusBar = nullptr);
 
 private slots:

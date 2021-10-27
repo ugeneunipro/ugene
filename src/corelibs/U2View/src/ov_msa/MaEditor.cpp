@@ -42,7 +42,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MSAEditorMultilineOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/UndoRedoFramework.h>
 
@@ -483,8 +483,8 @@ void MaEditor::updateResizeMode() {
     resizeMode = zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
-void MaEditor::addCopyPasteMenu(QMenu* m) {
-    QMenu* cm = m->addMenu(tr("Copy/Paste"));
+void MaEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
+    QMenu *cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
 
@@ -646,8 +646,20 @@ MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
-    return undoRedoFramework;
+void MaEditor::setMultilineMode(bool multilinemode) {
+    multilineMode = multilinemode;
+}
+
+MaEditorWgt *MaEditor::getActiveChild() {
+    return activeChild;
+}
+
+void MaEditor::setActiveChild(MaEditorWgt *child) {
+    if (child == nullptr) {
+        activeChild = getUI(0);
+    } else {
+        activeChild = child;
+    }
 }
 
 }  // namespace U2
