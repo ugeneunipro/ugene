@@ -76,6 +76,8 @@ public:
     int getLastVisibleBase(bool countClipped) const;
     int getNumVisibleBases() const;
 
+    void setFirstVisibleBase(int firstVisibleBase);
+
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.

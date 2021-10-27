@@ -117,9 +117,11 @@ void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
-void McaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
+void McaEditorWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
     if (_overviewArea == nullptr) {
-        overviewArea = new McaEditorOverviewArea(this);
+        // TODO:ichebyki
+        // overviewArea = new McaEditorOverviewArea(this);
+        overviewArea = nullptr;
     } else {
         overviewArea = _overviewArea;
     }

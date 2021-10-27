@@ -130,7 +130,8 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
-            U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
+            // TODO:ichebyki
+            U2Region yRange = editor->getUI()->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
             U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
 
             QRect rect;
@@ -200,7 +201,8 @@ void MaSimpleMultilineOverview::drawSelection(QPainter &p) {
     for (const QRect &selectedRect : qAsConst(selectedRects)) {
         U2Region columnRange = ui->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
-        U2Region sequenceViewYRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
+        // TODO:ichebyki
+        U2Region sequenceViewYRegion = editor->getUI()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
 
         QRect drawRect;
         drawRect.setLeft(qRound(columnRange.startPos / stepX));

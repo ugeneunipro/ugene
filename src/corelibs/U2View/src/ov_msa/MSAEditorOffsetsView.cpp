@@ -47,14 +47,15 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     : QObject(maEditorUi) {
     seqArea = sa;
     editor = ed;
+    ui = maEditorUi;
 
-    leftWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, true);
+    leftWidget = new MSAEditorOffsetsViewWidget(ui, ed, seqArea, true);
     leftWidget->setObjectName("msa_editor_offsets_view_widget_left");
-    rightWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, false);
+    rightWidget = new MSAEditorOffsetsViewWidget(ui, ed, seqArea, false);
     rightWidget->setObjectName("msa_editor_offsets_view_widget_right");
 
-    connect(maEditorUi->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
-    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
+    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_updateOffsets()));
 
     MultipleAlignmentObject* mobj = editor->getMaObject();
     SAFE_POINT(nullptr != mobj, L10N::nullPointerError("multiple alignment object"), );
@@ -109,9 +110,10 @@ void MSAEditorOffsetsViewController::updateOffsets() {
 MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditorWgt* maEditorUi, MaEditor* ed, MaEditorSequenceArea* sa, bool sp)
     : seqArea(sa),
       editor(ed),
+      ui(maEditorUi),
       showStartPos(sp),
       completeRedraw(true) {
-    connect(maEditorUi, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
+    connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
 }
 
 void MSAEditorOffsetsViewWidget::sl_completeRedraw() {
@@ -178,7 +180,6 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QFontMetrics fm(font, this);
     painter.setFont(font);
 
-    MaEditorWgt* ui = editor->getUI();
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
