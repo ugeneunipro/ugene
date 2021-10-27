@@ -41,7 +41,7 @@ class MSAEditorOffsetsViewController;
 class MaEditor;
 class MaEditorConsensusArea;
 class MaEditorNameList;
-class MaEditorOverviewArea;
+class MaEditorMultilineOverviewArea;
 class MaEditorSequenceArea;
 class MaEditorStatusBar;
 class RowHeightController;
@@ -51,6 +51,23 @@ class SequenceAreaRenderer;
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
+class U2VIEW_EXPORT MaEditorWgtEventFilter : public QObject
+{
+    Q_OBJECT
+public:
+    MaEditorWgtEventFilter(QObject *own, MaEditorWgt *maeditorwgt)
+        : QObject(own), maEditorWgt(maeditorwgt)
+    {}
+
+    ~MaEditorWgtEventFilter() {}
+
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
+private:
+    MaEditorWgt *maEditorWgt;
+
+};
+
 class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
@@ -70,7 +87,9 @@ public:
 
     MaEditorConsensusArea* getConsensusArea() const;
 
-    MaEditorOverviewArea* getOverviewArea() const;
+    MaEditorMultilineOverviewArea *getOverviewArea() const {
+        return overviewArea;
+    }
 
     MSAEditorOffsetsViewController* getOffsetsViewController() const;
 
@@ -91,6 +110,10 @@ public:
 
     QSplitter* getMainSplitter() const;
 
+    MsaUndoRedoFramework *getUndoRedoFramework() const { return undoFWK; }
+
+    MaEditorWgtEventFilter *getEventFilter() const { return eventFilter; };
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
@@ -101,7 +124,7 @@ protected:
     virtual void initActions();
 
     virtual void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) = 0;
-    virtual void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) = 0;
+    virtual void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) = 0;
     virtual void initNameList(QScrollBar *nhBar) = 0;
     virtual void initConsensusArea() = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusBar = nullptr) = 0;
@@ -111,7 +134,7 @@ protected:
     MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;
-    MaEditorOverviewArea *overviewArea;
+    MaEditorMultilineOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
     MSAEditorOffsetsViewController *offsetsViewController;
 
@@ -133,6 +156,8 @@ protected:
     BaseWidthController* baseWidthController;
     RowHeightController* rowHeightController;
     DrawHelper* drawHelper;
+
+    MaEditorWgtEventFilter *eventFilter;
 
 public:
     QAction* delSelectionAction;

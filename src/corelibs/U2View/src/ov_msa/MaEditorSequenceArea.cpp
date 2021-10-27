@@ -153,8 +153,12 @@ int MaEditorSequenceArea::getFirstVisibleBase() const {
     return ui->getScrollController()->getFirstVisibleBase();
 }
 
+void MaEditorSequenceArea::setFirstVisibleBase(int firstVisibleBase) {
+    ui->getScrollController()->setFirstVisibleBase(firstVisibleBase);
+}
+
 int MaEditorSequenceArea::getLastVisibleBase(bool countClipped) const {
-    return getEditor()->getUI()->getScrollController()->getLastVisibleBase(width(), countClipped);
+    return ui->getScrollController()->getLastVisibleBase(width(), countClipped);
 }
 
 int MaEditorSequenceArea::getNumVisibleBases() const {

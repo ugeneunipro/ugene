@@ -66,7 +66,10 @@ QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 
-void MSAEditorConsensusArea::buildMenu(QMenu* menu) {
+void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
+    if (editor->getActiveChild() != ui) {
+        return;
+    }
     menu->addAction(configureConsensusAction);
 }
 

@@ -116,7 +116,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const Multi
 
     SAFE_POINT(getSeqArea() != nullptr, "seqAreaWgt is NULL", -1);
     const int width = getSeqArea()->width();
-    const int seqRowHeight = editor->getUI()->getRowHeightController()->getSingleRowHeight();
+    const int seqRowHeight = ui->getRowHeightController()->getSingleRowHeight();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.save();
         painter.translate(0, yStart + seqRowHeight);

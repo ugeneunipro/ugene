@@ -29,10 +29,10 @@
 
 namespace U2 {
 
-MaEditorContext::MaEditorContext(MaEditor* maEditor)
+MaEditorContext::MaEditorContext(MaEditor *maEditor, MaEditorWgt *wgt)
     : editor(maEditor),
       maObject(maEditor->getMaObject()),
-      ui(maEditor->getUI()),
+      ui(wgt),
       selectionController(maEditor->getSelectionController()),
       collapseModel(editor->getCollapseModel()) {
     SAFE_POINT(maObject != nullptr, "maObject is null", );

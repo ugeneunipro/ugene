@@ -26,11 +26,11 @@
 
 namespace U2 {
 
-class MaEditor;
+class MaEditorWgt;
 
 class U2VIEW_EXPORT DrawHelper {
 public:
-    DrawHelper(MaEditor* editor);
+    DrawHelper(MaEditorWgt *ui);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
     U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
@@ -42,7 +42,7 @@ public:
     QRect getScreenRect(const QRect& columnsAndRowsRect) const;
 
 private:
-    MaEditor* const editor;
+    MaEditorWgt *ui;
 };
 
 }  // namespace U2
