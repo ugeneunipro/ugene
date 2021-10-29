@@ -23,9 +23,14 @@
 
 #include <QFileInfo>
 
+#include <U2core/DNASequenceObject.h>
+#include <U2core/DocumentModel.h>
+#include <U2core/U2SafePoints.h>
+
 namespace U2 {
 
-#define SEQ_ATTR "sequence"
+#define DOC_NAME_ATTR "docName"
+#define SEQ_NAME_ATTR "seqName"
 #define ENERGY_ATTR "gibbsFreeEnergy"
 #define MELTING_POINT_ATTR "meltingPoint"
 #define OVERLAP_ATTR "overlapLength"
@@ -40,22 +45,15 @@ namespace U2 {
 #define OTHER_SEQ_PCR_URL_ATTR "otherSequencesInPcrUrl"
 
 void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QDomElement &el) {
-    QString buf = el.attribute(SEQ_ATTR);
-    buf = buf.simplified();
-    buf.replace(" ", "");
-    if (buf.isEmpty()) {
-        failMissingValue(SEQ_ATTR);
-        return;
-    } else {
-        sequence = buf.toLatin1();
-    }
+    docName = el.attribute(DOC_NAME_ATTR);
+    seqName = el.attribute(SEQ_NAME_ATTR);
     settings.gibbsFreeEnergy = getU2RangeInt(el, ENERGY_ATTR, ";");
     settings.meltingPoint = getU2RangeInt(el, MELTING_POINT_ATTR, ";");
     settings.overlapLength = getU2RangeInt(el, OVERLAP_ATTR, ";");
     settings.gibbsFreeEnergyExclude = getInt(el, ENERGY_EXCLUDE_ATTR);
     settings.meltingPointExclude = getInt(el, MELTING_POINT_EXCLUDE_ATTR);
     settings.complementLengthExclude = getInt(el, COMPL_LENGTH_EXCLUDE_ATTR);
-    buf = el.attribute(INSERT_TO_ATTR);
+    QString buf = el.attribute(INSERT_TO_ATTR);
     if (buf == "5") {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
     } else if (buf == "3") {
@@ -88,17 +86,30 @@ void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QD
 }
 
 void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::prepare() {
-    task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    Document *loadedDocument = getContext<Document>(this, docName);
+    if (loadedDocument == nullptr) {
+        stateInfo.setError(GTest::tr("context not found %1").arg(docName));
+        return;
+    }
+    U2SequenceObject *dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
+    if (dnaso == nullptr) {
+        stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
+        return;
+    }
+    task = new PCRPrimerDesignForDNAAssemblyTask(settings, dnaso->getWholeSequenceData(stateInfo));
+    CHECK_OP(stateInfo, );
     addSubTask(task);
 }
 
 Task::ReportResult GTest_PCRPrimerDesignForDNAAssemblyTaskTest::report() {
     const QList<U2Region> actualResults = task->getResults();
     if (actualResults != result) {
+        CHECK_EXT(actualResults.size() == 8, setError(QString("Actual results size %1, expected 8.")
+            .arg(QString::number(actualResults.size()))), ReportResult_Finished);
         QString actualResultsStr;
         for (const U2Region &region : qAsConst(actualResults)) {
             actualResultsStr.append(QString::number(region.startPos) + ".." + QString::number(region.length));
-            if (region != actualResults[7]) {
+            if (region != actualResults.last()) {
                 actualResultsStr.append(";");
             }
         }

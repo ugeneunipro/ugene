@@ -41,6 +41,8 @@ public:
     Task::ReportResult report();
 
 private:
+    QString docName;
+    QString seqName;
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     PCRPrimerDesignForDNAAssemblyTask *task = nullptr;
     QByteArray sequence;
