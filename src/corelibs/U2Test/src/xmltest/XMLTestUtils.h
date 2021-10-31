@@ -83,7 +83,7 @@ public:
     static const QString FALSE_VALUE;
 
 private:
-    QPair<qint64, qint64> XmlTest::getPairQuint64(const QDomElement &element, const QString &attribute, const QString &splitter);
+    QPair<qint64, qint64> getPairQuint64(const QDomElement &element, const QString &attribute, const QString &splitter);
     QPair<qint64, qint64> getPairQuintFromQStringList(QStringList &splittedList, QString buf);
 };
 
