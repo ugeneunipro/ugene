@@ -245,11 +245,11 @@ GUI_TEST_CLASS_DEFINITION(test_4010) {
     //    2. Open the PCR OP tab.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
 
-    //    3. Enter the forward primer: AAGGAAAAAATGCT.
-    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAGGAAAAAATGCT");
+    //    3. Enter the forward primer: AAAGGAAAAAATGCT.
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAGGAAAAAATGCT");
 
-    //    4. Enter the reverse primer: AGCATTTTTTCCTT.
-    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AGCATTTTTTCCTT");
+    //    4. Enter the reverse primer: AGCATTTTTTCCTTT.
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AGCATTTTTTCCTTT");
 
     //    5. Click the Primers Details dialog.
     //    Expected: the primers are whole dimers, 14 red lines.
