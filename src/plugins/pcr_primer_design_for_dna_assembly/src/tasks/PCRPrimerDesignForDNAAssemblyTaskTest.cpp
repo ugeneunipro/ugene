@@ -23,9 +23,9 @@
 
 #include <QFileInfo>
 
-#include <U2core/DNASequenceObject.h>
-#include <U2core/DocumentModel.h>
-#include <U2core/U2SafePoints.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
