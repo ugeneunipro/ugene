@@ -115,7 +115,6 @@ void InSilicoPcrTask::prepare() {
     CHECK_OP(stateInfo, );
     FindAlgorithmTaskSettings reverseSettings = getFindPatternSettings(U2Strand::Complementary);
     CHECK_OP(stateInfo, );
-    bool intConversionIsOk = false;
     forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
     reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
     forwardSearch = new FindAlgorithmTask(forwardSettings);
