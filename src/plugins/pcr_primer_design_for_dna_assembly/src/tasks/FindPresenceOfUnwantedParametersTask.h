@@ -38,15 +38,14 @@ public:
     bool hasUnwantedParameters() const;
 
     const QByteArray& getSequence() const;
-    /**
-     * Return homodimers, heterodimers for 5' and 3' ends of given lengths.
-     */
+
+    // Return homodimers, heterodimers for 5' and 3' ends of given lengths.
     const QString &getUnwantedStructures() const;
 
 private:
     QByteArray sequence;
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
-    QString unwantedStructures;    // Homodimers, heterodimers.
+    QString unwantedStructures;  // Homodimers, heterodimers.
 };
 
 

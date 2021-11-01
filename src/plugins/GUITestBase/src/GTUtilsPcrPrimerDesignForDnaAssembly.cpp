@@ -92,15 +92,9 @@ static void scrollToWidget(GUITestOpStatus &os, const QWidget *scrollTo, const Q
 
     tab = tab == nullptr ? getTabWgt(os) : tab;
     QLabel *tabTop = GTWidget::findLabel(os, "ArrowHeader_Choose generated sequences as user primer's end", tab);
-    if (tabTop == nullptr) {  // Bad.
-        return;
-    }
 
     if (tabTop->visibleRegion().isEmpty()) {  // Are we at the bottom of the tab?
         QLabel *tabBottom = GTWidget::findLabel(os, "ArrowHeader_Other sequences in PCR reaction", tab);
-        if (tabBottom == nullptr) {  // Bad.
-            return;
-        }
         moveMouseAndScroll(tabBottom, true);
     } else {
         moveMouseAndScroll(tabTop, false);
@@ -110,17 +104,15 @@ static void scrollToWidget(GUITestOpStatus &os, const QWidget *scrollTo, const Q
 #undef GT_METHOD_NAME
 
 /**
- * Checks if row index is correct for table. Indices are numbered starting from 0. If the table is empty, returns false,
- * if the index is non-negative and less than the number of rows in the table, returns true. The table should not be
- * nullptr.
+ * Checks if row index is correct for table. Indices are numbered starting from 0. Runs without errors if the table
+ * isn't empty, the index is non-negative and less than the number of table rows. The table should not be nullptr.
  */
-#define GT_METHOD_NAME "isTableIndexCorrect"
-static bool isTableIndexCorrect(GUITestOpStatus &os, int ind, const QTableWidget *table) {
-    GT_CHECK_RESULT(table != nullptr, "Table is nullptr", false)
+#define GT_METHOD_NAME "checkTableIndex"
+static void checkTableIndex(GUITestOpStatus &os, int ind, const QTableWidget *table) {
+    GT_CHECK(table != nullptr, "Table is nullptr")
     int tableRowCount = table->rowCount();
-    GT_CHECK_RESULT(ind >= 0 && ind < tableRowCount, QString("Invalid index of '%1': expected 0<=i<%2, current i=%3").
-                                                         arg(table->objectName()).arg(tableRowCount).arg(ind), false)
-    return true;
+    GT_CHECK(ind >= 0 && ind < tableRowCount, QString("Invalid index of '%1': expected 0<=i<%2, current i=%3")
+        .arg(table->objectName()).arg(tableRowCount).arg(ind))
 }
 #undef GT_METHOD_NAME
 
@@ -129,10 +121,9 @@ static bool isTableIndexCorrect(GUITestOpStatus &os, int ind, const QTableWidget
  * from 0. The table should not be nullptr.
  */
 static void selectGenSeq(GUITestOpStatus &os, int ind, QTableWidget *table, const QWidget *tab) {
-    if (isTableIndexCorrect(os, ind, table)) {
-        scrollToWidget(os, table, tab == nullptr ? getTabWgt(os) : tab);
-        GTMouseDriver::click(GTTableView::getCellPoint(os, table, ind, 0));
-    }
+    checkTableIndex(os, ind, table);
+    scrollToWidget(os, table, tab == nullptr ? getTabWgt(os) : tab);
+    GTMouseDriver::click(GTTableView::getCellPoint(os, table, ind, 0));
 }
 
 // Clicks on button named btnName which is child of the generated sequences widget. Doesn't open the tab.
@@ -211,17 +202,16 @@ void GTUtilsPcrPrimerDesign::selectGeneratedSequence(GUITestOpStatus &os, int nu
 void GTUtilsPcrPrimerDesign::selectGeneratedSequence(GUITestOpStatus &os, const QString &sequence,
                                                      const GTGlobals::FindOptions &options) {
     QWidget *tab = getTabWgt(os);
-    if (QTableWidget *table = getGenSeqTable(os, tab)) {
-        QList<QTableWidgetItem *> result = table->findItems(sequence, options.matchPolicy);
-        if (options.failIfNotFound) {
-            GT_CHECK(!result.isEmpty(), QString("Sequence '%1' not found in generated sequence table").arg(sequence))
-        } else if (result.isEmpty()) {
-            return;
-        }
-        QTableWidgetItem *item = result.first();
-        GT_CHECK(item != nullptr, "The first element among the sequences found is nullptr")
-        selectGenSeq(os, item->row(), table, tab);
+    QTableWidget *table = getGenSeqTable(os, tab);
+    QList<QTableWidgetItem *> result = table->findItems(sequence, options.matchPolicy);
+    if (options.failIfNotFound) {
+        GT_CHECK(!result.isEmpty(), QString("Sequence '%1' not found in generated sequence table").arg(sequence))
+    } else if (result.isEmpty()) {
+        return;
     }
+    QTableWidgetItem *item = result.first();
+    GT_CHECK(item != nullptr, "The first element among the sequences found is nullptr")
+    selectGenSeq(os, item->row(), table, tab);
 }
 #undef GT_METHOD_NAME
 
@@ -324,18 +314,16 @@ void GTUtilsPcrPrimerDesign::setOtherSequences(GUITestOpStatus &os, const QStrin
 
 void GTUtilsPcrPrimerDesign::clickInResultsTable(GUITestOpStatus &os, int num, const ClickType &clickType) {
     QWidget *tab = getTabWgt(os);
-    if (QTableWidget *table = getResultTable(os, tab)) {
-        if (isTableIndexCorrect(os, num, table)) {
-            scrollToWidget(os, table, tab);
-            QPoint cell = GTTableView::getCellPoint(os, table, num, 0);
-            if (clickType == ClickType::Single) {
-                GTMouseDriver::click(cell);
-            } else {
-                GTMouseDriver::moveTo(cell);
-                GTMouseDriver::doubleClick();
-                GTUtilsTaskTreeView::waitTaskFinished(os);
-            }
-        }
+    QTableWidget *table = getResultTable(os, tab);
+    checkTableIndex(os, num, table);
+    scrollToWidget(os, table, tab);
+    QPoint cell = GTTableView::getCellPoint(os, table, num, 0);
+    if (clickType == ClickType::Single) {
+        GTMouseDriver::click(cell);
+    } else {
+        GTMouseDriver::moveTo(cell);
+        GTMouseDriver::doubleClick();
+        GTUtilsTaskTreeView::waitTaskFinished(os);
     }
 }
 
@@ -343,20 +331,17 @@ void GTUtilsPcrPrimerDesign::clickInResultsTable(GUITestOpStatus &os, int num, c
 void GTUtilsPcrPrimerDesign::checkEntryInResultsTable(GUITestOpStatus &os, int num, const QString &expectedFragment,
                                                       const U2Range<int> &expectedRegion) {
     QWidget *tab = getTabWgt(os);
-    if (QTableWidget *table = getResultTable(os, tab)) {
-        if (isTableIndexCorrect(os, num, table)) {
-            scrollToWidget(os, table, tab);
-            QString current = GTTableView::data(os, table, num, 0);
-            GT_CHECK(expectedFragment == current, QString("Incorrect name of the %1 row: expected '%2', current '%3'").
-                                                      arg(num).arg(expectedFragment, current))
+    QTableWidget *table = getResultTable(os, tab);
+    checkTableIndex(os, num, table);
+    scrollToWidget(os, table, tab);
+    QString current = GTTableView::data(os, table, num, 0);
+    GT_CHECK(expectedFragment == current, QString("Incorrect name of the %1 row: expected '%2', current '%3'").arg(num)
+        .arg(expectedFragment, current))
 
-            QString expected = QString::number(expectedRegion.minValue) + '-' +
-                               QString::number(expectedRegion.maxValue);
-            current = GTTableView::data(os, table, num, 1);
-            GT_CHECK(expected == current, QString("Incorrect result of the %1 row: expected '%2', current '%3'").
-                                              arg(num).arg(expected, current))
-        }
-    }
+    QString expected = QString::number(expectedRegion.minValue) + '-' + QString::number(expectedRegion.maxValue);
+    current = GTTableView::data(os, table, num, 1);
+    GT_CHECK(expected == current, QString("Incorrect result of the %1 row: expected '%2', current '%3'").arg(num)
+        .arg(expected, current))
 }
 #undef GT_METHOD_NAME
 
