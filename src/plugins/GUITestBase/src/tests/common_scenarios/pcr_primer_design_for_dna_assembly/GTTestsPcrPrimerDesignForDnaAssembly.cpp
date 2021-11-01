@@ -75,7 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     Expected: forward user primer = AAACACAGAAACACCA.
     // Select the third sequence in the "Choose generated sequences" table and click "Reverse 5'".
     // Select the fourth sequence in the "Choose generated sequences" table and click "Reverse 3'".
-    //     Expected: reverse user primer = AAACACCCAAACACCT.
+    //     Expected: reverse user primer = AAACACCTAAACACCC.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Reverse5);
     GTUtilsPcrPrimerDesign::selectGeneratedSequence(os, 3);
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Reverse3);
-    GTLineEdit::checkText(os, "leReversePrimer", sequence, "AAACACCCAAACACCT");
+    GTLineEdit::checkText(os, "leReversePrimer", sequence, "AAACACCTAAACACCC");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
