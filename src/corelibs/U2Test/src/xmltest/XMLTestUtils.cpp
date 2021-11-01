@@ -88,30 +88,35 @@ double XmlTest::getDouble(const QDomElement &element, const QString &attribute) 
     return result;
 }
 
-QPair<qint64, qint64> XmlTest::getPairQuintFromQStringList(QStringList &splittedList, QString buf) {
+QPair<qint64, qint64> XmlTest::getPairQintFromQStringList(QStringList &listToPair) {
+    QPair<qint64, qint64> result;
+    if (listToPair.size() != 2) {
+        stateInfo.setError(QString("Expected list size not equal 2."));
+        return result;
+    }
     bool ok0 = true;
     bool ok1 = true;
-    QPair<qint64, qint64> result = QPair<qint64, qint64>(splittedList[0].toLongLong(&ok0), splittedList[1].toLongLong(&ok1));
+    result = QPair<qint64, qint64>(listToPair[0].toLongLong(&ok0), listToPair[1].toLongLong(&ok1));
     if (!ok0) {
-        stateInfo.setError(QString("Error parsing line %1, first value is not qint64.").arg(buf));
+        stateInfo.setError(QString("Error parsing line %1, first value is not qint64."));
     }
     if (!ok1) {
-        stateInfo.setError(QString("Error parsing line %1, second value is not qint64.").arg(buf));
+        stateInfo.setError(QString("Error parsing line %1, second value is not qint64."));
     }
     return result;
 }
 
 U2Range<int> XmlTest::getU2RangeInt(const QDomElement &element, const QString &attribute, const QString &splitter) {
-    QPair<qint64, qint64> pair = getPairQuint64(element, attribute, splitter);
+    QPair<qint64, qint64> pair = getPairQint64(element, attribute, splitter);
     return U2Range<int>(pair.first, pair.second);
 }
 
 U2::U2Region XmlTest::getU2Region(const QDomElement &element, const QString &attribute) {
-    QPair<qint64, qint64> pair = getPairQuint64(element, attribute, "..");
+    QPair<qint64, qint64> pair = getPairQint64(element, attribute, "..");
     return U2Region(pair.first, pair.second);
 }
 
-QPair<qint64, qint64> XmlTest::getPairQuint64(const QDomElement &element, const QString &attribute, const QString &splitter) {
+QPair<qint64, qint64> XmlTest::getPairQint64(const QDomElement &element, const QString &attribute, const QString &splitter) {
     QPair<qint64, qint64> result;
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, result);
@@ -122,7 +127,7 @@ QPair<qint64, qint64> XmlTest::getPairQuint64(const QDomElement &element, const 
         wrongListSize(attribute, splittedList.size(), 2);
         return result;
     }
-    return getPairQuintFromQStringList(splittedList, buf);
+    return getPairQintFromQStringList(splittedList);
 }
 
 QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QString &attribute, const QString &splitter, int sizeToCheck) {
@@ -144,7 +149,7 @@ QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QStri
         if (regionValues.size() != 2) {
             stateInfo.setError(QString("Wrong list size at region values, there are %1, but expected 2.").arg(QString::number(regionValues.size())));
         }
-        QPair<qint64, qint64> pair = getPairQuintFromQStringList(regionValues, regionStr);
+        QPair<qint64, qint64> pair = getPairQintFromQStringList(regionValues);
         result << U2Region(pair.first, pair.second);
     }
     return result;

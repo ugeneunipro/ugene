@@ -24,7 +24,6 @@
 
 #include <U2Core/U2Range.h>
 #include <U2Core/U2Region.h>
-
 #include <U2Test/GTest.h>
 
 #include "XMLTestFormat.h"
@@ -83,8 +82,8 @@ public:
     static const QString FALSE_VALUE;
 
 private:
-    QPair<qint64, qint64> getPairQuint64(const QDomElement &element, const QString &attribute, const QString &splitter);
-    QPair<qint64, qint64> getPairQuintFromQStringList(QStringList &splittedList, QString buf);
+    QPair<qint64, qint64> getPairQint64(const QDomElement &element, const QString &attribute, const QString &splitter);
+    QPair<qint64, qint64> getPairQintFromQStringList(QStringList &listToPair);
 };
 
 class U2TEST_EXPORT XMLTestUtils {
