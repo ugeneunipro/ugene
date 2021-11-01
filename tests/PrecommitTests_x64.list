@@ -40,4 +40,4 @@ task_suite.xml
 umuscle_parallel_suite.xml
 umuscle_serial_suite.xml
 unit_tests/dbi-suite.xml
-PCR_DNA_assembly_suite.xml
+pcr_dna_assembly_suite.xml
