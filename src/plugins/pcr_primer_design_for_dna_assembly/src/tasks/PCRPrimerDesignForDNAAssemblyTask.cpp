@@ -222,7 +222,9 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
             // No unwanted structures -> Set as backbone, finish search for backbone.
             if (!checkBackboneSequence->hasUnwantedParameters()) {
                 backboneSequence = consideredBackboneSequence;
-                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has been found: %1").arg(QString(backboneSequence)));
+                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has been "
+                                   "found: %1")
+                                    .arg(QString(backboneSequence)));
                 return {};
             }
             // There are unwanted structures -> Asking the user if this sequence with unwanted structures should be used
@@ -518,21 +520,19 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     if (settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty()) {
         if (settings.forwardUserPrimer.isEmpty() && settings.reverseUserPrimer.isEmpty()) {
             taskLog.details(tr("No user primers"));
-        }
-        else if (settings.forwardUserPrimer.isEmpty()) {
+        } else if (settings.forwardUserPrimer.isEmpty()) {
             taskLog.error(tr("No forward user primer. Reverse user primer ignored"));
-        }
-        else if (settings.reverseUserPrimer.isEmpty()) {
+        } else if (settings.reverseUserPrimer.isEmpty()) {
             taskLog.error(tr("No reverse user primer. Forward user primer ignored"));
         }
         return;
     }
 
-    const int deltaG   = settings.gibbsFreeEnergyExclude,
-              meltingT = settings.meltingPointExclude,
-              dimerLen = settings.complementLengthExclude;
-    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer,
-            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports& saveTo) {
+    int deltaG = settings.gibbsFreeEnergyExclude,
+        meltingT = settings.meltingPointExclude,
+        dimerLen = settings.complementLengthExclude;
+    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray &primer,
+            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports &saveTo) {
         QString report_;
         if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, deltaG, meltingT, dimerLen, report_)) {
             saveTo.selfdimer = report_;
@@ -544,17 +544,16 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
                                                             dimerLen, report_)) {
             saveTo.fileRevComplSeq = report_;
         }
-        for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
+        for (const QByteArray &otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
             if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, otherSeqInPcr, deltaG, meltingT, dimerLen,
                                                                 report_)) {
                 saveTo.other << report_;
             }
         }
-
     };
 
-    const QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
-    const QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
+    QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
+    QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
     saveOnePrimerReports(forward, userPrimersReports.forward);
     saveOnePrimerReports(reverse, userPrimersReports.reverse);
 

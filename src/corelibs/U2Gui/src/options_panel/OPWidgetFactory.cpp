@@ -35,9 +35,9 @@ OPGroupParameters::OPGroupParameters(QString groupId, QPixmap headerImage, QStri
 
 /////////////////////////////////////////////////OPFactoryFilterVisitor/////////////////////////////////////////////////
 OPFactoryFilterVisitor::OPFactoryFilterVisitor(ObjectViewType _objectViewType,
-    const QList<const DNAAlphabet *> &_objectListAlphabet)
+                                               const QList<const DNAAlphabet *> &_objectListAlphabet)
     : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW),
-    alphabets(_objectListAlphabet) {
+      alphabets(_objectListAlphabet) {
     for (const DNAAlphabet *alpha : qAsConst(alphabets)) {
         objectAlphabets << alpha->getType();
     }

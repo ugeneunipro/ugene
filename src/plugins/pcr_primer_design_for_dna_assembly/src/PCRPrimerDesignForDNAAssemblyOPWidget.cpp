@@ -57,13 +57,13 @@
 namespace {
 // When a non-nucleotide sequence is selected, the widget should be disabled. But the groupbox titles continue to be
 // black as if they enabled. This code makes them gray.
-void makeGroupboxTittleGrayIfDisable(QGroupBox *const gb) {
+void makeGroupboxTittleGrayIfDisable(QGroupBox *gb) {
     QPalette palette;
     palette.setColor(QPalette::Disabled, QPalette::WindowText, QApplication::palette().color(QPalette::Disabled,
-        QPalette::WindowText));
+                                                                                             QPalette::WindowText));
     gb->setPalette(palette);
 }
-}    // namespace
+}  // namespace
 
 namespace U2 {
 
@@ -81,7 +81,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
       annDnaView(_annDnaView),
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
     setupUi(this);
-    setMinimumWidth(430);
+    setMinimumWidth(400);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength },
@@ -144,11 +144,12 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     }
     connect(tbLoadBackbone, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone);
     connect(tbLoadOtherSequencesInPcr, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr);
-    connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)),
+            SLOT(sl_activeSequenceChanged()));
     connect(annDnaView, &AnnotatedDNAView::si_sequenceModified, this,
-        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+            &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
-        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+            &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
 
     connect(pbFindReverseComplement, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectReverseComplementInTable);
@@ -176,9 +177,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified() {
-    const ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     CHECK(sequenceContext != nullptr, )
-    const qint64 seqLength = sequenceContext->getSequenceLength();
+    qint64 seqLength = sequenceContext->getSequenceLength();
 
     // End spinbox maximum value is the previous sequence length. If it has changed, need to update spinboxes.
     if (seqLength != sbLeftAreaEnd->maximum()) {
@@ -490,13 +491,13 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
     alphabetWarningLabel->setVisible(!isDna);
 }
 
-void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, U2Region region) {
+void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, const U2Region &region) {
     QSpinBox *end = parametersMinMaxSpinBoxes[start];
-    const ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     SAFE_POINT(start != nullptr && end != nullptr, L10N::nullPointerError("QSpinBox"), )
     CHECK(sequenceContext != nullptr, )
 
-    const qint64 seqLength = sequenceContext->getSequenceLength();
+    qint64 seqLength = sequenceContext->getSequenceLength();
     start->setRange(1, seqLength);
     end->setRange(1, seqLength);
 
@@ -504,6 +505,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, U2Region 
     end->setValue(region.endPos());
     sl_updateParametersRanges();
 }
+
 QString PCRPrimerDesignForDNAAssemblyOPWidget::getSelectedSequence() const {
     auto selecteItems = twGeneratedSequences->selectedItems();
     CHECK(!selecteItems.isEmpty(), QString());
