@@ -24,7 +24,9 @@
 namespace U2 {
 
 UnwantedStructuresInBackboneDialog::UnwantedStructuresInBackboneDialog(const QByteArray &sequence,
-    const QString &unwantedStructures, int sequencesCandidatesNumber, QWidget *parent)
+                                                                       const QString &unwantedStructures,
+                                                                       int sequencesCandidatesNumber,
+                                                                       QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
     sequenceTextEdit->setText(QString(sequence));
@@ -44,4 +46,4 @@ UnwantedStructuresInBackboneDialog::UnwantedStructuresInBackboneDialog(const QBy
                                .arg(sequenceDeclension));
 }
 
-}    // namespace U2
+}  // namespace U2

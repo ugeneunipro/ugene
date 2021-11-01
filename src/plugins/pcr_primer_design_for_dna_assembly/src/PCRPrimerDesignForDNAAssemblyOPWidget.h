@@ -131,7 +131,7 @@ private:
      * maximum and minimum of spinboxes in accordance with the current values and active sequence length.
      * start must be non-null.
      */
-    void setRegion(QSpinBox *start, U2Region region);
+    void setRegion(QSpinBox *start, const U2Region &region);
 
     /**
      * Return the selected in @twGeneratedSequences sequence

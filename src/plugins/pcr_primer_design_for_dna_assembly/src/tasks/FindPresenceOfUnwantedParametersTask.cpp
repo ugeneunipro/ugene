@@ -35,7 +35,7 @@ FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const
 
 void FindPresenceOfUnwantedParametersTask::run() {
     SAFE_POINT(settings.bachbone5Length >= 0 && settings.bachbone3Length >= 0,
-        "Backbone length must be greater than 0", )
+               "Backbone length must be greater than 0", )
     if (sequence.length() < settings.bachbone5Length) {
         stateInfo.addWarning("Sequence length is less than 5' backbone length, the entire sequence is used");
     }
@@ -85,4 +85,4 @@ const QByteArray& FindPresenceOfUnwantedParametersTask::getSequence() const {
 const QString &FindPresenceOfUnwantedParametersTask::getUnwantedStructures() const {
     return unwantedStructures;
 }
-}
+}  // namespace U2
