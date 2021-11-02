@@ -133,6 +133,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
+    tbLeftAreaSelectManually->setChecked(false);
+    tbRightAreaSelectManually->setChecked(false);
+
     sl_updateParametersRanges();
     const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
     for (auto minSb : qAsConst(parametersMinMaxSpinBoxesKeys)) {

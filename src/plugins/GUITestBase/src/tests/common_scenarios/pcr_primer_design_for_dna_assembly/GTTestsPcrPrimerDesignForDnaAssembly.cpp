@@ -237,6 +237,67 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    // Open common_data/pcr_primer_design/gfp.fa.
+    // Click the PCR Primer Design tab of the Options Panel.
+    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
+    // Reopen tab.
+    //     Expected: left "Select manually" not pressed.
+    // Select region 2-3.
+    //     Expected: left area spinboxes not changed.
+    //
+    // Click "Primer search areas for insert" -> "Right area" -> "Select manually".
+    // Reopen tab.
+    //     Expected: right "Select manually" not pressed.
+    // Select region 2-3.
+    //     Expected: right area spinboxes not changed.
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
+    GTUtilsPcrPrimerDesign::openTab(os);
+    QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+
+    GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
+    GTWidget::click(os, GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence));
+    GTUtilsOptionPanelSequenceView::closeTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
+    GTUtilsPcrPrimerDesign::openTab(os);
+    CHECK_SET_ERR(!GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence)->isChecked(),
+                  "Expected: left 'Select manually' not pressed")
+
+    QSpinBox *start = GTWidget::findSpinBox(os, "sbLeftAreaStart", sequence),
+             *end = GTWidget::findSpinBox(os, "sbLeftAreaEnd", sequence);
+    int expectedStart = GTSpinBox::getValue(os, start),
+        expectedEnd = GTSpinBox::getValue(os, end);
+    GTUtilsSequenceView::selectSequenceRegion(os, 2, 3);
+    int currentStart = GTSpinBox::getValue(os, start),
+        currentEnd = GTSpinBox::getValue(os, end);
+    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Left area spinbox: "
+                                                                                      "expected %1-%2, current %3-%4")
+                                                                                  .arg(expectedStart)
+                                                                                  .arg(expectedEnd)
+                                                                                  .arg(currentStart)
+                                                                                  .arg(currentEnd))
+
+    GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
+    GTWidget::click(os, GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence));
+    GTUtilsOptionPanelSequenceView::closeTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
+    GTUtilsPcrPrimerDesign::openTab(os);
+    CHECK_SET_ERR(!GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence)->isChecked(),
+                  "Expected: right 'Select manually' not pressed")
+
+    start = GTWidget::findSpinBox(os, "sbRightAreaStart", sequence);
+    end = GTWidget::findSpinBox(os, "sbRightAreaEnd", sequence);
+    expectedStart = GTSpinBox::getValue(os, start);
+    expectedEnd = GTSpinBox::getValue(os, end);
+    GTUtilsSequenceView::selectSequenceRegion(os, 3, 4);
+    currentStart = GTSpinBox::getValue(os, start),
+    currentEnd = GTSpinBox::getValue(os, end);
+    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Right area spinbox: "
+                                                                                      "expected %1-%2, current %3-%4")
+                                                                                  .arg(expectedStart)
+                                                                                  .arg(expectedEnd)
+                                                                                  .arg(currentStart)
+                                                                                  .arg(currentEnd))
+}
+
 }  // namespace GUITest_common_scenarios_pcr_primer_design_tab
 
 namespace GUITest_common_scenarios_pcr_primer_design_algo {
