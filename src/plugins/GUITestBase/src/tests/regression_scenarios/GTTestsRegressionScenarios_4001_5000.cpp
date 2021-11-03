@@ -738,6 +738,20 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
     CHECK_SET_ERR(nullptr != annotationGroup, "Wrong annotations number");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4086) {
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "AC\nG\nTG", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto label = GTWidget::findLabel(os, "lblErrorMessage");
+    CHECK_SET_ERR(label->text().isEmpty(), "There is an error: " + label->text());
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/4"), "Results string does not match");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4087) {
     // Enter "U" to the pattern field.
     // Check "Load patterns from file" option.
