@@ -49,6 +49,8 @@ QVariant PCRPrimerDesignForDNAAssemblyOPSavableTab::getChildValue(const QString&
         return QVariant::fromValue<ResultTableData>(productTable->getPCRPrimerProductTableData());
     } else if (userPrimerLineEdit != nullptr) {
         return QVariant::fromValue<UserPimerLineEditResult>(userPrimerLineEdit->getData());
+    } else if (childId.endsWith("AreaSelectManually")) {
+        return {};
     } else {
         return U2SavableWidget::getChildValue(childId);
     }
@@ -67,6 +69,8 @@ void PCRPrimerDesignForDNAAssemblyOPSavableTab::setChildValue(const QString &chi
     } else if (userPrimerLineEdit != nullptr) {
         UserPimerLineEditResult data = value.value<UserPimerLineEditResult>();
         userPrimerLineEdit->setData(data);
+    } else if (childId.endsWith("AreaSelectManually")) {
+        return;
     } else {
         return U2SavableWidget::setChildValue(childId, value);
     }
