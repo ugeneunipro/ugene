@@ -310,7 +310,7 @@ const QString GTest_CompareHmmFiles::FILE2_NAME_TAG = "file2";
 const QString GTest_CompareHmmFiles::FILE1_TMP_TAG = "tmp1";
 const QString GTest_CompareHmmFiles::FILE2_TMP_TAG = "tmp2";
 
-const int BUF_SZ = 2048;
+const int MAX_STOCKHOLM_LINE_LENGTH = 2048;
 const char TERM_SYM = '\0';
 
 const QByteArray DATE_STR = "DATE";
@@ -412,14 +412,14 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
         return ReportResult_Finished;
     }
 
-    QByteArray buf1(BUF_SZ, TERM_SYM);
-    QByteArray buf2(BUF_SZ, TERM_SYM);
+    QByteArray buf1(MAX_STOCKHOLM_LINE_LENGTH, TERM_SYM);
+    QByteArray buf2(MAX_STOCKHOLM_LINE_LENGTH, TERM_SYM);
     int bytes1;
     int bytes2;
 
     do {
-        bytes1 = io1->readUntil(buf1.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
-        bytes2 = io2->readUntil(buf2.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
+        bytes1 = io1->readUntil(buf1.data(), MAX_STOCKHOLM_LINE_LENGTH, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
+        bytes2 = io2->readUntil(buf2.data(), MAX_STOCKHOLM_LINE_LENGTH, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
         if (buf1.startsWith(DATE_STR) && buf2.startsWith(DATE_STR)) {
             continue;
         }

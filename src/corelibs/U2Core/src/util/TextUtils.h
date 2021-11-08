@@ -147,6 +147,12 @@ public:
 
     /** Returns true if the character at the text[charIndex] position is in WHITE_SPACE set. */
     static bool isWhiteSpace(const QString &text, int charIndex);
+
+    /** Returns true if the whole line contains white space characters only. */
+    static bool isWhiteSpace(const QString &text);
+
+    /** Returns index of the first whitespace character in the string or -1 if the string has no whites. */
+    static int findIndexOfFirstWhiteSpace(const QString &text);
 };
 
 template<typename T>

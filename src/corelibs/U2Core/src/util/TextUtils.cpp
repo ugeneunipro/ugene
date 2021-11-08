@@ -250,6 +250,24 @@ bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
     return WHITES.testBit(bitIndex);
 }
 
+bool TextUtils::isWhiteSpace(const QString &text) {
+    for (int i = 0; i < text.length(); i++) {
+        if (!isWhiteSpace(text, i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int TextUtils::findIndexOfFirstWhiteSpace(const QString &text) {
+    for (int i = 0; i < text.length(); i++) {
+        if (isWhiteSpace(text, i)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 QString TextUtils::skip(const QBitArray &map, const QString &text) {
     for (int i = 0, n = text.length(); i < n; i++) {
         uchar c = uchar(text[i].toLatin1());

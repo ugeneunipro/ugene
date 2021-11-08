@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Load a document without last line "//": such broken docs are also supported by UGENE.  -->
+    <load-document index="doc" url="stockholm/no_eof.sto" io="local_file" format="stockholm"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+    <find-object-by-name index="obj" doc="doc" name="no_eof_0" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="2"/>
+    <check-Msequence-size obj="obj" value="5"/>
+
+</multi-test>

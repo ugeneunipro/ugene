@@ -236,7 +236,7 @@ Task::ReportResult GTest_UHMM3Search::report() {
 const QString GTest_UHMM3SearchCompare::ACTUAL_OUT_FILE_TAG = "actualOut";
 const QString GTest_UHMM3SearchCompare::TRUE_OUT_FILE_TAG = "trueOut";
 
-const int BUF_SZ = 2048;
+const int MAX_STOCKHOLM_LINE_LENGTH = 2048;
 const char TERM_SYM = '\0';
 
 static bool getSignificance(const QByteArray &str) {
@@ -300,11 +300,11 @@ static UHMM3SearchSeqDomainResult getDomainRes(QStringList &tokens) {
 static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = nullptr) {
     assert(nullptr != io);
     to.clear();
-    QByteArray buf(BUF_SZ, TERM_SYM);
+    QByteArray buf(MAX_STOCKHOLM_LINE_LENGTH, TERM_SYM);
     bool there = false;
     int bytes = 0;
     while (!there) {
-        int ret = io->readUntil(buf.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &there);
+        int ret = io->readUntil(buf.data(), MAX_STOCKHOLM_LINE_LENGTH, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &there);
         if (0 > ret) {
             throw QString("read_error_occurred");
         }
