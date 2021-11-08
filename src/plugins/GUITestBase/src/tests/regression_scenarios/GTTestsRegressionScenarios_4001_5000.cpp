@@ -4884,45 +4884,45 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4735) {
-    // 1. Open "_common_data/fasta/empty.fa" as msa.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Open "Simple overview"
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    // Enable "Simple overview".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     GTThread::waitForMainThread();
-    QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
-    // Check empty simple overview gray color
-    QImage img = GTWidget::getImage(os, simple);
-    QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    QWidget *simpleOverviewWidget = GTWidget::findWidget(os, "msa_overview_area_simple");
+    CHECK_SET_ERR(simpleOverviewWidget->isVisible(), "simple overview is not visiable");
+
+    // Check Simple Overview has an empty gray color.
+    QImage img = GTWidget::getImage(os, simpleOverviewWidget);
+    QRgb rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     QColor c(rgb);
-    CHECK_SET_ERR(c.name() == "#ededed", "First check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
-    // 3. Add sequence eas.fastq to alignment
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
+    CHECK_SET_ERR(c.name() == "#ededed", "1. Simple overview has wrong color: " + c.name());
+
+    // 3. Append sequence eas.fastq to alignment.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fastq/", "eas.fastq");
     GTUtilsDialog::waitForDialog(os, ob);
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // check not empty overview color
-    img = GTWidget::getImage(os, simple);
-    rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    // Check the overview has non-empty color now.
+    img = GTWidget::getImage(os, simpleOverviewWidget);
+    rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     c = QColor(rgb);
-    CHECK_SET_ERR(c.name() == "#c3ebc3", "simple overview has wrong color. Expected: #c3ebc3, Found: " + c.name());
+    CHECK_SET_ERR(c.name() == "#b9d5e4", "2. Simple overview has wrong color: " + c.name());
 
-    // 4. Undo changes
+    // Undo changes.
     GTUtilsMsaEditor::undo(os);
     GTThread::waitForMainThread();
 
-    // Check empty simple overview gray color again
-    img = GTWidget::getImage(os, simple);
-    rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    // Check simple overview has an empty gray color again.
+    img = GTWidget::getImage(os, simpleOverviewWidget);
+    rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     c = QColor(rgb);
-    CHECK_SET_ERR(c.name() == "#ededed", "Second check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    CHECK_SET_ERR(c.name() == "#ededed", "3. Simple overview has wrong color: " + c.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {
