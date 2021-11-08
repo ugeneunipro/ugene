@@ -1,6 +1,0 @@
-<suite name="Genome Aligner Tests 2" test-timeout="300">
-
-    <test-dir test-format="XML" exclude="test001_CPU.xml,test003_Intel.xml" test-ext="*.xml" path="genome_aligner_2"/>
-    <excluded test="test001_CPU.xml" reason="failed due to timeout"/>
-    <excluded test="test003_Intel.xml" reason="failed due t0 timeout"/>
-</suite>
