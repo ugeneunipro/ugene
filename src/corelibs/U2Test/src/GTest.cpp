@@ -67,20 +67,20 @@ void GTest::removeContext(const QString& name) {
 
 void GTest::removeTempDir() {
     QDir tempDir(env->getVar("TEMP_DATA_DIR"));
-    taskLog.trace(QString("Removing test temporary dir: %1").arg(tempDir.path()));
+    taskLog.trace(QString("Removing test temporary dir: %1.").arg(tempDir.path()));
     tempDir.removeRecursively();
 }
 
-void GTest::failMissingValue(const QString& name) {
-    stateInfo.setError(QString("Mandatory attribute not set: %1").arg(name));
+void GTest::failMissingValue(const QString &name) {
+    stateInfo.setError(QString("Mandatory attribute not set: %1.").arg(name));
 }
 
-void GTest::wrongValue(const QString& name) {
-    stateInfo.setError(QString("Wrong value for attribute: %1").arg(name));
+void GTest::wrongValue(const QString &name) {
+    stateInfo.setError(QString("Wrong value for attribute: %1.").arg(name));
 }
 
-void GTest::emptyValue(const QString& name) {
-    stateInfo.setError(QString("Empty value for attribute: %1").arg(name));
+void GTest::emptyValue(const QString &name) {
+    stateInfo.setError(QString("Empty value for attribute: %1.").arg(name));
 }
 
 //////////////////////////////////////////////////////////////////////////
