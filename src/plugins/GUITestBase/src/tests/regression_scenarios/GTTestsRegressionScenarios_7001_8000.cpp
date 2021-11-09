@@ -41,6 +41,7 @@
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
@@ -1215,6 +1216,40 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7469) {
+    // Check that annotation sequence copy action respects 'join' and 'order' location flags.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/7469.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Check 'order' annotation on the direct strand.
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, false);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "AAGACCCCCCCGTAGG", "1. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "KTPP*", "1. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'order' annotation on the complementary strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "AAGACCCC-CCCGTAGG", "2. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "KT-PV", "2. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'join' annotation on the direct strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAAGTTACTTAAGCTAGCTTG", "3. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "CLAKLLKLA", "3. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'join' annotation on the complementary strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text(os));
 }
 
 }  // namespace GUITest_regression_scenarios

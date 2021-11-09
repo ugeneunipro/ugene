@@ -173,24 +173,26 @@ void ADVClipboard::copySequenceSelection(bool complement, bool amino) {
 
 void ADVClipboard::copyAnnotationSelection(const bool amino) {
     const QList<Annotation *> &selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
-    QByteArray res;
+    QByteArray resultText;
     for (auto annotation : qAsConst(selectedAnnotationList)) {
-        if (!res.isEmpty()) {
-            res.append('\n');
+        if (!resultText.isEmpty()) {
+            resultText.append('\n');
         }
         ADVSequenceObjectContext *seqCtx = ctx->getSequenceContext(annotation->getGObject());
         if (seqCtx == nullptr) {
-            res.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
+            resultText.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
             continue;
         }
         DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation *aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
         U2OpStatus2Log os;
         // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
-        AnnotationSelection::getSequenceInRegions(res, annotation->getRegions(), U2Msa::GAP_CHAR, seqCtx->getSequenceRef(), complTT, aminoTT, os);
+        const U2EntityRef &sequenceObjectRef = seqCtx->getSequenceRef();
+        QByteArray annotationSequence = AnnotationSelection::getSequenceUnderAnnotation(sequenceObjectRef, annotation, complTT, aminoTT, os);
+        resultText.append(annotationSequence);
         CHECK_OP(os, );
     }
-    putIntoClipboard(res);
+    putIntoClipboard(resultText);
 }
 
 void ADVClipboard::putIntoClipboard(const QString &data) {

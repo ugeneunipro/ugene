@@ -494,12 +494,11 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
         maxLen = qMax(maxLen, annotation->getRegionsLen());
         CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
 
-        QByteArray rowSequence;
         QString subjSeq = annotation->findFirstQualifierValue("subj_seq");
         if (!subjSeq.isEmpty()) {
             ma->addRow(rowName, subjSeq.toLatin1());
         } else {
-            AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, nullptr, nullptr, os);
+            QByteArray rowSequence = AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, nullptr, nullptr, os);
             CHECK_OP(os, );
             ma->addRow(rowName, rowSequence);
         }
@@ -552,8 +551,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
         CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
         const DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
         const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
-        QByteArray rowSequence;
-        AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, complTT, aminoTT, os);
+        QByteArray rowSequence =  AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, complTT, aminoTT, os);
         CHECK_OP(os, );
 
         ma->addRow(rowName, rowSequence);
