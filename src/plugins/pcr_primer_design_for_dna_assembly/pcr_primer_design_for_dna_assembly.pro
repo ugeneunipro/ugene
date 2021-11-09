@@ -26,7 +26,6 @@ SOURCES += src/options_panel/GeneratedSequencesTable.cpp \
            src/tasks/FindUnwantedIslandsTask.cpp \
            src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp \
            src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp \
-           src/tasks/UnwantedStructuresInBackboneDialog.cpp \
            src/utils/PCRPrimerDesignTaskReportUtils.cpp \
            src/utils/UnwantedConnectionsUtils.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPSavableTab.cpp \
