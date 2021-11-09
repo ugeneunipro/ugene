@@ -3529,33 +3529,32 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4536) {
-    //    1. Open "_common_data/fasta/empty.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there are next values on the statusbar: "Ln - / 0  Col - / 0  Pos - / -".
-    const QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
-    const QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
-    const QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
-    const QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
-    const QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
-    const QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
+    // Expected state: there are the following values in the status-bar: "Ln - / 2  Col - / 4  Pos - / -".
+    QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
+    QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
+    QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
+    QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
+    QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
 
-    CHECK_SET_ERR("-" == rowNumberString, QString("An incorrect row number label: expected '%1', got '%2'").arg("-").arg(rowNumberString));
-    CHECK_SET_ERR("0" == rowsCountString, QString("An incorrect rows count label: expected '%1', got '%2'").arg("-").arg(rowsCountString));
-    CHECK_SET_ERR("-" == columnNumberString, QString("An incorrect column number label: expected '%1', got '%2'").arg("-").arg(columnNumberString));
-    CHECK_SET_ERR("0" == columnsCountString, QString("An incorrect columns count label: expected '%1', got '%2'").arg("-").arg(columnsCountString));
-    CHECK_SET_ERR("-" == sequenceUngappedPositionString, QString("An incorrect sequence ungapped position label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedPositionString));
-    CHECK_SET_ERR("-" == sequenceUngappedLengthString, QString("An incorrect sequence ungapped length label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedLengthString));
+    CHECK_SET_ERR(rowNumberString == "-", QString("Incorrect row number label: expected '-', got '%1'").arg(rowNumberString));
+    CHECK_SET_ERR(rowsCountString == "2", QString("Incorrect rows count label: expected '2', got '%1'").arg(rowsCountString));
+    CHECK_SET_ERR(columnNumberString == "-", QString("Incorrect column number label: expected '-', got '%1'").arg(columnNumberString));
+    CHECK_SET_ERR(columnsCountString == "4", QString("Incorrect columns count label: expected '4', got '%1'").arg(columnsCountString));
+    CHECK_SET_ERR(sequenceUngappedPositionString == "-", QString("Incorrect sequence ungapped position label: expected '-', got '%1'").arg(sequenceUngappedPositionString));
+    CHECK_SET_ERR(sequenceUngappedLengthString == "-", QString("Incorrect sequence ungapped length label: expected '-', got '%1'").arg(sequenceUngappedLengthString));
 
-    //    2. Open "general" options panel tab.
+    // Open "general" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    //    Expected state: there are next values: Length: 0, Sequences: 0.
-    const int length = GTUtilsOptionPanelMsa::getLength(os);
-    const int height = GTUtilsOptionPanelMsa::getHeight(os);
-    CHECK_SET_ERR(0 == length, QString("An incorrect alignment length is on the options panel: expected %1, got %2").arg(0).arg(length));
-    CHECK_SET_ERR(0 == height, QString("An incorrect alignment height is on the options panel: expected %1, got %2").arg(0).arg(height));
+    // Expected state: there are next values: Length: 4, Sequences: 2.
+    int length = GTUtilsOptionPanelMsa::getLength(os);
+    int height = GTUtilsOptionPanelMsa::getHeight(os);
+    CHECK_SET_ERR(length == 4, QString("Incorrect alignment length is on the options panel: expected 4, got %1").arg(length));
+    CHECK_SET_ERR(height == 2, QString("Incorrect alignment height is on the options panel: expected 2, got %1").arg(height));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4537) {

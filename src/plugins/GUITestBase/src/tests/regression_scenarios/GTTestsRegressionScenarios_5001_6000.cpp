@@ -4519,13 +4519,13 @@ GUI_TEST_CLASS_DEFINITION(test_5849) {
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
 
     // Expected state: the selection has been cleared.
-    QLabel *line = GTWidget::findExactWidget<QLabel *>(os, "Line", msaEditorStatusBar);
-    QLabel *column = GTWidget::findExactWidget<QLabel *>(os, "Column", msaEditorStatusBar);
-    QLabel *position = GTWidget::findExactWidget<QLabel *>(os, "Position", msaEditorStatusBar);
-    QLabel *selection = GTWidget::findExactWidget<QLabel *>(os, "Selection", msaEditorStatusBar);
+    QLabel *line = GTWidget::findLabel(os, "Line", msaEditorStatusBar);
+    QLabel *column = GTWidget::findLabel(os, "Column", msaEditorStatusBar);
+    QLabel *position = GTWidget::findLabel(os, "Position", msaEditorStatusBar);
+    QLabel *selection = GTWidget::findLabel(os, "Selection", msaEditorStatusBar);
 
-    CHECK_SET_ERR(line->text() == "Seq - / 0", "Sequence is " + line->text());
-    CHECK_SET_ERR(column->text() == "Col - / 0", "Column is " + column->text());
+    CHECK_SET_ERR(line->text() == "Seq - / 2", "Sequence is " + line->text());
+    CHECK_SET_ERR(column->text() == "Col - / 4", "Column is " + column->text());
     CHECK_SET_ERR(position->text() == "Pos - / -", "Position is " + position->text());
     CHECK_SET_ERR(selection->text() == "Sel none", "Selection is " + selection->text());
 }
