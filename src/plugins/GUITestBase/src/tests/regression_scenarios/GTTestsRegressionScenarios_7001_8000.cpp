@@ -488,7 +488,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: one result found
-    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 19 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 22 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193_2) {
