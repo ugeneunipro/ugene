@@ -1,0 +1,21 @@
+<multi-test>
+
+<load-document index="doc" url="pcr_primer_design/gfp.fa" io="local_file" format="fasta"/>
+
+<primer-design-for-dna-assembly-task 
+    docName="doc" 
+    seqName="gfp" 
+    gibbsFreeEnergy = "-40;-30"
+    meltingPoint = "51;65"    
+    overlapLength = "18;25"    
+    gibbsFreeEnergyExclude = "-7"    
+    meltingPointExclude = "15"
+    complementLengthExclude = "3"
+    insertTo="5"
+    leftArea="0..70"
+    rightArea="354..71"
+    otherSequencesInPcrUrl="pcr_primer_design/other_in_pcr.fa"
+    expectedResultsList="28..22;336..22;0..0;0..0;0..0;0..0;0..0;0..0"
+    />
+
+</multi-test>

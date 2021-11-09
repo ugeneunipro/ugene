@@ -21,6 +21,7 @@
 
 #include "PCRPrimerDesignForDNAAssemblyPlugin.h"
 
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -28,7 +29,10 @@
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
+#include <U2Test/GTestFrameworkComponents.h>
+
 #include "PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h"
+#include "tasks/PCRPrimerDesignForDNAAssemblyTaskTest.h"
 
 namespace U2 {
 
@@ -44,6 +48,19 @@ PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
         SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
 
         opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
+    }
+    
+    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    assert(xmlTestFormat != nullptr);
+
+    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    l->qlist = PCRPrimerDesignForDNAAssemblyTaskTest::createTestFactories();
+
+    foreach (XMLTestFactory *f, l->qlist) {
+        bool res = xmlTestFormat->registerTestFactory(f);
+        assert(res);
+        Q_UNUSED(res);
     }
 }
 

@@ -1,0 +1,4 @@
+<suite name="PCR primer design for DNA assembly">
+
+    <test-dir path="pcr_dna_assembly" test-format="XML" test-ext="*.xml"/>
+</suite>

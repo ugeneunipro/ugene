@@ -22,6 +22,8 @@
 #ifndef _U2_XML_TEST_UTILS_
 #define _U2_XML_TEST_UTILS_
 
+#include <U2Core/U2Range.h>
+#include <U2Core/U2Region.h>
 #include <U2Test/GTest.h>
 
 #include "XMLTestFormat.h"
@@ -72,9 +74,16 @@ public:
     int getInt(const QDomElement &element, const QString &attribute);
     qint64 getInt64(const QDomElement &element, const QString &attribute);
     double getDouble(const QDomElement &element, const QString &attribute);
+    U2Range<int> getU2RangeInt(const QDomElement &element, const QString &attribute, const QString &splitter);
+    U2Region getU2Region(const QDomElement &element, const QString &attribute);
+    QList<U2Region> getU2RegionList(const QDomElement &element, const QString &attribute, const QString &splitter, int sizeToCheck = 0);
 
     static const QString TRUE_VALUE;
     static const QString FALSE_VALUE;
+
+private:
+    QPair<qint64, qint64> getPairQint64(const QDomElement &element, const QString &attribute, const QString &splitter);
+    QPair<qint64, qint64> getPairQintFromQStringList(QStringList &listToPair);
 };
 
 class U2TEST_EXPORT XMLTestUtils {
