@@ -28,8 +28,11 @@
 #include <QTimer>
 #include <QUrl>
 
+#include <U2Algorithm/EnzymeModel.h>
+
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppSettings.h>
+#include <U2View/AutoAnnotationUtils.h>
 #include <U2Core/CopyDataTask.h>
 #include <U2Core/CopyDocumentTask.h>
 #include <U2Core/DNAAlphabet.h>
@@ -53,6 +56,7 @@
 #include <U2Core/ProjectService.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/RemoveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/Settings.h>
@@ -1175,8 +1179,22 @@ void ProjectViewImpl::sl_onToggleCircular() {
         const bool objectIsModifiable = (!obj->isStateLocked() && !projectTreeController->isObjectInRecycleBin(obj));
         if (objectIsModifiable && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
             U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(obj);
+            CHECK(casted != nullptr);
             casted->setCircular(toggleCircularAction->isChecked());
             projectTreeController->refreshObject(casted);
+            QList<GObjectViewWindow *> viewsList = GObjectViewUtils::findViewsWithObject(obj);
+            for (GObjectViewWindow *view : viewsList) {
+                CHECK(view->getObjectView() != nullptr);
+                AnnotatedDNAView *castedADV = qobject_cast<AnnotatedDNAView *>(view->getObjectView());
+                if (castedADV != nullptr) {
+                    for (ADVSequenceObjectContext *ctx : castedADV->getSequenceContexts()) {
+                        QAction *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
+                        if (toggleAAAction != nullptr && toggleAAAction->isChecked()) {
+                            AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ctx, ANNOTATION_GROUP_ENZYME);
+                        }
+                    }
+                }
+            }
         }
     }
 }

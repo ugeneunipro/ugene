@@ -1221,6 +1221,34 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5263) {
+    //1. Open _common_data/genbank/pBR322.gb
+    //2. Find the following restriction site: EcoRI
+    //Expected state: it is located on the sequence junction point
+    //3. Remove the circular mark
+    //Expected state: the restriction sites of sequence junction disappear
+    
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/PBR322.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
+                                                                        << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
+    CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI") != nullptr, QString("'EcoRI' item isn't found, but should."));
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", options) == nullptr, QString("'EcoRI' item is found, but should not."));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5356) {
     //    1. Open WD
     //    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
