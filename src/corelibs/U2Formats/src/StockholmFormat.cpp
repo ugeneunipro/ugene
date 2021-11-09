@@ -84,8 +84,7 @@ enum AnnotationType {
 };
 
 /** Internal representation of the annotation used internally during parsing. */
-class StockholmAnnotation {
-public:
+struct StockholmAnnotation {
     StockholmAnnotation(const AnnotationType &_type, const AnnotationTag &_tag, const QString &_value)
         : type(_type), tag(_tag), value(_value) {
     }
@@ -100,8 +99,6 @@ public:
  */
 class AnnotationBank {
 public:
-    GAutoDeleteList<StockholmAnnotation> annotationsList;
-
     void add(StockholmAnnotation *newAnnotation) {
         CHECK(newAnnotation != nullptr, );
         if (newAnnotation->type == COLUMN_ANNOTATION && (newAnnotation->tag == SS_CONS || newAnnotation->tag == RF)) {
@@ -124,6 +121,59 @@ public:
         }
         return nullptr;
     }
+
+    /** Returns map of annotation values by name. */
+    QHash<QString, QString> createValueByNameMap() const {
+        QHash<QString, QString> valueByName;
+        for (StockholmAnnotation *annotation : qAsConst(annotationsList.qlist)) {
+            QString name = getGenbankAnnotationName(annotation);
+            valueByName[name] = annotation->value;
+        }
+        return valueByName;
+    }
+
+    /** Derives Genbank annotation name from the given Stockholm annotation. */
+    static QString getGenbankAnnotationName(StockholmAnnotation *annotation) {
+        switch (annotation->type) {
+            case UNI_ANNOTATION:
+                return StockholmFormat::UNI_ANNOTATION_MARK;
+            case FILE_ANNOTATION: {
+                switch (annotation->tag) {
+                    case ID:
+                        return StockholmFormat::FILE_ANNOTATION_ID;
+                    case AC:
+                        return StockholmFormat::FILE_ANNOTATION_AC;
+                    case DE:
+                        return StockholmFormat::FILE_ANNOTATION_DE;
+                    case GA:
+                        return StockholmFormat::FILE_ANNOTATION_GA;
+                    case NC:
+                        return StockholmFormat::FILE_ANNOTATION_NC;
+                    case TC:
+                        return StockholmFormat::FILE_ANNOTATION_TC;
+                    default:
+                        break;
+                }
+                FAIL(QString("Bad FILE annotation tag: %1").arg(annotation->tag), "");
+            }
+            case COLUMN_ANNOTATION: {
+                switch (annotation->tag) {
+                    case SS_CONS:
+                        return StockholmFormat::COLUMN_ANNOTATION_SS_CONS;
+                    case RF:
+                        return StockholmFormat::COLUMN_ANNOTATION_RF;
+                    default:
+                        break;
+                }
+                FAIL(QString("Bad COLUMN annotation tag: %1").arg(annotation->tag), "");
+            }
+            default:
+                FAIL(QString("Unsupported annotation tag: %1").arg(annotation->tag), "");
+        }
+    }
+
+private:
+    GAutoDeleteList<StockholmAnnotation> annotationsList;
 };  // AnnotationBank
 
 /** Parses annotation from the given line. Returns nullptr if annotation can't be parsed. */
@@ -170,56 +220,6 @@ static QString getMsaNameFromFileAnnotation(const AnnotationBank &annotationBank
 static bool hasCreatedByUGENEMarker(const AnnotationBank &annotationBank) {
     auto annotation = annotationBank.findAnnotation(UNI_ANNOTATION);
     return annotation != nullptr && annotation->value == StockholmFormat::UNI_ANNOTATION_MARK;
-}
-
-/** Derives UGENE (Genbank) annotation name from the given Stockholm annotation. */
-static QString getUGENEAnnotationName(StockholmAnnotation *annotation) {
-    switch (annotation->type) {
-        case UNI_ANNOTATION:
-            return StockholmFormat::UNI_ANNOTATION_MARK;
-        case FILE_ANNOTATION: {
-            switch (annotation->tag) {
-                case ID:
-                    return StockholmFormat::FILE_ANNOTATION_ID;
-                case AC:
-                    return StockholmFormat::FILE_ANNOTATION_AC;
-                case DE:
-                    return StockholmFormat::FILE_ANNOTATION_DE;
-                case GA:
-                    return StockholmFormat::FILE_ANNOTATION_GA;
-                case NC:
-                    return StockholmFormat::FILE_ANNOTATION_NC;
-                case TC:
-                    return StockholmFormat::FILE_ANNOTATION_TC;
-                default:
-                    break;
-            }
-            FAIL(QString("Bad FILE annotation tag: %1").arg(annotation->tag), "");
-        }
-        case COLUMN_ANNOTATION: {
-            switch (annotation->tag) {
-                case SS_CONS:
-                    return StockholmFormat::COLUMN_ANNOTATION_SS_CONS;
-                case RF:
-                    return StockholmFormat::COLUMN_ANNOTATION_RF;
-                default:
-                    break;
-            }
-            FAIL(QString("Bad COLUMN annotation tag: %1").arg(annotation->tag), "");
-        }
-        default:
-            FAIL(QString("Unsupported annotation tag: %1").arg(annotation->tag), "");
-    }
-}
-
-/** Returns map of annotation values by name. */
-static QHash<QString, QString> createValueByNameMap(const AnnotationBank &annotationBank) {
-    QHash<QString, QString> valueByName;
-    for (StockholmAnnotation *annotation : qAsConst(annotationBank.annotationsList.qlist)) {
-        QString name = getUGENEAnnotationName(annotation);
-        valueByName[name] = annotation->value;
-    }
-    return valueByName;
 }
 
 /** Skips comment of markup blocks. Returns true if the whole line was skipped. */
@@ -453,7 +453,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject 
         objectNameList.insert(name);
         msa->setName(name);
 
-        QHash<QString, QString> valueByNameMap = createValueByNameMap(annotationBank);
+        QHash<QString, QString> valueByNameMap = annotationBank.createValueByNameMap();
         setMsaInfo(valueByNameMap, msa);
 
         QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
