@@ -3971,7 +3971,9 @@ GUI_TEST_CLASS_DEFINITION(test_1396) {
      */
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1396", "empty_rows.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 0, "Wrong rows number");
+
+    int rowCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(rowCount == 2, "Wrong rows number: " + QString::number(rowCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1405) {

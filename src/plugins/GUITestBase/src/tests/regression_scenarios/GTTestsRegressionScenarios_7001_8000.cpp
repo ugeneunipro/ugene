@@ -466,28 +466,27 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
 
 GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsPcr::clearPcrDir(os);
-    //1. Open "samples/FASTA/human_T1.fa".
+    // 1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "GGAAAAAATGCTAAGGGC" and "CTGGGTTGAAAATTCTTT".
+    // 3. Enter the primers: "GGAAAAAATGCTAAGGGC" and "CTGGGTTGAAAATTCTTT".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "GGAAAAAATGCTAAGGGC");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CTGGGTTGAAAATTCTTT");
-    //4. Set both mismatches to 9
+    // 4. Set both mismatches to 9
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
-    //5. Set 3' perfect match to 3
+    // 5. Set 3' perfect match to 3
     QSpinBox *perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
     GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
 
-    //6. Click the find button.
+    // 6. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: one result found
     CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 22 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
 }
 
@@ -495,20 +494,20 @@ GUI_TEST_CLASS_DEFINITION(test_7193_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "AAA" and "CCC".
+    // 3. Enter the primers: "AAA" and "CCC".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AAA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
 
-    //Expected state: there is a warning about forward primer length
+    // Expected state: there is a warning about forward primer length
     QLabel *warningLabel = GTWidget::findLabel(os, "warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be between"), "Incorrect warning message");
 
     GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
-    //4. Click the find button.
-    //Expected state: task cancelled with corresponding log message
+    // 4. Click the find button.
+    // Expected state: task cancelled with corresponding log message
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsMessage(os, lt);
@@ -823,6 +822,42 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
         GTUtilsSequenceView::zoomIn(os);
         GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7388) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align_subalign.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // Export subalignment with only gaps inside.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
+
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7388.aln", {"s1", "s2"}, 16, 24);
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select both sequences with only gaps inside.
+    GTUtilsMdi::checkWindowIsActive(os, "test_7388");
+    GTUtilsMsaEditor::selectRows(os, 0, 1);
+
+    // Check that "Copy" works as expected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    QString clipboardText1 = GTClipboard::text(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(clipboardText1 == "---------\n---------",
+                  "1. Unexpected clipboard text: " + clipboardText1);
+
+    // Check that "Copy (custom format)" works as expected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString clipboardText2 = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText2 == "CLUSTAL W 2.0 multiple sequence alignment\n\ns1   --------- 9\ns2   --------- 9\n              \n\n",
+                  "2. Unexpected clipboard text: " + clipboardText2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7401) {

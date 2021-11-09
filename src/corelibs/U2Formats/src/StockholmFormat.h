@@ -33,49 +33,30 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormatDeprecated {
+class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormat {
     Q_OBJECT
-public:
-    static const QByteArray FILE_ANNOTATION_ID;
-    static const QByteArray FILE_ANNOTATION_AC;
-    static const QByteArray FILE_ANNOTATION_DE;
-    static const QByteArray FILE_ANNOTATION_GA;
-    static const QByteArray FILE_ANNOTATION_NC;
-    static const QByteArray FILE_ANNOTATION_TC;
-    static const QByteArray COLUMN_ANNOTATION_SS_CONS;
-    static const QByteArray COLUMN_ANNOTATION_RF;
-    static const QByteArray UNI_ANNOTATION_MARK;
-
 public:
     StockholmFormat(QObject *obj);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    void storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) override;
 
-    virtual bool isObjectOpSupported(const Document *d, DocumentFormat::DocObjectOp op, GObjectType t) const;
-
-    // exceptions
-    struct StockholmBaseException {
-        QString msg;
-        StockholmBaseException(const QString &str)
-            : msg(str) {
-        }
-    };
-    struct ReadError : public StockholmBaseException {
-        ReadError(const GUrl &url);
-    };
-    struct WriteError : public StockholmBaseException {
-        WriteError(const GUrl &url);
-    };
-    struct BadFileData : public StockholmBaseException {
-        BadFileData(const QString &msg)
-            : StockholmBaseException(msg) {
-        }
-    };
+    bool isObjectOpSupported(const Document *doc, DocumentFormat::DocObjectOp op, GObjectType t) const override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &data, const GUrl & = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+
+public:
+    static const QString FILE_ANNOTATION_ID;
+    static const QString FILE_ANNOTATION_AC;
+    static const QString FILE_ANNOTATION_DE;
+    static const QString FILE_ANNOTATION_GA;
+    static const QString FILE_ANNOTATION_NC;
+    static const QString FILE_ANNOTATION_TC;
+    static const QString COLUMN_ANNOTATION_SS_CONS;
+    static const QString COLUMN_ANNOTATION_RF;
+    static const QString UNI_ANNOTATION_MARK;
 
 };  // StockholmFormat
 
