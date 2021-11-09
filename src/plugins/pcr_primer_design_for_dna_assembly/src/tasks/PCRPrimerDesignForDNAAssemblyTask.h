@@ -100,7 +100,7 @@ private:
     U2Region b3Forward;
     U2Region b3Reverse;
 
-    //Unwanted connections reports of user primers.
+    // Unwanted connections reports of user primers.
     PCRPrimerDesignTaskReportUtils::UserPrimersReports userPrimersReports;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;

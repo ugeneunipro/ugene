@@ -151,7 +151,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
             } else {
                 // Region string representation
                 QString b1ForwardCandidatePrimerRegionString = regionToString(b1ForwardCandidatePrimerRegion, false);
-                taskLog.details(tr("The \"B1 Forward\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(QString(b1ForwardCandidatePrimerRegionString)));
+                taskLog.details(tr("The \"B1 Forward\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, checking for unwanted connections").arg(QString(b1ForwardCandidatePrimerRegionString)));
                 //If melting temperature and delta G are good - add backbone and check unwanted connections
                 b1ForwardCandidatePrimerSequence = backboneSequence + b1ForwardCandidatePrimerSequence;
                 bool hasUnwanted = hasUnwantedConnections(b1ForwardCandidatePrimerSequence);
@@ -222,7 +222,9 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
             // No unwanted structures -> Set as backbone, finish search for backbone.
             if (!checkBackboneSequence->hasUnwantedParameters()) {
                 backboneSequence = consideredBackboneSequence;
-                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has been found: %1").arg(QString(backboneSequence)));
+                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has been "
+                                   "found: %1")
+                                    .arg(QString(backboneSequence)));
                 return {};
             }
             // There are unwanted structures -> Asking the user if this sequence with unwanted structures should be used
@@ -337,7 +339,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1
                 continue;
             } else {
                 QString b1ReverseCandidatePrimerRegionString = regionToString(b1ReverseCandidatePrimerRegion, true);
-                taskLog.details(tr("The \"B1 Reverse\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(b1ReverseCandidatePrimerRegionString));
+                taskLog.details(tr("The \"B1 Reverse\" candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, checking for unwanted connections").arg(b1ReverseCandidatePrimerRegionString));
                 //If melt temp and delta G are good - add backbone and check unwanted connections
                 b1ReverseCandidatePrimerSequence = backboneSequence + b1ReverseCandidatePrimerSequence;
                 bool hasUnwanted = hasUnwantedConnections(b1ReverseCandidatePrimerSequence);
@@ -402,7 +404,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryForwardReversePrimers(Secon
         } else {
             //If melt temp and delta G are good - add backbone and check unwanted connections
             QString forwardCandidatePrimerRegionString = regionToString(forwardCandidatePrimerRegion, false);
-            taskLog.details(tr("The \"%1\" candidate primer region \"%2\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(forwardPrimerName).arg(forwardCandidatePrimerRegionString));
+            taskLog.details(tr("The \"%1\" candidate primer region \"%2\" fits to \"Parameters of priming sequences\" values, checking for unwanted connections").arg(forwardPrimerName).arg(forwardCandidatePrimerRegionString));
             forwardCandidatePrimerSequence = backboneSequence + forwardCandidatePrimerSequence;
             bool hasUnwanted = hasUnwantedConnections(forwardCandidatePrimerSequence);
             if (!hasUnwanted) {
@@ -480,7 +482,7 @@ void PCRPrimerDesignForDNAAssemblyTask::findSecondaryReversePrimer(SecondaryPrim
             continue;
         } else {
             QString reverseCandidatePrimerRegionString = regionToString(reverseCandidatePrimerRegion, true);
-            taskLog.details(tr("The \"%1\" candidate primer region \"%2\" fits to \"Parameters of priming sequences\" values, check for unwanted connections").arg(reversePrimerName).arg(reverseCandidatePrimerRegionString));
+            taskLog.details(tr("The \"%1\" candidate primer region \"%2\" fits to \"Parameters of priming sequences\" values, checking for unwanted connections").arg(reversePrimerName).arg(reverseCandidatePrimerRegionString));
             //If melt temp and delta G are good - add backbone and check unwanted connections
             reverseCandidatePrimerSequence = backboneSequence + reverseCandidatePrimerSequence;
             bool hasUnwanted = hasUnwantedConnections(reverseCandidatePrimerSequence);
@@ -518,21 +520,19 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
     if (settings.forwardUserPrimer.isEmpty() || settings.reverseUserPrimer.isEmpty()) {
         if (settings.forwardUserPrimer.isEmpty() && settings.reverseUserPrimer.isEmpty()) {
             taskLog.details(tr("No user primers"));
-        }
-        else if (settings.forwardUserPrimer.isEmpty()) {
+        } else if (settings.forwardUserPrimer.isEmpty()) {
             taskLog.error(tr("No forward user primer. Reverse user primer ignored"));
-        }
-        else if (settings.reverseUserPrimer.isEmpty()) {
+        } else if (settings.reverseUserPrimer.isEmpty()) {
             taskLog.error(tr("No reverse user primer. Forward user primer ignored"));
         }
         return;
     }
 
-    const int deltaG   = settings.gibbsFreeEnergyExclude,
-              meltingT = settings.meltingPointExclude,
-              dimerLen = settings.complementLengthExclude;
-    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray& primer,
-            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports& saveTo) {
+    int deltaG = settings.gibbsFreeEnergyExclude,
+        meltingT = settings.meltingPointExclude,
+        dimerLen = settings.complementLengthExclude;
+    const auto saveOnePrimerReports = [deltaG, meltingT, dimerLen, this](const QByteArray &primer,
+            PCRPrimerDesignTaskReportUtils::UserPrimersReports::PrimerReports &saveTo) {
         QString report_;
         if (UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, deltaG, meltingT, dimerLen, report_)) {
             saveTo.selfdimer = report_;
@@ -544,17 +544,16 @@ void PCRPrimerDesignForDNAAssemblyTask::generateUserPrimersReports() {
                                                             dimerLen, report_)) {
             saveTo.fileRevComplSeq = report_;
         }
-        for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
+        for (const QByteArray &otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
             if (UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, otherSeqInPcr, deltaG, meltingT, dimerLen,
                                                                 report_)) {
                 saveTo.other << report_;
             }
         }
-
     };
 
-    const QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
-    const QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
+    QByteArray forward = settings.forwardUserPrimer.toLocal8Bit();
+    QByteArray reverse = settings.reverseUserPrimer.toLocal8Bit();
     saveOnePrimerReports(forward, userPrimersReports.forward);
     saveOnePrimerReports(reverse, userPrimersReports.reverse);
 

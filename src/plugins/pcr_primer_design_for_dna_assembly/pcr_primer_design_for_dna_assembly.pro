@@ -16,6 +16,7 @@ HEADERS += src/options_panel/GeneratedSequencesTable.h \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h \
            src/PCRPrimerDesignForDNAAssemblyPlugin.h \
            src/PCRPrimerDesignForDNAAssemblyTaskSettings.h \
+           src/UnwantedStructuresInBackboneDialog.h \
 
 SOURCES += src/options_panel/GeneratedSequencesTable.cpp \
            src/options_panel/ResultTable.cpp \
@@ -32,9 +33,11 @@ SOURCES += src/options_panel/GeneratedSequencesTable.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.cpp \
            src/PCRPrimerDesignForDNAAssemblyPlugin.cpp \
+           src/UnwantedStructuresInBackboneDialog.cpp \
 
-FORMS +=   src/tasks/UnwantedStructuresInBackboneDialog.ui \
-           src/PCRPrimerDesignForDNAAssemblyOPWidget.ui \
+FORMS +=   src/PCRPrimerDesignForDNAAssemblyOPWidget.ui \
+           src/UnwantedStructuresInBackboneDialog.ui \
+
 
 TRANSLATIONS += transl/russian.ts
 

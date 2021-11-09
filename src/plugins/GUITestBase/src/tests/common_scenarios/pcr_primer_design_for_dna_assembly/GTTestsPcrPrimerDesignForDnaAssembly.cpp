@@ -48,8 +48,8 @@ static int getRowCount(GUITestOpStatus &os, const QString &tableName) {
 // Checks if the annotation table has an annotation with a given name and if its region matches an expected one.
 static void checkAnnotation(GUITestOpStatus &os, const QString &annotationName, const QString &expectedRegion) {
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, annotationName);
-    CHECK_SET_ERR(expectedRegion == region, QString("Invalid region for '%1' annotation: expected '%2', current '%3'").
-                                                arg(annotationName, expectedRegion, region))
+    CHECK_SET_ERR(expectedRegion == region, QString("Invalid region for '%1' annotation: expected '%2', current '%3'")
+        .arg(annotationName, expectedRegion, region))
 }
 
 namespace GUITest_common_scenarios_pcr_primer_design_tab {
@@ -63,8 +63,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsPcrPrimerDesign::openTab(os);
     GTUtilsPcrPrimerDesign::filterGeneratedSequences(os, "AAACACA");
     int currentRowCount = getRowCount(os, "twGeneratedSequences");
-    CHECK_SET_ERR(currentRowCount == 2, QString("Number of sequences after filtration: expected 2, current %1").
-                                            arg(currentRowCount))
+    CHECK_SET_ERR(currentRowCount == 2, QString("Number of sequences after filtration: expected 2, current %1")
+        .arg(currentRowCount))
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -75,7 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     Expected: forward user primer = AAACACAGAAACACCA.
     // Select the third sequence in the "Choose generated sequences" table and click "Reverse 5'".
     // Select the fourth sequence in the "Choose generated sequences" table and click "Reverse 3'".
-    //     Expected: reverse user primer = AAACACCCAAACACCT.
+    //     Expected: reverse user primer = AAACACCTAAACACCC.
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Reverse5);
     GTUtilsPcrPrimerDesign::selectGeneratedSequence(os, 3);
     GTUtilsPcrPrimerDesign::addToUserPrimer(os, GTUtilsPcrPrimerDesign::UserPrimer::Reverse3);
-    GTLineEdit::checkText(os, "leReversePrimer", sequence, "AAACACCCAAACACCT");
+    GTLineEdit::checkText(os, "leReversePrimer", sequence, "AAACACCTAAACACCC");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -142,11 +142,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Select Nucl sequence.
     //     Expected: all settings on the tab are enabled, no warning.
     QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                  testDir + "_common_data/fasta/", "alphabet.fa", {"Amino", "Nucl"});
+        testDir + "_common_data/fasta/", "alphabet.fa", {"Amino", "Nucl"});
     GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
     auto mainWidget = GTWidget::findWidget(os, "runPcrPrimerDesignWidget");
-    auto warnLabel = GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").
-        first();
+    auto warnLabel = GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design")
+        .first();
 
     GTWidget::click(os, seqWidgets.first());
     GTWidget::checkEnabled(os, mainWidget, false);
@@ -218,8 +218,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                            GTUtilsSequenceView::getActiveSequenceViewWindow(os));
     {
         int splitterCount = splitter->count();
-        CHECK_SET_ERR(splitterCount == 2, QString("Expected: 2 widgets separated by splitter, current: %1 widget(s)").
-                                              arg(splitterCount))
+        CHECK_SET_ERR(splitterCount == 2, QString("Expected: 2 widgets separated by splitter, current: %1 widget(s)")
+            .arg(splitterCount))
     }
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     auto scroll = GTWidget::findExactWidget<QAbstractScrollArea *>(os, "OP_SCROLL_AREA", splitter);
@@ -231,8 +231,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
         CHECK_SET_ERR(!horScroll->isVisible(), "Expected: horScroll is invisible");
         if (tab != GTUtilsOptionPanelSequenceView::PcrPrimerDesign) {
             int curWidth = splitter->sizes()[1];
-            CHECK_SET_ERR(curWidth == 315, QString("'%1' width: expected 315, current %2").
-                arg(GTUtilsOptionPanelSequenceView::tabsNames[tab]).arg(curWidth))
+            CHECK_SET_ERR(curWidth == 315, QString("'%1' width: expected 315, current %2")
+                .arg(GTUtilsOptionPanelSequenceView::tabsNames[tab]).arg(curWidth))
         }
     }
 }
@@ -478,7 +478,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsNotifications::checkNotificationReportText(os, QString("<span style=\" font-weight:600;\">Delta</span> G: "
         "-24.5 kcal/mole <span style=\" font-weight:600;\">Base Pairs:</span> 13 <span style=\" font-weight:600;\">"
-        "Melting temperature:</span> 42%1C").arg(QChar(0260)));
+                                                                  "Melting temperature:</span> 42%1C")
+                                                              .arg(QChar(0260)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {

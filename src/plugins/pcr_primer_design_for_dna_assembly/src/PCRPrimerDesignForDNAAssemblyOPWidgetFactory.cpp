@@ -31,7 +31,7 @@ namespace U2 {
 
 const QString PCRPrimerDesignForDNAAssemblyOPWidgetFactory::GROUP_ID = "OP_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY";
 const QString PCRPrimerDesignForDNAAssemblyOPWidgetFactory::GROUP_ICON_STR = ":/pcr_primer_design_for_dna_assembly/icon/pcr_primer_design_icon.png";
-const QString PCRPrimerDesignForDNAAssemblyOPWidgetFactory::GROUP_DOC_PAGE = "TODO";
+const QString PCRPrimerDesignForDNAAssemblyOPWidgetFactory::GROUP_DOC_PAGE = "71958581";
 
 PCRPrimerDesignForDNAAssemblyOPWidgetFactory::PCRPrimerDesignForDNAAssemblyOPWidgetFactory()
     : OPWidgetFactory() {
