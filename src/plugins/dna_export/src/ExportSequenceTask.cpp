@@ -554,9 +554,56 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
     CHECK_OP(os, U2Sequence());
 
     for (const U2Region &annotatedRegion : qAsConst(ad->location->regions)) {
+        CHECK_CONTINUE(!annotatedRegion.isEmpty());
+
         qint64 currentRegionLength = 0;
-        for (qint64 pos = annotatedRegion.startPos; pos < annotatedRegion.endPos(); pos += MAX_CHUNK_LENGTH) {
-            const qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotatedRegion.endPos() - pos);
+
+        // Go in the direct order in case of the direct sequence
+        // and in the reverse order in case of the reverse-complementary sequence
+        bool isReverseComplement = ad->getStrand().isCompementary() && ei.complTT != nullptr;
+        int pos = 0;
+        auto annotationEndPos = annotatedRegion.endPos();
+        // If we translate the reverse-complement sequence, we need to go from the rnd to the beginning
+        // And we need to skip first 1 or 2 bases (or don't skip them if the annotation length is divided by 3
+        int offset = 0;
+        qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotationEndPos - pos);
+        if (isReverseComplement) {
+            offset = annotatedRegion.length % 3;
+            pos = annotationEndPos - MAX_CHUNK_LENGTH;
+            if (pos < annotatedRegion.startPos + offset) {
+                pos = annotatedRegion.startPos + offset;
+            }
+        } else {
+            pos = annotatedRegion.startPos;
+        }
+        auto condition = [&]() -> bool {
+            if (isReverseComplement) {
+                return pos >= annotatedRegion.startPos;
+            } else {
+                return pos < annotationEndPos;
+            }
+        };
+        auto change = [&]() {
+            if (isReverseComplement) {
+                if (pos == annotatedRegion.startPos) { // If this condition is true, that we need to exit from the cycle
+                    pos--;
+                } else if (pos == annotatedRegion.startPos + offset) { // If this condition is true, there is the offset region left
+                    pos = annotatedRegion.startPos;
+                    currentChunkSize = offset;
+                } else {
+                    pos -= MAX_CHUNK_LENGTH;
+                    currentChunkSize = MAX_CHUNK_LENGTH;
+                    if (pos < annotatedRegion.startPos + offset) {
+                        currentChunkSize = (pos + MAX_CHUNK_LENGTH) - (annotatedRegion.startPos + offset);
+                        pos = annotatedRegion.startPos + offset;
+                    }
+                }
+            } else {
+                pos += MAX_CHUNK_LENGTH;
+                currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotationEndPos - pos);
+            }
+        };
+        for ( ; condition(); change()) {
             const U2Region chunkRegion(pos, currentChunkSize);
             QByteArray chunkContent = ei.sequence->getSequenceData(chunkRegion, os);
             CHECK_OP(os, U2Sequence());
@@ -564,7 +611,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
                 continue;
             }
 
-            if (ad->getStrand().isCompementary() && nullptr != ei.complTT) {
+            if (isReverseComplement) {
                 TextUtils::reverse(chunkContent.data(), currentChunkSize);
                 ei.complTT->translate(chunkContent.data(), currentChunkSize);
             }

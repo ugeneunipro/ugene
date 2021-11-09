@@ -1121,6 +1121,45 @@ GUI_TEST_CLASS_DEFINITION(test_7448_2) {
     CHECK_SET_ERR(currentString == "RAG", QString("Last 3 symbols expected: RAG, current: %1").arg(currentString));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7448_3) {
+    // 1. Copy "5mbf.fa.gz" and open the copy.
+    QString filePath = sandBoxDir + "test_7448_2.fa.gz";
+    GTFile::copy(os, testDir + "_common_data/fasta/5mbf.fa.gz", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Create an annotation covering the whole file.
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(1..5000000)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // 3. Export translation of the annotation.
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+        new ExportSequenceOfSelectedAnnotationsFiller(os,
+            sandBoxDir + "test_7448_2_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Export", "Export sequence of selected annotations..." }));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: first 3 symbols are TPA
+    QString currentString = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "TPA", QString("Last 3 symbols expected: TPA, current: %1").arg(currentString));
+
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
+
+    // Expected: last 3 symbols are ILD
+    currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "ILD", QString("Last 3 symbols expected: ILD, current: %1").arg(currentString));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7451) {
     // Check that a right click on a recent item on the Welcome Screen does not crash UGENE.
 
