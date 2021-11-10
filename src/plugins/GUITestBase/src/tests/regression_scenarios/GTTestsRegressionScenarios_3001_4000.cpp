@@ -1066,7 +1066,7 @@ GUI_TEST_CLASS_DEFINITION(test_3165) {
     //     7. Save file anywhere.
     //     Expected state: the project closes, the file is successfully saved, UGENE doesn't crash.
     // TODO: add this check after UGENE-3200 fix
-    // GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
+    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "test_3165_out.aln"), "file not saved");
     //    Current state: file is successfully saved, then UGENE crashes.
 }
