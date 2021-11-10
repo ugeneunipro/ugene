@@ -29,6 +29,8 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include <U2Algorithm/EnzymeModel.h>
+
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -785,6 +787,19 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
     }
 }
 
+void AnnotatedDNAView::sl_sequenceCircularStateChanged() {
+    U2SequenceObject *o = qobject_cast<U2SequenceObject *>(sender());
+    CHECK(o != nullptr, );
+    for (ADVSequenceObjectContext *ctx : getSequenceContexts()) {
+        if (ctx->getSequenceObject() == o) {
+            QAction *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
+            if (toggleAAAction != nullptr && toggleAAAction->isChecked()) {
+                AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ctx, ANNOTATION_GROUP_ENZYME);
+            }
+        }
+    }
+}
+
 void AnnotatedDNAView::sl_onContextMenuRequested() {
     QMenu m;
 
@@ -908,6 +923,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         addRelatedAnnotations(sc);
         emit si_sequenceAdded(sc);
         connect(o, SIGNAL(si_relatedObjectRelationChanged()), SLOT(sl_relatedObjectRelationChanged()));
+        connect(o, SIGNAL(si_sequenceCircularStateChanged()), SLOT(sl_sequenceCircularStateChanged()));
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
         SAFE_POINT(ao != nullptr, "Invalid annotation table!", QString());

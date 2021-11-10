@@ -228,6 +228,7 @@ private slots:
     void sl_aminoTranslationChanged();
     void sl_updatePasteAction();
     void sl_relatedObjectRelationChanged();
+    void sl_sequenceCircularStateChanged();
 
     void sl_onDocumentAdded(Document *) override;
     void sl_onDocumentLoadedStateChanged() override;
