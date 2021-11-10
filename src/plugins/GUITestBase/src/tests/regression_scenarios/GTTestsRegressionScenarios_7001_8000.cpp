@@ -889,7 +889,6 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
     QList<TrimmomaticAddSettings> steps;
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {} ));
-    TrimmomaticDialogFiller* filler = new TrimmomaticDialogFiller(os, steps);
 
     // 3. Open the "De novo assemble Illumina SE reads" sample
     // 4. Set "human_T1.fa" as input
@@ -900,7 +899,7 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     // 9. Click "Apply"
     class ProcessWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             //    Expected state: wizard has appeared.
             QWidget* wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
