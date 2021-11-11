@@ -45,10 +45,13 @@ PCRPrimerDesignForDNAAssemblyOPSavableTab::~PCRPrimerDesignForDNAAssemblyOPSavab
 QVariant PCRPrimerDesignForDNAAssemblyOPSavableTab::getChildValue(const QString& childId) const {
     ResultTable* productTable = qobject_cast<ResultTable*>(getChildWidgetById(childId));
     UserPimerLineEdit* userPrimerLineEdit = qobject_cast<UserPimerLineEdit*>(getChildWidgetById(childId));
+    QToolButton* toolButton = qobject_cast<QToolButton*>(getChildWidgetById(childId));
     if (productTable != nullptr) {
         return QVariant::fromValue<ResultTableData>(productTable->getPCRPrimerProductTableData());
     } else if (userPrimerLineEdit != nullptr) {
         return QVariant::fromValue<UserPimerLineEditResult>(userPrimerLineEdit->getData());
+    } else if (toolButton != nullptr) {
+        return {};
     } else {
         return U2SavableWidget::getChildValue(childId);
     }
@@ -57,6 +60,7 @@ QVariant PCRPrimerDesignForDNAAssemblyOPSavableTab::getChildValue(const QString&
 void PCRPrimerDesignForDNAAssemblyOPSavableTab::setChildValue(const QString &childId, const QVariant &value) {
     ResultTable *productTable = qobject_cast<ResultTable *>(getChildWidgetById(childId));
     UserPimerLineEdit* userPrimerLineEdit = qobject_cast<UserPimerLineEdit*>(getChildWidgetById(childId));
+    QToolButton* toolButton = qobject_cast<QToolButton*>(getChildWidgetById(childId));
     if (productTable != nullptr) {
         const ResultTableData data = value.value<ResultTableData>();
         productTable->setCurrentProducts(data.currentProducts, data.associatedView);
@@ -67,6 +71,8 @@ void PCRPrimerDesignForDNAAssemblyOPSavableTab::setChildValue(const QString &chi
     } else if (userPrimerLineEdit != nullptr) {
         UserPimerLineEditResult data = value.value<UserPimerLineEditResult>();
         userPrimerLineEdit->setData(data);
+    } else if (toolButton != nullptr) {
+        return;
     } else {
         return U2SavableWidget::setChildValue(childId, value);
     }
