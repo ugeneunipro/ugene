@@ -37,8 +37,13 @@ class U2VIEW_EXPORT CreatePhyTreeWidget : public QWidget {
 public:
     CreatePhyTreeWidget(QWidget *parent);
 
+    /** Saves the current UI widget state into the settings data model. */
     virtual void fillSettings(CreatePhyTreeSettings &settings) = 0;
+
+    /** Stores current UI widget state into U2::Settings. */
     virtual void storeSettings() = 0;
+
+    /** Resets current widget & U2::Settings state to the algorithm defaults. */
     virtual void restoreDefault() = 0;
 
     virtual bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);

@@ -50,6 +50,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
 #include "tests/common_scenarios/msa_editor/GTTestsMsaEditor.h"
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
@@ -3021,6 +3022,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0020);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0025);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/iqtree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_iqtree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_iqtree::test_0002);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/Assembly browser
