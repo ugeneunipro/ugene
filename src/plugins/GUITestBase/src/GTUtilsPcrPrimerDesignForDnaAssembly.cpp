@@ -260,7 +260,7 @@ void GTUtilsPcrPrimerDesign::setParametersToExcludeInWholePrimers(GUITestOpStatu
 void GTUtilsPcrPrimerDesign::configureInsertToBackboneBearings(GUITestOpStatus &os,
                                                                const InsertToBackboneBearings &params) {
     QWidget *tab = getTabWgt(os);
-    QWidget *parent = GTWidget::findWidget(os, "wgtAreasForPriming", tab);
+    QWidget *parent = GTWidget::findWidget(os, "wgtOpenBackboneSequence", tab);
     scrollToWidget(os, parent, tab);
 
     auto currentGb = GTWidget::findExactWidget<QGroupBox *>(os, "groupBox", parent);
