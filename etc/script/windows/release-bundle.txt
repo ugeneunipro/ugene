@@ -1476,6 +1476,7 @@ tools/clustalw
 tools/cutadapt
 tools/fastqc
 tools/hmmer3
+tools/iqtree
 tools/java8
 tools/mafft
 tools/mrbayes
