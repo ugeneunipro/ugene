@@ -1507,6 +1507,7 @@ Unipro UGENE.app/Contents/MacOS/tools/cufflinks
 Unipro UGENE.app/Contents/MacOS/tools/cutadapt
 Unipro UGENE.app/Contents/MacOS/tools/fastqc
 Unipro UGENE.app/Contents/MacOS/tools/hmmer3
+Unipro UGENE.app/Contents/MacOS/tools/iqtree
 Unipro UGENE.app/Contents/MacOS/tools/mafft
 Unipro UGENE.app/Contents/MacOS/tools/metaphlan2
 Unipro UGENE.app/Contents/MacOS/tools/mrbayes

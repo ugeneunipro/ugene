@@ -7,27 +7,28 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ExternalToolSupportPlugin.h \
            src/ExternalToolSupportSettings.h \
            src/ExternalToolSupportSettingsController.h \
+           src/R/RSupport.h \
            src/RnaSeqCommon.h \
            src/RunnerTool.h \
            src/TaskLocalStorage.h \
-           src/bedtools/BedtoolsIntersectTask.h \
            src/bedtools/BedToolsWorkersLibrary.h \
+           src/bedtools/BedtoolsIntersectTask.h \
            src/bedtools/BedtoolsSupport.h \
            src/bedtools/BedtoolsSupportTask.h \
-           src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
+           src/bigWigTools/BigWigSupport.h \
            src/blast_plus/AlignToReferenceBlastDialog.h \
            src/blast_plus/AlignToReferenceBlastWorker.h \
            src/blast_plus/BlastDBCmdDialog.h \
            src/blast_plus/BlastDBCmdSupport.h \
            src/blast_plus/BlastDBCmdSupportTask.h \
            src/blast_plus/BlastNPlusSupportTask.h \
+           src/blast_plus/BlastPPlusSupportTask.h \
            src/blast_plus/BlastPlusSupport.h \
            src/blast_plus/BlastPlusSupportCommonTask.h \
            src/blast_plus/BlastPlusSupportRunDialog.h \
            src/blast_plus/BlastPlusWorker.h \
-           src/blast_plus/BlastPPlusSupportTask.h \
            src/blast_plus/BlastXPlusSupportTask.h \
            src/blast_plus/FormatDBSupport.h \
            src/blast_plus/FormatDBSupportRunDialog.h \
@@ -41,22 +42,22 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast_plus/align_worker_subtasks/FormatDBSubTask.h \
            src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.h \
            src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
-           src/bowtie/bowtie_tests/bowtieTests.h \
            src/bowtie/BowtieSettingsWidget.h \
            src/bowtie/BowtieSupport.h \
            src/bowtie/BowtieTask.h \
            src/bowtie/BowtieWorker.h \
-           src/bowtie2/bowtie2_tests/Bowtie2Tests.h \
+           src/bowtie/bowtie_tests/bowtieTests.h \
+           src/bowtie2/Bowtie2SettingsWidget.h \
            src/bowtie2/Bowtie2Support.h \
            src/bowtie2/Bowtie2Task.h \
-           src/bowtie2/Bowtie2SettingsWidget.h \
            src/bowtie2/Bowtie2Worker.h \
-           src/bwa/bwa_tests/bwaTests.h \
+           src/bowtie2/bowtie2_tests/Bowtie2Tests.h \
+           src/bwa/BwaMemWorker.h \
            src/bwa/BwaSettingsWidget.h \
            src/bwa/BwaSupport.h \
            src/bwa/BwaTask.h \
-           src/bwa/BwaMemWorker.h \
            src/bwa/BwaWorker.h \
+           src/bwa/bwa_tests/bwaTests.h \
            src/cap3/CAP3Support.h \
            src/cap3/CAP3SupportDialog.h \
            src/cap3/CAP3SupportTask.h \
@@ -121,16 +122,19 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/PhmmerSearchSettings.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
+           src/iqtree/IQTreeTask.h \
+           src/iqtree/IQTreeSupport.h \
+           src/iqtree/IQTreeWidget.h \
            src/java/JavaSupport.h \
            src/macs/MACSSettings.h \
            src/macs/MACSSupport.h \
            src/macs/MACSTask.h \
            src/macs/MACSWorker.h \
-           src/mafft/MafftAddToAlignmentTask.h \
            src/mafft/MAFFTSupport.h \
            src/mafft/MAFFTSupportRunDialog.h \
            src/mafft/MAFFTSupportTask.h \
            src/mafft/MAFFTWorker.h \
+           src/mafft/MafftAddToAlignmentTask.h \
            src/mrbayes/MrBayesDialogWidget.h \
            src/mrbayes/MrBayesSupport.h \
            src/mrbayes/MrBayesTask.h \
@@ -147,7 +151,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/phyml/PhyMLTask.h \
            src/phyml/PhyMLTests.h \
            src/python/PythonSupport.h \
-           src/R/RSupport.h \
            src/samtools/BcfToolsSupport.h \
            src/samtools/SamToolsExtToolSupport.h \
            src/samtools/TabixSupport.h \
@@ -172,13 +175,13 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
+           src/stringtie/StringTieSupport.h \
+           src/stringtie/StringTieTask.h \
+           src/stringtie/StringTieWorker.h \
            src/stringtie/StringtieGeneAbundanceReportPrompter.h \
            src/stringtie/StringtieGeneAbundanceReportTask.h \
            src/stringtie/StringtieGeneAbundanceReportWorker.h \
            src/stringtie/StringtieGeneAbundanceReportWorkerFactory.h \
-           src/stringtie/StringTieSupport.h \
-           src/stringtie/StringTieTask.h \
-           src/stringtie/StringTieWorker.h \
            src/tcoffee/TCoffeeSupport.h \
            src/tcoffee/TCoffeeSupportRunDialog.h \
            src/tcoffee/TCoffeeSupportTask.h \
@@ -267,27 +270,28 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolSupportPlugin.cpp \
            src/ExternalToolSupportSettings.cpp \
            src/ExternalToolSupportSettingsController.cpp \
+           src/R/RSupport.cpp \
            src/RnaSeqCommon.cpp \
            src/RunnerTool.cpp \
            src/TaskLocalStorage.cpp \
-           src/bedtools/BedtoolsIntersectTask.cpp \
            src/bedtools/BedToolsWorkersLibrary.cpp \
+           src/bedtools/BedtoolsIntersectTask.cpp \
            src/bedtools/BedtoolsSupport.cpp \
            src/bedtools/BedtoolsSupportTask.cpp \
-           src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
+           src/bigWigTools/BigWigSupport.cpp \
            src/blast_plus/AlignToReferenceBlastDialog.cpp \
            src/blast_plus/AlignToReferenceBlastWorker.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
            src/blast_plus/BlastDBCmdSupport.cpp \
            src/blast_plus/BlastDBCmdSupportTask.cpp \
            src/blast_plus/BlastNPlusSupportTask.cpp \
+           src/blast_plus/BlastPPlusSupportTask.cpp \
            src/blast_plus/BlastPlusSupport.cpp \
            src/blast_plus/BlastPlusSupportCommonTask.cpp \
            src/blast_plus/BlastPlusSupportRunDialog.cpp \
            src/blast_plus/BlastPlusWorker.cpp \
-           src/blast_plus/BlastPPlusSupportTask.cpp \
            src/blast_plus/BlastXPlusSupportTask.cpp \
            src/blast_plus/FormatDBSupport.cpp \
            src/blast_plus/FormatDBSupportRunDialog.cpp \
@@ -301,22 +305,22 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp \
            src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
            src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
-           src/bowtie/bowtie_tests/bowtieTests.cpp \
            src/bowtie/BowtieSettingsWidget.cpp \
            src/bowtie/BowtieSupport.cpp \
            src/bowtie/BowtieTask.cpp \
            src/bowtie/BowtieWorker.cpp \
-           src/bowtie2/bowtie2_tests/Bowtie2Tests.cpp \
+           src/bowtie/bowtie_tests/bowtieTests.cpp \
+           src/bowtie2/Bowtie2SettingsWidget.cpp \
            src/bowtie2/Bowtie2Support.cpp \
            src/bowtie2/Bowtie2Task.cpp \
-           src/bowtie2/Bowtie2SettingsWidget.cpp \
            src/bowtie2/Bowtie2Worker.cpp \
-           src/bwa/bwa_tests/bwaTests.cpp \
+           src/bowtie2/bowtie2_tests/Bowtie2Tests.cpp \
+           src/bwa/BwaMemWorker.cpp \
            src/bwa/BwaSettingsWidget.cpp \
            src/bwa/BwaSupport.cpp \
            src/bwa/BwaTask.cpp \
-           src/bwa/BwaMemWorker.cpp \
            src/bwa/BwaWorker.cpp \
+           src/bwa/bwa_tests/bwaTests.cpp \
            src/cap3/CAP3Support.cpp \
            src/cap3/CAP3SupportDialog.cpp \
            src/cap3/CAP3SupportTask.cpp \
@@ -380,16 +384,19 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/hmmer/PhmmerSearchSettings.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
+           src/iqtree/IQTreeTask.cpp \
+           src/iqtree/IQTreeSupport.cpp \
+           src/iqtree/IQTreeWidget.cpp \
            src/java/JavaSupport.cpp \
            src/macs/MACSSettings.cpp \
            src/macs/MACSSupport.cpp \
            src/macs/MACSTask.cpp \
            src/macs/MACSWorker.cpp \
-           src/mafft/MafftAddToAlignmentTask.cpp \
            src/mafft/MAFFTSupport.cpp \
            src/mafft/MAFFTSupportRunDialog.cpp \
            src/mafft/MAFFTSupportTask.cpp \
            src/mafft/MAFFTWorker.cpp \
+           src/mafft/MafftAddToAlignmentTask.cpp \
            src/mrbayes/MrBayesDialogWidget.cpp \
            src/mrbayes/MrBayesSupport.cpp \
            src/mrbayes/MrBayesTask.cpp \
@@ -406,11 +413,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/phyml/PhyMLTask.cpp \
            src/phyml/PhyMLTests.cpp \
            src/python/PythonSupport.cpp \
-           src/R/RSupport.cpp \
            src/samtools/BcfToolsSupport.cpp \
            src/samtools/SamToolsExtToolSupport.cpp \
-           src/samtools/TabixSupportTask.cpp \
            src/samtools/TabixSupport.cpp \
+           src/samtools/TabixSupportTask.cpp \
            src/seqpos/SeqPosSettings.cpp \
            src/seqpos/SeqPosSupport.cpp \
            src/seqpos/SeqPosTask.cpp \
@@ -431,13 +437,13 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \
+           src/stringtie/StringTieSupport.cpp \
+           src/stringtie/StringTieTask.cpp \
+           src/stringtie/StringTieWorker.cpp \
            src/stringtie/StringtieGeneAbundanceReportPrompter.cpp \
            src/stringtie/StringtieGeneAbundanceReportTask.cpp \
            src/stringtie/StringtieGeneAbundanceReportWorker.cpp \
            src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp \
-           src/stringtie/StringTieSupport.cpp \
-           src/stringtie/StringTieTask.cpp \
-           src/stringtie/StringTieWorker.cpp \
            src/tcoffee/TCoffeeSupport.cpp \
            src/tcoffee/TCoffeeSupportRunDialog.cpp \
            src/tcoffee/TCoffeeSupportTask.cpp \
@@ -470,8 +476,8 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/trimmomatic/util/NoSettingsWidget.cpp \
            src/trimmomatic/util/QualitySettingsWidget.cpp \
            src/utils/AlignMsaAction.cpp \
-           src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \
+           src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BlastRunCommonDialog.cpp \
            src/utils/BlastTaskSettings.cpp \
            src/utils/CistromeDelegate.cpp \
