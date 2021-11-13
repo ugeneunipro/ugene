@@ -48,6 +48,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
+
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"

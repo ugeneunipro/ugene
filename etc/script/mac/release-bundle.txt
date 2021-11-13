@@ -183,7 +183,6 @@ Unipro UGENE.app/Contents/MacOS/data/cmdline/align-clustalo.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/align-clustalw.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/align-kalign.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/align-mafft.uwl
-Unipro UGENE.app/Contents/MacOS/data/cmdline/align-tcoffee.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/align-to-reference.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/align.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/convert-msa.uwl
