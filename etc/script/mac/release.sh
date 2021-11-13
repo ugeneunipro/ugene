@@ -56,8 +56,6 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 # These tools can't be notarized today:
 # diamond:  "The binary uses an SDK older than the 10.9 SDK."
 rm -rf "${APP_EXE_DIR}/tools/diamond"
-# java8: "The executable does not have the hardened runtime enabled."
-rm -rf "${APP_EXE_DIR}/tools/java8"
 # kraken:  "The binary uses an SDK older than the 10.9 SDK."
 rm -rf "${APP_EXE_DIR}/tools/kraken"
 # python2.7: "The signature does not include a secure timestamp."
@@ -70,6 +68,11 @@ rm -rf "${APP_EXE_DIR}/tools/tcoffee"
 rm -rf "${APP_EXE_DIR}/tools/tophat2"
 # wevote: "The binary uses an SDK older than the 10.9 SDK."
 rm -rf "${APP_EXE_DIR}/tools/wevote"
+
+# Deprecated/removed tools:
+rm -rf "${APP_EXE_DIR}/tools/clark"
+rm -rf "${APP_EXE_DIR}/tools/metaphlan2"
+rm -rf "${APP_EXE_DIR}/tools/ngs_reads_classification"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
@@ -125,6 +128,10 @@ echo "------------------ codesign:"
 codesign -dv --verbose=4 "${APP_DIR}"
 echo "------------------- pkgutil:"
 pkgutil --check-signature "${APP_DIR}"
+if pkgutil --check-signature "${APP_DIR}" | grep -q 'package is invalid'; then
+  echo "Sign failed"
+  exit 1
+fi
 echo " ##teamcity[blockClosed name='Check sign']"
 
 echo "##teamcity[blockOpened name='Pack']"
