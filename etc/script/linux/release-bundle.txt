@@ -1167,6 +1167,7 @@ data/workflow_samples/NGS/extract_transcript_seq.uwl
 data/workflow_samples/NGS/fastqc.uwl
 data/workflow_samples/NGS/from_tools_menu_only
 data/workflow_samples/NGS/from_tools_menu_only/ngs_assembly.uwl
+data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_pe_nanopore.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_pe.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_se.uwl
