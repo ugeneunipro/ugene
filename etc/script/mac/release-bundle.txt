@@ -1284,6 +1284,7 @@ Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/extract_transcript_seq
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/fastqc.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/from_tools_menu_only
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/from_tools_menu_only/ngs_assembly.uwl
+Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/ngs_assembly_illumina_pe.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/ngs_assembly_illumina_pe_nanopore.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/ngs_assembly_illumina_se.uwl
