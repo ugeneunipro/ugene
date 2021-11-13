@@ -123,7 +123,6 @@ PLUGIN_LIST="annotator \
              biostruct3d_view \
              chroma_view \
              circular_view \
-             clark_support \
              dbi_bam \
              dna_export \
              dna_flexibility \

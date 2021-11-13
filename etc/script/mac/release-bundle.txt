@@ -1379,8 +1379,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/chroma_view.license
 Unipro UGENE.app/Contents/MacOS/plugins/chroma_view.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/circular_view.license
 Unipro UGENE.app/Contents/MacOS/plugins/circular_view.plugin
-Unipro UGENE.app/Contents/MacOS/plugins/clark_support.license
-Unipro UGENE.app/Contents/MacOS/plugins/clark_support.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/dbi_bam.license
 Unipro UGENE.app/Contents/MacOS/plugins/dbi_bam.plugin
 Unipro UGENE.app/Contents/MacOS/plugins/dna_export.license
@@ -1410,7 +1408,6 @@ Unipro UGENE.app/Contents/MacOS/plugins/libball.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libbiostruct3d_view.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libchroma_view.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libcircular_view.dylib
-Unipro UGENE.app/Contents/MacOS/plugins/libclark_support.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libdbi_bam.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libdna_export.dylib
 Unipro UGENE.app/Contents/MacOS/plugins/libdna_flexibility.dylib
