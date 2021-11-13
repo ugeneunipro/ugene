@@ -34,6 +34,7 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 
 # Deprecated plugins.
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*clark*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*diamond*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*kraken*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*metaphlan2*
@@ -46,6 +47,7 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
 }
 
 # Deprecated tools.
+rm -rf "${APP_BUNDLE_DIR}/tools/clark"
 rm -rf "${APP_BUNDLE_DIR}/tools/diamond"
 rm -rf "${APP_BUNDLE_DIR}/tools/kraken"
 rm -rf "${APP_BUNDLE_DIR}/tools/metaphlan2"

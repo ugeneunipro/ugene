@@ -1294,8 +1294,6 @@ plugins/chroma_view.license
 plugins/chroma_view.plugin
 plugins/circular_view.license
 plugins/circular_view.plugin
-plugins/clark_support.license
-plugins/clark_support.plugin
 plugins/dbi_bam.license
 plugins/dbi_bam.plugin
 plugins/dna_export.license
@@ -1325,7 +1323,6 @@ plugins/libball.so
 plugins/libbiostruct3d_view.so
 plugins/libchroma_view.so
 plugins/libcircular_view.so
-plugins/libclark_support.so
 plugins/libdbi_bam.so
 plugins/libdna_export.so
 plugins/libdna_flexibility.so
@@ -1400,7 +1397,6 @@ tools/bowtie2
 tools/bwa
 tools/cap3
 tools/cistrome
-tools/clark
 tools/clustalo
 tools/clustalw
 tools/cufflinks

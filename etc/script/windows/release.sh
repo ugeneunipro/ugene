@@ -35,6 +35,7 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 
 # Deprecated plugins.
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*clark*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*diamond*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*kraken*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*metaphlan2*
