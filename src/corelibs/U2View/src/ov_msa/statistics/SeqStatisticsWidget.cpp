@@ -68,7 +68,8 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
 }
 
 void SeqStatisticsWidget::copySettings() {
-    const MsaEditorAlignmentDependentWidget* similarityWidget = msa->getUI()->getSimilarityWidget();
+    MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(msa->getUI()->getUI());
+    const MsaEditorAlignmentDependentWidget *similarityWidget = msaEditorUi->getSimilarityWidget();
     statisticsIsShown = false;
     if (nullptr != similarityWidget) {
         const SimilarityStatisticsSettings* s = static_cast<const SimilarityStatisticsSettings*>(similarityWidget->getSettings());
@@ -84,7 +85,7 @@ void SeqStatisticsWidget::copySettings() {
         settings->autoUpdate = true;
         settings->ma = msa->getMaObject();
         settings->usePercents = true;
-        settings->ui = msa->getUI();
+        settings->ui = msaEditorUi;
     }
     msaUI = settings->ui;
 }

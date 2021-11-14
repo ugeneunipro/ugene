@@ -52,7 +52,7 @@ MSAEditorMultilineOverviewArea::MSAEditorMultilineOverviewArea(MaEditorMultiline
     addOverview(graphOverview);
 
     MaEditorWgt *child = nullptr;
-    for (int i = 0; (child = ui->getEditor()->getUI(i)) != nullptr; i++) {
+    for (int i = 0; (child = ui->getUI(i)) != nullptr; i++) {
         connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()), simpleOverview, SLOT(sl_highlightingChanged()));
         connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()), graphOverview, SLOT(sl_highlightingChanged()));
     }

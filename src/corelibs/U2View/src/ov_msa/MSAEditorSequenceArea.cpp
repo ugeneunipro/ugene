@@ -197,7 +197,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     Q_UNUSED(v);
 
-    if (editor->getActiveChild() != ui) {
+    if (editor->getUI()->getActiveChild() != ui) {
         return;
     }
     t->addAction(ui->getUndoAction());
@@ -211,7 +211,7 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
 }
 
 void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
-    if (editor->getActiveChild() != ui) {
+    if (editor->getUI()->getActiveChild() != ui) {
         return;
     }
     bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
@@ -923,8 +923,8 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
 
             QColor unused;
             bool highlight = false;
-            MSAEditorSequenceArea* sequenceArea = msaEditor->getUI()->getSequenceArea();
-            MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
+            MaEditorSequenceArea *sequenceArea = msaEditor->getUI()->getUI()->getSequenceArea();
+            MsaHighlightingScheme *scheme = sequenceArea->getCurrentHighlightingScheme();
             scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
             scheme->process(refChar, c, unused, highlight, pos, seq);
 

@@ -39,6 +39,7 @@
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/helpers/MultilineScrollController.h"
 
 namespace U2 {
 
@@ -139,12 +140,16 @@ void MaGraphMultilineOverview::drawVisibleRange(QPainter &p) {
     } else {
         recalculateScale();
 
-        const int screenPositionX = editor->getUI()->getScrollController()->getScreenPosition().x();
-        const qint64 screenWidth = editor->getUI()->getSequenceArea()->width();
+        int screenPositionX[ui->getChildrenCount()];
+        qint64 screenWidth = 0;
+        for (uint i = 0; i < ui->getChildrenCount(); i++) {
+            screenPositionX[i] = ui->getUI(i)->getScrollController()->getScreenPosition().x();
+            screenWidth += ui->getUI(i)->getSequenceArea()->width();
+        }
 
         cachedVisibleRange.setY(0);
         cachedVisibleRange.setHeight(FIXED_HEIGHT);
-        cachedVisibleRange.setX(qRound(screenPositionX / stepX));
+        cachedVisibleRange.setX(qRound(screenPositionX[0] / stepX));
         cachedVisibleRange.setWidth(qRound(screenWidth / stepX));
 
         if (cachedVisibleRange.width() == 0) {
@@ -339,13 +344,21 @@ void MaGraphMultilineOverview::drawOverview(QPainter &p) {
 
 void MaGraphMultilineOverview::moveVisibleRange(QPoint _pos) {
     QRect newVisibleRange(cachedVisibleRange);
-    const QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1) / 2), height() / 2);
+    const QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2,
+                               _pos.x(),
+                               width() - (cachedVisibleRange.width() - 1) / 2),
+                        height() / 2);
 
     newVisibleRange.moveCenter(newPos);
 
     // TODO:ichebyki
-//    const int newScrollBarValue = newVisibleRange.x() * stepX;
-//    ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    // something wrong offsets values
+    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    const int pageX = newVisibleRange.width() * stepX / ui->getChildrenCount();
+    ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+        ui->getUI(i)->getScrollController()->setHScrollbarValue(newScrollBarValue + i * pageX);
+    }
 
     update();
 }

@@ -71,29 +71,42 @@ void MaEditorMultilineWgt::initWidgets() {
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
     GScrollBar *shBar = new GScrollBar(Qt::Horizontal);
-    shBar->setObjectName("horizontal_sequence_scroll");
+    shBar->setObjectName("multiline_horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     QScrollBar *nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
-    nameListHorizontalScrollBar->setObjectName("horizontal_names_scroll");
+    nameListHorizontalScrollBar->setObjectName("multiline_horizontal_names_scroll");
+
     GScrollBar *cvBar = new GScrollBar(Qt::Vertical);
-    cvBar->setObjectName("vertical_sequence_scroll");
+    cvBar->setObjectName("multiline_vertical_sequence_scroll");
 
-    scrollController->init(shBar, cvBar);
-
+    initScrollArea();
     initOverviewArea();
     initStatusBar();
     initChildrenArea();
 
+    QGridLayout *layoutChildren = new QGridLayout;
+    uiChildrenArea->setLayout(layoutChildren);
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
     uiChildrenArea->layout()->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QScrollArea *maContainer = new QScrollArea(this);
-    maContainer->setWidgetResizable(true);
-    maContainer->setWidget(uiChildrenArea);
+    QGridLayout *layoutMultilineArea = new QGridLayout;
+    layoutMultilineArea->setContentsMargins(0, 0, 0, 0);
+    layoutMultilineArea->setSpacing(0);
+    layoutMultilineArea->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    QWidget *multilineArea = new QWidget;
+    multilineArea->setLayout(layoutMultilineArea);
+    layoutMultilineArea->addWidget(scrollArea, 0, 0);
+    layoutMultilineArea->addWidget(cvBar, 0, 1);
+    layoutMultilineArea->addWidget(shBar, 1, 0);
+
+    scrollArea->setWidget(uiChildrenArea);
+
+    // the following must be after initing children area
+    scrollController->init(shBar, cvBar);
 
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
-    mainSplitter->addWidget(maContainer);
+    mainSplitter->addWidget(multilineArea);
     mainSplitter->addWidget(overviewArea);
     mainSplitter->addWidget(statusBar);
     mainSplitter->setStretchFactor(0, 2);
@@ -109,8 +122,39 @@ void MaEditorMultilineWgt::initWidgets() {
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 }
 
-void MaEditorMultilineWgt::addChild(MaEditorWgt *child) {
-    uiChildrenArea->layout()->addWidget(child);
+void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index)
+{
+    if (uiChild == nullptr) {
+        uiChildLength = 8;
+        uiChild = new MaEditorWgt *[uiChildLength];
+        uiChildCount = 0;
+    }
+
+    if (index == -1) {
+        index = uiChildCount;
+    }
+    if (index > 0 && (uint)index > uiChildLength) {
+        MaEditorWgt **tmp = uiChild;
+        uiChild = new MaEditorWgt *[index + 8];
+        for (uint i = 0; i < uiChildLength; i++) {
+            uiChild[i] = tmp[i];
+        }
+    }
+
+    uiChild[index] = child;
+    uiChildCount++;
+
+    QGridLayout *grid = (QGridLayout *)uiChildrenArea->layout();
+    grid->addWidget(child, index, 0);
+    scrollController->sl_updateScrollBars();
+}
+
+MaEditorWgt *MaEditorMultilineWgt::getActiveChild() {
+    return activeChild;
+}
+
+void MaEditorMultilineWgt::setActiveChild(MaEditorWgt *child) {
+    activeChild = child;
 }
 
 void MaEditorMultilineWgt::initActions() {
@@ -118,6 +162,21 @@ void MaEditorMultilineWgt::initActions() {
 
 MaEditor *MaEditorMultilineWgt::getEditor() const {
     return editor;
+}
+
+int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const
+{
+    if (index >= getChildrenCount()) {
+        return 0;
+    }
+    return getUI(index)->getSequenceArea()->width();
+}
+
+void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)
+{
+    for (uint i = 0; i < uiChildCount; i++) {
+        getUI(i)->getSequenceArea()->sl_toggleSequenceRowOrder(isOrderBySequence);
+    }
 }
 
 }  // namespace U2

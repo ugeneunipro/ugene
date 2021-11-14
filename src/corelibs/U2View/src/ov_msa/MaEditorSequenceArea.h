@@ -161,6 +161,11 @@ public slots:
     void sl_delCurrentSelection();
     void sl_changeCopyFormat(const QString& formatId);
 
+    /** Switches between Original and Sequence row orders. */
+    virtual void sl_toggleSequenceRowOrder(bool isOrderBySequence) {
+        Q_UNUSED(isOrderBySequence);
+    };
+
 protected slots:
     void sl_changeColorScheme();
     void sl_insertGaps2SelectedArea();

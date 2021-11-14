@@ -24,6 +24,7 @@
 
 #include <QVBoxLayout>
 #include <QGroupBox>
+#include <QScrollArea>
 #include <QWidget>
 
 #include <U2Core/global.h>
@@ -84,18 +85,54 @@ public:
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
 
-    int getSequenceAreaWidth()
+    virtual MaEditorWgt *getUI(uint index = 0) const
     {
-        // Need to override in subclass
-        return 100;
+        if (index < uiChildCount && index < uiChildLength) {
+            return uiChild[index];
+        }
+        return nullptr;
     }
 
-    void addChild(MaEditorWgt *child);
+    virtual uint getUIIndex(MaEditorWgt *_ui) const
+    {
+        if (_ui == nullptr) {
+            return 0;
+        }
+        for (uint index = 0; index < uiChildCount && index < uiChildLength; index++) {
+            if (_ui == uiChild[index]) {
+                return index;
+            }
+        }
+        return 0;
+    }
+
+    int getSequenceAreaWidth(uint index = 0) const;
+
+    void addChild(MaEditorWgt *child, int index = -1);
+
+    uint getChildrenCount() const {
+        return uiChildCount;
+    }
+
+    bool getMultilineMode() const {
+        return multilineMode;
+    }
+
+    void setMultilineMode(bool newmode) {
+        multilineMode = newmode;
+    }
+
+    MaEditorWgt *getActiveChild();
+    void setActiveChild(MaEditorWgt *child);
 
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
+
+public slots:
+    /** Switches between Original and Sequence row orders. */
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
 
 private slots:
 
@@ -103,15 +140,23 @@ protected:
     virtual void initWidgets();
     virtual void initActions();
 
+    virtual void initScrollArea(QScrollArea *_scrollArea = nullptr) = 0;
     virtual void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusbar = nullptr) = 0;
-    virtual void initChildrenArea() = 0;
+    virtual void initChildrenArea(QGroupBox *_uiChildrenArea = nullptr) = 0;
 
 protected:
     MaEditor *const editor;
+    QScrollArea *scrollArea; // scroll area for multiline widget, it's widget is uiChildrenArea
     QGroupBox *uiChildrenArea;
     MaEditorMultilineOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
+
+    MaEditorWgt **uiChild = nullptr;
+    MaEditorWgt *activeChild = nullptr;
+    uint uiChildLength = 0;
+    uint uiChildCount = 0;
+    bool multilineMode = false;
 
     bool enableCollapsingOfSingleRowGroups;
     MultilineScrollController *scrollController;

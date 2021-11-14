@@ -179,7 +179,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     QWidget* highlightingGroup = new ShowHideSubgroupWidget("HIGHLIGHTING", tr("Highlighting"), createHighlightingGroup(), true);
     mainLayout->addWidget(highlightingGroup);
 
-    seqArea = msa->getUI()->getSequenceArea();
+    seqArea = msa->getUI()->getUI()->getSequenceArea();
 
     savableTab.disableSavingForWidgets(QStringList()
                                        << highlightingThresholdSlider->objectName()
