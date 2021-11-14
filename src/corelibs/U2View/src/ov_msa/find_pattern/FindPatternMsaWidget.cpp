@@ -930,8 +930,8 @@ void FindPatternMsaWidget::sl_nextButtonClicked() {
 
 void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
-    const FindPatternWidgetResult& result = visibleSearchResults[currentResultIndex];
-    MaEditorSequenceArea* seqArea = msaEditor->getUI()->getSequenceArea();
+    const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
+    MaEditorSequenceArea *seqArea = msaEditor->getUI()->getUI()->getSequenceArea();
     QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
     seqArea->setSelectionRect(selection);
     seqArea->centerPos(selection.topLeft());
@@ -1072,7 +1072,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!maObject->isStateLocked(), );
 
     // Switch to the Original row order mode.
-    msaEditor->getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
+    msaEditor->getUI()->sl_toggleSequenceRowOrder(false);
 
     QSet<qint64> resultUidSet;
     for (const FindPatternWidgetResult& result : qAsConst(allSearchResults)) {

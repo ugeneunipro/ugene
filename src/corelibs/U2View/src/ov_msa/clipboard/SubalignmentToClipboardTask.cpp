@@ -166,7 +166,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString fontFamily = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
     int pointSize = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
-    MsaHighlightingScheme* highlightingScheme = maEditor->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
+    MsaHighlightingScheme *highlightingScheme = maEditor->getUI()->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
     SAFE_POINT(highlightingScheme != nullptr, "RTFMSA entry storing: NULL highlightingScheme object", );
 
     QString schemeName = highlightingScheme->metaObject()->className();

@@ -49,6 +49,7 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "ScrollController.h"
+#include "MultilineScrollController.h"
 
 namespace U2 {
 
@@ -282,13 +283,8 @@ void MaEditor::sl_zoomOut() {
 
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
-<<<<<<< HEAD
-    int seqAreaWidth = ui->getSequenceArea()->width();
-    const MaEditorSelection& selection = getSelection();
-=======
-    int seqAreaWidth = getUI()->getSequenceArea()->width();
+    int seqAreaWidth = ui->getUI(0)->getSequenceArea()->width();
     const MaEditorSelection &selection = getSelection();
->>>>>>> The init commit for UGENE-7042
     CHECK(!selection.isEmpty(), )
     QRect selectionRect = selection.getRectList()[0];  // We need width (equal on all rects) + top-left of the first rect.
     float pixelsPerBase = (seqAreaWidth / float(selectionRect.width())) * zoomMult;
@@ -307,8 +303,8 @@ void MaEditor::sl_zoomToSelection() {
         setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
         resizeMode = ResizeMode_OnlyContent;
     }
-    getUI()->getScrollController()->setFirstVisibleBase(selectionRect.x());
-    getUI()->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
+    ui->getScrollController()->setFirstVisibleBase(selectionRect.x());
+    ui->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
 
     updateActions();
 
@@ -365,11 +361,8 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-<<<<<<< HEAD
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget*)AppContext::getMainWindow()->getQMainWindow());
-=======
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(getUI(), (QWidget *)AppContext::getMainWindow()->getQMainWindow());
->>>>>>> The init commit for UGENE-7042
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui->getUI(),
+                                                                                                      (QWidget *)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -382,17 +375,7 @@ void MaEditor::sl_resetColumnWidthCache() {
     cachedColumnWidth = 0;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-void MaEditor::initActions() {
-    connect(showOverviewAction, &QAction::triggered, ui->getOverviewArea(), &QWidget::setVisible);
-    ui->addAction(showOverviewAction);
-    ui->addAction(clearSelectionAction);
-=======
 void MaEditor::initActions(uint index) {
-=======
-void MaEditor::initActions(MaEditorWgt *wgt) {
->>>>>>> Interim commit, overview area is under construction
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
@@ -405,12 +388,7 @@ void MaEditor::initActions(MaEditorWgt *wgt) {
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
-<<<<<<< HEAD
-    getUI(index)->addAction(clearSelectionAction);
->>>>>>> The init commit for UGENE-7042
-=======
     wgt->addAction(clearSelectionAction);
->>>>>>> Interim commit, overview area is under construction
 
     connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
@@ -453,7 +431,7 @@ void MaEditor::addExportMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
     em->addAction(exportHighlightedAction);
-    if (!getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
+    if (!ui->getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
         getReferenceRowId() != U2MsaRow::INVALID_ROW_ID) {
         exportHighlightedAction->setEnabled(true);
     } else {
@@ -510,9 +488,9 @@ void MaEditor::updateFontMetrics() {
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
-    if (getUI()->getSequenceArea()->isPosInRange(firstPos)) {
-        getUI()->getScrollController()->setFirstVisibleBase(firstPos);
-        getUI()->getScrollController()->setFirstVisibleMaRow(firstSeq);
+    if (ui->getUI()->getSequenceArea()->isPosInRange(firstPos)) {
+        ui->getScrollController()->setFirstVisibleBase(firstPos);
+        ui->getScrollController()->setFirstVisibleMaRow(firstSeq);
     }
 }
 
@@ -553,16 +531,11 @@ QList<qint64> MaEditor::getMaRowIds() const {
 }
 
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
-    getUI()->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
+    ui->getUI()->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
-<<<<<<< HEAD
-QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const {
-    QFontMetrics fontMetrics(sequenceFont, ui);
-=======
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
     QFontMetrics fontMetrics(sequenceFont, getUI());
->>>>>>> The init commit for UGENE-7042
     return fontMetrics.boundingRect('W');
 }
 
@@ -575,11 +548,7 @@ void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
 }
 
 void MaEditor::sl_onClearActionTriggered() {
-<<<<<<< HEAD
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
-=======
-    MaEditorSequenceArea *sequenceArea = getUI()->getSequenceArea();
->>>>>>> The init commit for UGENE-7042
+    MaEditorSequenceArea *sequenceArea = ui->getUI()->getSequenceArea();
     if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
         sequenceArea->exitFromEditCharacterMode();
         return;
@@ -611,10 +580,6 @@ MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-<<<<<<< HEAD
-MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
-    return undoRedoFramework;
-=======
 void MaEditor::setMultilineMode(bool multilinemode) {
     multilineMode = multilinemode;
 }
@@ -629,7 +594,6 @@ void MaEditor::setActiveChild(MaEditorWgt *child) {
     } else {
         activeChild = child;
     }
->>>>>>> Interim commit, overview area is under construction
 }
 
 }  // namespace U2
