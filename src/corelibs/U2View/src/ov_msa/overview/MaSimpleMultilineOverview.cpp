@@ -121,7 +121,7 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
     recalculateScale();
 
     // TODO:ichebyki
-    QString highlightingSchemeId = editor->getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
+    QString highlightingSchemeId = editor->getUI()->getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, tr("Incorrect multiple alignment object!"), );
@@ -141,7 +141,7 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
             rect.setBottom(qRound(yRange.endPos() / stepY));
 
             // TODO:ichebyki
-            QColor color = editor->getUI()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = editor->getUI()->getUI()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
@@ -157,9 +157,9 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
             drawColor = MaHighlightingOverviewCalculationTask::isCellHighlighted(
                 ma,
                 // TODO:ichebyki
-                editor->getUI()->getSequenceArea()->getCurrentHighlightingScheme(),
+                editor->getUI()->getUI()->getSequenceArea()->getCurrentHighlightingScheme(),
                 // TODO:ichebyki
-                editor->getUI()->getSequenceArea()->getCurrentColorScheme(),
+                editor->getUI()->getUI()->getSequenceArea()->getCurrentColorScheme(),
                 seq,
                 pos,
                 refPos);
@@ -178,7 +178,8 @@ void MaSimpleMultilineOverview::drawVisibleRange(QPainter &p) {
         setVisibleRangeForEmptyAlignment();
     } else {
         QPoint screenPosition = ui->getScrollController()->getScreenPosition();
-        QSize screenSize = editor->getUI()->getSequenceArea()->size();
+        // TODO:ichebyki
+        QSize screenSize = editor->getUI()->getUI()->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));

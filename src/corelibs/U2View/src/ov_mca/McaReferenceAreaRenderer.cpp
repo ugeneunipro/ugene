@@ -52,8 +52,8 @@ int McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
-int McaReferenceAreaRenderer::posToXCoord(const qint64 position, const QSize& /*canvasSize*/, const U2Region& /*visibleRange*/) const {
-    BaseWidthController* widthController = maEditor->getUI()->getBaseWidthController();
+int McaReferenceAreaRenderer::posToXCoord(const qint64 position, const QSize & /*canvasSize*/, const U2Region & /*visibleRange*/) const {
+    BaseWidthController *widthController = maEditor->getUI()->getUI()->getBaseWidthController();
     int baseCenterX = widthController->getBaseScreenRange(position).center();
     int columnWidth = widthController->getBaseWidth();
     return baseCenterX - columnWidth / 2;
@@ -74,13 +74,13 @@ void McaReferenceAreaRenderer::drawSequence(QPainter& p, const QSize& /*canvasSi
     p.setFont(commonMetrics.sequenceFont);
 
     SAFE_POINT(maEditor->getUI() != nullptr, "MaEditorWgt is NULL", );
-    MaEditorSequenceArea* seqArea = maEditor->getUI()->getSequenceArea();
+    MaEditorSequenceArea *seqArea = maEditor->getUI()->getUI()->getSequenceArea();
     SAFE_POINT(seqArea != nullptr, "MaEditorSequenceArea is NULL", );
     MsaColorScheme* scheme = seqArea->getCurrentColorScheme();
     SAFE_POINT(scheme != nullptr, "MsaColorScheme is NULL", );
 
     for (int position = region.startPos; position < region.endPos(); position++) {
-        const U2Region baseXRange = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position);
+        const U2Region baseXRange = maEditor->getUI()->getUI()->getBaseWidthController()->getBaseScreenRange(position);
 
         const char c = sequenceRegion[(int)(position - region.startPos)];
         QRect charRect(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);

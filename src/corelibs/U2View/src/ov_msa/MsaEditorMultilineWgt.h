@@ -47,12 +47,15 @@ public:
     MaEditorMultilineOverviewArea *getOverview();
     MaEditorStatusBar *getStatusBar();
 
+    MaEditorWgt *getUI(uint index = 0) const override;
+
 private slots:
 
 protected:
-    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr);
-    void initStatusBar(MaEditorStatusBar *_statusBar = nullptr);
-    void initChildrenArea();
+    void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
+    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
+    void initStatusBar(MaEditorStatusBar *_statusBar = nullptr) override;
+    void initChildrenArea(QGroupBox *_uiChildrenArea = nullptr) override;
 
 private:
 

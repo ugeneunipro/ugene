@@ -302,7 +302,8 @@ void TreeOptionsWidget::updateFormatSettings() {
 
 TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     SAFE_POINT(editor != nullptr || treeViewer != nullptr, QString("Invalid parameter in constructor TreeOptionsWidget"), nullptr);
-    return treeViewer != nullptr ? treeViewer : editor->getUI()->getCurrentTree()->getTreeViewerUI();
+    MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI());
+    return treeViewer != nullptr ? treeViewer : msaEditorUi->getCurrentTree()->getTreeViewerUI();
 }
 
 void TreeOptionsWidget::sl_fontTypeChanged() {

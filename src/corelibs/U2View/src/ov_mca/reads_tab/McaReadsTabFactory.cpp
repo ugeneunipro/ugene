@@ -60,7 +60,7 @@ QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMa
     auto ui = ma->getUI();
     SAFE_POINT(ui != nullptr, "UI isn't found", nullptr);
 
-    alternativeMutationsWgt->init(ma->getMaObject(), ui->getSequenceArea(), ui->getStatusBar());
+    alternativeMutationsWgt->init(ma->getMaObject(), ui->getUI()->getSequenceArea(), ui->getStatusBar());
     auto alternativeMutations = new ShowHideSubgroupWidget("ALTERNATIVE_MUTATIONS_MODE", tr("Alternative mutations"), alternativeMutationsWgt, true);
     layout->addWidget(alternativeMutations);
 

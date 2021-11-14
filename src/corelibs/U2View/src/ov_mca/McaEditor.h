@@ -58,7 +58,9 @@ public:
     }
 
     MultipleChromatogramAlignmentObject *getMaObject() const override;
-    McaEditorWgt *getUI(uint index = 0) const override;
+    // TODO:ichebyki
+    // do we need multiline Mca ?
+    McaEditorWgt *getUI(uint index = 0) const;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;

@@ -96,8 +96,6 @@ public:
 
     void buildMenu(QMenu* m, const QString& type) override;
 
-    MsaEditorWgt *getUI(uint index = 0) const override;
-
     // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
