@@ -1048,7 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, endPos - 1));
@@ -2432,7 +2432,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
     MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleViewRowIndex(
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
     GTUtilsMsaEditor::clickSequence(os, endPos - 1);
@@ -2463,7 +2463,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     //    Expected state: four sequences are selected, the msa is scrolled down for two lines.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 4));
 
-    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleViewRowIndex(
+    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getFirstVisibleViewRowIndex(
         false);
     CHECK_SET_ERR(firstVisibleSequence == 2, QString("MSA scrolled incorrectly: expected first fully visible sequence %1, got %2").arg(2).arg(firstVisibleSequence));
 }
@@ -4908,7 +4908,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *nameListWidget = editor->getUI()->getEditorNameList();
+    QWidget *nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
@@ -4942,7 +4942,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
+    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -4963,7 +4963,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
+    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
