@@ -32,7 +32,7 @@ const QString JavaSupport::ET_JAVA_ID = "USUPP_JAVA";
 const QStringList JavaSupport::RUN_PARAMETERS = {"-jar"};
 
 JavaSupport::JavaSupport()
-    : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, "java", "java") {
+    : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, isOsMac() ? "java" : "java8", "java") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
