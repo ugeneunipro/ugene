@@ -1209,6 +1209,7 @@ data/workflow_samples/NGS/extract_transcript_seq.uwl
 data/workflow_samples/NGS/fastqc.uwl
 data/workflow_samples/NGS/from_tools_menu_only
 data/workflow_samples/NGS/from_tools_menu_only/ngs_assembly.uwl
+data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_pe.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_pe_nanopore.uwl
 data/workflow_samples/NGS/ngs_assembly_illumina_se.uwl
@@ -1311,10 +1312,6 @@ plugins/circular_view.dll
 plugins/circular_view.license
 plugins/circular_view.map
 plugins/circular_view.plugin
-plugins/clark_support.dll
-plugins/clark_support.license
-plugins/clark_support.map
-plugins/clark_support.plugin
 plugins/cuda_support.dll
 plugins/cuda_support.license
 plugins/cuda_support.map
