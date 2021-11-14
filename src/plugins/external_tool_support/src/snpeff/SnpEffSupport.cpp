@@ -27,7 +27,6 @@
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/Settings.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/ConvertFileTask.h>
@@ -66,19 +65,9 @@ SnpEffSupport::SnpEffSupport()
 }
 
 QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
-    QStringList result;
     AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
-    CHECK(s != nullptr, result);
-    //java VM can't allocate whole free memory, Xmx size should be lesser than free memory
     int memSize = s->getMaxMemorySizeInMB();
-#if (defined(Q_OS_WIN) || defined(Q_OS_LINUX))
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    JavaSupport *java = qobject_cast<JavaSupport *>(etRegistry->getById(JavaSupport::ET_JAVA_ID));
-    CHECK(java != nullptr, result);
-    if (java->getArchitecture() == JavaSupport::x32) {
-        memSize = memSize > 1212 ? 1212 : memSize;
-    }
-#endif    // windows or linux
+    QStringList result;
     result << "-Xmx" + QString::number(memSize > 150 ? memSize - 150 : memSize) + "M";
     return result;
 }
@@ -103,4 +92,4 @@ void SnpEffSupport::sl_databaseListIsReady() {
     SnpEffSupport::databaseModel->getData(dbListFilePath);
 }
 
-}    // namespace U2
+}  // namespace U2

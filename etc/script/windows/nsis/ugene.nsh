@@ -176,7 +176,7 @@ Section "Add Shortcuts"
     RMDir /r "$SMPROGRAMS\${FullProductName}"
     ClearErrors
     CreateDirectory "$SMPROGRAMS\${FullProductName}"
-    CreateShortCut "$SMPROGRAMS\${FullProductName}\Launch UGENE.lnk" "$INSTDIR\ugeneui.exe" "" "$INSTDIR\ugeneui.exe" 0
+    CreateShortCut "$SMPROGRAMS\${FullProductName}\Unipro UGENE.lnk" "$INSTDIR\ugeneui.exe" "" "$INSTDIR\ugeneui.exe" 0
     # Make sure uninstall shortcut will be last item in Start menu
 #    nsisStartMenu::RegenerateFolder "${FullProductName}"
     CreateShortCut "$SMPROGRAMS\${FullProductName}\Uninstall.lnk" "$INSTDIR\Uninst.exe" "" "$INSTDIR\Uninst.exe" 0
