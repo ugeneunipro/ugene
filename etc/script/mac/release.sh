@@ -145,7 +145,7 @@ echo "##teamcity[blockOpened name='Pack']"
 # DMG bundle variant.
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
 cd ./ugene_app || exit 1
-ln -s Applications /Applications
+ln -s /Applications Applications
 cd .. || exit 1
 hdiutil create ugene-rw.dmg -ov -volname "Unipro UGENE ${VERSION}" -fs HFS+ -srcfolder "ugene_app"
 hdiutil convert ugene-rw.dmg -format UDZO -o "${RELEASE_FILE_NAME}"
