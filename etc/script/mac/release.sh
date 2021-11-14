@@ -136,10 +136,23 @@ fi
 echo " ##teamcity[blockClosed name='Check sign']"
 
 echo "##teamcity[blockOpened name='Pack']"
-cd ${APP_BUNDLE_DIR_NAME} || exit 1
-RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
-ditto -c -k --sequesterRsrc --keepParent "${APP_NAME}" ../"${RELEASE_FILE_NAME}"
-cd "${TEAMCITY_WORK_DIR}" || exit 1
+# ZIP bundle variant.
+#cd ${APP_BUNDLE_DIR_NAME} || exit 1
+#RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
+#ditto -c -k --sequesterRsrc --keepParent "${APP_NAME}" ../"${RELEASE_FILE_NAME}"
+#cd "${TEAMCITY_WORK_DIR}" || exit 1
+
+# DMG bundle variant.
+RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
+cd ./ugene_app || exit 1
+ln -s Applications /Applications
+cd .. || exit 1
+hdiutil create ugene-rw.dmg -ov -volname "Unipro UGENE ${VERSION}" -fs HFS+ -srcfolder "ugene_app"
+hdiutil convert ugene-rw.dmg -format UDZO -o "${RELEASE_FILE_NAME}"
+codesign --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+  "${RELEASE_FILE_NAME}" || exit 1
+
 echo " ##teamcity[blockClosed name='Pack']"
 
 echo "##teamcity[blockOpened name='Notarize']"
