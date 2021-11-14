@@ -18,9 +18,6 @@
     <excluded test="external-tool-support/bedtools/test_0022.xml" reason="need a bug"/>
     <excluded test="external-tool-support/snpeff/test_0001.xml" reason="need a bug"/>
     <excluded test="external-tool-support/tcoffee/align_without_params.xml" reason="Fails on Linux only."/>
-    <excluded test="external-tool-support/tcoffee/negative/test_0001.xml" reason="Tool is deprecated and is removed on Mac."/>
-    <excluded test="external-tool-support/tcoffee/negative/test_0004.xml" reason="Tool is deprecated and is removed on Mac."/>
-    <excluded test="external-tool-support/tcoffee/negative/test_0005.xml" reason="Tool is deprecated and is removed on Mac."/>
     <excluded test="hmm2-build/negative/text_0003.xml" reason="test hangs up"/>
     <excluded test="hmm2-build/negative/text_0006.xml" reason="where is bug?"/>
     <excluded test="remote-request/test_0001.xml" reason="too long"/>

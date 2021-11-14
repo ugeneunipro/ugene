@@ -34,6 +34,7 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -131,6 +132,7 @@
 #include "trimmomatic/TrimmomaticSupport.h"
 #include "trimmomatic/TrimmomaticWorkerFactory.h"
 #include "utils/ExternalToolSupportAction.h"
+#include "utils/ExternalToolValidateTask.h"
 #include "vcftools/VcfConsensusSupport.h"
 #include "vcftools/VcfConsensusWorker.h"
 #include "vcfutils/VcfutilsSupport.h"
@@ -194,13 +196,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     MAFFTSupport *mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
-    // T-Coffee.
-    // T-Coffee does not provide official binaries for the modern MacOS.
-    // The old binaries have signing problems.
-    TCoffeeSupport *tCoffeeTool = isOsMac() ? nullptr : new TCoffeeSupport();
-    if (tCoffeeTool != nullptr) {
-        etRegistry->registerEntry(tCoffeeTool);
-    }
+    // T-Coffee
+    TCoffeeSupport *tCoffeeTool = new TCoffeeSupport();
+    etRegistry->registerEntry(tCoffeeTool);
 
     // MrBayes
     etRegistry->registerEntry(new MrBayesSupport());
@@ -236,15 +234,13 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         connect(mAFFTAction, SIGNAL(triggered()), mAFFTTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, mAFFTAction);
 
-        if (tCoffeeTool != nullptr) {
-            tCoffeeTool->getViewContext()->setParent(this);
-            tCoffeeTool->getViewContext()->init();
+        tCoffeeTool->getViewContext()->setParent(this);
+        tCoffeeTool->getViewContext()->init();
 
-            ExternalToolSupportAction *tCoffeeAction = new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
-            tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
-            connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
-            ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
-        }
+        ExternalToolSupportAction *tCoffeeAction = new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
+        tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
+        connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
+        ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
     // MakeBLASTDB from BLAST+
@@ -491,9 +487,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
     LocalWorkflow::BlastPlusWorkerFactory::init();
 
-    if (!isOsMac()) {
-        LocalWorkflow::TCoffeeWorkerFactory::init();
-    }
+    LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();
     LocalWorkflow::CuffmergeWorkerFactory::init();

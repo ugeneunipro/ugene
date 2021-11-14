@@ -6,6 +6,7 @@
     + align_with_kalign_sas
     + align_with_mafft_sas
     + align_with_muscle_sas
+    + align_with_tcoffee_sas
     + annotate_with_uql_sas
     + basic_align_sas
     + build_weight_matrix_sas

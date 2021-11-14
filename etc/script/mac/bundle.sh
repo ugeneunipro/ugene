@@ -38,8 +38,6 @@ cp -R "${SOURCE_DIR}/etc/script/mac/dmg/qt_menu.nib" "${TARGET_APP_DIR}/Contents
 
 echo Copying data dir
 cp -R "${SOURCE_DIR}/data" "${TARGET_EXE_DIR}/"
-# We do not have t-coffee plugin on MacOS
-rm "${TARGET_EXE_DIR}/data/cmdline/align-tcoffee.uwl"
 
 function add-binary() {
   BINARY=$1
