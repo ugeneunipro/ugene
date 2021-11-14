@@ -129,26 +129,9 @@ public:
     }
 
     QList<qint64> getMaRowIds() const;
-    
-    virtual MaEditorWgt *getUI(uint index = 0) const
-    {
-        if (index < uiChildCount && index < uiChildLength) {
-            return uiChild[index];
-        }
-        return nullptr;
-    }
-    
-    virtual uint getUIIndex(MaEditorWgt *_ui) const
-    {
-        if (_ui == nullptr) {
-            return 0;
-        }
-        for (uint index = 0; index < uiChildCount && index < uiChildLength; index++) {
-            if (_ui == uiChild[index]) {
-                return index;
-            }
-        }
-        return 0;
+
+    virtual MaEditorMultilineWgt *getUI() const {
+        return ui;
     }
 
     virtual OptionsPanel* getOptionsPanel() {
@@ -302,17 +285,8 @@ protected:
 
     virtual void updateActions();
 
-<<<<<<< HEAD
-    MultipleAlignmentObject* maObject;
-    MaEditorWgt* ui;
-=======
     MultipleAlignmentObject *maObject;
     MaEditorMultilineWgt *ui = nullptr;
-    MaEditorWgt **uiChild = nullptr;
-    MaEditorWgt *activeChild = nullptr;
-    uint uiChildLength = 0;
-    uint uiChildCount = 0;
-    bool multilineMode = false;
 
     QFont font;
     ResizeMode resizeMode;

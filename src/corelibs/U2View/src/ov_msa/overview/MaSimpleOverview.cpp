@@ -172,8 +172,9 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        QPoint screenPosition = editor->getUI()->getScrollController()->getScreenPosition();
-        QSize screenSize = editor->getUI()->getSequenceArea()->size();
+        // TODO:ichebyki
+        QPoint screenPosition = editor->getUI()->getUI()->getScrollController()->getScreenPosition();
+        QSize screenSize = editor->getUI()->getUI()->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));

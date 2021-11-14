@@ -48,10 +48,21 @@ MaEditorStatusBar *MsaEditorMultilineWgt::getStatusBar() {
     return statusBar;
 }
 
+void MsaEditorMultilineWgt::initScrollArea(QScrollArea *_scrollArea)
+{
+    if (_scrollArea == nullptr) {
+        scrollArea = new QScrollArea(this);
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    } else {
+        scrollArea = _scrollArea;
+    }
+    scrollArea->setWidgetResizable(true);
+}
+
 void MsaEditorMultilineWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
     if (_overviewArea == nullptr) {
         overviewArea = new MSAEditorMultilineOverviewArea(this);
-        //overviewArea = nullptr;
     } else {
         overviewArea = _overviewArea;
     }
@@ -60,17 +71,22 @@ void MsaEditorMultilineWgt::initOverviewArea(MaEditorMultilineOverviewArea *_ove
 void MsaEditorMultilineWgt::initStatusBar(MaEditorStatusBar *_statusBar) {
     if (_statusBar == nullptr) {
         statusBar = new MsaEditorStatusBar(getEditor());
-        //statusBar = nullptr;
     } else {
         statusBar = _statusBar;
     }
 }
 
-void MsaEditorMultilineWgt::initChildrenArea() {
-    uiChildrenArea = new QGroupBox(tr("MSA vertical child layout"));
-    uiChildrenArea->setObjectName("msa_editor_children_vertical_layout");
-    QVBoxLayout *layout = new QVBoxLayout;
-    uiChildrenArea->setLayout(layout);
+void MsaEditorMultilineWgt::initChildrenArea(QGroupBox *_uiChildrenArea) {
+    if (_uiChildrenArea == nullptr) {
+        uiChildrenArea = new QGroupBox(tr("MSA multiline area"));
+        uiChildrenArea->setObjectName("msa_editor_multiline_children_area");
+    } else {
+        uiChildrenArea = _uiChildrenArea;
+    }
+}
+
+MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
+    return uiChild == nullptr ? nullptr : qobject_cast<MsaEditorWgt *>(uiChild[index]);
 }
 
 }  // namespace U2

@@ -72,7 +72,7 @@ MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
 }
 
 McaEditorWgt *McaEditor::getUI(uint index) const {
-    return uiChild == nullptr ? nullptr : qobject_cast<McaEditorWgt *>(uiChild[index]);
+    return ui == nullptr ? nullptr : qobject_cast<McaEditorWgt *>(ui->getUI(index));
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {

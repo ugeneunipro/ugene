@@ -33,6 +33,7 @@
 #include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorMultilineWgt.h"
+#include "ov_msa/view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -43,8 +44,10 @@ MultilineScrollController::MultilineScrollController(MaEditor *maEditor, MaEdito
       savedFirstVisibleMaRow(0),
       savedFirstVisibleMaRowOffset(0) {
     connect(this, SIGNAL(si_visibleAreaChanged()), maEditorUi, SIGNAL(si_completeRedraw()));
-    connect(maEditor->getCollapseModel(), SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
-    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
+    // TODO:ichebyki
+    // cleare dead code
+    //connect(maEditor->getCollapseModel(), SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
+    //connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
 void MultilineScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
@@ -373,9 +376,45 @@ void MultilineScrollController::zoomVerticalScrollBarPrivate() {
 }
 
 void MultilineScrollController::updateHorizontalScrollBarPrivate() {
+    SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
+    SignalBlocker signalBlocker(hScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
+    // don't show horz scrollbar in multiline mode
+    CHECK_EXT(ui->getMultilineMode(), hScrollBar->setVisible(false), );
+
+    const int alignmentLength = maEditor->getAlignmentLen();
+    const int columnWidth = maEditor->getColumnWidth();
+    const int sequenceAreaWidth = ui->getSequenceAreaWidth();
+
+    hScrollBar->setMinimum(0);
+    hScrollBar->setMaximum(qMax(0, alignmentLength * columnWidth - sequenceAreaWidth));
+    hScrollBar->setSingleStep(columnWidth);
+    hScrollBar->setPageStep(sequenceAreaWidth);
+
+    const int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
+    SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
+    hScrollBar->setVisible(numVisibleBases < alignmentLength);
 }
 
 void MultilineScrollController::updateVerticalScrollBarPrivate() {
+    SAFE_POINT(nullptr != vScrollBar, "Multiline Vertical scrollbar is not initialized", );
+    SignalBlocker signalBlocker(vScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const int alignmentLength = maEditor->getAlignmentLen();
+    const int columnWidth = maEditor->getColumnWidth();
+    const int sequenceAreaWidth = ui->getSequenceAreaWidth();
+    const int lineCount = sequenceAreaWidth == 0
+                              ? 0
+                              : alignmentLength * columnWidth / sequenceAreaWidth;
+
+    vScrollBar->setVisible((uint) lineCount > ui->getChildrenCount());
+    vScrollBar->setMinimum(0);
+    vScrollBar->setMaximum(qMax(0, lineCount));
+    vScrollBar->setSingleStep(1);
+    vScrollBar->setPageStep(ui->getChildrenCount());
 }
 
 QPoint MultilineScrollController::getViewPosByScreenPoint(const QPoint &point, bool reportOverflow) const {

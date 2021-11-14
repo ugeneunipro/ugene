@@ -41,7 +41,7 @@ void MsaEditorNameList::sl_buildMenu(GObjectView*, QMenu* menu, const QString& m
 }
 
 void MsaEditorNameList::buildMenu(QMenu *menu) {
-    if (editor->getActiveChild() != ui) {
+    if (editor->getUI()->getActiveChild() != ui) {
         return;
     }
     QMenu *editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);

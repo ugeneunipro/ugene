@@ -3212,7 +3212,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != nullptr, "MsaEditor not found");
 
-    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    MaEditorNameList *nameList = editor->getUI()->getUI(0)->getEditorNameList();
     CHECK_SET_ERR(nameList != nullptr, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 
