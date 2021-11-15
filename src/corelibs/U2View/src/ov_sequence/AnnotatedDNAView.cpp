@@ -457,6 +457,7 @@ bool AnnotatedDNAView::onObjectRemoved(GObject *o) {
     } else if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(o);
         ADVSequenceObjectContext *seqCtx = getSequenceContext(seqObj);
+        seqObj->disconnect(this);
         if (seqCtx != nullptr) {
             foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
                 removeSequenceWidget(w);
@@ -788,11 +789,11 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
 }
 
 void AnnotatedDNAView::sl_sequenceCircularStateChanged() {
-    U2SequenceObject *o = qobject_cast<U2SequenceObject *>(sender());
-    CHECK(o != nullptr, );
+    auto *o = qobject_cast<U2SequenceObject *>(sender());
+    SAFE_POINT(o != nullptr, "casting to 'U2SequenceObject' failed", );
     for (ADVSequenceObjectContext *ctx : getSequenceContexts()) {
         if (ctx->getSequenceObject() == o) {
-            QAction *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
+            auto *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
             if (toggleAAAction != nullptr && toggleAAAction->isChecked()) {
                 AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ctx, ANNOTATION_GROUP_ENZYME);
             }

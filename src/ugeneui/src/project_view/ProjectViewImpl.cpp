@@ -1176,7 +1176,7 @@ void ProjectViewImpl::sl_onToggleCircular() {
         const bool objectIsModifiable = (!obj->isStateLocked() && !projectTreeController->isObjectInRecycleBin(obj));
         if (objectIsModifiable && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
             U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(obj);
-            CHECK(casted != nullptr);
+            SAFE_POINT(obj != nullptr, "casting to 'U2SequenceObject' failed", );
             casted->setCircular(toggleCircularAction->isChecked());
             projectTreeController->refreshObject(casted);
         }
