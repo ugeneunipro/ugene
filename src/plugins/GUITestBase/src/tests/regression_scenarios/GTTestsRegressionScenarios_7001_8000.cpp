@@ -1272,7 +1272,7 @@ GUI_TEST_CLASS_DEFINITION(test_7472) {
             GTLineEdit::setText(os, saveLineEdit, dirPath + "/tree.nwk");
 
             // Check that error message is shown.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "File location is not writable"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Error opening file for writing"));
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);

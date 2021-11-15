@@ -146,9 +146,7 @@ QString SaveDocumentController::getValidatedSaveFilePath(U2OpStatus &os) const {
     QString fileName = getSaveFileName();
     CHECK_EXT(!fileName.isEmpty(), os.setError(tr("Output file name is empty")), "");
 
-    CHECK_EXT(FileAndDirectoryUtils::canWriteToPath(fileName),
-              os.setError(tr("File location is not writable: %1").arg(fileName)),
-              "");
+    CHECK_EXT(FileAndDirectoryUtils::canWriteToPath(fileName), os.setError(L10N::errorOpeningFileWrite(fileName)), "");
 
     return fileName;
 }
