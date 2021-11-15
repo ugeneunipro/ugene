@@ -51,7 +51,6 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"

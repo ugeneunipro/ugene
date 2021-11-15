@@ -50,7 +50,7 @@ private slots:
     void sl_onRestoreDefault();
 
 private:
-    bool checkFileName();
+    bool checkOutputFilePath();
     bool checkSettings();
     bool checkMemory();
     void initSaveController(const MultipleSequenceAlignmentObject *msaObject);

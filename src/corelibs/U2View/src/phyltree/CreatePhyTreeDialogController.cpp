@@ -31,6 +31,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
@@ -41,6 +42,7 @@
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -91,7 +93,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
 void CreatePhyTreeDialogController::accept() {
     settings.algorithm = ui->algorithmBox->currentText();
 
-    CHECK(checkFileName(), );
+    CHECK(checkOutputFilePath(), );
     SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
     settingsWidget->fillSettings(settings);
     CHECK(checkSettings(), );
@@ -122,7 +124,7 @@ void CreatePhyTreeDialogController::sl_onRestoreDefault() {
     settingsWidget->restoreDefault();
 }
 
-bool CreatePhyTreeDialogController::checkFileName() {
+bool CreatePhyTreeDialogController::checkOutputFilePath() {
     U2OpStatusImpl os;
     QString outputFilePath = saveController->getValidatedSaveFilePath(os);
     if (os.hasError()) {
@@ -164,16 +166,19 @@ bool CreatePhyTreeDialogController::checkMemory() {
 
 void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(msaObject->getDocument()->getURLString(), msaObject->getGObjectName(), ".nwk", "");
+    GUrl msaDocumentUrl = msaObject->getDocument()->getURL();
+    QString saveDirPath = QFileInfo(msaDocumentUrl.getURLString()).absolutePath();
+    if (!FileAndDirectoryUtils::canWriteToPath(saveDirPath)) {
+        saveDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath();
+    }
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(saveDirPath + "/" + msaDocumentUrl.fileName(), msaObject->getGObjectName(), ".nwk", "");
     config.defaultFormatId = BaseDocumentFormats::NEWICK;
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Choose file name");
 
-    const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::NEWICK;
-
-    saveController = new SaveDocumentController(config, formats, this);
+    saveController = new SaveDocumentController(config, {BaseDocumentFormats::NEWICK}, this);
 }
 
 }  // namespace U2
