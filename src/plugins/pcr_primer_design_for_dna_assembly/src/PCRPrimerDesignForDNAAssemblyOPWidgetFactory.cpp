@@ -39,7 +39,7 @@ PCRPrimerDesignForDNAAssemblyOPWidgetFactory::PCRPrimerDesignForDNAAssemblyOPWid
 }
 
 QWidget* PCRPrimerDesignForDNAAssemblyOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
     auto opWidget = new PCRPrimerDesignForDNAAssemblyOPWidget(annotatedDnaView);

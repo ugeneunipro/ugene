@@ -41,7 +41,7 @@ public:
     OptionsScrollArea(QWidget* parent = nullptr);
 
     /** Ensures that the scroll area would have an appropriate width */
-    virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const override;
 
     /** Set the width returned by sizeHint. This width is used if the optionsWidget current width is insufficient. */
     void setSizeHintWidthFromChild(int w);

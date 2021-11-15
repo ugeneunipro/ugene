@@ -81,14 +81,6 @@ struct PCRPrimerDesignTaskReportUtils::UserPrimersReports {
 };
 
 class PCRPrimerDesignTaskReportUtils::UserPrimersTable {
-    const QString name;  // Name of table.
-    const QStringList headers;  // Table column headers.
-    QList<bool> forwardRow,  // Forward user primer row cell values.
-        reverseRow;  // Reverse user primer row cell values.
-
-    // Converts bool to string, wraps it in <td> tag, concatenates and returns cells of row.
-    QString getRow(const QList<bool> &row) const;
-
 public:
     // Parameters must not be empty.
     UserPrimersTable(const QString &name, const QStringList &headers);
@@ -99,6 +91,15 @@ public:
     void addReverseRow(const QList<bool> &row);
     // Builds table and returns non-empty html string.
     QString getTable() const;
+
+private:
+    const QString name;  // Name of table.
+    const QStringList headers;  // Table column headers.
+    QList<bool> forwardRow,  // Forward user primer row cell values.
+        reverseRow;  // Reverse user primer row cell values.
+
+    // Converts bool to string, wraps it in <td> tag, concatenates and returns cells of row.
+    QString getRow(const QList<bool> &row) const;
 };
 
 }  // namespace U2

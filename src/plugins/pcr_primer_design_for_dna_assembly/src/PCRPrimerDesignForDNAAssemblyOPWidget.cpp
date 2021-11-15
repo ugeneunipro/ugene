@@ -428,7 +428,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateSequenceList(const QString&
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_annotationCreationTaskFinished() {
-    CreateAnnotationsTask *t = qobject_cast<CreateAnnotationsTask *>(sender());
+    auto t = qobject_cast<CreateAnnotationsTask *>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
@@ -459,9 +459,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     U2OpStatusImpl os;
     const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
-    AnnotationTableObject *resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
+    auto resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
     QSet<QString> excludeList;
-    for (Document* d : AppContext::getProject()->getDocuments()) {
+    for (Document *d : qAsConst(AppContext::getProject()->getDocuments())) {
         excludeList.insert(d->getURLString());
     }
     QString newDocUrl = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/PCRPrimers.gb", "_", excludeList);
@@ -475,7 +475,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     d->addObject(resultsTableObject);
     AppContext::getProject()->addDocument(d);
     annDnaView->tryAddObject(resultsTableObject);
-    Task *createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, annotations, "Primers");
+    auto createAnnotationsTask = new CreateAnnotationsTask(resultsTableObject, annotations, "Primers");
     connect(createAnnotationsTask, SIGNAL(si_stateChanged()), SLOT(sl_annotationCreationTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(createAnnotationsTask);
 }
@@ -483,10 +483,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
 void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     CHECK(sequenceContext != nullptr, )
-    const DNAAlphabet *alphabet = sequenceContext->getAlphabet();
-    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), )
 
-    bool isDna = alphabet->isDNA();
+    bool isDna = sequenceContext->getAlphabet()->isDNA();
     runPcrPrimerDesignWidget->setEnabled(isDna);
     alphabetWarningLabel->setVisible(!isDna);
 }
