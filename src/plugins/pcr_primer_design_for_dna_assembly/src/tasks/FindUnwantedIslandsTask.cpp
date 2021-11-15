@@ -87,7 +87,7 @@ void FindUnwantedIslandsTask::run() {
 
     if (!regionsBetweenIslands.isEmpty()) {
         QString regions;
-        for (const auto& region : regionsBetweenIslands) {
+        for (const auto& region : qAsConst(regionsBetweenIslands)) {
             regions += QString("%1,").arg(regionToString(region));
         }
         regions = regions.left(regions.size() - 1);

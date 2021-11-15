@@ -29,6 +29,7 @@
 namespace U2 {
 
 class UnwantedStructuresInBackboneDialog : public QDialog, private Ui_UnwantedStructuresInBackboneDialog {
+    Q_OBJECT
 public:
     UnwantedStructuresInBackboneDialog(const QByteArray &sequence, const QString &unwantedStructures,
                                        int sequencesCandidatesNumber, QWidget *parent = nullptr);

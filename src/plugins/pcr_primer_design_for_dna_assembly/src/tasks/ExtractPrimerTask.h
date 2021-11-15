@@ -53,7 +53,7 @@ public:
     void prepare();
     QList<Task *> onSubTaskFinished(Task *subTask);
     */
-    void run();
+    void run() override;
     /* Moves the document to the main thread */
     Document *takeResult();
 
@@ -79,7 +79,7 @@ public:
     ExtractPrimerAndOpenDocumentTask(const ExtractPrimerTaskSettings &settings);
 
     // Task
-    void prepare();
+    void prepare() override;
     QList<Task *> onSubTaskFinished(Task *subTask);
     ReportResult report();
 

@@ -37,7 +37,7 @@ GeneratedSequencesTable::GeneratedSequencesTable(QWidget* parent)
 void GeneratedSequencesTable::updateSequenceList(const QString& filter) {
     clearContents();
     QList<QString> filtred;
-    for (const auto& sequence : sequences) {
+    for (const auto &sequence : qAsConst(sequences)) {
         CHECK_CONTINUE(sequence.contains(filter));
 
         filtred << sequence;

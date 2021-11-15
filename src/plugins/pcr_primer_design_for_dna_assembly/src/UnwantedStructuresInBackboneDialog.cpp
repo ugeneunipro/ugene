@@ -36,16 +36,15 @@ UnwantedStructuresInBackboneDialog::UnwantedStructuresInBackboneDialog(const QBy
     QString sequenceDeclension;
     switch (sequencesCandidatesNumber) {
         case 0:
-            sequenceDeclension = QObject::tr("are no sequences");
+            sequenceDeclension = tr("are no sequences");
             break;
         case 1:
-            sequenceDeclension = QObject::tr("is 1 sequence");
+            sequenceDeclension = tr("is 1 sequence");
             break;
         default:
-            sequenceDeclension = QObject::tr("are %1 sequences").arg(sequencesCandidatesNumber);
+            sequenceDeclension = tr("are %1 sequences").arg(sequencesCandidatesNumber);
     }
-    questionLabel->setText(QObject::tr("There %1 in the file left. Use this sequence as the backbone?")
-                               .arg(sequenceDeclension));
+    questionLabel->setText(tr("There %1 in the file left. Use this sequence as the backbone?").arg(sequenceDeclension));
 
     new HelpButton(this, buttonBox, "71958585");
 }

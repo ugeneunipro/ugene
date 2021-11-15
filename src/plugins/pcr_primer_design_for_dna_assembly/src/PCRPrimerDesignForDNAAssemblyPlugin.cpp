@@ -51,10 +51,10 @@ PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
     }
     
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    auto l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = PCRPrimerDesignForDNAAssemblyTaskTest::createTestFactories();
 
     foreach (XMLTestFactory *f, l->qlist) {
