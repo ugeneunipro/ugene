@@ -144,7 +144,7 @@ QList<U2Region> XmlTest::getU2RegionList(const QDomElement &element, const QStri
         }
     }
     
-    for (const QString &regionStr : splittedList) {
+    for (const QString &regionStr : qAsConst(splittedList)) {
         QStringList regionValues = regionStr.split("..");
         if (regionValues.size() != 2) {
             stateInfo.setError(QString("Wrong list size at region values, there are %1, but expected 2.").arg(QString::number(regionValues.size())));

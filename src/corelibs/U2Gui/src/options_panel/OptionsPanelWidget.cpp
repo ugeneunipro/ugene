@@ -181,12 +181,10 @@ GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &group
             QMargins margins = curWidget->contentsMargins();
             marginSum += margins.left() + margins.right();
         }
-        if (optionsScrollArea != nullptr) {
-            if (QScrollBar *vertScroll = optionsScrollArea->verticalScrollBar()) {
-                optionsScrollArea->setSizeHintWidthFromChild(mainWidget->minimumWidth() + marginSum +
-                                                             vertScroll->sizeHint().width());
-                optionsScrollArea->updateGeometry();
-            }
+        if (QScrollBar *vertScroll = optionsScrollArea->verticalScrollBar()) {
+            optionsScrollArea->setSizeHintWidthFromChild(mainWidget->minimumWidth() + marginSum +
+                                                         vertScroll->sizeHint().width());
+            optionsScrollArea->updateGeometry();
         }
     }
 

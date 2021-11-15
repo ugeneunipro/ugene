@@ -77,14 +77,14 @@ void ExtractPrimerTask::run() {
 
     QList<SharedAnnotationData> annotations;
     int resultIndex = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.indexOf(settings.fragmentName);
-    bool isForvard = resultIndex % 2 == 0;
+    bool isForward = resultIndex % 2 == 0;
 
     U2Region fragmentRegion = U2Region(0, productSequence.length());
     if (!settings.backboneSequence.isEmpty()) {
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
         U2Strand backboneStrand = U2Strand(U2Strand::Direct);
-        if (isForvard) {
+        if (isForward) {
             if (settings.direction == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5) {
                 backboneStrand = U2Strand(U2Strand::Complementary);
             }
@@ -102,14 +102,14 @@ void ExtractPrimerTask::run() {
         annotations.append(backboneAnnotationData);
     }
     SharedAnnotationData fragmentAnnotationData(new AnnotationData());
-    fragmentAnnotationData->setStrand(isForvard ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
+    fragmentAnnotationData->setStrand(isForward ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
     fragmentAnnotationData->name = settings.fragmentName;
     fragmentAnnotationData->location->regions.append(fragmentRegion);
     annotations.append(fragmentAnnotationData);
-    U2SequenceObject *sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
+    auto sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
     sequenceObject->setWholeSequence(productSequence);
     doc->addObject(sequenceObject);
-    AnnotationTableObject *annotationsTableObject = new AnnotationTableObject(productSequence.getName() + " annotations", dbiRef);
+    auto annotationsTableObject = new AnnotationTableObject(productSequence.getName() + " annotations", dbiRef);
     doc->addObject(annotationsTableObject);
     annotationsTableObject->addObjectRelation(sequenceObject, ObjectRole_Sequence);
     annotationsTableObject->addAnnotations(annotations, RESULT_ANNOTATION_GROUP_NAME);

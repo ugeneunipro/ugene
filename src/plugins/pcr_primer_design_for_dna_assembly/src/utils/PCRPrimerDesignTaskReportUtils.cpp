@@ -23,11 +23,17 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include "../PCRPrimerDesignForDNAAssemblyPlugin.h"
 #include "../tasks/PCRPrimerDesignForDNAAssemblyTask.h"
+
+// Short alias for translate string method.
+static QString tr(const char s[]) {
+    return U2::PCRPrimerDesignForDNAAssemblyPlugin::tr(s);
+}
 
 // Returns error message in html.
 static QString errMsg() {
-    return QObject::tr("<p>Error, see log.</p>");
+    return tr("<p>Error, see log.</p>");
 }
 
 // Returns primerName as html header. Wraps primerName in <h2> tag. primerName must not be empty.
@@ -42,24 +48,24 @@ static QString primerToHtml(const QString &primer) {
 
 // Functions below return row and column headers.
 static QString forwardUserPrimerStr() {
-    return QObject::tr("Forward user primer");
+    return tr("Forward user primer");
 }
 static QString reverseUserPrimerStr() {
-    return QObject::tr("Reverse user primer");
+    return tr("Reverse user primer");
 }
 static QString sequenceStr() {
-    return QObject::tr("File sequence");
+    return tr("File sequence");
 }
 static QString revComplSeqStr() {
-    return QObject::tr("Reverse complementary file sequence");
+    return tr("Reverse complementary file sequence");
 }
 static QString otherSequencesStr() {
-    return QObject::tr("Other sequences in PCR reaction");
+    return tr("Other sequences in PCR reaction");
 }
 
 // Returns "name1 and name2". name1 and name2 must not be empty.
 static QString concatenateNames(const QString &name1, const QString &name2) {
-    return name1 + QObject::tr(" and ") + name2;
+    return name1 + tr(" and ") + name2;
 }
 
 namespace U2 {
@@ -82,7 +88,7 @@ static QString checkPrimerAndGetInfo(const U2Region region, const QString &prime
     if (!region.isEmpty()) {
         ans += primerHeader(primerName);
         SAFE_POINT(region.startPos > 0 && region.startPos < sequence.length() && region.length > 0,
-                   QObject::tr("Invalid region %1 for sequence length %2 (%3 primer)").arg(region.toString())
+                   tr("Invalid region %1 for sequence length %2 (%3 primer)").arg(region.toString())
                        .arg(sequence.length()).arg(primerName),
                    ans += errMsg())
 
@@ -105,12 +111,12 @@ static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask &task,
                            const QByteArray &sequence,
                            const QByteArray &revComplSeq,
                            const PCRPrimerDesignTaskReportUtils::UserPrimersReports &reports) {
-    SAFE_POINT(!sequence.isEmpty(), QObject::tr("Empty sequence"), errMsg())
+    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), errMsg())
 
     const QStringList &primersNames = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME;
     QList<U2Region> regions = task.getResults();
     SAFE_POINT(regions.size() == primersNames.size(),
-               QObject::tr("The number of resulting primers (%1) isn't equal to the number of primer names (%2)")
+               tr("The number of resulting primers (%1) isn't equal to the number of primer names (%2)")
                    .arg(regions.size())
                    .arg(primersNames.size()),
                errMsg())
@@ -118,16 +124,16 @@ static QString primersInfo(const PCRPrimerDesignForDNAAssemblyTask &task,
     bool primersNotFound = std::all_of(regions.begin(), regions.end(), [](U2Region r) { return r.isEmpty(); });
     bool areUserPrimersBad = !hasUserPrimers(task.getSettings()) || reports.hasUnwantedConnections();
     if (primersNotFound && areUserPrimersBad) {
-        return QObject::tr("<p>There are no primers that meet the specified parameters.</p>");
+        return tr("<p>There are no primers that meet the specified parameters.</p>");
     }
 
     QString ans;
     // Desciption.
-    ans += QObject::tr("<h3>Details:</h3>"
-                       "<p>"
-                       "<u>Underlined</u>&#8211;backbone sequence&#59;<br>"
-                       "<b>Bold</b>&#8211;primer sequence."
-                       "</p>");
+    ans += tr("<h3>Details:</h3>"
+              "<p>"
+              "<u>Underlined</u>&#8211;backbone sequence&#59;<br>"
+              "<b>Bold</b>&#8211;primer sequence."
+              "</p>");
 
     QString backbone = task.getBackboneSequence().isEmpty() ? task.getBackboneSequence() : "<u>" +
         task.getBackboneSequence() + "</u>";
@@ -180,10 +186,10 @@ QString PCRPrimerDesignTaskReportUtils::userPrimersUnwantedConnectionsInfo(
     const PCRPrimerDesignTaskReportUtils::UserPrimersReports &reports) {
     QString ans;
     if (hasUserPrimers(settings) && reports.hasUnwantedConnections()) {
-        ans += QObject::tr("<h2>Unwanted connections of user primers</h2>");
+        ans += tr("<h2>Unwanted connections of user primers</h2>");
 
         if (reports.hasSelfdimers()) {
-            QString selfdimerStr = QObject::tr("Selfdimers");
+            QString selfdimerStr = tr("Selfdimers");
             PCRPrimerDesignTaskReportUtils::UserPrimersTable table(selfdimerStr, {selfdimerStr});
             table.addForwardRow({!reports.forward.selfdimer.isEmpty()});
             table.addReverseRow({!reports.reverse.selfdimer.isEmpty()});
@@ -198,8 +204,8 @@ QString PCRPrimerDesignTaskReportUtils::userPrimersUnwantedConnectionsInfo(
                 return {!reports.heterodimer.isEmpty(), !r.fileSeq.isEmpty(), !r.fileRevComplSeq.isEmpty(),
                         !r.other.isEmpty()};
             };
-            UserPrimersTable table(QObject::tr("Heterodimers"), {QObject::tr("Another user primer"), sequenceStr(),
-                                                                 revComplSeqStr(), otherSequencesStr()});
+            UserPrimersTable table(tr("Heterodimers"), {tr("Another user primer"), sequenceStr(), revComplSeqStr(),
+                                                        otherSequencesStr()});
             table.addForwardRow(getRow(reports.forward));
             table.addReverseRow(getRow(reports.reverse));
 
@@ -233,8 +239,8 @@ bool PCRPrimerDesignTaskReportUtils::UserPrimersReports::hasUnwantedConnections(
 ////////////////////////////////////////////////////UserPrimersTable////////////////////////////////////////////////////
 QString PCRPrimerDesignTaskReportUtils::UserPrimersTable::getRow(const QList<bool> &row) const {
     QString ans;
-    for (bool cell : row) {
-        ans += "<td align='center'>" + (cell ? QObject::tr("Yes") : QObject::tr("No")) + "</td>";
+    for (bool cell : qAsConst(row)) {
+        ans += "<td align='center'>" + (cell ? tr("Yes") : tr("No")) + "</td>";
     }
     return ans;
 }
@@ -253,7 +259,7 @@ void PCRPrimerDesignTaskReportUtils::UserPrimersTable::addReverseRow(const QList
 
 QString PCRPrimerDesignTaskReportUtils::UserPrimersTable::getTable() const {
     QString header;
-    for (const QString &h : headers) {
+    for (const QString &h : qAsConst(headers)) {
         header += "<th>" + h + "</th>";
     }
 

@@ -51,7 +51,7 @@ void ResultTable::setCurrentProducts(const QList<U2Region> &_currentProducts, An
     int index = 0;
     int row = 0;
     setRowCount(MAXIMUM_ROW_COUNT);
-    for (const U2Region &region : _currentProducts) {
+    for (const U2Region &region : qAsConst(_currentProducts)) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
             setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos + 1)).arg(QString::number(region.endPos()))));
@@ -99,7 +99,7 @@ ResultTableData ResultTable::getPCRPrimerProductTableData() const {
 void ResultTable::sl_selectionChanged() {
     Annotation *selectedAnnotation = getSelectedAnnotation();
     if (selectedAnnotation != nullptr) {
-        for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
+        for (ADVSequenceObjectContext *context : qAsConst(associatedView->getSequenceContexts())) {
             if (selectedAnnotation->getGObject() != nullptr && context->getAnnotationObjects(true).contains(selectedAnnotation->getGObject())) {
                 context->getAnnotationsSelection()->clear();
                 context->getSequenceSelection()->clear();

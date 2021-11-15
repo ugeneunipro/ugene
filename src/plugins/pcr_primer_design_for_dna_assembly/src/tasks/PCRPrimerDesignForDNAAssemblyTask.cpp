@@ -53,7 +53,7 @@ const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
 };
 
 PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
-    : Task("PCR Primer Design For DNA Assembly Task", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+    : Task(tr("PCR Primer Design For DNA Assembly Task"), TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(_settings),
       sequence(_sequence),
       reverseComplementSequence(DNASequenceUtils::reverseComplement(sequence)) {
@@ -103,7 +103,7 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
     // A and B1 are pretty the same, except the fact that B1 has some depencedcies on B2 and B3
     // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3
     bool aWasNotFoundYet = true;
-    for (const auto& regionBetweenIslandsForward : regionsBetweenIslandsForward) {
+    for (const auto& regionBetweenIslandsForward : qAsConst(regionsBetweenIslandsForward)) {
         stateInfo.setProgress(((double)regionsBetweenIslandsForward.indexOf(regionBetweenIslandsForward) / (double)regionsBetweenIslandsForward.size()) * 100);
         int progressStage = 100 / regionsBetweenIslandsForward.size();
         //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
@@ -308,7 +308,7 @@ QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(Load
 
 void PCRPrimerDesignForDNAAssemblyTask::findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence) {
     // Very the same algorithm, but for reverse regions etween islands
-    for (const auto& regionBetweenIslandsReverse : regionsBetweenIslandsReverse) {
+    for (const auto& regionBetweenIslandsReverse : qAsConst(regionsBetweenIslandsReverse)) {
         //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
         CHECK_OP(stateInfo, );
 

@@ -91,7 +91,7 @@ void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::prepare() {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
-    U2SequenceObject *dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
+    auto dnaso = qobject_cast<U2SequenceObject *>(loadedDocument->findGObjectByName(seqName));
     if (dnaso == nullptr) {
         stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
         return;
