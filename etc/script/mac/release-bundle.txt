@@ -1517,6 +1517,7 @@ Unipro UGENE.app/Contents/MacOS/tools/spades
 Unipro UGENE.app/Contents/MacOS/tools/stringtie
 Unipro UGENE.app/Contents/MacOS/tools/tcoffee
 Unipro UGENE.app/Contents/MacOS/tools/trimmomatic
+Unipro UGENE.app/Contents/MacOS/tools/tophat2
 Unipro UGENE.app/Contents/MacOS/tools/vcftools
 Unipro UGENE.app/Contents/MacOS/transl_ru.qm
 Unipro UGENE.app/Contents/MacOS/transl_tr.qm
