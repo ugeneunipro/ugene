@@ -93,7 +93,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
 void CreatePhyTreeDialogController::accept() {
     settings.algorithm = ui->algorithmBox->currentText();
 
-    CHECK(checkOutputFilePath(), );
+    CHECK(checkAndPrepareOutputFilePath(), );
     SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
     settingsWidget->fillSettings(settings);
     CHECK(checkSettings(), );
@@ -124,7 +124,7 @@ void CreatePhyTreeDialogController::sl_onRestoreDefault() {
     settingsWidget->restoreDefault();
 }
 
-bool CreatePhyTreeDialogController::checkOutputFilePath() {
+bool CreatePhyTreeDialogController::checkAndPrepareOutputFilePath() {
     U2OpStatusImpl os;
     QString outputFilePath = saveController->getValidatedSaveFilePath(os);
     if (os.hasError()) {
@@ -132,6 +132,15 @@ bool CreatePhyTreeDialogController::checkOutputFilePath() {
         ui->fileNameEdit->setFocus();
         return false;
     }
+    // Prepare the result dir.
+    QFileInfo outputFileInfo(outputFilePath);
+    QDir outputFileDir(outputFileInfo.absolutePath());
+    if (!outputFileDir.exists()) {
+        bool result = QDir().mkpath(outputFileInfo.absolutePath());
+        // This should never happen: saveController->getValidatedSaveFilePath checked that the dir is writable.
+        SAFE_POINT(result, L10N::internalError(L10N::errorWritingFile(outputFilePath)), false);
+    }
+
     settings.fileUrl = outputFilePath;
     return true;
 }
