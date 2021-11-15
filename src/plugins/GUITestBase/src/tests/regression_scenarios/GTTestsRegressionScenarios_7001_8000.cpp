@@ -24,6 +24,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
@@ -36,6 +37,7 @@
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QPlainTextEdit>
 #include <QRadioButton>
@@ -49,6 +51,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
@@ -1249,6 +1252,38 @@ GUI_TEST_CLASS_DEFINITION(test_7469) {
     CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text(os));
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text(os) == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7472) {
+    // Check that "Build tree" does not start the task if output directory is not writable.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm/ABC_tran.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class CheckReadOnlyPathScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            // Create a read-only directory and set a path to a file inside it into the saveLineEdit.
+            QString dirPath = QFileInfo(sandBoxDir + GTUtils::genUniqueString("test_7472")).absoluteFilePath();
+            CHECK_SET_ERR(QDir().mkpath(dirPath), "Failed to create dir: " + dirPath);
+            GTFile::setReadOnly(os, dirPath, false);
+
+            auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, saveLineEdit, dirPath + "/tree.nwk");
+
+            // Check that error message is shown.
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "File location is not writable"));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CheckReadOnlyPathScenario()));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::checkNoItem(os, "tree.nwk");
 }
 
 }  // namespace GUITest_regression_scenarios

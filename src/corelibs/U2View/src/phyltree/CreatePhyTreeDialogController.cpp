@@ -33,6 +33,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -122,22 +123,14 @@ void CreatePhyTreeDialogController::sl_onRestoreDefault() {
 }
 
 bool CreatePhyTreeDialogController::checkFileName() {
-    const QString fileName = saveController->getSaveFileName();
-    if (fileName.isEmpty()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Please, input the file name."));
+    U2OpStatusImpl os;
+    QString outputFilePath = saveController->getValidatedSaveFilePath(os);
+    if (os.hasError()) {
+        QMessageBox::critical(this, L10N::errorTitle(), os.getError());
         ui->fileNameEdit->setFocus();
         return false;
     }
-    settings.fileUrl = fileName;
-
-    U2OpStatus2Log os;
-    GUrlUtils::validateLocalFileUrl(GUrl(fileName), os);
-    if (os.hasError()) {
-        QMessageBox::warning(this, tr("Error"), tr("Please, change the output file.") + "\n" + os.getError());
-        ui->fileNameEdit->setFocus(Qt::MouseFocusReason);
-        return false;
-    }
-
+    settings.fileUrl = outputFilePath;
     return true;
 }
 

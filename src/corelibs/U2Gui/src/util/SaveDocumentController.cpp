@@ -26,15 +26,14 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QLineEdit>
-#include <QToolButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -141,6 +140,17 @@ QString SaveDocumentController::getSaveFileName() const {
 DocumentFormatId SaveDocumentController::getFormatIdToSave() const {
     SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId());
     return formatsInfo.getIdByName(currentFormat);
+}
+
+QString SaveDocumentController::getValidatedSaveFilePath(U2OpStatus &os) const {
+    QString fileName = getSaveFileName();
+    CHECK_EXT(!fileName.isEmpty(), os.setError(tr("Output file name is empty")), "");
+
+    CHECK_EXT(FileAndDirectoryUtils::canWriteToPath(fileName),
+              os.setError(tr("File location is not writable: %1").arg(fileName)),
+              "");
+
+    return fileName;
 }
 
 void SaveDocumentController::sl_fileNameChanged(const QString &newName) {
