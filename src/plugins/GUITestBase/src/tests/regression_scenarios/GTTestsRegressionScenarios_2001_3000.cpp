@@ -3233,50 +3233,6 @@ GUI_TEST_CLASS_DEFINITION(test_2542) {
     CHECK_SET_ERR(!button->isEnabled(), "Align button is enabled");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_2543) {
-    class BuildTreeDialogFiller_test_2543 : public Filler {
-    public:
-        BuildTreeDialogFiller_test_2543(HI::GUITestOpStatus &os, QString _saveTree = "default")
-            : Filler(os, "CreatePhyTree"),
-              saveTree(_saveTree) {
-        }
-        virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            if (saveTree != "default") {
-                QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit"));
-                GTLineEdit::setText(os, saveLineEdit, saveTree);
-            }
-
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
-            // Expected state: UGENE does not allow to create tree, the message dialog appears
-            GTUtilsNotifications::waitForNotification(os, true);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-
-    private:
-        QString saveTree;
-    };
-
-    // 1. Open "samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 2. Click the "Build tree" button on the toolbar.
-    // Expected state: a "Build Phylogenetic Tree" dialog appeared.
-    // 3. Set the output file location to any read-only folder.
-    const QString outputFilePath = testDir + "_common_data/scenarios/sandbox/gui_regr_2543";
-    QDir sandboxDir(testDir + "_common_data/scenarios/sandbox");
-    sandboxDir.mkdir("gui_regr_2543");
-    GTFile::setReadOnly(os, outputFilePath);
-
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller_test_2543(os, outputFilePath + "/test.nwk"));
-
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_2544) {
     //    1. Open "data/samples/FASTA/human_T1.fa"
     GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_2544.fa");
