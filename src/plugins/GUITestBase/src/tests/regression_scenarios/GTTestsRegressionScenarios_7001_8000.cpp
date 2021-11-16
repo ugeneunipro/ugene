@@ -27,12 +27,14 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
@@ -40,8 +42,11 @@
 #include <QPlainTextEdit>
 #include <QRadioButton>
 
+#include <U2Core/AppContext.h>
+
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
@@ -1215,6 +1220,48 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7463) {
+    // Tools->NGS data analysis->Extract consensus from assemblies...
+    // Set _common_data/bam/Mycobacterium.sorted.bam as input and run.
+    // Repeat steps with data/samples/Assembly/chrM.sorted.bam.
+    // When the chrM workflow is over, click "Close dashboard".
+    //     Expected: no crash or freeze.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
+        {{"Assembly", testDir + "_common_data/bam/Mycobacterium.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
+        {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Code from GTUtilsTaskTreeView::waitTaskFinished with changes for counting the number of current top level tasks.
+    // Wait for one of the two tasks to complete.
+    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    if (scheduler->getTopLevelTasks().size() == 1 && !GTThread::isMainThread()) {
+        GTThread::waitForMainThread();
+    }
+    for (int time = 0; time < 180'000 && scheduler->getTopLevelTasks().size() > 1; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
+
+    const QList<Task *> &tasks = scheduler->getTopLevelTasks();
+    int taskNumber = tasks.size();
+    CHECK_SET_ERR(taskNumber == 1,
+                  QString("Expected: only one task in progress, current state: %1 tasks in progress (%2)")
+                      .arg(taskNumber)
+                      .arg(taskNumber < 2 ? ""
+                                          : std::accumulate(std::next(tasks.constBegin()),
+                                                            tasks.constEnd(),
+                                                            tasks.first()->getTaskName(),
+                                                            [](const QString &res, Task *t) {
+                                                                return res + ", " + t->getTaskName();
+                                                            })))
+    GTTabWidget::closeTab(os, GTUtilsDashboard::getTabWidget(os), "Extract consensus from assembly 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
