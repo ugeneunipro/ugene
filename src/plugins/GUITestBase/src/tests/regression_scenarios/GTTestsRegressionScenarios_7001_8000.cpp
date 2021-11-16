@@ -70,11 +70,13 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -863,6 +865,67 @@ GUI_TEST_CLASS_DEFINITION(test_7388) {
                   "2. Unexpected clipboard text: " + clipboardText2);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7390) {
+    // 1. Set SPAdes to any file
+    // Expected: SPAdes is invalid
+    class SetSpades : public CustomScenario {
+        void run(GUITestOpStatus &os) override {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            QString toolPath = dataDir + "samples/FASTA/human_T1.fa";
+
+            AppSettingsDialogFiller::setExternalToolPath(os, "SPAdes", QFileInfo(toolPath).absoluteFilePath());
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"),
+                          "SPAdes is expected to be invalid, but in fact it is valid");
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetSpades()));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
+
+    // 2. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
+    QList<TrimmomaticAddSettings> steps;
+    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {}));
+
+    // 3. Open the "De novo assemble Illumina SE reads" sample
+    // 4. Set "human_T1.fa" as input
+    // 5. Click "Next"
+    // 6. Set the "ILLUMINACLIP" Trimmomatic step
+    // 7. Click "Next"
+    // 8. Click "Next"
+    // 9. Click "Apply"
+    class ProcessWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            //    Expected state: wizard has appeared.
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            GTWidget::clickWindowTitle(os, wizard);
+
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTWidget::click(os, GTWidget::findToolButton(os, "trimmomaticPropertyToolButton", wizard));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, steps));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new ProcessWizard));
+    GTUtilsWorkflowDesigner::addSample(os, "De novo assemble Illumina SE reads");
+
+    // 10. Validate workflow
+    // Expected: no crash
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7401) {
     // 1. Open human_T1.fa.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -1283,6 +1346,20 @@ GUI_TEST_CLASS_DEFINITION(test_7472) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::checkNoItem(os, "tree.nwk");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7473) {
+    // Build an alignment for a read-only alignment file.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "2-Hacid_dh.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "2-Hacid_dh.sto", true);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7443.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsMsaEditor::getTreeView(os);
 }
 
 }  // namespace GUITest_regression_scenarios
