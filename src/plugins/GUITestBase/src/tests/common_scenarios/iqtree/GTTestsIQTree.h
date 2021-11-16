@@ -19,26 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JAVASUPPORT_H_
-#define _U2_JAVASUPPORT_H_
+#ifndef _U2_GT_TESTS_IQTREE_H_
+#define _U2_GT_TESTS_IQTREE_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#include "RunnerTool.h"
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
+namespace GUITest_common_scenarios_iqtree {
 
-class JavaSupport : public RunnerTool {
-    Q_OBJECT
-public:
-    JavaSupport();
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_iqtree"
 
-    static const QString ET_JAVA_ID;
+GUI_TEST_CLASS_DECLARATION(test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0002)
 
-private:
-    static const QStringList RUN_PARAMETERS;
-};
+#undef GUI_TEST_SUITE
 
+}  // namespace GUITest_common_scenarios_iqtree
 }  // namespace U2
 
-#endif  // _U2_JAVASUPPORT_H_
+#endif  // _U2_GT_TESTS_IQTREE_H_

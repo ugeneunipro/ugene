@@ -1423,6 +1423,7 @@ tools/cutadapt
 tools/diamond
 tools/fastqc
 tools/hmmer3
+tools/iqtree
 tools/java8
 tools/kraken
 tools/mafft

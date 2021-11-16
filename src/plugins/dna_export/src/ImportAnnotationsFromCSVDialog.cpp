@@ -157,7 +157,8 @@ void ImportAnnotationsFromCSVDialog::accept() {
         }
     }
     if (endPos + startPos + length < 2 || endPos > 1 || startPos > 1 || length > 1) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid start position/end position/length configuration!"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid [start position] or [end position] or [length] column assignment!\n\n"
+                                                           "Please assign a column role by clicking on a column header in 'Results preview'"));
         return;
     }
     if (names > 1) {
@@ -251,6 +252,7 @@ void ImportAnnotationsFromCSVDialog::initSaveController() {
     config.formatCombo = saveFormatCombo;
     config.parentWidget = this;
     config.saveTitle = tr("Save imported annotations to");
+    config.defaultFormatId = BaseDocumentFormats::PLAIN_GENBANK;
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::ANNOTATION_TABLE;

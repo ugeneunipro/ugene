@@ -2665,15 +2665,15 @@ GUI_TEST_CLASS_DEFINITION(test_3439) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3441) {
-    //    Open file test_common_data\fasta\empty.fa
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Open "Statistics" options panel tab.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
-    // Sequence count is 0
 
-    QLabel *seqCount = GTWidget::findExactWidget<QLabel *>(os, "alignmentHeight");
-    CHECK_SET_ERR(seqCount->text() == "0", "Sequence count don't match");
+    // Open "Statistics" options panel tab.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
+
+    // Sequence count is 2.
+    auto seqCountLabel = GTWidget::findLabel(os, "alignmentHeight");
+    CHECK_SET_ERR(seqCountLabel->text() == "2", "Sequence count don't match: " + seqCountLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3443) {

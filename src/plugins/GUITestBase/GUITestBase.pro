@@ -223,6 +223,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+            src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
@@ -505,6 +506,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+            src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \

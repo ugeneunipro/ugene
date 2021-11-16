@@ -3,7 +3,7 @@
     <!-- Check sequence quality scores -->
 
     <load-document index="in" url="dna_export/nucleic/in9.aln" io="local_file" format="clustal"/>
-    <load-document index="exp" url="dna_export/nucleic/exp9.aln" io="local_file" format="clustal"/>
+    <load-document index="exp" url="dna_export/nucleic/in9_transl.aln" io="local_file" format="clustal"/>
 
     <export-nucleic-alignment nucleic-url="in" translation-frame="-2" exp-url="exp" trans-table="1"/>
 

@@ -1,5 +1,0 @@
-<multi-test>
-    <!-- try to load document without last line "//"  -->
-    <load-broken-document index="doc" url="stockholm/no_eof.sto" io="local_file" format="stockholm"/>
-
-</multi-test>
