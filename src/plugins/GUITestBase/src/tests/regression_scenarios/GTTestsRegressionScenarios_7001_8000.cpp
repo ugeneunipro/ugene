@@ -41,6 +41,7 @@
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
@@ -68,11 +69,13 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -467,49 +470,48 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
 
 GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsPcr::clearPcrDir(os);
-    //1. Open "samples/FASTA/human_T1.fa".
+    // 1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "GGAAAAAATGCTAAGGGC" and "CTGGGTTGAAAATTCTTT".
+    // 3. Enter the primers: "GGAAAAAATGCTAAGGGC" and "CTGGGTTGAAAATTCTTT".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "GGAAAAAATGCTAAGGGC");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CTGGGTTGAAAATTCTTT");
-    //4. Set both mismatches to 9
+    // 4. Set both mismatches to 9
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
-    //5. Set 3' perfect match to 3
+    // 5. Set 3' perfect match to 3
     QSpinBox *perfectSpinBox = GTWidget::findSpinBox(os, "perfectSpinBox");
     GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
 
-    //6. Click the find button.
+    // 6. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected: one result found
-    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 19 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 22 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Open the PCR OP.
+    // 2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
-    //3. Enter the primers: "AAA" and "CCC".
+    // 3. Enter the primers: "AAA" and "CCC".
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AAA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
 
-    //Expected state: there is a warning about forward primer length
+    // Expected state: there is a warning about forward primer length
     QLabel *warningLabel = GTWidget::findLabel(os, "warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be between"), "Incorrect warning message");
 
     GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
-    //4. Click the find button.
-    //Expected state: task cancelled with corresponding log message
+    // 4. Click the find button.
+    // Expected state: task cancelled with corresponding log message
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsMessage(os, lt);
@@ -824,6 +826,103 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
         GTUtilsSequenceView::zoomIn(os);
         GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7388) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align_subalign.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // Export subalignment with only gaps inside.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
+
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7388.aln", {"s1", "s2"}, 16, 24);
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select both sequences with only gaps inside.
+    GTUtilsMdi::checkWindowIsActive(os, "test_7388");
+    GTUtilsMsaEditor::selectRows(os, 0, 1);
+
+    // Check that "Copy" works as expected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    QString clipboardText1 = GTClipboard::text(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(clipboardText1 == "---------\n---------",
+                  "1. Unexpected clipboard text: " + clipboardText1);
+
+    // Check that "Copy (custom format)" works as expected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString clipboardText2 = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText2 == "CLUSTAL W 2.0 multiple sequence alignment\n\ns1   --------- 9\ns2   --------- 9\n              \n\n",
+                  "2. Unexpected clipboard text: " + clipboardText2);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7390) {
+    // 1. Set SPAdes to any file
+    // Expected: SPAdes is invalid
+    class SetSpades : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            QString toolPath = dataDir + "samples/FASTA/human_T1.fa";
+
+            AppSettingsDialogFiller::setExternalToolPath(os, "SPAdes", QFileInfo(toolPath).absoluteFilePath());
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"), 
+                          "SPAdes is expected to be invalid, but in fact it is valid");
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetSpades()));
+    GTMenu::clickMainMenuItem(os, { "Settings", "Preferences..." }, GTGlobals::UseMouse);
+
+    // 2. Open WD
+   GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
+    QList<TrimmomaticAddSettings> steps;
+    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {} ));
+
+    // 3. Open the "De novo assemble Illumina SE reads" sample
+    // 4. Set "human_T1.fa" as input
+    // 5. Click "Next"
+    // 6. Set the "ILLUMINACLIP" Trimmomatic step
+    // 7. Click "Next"
+    // 8. Click "Next"
+    // 9. Click "Apply"
+    class ProcessWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            //    Expected state: wizard has appeared.
+            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            GTWidget::clickWindowTitle(os, wizard);
+
+            GTUtilsWizard::setInputFiles(os, { { dataDir + "samples/FASTA/human_T1.fa" } });
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTWidget::click(os, GTWidget::findToolButton(os, "trimmomaticPropertyToolButton", wizard));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, steps));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new ProcessWizard));
+    GTUtilsWorkflowDesigner::addSample(os, "De novo assemble Illumina SE reads");
+
+    // 10. Validate workflow
+    // Expected: no crash
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7401) {
@@ -1205,6 +1304,40 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     //Expected state: there is a notification about lacking of memory.
     CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"), 
         "No expected message about lacking of memory in notifications");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7469) {
+    // Check that annotation sequence copy action respects 'join' and 'order' location flags.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/7469.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Check 'order' annotation on the direct strand.
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, false);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "AAGACCCCCCCGTAGG", "1. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "KTPP*", "1. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'order' annotation on the complementary strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "AAGACCCC-CCCGTAGG", "2. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "KT-PV", "2. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'join' annotation on the direct strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAAGTTACTTAAGCTAGCTTG", "3. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "CLAKLLKLA", "3. Unexpected Amino sequence: " + GTClipboard::text(os));
+
+    // Check 'join' annotation on the complementary strand.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text(os));
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+    CHECK_SET_ERR(GTClipboard::text(os) == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text(os));
 }
 
 }  // namespace GUITest_regression_scenarios

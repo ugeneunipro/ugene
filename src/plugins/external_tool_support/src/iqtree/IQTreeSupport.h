@@ -19,26 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JAVASUPPORT_H_
-#define _U2_JAVASUPPORT_H_
+#ifndef _U2_IQTREE_SUPPORT_H_
+#define _U2_IQTREE_SUPPORT_H_
+
+#include <U2Algorithm/PhyTreeGenerator.h>
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#include "RunnerTool.h"
-
 namespace U2 {
 
-class JavaSupport : public RunnerTool {
+class IQTreeSupport : public ExternalTool {
     Q_OBJECT
 public:
-    JavaSupport();
+    IQTreeSupport();
 
-    static const QString ET_JAVA_ID;
+    static const QString IQTREE_ID;
+    static const QString ET_IQTREE_ALGORITHM_NAME_AND_KEY;
+};
 
-private:
-    static const QStringList RUN_PARAMETERS;
+class IQTreeAdapter : public PhyTreeGenerator {
+public:
+    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings) override;
+
+    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &msa, QWidget *parent = nullptr) override;
 };
 
 }  // namespace U2
-
-#endif  // _U2_JAVASUPPORT_H_
+#endif  // _U2_IQTREE_SUPPORT_H_

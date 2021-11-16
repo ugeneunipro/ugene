@@ -1099,6 +1099,7 @@ void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, c
     // Get the alignment.
     MultipleSequenceAlignmentExporter alExporter;
     MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    CHECK_OP_EXT(os, uiLog.error(os.getError()), );
 
     // Validate the parameters.
     if (columnRange.startPos < 0 || columnRange.endPos() > al->getLength()) {

@@ -31,6 +31,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
+#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QTextEdit>
@@ -122,11 +123,14 @@ public:
     /** Calls findExactWidget with QTextEdit type. Shortcut method. */
     static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
+    /** Calls findExactWidget with QPlainTextEdit type. Shortcut method. */
+    static QPlainTextEdit *findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
     /** Calls findExactWidget with QCheckBox type. Shortcut method. */
     static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     /** Calls findExactWidget with QComboBox type. Shortcut method. */
-    static QComboBox* findComboBox(GUITestOpStatus& os, const QString& widgetName, const QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
+    static QComboBox *findComboBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
     static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
