@@ -3578,25 +3578,6 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
                                                 << "Open as...");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4552) {
-    // Open .
-    // Align the sequences with MUSCLE.
-    // While MUSCLE is running, open the "Tree" context menu.
-    // Expected state: the "Build tree" action is disabled while the modification is not finished.
-    // Current state: the "Build tree" action is enabled.
-
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE…"));
-    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_TREES << "Build Tree", PopupChecker::IsDisabled));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-}
-
 GUI_TEST_CLASS_DEFINITION(test_4557) {
     //    1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
