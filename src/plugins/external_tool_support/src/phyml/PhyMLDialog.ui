@@ -56,7 +56,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="substitutionModel">
       <attribute name="title">
@@ -654,9 +654,9 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="freqRbGroup"/>
-  <buttongroup name="gammaRbGroup"/>
   <buttongroup name="sitesRbGroup"/>
   <buttongroup name="transitionRbGroup"/>
+  <buttongroup name="gammaRbGroup"/>
+  <buttongroup name="freqRbGroup"/>
  </buttongroups>
 </ui>

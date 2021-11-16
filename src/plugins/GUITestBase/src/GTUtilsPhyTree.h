@@ -31,6 +31,12 @@ namespace U2 {
 
 class GTUtilsPhyTree {
 public:
+    /** Returns active Tree Viewer window or fails. */
+    static QWidget *getActiveTreeViewerWindow(HI::GUITestOpStatus &os);
+
+    /** Checks that the active MDI window is a Tree Viewer window or fails. */
+    static void checkTreeViewerWindowIsActive(HI::GUITestOpStatus &os, const QString& titlePart = "");
+
     static QList<GraphicsButtonItem *> getSelectedNodes(HI::GUITestOpStatus &os);
     static QList<GraphicsButtonItem *> getUnselectedNodes(HI::GUITestOpStatus &os);
     static QList<GraphicsButtonItem *> getNodes(HI::GUITestOpStatus &os);

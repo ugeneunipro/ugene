@@ -29,6 +29,8 @@
 #include <U2View/CreatePhyTreeWidget.h>
 namespace U2 {
 
+class PhyTreeDisplayOptionsWidget;
+
 class IQTreeWidget : public CreatePhyTreeWidget {
     Q_OBJECT
 public:
@@ -40,8 +42,11 @@ public:
 
     void restoreDefault() override;
 
+    bool checkSettings(QString &message, const CreatePhyTreeSettings &settings) override;
+
 private:
-    QPlainTextEdit *extraParametersTextEdit;
+    QPlainTextEdit *extraParametersTextEdit = nullptr;
+    PhyTreeDisplayOptionsWidget *displayOptionsWidget = nullptr;
 };
 
 }  // namespace U2
