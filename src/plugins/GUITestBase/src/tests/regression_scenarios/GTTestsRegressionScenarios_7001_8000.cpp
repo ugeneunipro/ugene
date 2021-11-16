@@ -41,6 +41,7 @@
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
@@ -1179,6 +1180,31 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7465) {
+    //1. Open workflow sample "Align sequences with MUSCLE"
+    //Expected state: wizard has appeared.
+    class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            GTWidget::clickWindowTitle(os, wizard);
+
+            //2. Set file with many (~1200) sequences as input file and run workflow
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath()}});
+            //GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Align Sequences with MUSCLE Wizard", new AlignSequencesWithMuscleWizardFiller));
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected state: there is a notification about lacking of memory.
+    CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"), 
+        "No expected message about lacking of memory in notifications");
 }
 
 }  // namespace GUITest_regression_scenarios
