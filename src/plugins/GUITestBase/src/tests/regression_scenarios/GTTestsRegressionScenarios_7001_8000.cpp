@@ -34,15 +34,12 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
-#include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
 #include <QFileInfo>
 #include <QPlainTextEdit>
 #include <QRadioButton>
-
-#include <U2Core/AppContext.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -54,6 +51,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
@@ -1239,28 +1237,8 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    // Code from GTUtilsTaskTreeView::waitTaskFinished with changes for counting the number of current top level tasks.
-    // Wait for one of the two tasks to complete.
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    if (scheduler->getTopLevelTasks().size() == 1 && !GTThread::isMainThread()) {
-        GTThread::waitForMainThread();
-    }
-    for (int time = 0; time < 180'000 && scheduler->getTopLevelTasks().size() > 1; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
-    }
-
-    const QList<Task *> &tasks = scheduler->getTopLevelTasks();
-    int taskNumber = tasks.size();
-    CHECK_SET_ERR(taskNumber == 1,
-                  QString("Expected: only one task in progress, current state: %1 tasks in progress (%2)")
-                      .arg(taskNumber)
-                      .arg(taskNumber < 2 ? ""
-                                          : std::accumulate(std::next(tasks.constBegin()),
-                                                            tasks.constEnd(),
-                                                            tasks.first()->getTaskName(),
-                                                            [](const QString &res, Task *t) {
-                                                                return res + ", " + t->getTaskName();
-                                                            })))
+    GTUtilsNotifications::waitForNotification(os);
+    GTUtilsDialog::waitAllFinished(os);
     GTTabWidget::closeTab(os, GTUtilsDashboard::getTabWidget(os), "Extract consensus from assembly 2");
 }
 
