@@ -336,9 +336,9 @@ ExtractConsensusTask::~ExtractConsensusTask() {
 
 void ExtractConsensusTask::run() {
     CHECK(ma->getUI(), );
-    CHECK(ma->getUI()->getUI(), );
-    CHECK(ma->getUI()->getUI()->getConsensusArea(), );
-    CHECK(ma->getUI()->getUI()->getConsensusArea()->getConsensusCache(), );
+    CHECK(ma->getMaEditorWgt(), );
+    CHECK(ma->getMaEditorWgt()->getConsensusArea(), );
+    CHECK(ma->getMaEditorWgt()->getConsensusArea()->getConsensusCache(), );
 
     const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {

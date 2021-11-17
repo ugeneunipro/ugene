@@ -67,7 +67,7 @@ QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
-    if (editor->getUI()->getActiveChild() != ui) {
+    if (qobject_cast<MaEditorMultilineWgt *>(editor->getUI())->getActiveChild() != ui) {
         return;
     }
     menu->addAction(configureConsensusAction);

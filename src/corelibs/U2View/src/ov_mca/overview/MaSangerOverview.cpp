@@ -233,7 +233,7 @@ void MaSangerOverview::drawReference() {
     QPainter painter(&cachedReferenceView);
     painter.fillRect(cachedReferenceView.rect(), Qt::white);
 
-    const int referenceUngappedLength = getEditor()->getUI()->getRefCharController()->getUngappedLength();
+    const int referenceUngappedLength = getEditor()->getMcaEditorWgtUI()->getRefCharController()->getUngappedLength();
     GraphUtils::RulerConfig config;
     config.drawArrow = false;
     config.drawNumbers = true;
@@ -269,7 +269,7 @@ void MaSangerOverview::drawReads() {
         int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
         const MultipleChromatogramAlignmentRow row = mca->getMcaRow(maRowIndex);
         const U2Region coreRegion = row->getCoreRegion();
-        const U2Region positionRegion = editor->getUI()->getUI()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
+        const U2Region positionRegion = editor->getMaEditorWgt()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 
         QRect readRect;
         readRect.setX(qRound(positionRegion.startPos / stepX));
