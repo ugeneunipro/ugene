@@ -28,6 +28,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -53,6 +54,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
+#include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -1360,6 +1362,33 @@ GUI_TEST_CLASS_DEFINITION(test_7473) {
 
     // Check that tree view is opened.
     GTUtilsMsaEditor::getTreeView(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7476) {
+    // Check that IQ-TREE has "Display Options" tab, and it works.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class EnableCreateNewViewOptionScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
+
+            GTTabWidget::clickTab(os, "tab_widget", dialog, "Display Options");
+
+            GTRadioButton::click(os, "createNewView", dialog);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new EnableCreateNewViewOptionScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os, "collapse_mode_");
 }
 
 }  // namespace GUITest_regression_scenarios
