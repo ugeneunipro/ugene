@@ -49,10 +49,7 @@ class ExtractPrimerTask : public Task {
 public:
     ExtractPrimerTask(const ExtractPrimerTaskSettings &settings);
     ~ExtractPrimerTask();
-    /*
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    */
+
     void run() override;
     /* Moves the document to the main thread */
     Document *takeResult();
@@ -63,7 +60,7 @@ private:
 
     ExtractPrimerTaskSettings settings;
     Document *result = nullptr;
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask *loadTask = nullptr;
 
     const static QString BACKBONE_ANNOTATION_NAME;
     const static QString RESULT_ANNOTATION_GROUP_NAME;

@@ -79,7 +79,7 @@ void ExtractPrimerTask::run() {
     int resultIndex = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.indexOf(settings.fragmentName);
     bool isForward = resultIndex % 2 == 0;
 
-    U2Region fragmentRegion = U2Region(0, productSequence.length());
+    U2Region fragmentRegion(0, productSequence.length());
     if (!settings.backboneSequence.isEmpty()) {
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
@@ -117,7 +117,7 @@ void ExtractPrimerTask::run() {
 }
 
 Document *ExtractPrimerTask::takeResult() {
-    CHECK(nullptr != result, nullptr);
+    CHECK(result != nullptr, nullptr);
     if (result->thread() != QCoreApplication::instance()->thread()) {
         result->moveToThread(QCoreApplication::instance()->thread());
     }
@@ -130,9 +130,9 @@ DNASequence ExtractPrimerTask::getProductSequence() {
     DNASequence primerSequence("", "");
     DbiConnection connection(settings.sequenceRef.dbiRef, stateInfo);
     CHECK_OP(stateInfo, primerSequence);
-    SAFE_POINT_EXT(NULL != connection.dbi, setError(L10N::nullPointerError("DBI")), primerSequence);
+    SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("DBI")), primerSequence);
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != sequenceDbi, setError(L10N::nullPointerError("Sequence DBI")), primerSequence);
+    SAFE_POINT_EXT(sequenceDbi != nullptr, setError(L10N::nullPointerError("Sequence DBI")), primerSequence);
 
     U2Sequence sequence = sequenceDbi->getSequenceObject(settings.sequenceRef.entityId, stateInfo);
     CHECK_OP(stateInfo, primerSequence);
@@ -186,7 +186,10 @@ void ExtractPrimerAndOpenDocumentTask::prepareUrl() {
 
     // reserve file
     QFile file(settings.outputFileUrl);
-    file.open(QIODevice::WriteOnly);
+    if (!file.open(QIODevice::WriteOnly)) {
+        stateInfo.setError(L10N::errorOpeningFileWrite(GUrl(settings.outputFileUrl)));
+        return;
+    }
     file.close();
 }
 
