@@ -25,10 +25,13 @@
 #include <QLabel>
 #include <QPlainTextEdit>
 #include <QPushButton>
+#include <QTabWidget>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
+
+#include <U2View/PhyTreeDisplayOptionsWidget.h>
 
 namespace U2 {
 
@@ -37,6 +40,15 @@ static constexpr const char *IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-para
 IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment &, QWidget *parent)
     : CreatePhyTreeWidget(parent) {
     auto layout = new QVBoxLayout();
+    setLayout(layout);
+
+    auto tabWidget = new QTabWidget(this);
+    tabWidget->setObjectName("tab_widget");
+    layout->addWidget(tabWidget);
+
+    auto iqTreeOptionsWidget = new QWidget();
+    auto iqTreeOptionsTabLayout = new QVBoxLayout();
+    iqTreeOptionsWidget->setLayout(iqTreeOptionsTabLayout);
 
     auto hintLayout = new QHBoxLayout();
     hintLayout->addWidget(new QLabel(tr("Extra command line options for IQ-TREE (1 per line):")));
@@ -47,16 +59,20 @@ IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment &, QWidget *parent)
         QDesktopServices::openUrl(QUrl("http://www.iqtree.org/doc/Command-Reference"));
     });
     hintLayout->addWidget(docsButton);
-    layout->addLayout(hintLayout);
+    iqTreeOptionsTabLayout->addLayout(hintLayout);
 
     extraParametersTextEdit = new QPlainTextEdit();
     extraParametersTextEdit->setToolTip(tr("Use one parameter per one line"));
     extraParametersTextEdit->setObjectName("extra_parameters_text_edit");
     auto savedParameters = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY).toStringList();
     extraParametersTextEdit->setPlainText(savedParameters.join("\n"));
-    layout->addWidget(extraParametersTextEdit);
+    iqTreeOptionsTabLayout->addWidget(extraParametersTextEdit);
 
-    setLayout(layout);
+    tabWidget->addTab(iqTreeOptionsWidget, tr("IQ-TREE options"));
+
+    displayOptionsWidget = new PhyTreeDisplayOptionsWidget();
+    displayOptionsWidget->setContentsMargins(10, 10, 10, 10);
+    tabWidget->addTab(displayOptionsWidget, tr("Display Options"));
 }
 
 void IQTreeWidget::fillSettings(CreatePhyTreeSettings &settings) {
@@ -64,20 +80,27 @@ void IQTreeWidget::fillSettings(CreatePhyTreeSettings &settings) {
     QStringList extraArguments = extraParametersTextEdit->toPlainText().split("\n");
     for (const QString &arg : qAsConst(extraArguments)) {
         QString trimmedArg = arg.trimmed();
-        if (!trimmedArg.isEmpty()) { // Do not add empty lines into the argument list.
+        if (!trimmedArg.isEmpty()) {  // Do not add empty lines into the argument list.
             settings.extToolArguments << trimmedArg;
         }
     }
+    displayOptionsWidget->fillSettings(settings);
 }
 
 void IQTreeWidget::storeSettings() {
     QStringList params = extraParametersTextEdit->toPlainText().split("\n");
     AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY, params);
+    displayOptionsWidget->storeSettings();
 }
 
 void IQTreeWidget::restoreDefault() {
     AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY);
     extraParametersTextEdit->clear();
+    displayOptionsWidget->restoreDefault();
+}
+
+bool IQTreeWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
+    return displayOptionsWidget->checkSettings(message, settings);
 }
 
 }  // namespace U2
