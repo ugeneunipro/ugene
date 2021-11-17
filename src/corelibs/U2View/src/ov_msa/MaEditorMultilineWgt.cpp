@@ -41,6 +41,7 @@
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/helpers/MultilineBaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
+#include "ov_msa/helpers/ScrollController.h"
 #include "ov_msa/helpers/MultilineScrollController.h"
 
 namespace U2 {
@@ -88,7 +89,8 @@ void MaEditorMultilineWgt::initWidgets() {
     uiChildrenArea->setLayout(layoutChildren);
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
-    uiChildrenArea->layout()->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    uiChildrenArea->layout()->setSizeConstraint(QLayout::SetMaximumSize);
+    uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
     QGridLayout *layoutMultilineArea = new QGridLayout;
     layoutMultilineArea->setContentsMargins(0, 0, 0, 0);
@@ -98,7 +100,7 @@ void MaEditorMultilineWgt::initWidgets() {
     multilineArea->setLayout(layoutMultilineArea);
     layoutMultilineArea->addWidget(scrollArea, 0, 0);
     layoutMultilineArea->addWidget(cvBar, 0, 1);
-    layoutMultilineArea->addWidget(shBar, 1, 0);
+    layoutChildren->addWidget(shBar, 0, 0);
 
     scrollArea->setWidget(uiChildrenArea);
 
@@ -122,8 +124,7 @@ void MaEditorMultilineWgt::initWidgets() {
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 }
 
-void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index)
-{
+void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
     if (uiChild == nullptr) {
         uiChildLength = 8;
         uiChild = new MaEditorWgt *[uiChildLength];
@@ -134,11 +135,10 @@ void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index)
         index = uiChildCount;
     }
     if (index > 0 && (uint)index > uiChildLength) {
-        MaEditorWgt **tmp = uiChild;
-        uiChild = new MaEditorWgt *[index + 8];
-        for (uint i = 0; i < uiChildLength; i++) {
-            uiChild[i] = tmp[i];
-        }
+        MaEditorWgt **uiChildNew = new MaEditorWgt *[index + 8];
+        std::copy(uiChild, uiChild + std::min(uiChildLength, uiChildLength + 8), uiChildNew);
+        delete[] uiChild;
+        uiChild = uiChildNew;
     }
 
     uiChild[index] = child;
@@ -146,6 +146,9 @@ void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index)
 
     QGridLayout *grid = (QGridLayout *)uiChildrenArea->layout();
     grid->addWidget(child, index, 0);
+    grid->addWidget(scrollController->getHorizontalScrollBar(), index + 1, 0);
+
+    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), getScrollController(), SLOT(sl_updateScrollBars()));
     scrollController->sl_updateScrollBars();
 }
 
@@ -169,7 +172,18 @@ int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const
     if (index >= getChildrenCount()) {
         return 0;
     }
+
     return getUI(index)->getSequenceArea()->width();
+}
+
+int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const {
+    if (index >= getChildrenCount()) {
+        return 0;
+    }
+
+    int l = getUI(index)->getSequenceArea()->getLastVisibleBase(false);
+    int f = getUI(index)->getSequenceArea()->getFirstVisibleBase();
+    return l - f + 1;
 }
 
 void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)

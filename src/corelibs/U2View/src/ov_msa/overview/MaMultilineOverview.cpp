@@ -30,6 +30,7 @@
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/helpers/MultilineScrollController.h"
 #include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
@@ -42,14 +43,14 @@ MaMultilineOverview::MaMultilineOverview(MaEditorMultilineWgt *ui)
       stepY(0) {
     // TODO:ichebyki
     // sequenceArea ?
-    // connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
+    //connect(ui->getUI(0)->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_redraw()));
     // TODO:ichebyki
     // scroll ?
-    // connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
 }
 
@@ -111,8 +112,8 @@ void MaMultilineOverview::setVisibleRangeForEmptyAlignment() {
 void MaMultilineOverview::recalculateScale() {
     // TODO:ichebyki
     // Is it right ?
-    stepX = static_cast<double>(editor->getUI()->getUI()->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
-    stepY = static_cast<double>(editor->getUI()->getUI()->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
+    stepX = static_cast<double>(editor->getMaEditorWgt()->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
+    stepY = static_cast<double>(editor->getMaEditorWgt()->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }
 
 int MaMultilineOverview::getContentWidgetWidth() const {

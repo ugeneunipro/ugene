@@ -55,7 +55,7 @@ protected:
     void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
     void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
     void initStatusBar(MaEditorStatusBar *_statusBar = nullptr) override;
-    void initChildrenArea(QGroupBox *_uiChildrenArea = nullptr) override;
+    void initChildrenArea(QGroupBox *_uiChildrenArea) override;
 
 private:
 

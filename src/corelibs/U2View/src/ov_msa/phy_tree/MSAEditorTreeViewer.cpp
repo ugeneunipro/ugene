@@ -106,7 +106,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     connect(msaSequenceArea, SIGNAL(si_visibleRangeChanged(QStringList, int)), msaTreeViewerUi, SLOT(sl_onVisibleRangeChanged(const QStringList &, int)));
     connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList &)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList &)));
 
-    MaEditorNameList *msaNameList = editor->getUI()->getUI()->getEditorNameList();
+    MaEditorNameList *msaNameList = editor->getMaEditorWgt()->getEditorNameList();
     connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));
 
     return view;
@@ -153,7 +153,7 @@ bool MSAEditorTreeViewer::enableSyncMode() {
     updateSyncModeActionState(true);
 
     // Trigger si_visibleRangeChanged that will make tree widget update geometry to the correct scale. TODO: create a better API for this.
-    editor->getUI()->getUI()->getSequenceArea()->onVisibleRangeChanged();
+    editor->getMaEditorWgt()->getSequenceArea()->onVisibleRangeChanged();
 
     return true;
 }
@@ -163,7 +163,7 @@ void MSAEditorTreeViewer::disableSyncMode() {
     // Reset the MSA state back to the original from 'Free'.
     msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
 
-    MaEditorNameList *msaNameList = editor->getUI()->getUI()->getEditorNameList();
+    MaEditorNameList *msaNameList = editor->getMaEditorWgt()->getEditorNameList();
     msaNameList->update();
 
     updateSyncModeActionState(false);
@@ -339,7 +339,7 @@ void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout& layout) {
             msaEditorTreeViewer->getSortSeqsAction()->setEnabled(true);
             MSAEditor* msa = msaEditorTreeViewer->getMsaEditor();
             CHECK(msa != nullptr, );
-            msa->getUI()->getUI()->getSequenceArea()->onVisibleRangeChanged();
+            msa->getMaEditorWgt()->getSequenceArea()->onVisibleRangeChanged();
         }
     }
 }
@@ -454,7 +454,7 @@ void MSAEditorTreeViewerUI::updateScene(bool) {
 
     MSAEditor* msaEditor = msaEditorTreeViewer->getMsaEditor();
     CHECK(msaEditor != nullptr, );
-    msaEditor->getUI()->getUI()->getSequenceArea()->onVisibleRangeChanged();
+    msaEditor->getMaEditorWgt()->getSequenceArea()->onVisibleRangeChanged();
     updateRect();
 }
 

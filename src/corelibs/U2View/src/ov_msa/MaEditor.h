@@ -130,9 +130,18 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual MaEditorMultilineWgt *getUI() const {
-        return ui;
-    }
+    virtual QWidget *getUI() const { return ui; }
+
+    virtual MaEditorWgt *getMaEditorWgt(uint index = 0) {
+        Q_UNUSED(index);
+        Q_ASSERT(false);
+        return nullptr;
+    };
+
+    virtual MaEditorMultilineWgt *getMaEditorMultilineWgt() {
+        Q_ASSERT(false);
+        return nullptr;
+    };
 
     virtual OptionsPanel* getOptionsPanel() {
         return optionsPanel;
@@ -260,12 +269,14 @@ protected slots:
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
 
+    void sl_multilineViewAction();
+
 private slots:
     void resetColumnWidthCache();
 
 protected:
     virtual QWidget *createWidget() = 0;
-    virtual void initActions(MaEditorWgt *wgt);
+    virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
     void updateResizeMode();
@@ -286,7 +297,7 @@ protected:
     virtual void updateActions();
 
     MultipleAlignmentObject *maObject;
-    MaEditorMultilineWgt *ui = nullptr;
+    QWidget *ui = nullptr;
 
     QFont font;
     ResizeMode resizeMode;
