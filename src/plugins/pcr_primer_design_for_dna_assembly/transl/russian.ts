@@ -181,44 +181,36 @@
         <translation>Дизайн праймеров для ПЦР для сборки ДНК</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="45"/>
         <source>A Forward</source>
-        <translation>А Прямой</translation>
+        <translation type="vanished">А Прямой</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="46"/>
         <source>A Reverse</source>
-        <translation>А Обратный</translation>
+        <translation type="vanished">А Обратный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="47"/>
         <source>B1 Forward</source>
-        <translation>В1 Прямой</translation>
+        <translation type="vanished">В1 Прямой</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="48"/>
         <source>B1 Reverse</source>
-        <translation>B1 Обратный</translation>
+        <translation type="vanished">B1 Обратный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="49"/>
         <source>B2 Forward</source>
-        <translation>В2 Прямой</translation>
+        <translation type="vanished">В2 Прямой</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="50"/>
         <source>B2 Reverse</source>
-        <translation>В2 Обратный</translation>
+        <translation type="vanished">В2 Обратный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="51"/>
         <source>B3 Forward</source>
-        <translation>В3 Прямой</translation>
+        <translation type="vanished">В3 Прямой</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="52"/>
         <source>B3 Reverse</source>
-        <translation>В3 Обратный</translation>
+        <translation type="vanished">В3 Обратный</translation>
     </message>
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="39"/>
@@ -393,14 +385,27 @@
         <translation>Регион между нежелательными островками найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="94"/>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="93"/>
         <source>The following regions are located between unwanted islands: %1</source>
         <translation>Следующие регионы располагаются между нежелательными островками: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="96"/>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="95"/>
         <source>The whole region is filled with unwanted islands, no regions between them has been found</source>
         <translation>Регион полностью состоит из нежелательных островком, регионов между ними не найдено</translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest</name>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp" line="91"/>
+        <source>context not found %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp" line="96"/>
+        <source>Sequence %1 not found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -441,17 +446,17 @@
         <translation>Другие последовательности в реакции ПЦР</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="289"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="284"/>
         <source>Multiple regions selection, the only first is set as primer search area.</source>
         <translation>Выбрано несколько регионов, в качестве обюласти поиска праймеров выбран первый из них.</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="334"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="329"/>
         <source>Select a backbone sequence file</source>
         <translation>Выбрать файл с последовательностью остова</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="344"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="339"/>
         <source>Select an &quot;Other sequences in PCR reaction&quot; file</source>
         <translation>Выбрать файл &quot;Другие последовательности в реакции ПЦР&quot;</translation>
     </message>
@@ -467,12 +472,12 @@
 <context>
     <name>U2::PCRPrimerDesignForDNAAssemblyPlugin</name>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="40"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="44"/>
         <source>PCR Primer Design for DNA assembly</source>
         <translation>Дизайн праймеров для ПЦР для сборки ДНК</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="40"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="44"/>
         <source>PCR Primer Design for DNA assembly.</source>
         <translation>Дизайн праймеров для ПЦР для сборки ДНК,.</translation>
     </message>
@@ -528,6 +533,46 @@
         <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="342"/>
         <source>The &quot;B1 Reverse&quot; candidate primer region &quot;%1&quot; fits to &quot;Parameters of priming sequences&quot; values, checking for unwanted connections</source>
         <translation>Кандидат в праймер &quot;В1 Обратный&quot;, находящийся в &quot;%1&quot; подходит к &quot;Парамертрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="45"/>
+        <source>A Forward</source>
+        <translation>А Прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="46"/>
+        <source>A Reverse</source>
+        <translation>А Обратный</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="47"/>
+        <source>B1 Forward</source>
+        <translation>В1 Прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="48"/>
+        <source>B1 Reverse</source>
+        <translation>B1 Обратный</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="49"/>
+        <source>B2 Forward</source>
+        <translation>В2 Прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="50"/>
+        <source>B2 Reverse</source>
+        <translation>В2 Обратный</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="51"/>
+        <source>B3 Forward</source>
+        <translation>В3 Прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="52"/>
+        <source>B3 Reverse</source>
+        <translation>В3 Обратный</translation>
     </message>
     <message>
         <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="407"/>
@@ -624,7 +669,7 @@
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="20"/>
         <source>The unwanted structures have been found in the following backbone sequence candidate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Нежелательные соединения, которые были найдены в следующем кандидате на последовательность остова:</translation>
     </message>
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="27"/>
@@ -638,7 +683,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="38"/>
         <source>Unwanted structures:</source>
-        <translation type="unfinished"></translation>
+        <translation>Нежелательные соединения:</translation>
     </message>
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="48"/>
@@ -647,12 +692,12 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="59"/>
         <source>There no sequences in the file left. Use this sequence as the backbone?</source>
-        <translation type="unfinished"></translation>
+        <translation>В файле больше не осталось последовательностей. Использовать текущую в качестве остова?</translation>
     </message>
 </context>
 </TS>

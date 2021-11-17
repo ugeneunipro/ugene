@@ -52,7 +52,7 @@ void ResultTable::setCurrentProducts(const QList<U2Region> &_currentProducts, An
     int row = 0;
     setRowCount(MAXIMUM_ROW_COUNT);
     for (const U2Region &region : qAsConst(_currentProducts)) {
-        if (region != U2Region()) {
+        if (!region.isEmpty()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
             setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos + 1)).arg(QString::number(region.endPos()))));
             row++;

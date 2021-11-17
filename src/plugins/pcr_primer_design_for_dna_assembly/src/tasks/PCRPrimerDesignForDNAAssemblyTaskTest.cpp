@@ -87,17 +87,16 @@ void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::init(XMLTestFormat *, const QD
 
 void GTest_PCRPrimerDesignForDNAAssemblyTaskTest::prepare() {
     Document *loadedDocument = getContext<Document>(this, docName);
-    if (loadedDocument == nullptr) {
-        stateInfo.setError(GTest::tr("context not found %1").arg(docName));
-        return;
-    }
-    auto dnaso = qobject_cast<U2SequenceObject *>(loadedDocument->findGObjectByName(seqName));
-    if (dnaso == nullptr) {
-        stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
-        return;
-    }
+    CHECK_EXT(loadedDocument != nullptr, stateInfo.setError(GTest::tr("context not found %1").arg(docName)), );
+    
+    U2SequenceObject *dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
+    CHECK_EXT(dnaso != nullptr, stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName)), );
+
+    CHECK_OP(stateInfo, );
+
     task = new PCRPrimerDesignForDNAAssemblyTask(settings, dnaso->getWholeSequenceData(stateInfo));
     CHECK_OP(stateInfo, );
+
     addSubTask(task);
 }
 

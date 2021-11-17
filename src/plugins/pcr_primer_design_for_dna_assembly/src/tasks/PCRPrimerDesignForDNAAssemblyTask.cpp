@@ -42,14 +42,14 @@
 namespace U2 {
 
 const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
-    QObject::tr("A Forward"),
-    QObject::tr("A Reverse"),
-    QObject::tr("B1 Forward"),
-    QObject::tr("B1 Reverse"),
-    QObject::tr("B2 Forward"),
-    QObject::tr("B2 Reverse"),
-    QObject::tr("B3 Forward"),
-    QObject::tr("B3 Reverse")
+    "A Forward",
+    "A Reverse",
+    "B1 Forward",
+    "B1 Reverse",
+    "B2 Forward",
+    "B2 Reverse",
+    "B3 Forward",
+    "B3 Reverse"
 };
 
 PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
@@ -63,26 +63,15 @@ PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPr
 }
 
 void PCRPrimerDesignForDNAAssemblyTask::prepare() {
-    auto prepareLoadDocumentTask = [this](const QString& url) -> LoadDocumentTask* {
-        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url);
-        CHECK_EXT(!formats.isEmpty(), setError(tr("Unknown file format!")), nullptr);
-
-        auto ioRegistry = AppContext::getIOAdapterRegistry();
-        SAFE_POINT_EXT(ioRegistry != nullptr, setError(L10N::nullPointerError("IOAdapterRegistry")), nullptr);
-
-        IOAdapterFactory* iow = ioRegistry->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-        return new LoadDocumentTask(formats.first().format->getFormatId(), GUrl(url), iow);
-    };
-
     if (!settings.backboneSequenceUrl.isEmpty()) {
-        loadBackboneSequence = prepareLoadDocumentTask(settings.backboneSequenceUrl);
+        loadBackboneSequence = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, GUrl(settings.backboneSequenceUrl));
         CHECK_OP(stateInfo, );
 
         addSubTask(loadBackboneSequence);
     }
 
     if (!settings.otherSequencesInPcrUrl.isEmpty()) {
-        loadOtherSequencesInPcr = prepareLoadDocumentTask(settings.otherSequencesInPcrUrl);
+        loadOtherSequencesInPcr = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, GUrl(settings.otherSequencesInPcrUrl));;
         CHECK_OP(stateInfo, );
 
         addSubTask(loadOtherSequencesInPcr);
@@ -103,9 +92,10 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
     // A and B1 are pretty the same, except the fact that B1 has some depencedcies on B2 and B3
     // So, the first time we find good B1 pair they are also the A pair. But if B1 doesn't fit to B2 or B3, we need to continue searching B1, which will be fit to B2 and B3
     bool aWasNotFoundYet = true;
-    for (const auto& regionBetweenIslandsForward : qAsConst(regionsBetweenIslandsForward)) {
-        stateInfo.setProgress(((double)regionsBetweenIslandsForward.indexOf(regionBetweenIslandsForward) / (double)regionsBetweenIslandsForward.size()) * 100);
-        int progressStage = 100 / regionsBetweenIslandsForward.size();
+    int progressStage = 100 / regionsBetweenIslandsForward.size();
+    for (int i = 0; i < regionsBetweenIslandsForward.size(); i++) {
+        const auto& regionBetweenIslandsForward = regionsBetweenIslandsForward[i];
+        stateInfo.setProgress(((double)i / (double)regionsBetweenIslandsForward.size()) * 100);
         //The task could be really time-consuming, so it's better to check sometimes it it's been canceled
         CHECK_OP(stateInfo, );
 
@@ -207,7 +197,6 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
         }
     }
     generateUserPrimersReports();
-    stateInfo.setProgress(100);
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
