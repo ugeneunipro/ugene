@@ -72,9 +72,10 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
         }
     }
     const int maxInt = std::numeric_limits<int>::max();
-    quint64 m_DistsUsedBytes = sizeof(float) * rowsLengths.size() * rowsLengths.size();
+    //Check memory consumption for m_Dists in distfunc.cpp
+    quint64 mDistsUsedBytes = sizeof(float) * rowsLengths.size() * rowsLengths.size();
     usedBytes = usedBytes >= 0 ? usedBytes : maxInt;
-    usedBytes = qMax(usedBytes, m_DistsUsedBytes);
+    usedBytes = qMax(usedBytes, mDistsUsedBytes);
     return qMin(qint64(usedBytes / 1024 / 1024), qint64(maxInt));
 }
 

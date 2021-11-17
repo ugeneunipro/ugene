@@ -1286,7 +1286,7 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     //Expected state: wizard has appeared.
     class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
