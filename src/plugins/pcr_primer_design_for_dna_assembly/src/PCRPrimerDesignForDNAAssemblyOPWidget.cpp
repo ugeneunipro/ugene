@@ -277,7 +277,10 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
     auto sequenceSelection = annDnaView->getActiveSequenceContext()->getSequenceSelection();
     int startRegionValue = sbStartRegion->value();
     int endRegionValue = sbEndRegion->value();
-    sequenceSelection->setSelectedRegions({ U2Region(startRegionValue, endRegionValue - startRegionValue) });
+    if (startRegionValue > 0) {
+        sequenceSelection->setSelectedRegions({U2Region(static_cast<qint64>(startRegionValue) - 1,
+                                                        static_cast<qint64>(endRegionValue) - startRegionValue + 1)});
+    }
     updateRegionConnection = connect(sequenceSelection, &DNASequenceSelection::si_onSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion);
 }
 

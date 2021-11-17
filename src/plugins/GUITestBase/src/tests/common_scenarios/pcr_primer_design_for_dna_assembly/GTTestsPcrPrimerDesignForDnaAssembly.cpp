@@ -298,6 +298,45 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                                                   .arg(currentEnd))
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    // Open common_data/pcr_primer_design/gfp.fa.
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
+    // Open the PCR Primer Design tab.
+    GTUtilsPcrPrimerDesign::openTab(os);
+    QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QToolButton *selectManually = GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence);
+    GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
+
+    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
+    GTWidget::click(os, selectManually);
+    //     Expected: region 1-71 is selected in the Sequence View.
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    int regionNumber = selection.size();
+    CHECK_SET_ERR(regionNumber == 1, QString("Left. Expected: one region is selected, current: %1").arg(regionNumber))
+    U2Region region = selection.first();
+    CHECK_SET_ERR(region == U2Region(0, 71),
+                  QString("Selected region: expected 1-71, current: %1").arg(region.toString()))
+    // Select area 1-1.
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
+    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
+    GTWidget::click(os, selectManually);
+    // Set Left area to 717-717.
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{717, 717}, true}, GTUtilsPcrPrimerDesign::AreaType::Left);
+
+    // Repeat steps for right area.
+    selectManually = GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence);
+    GTWidget::click(os, selectManually);
+    selection = GTUtilsSequenceView::getSelection(os);
+    regionNumber = selection.size();
+    CHECK_SET_ERR(regionNumber == 1, QString("Right. Expected: one region is selected, current: %1").arg(regionNumber))
+    region = selection.first();
+    CHECK_SET_ERR(region == U2Region(354, 72),
+                  QString("Selected region: expected 355-426, current: %1").arg(region.toString()))
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
+    GTWidget::click(os, selectManually);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{717, 717}, true}, GTUtilsPcrPrimerDesign::AreaType::Right);
+}
+
 }  // namespace GUITest_common_scenarios_pcr_primer_design_tab
 
 namespace GUITest_common_scenarios_pcr_primer_design_algo {
