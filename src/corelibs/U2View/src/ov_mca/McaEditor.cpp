@@ -71,11 +71,7 @@ MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
     return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
-McaEditorWgt *McaEditor::getUI(uint index) const {
-    return ui == nullptr ? nullptr : qobject_cast<McaEditorWgt *>(ui->getUI(index));
-}
-
-void McaEditor::buildStaticToolbar(QToolBar* tb) {
+void McaEditor::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(showChromatogramsAction);
     tb->addAction(showOverviewAction);
     tb->addSeparator();
@@ -162,6 +158,8 @@ void McaEditor::sl_showConsensusTab() {
 
 QWidget *McaEditor::createWidget()
 {
+    Q_ASSERT(ui == nullptr);
+
     QWidget *child = createChildWidget();
     Q_ASSERT(child != nullptr);
 
@@ -192,7 +190,7 @@ QWidget *McaEditor::createChildWidget() {
 
     connect(child, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
-    initActions(child);
+    initActions();
 
     optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -212,8 +210,8 @@ QWidget *McaEditor::createChildWidget() {
     return child;
 }
 
-void McaEditor::initActions(MaEditorWgt *wgt) {
-    MaEditor::initActions(wgt);
+void McaEditor::initActions() {
+    MaEditor::initActions();
 
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
@@ -221,39 +219,39 @@ void McaEditor::initActions(MaEditorWgt *wgt) {
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
     GUIUtils::updateActionToolTip(zoomInAction);
-    wgt->addAction(zoomInAction);
+    ui->addAction(zoomInAction);
 
     zoomOutAction->setText(tr("Zoom out"));
     zoomOutAction->setShortcut(QKeySequence::ZoomOut);
     GUIUtils::updateActionToolTip(zoomOutAction);
-    wgt->addAction(zoomOutAction);
+    ui->addAction(zoomOutAction);
 
     resetZoomAction->setText(tr("Reset zoom"));
     resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
     GUIUtils::updateActionToolTip(resetZoomAction);
-    wgt->addAction(resetZoomAction);
+    ui->addAction(resetZoomAction);
 
     showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
     showChromatogramsAction->setChecked(s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool());
-    wgt->addAction(showChromatogramsAction);
+    ui->addAction(showChromatogramsAction);
 
     showGeneralTabAction = new QAction(tr("Open \"General\" tab on the options panel"), this);
     connect(showGeneralTabAction, SIGNAL(triggered()), SLOT(sl_showGeneralTab()));
-    wgt->addAction(showGeneralTabAction);
+    ui->addAction(showGeneralTabAction);
 
     showConsensusTabAction = new QAction(tr("Open \"Consensus\" tab on the options panel"), this);
     connect(showConsensusTabAction, SIGNAL(triggered()), SLOT(sl_showConsensusTab()));
-    wgt->addAction(showConsensusTabAction);
+    ui->addAction(showConsensusTabAction);
 
     showOverviewAction->setText(tr("Show overview"));
     showOverviewAction->setObjectName("overview");
     connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
-    ui->getOverviewArea()->setVisible(overviewVisible);
+    getMaEditorWgt()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -282,7 +280,7 @@ void McaEditor::addAppearanceMenu(QMenu* menu) {
     QMenu* appearanceMenu = menu->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MCAE_MENU_APPEARANCE);
 
-    auto ui = getUI();
+    auto ui = getMcaEditorWgtUI();
     auto sequenceArea = ui->getSequenceArea();
     auto offsetsController = ui->getOffsetsViewController();
 
@@ -314,7 +312,7 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     QMenu* navigationMenu = menu->addMenu(tr("Navigation"));
     navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
 
-    auto ui = getUI();
+    auto ui = getMcaEditorWgtUI();
     navigationMenu->addAction(gotoSelectedReadAction);
 
     auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();
@@ -327,16 +325,11 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     navigationMenu->addAction(mismatchController->getNextMismatchAction());
 }
 
-<<<<<<< HEAD
-void McaEditor::addEditMenu(QMenu* menu) {
-    QMenu* editMenu = menu->addMenu(tr("Edit"));
-=======
 void McaEditor::addEditMenu(QMenu *menu, uint uiIndex) {
     QMenu *editMenu = menu->addMenu(tr("Edit"));
->>>>>>> Interim commit, overview area is under construction
     editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
-    auto ui = getUI(uiIndex);
+    auto ui = getMcaEditorWgtUI();
     auto sequenceArea = ui->getSequenceArea();
 
     editMenu->addAction(sequenceArea->getInsertAction());

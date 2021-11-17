@@ -68,8 +68,11 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
-    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr);
-    void initStatusBar(MaEditorStatusBar *statusBar = nullptr);
+    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
+    void initStatusBar(MaEditorStatusBar *statusBar = nullptr) override;
+
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 private slots:
     void sl_onTabsCountChanged(int tabsCount);

@@ -95,10 +95,14 @@ public:
 
 signals:
     void si_visibleAreaChanged();
+    void si_hScrollValueChanged();
+    void si_vScrollValueChanged();
 
 public slots:
     void sl_updateScrollBars();
     void sl_zoomScrollBars();
+    void sl_hScrollValueChanged();
+    void sl_vScrollValueChanged();
 
 private slots:
     void sl_collapsibleModelIsAboutToBeChanged();

@@ -37,7 +37,7 @@ namespace U2 {
 MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString& title, MSAEditor* msaEditor)
     : editor(msaEditor) {
     treeTabArea = new MsaEditorTreeTabArea(editor, this);
-    titleWidget = msaEditor->getUI()->getUI()->createHeaderLabelWidget(title);
+    titleWidget = msaEditor->getMaEditorWgt()->createHeaderLabelWidget(title);
 
     auto maUtilsWidget = dynamic_cast<MaUtilsWidget*>(titleWidget);
     maUtilsWidget->setHeightMargin(-55);

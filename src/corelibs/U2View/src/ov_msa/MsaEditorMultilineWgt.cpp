@@ -31,8 +31,6 @@ namespace U2 {
 
 MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor)
     : MaEditorMultilineWgt(editor) {
-    // TODO:ichebyki
-    // rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
 }

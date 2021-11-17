@@ -356,6 +356,7 @@ void MaGraphMultilineOverview::moveVisibleRange(QPoint _pos) {
     const int newScrollBarValue = newVisibleRange.x() * stepX;
     const int pageX = newVisibleRange.width() * stepX / ui->getChildrenCount();
     ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    ui->getScrollController()->setVScrollbarValue(newScrollBarValue);
     for (uint i = 0; i < ui->getChildrenCount(); i++) {
         ui->getUI(i)->getScrollController()->setHScrollbarValue(newScrollBarValue + i * pageX);
     }
