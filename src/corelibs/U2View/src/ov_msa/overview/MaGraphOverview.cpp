@@ -143,8 +143,8 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
     } else {
         recalculateScale();
 
-        const int screenPositionX = editor->getUI()->getUI()->getScrollController()->getScreenPosition().x();
-        const qint64 screenWidth = editor->getUI()->getUI()->getSequenceArea()->width();
+        const int screenPositionX = editor->getMaEditorWgt()->getScrollController()->getScreenPosition().x();
+        const qint64 screenWidth = editor->getMaEditorWgt()->getSequenceArea()->width();
 
         cachedVisibleRange.setY(0);
         cachedVisibleRange.setHeight(FIXED_HEIGHT);

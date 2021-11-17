@@ -135,6 +135,18 @@ public:
      */
     static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
 
+    MaEditorMultilineWgt *getUI() const override {
+        return qobject_cast<MsaEditorMultilineWgt *>(ui);
+    }
+
+    MaEditorWgt *getMaEditorWgt(uint index = 0) override {
+        return qobject_cast<MsaEditorWgt *>(getUI()->getUI(index));
+    }
+
+    MaEditorMultilineWgt *getMaEditorMultilineWgt() override {
+        return qobject_cast<MaEditorMultilineWgt *>(ui);
+    }
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;
 
@@ -181,9 +193,7 @@ protected slots:
 
 protected:
     QWidget *createWidget() override;
-    MsaEditorWgt *createChildWidget(uint index,
-                                    MaEditorMultilineOverviewArea *overview = nullptr,
-                                    MaEditorStatusBar *statusbar = nullptr);
+    void initActions() override;
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
     void onObjectRenamed(GObject *obj, const QString &oldName) override;
@@ -249,7 +259,11 @@ public:
     QAction* convertRawToAminoAction = nullptr;
 
 private:
-    PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings = nullptr;
+    MsaEditorWgt *createChildWidget(uint index,
+                                    MaEditorMultilineOverviewArea *overview = nullptr,
+                                    MaEditorStatusBar *statusbar = nullptr);
+
+    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
     MSAEditorTreeManager treeManager;
 
     /**

@@ -121,7 +121,7 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
     recalculateScale();
 
     // TODO:ichebyki
-    QString highlightingSchemeId = editor->getUI()->getUI()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
+    QString highlightingSchemeId = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, tr("Incorrect multiple alignment object!"), );
@@ -131,7 +131,7 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
             // TODO:ichebyki
-            U2Region yRange = editor->getUI()->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
+            U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
             U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
 
             QRect rect;
@@ -141,7 +141,7 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
             rect.setBottom(qRound(yRange.endPos() / stepY));
 
             // TODO:ichebyki
-            QColor color = editor->getUI()->getUI()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
@@ -157,9 +157,9 @@ void MaSimpleMultilineOverview::drawOverview(QPainter &p) {
             drawColor = MaHighlightingOverviewCalculationTask::isCellHighlighted(
                 ma,
                 // TODO:ichebyki
-                editor->getUI()->getUI()->getSequenceArea()->getCurrentHighlightingScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme(),
                 // TODO:ichebyki
-                editor->getUI()->getUI()->getSequenceArea()->getCurrentColorScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme(),
                 seq,
                 pos,
                 refPos);
@@ -179,7 +179,7 @@ void MaSimpleMultilineOverview::drawVisibleRange(QPainter &p) {
     } else {
         QPoint screenPosition = ui->getScrollController()->getScreenPosition();
         // TODO:ichebyki
-        QSize screenSize = editor->getUI()->getUI()->getSequenceArea()->size();
+        QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
@@ -203,7 +203,7 @@ void MaSimpleMultilineOverview::drawSelection(QPainter &p) {
         U2Region columnRange = ui->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
         // TODO:ichebyki
-        U2Region sequenceViewYRegion = editor->getUI()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
+        U2Region sequenceViewYRegion = editor->getMaEditorMultilineWgt()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
 
         QRect drawRect;
         drawRect.setLeft(qRound(columnRange.startPos / stepX));

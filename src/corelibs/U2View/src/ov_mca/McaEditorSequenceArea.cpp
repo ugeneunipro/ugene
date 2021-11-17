@@ -279,7 +279,7 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* /*v*/, QToolBar* 
     t->addSeparator();
     t->addAction(ambiguousCharactersController->getPreviousAction());
     t->addAction(ambiguousCharactersController->getNextAction());
-    McaEditorConsensusArea* consensusArea = getEditor()->getUI()->getConsensusArea();
+    McaEditorConsensusArea *consensusArea = getEditor()->getMcaEditorWgtUI()->getConsensusArea();
     consensusArea->buildStaticToolbar(t);
 
     t->addSeparator();
