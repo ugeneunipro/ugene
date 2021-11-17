@@ -1350,7 +1350,7 @@ GUI_TEST_CLASS_DEFINITION(test_7472) {
     GTUtilsProjectTreeView::checkNoItem(os, "tree.nwk");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7473) {
+GUI_TEST_CLASS_DEFINITION(test_7473_1) {
     // Build an alignment for a read-only alignment file.
     GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "2-Hacid_dh.sto");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -1358,6 +1358,23 @@ GUI_TEST_CLASS_DEFINITION(test_7473) {
     GTUtilsDocument::checkIfDocumentIsLocked(os, "2-Hacid_dh.sto", true);
 
     GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7443.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsMsaEditor::getTreeView(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7473_2) {
+    // Build an alignment for a read-only alignment file from options panel.
+    GTFileDialog::openFile(os, dataDir + "samples/Stockholm/CBS.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "CBS.sto", true);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
+    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tree view is opened.
