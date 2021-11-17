@@ -24,6 +24,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
@@ -36,6 +37,7 @@
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QPlainTextEdit>
 #include <QRadioButton>
@@ -867,13 +869,13 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     // 1. Set SPAdes to any file
     // Expected: SPAdes is invalid
     class SetSpades : public CustomScenario {
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus &os) override {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             QString toolPath = dataDir + "samples/FASTA/human_T1.fa";
 
             AppSettingsDialogFiller::setExternalToolPath(os, "SPAdes", QFileInfo(toolPath).absoluteFilePath());
-            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"), 
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"),
                           "SPAdes is expected to be invalid, but in fact it is valid");
 
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
@@ -881,14 +883,14 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetSpades()));
-    GTMenu::clickMainMenuItem(os, { "Settings", "Preferences..." }, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
     // 2. Open WD
-   GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
     QList<TrimmomaticAddSettings> steps;
-    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {} ));
+    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {}));
 
     // 3. Open the "De novo assemble Illumina SE reads" sample
     // 4. Set "human_T1.fa" as input
@@ -899,12 +901,12 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     // 9. Click "Apply"
     class ProcessWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
+        void run(HI::GUITestOpStatus &os) override {
             //    Expected state: wizard has appeared.
-            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
-            GTUtilsWizard::setInputFiles(os, { { dataDir + "samples/FASTA/human_T1.fa" } });
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             GTWidget::click(os, GTWidget::findToolButton(os, "trimmomaticPropertyToolButton", wizard));
@@ -1312,6 +1314,52 @@ GUI_TEST_CLASS_DEFINITION(test_7469) {
     CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text(os));
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text(os) == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7472) {
+    // Check that "Build tree" does not start the task if output directory is not writable.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm/ABC_tran.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class CheckReadOnlyPathScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            // Create a read-only directory and set a path to a file inside it into the saveLineEdit.
+            QString dirPath = QFileInfo(sandBoxDir + GTUtils::genUniqueString("test_7472")).absoluteFilePath();
+            CHECK_SET_ERR(QDir().mkpath(dirPath), "Failed to create dir: " + dirPath);
+            GTFile::setReadOnly(os, dirPath, false);
+
+            auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, saveLineEdit, dirPath + "/tree.nwk");
+
+            // Check that error message is shown.
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Error opening file for writing"));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CheckReadOnlyPathScenario()));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::checkNoItem(os, "tree.nwk");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7473) {
+    // Build an alignment for a read-only alignment file.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "2-Hacid_dh.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "2-Hacid_dh.sto", true);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7443.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsMsaEditor::getTreeView(os);
 }
 
 }  // namespace GUITest_regression_scenarios
