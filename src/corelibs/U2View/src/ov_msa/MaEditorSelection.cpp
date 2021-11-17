@@ -287,20 +287,20 @@ McaEditorSelectionController::McaEditorSelectionController(McaEditor* _editor)
 
 void McaEditorSelectionController::clearSelection() {
     MaEditorSelectionController::clearSelection();
-    mcaEditor->getUI()->getReferenceArea()->clearSelection();
+    mcaEditor->getMcaEditorWgtUI()->getReferenceArea()->clearSelection();
 }
 
 void McaEditorSelectionController::setSelection(const MaEditorSelection& newSelection) {
     if (newSelection.isEmpty()) {
         MaEditorSelectionController::setSelection({});
-        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        mcaEditor->getMcaEditorWgtUI()->getReferenceArea()->clearSelection();
         return;
     }
     QList<QRect> selectedRects = newSelection.getRectList();
     if (newSelection.isSingleBaseSelection() && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectedRects[0].y(), selectedRects[0].x())) {
         // Clear selection if gap is clicked.
         MaEditorSelectionController::setSelection({});
-        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        mcaEditor->getMcaEditorWgtUI()->getReferenceArea()->clearSelection();
         return;
     }
     MaEditorSelectionController::setSelection(newSelection);

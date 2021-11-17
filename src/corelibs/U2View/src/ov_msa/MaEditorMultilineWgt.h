@@ -107,6 +107,7 @@ public:
     }
 
     int getSequenceAreaWidth(uint index = 0) const;
+    int getSequenceAreaBaseWidth(uint index = 0) const;
 
     void addChild(MaEditorWgt *child, int index = -1);
 

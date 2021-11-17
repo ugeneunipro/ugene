@@ -79,11 +79,11 @@ void MSAGeneralTab::sl_alignmentChanged() {
 
 void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
     QString formatId = copyType->itemData(index).toString();
-    msaEditor->getUI()->getUI()->getSequenceArea()->sl_changeCopyFormat(formatId);
+    msaEditor->getMaEditorWgt()->getSequenceArea()->sl_changeCopyFormat(formatId);
 }
 
 void MSAGeneralTab::connectSignals() {
-    MaEditorSequenceArea *sequenceArea = msaEditor->getUI()->getUI()->getSequenceArea();
+    MaEditorSequenceArea *sequenceArea = msaEditor->getMaEditorWgt()->getSequenceArea();
 
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
@@ -107,10 +107,10 @@ void MSAGeneralTab::initializeParameters() {
     alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     // Consensus type combobox
-    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getUI()->getUI()->getConsensusArea());
+    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getMaEditorWgt()->getConsensusArea());
 
     // Copy formatted
-    copyButton->setToolTip(msaEditor->getUI()->getUI()->copyFormattedSelectionAction->toolTip());
+    copyButton->setToolTip(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->toolTip());
 
     DocumentFormatConstraints constr;
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
@@ -127,7 +127,7 @@ void MSAGeneralTab::initializeParameters() {
     copyType->addItem(QIcon(), tr("Rich text (HTML)"), "RTF");
     copyType->model()->sort(0);
 
-    QString currentCopyFormattedID = msaEditor->getUI()->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
+    QString currentCopyFormattedID = msaEditor->getMaEditorWgt()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 }
 
@@ -137,7 +137,7 @@ void MSAGeneralTab::updateState() {
     alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     consensusModeWidget->updateState();
-    copyButton->setEnabled(msaEditor->getUI()->getUI()->copyFormattedSelectionAction->isEnabled());
+    copyButton->setEnabled(msaEditor->getMaEditorWgt()->copyFormattedSelectionAction->isEnabled());
     updateConvertAlphabetButtonState();
 }
 
