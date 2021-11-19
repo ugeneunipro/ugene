@@ -71,6 +71,10 @@ MultipleChromatogramAlignmentObject* McaEditor::getMaObject() const {
     return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
 }
 
+McaEditorWgt *McaEditor::getUI() const {
+    return qobject_cast<McaEditorWgt *>(ui);
+}
+
 void McaEditor::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(showChromatogramsAction);
     tb->addAction(showOverviewAction);
@@ -92,7 +96,7 @@ void McaEditor::buildMenu(QMenu* menu, const QString& type) {
     addAlignmentMenu(menu);
     addAppearanceMenu(menu);
     addNavigationMenu(menu);
-    addEditMenu(menu, 0);
+    addEditMenu(menu);
     menu->addSeparator();
     menu->addAction(showConsensusTabAction);
     menu->addSeparator();
@@ -156,28 +160,9 @@ void McaEditor::sl_showConsensusTab() {
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
-QWidget *McaEditor::createWidget()
-{
+QWidget *McaEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
-
-    QWidget *child = createChildWidget();
-    Q_ASSERT(child != nullptr);
-
-    // TODO:ichebyki
-    //ui = new QGroupBox(tr("MSA vertical child layout"));
-    ui = nullptr;
-    QVBoxLayout *layout = new QVBoxLayout;
-
-    QString objName = "msa_editor_vertical_childs_layout_" + maObject->getGObjectName();
-    ui->setObjectName(objName);
-    layout->addWidget(child);
-    ui->setLayout(layout);
-
-    return ui;
-}
-
-QWidget *McaEditor::createChildWidget() {
-    MaEditorWgt *child = new McaEditorWgt(this);
+    ui = new McaEditorWgt(this);
 
     collapseModel->reset(getMaRowIds());
 
@@ -186,9 +171,9 @@ QWidget *McaEditor::createChildWidget() {
     GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
 
     QString objName = "mca_editor_" + maObject->getGObjectName();
-    child->setObjectName(objName);
+    ui->setObjectName(objName);
 
-    connect(child, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
+    connect(ui, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
     initActions();
 
@@ -207,7 +192,7 @@ QWidget *McaEditor::createChildWidget() {
 
     updateActions();
 
-    return child;
+    return ui;
 }
 
 void McaEditor::initActions() {
@@ -251,7 +236,7 @@ void McaEditor::initActions() {
     connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
-    getMaEditorWgt()->getOverviewArea()->setVisible(overviewVisible);
+    getUI()->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
@@ -280,7 +265,7 @@ void McaEditor::addAppearanceMenu(QMenu* menu) {
     QMenu* appearanceMenu = menu->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MCAE_MENU_APPEARANCE);
 
-    auto ui = getMcaEditorWgtUI();
+    auto ui = getUI();
     auto sequenceArea = ui->getSequenceArea();
     auto offsetsController = ui->getOffsetsViewController();
 
@@ -312,7 +297,7 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     QMenu* navigationMenu = menu->addMenu(tr("Navigation"));
     navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
 
-    auto ui = getMcaEditorWgtUI();
+    auto ui = getUI();
     navigationMenu->addAction(gotoSelectedReadAction);
 
     auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();
@@ -325,11 +310,11 @@ void McaEditor::addNavigationMenu(QMenu* menu) {
     navigationMenu->addAction(mismatchController->getNextMismatchAction());
 }
 
-void McaEditor::addEditMenu(QMenu *menu, uint uiIndex) {
+void McaEditor::addEditMenu(QMenu *menu) {
     QMenu *editMenu = menu->addMenu(tr("Edit"));
     editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
-    auto ui = getMcaEditorWgtUI();
+    auto ui = getUI();
     auto sequenceArea = ui->getSequenceArea();
 
     editMenu->addAction(sequenceArea->getInsertAction());

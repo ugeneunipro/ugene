@@ -28,6 +28,7 @@
 
 namespace U2 {
 
+class MsaEditorMultilineWgt;
 class MaEditorWgt;
 class MaSimpleOverview;
 class MaGraphOverview;
@@ -36,7 +37,7 @@ class MaOverviewContextMenu;
 class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
+    MSAEditorOverviewArea(MsaEditorMultilineWgt *ui);
 
     void contextMenuEvent(QContextMenuEvent* event) override;
 

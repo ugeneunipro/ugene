@@ -68,7 +68,7 @@ void McaEditorNameList::setSelection(const MaEditorSelection& selection) {
     MaEditorNameList::setSelection(selection);
     bool isWholeReadSelected = selection.getWidth() == editor->getAlignmentLen();
     if (isWholeReadSelected) {  // Whole sequence selection in the name list should not trigger reference selection.
-        getEditor()->getMcaEditorWgtUI()->getReferenceArea()->clearSelection();
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
     }
 }
 

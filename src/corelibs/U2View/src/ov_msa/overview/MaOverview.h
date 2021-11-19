@@ -39,7 +39,7 @@ class MaEditorSequenceArea;
 class U2VIEW_EXPORT MaOverview : public QWidget {
     Q_OBJECT
 public:
-    MaOverview(MaEditorWgt* _ui);
+    MaOverview(MaEditor *_editor, QWidget *_ui);
     virtual bool isValid() const {
         return false;
     }
@@ -76,8 +76,10 @@ protected:
     virtual int getContentWidgetWidth() const;
     virtual int getContentWidgetHeight() const;
 
-    MaEditor* editor;
-    MaEditorWgt* ui;
+    MaEditor *editor;
+    QWidget *ui;
+    // TODO:ichebyki
+    // MaEditorSequenceArea *sequenceArea;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;

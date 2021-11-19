@@ -22,6 +22,7 @@
 #ifndef _U2_MA_EDITOR_H_
 #define _U2_MA_EDITOR_H_
 
+#include <U2Core/U2SafePoints.h>
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -127,16 +128,18 @@ public:
 
     QList<qint64> getMaRowIds() const;
 
-    virtual QWidget *getUI() const { return ui; }
+    virtual QWidget *getUI() const {
+        return ui;
+    }
 
-    virtual MaEditorWgt *getMaEditorWgt(uint index = 0) {
+    virtual MaEditorWgt *getMaEditorWgt(uint index = 0) const {
+        SAFE_POINT(false, "The function getMaEditorWgt(index) must be overrided", nullptr);
         Q_UNUSED(index);
-        Q_ASSERT(false);
         return nullptr;
     };
 
-    virtual MaEditorMultilineWgt *getMaEditorMultilineWgt() {
-        Q_ASSERT(false);
+    virtual MaEditorMultilineWgt *getMaEditorMultilineWgt() const {
+        SAFE_POINT(false, "The function getMaEditorMultilineWgt(index) must be overrided", nullptr);
         return nullptr;
     };
 
@@ -264,7 +267,7 @@ protected:
     void updateResizeMode();
 
     virtual void addCopyPasteMenu(QMenu *m, uint uiIndex);
-    virtual void addEditMenu(QMenu *m, uint uiIndex) = 0;
+    virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
 

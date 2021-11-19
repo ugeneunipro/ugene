@@ -33,7 +33,7 @@ class McaEditor;
 class MaSangerOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSangerOverview(MaEditorWgt* ui);
+    MaSangerOverview(MaEditor *editor, MaEditorWgt *ui);
 
     bool isValid() const;
     QPixmap getView();
