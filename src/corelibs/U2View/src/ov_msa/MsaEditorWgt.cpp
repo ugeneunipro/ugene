@@ -38,7 +38,7 @@
 namespace U2 {
 
 MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
-                           MaEditorMultilineOverviewArea *overview,
+                           MaEditorOverviewArea *overview,
                            MaEditorStatusBar *statusbar)
     : MaEditorWgt(editor),
       multiTreeViewer(nullptr),
@@ -48,7 +48,12 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
     statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
     initActions();
-    initWidgets();
+    initWidgets(true);
+
+    // For active MaEditorWgt tracking
+    this->setAttribute(Qt::WA_Hover, true);
+    eventFilter = new MaEditorWgtEventFilter(this, this);
+    this->installEventFilter(eventFilter);
 
     setMinimumSize(sizeHint());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
@@ -131,7 +136,7 @@ void MsaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
-void MsaEditorWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
+void MsaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
     Q_ASSERT(_overviewArea);
     overviewArea = _overviewArea;
 }

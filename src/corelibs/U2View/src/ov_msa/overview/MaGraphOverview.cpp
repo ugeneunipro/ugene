@@ -39,6 +39,7 @@
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/ScrollController.h"
+#include "ov_msa/MultilineScrollController.h"
 
 #define MSA_GRAPH_OVERVIEW_COLOR_KEY "msa_graph_overview_color"
 #define MSA_GRAPH_OVERVIEW_TYPE_KEY "msa_graph_overview_type"
@@ -46,8 +47,13 @@
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditorWgt* ui)
-    : MaOverview(ui) {
+MaGraphOverview::MaGraphOverview(MaEditor *editor, QWidget *ui)
+    : MaOverview(editor, ui),
+      redrawGraph(true),
+      isBlocked(false),
+      lastDrawnVersion(-1),
+      method(Strict),
+      graphCalculationTask(nullptr) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 
@@ -143,8 +149,13 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
     } else {
         recalculateScale();
 
-        const int screenPositionX = editor->getMaEditorWgt()->getScrollController()->getScreenPosition().x();
-        const qint64 screenWidth = editor->getMaEditorWgt()->getSequenceArea()->width();
+        qint64 screenWidth = 0;
+        MaEditorWgt *wgt = editor->getMaEditorWgt(0);
+        const int screenPositionX = wgt->getScrollController()->getScreenPosition().x();
+        for (uint i = 0; wgt != nullptr; ) {
+            screenWidth += wgt->getSequenceArea()->width();
+            wgt = editor->getMaEditorWgt(++i);
+        }
 
         cachedVisibleRange.setY(0);
         cachedVisibleRange.setHeight(FIXED_HEIGHT);
@@ -179,8 +190,18 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
         case MaGraphCalculationMethod::Clustal:
             task = new MaClustalOverviewCalculationTask(maObject, width(), height());
             break;
-        case MaGraphCalculationMethod::Highlighting:
-            task = new MaHighlightingOverviewCalculationTask(editor, state.colorSchemeId, state.highlightingSchemeId, width(), height());
+        case Highlighting:
+            MsaHighlightingScheme *hScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme();
+            QString hSchemeId = hScheme->getFactory()->getId();
+
+            MsaColorScheme *cScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme();
+            QString cSchemeId = cScheme->getFactory()->getId();
+
+            graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
+                                                                             cSchemeId,
+                                                                             hSchemeId,
+                                                                             width(),
+                                                                             FIXED_HEIGHT);
             break;
     }
     SAFE_POINT(task != nullptr, "Unsupported overview method:" + QString::number((int)state.method), );
@@ -292,8 +313,9 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
 
     newVisibleRange.moveCenter(newPos);
 
-    int newScrollBarValue = qRound(newVisibleRange.x() * stepX);
-    ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    // TODO:ichebyki qobject_cast?
+    qobject_cast<MaEditorMultilineWgt *>(ui)->getScrollController()->setHScrollbarValue(newScrollBarValue);
 
     update();
 }
