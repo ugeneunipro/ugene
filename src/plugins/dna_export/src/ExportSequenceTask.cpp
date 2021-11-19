@@ -566,7 +566,6 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
         // If we translate the reverse-complement sequence, we need to go from the rnd to the beginning
         // And we need to skip first 1 or 2 bases (or don't skip them if the annotation length is divided by 3
         int offset = 0;
-        qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotationEndPos - pos);
         if (isReverseComplement) {
             offset = annotatedRegion.length % 3;
             pos = annotationEndPos - MAX_CHUNK_LENGTH;
@@ -583,6 +582,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
                 return pos < annotationEndPos;
             }
         };
+        qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotationEndPos - pos);
         auto change = [&]() {
             if (isReverseComplement) {
                 if (pos == annotatedRegion.startPos) { // If this condition is true, that we need to exit from the cycle
