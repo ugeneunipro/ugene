@@ -28,7 +28,6 @@ fi
 
 xcrun altool \
     $op \
-    --show-progress \
     --verbose \
     -f "$2" \
     -t osx \

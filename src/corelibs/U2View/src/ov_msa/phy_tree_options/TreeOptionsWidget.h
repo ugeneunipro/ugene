@@ -130,8 +130,6 @@ public:
 
 private slots:
     void sl_onOpenTreeTriggered();
-    void sl_onBuildTreeTriggered();
-    void sl_updateBuildTreeButtonState();
 
 private:
     MSAEditor *editor;

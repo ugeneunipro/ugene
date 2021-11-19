@@ -90,6 +90,10 @@ public:
     void setFormat(const QString &formatId);
 
     QString getSaveFileName() const;
+
+    /** Returns save-file-name and a validation state in op-status. */
+    QString getValidatedSaveFilePath(U2OpStatus &os) const;
+
     DocumentFormatId getFormatIdToSave() const;
 
     void forceRoll(const QSet<QString> &excludeList = QSet<QString>());

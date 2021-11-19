@@ -1198,8 +1198,14 @@ QString FindPatternWidget::checkSearchRegion() const {
         return tr("Warning: Invalid search region.");
     }
     QString pattern = textPattern->toPlainText();
-    if (!usePatternFromFileRadioButton->isChecked() && selectedAlgorithm != FindAlgorithmPatternSettings_RegExp && region.length < pattern.length()) {
-        return tr("Warning: Search region is too small.");
+    if (!usePatternFromFileRadioButton->isChecked() && selectedAlgorithm != FindAlgorithmPatternSettings_RegExp && !pattern.isEmpty()) {
+        QStringList patterns = pattern.split("\n");
+        QString longestPattern = *std::max_element(patterns.begin(),
+                                                   patterns.end(),
+                                                   [](auto &p1, auto &p2) { return p1.length() < p2.length(); });
+        if (longestPattern.length() > region.length) {
+            return tr("Warning: Search region is too small.");
+        }
     }
     return "";
 }

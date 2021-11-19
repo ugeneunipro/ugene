@@ -213,32 +213,26 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
 
     for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getNumRows(); ++rowIdx, ++seqIdx) {
         U2Sequence seq = sequences[seqIdx];
-        if (seq.length > 0) {
-            MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
-            const U2MsaRowGapModel gapModel = msaGapModel[rowIdx];
-            if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
-                // remove trailing gap if it exists
-                U2MsaRowGapModel newGapModel = gapModel;
-                newGapModel.removeLast();
-                alignmentRow->setGapModel(newGapModel);
-            }
-
-            U2MsaRow row;
-            row.sequenceId = seq.id;
-            row.gstart = 0;
-            row.gend = seq.length;
-            row.gaps = alignmentRow->getGapModel();
-            row.length = alignmentRow->getRowLengthWithoutTrailing();
-
-            rows.append(row);
-        } else {
-            al->removeRow(rowIdx, os);
-            --rowIdx;
+        MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
+        const U2MsaRowGapModel& gapModel = msaGapModel[rowIdx];
+        if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
+            // remove trailing gap if it exists
+            U2MsaRowGapModel newGapModel = gapModel;
+            newGapModel.removeLast();
+            alignmentRow->setGapModel(newGapModel);
         }
+        U2MsaRow row;
+        row.sequenceId = seq.id;
+        row.gstart = 0;
+        row.gend = seq.length;
+        row.gaps = alignmentRow->getGapModel();
+        row.length = alignmentRow->getRowLengthWithoutTrailing();
+
+        rows.append(row);
     }
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "NULL MSA Dbi during importing an alignment!", QList<U2MsaRow>());
+    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during importing an alignment!", QList<U2MsaRow>());
 
     msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, QList<U2MsaRow>());

@@ -101,6 +101,7 @@
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
+#include "iqtree/IQTreeSupport.h"
 #include "java/JavaSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
@@ -149,8 +150,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     // External tools serialize additional tool info into QSettings and using StrStrMap type.
     qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
 
-    //External tools registry keeps order of items added
-    //it is important because there might be dependencies
+    // External tools registry keeps order of items added
+    // it is important because there might be dependencies
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry != nullptr, "ExternalToolRegistry is null", );
 
@@ -177,33 +178,36 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new RModuleOrgdmegdbSupport());
     etRegistry->registerEntry(new RModuleSeqlogoSupport());
 
-    //perl
+    // perl
     etRegistry->registerEntry(new PerlSupport());
 
-    //java
+    // java
     etRegistry->registerEntry(new JavaSupport());
 
-    //ClustalW
+    // ClustalW
     ClustalWSupport *clustalWTool = new ClustalWSupport();
     etRegistry->registerEntry(clustalWTool);
 
-    //ClustalO
+    // ClustalO
     ClustalOSupport *clustalOTool = new ClustalOSupport();
     etRegistry->registerEntry(clustalOTool);
 
-    //MAFFT
+    // MAFFT
     MAFFTSupport *mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
-    //T-Coffee
+    // T-Coffee
     TCoffeeSupport *tCoffeeTool = new TCoffeeSupport();
     etRegistry->registerEntry(tCoffeeTool);
 
-    //MrBayes
+    // MrBayes
     etRegistry->registerEntry(new MrBayesSupport());
 
-    //PhyML
+    // PhyML
     etRegistry->registerEntry(new PhyMLSupport());
+
+    // IQTree
+    etRegistry->registerEntry(new IQTreeSupport());
 
     if (AppContext::getMainWindow()) {
         clustalWTool->getViewContext()->setParent(this);
@@ -239,11 +243,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    //MakeBLASTDB from BLAST+
+    // MakeBLASTDB from BLAST+
     FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
-    //BlastAll
+    // BlastAll
     BlastPlusSupport *blastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTN_ID, BlastPlusSupport::ET_BLASTN);
     etRegistry->registerEntry(blastNPlusTool);
     BlastPlusSupport *blastPPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTP_ID, BlastPlusSupport::ET_BLASTP);
@@ -294,13 +298,13 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     SpideySupport *spideySupport = new SpideySupport();
     etRegistry->registerEntry(spideySupport);
 
-    //bedtools
+    // bedtools
     etRegistry->registerEntry(new BedtoolsSupport());
 
-    //cutadapt
+    // cutadapt
     etRegistry->registerEntry(new CutadaptSupport());
 
-    //bigwig
+    // bigwig
     etRegistry->registerEntry(new BigWigSupport());
 
     // TopHat
@@ -322,33 +326,33 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     // peak2gene
     etRegistry->registerEntry(new Peak2GeneSupport());
 
-    //ConservationPlot
+    // ConservationPlot
     etRegistry->registerEntry(new ConservationPlotSupport());
 
-    //SeqPos
+    // SeqPos
     etRegistry->registerEntry(new SeqPosSupport());
 
-    //ConductGO
+    // ConductGO
     etRegistry->registerEntry(new ConductGOSupport());
 
-    //Vcfutils
+    // Vcfutils
     etRegistry->registerEntry(new VcfutilsSupport());
 
-    //SnpEff
+    // SnpEff
     etRegistry->registerEntry(new SnpEffSupport());
 
-    //FastQC
+    // FastQC
     etRegistry->registerEntry(new FastQCSupport());
 
     // StringTie
     etRegistry->registerEntry(new StringTieSupport());
 
-    //HMMER
+    // HMMER
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL_ID, HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL_ID, HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL_ID, HmmerSupport::PHMMER_TOOL));
 
-    //Trimmomatic
+    // Trimmomatic
     etRegistry->registerEntry(new TrimmomaticSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
@@ -396,7 +400,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
 
         BlastPlusSupportContext *blastPlusViewCtx = new BlastPlusSupportContext(this);
-        blastPlusViewCtx->setParent(this);    //may be problems???
+        blastPlusViewCtx->setParent(this);  // may be problems???
         blastPlusViewCtx->init();
         QStringList toolList;
         toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
@@ -408,7 +412,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
         connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 
-        //Add to menu NCBI Toolkit
+        // Add to menu NCBI Toolkit
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, makeBLASTDBAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusCmdAction);
@@ -461,7 +465,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     registerWorkers();
 
     if (AppContext::getMainWindow()) {
-        services << new ExternalToolSupportService();    // Add project view service
+        services << new ExternalToolSupportService();  // Add project view service
     }
 }
 
@@ -537,4 +541,4 @@ void ExternalToolSupportService::serviceStateChangedCallback(ServiceState oldSta
     }
 }
 
-}    // namespace U2
+}  // namespace U2

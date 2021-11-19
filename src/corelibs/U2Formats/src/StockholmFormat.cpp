@@ -21,12 +21,11 @@
 
 #include "StockholmFormat.h"
 
-#include <QFileInfo>
 #include <QTextStream>
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
@@ -34,55 +33,36 @@
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "DocumentFormatUtils.h"
-
-/* TRANSLATOR U2::StockholmFormat */
 namespace U2 {
-const QByteArray StockholmFormat::FILE_ANNOTATION_ID = "#=GF ID";
-const QByteArray StockholmFormat::FILE_ANNOTATION_AC = "#=GF AC";
-const QByteArray StockholmFormat::FILE_ANNOTATION_DE = "#=GF DE";
-const QByteArray StockholmFormat::FILE_ANNOTATION_GA = "#=GF GA";
-const QByteArray StockholmFormat::FILE_ANNOTATION_NC = "#=GF NC";
-const QByteArray StockholmFormat::FILE_ANNOTATION_TC = "#=GF TC";
 
-const QByteArray StockholmFormat::UNI_ANNOTATION_MARK = "# UNIMARK";
+const QString StockholmFormat::FILE_ANNOTATION_ID = "#=GF ID";
+const QString StockholmFormat::FILE_ANNOTATION_AC = "#=GF AC";
+const QString StockholmFormat::FILE_ANNOTATION_DE = "#=GF DE";
+const QString StockholmFormat::FILE_ANNOTATION_GA = "#=GF GA";
+const QString StockholmFormat::FILE_ANNOTATION_NC = "#=GF NC";
+const QString StockholmFormat::FILE_ANNOTATION_TC = "#=GF TC";
 
-const QByteArray StockholmFormat::COLUMN_ANNOTATION_SS_CONS = "#=GC SS_cons";
-const QByteArray StockholmFormat::COLUMN_ANNOTATION_RF = "#=GC RF";
+const QString StockholmFormat::UNI_ANNOTATION_MARK = "# UNIMARK";
 
-StockholmFormat::ReadError::ReadError(const GUrl &url)
-    : StockholmBaseException(L10N::errorReadingFile(url)) {
-}
+const QString StockholmFormat::COLUMN_ANNOTATION_SS_CONS = "#=GC SS_cons";
+const QString StockholmFormat::COLUMN_ANNOTATION_RF = "#=GC RF";
 
-StockholmFormat::WriteError::WriteError(const GUrl &url)
-    : StockholmBaseException(L10N::errorWritingFile(url)) {
-}
-}  // namespace U2
+/** Maximum line length supported by UGENE when parsing Stockholm format. */
+static constexpr int MAX_STOCKHOLM_LINE_LENGTH = 1024 * 1024;
 
-const int BUF_SZ = 1024;
-const int SMALL_BUF_SZ = 128;
-const char TERM_SYM = '\0';
-const int NO_BYTES = 0;
-const char NEW_LINE = '\n';
+static const QString HEADER = "# STOCKHOLM 1.0\n\n";
+static const QString HEADER_PREFIX = "# STOCKHOLM 1.";
+static const QString END_OF_MSA_OBJECT_TOKEN = "//";
 
-const char *HEADER = "# STOCKHOLM 1.0\n\n";
-const char *HEADER_MIN = "# STOCKHOLM 1.";
-const int HEADER_SZ_MIN = 15;
-const char *EOF_STR = "//";
+static constexpr char COMMENT_OR_MARKUP_LINE = '#';
 
-const char COMMENT_OR_MARKUP_LINE = '#';
-const char *EMPTY_STR = "";
+static constexpr int WRITE_BLOCK_LENGTH = 50;
 
-const int WRITE_BLOCK_LENGTH = 50;
-
-using namespace U2;
-
-// other not supported
+/** Set of supported flags. */
 enum AnnotationTag {
     NO_TAG = -1,
     ID,
@@ -94,491 +74,331 @@ enum AnnotationTag {
     NC,
     TC
 };
-// other types not supported
+
+/** Set of supported annotation types. */
 enum AnnotationType {
     FILE_ANNOTATION,
     COLUMN_ANNOTATION,
     UNI_ANNOTATION
 };
 
-struct Annotation {
-    AnnotationType type;
-    AnnotationTag tag;
-    QString val;
-    Annotation(AnnotationType ty, AnnotationTag t, QString v) {
-        type = ty, tag = t;
-        val = v;
+/** Internal representation of the annotation used internally during parsing. */
+struct StockholmAnnotation {
+    StockholmAnnotation(const AnnotationType &_type, const AnnotationTag &_tag, const QString &_value)
+        : type(_type), tag(_tag), value(_value) {
     }
-    virtual ~Annotation() {
-    }
-};
-//#=GF annotations
-struct FileAnnotation : public Annotation {
-    FileAnnotation(AnnotationTag t, QString v)
-        : Annotation(FILE_ANNOTATION, t, v) {
-    }
-};
-// unipro ugene annotations
-struct UniAnnotation : public Annotation {
-    UniAnnotation(AnnotationTag t, QString v)
-        : Annotation(UNI_ANNOTATION, t, v) {
-    }
-};
-//#=GC annotations
-struct ColumnAnnotation : public Annotation {
-    ColumnAnnotation(AnnotationTag t, QString v)
-        : Annotation(COLUMN_ANNOTATION, t, v) {
-    }
+    const AnnotationType type;
+    const AnnotationTag tag;
+    QString value;
 };
 
-static Annotation *findAnnotation(const QList<Annotation *> &annList, AnnotationType t, AnnotationTag tag);
-
-// you should put annotations here after creation
-struct AnnotationBank {
-    QList<Annotation *> ann_list;
-
-    void addAnnotation(Annotation *ann) {
-        if (nullptr == ann) {
-            return;
-        }
-        if (COLUMN_ANNOTATION == ann->type) { /* Column annotations usually written as blocks with seqs */
-            assert(SS_CONS == ann->tag || RF == ann->tag);
-            Annotation *nAnn = findAnnotation(ann_list, COLUMN_ANNOTATION, ann->tag);
-            if (nullptr != nAnn) {
-                nAnn->val.append(ann->val);
-                delete ann;
+/**
+ * A list of StockholmAnnotation with an adjusted 'add' method.
+ * Auto-deletes all annotations when destroyed.
+ */
+class AnnotationBank {
+public:
+    void add(StockholmAnnotation *newAnnotation) {
+        CHECK(newAnnotation != nullptr, );
+        if (newAnnotation->type == COLUMN_ANNOTATION && (newAnnotation->tag == SS_CONS || newAnnotation->tag == RF)) {
+            auto existingAnnotation = findAnnotation(COLUMN_ANNOTATION, newAnnotation->tag);
+            if (existingAnnotation != nullptr) {
+                existingAnnotation->value += newAnnotation->value;
+                delete newAnnotation;
                 return;
             }
         }
-        ann_list.append(ann);
+        annotationsList.qlist.append(newAnnotation);
     }
-    ~AnnotationBank() {
-        qDeleteAll(ann_list);
-    }
-};  // AnnotationBank
 
-static Annotation *findAnnotation(const QList<Annotation *> &annList, AnnotationType t, AnnotationTag tag) {
-    Annotation *ret = nullptr;
-    foreach (Annotation *a, annList) {
-        assert(nullptr != a);
-        if (a->type == t && a->tag == tag) {
-            ret = a;
-            break;
+    /** Finds annotations by the type & tag pair. */
+    StockholmAnnotation *findAnnotation(const AnnotationType &type, const AnnotationTag &tag = NO_TAG) const {
+        for (StockholmAnnotation *annotation : qAsConst(annotationsList.qlist)) {
+            if (annotation->type == type && (annotation->tag == tag || tag == NO_TAG)) {
+                return annotation;
+            }
+        }
+        return nullptr;
+    }
+
+    /** Returns map of annotation values by name. */
+    QHash<QString, QString> createValueByNameMap() const {
+        QHash<QString, QString> valueByName;
+        for (StockholmAnnotation *annotation : qAsConst(annotationsList.qlist)) {
+            QString name = getGenbankAnnotationName(annotation);
+            valueByName[name] = annotation->value;
+        }
+        return valueByName;
+    }
+
+    /** Derives Genbank annotation name from the given Stockholm annotation. */
+    static QString getGenbankAnnotationName(StockholmAnnotation *annotation) {
+        switch (annotation->type) {
+            case UNI_ANNOTATION:
+                return StockholmFormat::UNI_ANNOTATION_MARK;
+            case FILE_ANNOTATION: {
+                switch (annotation->tag) {
+                    case ID:
+                        return StockholmFormat::FILE_ANNOTATION_ID;
+                    case AC:
+                        return StockholmFormat::FILE_ANNOTATION_AC;
+                    case DE:
+                        return StockholmFormat::FILE_ANNOTATION_DE;
+                    case GA:
+                        return StockholmFormat::FILE_ANNOTATION_GA;
+                    case NC:
+                        return StockholmFormat::FILE_ANNOTATION_NC;
+                    case TC:
+                        return StockholmFormat::FILE_ANNOTATION_TC;
+                    default:
+                        break;
+                }
+                FAIL(QString("Bad FILE annotation tag: %1").arg(annotation->tag), "");
+            }
+            case COLUMN_ANNOTATION: {
+                switch (annotation->tag) {
+                    case SS_CONS:
+                        return StockholmFormat::COLUMN_ANNOTATION_SS_CONS;
+                    case RF:
+                        return StockholmFormat::COLUMN_ANNOTATION_RF;
+                    default:
+                        break;
+                }
+                FAIL(QString("Bad COLUMN annotation tag: %1").arg(annotation->tag), "");
+            }
+            default:
+                FAIL(QString("Unsupported annotation tag: %1").arg(annotation->tag), "");
         }
     }
-    return ret;
-}
 
-static Annotation *getAnnotation(const QByteArray &l) {
-    QByteArray line = l.trimmed();
+private:
+    GAutoDeleteList<StockholmAnnotation> annotationsList;
+};  // AnnotationBank
+
+/** Parses annotation from the given line. Returns nullptr if annotation can't be parsed. */
+static StockholmAnnotation *parseAnnotation(const QString &lineText) {
+    QString line = lineText.trimmed();
 
     if (line.startsWith(StockholmFormat::FILE_ANNOTATION_ID)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_ID.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(ID, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_ID.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, ID, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::FILE_ANNOTATION_AC)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_AC.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(AC, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_AC.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, AC, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::FILE_ANNOTATION_DE)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_DE.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(DE, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_DE.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, DE, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::FILE_ANNOTATION_GA)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_GA.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(GA, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_GA.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, GA, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::FILE_ANNOTATION_NC)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_NC.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(NC, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_NC.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, NC, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::FILE_ANNOTATION_TC)) {
-        QByteArray val = line.mid(StockholmFormat::FILE_ANNOTATION_TC.size()).trimmed();
-        return (val.size()) ? new FileAnnotation(TC, val) : nullptr;
+        QString val = line.mid(StockholmFormat::FILE_ANNOTATION_TC.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(FILE_ANNOTATION, TC, val) : nullptr;
     } else if (StockholmFormat::UNI_ANNOTATION_MARK == line) {
-        return new UniAnnotation(NO_TAG, line);
+        return new StockholmAnnotation(UNI_ANNOTATION, NO_TAG, line);
     } else if (line.startsWith(StockholmFormat::COLUMN_ANNOTATION_SS_CONS)) {
-        QByteArray val = line.mid(StockholmFormat::COLUMN_ANNOTATION_SS_CONS.size()).trimmed();
-        return (val.size()) ? new ColumnAnnotation(SS_CONS, val) : nullptr;
+        QString val = line.mid(StockholmFormat::COLUMN_ANNOTATION_SS_CONS.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(COLUMN_ANNOTATION, SS_CONS, val) : nullptr;
     } else if (line.startsWith(StockholmFormat::COLUMN_ANNOTATION_RF)) {
-        QByteArray val = line.mid(StockholmFormat::COLUMN_ANNOTATION_RF.size()).trimmed();
-        return (val.size()) ? new ColumnAnnotation(RF, val) : nullptr;
+        QString val = line.mid(StockholmFormat::COLUMN_ANNOTATION_RF.size()).trimmed();
+        return !val.isEmpty() ? new StockholmAnnotation(COLUMN_ANNOTATION, RF, val) : nullptr;
     }
     return nullptr;
 }
 
-static QString getMsaName(const AnnotationBank &ann_bank) {
-    foreach (Annotation *ann, ann_bank.ann_list) {
-        assert(nullptr != ann);
-        if (FILE_ANNOTATION == ann->type && ID == ann->tag) {
-            return ann->val;
-        }
-    }
-    return QString();
+/** Returns MSA object name using ID annotation value or returns an empty string if no ID annotation has been found. */
+static QString getMsaNameFromFileAnnotation(const AnnotationBank &annotationBank) {
+    auto annotation = annotationBank.findAnnotation(FILE_ANNOTATION, ID);
+    return annotation == nullptr ? "" : annotation->value;
 }
 
-static bool isUniFile(const AnnotationBank &ann_bank) {
-    foreach (Annotation *ann, ann_bank.ann_list) {
-        assert(nullptr != ann);
-        if (UNI_ANNOTATION == ann->type && StockholmFormat::UNI_ANNOTATION_MARK == ann->val) {
-            return true;
-        }
-    }
-    return false;
+/** Returns 'true' if the file was created by UGENE: the annotations list has an annotation with a special UGENE mark. */
+static bool hasCreatedByUGENEMarker(const AnnotationBank &annotationBank) {
+    auto annotation = annotationBank.findAnnotation(UNI_ANNOTATION);
+    return annotation != nullptr && annotation->value == StockholmFormat::UNI_ANNOTATION_MARK;
 }
 
-static QString getAnnotationName(Annotation *ann) {
-    assert(nullptr != ann);
-
-    AnnotationType t = ann->type;
-    switch (t) {
-        case UNI_ANNOTATION:
-            return QString(StockholmFormat::UNI_ANNOTATION_MARK);
-        case FILE_ANNOTATION: {
-            AnnotationTag tag = ann->tag;
-            switch (tag) {
-                case ID:
-                    return QString(StockholmFormat::FILE_ANNOTATION_ID);
-                case AC:
-                    return QString(StockholmFormat::FILE_ANNOTATION_AC);
-                case DE:
-                    return QString(StockholmFormat::FILE_ANNOTATION_DE);
-                case GA:
-                    return QString(StockholmFormat::FILE_ANNOTATION_GA);
-                case NC:
-                    return QString(StockholmFormat::FILE_ANNOTATION_NC);
-                case TC:
-                    return QString(StockholmFormat::FILE_ANNOTATION_TC);
-                default:
-                    assert(false);
-                    break;
-            }
-            break;
-        }
-        case COLUMN_ANNOTATION: {
-            AnnotationTag tag = ann->tag;
-            switch (tag) {
-                case SS_CONS:
-                    return QString(StockholmFormat::COLUMN_ANNOTATION_SS_CONS);
-                case RF:
-                    return QString(StockholmFormat::COLUMN_ANNOTATION_RF);
-                default:
-                    assert(false);
-            }
-        }
-        default:
-            assert(false);
-    }
-    return QString();
-}
-
-static QHash<QString, QString> getAnnotationMap(const AnnotationBank &annBank) {
-    QHash<QString, QString> ret;
-    foreach (Annotation *ann, annBank.ann_list) {
-        assert(nullptr != ann);
-        QString annName = getAnnotationName(ann);
-        ret[annName] = QString(ann->val);
-    }
-    return ret;
-}
-
-template<class T>
-static void checkValThrowException(bool expected, T val1, T val2, const StockholmFormat::StockholmBaseException &e) {
-    if (expected != (val1 == val2)) {
-        throw e;
-    }
-}
-
-static bool checkHeader(const char *data, int sz) {
-    assert(nullptr != data && 0 <= sz);
-
-    if (HEADER_SZ_MIN > sz) {
+/** Skips comment of markup blocks. Returns true if the whole line was skipped. */
+static bool skipCommentOrMarkup(IOAdapterReader &reader, U2OpStatus &os, AnnotationBank &annotationBank) {
+    CHECK(!reader.atEnd(), false);
+    QString firstChar;
+    reader.read(os, firstChar, 1);
+    CHECK_OP(os, false);
+    if (firstChar != COMMENT_OR_MARKUP_LINE) {
+        reader.undo(os);
         return false;
     }
-    return QByteArray(data, sz).startsWith(HEADER_MIN);
+    QString line = firstChar + reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
+    CHECK_OP(os, false);
+    annotationBank.add(parseAnnotation(line));
+    return true;
 }
 
-// returns true if the line was skipped
-static bool skipCommentOrMarkup(IOAdapter *io, U2OpStatus &os, AnnotationBank &ann_bank) {
-    assert(nullptr != io);
-
-    QByteArray buf(BUF_SZ, TERM_SYM);
-    bool term_there = false;
-    int ret = io->readUntil(buf.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &term_there);
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), false);
-
-    checkValThrowException<int>(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-    if (COMMENT_OR_MARKUP_LINE == buf[0]) {
-        QByteArray line;
-        line.append(QByteArray(buf.data(), ret));
-        while (!term_there) {
-            ret = io->readUntil(buf.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &term_there);
-            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), false);
-
-            checkValThrowException<int>(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-            CHECK_BREAK(NO_BYTES != ret);
-
-            line.append(QByteArray(buf.data(), ret));
+/** Skips blank lines in the input. Returns number of lines skipped. */
+static int skipBlankLines(IOAdapterReader &reader, U2OpStatus &os) {
+    int lineCount = 0;
+    while (!reader.atEnd()) {
+        QString line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
+        CHECK_OP(os, lineCount);
+        if (!TextUtils::isWhiteSpace(line)) {
+            reader.undo(os);
+            break;
         }
-        ann_bank.addAnnotation(getAnnotation(line));
-        return true;
+        lineCount++;
     }
-    io->skip(-ret);
-    if (io->hasError()) {
-        os.setError(io->errorString());
-    }
-    return false;
+    return lineCount;
 }
 
-static void skipBlankLines(IOAdapter *io, U2OpStatus &os, QByteArray *lines = nullptr) {
-    assert(nullptr != io);
-
-    char c = 0;
-    bool work = true;
-    while (work) {
-        int ret = io->readBlock(&c, 1);
-        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-        checkValThrowException<int>(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-        CHECK(ret != NO_BYTES, );
-
-        work = TextUtils::LINE_BREAKS[(uchar)c] || TextUtils::WHITES[(uchar)c];
-        if (lines && TextUtils::LINE_BREAKS[(uchar)c]) {
-            lines->append(c);
-        }
-    }
-    io->skip(-1);
-    if (io->hasError()) {
-        os.setError(io->errorString());
-    }
-}
-
-// skips all that it can
-static void skipMany(IOAdapter *io, U2OpStatus &os, AnnotationBank &ann_bank) {
-    assert(nullptr != io);
-
-    char c = 0;
-    while (1) {
-        bool ret = io->getChar(&c);
-        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-        checkValThrowException<bool>(false, false, ret, StockholmFormat::ReadError(io->getURL()));
-        if (COMMENT_OR_MARKUP_LINE == c) {
-            io->skip(-1);
-            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-            skipCommentOrMarkup(io, os, ann_bank);
+/** Skips all comments and unsupported markup tokens. */
+static void skipCommentsAndBlankLines(IOAdapterReader &reader, U2OpStatus &os, AnnotationBank &annotationBank) {
+    QString ch;
+    while (!reader.atEnd()) {
+        reader.read(os, ch, 1);
+        CHECK_OP(os, );
+        if (ch == COMMENT_OR_MARKUP_LINE) {
+            reader.undo(os);
             CHECK_OP(os, );
-
-            continue;
-        } else if (TextUtils::LINE_BREAKS[(uchar)c] || TextUtils::WHITES[(uchar)c]) {
-            skipBlankLines(io, os);
+            skipCommentOrMarkup(reader, os, annotationBank);
             CHECK_OP(os, );
-
             continue;
         }
-        io->skip(-1);
-        if (io->hasError()) {
-            os.setError(io->errorString());
+        if (TextUtils::isWhiteSpace(ch, 0) || TextUtils::isLineBreak(ch, 0)) {
+            skipBlankLines(reader, os);
+            CHECK_OP(os, );
+            continue;
         }
+        reader.undo(os);
+        CHECK_OP(os, );
         break;
     }
 }
 
-static bool eofMsa(IOAdapter *io, U2OpStatus &os) {
-    assert(nullptr != io);
+/**
+ * Returns true if the next line in the input is a Stockholm's end-of-msa marker line.
+ * Does not advance reader position.
+ */
+static bool isEndOfMsaLine(IOAdapterReader &reader, U2OpStatus &os) {
+    CHECK(!reader.atEnd(), false);
 
-    QByteArray buf(SMALL_BUF_SZ, TERM_SYM);
-    int ret = io->readUntil(buf.data(), SMALL_BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), false);
-
-    checkValThrowException(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-    io->skip(-ret);
-    if (io->hasError()) {
-        os.setError(io->errorString());
-    }
-    return EOF_STR == QByteArray(buf.data(), ret).trimmed();
-}
-
-static void readEofMsa(IOAdapter *io, U2OpStatus &os) {
-    assert(eofMsa(io, os));
-    CHECK_OP(os, );
-
-    QByteArray buf(SMALL_BUF_SZ, TERM_SYM);
-    int ret = io->readUntil(buf.data(), SMALL_BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), );
-
-    checkValThrowException(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-}
-
-// returns end of sequence name in line
-static int getLine(IOAdapter *io, U2OpStatus &os, QByteArray &to) {
-    assert(nullptr != io);
-
-    QByteArray buf(BUF_SZ, TERM_SYM);
-    bool there = false;
-
-    while (!there) {
-        int ret = io->readUntil(buf.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &there);
-        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), 0);
-
-        checkValThrowException<int>(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-        CHECK_BREAK(ret != NO_BYTES);
-
-        to.append(QByteArray(buf.data(), ret));
-    }
-
-    int sz = to.size();
-    int i = 0;
-    for (i = 0; i < sz; ++i) {
-        if (TextUtils::WHITES[(uchar)to[i]]) {
-            break;
-        }
-    }
-    return i;
-}
-
-static bool blockEnded(IOAdapter *io, U2OpStatus &os) {
-    assert(nullptr != io);
-
-    QByteArray lines;
-    skipBlankLines(io, os, &lines);
+    QString line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
     CHECK_OP(os, false);
 
-    if (eofMsa(io, os)) {
-        CHECK_OP(os, false);
+    reader.undo(os);
+    CHECK_OP(os, false);
 
-        return true;
-    }
-    int nl_count = 0;
-    int lines_sz = lines.size();
-
-    for (int i = 0; i < lines_sz; ++i) {
-        nl_count = (NEW_LINE == lines[i]) ? nl_count + 1 : nl_count;
-    }
-    return 1 < nl_count;
+    return line.trimmed() == END_OF_MSA_OBJECT_TOKEN;
 }
 
-static bool nameWasBefore(const MultipleSequenceAlignment &msa, const QString &name) {
-    int n = msa->getNumRows();
-    bool ret = false;
-
-    for (int i = 0; i < n; ++i) {
-        if (name == msa->getMsaRow(i)->getName()) {
-            ret = true;
-            break;
-        }
-    }
-    return ret;
+/**
+ * Returns true if the reader is at the end position of the MSA object: >1 of blank lines or 'end of MSA' line.
+ * Advances reader to the first non-blank line in the input (may be 'end of MSA' line).
+ */
+static bool isEndOfMsaBlock(IOAdapterReader &reader, U2OpStatus &os) {
+    int lineCount = skipBlankLines(reader, os);
+    CHECK_OP(os, false);
+    return lineCount > 0 || isEndOfMsaLine(reader, os);
 }
 
-static void changeGaps(QByteArray &seq) {
-    int seq_sz = seq.size();
-    for (int i = 0; i < seq_sz; ++i) {
-        if ('.' == seq[i]) {
-            seq[i] = '-';
-        }
-    }
+/** Returns true if there is a row in the 'msa' with the given name. */
+static bool hasRowWithName(const MultipleSequenceAlignment &msa, const QString &name) {
+    const QList<MultipleAlignmentRow> &rows = msa->getRows();
+    return std::any_of(rows.begin(), rows.end(), [name](auto &row) { return row->getName() == name; });
 }
 
-// returns true if operation was not canceled
-static bool loadOneMsa(IOAdapter *io, U2OpStatus &tsi, MultipleSequenceAlignment &msa, AnnotationBank &ann_bank) {
-    assert(nullptr != io);
+/** Loads a single MSA object data and related annotations. */
+static void loadOneMsa(IOAdapterReader &reader, U2OpStatus &os, MultipleSequenceAlignment &msa, AnnotationBank &annotationBank) {
+    skipBlankLines(reader, os);
+    CHECK_OP(os, );
 
-    QByteArray buf(BUF_SZ, TERM_SYM);
-    int ret = 0;
+    QString line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
+    CHECK_OP(os, );
 
-    // skip header
-    skipBlankLines(io, tsi);
-    CHECK_OP(tsi, false);
-
-    ret = io->readUntil(buf.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude);
-    CHECK_EXT(!io->hasError(), tsi.setError(io->errorString()), false);
-
-    checkValThrowException<int>(false, -1, ret, StockholmFormat::ReadError(io->getURL()));
-    if (!checkHeader(buf.data(), ret)) {
-        throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: bad header line"));
+    if (!line.startsWith(HEADER_PREFIX)) {
+        os.setError(QString("Invalid file format: bad header line: %1").arg(reader.getURL().getURLString()));
+        return;
     }
+
     int currentLen = 0;
-    // read blocks
-    bool firstBlock = true;
-    while (1) {
-        CHECK_OP(tsi, false);
+    bool isFirstBlock = true;
+    while (!reader.atEnd()) {
+        skipCommentsAndBlankLines(reader, os, annotationBank);
+        CHECK_OP(os, );
 
-        skipMany(io, tsi, ann_bank);
-        CHECK_OP(tsi, false);
-
-        if (eofMsa(io, tsi)) {
+        if (isEndOfMsaLine(reader, os)) {
             break;
         }
-        CHECK_OP(tsi, false);
+        CHECK_OP(os, );
 
-        bool hasSeqs = true;
-        int seq_ind = 0;
+        bool isEndOfBlock = false;
+        int sequenceIndex = 0;
         int blockSize = -1;
-        while (hasSeqs) {
-            QByteArray line;
-            int name_end = getLine(io, tsi, line);
-            CHECK_OP(tsi, false);
-
-            QByteArray name = line.left(name_end);
-            QByteArray seq = line.mid(name_end + 1).trimmed();
+        while (!isEndOfBlock && !reader.atEnd()) {
+            line = reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH).trimmed();
+            CHECK_OP(os, );
+            int firstSpaceIndex = TextUtils::findIndexOfFirstWhiteSpace(line);
+            if (firstSpaceIndex == -1) {
+                firstSpaceIndex = line.length();
+            }
+            QString name = line.left(firstSpaceIndex);
+            QByteArray seq = line.mid(firstSpaceIndex + 1).toLatin1().trimmed();
 
             if (name.startsWith(COMMENT_OR_MARKUP_LINE)) {
-                ann_bank.addAnnotation(getAnnotation(line));
-                hasSeqs = !blockEnded(io, tsi);
-                CHECK_OP(tsi, false);
+                annotationBank.add(parseAnnotation(line));
+                isEndOfBlock = isEndOfMsaBlock(reader, os);
+                CHECK_OP(os, );
 
-                tsi.setProgress(io->getProgress());
+                os.setProgress(reader.getProgress());
                 continue;
             }
-            changeGaps(seq);
-            if (firstBlock) {
-                if (EMPTY_STR == name) {
-                    throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: empty sequence name"));
-                }
-                if (nameWasBefore(msa, QString(name.data()))) {
-                    throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: equal sequence names in one block"));
-                }
-
-                msa->addRow(name.data(), seq);
-                if (blockSize == -1) {
-                    blockSize = seq.size();
-                } else if (blockSize != seq.size()) {
-                    throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: sequences in block are not of equal size"));
-                }
+            seq.replace('.', '-');
+            if (isFirstBlock) {
+                CHECK_EXT(!name.isEmpty(), os.setError(StockholmFormat::tr("Invalid file: empty sequence name")), );
+                CHECK_EXT(!hasRowWithName(msa, name), os.setError(StockholmFormat::tr("Invalid file: duplicate sequence names in one block: %1").arg(name)), );
+                msa->addRow(name, seq);
             } else {
-                if (name != msa->getMsaRow(seq_ind)->getName()) {
-                    throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: sequence names are not equal in blocks"));
-                }
-                msa->appendChars(seq_ind, currentLen, seq.constData(), seq.size());
-                if (blockSize == -1) {
-                    blockSize = seq.size();
-                } else if (blockSize != seq.size()) {
-                    throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: sequences in block are not of equal size"));
-                }
+                QString rowName = msa->getMsaRow(sequenceIndex)->getName();
+                CHECK_EXT(name == rowName, os.setError(StockholmFormat::tr("Invalid file: sequence names are not equal in blocks")), );
+                msa->appendChars(sequenceIndex, currentLen, seq.constData(), seq.size());
             }
-            seq_ind++;
-            hasSeqs = !blockEnded(io, tsi);
-            CHECK_OP(tsi, false);
 
-            tsi.setProgress(io->getProgress());
+            if (blockSize == -1) {
+                blockSize = seq.size();
+            } else {
+                CHECK_EXT(blockSize == seq.size(), os.setError(StockholmFormat::tr("Invalid file: sequences in block are not of equal size")), );
+            }
+
+            sequenceIndex++;
+            isEndOfBlock = isEndOfMsaBlock(reader, os);
+            CHECK_OP(os, );
+
+            os.setProgress(reader.getProgress());
         }
-        firstBlock = false;
+        isFirstBlock = false;
         currentLen += blockSize;
-    }  // while( 1 )
-    readEofMsa(io, tsi);
-    CHECK_OP(tsi, false);
+    }  // while( true )
 
-    skipBlankLines(io, tsi);
-    CHECK_OP(tsi, false);
+    SAFE_POINT_EXT(reader.atEnd() || isEndOfMsaLine(reader, os), os.setError(L10N::internalError("expected and of MSA object marker")), );
+    CHECK_OP(os, );
 
-    if (msa->getNumRows() == 0) {
-        throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: empty sequence alignment"));
-    }
+    reader.readLine(os, MAX_STOCKHOLM_LINE_LENGTH);
+    CHECK_OP(os, );
+
+    skipBlankLines(reader, os);
+    CHECK_OP(os, );
+
+    CHECK_EXT(msa->getNumRows() > 0, os.setError(StockholmFormat::tr("invalid file: empty sequence alignment")), );
+
     U2AlphabetUtils::assignAlphabet(msa);
-    if (msa->getAlphabet() == nullptr) {
-        throw StockholmFormat::BadFileData(StockholmFormat::tr("invalid file: unknown alphabet"));
-    }
-    return true;
+    CHECK_EXT(msa->getAlphabet() != nullptr, os.setError(StockholmFormat::tr("invalid file: unknown alphabet")), )
 }
 
-static void setMsaInfoCutoffs(QVariantMap &info, const QString &string, MultipleAlignmentInfo::Cutoffs cof1, MultipleAlignmentInfo::Cutoffs cof2) {
+static void setMsaInfoCutoffs(QVariantMap &info,
+                              const QString &string,
+                              const MultipleAlignmentInfo::Cutoffs &cof1,
+                              const MultipleAlignmentInfo::Cutoffs &cof2) {
     QByteArray str = string.toLatin1();
     QTextStream txtStream(str);
     float val1 = .0f;
@@ -615,170 +435,123 @@ static void setMsaInfo(const QHash<QString, QString> &annMap, MultipleSequenceAl
     ma->setInfo(info);
 }
 
-static void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &l, const QVariantMap &fs, U2OpStatus &tsi, bool &uni_file) {
-    QStringList names_list;
-    QString filename = io->getURL().baseFileName();
-    while (!io->isEof()) {
+/** Loads list of MSA objects from the given 'reader'. Adds all loaded objects into the 'objectList'. */
+static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objectList, const QVariantMap &hints, U2OpStatus &os, bool &isCreatedByUGENE) {
+    QSet<QString> objectNameList;
+    QString baseFileName = reader.getURL().baseFileName();
+    while (!reader.atEnd()) {
         MultipleSequenceAlignment msa;
-        AnnotationBank ann_bank;
-        QString name;
-        bool notCanceled = true;
-        QHash<QString, QString> annMap;
+        AnnotationBank annotationBank;
+        loadOneMsa(reader, os, msa, annotationBank);
+        CHECK_OP(os, );
 
-        notCanceled = loadOneMsa(io, tsi, msa, ann_bank);
-        CHECK_OP(tsi, );
-        CHECK_BREAK(notCanceled);
+        isCreatedByUGENE = isCreatedByUGENE || hasCreatedByUGENEMarker(annotationBank);
 
-        uni_file = uni_file || isUniFile(ann_bank);
-
-        name = getMsaName(ann_bank);
-        name = (QString() == name || names_list.contains(name)) ? filename + "_" + QString::number(l.size()) : name;
-        names_list.append(name);
+        QString name = getMsaNameFromFileAnnotation(annotationBank);
+        name = name.isEmpty() || objectNameList.contains(name) ? baseFileName + "_" + QString::number(objectList.size()) : name;
+        objectNameList.insert(name);
         msa->setName(name);
 
-        annMap = getAnnotationMap(ann_bank);
-        setMsaInfo(annMap, msa);
+        QHash<QString, QString> valueByNameMap = annotationBank.createValueByNameMap();
+        setMsaInfo(valueByNameMap, msa);
 
-        U2OpStatus2Log os;
-        const QString folder = fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+        auto msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
         CHECK_OP(os, );
-
-        obj->setIndexInfo(annMap);
-        l.append(obj);
+        msaObject->setIndexInfo(valueByNameMap);
+        objectList.append(msaObject);
     }
 }
 
+/** Returns maximum row name length in the msa. */
 static int getMaxNameLen(const MultipleSequenceAlignment &msa) {
-    assert(msa->getNumRows() != 0);
-    int sz = msa->getNumRows();
-    int max_len = msa->getMsaRow(0)->getName().size();
-
-    for (int i = 0; i < sz; ++i) {
-        int name_len = msa->getMsaRow(i)->getName().size();
-        max_len = (max_len < name_len) ? name_len : max_len;
-    }
-    return max_len;
-}
-// returns a gap between name and sequence in block
-static QByteArray getNameSeqGap(int diff) {
-    assert(0 <= diff);
-    QByteArray ret = "    ";
-    for (int i = 0; i < diff; ++i) {
-        ret.append(" ");
-    }
-    return ret;
+    const QList<MultipleAlignmentRow> &rows = msa->getRows();
+    CHECK(rows.isEmpty(), 0);
+    auto it = std::max_element(rows.begin(), rows.end(), [](auto &r1, auto &r2) { return r1->getName().length() < r2->getName().length(); });
+    return (*it)->getName().length();
 }
 
-static void save(IOAdapter *io, const MultipleSequenceAlignment &msa, QString name, U2OpStatus &os) {
-    assert(nullptr != io);
-    assert(msa->getNumRows());
-    int ret = 0;
-
-    QByteArray header(HEADER);
-    ret = io->writeBlock(header);
-    checkValThrowException<int>(true, header.size(), ret, StockholmFormat::WriteError(io->getURL()));
-    QByteArray unimark = StockholmFormat::UNI_ANNOTATION_MARK + "\n\n";
-    ret = io->writeBlock(unimark);
-    checkValThrowException<int>(true, unimark.size(), ret, StockholmFormat::WriteError(io->getURL()));
-    QByteArray idAnn = StockholmFormat::FILE_ANNOTATION_ID + " " + name.replace(QRegExp("\\s"), "_").toLatin1() + "\n\n";
-    ret = io->writeBlock(idAnn);
-    checkValThrowException<int>(true, idAnn.size(), ret, StockholmFormat::WriteError(io->getURL()));
-
-    // write sequences
-    int name_max_len = getMaxNameLen(msa);
-    int seq_len = msa->getLength();
-    MultipleSequenceAlignmentWalker walker(msa);
+/** Saves all objects in 'msa' into the 'writer' stream. */
+static void save(IOAdapterWriter &writer, const MultipleSequenceAlignment &msa, const QString &name, U2OpStatus &os) {
+    writer.write(os, HEADER);
     CHECK_OP(os, );
-    while (0 < seq_len) {
-        int block_len = (WRITE_BLOCK_LENGTH >= seq_len) ? seq_len : WRITE_BLOCK_LENGTH;
-        QList<QByteArray> seqs = walker.nextData(block_len, os);
-        CHECK_OP(os, );
 
-        // write block
-        QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
-        for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray rowName = row->getName().toLatin1();
-            TextUtils::replace(rowName.data(), rowName.length(), TextUtils::WHITES, '_');
-            rowName += getNameSeqGap(name_max_len - row->getName().size());
-            ret = io->writeBlock(rowName);
-            checkValThrowException<int>(true, rowName.size(), ret, StockholmFormat::WriteError(io->getURL()));
-            QByteArray seq = *si + NEW_LINE;
-            ret = io->writeBlock(seq);
-            checkValThrowException<int>(true, seq.size(), ret, StockholmFormat::WriteError(io->getURL()));
+    writer.write(os, StockholmFormat::UNI_ANNOTATION_MARK + "\n\n");
+    CHECK_OP(os, );
+
+    QString idValue = QString(name).replace(QRegExp("\\s"), "_");
+    writer.write(os, StockholmFormat::FILE_ANNOTATION_ID + " " + idValue + "\n\n");
+    CHECK_OP(os, );
+
+    // Write sequences.
+    int maxNameLength = getMaxNameLen(msa);
+    int remainingSequenceLength = msa->getLength();
+    MultipleSequenceAlignmentWalker walker(msa);
+    const QList<MultipleAlignmentRow> &rows = msa->getRows();
+    while (remainingSequenceLength > 0) {
+        // Write a block.
+        int blockLength = qMin(remainingSequenceLength, WRITE_BLOCK_LENGTH);
+        QList<QByteArray> sequences = walker.nextData(blockLength, os);
+        CHECK_OP(os, );
+        SAFE_POINT(sequences.size() == rows.size(), "Sequences and rows counts do not match!", );
+        for (int i = 0; i < rows.size(); i++) {
+            const MultipleAlignmentRow &row = rows[i];
+            QByteArray safeRowName = row->getName().toLatin1();
+            TextUtils::replace(safeRowName.data(), safeRowName.length(), TextUtils::WHITES, '_');
+            writer.write(os, safeRowName);
+            CHECK_OP(os, );
+            writer.write(os, QString(" ").repeated(qMax(1, maxNameLength - row->getName().size())));
+            CHECK_OP(os, );
+            writer.write(os, sequences[i]);
+            CHECK_OP(os, );
+            writer.write(os, "\n");
+            CHECK_OP(os, );
         }
-        ret = io->writeBlock(QByteArray("\n\n"));
-        checkValThrowException<int>(true, 2, ret, StockholmFormat::WriteError(io->getURL()));
-        seq_len -= block_len;
+        writer.write(os, "\n\n");
+        CHECK_OP(os, );
+        remainingSequenceLength -= blockLength;
     }
-    // write eof
-    ret = io->writeBlock(QByteArray("//\n"));
-    checkValThrowException<int>(true, 3, ret, StockholmFormat::WriteError(io->getURL()));
+    // Write end of MSA object mark.
+    writer.write(os, END_OF_MSA_OBJECT_TOKEN + "\n");
 }
 
-namespace U2 {
 StockholmFormat::StockholmFormat(QObject *obj)
-    : TextDocumentFormatDeprecated(obj, BaseDocumentFormats::STOCKHOLM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
+    : TextDocumentFormat(obj,
+                         BaseDocumentFormats::STOCKHOLM,
+                         DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE,
+                         {"sto"}) {
     formatName = tr("Stockholm");
     formatDescription = tr("A multiple sequence alignments file format");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-Document *StockholmFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
+Document *StockholmFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     QList<GObject *> objects;
-    try {
-        bool uniFile = false;
-        QString lockReason;
-        load(io, dbiRef, objects, fs, os, uniFile);
-        if (!uniFile) {
-            lockReason = QObject::tr("The document is not created by UGENE");
-        }
-        return new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
-    } catch (const StockholmBaseException &e) {
-        os.setError(e.msg);
-    } catch (...) {
-        os.setError(tr("unknown error occurred"));
-    }
-    qDeleteAll(objects);
-    return nullptr;
+    bool isCreatedByUGENE = false;
+    load(reader, dbiRef, objects, hints, os, isCreatedByUGENE);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
+
+    // Set lock to avoid change data that we can't read/write safely.
+    QString lockReason = isCreatedByUGENE ? "" : QObject::tr("The document is not created by UGENE");
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints, lockReason);
 }
 
-void StockholmFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    try {
-        foreach (GObject *p_obj, doc->getObjects()) {
-            const MultipleSequenceAlignmentObject *aln_obj = qobject_cast<const MultipleSequenceAlignmentObject *>(p_obj);
-            assert(nullptr != aln_obj);
-            save(io, aln_obj->getMultipleAlignment(), aln_obj->getGObjectName(), os);
-            CHECK_OP(os, );
-        }
-    } catch (const StockholmBaseException &ex) {
-        os.setError(ex.msg);
-    } catch (...) {
-        os.setError(tr("unknown error occurred"));
+void StockholmFormat::storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) {
+    QList<GObject *> objects = doc->getObjects();
+    for (GObject *obj : qAsConst(objects)) {
+        auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject *>(obj);
+        SAFE_POINT_EXT(alnObj != nullptr, os.setError(tr("Not an alignment object: ") + obj->getGObjectName()), );
+        save(writer, alnObj->getMultipleAlignment(), alnObj->getGObjectName(), os);
+        CHECK_OP(os, );
     }
 }
 
-FormatCheckResult StockholmFormat::checkRawTextData(const QByteArray &data, const GUrl &) const {
-    bool headerIsOK = checkHeader(data.constData(), data.size());
-    return headerIsOK ? FormatDetection_VeryHighSimilarity : FormatDetection_NotMatched;
+FormatCheckResult StockholmFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+    return dataPrefix.startsWith(HEADER_PREFIX) ? FormatDetection_VeryHighSimilarity : FormatDetection_NotMatched;
 }
 
-bool StockholmFormat::isObjectOpSupported(const Document *doc, DocObjectOp op, GObjectType t) const {
-    Q_UNUSED(op);
-    Q_UNUSED(doc);
-    assert(nullptr != doc);
-    if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT != t) {
-        return false;
-    }
-    /*if (op == DocumentFormat::DocObjectOp_Add) {
-        return doc->getObjects().isEmpty();
-    }
-    return false;*/
-    return true;
+bool StockholmFormat::isObjectOpSupported(const Document *, DocObjectOp, GObjectType type) const {
+    return type == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 }  // namespace U2

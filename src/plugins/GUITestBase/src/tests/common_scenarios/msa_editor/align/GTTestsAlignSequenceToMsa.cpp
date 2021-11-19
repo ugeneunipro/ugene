@@ -279,6 +279,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == 2, "1. Incorrect sequences count: " + QString::number(sequenceCount));
+
     // 3. Click "Align sequence(s) to this alignment" button on the toolbar.
     // 4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
@@ -287,7 +290,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: three sequences are added to the msa.
-    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Incorrect sequences count");
+    sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == 5, "2. Incorrect sequences count: " + QString::number(sequenceCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

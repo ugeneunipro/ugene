@@ -245,11 +245,11 @@ GUI_TEST_CLASS_DEFINITION(test_4010) {
     //    2. Open the PCR OP tab.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
 
-    //    3. Enter the forward primer: AAGGAAAAAATGCT.
-    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAGGAAAAAATGCT");
+    //    3. Enter the forward primer: AAAGGAAAAAATGCT.
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAGGAAAAAATGCT");
 
-    //    4. Enter the reverse primer: AGCATTTTTTCCTT.
-    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AGCATTTTTTCCTT");
+    //    4. Enter the reverse primer: AGCATTTTTTCCTTT.
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AGCATTTTTTCCTTT");
 
     //    5. Click the Primers Details dialog.
     //    Expected: the primers are whole dimers, 14 red lines.
@@ -736,6 +736,20 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     CHECK_SET_ERR(nullptr != annotationGroup, "Wrong annotations number");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4086) {
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "AC\nG\nTG", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto label = GTWidget::findLabel(os, "lblErrorMessage");
+    CHECK_SET_ERR(label->text().isEmpty(), "There is an error: " + label->text());
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/4"), "Results string does not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4087) {
@@ -3515,33 +3529,32 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4536) {
-    //    1. Open "_common_data/fasta/empty.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there are next values on the statusbar: "Ln - / 0  Col - / 0  Pos - / -".
-    const QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
-    const QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
-    const QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
-    const QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
-    const QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
-    const QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
+    // Expected state: there are the following values in the status-bar: "Ln - / 2  Col - / 4  Pos - / -".
+    QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
+    QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
+    QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
+    QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
+    QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
 
-    CHECK_SET_ERR("-" == rowNumberString, QString("An incorrect row number label: expected '%1', got '%2'").arg("-").arg(rowNumberString));
-    CHECK_SET_ERR("0" == rowsCountString, QString("An incorrect rows count label: expected '%1', got '%2'").arg("-").arg(rowsCountString));
-    CHECK_SET_ERR("-" == columnNumberString, QString("An incorrect column number label: expected '%1', got '%2'").arg("-").arg(columnNumberString));
-    CHECK_SET_ERR("0" == columnsCountString, QString("An incorrect columns count label: expected '%1', got '%2'").arg("-").arg(columnsCountString));
-    CHECK_SET_ERR("-" == sequenceUngappedPositionString, QString("An incorrect sequence ungapped position label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedPositionString));
-    CHECK_SET_ERR("-" == sequenceUngappedLengthString, QString("An incorrect sequence ungapped length label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedLengthString));
+    CHECK_SET_ERR(rowNumberString == "-", QString("Incorrect row number label: expected '-', got '%1'").arg(rowNumberString));
+    CHECK_SET_ERR(rowsCountString == "2", QString("Incorrect rows count label: expected '2', got '%1'").arg(rowsCountString));
+    CHECK_SET_ERR(columnNumberString == "-", QString("Incorrect column number label: expected '-', got '%1'").arg(columnNumberString));
+    CHECK_SET_ERR(columnsCountString == "4", QString("Incorrect columns count label: expected '4', got '%1'").arg(columnsCountString));
+    CHECK_SET_ERR(sequenceUngappedPositionString == "-", QString("Incorrect sequence ungapped position label: expected '-', got '%1'").arg(sequenceUngappedPositionString));
+    CHECK_SET_ERR(sequenceUngappedLengthString == "-", QString("Incorrect sequence ungapped length label: expected '-', got '%1'").arg(sequenceUngappedLengthString));
 
-    //    2. Open "general" options panel tab.
+    // Open "general" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    //    Expected state: there are next values: Length: 0, Sequences: 0.
-    const int length = GTUtilsOptionPanelMsa::getLength(os);
-    const int height = GTUtilsOptionPanelMsa::getHeight(os);
-    CHECK_SET_ERR(0 == length, QString("An incorrect alignment length is on the options panel: expected %1, got %2").arg(0).arg(length));
-    CHECK_SET_ERR(0 == height, QString("An incorrect alignment height is on the options panel: expected %1, got %2").arg(0).arg(height));
+    // Expected state: there are next values: Length: 4, Sequences: 2.
+    int length = GTUtilsOptionPanelMsa::getLength(os);
+    int height = GTUtilsOptionPanelMsa::getHeight(os);
+    CHECK_SET_ERR(length == 4, QString("Incorrect alignment length is on the options panel: expected 4, got %1").arg(length));
+    CHECK_SET_ERR(height == 2, QString("Incorrect alignment height is on the options panel: expected 2, got %1").arg(height));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4537) {
@@ -3563,25 +3576,6 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.sam"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open as...");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4552) {
-    // Open .
-    // Align the sequences with MUSCLE.
-    // While MUSCLE is running, open the "Tree" context menu.
-    // Expected state: the "Build tree" action is disabled while the modification is not finished.
-    // Current state: the "Build tree" action is enabled.
-
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE…"));
-    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_TREES << "Build Tree", PopupChecker::IsDisabled));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4557) {
@@ -4884,45 +4878,45 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4735) {
-    // 1. Open "_common_data/fasta/empty.fa" as msa.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Open "Simple overview"
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    // Enable "Simple overview".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     GTThread::waitForMainThread();
-    QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
-    // Check empty simple overview gray color
-    QImage img = GTWidget::getImage(os, simple);
-    QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    QWidget *simpleOverviewWidget = GTWidget::findWidget(os, "msa_overview_area_simple");
+    CHECK_SET_ERR(simpleOverviewWidget->isVisible(), "simple overview is not visiable");
+
+    // Check Simple Overview has an empty gray color.
+    QImage img = GTWidget::getImage(os, simpleOverviewWidget);
+    QRgb rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     QColor c(rgb);
-    CHECK_SET_ERR(c.name() == "#ededed", "First check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
-    // 3. Add sequence eas.fastq to alignment
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
+    CHECK_SET_ERR(c.name() == "#ededed", "1. Simple overview has wrong color: " + c.name());
+
+    // 3. Append sequence eas.fastq to alignment.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fastq/", "eas.fastq");
     GTUtilsDialog::waitForDialog(os, ob);
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // check not empty overview color
-    img = GTWidget::getImage(os, simple);
-    rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    // Check the overview has non-empty color now.
+    img = GTWidget::getImage(os, simpleOverviewWidget);
+    rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     c = QColor(rgb);
-    CHECK_SET_ERR(c.name() == "#c3ebc3", "simple overview has wrong color. Expected: #c3ebc3, Found: " + c.name());
+    CHECK_SET_ERR(c.name() == "#b9d5e4", "2. Simple overview has wrong color: " + c.name());
 
-    // 4. Undo changes
+    // Undo changes.
     GTUtilsMsaEditor::undo(os);
     GTThread::waitForMainThread();
 
-    // Check empty simple overview gray color again
-    img = GTWidget::getImage(os, simple);
-    rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
+    // Check simple overview has an empty gray color again.
+    img = GTWidget::getImage(os, simpleOverviewWidget);
+    rgb = img.pixel(simpleOverviewWidget->rect().bottomLeft() + QPoint(10, -10));
     c = QColor(rgb);
-    CHECK_SET_ERR(c.name() == "#ededed", "Second check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    CHECK_SET_ERR(c.name() == "#ededed", "3. Simple overview has wrong color: " + c.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {

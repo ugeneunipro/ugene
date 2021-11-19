@@ -50,7 +50,7 @@ bool InSilicoPcrProduct::isValid() const {
 }
 
 InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &_settings)
-    : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlags_FOSE_COSC),
+    : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
@@ -106,10 +106,17 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
 }
 
 void InSilicoPcrTask::prepare() {
+    if (!PrimerStatistics::validatePrimerLength(settings.forwardPrimer) || !PrimerStatistics::validatePrimerLength(settings.reversePrimer)) {
+        algoLog.details(tr("One of the given do not fits acceptable length. Task cancelled."));
+        stateInfo.setCanceled(true);
+        return;
+    }
     FindAlgorithmTaskSettings forwardSettings = getFindPatternSettings(U2Strand::Direct);
     CHECK_OP(stateInfo, );
     FindAlgorithmTaskSettings reverseSettings = getFindPatternSettings(U2Strand::Complementary);
     CHECK_OP(stateInfo, );
+    forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
+    reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
     forwardSearch = new FindAlgorithmTask(forwardSettings);
     reverseSearch = new FindAlgorithmTask(reverseSettings);
     addSubTask(forwardSearch);

@@ -106,6 +106,9 @@ private:
     void updateSequenceByPrimer(const PrimerBind &primer, QByteArray &productSequence) const;
 
 private:
+    //it takes ~6 minutes to process matrix 50x50 results with default algorithm settings in release build
+    static constexpr int MAX_RESULTS_FOR_PRIMERS_PER_STRAND = 50;
+
     InSilicoPcrTaskSettings settings;
     FindAlgorithmTask *forwardSearch;
     FindAlgorithmTask *reverseSearch;

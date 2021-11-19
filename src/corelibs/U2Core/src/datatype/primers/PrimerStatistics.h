@@ -39,9 +39,15 @@ public:
     static double getAnnealingTemperature(const QByteArray &product, const QByteArray &forwardPrimer, const QByteArray &reversePrimer);
 
     static bool validate(const QByteArray &primer);
+    static bool validatePrimerLength(const QByteArray &primer);
     static bool validate(QString primer);
 
     static QString getDoubleStringValue(double value);
+
+private:
+    //Length bounds of a typical primer
+    static constexpr int MAXIMUM_PRIMER_LENGTH = 50;
+    static constexpr int MINIMUM_PRIMER_LENGTH = 15;
 };
 
 class U2CORE_EXPORT PrimerStatisticsCalculator {

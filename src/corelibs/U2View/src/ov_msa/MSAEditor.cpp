@@ -129,7 +129,6 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
 
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
-    buildTreeAction->setEnabled(!isAlignmentEmpty());
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
@@ -176,7 +175,7 @@ void MSAEditor::updateActions() {
     if (alignSequencesToAlignmentAction != nullptr) {
         alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
     }
-    buildTreeAction->setEnabled(!isReadOnly && !isAlignmentEmpty());
+    buildTreeAction->setEnabled(maObject->getNumRows() >= 3);
     sl_updateRealignAction();
 
     auto alphabetId = maObject->getAlphabet()->getId();

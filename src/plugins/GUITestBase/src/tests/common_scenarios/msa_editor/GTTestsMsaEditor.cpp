@@ -2004,8 +2004,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    press OK
     qint64 bigSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-    CHECK_SET_ERR(bigSize > 4 * 1000 * 1000 && bigSize < 6 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
-    CHECK_SET_ERR(smallSize > 800 * 1000 && smallSize < 1.5 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
+    CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 7 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
+    CHECK_SET_ERR(smallSize > 700 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {

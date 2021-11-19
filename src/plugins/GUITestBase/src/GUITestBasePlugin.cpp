@@ -50,6 +50,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
 #include "tests/common_scenarios/msa_editor/GTTestsMsaEditor.h"
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
@@ -837,7 +838,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2538);
     REGISTER_TEST(GUITest_regression_scenarios::test_2540);
     REGISTER_TEST(GUITest_regression_scenarios::test_2542);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2543);
     REGISTER_TEST(GUITest_regression_scenarios::test_2544);
     REGISTER_TEST(GUITest_regression_scenarios::test_2545);
     REGISTER_TEST(GUITest_regression_scenarios::test_2549);
@@ -1173,6 +1173,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4071);
     REGISTER_TEST(GUITest_regression_scenarios::test_4072);
     REGISTER_TEST(GUITest_regression_scenarios::test_4084);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4086);
     REGISTER_TEST(GUITest_regression_scenarios::test_4087);
     REGISTER_TEST(GUITest_regression_scenarios::test_4091);
     REGISTER_TEST(GUITest_regression_scenarios::test_4093);
@@ -1267,7 +1268,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4524);
     REGISTER_TEST(GUITest_regression_scenarios::test_4536);
     REGISTER_TEST(GUITest_regression_scenarios::test_4537);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4552);
     REGISTER_TEST(GUITest_regression_scenarios::test_4557);
     REGISTER_TEST(GUITest_regression_scenarios::test_4587);
     REGISTER_TEST(GUITest_regression_scenarios::test_4588);
@@ -1769,6 +1769,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7151);
     REGISTER_TEST(GUITest_regression_scenarios::test_7152);
     REGISTER_TEST(GUITest_regression_scenarios::test_7183);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7193_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7193_2);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7212);
     REGISTER_TEST(GUITest_regression_scenarios::test_7234);
@@ -1782,6 +1784,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7380);
     REGISTER_TEST(GUITest_regression_scenarios::test_7384_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_7384_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7388);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7390);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7401);
     REGISTER_TEST(GUITest_regression_scenarios::test_7403);
@@ -1801,6 +1805,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7451);
     REGISTER_TEST(GUITest_regression_scenarios::test_7456);
     REGISTER_TEST(GUITest_regression_scenarios::test_7460);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7469);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7472);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7473_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7473_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7476);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3019,6 +3028,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0020);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0025);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/iqtree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_iqtree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_iqtree::test_0002);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/Assembly browser
