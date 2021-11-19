@@ -29,24 +29,35 @@
 
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
-MaOverview::MaOverview(MaEditorWgt* ui)
-    : QWidget(ui),
-      editor(ui->getEditor()),
-      ui(ui),
+MaOverview::MaOverview(MaEditor *_editor, QWidget *_ui)
+    : QWidget(_ui),
+      editor(_editor),
+      ui(_ui),
       stepX(0),
       stepY(0) {
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
-    connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
+    // TODO:ichebyki
+    // connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_selectionChanged()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_redraw()));
-    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+    connect(editor->getMaObject(),
+            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
+            SLOT(sl_redraw()));
+    MaEditorMultilineWgt *wgt = qobject_cast<MaEditorMultilineWgt *>(_ui);
+    if (wgt != nullptr) {
+        connect(wgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+    } else {
+        MaEditorWgt *wgt = qobject_cast<MaEditorWgt *>(_ui);
+        if (wgt != nullptr) {
+            connect(wgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+        }
+    }
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
 }
 
@@ -106,8 +117,8 @@ void MaOverview::setVisibleRangeForEmptyAlignment() {
 }
 
 void MaOverview::recalculateScale() {
-    stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
-    stepY = static_cast<double>(ui->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
+    stepX = static_cast<double>(editor->getMaEditorWgt()->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
+    stepY = static_cast<double>(editor->getMaEditorWgt()->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
 }
 
 int MaOverview::getContentWidgetWidth() const {

@@ -79,9 +79,8 @@ class U2VIEW_EXPORT MaGraphOverview : public MaOverview {
     Q_OBJECT
 
 public:
-    MaGraphOverview(MaEditorWgt* ui);
-
-    bool isValid() const override {
+    MaGraphOverview(MaEditor *editor, QWidget *ui);
+    bool isValid() const {
         return graphCalculationTaskRunner.getError().isEmpty();
     }
 

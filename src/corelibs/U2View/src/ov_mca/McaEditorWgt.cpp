@@ -53,7 +53,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor)
     refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
-    initWidgets();
+    initWidgets(false);
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
     connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));
@@ -117,11 +117,9 @@ void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
-void McaEditorWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
+void McaEditorWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
     if (_overviewArea == nullptr) {
-        // TODO:ichebyki
-        // overviewArea = new McaEditorOverviewArea(this);
-        overviewArea = nullptr;
+        overviewArea = new McaEditorOverviewArea(this);
     } else {
         overviewArea = _overviewArea;
     }

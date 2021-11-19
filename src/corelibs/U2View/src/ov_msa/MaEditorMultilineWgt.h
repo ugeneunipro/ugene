@@ -46,7 +46,7 @@ class MSAEditorOffsetsViewController;
 class MaEditorStatusBar;
 class MaEditor;
 class MaEditorNameList;
-class MaEditorMultilineOverviewArea;
+class MaEditorOverviewArea;
 class MaEditorSequenceArea;
 class RowHeightController;
 class MsaUndoRedoFramework;
@@ -64,7 +64,7 @@ public:
     /** Returns MA editor instance. The instance is always defined and is never null. */
     MaEditor *getEditor() const;
 
-    MaEditorMultilineOverviewArea *getOverviewArea() const {
+    MaEditorOverviewArea *getOverviewArea() const {
         return overviewArea;
     }
 
@@ -142,7 +142,7 @@ protected:
     virtual void initActions();
 
     virtual void initScrollArea(QScrollArea *_scrollArea = nullptr) = 0;
-    virtual void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) = 0;
+    virtual void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusbar = nullptr) = 0;
     virtual void initChildrenArea(QGroupBox *_uiChildrenArea = nullptr) = 0;
 
@@ -150,7 +150,7 @@ protected:
     MaEditor *const editor;
     QScrollArea *scrollArea; // scroll area for multiline widget, it's widget is uiChildrenArea
     QGroupBox *uiChildrenArea;
-    MaEditorMultilineOverviewArea *overviewArea;
+    MaEditorOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
 
     MaEditorWgt **uiChild = nullptr;
