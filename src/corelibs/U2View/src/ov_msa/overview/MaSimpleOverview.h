@@ -33,7 +33,7 @@ namespace U2 {
 class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSimpleOverview(MaEditorWgt* ui);
+    MaSimpleOverview(MaEditor *editor, MaEditorWgt *ui);
 
     /** Height of the overview. */
     const static int FIXED_HEIGHT = 70;

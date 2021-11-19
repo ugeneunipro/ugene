@@ -24,8 +24,9 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include "MSAEditor.h"
-#include "MSAEditorMultilineOverviewArea.h"
+#include "MSAEditorOverviewArea.h"
 #include "MsaEditorStatusBar.h"
+#include "MsaEditorWgt.h"
 
 namespace U2 {
 
@@ -33,13 +34,36 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor)
     : MaEditorMultilineWgt(editor) {
     initActions();
     initWidgets();
+
+    this->setObjectName("msa_editor_vertical_childs_layout_" +
+                        editor->getMaObject()->getGObjectName());
+    this->setMultilineMode(true);
+
+    // TODO:ichebyki
+    // calculate needed count
+    uint childrenCount = this->getMultilineMode() ? 3 : 1;
+
+    MaEditorOverviewArea *overviewArea = this->getOverviewArea();
+    MaEditorStatusBar *statusBar = this->getStatusBar();
+
+    for (uint i = 0; i < childrenCount; i++) {
+        MsaEditorWgt *child = new MsaEditorWgt(editor, overviewArea, statusBar);
+        SAFE_POINT(child != nullptr, "Can't create sequence widget in multiline mode", );
+        QString objName = QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(i);
+        child->setObjectName(objName);
+
+        this->addChild(child);
+        if (i == 0) {
+            this->setActiveChild(child);
+        }
+    }
 }
 
 MSAEditor *MsaEditorMultilineWgt::getEditor() const {
     return qobject_cast<MSAEditor *>(editor);
 }
 
-MaEditorMultilineOverviewArea *MsaEditorMultilineWgt::getOverview() {
+MaEditorOverviewArea *MsaEditorMultilineWgt::getOverview() {
     return overviewArea;
 }
 MaEditorStatusBar *MsaEditorMultilineWgt::getStatusBar() {
@@ -58,9 +82,9 @@ void MsaEditorMultilineWgt::initScrollArea(QScrollArea *_scrollArea)
     scrollArea->setWidgetResizable(true);
 }
 
-void MsaEditorMultilineWgt::initOverviewArea(MaEditorMultilineOverviewArea *_overviewArea) {
+void MsaEditorMultilineWgt::initOverviewArea(MaEditorOverviewArea *_overviewArea) {
     if (_overviewArea == nullptr) {
-        overviewArea = new MSAEditorMultilineOverviewArea(this);
+        overviewArea = new MSAEditorOverviewArea(this);
     } else {
         overviewArea = _overviewArea;
     }
@@ -84,7 +108,9 @@ void MsaEditorMultilineWgt::initChildrenArea(QGroupBox *_uiChildrenArea) {
 }
 
 MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
-    return uiChild == nullptr ? nullptr : qobject_cast<MsaEditorWgt *>(uiChild[index]);
+    return uiChild == nullptr || index >= uiChildCount
+               ? nullptr
+               : qobject_cast<MsaEditorWgt *>(uiChild[index]);
 }
 
 }  // namespace U2

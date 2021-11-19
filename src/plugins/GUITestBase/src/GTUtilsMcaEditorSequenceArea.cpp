@@ -65,7 +65,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus& os) {
     McaEditorNameList* nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(nullptr != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getMcaEditorWgtUI()->getDrawHelper()->getVisibleMaRowIndexes(
+    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
         nameListArea->height());
 
     QStringList visibleRowNames;
@@ -96,8 +96,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus& os, const QP
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
 
-    BaseWidthController *widthController = mcaSeqArea->getEditor()->getMcaEditorWgtUI()->getBaseWidthController();
-    RowHeightController *heightController = mcaSeqArea->getEditor()->getMcaEditorWgtUI()->getRowHeightController();
+    BaseWidthController *widthController = mcaSeqArea->getEditor()->getUI()->getBaseWidthController();
+    RowHeightController *heightController = mcaSeqArea->getEditor()->getUI()->getRowHeightController();
     QPoint positionCenter(widthController->getBaseScreenCenter(globalMaPosition.x()),
                           heightController->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -210,8 +210,8 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, con
     QWidget* activeWindow = GTUtilsMcaEditor::getActiveMcaEditorWindow(os);
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", activeWindow);
 
-    const int posX = static_cast<int>(mcaEditArea->getEditor()->getMcaEditorWgtUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(mcaEditArea->getEditor()->getMcaEditorWgtUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
+    const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
+    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
     return mcaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 #undef GT_METHOD_NAME
@@ -307,7 +307,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getPositionRect"
 QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int rowIndex, int referenceBaseIndex) {
-    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getMcaEditorWgtUI();
+    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getUI();
 
     U2Region xRegion = mcaWidget->getBaseWidthController()->getBaseScreenRange(referenceBaseIndex);
     U2Region yRegion = mcaWidget->getRowHeightController()->getScreenYRegionByMaRowIndex(rowIndex);
@@ -339,7 +339,7 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
 
     scrollToPosition(os, selectedPoint);
 
-    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getMcaEditorWgtUI();
+    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getUI();
     int centerX = mcaWidget->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
     int centerY = mcaWidget->getRowHeightController()->getSingleRowHeight() / 2;
     QPoint cursorPosition(centerX + movePointAdjustment.x(), centerY + movePointAdjustment.y());

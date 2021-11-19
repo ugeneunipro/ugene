@@ -29,7 +29,7 @@ namespace U2 {
 class McaEditor;
 class McaEditorConsensusArea;
 class McaEditorNameList;
-class MaEditorMultilineOverviewArea;
+class MaEditorOverviewArea;
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class McaReferenceCharController;
@@ -53,7 +53,7 @@ public:
 protected:
     void initActions() override;
     void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
-    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
     void initNameList(QScrollBar *nhBar) override;
     void initConsensusArea() override;
     void initStatusBar(MaEditorStatusBar *statusBar = nullptr) override;

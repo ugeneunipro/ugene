@@ -42,7 +42,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditorOffsetsView.h>
-#include <U2View/MSAEditorMultilineOverviewArea.h>
+#include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/UndoRedoFramework.h>
 
@@ -445,7 +445,7 @@ void MaEditor::initActions() {
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, &QAction::triggered,
-            getMaEditorMultilineWgt()->getOverviewArea(), &QWidget::setVisible);
+            getMaEditorWgt(0)->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
 
     MaEditorSelectionController *selectionController = getSelectionController();

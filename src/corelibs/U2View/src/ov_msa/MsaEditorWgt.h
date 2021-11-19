@@ -44,7 +44,7 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
 
 public:
     MsaEditorWgt(MSAEditor *editor,
-                 MaEditorMultilineOverviewArea *overview = nullptr,
+                 MaEditorOverviewArea *overview = nullptr,
                  MaEditorStatusBar *statusbar = nullptr);
 
     MSAEditor* getEditor() const;
@@ -68,7 +68,7 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
-    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
     void initStatusBar(MaEditorStatusBar *statusBar = nullptr) override;
 
     QSize sizeHint() const override;

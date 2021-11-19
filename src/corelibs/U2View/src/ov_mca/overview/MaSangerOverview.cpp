@@ -49,8 +49,8 @@ const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
 const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue";
 const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green";
 
-MaSangerOverview::MaSangerOverview(MaEditorWgt* ui)
-    : MaOverview(ui),
+MaSangerOverview::MaSangerOverview(MaEditor *editor, MaEditorWgt *ui)
+    : MaOverview(editor, ui),
       vScrollBar(new QScrollBar(Qt::Vertical, this)),
       renderArea(new QWidget(this)),
       completeRedraw(true) {
@@ -133,8 +133,8 @@ void MaSangerOverview::sl_resetCaches() {
 }
 
 void MaSangerOverview::sl_screenMoved() {
-    const int screenYPosition = ui->getScrollController()->getScreenPosition().y();
-    const int screenHeight = ui->getSequenceArea()->height();
+    const int screenYPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition().y();
+    const int screenHeight = editor->getMaEditorWgt()->getSequenceArea()->height();
     const int mappedTopPosition = screenYPosition / stepY;
     const int mappedBottomPosition = (screenYPosition + screenHeight) / stepY;
 
@@ -214,8 +214,8 @@ void MaSangerOverview::drawVisibleRange(QPainter& painter) {
     } else {
         recalculateScale();
 
-        const QPoint screenPosition = ui->getScrollController()->getScreenPosition();
-        const QSize screenSize = ui->getSequenceArea()->size();
+        const QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
+        const QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
@@ -233,7 +233,7 @@ void MaSangerOverview::drawReference() {
     QPainter painter(&cachedReferenceView);
     painter.fillRect(cachedReferenceView.rect(), Qt::white);
 
-    const int referenceUngappedLength = getEditor()->getMcaEditorWgtUI()->getRefCharController()->getUngappedLength();
+    const int referenceUngappedLength = getEditor()->getUI()->getRefCharController()->getUngappedLength();
     GraphUtils::RulerConfig config;
     config.drawArrow = false;
     config.drawNumbers = true;
@@ -305,9 +305,9 @@ void MaSangerOverview::moveVisibleRange(QPoint pos) {
     }
 
     const int newHScrollBarValue = newVisibleRange.x() * stepX;
-    ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    editor->getMaEditorWgt()->getScrollController()->setHScrollbarValue(newHScrollBarValue);
     const int newVScrollBarValue = (newVisibleRange.y() - getReferenceHeight() + getScrollBarValue()) * stepY;
-    ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    editor->getMaEditorWgt()->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 }  // namespace U2

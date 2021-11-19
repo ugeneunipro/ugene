@@ -41,7 +41,7 @@ class MSAEditorOffsetsViewController;
 class MaEditor;
 class MaEditorConsensusArea;
 class MaEditorNameList;
-class MaEditorMultilineOverviewArea;
+class MaEditorOverviewArea;
 class MaEditorSequenceArea;
 class MaEditorStatusBar;
 class RowHeightController;
@@ -87,7 +87,7 @@ public:
 
     MaEditorConsensusArea* getConsensusArea() const;
 
-    MaEditorMultilineOverviewArea *getOverviewArea() const {
+    MaEditorOverviewArea *getOverviewArea() const {
         return overviewArea;
     }
 
@@ -120,11 +120,11 @@ signals:
     void si_completeRedraw();
 
 protected:
-    virtual void initWidgets();
+    virtual void initWidgets(bool multilineMode);
     virtual void initActions();
 
     virtual void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) = 0;
-    virtual void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) = 0;
+    virtual void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) = 0;
     virtual void initNameList(QScrollBar *nhBar) = 0;
     virtual void initConsensusArea() = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusBar = nullptr) = 0;
@@ -134,7 +134,7 @@ protected:
     MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;
-    MaEditorMultilineOverviewArea *overviewArea;
+    MaEditorOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
     MSAEditorOffsetsViewController *offsetsViewController;
 

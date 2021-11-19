@@ -42,10 +42,10 @@
 
 namespace U2 {
 
-MaSimpleOverview::MaSimpleOverview(MaEditorWgt* ui)
-    : MaOverview(ui) {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    setFixedHeight(FIXED_HEIGHT);
+MaSimpleOverview::MaSimpleOverview(MaEditor *editor, MaEditorWgt *ui)
+    : MaOverview(editor, ui) {
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    setFixedHeight(FIXED_HEIGTH);
 }
 
 bool MaSimpleOverview::isValid() const {
@@ -119,8 +119,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
 
     recalculateScale();
 
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
-    QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
+    QString highlightingSchemeId = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject* mAlignmentObj = editor->getMaObject();
     SAFE_POINT(mAlignmentObj != nullptr, tr("Incorrect multiple alignment object!"), );
@@ -129,8 +128,8 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
-            U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
-            U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
+            U2Region yRange = editor->getMaEditorWgt()->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
+            U2Region xRange = editor->getMaEditorWgt()->getBaseWidthController()->getBaseGlobalRange(pos);
 
             QRect rect;
             rect.setLeft(qRound(xRange.startPos / stepX));
@@ -138,7 +137,7 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             rect.setRight(qRound(xRange.endPos() / stepX));
             rect.setBottom(qRound(yRange.endPos() / stepY));
 
-            QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
@@ -153,8 +152,8 @@ void MaSimpleOverview::drawOverview(QPainter& p) {
             }
             drawColor = MaHighlightingOverviewCalculationTask::isCellHighlighted(
                 ma,
-                sequenceArea->getCurrentHighlightingScheme(),
-                sequenceArea->getCurrentColorScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme(),
+                editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme(),
                 seq,
                 pos,
                 refPos);
@@ -172,7 +171,6 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        // TODO:ichebyki
         QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
         QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
 
@@ -194,10 +192,10 @@ void MaSimpleOverview::drawSelection(QPainter& p) {
     const MaEditorSelection& selection = editor->getSelection();
 
     QList<QRect> selectedRects = selection.getRectList();
-    for (const QRect& selectedRect : qAsConst(selectedRects)) {
-        U2Region columnRange = ui->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        U2Region columnRange = editor->getMaEditorWgt()->getBaseWidthController()->getBasesGlobalRange(selectedRect.x(), selectedRect.width());
         U2Region rowRange = U2Region::fromYRange(selectedRect);
-        U2Region sequenceViewYRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
+        U2Region sequenceViewYRegion = editor->getMaEditorWgt()->getRowHeightController()->getGlobalYRegionByViewRowsRegion(rowRange);
 
         QRect drawRect;
         drawRect.setLeft(qRound(columnRange.startPos / stepX));
@@ -216,9 +214,9 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     int newHScrollBarValue = newVisibleRange.x() * stepX;
-    ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    editor->getMaEditorWgt()->getScrollController()->setHScrollbarValue(newHScrollBarValue);
     int newVScrollBarValue = newVisibleRange.y() * stepY;
-    ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    editor->getMaEditorWgt()->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 }  // namespace U2

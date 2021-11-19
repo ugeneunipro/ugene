@@ -23,12 +23,14 @@
 #define _U2_MCA_EDITOR_H_
 
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/MaEditor.h>
 #include <U2View/MaEditorWgt.h>
 
 #include "McaEditorWgt.h"
 #include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -59,6 +61,7 @@ public:
     }
 
     MultipleChromatogramAlignmentObject *getMaObject() const override;
+    McaEditorWgt *getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */
     MaEditorSelectionController* getSelectionController() const override;
@@ -77,21 +80,13 @@ public:
 
     SequenceObjectContext* getReferenceContext() const;
 
-    QAction *getGotoSelectedReadAction() const { return gotoSelectedReadAction; }
-
-    // Get child ui as MaEditorMultilineWgt is proxy for Mca
-    McaEditorWgt *getMcaEditorWgtUI() {
-        return qobject_cast<McaEditorWgt *>(ui);
+    QAction *getGotoSelectedReadAction() const {
+        return gotoSelectedReadAction;
     }
 
-    MaEditorWgt *getMaEditorWgt(uint index = 0) override {
-        Q_UNUSED(index);
+    MaEditorWgt *getMaEditorWgt(uint index = 0) const override {
+        SAFE_POINT(index == 0, "Calling getMaEditorWgt(index) with index > 0 is prohibited for Mca", nullptr);
         return qobject_cast<McaEditorWgt *>(ui);
-    }
-
-    MaEditorMultilineWgt *getMaEditorMultilineWgt() override {
-        Q_ASSERT(false);
-        return nullptr;
     }
 
 protected slots:
@@ -107,7 +102,6 @@ private slots:
 
 protected:
     QWidget *createWidget() override;
-    QWidget *createChildWidget();
     void initActions() override;
     void updateActions() override;
 
@@ -122,7 +116,7 @@ protected:
     /** Selection state controller. */
     McaEditorSelectionController* selectionController;
 
-    void addEditMenu(QMenu *menu, uint uiIndex = 0) override;
+    void addEditMenu(QMenu *menu) override;
     void addAlignmentMenu(QMenu *menu);
     void addAppearanceMenu(QMenu *menu);
     void addNavigationMenu(QMenu *menu);
