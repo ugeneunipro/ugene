@@ -36,10 +36,10 @@ OPGroupParameters::OPGroupParameters(QString groupId, QPixmap headerImage, QStri
 /////////////////////////////////////////////////OPFactoryFilterVisitor/////////////////////////////////////////////////
 OPFactoryFilterVisitor::OPFactoryFilterVisitor(ObjectViewType _objectViewType,
                                                const QList<const DNAAlphabet *> &_objectListAlphabet)
-    : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW),
-      alphabets(_objectListAlphabet) {
-    for (const DNAAlphabet *alpha : qAsConst(alphabets)) {
+    : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW) {
+    for (const DNAAlphabet *alpha : qAsConst(_objectListAlphabet)) {
         objectAlphabets << alpha->getType();
+        objectAlphabetIds << alpha->getId();
     }
 }
 
@@ -52,8 +52,9 @@ bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlpha
 }
 
 bool OPFactoryFilterVisitor::atLeastOneDnaPass() const {
-    for (const DNAAlphabet *alpha : qAsConst(alphabets)) {
-        if (alpha->isDNA()) {
+    for (const QString &alphabetId : qAsConst(objectAlphabetIds)) {
+        if (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()) {
             return true;
         }
     }

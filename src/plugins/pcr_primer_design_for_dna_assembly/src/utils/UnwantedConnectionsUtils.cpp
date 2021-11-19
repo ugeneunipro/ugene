@@ -25,6 +25,8 @@
 #include <U2Core/Log.h>
 #include <U2Core/PrimerStatistics.h>
 
+#include "PCRPrimerDesignForDNAAssemblyPlugin.h"
+
 namespace U2 {
 
 bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequence,
@@ -42,7 +44,7 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray &forwardSequ
                                                    int unwantedDimerLength,
                                                    QString &report) {
     PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter);
-    report = QObject::tr("<b>Self-dimer:</b><br>");
+    report = PCRPrimerDesignForDNAAssemblyPlugin::tr("<b>Self-dimer:</b><br>");
     return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature,
                                                       unwantedDimerLength, report);
 }
@@ -64,7 +66,7 @@ bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSe
                                                      int unwantedDimerLength,
                                                      QString &report) {
     PrimersPairStatistics calc(forwardSequence, reverseSequence);
-    report = QObject::tr("<b>Hetero-dimer:</b><br>");
+    report = PCRPrimerDesignForDNAAssemblyPlugin::tr("<b>Hetero-dimer:</b><br>");
     return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature,
                                                       unwantedDimerLength, report);
 }
@@ -83,13 +85,12 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature <= dimerMeltingTemp;
     bool isLengthUnwanted = unwantedDimerLength <= dimerLength;
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
-    report += QObject::tr(dimersInfo.getReportWithMeltingTemp().toLocal8Bit());
+    report += PCRPrimerDesignForDNAAssemblyPlugin::tr(dimersInfo.getReportWithMeltingTemp().toLocal8Bit());
     if (isUnwantedParameter) {
         algoLog.details(report);
     }
 
     return isUnwantedParameter;
 }
-
 
 }  // namespace U2
