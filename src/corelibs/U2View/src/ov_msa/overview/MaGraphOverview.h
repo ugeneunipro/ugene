@@ -69,7 +69,7 @@ enum MaGraphCalculationMethod {
 class U2VIEW_EXPORT MaGraphOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaGraphOverview(MaEditorWgt *ui);
+    MaGraphOverview(MaEditor *editor, QWidget *ui);
     bool isValid() const {
         return graphCalculationTaskRunner.getError().isEmpty();
     }

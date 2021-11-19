@@ -38,11 +38,12 @@
 
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/ScrollController.h"
+#include "ov_msa/MultilineScrollController.h"
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
-    : MaOverview(ui),
+MaGraphOverview::MaGraphOverview(MaEditor *editor, QWidget *ui)
+    : MaOverview(editor, ui),
       redrawGraph(true),
       isBlocked(false),
       lastDrawnVersion(-1),
@@ -139,8 +140,13 @@ void MaGraphOverview::drawVisibleRange(QPainter &p) {
     } else {
         recalculateScale();
 
-        const int screenPositionX = editor->getMaEditorWgt()->getScrollController()->getScreenPosition().x();
-        const qint64 screenWidth = editor->getMaEditorWgt()->getSequenceArea()->width();
+        qint64 screenWidth = 0;
+        MaEditorWgt *wgt = editor->getMaEditorWgt(0);
+        const int screenPositionX = wgt->getScrollController()->getScreenPosition().x();
+        for (uint i = 0; wgt != nullptr; ) {
+            screenWidth += wgt->getSequenceArea()->width();
+            wgt = editor->getMaEditorWgt(++i);
+        }
 
         cachedVisibleRange.setY(0);
         cachedVisibleRange.setHeight(FIXED_HEIGHT);
@@ -183,10 +189,10 @@ void MaGraphOverview::sl_drawGraph() {
                                                                         FIXED_HEIGHT);
             break;
         case Highlighting:
-            MsaHighlightingScheme *hScheme = sequenceArea->getCurrentHighlightingScheme();
+            MsaHighlightingScheme *hScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme();
             QString hSchemeId = hScheme->getFactory()->getId();
 
-            MsaColorScheme *cScheme = sequenceArea->getCurrentColorScheme();
+            MsaColorScheme *cScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme();
             QString cSchemeId = cScheme->getFactory()->getId();
 
             graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
@@ -347,7 +353,8 @@ void MaGraphOverview::moveVisibleRange(QPoint _pos) {
     newVisibleRange.moveCenter(newPos);
 
     const int newScrollBarValue = newVisibleRange.x() * stepX;
-    ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    // TODO:ichebyki qobject_cast?
+    qobject_cast<MaEditorMultilineWgt *>(ui)->getScrollController()->setHScrollbarValue(newScrollBarValue);
 
     update();
 }

@@ -49,7 +49,7 @@
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "MSAEditorOffsetsView.h"
-#include "MSAEditorMultilineOverviewArea.h"
+#include "MSAEditorOverviewArea.h"
 #include "MsaEditorStatusBar.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorConsensusArea.h"
@@ -63,7 +63,6 @@
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
-#include "overview/MaEditorMultilineOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"
 #include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
@@ -274,7 +273,7 @@ void MSAEditor::buildMenu(QMenu *m, const QString &type) {
     addLoadMenu(m);
 
     addCopyPasteMenu(m, 0);
-    addEditMenu(m, 0);
+    addEditMenu(m);
     addSortMenu(m);
 
     addAlignMenu(m);
@@ -322,7 +321,7 @@ void MSAEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
     copyMenu->addAction(nameList->copyWholeRowAction);
 }
 
-void MSAEditor::addEditMenu(QMenu *m, uint uiIndex) {
+void MSAEditor::addEditMenu(QMenu *m) {
     QMenu *menu = m->addMenu(tr("Edit"));
     menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
 }
@@ -472,75 +471,17 @@ QWidget *MSAEditor::createWidget()
     Q_ASSERT(ui == nullptr);
 
     ui = new MsaEditorMultilineWgt(this);
-    ui->setObjectName("msa_editor_vertical_childs_layout_" + maObject->getGObjectName());
-    getUI()->setMultilineMode(true);
-
-    // TODO:ichebyki
-    // calculate needed count
-    uint childrenCount = getUI()->getMultilineMode() ? 3 : 1;
-
-    MaEditorMultilineOverviewArea *overviewArea = getUI()->getOverviewArea();
-    MaEditorStatusBar *statusBar = getUI()->getStatusBar();
-
-    for (uint i = 0; i < childrenCount; i++) {
-        MsaEditorWgt *child = createChildWidget(i, overviewArea, statusBar);
-        if (i == 0) {
-            getUI()->setActiveChild(child);
-        }
-        Q_ASSERT(child != nullptr);
-        getUI()->addChild(child);
-    }
 
     initActions();
 
-    return ui;
-}
-
-MsaEditorWgt *MSAEditor::createChildWidget(uint index4name,
-                                           MaEditorMultilineOverviewArea *overview,
-                                           MaEditorStatusBar *statusbar) {
-    MaEditorWgt *child = new MsaEditorWgt(this, overview, statusbar);
-
-    QString objName = QString("msa_editor_" + maObject->getGObjectName() + "%1").arg(index4name);
-    child->setObjectName(objName);
-
-    connect(child, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
-
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
-    connect(gotoAction, SIGNAL(triggered()), child->getSequenceArea(), SLOT(sl_goto()));
-
-    searchInSequencesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequences…"), this);
-    searchInSequencesAction->setObjectName("search_in_sequences");
-    searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
-    searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
-    searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
     connect(searchInSequencesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequences()));
-
-    searchInSequenceNamesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequence names…"), this);
-    searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
-    searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
-    searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);
-    searchInSequenceNamesAction->setToolTip(QString("%1 (%2)").arg(searchInSequenceNamesAction->text()).arg(searchInSequenceNamesAction->shortcut().toString()));
-    connect(searchInSequenceNamesAction, SIGNAL(triggered()), this, SLOT(sl_searchInSequenceNames()));
-
-    alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
-    alignAction->setObjectName("Align");
+    connect(searchInSequenceNamesAction,
+            SIGNAL(triggered()),
+            this,
+            SLOT(sl_searchInSequenceNames()));
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
-
-    alignNewSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
-    alignNewSequencesToAlignmentAction->setObjectName("align_new_sequences_to_alignment_action");
-    connect(alignNewSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignNewSequencesToAlignment);
-
-    setAsReferenceSequenceAction = new QAction(tr("Set this sequence as reference"), this);
-    setAsReferenceSequenceAction->setObjectName("set_seq_as_reference");
+    connect(alignSequencesToAlignmentAction, SIGNAL(triggered()), this, SLOT(sl_addToAlignment()));
     connect(setAsReferenceSequenceAction, SIGNAL(triggered()), SLOT(sl_setSeqAsReference()));
-
-    unsetReferenceSequenceAction = new QAction(tr("Unset reference sequence"), this);
-    unsetReferenceSequenceAction->setObjectName("unset_reference");
     connect(unsetReferenceSequenceAction, SIGNAL(triggered()), SLOT(sl_unsetReferenceSeq()));
 
     optionsPanel = new OptionsPanel(this);
@@ -549,35 +490,77 @@ MsaEditorWgt *MSAEditor::createChildWidget(uint index4name,
     QList<OPFactoryFilterVisitorInterface *> filters;
     filters.append(new OPFactoryFilterVisitor(ObjViewType_AlignmentEditor));
 
-    QList<OPWidgetFactory *> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
+    QList<OPWidgetFactory *> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(
+        filters);
     foreach (OPWidgetFactory *factory, opWidgetFactories) {
         optionsPanel->addGroup(factory);
     }
 
-    connect(alignSelectedSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignSelectedSequencesToAlignment);
-
-    connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
+    connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
+    connect(maObject,
+            SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)),
+            SLOT(sl_updateRealignAction()));
     connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_updateRealignAction()));
 
     qDeleteAll(filters);
 
-    connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
-    connect(child, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
-    sl_hideTreeOP();
+    MaEditorWgt *child;
+    for (uint i = 0; i < getUI()->getChildrenCount(); i++) {
+        child = getUI()->getUI(i);
+        connect(child,
+                SIGNAL(customContextMenuRequested(const QPoint &)),
+                SLOT(sl_onContextMenuRequested(const QPoint &)));
+        connect(gotoAction, SIGNAL(triggered()), child->getSequenceArea(), SLOT(sl_goto()));
+        connect(child, SIGNAL(si_showTreeOP()), SLOT(sl_showTreeOP()));
+        connect(child, SIGNAL(si_hideTreeOP()), SLOT(sl_hideTreeOP()));
 
+        new MoveToObjectMaController(this, child);
+        initDragAndDropSupport(child);
+    }
+
+    sl_hideTreeOP();
     treeManager.loadRelatedTrees();
 
-    new MoveToObjectMaController(this, child);
-
-    initDragAndDropSupport(child);
     updateActions();
-    return (MsaEditorWgt *)child;
+
+    return ui;
 }
 
 void MSAEditor::initActions() {
     MaEditor::initActions();
+
+    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction->setObjectName("action_go_to_position");
+    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+    gotoAction->setShortcutContext(Qt::WindowShortcut);
+    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
+
+    searchInSequencesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequences…"), this);
+    searchInSequencesAction->setObjectName("search_in_sequences");
+    searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
+    searchInSequencesAction->setShortcutContext(Qt::WindowShortcut);
+    searchInSequencesAction->setToolTip(QString("%1 (%2)").arg(searchInSequencesAction->text()).arg(searchInSequencesAction->shortcut().toString()));
+
+    searchInSequenceNamesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequence names…"), this);
+    searchInSequenceNamesAction->setObjectName("search_in_sequence_names");
+    searchInSequenceNamesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
+    searchInSequenceNamesAction->setShortcutContext(Qt::WindowShortcut);
+    searchInSequenceNamesAction->setToolTip(QString("%1 (%2)").arg(searchInSequenceNamesAction->text()).arg(searchInSequenceNamesAction->shortcut().toString()));
+
+    alignAction = new QAction(QIcon(":core/images/align.png"), tr("Align"), this);
+    alignAction->setObjectName("Align");
+
+    alignNewSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
+    alignNewSequencesToAlignmentAction->setObjectName("align_new_sequences_to_alignment_action");
+    connect(alignNewSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignNewSequencesToAlignment);
+
+    setAsReferenceSequenceAction = new QAction(tr("Set this sequence as reference"), this);
+    setAsReferenceSequenceAction->setObjectName("set_seq_as_reference");
+
+    unsetReferenceSequenceAction = new QAction(tr("Unset reference sequence"), this);
+    unsetReferenceSequenceAction->setObjectName("unset_reference");
 
     // Disable overview for very large alignments by default.
     // UGENE's MSA overview calculation is too slow and having the overview ON when multiple large files
@@ -601,7 +584,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addNavigationMenu(&m);
     addLoadMenu(&m);
     addCopyPasteMenu(&m, uiIndex);
-    addEditMenu(&m, uiIndex);
+    addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();
 

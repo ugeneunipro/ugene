@@ -106,7 +106,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
 
     if (ctx->getSequenceSelection()->isEmpty()) {
         // find next/prev from visible range
-        MaEditorSequenceArea *seqArea = mcaEditor->getMcaEditorWgtUI()->getSequenceArea();
+        MaEditorSequenceArea *seqArea = mcaEditor->getUI()->getSequenceArea();
         initialPos = seqArea->getFirstVisibleBase() != 0 ? seqArea->getFirstVisibleBase() - 1 : mismatchCache.size() - 1;
     } else {
         // find next/prev from referenece selection

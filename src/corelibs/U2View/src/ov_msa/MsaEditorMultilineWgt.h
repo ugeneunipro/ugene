@@ -31,7 +31,8 @@ class MSADistanceMatrix;
 class MSAEditor;
 class MsaEditorAlignmentDependentWidget;
 class MSAEditorMultiTreeViewer;
-class MSAEditorMultilineOverviewArea;
+class MsaEditorWgt;
+class MSAEditorOverviewArea;
 class MsaEditorStatusBar;
 class MsaEditorSimilarityColumn;
 class MSAEditorTreeViewer;
@@ -44,7 +45,7 @@ public:
     MsaEditorMultilineWgt(MSAEditor *editor);
 
     MSAEditor *getEditor() const;
-    MaEditorMultilineOverviewArea *getOverview();
+    MaEditorOverviewArea *getOverview();
     MaEditorStatusBar *getStatusBar();
 
     MaEditorWgt *getUI(uint index = 0) const override;
@@ -53,7 +54,7 @@ private slots:
 
 protected:
     void initScrollArea(QScrollArea *_scrollArea = nullptr) override;
-    void initOverviewArea(MaEditorMultilineOverviewArea *overviewArea = nullptr) override;
+    void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
     void initStatusBar(MaEditorStatusBar *_statusBar = nullptr) override;
     void initChildrenArea(QGroupBox *_uiChildrenArea) override;
 
