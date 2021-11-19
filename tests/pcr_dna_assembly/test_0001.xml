@@ -1,5 +1,6 @@
 <multi-test>
-
+<!-- Expected result means that that no regions found. 
+     For details see the structure of data members in file PCRPrimerDesignForDNAAssemblyTask.h and getResults() method-->
 <load-document index="doc" url="pcr_primer_design/gfp.fa" io="local_file" format="fasta"/>
 
 <primer-design-for-dna-assembly-task 
