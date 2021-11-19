@@ -104,7 +104,7 @@ private:
     ObjectViewType objectViewType;
     DNAAlphabetType objectAlphabetType;
     QList<DNAAlphabetType> objectAlphabets;
-    QList<const DNAAlphabet *> alphabets;  // To check DNA.
+    QList<QString> objectAlphabetIds;  // To check DNA.
 };
 
 class U2GUI_EXPORT OPWidgetFactory : public QObject {
