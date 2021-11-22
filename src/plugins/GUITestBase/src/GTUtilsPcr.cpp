@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
@@ -54,6 +55,11 @@ void GTUtilsPcr::setPerfectMatch(HI::GUITestOpStatus &os, int number) {
 void GTUtilsPcr::setMaxProductSize(HI::GUITestOpStatus &os, int number) {
     QSpinBox *spinBox = dynamic_cast<QSpinBox *>(GTWidget::findWidget(os, "productSizeSpinBox"));
     GTSpinBox::setValue(os, spinBox, number, GTGlobals::UseKeyBoard);
+}
+
+void GTUtilsPcr::setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases) {
+    auto checkBox = dynamic_cast<QCheckBox*>(GTWidget::findWidget(os, "useAmbiguousBasesCheckBox"));
+    GTCheckBox::setChecked(os, checkBox, useAmbiguousBases);
 }
 
 QWidget *GTUtilsPcr::browseButton(HI::GUITestOpStatus &os, U2Strand::Direction direction) {

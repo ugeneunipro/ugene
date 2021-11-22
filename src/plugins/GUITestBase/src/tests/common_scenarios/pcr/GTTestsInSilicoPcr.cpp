@@ -33,13 +33,17 @@
 
 #include "GTTestsInSilicoPcr.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "primitives/PopupChooser.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
@@ -666,6 +670,102 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTLineEdit::setText(os, primerEdit, "AC\r\nCCTG   GAGAG\nCATCG\tAT", true, true);
 
     CHECK_SET_ERR(primerEdit->text() == "ACCCTGGAGAGCATCGAT", "Incorrect whitespaces removing");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0018) {
+    // 1. Open the "pcr_check_ambiguous.seq" file
+    GTUtilsPcr::clearPcrDir(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/cmdline/pcr/", "pcr_check_ambiguous.seq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Go to the PCR OP tab
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // 3. Set "TTGTCAGAATTCACCA" as the direct primer
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTGTCAGAATTCACCA");
+
+    // 4. Set "TAGTCTGATGGGCTTCCCTTTGT" as the complementary primer
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TAGTCTGATGGGCTTCCCTTTGT");
+
+    // 5. Search for results
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+
+    // Expected: 1 result has been found
+    int count = GTUtilsPcr::productsCount(os);
+    CHECK_SET_ERR(count == 1, QString("Unexpected results count, expected: 1, current: %1").arg(count));
+
+    // 6. Set "Use ambiguous bases" unchecked
+    GTUtilsPcr::setUseAmbiguousBases(os, false);
+
+    // 7. Search for results
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+
+    // Expected: 0 result has been found
+    count = GTUtilsPcr::productsCount(os);
+    CHECK_SET_ERR(count == 0, QString("Unexpected results count, expected: 0, current: %1").arg(count));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0019) {
+    // 1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) {
+            // Expected state: "In Silico PCR" dialog has appered
+            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, wizard);
+
+            // 3. Select "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"
+            GTUtilsWizard::setInputFiles(os, {{ testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq" }});
+
+            // 4. Push "Next"
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            // 5. Push "Next"
+            GTUtilsWizard::setParameter(os, "Primers URL", testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous_primers.fa");
+            GTUtilsWizard::setParameter(os, "Mismatches", 0);
+
+            // 6. Push "Next"
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            // 7. Push "Next" twice
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+
+    // 2. Open the "In Silico PCR" sample
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In silico PCR");
+
+    // 8. Set output to sandBoxDir + "result.gb"
+    GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", sandBoxDir + "result.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    // 9. Run workflow
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Expected: result.gb in the result files
+    auto outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(outputFiles.contains("result.gb"), "No expected file: \"result.gb\"");
+
+    // 10. Go to dashboard
+    GTUtilsWorkflowDesigner::returnToWorkflow(os);
+
+    // 11. Set "Use ambiguous bases", change output to sandBoxDir + "result_1.gb"
+    GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
+    GTUtilsWorkflowDesigner::setParameter(os, "Use ambiguous bases", false, GTUtilsWorkflowDesigner::valueType::comboValue);
+    GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", sandBoxDir + "result_1.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    // 12. Run workflow
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Expected: result_1.gb is absent
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(outputFiles.size() == 1, "Unexpected PCR result exists");
 }
 
 }  // namespace GUITest_common_scenarios_in_silico_pcr
