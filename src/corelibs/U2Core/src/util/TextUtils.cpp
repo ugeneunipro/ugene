@@ -235,6 +235,9 @@ void TextUtils::replace(QString &text, const QBitArray &latin1CharCodeMap, QChar
 }
 
 QString TextUtils::readFirstLine(const QString &text) {
+    if (text.indexOf('\n') == -1) {
+        return text;
+    }
     QString textCopy = text;
     QTextStream stream(&textCopy);
     return stream.readLine();
