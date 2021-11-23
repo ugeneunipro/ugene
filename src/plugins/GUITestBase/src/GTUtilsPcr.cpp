@@ -58,7 +58,7 @@ void GTUtilsPcr::setMaxProductSize(HI::GUITestOpStatus &os, int number) {
 }
 
 void GTUtilsPcr::setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases) {
-    auto checkBox = dynamic_cast<QCheckBox*>(GTWidget::findWidget(os, "useAmbiguousBasesCheckBox"));
+    auto checkBox = GTWidget::findCheckBox(os, "useAmbiguousBasesCheckBox");
     GTCheckBox::setChecked(os, checkBox, useAmbiguousBases);
 }
 

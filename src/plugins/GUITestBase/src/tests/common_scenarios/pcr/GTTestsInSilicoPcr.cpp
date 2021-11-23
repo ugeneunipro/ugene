@@ -711,7 +711,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state: "In Silico PCR" dialog has appered
             QWidget* wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, wizard);
