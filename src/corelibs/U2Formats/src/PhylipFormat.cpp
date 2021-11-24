@@ -154,6 +154,10 @@ void PhylipSequentialFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<
 
     // Write sequences.
     for (int sequenceIndex = 0; sequenceIndex < sequenceCount; sequenceIndex++) {
+        if (sequenceIndex > 0) {
+            writer.write(os, "\n");  // Blocks separator empty line.
+            CHECK_OP(os, );
+        }
         auto row = msa->getMsaRow(sequenceIndex);
         writeSequenceName(writer, row->getName(), os);
         CHECK_OP(os, );
@@ -265,6 +269,10 @@ void PhylipInterleavedFormat::storeTextEntry(IOAdapterWriter &writer, const QMap
     QList<QByteArray> sequenceList;
     int pos = 0;
     do {
+        if (pos > 0) {
+            writer.write(os, "\n");  // Blocks separator empty line.
+            CHECK_OP(os, );
+        }
         for (int sequenceIndex = 0; sequenceIndex < sequenceCount; sequenceIndex++) {
             auto row = msa->getMsaRow(sequenceIndex);
             if (pos == 0) {
