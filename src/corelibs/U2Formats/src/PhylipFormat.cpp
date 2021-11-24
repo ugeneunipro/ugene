@@ -180,6 +180,7 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString &dataPr
     // Check that data prefix has no more than expected sequence count and each of the sequences has an expected length.
     int readColumnCount = 0;
     int readSequenceCount = 0;
+    bool isMultiLineSequence = false;
     for (; readSequenceCount < sequenceCountInHeader && !textStream.atEnd();) {
         CHECK(readSequenceCount < sequenceCountInHeader, FormatDetection_NotMatched);
         line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
@@ -187,6 +188,7 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString &dataPr
         CHECK(line.length() > PHYLIP_NAME_COLUMNS_COUNT, FormatDetection_NotMatched);
         readColumnCount += countNonSpaceChars(line.mid(PHYLIP_NAME_COLUMNS_COUNT));
         while (readColumnCount < columnCountInHeader) {
+            isMultiLineSequence = true;
             line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
             CHECK(!TextUtils::isWhiteSpace(line), FormatDetection_NotMatched);
             readColumnCount += countNonSpaceChars(line);
@@ -197,7 +199,10 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString &dataPr
         }
         readSequenceCount++;
     }
-    return readSequenceCount == sequenceCountInHeader ? FormatDetection_Matched : FormatDetection_HighSimilarity;
+    return readSequenceCount == sequenceCountInHeader
+               // Return 'Matched' only for multiline. Otherwise, give a higher priority to the interleaved version of the Phylip format.
+               ? (isMultiLineSequence ? FormatDetection_Matched : FormatDetection_VeryHighSimilarity)
+               : FormatDetection_HighSimilarity;
 }
 
 MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapterReader &reader, U2OpStatus &os) const {
