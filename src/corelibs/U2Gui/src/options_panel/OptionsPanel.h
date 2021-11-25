@@ -31,6 +31,7 @@ namespace U2 {
 class GObjectView;
 class OptionsPanelWidget;
 class OPWidgetFactory;
+struct OPGroupParameters;
 
 /**
  * Provides interface between instances that want to use an options panel and
@@ -81,6 +82,16 @@ private:
     /** Returns the Options Panel widget factory by the specified groupId, or NULL. */
     OPWidgetFactory *findFactoryByGroupId(const QString &groupId);
 
+    /**
+     * Restores QSplitter state using parameters.getBoundaryId(). If OP tab in current process has not been opened
+     * before, sets by default. This QSplitter is the parent of 'widget' and separates the Sequence/MSA/... View from
+     * the OptionsPanelWidget.
+     */
+    void restoreSplitterState(const OPGroupParameters &parameters) const;
+
+    /** Saves QSplitter state by groupId. See method above. */
+    void saveSplitterState(const QString &groupId);
+
     /** All added groups */
     QList<OPWidgetFactory *> opWidgetFactories;
 
@@ -89,6 +100,9 @@ private:
 
     /** IDs of the opened group */
     QString activeGroupId;
+
+    /** OP Group Boundary Id->QSplitter State */
+    QMap<QString, QByteArray> splitterStates;
 };
 
 }  // namespace U2

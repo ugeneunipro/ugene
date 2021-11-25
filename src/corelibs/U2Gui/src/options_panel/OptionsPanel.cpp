@@ -21,6 +21,8 @@
 
 #include "OptionsPanel.h"
 
+#include <QSplitter>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
@@ -138,6 +140,10 @@ void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &o
     headerWidget->setHeaderSelected();
     // Re-apply options in case if they were overriden by SavableTab.
     opWidgetFactory->applyOptionsToWidget(mainWidget, options);
+
+    // Restore splitter state: tab width must be the same as before for this BoundaryId.
+    restoreSplitterState(parameters);
+
     activeGroupId = groupId;
 }
 
@@ -148,6 +154,9 @@ void OptionsPanel::closeOptionsGroup(const QString &groupId) {
 
     GroupHeaderImageWidget *headerWidget = widget->findHeaderWidgetByGroupId(groupId);
     SAFE_POINT(nullptr != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
+
+    // Save splitter state: remember tab width by the BoundaryId key.
+    saveSplitterState(groupId);
 
     widget->deleteOptionsWidget(groupId);
     headerWidget->setHeaderDeselected();
@@ -163,6 +172,28 @@ OPWidgetFactory *OptionsPanel::findFactoryByGroupId(const QString &groupId) {
     }
 
     return nullptr;
+}
+
+void OptionsPanel::restoreSplitterState(const OPGroupParameters &parameters) const {
+    if (auto splitter = qobject_cast<QSplitter *>(widget->getOptionsWidget()->parent())) {
+        QString splitterId = parameters.getBoundaryId();
+        if (splitterStates.contains(splitterId)) {
+            splitter->restoreState(splitterStates[splitterId]);
+        } else {  // Reset QSplitter state to its default value.
+            QList<int> sizes = splitter->sizes();
+            int defaultTabWidth = GroupOptionsWidget::getMinWidgetWidth();
+            splitter->setSizes({std::accumulate(sizes.constBegin(), sizes.constEnd(), 0) - defaultTabWidth,
+                                defaultTabWidth});
+        }
+    }
+}
+
+void OptionsPanel::saveSplitterState(const QString &groupId) {
+    OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
+    auto splitter = qobject_cast<QSplitter *>(widget->getOptionsWidget()->parent());
+    if (opWidgetFactory != nullptr && splitter != nullptr) {
+        splitterStates[opWidgetFactory->getOPGroupParameters().getBoundaryId()] = splitter->saveState();
+    }
 }
 
 }  // namespace U2

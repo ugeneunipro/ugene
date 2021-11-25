@@ -23,7 +23,9 @@
 
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcrPrimerDesignForDnaAssembly.h"
 #include "GTUtilsProject.h"
@@ -32,9 +34,11 @@
 #include "base_dialogs/MessageBoxFiller.h"
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTSpinBox.h"
+#include "primitives/GTSplitter.h"
 #include "primitives/GTTableView.h"
 #include "primitives/GTTextEdit.h"
 #include "primitives/GTWidget.h"
+#include "utils/GTThread.h"
 
 namespace U2 {
 using namespace HI;
@@ -296,6 +300,97 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                                                   .arg(expectedEnd)
                                                                                   .arg(currentStart)
                                                                                   .arg(currentEnd))
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    // Open any sequence.
+    // Open "PCR Primer Design for DNA assembly" OP tab.
+    //     Expected: tab is wide enough for all widgets to display in full.
+    // Expand tab to the maximum.
+    //     Expected: tab has its maximum width.
+    // Open "Search in Sequence" OP tab.
+    //     Expected: tab narrow (300px).
+    // Expand tab.
+    //     Expected: tab is wider.
+    // Open "Annotations Highlighting" OP tab.
+    //     Expected: tab is the same width as "Search in Sequence" after expanding.
+    // Open "PCR Primer Design for DNA assembly" OP tab.
+    //     Expected: maximum width.
+    // Open "Search in Sequence" OP tab.
+    //     Expected: the width is the same as it was when this tab was last opened.
+    //
+    // Open alignment file.
+    // Open the first OP tab.
+    //     Expected: tab narrow (300px).
+    // Expand tab.
+    //     Expected: tab is wider.
+    // Open the second OP tab.
+    //     Expected: tab is the same width as the first one after expanding.
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
+    GTUtilsPcrPrimerDesign::openTab(os);
+    auto splitter = GTWidget::findExactWidget<QSplitter *>(os,
+                                                           "OPTIONS_PANEL_SPLITTER",
+                                                           GTUtilsSequenceView::getActiveSequenceViewWindow(os));
+    auto expandTab = [&splitter](GUITestOpStatus &os) {
+        GTThread::waitForMainThread();
+        GTSplitter::moveHandle(os, splitter, -100, 1);
+        GTThread::waitForMainThread();
+    };
+
+    QWidget *tab = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign]);
+    int width = tab->width();
+    CHECK_SET_ERR(width > 400, QString("'PCR Primer Design' width: expected more than 400, current %1").arg(width))
+
+    expandTab(os);
+    width = tab->width();
+    CHECK_SET_ERR(width > 450, QString("'PCR Primer Design' width: expected maximum (over 450), current %1").arg(width))
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    tab = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::Search]);
+    width = tab->width();
+    CHECK_SET_ERR(width == 300, QString("'Search in Sequence' width: expected 300, current %1").arg(width))
+
+    expandTab(os);
+    width = tab->width();
+    CHECK_SET_ERR(width == 400, QString("'Search in Sequence' width: expected 400, current %1").arg(width))
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
+    tab = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::AnnotationsHighlighting]);
+    width = tab->width();
+    CHECK_SET_ERR(width == 400, QString("'Annotations Highlighting' width: expected 400, current %1").arg(width))
+
+    GTUtilsPcrPrimerDesign::openTab(os);
+    tab = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign]);
+    width = tab->width();
+    CHECK_SET_ERR(width > 450, QString("'PCR Primer Design' width: expected maximum, current %1").arg(width))
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    tab = GTWidget::findWidget(os,
+        GTUtilsOptionPanelSequenceView::innerWidgetNames[GTUtilsOptionPanelSequenceView::Search]);
+    width = tab->width();
+    CHECK_SET_ERR(width == 400, QString("'Search in Sequence' width: expected again 400, current %1").arg(width))
+
+    GTUtilsProject::openFile(os, GUrl(dataDir + "samples/CLUSTALW/COI.aln"));
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    tab = GTWidget::findWidget(os, GTUtilsOptionPanelMsa::innerWidgetNames[GTUtilsOptionPanelMsa::General]);
+    width = tab->width();
+    CHECK_SET_ERR(width == 300, QString("'General' width: expected 300, current %1").arg(width))
+
+    splitter = GTWidget::findExactWidget<QSplitter *>(os,
+                                                      "OPTIONS_PANEL_SPLITTER",
+                                                      GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
+    expandTab(os);
+    width = tab->width();
+    CHECK_SET_ERR(width == 400, QString("'General' width: expected 400, current %1").arg(width))
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    tab = GTWidget::findWidget(os, GTUtilsOptionPanelMsa::innerWidgetNames[GTUtilsOptionPanelMsa::Search]);
+    width = tab->width();
+    CHECK_SET_ERR(width == 400, QString("'Search in Alignment' width: expected 400, current %1").arg(width))
 }
 
 }  // namespace GUITest_common_scenarios_pcr_primer_design_tab

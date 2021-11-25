@@ -26,11 +26,20 @@
 
 namespace U2 {
 
-OPGroupParameters::OPGroupParameters(QString groupId, QPixmap headerImage, QString title, QString documentationPage)
+OPGroupParameters::OPGroupParameters(QString groupId,
+                                     QPixmap headerImage,
+                                     QString title,
+                                     QString documentationPage,
+                                     bool isDefaultBoundary)
     : groupId(groupId),
       groupIcon(headerImage),
       groupTitle(title),
-      groupDocumentationPage(documentationPage) {
+      groupDocumentationPage(documentationPage),
+      isDefaultBoundary(isDefaultBoundary) {
+}
+
+QString OPGroupParameters::getBoundaryId() const {
+    return isDefaultBoundary ? "DefaultBoundaryId" : groupId;
 }
 
 /////////////////////////////////////////////////OPFactoryFilterVisitor/////////////////////////////////////////////////

@@ -48,7 +48,11 @@ QWidget* PCRPrimerDesignForDNAAssemblyOPWidgetFactory::createWidget(GObjectView*
 }
 
 OPGroupParameters PCRPrimerDesignForDNAAssemblyOPWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), tr("PCR Primer Design for DNA assembly"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID,
+                             QPixmap(GROUP_ICON_STR),
+                             tr("PCR Primer Design for DNA assembly"),
+                             GROUP_DOC_PAGE,
+                             false);
 }
 
 bool PCRPrimerDesignForDNAAssemblyOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {

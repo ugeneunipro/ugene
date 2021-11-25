@@ -40,7 +40,12 @@ enum ObjectViewType {
 
 struct U2GUI_EXPORT OPGroupParameters {
 public:
-    OPGroupParameters(QString groupId, QPixmap headerImage, QString title, QString documentationPage);
+    // isDefaultBoundary affects getBoundaryId().
+    OPGroupParameters(QString groupId,
+                      QPixmap headerImage,
+                      QString title,
+                      QString documentationPage,
+                      bool isDefaultBoundary = true);
 
     inline QString getGroupId() {
         return groupId;
@@ -54,12 +59,17 @@ public:
     inline QString getDocumentationPage() {
         return groupDocumentationPage;
     }
+    // Returns boundaryId, which can be the default value or groupId. Affects OP tab expanding and opening behavior.
+    QString getBoundaryId() const;
 
 private:
     QString groupId;
     QPixmap groupIcon;
     QString groupTitle;
     QString groupDocumentationPage;
+    // If it is necessary that OP tab to expand/shrink independently of others (that is, when the width of other tabs
+    // changes, the width of this tab remains the same), set to false.
+    bool isDefaultBoundary;
 };
 
 class U2GUI_EXPORT OPFactoryFilterVisitorInterface {
