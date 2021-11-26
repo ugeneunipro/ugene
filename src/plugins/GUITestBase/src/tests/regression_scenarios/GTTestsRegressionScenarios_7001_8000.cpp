@@ -1408,6 +1408,78 @@ GUI_TEST_CLASS_DEFINITION(test_7476) {
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os, "collapse_mode_");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7487_1) {
+    // Check that move of the multi-region selection with drag-and-drop works as expected (2 selected regions).
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::selectRowsByName(os, {"c", "d", "g", "h"});
+
+    // Drag and drop "g" up to the "e" location.
+    QRect movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "g");
+    QRect movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "g", "h", "e", "f"}), "1. Unexpected order: " + nameList.join(","));
+
+    // Restore original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::undo(os);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "2. Unexpected order: " + nameList.join(","));
+
+    // Drag and drop "b" down to the "d" location.
+    GTUtilsMsaEditor::selectRowsByName(os, {"a", "b", "e", "f"});
+    movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "b");
+    movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"c", "d", "a", "b", "e", "f", "g", "h"}), "3. Unexpected order: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7487_2) {
+    // Check that move of the multi-region selection with drag-and-drop works as expected (4 selected regions).
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::selectRowsByName(os, {"a", "c", "e", "g"});
+
+    // Drag and drop "e" up to the "d" location.
+    QRect movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    QRect movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"b", "a", "c", "e", "g", "d", "f", "h"}), "1. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"a", "c", "e", "g"});
+
+    // Restore original state: a,b,c,d,e,f,g,h. Check that selection is restored too.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"a", "c", "e", "g"});
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "2. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::clearSelection(os);
+
+    // Drag and drop "d" down to the "e" location.
+    GTUtilsMsaEditor::selectRowsByName(os, {"b", "d", "f", "h"});
+    movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "c", "e", "b", "d", "f", "h", "g"}), "3. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"b", "d", "f", "h"});
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"b", "d", "f", "h"});
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "4. Unexpected order: " + nameList.join(","));
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
