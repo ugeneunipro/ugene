@@ -166,11 +166,12 @@ protected:
     virtual int getAvailableWidth() const;
 
     /**
-     * Converts multiple region selection into a single region selection.
-     * Only the 'stableRowIndex' sequence is guaranteed to stays on the current position.
-     * The order of sequences does not change.
+     * Converts multiple region selection into a continuous single region selection by moving all
+     * selected regions close to the region with a 'stableRowIndex'.
+     * Only the 'stableRowIndex' region is guaranteed to stay on the current position.
+     * The order of sequences in the selection does not change.
      * */
-    void groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus& os);
+    void groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus &os);
 
     QObject *labels = nullptr;  // used in GUI tests
     MaEditorWgt *ui = nullptr;
