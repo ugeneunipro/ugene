@@ -331,9 +331,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     auto splitter = GTWidget::findExactWidget<QSplitter *>(os,
                                                            "OPTIONS_PANEL_SPLITTER",
                                                            GTUtilsSequenceView::getActiveSequenceViewWindow(os));
-    auto expandTab = [&splitter](GUITestOpStatus &os) {
+    auto expandTab = [&splitter](GUITestOpStatus &os_) {
         GTThread::waitForMainThread();
-        GTSplitter::moveHandle(os, splitter, -100, 1);
+        GTSplitter::moveHandle(os_, splitter, -100, 1);
         GTThread::waitForMainThread();
     };
 
