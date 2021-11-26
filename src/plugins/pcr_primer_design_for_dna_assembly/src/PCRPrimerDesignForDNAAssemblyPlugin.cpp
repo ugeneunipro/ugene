@@ -59,7 +59,7 @@ PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
 
     foreach (XMLTestFactory *f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
-        SAFE_POINT(res, "Can't register test factory");
+        SAFE_POINT(res, "Can't register test factory", );
         Q_UNUSED(res);
     }
 }
