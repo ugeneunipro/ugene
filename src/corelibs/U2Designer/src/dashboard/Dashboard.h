@@ -52,7 +52,9 @@ public:
 
     const QPointer<const WorkflowMonitor> &getMonitor() const;
 
+    bool isOpened() const;
     void setClosed();
+
     const QString &directory() const;
     const QString &getDashboardId() const;
 

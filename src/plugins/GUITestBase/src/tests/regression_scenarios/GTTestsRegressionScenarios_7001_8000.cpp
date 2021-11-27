@@ -45,6 +45,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
@@ -52,6 +53,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
@@ -1282,6 +1284,28 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
     CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7463) {
+    // Tools->NGS data analysis->Extract consensus from assemblies...
+    // Set _common_data/bam/Mycobacterium.sorted.bam as input and run.
+    // Repeat steps with data/samples/Assembly/chrM.sorted.bam.
+    // When the chrM workflow is over, click "Close dashboard".
+    //     Expected: no crash or freeze.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
+        {{"Assembly", testDir + "_common_data/bam/Mycobacterium.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
+        {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsNotifications::waitForNotification(os);
+    GTUtilsDialog::waitAllFinished(os);
+    GTTabWidget::closeTab(os, GTUtilsDashboard::getTabWidget(os), "Extract consensus from assembly 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
