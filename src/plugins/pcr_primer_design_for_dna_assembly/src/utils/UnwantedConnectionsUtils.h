@@ -32,23 +32,75 @@ class UnwantedConnectionsUtils {
 public:
     UnwantedConnectionsUtils() = delete;
 
+    /**
+     * Return true if @forwardSequence has selfdimers with:
+     *  - Gibbs free energy <= than @unwantedDeltaG,
+     *  - the melting temperature >= than @unwantedMeltingTemperatur,
+     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Othervise return false.
+     * @forwardSequence sequence we are looking for selfdimers in.
+     * @unwantedDeltaG the Gibbs free energy threshold.
+     * @unwantedMeltingTemperatur the melting temperature threshold.
+     * @unwantedDimerLength the dimer length threshold.
+     * @return true if unwanted connections exist, otherwise false.
+     */
     static bool isUnwantedSelfDimer(const QByteArray& forwardSequence,
                                     double unwantedDeltaG,
                                     double unwantedMeltingTemperatur,
                                     int unwantedDimerLength);
 
+    /**
+     * Return true if @forwardSequence has selfdimers with:
+     *  - Gibbs free energy <= than @unwantedDeltaG,
+     *  - the melting temperature >= than @unwantedMeltingTemperatur,
+     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Othervise return false.
+     * Return the report in @report if unwanted connections exist.
+     * @forwardSequence sequence we are looking for selfdimers in.
+     * @unwantedDeltaG the Gibbs free energy threshold.
+     * @unwantedMeltingTemperatur the melting temperature threshold.
+     * @unwantedDimerLength the dimer length threshold.
+     * @report report for the existed unwanted connections.
+     * @return true if unwanted connections exist, otherwise false.
+     */
     static bool isUnwantedSelfDimer(const QByteArray &forwardSequence,
                                     double unwantedDeltaG,
                                     double unwantedMeltingTemperature,
                                     int unwantedDimerLength,
                                     QString &report);
 
+    /**
+     * Return true if @forwardSequence and @reverseSequence have heterodimers with:
+     *  - Gibbs free energy <= than @unwantedDeltaG,
+     *  - the melting temperature >= than @unwantedMeltingTemperatur,
+     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Othervise return false.
+     * @forwardSequence sequence we are looking for selfdimers in.
+     * @unwantedDeltaG the Gibbs free energy threshold.
+     * @unwantedMeltingTemperatur the melting temperature threshold.
+     * @unwantedDimerLength the dimer length threshold.
+     * @return true if unwanted connections exist, otherwise false.
+     */
     static bool isUnwantedHeteroDimer(const QByteArray &forwardSequence,
                                       const QByteArray &reverseSequence,
                                       double unwantedDeltaG,
                                       double unwantedMeltingTemperature,
                                       int unwantedDimerLength);
 
+    /**
+     * Return true if @forwardSequence and @reverseSequence have heterodimers with:
+     *  - Gibbs free energy <= than @unwantedDeltaG,
+     *  - the melting temperature >= than @unwantedMeltingTemperatur,
+     *  - the length of the dimer >= than @unwantedDimerLength.
+     * Othervise return false.
+     * Return the report in @report if unwanted connections exist.
+     * @forwardSequence sequence we are looking for selfdimers in.
+     * @unwantedDeltaG the Gibbs free energy threshold.
+     * @unwantedMeltingTemperatur the melting temperature threshold.
+     * @unwantedDimerLength the dimer length threshold.
+     * @report report for the existed unwanted connections.
+     * @return true if unwanted connections exist, otherwise false.
+     */
     static bool isUnwantedHeteroDimer(const QByteArray& forwardSequence,
                                       const QByteArray& reverseSequence,
                                       double unwantedDeltaG,

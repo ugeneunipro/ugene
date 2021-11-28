@@ -66,8 +66,7 @@ void FindUnwantedIslandsTask::run() {
         U2Region islandCandidate(leftNucleotide, ISLAND_LENGTH);
         bool isIsland = hasUnwantedConnections(islandCandidate);
         if (isIsland) {
-            //The obvious limit - we don't need regions which couldn't fit the primer
-            if (lengthBetweenIslands != 0/*>= overlap.minValue*/) {
+            if (lengthBetweenIslands != 0) {
                 U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
                 text2LogAboutFoundRegion(newRegion);
                 regionsBetweenIslands << newRegion;
@@ -78,7 +77,7 @@ void FindUnwantedIslandsTask::run() {
             lengthBetweenIslands++;
         }
         leftNucleotide++;
-        stateInfo.setProgress(100 - (double(rightNucleotide - leftNucleotide) / double(rightNucleotide - progressZeroPoint)) * 100);
+        stateInfo.setProgress(100 - (double(rightNucleotide - leftNucleotide) / qMax((double)(rightNucleotide - progressZeroPoint), 1.0) * 100));
     }
     stateInfo.setProgress(100);
     U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
@@ -122,7 +121,6 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
                                                                              UNWANTED_MAX_LENGTH);
 
     //TODO: hairpins
-    //TODO: find out if hetero-dimers are required
 
     return isUnwantedSelfDimer;
 }

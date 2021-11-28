@@ -74,7 +74,9 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::SELECT_AREAS_FOR_PRIMING_SH
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID = "open-backbone-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::GENERATE_SEQUENCE_SHOW_HIDE_ID = "generate-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID = "other-sequences-in-pcr-reaction-show-hide-id";
-const QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME = QObject::tr("PCR Primer Design for DNA assembly");
+QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME() {
+    return PCRPrimerDesignForDNAAssemblyOPWidget::tr("PCR Primer Design for DNA assembly");
+}
 
 PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
@@ -217,10 +219,10 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.bachbone5Length = sbBackbone5Length->value();
     settings.bachbone3Length = sbBackbone3Length->value();
 
-    settings.leftArea.startPos = (int)(sbLeftAreaStart->value()) - 1;
-    settings.leftArea.length = (int)sbLeftAreaEnd->value() - (int)sbLeftAreaStart->value();
-    settings.rightArea.startPos = (int)(sbRightAreaStart->value()) - 1;
-    settings.rightArea.length = (int)sbRightAreaEnd->value() - (int)sbRightAreaStart->value();
+    settings.leftArea.startPos = sbLeftAreaStart->value() - 1;
+    settings.leftArea.length = sbLeftAreaEnd->value() - sbLeftAreaStart->value();
+    settings.rightArea.startPos = sbRightAreaStart->value() - 1;
+    settings.rightArea.length = sbRightAreaEnd->value() - sbRightAreaStart->value();
 
     settings.backboneSequenceUrl = leBackboneFilePath->text();
 
@@ -230,18 +232,13 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
 
     U2SequenceObject* sequenceObject = activeSequenceContext->getSequenceObject();
-    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
-
     U2OpStatus2Log os;
     auto sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
     pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
-    auto ts = AppContext::getTaskScheduler();
-    SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
-
-    ts->registerTopLevelTask(pcrTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(pcrTask);
     pbStart->setEnabled(false);
 }
 
@@ -299,14 +296,14 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion() {
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateParametersRanges() {
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
-    const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
+    auto parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
     for (const auto& minSb : qAsConst(parametersMinMaxSpinBoxesKeys)) {
         auto maxSb = parametersMinMaxSpinBoxes.value(minSb);
         SAFE_POINT(maxSb != nullptr, L10N::nullPointerError("QSpinBox"), );
 
         minSb->setMaximum(maxSb->value() - 1);
-        maxSb->setMinimum(minSb->value() + 1);
         maxSb->setMaximum(seqLength);
+        maxSb->setMinimum(minSb->value() + 1);
     }
 }
 
@@ -462,7 +459,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     U2OpStatusImpl os;
     const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
-    auto resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
+    auto resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME(), localDbiRef);
     QSet<QString> excludeList;
     for (Document *d : qAsConst(AppContext::getProject()->getDocuments())) {
         excludeList.insert(d->getURLString());
