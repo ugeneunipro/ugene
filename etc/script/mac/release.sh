@@ -51,6 +51,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
 # Deprecated workflows
 rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/ngs_classification"*
+rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl"
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
