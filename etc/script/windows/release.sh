@@ -42,6 +42,9 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*metaphlan2*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*ngs_reads_classification*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*wevote*
 
+# Deprecated workflows
+rm -rf "${APP_BUNDLE_DIR}/data/workflow_samples/NGS/ngs_classification"*
+
 # Copy UGENE files & tools into 'app' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
