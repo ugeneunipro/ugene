@@ -303,8 +303,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     // Open the PCR Primer Design tab.
     GTUtilsPcrPrimerDesign::openTab(os);
-    QWidget *sequence = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QToolButton *selectManually = GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence);
+    auto sequenceWidget = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    auto selectManually = GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequenceWidget);
     GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
 
     // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
@@ -324,7 +324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPcrPrimerDesign::setSearchArea(os, {{717, 717}, true}, GTUtilsPcrPrimerDesign::AreaType::Left);
 
     // Repeat steps for right area.
-    selectManually = GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence);
+    selectManually = GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequenceWidget);
     GTWidget::click(os, selectManually);
     selection = GTUtilsSequenceView::getSelection(os);
     regionNumber = selection.size();
