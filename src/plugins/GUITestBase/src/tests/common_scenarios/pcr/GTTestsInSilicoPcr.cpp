@@ -743,8 +743,8 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", sandBoxDir + "result.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
 
     // 9. Run workflow
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: result.gb in the result files
     auto outputFiles = GTUtilsDashboard::getOutputFiles(os);
@@ -760,8 +760,8 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", sandBoxDir + "result_1.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
 
     // 12. Run workflow
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: result_1.gb is absent
     outputFiles = GTUtilsDashboard::getOutputFiles(os);
