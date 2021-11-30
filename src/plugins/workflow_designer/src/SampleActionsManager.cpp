@@ -22,6 +22,7 @@
 #include "SampleActionsManager.h"
 
 #include <QApplication>
+#include <QDir>
 #include <QMenu>
 #include <QMessageBox>
 
@@ -48,6 +49,10 @@ SampleActionsManager::SampleActionsManager(QObject *parent)
 }
 
 void SampleActionsManager::registerAction(const SampleAction &action) {
+    // Do not register samples with not available workflow files.
+    QString samplePath = QDir("data:workflow_samples").path() + "/" + action.samplePath;
+    CHECK(QFileInfo::exists(samplePath), );
+
     actions.append(action);
     int id = actions.size() - 1;
 
