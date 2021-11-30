@@ -59,7 +59,10 @@ workflow "In silico PCR"{
             }
             write-sequence.url-out {
                 alias:out;
-            }
+            }			
+			in-silico-pcr.use-ambiguous-bases {
+				alias:ambiguous;
+			}
         }
         visual {
             in-silico-pcr {
@@ -121,6 +124,8 @@ workflow "In silico PCR"{
                         in-silico-pcr.perfect-match {
                         }
                         in-silico-pcr.max-product {
+                        }
+                        in-silico-pcr.use-ambiguous-bases {
                         }
                     }
                 }

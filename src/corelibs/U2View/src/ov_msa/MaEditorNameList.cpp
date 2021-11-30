@@ -29,7 +29,6 @@
 
 #include <U2Core/ClipboardController.h>
 #include <U2Core/Counter.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2Mod.h>
@@ -57,13 +56,10 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
       ui(_ui),
       nhBar(_nhBar),
       changeTracker(nullptr),
-      maVersionBeforeMousePress(-1),
       editor(_ui->getEditor()) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
-    completeRedraw = true;
-    dragging = false;
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
 
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
@@ -404,7 +400,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     if (editor->getSelection().containsRow(viewRow) && !hasCtrlModifier && !hasShiftModifier) {
         // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
         // TODO: support dragging in the Free mode (v39). Today Free mode is enabled only when Sync is ON with tree: MSA order is enforced by Tree.
-        dragging = !editor->getCollapseModel()->hasGroupsWithMultipleRows() && editor->getRowOrderMode() != MaEditorRowOrderMode::Free;
+        isDragging = !editor->getCollapseModel()->hasGroupsWithMultipleRows() && editor->getRowOrderMode() != MaEditorRowOrderMode::Free;
     } else if (!hasShiftModifier) {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
         rubberBand->show();
@@ -415,7 +411,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
 
 void MaEditorNameList::mouseMoveEvent(QMouseEvent *e) {
     bool isDragSelection = rubberBand->isVisible();
-    bool isDragSequences = !isDragSelection && dragging;
+    bool isDragSequences = !isDragSelection && isDragging;
     bool isMoveSelection = !isDragSelection && !isDragSequences && e->modifiers().testFlag(Qt::ShiftModifier) && !editor->getSelection().isEmpty();
 
     if (!isDragSelection && !isDragSequences && !isMoveSelection) {
@@ -477,7 +473,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     U2Region nameListRegion(0, maxRows);
     if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != nullptr) {
         // Do nothing. Expand collapse is processed as a part of MousePress.
-    } else if (!isClick && dragging) {
+    } else if (!isClick && isDragging) {
         if (oldSelectedRects.size() == 1) {  // Drag is supported for a trivial selection only.
             QRect oldSelectionRect = oldSelectedRects.first();
             int shift;
@@ -497,9 +493,9 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             // Drag (non-click) is processed as a part of mouse move event.
             if (isClick) {
                 QRect oldSelectionRect = oldSelectedRects.isEmpty() ? QRect() : oldSelectedRects.first();
-                // Default is a 1 full row where mouse relese event happend. Drag or key-modifiers will change this region.
+                // Default is a 1 full row where mouse release event happens. Drag or key-modifiers will change this region.
                 QRect newSelectionRect(0, cursorPos.y(), alignmentLen, 1);
-                // Keep X range when adidng more rows to the existing selection.
+                // Keep X range when adding more rows to the existing selection.
                 if (!oldSelectionRect.isEmpty()) {
                     newSelectionRect.setLeft(oldSelectionRect.left());
                     newSelectionRect.setRight(oldSelectionRect.right());
@@ -556,7 +552,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     }
 
     rubberBand->hide();
-    dragging = false;
+    isDragging = false;
     changeTracker->finishTracking();
     editor->getMaObject()->releaseState();
     emit si_stopMaChanging(maVersionBeforeMousePress != editor->getMaObject()->getModificationVersion());
@@ -605,7 +601,7 @@ void MaEditorNameList::sl_updateActions() {
 }
 
 void MaEditorNameList::sl_vScrollBarActionPerformed() {
-    CHECK(dragging, );
+    CHECK(isDragging, );
 
     GScrollBar *vScrollBar = qobject_cast<GScrollBar *>(sender());
     SAFE_POINT(vScrollBar != nullptr, "vScrollBar is NULL", );
@@ -837,13 +833,57 @@ void MaEditorNameList::sl_editSequenceName() {
     }
 }
 
+void MaEditorNameList::groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus &os) {
+    const MaEditorSelection &selection = editor->getSelection();
+    const QList<QRect> &rects = selection.getRectList();
+    CHECK(rects.size() > 1, );
+
+    QVector<U2Region> regions(rects.size());
+    std::transform(rects.begin(), rects.end(), regions.begin(), [](auto &rect) { return U2Region::fromYRange(rect); });
+    auto stableRegionPosition = std::find_if(regions.begin(),
+                                             regions.end(),
+                                             [&stableRowIndex](auto &region) { return region.contains(stableRowIndex); });
+    SAFE_POINT_EXT(stableRegionPosition != regions.end(),
+                   os.setError(L10N::internalError("stableRowIndex is not within the selection")), );
+    int stableRegionIndex = std::distance(regions.begin(), stableRegionPosition);
+
+    U2Region stableRegion = regions[stableRegionIndex];
+    QList<qint64> rowOrder = editor->getMaRowIds();
+
+    for (int regionIndex = stableRegionIndex; --regionIndex >= 0;) {
+        const U2Region &region = regions[regionIndex];
+        for (int rowIndex = region.endPos(); --rowIndex >= region.startPos; stableRegion.startPos--, stableRegion.length++) {
+            rowOrder.move(rowIndex, stableRegion.startPos - 1);
+        }
+    }
+
+    for (int regionIndex = stableRegionIndex + 1; regionIndex < regions.size(); regionIndex++) {
+        const U2Region &region = regions[regionIndex];
+        for (int rowIndex = region.startPos; rowIndex < region.endPos(); rowIndex++, stableRegion.length++) {
+            rowOrder.move(rowIndex, stableRegion.endPos());
+        }
+    }
+
+    editor->getMaObject()->updateRowsOrder(os, rowOrder);
+    CHECK_OP(os, );
+
+    U2Region columnRegion = selection.getColumnRegion();
+    QRect newSelectedRect(columnRegion.startPos, stableRegion.startPos, columnRegion.length, stableRegion.length);
+    setSelection({{newSelectedRect}});
+}
+
 void MaEditorNameList::moveSelectedRegion(int shift) {
     CHECK(shift != 0, );
     MultipleAlignmentObject *maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 
     const MaEditorSelection &selection = editor->getSelection();
-    CHECK(selection.getRectList().size() == 1, );  // Multi-selection mode is not supported today.
+    SAFE_POINT(!selection.isEmpty(), "moveSelectedRegion with no selection!", );
+    U2OpStatus2Log os;
+    int multiRegionStableRowIndex = editor->getCursorPosition().y();
+    groupSelectedSequencesIntoASingleRegion(multiRegionStableRowIndex, os);
+    CHECK_OP(os, );
+    SAFE_POINT(selection.getRectList().size() == 1, "Expected to have a single continuous selection.", );
 
     QRect selectedRect = selection.getRectList().first();
     int numRowsInSelection = selectedRect.height();
