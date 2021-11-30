@@ -38,6 +38,7 @@ public:
     static void setMismatches(HI::GUITestOpStatus &os, U2Strand::Direction direction, int mismatches);
     static void setPerfectMatch(HI::GUITestOpStatus &os, int number);
     static void setMaxProductSize(HI::GUITestOpStatus &os, int number);
+    static void setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases);
     static QWidget *browseButton(HI::GUITestOpStatus &os, U2Strand::Direction direction);
     static int productsCount(HI::GUITestOpStatus &os);
     static QString getResultRegion(HI::GUITestOpStatus &os, int number);

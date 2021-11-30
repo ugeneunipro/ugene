@@ -83,7 +83,7 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     result.searchRegion.length = settings.sequence.length();
     result.patternSettings = FindAlgorithmPatternSettings_Subst;
     result.strand = FindAlgorithmStrand_Both;
-    result.useAmbiguousBases = true;
+    result.useAmbiguousBases = settings.useAmbiguousBases;
 
     int pos = 0;
     if (U2Strand::Direct == direction) {

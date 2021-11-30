@@ -3458,6 +3458,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0016);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0018);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0019);
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/primer_library
     /////////////////////////////////////////////////////////////////////////

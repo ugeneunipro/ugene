@@ -42,6 +42,7 @@ public:
     uint reverseMismatches;
     uint maxProductSize;
     uint perfectMatch;
+    bool useAmbiguousBases = true;
 
     QString sequenceName;
 
