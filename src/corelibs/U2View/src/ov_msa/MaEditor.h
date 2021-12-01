@@ -249,7 +249,6 @@ protected:
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);  // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
 

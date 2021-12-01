@@ -187,6 +187,7 @@ protected:
     void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;
     void addSortMenu(QMenu *m);
+    void addAlignMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
     void addAppearanceMenu(QMenu *m);
     void addColorsMenu(QMenu *m);

@@ -328,6 +328,12 @@ void MSAEditor::addSortMenu(QMenu *m) {
     }
 }
 
+void MSAEditor::addAlignMenu(QMenu *m) {
+    QMenu *em = m->addMenu(tr("Align"));
+    em->setIcon(QIcon(":core/images/align.png"));
+    em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
+}
+
 void MSAEditor::addExportMenu(QMenu *m) {
     MaEditor::addExportMenu(m);
     QMenu *em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);

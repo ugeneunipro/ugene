@@ -419,12 +419,6 @@ void MaEditor::addLoadMenu(QMenu *m) {
     lsm->menuAction()->setObjectName(MSAE_MENU_LOAD);
 }
 
-void MaEditor::addAlignMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Align"));
-    em->setIcon(QIcon(":core/images/align.png"));
-    em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
-}
-
 void MaEditor::setFont(const QFont &f) {
     int pSize = f.pointSize();
     font = f;
