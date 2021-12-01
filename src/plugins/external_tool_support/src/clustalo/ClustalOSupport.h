@@ -63,8 +63,6 @@ protected slots:
 protected:
     void initViewContext(GObjectView *view) override;
 
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
-
 private:
     /**
      * Checks that ClustalO tool setup is valid. Shows external tools setup dialog to user.

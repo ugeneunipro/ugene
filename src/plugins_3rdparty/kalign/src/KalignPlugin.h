@@ -61,7 +61,6 @@ protected slots:
 
 protected:
     void initViewContext(GObjectView *view) override;
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 class KalignAction : public GObjectViewAction {

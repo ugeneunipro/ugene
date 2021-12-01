@@ -66,6 +66,7 @@ namespace U2 {
 
 const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
 const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-align-sequences-to-alignment");
+const QString MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT("msa-editor-menu-align-alignment-to-alignment");
 
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
@@ -329,9 +330,14 @@ void MSAEditor::addSortMenu(QMenu *m) {
 }
 
 void MSAEditor::addAlignMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Align"));
-    em->setIcon(QIcon(":core/images/align.png"));
-    em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
+    QMenu *alignMenu = m->addMenu(tr("Align"));
+    alignMenu->setIcon(QIcon(":core/images/align.png"));
+    alignMenu->menuAction()->setObjectName(MSAE_MENU_ALIGN);
+
+    buildActionMenu(alignMenu,
+                    {MsaEditorMenuType::ALIGN,
+                     MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT,
+                     MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -654,13 +660,13 @@ void MSAEditor::initDragAndDropSupport() {
 
 void MSAEditor::sl_align() {
     QMenu menu;
-    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN);
+    buildActionMenu(&menu, MsaEditorMenuType::ALIGN);
     menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {
     QMenu menu;
-    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT);
+    buildActionMenu(&menu, {MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT, MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
     menu.exec(QCursor::pos());
 }
 

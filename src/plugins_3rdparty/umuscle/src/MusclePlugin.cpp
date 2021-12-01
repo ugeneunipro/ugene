@@ -131,6 +131,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
     SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != nullptr, );
 
+    msaed->registerActionProvider(this);
+
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
@@ -158,20 +160,11 @@ void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
     alignProfilesAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
     alignProfilesAction->setEnabled(!objLocked && !isMsaEmpty);
     alignProfilesAction->setObjectName("Align profile to profile with MUSCLE");
-    alignProfilesAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
+    alignProfilesAction->setMenuTypes({MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
     connect(alignProfilesAction, SIGNAL(triggered()), SLOT(sl_alignProfileToProfile()));
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
     connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
     addViewAction(alignProfilesAction);
-}
-
-void MuscleMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(v);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    foreach (GObjectViewAction *a, actions) {
-        a->addToMenuWithOrder(alignMenu);
-    }
 }
 
 void MuscleMSAEditorContext::sl_align() {
@@ -248,7 +241,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
         return;
     assert(!obj->isStateLocked());
 
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({ GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE }, true);
+    QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE}, true);
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, filter);
 

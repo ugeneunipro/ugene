@@ -32,8 +32,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/GUIUtils.h>
-
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 
@@ -71,7 +69,7 @@ TCoffeeSupport::TCoffeeSupport()
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
-    //Check that T-Coffee and temporary folder path defined
+    // Check that T-Coffee and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -89,7 +87,7 @@ void TCoffeeSupport::sl_runWithExtFileSpecify() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     TCoffeeSupportTaskSettings settings;
     QObjectScopedPointer<TCoffeeWithExtFileSpecifySupportRunDialog> tCoffeeRunDialog = new TCoffeeWithExtFileSpecifySupportRunDialog(settings, AppContext::getMainWindow()->getQMainWindow());
     tCoffeeRunDialog->exec();
@@ -100,7 +98,7 @@ void TCoffeeSupport::sl_runWithExtFileSpecify() {
 }
 
 ////////////////////////////////////////
-//TCoffeeSupportContext
+// TCoffeeSupportContext
 TCoffeeSupportContext::TCoffeeSupportContext(QObject *p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
@@ -108,25 +106,17 @@ TCoffeeSupportContext::TCoffeeSupportContext(QObject *p)
 void TCoffeeSupportContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    msaEditor->registerActionProvider(this);
 
-    auto alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, msaEditor, tr("Align with T-Coffee..."), 2000);
+    auto alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, msaEditor, tr("Align with T-Coffee..."), 6000);
     alignAction->setObjectName("Align with T-Coffee");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
     addViewAction(alignAction);
 }
 
-void TCoffeeSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    for (GObjectViewAction *a : qAsConst(actions)) {
-        a->addToMenuWithOrder(alignMenu);
-    }
-}
-
 void TCoffeeSupportContext::sl_align_with_TCoffee() {
-    //Check that T-Coffee and temporary folder path defined
+    // Check that T-Coffee and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("T-Coffee");
@@ -145,7 +135,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call run T-Coffee align dialog
+    // Call run T-Coffee align dialog
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     CHECK(action != nullptr, );
 
@@ -166,4 +156,4 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     msaEditor->resetCollapseModel();
 }
 
-}    // namespace U2
+}  // namespace U2

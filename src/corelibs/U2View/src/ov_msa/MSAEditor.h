@@ -270,8 +270,11 @@ public:
     /** "Align" button menu identifier. */
     const static QString ALIGN;
 
-    /** "Align sequence(s) to this alignment" menu identifier. */
+    /** "Align sequence(s) to the current alignment menu identifier. */
     const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
+
+    /** "Align another alignment to the current alignment menu identifier. */
+    const static QString ALIGN_ALIGNMENT_TO_ALIGNMENT;
 };
 
 }  // namespace U2
