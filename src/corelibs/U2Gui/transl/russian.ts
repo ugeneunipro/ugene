@@ -3109,6 +3109,14 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
+    <name>U2::SaveDocumentController</name>
+    <message>
+        <location filename="../src/util/SaveDocumentController.cpp" line="147"/>
+        <source>Output file name is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::ScaleBar</name>
     <message>
         <location filename="../src/util/ScaleBar.cpp" line="41"/>

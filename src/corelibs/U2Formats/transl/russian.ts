@@ -102,7 +102,7 @@
     </message>
     <message>
         <location filename="../src/PDWFormat.cpp" line="165"/>
-        <location filename="../src/StockholmFormat.cpp" line="738"/>
+        <location filename="../src/StockholmFormat.cpp" line="535"/>
         <source>The document is not created by UGENE</source>
         <translation>Документ создан не в UGENE</translation>
     </message>
@@ -2145,88 +2145,117 @@
 <context>
     <name>U2::PhylipFormat</name>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="48"/>
+        <location filename="../src/PhylipFormat.cpp" line="78"/>
+        <source>Wrong row count. Header: %1, actual: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="80"/>
+        <source>Wrong column count. Header: %1, actual: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="85"/>
         <source>PHYLIP multiple alignment format for phylogenetic applications.</source>
         <translation>PHYLIP формат филогенетических деревьев.</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="77"/>
+        <location filename="../src/PhylipFormat.cpp" line="90"/>
+        <source>Incorrect number of objects in document: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="109"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="351"/>
+        <location filename="../src/PhylipFormat.cpp" line="144"/>
+        <location filename="../src/PhylipFormat.cpp" line="257"/>
+        <source>Failed to find MSA object to store</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="221"/>
+        <location filename="../src/PhylipFormat.cpp" line="350"/>
+        <source>Failed to parse header line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="224"/>
+        <source>Unexpected end of data in Phylip file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="230"/>
+        <location filename="../src/PhylipFormat.cpp" line="356"/>
+        <source>Line with a name is too short %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PhylipFormat.cpp" line="236"/>
+        <source>Unexpected end of file</source>
+        <translation type="unfinished">Неожиданный конец файла</translation>
+    </message>
+    <message>
         <source>Error parsing file</source>
-        <translation>Ошибка разбора формата</translation>
+        <translation type="vanished">Ошибка разбора формата</translation>
     </message>
 </context>
 <context>
     <name>U2::PhylipInterleavedFormat</name>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="239"/>
+        <location filename="../src/PhylipFormat.cpp" line="252"/>
         <source>PHYLIP Interleaved</source>
         <translation>PHYLIP Interleaved</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="337"/>
         <source>Illegal line</source>
-        <translation>Неправильная строка</translation>
+        <translation type="vanished">Неправильная строка</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="344"/>
         <source>Wrong header</source>
-        <translation>Неверный заголовок</translation>
+        <translation type="vanished">Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="384"/>
         <source>Block is incomplete</source>
-        <translation>Block is incomplete</translation>
+        <translation type="vanished">Block is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="395"/>
         <source>Block is incomlete</source>
-        <translation>Block is incomlete</translation>
+        <translation type="vanished">Block is incomlete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="403"/>
         <source>Number of characters does not correspond to the stated number</source>
-        <translation>Число символов не соответствует установленному числу</translation>
+        <translation type="vanished">Число символов не соответствует установленному числу</translation>
     </message>
 </context>
 <context>
     <name>U2::PhylipSequentialFormat</name>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="119"/>
+        <location filename="../src/PhylipFormat.cpp" line="139"/>
         <source>PHYLIP Sequential</source>
         <translation>PHYLIP Sequential</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="201"/>
         <source>Illegal line</source>
-        <translation>Неправильная строка</translation>
+        <translation type="vanished">Неправильная строка</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="208"/>
         <source>Wrong header</source>
-        <translation>Неверный заголовок</translation>
+        <translation type="vanished">Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="211"/>
-        <location filename="../src/PhylipFormat.cpp" line="348"/>
         <source>There is not enough data</source>
-        <translation>Недостаточно данных</translation>
+        <translation type="vanished">Недостаточно данных</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="200"/>
-        <location filename="../src/PhylipFormat.cpp" line="215"/>
-        <location filename="../src/PhylipFormat.cpp" line="359"/>
         <source>Error parsing file</source>
-        <translation>Ошибка разбора формата</translation>
+        <translation type="vanished">Ошибка разбора формата</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="232"/>
         <source>Number of characters does not correspond to the stated number</source>
-        <translation>Число символов не соответствует установленному числу</translation>
+        <translation type="vanished">Число символов не соответствует установленному числу</translation>
     </message>
 </context>
 <context>
@@ -2312,54 +2341,71 @@
 <context>
     <name>U2::StockholmFormat</name>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="725"/>
+        <location filename="../src/StockholmFormat.cpp" line="358"/>
+        <source>Invalid file: empty sequence name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/StockholmFormat.cpp" line="359"/>
+        <source>Invalid file: duplicate sequence names in one block: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/StockholmFormat.cpp" line="363"/>
+        <source>Invalid file: sequence names are not equal in blocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/StockholmFormat.cpp" line="370"/>
+        <source>Invalid file: sequences in block are not of equal size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/StockholmFormat.cpp" line="523"/>
         <source>Stockholm</source>
         <translation>Stockholm</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="726"/>
+        <location filename="../src/StockholmFormat.cpp" line="524"/>
         <source>A multiple sequence alignments file format</source>
         <translation>Формат файла для множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="744"/>
-        <location filename="../src/StockholmFormat.cpp" line="761"/>
-        <source>unknown error occurred</source>
-        <translation>Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/StockholmFormat.cpp" line="495"/>
-        <source>invalid file: bad header line</source>
-        <translation>Неверный заголовок</translation>
-    </message>
-    <message>
-        <location filename="../src/StockholmFormat.cpp" line="533"/>
-        <source>invalid file: empty sequence name</source>
-        <translation>Не указано имя последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/StockholmFormat.cpp" line="536"/>
-        <source>invalid file: equal sequence names in one block</source>
-        <translation>одинаковые имена последовательностей в блоке</translation>
-    </message>
-    <message>
-        <location filename="../src/StockholmFormat.cpp" line="547"/>
-        <source>invalid file: sequence names are not equal in blocks</source>
-        <translation>Непарное имя последовательности в блоке</translation>
-    </message>
-    <message>
         <location filename="../src/StockholmFormat.cpp" line="543"/>
-        <location filename="../src/StockholmFormat.cpp" line="553"/>
-        <source>invalid file: sequences in block are not of equal size</source>
-        <translation>Блок содержит последовательности разной длины</translation>
+        <source>Not an alignment object: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="572"/>
+        <source>unknown error occurred</source>
+        <translation type="vanished">Ошибка</translation>
+    </message>
+    <message>
+        <source>invalid file: bad header line</source>
+        <translation type="vanished">Неверный заголовок</translation>
+    </message>
+    <message>
+        <source>invalid file: empty sequence name</source>
+        <translation type="vanished">Не указано имя последовательности</translation>
+    </message>
+    <message>
+        <source>invalid file: equal sequence names in one block</source>
+        <translation type="vanished">одинаковые имена последовательностей в блоке</translation>
+    </message>
+    <message>
+        <source>invalid file: sequence names are not equal in blocks</source>
+        <translation type="vanished">Непарное имя последовательности в блоке</translation>
+    </message>
+    <message>
+        <source>invalid file: sequences in block are not of equal size</source>
+        <translation type="vanished">Блок содержит последовательности разной длины</translation>
+    </message>
+    <message>
+        <location filename="../src/StockholmFormat.cpp" line="392"/>
         <source>invalid file: empty sequence alignment</source>
         <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="576"/>
+        <location filename="../src/StockholmFormat.cpp" line="395"/>
         <source>invalid file: unknown alphabet</source>
         <translation>Не удалось установить алфавит</translation>
     </message>
