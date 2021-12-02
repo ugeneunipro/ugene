@@ -194,7 +194,7 @@ void SaveProjectTask::prepare() {
     if (k != SaveProjectTaskKind_SaveProjectOnly) {
         QList<Document *> modifiedDocs = SaveMultipleDocuments::findModifiedDocuments(AppContext::getProject()->getDocuments());
         if (!modifiedDocs.isEmpty()) {
-            ssTasks.append(new SaveMultipleDocuments(modifiedDocs, k == SaveProjectTaskKind_SaveProjectAndDocumentsAskEach, SavedNewDoc_Open));
+            ssTasks.append(new SaveMultipleDocuments(modifiedDocs, k == SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
         }
     }
     if (!url.isEmpty()) {
