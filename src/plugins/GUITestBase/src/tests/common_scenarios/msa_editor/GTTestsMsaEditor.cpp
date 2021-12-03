@@ -3865,11 +3865,13 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
                                                      "align-alignment-to-alignment-clustalo"};
             QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(),
+            int expectedActionCount = expectedActionObjectNames.size() + 1;  // +1 is for the separator.
+            CHECK_SET_ERR(menuActions.size() == expectedActionCount,
                           QString("Unexpected number of actions in 'Align to alignment': %1, expected: %2")
                               .arg(menuActions.size())
-                              .arg(expectedActionObjectNames.size()));
+                              .arg(expectedActionCount));
             for (const QAction *action : qAsConst(menuActions)) {
+                CHECK_CONTINUE(action->isSeparator());
                 CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align to alignment' menu");
             }
         }
