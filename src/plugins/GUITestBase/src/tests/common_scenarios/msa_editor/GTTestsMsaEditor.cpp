@@ -3847,11 +3847,11 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
                                                      "Align with T-Coffee",
                                                      "align_with_kalign"};
             QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(), QString("Unexpected number of actions in 'Align' menu: %1").arg(menuActions.size()));
             for (const QAction *action : qAsConst(menuActions)) {
                 CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align' menu");
             }
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
 
@@ -3864,16 +3864,17 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
                                                      "Align profile to profile with MUSCLE",
                                                      "align-alignment-to-alignment-clustalo"};
             QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             int expectedActionCount = expectedActionObjectNames.size() + 1;  // +1 is for the separator.
             CHECK_SET_ERR(menuActions.size() == expectedActionCount,
                           QString("Unexpected number of actions in 'Align to alignment': %1, expected: %2")
                               .arg(menuActions.size())
                               .arg(expectedActionCount));
             for (const QAction *action : qAsConst(menuActions)) {
-                CHECK_CONTINUE(action->isSeparator());
-                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align to alignment' menu");
+                if (!action->isSeparator()) {
+                    CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), "[" + action->objectName() + "] is not found in 'Align to alignment' menu");
+                }
             }
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
 
