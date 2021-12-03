@@ -1,11 +1,5 @@
 <RCC>
     <qresource prefix="/U2Designer">
-        <file>html/Dashboard.css</file>
-        <file>html/Dashboard.html</file>
-        <file>javascript/Common.js</file>
-        <file>javascript/ParametersWidget.js</file>
-        <file>javascript/ExternalToolsWidget.js</file>
-        <file>javascript/ContextMenu.js</file>
         <file>images/add.png</file>
         <file>images/background.png</file>
         <file>images/background-menu.png</file>
@@ -26,21 +20,5 @@
         <file>images/database_add.png</file>
         <file>images/database_folder.png</file>
         <file>images/blue_circle.png</file>
-        <file>javascript/ProblemsWidget.js</file>
-        <file>javascript/StatisticsWidget.js</file>
-        <file>javascript/TableWidget.js</file>
-        <file>javascript/StatusWidget.js</file>
-        <file>javascript/WebPageInitialize.js</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>javascript/bootstrap/css/bootstrap-responsive.css</file>
-        <file>javascript/bootstrap/css/bootstrap-responsive.min.css</file>
-        <file>javascript/bootstrap/css/bootstrap.css</file>
-        <file>javascript/bootstrap/css/bootstrap.min.css</file>
-        <file>javascript/bootstrap/img/glyphicons-halflings-white.png</file>
-        <file>javascript/bootstrap/img/glyphicons-halflings.png</file>
-        <file>javascript/bootstrap/js/bootstrap.js</file>
-        <file>javascript/bootstrap/js/bootstrap.min.js</file>
-        <file>javascript/jquery/jquery.js</file>
     </qresource>
 </RCC>
