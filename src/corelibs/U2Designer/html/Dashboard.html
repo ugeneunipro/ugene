@@ -1,0 +1,96 @@
+<!--
+ UGENE - Integrated Bioinformatics Tools.
+ Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ http://ugene.net
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ MA 02110-1301, USA.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+</head>
+
+<body>
+
+<script>
+    setTimeout(function () {
+        document.getElementById("wrapper").innerHTML = "<center><b>This dashboard was created with a newer version of UGENE. Please <a href='https://ugene.net'>update</a>.</b></center>";
+    }, 500);
+</script>
+
+<div id="wrapper">
+    <div class="tabbable">
+        <div class="dash-menu-line">
+            <ul class="nav nav-pills dash-nav">
+                <li class="active">
+                    <a href="#overview_tab" data-toggle="tab" class="dash-tab-name">
+                        <span lang="en" class="translatable">Overview</span>
+                        <span lang="ru" class="translatable">Обзор</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#input_tab" data-toggle="tab" class="dash-tab-name">
+                        <span lang="en" class="translatable">Input</span>
+                        <span lang="ru" class="translatable">Параметры схемы</span>
+                    </a>
+                </li>
+                <li id="ext_tools_tab_menu" style="display: none;">
+                    <a href="#ext_tools_tab" data-toggle="tab" class="dash-tab-name">
+                        <span lang="en" class="translatable">External Tools</span>
+                        <span lang="ru" class="translatable">Внешние инструменты</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="dash-outer-tab-content">
+            <div class="tab-content dash-tab-content">
+                <div class="tab-pane active" id="overview_tab">
+                    <div class="left-container"></div>
+                    <div class="right-container"></div>
+                </div>
+                <div class="tab-pane" id="input_tab">
+                    <div class="widget">
+                        <div class="title">
+                            <div class="title-content">
+                                <span lang="en" class="translatable">Parameters</span>
+                                <span lang="ru" class="translatable">Параметры</span>
+                            </div>
+                        </div>
+                        <div class="widget-content" id="parametersWidget"></div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="ext_tools_tab">
+                    <div class="widget">
+                        <div class="title">
+                            <div class="title-content">
+                                <span lang="en" class="translatable">External Tools</span>
+                                <span lang="ru" class="translatable">Внешние инструменты</span>
+                            </div>
+                        </div>
+                        <div class="widget-content" id="externalToolsWidget"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--For debug purposes-->
+<div id="log_messages" style="position: fixed; top: 10%; left: 2%;"></div>
+</body>
+
+</html>
