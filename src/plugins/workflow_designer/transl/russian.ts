@@ -610,7 +610,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="502"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1570"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1574"/>
         <source>Breakpoints</source>
         <translation>Точки остановки</translation>
     </message>
@@ -626,13 +626,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="394"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2182"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
         <source>You opened obsolete workflow in XML format. It is strongly recommended to clear working space and create workflow from scratch.</source>
         <translation>Вы открыли устаревшую схему в XML формате. Рекомендуется очистить рабочее пространство и создайть новую схему.</translation>
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="397"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2185"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2189"/>
         <source>Sorry! This workflow is obsolete and cannot be opened.</source>
         <translation>Эта схема устарела и не может быть открыта.</translation>
     </message>
@@ -5378,7 +5378,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::SampleActionsManager</name>
     <message>
-        <location filename="../src/SampleActionsManager.cpp" line="99"/>
+        <location filename="../src/SampleActionsManager.cpp" line="104"/>
         <source>This task requires the following plugins: %1. Add them and try again, please.</source>
         <translation>This task requires the following plugins: %1. Add them and try again, please.</translation>
     </message>
@@ -6190,22 +6190,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowScene</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2456"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2460"/>
         <source>Open document(s)</source>
         <translation>Открыть документы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2629"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2633"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер вычислительных схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2629"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2633"/>
         <source>Unable to open specified documents. Watch log for details.</source>
         <translation>Невозможно открыть указанные документы. Посмотрите лог для выяснения деталей.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2712"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2716"/>
         <source>Drop an element from the palette here</source>
         <translation>Перенесите сюда элемент из палитры</translation>
     </message>
@@ -6258,7 +6258,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::WorkflowView</name>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="273"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2260"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2264"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер схем</translation>
     </message>
@@ -6271,8 +6271,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="394"/>
         <location filename="../src/WorkflowViewController.cpp" line="397"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2182"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2185"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2189"/>
         <source>Warning!</source>
         <translation>Предупреждение!</translation>
     </message>
@@ -6324,8 +6324,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1703"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1730"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1707"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1734"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -6516,57 +6516,57 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Схема валидна</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1598"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1602"/>
         <source>Aliases for workflow parameters should be different!</source>
         <translation>Алиасы для параметров схемы должны бть разными!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1631"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1635"/>
         <source>Workflow does not contain any parameter aliases</source>
         <translation>Схема не содержит алиасов параметров</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1645"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1649"/>
         <source>Internal error!</source>
         <translation>Веутренняя ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1645"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1649"/>
         <source>Can not create Galaxy config</source>
         <translation>Невозможно создать конфигурацию Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1701"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1705"/>
         <source>The workflow contains a wizard. Sorry, but current version of UGENE doesn&apos;t support of wizards in the includes.</source>
         <translation>Схема содержит визард. Текущая версия UGENE не поддерживает визарды в схемах.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1749"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1753"/>
         <source>Drag an element to the scene to add it to the workflow.</source>
         <translation>Перенесите элемент на сцену чтобы добавить его в схему.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2040"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2044"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2105"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2109"/>
         <source>To Workflow Designer</source>
         <translation>В Дизайнер</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2109"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2113"/>
         <source>Go to Dashboard</source>
         <translation>К отчётам</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2111"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2115"/>
         <source>Show dashboard</source>
         <translation>Показать панель</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2107"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2111"/>
         <source>Show workflow</source>
         <translation>Показать схему</translation>
     </message>
@@ -6576,18 +6576,18 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Невозможно зарегистрировать элемент.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2155"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2158"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2159"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2162"/>
         <source>Open workflow file</source>
         <translation>Открыть файл схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2197"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2201"/>
         <source>New workflow</source>
         <translation>Новая схема</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2260"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2264"/>
         <source>The workflow has been modified.
 Do you want to save changes?</source>
         <translation>Схема была изменена. Вы хотите сохранить изменения?</translation>
@@ -6603,13 +6603,13 @@ Do you want to save changes?</source>
         <translation>Свойства элемента</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1598"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1631"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1602"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1635"/>
         <source>Bad input!</source>
         <translation>Неверные входные данные!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2229"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2233"/>
         <source>Workflow Designer - %1</source>
         <translation>Дизайнер схем - %1</translation>
     </message>

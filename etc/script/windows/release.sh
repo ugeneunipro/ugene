@@ -88,9 +88,9 @@ function dump_symbols() {
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
-  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | tr -d ".pdb")
+  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | sed -e 's/\.pdb//g')
 
-  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}/${FILE_HASH}"
+  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}.pdb/${FILE_HASH}"
   mkdir -p "${DEST_PATH}"
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }

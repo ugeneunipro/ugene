@@ -50,6 +50,7 @@
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
+#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -1293,13 +1294,11 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
     // When the chrM workflow is over, click "Close dashboard".
     //     Expected: no crash or freeze.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
-        {{"Assembly", testDir + "_common_data/bam/Mycobacterium.sorted.bam"}}));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/Mycobacterium.sorted.bam"}}));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(),
-        {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
@@ -1502,6 +1501,17 @@ GUI_TEST_CLASS_DEFINITION(test_7487_2) {
     GTUtilsMsaEditor::checkSelectionByNames(os, {"b", "d", "f", "h"});
     nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "4. Unexpected order: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7490) {
+    // Create a multi-selection and check that the current line label in the MCA editor's status bar shows '-'.
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", sandBoxDir + "test_7490.ugenedb");
+    GTFileDialog::openFile(os, sandBoxDir + "test_7490.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMcaEditor::selectReadsByName(os, {"SZYD_Cas9_5B70", "SZYD_Cas9_CR50"});
+    QString currentLineNumberText = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
 }
 
 }  // namespace GUITest_regression_scenarios

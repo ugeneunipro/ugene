@@ -639,6 +639,19 @@
     </message>
 </context>
 <context>
+    <name>U2::AnnotationSelection</name>
+    <message>
+        <location filename="../src/selection/AnnotationSelection.cpp" line="119"/>
+        <source>Sequence is too long.</source>
+        <translation>Последовательность слишком длинная.</translation>
+    </message>
+    <message>
+        <location filename="../src/selection/AnnotationSelection.cpp" line="123"/>
+        <source>Can&apos;t reserve enough space for the result sequence.</source>
+        <translation>Can&apos;t reserve enough space for the result sequence.</translation>
+    </message>
+</context>
+<context>
     <name>U2::AppResourcePool</name>
     <message>
         <location filename="../src/globals/AppResources.cpp" line="87"/>
@@ -2120,63 +2133,62 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="208"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="221"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="207"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="220"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Чтение документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="241"/>
         <source>Document format is NULL!</source>
         <translation>Формат документа NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="243"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO адаптер NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="257"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="256"/>
         <source>The fileURL  to load is empty</source>
         <translation>The fileURL  to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="260"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="259"/>
         <source>Cannot get an IO file adapter factory for the file URL: %1</source>
         <translation>Cannot get an IO file adapter factory for the file URL: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="263"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
         <source>Cannot detect the file format: %1</source>
         <translation>Cannot detect the file format: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="265"/>
         <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
         <translation>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="421"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="420"/>
         <source>Document not found %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="439"/>
         <source>Not enough memory to load document %1</source>
-        <translation>Недостаточно памяти для загрузки документа %1</translation>
+        <translation type="vanished">Недостаточно памяти для загрузки документа %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="455"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="452"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="485"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="492"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="491"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>
@@ -2197,37 +2209,37 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadUnloadedDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="116"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="115"/>
         <source>Document was removed</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="163"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="162"/>
         <source>Project Document:</source>
         <translation>Документ проекта:</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="144"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="143"/>
         <source>Document is locked</source>
         <translation>Документ заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="75"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="74"/>
         <source>Load &apos;%1&apos;</source>
         <translation>Загрузка: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="90"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="89"/>
         <source>Starting load document from %1, document format %2</source>
         <translation>Начата загрузка из &quot;%1&quot;, формат документа: %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="83"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="82"/>
         <source>Document not found</source>
         <translation>Документ не найден</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="181"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="180"/>
         <source>Annotation object not found</source>
         <translation>Не найдена таблица аннотаций</translation>
     </message>
@@ -2352,17 +2364,17 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Неверный диапазон: %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1105"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1106"/>
         <source>Invalid crop column range: %1..%2</source>
         <translation>Неверный диапазон столбцов: %1..%2</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1110"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
         <source>List of ids to crop is empty</source>
         <translation>Список пуст</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1115"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1116"/>
         <source>Invalid crop row ids</source>
         <translation>Неверные названия строк</translation>
     </message>
@@ -2430,72 +2442,82 @@ The session database file is removed after closing of UGENE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="50"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="49"/>
+        <source>The forward primer length should be between %1 and %2 bp.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="51"/>
+        <source>The reverse primer length should be between %1 and %2 bp.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="54"/>
         <source> Unable to calculate primer statistics.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="142"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="150"/>
         <source>Unexpected symbol: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="235"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="243"/>
         <source>low GC-content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="236"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="244"/>
         <source>high GC-content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="242"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="250"/>
         <source>low melting temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="243"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="251"/>
         <source>high melting temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="249"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="257"/>
         <source>low GC clamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="255"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="263"/>
         <source>high base runs value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="262"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="270"/>
         <source>forward primer has %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="264"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="272"/>
         <source>reverse primer has %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="336"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="344"/>
         <source>Criteria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="337"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="345"/>
         <source>Valid Values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="338"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="346"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="339"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="347"/>
         <source>Reverse</source>
         <translation type="unfinished"></translation>
     </message>
