@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/U2Designer">
+        <file>html/Dashboard.html</file>
         <file>images/add.png</file>
         <file>images/background.png</file>
         <file>images/background-menu.png</file>
