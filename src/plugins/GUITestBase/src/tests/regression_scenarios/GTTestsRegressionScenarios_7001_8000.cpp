@@ -69,6 +69,7 @@
 #include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -1214,6 +1215,135 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
     selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(selectedRect == QRect(0, 0, 3, 1),
                   QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_1) {
+    // Check that "Export sequence of selected annotations..." does not generate error messages.
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 2);
+
+
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "murine_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
+    GTLogTracer::checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_2) {
+    // Check that "Export sequence of selected annotations..."  for multi-big-chunks import mode works correctly.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..5000000"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_2_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the last 3 symbols are RAG.
+    QString currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "RAG", "Last 3 symbols expected: RAG, current: " + currentString);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_3) {
+    // Check that "Export sequence of selected annotations..."  for multi-big-chunks import mode works correctly for complementary mode.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(1..5000000)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_3_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the first 3 symbols are TPA.
+    QString currentString = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "TPA", "Last 3 symbols expected: TPA, current:" + currentString);
+
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
+
+    // Expected: the last 3 symbols are ILD.
+    currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "ILD", "Last 3 symbols expected: ILD, current: " + currentString);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_4) {
+    // Check that multi-region/multi-frame DNA annotation is translated correctly (DNA is joined first, translated next).
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "join(10..16,18..20)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 10);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_4_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(exportedSequence == "SPS", "Sequence not matched: " + exportedSequence);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7451) {
