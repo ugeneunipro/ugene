@@ -3921,32 +3921,28 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4620) {
-    //    1. Open "data/samples/ABIF/A01.abi".
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Call a context menu on the chromatogram, select {Edit new sequence} menu item.
-    //    Expected state: an "Add new document" dialog appears.
-
-    class Scenario : public CustomScenario {
+    // Call a context menu on the chromatogram, select {Edit new sequence} menu item.
+    // Expected state: an "Add new document" dialog appears.
+    class CheckFormatsScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            //    3. Ensure that there is no "Database connection" format. Ensure that there are no formats with "DocumentFormatFlag_Hidden" flag.
-            const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "documentTypeCombo", dialog));
-            CHECK_SET_ERR(!formats.contains("Database connection"), "'Database connection' format isavailable");
+            // Check that there is no "Database connection" format. Ensure that there are no formats with "DocumentFormatFlag_Hidden" flag.
+            QStringList formatNames = GTComboBox::getValues(os, GTWidget::findComboBox(os, "documentTypeCombo", dialog));
+            CHECK_SET_ERR(!formatNames.contains("Database connection"), "'Database connection' format is not available");
 
             QList<DocumentFormatId> registeredFormatsIds = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-            QMap<QString, DocumentFormat *> formatsWithNames;
-            foreach (const DocumentFormatId &formatId, registeredFormatsIds) {
+            QMap<QString, DocumentFormat *> formatByName;
+            for (const DocumentFormatId &formatId : qAsConst(registeredFormatsIds)) {
                 DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-                CHECK_SET_ERR(nullptr != format, QString("Can't get document format by ID: '%1'").arg(formatId));
-                formatsWithNames[format->getFormatName()] = format;
+                formatByName[format->getFormatName()] = format;
             }
 
-            foreach (const QString &formatName, formats) {
-                DocumentFormat *format = formatsWithNames.value(formatName, nullptr);
-                CHECK_SET_ERR(nullptr != format, QString("An unknown format: '%1'").arg(formatName));
+            for (const QString &formatName : qAsConst(formatNames)) {
+                DocumentFormat *format = formatByName.value(formatName, nullptr);
                 CHECK_SET_ERR(!format->getFlags().testFlag(DocumentFormatFlag_Hidden), "A hidden format is offered to choose");
             }
 
@@ -3954,8 +3950,8 @@ GUI_TEST_CLASS_DEFINITION(test_4620) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit new sequence"));
-    GTUtilsDialog::waitForDialog(os, new AddNewDocumentDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit new sequence"}));
+    GTUtilsDialog::waitForDialog(os, new AddNewDocumentDialogFiller(os, new CheckFormatsScenario()));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
