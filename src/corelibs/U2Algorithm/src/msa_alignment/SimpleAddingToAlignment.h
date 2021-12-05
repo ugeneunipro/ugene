@@ -70,9 +70,9 @@ public:
 
 class SimpleAddToAlignmentAlgorithm : public AlignmentAlgorithm {
 public:
-    SimpleAddToAlignmentAlgorithm();
+    SimpleAddToAlignmentAlgorithm(const AlignmentAlgorithmType &type);
 };
 
 }  // namespace U2
 
-#endif  // _U2_PAIRWISE_ALIGNER_H_
+#endif  // _U2_SIMPLE_ADDING_TO_ALIGNMENT_H_

@@ -3882,7 +3882,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTWidget::click(os, GTAction::button(os, "Align"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignToSequenceMenuScenario()));
-    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
+    GTWidget::click(os, GTAction::button(os, "align_new_sequences_to_alignment_action"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0064) {

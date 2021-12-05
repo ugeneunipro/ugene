@@ -53,20 +53,21 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
+#include "align_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "export/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
-#include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
 #include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
-const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
-const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-align-sequences-to-alignment");
-const QString MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT("msa-editor-menu-align-alignment-to-alignment");
+const QString MsaEditorMenuType::ALIGN("msa_editor_menu_align");
+const QString MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT("msa_editor_menu_align_new_sequences_to_alignment");
+const QString MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT("msa_editor_menu_align_new_alignment_to_alignment");
+const QString MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT("msa_editor_menu_align_selected_sequences_to_alignment");
 
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
@@ -133,8 +134,8 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
-    realignSomeSequenceAction = new QAction(QIcon(":/core/images/realign_some_sequences.png"), tr("Realign sequence(s) to other sequences"), this);
-    realignSomeSequenceAction->setObjectName("Realign sequence(s) to other sequences");
+    alignSelectedSequencesToAlignmentAction = new QAction(QIcon(":/core/images/realign_some_sequences.png"), tr("Realign sequence(s) to other sequences"), this);
+    alignSelectedSequencesToAlignmentAction->setObjectName("align_selected_sequences_to_alignment");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
     if (maObject->getAlphabet() != nullptr) {
@@ -160,8 +161,6 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     convertRawToAminoAction->setObjectName("convertRawToAminoAction");
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
-
-    updateActions();
 }
 
 void MSAEditor::updateActions() {
@@ -173,10 +172,10 @@ void MSAEditor::updateActions() {
     sortByLengthAscendingAction->setEnabled(!isReadOnly);
     sortByLengthDescendingAction->setEnabled(!isReadOnly);
 
-    if (alignSequencesToAlignmentAction != nullptr) {
-        alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
-    }
+    alignNewSequencesToAlignmentAction->setEnabled(!isReadOnly);
+
     buildTreeAction->setEnabled(maObject->getNumRows() >= 3);
+
     sl_updateRealignAction();
 
     auto alphabetId = maObject->getAlphabet()->getId();
@@ -243,8 +242,8 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);
     tb->addAction(alignAction);
-    tb->addAction(alignSequencesToAlignmentAction);
-    tb->addAction(realignSomeSequenceAction);
+    tb->addAction(alignNewSequencesToAlignmentAction);
+    tb->addAction(alignSelectedSequencesToAlignmentAction);
 
     GObjectView::buildStaticToolbar(tb);
 }
@@ -335,9 +334,12 @@ void MSAEditor::addAlignMenu(QMenu *m) {
     alignMenu->menuAction()->setObjectName(MSAE_MENU_ALIGN);
 
     buildActionMenu(alignMenu,
-                    {MsaEditorMenuType::ALIGN,
-                     MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT,
-                     MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
+                    {
+                        MsaEditorMenuType::ALIGN,
+                        MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT,
+                        MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT,
+                        MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT,
+                    });
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -487,9 +489,9 @@ QWidget *MSAEditor::createWidget() {
     alignAction->setObjectName("Align");
     connect(alignAction, SIGNAL(triggered()), this, SLOT(sl_align()));
 
-    alignSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
-    alignSequencesToAlignmentAction->setObjectName("Align sequence(s) to this alignment");
-    connect(alignSequencesToAlignmentAction, SIGNAL(triggered()), this, SLOT(sl_addToAlignment()));
+    alignNewSequencesToAlignmentAction = new QAction(QIcon(":/core/images/add_to_alignment.png"), tr("Align sequence(s) to this alignment"), this);
+    alignNewSequencesToAlignmentAction->setObjectName("align_new_sequences_to_alignment_action");
+    connect(alignNewSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignNewSequencesToAlignment);
 
     setAsReferenceSequenceAction = new QAction(tr("Set this sequence as reference"), this);
     setAsReferenceSequenceAction->setObjectName("set_seq_as_reference");
@@ -510,7 +512,8 @@ QWidget *MSAEditor::createWidget() {
         optionsPanel->addGroup(factory);
     }
 
-    connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
+    connect(alignSelectedSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignSelectedSequencesToAlignment);
+
     connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
     connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
@@ -664,9 +667,9 @@ void MSAEditor::sl_align() {
     menu.exec(QCursor::pos());
 }
 
-void MSAEditor::sl_addToAlignment() {
+void MSAEditor::sl_alignNewSequencesToAlignment() {
     QMenu menu;
-    buildActionMenu(&menu, {MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT, MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
+    buildActionMenu(&menu, {MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT, MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
     menu.exec(QCursor::pos());
 }
 
@@ -686,13 +689,10 @@ void MSAEditor::sl_searchInSequenceNames() {
     optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
-void MSAEditor::sl_realignSomeSequences() {
-    const MaEditorSelection &selection = getSelection();
-    QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesFromSelectionRects(selection.getRectList());
-    QList<qint64> selectedRowIds = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
-    auto realignTask = new RealignSequencesInAlignmentTask(getMaObject(), selectedRowIds.toSet());
-    TaskWatchdog::trackResourceExistence(maObject, realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
-    AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
+void MSAEditor::sl_alignSelectedSequencesToAlignment() {
+    QMenu menu;
+    buildActionMenu(&menu, {MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT});
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_setSeqAsReference() {
@@ -723,7 +723,7 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
 
 void MSAEditor::sl_updateRealignAction() {
     if (maObject->isStateLocked() || maObject->getAlphabet()->isRaw() || ui == nullptr) {
-        realignSomeSequenceAction->setDisabled(true);
+        alignSelectedSequencesToAlignmentAction->setDisabled(true);
         return;
     }
     const MaEditorSelection &selection = getSelection();
@@ -731,7 +731,7 @@ void MSAEditor::sl_updateRealignAction() {
     int selectedRowsCount = selection.getCountOfSelectedRows();
     bool isWholeSequenceSelection = selectionWidth == maObject->getLength() && selectedRowsCount >= 1;
     bool isAllRowsSelection = selectedRowsCount == collapseModel->getViewRowCount();
-    realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
+    alignSelectedSequencesToAlignmentAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
 void MSAEditor::buildTree() {

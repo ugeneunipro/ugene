@@ -21,14 +21,12 @@
 
 #include "MafftAddToAlignmentTask.h"
 
-#include <QCoreApplication>
 #include <QDir>
 #include <QTemporaryFile>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
@@ -36,8 +34,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
@@ -48,11 +44,8 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Mod.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "MAFFTSupport.h"
 #include "MAFFTSupportTask.h"
@@ -234,7 +227,7 @@ void MafftAddToAlignmentTask::run() {
         U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject *>(object);
         bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
-            //inserting new rows
+            // inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
@@ -258,7 +251,7 @@ void MafftAddToAlignmentTask::run() {
                 unalignedSequences << object->getGObjectName();
             }
         } else {
-            //maybe need add leading gaps to original rows
+            // maybe need add leading gaps to original rows
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
             if (rowId == -1) {
@@ -325,15 +318,19 @@ AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractA
     return new MafftAddToAlignmentTask(*addSettings);
 }
 
-MafftAddToAlignmentAlgorithm::MafftAddToAlignmentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment,
-                         BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT,
-                         AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with MAFFT…"),
+MafftAlignSequencesToAlignmentAlgorithm::MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType &type)
+    : AlignmentAlgorithm(type,
+                         type == AlignNewSequencesToAlignment
+                             ? BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT
+                             : BaseAlignmentAlgorithmsIds::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_MAFFT,
+                         type == AlignNewSequencesToAlignment
+                             ? AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with MAFFT…")
+                             : AlignmentAlgorithmsRegistry::tr("Align selected sequences to alignment with MAFFT…"),
                          new MafftAddToAlignmentTaskFactory()) {
 }
 
-bool MafftAddToAlignmentAlgorithm::isAlgorithmAvailable() const {
+bool MafftAlignSequencesToAlignmentAlgorithm::isAlgorithmAvailable() const {
     return AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid();
 }
 
-}    // namespace U2
+}  // namespace U2

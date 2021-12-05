@@ -31,6 +31,15 @@ public:
     // align sequences to alignment algorithms
     static const QString ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
     static const QString ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
+
+    /**
+     * Built-in algorithm ids for "Align selected sequences" to alignment.
+     * TODO: these are the same algorithm as 'ALIGN_SEQUENCES_TO_ALIGNMENT' but with a separate visual (action) names.
+     *  This should be changed and action names assigned in UI. The algorithm must hold only generic name: MAFFT, UGENE...
+     *  TO be fixed as a part of UGENE-7499.
+     */
+    static const QString ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
+    static const QString ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
 };
 
 }  // namespace U2

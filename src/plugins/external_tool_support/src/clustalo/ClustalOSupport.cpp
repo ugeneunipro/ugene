@@ -129,7 +129,7 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
 
     auto addAlignmentToAlignmentAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align alignment to alignment with ClustalO…"), 2001);
     addAlignmentToAlignmentAction->setObjectName("align-alignment-to-alignment-clustalo");
-    addAlignmentToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_ALIGNMENT_TO_ALIGNMENT});
+    addAlignmentToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
     connect(addAlignmentToAlignmentAction, SIGNAL(triggered()), SLOT(sl_addAlignmentToAlignment()));
     addViewAction(addAlignmentToAlignmentAction);
 }

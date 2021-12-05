@@ -33,7 +33,8 @@ namespace U2 {
 
 AlignmentAlgorithmsRegistry::AlignmentAlgorithmsRegistry(QObject *parent)
     : QObject(parent) {
-    registerAlgorithm(new SimpleAddToAlignmentAlgorithm());
+    registerAlgorithm(new SimpleAddToAlignmentAlgorithm(AlignNewSequencesToAlignment));
+    registerAlgorithm(new SimpleAddToAlignmentAlgorithm(AlignSelectionToAlignment));
 }
 
 AlignmentAlgorithmsRegistry::~AlignmentAlgorithmsRegistry() {

@@ -63,7 +63,9 @@ MAFFTSupport::MAFFTSupport()
     versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
-    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAlignmentAlgorithm());
+    AlignmentAlgorithmsRegistry *registry = AppContext::getAlignmentAlgorithmsRegistry();
+    registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
+    registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {
