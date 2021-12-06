@@ -125,20 +125,18 @@ void MaEditorMultilineWgt::initWidgets() {
 }
 
 void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
-    if (uiChild == nullptr) {
+    if (uiChildLength == 0) {
         uiChildLength = 8;
-        uiChild = new MaEditorWgt *[uiChildLength];
+        uiChild.resize(uiChildLength);
         uiChildCount = 0;
     }
 
     if (index == -1) {
         index = uiChildCount;
     }
-    if (index > 0 && (uint)index > uiChildLength) {
-        MaEditorWgt **uiChildNew = new MaEditorWgt *[index + 8];
-        std::copy(uiChild, uiChild + std::min(uiChildLength, uiChildLength + 8), uiChildNew);
-        delete[] uiChild;
-        uiChild = uiChildNew;
+    if (index > 0 && (uint) index >= uiChildLength) {
+        uiChildLength = index * 2;
+        uiChild.resize(uiChildLength);
     }
 
     uiChild[index] = child;
@@ -150,6 +148,17 @@ void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
 
     connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), getScrollController(), SLOT(sl_updateScrollBars()));
     scrollController->sl_updateScrollBars();
+}
+
+bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
+{
+    bool oldmode = multilineMode;
+    multilineMode = newmode;
+    if (oldmode != newmode) {
+        updateChildren();
+        return true;
+    }
+    return false;
 }
 
 MaEditorWgt *MaEditorMultilineWgt::getActiveChild() {

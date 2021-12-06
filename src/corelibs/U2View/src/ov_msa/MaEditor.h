@@ -222,20 +222,8 @@ public:
     /** Returns collapse model instance. The returned value is never null. */
     MaCollapseModel* getCollapseModel() const;
 
-    uint getChildrenCount() const { return uiChildCount; }
-
-    bool getMultilineMode() const { return multilineMode; }
-
-    void setMultilineMode(bool multilinemode);
-
-    MaEditorWgt *getActiveChild();
-    void setActiveChild(MaEditorWgt *child);
-
-    /**
-     * Centers selection on the screen if possible. Otherwise scrolls one of the selection corners into the view.
-     * Does not perform zoom/font-change operations.
-     */
-    void scrollSelectionIntoView();
+    virtual void initActionsAndSignals() {};
+    virtual void initChildrenActionsAndSignals() {};
 
 signals:
     void si_fontChanged(const QFont& f);
@@ -272,7 +260,10 @@ protected slots:
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
 
-    void sl_multilineViewAction();
+    virtual void sl_multilineViewAction() {
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
+        return;
+    };
 
 private slots:
     void resetColumnWidthCache();

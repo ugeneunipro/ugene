@@ -30,26 +30,33 @@
 
 namespace U2 {
 
-MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor)
+MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
     : MaEditorMultilineWgt(editor) {
     initActions();
     initWidgets();
 
     this->setObjectName("msa_editor_vertical_childs_layout_" +
                         editor->getMaObject()->getGObjectName());
-    this->setMultilineMode(true);
+    this->setMultilineMode(multiline);
 
+    createChildren();
+}
+
+void MsaEditorMultilineWgt::createChildren()
+{
     // TODO:ichebyki
     // calculate needed count
     uint childrenCount = this->getMultilineMode() ? 3 : 1;
 
     MaEditorOverviewArea *overviewArea = this->getOverviewArea();
     MaEditorStatusBar *statusBar = this->getStatusBar();
-
     for (uint i = 0; i < childrenCount; i++) {
-        MsaEditorWgt *child = new MsaEditorWgt(editor, overviewArea, statusBar);
+        MsaEditorWgt *child = new MsaEditorWgt(qobject_cast<MSAEditor *>(editor),
+                                               overviewArea,
+                                               statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget in multiline mode", );
-        QString objName = QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(i);
+        QString objName = QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1")
+                              .arg(i);
         child->setObjectName(objName);
 
         this->addChild(child);
@@ -57,6 +64,17 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor)
             this->setActiveChild(child);
         }
     }
+}
+
+void MsaEditorMultilineWgt::updateChildren()
+{
+    for (; uiChildCount > 0; uiChildCount--) {
+        MsaEditorWgt *child = qobject_cast<MsaEditorWgt *>(uiChild[uiChildCount - 1]);
+        delete child;
+        uiChild[uiChildCount - 1] = nullptr;
+    }
+
+    createChildren();
 }
 
 MSAEditor *MsaEditorMultilineWgt::getEditor() const {
@@ -108,7 +126,7 @@ void MsaEditorMultilineWgt::initChildrenArea(QGroupBox *_uiChildrenArea) {
 }
 
 MaEditorWgt *MsaEditorMultilineWgt::getUI(uint index) const {
-    return uiChild == nullptr || index >= uiChildCount
+    return !(index < uiChildCount)
                ? nullptr
                : qobject_cast<MsaEditorWgt *>(uiChild[index]);
 }
