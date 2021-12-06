@@ -155,9 +155,9 @@ public:
     void disableFreeRowOrderMode(QObject* marker);
 
 protected:
-    void focusOutEvent(QFocusEvent* fe) override;
-
-    void focusInEvent(QFocusEvent* fe) override;
+    void focusOutEvent(QFocusEvent *fe) override;
+    void focusInEvent(QFocusEvent *fe) override;
+    void wheelEvent(QWheelEvent *we) override;
 
 private slots:
     void sl_buildMenu(GObjectView* v, QMenu* m, const QString& menuType);

@@ -64,7 +64,8 @@ bool MaEditorWgtEventFilter::eventFilter(QObject *obj, QEvent *event)
         coreLog.info(tr("=============== HoverLeave %1")
                          .arg(QString("0x%1").arg((qulonglong) maEditorWgt)));
 #endif
-        maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(nullptr);
+        maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(
+            maEditorWgt->getEditor()->getMaEditorMultilineWgt()->getUI(0));
     }
     // standard event processing
     return QObject::eventFilter(obj, event);

@@ -129,21 +129,16 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, Mult
     copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
     copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
 
+    gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
+    gotoSelectedReadAction->setObjectName("center-read-start-end-action");
+    gotoSelectedReadAction->setEnabled(false);
+    connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
+
     multilineViewAction = new QAction(QIcon(":core/images/multiline_view.png"), tr("Multiline View"), this);
     multilineViewAction->setObjectName("Multiline View");
     multilineViewAction->setCheckable(true);
     multilineViewAction->setChecked(false);
     connect(multilineViewAction, SIGNAL(triggered()), SLOT(sl_multilineViewAction()));
-
-    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
-    showOverviewAction->setObjectName("Show overview");
-    showOverviewAction->setCheckable(true);
-    showOverviewAction->setChecked(true);
-
-    clearSelectionAction = new QAction(tr("Clear selection"), this);
-    clearSelectionAction->setShortcut(Qt::Key_Escape);
-    clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(clearSelectionAction, &QAction::triggered, this, &MaEditor::sl_onClearActionTriggered);
 
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,

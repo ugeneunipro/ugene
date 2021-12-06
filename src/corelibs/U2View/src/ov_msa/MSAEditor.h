@@ -147,6 +147,9 @@ public:
         return qobject_cast<MsaEditorMultilineWgt *>(ui);
     }
 
+    void initActionsAndSignals() override;
+    void initChildrenActionsAndSignals() override;
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint& pos) override;
 
@@ -191,8 +194,11 @@ protected slots:
     /** Shows 'Export Image' dialog. */
     void sl_exportImage();
 
+    void sl_multilineViewAction() override;
+
 protected:
     QWidget *createWidget() override;
+
     void initActions() override;
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
@@ -284,7 +290,11 @@ private:
     QSet<QObject*> freeModeMasterMarkersSet;
 
     /** Selection state controller. */
-    MaEditorSelectionController* selectionController;
+    MaEditorSelectionController *selectionController;
+
+    // Main windows toolbar
+    // we need to save it for recreating actions while switching singleline <-> multiline modes
+    QToolBar *staticToolBar;
 };
 
 /** Set of custom menu actions in MSA editor. */
