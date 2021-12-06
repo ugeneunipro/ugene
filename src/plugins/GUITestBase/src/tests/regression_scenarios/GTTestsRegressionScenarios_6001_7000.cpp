@@ -7063,7 +7063,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check direct read first.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();
@@ -7071,7 +7071,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check complement read.
     GTUtilsMcaEditor::clickReadName(os, 2);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();

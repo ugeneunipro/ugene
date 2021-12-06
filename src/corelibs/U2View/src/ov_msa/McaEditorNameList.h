@@ -38,12 +38,6 @@ protected slots:
     void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &oldSelection) override;
 
 protected:
-    /** Processes special MCA-editor only name-list keyboard actions. */
-    void keyPressEvent(QKeyEvent *e) override;
-
-    /** Double-click in MCA editor is bound to 'goto-read' action. */
-    void mouseDoubleClickEvent(QMouseEvent *e) override;
-
     void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) override;
 
     /**

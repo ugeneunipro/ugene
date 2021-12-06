@@ -91,6 +91,7 @@ protected:
     void focusOutEvent(QFocusEvent *fe) override;
     void focusInEvent(QFocusEvent *fe) override;
     void wheelEvent(QWheelEvent *we) override;
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
 
     /**
      * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
