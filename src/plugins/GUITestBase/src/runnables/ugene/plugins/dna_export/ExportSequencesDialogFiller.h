@@ -54,7 +54,16 @@ public:
                        Genbank };
     enum MergeOptions { SaveAsSeparate,
                         Merge };
-    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_path, FormatToUse _format, MergeOptions _options, int _gapLength = 0, bool _addDocToProject = true, bool _exportWithAnnotations = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+
+    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os,
+                                              const QString &_path,
+                                              FormatToUse _format,
+                                              MergeOptions _options,
+                                              int _gapLength = 0,
+                                              bool _addDocToProject = true,
+                                              bool _exportWithAnnotations = false,
+                                              GTGlobals::UseMethod method = GTGlobals::UseMouse,
+                                              bool translate = false);
     void commonScenario();
 
 private:
@@ -65,6 +74,7 @@ private:
     bool exportWithAnnotations;
     MergeOptions options;
     GTGlobals::UseMethod useMethod;
+    bool translate = false;
     QMap<FormatToUse, QString> comboBoxItems;
     QMap<MergeOptions, QString> mergeRadioButtons;
 };
