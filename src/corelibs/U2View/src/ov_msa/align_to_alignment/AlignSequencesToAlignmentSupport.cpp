@@ -102,10 +102,12 @@ MSAEditor *BaseObjectViewAlignmentAction::getEditor() const {
 /////////////////////////////////////
 AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
+    connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
+
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
     connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
     connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
-    connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
+
     sl_updateState();
 }
 
@@ -180,6 +182,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
 /////////////////////////////////////
 AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
+    connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
     connect(msaEditor->alignSelectedSequencesToAlignmentAction,
             &QAction::changed,
             this,

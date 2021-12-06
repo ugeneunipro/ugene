@@ -3885,7 +3885,6 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
 
     GTUtilsMsaEditor::selectRows(os, 1, 2);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
-                                                              "align-selection-to-alignment-ugene",
                                                               "align-selection-to-alignment-mafft",
                                                           })));
     GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));

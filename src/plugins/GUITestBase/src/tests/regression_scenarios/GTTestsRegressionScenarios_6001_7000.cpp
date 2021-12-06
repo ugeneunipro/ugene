@@ -1725,9 +1725,9 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     // Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
     QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
     CHECK_SET_ERR(docs.size() == 3, QString("Unexpected docs number, expected: 3, current: %1").arg(docs.size()));
-    CHECK_SET_ERR(docs.keys().contains("alignment.ugenedb"), "alignment.ugenedb in unexpectably absent");
-    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectably absent");
-    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.contains("alignment.ugenedb"), "alignment.ugenedb in unexpectedly absent");
+    CHECK_SET_ERR(docs.contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectedly absent");
+    CHECK_SET_ERR(docs.contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectedly absent");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6249_1) {
@@ -2948,10 +2948,13 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly disabled");
     //         Click "align_selected_sequences_to_alignment".
     //         Expected result : the sequences are realigned.
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
-    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
     //         Open "empty_mult_seq.fa".
     //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsProject::closeProject(os);
@@ -2967,14 +2970,17 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
     //  Expected result : "align_selected_sequences_to_alignment" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
     GTUtilsMsaEditor::selectRows(os, 18, 20);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
     QAbstractButton *realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
     //  Click "align_selected_sequences_to_alignment".
     //  Expected result : sequences realigned.
     GTWidget::click(os, realignButton);
+
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
@@ -2990,6 +2996,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3007,9 +3014,10 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
 
     //     Expected result : "align_selected_sequences_to_alignment" button is enabled.
     realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
-    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectably disabled");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

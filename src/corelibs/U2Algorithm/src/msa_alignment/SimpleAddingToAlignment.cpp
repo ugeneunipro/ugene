@@ -215,14 +215,10 @@ AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(Abstract
     return new SimpleAddToAlignmentTask(*addSettings);
 }
 
-SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm(const AlignmentAlgorithmType &type)
-    : AlignmentAlgorithm(type,
-                         type == AlignNewSequencesToAlignment
-                             ? BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE
-                             : BaseAlignmentAlgorithmsIds::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_UGENE,
-                         type == AlignNewSequencesToAlignment
-                             ? AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with UGENE…")
-                             : AlignmentAlgorithmsRegistry::tr("Align selected sequences to alignment with UGENE…"),
+SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()
+    : AlignmentAlgorithm(AlignNewSequencesToAlignment,
+                         BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT,
+                         AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with UGENE…"),
                          new SimpleAddToAlignmentTaskFactory()) {
 }
 

@@ -38,7 +38,6 @@ public:
      *  This should be changed and action names assigned in UI. The algorithm must hold only generic name: MAFFT, UGENE...
      *  TO be fixed as a part of UGENE-7499.
      */
-    static const QString ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
     static const QString ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
 };
 
