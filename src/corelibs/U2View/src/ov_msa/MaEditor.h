@@ -222,6 +222,9 @@ public:
     /** Returns collapse model instance. The returned value is never null. */
     MaCollapseModel* getCollapseModel() const;
 
+    virtual void initActionsAndSignals() {};
+    virtual void initChildrenActionsAndSignals() {};
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -257,7 +260,10 @@ protected slots:
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
 
-    void sl_multilineViewAction();
+    virtual void sl_multilineViewAction() {
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
+        return;
+    };
 
 private slots:
     void resetColumnWidthCache();

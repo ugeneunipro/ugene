@@ -81,9 +81,9 @@ signals:
     void si_hideTreeOP();
 
 protected:
-    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar);
-    void initNameList(QScrollBar *nhBar);
-    void initConsensusArea();
+    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
+    void initNameList(QScrollBar *nhBar) override;
+    void initConsensusArea() override;
 
 private:
     MsaEditorSimilarityColumn* dataList;
