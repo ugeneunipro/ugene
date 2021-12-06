@@ -42,7 +42,7 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
     Q_OBJECT
 
 public:
-    MsaEditorMultilineWgt(MSAEditor *editor);
+    MsaEditorMultilineWgt(MSAEditor *editor, bool multiline);
 
     MSAEditor *getEditor() const;
     MaEditorOverviewArea *getOverview();
@@ -57,6 +57,8 @@ protected:
     void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) override;
     void initStatusBar(MaEditorStatusBar *_statusBar = nullptr) override;
     void initChildrenArea(QGroupBox *_uiChildrenArea) override;
+    void createChildren() override;
+    void updateChildren() override;
 
 private:
 

@@ -119,9 +119,7 @@ public:
         return multilineMode;
     }
 
-    void setMultilineMode(bool newmode) {
-        multilineMode = newmode;
-    }
+    bool setMultilineMode(bool newmode);
 
     MaEditorWgt *getActiveChild();
     void setActiveChild(MaEditorWgt *child);
@@ -141,6 +139,9 @@ protected:
     virtual void initWidgets();
     virtual void initActions();
 
+    virtual void createChildren() = 0;
+    virtual void updateChildren() = 0;
+
     virtual void initScrollArea(QScrollArea *_scrollArea = nullptr) = 0;
     virtual void initOverviewArea(MaEditorOverviewArea *overviewArea = nullptr) = 0;
     virtual void initStatusBar(MaEditorStatusBar *statusbar = nullptr) = 0;
@@ -153,7 +154,7 @@ protected:
     MaEditorOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
 
-    MaEditorWgt **uiChild = nullptr;
+    QVector<MaEditorWgt *> uiChild;
     MaEditorWgt *activeChild = nullptr;
     uint uiChildLength = 0;
     uint uiChildCount = 0;
