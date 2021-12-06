@@ -60,6 +60,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
+        alignAction->setObjectName(algorithmId);
         alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT});
         addViewAction(alignAction);
     }
@@ -69,6 +70,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
+        alignAction->setObjectName(algorithmId);
         alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
         addViewAction(alignAction);
     }
@@ -78,6 +80,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSelectedSequencesAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/realign_some_sequences.png"));  // TODO: add a dedicated icon per algorithm.
+        alignAction->setObjectName(algorithmId);
         alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT});
         addViewAction(alignAction);
     }
