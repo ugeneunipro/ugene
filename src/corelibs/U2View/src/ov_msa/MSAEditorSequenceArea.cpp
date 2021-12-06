@@ -185,6 +185,12 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent *fe) {
     update();
 }
 
+void MSAEditorSequenceArea::wheelEvent(QWheelEvent *we) {
+    if (!editor->getMaEditorMultilineWgt()->getMultilineMode()) {
+        MaEditorSequenceArea::wheelEvent(we);
+    }
+}
+
 void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInfo) {
     if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
@@ -195,7 +201,8 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     Q_UNUSED(v);
 
-    if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
+    MaEditorWgt *child = editor->getMaEditorMultilineWgt()->getActiveChild();
+    if (child != ui) {
         return;
     }
     t->addAction(ui->getUndoAction());
