@@ -2702,7 +2702,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" and select "_common_data/database.ini".
+    //    2. Click "align_new_sequences_to_alignment_action" and select "_common_data/database.ini".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/database.ini"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2716,7 +2716,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2741,7 +2741,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2760,7 +2760,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_4) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "1");
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
 
-    //    3. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/FASTQ/eas.fastq".
+    //    3. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/FASTQ/eas.fastq".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3070,7 +3070,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    4. Select some sequences in project view and click "Align sequence(s) to this alignment".
+    //    4. Select some sequences in project view and click "align_new_sequences_to_alignment_action".
     GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
@@ -3091,7 +3091,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
     //    2. Rename the alignment, a new name should contain spaces.
     GTUtilsProjectTreeView::rename(os, "COI", "C O I");
 
-    //    3. Click "Align sequence(s) to this alignment" and select any file with sequence.
+    //    3. Click "align_new_sequences_to_alignment_action" and select any file with sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4200,7 +4200,7 @@ GUI_TEST_CLASS_DEFINITION(test_4687) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    // 3. Press "Align sequence(s) to this alignment" and add next sequence _common_data/fasta/amino_ext.fa
+    // 3. Press "align_new_sequences_to_alignment_action" and add next sequence _common_data/fasta/amino_ext.fa
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "amino_ext.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4688,7 +4688,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/amino_ext.fa".
+    //    3. Click "align_new_sequences_to_alignment_action" and select "_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4718,7 +4718,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/fa1.fa" (base DNA alphabet).
+    //    3. Click "align_new_sequences_to_alignment_action" and select "_common_data/fasta/fa1.fa" (base DNA alphabet).
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/fa1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4745,7 +4745,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" and select "data/samples/Genbank/PBR322.gb".
+    //    2. Click "align_new_sequences_to_alignment_action" and select "data/samples/Genbank/PBR322.gb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/PBR322.gb"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5330,7 +5330,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
 
@@ -5343,7 +5343,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_rna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
 

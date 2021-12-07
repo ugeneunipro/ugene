@@ -82,6 +82,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentSupport.h \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h \
+           src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.h \
            src/ov_msa/common/RefSeqCommonWidget.h \
            src/ov_msa/export/MSAImageExportTask.h \
@@ -127,7 +128,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.h \
            src/ov_msa/phy_tree_options/TreeOptionsWidget.h \
            src/ov_msa/phy_tree_options/TreeOptionsWidgetFactory.h \
-           src/ov_msa/realign_to_alignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.h \
@@ -362,6 +362,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentSupport.cpp \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp \
+           src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp \
            src/ov_msa/common/RefSeqCommonWidget.cpp \
            src/ov_msa/export/MSAImageExportTask.cpp \
@@ -406,7 +407,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.cpp \
            src/ov_msa/phy_tree_options/TreeOptionsWidget.cpp \
            src/ov_msa/phy_tree_options/TreeOptionsWidgetFactory.cpp \
-           src/ov_msa/realign_to_alignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.cpp \

@@ -21,8 +21,9 @@
 
 #include "RealignSequencesInAlignmentTaskTest.h"
 
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2View/RealignSequencesInAlignmentTask.h>
@@ -93,7 +94,7 @@ void GTest_Realign::prepare() {
     foreach (const qint64 index, rowsIndexesToAlign) {
         rowIdsToRealign.insert(msaObj->getMultipleAlignment()->getRowsIds().at(index));
     }
-    realignTask = new RealignSequencesInAlignmentTask(msaObj, rowIdsToRealign);
+    realignTask = new RealignSequencesInAlignmentTask(msaObj, rowIdsToRealign, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
     addSubTask(realignTask);
 }
 

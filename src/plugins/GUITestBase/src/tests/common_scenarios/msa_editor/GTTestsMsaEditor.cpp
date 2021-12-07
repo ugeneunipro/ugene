@@ -3837,52 +3837,57 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    class CheckAlignMenuScenario : public CustomScenario {
+    class CheckActivePopupMenuScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QStringList expectedActionObjectNames = {"Align with muscle",
-                                                     "Align with ClustalW",
-                                                     "Align with ClustalO",
-                                                     "Align with MAFFT",
-                                                     "Align with T-Coffee",
-                                                     "align_with_kalign"};
-            QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
-            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(), QString("Unexpected number of actions in 'Align' menu: %1").arg(menuActions.size()));
-            for (const QAction *action : qAsConst(menuActions)) {
-                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align' menu");
-            }
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        CheckActivePopupMenuScenario(const QStringList &_actionNames)
+            : actionNames(_actionNames) {
         }
-    };
 
-    class CheckAlignToSequenceMenuScenario : public CustomScenario {
-    public:
         void run(HI::GUITestOpStatus &os) override {
-            QStringList expectedActionObjectNames = {"align-to-alignment-ugene",
-                                                     "align-to-alignment-mafft",
-                                                     "Align sequences to profile with MUSCLE",
-                                                     "Align profile to profile with MUSCLE",
-                                                     "align-alignment-to-alignment-clustalo"};
             QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
-            int expectedActionCount = expectedActionObjectNames.size() + 1;  // +1 is for the separator.
-            CHECK_SET_ERR(menuActions.size() == expectedActionCount,
-                          QString("Unexpected number of actions in 'Align to alignment': %1, expected: %2")
-                              .arg(menuActions.size())
-                              .arg(expectedActionCount));
+            int nonSeparatorMenuActionCount = 0;
             for (const QAction *action : qAsConst(menuActions)) {
                 if (!action->isSeparator()) {
-                    CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), "[" + action->objectName() + "] is not found in 'Align to alignment' menu");
+                    nonSeparatorMenuActionCount++;
+                    CHECK_SET_ERR(actionNames.contains(action->objectName()),
+                                  "[" + action->objectName() + "/" + action->text() + " is not found in 'Align' menu");
                 }
             }
+            CHECK_SET_ERR(actionNames.size() == nonSeparatorMenuActionCount,
+                          QString("Unexpected number of actions in menu with the first action = '%1', menu size: %2")
+                              .arg(menuActions.isEmpty() ? "<empty>" : menuActions[0]->text())
+                              .arg(nonSeparatorMenuActionCount));
+
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
+
+        QStringList actionNames;
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignMenuScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
+                                                              "Align with muscle",
+                                                              "Align with ClustalW",
+                                                              "Align with ClustalO",
+                                                              "Align with MAFFT",
+                                                              "Align with T-Coffee",
+                                                              "align_with_kalign",
+                                                          })));
     GTWidget::click(os, GTAction::button(os, "Align"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignToSequenceMenuScenario()));
-    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
+                                                              "align-to-alignment-ugene",
+                                                              "align-to-alignment-mafft",
+                                                              "Align sequences to profile with MUSCLE",
+                                                              "Align profile to profile with MUSCLE",
+                                                              "align-alignment-to-alignment-clustalo",
+                                                          })));
+    GTWidget::click(os, GTAction::button(os, "align_new_sequences_to_alignment_action"));
+
+    GTUtilsMsaEditor::selectRows(os, 1, 2);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
+                                                              "align-selection-to-alignment-mafft",
+                                                          })));
+    GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0064) {
