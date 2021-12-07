@@ -1434,7 +1434,8 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
 
     GTUtilsNotifications::waitForNotification(os);
     GTUtilsDialog::waitAllFinished(os);
-    GTTabWidget::closeTab(os, GTUtilsDashboard::getTabWidget(os), "Extract consensus from assembly 2");
+    auto tab = GTTabWidget::getTabBar(os, GTUtilsDashboard::getTabWidget(os));
+    GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
