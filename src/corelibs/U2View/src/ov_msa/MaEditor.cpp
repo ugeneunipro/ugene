@@ -557,4 +557,5 @@ void MaEditor::sl_gotoSelectedRead() {
 MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
 }
+
 }  // namespace U2
