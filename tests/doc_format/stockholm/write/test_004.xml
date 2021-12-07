@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Check Unicode support for Stockholm format -->
+
+    <load-document index="doc" url="clustal/utf16be.aln" io="local_file" format="clustal"/>
+
+    <save-document doc="doc" url="_temp0004.sto" io="local_file" format="stockholm"/>
+    <load-document index="doc2" url="_temp0004.sto" io="local_file" format="stockholm" dir="temp"/>
+
+    <compare-Msequences-alphabets-in-two-objects doc="doc" value="doc2"/>
+    <compare-Msequences-names-in-two-objects doc="doc" value="doc2"/>
+    <compare-Msequences-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>
