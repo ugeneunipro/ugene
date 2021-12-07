@@ -1723,7 +1723,7 @@ GUI_TEST_CLASS_DEFINITION(test_3274) {
 
 GUI_TEST_CLASS_DEFINITION(test_3276) {
     // Open "data/samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Build a phylogenetic tree. Check that the tree is synchronized with the alignment.
