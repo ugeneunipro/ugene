@@ -24,9 +24,9 @@
 
 #include <QObject>
 
-#include "PrimerDimersFinder.h"
-
 #include <U2Core/global.h>
+
+#include "PrimerDimersFinder.h"
 
 namespace U2 {
 
@@ -45,9 +45,11 @@ public:
     static QString getDoubleStringValue(double value);
 
 private:
-    //Length bounds of a typical primer
-    static constexpr int MAXIMUM_PRIMER_LENGTH = 50;
+    /** Minimum supported primer length. A length below this value may result to a memory and results count overflow. */
     static constexpr int MINIMUM_PRIMER_LENGTH = 15;
+
+    /** Maximum supported primer length. A length above this value is found as non-meaningful for a primers search. */
+    static constexpr int MAXIMUM_PRIMER_LENGTH = 200;
 };
 
 class U2CORE_EXPORT PrimerStatisticsCalculator {
@@ -118,7 +120,7 @@ public:
         return reverse;
     }
 
-    const DimerFinderResult& getDimersInfo() const;
+    const DimerFinderResult &getDimersInfo() const;
 
     bool isHeteroDimers() {
         return dimersInfo.canBeFormed;
