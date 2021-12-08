@@ -31,10 +31,6 @@
 
 namespace U2 {
 
-const QString RegionSelectorSettings::WHOLE_SEQUENCE = QApplication::translate("RegionSelectorController", "Whole sequence");
-const QString RegionSelectorSettings::SELECTED_REGION = QApplication::translate("RegionSelectorController", "Selected region");
-const QString RegionSelectorSettings::CUSTOM_REGION = QApplication::translate("RegionSelectorController", "Custom region");
-
 RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
                                                bool isCircularSelectionAvailable,
                                                DNASequenceSelection *selection,
@@ -47,10 +43,10 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
       defaultPreset(defaultPreset) {
     if (selection != nullptr && !selection->isEmpty()) {
         U2Region region = getOneRegionFromSelection();
-        presetRegions.prepend(RegionPreset(SELECTED_REGION, region));
+        presetRegions.prepend(RegionPreset(RegionPreset::SELECTED_REGION(), region));
     }
-    presetRegions.prepend(RegionPreset(WHOLE_SEQUENCE, U2Region(0, maxLen)));
-    presetRegions.prepend(RegionPreset(CUSTOM_REGION, U2Region()));
+    presetRegions.prepend(RegionPreset(RegionPreset::WHOLE_SEQUENCE(), U2Region(0, maxLen)));
+    presetRegions.prepend(RegionPreset(RegionPreset::CUSTOM_REGION(), U2Region()));
 }
 
 U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
@@ -69,6 +65,18 @@ U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
     }
 
     return region;
+}
+
+QString RegionPreset::WHOLE_SEQUENCE() {
+    return RegionSelectorController::tr("Whole sequence");
+}
+
+QString RegionPreset::SELECTED_REGION() {
+    return RegionSelectorController::tr("Selected region");
+}
+
+QString RegionPreset::CUSTOM_REGION() {
+    return RegionSelectorController::tr("Custom region");
 }
 
 RegionSelectorController::RegionSelectorController(RegionSelectorGui gui, RegionSelectorSettings settings, QObject *parent)
@@ -199,12 +207,12 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
     blockSignals(true);
 
     // set the region
-    if (index == gui.presetsComboBox->findText(RegionSelectorSettings::CUSTOM_REGION)) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::CUSTOM_REGION())) {
         connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
         return;
     }
 
-    if (index == gui.presetsComboBox->findText(RegionSelectorSettings::SELECTED_REGION)) {
+    if (index == gui.presetsComboBox->findText(RegionPreset::SELECTED_REGION())) {
         setRegion(settings.getOneRegionFromSelection());
     } else {
         const U2Region region = gui.presetsComboBox->itemData(index).value<U2Region>();
@@ -215,7 +223,7 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
 
 void RegionSelectorController::sl_regionChanged() {
     gui.presetsComboBox->blockSignals(true);
-    gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionSelectorSettings::CUSTOM_REGION));
+    gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionPreset::CUSTOM_REGION()));
     gui.presetsComboBox->blockSignals(false);
 }
 
@@ -251,10 +259,10 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection *selection) {
     CHECK(gui.presetsComboBox != nullptr, );  // no combobox - no selection dependency
 
     SAFE_POINT(settings.selection == selection, "Invalid sequence selection", );
-    int selectedRegionIndex = gui.presetsComboBox->findText(RegionSelectorSettings::SELECTED_REGION);
+    int selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::SELECTED_REGION());
     if (-1 == selectedRegionIndex) {
-        selectedRegionIndex = gui.presetsComboBox->findText(RegionSelectorSettings::WHOLE_SEQUENCE) + 1;
-        gui.presetsComboBox->insertItem(selectedRegionIndex, RegionSelectorSettings::SELECTED_REGION);
+        selectedRegionIndex = gui.presetsComboBox->findText(RegionPreset::WHOLE_SEQUENCE()) + 1;
+        gui.presetsComboBox->insertItem(selectedRegionIndex, RegionPreset::SELECTED_REGION());
     }
 
     U2Region region = settings.getOneRegionFromSelection();
@@ -307,7 +315,7 @@ void RegionSelectorController::setupPresets() {
         }
     }
     if (!foundDefaultPreset) {
-        settings.defaultPreset = RegionSelectorSettings::WHOLE_SEQUENCE;
+        settings.defaultPreset = RegionPreset::WHOLE_SEQUENCE();
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);

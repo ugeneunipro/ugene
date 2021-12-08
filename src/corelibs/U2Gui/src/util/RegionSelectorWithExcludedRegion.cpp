@@ -51,7 +51,7 @@ RegionSelectorWithExcludedRegion::~RegionSelectorWithExcludedRegion() {
 }
 
 bool RegionSelectorWithExcludedRegion::isWholeSequenceSelected() const {
-    return includeController->getPresetName() == RegionSelectorSettings::WHOLE_SEQUENCE;
+    return includeController->getPresetName() == RegionPreset::WHOLE_SEQUENCE();
 }
 
 U2Region RegionSelectorWithExcludedRegion::getIncludeRegion(bool *ok) const {
