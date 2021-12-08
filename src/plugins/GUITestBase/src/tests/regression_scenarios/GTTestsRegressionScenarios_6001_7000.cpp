@@ -1587,27 +1587,28 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6236) {
-    // 1. Open WD
+    // Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // 2. Compose workflow read sequence -> Remote blase
+
+    // Compose workflow read sequence -> Remote blast.
     WorkflowProcessItem *readElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem *remoteBlast = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "Remote BLAST");
     GTUtilsWorkflowDesigner::connect(os, readElement, remoteBlast);
 
-    // 3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
+    // Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
-    GTLogTracer l;
-    // 4. run workflow
+    // Run the workflow and wait for the expected message.
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep(60000);
-    GTUtilsWorkflowDesigner::stopWorkflow(os);
-
-    // 5. Check id of the blast job in log
-    bool desiredMessage = l.checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
-    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+    bool isMessageFound = false;
+    for (int second = 0; second < 90 && !isMessageFound; second++) {
+        GTGlobals::sleep(1000);
+        isMessageFound = GTLogTracer::checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
+    }
+    // Check id of the blast job in the log.
+    CHECK_SET_ERR(isMessageFound, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
