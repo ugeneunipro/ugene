@@ -1226,8 +1226,6 @@ GUI_TEST_CLASS_DEFINITION(test_7448_1) {
 
     GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 2);
 
-
-
     GTUtilsDialog::waitForDialog(os,
                                  new ExportSequenceOfSelectedAnnotationsFiller(os,
                                                                                sandBoxDir + "murine_out.fa",
@@ -1642,6 +1640,29 @@ GUI_TEST_CLASS_DEFINITION(test_7490) {
     GTUtilsMcaEditor::selectReadsByName(os, {"SZYD_Cas9_5B70", "SZYD_Cas9_CR50"});
     QString currentLineNumberText = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7504) {
+    // Check that multi-region complement(join()) annotation is exported in the correct order.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/short.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(join(1..1,10..10))"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7504_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Merge));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(exportedSequence == "GA", "Sequence not matched: " + exportedSequence);
 }
 
 }  // namespace GUITest_regression_scenarios
