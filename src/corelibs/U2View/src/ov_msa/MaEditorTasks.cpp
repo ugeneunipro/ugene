@@ -281,7 +281,6 @@ QList<Task *> ExportMaConsensusTask::onSubTaskFinished(Task *subTask) {
     Document *consensusDocument = createDocument();
     CHECK_OP(stateInfo, taskList);
     auto saveTask = new SaveDocumentTask(consensusDocument, consensusDocument->getIOAdapterFactory(), consensusDocument->getURL());
-    saveTask->addFlag(SaveDoc_Overwrite);
     taskList << saveTask;
 
     Project *proj = AppContext::getProject();

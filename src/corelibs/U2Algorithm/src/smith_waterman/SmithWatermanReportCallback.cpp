@@ -234,7 +234,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         alignmentDoc->addObject(docObject);
         currentProject->addDocument(alignmentDoc);
 
-        SaveDocFlags flags = SaveDoc_Overwrite;
+        SaveDocFlags flags;
         Task *saveMADocument = nullptr;
 
         if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
@@ -318,17 +318,14 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));
     alignmentDoc->addObject(docObject);
 
-    SaveDocFlags flags = SaveDoc_Overwrite;
-    flags |= SaveDoc_OpenAfter;
-    Task *saveMADocument = nullptr;
-
+    SaveDocFlags flags = SaveDoc_OpenAfter;
     if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
         ++countOfLoadedDocs;
     } else {
         flags |= SaveDoc_UnloadAfter;
     }
 
-    saveMADocument = new SaveDocumentTask(alignmentDoc, flags);
+    auto saveMADocument = new SaveDocumentTask(alignmentDoc, flags);
     taskScheduler->registerTopLevelTask(saveMADocument);
     return QString();
 }

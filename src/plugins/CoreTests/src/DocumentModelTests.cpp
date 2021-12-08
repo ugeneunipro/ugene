@@ -215,7 +215,7 @@ void GTest_SaveDocument::prepare() {
         return;
     }
 
-    SaveDocFlags saveTaskFlags = SaveDoc_Overwrite;
+    SaveDocFlags saveTaskFlags;
     if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         CHECK_EXT(nullptr != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );

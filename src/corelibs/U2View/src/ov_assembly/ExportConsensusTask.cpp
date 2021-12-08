@@ -93,8 +93,7 @@ void ExportConsensusTask::prepare() {
     CHECK_OP(stateInfo, );
 
     if (settings.saveToFile) {
-        SaveDocFlags saveFlags = SaveDoc_Overwrite;
-        addSubTask(new SaveDocumentTask(resultDocument, saveFlags));
+        addSubTask(new SaveDocumentTask(resultDocument));
 
         Project *p = AppContext::getProject();
         if (p != nullptr && p->findDocumentByURL(resultDocument->getURL()) != nullptr) {

@@ -151,7 +151,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, 
             doc->addObject(object);
         }
     }
-    Task *saveDoc = new SaveDocumentTask(doc, SaveDoc_Overwrite);
+    Task *saveDoc = new SaveDocumentTask(doc);
     AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
 }
 
