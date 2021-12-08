@@ -68,15 +68,15 @@ U2Region RegionSelectorSettings::getOneRegionFromSelection() const {
 }
 
 QString RegionPreset::WHOLE_SEQUENCE() {
-    return RegionSelectorController::tr("Whole sequence");
+    return QApplication::translate("RegionSelectorController", "Whole sequence");
 }
 
 QString RegionPreset::SELECTED_REGION() {
-    return RegionSelectorController::tr("Selected region");
+    return QApplication::translate("RegionSelectorController", "Selected region");
 }
 
 QString RegionPreset::CUSTOM_REGION() {
-    return RegionSelectorController::tr("Custom region");
+    return QApplication::translate("RegionSelectorController", "Custom region");
 }
 
 RegionSelectorController::RegionSelectorController(RegionSelectorGui gui, RegionSelectorSettings settings, QObject *parent)
