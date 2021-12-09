@@ -76,6 +76,7 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
@@ -1699,6 +1700,21 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
     CHECK_SET_ERR(firstVisibleBase < expectedCenter, "4. Unexpected first visible base: " + QString::number(firstVisibleBase));
     lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7506) {
+    // Check that blast search correctly selects database name from new variants of file.
+    BlastAllSupportDialogFiller::Parameters blastParams;
+    blastParams.runBlast = true;
+    blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1_v2_10/human_T1.ndb";
+    blastParams.withInputFile = true;
+    blastParams.inputPath = dataDir + "samples/FASTA/human_T1.fa";
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST+ search..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    bool hasExpectedResult = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));
+    CHECK_SET_ERR(hasExpectedResult, "Can not find the expected blastn result");
 }
 
 }  // namespace GUITest_regression_scenarios
