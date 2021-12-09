@@ -924,31 +924,28 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
 
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
-    class custom : public CustomScenario {
+    class NoButtonClickScenario : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        void run(HI::GUITestOpStatus &os) override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new custom()));
-
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
+    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new NoButtonClickScenario()));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    ;
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() == 1, "Length of namelist is not 1! Length: " + QString::number(sequencesNameList.length()));
 }
 
@@ -1590,27 +1587,28 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6236) {
-    // 1. Open WD
+    // Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // 2. Compose workflow read sequence -> Remote blase
+
+    // Compose workflow read sequence -> Remote blast.
     WorkflowProcessItem *readElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem *remoteBlast = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "Remote BLAST");
     GTUtilsWorkflowDesigner::connect(os, readElement, remoteBlast);
 
-    // 3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
+    // Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
-    GTLogTracer l;
-    // 4. run workflow
+    // Run the workflow and wait for the expected message.
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep(60000);
-    GTUtilsWorkflowDesigner::stopWorkflow(os);
-
-    // 5. Check id of the blast job in log
-    bool desiredMessage = l.checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
-    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+    bool isMessageFound = false;
+    for (int second = 0; second < 90 && !isMessageFound; second++) {
+        GTGlobals::sleep(1000);
+        isMessageFound = GTLogTracer::checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
+    }
+    // Check id of the blast job in the log.
+    CHECK_SET_ERR(isMessageFound, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -2142,24 +2140,19 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
 
 GUI_TEST_CLASS_DEFINITION(test_6314) {
     // 1. Copy "_common_data/clustal/align.aln" to sandbox and open it
-    const QString filePath = sandBoxDir + "test_6043.aln";
+    QString filePath = sandBoxDir + "test_6043.aln";
     GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
 
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Rename the first sequence with some very long name (more than 150 chars)
-    QString veryLongName;
-    for (int i = 0; i < 200; i++) {
-        veryLongName += "Q";
-    }
+    QString veryLongName = QString("Q").repeated(200);
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "IXI_234", veryLongName);
 
     // 3. Save sequence and close the project
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save all",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"File", "Save all"}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
 
@@ -7070,7 +7063,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check direct read first.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();
@@ -7078,7 +7071,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check complement read.
     GTUtilsMcaEditor::clickReadName(os, 2);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();

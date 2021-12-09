@@ -101,10 +101,19 @@ void ScrollController::scrollToPoint(const QPoint &maPoint, const QSize &screenS
     scrollToViewRow(maPoint.y(), screenSize.height());
 }
 
-void ScrollController::centerBase(int baseNumber, int widgetWidth) {
-    const U2Region baseGlobalRange = ui->getBaseWidthController()->getBaseGlobalRange(baseNumber);
-    const U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
-    const int newScreenXOffset = baseGlobalRange.startPos - visibleRange.length / 2;
+int ScrollController::getHorizontalScrollBarValueWithBaseCentered(int baseIndex, int widgetWidth) const {
+    U2Region baseGlobalRange = ui->getBaseWidthController()->getBaseGlobalRange(baseIndex);
+    U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
+    return qBound(0, (int)(baseGlobalRange.startPos - visibleRange.length / 2), hScrollBar->maximum());
+}
+
+bool ScrollController::isBaseCentered(int baseIndex, int widgetWidth) const {
+    int newScreenXOffset = getHorizontalScrollBarValueWithBaseCentered(baseIndex, widgetWidth);
+    return newScreenXOffset == hScrollBar->value();
+}
+
+void ScrollController::centerBase(int baseIndex, int widgetWidth) {
+    int newScreenXOffset = getHorizontalScrollBarValueWithBaseCentered(baseIndex, widgetWidth);
     hScrollBar->setValue(newScreenXOffset);
 }
 

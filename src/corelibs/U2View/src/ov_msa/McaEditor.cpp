@@ -239,18 +239,7 @@ void McaEditor::initActions() {
     ui->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
 
-    gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
-    gotoSelectedReadAction->setObjectName("centerReadStartAction");
-    gotoSelectedReadAction->setEnabled(false);  // Action state is managed by updateActions().
-    connect(gotoSelectedReadAction, SIGNAL(triggered()), SLOT(sl_gotoSelectedRead()));
-
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
-}
-
-void McaEditor::updateActions() {
-    MaEditor::updateActions();
-    MaEditorSelection selection = getSelection();
-    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
 }
 
 void McaEditor::sl_saveOverviewState() {
@@ -349,18 +338,6 @@ void McaEditor::addEditMenu(QMenu *menu) {
 
     editMenu->addAction(ui->getUndoAction());
     editMenu->addAction(ui->getRedoAction());
-}
-
-void McaEditor::sl_gotoSelectedRead() {
-    GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
-    MaEditorSelection selection = getSelection();
-    QRect selectionRect = selection.toRect();
-    int rowIndex = selectionRect.y();
-    CHECK(selectionRect.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
-
-    MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
-    int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();
-    ui->getSequenceArea()->centerPos(rowStartPos);
 }
 
 MaEditorSelectionController *McaEditor::getSelectionController() const {

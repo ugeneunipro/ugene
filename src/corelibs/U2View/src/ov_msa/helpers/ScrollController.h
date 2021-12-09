@@ -56,9 +56,12 @@ public:
     void scrollToBase(int baseNumber, int widgetWidth);
     void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
 
-    void centerBase(int baseNumber, int widgetWidth);
+    void centerBase(int baseIndex, int widgetWidth);
     void centerViewRow(int viewRowIndex, int widgetHeight);
     void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
+
+    /** Returns true if the base is centered. See 'centerBase' for details. */
+    bool isBaseCentered(int baseIndex, int widgetWidth) const;
 
     void setHScrollbarValue(int value);
     void setVScrollbarValue(int value);
@@ -105,6 +108,12 @@ private slots:
     void sl_collapsibleModelChanged();
 
 private:
+    /**
+     * Returns 'hScrollBar' value with the 'baseIndex' base centered.
+     * For the 'overflow' situation returns safe scroll bar values.
+     */
+    int getHorizontalScrollBarValueWithBaseCentered(int baseIndex, int widgetWidth) const;
+
     int getAdditionalXOffset() const;  // in pixels;
     int getAdditionalYOffset() const;  // in pixels;
 

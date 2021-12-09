@@ -145,6 +145,12 @@ public:
     /** Returns whole alignment data. */
     virtual MultipleAlignmentData *getMultipleAlignmentData() const = 0;
 
+    /**
+     * Returns true if the row sequence should be read in the reversed direction
+     * Such rows only exist for MCA alignments with a reverse-complementary read direction.
+     */
+    virtual bool isComplemented() const;
+
 protected:
     /** The sequence of the row without gaps (cached) */
     DNASequence sequence;

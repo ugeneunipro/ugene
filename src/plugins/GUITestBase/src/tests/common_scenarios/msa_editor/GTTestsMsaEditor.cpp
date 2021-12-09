@@ -465,165 +465,29 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Check rename & undo functionality in MSA Editor.
 
-    // Expected state: Alignment length 14, left offset 1, right offset 14
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Do double click on Tettigonia_viridissima sequence name.
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
+    GTUtilsMsaEditor::clickSequenceName(os, "Tettigonia_viridissima");
 
+    // Rename Tettigonia_viridissima -> Sequence_a.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Tettigonia_viridissima"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // 4. Rlick Undo button.
-    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
-    GTWidget::click(os, undo);
-    // GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed back
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Tettigonia_viridissima", "Tettigonia_viridissima"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0007_1) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-
-    // 2. Do double click on Tettigonia_viridissima sequence name.
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
-
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Tettigonia_viridissima"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
-
+    // Rename Sequence_a -> Sequence_a: must be a no-op.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // 4. Rlick Undo button. CHANGES: clicking undo by mouse
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "msa_action_undo"));
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed back
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Tettigonia_viridissima", "Tettigonia_viridissima"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0007_2) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Alignment length 14, left offset 1, right offset 14
-
-    // 2. Do double click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
-
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Bicolorana_bicolor_EF540830"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 2));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 2));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // 4. Rlick Undo button.
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed back
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Bicolorana_bicolor_EF540830", "Bicolorana_bicolor_EF540830"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 2));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0007_3) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Double-click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed.
-    // Expected state: Rename dialog appears.
-    // Put "Sequence_a" into text field. Click OK.
-
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Phaneroptera_falcata"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
-    GTMouseDriver::doubleClick();
-
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a.
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
-    GTMouseDriver::doubleClick();
-
-    // Click Undo button.
-    GTUtilsMsaEditor::undo(os);
+    // Undo.
+    GTWidget::click(os, GTAction::button(os, "msa_action_undo"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Tettigonia_viridissima is renamed back.
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Phaneroptera_falcata", "Phaneroptera_falcata"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
-    GTMouseDriver::doubleClick();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0007_4) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // Expected state: Alignment length 14, left offset 1, right offset 14
-
-    // 2. Do double-click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
-
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Conocephalus_sp."));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 5));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 5));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-
-    // 4. Rlick Undo button.
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTGlobals::sleep();
-
-    // Expected state: Tettigonia_viridissima renamed back
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Conocephalus_sp.", "Conocephalus_sp."));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 5));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::getSequenceNameRect(os, "Tettigonia_viridissima");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -1867,21 +1731,17 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {  // DIFFERENCE: Line label is tested
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
-    //    1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
-    //    2. Do context menu->Add->sequence from file
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb");
-    GTUtilsDialog::waitForDialog(os, ob);
+    // Test that an external sequence can be added to an alignment.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
+    // Call context menu->Add->sequence from file.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "CVU55762.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-    //    3. Select data/samples/GENBANK/CVU55762_new.fa
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "CVU55762", "CVU55762"));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 18));
-    GTMouseDriver::doubleClick();
-    //    Expected state: CVU55762 presents in list
+
+    // Check that the sequence is present.
+    GTUtilsMsaEditor::clickSequenceName(os, "CVU55762");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {

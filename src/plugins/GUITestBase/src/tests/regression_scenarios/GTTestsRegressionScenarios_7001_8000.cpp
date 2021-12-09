@@ -1432,7 +1432,8 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
 
     GTUtilsNotifications::waitForNotification(os);
     GTUtilsDialog::waitAllFinished(os);
-    GTTabWidget::closeTab(os, GTUtilsDashboard::getTabWidget(os), "Extract consensus from assembly 2");
+    auto tab = GTTabWidget::getTabBar(os, GTUtilsDashboard::getTabWidget(os));
+    GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
@@ -1663,6 +1664,41 @@ GUI_TEST_CLASS_DEFINITION(test_7504) {
 
     QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
     CHECK_SET_ERR(exportedSequence == "GA", "Sequence not matched: " + exportedSequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7505) {
+    // Check that double-click on the sequence name in MSA editor toggles centering of the start/end sequence region.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::clickSequenceName(os, "Pc_Metavir10");
+
+    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase == 0, "1. Unexpected first visible base: " + QString::number(firstVisibleBase));
+
+    QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, "Pc_Metavir10");
+    GTMouseDriver::moveTo(rect.center());
+
+    GTMouseDriver::doubleClick();
+    int expectedCenter = 66;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "2. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "2. Unexpected last visible base: " + QString::number(lastVisibleBase));
+
+    GTMouseDriver::doubleClick();
+    expectedCenter = 1220;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "3. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "3. Unexpected last visible base: " + QString::number(lastVisibleBase));
+
+    GTMouseDriver::doubleClick();
+    expectedCenter = 66;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "4. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
 }
 
 }  // namespace GUITest_regression_scenarios

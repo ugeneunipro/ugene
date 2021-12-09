@@ -135,7 +135,11 @@ public:
     bool shiftSelectedRegion(int shift);
 
     void centerPos(const QPoint &point);
+
     void centerPos(int pos);
+
+    /** Returns true if the given position was centered (see 'centerPos()'). */
+    bool isPositionCentered(int pos) const;
 
     QFont getFont() const;
 

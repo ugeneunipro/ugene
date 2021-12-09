@@ -72,10 +72,6 @@ public:
 
     void showErrorMessage();
 
-    static const QString WHOLE_SEQUENCE;
-    static const QString SELECTED_REGION;
-    static const QString CUSTOM_REGION;
-
 signals:
     void si_regionChanged(const U2Region &newRegion);
 

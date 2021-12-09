@@ -249,7 +249,7 @@ public:
     void reverseComplement();
 
     bool isReversed() const;
-    bool isComplemented() const;
+    bool isComplemented() const override;
 
 private:
     /** Splits input to sequence bytes and gaps model */

@@ -275,11 +275,31 @@ void MaEditorNameList::paintEvent(QPaintEvent *) {
     drawAll();
 }
 
+void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
+    if (editor->gotoSelectedReadAction->isEnabled()) {
+        editor->gotoSelectedReadAction->trigger();
+        e->ignore();
+        return;
+    }
+    QWidget::mouseDoubleClickEvent(e);
+}
+
 void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     int key = e->key();
-    bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
+    Qt::KeyboardModifiers modifiers = e->modifiers();
+    bool isShiftPressed = modifiers.testFlag(Qt::ShiftModifier);
     int cursorRow = editor->getCursorPosition().y();
+
     switch (key) {
+        case Qt::Key_Space:
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            if (modifiers == Qt::NoModifier && editor->gotoSelectedReadAction->isEnabled()) {
+                editor->gotoSelectedReadAction->trigger();
+                e->ignore();
+                return;
+            }
+            break;
         case Qt::Key_Up: {
             const MaEditorSelection &selection = editor->getSelection();
             if (selection.isEmpty() || selection.isMultiRegionSelection()) {

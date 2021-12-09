@@ -67,9 +67,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
       rowOrderMode(MaEditorRowOrderMode::Original),
-      collapseModel(new MaCollapseModel(this, obj->getRowIds())),
-      exportHighlightedAction(nullptr),
-      clearSelectionAction(nullptr) {
+      collapseModel(new MaCollapseModel(this, obj->getRowIds())) {
     GCOUNTER(cvar, factoryId);
 
     maObject = qobject_cast<MultipleAlignmentObject *>(obj);
@@ -124,6 +122,11 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
 
     copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
     copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
+
+    gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
+    gotoSelectedReadAction->setObjectName("center-read-start-end-action");
+    gotoSelectedReadAction->setEnabled(false);
+    connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
@@ -482,6 +485,10 @@ void MaEditor::updateActions() {
     zoomOutAction->setEnabled(getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH);
     zoomToSelectionAction->setEnabled(font.pointSize() < maximumFontPointSize);
     changeFontAction->setEnabled(resizeMode == ResizeMode_FontAndContent);
+
+    MaEditorSelection selection = getSelection();
+    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
+
     emit si_updateActions();
 }
 
@@ -527,7 +534,28 @@ void MaEditor::sl_onClearActionTriggered() {
     getSelectionController()->clearSelection();
 }
 
+void MaEditor::sl_gotoSelectedRead() {
+    GCOUNTER(cvar, "MAEditor:gotoSelectedRead");
+    MaEditorSelection selection = getSelection();
+    CHECK(!selection.isEmpty(), );
+
+    QRect selectionRect = selection.toRect();
+    int viewRowIndex = selectionRect.y();
+
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getNumRows(), );
+
+    MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
+    int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    if (sequenceArea->isPositionCentered(posToCenter)) {
+        posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
+    }
+    sequenceArea->centerPos(posToCenter);
+}
+
 MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
 }
+
 }  // namespace U2

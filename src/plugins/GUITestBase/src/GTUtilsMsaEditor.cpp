@@ -345,8 +345,9 @@ void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber,
 
 #define GT_METHOD_NAME "clearSelection"
 void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
-    Q_UNUSED(os);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    if (!getEditor(os)->getSelection().isEmpty()) {
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    }
 }
 #undef GT_METHOD_NAME
 
