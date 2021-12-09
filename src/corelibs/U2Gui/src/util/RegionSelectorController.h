@@ -51,7 +51,7 @@ struct RegionSelectorGui {
     QComboBox *presetsComboBox;
 };
 
-struct RegionPreset {
+struct U2GUI_EXPORT RegionPreset {
     RegionPreset() {
     }
     RegionPreset(const QString &text, const U2Region &region)

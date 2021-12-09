@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="177"/>
         <source>Use ambiguous bases</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать расширенный алфавит</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="191"/>
@@ -764,12 +764,12 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="101"/>
         <source>Use ambiguous bases</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать расширенный алфавит</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="101"/>
         <source>Search for ambiguous bases (as &quot;N) if checked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск для расширенного алфавита.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="102"/>
