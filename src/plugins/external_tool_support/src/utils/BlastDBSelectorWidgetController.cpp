@@ -96,6 +96,9 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
                 break;
             }
         }
+        // Remove counter-like suffix from the database file name: database-name.01.
+        databaseName = databaseName.replace(QRegExp("(\\.\\d+)$"), "");
+
         baseNameLineEdit->setText(databaseName);
         databasePathLineEdit->setText(fileInfo.dir().path());
         lod.url = name;
