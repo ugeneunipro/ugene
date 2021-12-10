@@ -1701,6 +1701,20 @@ GUI_TEST_CLASS_DEFINITION(test_7505) {
     CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7507) {
+    // Check that "Worm" rendering mode is available and is enabled by default for '4rte' PDB file.
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/4rte.pdb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QWidget *sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *glWidget = GTWidget::findWidget(os, "1-4RTE", sequenceViewWindow);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new PopupCheckerByText(os,
+                                                        {"Render Style", "Worms"},
+                                                        PopupChecker::CheckOptions(PopupChecker::IsEnabled | PopupChecker::IsChecked)));
+    GTMenu::showContextMenu(os, glWidget);
+}
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
