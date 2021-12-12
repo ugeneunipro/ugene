@@ -27,6 +27,8 @@
 #include "MSAEditorOverviewArea.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
+#include "helpers/MultilineScrollController.h"
+#include "helpers/ScrollController.h"
 
 namespace U2 {
 
@@ -46,7 +48,7 @@ void MsaEditorMultilineWgt::createChildren()
 {
     // TODO:ichebyki
     // calculate needed count
-    uint childrenCount = this->getMultilineMode() ? 3 : 1;
+    uint childrenCount = getMultilineMode() ? 3 : 1;
 
     MaEditorOverviewArea *overviewArea = this->getOverviewArea();
     MaEditorStatusBar *statusBar = this->getStatusBar();
@@ -58,18 +60,21 @@ void MsaEditorMultilineWgt::createChildren()
         QString objName = QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1")
                               .arg(i);
         child->setObjectName(objName);
+        child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
 
         this->addChild(child);
         if (i == 0) {
             this->setActiveChild(child);
         }
     }
+    emit scrollController->si_hScrollValueChanged();
 }
 
 void MsaEditorMultilineWgt::updateChildren()
 {
     for (; uiChildCount > 0; uiChildCount--) {
         MsaEditorWgt *child = qobject_cast<MsaEditorWgt *>(uiChild[uiChildCount - 1]);
+        SAFE_POINT(child != nullptr, "Can't delete sequence widget in multiline mode", );
         delete child;
         uiChild[uiChildCount - 1] = nullptr;
     }

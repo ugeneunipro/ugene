@@ -43,7 +43,8 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor* maEditor, MaEditorWgt* ui);
+    ScrollController(MaEditor *maEditor,
+                     MaEditorWgt *ui);
 
     void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar);
 
@@ -96,6 +97,12 @@ public:
     GScrollBar* getHorizontalScrollBar() const;
     GScrollBar* getVerticalScrollBar() const;
 
+    void setHScrollBarVisible(bool visible);
+    bool getHScrollBarVisible();
+
+    void setVScrollBarVisible(bool visible);
+    bool getVScrollBarVisible();
+
 signals:
     void si_visibleAreaChanged();
 
@@ -132,6 +139,9 @@ private:
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
+
+    bool hScrollBarVisible = true;
+    bool vScrollBarVisible = true;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)

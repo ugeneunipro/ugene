@@ -239,16 +239,27 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar *tb) {
+    // For multiline mode switching
+    // Workaround, need to remove all separators, which
+    // were created before and not auto-deleted
+    foreach (QAction *action, tb->actions()) {
+        if (action->isSeparator()) {
+            tb->removeAction(action);
+        }
+    }
+
     this->staticToolBar = tb;
     tb->addAction(getMaEditorWgt(0)->copyFormattedSelectionAction);
 
     tb->addAction(saveAlignmentAction);
     tb->addAction(saveAlignmentAsAction);
+    tb->addSeparator();
 
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
     tb->addAction(zoomToSelectionAction);
     tb->addAction(resetZoomAction);
+    tb->addSeparator();
 
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
@@ -256,10 +267,13 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);
     tb->addAction(alignAction);
+
     tb->addAction(alignNewSequencesToAlignmentAction);
     tb->addAction(alignSelectedSequencesToAlignmentAction);
+    tb->addSeparator();
 
     tb->addAction(multilineViewAction);
+    tb->addSeparator();
 
     GObjectView::buildStaticToolbar(tb);
 }
@@ -471,12 +485,11 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-QWidget *MSAEditor::createWidget()
-{
+QWidget *MSAEditor::createWidget() {
     Q_ASSERT(ui == nullptr);
 
-    ui = new MsaEditorMultilineWgt(this, false);
-    multilineViewAction->setChecked(false);
+    ui = new MsaEditorMultilineWgt(this, multilineMode);
+    multilineViewAction->setChecked(multilineMode);
     initActionsAndSignals();
     initChildrenActionsAndSignals();
     updateActions();
