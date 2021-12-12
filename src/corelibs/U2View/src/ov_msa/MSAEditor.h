@@ -295,6 +295,8 @@ private:
     // Main windows toolbar
     // we need to save it for recreating actions while switching singleline <-> multiline modes
     QToolBar *staticToolBar;
+
+    bool multilineMode = false;
 };
 
 /** Set of custom menu actions in MSA editor. */
