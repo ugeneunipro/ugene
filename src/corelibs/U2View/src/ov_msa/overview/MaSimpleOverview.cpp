@@ -37,12 +37,13 @@
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/RowHeightController.h"
 #include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
-MaSimpleOverview::MaSimpleOverview(MaEditor *editor, MaEditorWgt *ui)
+MaSimpleOverview::MaSimpleOverview(MaEditor *editor, QWidget *ui)
     : MaOverview(editor, ui) {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     setFixedHeight(FIXED_HEIGTH);
@@ -171,11 +172,22 @@ void MaSimpleOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
+        qint64 screenWidth = 0;
+        MaEditorWgt *wgt = editor->getMaEditorWgt(0);
+        const int screenPositionX = wgt->getScrollController()->getScreenPosition().x();
+        for (uint i = 0; wgt != nullptr; ) {
+            screenWidth += wgt->getSequenceArea()->width();
+            wgt = editor->getMaEditorWgt(++i);
+        }
         QPoint screenPosition = editor->getMaEditorWgt()->getScrollController()->getScreenPosition();
         QSize screenSize = editor->getMaEditorWgt()->getSequenceArea()->size();
 
-        cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
-        cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
+        cachedVisibleRange.setX(qRound(screenPositionX / stepX));
+        cachedVisibleRange.setWidth(qRound(screenWidth / stepX));
+
+        if (cachedVisibleRange.width() == 0) {
+            cachedVisibleRange.setWidth(1);
+        }
         cachedVisibleRange.setY(qRound(screenPosition.y() / stepY));
         cachedVisibleRange.setHeight(qRound(screenSize.height() / stepY));
 
@@ -211,12 +223,13 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     int newPosX = qBound(cachedVisibleRange.width() / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
     int newPosY = qBound(cachedVisibleRange.height() / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     QPoint newPos(newPosX, newPosY);
+
     newVisibleRange.moveCenter(newPos);
 
-    int newHScrollBarValue = newVisibleRange.x() * stepX;
-    editor->getMaEditorWgt()->getScrollController()->setHScrollbarValue(newHScrollBarValue);
-    int newVScrollBarValue = newVisibleRange.y() * stepY;
-    editor->getMaEditorWgt()->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    qobject_cast<MaEditorMultilineWgt *>(ui)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+
+    update();
 }
 
 }  // namespace U2
