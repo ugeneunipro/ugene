@@ -48,7 +48,7 @@ MsaEditorWgt::MsaEditorWgt(MSAEditor *editor,
     statusBar = statusbar;
     rowHeightController = new MsaRowHeightController(this);
     initActions();
-    initWidgets(true);
+    initWidgets(false, false);
 
     // For active MaEditorWgt tracking
     this->setAttribute(Qt::WA_Hover, true);

@@ -35,7 +35,8 @@
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor* maEditor, MaEditorWgt* maEditorUi)
+ScrollController::ScrollController(MaEditor *maEditor,
+                                   MaEditorWgt *maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -46,7 +47,8 @@ ScrollController::ScrollController(MaEditor* maEditor, MaEditorWgt* maEditorUi)
     connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
-void ScrollController::init(GScrollBar* hScrollBar, GScrollBar* vScrollBar) {
+void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar)
+{
     this->hScrollBar = hScrollBar;
     hScrollBar->setValue(0);
     connect(hScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
@@ -429,7 +431,8 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
     int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
     SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
-    hScrollBar->setVisible(numVisibleBases < alignmentLength);
+
+    hScrollBar->setVisible(hScrollBarVisible && numVisibleBases < alignmentLength);
 }
 
 void ScrollController::updateVerticalScrollBarPrivate() {
@@ -451,7 +454,8 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     int lastVisibleViewRowIndex = getLastVisibleViewRowIndex(sequenceAreaHeight);
     int numVisibleSequences = lastVisibleViewRowIndex - firstVisibleViewRowIndex + 1;
     SAFE_POINT(numVisibleSequences <= viewRowCount, "Vertical scrollbar appears unexpectedly: numVisibleSequences is too small", );
-    vScrollBar->setVisible(numVisibleSequences < viewRowCount);
+
+    vScrollBar->setVisible(vScrollBarVisible && numVisibleSequences < viewRowCount);
 }
 
 QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool reportOverflow) const {
@@ -467,6 +471,27 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool repor
         return QPoint(column, row);
     }
     return QPoint(-1, -1);
+}
+
+
+void ScrollController::setHScrollBarVisible(bool visible)
+{
+    hScrollBarVisible = visible;
+}
+
+bool ScrollController::getHScrollBarVisible()
+{
+    return hScrollBarVisible;
+}
+
+void ScrollController::setVScrollBarVisible(bool visible)
+{
+    vScrollBarVisible = visible;
+}
+
+bool ScrollController::getVScrollBarVisible()
+{
+    return vScrollBarVisible;
 }
 
 }  // namespace U2

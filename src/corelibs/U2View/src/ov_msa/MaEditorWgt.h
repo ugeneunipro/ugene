@@ -91,11 +91,25 @@ public:
         return overviewArea;
     }
 
-    MSAEditorOffsetsViewController* getOffsetsViewController() const;
+    void setOverviewArea(MaEditorOverviewArea *overview) {
+        overviewArea = overview;
+    }
 
-    MaEditorStatusBar* getStatusBar() const;
+    MaEditorStatusBar *getStatusBar() const {
+        return statusBar;
+    }
 
-    ScrollController* getScrollController() const;
+    void setStatusBar(MaEditorStatusBar *statusbar) {
+        statusBar = statusbar;
+    }
+
+    MSAEditorOffsetsViewController *getOffsetsViewController() const {
+        return offsetsViewController;
+    }
+
+    ScrollController *getScrollController() const {
+        return scrollController;
+    }
 
     BaseWidthController* getBaseWidthController() const;
 
@@ -120,7 +134,7 @@ signals:
     void si_completeRedraw();
 
 protected:
-    virtual void initWidgets(bool multilineMode);
+    virtual void initWidgets(bool addStatusBar = true, bool addOverviewArea = true);
     virtual void initActions();
 
     virtual void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) = 0;
