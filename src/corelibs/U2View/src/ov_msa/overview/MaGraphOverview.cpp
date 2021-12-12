@@ -353,7 +353,6 @@ void MaGraphOverview::moveVisibleRange(QPoint _pos) {
     newVisibleRange.moveCenter(newPos);
 
     const int newScrollBarValue = newVisibleRange.x() * stepX;
-    // TODO:ichebyki qobject_cast?
     qobject_cast<MaEditorMultilineWgt *>(ui)->getScrollController()->setHScrollbarValue(newScrollBarValue);
 
     update();

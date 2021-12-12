@@ -109,15 +109,15 @@ void MaEditorMultilineWgt::initWidgets() {
 
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(multilineArea);
-    mainSplitter->addWidget(overviewArea);
     mainSplitter->addWidget(statusBar);
-    mainSplitter->setStretchFactor(0, 2);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     mainLayout->addWidget(mainSplitter);
+    mainLayout->addWidget(statusBar);
+    mainLayout->addWidget(overviewArea);
 
     setLayout(mainLayout);
 
