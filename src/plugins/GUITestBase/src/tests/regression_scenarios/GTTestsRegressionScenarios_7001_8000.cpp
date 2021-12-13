@@ -1644,6 +1644,50 @@ GUI_TEST_CLASS_DEFINITION(test_7490) {
     CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7499) {
+    // Create a multi-selection and check that the current line label in the MCA editor's status bar shows '-'.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/protein.fasta.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    QString sequence1v1 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v1 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+
+    // Modify 2 sequences first.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {1, 1});
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {8, 8});
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString sequence1v2 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v2 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+    QString expected1v2 = sequence1v1.mid(0, 1) + "-" + sequence1v1.mid(1, 8);
+    QString expected8v2 = sequence8v1.mid(0, 8) + "-" + sequence8v1.mid(8, 1);
+    CHECK_SET_ERR(sequence1v2 == expected1v2, "Sequence 1 modification is not matched: " + sequence1v2 + ", expected: " + expected1v2);
+    CHECK_SET_ERR(sequence8v2 == expected8v2, "Sequence 8 modification is not matched: " + sequence8v2 + ", expected: " + expected8v2);
+
+    QStringList nameListBefore = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // Align the first sequence to the current alignment.
+    GTUtilsMsaEditor::clickSequence(os, 1);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_muscle"}));
+    GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // The order of sequences should not change.
+    QStringList nameListAfter = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameListBefore == nameListAfter, "Name list changed");
+
+    // The only the first sequence must be changed (alignment back).
+    QString sequence1v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+    CHECK_SET_ERR(sequence1v3 == sequence1v1, "Sequence 1 was not aligned as expected.");
+    CHECK_SET_ERR(sequence8v3 == sequence8v2, "Sequence 8 was modified as result of alignment");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7504) {
     // Check that multi-region complement(join()) annotation is exported in the correct order.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/short.fa");

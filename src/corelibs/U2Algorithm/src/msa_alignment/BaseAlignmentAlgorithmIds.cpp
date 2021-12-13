@@ -23,9 +23,9 @@
 
 namespace U2 {
 
-const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE("align-to-alignment-ugene");
-const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("align-to-alignment-mafft");
+const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE("align_to_alignment_ugene");
+const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("align_to_alignment_mafft");
 
-const QString BaseAlignmentAlgorithmsIds::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("align-selection-to-alignment-mafft");
+const QString BaseAlignmentAlgorithmsIds::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("align_selection_to_alignment_mafft");
 
 }  // namespace U2

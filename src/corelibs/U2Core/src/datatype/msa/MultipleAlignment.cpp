@@ -35,9 +35,6 @@ MultipleAlignment::MultipleAlignment(MultipleAlignmentData *maData)
     : maData(maData) {
 }
 
-MultipleAlignment::~MultipleAlignment() {
-}
-
 MultipleAlignmentData *MultipleAlignment::data() const {
     return maData.data();
 }
