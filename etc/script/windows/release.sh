@@ -34,6 +34,18 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 
+# Deprecated plugins.
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*clark*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*diamond*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*kraken*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*metaphlan2*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*ngs_reads_classification*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*wevote*
+
+# Deprecated workflows
+rm -rf "${APP_BUNDLE_DIR}/data/workflow_samples/NGS/ngs_classification"*
+rm -rf "${APP_BUNDLE_DIR}/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl"
+
 # Copy UGENE files & tools into 'app' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
@@ -76,9 +88,9 @@ function dump_symbols() {
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
-  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | tr -d ".pdb")
+  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | sed -e 's/\.pdb//g')
 
-  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}/${FILE_HASH}"
+  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}.pdb/${FILE_HASH}"
   mkdir -p "${DEST_PATH}"
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }

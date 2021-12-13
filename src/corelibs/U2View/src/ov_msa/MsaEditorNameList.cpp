@@ -56,13 +56,4 @@ MSAEditor *MsaEditorNameList::getEditor() const {
     return qobject_cast<MSAEditor *>(editor);
 }
 
-void MsaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
-    if (e->button() == Qt::LeftButton) {
-        sl_editSequenceName();
-        e->ignore();
-        return;
-    }
-    QWidget::mouseDoubleClickEvent(e);
-}
-
 }  // namespace U2

@@ -24,9 +24,11 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -36,6 +38,7 @@
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QPlainTextEdit>
 #include <QRadioButton>
@@ -47,11 +50,14 @@
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
+#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPcr.h"
+#include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -63,12 +69,14 @@
 #include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
@@ -868,13 +876,13 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     // 1. Set SPAdes to any file
     // Expected: SPAdes is invalid
     class SetSpades : public CustomScenario {
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus &os) override {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             QString toolPath = dataDir + "samples/FASTA/human_T1.fa";
 
             AppSettingsDialogFiller::setExternalToolPath(os, "SPAdes", QFileInfo(toolPath).absoluteFilePath());
-            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"), 
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "SPAdes"),
                           "SPAdes is expected to be invalid, but in fact it is valid");
 
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
@@ -882,14 +890,14 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetSpades()));
-    GTMenu::clickMainMenuItem(os, { "Settings", "Preferences..." }, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
     // 2. Open WD
-   GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
     QList<TrimmomaticAddSettings> steps;
-    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {} ));
+    steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, {}));
 
     // 3. Open the "De novo assemble Illumina SE reads" sample
     // 4. Set "human_T1.fa" as input
@@ -900,12 +908,12 @@ GUI_TEST_CLASS_DEFINITION(test_7390) {
     // 9. Click "Apply"
     class ProcessWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
+        void run(HI::GUITestOpStatus &os) override {
             //    Expected state: wizard has appeared.
-            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
-            GTUtilsWizard::setInputFiles(os, { { dataDir + "samples/FASTA/human_T1.fa" } });
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             GTWidget::click(os, GTWidget::findToolButton(os, "trimmomaticPropertyToolButton", wizard));
@@ -1210,6 +1218,133 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal first (2) result coordinates: " + GTUtils::rectToString(selectedRect)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7448_1) {
+    // Check that "Export sequence of selected annotations..." does not generate error messages.
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 2);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "murine_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
+    GTLogTracer::checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_2) {
+    // Check that "Export sequence of selected annotations..."  for multi-big-chunks import mode works correctly.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..5000000"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_2_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the last 3 symbols are RAG.
+    QString currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "RAG", "Last 3 symbols expected: RAG, current: " + currentString);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_3) {
+    // Check that "Export sequence of selected annotations..."  for multi-big-chunks import mode works correctly for complementary mode.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/5mbf.fa.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(1..5000000)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_3_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the first 3 symbols are TPA.
+    QString currentString = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "TPA", "Last 3 symbols expected: TPA, current:" + currentString);
+
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
+
+    // Expected: the last 3 symbols are ILD.
+    currentString = GTUtilsSequenceView::getEndOfSequenceAsString(os, 3);
+    CHECK_SET_ERR(currentString == "ILD", "Last 3 symbols expected: ILD, current: " + currentString);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7448_4) {
+    // Check that multi-region/multi-frame DNA annotation is translated correctly (DNA is joined first, translated next).
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "join(10..16,18..20)"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 10);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7448_4_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+                                                                               0,
+                                                                               true,
+                                                                               false,
+                                                                               GTGlobals::UseMouse,
+                                                                               true));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(exportedSequence == "SPS", "Sequence not matched: " + exportedSequence);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7451) {
     // Check that a right click on a recent item on the Welcome Screen does not crash UGENE.
 
@@ -1281,6 +1416,27 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7463) {
+    // Tools->NGS data analysis->Extract consensus from assemblies...
+    // Set _common_data/bam/Mycobacterium.sorted.bam as input and run.
+    // Repeat steps with data/samples/Assembly/chrM.sorted.bam.
+    // When the chrM workflow is over, click "Close dashboard".
+    //     Expected: no crash or freeze.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/Mycobacterium.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsNotifications::waitForNotification(os);
+    GTUtilsDialog::waitAllFinished(os);
+    auto tab = GTTabWidget::getTabBar(os, GTUtilsDashboard::getTabWidget(os));
+    GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7465) {
     //1. Open workflow sample "Align sequences with MUSCLE"
     //Expected state: wizard has appeared.
@@ -1338,6 +1494,296 @@ GUI_TEST_CLASS_DEFINITION(test_7469) {
     CHECK_SET_ERR(GTClipboard::text(os) == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text(os));
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text(os) == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text(os));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7472) {
+    // Check that "Build tree" does not start the task if output directory is not writable.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm/ABC_tran.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class CheckReadOnlyPathScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            // Create a read-only directory and set a path to a file inside it into the saveLineEdit.
+            QString dirPath = QFileInfo(sandBoxDir + GTUtils::genUniqueString("test_7472")).absoluteFilePath();
+            CHECK_SET_ERR(QDir().mkpath(dirPath), "Failed to create dir: " + dirPath);
+            GTFile::setReadOnly(os, dirPath, false);
+
+            auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, saveLineEdit, dirPath + "/tree.nwk");
+
+            // Check that error message is shown.
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Error opening file for writing"));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CheckReadOnlyPathScenario()));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::checkNoItem(os, "tree.nwk");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7473_1) {
+    // Build an alignment for a read-only alignment file.
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "2-Hacid_dh.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "2-Hacid_dh.sto", true);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7443.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsMsaEditor::getTreeView(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7473_2) {
+    // Build an alignment for a read-only alignment file from options panel.
+    GTFileDialog::openFile(os, dataDir + "samples/Stockholm/CBS.sto");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "CBS.sto", true);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
+    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsMsaEditor::getTreeView(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7476) {
+    // Check that IQ-TREE has "Display Options" tab, and it works.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class EnableCreateNewViewOptionScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
+
+            GTTabWidget::clickTab(os, "tab_widget", dialog, "Display Options");
+
+            GTRadioButton::click(os, "createNewView", dialog);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new EnableCreateNewViewOptionScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that tree view is opened.
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os, "collapse_mode_");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7487_1) {
+    // Check that move of the multi-region selection with drag-and-drop works as expected (2 selected regions).
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::selectRowsByName(os, {"c", "d", "g", "h"});
+
+    // Drag and drop "g" up to the "e" location.
+    QRect movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "g");
+    QRect movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "g", "h", "e", "f"}), "1. Unexpected order: " + nameList.join(","));
+
+    // Restore original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::undo(os);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "2. Unexpected order: " + nameList.join(","));
+
+    // Drag and drop "b" down to the "d" location.
+    GTUtilsMsaEditor::selectRowsByName(os, {"a", "b", "e", "f"});
+    movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "b");
+    movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"c", "d", "a", "b", "e", "f", "g", "h"}), "3. Unexpected order: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7487_2) {
+    // Check that move of the multi-region selection with drag-and-drop works as expected (4 selected regions).
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/collapse_mode_1.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Original state: a,b,c,d,e,f,g,h.
+    GTUtilsMsaEditor::selectRowsByName(os, {"a", "c", "e", "g"});
+
+    // Drag and drop "e" up to the "d" location.
+    QRect movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    QRect movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"b", "a", "c", "e", "g", "d", "f", "h"}), "1. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"a", "c", "e", "g"});
+
+    // Restore original state: a,b,c,d,e,f,g,h. Check that selection is restored too.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"a", "c", "e", "g"});
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "2. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::clearSelection(os);
+
+    // Drag and drop "d" down to the "e" location.
+    GTUtilsMsaEditor::selectRowsByName(os, {"b", "d", "f", "h"});
+    movingSequenceSrcRect = GTUtilsMsaEditor::getSequenceNameRect(os, "d");
+    movingSequenceDstRect = GTUtilsMsaEditor::getSequenceNameRect(os, "e");
+    GTMouseDriver::dragAndDrop(movingSequenceSrcRect.center(), movingSequenceDstRect.center());
+
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "c", "e", "b", "d", "f", "h", "g"}), "3. Unexpected order: " + nameList.join(","));
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"b", "d", "f", "h"});
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"b", "d", "f", "h"});
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"a", "b", "c", "d", "e", "f", "g", "h"}), "4. Unexpected order: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7490) {
+    // Create a multi-selection and check that the current line label in the MCA editor's status bar shows '-'.
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", sandBoxDir + "test_7490.ugenedb");
+    GTFileDialog::openFile(os, sandBoxDir + "test_7490.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMcaEditor::selectReadsByName(os, {"SZYD_Cas9_5B70", "SZYD_Cas9_CR50"});
+    QString currentLineNumberText = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7499) {
+    // Create a multi-selection and check that the current line label in the MCA editor's status bar shows '-'.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/protein.fasta.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    QString sequence1v1 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v1 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+
+    // Modify 2 sequences first.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {1, 1});
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {8, 8});
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString sequence1v2 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v2 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+    QString expected1v2 = sequence1v1.mid(0, 1) + "-" + sequence1v1.mid(1, 8);
+    QString expected8v2 = sequence8v1.mid(0, 8) + "-" + sequence8v1.mid(8, 1);
+    CHECK_SET_ERR(sequence1v2 == expected1v2, "Sequence 1 modification is not matched: " + sequence1v2 + ", expected: " + expected1v2);
+    CHECK_SET_ERR(sequence8v2 == expected8v2, "Sequence 8 modification is not matched: " + sequence8v2 + ", expected: " + expected8v2);
+
+    QStringList nameListBefore = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    // Align the first sequence to the current alignment.
+    GTUtilsMsaEditor::clickSequence(os, 1);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_muscle"}));
+    GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // The order of sequences should not change.
+    QStringList nameListAfter = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameListBefore == nameListAfter, "Name list changed");
+
+    // The only the first sequence must be changed (alignment back).
+    QString sequence1v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 1).left(10);
+    QString sequence8v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 8).left(10);
+    CHECK_SET_ERR(sequence1v3 == sequence1v1, "Sequence 1 was not aligned as expected.");
+    CHECK_SET_ERR(sequence8v3 == sequence8v2, "Sequence 8 was modified as result of alignment");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7504) {
+    // Check that multi-region complement(join()) annotation is exported in the correct order.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/short.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(join(1..1,10..10))"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7504_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Merge));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(exportedSequence == "GA", "Sequence not matched: " + exportedSequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7505) {
+    // Check that double-click on the sequence name in MSA editor toggles centering of the start/end sequence region.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::clickSequenceName(os, "Pc_Metavir10");
+
+    int firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase == 0, "1. Unexpected first visible base: " + QString::number(firstVisibleBase));
+
+    QRect rect = GTUtilsMsaEditor::getSequenceNameRect(os, "Pc_Metavir10");
+    GTMouseDriver::moveTo(rect.center());
+
+    GTMouseDriver::doubleClick();
+    int expectedCenter = 66;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "2. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    int lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "2. Unexpected last visible base: " + QString::number(lastVisibleBase));
+
+    GTMouseDriver::doubleClick();
+    expectedCenter = 1220;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "3. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "3. Unexpected last visible base: " + QString::number(lastVisibleBase));
+
+    GTMouseDriver::doubleClick();
+    expectedCenter = 66;
+    firstVisibleBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstVisibleBase < expectedCenter, "4. Unexpected first visible base: " + QString::number(firstVisibleBase));
+    lastVisibleBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastVisibleBase > expectedCenter, "4. Unexpected last visible base: " + QString::number(lastVisibleBase));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7506) {
+    // Check that blast search correctly selects database name from new variants of file.
+    BlastAllSupportDialogFiller::Parameters blastParams;
+    blastParams.runBlast = true;
+    blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1_v2_10/human_T1.ndb";
+    blastParams.withInputFile = true;
+    blastParams.inputPath = dataDir + "samples/FASTA/human_T1.fa";
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST+ search..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    bool hasExpectedResult = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));
+    CHECK_SET_ERR(hasExpectedResult, "Can not find the expected blastn result");
 }
 
 }  // namespace GUITest_regression_scenarios

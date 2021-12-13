@@ -136,4 +136,8 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
     return bytes;
 }
 
+bool MultipleAlignmentRowData::isComplemented() const {
+    return false;
+}
+
 }  // namespace U2

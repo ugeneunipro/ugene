@@ -26,7 +26,6 @@
 #include <QComboBox>
 #include <QContextMenuEvent>
 #include <QGroupBox>
-#include <QHBoxLayout>
 #include <QIntValidator>
 #include <QLabel>
 #include <QMenu>
@@ -47,10 +46,6 @@
 namespace U2 {
 ////////////////////////////////////////
 // RangeSelectorWidget
-const QString RegionSelector::WHOLE_SEQUENCE = QApplication::translate("RegionSelector", "Whole sequence");
-const QString RegionSelector::SELECTED_REGION = QApplication::translate("RegionSelector", "Selected region");
-const QString RegionSelector::CUSTOM_REGION = QApplication::translate("RegionSelector", "Custom region");
-
 RegionSelector::RegionSelector(QWidget *p, qint64 len, bool isVertical, DNASequenceSelection *selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions)
     : QWidget(p),
       maxLen(len),
@@ -70,7 +65,7 @@ U2Region RegionSelector::getRegion(bool *_ok) const {
 }
 
 bool RegionSelector::isWholeSequenceSelected() const {
-    return controller->getPresetName() == RegionSelectorSettings::WHOLE_SEQUENCE;
+    return controller->getPresetName() == RegionPreset::WHOLE_SEQUENCE();
 }
 
 void RegionSelector::setCustomRegion(const U2Region &value) {
@@ -78,7 +73,7 @@ void RegionSelector::setCustomRegion(const U2Region &value) {
 }
 
 void RegionSelector::setWholeRegionSelected() {
-    controller->setPreset(RegionSelectorSettings::WHOLE_SEQUENCE);
+    controller->setPreset(RegionPreset::WHOLE_SEQUENCE());
 }
 
 void RegionSelector::setCurrentPreset(const QString &presetName) {

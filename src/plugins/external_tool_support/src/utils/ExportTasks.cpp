@@ -166,7 +166,7 @@ QList<Task *> SaveSequenceTask::onSubTaskFinished(Task *subTask) {
         document->setDocumentOwnsDbiResources(true);
         document->addObject(cloneTask->takeResult());
 
-        SaveDocumentTask *saveTask = new SaveDocumentTask(document, nullptr, GUrl(), SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter);
+        SaveDocumentTask *saveTask = new SaveDocumentTask(document, nullptr, GUrl(), SaveDoc_DestroyAfter);
         saveTask->setSubtaskProgressWeight(50);
         result << saveTask;
     }

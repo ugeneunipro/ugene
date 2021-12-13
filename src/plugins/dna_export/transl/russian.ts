@@ -512,7 +512,7 @@
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="470"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="523"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="522"/>
         <source>Illegal parameter: input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
@@ -532,17 +532,17 @@
         <translation>Невозможно найти квалификатор, чтобы установить в качестве имени для BLAST последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="566"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="564"/>
         <source>Illegal parameter: Input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="641"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="639"/>
         <source>Create alignment</source>
         <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="642"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
         <source>Save alignment to file</source>
         <translation>Сохранить выравнивание в файл</translation>
     </message>
@@ -559,35 +559,35 @@
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="472"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="525"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
         <source>At least 2 annotations are required</source>
         <translation>Нужно выбрать хотя бы 2 аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="538"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="537"/>
         <source>Different sequence alphabets</source>
         <translation>Несопоставимые алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="594"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="592"/>
         <source>At least 2 sequences required</source>
         <translation>Необходимо как минимум 2 последовательности</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="485"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="532"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="531"/>
         <source>No sequence object found</source>
         <translation>Последовательность недоступна</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="495"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="552"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="608"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="551"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="606"/>
         <source>Alignment is too large</source>
         <translation>Слишком большой размер выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="588"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="586"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Невозможно определить алфавит выравнивания</translation>
     </message>
@@ -710,8 +710,12 @@
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
+        <source>Windows size is bigger than the sequence length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Windows size bigger than sequence length</source>
-        <translation>Размер окна больше чем длина последовательности</translation>
+        <translation type="vanished">Размер окна больше чем длина последовательности</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="157"/>
@@ -1582,7 +1586,7 @@
 <context>
     <name>U2::ImportAnnotationsFromCSVDialog</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="253"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="254"/>
         <source>Save imported annotations to</source>
         <translation>Выберите файл для сохранения аннотаций</translation>
     </message>
@@ -1598,62 +1602,61 @@ var %1; //input line
 var %2; //parsed line number</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="160"/>
         <source>Invalid start position/end position/length configuration!</source>
-        <translation>Неправильная конфигурация координат аннотации!</translation>
+        <translation type="vanished">Неправильная конфигурация координат аннотации!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="164"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="165"/>
         <source>Multiple columns are used as a name!</source>
         <translation>В качестве имени аннотации можно выбрать только один столбец!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="325"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="327"/>
         <source>Column separator value: [%1], hex: [%2], length: %3</source>
         <translation>Значение разделителя: [%1], hex: [%2], длина: %3</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="345"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="347"/>
         <source>CSV Files</source>
         <translation>CSV файлы</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="393"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="395"/>
         <source>Script is empty</source>
         <translation>Скрипт пуст</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="403"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="405"/>
         <source>Output file name is not set!</source>
         <translation>Не задано имя файла с аннотациями!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="168"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="169"/>
         <source>Invalid default annotation name!</source>
         <translation>Неправильное имя аннотации по умолчанию!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="302"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="304"/>
         <source>Failed to guess separator sequence!</source>
         <translation>Не удалось определить разделителный символ !</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="323"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="325"/>
         <source>Column separator</source>
         <translation>Разделитель столбцов</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="346"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="348"/>
         <source>Select CSV file to read</source>
         <translation>Выберите файл со столбцами</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="360"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="362"/>
         <source>Enter input CSV file name</source>
         <translation>Укажите исходный файл с данными</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="387"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="389"/>
         <source>Separator value is not set</source>
         <translation>Не задан символ разделитель столбцов</translation>
     </message>
@@ -1668,57 +1671,66 @@ var %2; //parsed line number</translation>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="485"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="160"/>
+        <source>Invalid [start position] or [end position] or [length] column assignment!
+
+Please assign a column role by clicking on a column header in &apos;Results preview&apos;</source>
+        <translation>Неверное назначение столбцов: [стартовая позиция] или [конечная позиция] или [длина]!
+
+Изменить назначение колонки можно дважды нажав на ее заголовок в таблице &apos;Просмотр результата&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="487"/>
         <source>[ignored]</source>
         <translation>[не используется]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="488"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="490"/>
         <source>[qualifier %1]</source>
         <translation>[квалификатор: %1]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="491"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="493"/>
         <source>[name]</source>
         <translation>[имя]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="495"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="497"/>
         <source>[start position with offset %1]</source>
         <translation>[начальная позиция, смещение %1]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="497"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="499"/>
         <source>[start position]</source>
         <translation>[начальная позиция]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="502"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="504"/>
         <source>[end position (inclusive)]</source>
         <translation>[конечная позиция (включительно)]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="504"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="506"/>
         <source>[end position]</source>
         <translation>[конечная позиция]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="508"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="510"/>
         <source>[length]</source>
         <translation>[длина]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="512"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="514"/>
         <source>[complement]</source>
         <translation>[complement]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="514"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="516"/>
         <source>[complement if &apos;%1&apos;]</source>
         <translation>[комплементарная если &apos;%1&apos;]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="518"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="520"/>
         <source>[group]</source>
         <translation>[группа]</translation>
     </message>

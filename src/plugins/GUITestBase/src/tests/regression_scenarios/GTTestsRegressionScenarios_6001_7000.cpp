@@ -71,7 +71,6 @@
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
-#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
@@ -925,31 +924,28 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
 
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
-    class custom : public CustomScenario {
+    class NoButtonClickScenario : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        void run(HI::GUITestOpStatus &os) override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new custom()));
-
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
+    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new NoButtonClickScenario()));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    ;
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() == 1, "Length of namelist is not 1! Length: " + QString::number(sequencesNameList.length()));
 }
 
@@ -1591,27 +1587,28 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6236) {
-    // 1. Open WD
+    // Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // 2. Compose workflow read sequence -> Remote blase
+
+    // Compose workflow read sequence -> Remote blast.
     WorkflowProcessItem *readElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     WorkflowProcessItem *remoteBlast = GTUtilsWorkflowDesigner::addElementByUsingNameFilter(os, "Remote BLAST");
     GTUtilsWorkflowDesigner::connect(os, readElement, remoteBlast);
 
-    // 3. Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
+    // Set the input sequence file: "data/samples/Genbank/NC_014267.1.gb".
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
-    GTLogTracer l;
-    // 4. run workflow
+    // Run the workflow and wait for the expected message.
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep(60000);
-    GTUtilsWorkflowDesigner::stopWorkflow(os);
-
-    // 5. Check id of the blast job in log
-    bool desiredMessage = l.checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
-    CHECK_SET_ERR(desiredMessage, "No expected message in the log");
+    bool isMessageFound = false;
+    for (int second = 0; second < 90 && !isMessageFound; second++) {
+        GTGlobals::sleep(1000);
+        isMessageFound = GTLogTracer::checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
+    }
+    // Check id of the blast job in the log.
+    CHECK_SET_ERR(isMessageFound, "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -1726,9 +1723,9 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     // Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
     QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
     CHECK_SET_ERR(docs.size() == 3, QString("Unexpected docs number, expected: 3, current: %1").arg(docs.size()));
-    CHECK_SET_ERR(docs.keys().contains("alignment.ugenedb"), "alignment.ugenedb in unexpectably absent");
-    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectably absent");
-    CHECK_SET_ERR(docs.keys().contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectably absent");
+    CHECK_SET_ERR(docs.contains("alignment.ugenedb"), "alignment.ugenedb in unexpectedly absent");
+    CHECK_SET_ERR(docs.contains("Aligned reads_consensus.txt"), "alignment.ugenedb in unexpectedly absent");
+    CHECK_SET_ERR(docs.contains("Aligned reads_consensus_1.txt"), "alignment.ugenedb in unexpectedly absent");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6249_1) {
@@ -2143,24 +2140,19 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
 
 GUI_TEST_CLASS_DEFINITION(test_6314) {
     // 1. Copy "_common_data/clustal/align.aln" to sandbox and open it
-    const QString filePath = sandBoxDir + "test_6043.aln";
+    QString filePath = sandBoxDir + "test_6043.aln";
     GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
 
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Rename the first sequence with some very long name (more than 150 chars)
-    QString veryLongName;
-    for (int i = 0; i < 200; i++) {
-        veryLongName += "Q";
-    }
+    QString veryLongName = QString("Q").repeated(200);
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "IXI_234", veryLongName);
 
     // 3. Save sequence and close the project
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save all",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"File", "Save all"}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::closeProject(os);
 
@@ -2927,55 +2919,61 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x70.aln");
 
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    QAbstractButton *realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
     //         Expected result : no sequences are selected.
     //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect());
-    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 
     //         Select all sequences in the alignment.
-    //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    //         Expected result : the "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(69, 20));
-    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 
     //         Select none sequences.
-    //         Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    //         Expected result : the "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsMSAEditorSequenceArea::cancelSelection(os);
-    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 
     //         Select 3 sequences in the alignment.
-    //         Expected result : the "Realign sequence(s) to other sequences" button is enabled.
+    //         Expected result : the "align_selected_sequences_to_alignment" button is enabled.
     GTUtilsMsaEditor::selectRows(os, 18, 20);
-    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably disabled");
-    //         Click "Realign sequence(s) to other sequences".
+    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly disabled");
+    //         Click "align_selected_sequences_to_alignment".
     //         Expected result : the sequences are realigned.
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
-    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
     //         Open "empty_mult_seq.fa".
-    //         Expected result : there are no sequences in the Realignment Editor.The "Realign sequence(s) to other sequences" button is disabled.
+    //         Expected result : there are no sequences in the Realignment Editor.The "align_selected_sequences_to_alignment" button is disabled.
     GTUtilsProject::closeProject(os);
     GTFileDialog::openFile(os, testDir + "_common_data/empty_sequences/", "empty_mult_seq.fa");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
-    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' is unexpectedly enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_2) {
     //  Open "COI_SHORT_21x88_russian_letters.msf".
     //  Select ���� ����    ���Ɣ, ��� �� ���� ����, �����   ���� ���� ������ sequences.
-    //  Expected result : "Realign sequence(s) to other sequences" button is enabled.
+    //  Expected result : "align_selected_sequences_to_alignment" button is enabled.
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
     GTUtilsMsaEditor::selectRows(os, 18, 20);
-    QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
-    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
-    //  Click "Realign sequence(s) to other sequences".
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
+    QAbstractButton *realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
+    //  Click "align_selected_sequences_to_alignment".
     //  Expected result : sequences realigned.
     GTWidget::click(os, realignButton);
+
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_3) {
@@ -2986,11 +2984,12 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Select "FOSB_MOUSE" sequence.
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "FOSB_MOUSE");
 
-    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
-    QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
-    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+    //     Expected result : "align_selected_sequences_to_alignment" button is enabled.
+    QAbstractButton *realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
-    //     Click "Realign sequence(s) to other sequences".
+    //     Click "align_selected_sequences_to_alignment".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3006,11 +3005,12 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     //     Select �Loach�, �Frog�, "Human" sequences.
     GTUtilsMsaEditor::selectRows(os, 3, 5);
 
-    //     Expected result : "Realign sequence(s) to other sequences" button is enabled.
-    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
-    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably disabled");
+    //     Expected result : "align_selected_sequences_to_alignment" button is enabled.
+    realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
+    CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
-    //     Click "Realign sequence(s) to other sequences".
+    //     Click "align_selected_sequences_to_alignment".
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3023,9 +3023,9 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "RAW.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //     Expected result : "Realign sequence(s) to other sequences" button is disabled.
-    realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
-    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably enabled");
+    //     Expected result : "align_selected_sequences_to_alignment" button is disabled.
+    realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6544) {
@@ -3783,7 +3783,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     // 2. Make sure, that MAFFT is valid
     GTUtilsExternalTools::checkValidation(os, "MAFFT");
 
-    // 3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // 3. Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // 4. Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3809,7 +3809,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3836,7 +3836,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // Select "_common_data\empty_sequences\gap_only_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3868,7 +3868,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     // 2. Make sure, that MAFFT is valid
     GTUtilsExternalTools::checkValidation(os, "MAFFT");
 
-    // 3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // 3. Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // 4. Select "_common_data\empty_sequences\gap_only_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3894,7 +3894,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // 2. Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // 3. Select "_common_data\empty_sequences\empty_file.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3921,7 +3921,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // 2. Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // 3. Select "_common_data\empty_sequences\incorrect_fasta_header_only.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
@@ -3948,7 +3948,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // 2. Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // 3. Select "_common_data\empty_sequences\incorrect_multifasta_with_empty_seq.fa".
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
@@ -7063,7 +7063,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check direct read first.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();
@@ -7071,7 +7071,7 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     // Check complement read.
     GTUtilsMcaEditor::clickReadName(os, 2);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MCAE_MENU_NAVIGATION, "center-read-start-end-action"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     visibleRange = referenceArea->getVisibleRange();

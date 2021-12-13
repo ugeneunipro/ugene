@@ -237,7 +237,7 @@ void WorkflowTabView::sl_dashboardsChanged(const QStringList &dashboardIds) {
             continue;
         }
 
-        if (!dashboardInfo.opened) {
+        if (!dashboardInfo.opened && dashboard->isOpened()) {
             dashboard->setClosed();
             removeDashboard(dashboard);
         } else if (dashboardInfo.name != dashboard->getName()) {

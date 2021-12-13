@@ -76,6 +76,18 @@ public:
     U2SequenceImporter(qint64 _insertBlockSize, const QVariantMap &fs = QVariantMap(), bool lazyMode = false, bool singleThread = true);
     virtual ~U2SequenceImporter();
 
+    /**
+     * Enables amino translation of the input sequence.
+     * When 'aminoTT' is set all content added with 'addBlock' methods will be automatically translated.
+     */
+    void enableAminoTranslation(const DNATranslation *aminoTT);
+
+    /**
+     * Enables reverse-complementary translation of input sequence blocks.
+     * When 'complTT' is set all content added with 'addBlock' methods will be automatically reversed and complemented.
+     */
+    void enableReverseComplement(const DNATranslation *complTT);
+
     void startSequence(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const QString &visualName, bool circular, const U2AlphabetId &alphabetId = U2AlphabetId());
     virtual void addBlock(const char *data, qint64 len, U2OpStatus &os);
     void addSequenceBlock(const U2EntityRef &seqId, const U2Region &r, U2OpStatus &os);
@@ -105,6 +117,9 @@ protected:
     U2Sequence sequence;
     QByteArray sequenceBuffer;
 
+    /** Buffer of the pending non translated DNA characters. Maximum size is 2 characters. */
+    QByteArray aminoTranslationBuffer;
+
     // for lower case annotations
     qint64 currentLength;
     QList<SharedAnnotationData> annList;
@@ -117,6 +132,9 @@ protected:
 
     bool sequenceCreated;
     qint64 committedLength;  // singleThread only
+
+    const DNATranslation *aminoTT = nullptr;
+    const DNATranslation *complTT = nullptr;
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */

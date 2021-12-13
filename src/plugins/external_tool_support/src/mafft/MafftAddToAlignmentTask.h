@@ -75,13 +75,13 @@ public:
     virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *_settings) const;
 };
 
-class MafftAddToAlignmentAlgorithm : public AlignmentAlgorithm {
+class MafftAlignSequencesToAlignmentAlgorithm : public AlignmentAlgorithm {
 public:
-    MafftAddToAlignmentAlgorithm();
+    MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType &type);
 
-    bool isAlgorithmAvailable() const;
+    bool isAlgorithmAvailable() const override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    //_U2_MAFFT_ADD_TO_ALIGNMENT_TASK_H_
+#endif  //_U2_MAFFT_ADD_TO_ALIGNMENT_TASK_H_

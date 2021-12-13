@@ -105,77 +105,57 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {  // DIFFERENCE: lock document is checked
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {  // DIFFERENCE: delete sequence is checked
-    // Check Undo/Redo functional
-    // 1. Open document COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    // The test checks Undo/Redo functional.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Delete 4-th sequence
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
-    GTMouseDriver::doubleClick();
+    // Delete 4-th sequence.
+    GTUtilsMsaEditor::selectRows(os, 3, 3);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"Roeseliana_roeseli"});
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    // Expected state: sequence deleted
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
-    GTMouseDriver::doubleClick();
+    // Expected state: sequence deleted.
+    GTUtilsMsaEditor::selectRows(os, 3, 3);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"Montana_montana"});
 
-    // 3. undo deletion
-    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
-    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    GTWidget::click(os, GTAction::button(os, "msa_action_undo"));
 
-    GTWidget::click(os, undo);
+    // Expected state: deletion undone.
+    GTUtilsMsaEditor::selectRows(os, 3, 3);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"Roeseliana_roeseli"});
 
-    // Expected state: deletion undone
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
-    GTMouseDriver::doubleClick();
+    // Redo delition
+    GTWidget::click(os, GTAction::button(os, "msa_action_redo"));
 
-    // 4. Redo delition
-    GTWidget::click(os, redo);
-
-    // Expected state: delition is redone
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
-    GTMouseDriver::doubleClick();
+    // Expected state: delition is redone.
+    GTUtilsMsaEditor::selectRows(os, 3, 3);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"Montana_montana"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {  // DIFFERENCE: add sequence is checked
-    // Check Undo/Redo functional
-    // 1. Open document COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    // Check Undo/Redo functional.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. add sequence to alignment
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "/samples/Raw/", "raw.seq");
-    GTUtilsDialog::waitForDialog(os, ob);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD , "Sequence from file"}));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/Raw/", "raw.seq"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    // Expected state: raw sequence appeared in alignment
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).contains("raw"), "raw is not added");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 18));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "raw", "raw"));
-    GTMouseDriver::doubleClick();
+    // Expected state: raw sequence appeared in alignment.
+    GTUtilsMsaEditor::selectRowsByName(os, {"raw"});
 
-    // 3. undo adding
-    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
-    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    // Undo the deletion.
+    GTWidget::click(os, GTAction::button(os, "msa_action_undo"));
 
-    GTWidget::click(os, undo);
-
-    // Expected state: raw doesn't present in namelist
+    // Expected state: raw doesn't present in namelist.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(!nameList.contains("raw"), "adding raw is not undone");
 
-    // 4. Redo delition
-    GTWidget::click(os, redo);
+    // Redo the delition.
+    GTWidget::click(os, GTAction::button(os, "msa_action_redo"));
 
-    // Expected state: delition is redone
+    // Expected state: delition is redone.
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).contains("raw"), "Adding raw is not redone");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 18));
-    GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "raw", "raw"));
-    GTMouseDriver::doubleClick();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {  // DIFFERENCE: add sequence is checked

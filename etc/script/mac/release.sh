@@ -48,6 +48,11 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
+
+# Deprecated workflows
+rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/ngs_classification"*
+rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl"
+
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
@@ -60,8 +65,6 @@ rm -rf "${APP_EXE_DIR}/tools/diamond"
 rm -rf "${APP_EXE_DIR}/tools/kraken"
 # python2.7: "The signature does not include a secure timestamp."
 rm -rf "${APP_EXE_DIR}/tools/python2"
-# tophat2: "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/tophat2"
 # wevote: "The binary uses an SDK older than the 10.9 SDK."
 rm -rf "${APP_EXE_DIR}/tools/wevote"
 

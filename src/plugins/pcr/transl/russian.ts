@@ -123,13 +123,13 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="121"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="105"/>
         <source>Maximum product</source>
         <translation>Максимальный продукт</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="105"/>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="137"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="121"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="160"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
@@ -139,42 +139,47 @@
         <translation>3&apos; идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="153"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
         <source>Extract annotations</source>
         <translation>Извлечь аннотации</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="174"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="177"/>
+        <source>Use ambiguous bases</source>
+        <translation>Использовать расширенный алфавит</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="191"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Показать информацию о праймерах&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="235"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="252"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="330"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="347"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="335"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="352"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="340"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="357"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="369"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="386"/>
         <source>Extract product(s)</source>
         <translation>Извлечь продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="383"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="400"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Информация: выберите нуклеотидную последовательность для запуска In Silico PCR</translation>
     </message>
@@ -508,7 +513,7 @@
         <translation>Найти продукт(ы) в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="216"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="217"/>
         <source>Extract In Silico PCR products</source>
         <translation>Извлечь продукты ПЦР in silico</translation>
     </message>
@@ -529,27 +534,32 @@
         <translation>In Silico PCR</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="122"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="110"/>
+        <source>One of the given do not fits acceptable length. Task cancelled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrTask.cpp" line="129"/>
         <source>Forward primers found: %1</source>
         <translation>Forward primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="123"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="130"/>
         <source>Reverse primers found: %1</source>
         <translation>Reverse primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="243"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="250"/>
         <source>Products found: %1</source>
         <translation>Products found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="247"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="254"/>
         <source>Primers details:</source>
         <translation>Информация о праймерах:</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="251"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="258"/>
         <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
         <translation>Найдено продуктов: %1. &lt;br&gt;&lt;br&gt;Детальная информация о праймерах недоступна так как праймеры или продукты содержат символы из расширенного ДНК алфавита.</translation>
     </message>
@@ -641,12 +651,12 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrPrompter</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="161"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="164"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="164"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="167"/>
         <source>Simulates PCR for the sequences from &lt;u&gt;%1&lt;/u&gt; and primer pairs from &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Имитирует PCR для последовательностей из &lt;u&gt;%1&lt;/u&gt; и пар праймеров из &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
@@ -654,27 +664,27 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrReportTask</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="369"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="373"/>
         <source>Generate In Silico PCR report</source>
         <translation>Generate In Silico PCR report</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="396"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="400"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="412"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="416"/>
         <source>Products count table</source>
         <translation>Таблица продуктов</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="421"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="425"/>
         <source>An error &apos;%1&apos; has occurred during processing file with primers &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="428"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="432"/>
         <source>Primer pair details</source>
         <translation>Информация о парах праймеров</translation>
     </message>
@@ -682,162 +692,172 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrWorker</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="79"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="80"/>
         <source>Input sequence</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="79"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="80"/>
         <source>Input sequence.</source>
         <translation>Входная последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="80"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="81"/>
         <source>PCR product</source>
         <translation>Продукт PCR</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="80"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="81"/>
         <source>PCR product sequence.</source>
         <translation>Последовательность продукта PCR.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="95"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="96"/>
         <source>Primers URL</source>
         <translation>Путь до праймеров</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="95"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="96"/>
         <source>A URL to the input file with primer pairs.</source>
         <translation>Путь до входного файла с парами праймеров.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="96"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="97"/>
         <source>Report URL</source>
         <translation>Путь до отчета</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="96"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="97"/>
         <source>A URL to the output file with the PCR report.</source>
         <translation>Путь до выходного файла с отчетом PCR.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="97"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="98"/>
         <source>Mismatches</source>
         <translation>Несоответствия</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="97"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="98"/>
         <source>Number of allowed mismatches.</source>
         <translation>Число допустимых несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="98"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
         <source>Min perfect match</source>
         <translation>Минимальное точное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="98"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
         <source>Number of bases that match exactly on 3&apos; end of primers.</source>
         <translation>Число оснований, которое точно совпадает с 3&apos; концом праймеров.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
         <source>Max product size</source>
         <translation>Максимальный размер продукта</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
         <source>Maximum size of amplified region.</source>
         <translation>Максимальный размер расширенного региона.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="101"/>
+        <source>Use ambiguous bases</source>
+        <translation>Использовать расширенный алфавит</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="101"/>
+        <source>Search for ambiguous bases (as &quot;N) if checked.</source>
+        <translation>Поиск для расширенного алфавита.</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="102"/>
         <source>Extract annotations</source>
         <translation>Извлечь аннотации</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="102"/>
         <source>Extract annotations within a product region.</source>
         <translation>Извлечь аннотации внутри региона.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="133"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="136"/>
         <source>Inner</source>
         <translation>Внутренний</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="134"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="137"/>
         <source>All intersected</source>
         <translation>Все пересечения</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="135"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="138"/>
         <source>None</source>
         <translation>Ни один</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="140"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="143"/>
         <source>In Silico PCR</source>
         <translation>ПЦР in silico</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="140"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="143"/>
         <source>Simulates PCR for input sequences and primer pairs. Creates the table with the PCR statistics.</source>
         <translation>Имитирует PCR для последовательностей и пар праймеров. Создает таблицу со статистиками PCR.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="180"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="183"/>
         <source>Can not read the primers file: </source>
         <translation>Can not read the primers file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="190"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="193"/>
         <source>Can&apos;t read the file: </source>
         <translation>Can&apos;t read the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="194"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="197"/>
         <source>No primer sequences in the file: </source>
         <translation>No primer sequences in the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="195"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="198"/>
         <source>There is the odd number of primers in the file: </source>
         <translation>There is the odd number of primers in the file: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="225"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="228"/>
         <source>Primer sequence is too long: %1. The pair is skipped</source>
         <translation>Primer sequence is too long: %1. The pair is skipped</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="282"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="285"/>
         <source>Wrong sequence objects count</source>
         <translation>Wrong sequence objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="292"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="295"/>
         <source>Wrong annotations objects count</source>
         <translation>Wrong annotations objects count</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="322"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="325"/>
         <source>The input file &quot;%1&quot; doesn&apos;t contain a valid sequence.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="326"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="329"/>
         <source>The sequence is too long: </source>
         <translation>The sequence is too long: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="360"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="364"/>
         <source>Primers specified in &quot;%1&quot; are too long.</source>
         <translation>Праймеры указанные в &quot;%1&quot; слишком длинные.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="362"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="366"/>
         <source>Multiple In Silico PCR</source>
         <translation>Multiple In Silico PCR</translation>
     </message>

@@ -216,7 +216,7 @@ AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(Abstract
 }
 
 SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment,
+    : AlignmentAlgorithm(AlignNewSequencesToAlignment,
                          BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE,
                          AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with UGENE…"),
                          new SimpleAddToAlignmentTaskFactory()) {

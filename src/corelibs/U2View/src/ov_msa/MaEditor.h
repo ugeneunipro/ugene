@@ -235,6 +235,9 @@ protected slots:
     /** The slot is called each time selection is changed. By default calls 'updateActions'. */
     virtual void sl_selectionChanged(const MaEditorSelection &ma, const MaEditorSelection &modInfo);
 
+    /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
+    void sl_gotoSelectedRead();
+
 private slots:
     void sl_resetColumnWidthCache();
 
@@ -249,7 +252,6 @@ protected:
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);  // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
 
@@ -292,21 +294,34 @@ protected:
     MaCollapseModel *const collapseModel;
 
 public:
-    QAction *saveAlignmentAction;
-    QAction *saveAlignmentAsAction;
-    QAction *zoomInAction;
-    QAction *zoomOutAction;
-    QAction *zoomToSelectionAction;
-    QAction *showOverviewAction;
-    QAction *changeFontAction;
-    QAction *resetZoomAction;
-    QAction *exportHighlightedAction;
+    QAction *saveAlignmentAction = nullptr;
+    QAction *saveAlignmentAsAction = nullptr;
+    QAction *zoomInAction = nullptr;
+    QAction *zoomOutAction = nullptr;
+    QAction *zoomToSelectionAction = nullptr;
+    QAction *showOverviewAction = nullptr;
+    QAction *changeFontAction = nullptr;
+    QAction *resetZoomAction = nullptr;
+    QAction *exportHighlightedAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
-    QAction *clearSelectionAction;
+    QAction *clearSelectionAction = nullptr;
 
-    QAction *copyConsensusAction;
-    QAction *copyConsensusWithGapsAction;
+    QAction *copyConsensusAction = nullptr;
+    QAction *copyConsensusWithGapsAction = nullptr;
+
+    /**
+     * When activated MA editor moves start of the currently selected read into the view.
+     * If the selection contains multiple reads - selects the first one.
+     *
+     * The start of the direct reads (reads located on 3'-5' strand) is the same with their visual start on the screen -
+     *  direct reads are read from the left to the right direction.
+     * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
+     * This way the action works the same as annotation selection in the sequence view.
+     *
+     * When the action is triggered for the already selected read it tries to center the opposite side of the read: 'start' -> 'end', 'end' -> 'start'.
+     */
+    QAction *gotoSelectedReadAction = nullptr;
 };
 
 }  // namespace U2

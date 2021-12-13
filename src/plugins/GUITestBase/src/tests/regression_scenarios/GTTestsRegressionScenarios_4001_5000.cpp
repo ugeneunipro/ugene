@@ -2702,7 +2702,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" and select "_common_data/database.ini".
+    //    2. Click "align_new_sequences_to_alignment_action" and select "_common_data/database.ini".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/database.ini"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2716,7 +2716,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2741,7 +2741,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/PDB/1CF7.pdb".
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/PDB/1CF7.pdb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2760,7 +2760,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_4) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "1");
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
 
-    //    3. Click "Align sequence(s) to this alignment" button on the toolbar, select "samples/FASTQ/eas.fastq".
+    //    3. Click "align_new_sequences_to_alignment_action" button on the toolbar, select "samples/FASTQ/eas.fastq".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3070,7 +3070,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    4. Select some sequences in project view and click "Align sequence(s) to this alignment".
+    //    4. Select some sequences in project view and click "align_new_sequences_to_alignment_action".
     GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
@@ -3091,7 +3091,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
     //    2. Rename the alignment, a new name should contain spaces.
     GTUtilsProjectTreeView::rename(os, "COI", "C O I");
 
-    //    3. Click "Align sequence(s) to this alignment" and select any file with sequence.
+    //    3. Click "align_new_sequences_to_alignment_action" and select any file with sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3578,25 +3578,6 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
                                                 << "Open as...");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_4552) {
-    // Open .
-    // Align the sequences with MUSCLE.
-    // While MUSCLE is running, open the "Tree" context menu.
-    // Expected state: the "Build tree" action is disabled while the modification is not finished.
-    // Current state: the "Build tree" action is enabled.
-
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE…"));
-    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_TREES << "Build Tree", PopupChecker::IsDisabled));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-}
-
 GUI_TEST_CLASS_DEFINITION(test_4557) {
     //    1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
@@ -3671,39 +3652,40 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588", "4588.gb");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588/4588.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     GTUtilsAnnotationsTreeView::selectItems(os, blastResultItems);
 
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus &_os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {};
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(w != nullptr, );
+        OkClicker(HI::GUITestOpStatus &os, const QString &_dbPath, const QString &_outputPath)
+            : Filler(os, "BlastDBCmdDialog"), dbPath(_dbPath), outputPath(_outputPath) {};
+
+        void run() override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
-            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", dialog));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(buttonBox != nullptr, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(button != nullptr, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
+
+            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
+            GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         };
 
     private:
-        const QString dbPath;
-        const QString outputPath;
+        QString dbPath;
+        QString outputPath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os, testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr", testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "fetchMenu"
-                                                                        << "fetchSequenceById"));
+    GTUtilsDialog::waitForDialog(os,
+                                 new OkClicker(os,
+                                               testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr",
+                                               testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3712,40 +3694,42 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
 
 GUI_TEST_CLASS_DEFINITION(test_4588_1) {
     GTUtilsExternalTools::removeTool(os, "BlastAll");
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588", "4588_1.gb");
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588/4588_1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     GTUtilsAnnotationsTreeView::selectItems(os, blastResultItems);
 
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus &_os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
+        OkClicker(HI::GUITestOpStatus &os, const QString &_dbPath, const QString &_outputPath)
+            : Filler(os, "BlastDBCmdDialog"), dbPath(_dbPath), outputPath(_outputPath) {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
+
+        void run() override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
-            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", dialog));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(buttonBox != nullptr, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(button != nullptr, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
+
+            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
+            GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         }
 
     private:
-        const QString dbPath;
-        const QString outputPath;
+        QString dbPath;
+        QString outputPath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os, testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr", testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "fetchMenu"
-                                                                        << "fetchSequenceById"));
+    GTUtilsDialog::waitForDialog(os,
+                                 new OkClicker(os,
+                                               testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr",
+                                               testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3940,32 +3924,28 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4620) {
-    //    1. Open "data/samples/ABIF/A01.abi".
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Call a context menu on the chromatogram, select {Edit new sequence} menu item.
-    //    Expected state: an "Add new document" dialog appears.
-
-    class Scenario : public CustomScenario {
+    // Call a context menu on the chromatogram, select {Edit new sequence} menu item.
+    // Expected state: an "Add new document" dialog appears.
+    class CheckFormatsScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            //    3. Ensure that there is no "Database connection" format. Ensure that there are no formats with "DocumentFormatFlag_Hidden" flag.
-            const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "documentTypeCombo", dialog));
-            CHECK_SET_ERR(!formats.contains("Database connection"), "'Database connection' format isavailable");
+            // Check that there is no "Database connection" format. Ensure that there are no formats with "DocumentFormatFlag_Hidden" flag.
+            QStringList formatNames = GTComboBox::getValues(os, GTWidget::findComboBox(os, "documentTypeCombo", dialog));
+            CHECK_SET_ERR(!formatNames.contains("Database connection"), "'Database connection' format is not available");
 
             QList<DocumentFormatId> registeredFormatsIds = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-            QMap<QString, DocumentFormat *> formatsWithNames;
-            foreach (const DocumentFormatId &formatId, registeredFormatsIds) {
+            QMap<QString, DocumentFormat *> formatByName;
+            for (const DocumentFormatId &formatId : qAsConst(registeredFormatsIds)) {
                 DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-                CHECK_SET_ERR(nullptr != format, QString("Can't get document format by ID: '%1'").arg(formatId));
-                formatsWithNames[format->getFormatName()] = format;
+                formatByName[format->getFormatName()] = format;
             }
 
-            foreach (const QString &formatName, formats) {
-                DocumentFormat *format = formatsWithNames.value(formatName, nullptr);
-                CHECK_SET_ERR(nullptr != format, QString("An unknown format: '%1'").arg(formatName));
+            for (const QString &formatName : qAsConst(formatNames)) {
+                DocumentFormat *format = formatByName.value(formatName, nullptr);
                 CHECK_SET_ERR(!format->getFlags().testFlag(DocumentFormatFlag_Hidden), "A hidden format is offered to choose");
             }
 
@@ -3973,8 +3953,8 @@ GUI_TEST_CLASS_DEFINITION(test_4620) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit new sequence"));
-    GTUtilsDialog::waitForDialog(os, new AddNewDocumentDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit new sequence"}));
+    GTUtilsDialog::waitForDialog(os, new AddNewDocumentDialogFiller(os, new CheckFormatsScenario()));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
@@ -4223,7 +4203,7 @@ GUI_TEST_CLASS_DEFINITION(test_4687) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 
-    // 3. Press "Align sequence(s) to this alignment" and add next sequence _common_data/fasta/amino_ext.fa
+    // 3. Press "align_new_sequences_to_alignment_action" and add next sequence _common_data/fasta/amino_ext.fa
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "amino_ext.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4711,7 +4691,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/amino_ext.fa".
+    //    3. Click "align_new_sequences_to_alignment_action" and select "_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4741,7 +4721,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/fa1.fa" (base DNA alphabet).
+    //    3. Click "align_new_sequences_to_alignment_action" and select "_common_data/fasta/fa1.fa" (base DNA alphabet).
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/fa1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4768,7 +4748,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" and select "data/samples/Genbank/PBR322.gb".
+    //    2. Click "align_new_sequences_to_alignment_action" and select "data/samples/Genbank/PBR322.gb".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/PBR322.gb"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5353,7 +5333,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
 
@@ -5366,7 +5346,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_rna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
 

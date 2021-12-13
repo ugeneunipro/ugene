@@ -109,7 +109,13 @@ public:
 
 private:
     void init();
-    void processObjRef();
+
+    /**
+     * Processes config.checkObjRef and config.checkObjRef.objFactory related settings.
+     * See 'LoadDocumentTaskConfig' for details.
+     */
+    void processObjRef(Document *loadedDocument);
+
     int calculateMemory() const;
 
     static void renameObjects(Document *doc, const QStringList &names);

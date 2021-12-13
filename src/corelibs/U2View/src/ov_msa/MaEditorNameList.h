@@ -91,6 +91,7 @@ protected:
     void focusOutEvent(QFocusEvent *fe) override;
     void focusInEvent(QFocusEvent *fe) override;
     void wheelEvent(QWheelEvent *we) override;
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
 
     /**
      * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
@@ -101,7 +102,7 @@ protected:
 
     void scrollSelectionToView(bool fromStart);
 
-    bool completeRedraw;
+    bool completeRedraw = true;
 
 protected:
     void drawContent(QPainter &p);
@@ -120,7 +121,7 @@ protected:
     /**
      * Sets selection MA editor selection to the given state.
      * The method is called for all selection change events triggered in the name-list component.
-     * May be overriden to adjust behavior. */
+     * May be overridden to adjust behavior. */
     virtual void setSelection(const MaEditorSelection &selection);
 
     void moveSelectedRegion(int shift);
@@ -165,27 +166,35 @@ protected:
 
     virtual int getAvailableWidth() const;
 
-    QObject *labels;  // used in GUI tests
-    MaEditorWgt *ui;
-    QScrollBar *nhBar;
+    /**
+     * Converts multiple region selection into a continuous single region selection by moving all
+     * selected regions close to the region with a 'stableRowIndex'.
+     * Only the 'stableRowIndex' region is guaranteed to stay on the current position.
+     * The order of sequences in the selection does not change.
+     * */
+    void groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus &os);
+
+    QObject *labels = nullptr;  // used in GUI tests
+    MaEditorWgt *ui = nullptr;
+    QScrollBar *nhBar = nullptr;
     QPoint mousePressPoint;
-    bool dragging;
-    QRubberBand *rubberBand;
+    bool isDragging = false;
+    QRubberBand *rubberBand = nullptr;
 
 public:
-    QAction *editSequenceNameAction;
+    QAction *editSequenceNameAction = nullptr;
 
     /** Copies whole selected rows. Ignores actual selected column range. */
-    QAction *copyWholeRowAction;
+    QAction *copyWholeRowAction = nullptr;
 
     // TODO: remove this action. It triggers the same code with ui->delSelectionAction and exists only to show a different text in the context menu.
-    QAction *removeSequenceAction;
+    QAction *removeSequenceAction = nullptr;
 
 protected:
-    QPixmap *cachedView;
+    QPixmap *cachedView = nullptr;
 
-    MsaEditorUserModStepController *changeTracker;
-    int maVersionBeforeMousePress;
+    MsaEditorUserModStepController *changeTracker = nullptr;
+    int maVersionBeforeMousePress = -1;
 
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;
@@ -194,7 +203,7 @@ protected:
     static const int MARGIN_TEXT_BOTTOM = 2;
 
 protected:
-    MaEditor *editor;
+    MaEditor *editor = nullptr;
 };
 
 }  // namespace U2

@@ -690,13 +690,10 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 
 #define GT_METHOD_NAME "renameSequence"
 void GTUtilsMSAEditorSequenceArea::renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName, bool useCopyPaste) {
-    int num = getVisibleNames(os).indexOf(seqToRename);
-    GT_CHECK(num != -1, "sequence not found");
-
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::selectRowsByName(os, {seqToRename});
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename, useCopyPaste));
-    moveTo(os, QPoint(-10, num));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 #undef GT_METHOD_NAME
 

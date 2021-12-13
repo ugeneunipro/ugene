@@ -28,7 +28,6 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/U2FileDialog.h>
 
 namespace U2 {
 
@@ -77,11 +76,30 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
     QString name = U2FileDialog::getOpenFileName(nullptr, tr("Select a database file"), lod.dir, "", nullptr, options);
     if (!name.isEmpty()) {
         QFileInfo fileInfo(name);
-        if (!fileInfo.suffix().isEmpty()) {
-            isNuclDB = (fileInfo.suffix().at(0) == 'n');
+        isNuclDB = !fileInfo.suffix().isEmpty() && fileInfo.suffix().at(0) == 'n';
+
+        // Build list of known file suffixes produced by 'makeblastdb' command.
+        QStringList subSuffixes = QString("al|db|hr|in|sq|hd|nd|og|ot|pi|si|hi|ni|pd|sd|sq|tf|to").split("|");
+        QStringList blastDbFileSuffixes;
+        for (const QString &subSuffix : qAsConst(subSuffixes)) {
+            blastDbFileSuffixes << (".n" + subSuffix) << (".p" + subSuffix);  // nucleic and protein variants.
         }
-        QRegExp toReplace("(\\.\\d+)?(((formatDB|makeBlastDB)\\.log)|(\\.(phr|pin|psq|phd|pnd|pog|ppi|psi|phi|pni|ppd|psd|psq|pal|nal|nhr|nin|nsq)))?$", Qt::CaseInsensitive);
-        baseNameLineEdit->setText(fileInfo.fileName().replace(toReplace, QString()));
+        blastDbFileSuffixes << "formatDB.log";
+        blastDbFileSuffixes << "MakeBLASTDB.log";
+        blastDbFileSuffixes << "MakeBLASTDB.perf";
+
+        // Guess the database name: a part of the file name with no suffix.
+        QString databaseName = fileInfo.fileName();
+        for (const QString &suffix : qAsConst(blastDbFileSuffixes)) {
+            if (databaseName.endsWith(suffix, Qt::CaseInsensitive)) {
+                databaseName = databaseName.left(databaseName.length() - suffix.length());
+                break;
+            }
+        }
+        // Remove counter-like suffix from the database file name: database-name.01.
+        databaseName = databaseName.replace(QRegExp("(\\.\\d+)$"), "");
+
+        baseNameLineEdit->setText(databaseName);
         databasePathLineEdit->setText(fileInfo.dir().path());
         lod.url = name;
     }
@@ -112,4 +130,4 @@ bool BlastDBSelectorWidgetController::validateDatabaseDir() {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

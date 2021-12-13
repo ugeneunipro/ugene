@@ -491,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
      * 2. Show simple overview.
      * 3. Select whole alignment.
      * Expected state: whole simple overview is filled with a selection rect.
-     * 4. Click "Align sequence(s) to this alignment" button on the tool bar and select "data/samples/fastq/eas.fastq".
+     * 4. Click "align_new_sequences_to_alignment_action" button on the toolbar and select "data/samples/fastq/eas.fastq".
      * Expected state: sequences are added, two of five sequences are selected both in the sequence area and simple overview.
      * Current state: sequences are added, two of five sequences are selected in the sequence area, but the simple overview is filled with a selection rect like whole alignment is selected.
      */

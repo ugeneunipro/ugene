@@ -282,7 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceCount == 2, "1. Incorrect sequences count: " + QString::number(sequenceCount));
 
-    // 3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    // 3. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // 4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
@@ -300,7 +300,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //  Click "Align sequence(s) to this alignment" button on the toolbar.
+    //  Click "align_new_sequences_to_alignment_action" button on the toolbar.
     //  Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -337,7 +337,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_2.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_2.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -374,7 +374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -403,7 +403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    //    3. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::NotExists);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
@@ -465,7 +465,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar.
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     //    3. Select "_common_data/scenarios/add_and_align/seq1.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -484,7 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/seq2.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq2.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -506,7 +506,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/two_seqs.aln" as input data.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/two_seqs.aln"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");

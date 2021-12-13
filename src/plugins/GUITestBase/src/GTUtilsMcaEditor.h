@@ -76,8 +76,16 @@ public:
     static void scrollToRead(HI::GUITestOpStatus &os, int readNumber);
     static void moveToReadName(HI::GUITestOpStatus &os, const QString &readName);
     static void moveToReadName(HI::GUITestOpStatus &os, int readNumber);
-    static void clickReadName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
-    static void clickReadName(HI::GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    static void clickReadName(HI::GUITestOpStatus &os,
+                              const QString &sequenceName,
+                              Qt::MouseButton mouseButton = Qt::LeftButton,
+                              const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
+
+    static void clickReadName(HI::GUITestOpStatus &os,
+                              int readNumber,
+                              Qt::MouseButton mouseButton = Qt::LeftButton,
+                              const Qt::KeyboardModifiers &modifiers = Qt::NoModifier);
 
     /** Double clicks read with the given index in the name list. */
     static void doubleClickReadName(HI::GUITestOpStatus &os, int readIndex);
@@ -94,6 +102,9 @@ public:
     static bool isRedoEnabled(HI::GUITestOpStatus &os);
 
     static void toggleShowChromatogramsMode(HI::GUITestOpStatus &os);
+
+    /** Selects reads in the name list by name using Ctrl + Mouse click. Fails if any of the rows is not found. */
+    static void selectReadsByName(HI::GUITestOpStatus &os, const QStringList &rowNames);
 
 private:
     static int readName2readNumber(HI::GUITestOpStatus &os, const QString &readName);

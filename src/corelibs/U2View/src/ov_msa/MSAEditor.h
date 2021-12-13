@@ -40,7 +40,7 @@ public:
         : firstSequenceId(U2MsaRow::INVALID_ROW_ID),
           secondSequenceId(U2MsaRow::INVALID_ROW_ID), inNewWindow(true),
           showSequenceWidget(true), showAlgorithmWidget(false),
-          showOutputWidget(false), sequenceSelectionModeOn(false) {
+          showOutputWidget(false) {
     }
 
     qint64 firstSequenceId;
@@ -52,7 +52,6 @@ public:
     bool showSequenceWidget;
     bool showAlgorithmWidget;
     bool showOutputWidget;
-    bool sequenceSelectionModeOn;
 
     QVariantMap customSettings;
 };
@@ -131,15 +130,26 @@ public:
     /** Removes the given marker object from the freeModeMasterMarkersSet. */
     void removeFreeModeMasterMarker(QObject *marker);
 
+    /**
+     * Maximum supported length of MSA object.
+     * The MSA Editor uses by-value caches (QVector/QList) that are proportional to the MSA length which can't grow above 2Gb limit.
+     */
+    static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos) override;
 
     void sl_buildTree();
     void sl_align();
-    void sl_addToAlignment();
+
+    /** Shows 'add-to-alignment' menu. */
+    void sl_alignNewSequencesToAlignment();
+
+    /** Shows 're-align-selection-to-alignment' menu. */
+    void sl_alignSelectedSequencesToAlignment();
+
     void sl_searchInSequences();
     void sl_searchInSequenceNames();
-    void sl_realignSomeSequences();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
 
@@ -181,6 +191,7 @@ protected:
     void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;
     void addSortMenu(QMenu *m);
+    void addAlignMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
     void addAppearanceMenu(QMenu *m);
     void addColorsMenu(QMenu *m);
@@ -197,8 +208,13 @@ protected:
 public:
     QAction *buildTreeAction = nullptr;
     QAction *alignAction = nullptr;
-    QAction *alignSequencesToAlignmentAction = nullptr;
-    QAction *realignSomeSequenceAction = nullptr;
+
+    /** Aligns new sequences (from an external file) to the current alignment. */
+    QAction *alignNewSequencesToAlignmentAction = nullptr;
+
+    /** Aligns selected sequences (from the current alignment) to the current rest of the alignment. */
+    QAction *alignSelectedSequencesToAlignmentAction = nullptr;
+
     QAction *setAsReferenceSequenceAction = nullptr;
     QAction *unsetReferenceSequenceAction = nullptr;
     QAction *gotoAction = nullptr;
@@ -263,8 +279,15 @@ public:
     /** "Align" button menu identifier. */
     const static QString ALIGN;
 
-    /** "Align sequence(s) to this alignment" menu identifier. */
-    const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
+    /** "Align new sequence(s) to the current alignment menu identifier. */
+    const static QString ALIGN_NEW_SEQUENCES_TO_ALIGNMENT;
+
+    /** "Align another alignment to the current alignment menu identifier. */
+
+    const static QString ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT;
+
+    /** "Align selected sequences to the  alignment menu identifier. */
+    const static QString ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT;
 };
 
 }  // namespace U2

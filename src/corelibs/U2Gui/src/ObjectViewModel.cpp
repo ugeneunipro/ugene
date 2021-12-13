@@ -281,6 +281,53 @@ void GObjectView::setName(const QString &newName) {
     emit si_nameChanged(oldName);
 }
 
+/** Registers a new actions provider to the view. */
+void GObjectView::registerActionProvider(GObjectViewActionsProvider *actionsProvider) {
+    SAFE_POINT(actionsProvider != nullptr, "GObjectViewActionsProvider is null!", );
+    SAFE_POINT(!actionsProviders.contains(actionsProvider), "GObjectViewActionsProvider is already registered!", );
+    actionsProviders << actionsProvider;
+}
+
+/** Unregisters an actions provider from the view. */
+void GObjectView::unregisterActionProvider(GObjectViewActionsProvider *actionsProvider) {
+    bool isFound = actionsProviders.removeOne(actionsProvider);
+    SAFE_POINT(isFound, "unregisterActionProvider can't find a registered provider", );
+}
+
+void GObjectView::buildActionMenu(QMenu *menu, const QString &menuType) {
+    buildActionMenu(menu, QStringList(menuType));
+}
+
+void GObjectView::buildActionMenu(QMenu *menu, const QList<QString> &menuTypes) {
+    QVector<QList<GObjectViewAction *>> actionsByType;
+    actionsByType.resize(menuTypes.size());
+
+    for (const GObjectViewActionsProvider *provider : qAsConst(actionsProviders)) {
+        QList<GObjectViewAction *> actions = provider->getViewActions(this);
+        for (GObjectViewAction *action : qAsConst(actions)) {
+            for (int menuTypeIndex = 0; menuTypeIndex < menuTypes.size(); menuTypeIndex++) {
+                if (action->isInMenu(menuTypes[menuTypeIndex])) {
+                    actionsByType[menuTypeIndex].append(action);
+                    break;
+                }
+            }
+        }
+    }
+
+    auto actionOrderComparator = [](const GObjectViewAction *a1, const GObjectViewAction *a2) { return a1->getActionOrder() < a2->getActionOrder(); };
+    for (const QList<GObjectViewAction *> &actions : qAsConst(actionsByType)) {
+        CHECK_CONTINUE(!actions.isEmpty());
+        QList<GObjectViewAction *> sortedActions = actions;
+        std::sort(sortedActions.begin(), sortedActions.end(), actionOrderComparator);
+        if (!menu->isEmpty()) {
+            menu->addSeparator();
+        }
+        for (auto action : qAsConst(sortedActions)) {
+            menu->addAction(action);
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// GObjectViewWindow
 
@@ -703,6 +750,7 @@ void GObjectViewAction::setMenuTypes(const QList<QString> &newMenuTypes) {
 
 void GObjectViewAction::addToMenuWithOrder(QMenu *menu) {
     QList<QAction *> actionList = menu->actions();
+    CHECK(!actionList.contains(this), )
     for (QAction *action : actionList) {
         GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(action);
         if (viewAction != nullptr && viewAction->getActionOrder() > actionOrder) {

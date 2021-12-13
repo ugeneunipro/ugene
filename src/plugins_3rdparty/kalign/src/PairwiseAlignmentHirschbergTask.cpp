@@ -131,8 +131,7 @@ QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) 
 
             alignmentDoc->addObject(docObject);
 
-            SaveDocFlags flags = SaveDoc_Overwrite;
-            flags |= SaveDoc_OpenAfter;
+            SaveDocFlags flags = SaveDoc_OpenAfter;
             res << new SaveDocumentTask(alignmentDoc, flags);
         } else {  // in current window
             U2OpStatus2Log os;
