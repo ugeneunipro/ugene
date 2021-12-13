@@ -49,7 +49,6 @@
 #include <QClipboard>
 #include <QDir>
 #include <QFile>
-#include <QPlainTextEdit>
 #include <QRadioButton>
 #include <QTableView>
 #include <QTableWidget>

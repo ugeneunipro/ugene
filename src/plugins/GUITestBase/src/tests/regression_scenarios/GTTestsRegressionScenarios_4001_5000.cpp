@@ -3652,39 +3652,40 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588) {
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588", "4588.gb");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588/4588.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     GTUtilsAnnotationsTreeView::selectItems(os, blastResultItems);
 
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus &_os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {};
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(w != nullptr, );
+        OkClicker(HI::GUITestOpStatus &os, const QString &_dbPath, const QString &_outputPath)
+            : Filler(os, "BlastDBCmdDialog"), dbPath(_dbPath), outputPath(_outputPath) {};
+
+        void run() override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
-            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", dialog));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(buttonBox != nullptr, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(button != nullptr, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
+
+            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
+            GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         };
 
     private:
-        const QString dbPath;
-        const QString outputPath;
+        QString dbPath;
+        QString outputPath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os, testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr", testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "fetchMenu"
-                                                                        << "fetchSequenceById"));
+    GTUtilsDialog::waitForDialog(os,
+                                 new OkClicker(os,
+                                               testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr",
+                                               testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3693,40 +3694,42 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
 
 GUI_TEST_CLASS_DEFINITION(test_4588_1) {
     GTUtilsExternalTools::removeTool(os, "BlastAll");
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588", "4588_1.gb");
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4588/4588_1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     GTUtilsAnnotationsTreeView::selectItems(os, blastResultItems);
 
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus &_os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
+        OkClicker(HI::GUITestOpStatus &os, const QString &_dbPath, const QString &_outputPath)
+            : Filler(os, "BlastDBCmdDialog"), dbPath(_dbPath), outputPath(_outputPath) {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
+
+        void run() override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
-            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", dialog));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(buttonBox != nullptr, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(button != nullptr, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
+
+            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
+            GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         }
 
     private:
-        const QString dbPath;
-        const QString outputPath;
+        QString dbPath;
+        QString outputPath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os, testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr", testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "fetchMenu"
-                                                                        << "fetchSequenceById"));
+    GTUtilsDialog::waitForDialog(os,
+                                 new OkClicker(os,
+                                               testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr",
+                                               testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

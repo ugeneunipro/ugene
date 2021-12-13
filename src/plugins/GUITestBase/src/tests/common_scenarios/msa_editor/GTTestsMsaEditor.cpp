@@ -3735,8 +3735,8 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTWidget::click(os, GTAction::button(os, "Align"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
-                                                              "align-to-alignment-ugene",
-                                                              "align-to-alignment-mafft",
+                                                              "align_to_alignment_ugene",
+                                                              "align_to_alignment_mafft",
                                                               "Align sequences to profile with MUSCLE",
                                                               "Align profile to profile with MUSCLE",
                                                               "align-alignment-to-alignment-clustalo",
@@ -3745,7 +3745,8 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
 
     GTUtilsMsaEditor::selectRows(os, 1, 2);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckActivePopupMenuScenario({
-                                                              "align-selection-to-alignment-mafft",
+                                                              "align_selection_to_alignment_mafft",
+                                                              "align_selection_to_alignment_muscle",
                                                           })));
     GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));
 }

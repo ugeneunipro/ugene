@@ -2942,7 +2942,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_1) {
     //         Click "align_selected_sequences_to_alignment".
     //         Expected result : the sequences are realigned.
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2964,7 +2964,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "COI_SHORT_21x88_russian_letters.msf");
     GTUtilsMsaEditor::selectRows(os, 18, 20);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     QAbstractButton *realignButton = GTAction::button(os, "align_selected_sequences_to_alignment");
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
     //  Click "align_selected_sequences_to_alignment".
@@ -2989,7 +2989,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3010,7 +3010,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(realignButton->isEnabled(), "'align_selected_sequences_to_alignment' button is unexpectedly disabled");
 
     //     Click "align_selected_sequences_to_alignment".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align-selection-to-alignment-mafft"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_mafft"}));
     GTWidget::click(os, realignButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

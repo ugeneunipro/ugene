@@ -24,6 +24,9 @@
 #include <QDialog>
 #include <QMainWindow>
 
+#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
@@ -39,8 +42,10 @@
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
+#include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
+#include <U2View/RealignSequencesInAlignmentTask.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MuscleTask.h"
@@ -73,18 +78,18 @@ MusclePlugin::MusclePlugin()
     }
     LocalWorkflow::MuscleWorkerFactory::init();
     LocalWorkflow::ProfileToProfileWorkerFactory::init();
-    // uMUSCLE Test
+
+    // Register MUSCLE tests.
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != nullptr);
+    auto xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    if (xmlTestFormat != nullptr) {
+        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+        l->qlist = UMUSCLETests ::createTestFactories();
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-    l->qlist = UMUSCLETests ::createTestFactories();
-
-    foreach (XMLTestFactory *f, l->qlist) {
-        bool res = xmlTestFormat->registerTestFactory(f);
-        Q_UNUSED(res);
-        assert(res);
+        for (XMLTestFactory *f : qAsConst(l->qlist)) {
+            bool res = xmlTestFormat->registerTestFactory(f);
+            SAFE_POINT(res, "Failed to register MUSCLE test factories", );
+        }
     }
 }
 
@@ -104,8 +109,16 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
     AppContext::getTaskScheduler()->registerTopLevelTask(muscleTask);
 }
 
-MusclePlugin::~MusclePlugin() {
-    // nothing to do
+MuscleAction::MuscleAction(QObject *p, GObjectView *v, const QString &text, int order, bool isAlignSelectionAction)
+    : GObjectViewAction(p, v, text, order) {
+    setIcon(QIcon(":umuscle/images/muscle_16.png"));
+
+    auto msaEditor = qobject_cast<MSAEditor *>(getObjectView());
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+
+    QAction *msaEditorAction = isAlignSelectionAction ? msaEditor->alignSelectedSequencesToAlignmentAction : msaEditor->alignAction;
+    connect(msaEditorAction, &QAction::changed, this, [this, msaEditorAction]() { setEnabled(msaEditorAction->isEnabled()); });
+    setEnabled(msaEditorAction->isEnabled());
 }
 
 MSAEditor *MuscleAction::getMSAEditor() const {
@@ -114,57 +127,36 @@ MSAEditor *MuscleAction::getMSAEditor() const {
     return e;
 }
 
-void MuscleAction::sl_updateState() {
-    StateLockableItem *item = qobject_cast<StateLockableItem *>(sender());
-    SAFE_POINT(item != nullptr, "Unexpected sender: expect StateLockableItem", );
-    MSAEditor *msaEditor = getMSAEditor();
-    CHECK(msaEditor != nullptr, );
-    setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
-}
-
 MuscleMSAEditorContext::MuscleMSAEditorContext(QObject *p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
 void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
-    CHECK(msaed->getMaObject() != nullptr, );
-
-    msaed->registerActionProvider(this);
-
-    bool objLocked = msaed->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaed->isAlignmentEmpty();
+    view->registerActionProvider(this);
 
     auto alignAction = new MuscleAction(this, view, tr("Align with MUSCLE…"), 1000);
-    alignAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
     alignAction->setObjectName("Align with muscle");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-    connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(alignAction, &QAction::triggered, this, &MuscleMSAEditorContext::sl_align);
     addViewAction(alignAction);
 
     auto addSequencesAction = new MuscleAction(this, view, tr("Align sequences to alignment with MUSCLE…"), 1001);
-    addSequencesAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
-    addSequencesAction->setEnabled(!objLocked && !isMsaEmpty);
     addSequencesAction->setObjectName("Align sequences to profile with MUSCLE");
     addSequencesAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT});
-    connect(addSequencesAction, SIGNAL(triggered()), SLOT(sl_alignSequencesToProfile()));
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
+    connect(addSequencesAction, &QAction::triggered, this, &MuscleMSAEditorContext::sl_alignSequencesToProfile);
     addViewAction(addSequencesAction);
 
     auto alignProfilesAction = new MuscleAction(this, view, tr("Align alignment to alignment with MUSCLE…"), 1002);
-    alignProfilesAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
-    alignProfilesAction->setEnabled(!objLocked && !isMsaEmpty);
     alignProfilesAction->setObjectName("Align profile to profile with MUSCLE");
     alignProfilesAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
-    connect(alignProfilesAction, SIGNAL(triggered()), SLOT(sl_alignProfileToProfile()));
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
+    connect(alignProfilesAction, &QAction::triggered, this, &MuscleMSAEditorContext::sl_alignProfileToProfile);
     addViewAction(alignProfilesAction);
+
+    auto alignSelectionToAlignmentAction = new MuscleAction(this, view, tr("Align selected sequences to alignment with MUSCLE…"), 3003, true);
+    alignSelectionToAlignmentAction->setObjectName("align_selection_to_alignment_muscle");
+    alignSelectionToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT});
+    connect(alignSelectionToAlignmentAction, &QAction::triggered, this, &MuscleMSAEditorContext::sl_alignSelectedSequences);
+    addViewAction(alignSelectionToAlignmentAction);
 }
 
 void MuscleMSAEditorContext::sl_align() {
@@ -237,8 +229,6 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     assert(action != nullptr);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (obj == nullptr)
-        return;
     assert(!obj->isStateLocked());
 
     QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE}, true);
@@ -255,6 +245,19 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 
     // Turn off rows collapsing mode.
     ed->resetCollapseModel();
+}
+
+void MuscleMSAEditorContext::sl_alignSelectedSequences() {
+    MuscleAction *action = qobject_cast<MuscleAction *>(sender());
+    SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
+    MSAEditor *msaEditor = action->getMSAEditor();
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+
+    QList<int> selectedMaRowIndexes = msaEditor->getSelection().getSelectedRowIndexes();
+
+    auto alignTask = new MuscleAlignOwnSequencesToSelfAction(msaObject, selectedMaRowIndexes);
+    connect(msaObject, &QObject::destroyed, alignTask, &Task::cancel);
+    AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 }
 
 }  // namespace U2
