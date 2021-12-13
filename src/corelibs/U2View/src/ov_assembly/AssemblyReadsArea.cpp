@@ -914,7 +914,7 @@ void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead> &reads) {
         Document *doc = df->createNewLoadedDocument(iof, model.filepath, os);
         CHECK_OP(os, )
 
-        SaveDocFlags saveFlags(SaveDoc_Overwrite);
+        SaveDocFlags saveFlags;
         if (model.addToProject) {
             saveFlags |= SaveDoc_OpenAfter;
         }

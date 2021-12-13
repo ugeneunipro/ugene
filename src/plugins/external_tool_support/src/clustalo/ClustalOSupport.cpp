@@ -66,7 +66,7 @@ ClustalOSupport::ClustalOSupport()
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify() {
-    //Check that Clustal and temporary folder path defined
+    // Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -94,7 +94,7 @@ void ClustalOSupport::sl_runWithExtFileSpecify() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     ClustalOSupportTaskSettings settings;
     QObjectScopedPointer<ClustalOWithExtFileSpecifySupportRunDialog> clustalORunDialog = new ClustalOWithExtFileSpecifySupportRunDialog(settings, AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
@@ -110,7 +110,7 @@ void ClustalOSupport::sl_runWithExtFileSpecify() {
 }
 
 ////////////////////////////////////////
-//ExternalToolSupportMSAContext
+// ExternalToolSupportMSAContext
 ClustalOSupportContext::ClustalOSupportContext(QObject *p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
@@ -119,26 +119,19 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
+    msaEditor->registerActionProvider(this);
+
     auto alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align with ClustalO..."), 2000);
     alignAction->setObjectName("Align with ClustalO");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     addViewAction(alignAction);
 
-    auto addAlignmentToAlignmentAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align alignment to alignment with ClustalO…"), 2000);
+    auto addAlignmentToAlignmentAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align alignment to alignment with ClustalO…"), 2001);
     addAlignmentToAlignmentAction->setObjectName("align-alignment-to-alignment-clustalo");
-    addAlignmentToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
+    addAlignmentToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
     connect(addAlignmentToAlignmentAction, SIGNAL(triggered()), SLOT(sl_addAlignmentToAlignment()));
     addViewAction(addAlignmentToAlignmentAction);
-}
-
-void ClustalOSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    foreach (GObjectViewAction *a, actions) {
-        a->addToMenuWithOrder(alignMenu);
-    }
 }
 
 void ClustalOSupportContext::sl_align() {
@@ -146,7 +139,7 @@ void ClustalOSupportContext::sl_align() {
     checkClustalOSetup(os);
     CHECK_OP(os, );
 
-    //Call run ClustalO align dialog
+    // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction *>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor *msaEditor = action->getMsaEditor();
@@ -179,7 +172,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     checkClustalOSetup(os);
     CHECK_OP(os, );
 
-    //Call run ClustalO align dialog
+    // Call run ClustalO align dialog
     auto action = qobject_cast<AlignMsaAction *>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor *msaEditor = action->getMsaEditor();
@@ -224,4 +217,4 @@ void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {
     ExternalToolSupportSettings::checkTemporaryDir(os);
 }
 
-}    // namespace U2
+}  // namespace U2

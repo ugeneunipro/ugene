@@ -282,7 +282,6 @@ void PairAlign::checkState() {
     pairwiseAlignmentWidgetsSettings->showSequenceWidget = showSequenceWidget;
     pairwiseAlignmentWidgetsSettings->showAlgorithmWidget = showAlgorithmWidget;
     pairwiseAlignmentWidgetsSettings->showOutputWidget = showOutputWidget;
-    pairwiseAlignmentWidgetsSettings->sequenceSelectionModeOn = firstSequenceSelectionOn || secondSequenceSelectionOn;
 }
 
 void PairAlign::updatePercentOfSimilarity() {

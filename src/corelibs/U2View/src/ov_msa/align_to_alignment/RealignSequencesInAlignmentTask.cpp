@@ -24,7 +24,6 @@
 #include <QUuid>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 #include <U2Algorithm/CreateSubalignmentTask.h>
 
 #include <U2Core/AppContext.h>
@@ -41,11 +40,13 @@
 
 namespace U2 {
 
-RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject *msaObjectToClone, const QSet<qint64> &_rowsToAlignIds)
+RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenceAlignmentObject *msaObjectToClone,
+                                                                 const QSet<qint64> &_rowsToAlignIds,
+                                                                 const QString &_algorithmId)
     : Task(tr("Realign sequences in this alignment"), TaskFlags_NR_FOSE_COSC),
       originalMsaObject(msaObjectToClone),
       msaObject(nullptr),
-      rowsToAlignIds(_rowsToAlignIds) {
+      rowsToAlignIds(_rowsToAlignIds), algorithmId(_algorithmId) {
     locker = new StateLocker(originalMsaObject);
     msaObject = msaObjectToClone->clone(msaObjectToClone->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
@@ -63,7 +64,6 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
         clonedObjectRowsToAlignIds.insert(id);
     }
 
-    QString url;
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     QDir dir(path);
     if (!dir.exists()) {
@@ -106,32 +106,23 @@ U2::Task::ReportResult RealignSequencesInAlignmentTask::report() {
 QList<Task *> RealignSequencesInAlignmentTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
     CHECK_OP(stateInfo, res);
+    CHECK(subTask == extractSequences, res);
 
-    if (subTask == extractSequences) {
-        QList<int> rowPosToRemove;
-        foreach (qint64 idToRemove, rowsToAlignIds) {
-            rowPosToRemove.append(originalMsaObject->getRowPosById(idToRemove));
-        }
-        std::sort(rowPosToRemove.begin(), rowPosToRemove.end());
-        std::reverse(rowPosToRemove.begin(), rowPosToRemove.end());
-        foreach (int rowPos, rowPosToRemove) {
-            msaObject->removeRow(rowPos);
-        }
-        QStringList sequenceFilesToAlign;
-        QDirIterator it(extractedSequencesDirUrl, QStringList() << "*.fa", QDir::Files, QDirIterator::Subdirectories);
-        while (it.hasNext()) {
-            sequenceFilesToAlign.append(it.next());
-        }
-
-        AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
-        QStringList availableAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AddToAlignment);
-        // TODO: make the algorithm be selectable by user.
-        QString algorithmId = availableAlgorithmIds.contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
-                                  ? BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT
-                                  : BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-        auto task = new LoadSequencesAndAlignToAlignmentTask(msaObject, algorithmId, sequenceFilesToAlign);
-        res.append(task);
+    QList<int> rowPosToRemove;
+    for (qint64 idToRemove : qAsConst(rowsToAlignIds)) {
+        rowPosToRemove.append(originalMsaObject->getRowPosById(idToRemove));
     }
+    std::sort(rowPosToRemove.begin(), rowPosToRemove.end());
+    std::reverse(rowPosToRemove.begin(), rowPosToRemove.end());
+    for (int rowPos : qAsConst(rowPosToRemove)) {
+        msaObject->removeRow(rowPos);
+    }
+    QStringList sequenceFilesToAlign;
+    QDirIterator it(extractedSequencesDirUrl, {"*.fa"}, QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        sequenceFilesToAlign.append(it.next());
+    }
+    res.append(new LoadSequencesAndAlignToAlignmentTask(msaObject, algorithmId, sequenceFilesToAlign));
 
     return res;
 }

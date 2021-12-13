@@ -265,6 +265,10 @@ const QPointer<const WorkflowMonitor> &Dashboard::getMonitor() const {
     return monitor;
 }
 
+bool Dashboard::isOpened() const {
+    return opened;
+}
+
 void Dashboard::setClosed() {
     opened = false;
     saveSettings();

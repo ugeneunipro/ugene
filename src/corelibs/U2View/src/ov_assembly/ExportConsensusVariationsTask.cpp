@@ -87,8 +87,7 @@ void ExportConsensusVariationsTask::prepare() {
     U2EntityRef trackRef(resultDocument->getDbiRef(), track.id);
     varTrackObject = new VariantTrackObject(settings.seqObjName, trackRef);
 
-    SaveDocFlags saveFlags = SaveDoc_Overwrite;
-    addSubTask(new SaveDocumentTask(resultDocument, saveFlags));
+    addSubTask(new SaveDocumentTask(resultDocument));
 
     Project *p = AppContext::getProject();
     if (p != nullptr && p->findDocumentByURL(resultDocument->getURL()) != nullptr) {

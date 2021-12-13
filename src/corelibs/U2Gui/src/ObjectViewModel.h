@@ -33,13 +33,15 @@
 
 namespace U2 {
 
-class GObjectViewFactory;
-class GObjectView;
-class Task;
-class GObject;
 class Document;
-class MultiGSelection;
+class GObject;
+class GObjectView;
+class GObjectViewAction;
+class GObjectViewActionsProvider;
+class GObjectViewFactory;
 class GObjectViewObjectHandler;
+class MultiGSelection;
+class Task;
 
 class U2GUI_EXPORT GObjectViewFactoryRegistry : public QObject {
 public:
@@ -203,6 +205,12 @@ public:
         return true;
     }
 
+    /** Registers a new actions provider to the view. */
+    void registerActionProvider(GObjectViewActionsProvider *actionsProvider);
+
+    /** Unregisters an actions provider from the view. */
+    void unregisterActionProvider(GObjectViewActionsProvider *actionsProvider);
+
 protected:
     /** if 'true' is returned -> view will be closed */
     virtual bool onObjectRemoved(GObject *o);
@@ -215,6 +223,16 @@ protected:
 protected:
     virtual void _removeObject(GObject *o);
     virtual QWidget *createWidget() = 0;
+
+    /**
+     * Adds all actions with the given menu types into the menu.
+     * The action are queried from the current list of actions provider.
+     * Different menu sections (menu types) are divided by menu separator items.
+     */
+    void buildActionMenu(QMenu *menu, const QList<QString> &menuTypes);
+
+    /** Calls 'buildActionMenu' with a menu type wrapped with the QList<>. */
+    void buildActionMenu(QMenu *menu, const QString &menuType);
 
 signals:
     /**
@@ -246,6 +264,13 @@ protected:
     bool closing;
     QList<GObjectViewObjectHandler *> objectHandlers;
     OptionsPanel *optionsPanel;
+    QList<GObjectViewActionsProvider *> actionsProviders;
+};
+
+class U2GUI_EXPORT GObjectViewActionsProvider {
+public:
+    /** Returns list of actions available to the view. */
+    virtual QList<GObjectViewAction *> getViewActions(GObjectView *view) const = 0;
 };
 
 /** Constants for known GObject view menu types. */
@@ -398,7 +423,7 @@ public:
     virtual void onObjectRemoved(GObjectView *view, GObject *obj);
 };
 
-class U2GUI_EXPORT GObjectViewWindowContext : public QObject, public GObjectViewObjectHandler {
+class U2GUI_EXPORT GObjectViewWindowContext : public QObject, public GObjectViewObjectHandler, public GObjectViewActionsProvider {
     Q_OBJECT
 
 public:
@@ -406,7 +431,7 @@ public:
     virtual ~GObjectViewWindowContext();
     virtual void init();
 
-    QList<GObjectViewAction *> getViewActions(GObjectView *view) const;
+    QList<GObjectViewAction *> getViewActions(GObjectView *view) const override;
 
     void onObjectRemoved(GObjectView *v, GObject *obj) override;
 

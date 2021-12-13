@@ -49,7 +49,6 @@
 #include <QClipboard>
 #include <QDir>
 #include <QFile>
-#include <QPlainTextEdit>
 #include <QRadioButton>
 #include <QTableView>
 #include <QTableWidget>
@@ -4540,7 +4539,7 @@ GUI_TEST_CLASS_DEFINITION(test_5849) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click the "Align sequence(s) to this alignment" button on the toolbar.
+    // Click the "align_new_sequences_to_alignment_action" button on the toolbar.
     // Expected state: the file selection dialog is opened.
     // Select "..\samples\CLUSTALW\COI.aln" in the dialog.
 

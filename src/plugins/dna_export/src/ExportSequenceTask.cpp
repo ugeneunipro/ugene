@@ -28,7 +28,6 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
@@ -548,42 +547,45 @@ int totalAnnotationCount(const ExportAnnotationSequenceTaskSettings &config) {
 
 }  // namespace
 
-U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData &ad, const ExportSequenceAItem &ei, const U2DbiRef &resultDbiRef, QVector<U2Region> &resultRegions, U2OpStatus &os) {
+U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedAnnotationData &ad,
+                                                                   const ExportSequenceAItem &ei,
+                                                                   const U2DbiRef &resultDbiRef,
+                                                                   QVector<U2Region> &resultRegions,
+                                                                   U2OpStatus &os) {
     U2SequenceImporter importer(QVariantMap(), true);
+
+    bool isReverseComplement = ad->getStrand().isCompementary() && ei.complTT != nullptr;
+    importer.enableReverseComplement(isReverseComplement ? ei.complTT : nullptr);
+
+    importer.enableAminoTranslation(ei.aminoTT);
+
     importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ad->name, false);
-    CHECK_OP(os, U2Sequence());
+    CHECK_OP(os, {});
 
-    foreach (const U2Region &annotatedRegion, ad->location->regions) {
+    QVector<U2Region> regions = ad->location->regions;
+    if (isReverseComplement) {
+        std::reverse(regions.begin(), regions.end());
+    }
+    for (const U2Region &region : qAsConst(regions)) {
         qint64 currentRegionLength = 0;
-        for (qint64 pos = annotatedRegion.startPos; pos < annotatedRegion.endPos(); pos += MAX_CHUNK_LENGTH) {
-            const qint64 currentChunkSize = qMin(MAX_CHUNK_LENGTH, annotatedRegion.endPos() - pos);
-            const U2Region chunkRegion(pos, currentChunkSize);
-            QByteArray chunkContent = ei.sequence->getSequenceData(chunkRegion, os);
-            CHECK_OP(os, U2Sequence());
-            if (chunkContent.isEmpty()) {
-                continue;
-            }
-
-            if (ad->getStrand().isCompementary() && nullptr != ei.complTT) {
-                TextUtils::reverse(chunkContent.data(), currentChunkSize);
-                ei.complTT->translate(chunkContent.data(), currentChunkSize);
-            }
-
-            if (nullptr != ei.aminoTT) {
-                int translationSize = currentChunkSize / 3;
-                QByteArray translation(translationSize, ei.aminoTT->getDstAlphabet()->getDefaultSymbol());
-                ei.aminoTT->translate(chunkContent.constData(), currentChunkSize, translation.data(), translationSize);
-                chunkContent = translation;
-            }
-
+        for (qint64 currentChunkOffset = 0; currentChunkOffset < region.length; currentChunkOffset += MAX_CHUNK_LENGTH) {
+            int currentChunkSize = (int)qMin(MAX_CHUNK_LENGTH, region.length - currentChunkOffset);
+            U2Region currentChunkRegion(isReverseComplement
+                                            ? region.endPos() - currentChunkOffset - currentChunkSize
+                                            : region.startPos + currentChunkOffset,
+                                        currentChunkSize);
+            QByteArray chunkContent = ei.sequence->getSequenceData(currentChunkRegion, os);
+            CHECK_OP(os, {});
             importer.addBlock(chunkContent.constData(), chunkContent.length(), os);
-            CHECK_OP(os, U2Sequence());
+            CHECK_OP(os, {});
             currentRegionLength += chunkContent.length();
         }
-        CHECK_EXT(currentRegionLength == annotatedRegion.length,
+        CHECK_EXT(currentRegionLength == region.length,
                   os.setError(tr("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries")),
-                  U2Sequence());
-        resultRegions.append(U2Region(resultRegions.isEmpty() ? 0 : resultRegions.last().endPos(), currentRegionLength));
+                  {});
+        qint64 resultRegionStart = resultRegions.isEmpty() ? 0 : resultRegions.last().endPos();
+        qint64 resultRegionLength = ei.aminoTT == nullptr ? currentRegionLength : currentRegionLength / 3;
+        resultRegions.append({resultRegionStart, resultRegionLength});
     }
     return importer.finalizeSequence(os);
 }

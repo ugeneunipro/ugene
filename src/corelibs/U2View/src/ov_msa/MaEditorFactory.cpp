@@ -155,9 +155,13 @@ MsaEditorFactory::MsaEditorFactory()
     : MaEditorFactory(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, ID) {
 }
 
-MaEditor *MsaEditorFactory::getEditor(const QString &viewName, GObject *obj) {
-    MultipleSequenceAlignmentObject *msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+MaEditor *MsaEditorFactory::getEditor(const QString &viewName, GObject *obj, U2OpStatus &os) {
+    auto msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
     SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
+    if (msaObj->getLength() > MSAEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
+        os.setError(tr("MSA object is too large to be opened in MSA Editor!"));
+        return nullptr;
+    }
     return new MSAEditor(viewName, msaObj);
 }
 
@@ -185,7 +189,7 @@ McaEditorFactory::McaEditorFactory()
     : MaEditorFactory(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, ID) {
 }
 
-MaEditor *McaEditorFactory::getEditor(const QString &viewName, GObject *obj) {
+MaEditor *McaEditorFactory::getEditor(const QString &viewName, GObject *obj, U2OpStatus &) {
     MultipleChromatogramAlignmentObject *mcaObj = qobject_cast<MultipleChromatogramAlignmentObject *>(obj);
     SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);

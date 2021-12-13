@@ -31,7 +31,6 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -419,28 +418,18 @@ AddTreeWidget::AddTreeWidget(MSAEditor *msaEditor)
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName("BuildTreeButton");
+    buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled());
 
-    MultipleSequenceAlignmentObject *maObj = editor->getMaObject();
-    buildTreeButton->setDisabled(editor->getNumSequences() < 2 || maObj->isStateLocked());
+    connect(msaEditor->buildTreeAction, &QAction::changed, [this, msaEditor]() { buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled()); });
+    connect(buildTreeButton, &QPushButton::clicked, [msaEditor]() { msaEditor->buildTreeAction->trigger(); });
 
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));
-    connect(buildTreeButton, SIGNAL(clicked()), SLOT(sl_onBuildTreeTriggered()));
-    connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateBuildTreeButtonState()));
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateBuildTreeButtonState()));
 }
 
 void AddTreeWidget::sl_onOpenTreeTriggered() {
     editor->getTreeManager()->openTreeFromFile();
-}
-
-void AddTreeWidget::sl_onBuildTreeTriggered() {
-    editor->getTreeManager()->buildTreeWithDialog();
-}
-
-void AddTreeWidget::sl_updateBuildTreeButtonState() {
-    buildTreeButton->setDisabled(editor->getNumSequences() < 2 || editor->getMaObject()->isStateLocked());
 }
 
 TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= nullptr*/)

@@ -39,7 +39,6 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
-#include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
 
@@ -346,8 +345,9 @@ void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber,
 
 #define GT_METHOD_NAME "clearSelection"
 void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
-    Q_UNUSED(os);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    if (!getEditor(os)->getSelection().isEmpty()) {
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -371,6 +371,20 @@ void GTUtilsMsaEditor::checkSelection(HI::GUITestOpStatus &os, const QList<QRect
                           .arg(expectedRect.width())
                           .arg(expectedRect.height()));
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkSelectionByNames"
+void GTUtilsMsaEditor::checkSelectionByNames(GUITestOpStatus &os, const QStringList &selectedNames) {
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
+    QStringList rowNames = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    QList<int> selectedRowIndexes = editor->getSelection().getSelectedRowIndexes();
+    QStringList selectedNamesFromEditor;
+    for (int i = 0; i < selectedRowIndexes.size(); i++) {
+        selectedNamesFromEditor << rowNames[selectedRowIndexes[i]];
+    }
+    GT_CHECK(selectedNames == selectedNamesFromEditor,
+             QString("Unexpected selection! Expected: %1, got: %2").arg(selectedNames.join(",")).arg(selectedNamesFromEditor.join(",")));
 }
 #undef GT_METHOD_NAME
 

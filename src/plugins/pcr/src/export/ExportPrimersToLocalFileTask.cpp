@@ -62,7 +62,7 @@ QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
     addObjects(document, convertTask);
     CHECK_OP(stateInfo, result);
 
-    result << new SaveDocumentTask(document, SaveDocFlags(SaveDoc_Overwrite | SaveDoc_DestroyAfter));
+    result << new SaveDocumentTask(document, SaveDoc_DestroyAfter);
     return result;
 }
 

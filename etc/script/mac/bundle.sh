@@ -121,9 +121,7 @@ PLUGIN_LIST="annotator \
              biostruct3d_view \
              chroma_view \
              circular_view \
-             clark_support \
              dbi_bam \
-             diamond_support \
              dna_export \
              dna_flexibility \
              dna_graphpack \
@@ -135,10 +133,7 @@ PLUGIN_LIST="annotator \
              gor4 \
              hmm2 \
              kalign \
-             kraken_support \
              linkdata_support \
-             metaphlan2_support \
-             ngs_reads_classification \
              opencl_support \
              orf_marker \
              pcr \
@@ -156,7 +151,6 @@ PLUGIN_LIST="annotator \
              umuscle \
              variants \
              weight_matrix \
-             wevote_support \
              workflow_designer"
 
 for PLUGIN in ${PLUGIN_LIST}; do

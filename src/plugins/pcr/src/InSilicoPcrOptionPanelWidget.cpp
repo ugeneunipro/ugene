@@ -157,6 +157,7 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     settings.reverseMismatches = reversePrimerBox->getMismatches();
     settings.maxProductSize = uint(maxProduct);
     settings.perfectMatch = uint(perfectMatch);
+    settings.useAmbiguousBases = useAmbiguousBasesCheckBox->isChecked();
     U2OpStatusImpl os;
     settings.sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );

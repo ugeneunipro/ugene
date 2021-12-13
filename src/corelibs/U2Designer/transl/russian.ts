@@ -779,22 +779,22 @@ bowtie index file</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="322"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="326"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="328"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="332"/>
         <source>Failed to open Dashboard.html</source>
         <translation>Невозможно открыть Dashboard.html</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="479"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="483"/>
         <source>Error reading dashboard file: %1</source>
         <translation>Error reading dashboard file: %1</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="491"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="495"/>
         <source>Error parsing dashboard file: &apos;%1&apos;, file: %2</source>
         <translation>Error parsing dashboard file: &apos;%1&apos;, file: %2</translation>
     </message>

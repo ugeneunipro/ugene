@@ -21,8 +21,9 @@
 
 #include "RealignSequencesInAlignmentTaskTest.h"
 
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2View/RealignSequencesInAlignmentTask.h>
@@ -31,11 +32,8 @@ namespace U2 {
 
 #define IN_OBJECT_NAME_ATTR "in"
 #define ROWS_LIST_ATTR "rows"
-#define FORCE_USE_UGENE_ALIGNER_ATTR "useUgeneAligner"
 
 void GTest_Realign::init(XMLTestFormat *, const QDomElement &el) {
-    forceUseUgeneAligner = false;
-
     inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);
     if (inputObjectName.isEmpty()) {
         failMissingValue(IN_OBJECT_NAME_ATTR);
@@ -50,18 +48,13 @@ void GTest_Realign::init(XMLTestFormat *, const QDomElement &el) {
 
     QStringList rowsIndexesToAlignStringList = rows.split(",");
     bool conversionIsOk = false;
-    foreach (const QString &str, rowsIndexesToAlignStringList) {
-        qint64 rowIndex = str.toUInt(&conversionIsOk);
+    for (const QString &str : qAsConst(rowsIndexesToAlignStringList)) {
+        int rowIndex = str.toInt(&conversionIsOk);
         if (!conversionIsOk) {
             wrongValue(ROWS_LIST_ATTR);
             return;
         }
         rowsIndexesToAlign.append(rowIndex);
-    }
-
-    QString forceUseUgeneAlignerStr = el.attribute(FORCE_USE_UGENE_ALIGNER_ATTR);
-    if (!forceUseUgeneAlignerStr.isEmpty() && forceUseUgeneAlignerStr == "true") {
-        forceUseUgeneAligner = true;
     }
 }
 
@@ -73,7 +66,7 @@ void GTest_Realign::prepare() {
     }
 
     QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-    if (list.size() == 0) {
+    if (list.isEmpty()) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
@@ -83,17 +76,17 @@ void GTest_Realign::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    assert(obj != nullptr);
     msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }
+    QList<qint64> rowIds = msaObj->getMultipleAlignment()->getRowsIds();
     QSet<qint64> rowIdsToRealign;
-    foreach (const qint64 index, rowsIndexesToAlign) {
-        rowIdsToRealign.insert(msaObj->getMultipleAlignment()->getRowsIds().at(index));
+    for (int index : qAsConst(rowsIndexesToAlign)) {
+        rowIdsToRealign.insert(rowIds.at(index));
     }
-    realignTask = new RealignSequencesInAlignmentTask(msaObj, rowIdsToRealign);
+    realignTask = new RealignSequencesInAlignmentTask(msaObj, rowIdsToRealign, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT);
     addSubTask(realignTask);
 }
 

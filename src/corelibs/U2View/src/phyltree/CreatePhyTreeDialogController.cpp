@@ -31,8 +31,10 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -40,6 +42,7 @@
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -63,7 +66,8 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
     QMap<QString, QString> helpPagesMap;
     helpPagesMap.insert("PHYLIP Neighbor Joining", "65929715");
     helpPagesMap.insert("MrBayes", "65929718");
-    helpPagesMap.insert("PhyML Maximum Likelihood", "65929712");
+    helpPagesMap.insert("PhyML Maximum Likelihood", "65929720");
+    helpPagesMap.insert("IQ-TREE", "74809348");
     new ComboboxDependentHelpButton(this, ui->buttonBox, ui->algorithmBox, helpPagesMap);
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -90,7 +94,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
 void CreatePhyTreeDialogController::accept() {
     settings.algorithm = ui->algorithmBox->currentText();
 
-    CHECK(checkFileName(), );
+    CHECK(checkAndPrepareOutputFilePath(), );
     SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
     settingsWidget->fillSettings(settings);
     CHECK(checkSettings(), );
@@ -121,23 +125,24 @@ void CreatePhyTreeDialogController::sl_onRestoreDefault() {
     settingsWidget->restoreDefault();
 }
 
-bool CreatePhyTreeDialogController::checkFileName() {
-    const QString fileName = saveController->getSaveFileName();
-    if (fileName.isEmpty()) {
-        QMessageBox::warning(this, tr("Warning"), tr("Please, input the file name."));
+bool CreatePhyTreeDialogController::checkAndPrepareOutputFilePath() {
+    U2OpStatusImpl os;
+    QString outputFilePath = saveController->getValidatedSaveFilePath(os);
+    if (os.hasError()) {
+        QMessageBox::critical(this, L10N::errorTitle(), os.getError());
         ui->fileNameEdit->setFocus();
         return false;
     }
-    settings.fileUrl = fileName;
-
-    U2OpStatus2Log os;
-    GUrlUtils::validateLocalFileUrl(GUrl(fileName), os);
-    if (os.hasError()) {
-        QMessageBox::warning(this, tr("Error"), tr("Please, change the output file.") + "\n" + os.getError());
-        ui->fileNameEdit->setFocus(Qt::MouseFocusReason);
-        return false;
+    // Prepare the result dir.
+    QFileInfo outputFileInfo(outputFilePath);
+    QDir outputFileDir(outputFileInfo.absolutePath());
+    if (!outputFileDir.exists()) {
+        bool result = QDir().mkpath(outputFileInfo.absolutePath());
+        // This should never happen: saveController->getValidatedSaveFilePath checked that the dir is writable.
+        SAFE_POINT(result, L10N::internalError(L10N::errorWritingFile(outputFilePath)), false);
     }
 
+    settings.fileUrl = outputFilePath;
     return true;
 }
 
@@ -171,16 +176,19 @@ bool CreatePhyTreeDialogController::checkMemory() {
 
 void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(msaObject->getDocument()->getURLString(), msaObject->getGObjectName(), ".nwk", "");
+    GUrl msaDocumentUrl = msaObject->getDocument()->getURL();
+    QString saveDirPath = QFileInfo(msaDocumentUrl.getURLString()).absolutePath();
+    if (!FileAndDirectoryUtils::canWriteToPath(saveDirPath)) {
+        saveDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath();
+    }
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(saveDirPath + "/" + msaDocumentUrl.fileName(), msaObject->getGObjectName(), ".nwk", "");
     config.defaultFormatId = BaseDocumentFormats::NEWICK;
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Choose file name");
 
-    const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::NEWICK;
-
-    saveController = new SaveDocumentController(config, formats, this);
+    saveController = new SaveDocumentController(config, {BaseDocumentFormats::NEWICK}, this);
 }
 
 }  // namespace U2

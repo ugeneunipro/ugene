@@ -547,6 +547,11 @@ void MaEditorSequenceArea::centerPos(int position) {
     update();
 }
 
+bool MaEditorSequenceArea::isPositionCentered(int position) const {
+    SAFE_POINT(isPosInRange(position), QString("Base %1 is out of range").arg(position), false);
+    return ui->getScrollController()->isBaseCentered(position, width());
+}
+
 void MaEditorSequenceArea::onVisibleRangeChanged() {
     exitFromEditCharacterMode();
     CHECK(!isAlignmentEmpty(), );

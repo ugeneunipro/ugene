@@ -101,7 +101,7 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
 
         preparedReferenceUrl = GUrlUtils::rollFileName(doc->getURL().getURLString(), "_");    // we roll the URL here because there was a strange problem when UGENE couldn't overwrite the file (UTI-242)
         Document *fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, preparedReferenceUrl);
-        SaveDocumentTask *saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_Overwrite | SaveDoc_DestroyButDontUnload);
+        SaveDocumentTask *saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_DestroyButDontUnload);
         newSubTasks << saveTask;
     }
 

@@ -46,7 +46,7 @@ IQTreeSupport::IQTreeSupport()
     executableFileName = isOsWindows() ? "iqtree.exe" : "iqtree";
     validationArguments << "--version";
     validMessage = "IQ-TREE";
-    description = tr("<i>IQ-TREE</i> Efficient software for phylogenomic inference");
+    description = tr("<i>IQ-TREE</i>  Efficient software for phylogenomic inference");
     versionRegExp = QRegExp("IQ-TREE .* version (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "IQ-TREE";
 

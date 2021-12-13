@@ -58,8 +58,6 @@ protected slots:
 
 protected:
     void initViewContext(GObjectView *view) override;
-
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 }    // namespace U2

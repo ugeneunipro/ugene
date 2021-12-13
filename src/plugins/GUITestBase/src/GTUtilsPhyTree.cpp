@@ -20,7 +20,6 @@
  */
 
 #include <drivers/GTMouseDriver.h>
-#include <math.h>
 #include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
@@ -30,6 +29,7 @@
 
 #include <U2View/GraphicsButtonItem.h>
 #include <U2View/GraphicsRectangularBranchItem.h>
+#include <U2View/TreeViewerFactory.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsPhyTree.h"
@@ -329,6 +329,27 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(GraphicsRectangularBranchItem *fi
     }
 
     return first->getDirection() > second->getDirection();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getActiveTreeViewerWindow"
+QWidget *GTUtilsPhyTree::getActiveTreeViewerWindow(GUITestOpStatus &os) {
+    QWidget *widget = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
+    GTThread::waitForMainThread();
+    return widget;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkTreeViewerWindowIsActive"
+void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus &os, const QString &titlePart) {
+    getActiveTreeViewerWindow(os);
+    if (!titlePart.isEmpty()) {
+        auto windowTitle = GTUtilsMdi::activeWindowTitle(os);
+        GT_CHECK_RESULT(windowTitle.contains(titlePart),
+                        QString("Wrong window title part. Expected part: '%1', actual title: '%2'")
+                            .arg(titlePart)
+                            .arg(windowTitle), );
+    }
 }
 #undef GT_METHOD_NAME
 

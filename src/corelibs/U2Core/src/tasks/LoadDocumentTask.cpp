@@ -37,7 +37,6 @@
 #include <U2Core/GHints.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectReference.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -428,75 +427,73 @@ void LoadDocumentTask::run() {
     // and used for LoadUnloadedDocument & LoadDocument privately
     hints.remove(GObjectHint_NamesList);
 
-    try {
-        if (isLoadFromMultipleFiles(hints)) {
-            resultDocument = loadFromMultipleFiles(iof, hints, stateInfo);
-        } else {
-            resultDocument = format->loadDocument(iof, url, hints, stateInfo);
-        }
-    } catch (std::bad_alloc &) {
-        resultDocument = nullptr;
-        setError(tr("Not enough memory to load document %1").arg(url.getURLString()));
+    // Warning: there are memory consuming ops below, so we save the loaded document into the result only if the method is finished with no errors.
+    QScopedPointer<Document> loadedDocument;
+    if (isLoadFromMultipleFiles(hints)) {
+        loadedDocument.reset(loadFromMultipleFiles(iof, hints, stateInfo));
+    } else {
+        loadedDocument.reset(format->loadDocument(iof, url, hints, stateInfo));
     }
+    CHECK_OP(stateInfo, );
+    SAFE_POINT(!loadedDocument.isNull(), "format->loadDocument is finished with no errors but has no result document.", );
 
-    if (resultDocument != nullptr) {
-        if (!renameList.isEmpty()) {
-            renameObjects(resultDocument, renameList);
-        }
-        Document *convertedDoc = DocumentUtils::createCopyRestructuredWithHints(resultDocument, stateInfo, true);
-        if (convertedDoc != nullptr) {
-            delete resultDocument;
-            resultDocument = convertedDoc;
-        }
-        if (hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
-            int maxObjects = hints.value(DocumentReadingMode_MaxObjectsInDoc).toInt();
-            int docObjects = resultDocument->getObjects().size();
-            if (docObjects > maxObjects) {
-                setError(tr("Maximum number of objects per document limit reached for %1. Try different options for opening the document!").arg(resultDocument->getURLString()));
-                delete resultDocument;
-                resultDocument = nullptr;
-            }
+    if (!renameList.isEmpty()) {
+        renameObjects(loadedDocument.get(), renameList);
+    }
+    Document *convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo, true);
+    CHECK_OP(stateInfo, );
+    if (convertedDoc != nullptr) {
+        loadedDocument.reset(convertedDoc);
+    }
+    if (hints.contains(DocumentReadingMode_MaxObjectsInDoc)) {
+        int maxObjects = hints.value(DocumentReadingMode_MaxObjectsInDoc).toInt();
+        int docObjects = loadedDocument->getObjects().size();
+        if (docObjects > maxObjects) {
+            setError(tr("Maximum number of objects per document limit reached for %1. Try different options for opening the document!").arg(loadedDocument->getURLString()));
+            return;
         }
     }
-    if (config.checkObjRef.isValid() && !hasError()) {
-        processObjRef();
+    if (config.checkObjRef.isValid()) {
+        processObjRef(loadedDocument.get());
+        CHECK_OP(stateInfo, );
     }
-    if ((nullptr != resultDocument) && hints.value(ProjectLoaderHint_DontCheckForExistence, false).toBool()) {
-        resultDocument->getGHints()->set(ProjectLoaderHint_DontCheckForExistence, true);
+    if (hints.value(ProjectLoaderHint_DontCheckForExistence, false).toBool()) {
+        loadedDocument->getGHints()->set(ProjectLoaderHint_DontCheckForExistence, true);
     }
-    assert(stateInfo.isCoR() || resultDocument != nullptr);
-    assert(resultDocument == nullptr || resultDocument->isLoaded());
+    SAFE_POINT(loadedDocument->isLoaded(), "LoadDocumentTask result document is not loaded.", );
+    resultDocument = loadedDocument.take();
 }
 
 Task::ReportResult LoadDocumentTask::report() {
-    if (stateInfo.hasError() || isCanceled()) {
-        return ReportResult_Finished;
-    }
+    CHECK_OP(stateInfo, ReportResult_Finished);
+    SAFE_POINT(resultDocument != nullptr, "Document is null and there is no error in LoadDocumentTask!", ReportResult_Finished);
+
     resultDocument->setLastUpdateTime();
     return ReportResult_Finished;
 }
 
-void LoadDocumentTask::processObjRef() {
-    assert(config.checkObjRef.isValid());
-    assert(resultDocument != nullptr);
+void LoadDocumentTask::processObjRef(Document *loadedDocument) {
+    SAFE_POINT(config.checkObjRef.isValid(), "LoadDocumentTask: config.checkObjRef is invalid", );
+    SAFE_POINT(loadedDocument != nullptr, "LoadDocumentTask: loadedDocument is null!", );
 
-    if (GObjectUtils::selectObjectByReference(config.checkObjRef, resultDocument->getObjects(), UOF_LoadedOnly) == nullptr) {
-        if (config.objFactory == nullptr) {
-            stateInfo.setError(tr("Object not found: %1").arg(config.checkObjRef.objName));
-        } else {
-            assert(!resultDocument->isStateLocked());
-            Document::Constraints c;
-            c.objectTypeToAdd.append(config.checkObjRef.objType);
-            bool ok = resultDocument->checkConstraints(c);
-            if (!ok) {
-                stateInfo.setError(tr("Can't add object. Document format constraints check failed: %1").arg(resultDocument->getName()));
-            } else {
-                GObject *obj = config.objFactory->create(config.checkObjRef);
-                assert(obj != nullptr);
-                resultDocument->addObject(obj);
-            }
-        }
+    if (GObjectUtils::selectObjectByReference(config.checkObjRef, loadedDocument->getObjects(), UOF_LoadedOnly) != nullptr) {
+        return;
     }
+    if (config.objFactory == nullptr) {
+        stateInfo.setError(tr("Object not found: %1").arg(config.checkObjRef.objName));
+        return;
+    }
+    SAFE_POINT(!loadedDocument->isStateLocked(), "LoadDocumentTask: loaded document is state-locked!", );
+    Document::Constraints c;
+    c.objectTypeToAdd.append(config.checkObjRef.objType);
+    bool ok = loadedDocument->checkConstraints(c);
+    if (!ok) {
+        stateInfo.setError(tr("Can't add object. Document format constraints check failed: %1").arg(loadedDocument->getName()));
+        return;
+    }
+    GObject *obj = config.objFactory->create(config.checkObjRef);
+    SAFE_POINT(obj != nullptr, "LoadDocumentTask: Failed to create a new object", );
+    loadedDocument->addObject(obj);
 }
 
 int LoadDocumentTask::calculateMemory() const {

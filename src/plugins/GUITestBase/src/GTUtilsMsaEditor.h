@@ -97,6 +97,9 @@ public:
     /** Checks that MSA editor selection is equal to the given rect. Fails if not. */
     static void checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects);
 
+    /** Checks that the current selection names & order are equal to 'selectedNames' list. */
+    static void checkSelectionByNames(HI::GUITestOpStatus &os, const QStringList &selectedNames);
+
     static void clearSelection(HI::GUITestOpStatus &os);
 
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);

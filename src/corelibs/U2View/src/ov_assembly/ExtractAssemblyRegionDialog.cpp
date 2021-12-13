@@ -24,17 +24,10 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
-
-#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/SaveDocumentController.h>
-
-#include <U2View/AssemblyModel.h>
-
-#include "ExtractAssemblyRegionDialog.h"
 
 namespace U2 {
 
@@ -51,7 +44,7 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget *p, ExtractAsse
     QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), settings->regionToExtract);
     regionSelector = new RegionSelector(this, settings->assemblyLength, false, nullptr, false, presets);
     regionSelector->setCurrentPreset(tr("Visible"));
-    regionSelector->removePreset(RegionSelector::WHOLE_SEQUENCE);
+    regionSelector->removePreset(RegionPreset::WHOLE_SEQUENCE());
     regionSelectorWidget->layout()->addWidget(regionSelector);
 
     setMaximumHeight(layout()->minimumSize().height());

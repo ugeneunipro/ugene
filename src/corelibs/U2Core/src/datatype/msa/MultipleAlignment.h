@@ -57,7 +57,7 @@ public:
         SortByLeadingGap = 3,
     };
 
-    virtual ~MultipleAlignment();
+    virtual ~MultipleAlignment() = default;
 
     MultipleAlignmentData *data() const;
     template<class Derived>

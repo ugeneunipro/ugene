@@ -39,17 +39,16 @@ class GTest_Realign : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_Realign, "realign");
 
-    void prepare();
-    Task::ReportResult report();
-    void cleanup();
+    void prepare() override;
+    Task::ReportResult report() override;
+    void cleanup() override;
 
 private:
     QString inputObjectName;
-    MultipleSequenceAlignmentObject *msaObj;
-    QList<qint64> rowsIndexesToAlign;
-    Document *doc;
-    RealignSequencesInAlignmentTask *realignTask;
-    bool forceUseUgeneAligner;
+    MultipleSequenceAlignmentObject *msaObj = nullptr;
+    QList<int> rowsIndexesToAlign;
+    Document *doc = nullptr;
+    RealignSequencesInAlignmentTask *realignTask = nullptr;
 };
 
 class RealignTests {

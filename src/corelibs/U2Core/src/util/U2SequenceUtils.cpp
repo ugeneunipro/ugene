@@ -22,6 +22,7 @@
 #include "U2SequenceUtils.h"
 
 #include <QApplication>
+#include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -422,6 +423,16 @@ U2SequenceImporter::~U2SequenceImporter() {
     }
 }
 
+void U2SequenceImporter::enableAminoTranslation(const DNATranslation *newAminoTT) {
+    SAFE_POINT(!sequenceCreated, "enableAminoTranslation can be set only during initialization", );
+    this->aminoTT = newAminoTT;
+}
+
+void U2SequenceImporter::enableReverseComplement(const DNATranslation *newComplTT) {
+    SAFE_POINT(!sequenceCreated, "enableReverseComplement can be set only during initialization", );
+    this->complTT = newComplTT;
+}
+
 void U2SequenceImporter::startSequence(U2OpStatus &os,
                                        const U2DbiRef &dbiRef,
                                        const QString &dstFolder,
@@ -451,6 +462,7 @@ void U2SequenceImporter::startSequence(U2OpStatus &os,
 }
 
 void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+    CHECK(len > 0, );
     // derive common alphabet
     const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
     CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
@@ -509,15 +521,63 @@ void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
     currentLength += n;
 }
 
-void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 len, U2OpStatus &os) {
-    if (len + sequenceBuffer.length() < insertBlockSize) {
-        sequenceBuffer.append(data, len);
+void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 dataLength, U2OpStatus &os) {
+    CHECK(dataLength > 0, );
+    const char *newBlock = data;
+    int newBlockLength = (int)dataLength;
+
+    QScopedPointer<QByteArray> complBlockPointer;  // container of the reverse-complementary block sequence.
+    if (complTT != nullptr) {
+        complBlockPointer.reset(new QByteArray(newBlockLength, Qt::Uninitialized));
+        char *revComplBlock = complBlockPointer->data();
+        TextUtils::reverse(newBlock, revComplBlock, newBlockLength);
+        complTT->translate(revComplBlock, newBlockLength);
+        newBlock = revComplBlock;
+    }
+
+    QScopedPointer<QByteArray> aminoBlockPointer;  // container of the translated block sequence.
+    if (aminoTT != nullptr) {
+        if (newBlockLength + aminoTranslationBuffer.size() < 3) {
+            aminoTranslationBuffer.append(newBlock, newBlockLength);
+            return;
+        }
+        const char *const dnaBlock = newBlock;
+        aminoBlockPointer.reset(new QByteArray(newBlockLength / 3 + 1, Qt::Uninitialized));
+        char *aminoBlock = aminoBlockPointer->data();
+        int remainingDnaBlockLength = newBlockLength;
+        int dnaBlockOffset = 0;
+        bool hasCharFromAminoBuffer = false;
+        // Finish the pending block first.
+        if (!aminoTranslationBuffer.isEmpty()) {
+            SAFE_POINT(aminoTranslationBuffer.length() <= 2, "Invalid size of aminoTranslationBuffer", );
+            hasCharFromAminoBuffer = true;
+            dnaBlockOffset = 3 - aminoTranslationBuffer.size();
+            aminoTranslationBuffer.append(dnaBlock, dnaBlockOffset);
+            aminoTT->translate(aminoTranslationBuffer.constData(), 3, aminoBlock, 1);
+            aminoBlockPointer->append(dnaBlock, 1);
+            remainingDnaBlockLength -= dnaBlockOffset;
+            aminoTranslationBuffer.clear();
+        }
+        int aminoBlockLength = remainingDnaBlockLength / 3;
+        aminoTT->translate(dnaBlock + dnaBlockOffset, remainingDnaBlockLength, aminoBlock + (hasCharFromAminoBuffer ? 1 : 0), aminoBlockLength);
+        remainingDnaBlockLength = remainingDnaBlockLength % 3;
+
+        newBlock = aminoBlock;
+        newBlockLength = (hasCharFromAminoBuffer ? 1 : 0) + aminoBlockLength;
+
+        if (remainingDnaBlockLength != 0) {
+            aminoTranslationBuffer.append(dnaBlock + dataLength - remainingDnaBlockLength, remainingDnaBlockLength);
+        }
+    }
+
+    if (newBlockLength + sequenceBuffer.length() < insertBlockSize) {
+        sequenceBuffer.append(newBlock, newBlockLength);
         return;
     }
     _addBlock2Db(sequenceBuffer.data(), sequenceBuffer.length(), os);
     CHECK_OP(os, );
     sequenceBuffer.clear();
-    _addBlock2Db(data, len, os);
+    _addBlock2Db(newBlock, newBlockLength, os);
 }
 
 void U2SequenceImporter::_addBlock2Db(const char *data, qint64 len, U2OpStatus &os) {
@@ -622,6 +682,8 @@ qint64 U2SequenceImporter::getCurrentLength() const {
 }
 
 void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+    SAFE_POINT(aminoTT == nullptr, "Import with amino translation is not supported by U2MemorySequenceImporter", );
+    SAFE_POINT(complTT == nullptr, "Import with reverse-complementary translation is not supported by U2MemorySequenceImporter", );
     if (qstrlen(data) < len) {
         os.setError("Wrong data length in addBlock");
         return;

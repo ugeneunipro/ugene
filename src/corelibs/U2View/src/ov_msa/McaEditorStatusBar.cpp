@@ -103,7 +103,9 @@ void McaEditorStatusBar::updateLabels() {
 
 void McaEditorStatusBar::updateLineLabel() {
     const MaEditorSelection &selection = editor->getSelection();
-    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.getRectList().first().top() + 1),
+    lineLabel->update(selection.isEmpty() || selection.isMultiRegionSelection()
+                          ? MaEditorStatusBar::NONE_MARK
+                          : QString::number(selection.getRectList().first().top() + 1),
                       QString::number(editor->getNumSequences()));
 }
 

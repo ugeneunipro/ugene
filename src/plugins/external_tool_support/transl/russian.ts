@@ -5101,88 +5101,88 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="148"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="149"/>
         <source>External tool support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="148"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="149"/>
         <source>Runs other external tools</source>
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="212"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="216"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="220"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="224"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="228"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="232"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="236"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="240"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="355"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
         <source>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) finds regions of local similarity between sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families.</source>
         <translation>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) ищет регионы локального сходства между последовательностями. Программа сравнивает нуклеотидные или белковые последовательности в базах данных последовательностей и вычисляет статистическую значимость совпадений. BLAST может использоваться для выявления функциональных и эволюционных взаимосвязей между последовательностями, а также для определения членов семейств гена.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="361"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="365"/>
         <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
         <translation>&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="367"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="370"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="374"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="377"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="381"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="385"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="389"/>
         <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
         <translation>&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="388"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
         <source>BLAST+ make database...</source>
         <translation>Создание базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="396"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="416"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="420"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="403"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
         <source>BLAST+ search...</source>
         <translation>Поиск с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="411"/>
         <source>BLAST+ query database...</source>
         <translation>Запрос с помощью BLAST+...</translation>
     </message>
@@ -5200,12 +5200,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="522"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="526"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="522"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="526"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5996,6 +5996,55 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
 </context>
 <context>
+    <name>U2::IQTreeSupport</name>
+    <message>
+        <location filename="../src/iqtree/IQTreeSupport.cpp" line="49"/>
+        <source>&lt;i&gt;IQ-TREE&lt;/i&gt; Efficient software for phylogenomic inference</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::IQTreeTask</name>
+    <message>
+        <location filename="../src/iqtree/IQTreeTask.cpp" line="53"/>
+        <source>IQTree tree calculation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::IQTreeWidget</name>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="54"/>
+        <source>Extra command line options for IQ-TREE (1 per line):</source>
+        <translation>Дополнительные опции для IQ-TREE (1 на строку)</translation>
+    </message>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="56"/>
+        <source>View all options</source>
+        <translation>Посмотреть все опции</translation>
+    </message>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="57"/>
+        <source>Open official &apos;Command reference&apos; guide for IQ-TREE in browser</source>
+        <translation>Откройте официальную &apos;Command reference&apos; документацию для IQ-TREE в браузере</translation>
+    </message>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="65"/>
+        <source>Use one parameter per one line</source>
+        <translation>Используйте один параметр на одну строку</translation>
+    </message>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="71"/>
+        <source>IQ-TREE options</source>
+        <translation>Настройки IQ-TREE</translation>
+    </message>
+    <message>
+        <location filename="../src/iqtree/IQTreeWidget.cpp" line="75"/>
+        <source>Display Options</source>
+        <translation>Опции отображения</translation>
+    </message>
+</context>
+<context>
     <name>U2::ImportCustomToolsTask</name>
     <message>
         <location filename="../src/custom_tools/ImportCustomToolsTask.cpp" line="48"/>
@@ -6014,9 +6063,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::JavaSupport</name>
     <message>
-        <location filename="../src/java/JavaSupport.cpp" line="54"/>
         <source>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 1.7 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</source>
-        <translation>Java позволяет разрабатывать приложения Java на компьютерах и серверах &lt;br&gt; &lt;i&gt; (Требуется Java 1.7 или выше) &lt;/i&gt; &lt;br&gt; Java можно свободно скачать на официальном веб-сайте:. HTTPS: / /www.java.com/en/download/</translation>
+        <translation type="vanished">Java позволяет разрабатывать приложения Java на компьютерах и серверах &lt;br&gt; &lt;i&gt; (Требуется Java 1.7 или выше) &lt;/i&gt; &lt;br&gt; Java можно свободно скачать на официальном веб-сайте:. HTTPS: / /www.java.com/en/download/</translation>
+    </message>
+    <message>
+        <location filename="../src/java/JavaSupport.cpp" line="45"/>
+        <source>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 8 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</source>
+        <translation type="unfinished">Java позволяет разрабатывать приложения Java на компьютерах и серверах &lt;br&gt; &lt;i&gt; (Требуется Java 1.7 или выше) &lt;/i&gt; &lt;br&gt; Java можно свободно скачать на официальном веб-сайте:. HTTPS: / /www.java.com/en/download/ {8 ?}</translation>
     </message>
 </context>
 <context>
@@ -12572,6 +12625,14 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
+    <name>U2::PrepareIQTreeWorkDirTask</name>
+    <message>
+        <location filename="../src/iqtree/IQTreeTask.cpp" line="77"/>
+        <source>Prepare IQTree work dir</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::PrepareInputFastaFilesTask</name>
     <message>
         <location filename="../src/blast_plus/PrepareInputFastaFilesTask.cpp" line="36"/>
@@ -12847,6 +12908,14 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
+    <name>U2::RunIQTreeExternalToolTask</name>
+    <message>
+        <location filename="../src/iqtree/IQTreeTask.cpp" line="105"/>
+        <source>Run IQTree tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::SaveAlignmentTask</name>
     <message>
         <location filename="../src/utils/ExportTasks.cpp" line="62"/>
@@ -12936,12 +13005,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SnpEffSupport</name>
     <message>
-        <location filename="../src/snpeff/SnpEffSupport.cpp" line="56"/>
+        <location filename="../src/snpeff/SnpEffSupport.cpp" line="55"/>
         <source>&lt;i&gt;SnpEff&lt;/i&gt;: Genetic variant annotation and effect prediction toolbox.</source>
         <translation>&lt;i&gt;SnpEff&lt;/i&gt;: инструмент генетического варианта аннотации и прогнозирования эффекта.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffSupport.cpp" line="101"/>
+        <location filename="../src/snpeff/SnpEffSupport.cpp" line="90"/>
         <source>Failed to get SnpEff database list</source>
         <translation>Failed to get SnpEff database list</translation>
     </message>
@@ -13388,32 +13457,37 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Map one read with BLAST &amp; SW task</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="139"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="140"/>
+        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;, %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="142"/>
         <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
         <translation>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="149"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="153"/>
         <source>%1 was skipped. No BLAST results.</source>
         <translation>%1 was skipped. No BLAST results.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="193"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="198"/>
         <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
         <translation>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="294"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="299"/>
         <source>Read doesn&apos;t contain meaningful data</source>
         <translation>Read doesn&apos;t contain meaningful data</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="377"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="382"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>The %1 algorithm is not found. Add the %1 plugin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="380"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="385"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>The %1 algorithm is not found. Check that the %1 plugin is up to date.</translation>
     </message>

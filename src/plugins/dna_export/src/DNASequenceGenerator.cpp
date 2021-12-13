@@ -282,7 +282,7 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
                        resultTasks);
             addSequencesToMsaDoc(doc);
         }
-        saveTask = new SaveDocumentTask(doc, SaveDoc_Overwrite);
+        saveTask = new SaveDocumentTask(doc);
         resultTasks << saveTask;
     } else {  // TODO: avoid high memory consumption here
         const DNAAlphabet *alp = cfg.getAlphabet();

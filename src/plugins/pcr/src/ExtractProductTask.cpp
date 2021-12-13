@@ -291,7 +291,6 @@ QList<Task *> ExtractProductWrapperTask::onSubTaskFinished(Task *subTask) {
     SaveDocFlags flags;
     flags |= SaveDoc_OpenAfter;
     flags |= SaveDoc_DestroyAfter;
-    flags |= SaveDoc_Overwrite;
     QFile::remove(settings.outputFile);
     result << new SaveDocumentTask(extractTask->takeResult(), flags);
     return result;
