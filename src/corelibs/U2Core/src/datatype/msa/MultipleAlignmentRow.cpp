@@ -121,12 +121,12 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other
         thisGaps.removeFirst();
     }
 
-    U2MsaRowGapModel otherGas = other.getGapModel();
-    if (!otherGas.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
-        otherGas.removeFirst();
+    U2MsaRowGapModel otherGaps = other.getGapModel();
+    if (!otherGaps.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
+        otherGaps.removeFirst();
     }
 
-    return thisGaps == otherGas;
+    return thisGaps == otherGaps;
 }
 
 QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const {
