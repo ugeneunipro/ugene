@@ -64,19 +64,17 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
     }
     std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());
 
-    quint64 usedBytes = 0;
+    qint64 usedBytes = 0;
     int availableThreads = workpool->nThreads;
     for (int i = 0; i < rowsLengths.size() && availableThreads > 0; i++) {
         for (int j = 0; j < rowsLengths.size() && availableThreads > 0; j++, availableThreads--) {
             usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
         }
     }
-    const int maxInt = std::numeric_limits<int>::max();
     //Check memory consumption for m_Dists in distfunc.cpp
-    quint64 mDistsUsedBytes = sizeof(float) * rowsLengths.size() * rowsLengths.size();
-    usedBytes = usedBytes >= 0 ? usedBytes : maxInt;
+    qint64 mDistsUsedBytes = sizeof(float) * rowsLengths.size() * rowsLengths.size();
     usedBytes = qMax(usedBytes, mDistsUsedBytes);
-    return qMin(qint64(usedBytes / 1024 / 1024), qint64(maxInt));
+    return qMin(qint64(usedBytes / 1024 / 1024), qint64(std::numeric_limits<int>::max()));
 }
 
 QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {

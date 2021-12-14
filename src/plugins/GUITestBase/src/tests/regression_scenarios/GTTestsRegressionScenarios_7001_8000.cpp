@@ -1447,8 +1447,7 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
             GTWidget::clickWindowTitle(os, wizard);
 
             //2. Set file with many (~1200) sequences as input file and run workflow
-            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath()}});
-            //GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/regression/7465/big_msa_as_fasta.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
