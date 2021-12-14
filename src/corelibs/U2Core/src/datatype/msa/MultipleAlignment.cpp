@@ -55,10 +55,11 @@ const MultipleAlignmentData *MultipleAlignment::operator->() const {
     return maData.data();
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleAlignmentRow> &rows)
-    : alphabet(alphabet),
-      rows(rows),
-      length(0) {
+MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType &_type,
+                                             const QString &name,
+                                             const DNAAlphabet *_alphabet,
+                                             const QList<MultipleAlignmentRow> &_rows)
+    : type(_type), alphabet(_alphabet), rows(_rows), length(0) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -68,9 +69,6 @@ MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlpha
     for (int i = 0, n = rows.size(); i < n; i++) {
         length = qMax(length, rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
     }
-}
-
-MultipleAlignmentData::~MultipleAlignmentData() {
 }
 
 void MultipleAlignmentData::clear() {
@@ -373,18 +371,24 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
     }
 }
 
-bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
-    const bool lengthsAreEqual = (length == other.length);
-    const bool alphabetsAreEqual = (alphabet == other.alphabet);
-    bool rowsAreEqual = (rows.size() == other.rows.size());
-    for (int i = 0; i < rows.size() && rowsAreEqual; i++) {
-        rowsAreEqual &= (*rows[i] == *other.rows[i]);
+bool MultipleAlignmentData::isEqual(const MultipleAlignmentData &other) const {
+    CHECK(this != &other, true);
+    CHECK(type == other.type, false);
+    CHECK(alphabet == other.alphabet, false);
+    CHECK(length == other.length, false);
+    CHECK(rows.size() == other.rows.size(), false);
+    for (int i = 0; i < rows.size(); i++) {
+        CHECK(rows[i]->isEqual(*(other.rows[i].data())), false);
     }
-    return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
+    return true;
+}
+
+bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
+    return isEqual(other);
 }
 
 bool MultipleAlignmentData::operator!=(const MultipleAlignmentData &other) const {
-    return !operator==(other);
+    return !isEqual(other);
 }
 
 void MultipleAlignmentData::check() const {

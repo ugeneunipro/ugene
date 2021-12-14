@@ -206,11 +206,9 @@ public:
      */
     MultipleChromatogramAlignmentData &operator+=(const MultipleChromatogramAlignmentData &mcaData);
 
-    /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
-     */
-    bool operator==(const MultipleChromatogramAlignmentData &mcaData) const;
-    bool operator!=(const MultipleChromatogramAlignmentData &mcaData) const;
+    /** Compares two alignments: calls isEqual() method. */
+    bool operator==(const MultipleChromatogramAlignmentData &other) const;
+    bool operator!=(const MultipleChromatogramAlignmentData &other) const;
 
     MultipleAlignment getCopy() const;
     MultipleChromatogramAlignment getExplicitCopy() const;

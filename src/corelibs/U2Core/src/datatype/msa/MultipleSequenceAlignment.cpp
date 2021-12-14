@@ -76,7 +76,7 @@ QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment::getMsaD
 
 namespace {
 
-QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmentRow> &msaRows) {
+static QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmentRow> &msaRows) {
     QList<MultipleAlignmentRow> maRows;
     foreach (const MultipleSequenceAlignmentRow &msaRow, msaRows) {
         maRows << msaRow;
@@ -86,12 +86,14 @@ QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleSequenceAlignmen
 
 }  // namespace
 
-MultipleSequenceAlignmentData::MultipleSequenceAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleSequenceAlignmentRow> &rows)
-    : MultipleAlignmentData(name, alphabet, convertToMaRows(rows)) {
+MultipleSequenceAlignmentData::MultipleSequenceAlignmentData(const QString &name,
+                                                             const DNAAlphabet *alphabet,
+                                                             const QList<MultipleSequenceAlignmentRow> &rows)
+    : MultipleAlignmentData(MultipleAlignmentDataType::MSA, name, alphabet, convertToMaRows(rows)) {
 }
 
 MultipleSequenceAlignmentData::MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msaData)
-    : MultipleAlignmentData() {
+    : MultipleAlignmentData(MultipleAlignmentDataType::MSA) {
     copy(msaData);
 }
 
@@ -245,14 +247,11 @@ MultipleSequenceAlignmentData &MultipleSequenceAlignmentData::operator+=(const M
 }
 
 bool MultipleSequenceAlignmentData::operator==(const MultipleSequenceAlignmentData &other) const {
-    bool lengthsAreEqual = (length == other.length);
-    bool alphabetsAreEqual = (alphabet == other.alphabet);
-    bool rowsAreEqual = (rows == other.rows);
-    return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
+    return isEqual(other);
 }
 
 bool MultipleSequenceAlignmentData::operator!=(const MultipleSequenceAlignmentData &other) const {
-    return !operator==(other);
+    return !isEqual(other);
 }
 
 bool MultipleSequenceAlignmentData::crop(const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os) {

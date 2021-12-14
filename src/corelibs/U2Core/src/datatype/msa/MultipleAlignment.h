@@ -90,12 +90,13 @@ protected:
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleAlignmentData(const QString &name = QString(),
+    MultipleAlignmentData(const MultipleAlignmentDataType &type,
+                          const QString &name = QString(),
                           const DNAAlphabet *alphabet = nullptr,
                           const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
 
 public:
-    virtual ~MultipleAlignmentData();
+    virtual ~MultipleAlignmentData() = default;
 
     /**
      * Clears the alignment. Makes alignment length == 0.
@@ -195,9 +196,15 @@ public:
     void moveRowsBlock(int startRow, int numRows, int delta);
 
     /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
+     * Returns true if 2 alignments have the same alphabets, dimensions and the same ordered list of rows.
+     * To compare rows the method calls row.isEqual(otherRow) method.
      */
-    bool operator==(const MultipleAlignmentData &ma) const;
+    bool isEqual(const MultipleAlignmentData &other) const;
+
+    /** Calls isEqual() method. */
+    bool operator==(const MultipleAlignmentData &other) const;
+
+    /** Returns !isEqual() method result. */
     bool operator!=(const MultipleAlignmentData &ma) const;
 
     /** Checks model consistency */
@@ -213,6 +220,8 @@ protected:
 
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow &row, qint64 rowLenWithTrailingGaps, int rowIndex);
+
+    const MultipleAlignmentDataType type;
 
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet *alphabet;

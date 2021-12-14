@@ -83,7 +83,7 @@ protected:
     MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignmentData *msaData);
 
 public:
-    virtual ~MultipleSequenceAlignmentRowData();
+    virtual ~MultipleSequenceAlignmentRowData() = default;
 
     /** Name of the row (equals to the sequence name), can be empty */
     QString getName() const;
@@ -189,18 +189,18 @@ public:
 
     bool isDefault() const override;
 
-    /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    bool operator!=(const MultipleSequenceAlignmentRowData &msaRowData) const;
-    bool operator!=(const MultipleAlignmentRowData &maRowData) const;
-    bool operator==(const MultipleSequenceAlignmentRowData &msaRowData) const;
-    bool operator==(const MultipleAlignmentRowData &maRowData) const;
+    /** Checks that 'other' is MultipleSequenceAlignmentRowData and calls the MSA version of the method. */
+    bool isEqual(const MultipleAlignmentRowData &other) const override;
+
+    /** Compares 2 rows. Rows are equal if their names, sequences and gap models are equal. */
+    bool isEqual(const MultipleSequenceAlignmentRowData &other) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count);
+    void crop(U2OpStatus &os, qint64 startPosition, qint64 count) override;
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
@@ -286,25 +286,6 @@ inline bool MultipleSequenceAlignmentRowData::simplify() {
 
 inline int MultipleSequenceAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
-}
-
-inline bool operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) {
-    return *ptr1 == *ptr2;
-}
-inline bool operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRowData *ptr2) {
-    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
-}
-inline bool operator==(const MultipleSequenceAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) {
-    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
-}
-inline bool operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) {
-    return !(ptr1 == ptr2);
-}
-inline bool operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRowData *ptr2) {
-    return !(ptr1 == ptr2);
-}
-inline bool operator!=(const MultipleSequenceAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) {
-    return !(ptr1 == ptr2);
 }
 
 }  // namespace U2

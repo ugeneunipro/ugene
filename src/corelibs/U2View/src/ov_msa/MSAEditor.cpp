@@ -861,7 +861,7 @@ static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>
         rowGroup << i;
         for (int j = i + 1; j < msaRows.size(); j++) {
             const MultipleAlignmentRow &next = msaRows[j];
-            if (!mappedRows.contains(j) && MultipleAlignmentRowData::isEqualsIgnoreGaps(next.data(), row.data())) {
+            if (!mappedRows.contains(j) && MultipleAlignmentRowData::isEqualIgnoreGaps(next.data(), row.data())) {
                 rowGroup << j;
                 mappedRows.insert(j);
             }

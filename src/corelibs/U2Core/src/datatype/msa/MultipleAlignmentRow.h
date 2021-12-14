@@ -36,6 +36,11 @@ class MultipleAlignmentData;
 class MultipleAlignmentRowData;
 class U2OpStatus;
 
+enum class U2CORE_EXPORT MultipleAlignmentDataType {
+    MSA,
+    MCA,
+};
+
 class U2CORE_EXPORT MultipleAlignmentRow {
     friend class MultipleAlignmentData;
 
@@ -43,7 +48,7 @@ protected:
     MultipleAlignmentRow(MultipleAlignmentRowData *maRowData);
 
 public:
-    virtual ~MultipleAlignmentRow();
+    virtual ~MultipleAlignmentRow() = default;
 
     MultipleAlignmentRowData *data() const;
     template<class Derived>
@@ -85,8 +90,8 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
-    MultipleAlignmentRowData();
-    MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+    MultipleAlignmentRowData(const MultipleAlignmentDataType &type);
+    MultipleAlignmentRowData(const MultipleAlignmentDataType &type, const DNASequence &sequence, const QList<U2MsaGap> &gaps);
     virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
@@ -133,11 +138,21 @@ public:
 
     virtual bool isDefault() const = 0;
 
-    virtual bool operator!=(const MultipleAlignmentRowData &other) const = 0;
-    virtual bool operator==(const MultipleAlignmentRowData &other) const = 0;
+    /**
+     * Checks that the row is equal to 'other' rows.
+     * Only rows of the same 'MultipleAlignmentDataType' can be equal.
+     * For the equality method details see comments for the implementation.
+     */
+    virtual bool isEqual(const MultipleAlignmentRowData &other) const = 0;
+
+    /** Calls isEqual() method. */
+    bool operator==(const MultipleAlignmentRowData &other) const;
+
+    /** Returns !isEqual() method result. */
+    bool operator!=(const MultipleAlignmentRowData &other) const;
 
     /* Compares sequences of 2 rows ignoring gaps. */
-    static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
+    static bool isEqualIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
 
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
@@ -150,6 +165,9 @@ public:
      * Such rows only exist for MCA alignments with a reverse-complementary read direction.
      */
     virtual bool isComplemented() const;
+
+public:
+    const MultipleAlignmentDataType type;
 
 protected:
     /** The sequence of the row without gaps (cached) */

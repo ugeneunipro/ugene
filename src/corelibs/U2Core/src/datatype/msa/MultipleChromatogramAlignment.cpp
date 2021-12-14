@@ -91,21 +91,12 @@ QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlig
 }  // namespace
 
 MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleChromatogramAlignmentRow> &rows)
-    : MultipleAlignmentData(name, alphabet, convertToMaRows(rows)) {
+    : MultipleAlignmentData(MultipleAlignmentDataType::MCA, name, alphabet, convertToMaRows(rows)) {
 }
 
 MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData)
-    : MultipleAlignmentData() {
+    : MultipleAlignmentData(MultipleAlignmentDataType::MCA) {
     copy(mcaData);
-}
-
-MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator=(const MultipleChromatogramAlignment &mca) {
-    return *this = *mca;
-}
-
-MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator=(const MultipleChromatogramAlignmentData &mcaData) {
-    copy(mcaData);
-    return *this;
 }
 
 bool MultipleChromatogramAlignmentData::trim(bool removeLeadingGaps) {
@@ -250,14 +241,11 @@ MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator+=
 }
 
 bool MultipleChromatogramAlignmentData::operator==(const MultipleChromatogramAlignmentData &other) const {
-    bool lengthsAreEqual = (length == other.length);
-    bool alphabetsAreEqual = (alphabet == other.alphabet);
-    bool rowsAreEqual = (rows == other.rows);
-    return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
+    return isEqual(other);
 }
 
 bool MultipleChromatogramAlignmentData::operator!=(const MultipleChromatogramAlignmentData &other) const {
-    return !operator==(other);
+    return !isEqual(other);
 }
 
 bool MultipleChromatogramAlignmentData::crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os) {

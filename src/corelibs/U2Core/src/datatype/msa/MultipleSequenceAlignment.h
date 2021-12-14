@@ -213,9 +213,7 @@ public:
      */
     MultipleSequenceAlignmentData &operator+=(const MultipleSequenceAlignmentData &ma);
 
-    /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
-     */
+    /** Compares two alignments: calls isEqual() method. */
     bool operator==(const MultipleSequenceAlignmentData &msaData) const;
     bool operator!=(const MultipleSequenceAlignmentData &msaData) const;
 
