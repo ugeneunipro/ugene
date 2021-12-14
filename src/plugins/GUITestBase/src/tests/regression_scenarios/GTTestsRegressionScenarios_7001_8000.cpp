@@ -1776,6 +1776,21 @@ GUI_TEST_CLASS_DEFINITION(test_7507) {
     GTMenu::showContextMenu(os, glWidget);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7508) {
+    // Check that no-op "align-selection" action with MUSCLE does not produce "Undo" history.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Try to  align a sequence that is already aligned.
+    GTUtilsMsaEditor::clickSequence(os, 1);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_selection_to_alignment_muscle"}));
+    GTWidget::click(os, GTAction::button(os, "align_selected_sequences_to_alignment"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto undoButton = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(!undoButton->isEnabled(), "Undo button must be disabled");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
