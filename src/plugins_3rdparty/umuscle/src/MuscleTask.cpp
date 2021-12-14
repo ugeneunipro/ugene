@@ -505,12 +505,11 @@ Task::ReportResult MuscleGObjectTask::report() {
                        stateInfo.setError(tr("Illegal number of sequences in the MUSCLE alignment result")),
                        ReportResult_Finished);
 
-        // TODO: MSA comparison works incorrectly here: Gap models are ignored!
-        // if (*obj->getMultipleAlignment().data() != *muscleTask->resultMA.data()) {
-        U2UseCommonUserModStep userModStep(obj->getEntityRef(), stateInfo);
-        CHECK_OP(stateInfo, ReportResult_Finished);
-        obj->setMultipleAlignment(muscleTask->resultMA);
-        // }
+        if (*obj->getMultipleAlignment().data() != *muscleTask->resultMA.data()) {
+            U2UseCommonUserModStep userModStep(obj->getEntityRef(), stateInfo);
+            CHECK_OP(stateInfo, ReportResult_Finished);
+            obj->setMultipleAlignment(muscleTask->resultMA);
+        }
     } else {
         FAIL("Unsupported Muscle Align task mode: " + QString::number(config.op), ReportResult_Finished);
     }

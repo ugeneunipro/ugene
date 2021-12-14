@@ -525,7 +525,7 @@ bool MultipleChromatogramAlignmentData::sortRowsBySimilarity(QVector<U2Region> &
         QMutableListIterator<MultipleChromatogramAlignmentRow> iter(oldRows);
         while (iter.hasNext()) {
             const MultipleChromatogramAlignmentRow &next = iter.next();
-            if (next->isRowContentEqual(row)) {
+            if (next->isEqualCore(*row)) {
                 sortedRows << next;
                 iter.remove();
                 ++len;

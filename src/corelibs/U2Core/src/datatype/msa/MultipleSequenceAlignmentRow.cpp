@@ -319,34 +319,6 @@ qint64 MultipleSequenceAlignmentRowData::getBaseCount(qint64 before) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
 }
 
-bool MultipleSequenceAlignmentRowData::isRowContentEqual(const MultipleSequenceAlignmentRow &row) const {
-    return isRowContentEqual(*row);
-}
-
-bool MultipleSequenceAlignmentRowData::isRowContentEqual(const MultipleSequenceAlignmentRowData &row) const {
-    if (MatchExactly == DNASequenceUtils::compare(sequence, row.getSequence())) {
-        if (sequence.length() == 0) {
-            return true;
-        } else {
-            QList<U2MsaGap> firstRowGaps = gaps;
-            if (!firstRowGaps.isEmpty() && (U2Msa::GAP_CHAR == charAt(0))) {
-                firstRowGaps.removeFirst();
-            }
-
-            QList<U2MsaGap> secondRowGaps = row.getGapModel();
-            if (!secondRowGaps.isEmpty() && (U2Msa::GAP_CHAR == row.charAt(0))) {
-                secondRowGaps.removeFirst();
-            }
-
-            if (firstRowGaps == secondRowGaps) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 bool MultipleSequenceAlignmentRowData::isDefault() const {
     static const MultipleSequenceAlignmentRowData defaultRow;
     return isEqual(defaultRow);
@@ -364,10 +336,8 @@ bool MultipleSequenceAlignmentRowData::isEqual(const MultipleSequenceAlignmentRo
     CHECK(getName() == other.getName(), false);
     CHECK(gaps == other.getGapModel(), false);
 
-    const DNASequence &sequence1 = getUngappedSequence();
-    const DNASequence &sequence2 = other.getUngappedSequence();
-    CHECK(sequence1.alphabet == sequence2.alphabet, false);
-    CHECK(sequence1.seq == sequence2.seq, false);
+    CHECK(sequence.alphabet == other.sequence.alphabet, false);
+    CHECK(sequence.seq == sequence.seq, false);
     return true;
 }
 

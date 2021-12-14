@@ -539,7 +539,7 @@ QList<MultipleSequenceAlignmentRow> MultipleSequenceAlignmentData::getRowsSorted
         QMutableListIterator<MultipleSequenceAlignmentRow> iter(oldRows);
         while (iter.hasNext()) {
             const MultipleSequenceAlignmentRow &next = iter.next();
-            if (next->isRowContentEqual(row)) {
+            if (next->isEqualCore(*row)) {
                 sortedRows << next;
                 iter.remove();
                 ++len;

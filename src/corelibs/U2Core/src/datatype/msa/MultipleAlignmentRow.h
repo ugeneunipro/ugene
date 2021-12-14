@@ -154,6 +154,12 @@ public:
     /* Compares sequences of 2 rows ignoring gaps. */
     static bool isEqualIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
 
+    /**
+     * Compares whole gapped sequences (with inner gaps) but with leading gaps removed.
+     * This method method may be overriden to compare other sequence related properties (like chromatogram in MCA).
+     */
+    virtual bool isEqualCore(const MultipleAlignmentRowData &other) const;
+
     /** Joins sequence chars and gaps into one byte array. */
     QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
 

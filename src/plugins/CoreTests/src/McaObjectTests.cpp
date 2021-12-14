@@ -63,10 +63,6 @@ Task::ReportResult GTest_CompareTwoMca::report() {
     MultipleChromatogramAlignmentObject *mca2 = qobject_cast<MultipleChromatogramAlignmentObject *>(objs2.first());
     CHECK_EXT(nullptr != mca2, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(secondDocContextName).arg(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT).arg(objs2.first()->getGObjectType())), ReportResult_Finished);
 
-    const U2SequenceObject *reference1 = mca1->getReferenceObj();
-    const U2SequenceObject *reference2 = mca2->getReferenceObj();
-    CHECK_EXT((nullptr == reference1 && nullptr == reference2) || (nullptr != reference1 && nullptr != reference2), setError("One object has a reference, but another one doesn't"), ReportResult_Finished);
-
     const qint64 rowsNumber1 = mca1->getNumRows();
     const qint64 rowsNumber2 = mca2->getNumRows();
     CHECK_EXT(rowsNumber1 == rowsNumber2,
@@ -82,12 +78,23 @@ Task::ReportResult GTest_CompareTwoMca::report() {
     for (int i = 0; i < rowsNumber1; i++) {
         const MultipleChromatogramAlignmentRow row1 = mca1->getMcaRow(i);
         const MultipleChromatogramAlignmentRow row2 = mca2->getMcaRow(i);
-        const bool areEqual = row1->isRowContentEqual(row2);
+        const bool areEqual = row1->isEqualCore(*row2);
         CHECK_EXT(areEqual, setError(QString("The rows with number %1 differ from each other").arg(i)), ReportResult_Finished);
     }
 
-    const bool areReferencesEqual = (MatchExactly == DNASequenceUtils::compare(reference1->getWholeSequenceData(stateInfo), reference2->getWholeSequenceData(stateInfo)));
-    CHECK_EXT(areReferencesEqual, setError("References are not equal"), ReportResult_Finished);
+    U2SequenceObject *reference1 = mca1->getReferenceObj();
+    U2SequenceObject *reference2 = mca2->getReferenceObj();
+    CHECK_EXT((reference1 == nullptr) == (reference2 == nullptr),
+              setError("One object has a reference, but another one doesn't"),
+              ReportResult_Finished);
+
+    CHECK(reference1 != nullptr && reference2 != nullptr, ReportResult_Finished);
+
+    QByteArray reference1Sequence = reference1->getWholeSequenceData(stateInfo);
+    CHECK_OP(stateInfo, ReportResult_Finished);
+    QByteArray reference2Sequence = reference2->getWholeSequenceData(stateInfo);
+    CHECK_OP(stateInfo, ReportResult_Finished);
+    CHECK_EXT(reference1Sequence == reference2Sequence, setError("References are not equal"), ReportResult_Finished);
 
     return ReportResult_Finished;
 }

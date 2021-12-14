@@ -180,13 +180,6 @@ public:
      */
     qint64 getBaseCount(qint64 before) const;
 
-    /**
-     * Exactly compares the rows. Sequences and gap models must match.
-     * However, the rows are considered equal if they differ by trailing gaps only.
-     */
-    virtual bool isRowContentEqual(const MultipleSequenceAlignmentRow &row) const;
-    virtual bool isRowContentEqual(const MultipleSequenceAlignmentRowData &rowData) const;
-
     bool isDefault() const override;
 
     /** Checks that 'other' is MultipleSequenceAlignmentRowData and calls the MSA version of the method. */

@@ -35,14 +35,6 @@ void DNASequenceUtils::append(DNASequence &sequence, const DNASequence &appended
     sequence.seq += appendedSequence.constSequence();
 }
 
-DnaSequencesMatchStatus DNASequenceUtils::compare(const DNASequence &firstSeq, const DNASequence &secondSec) {
-    if (firstSeq.constSequence() == secondSec.constSequence()) {
-        return MatchExactly;
-    } else {
-        return DoNotMatch;
-    }
-}
-
 void DNASequenceUtils::removeChars(DNASequence &sequence, int startPos, int endPos, U2OpStatus &os) {
     removeChars(sequence.seq, startPos, endPos, os);
 }

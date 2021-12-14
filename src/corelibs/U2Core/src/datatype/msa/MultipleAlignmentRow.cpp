@@ -112,6 +112,23 @@ bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData 
     return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
 }
 
+bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other) const {
+    CHECK(sequence.seq == other.sequence.seq, false);
+    CHECK(sequence.length() > 0, true);
+
+    U2MsaRowGapModel thisGaps = gaps;
+    if (!thisGaps.isEmpty() && charAt(0) == U2Msa::GAP_CHAR) {
+        thisGaps.removeFirst();
+    }
+
+    U2MsaRowGapModel otherGas = other.getGapModel();
+    if (!otherGas.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
+        otherGas.removeFirst();
+    }
+
+    return thisGaps == otherGas;
+}
+
 QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const {
     QByteArray bytes = sequence.constSequence();
     int beginningOffset = 0;

@@ -1043,7 +1043,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_sameContent) {
     MultipleSequenceAlignmentRow firstRow = MsaRowTestUtils::initTestRowWithGapsInMiddle(almnt);
     MultipleSequenceAlignmentRow secondRow = MsaRowTestUtils::initTestRowWithGapsInMiddle(almnt);
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
     CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1057,7 +1057,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_noGaps) {
     almnt->addRow("Second", "ACT");
     MultipleSequenceAlignmentRow secondRow = almnt->getMsaRow(1);
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
     CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1072,7 +1072,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInFirst) {
     almnt2->addRow("Second", "AC-GT");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
     CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1087,7 +1087,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInSecond) {
     almnt2->addRow("Second", "AC-GT--");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
     CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1102,7 +1102,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInBoth) {
     almnt2->addRow("Second", "AC-GT--");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
     CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1119,7 +1119,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsGap) {
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--GG--A---T", MsaRowTestUtils::getRowData(secondRow), "second row data");
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
     CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1136,7 +1136,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsOffset) {
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--G-GA---T", MsaRowTestUtils::getRowData(secondRow), "second row data");
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
     CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1153,7 +1153,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffNumOfGaps) {
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--GG-AT", MsaRowTestUtils::getRowData(secondRow), "second row data");
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
     CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
@@ -1169,7 +1169,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffSequences) {
     MultipleSequenceAlignmentRow secondRow = almnt->getMsaRow(1);
     CHECK_EQUAL("--GG-C---T", MsaRowTestUtils::getRowData(secondRow), "second row data");
 
-    bool result = firstRow->isRowContentEqual(secondRow);
+    bool result = firstRow->isEqualCore(*secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
     CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");

@@ -82,7 +82,7 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
     for (int i = 0; i < rowsNumber1; i++) {
         const MultipleSequenceAlignmentRow row1 = msa1->getMsaRow(i);
         const MultipleSequenceAlignmentRow row2 = msa2->getMsaRow(i);
-        const bool areEqual = row1->isRowContentEqual(row2);
+        const bool areEqual = row1->isEqualCore(*row2);
         CHECK_EXT(areEqual, setError(QString("The rows with number %1 differ from each other").arg(i)), ReportResult_Finished);
     }
 
