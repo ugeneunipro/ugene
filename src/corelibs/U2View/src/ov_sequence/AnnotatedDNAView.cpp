@@ -789,10 +789,10 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
 }
 
 void AnnotatedDNAView::sl_sequenceCircularStateChanged() {
-    auto *o = qobject_cast<U2SequenceObject *>(sender());
-    SAFE_POINT(o != nullptr, "casting to 'U2SequenceObject' failed", );
-    for (ADVSequenceObjectContext *ctx : getSequenceContexts()) {
-        if (ctx->getSequenceObject() == o) {
+    auto *sequenceObject = qobject_cast<U2SequenceObject *>(sender());
+    SAFE_POINT(sequenceObject != nullptr, "casting to 'U2SequenceObject' failed", );
+    for (ADVSequenceObjectContext *ctx : qAsConst(getSequenceContexts())) {
+        if (ctx->getSequenceObject() == sequenceObject) {
             auto *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
             if (toggleAAAction != nullptr && toggleAAAction->isChecked()) {
                 AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ctx, ANNOTATION_GROUP_ENZYME);
@@ -924,7 +924,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         addRelatedAnnotations(sc);
         emit si_sequenceAdded(sc);
         connect(o, SIGNAL(si_relatedObjectRelationChanged()), SLOT(sl_relatedObjectRelationChanged()));
-        connect(o, SIGNAL(si_sequenceCircularStateChanged()), SLOT(sl_sequenceCircularStateChanged()));
+        connect(dnaObj, &U2SequenceObject::si_sequenceCircularStateChanged, this, &AnnotatedDNAView::sl_sequenceCircularStateChanged);
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
         SAFE_POINT(ao != nullptr, "Invalid annotation table!", QString());
