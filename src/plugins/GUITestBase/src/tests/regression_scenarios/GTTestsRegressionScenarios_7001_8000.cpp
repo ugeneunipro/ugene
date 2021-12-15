@@ -969,6 +969,31 @@ GUI_TEST_CLASS_DEFINITION(test_7401) {
                   QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7402) {
+    // Check that MSA Toolbar→Actions→Export→Export-Selected-Sequences action is present and works as expected.
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/protein.fasta.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Check that menu is present and disabled.
+    GTMenu::checkMainMenuItemState(os, {"Actions", "Export", "Move selected rows to another alignment"}, PopupChecker::IsDisabled);
+
+    // Select a row, check that menu is enabled, export the selected row.
+    GTUtilsMsaEditor::selectRowsByName(os, {"Whale"});
+    GTMenu::clickMainMenuItem(os, {"Actions", "Export", "Move selected rows to another alignment", "COI [COI.aln]"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList sourceNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(!sourceNameList.contains("Whale"), "Row was not removed from the source MSA");
+
+    GTUtilsMdi::activateWindow(os, "COI.aln");
+    QStringList targetNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(targetNameList.contains("Whale"), "Row was not added to the target MSA");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7403) {
     // Check that there is no crash when generating very large (2Gb) sequences.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7403.fa");

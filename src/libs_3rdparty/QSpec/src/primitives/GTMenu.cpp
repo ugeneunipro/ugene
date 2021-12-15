@@ -184,7 +184,7 @@ QAction *GTMenu::getMenuItem(GUITestOpStatus &os, const QMenu *menu, const QStri
 
     QAction *action = nullptr;
 
-    // If menu is built dynamically not all actions may be available immidiately.
+    // If menu is built dynamically not all actions may be available immediately.
     // In this case wait up to 2 seconds before returning nullptr.
     for (int time = 0; time < 2000 && action == nullptr; time += GT_OP_CHECK_MILLIS) {
         if (time > 0) {
@@ -193,7 +193,7 @@ QAction *GTMenu::getMenuItem(GUITestOpStatus &os, const QMenu *menu, const QStri
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
 
         QList<QAction *> menuActions = menu->actions();
-        foreach (QAction *menuAction, menuActions) {
+        for (QAction *menuAction : qAsConst(menuActions)) {
             QString value = byText ? menuAction->text() : menuAction->objectName();
             qDebug("GT_DEBUG_MESSAGE: Action by %s: '%s'", byText ? "text" : "object name", value.toLocal8Bit().constData());
             if (compare(value, itemName, matchFlag)) {
