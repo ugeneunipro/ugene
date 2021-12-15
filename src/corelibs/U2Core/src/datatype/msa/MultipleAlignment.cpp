@@ -59,7 +59,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType &_t
                                              const QString &name,
                                              const DNAAlphabet *_alphabet,
                                              const QList<MultipleAlignmentRow> &_rows)
-    : type(_type), alphabet(_alphabet), rows(_rows), length(0) {
+    : type(_type), alphabet(_alphabet), rows(_rows) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 

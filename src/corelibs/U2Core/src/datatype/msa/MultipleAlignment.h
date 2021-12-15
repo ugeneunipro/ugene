@@ -224,13 +224,13 @@ protected:
     const MultipleAlignmentDataType type;
 
     /** Alphabet for all sequences in the alignment */
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet *alphabet = nullptr;
 
     /** Alignment rows (each row = sequence + gap model) */
     QList<MultipleAlignmentRow> rows;
 
     /** The length of the longest row in the alignment */
-    qint64 length;
+    qint64 length = 0;
 
     /** Additional alignment info */
     QVariantMap info;
