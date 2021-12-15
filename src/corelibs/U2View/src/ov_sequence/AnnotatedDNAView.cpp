@@ -29,6 +29,8 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include <U2Algorithm/EnzymeModel.h>
+
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -455,6 +457,7 @@ bool AnnotatedDNAView::onObjectRemoved(GObject *o) {
     } else if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
         U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(o);
         ADVSequenceObjectContext *seqCtx = getSequenceContext(seqObj);
+        seqObj->disconnect(this);
         if (seqCtx != nullptr) {
             foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
                 removeSequenceWidget(w);
@@ -785,6 +788,19 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
     }
 }
 
+void AnnotatedDNAView::sl_sequenceCircularStateChanged() {
+    auto *sequenceObject = qobject_cast<U2SequenceObject *>(sender());
+    SAFE_POINT(sequenceObject != nullptr, "casting to 'U2SequenceObject' failed", );
+    for (ADVSequenceObjectContext *ctx : qAsConst(getSequenceContexts())) {
+        if (ctx->getSequenceObject() == sequenceObject) {
+            auto *toggleAAAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(ctx, ANNOTATION_GROUP_ENZYME);
+            if (toggleAAAction != nullptr && toggleAAAction->isChecked()) {
+                AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ctx, ANNOTATION_GROUP_ENZYME);
+            }
+        }
+    }
+}
+
 void AnnotatedDNAView::sl_onContextMenuRequested() {
     QMenu m;
 
@@ -908,6 +924,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         addRelatedAnnotations(sc);
         emit si_sequenceAdded(sc);
         connect(o, SIGNAL(si_relatedObjectRelationChanged()), SLOT(sl_relatedObjectRelationChanged()));
+        connect(dnaObj, &U2SequenceObject::si_sequenceCircularStateChanged, this, &AnnotatedDNAView::sl_sequenceCircularStateChanged);
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
         SAFE_POINT(ao != nullptr, "Invalid annotation table!", QString());
