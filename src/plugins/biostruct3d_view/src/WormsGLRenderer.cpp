@@ -241,51 +241,32 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &molec
         i.next();
         const SharedMolecule mol = i.value();
         BioPolymer bioPolymer;
-        foreach (int modelId, mol->models.keys()) {
+        QList<int> modelIds = mol->models.keys();
+        for (int modelId : qAsConst(modelIds)) {
             const Molecule3DModel &model = mol->models.value(modelId);
             BioPolymerModel &bpModel = bioPolymer.bpModels[modelId];
-            QMap<int, QPair<bool, bool>> checkList;
-            foreach (const SharedAtom atom, model.atoms) {
-                int residueIdx = atom->residueIndex.toInt();
-                if (atom->name.trimmed() == alphaCarbonTag) {
-                    if (checkList.contains(residueIdx)) {
-                        QPair<bool, bool> check = checkList.value(residueIdx);
-                        if (check.first == false) {
-                            SAFE_POINT(check.second == true, "Invalid checklist state", );
-                            bpModel.monomerMap[residueIdx].alphaCarbon = atom;
-                            checkList.remove(residueIdx);
-                        } else {
-                            FAIL("Reapeated alpha carbon atom in the same residue", );
-                        }
-                    } else {
-                        checkList[residueIdx] = QPair<bool, bool>(true, false);
-                        bpModel.monomerMap[residueIdx].alphaCarbon = atom;
+            QHash<int, Monomer> monomerByResideMap;
+            for (const SharedAtom &atom : qAsConst(model.atoms)) {
+                if (atom->name == alphaCarbonTag || atom->name == carbonylOxygenTag) {
+                    int residueIdx = atom->residueIndex.toInt();
+                    if (!monomerByResideMap.contains(residueIdx)) {
+                        monomerByResideMap[residueIdx] = Monomer();
                     }
-                }
-                if ((atom->name.trimmed() == carbonylOxygenTag)) {
-                    if (checkList.contains(residueIdx)) {
-                        QPair<bool, bool> check = checkList.value(residueIdx);
-                        if (check.second == false) {
-                            SAFE_POINT(check.first == true, "", );
-                            bpModel.monomerMap[residueIdx].carbonylOxygen = atom;
-                            checkList.remove(residueIdx);
-                        } else {
-                            FAIL("Reapeated carbonyl oxygen atom in the same residue", );
-                        }
-
+                    if (atom->name == alphaCarbonTag) {
+                        monomerByResideMap[residueIdx].alphaCarbon = atom;
                     } else {
-                        checkList[residueIdx] = QPair<bool, bool>(false, true);
-                        bpModel.monomerMap[residueIdx].carbonylOxygen = atom;
-                    }
+                        monomerByResideMap[residueIdx].carbonylOxygen = atom;
+                    };
                 }
             }
-            foreach (int residueIdx, checkList.keys()) {
-                QPair<bool, bool> check = checkList[residueIdx];
-                if (check.first == false && check.second == true) {
-                    bpModel.monomerMap.remove(residueIdx);
+            // Register complete monomers in the model.
+            QList<int> linkResideIndexes = monomerByResideMap.keys();
+            for (int residueIdx : qAsConst(linkResideIndexes)) {
+                const Monomer &monomer = monomerByResideMap[residueIdx];
+                if (monomer.alphaCarbon.data() != nullptr && monomer.carbonylOxygen.data() != nullptr) {
+                    bpModel.monomerMap[residueIdx] = monomer;
                 }
             }
-
             if (bpModel.monomerMap.isEmpty()) {
                 bioPolymer.bpModels.remove(modelId);
             }
