@@ -71,9 +71,10 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
             usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
         }
     }
-    const int maxInt = std::numeric_limits<int>::max();
-    usedBytes = usedBytes >= 0 ? usedBytes : maxInt;
-    return qMin(usedBytes / 1024 / 1024, qint64(maxInt));
+    //Check memory consumption for m_Dists in distfunc.cpp
+    qint64 mDistsUsedBytes = (qint64)sizeof(float) * rowsLengths.size() * rowsLengths.size();
+    usedBytes = qMax(usedBytes, mDistsUsedBytes);
+    return qMin(qint64(usedBytes / 1024 / 1024), qint64(std::numeric_limits<int>::max()));
 }
 
 QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {
