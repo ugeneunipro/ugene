@@ -53,6 +53,7 @@
 #include <U2Core/ProjectService.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/RemoveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/Settings.h>
@@ -1175,6 +1176,7 @@ void ProjectViewImpl::sl_onToggleCircular() {
         const bool objectIsModifiable = (!obj->isStateLocked() && !projectTreeController->isObjectInRecycleBin(obj));
         if (objectIsModifiable && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
             U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(obj);
+            SAFE_POINT(obj != nullptr, "casting to 'U2SequenceObject' failed", );
             casted->setCircular(toggleCircularAction->isChecked());
             projectTreeController->refreshObject(casted);
         }
