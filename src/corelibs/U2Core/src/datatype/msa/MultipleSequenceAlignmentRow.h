@@ -281,6 +281,25 @@ inline int MultipleSequenceAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
 }
 
+inline bool operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) {
+    return *ptr1 == *ptr2;
+}
+inline bool operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRowData *ptr2) {
+    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool operator==(const MultipleSequenceAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) {
+    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRowData *ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleSequenceAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+
 }  // namespace U2
 
 #endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_

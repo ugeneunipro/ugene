@@ -3253,20 +3253,17 @@ GUI_TEST_CLASS_DEFINITION(test_0053_6) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
-    //    Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Use context menu:
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle"));
+
+    // Call 'Align with MUSCLE'. Use 'translate to amino' option.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QString actual = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(actual.startsWith("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGATACC---TAATTGGAGATGATCAAATTTATAATGTAATTGT"), "unexpected sequence: " + actual);
-
-    //    {Align->Align with MUSCLE}
-    //    Check "Translate to amino when aligning" checkbox
-    //    Align
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0054_1) {
