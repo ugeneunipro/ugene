@@ -40,7 +40,6 @@ public:
 
     AnnotatedDNAView *getDnaView() const;
 
-    bool isResultTableShown() const;
     void setResultTableShown(bool show);
 
 private slots:

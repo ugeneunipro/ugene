@@ -43,7 +43,6 @@
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
 #include "PrimersDetailsDialog.h"
-#include "PrimerGroupBox.h"
 
 namespace U2 {
 
@@ -107,10 +106,6 @@ AnnotatedDNAView *InSilicoPcrOptionPanelWidget::getDnaView() const {
     return annotatedDnaView;
 }
 
-bool InSilicoPcrOptionPanelWidget::isResultTableShown() const {
-    return resultTableShown;
-}
-
 void InSilicoPcrOptionPanelWidget::setResultTableShown(bool show) {
     resultTableShown = show;
     productsWidget->setVisible(show);
@@ -130,13 +125,21 @@ void InSilicoPcrOptionPanelWidget::sl_onPrimerChanged() {
     bool isCriticalError = false;
     QString message = PrimerStatistics::checkPcrPrimersPair(forward, reverse, isCriticalError);
     detailsLinkLabel->setVisible(!isCriticalError);
-    if (message.isEmpty()) {
-        warningLabel->hide();
-        findProductButton->setText(tr("Find product(s)"));
-    } else {
+
+    findProductButton->setEnabled(true);
+    findProductButton->setText(tr("Find product(s)"));
+    warningLabel->hide();
+    if (!message.isEmpty()) {
+        // The algorithm will not work with too short or too long primers: disable the "Run" button in this case.
+        bool hasRunAnywayOption = PrimerStatistics::validatePrimerLength(forward) && PrimerStatistics::validatePrimerLength(reverse);
+        findProductButton->setEnabled(hasRunAnywayOption);
+        if (hasRunAnywayOption) {
+            warningLabel->setText(tr("Warning: ") + message);
+            findProductButton->setText(tr("Find product(s) anyway"));
+        } else {
+            warningLabel->setText(tr("Error: ") + message);
+        }
         warningLabel->show();
-        warningLabel->setText(tr("Warning: ") + message);
-        findProductButton->setText(tr("Find product(s) anyway"));
     }
 }
 

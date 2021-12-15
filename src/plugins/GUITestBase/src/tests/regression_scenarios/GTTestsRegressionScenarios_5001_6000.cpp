@@ -694,6 +694,23 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Predict secondary structure");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5205) {
+    // Check that there is no way to run "primer-search" algorithm with invalid primer settings.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AACTTG");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CCCTGG");
+
+    auto findButton = GTWidget::findPushButton(os, "findProductButton");
+    CHECK_SET_ERR(!findButton->isEnabled(), "Find product(s) must be disabled");
+
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "TTTGGATCCAGCATCACCATCACCATCACGATCAAATAGAAGCAATG");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AAACCTAGGTACGTAGTGGTAGTGGTAGTGCTAGTTTATCTTCGTTAC");
+    CHECK_SET_ERR(findButton->isEnabled(), "Find product(s) must be enabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    1. Open the library, clear it.
     GTUtilsPrimerLibrary::openLibrary(os);
