@@ -1443,9 +1443,6 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            GTWidget::clickWindowTitle(os, wizard);
-
             //2. Set file with many (~1200) sequences as input file and run workflow
             GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/regression/7465/big_msa_as_fasta.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
