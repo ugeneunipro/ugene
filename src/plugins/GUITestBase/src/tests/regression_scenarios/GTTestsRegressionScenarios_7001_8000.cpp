@@ -1437,6 +1437,27 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
     GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7465) {
+    //1. Open workflow sample "Align sequences with MUSCLE"
+    //Expected state: wizard has appeared.
+    class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            //2. Set file with many (~1200) sequences as input file and run workflow
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/regression/7465/big_msa_as_fasta.fa").absoluteFilePath()}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Align Sequences with MUSCLE Wizard", new AlignSequencesWithMuscleWizardFiller));
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected state: there is a notification about lacking of memory.
+    CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"), 
+        "No expected message about lacking of memory in notifications");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7469) {
     // Check that annotation sequence copy action respects 'join' and 'order' location flags.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/7469.gb");
