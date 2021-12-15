@@ -378,8 +378,7 @@ bool MultipleAlignmentData::isEqual(const MultipleAlignmentData &other) const {
     CHECK(length == other.length, false);
     CHECK(rows.size() == other.rows.size(), false);
     for (int i = 0; i < rows.size(); i++) {
-        const MultipleAlignmentRow &otherRow = rows[i];
-        CHECK(otherRow->isEqual(*otherRow), false);
+        CHECK(rows[i]->isEqual(*other.rows[i]), false);
     }
     return true;
 }
