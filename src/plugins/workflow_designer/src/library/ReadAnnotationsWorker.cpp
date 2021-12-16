@@ -237,6 +237,7 @@ void ReadAnnotationsTask::run() {
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(context->getDataStorage()->getDbiRef());
     QScopedPointer<Document> doc(format->loadDocument(iof, url, hints, stateInfo));
     CHECK_OP(stateInfo, );
+    doc->setDocumentOwnsDbiResources(false);
 
     QList<GObject *> annsObjList = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
@@ -251,9 +252,7 @@ void ReadAnnotationsTask::run() {
         CHECK_EXT(annsObj != nullptr, stateInfo.setError("NULL annotations object"), );
 
         if (!mergeAnnotations || annsObjList.size() == 1) {
-            doc->removeObject(go, DocumentObjectRemovalMode_Release);
             const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsObj);
-            delete go;
             m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
             results.append(m);
         } else {
