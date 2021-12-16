@@ -283,8 +283,6 @@ protected:
     virtual bool isCharacterAcceptable(const QString &text) const;
     virtual const QString &getInacceptableCharacterErrorMessage() const;
 
-    void deleteOldCustomSchemes();
-
     /*
      * Update collapse model on alignment modification.
      * Note, that we have collapse model regardless if collapsing mode is enabled or not.
@@ -302,7 +300,7 @@ public:
     /** Returns current mode of the sequence area: viewing or editing. */
     MaMode getMode() const;
 
-    /** Swithes sequence area into the ViewMode. */
+    /** Switches sequence area into the ViewMode. */
     void exitFromEditCharacterMode();
 
 protected:

@@ -1440,12 +1440,12 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7465) {
-    //1. Open workflow sample "Align sequences with MUSCLE"
-    //Expected state: wizard has appeared.
+    // 1. Open workflow sample "Align sequences with MUSCLE"
+    // Expected state: wizard has appeared.
     class AlignSequencesWithMuscleWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            //2. Set file with many (~1200) sequences as input file and run workflow
+            // 2. Set file with many (~1200) sequences as input file and run workflow
             GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/regression/7465/big_msa_as_fasta.fa").absoluteFilePath()}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
@@ -1455,9 +1455,9 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //Expected state: there is a notification about lacking of memory.
-    CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"), 
-        "No expected message about lacking of memory in notifications");
+    // Expected state: there is a notification about lacking of memory.
+    CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"),
+                  "No expected message about lacking of memory in notifications");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {
@@ -1812,6 +1812,23 @@ GUI_TEST_CLASS_DEFINITION(test_7508) {
 
     auto undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(!undoButton->isEnabled(), "Undo button must be disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7509) {
+    // Check that MCA editor does not crash when closed in "replace-character" mode.
+    GTFileDialog::openFile(os, dataDir + "samples/Sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    // Enable "replace-character" mode.
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, {6374, 0});
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os) == 'C', "Position validation failed!");
+
+    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
+    short mode = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(mode == 1, "Not an edit mode! Mode: " + QString::number(mode));
+
+    // Close MCA editor -> UGENE should not crash.
+    GTUtilsMdi::closeActiveWindow(os);
 }
 
 }  // namespace GUITest_regression_scenarios

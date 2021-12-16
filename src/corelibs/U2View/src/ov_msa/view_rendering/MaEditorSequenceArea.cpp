@@ -132,9 +132,9 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
-    exitFromEditCharacterMode();
+    editModeAnimationTimer.stop();
     delete cachedView;
-    deleteOldCustomSchemes();
+    qDeleteAll(customColorSchemeMenuActions);
     delete highlightingScheme;
 }
 
@@ -685,7 +685,8 @@ void MaEditorSequenceArea::sl_useDots() {
 }
 
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
-    deleteOldCustomSchemes();
+    qDeleteAll(customColorSchemeMenuActions);
+    customColorSchemeMenuActions.clear();
 
     MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions,
                                                                MsaSchemesMenuBuilder::Custom,
@@ -1543,11 +1544,6 @@ const QString &MaEditorSequenceArea::getInacceptableCharacterErrorMessage() cons
                                       "Please use a character from set A-Z (upper-case or lower-case) or the gap character ('Space', '-' or '%1').")
                                        .arg(emDash);
     return message;
-}
-
-void MaEditorSequenceArea::deleteOldCustomSchemes() {
-    qDeleteAll(customColorSchemeMenuActions);
-    customColorSchemeMenuActions.clear();
 }
 
 void MaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &) {
