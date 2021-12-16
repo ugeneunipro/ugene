@@ -5283,7 +5283,7 @@ GUI_TEST_CLASS_DEFINITION(test_6734) {
     // Expected state: UGENE isn't crash
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6736) {
+GUI_TEST_CLASS_DEFINITION(test_6736_1) {
     // Check that UGENE does not show a falthy invalid pattern error for multi-line patterns.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/1-column.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -5301,6 +5301,25 @@ GUI_TEST_CLASS_DEFINITION(test_6736) {
 
     GTUtilsOptionPanelMsa::enterPattern(os, "AA\nTT", true);
     GTWidget::findLabelByText(os, "Warning: Pattern is too long.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6736_2) {
+    // Check that "Search is names" mode does not trigger "Search in sequence" validation errors.
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/1-column.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::setSearchContext(os, "Sequence Names");
+
+    GTUtilsOptionPanelMsa::enterPattern(os, "conocephalus", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: no warnings, the result label shows 3 rows matched.
+    QWidget *optionsPanel = GTUtilsOptionsPanel::getActiveOptionsWidget(os);
+    QList<QLabel *> labels = GTWidget::findLabelByText(os, "Warning:", optionsPanel, {false});
+    CHECK_SET_ERR(labels.isEmpty(), "No warning labels expected");
+
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6739) {
