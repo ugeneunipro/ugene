@@ -27,6 +27,7 @@
 #include "MSAEditorOverviewArea.h"
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
+#include "MsaMultilineScrollArea.h"
 #include "helpers/MultilineScrollController.h"
 #include "helpers/ScrollController.h"
 
@@ -96,7 +97,7 @@ MaEditorStatusBar *MsaEditorMultilineWgt::getStatusBar() {
 void MsaEditorMultilineWgt::initScrollArea(QScrollArea *_scrollArea)
 {
     if (_scrollArea == nullptr) {
-        scrollArea = new QScrollArea(this);
+        scrollArea = new MsaMultilineScrollArea(editor, this);
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     } else {

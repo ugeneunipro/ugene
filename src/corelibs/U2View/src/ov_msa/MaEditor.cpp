@@ -567,7 +567,7 @@ void MaEditor::sl_gotoSelectedRead() {
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
-    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+    MaEditorSequenceArea *sequenceArea = getMaEditorWgt()->getSequenceArea();
     if (sequenceArea->isPositionCentered(posToCenter)) {
         posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
     }
