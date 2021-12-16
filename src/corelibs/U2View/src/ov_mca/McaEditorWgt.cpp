@@ -53,7 +53,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor)
     refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
-    initWidgets(false);
+    initWidgets();
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
     connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));

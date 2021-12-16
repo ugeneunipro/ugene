@@ -147,7 +147,6 @@ public:
         return qobject_cast<MsaEditorMultilineWgt *>(ui);
     }
 
-    void initActionsAndSignals() override;
     void initChildrenActionsAndSignals() override;
 
 protected slots:
