@@ -36,6 +36,7 @@ class MSAEditorOverviewArea;
 class MsaEditorStatusBar;
 class MsaEditorSimilarityColumn;
 class MSAEditorTreeViewer;
+class MsaMultilineScrollArea;
 class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
