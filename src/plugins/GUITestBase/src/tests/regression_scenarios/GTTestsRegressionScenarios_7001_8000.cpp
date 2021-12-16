@@ -476,7 +476,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     // Expected state: UGENE is not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7193_1) {
+GUI_TEST_CLASS_DEFINITION(test_7193) {
     GTUtilsPcr::clearPcrDir(os);
     // 1. Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -500,29 +500,6 @@ GUI_TEST_CLASS_DEFINITION(test_7193_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 22, QString("Expected 22 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_7193_2) {
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 2. Open the PCR OP.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
-
-    // 3. Enter the primers: "AAA" and "CCC".
-    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AAA");
-    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
-
-    // Expected state: there is a warning about forward primer length
-    QLabel *warningLabel = GTWidget::findLabel(os, "warningLabel");
-    CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be between"), "Incorrect warning message");
-
-    GTLogTracer lt("One of the given do not fits acceptable length. Task cancelled.");
-    // 4. Click the find button.
-    // Expected state: task cancelled with corresponding log message
-    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsMessage(os, lt);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7212) {
