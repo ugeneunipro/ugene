@@ -115,9 +115,6 @@ public:
         Q_UNUSED(os);
     }
 
-    /** Returns list of selected MA row indexes. */
-    QList<int> getSelectedMaRowIndexes() const;
-
     /** Returns MA row index of the top-most selected view row or -1 if selection is empty. */
     int getTopSelectedMaRow() const;
 
@@ -198,12 +195,6 @@ private:
     QList<U2MsaGap> findCommonGapColumns(int &numOfColumns);
     U2MsaGap addTrailingGapColumns(int count);
     QList<U2MsaGap> findRestorableGapColumns(const int shift);
-
-    /**
-     * Restores view selection using cached MA selection.
-     * If the original selection can't be restored moves the selection to the top-left corner of the original.
-     */
-    void restoreViewSelectionFromMaSelection();
 
 signals:
     void si_selectionChanged(const QStringList &selectedRows);
@@ -336,12 +327,6 @@ protected:
      * May be out of range if clicked out of the view/rows range.
      */
     QPoint mousePressViewPos;
-
-    /** Selected MA row ids within the current view selection. */
-    QList<qint64> selectedMaRowIds;
-
-    /** Selected MA row columns within the current view selection. */
-    U2Region selectedColumns;
 
     int maVersionBeforeShifting;
     SelectionModificationHelper::MovableSide movableBorder;

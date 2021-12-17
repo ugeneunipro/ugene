@@ -498,6 +498,31 @@ bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment
     return true;
 }
 
+bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa, const MultipleSequenceAlignment &originalMa, const QString &prefix) {
+    int rowCount = resultMa->getNumRows();
+    CHECK(rowCount == originalMa->getNumRows() || !prefix.isEmpty(), false);
+
+    for (int i = 0; i < rowCount; i++) {
+        MultipleSequenceAlignmentRow resultRow = resultMa->getMsaRow(i);
+        QString indexedName = resultRow->getName();
+        if (!prefix.isEmpty()) {
+            if (!indexedName.startsWith(prefix)) {
+                continue;  // Do not remap the name. Use it as it is.
+            }
+            indexedName = indexedName.mid(prefix.length());
+        }
+        bool ok = false;
+        int originalRowIndex = indexedName.toInt(&ok);
+        CHECK(ok && originalRowIndex >= 0 && originalRowIndex < rowCount, false);
+        MultipleSequenceAlignmentRow originalRow = originalMa->getMsaRow(originalRowIndex);
+        U2MsaRow originalRowInfo = originalRow->getRowDbInfo();
+        resultMa->setRowId(originalRowIndex, originalRowInfo.rowId);
+        resultMa->setSequenceId(originalRowIndex, originalRowInfo.sequenceId);
+        resultMa->renameRow(originalRowIndex, originalRow->getName());
+    }
+    return true;
+}
+
 QList<U2Region> MSAUtils::getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
     if (requiredGapsCount == -1) {

@@ -226,22 +226,20 @@ void MaEditorSequenceArea::setSelectionRect(const QRect &newSelectionRect) {
     editor->getSelectionController()->setSelection(MaEditorSelection({safeRect}));
 }
 
-void MaEditorSequenceArea::sl_onSelectionChanged(const MaEditorSelection &selection, const MaEditorSelection &) {
+void MaEditorSequenceArea::sl_onSelectionChanged(const MaEditorSelection &, const MaEditorSelection &) {
     exitFromEditCharacterMode();
-    QList<int> selectedMaRowsIndexes = getSelectedMaRowIndexes();
-    selectedMaRowIds = editor->getMaObject()->convertMaRowIndexesToMaRowIds(selectedMaRowsIndexes);
-    selectedColumns = U2Region::fromXRange(selection.toRect());
-
+    QList<int> selectedMaRowsIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    MultipleAlignmentObject *maObject = editor->getMaObject();
     QStringList selectedRowNames;
     for (int maRow : qAsConst(selectedMaRowsIndexes)) {
-        selectedRowNames.append(editor->getMaObject()->getRow(maRow)->getName());
+        selectedRowNames.append(maObject->getRow(maRow)->getName());
     }
     emit si_selectionChanged(selectedRowNames);
     update();
 
     // TODO: the code below can be moved to the sl_updateActions().
-    bool isReadOnly = editor->getMaObject()->isStateLocked();
-    bool hasSelection = !selection.isEmpty();
+    bool isReadOnly = maObject->isStateLocked();
+    bool hasSelection = !selectedMaRowsIndexes.isEmpty();
     ui->copySelectionAction->setEnabled(hasSelection);
     ui->copyFormattedSelectionAction->setEnabled(hasSelection);
     emit si_copyFormattedChanging(hasSelection);
@@ -265,17 +263,6 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
     editor->setCursorPosition(editor->getCursorPosition() + QPoint(dx, dy));
     setSelectionRect(newSelectionRect);
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
-}
-
-QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
-    QList<int> maRowIndexes;
-    QList<QRect> selectedRectList = editor->getSelection().getRectList();
-    for (const QRect &rect : selectedRectList) {
-        U2Region rowRange = U2Region::fromYRange(rect);
-        QList<int> maRowIndexesPerRect = editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(rowRange, true);
-        maRowIndexes << maRowIndexesPerRect;
-    }
-    return maRowIndexes;
 }
 
 int MaEditorSequenceArea::getTopSelectedMaRow() const {
@@ -315,13 +302,13 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     Q_ASSERT(isInRange(QPoint(selectionRect.x() + selectionRect.width() - 1, selectionRect.y() + selectionRect.height() - 1)));
 
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     int numRows = (int)maObj->getNumRows();
-    if (selectedMaRows.size() == numRows) {
+    if (selectedMaRowIndexes.size() == numRows) {
         bool isResultAlignmentEmpty = true;
         U2Region xRegion = U2Region::fromXRange(selectionRect);
-        for (int i = 0; i < selectedMaRows.size() && isResultAlignmentEmpty; i++) {
-            int maRow = selectedMaRows[i];
+        for (int i = 0; i < selectedMaRowIndexes.size() && isResultAlignmentEmpty; i++) {
+            int maRow = selectedMaRowIndexes[i];
             isResultAlignmentEmpty = maObj->isRegionEmpty(0, maRow, xRegion.startPos, 1) &&
                                      maObj->isRegionEmpty(xRegion.endPos(), maRow, numColumns - xRegion.endPos(), 1);
         }
@@ -334,7 +321,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-    maObj->removeRegion(selectedMaRows, selectionRect.x(), selectionRect.width(), true);
+    maObj->removeRegion(selectedMaRowIndexes, selectionRect.x(), selectionRect.width(), true);
     GCounter::increment("Delete current selection", editor->getFactoryId());
 }
 
@@ -346,10 +333,10 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     if (maObj->isStateLocked()) {
         return false;
     }
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     const MaEditorSelection &selection = editor->getSelection();
     QRect selectionRectBefore = selection.toRect();
-    if (maObj->isRegionEmpty(selectedMaRows, selectionRectBefore.x(), selectionRectBefore.width())) {
+    if (maObj->isRegionEmpty(selectedMaRowIndexes, selectionRectBefore.x(), selectionRectBefore.width())) {
         return true;
     }
     int resultShift = shiftRegion(shift);
@@ -371,15 +358,16 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
 }
 
 int MaEditorSequenceArea::shiftRegion(int shift) {
-    int resultShift = 0;
-
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
     const MaEditorSelection &selection = editor->getSelection();
-    const int selectionWidth = selection.toRect().width();
-    const int height = selectedMaRows.size();
-    const int y = getTopSelectedMaRow();
+    CHECK(!selection.isEmpty(), 0);
+
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    const int selectionWidth = selection.getWidth();
+    const int height = selectedMaRowIndexes.size();
+    const int y = selection.getRectList()[0].y();
     int x = selection.toRect().x();
+    int resultShift = 0;
     bool isCtrlPressed = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (isCtrlPressed) {
         if (shift > 0) {
@@ -391,7 +379,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                     U2OpStatus2Log os;
                     const int length = maObj->getLength();
                     if (length != gap.offset) {
-                        maObj->deleteGapByRowIndexList(os, selectedMaRows, gap.offset, gap.gap);
+                        maObj->deleteGapByRowIndexList(os, selectedMaRowIndexes, gap.offset, gap.gap);
                     }
                     CHECK_OP(os, resultShift);
                     resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.gap);
@@ -405,7 +393,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                 resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
                 foreach (U2MsaGap gap, gapModelToRestore) {
                     if (gap.endPos() < lengthOnMousePress) {
-                        maObj->insertGapByRowIndexList(selectedMaRows, gap.offset, gap.gap);
+                        maObj->insertGapByRowIndexList(selectedMaRowIndexes, gap.offset, gap.gap);
                     } else if (gap.offset >= lengthOnMousePress) {
                         U2OpStatus2Log os;
                         U2Region allRows(0, maObj->getNumRows());
@@ -456,37 +444,35 @@ QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int &shift) {
 }
 
 QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int &numOfColumns) {
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    if (selectedMaRows.isEmpty()) {
-        return QList<U2MsaGap>();
-    }
-    const MaEditorSelection &selection = editor->getSelection();
-    QRect selectionRect = selection.toRect();
-    int x = selectionRect.x();
-    int wight = selectionRect.width();
+    numOfColumns = 0;
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    CHECK(!selectedMaRowIndexes.isEmpty(), {});
+
+    U2Region columnRegion = editor->getSelection().getColumnRegion();
     U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
 
     U2MsaRowGapModel gapModelToUpdate;
-    foreach (U2MsaGap gap, listGapModel[selectedMaRows[0]]) {
-        if (gap.offset + gap.gap <= x + wight) {
+    const QList<U2MsaGap> &firstRowGapList = listGapModel[selectedMaRowIndexes[0]];
+    for (const U2MsaGap &gap : qAsConst(firstRowGapList)) {
+        if (gap.offset + gap.gap <= columnRegion.endPos()) {
             continue;
         }
-        if (gap.offset < x + wight && gap.offset + gap.gap > x + wight) {
-            int startPos = x + wight;
-            U2MsaGap g(startPos, gap.offset + gap.gap - startPos);
-            gapModelToUpdate << g;
+        if (gap.offset < columnRegion.endPos() && gap.offset + gap.gap > columnRegion.endPos()) {
+            qint64 startPos = columnRegion.endPos();
+            U2MsaGap trailingGap(startPos, gap.offset + gap.gap - startPos);
+            gapModelToUpdate << trailingGap;
         } else {
             gapModelToUpdate << gap;
         }
     }
 
-    numOfColumns = 0;
-    for (int i = 1; i < selectedMaRowIds.size(); i++) {
-        int maRow = selectedMaRows[i];
-        U2MsaRowGapModel currentGapModelToRemove;
-        int currentNumOfColumns = 0;
-        foreach (U2MsaGap gap, listGapModel[maRow]) {
-            foreach (U2MsaGap gapToRemove, gapModelToUpdate) {
+    for (int i = 1; i < selectedMaRowIndexes.size(); i++) {
+        int maRowIndex = selectedMaRowIndexes[i];
+        QList<U2MsaGap> currentGapModelToRemove;
+        qint64 currentNumOfColumns = 0;
+        const QList<U2MsaGap> &rowGrapList = listGapModel[maRowIndex];
+        for (const U2MsaGap &gap : qAsConst(rowGrapList)) {
+            for (const U2MsaGap &gapToRemove : qAsConst(gapModelToUpdate)) {
                 U2MsaGap intersectedGap = gap.intersect(gapToRemove);
                 if (intersectedGap.gap == 0) {
                     continue;
@@ -646,7 +632,6 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     exitFromEditCharacterMode();
     updateCollapseModel(modInfo);
     ui->getScrollController()->sl_updateScrollBars();
-    restoreViewSelectionFromMaSelection();
 
     int columnCount = editor->getAlignmentLen();
     int rowCount = getViewRowCount();
@@ -790,33 +775,8 @@ U2Region findLongestRegion(const QList<int> &sortedViewIndexes) {
     return longestRegion;
 }
 
-void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
-    if (selectedColumns.isEmpty() || selectedMaRowIds.isEmpty()) {
-        return;
-    }
-    // Ensure the columns region is in range.
-    U2Region columnsRegions = selectedColumns;
-    columnsRegions.startPos = qMin(columnsRegions.startPos, (qint64)editor->getAlignmentLen() - 1);
-    qint64 selectedColumnsEndPos = qMin(columnsRegions.endPos(), (qint64)editor->getAlignmentLen());
-    columnsRegions.length = selectedColumnsEndPos - columnsRegions.startPos;
-
-    // Select the longest continuous region for the new selection
-    QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedMaRowIds);
-    MaCollapseModel *collapseModel = editor->getCollapseModel();
-    QList<QRect> newSelectedRects;
-    for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
-        int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
-        if (viewRowIndex >= 0) {
-            newSelectedRects << QRect(columnsRegions.startPos, viewRowIndex, columnsRegions.length, 1);
-        }
-    }
-    editor->getSelectionController()->setSelection(MaEditorSelection(newSelectedRects));
-
-    ui->getScrollController()->updateVerticalScrollBar();
-}
-
 void MaEditorSequenceArea::sl_modelChanged() {
-    restoreViewSelectionFromMaSelection();
+    ui->getScrollController()->updateVerticalScrollBar();
     sl_completeRedraw();
 }
 
@@ -1203,8 +1163,8 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
         return;
     }
 
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    maObj->insertGapByRowIndexList(selectedMaRows, selectionRect.x(), countOfGaps);
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    maObj->insertGapByRowIndexList(selectedMaRowIndexes, selectionRect.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os, );
     moveSelection(countOfGaps, 0, true);
@@ -1239,8 +1199,8 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
-    int countOfDeletedSymbols = maObj->deleteGapByRowIndexList(os, selectedMaRows, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    int countOfDeletedSymbols = maObj->deleteGapByRowIndexList(os, selectedMaRowIndexes, topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
     // at the alignment end, then it's needed to move the selection
