@@ -195,8 +195,8 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     Q_UNUSED(v);
 
-    t->addAction(ui->getUndoAction());
-    t->addAction(ui->getRedoAction());
+    t->addAction(editor->undoAction);
+    t->addAction(editor->redoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 

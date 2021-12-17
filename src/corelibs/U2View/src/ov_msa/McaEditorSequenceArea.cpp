@@ -283,8 +283,8 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar 
     consensusArea->buildStaticToolbar(t);
 
     t->addSeparator();
-    t->addAction(ui->getUndoAction());
-    t->addAction(ui->getRedoAction());
+    t->addAction(editor->undoAction);
+    t->addAction(editor->redoAction);
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {

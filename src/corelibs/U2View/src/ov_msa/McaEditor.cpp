@@ -336,8 +336,8 @@ void McaEditor::addEditMenu(QMenu *menu) {
     editMenu->addAction(editorNameList->getRemoveSequenceAction());
     editMenu->addSeparator();
 
-    editMenu->addAction(ui->getUndoAction());
-    editMenu->addAction(ui->getRedoAction());
+    editMenu->addAction(undoAction);
+    editMenu->addAction(redoAction);
 }
 
 MaEditorSelectionController *McaEditor::getSelectionController() const {

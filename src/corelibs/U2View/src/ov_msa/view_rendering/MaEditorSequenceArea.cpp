@@ -68,15 +68,10 @@ const QChar MaEditorSequenceArea::emDash = QChar(0x2015);
 MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : editor(ui->getEditor()),
       ui(ui),
-      colorScheme(nullptr),
-      highlightingScheme(nullptr),
       shBar(hb),
       svBar(vb),
       editModeAnimationTimer(this),
       prevPressedButton(Qt::NoButton),
-      maVersionBeforeShifting(-1),
-      replaceCharacterAction(nullptr),
-      useDotsAction(nullptr),
       changeTracker(editor->getMaObject()->getEntityRef()) {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
     // show rubber band for selection in MSA editor only
@@ -124,8 +119,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)));
 
-    connect(this, SIGNAL(si_startMaChanging()), ui->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
-    connect(this, SIGNAL(si_stopMaChanging(bool)), ui->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
+    connect(this, SIGNAL(si_startMaChanging()), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
+    connect(this, SIGNAL(si_stopMaChanging(bool)), editor->getUndoRedoFramework(), SLOT(sl_updateUndoRedoState()));
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_onSelectionChanged(const MaEditorSelection &, const MaEditorSelection &)));

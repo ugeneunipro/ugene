@@ -45,7 +45,6 @@ class MaEditorNameList;
 class MaEditorOverviewArea;
 class MaEditorSequenceArea;
 class RowHeightController;
-class MsaUndoRedoFramework;
 class ScrollController;
 class SequenceAreaRenderer;
 
@@ -103,10 +102,6 @@ public:
         return drawHelper;
     }
 
-    QAction *getUndoAction() const;
-
-    QAction *getRedoAction() const;
-
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const {
         return enableCollapsingOfSingleRowGroups;
@@ -116,18 +111,10 @@ public:
         return seqAreaHeader;
     }
 
-    MsaUndoRedoFramework *getUndoRedoFramework() const {
-        return undoFWK;
-    }
-
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
     void si_completeRedraw();
-
-private slots:
-    void sl_countUndo();
-    void sl_countRedo();
 
 protected:
     virtual void initWidgets();
@@ -155,8 +142,6 @@ protected:
     QGridLayout *seqAreaLayout;
     QVBoxLayout *nameAreaLayout;
     MaSplitterController maSplitter;
-
-    MsaUndoRedoFramework *undoFWK;
 
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;
