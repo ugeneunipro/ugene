@@ -124,13 +124,7 @@ public:
      * Checks thats selection geometry is correct: all rects are within the alignment.
      * Returns 'true' if the selection is correct. Returns false and calls SAFE_POINT if the selection is not safe.
      * */
-    static bool validateSelectionGeometry(const MaEditorSelection &selection, int alignmentLength, int viewRowCount);
-
-    /** Returns list of currently selected MA row indexes ordered using view row index order. */
-    QList<int> getSelectedMaRowIndexes() const;
-
-    /** Returns list of currently selected MA row ids ordered using view row index order. */
-    QList<qint64> getSelectedMaRowIds() const;
+    bool validateSelectionGeometry(const MaEditorSelection &selection, bool useSafePoint = true) const;
 
 signals:
 
@@ -141,18 +135,9 @@ public slots:
     /** Sets selection to empty selection. Emits signal that selection is changed. */
     virtual void clearSelection();
 
-    /** Updates selection state as a side effect on the alignment change. */
-    virtual void handleAlignmentChange();
-
-    /** Updates selection state as a side effect on the collapse model change. */
-    virtual void handleCollapseModelChange();
-
 protected:
     /** Current selection with view rows/column coordinates. */
     MaEditorSelection selection;
-
-    /** List of selected row ids from the current selection. Used to restore selection state on MSA or collapse state updates. */
-    QList<qint64> selectedRowIdsSnapshot;
 
 private:
     /** MSA/MCA editor instance. Never null. */

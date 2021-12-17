@@ -344,9 +344,9 @@ void McaEditorSequenceArea::sl_updateActions() {
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
     MultipleChromatogramAlignmentObject *mcaObj = getEditor()->getMaObject();
-    QList<int> maRowIndexes = getEditor()->getSelectionController()->getSelectedMaRowIndexes();
-    SAFE_POINT(!maRowIndexes.isEmpty() && maRowIndexes.size() == 1, "Incorrect selection", )
-    int maRowIndex = maRowIndexes[0];
+    QList<int> maRows = getSelectedMaRowIndexes();
+    SAFE_POINT(!maRows.isEmpty() && maRows.size() == 1, "Incorrect selection", )
+    int maRowIndex = maRows[0];
 
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(mcaObj->getEntityRef(), os);

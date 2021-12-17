@@ -188,7 +188,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 
     MultipleSequenceAlignment resultMsa = getResult();
     const MultipleSequenceAlignment &originalMsa = msaObjectPointer->getMultipleAlignment();
-    bool isAllRowsRestored = MSAUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
+    bool isAllRowsRestored = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, originalMsa->getRowNames());
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
         return ReportResult_Finished;
