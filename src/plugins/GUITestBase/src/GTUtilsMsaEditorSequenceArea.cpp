@@ -502,9 +502,8 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const
 
     // Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
-    QList<int> selectedMaRows = msaEditArea->getSelectedMaRowIndexes();
-    for (int i = 0; i < selectedMaRows.size(); i++) {
-        int maIndex = selectedMaRows[i];
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    for (int maIndex : qAsConst(selectedMaRowIndexes)) {
         QString selectedSequenceName = editor->getMaObject()->getRow(maIndex)->getName();
         if (selectedSequenceName == seqName) {
             return true;
@@ -519,7 +518,7 @@ int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(GUITestOpStatus &os) {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", 0);
 
-    return msaEditArea->getSelectedMaRowIndexes().size();
+    return msaEditArea->getEditor()->getSelection().getCountOfSelectedRows();
 }
 #undef GT_METHOD_NAME
 
