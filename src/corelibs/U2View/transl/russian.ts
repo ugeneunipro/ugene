@@ -7158,7 +7158,7 @@ Simple overview is unavailable.</source>
     </message>
 </context>
 <context>
-    <name>U2::MsaUndoRedoFramework</name>
+    <name>U2::MaUndoRedoFramework</name>
     <message>
         <location filename="../src/UndoRedoFramework.cpp" line="45"/>
         <source>Undo</source>

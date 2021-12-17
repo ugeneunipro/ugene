@@ -55,13 +55,14 @@ namespace U2 {
 #define MOBJECT_DEFAULT_FONT_SIZE 10
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
-class MaEditorWgt;
-class MultipleAlignmentObject;
+class MaCollapseModel;
 class MaEditorSelection;
 class MaEditorSelectionController;
-class MultipleAlignment;
-class MaCollapseModel;
+class MaEditorWgt;
 class MaModificationInfo;
+class MaUndoRedoFramework;
+class MultipleAlignment;
+class MultipleAlignmentObject;
 
 class SNPSettings {
 public:
@@ -203,6 +204,9 @@ public:
     /** Returns collapse model instance. The returned value is never null. */
     MaCollapseModel *getCollapseModel() const;
 
+    /** Returns undo-redo framework. The returned value is never null. */
+    MaUndoRedoFramework *getUndoRedoFramework() const;
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -293,6 +297,9 @@ protected:
     /** Collapse model instance. Created in the constructor and is never changed. */
     MaCollapseModel *const collapseModel;
 
+    /** Undo-redo support. */
+    MaUndoRedoFramework *undoRedoFramework = nullptr;
+
 public:
     QAction *saveAlignmentAction = nullptr;
     QAction *saveAlignmentAsAction = nullptr;
@@ -322,6 +329,12 @@ public:
      * When the action is triggered for the already selected read it tries to center the opposite side of the read: 'start' -> 'end', 'end' -> 'start'.
      */
     QAction *gotoSelectedReadAction = nullptr;
+
+    /** Undo action in MA Editor. Never null after the initialization. */
+    QAction *undoAction = nullptr;
+
+    /** Redo action. Never null after the initialization.*/
+    QAction *redoAction = nullptr;
 };
 
 }  // namespace U2

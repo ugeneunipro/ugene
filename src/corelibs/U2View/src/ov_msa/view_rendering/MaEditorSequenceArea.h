@@ -309,18 +309,18 @@ protected:
     MaEditor *const editor;
     MaEditorWgt *const ui;
 
-    MsaColorScheme *colorScheme;
-    MsaHighlightingScheme *highlightingScheme;
+    MsaColorScheme *colorScheme = nullptr;
+    MsaHighlightingScheme *highlightingScheme = nullptr;
 
-    GScrollBar *shBar;
-    GScrollBar *svBar;
-    QRubberBand *rubberBand;
+    GScrollBar *const shBar;
+    GScrollBar *const svBar;
+    QRubberBand *rubberBand = nullptr;
     bool showRubberBandOnSelection;
 
-    SequenceAreaRenderer *renderer;
+    SequenceAreaRenderer *renderer = nullptr;
 
-    QPixmap *cachedView;
-    bool completeRedraw;
+    QPixmap *cachedView = nullptr;
+    bool completeRedraw = false;
 
     MaMode maMode;
     QTimer editModeAnimationTimer;
@@ -345,14 +345,14 @@ protected:
     /** Selected MA row columns within the current view selection. */
     U2Region selectedColumns;
 
-    int maVersionBeforeShifting;
+    int maVersionBeforeShifting = -1;
     SelectionModificationHelper::MovableSide movableBorder;
 
     QList<U2MsaGap> ctrlModeGapModel;
     qint64 lengthOnMousePress;
 
-    QAction *replaceCharacterAction;
-    QAction *fillWithGapsinsSymAction;
+    QAction *replaceCharacterAction = nullptr;
+    QAction *fillWithGapsinsSymAction = nullptr;
 
 public:
     QAction *useDotsAction;

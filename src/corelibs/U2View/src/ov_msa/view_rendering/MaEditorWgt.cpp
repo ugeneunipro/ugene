@@ -35,7 +35,6 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
-#include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
@@ -73,11 +72,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *_editor)
       pasteBeforeAction(nullptr),
       cutSelectionAction(nullptr) {
     SAFE_POINT(editor != nullptr, "MaEditor is null!", );
-    undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
     setFocusPolicy(Qt::ClickFocus);
-
-    connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
-    connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
 QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment alignment, QWidget *heightTarget, bool proxyMouseEventsToNameList) {
@@ -91,18 +86,6 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
 
 MaEditorStatusBar *MaEditorWgt::getStatusBar() const {
     return statusBar;
-}
-
-QAction *MaEditorWgt::getUndoAction() const {
-    QAction *a = undoFWK->getUndoAction();
-    a->setObjectName("msa_action_undo");
-    return a;
-}
-
-QAction *MaEditorWgt::getRedoAction() const {
-    QAction *a = undoFWK->getRedoAction();
-    a->setObjectName("msa_action_redo");
-    return a;
 }
 
 void MaEditorWgt::initWidgets() {
@@ -270,17 +253,6 @@ void MaEditorWgt::initActions() {
     cutSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     cutSelectionAction->setToolTip(QString("%1 (%2)").arg(cutSelectionAction->text()).arg(cutSelectionAction->shortcut().toString()));
     addAction(cutSelectionAction);
-
-    addAction(getUndoAction());
-    addAction(getRedoAction());
-}
-
-void MaEditorWgt::sl_countUndo() {
-    GCounter::increment("Undo", editor->getFactoryId());
-}
-
-void MaEditorWgt::sl_countRedo() {
-    GCounter::increment("Redo", editor->getFactoryId());
 }
 
 MaEditor *MaEditorWgt::getEditor() const {
