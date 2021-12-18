@@ -170,7 +170,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             }
         }
     }
-    CHECK_SET_ERR(count == 22, QString("Wrong number of visible items in sample tree: %1").arg(count));
+    CHECK_SET_ERR(count == 21, QString("Wrong number of visible items in sample tree: %1").arg(count));
 }
 
 }  // namespace GUITest_common_scenarios_workflow_name_filter

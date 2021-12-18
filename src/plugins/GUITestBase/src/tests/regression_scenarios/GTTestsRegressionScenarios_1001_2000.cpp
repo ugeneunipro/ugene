@@ -7180,27 +7180,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
 
     CHECK_SET_ERR(progress > oldProgress, "Progress didn't groving up");
 }
-GUI_TEST_CLASS_DEFINITION(test_1756) {
-    /*  1. Open WD.
-    2. Add the element "Collect Motifs with SeqPos" to the scene.
-    3. Click the element.
-    Expected: the property "Motif database" is not required (no bold text).
-*/
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Collect Motifs with SeqPos");
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
-    GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setParameter(os, "Motif database", QStringList(), GTUtilsWorkflowDesigner::ComboChecks);
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
-    GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
-    GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTUtilsDialog::waitAllFinished(os);
-
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::checkErrorList(os, "Required parameter is not set: Motif database") == 0,
-                  "The property Motif database is required. This is wrong.");
-}
 GUI_TEST_CLASS_DEFINITION(test_1731) {
     // 1. Open \data\samples\CLUSTALW\ty3.aln.gz
 
