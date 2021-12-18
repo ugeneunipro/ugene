@@ -554,6 +554,7 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeV
             break;
         }
     }
+    CHECK_SET_ERR_RESULT(!indexList.isEmpty() || !options.failIfNotFound, "Project tree item not found: " + itemName, false);
     return !indexList.isEmpty();
 }
 #undef GT_METHOD_NAME

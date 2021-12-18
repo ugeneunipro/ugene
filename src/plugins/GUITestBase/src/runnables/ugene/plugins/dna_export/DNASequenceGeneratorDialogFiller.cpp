@@ -20,10 +20,14 @@
  */
 
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
 
 #include "DNASequenceGeneratorDialogFiller.h"
 
@@ -64,6 +68,12 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
         GTSpinBox::setValue(os, "seedSpinBox", model.seed, dialog);
     }
     GTLineEdit::setText(os, "outputEdit", model.url, dialog);
+
+    if (!model.formatId.isEmpty()) {
+        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(model.formatId);
+        CHECK_SET_ERR(format != nullptr, "Format not found: " + model.formatId);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatCombo"), format->getFormatName());
+    }
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Generate", dialog));
 }

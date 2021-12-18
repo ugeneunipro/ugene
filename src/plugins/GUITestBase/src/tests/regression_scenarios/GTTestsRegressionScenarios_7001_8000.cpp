@@ -43,6 +43,8 @@
 #include <QPlainTextEdit>
 #include <QRadioButton>
 
+#include <U2Core/BaseDocumentFormats.h>
+
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDashboard.h"
@@ -1068,6 +1070,20 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
     char c = sequence[0].toLatin1();
     CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
     GTUtilsLog::check(os, lt);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7410) {
+    // Check sequence generation dialog uses correct file extension for MSA and generates MSA, not a sequence.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7410");
+    model.formatId = BaseDocumentFormats::CLUSTAL_ALN;
+    model.numberOfSequences = 3;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Invalid number of sequence in the alignment");
+
+    GTUtilsProjectTreeView::checkItem(os, "test_7410.aln");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7414) {
