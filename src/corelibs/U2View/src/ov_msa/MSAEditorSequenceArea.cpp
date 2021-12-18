@@ -422,7 +422,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
 void MSAEditorSequenceArea::sl_createSubalignment() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    QList<int> maRowIndexes = getSelectedMaRowIndexes();
+    QList<int> maRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     const MultipleAlignment &alignment = msaObject->getMultipleAlignment();
     QList<qint64> maRowIds = maRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(maRowIndexes);
     const MaEditorSelection &selection = editor->getSelection();
@@ -710,11 +710,11 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
 
     QList<qint64> modifiedRowIds;
-    for (int i = 0; i < selectedMaRows.size(); i++) {
-        int maRowIndex = selectedMaRows[i];
+    for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
+        int maRowIndex = selectedMaRowIndexes[i];
         MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(maRowIndex);
         QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
         switch (type.getType()) {

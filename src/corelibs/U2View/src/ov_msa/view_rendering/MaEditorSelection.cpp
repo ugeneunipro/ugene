@@ -179,6 +179,8 @@ U2Region MaEditorSelection::getColumnRegion() const {
 MaEditorSelectionController::MaEditorSelectionController(MaEditor *_editor)
     : QObject(_editor), editor(_editor) {
     SAFE_POINT(editor != nullptr, "MAEditor is null!", );
+    connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaEditorSelectionController::handleCollapseModelChange);
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MaEditorSelectionController::handleAlignmentChange);
 }
 
 const MaEditorSelection &MaEditorSelectionController::getSelection() const {
@@ -192,27 +194,26 @@ void MaEditorSelectionController::clearSelection() {
 void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
     CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
     CHECK(newSelection != selection, );
-    CHECK(validateSelectionGeometry(newSelection), );
+    CHECK(validateSelectionGeometry(newSelection, editor->getAlignmentLen(), editor->getCollapseModel()->getViewRowCount()), );
     MaEditorSelection oldSelection = selection;
     selection = newSelection;
+    selectedRowIdsSnapshot = getSelectedMaRowIds();
     emit si_selectionChanged(selection, oldSelection);
 }
 
-bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelection &selection, bool useSafePoint) const {
+bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelection &selection, int alignmentLength, int viewRowCount) {
     CHECK(!selection.isEmpty(), true);
 
     // Check column range.
-    int length = editor->getAlignmentLen();
     U2Region columnRegion = selection.getColumnRegion();
-    bool hasValidColumnRange = columnRegion.startPos >= 0 && columnRegion.endPos() <= length;
-    SAFE_POINT(!useSafePoint || hasValidColumnRange, "Invalid column range in MSA selection", false);
+    bool hasValidColumnRange = columnRegion.startPos >= 0 && columnRegion.endPos() <= alignmentLength;
+    SAFE_POINT(hasValidColumnRange, "Invalid column range in MSA selection", false);
     CHECK(hasValidColumnRange, false);
 
     // Check row range.
-    int viewRowCount = editor->getCollapseModel()->getViewRowCount();
     U2Region rowRange = U2Region::fromStartAndEnd(selection.getRectList().first().top(), selection.getRectList().last().bottom() + 1);
     bool hasValidRowRange = rowRange.startPos >= 0 && rowRange.endPos() <= viewRowCount;
-    SAFE_POINT(!useSafePoint || hasValidRowRange, "Invalid row range in MSA selection", false);
+    SAFE_POINT(hasValidRowRange, "Invalid row range in MSA selection", false);
     return hasValidRowRange;
 }
 
@@ -222,6 +223,53 @@ int MaEditorSelection::getCountOfSelectedRows() const {
         count += rect.height();
     }
     return count;
+}
+
+QList<int> MaEditorSelectionController::getSelectedMaRowIndexes() const {
+    QList<int> maRowIndexes;
+    QList<QRect> selectedRectList = editor->getSelection().getRectList();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    for (const QRect &rect : qAsConst(selectedRectList)) {
+        U2Region rowRange = U2Region::fromYRange(rect);
+        QList<int> maRowIndexesPerRect = collapseModel->getMaRowIndexesByViewRowIndexes(rowRange, true);
+        maRowIndexes << maRowIndexesPerRect;
+    }
+    return maRowIndexes;
+}
+
+QList<qint64> MaEditorSelectionController::getSelectedMaRowIds() const {
+    QList<int> selectedMaRowIndexes = getSelectedMaRowIndexes();
+    QList<qint64> allMaRowIds = editor->getMaRowIds();
+    QList<qint64> selectedMaRowIds;
+    for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
+        SAFE_POINT(maRowIndex >= 0 && maRowIndex < allMaRowIds.size(), "Invalid ma-row-index: " + QString::number(maRowIndex), {});
+        selectedMaRowIds << allMaRowIds[maRowIndex];
+    }
+    return selectedMaRowIds;
+}
+
+void MaEditorSelectionController::handleAlignmentChange() {
+    // Ensure the columns region is in range.
+    U2Region columnsRegions = selection.getColumnRegion();
+    columnsRegions.startPos = qMin(columnsRegions.startPos, (qint64)editor->getAlignmentLen() - 1);
+    qint64 selectedColumnsEndPos = qMin(columnsRegions.endPos(), (qint64)editor->getAlignmentLen());
+    columnsRegions.length = selectedColumnsEndPos - columnsRegions.startPos;
+
+    // Select the longest continuous region for the new selection
+    QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedRowIdsSnapshot);
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    QList<QRect> newSelectedRects;
+    for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
+        int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
+        if (viewRowIndex >= 0) {
+            newSelectedRects << QRect(columnsRegions.startPos, viewRowIndex, columnsRegions.length, 1);
+        }
+    }
+    setSelection(MaEditorSelection(newSelectedRects));
+}
+
+void MaEditorSelectionController::handleCollapseModelChange() {
+    handleAlignmentChange();  // Using the same selection morph logic with alignment modification.
 }
 
 /************************************************************************/
