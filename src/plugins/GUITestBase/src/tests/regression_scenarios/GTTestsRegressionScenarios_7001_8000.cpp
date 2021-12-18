@@ -80,6 +80,7 @@
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -620,6 +621,49 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
     GTUtilsMdi::click(os, GTGlobals::Close);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7276) {
+    // Check that selection and sequence order does not change after KAlign alignment.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Insert space into some sequence to check that the final alignment algorithm is not no-op.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {0, 0});
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString unalignedSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    QStringList sequenceNameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    QString sequenceName = "Phaneroptera_falcata";
+    GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
+    GTUtilsMsaEditor::checkSelectionByNames(os, {sequenceName});
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Sort", "By name"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that the sequence is still selected, but the list is re-ordered.
+    GTUtilsMsaEditor::checkSelectionByNames(os, {sequenceName});
+    QStringList sequenceNameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(sequenceNameList2 != sequenceNameList1, "Name list must change as the result of sorting");
+
+    // Align with KAlign now.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN,  "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that sequence is still selected and the list is not re-ordered.
+    GTUtilsMsaEditor::checkSelectionByNames(os, {sequenceName});
+    QStringList sequenceNameList3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(sequenceNameList3 == sequenceNameList2, "Name list should not change as the result of alignment");
+
+    // Check that the space inserted before was fixed by the alignment algorithm.
+    int newIndex = sequenceNameList2.indexOf(sequenceName);
+    QString alignedSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, newIndex);
+    CHECK_SET_ERR(alignedSequence.left(20) == unalignedSequence.mid(1).left(20), "Aligned sequence must match the original sequence");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7293) {
