@@ -823,14 +823,16 @@ bool FindPatternMsaWidget::checkAlphabet(const QString &pattern) {
 }
 
 QString FindPatternMsaWidget::checkSearchRegion() const {
+    CHECK(!isSearchInNamesMode, "");
+
     U2Region region = getSearchRegion();
-    if (region.isEmpty()) {
-        return tr("Warning: Invalid search region.");
-    }
+    CHECK(!region.isEmpty(), tr("Warning: Invalid search region."));
 
     CHECK(selectedAlgorithm != FindAlgorithmPatternSettings_RegExp, "");
+
     QStringList patternLines = textPattern->toPlainText().split("\n", QString::SkipEmptyParts);
     CHECK(!patternLines.isEmpty(), "");
+
     int minPatternLength = INT_MAX;
     for (const QString &line : qAsConst(patternLines)) {
         minPatternLength = qMin(minPatternLength, line.length());

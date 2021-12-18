@@ -115,9 +115,6 @@ public:
         Q_UNUSED(os);
     }
 
-    /** Returns list of selected MA row indexes. */
-    QList<int> getSelectedMaRowIndexes() const;
-
     /** Returns MA row index of the top-most selected view row or -1 if selection is empty. */
     int getTopSelectedMaRow() const;
 
@@ -199,12 +196,6 @@ private:
     U2MsaGap addTrailingGapColumns(int count);
     QList<U2MsaGap> findRestorableGapColumns(const int shift);
 
-    /**
-     * Restores view selection using cached MA selection.
-     * If the original selection can't be restored moves the selection to the top-left corner of the original.
-     */
-    void restoreViewSelectionFromMaSelection();
-
 signals:
     void si_selectionChanged(const QStringList &selectedRows);
     void si_highlightingChanged();
@@ -283,8 +274,6 @@ protected:
     virtual bool isCharacterAcceptable(const QString &text) const;
     virtual const QString &getInacceptableCharacterErrorMessage() const;
 
-    void deleteOldCustomSchemes();
-
     /*
      * Update collapse model on alignment modification.
      * Note, that we have collapse model regardless if collapsing mode is enabled or not.
@@ -302,25 +291,25 @@ public:
     /** Returns current mode of the sequence area: viewing or editing. */
     MaMode getMode() const;
 
-    /** Swithes sequence area into the ViewMode. */
+    /** Switches sequence area into the ViewMode. */
     void exitFromEditCharacterMode();
 
 protected:
     MaEditor *const editor;
     MaEditorWgt *const ui;
 
-    MsaColorScheme *colorScheme;
-    MsaHighlightingScheme *highlightingScheme;
+    MsaColorScheme *colorScheme = nullptr;
+    MsaHighlightingScheme *highlightingScheme = nullptr;
 
-    GScrollBar *shBar;
-    GScrollBar *svBar;
-    QRubberBand *rubberBand;
+    GScrollBar *const shBar;
+    GScrollBar *const svBar;
+    QRubberBand *rubberBand = nullptr;
     bool showRubberBandOnSelection;
 
-    SequenceAreaRenderer *renderer;
+    SequenceAreaRenderer *renderer = nullptr;
 
-    QPixmap *cachedView;
-    bool completeRedraw;
+    QPixmap *cachedView = nullptr;
+    bool completeRedraw = false;
 
     MaMode maMode;
     QTimer editModeAnimationTimer;
@@ -339,20 +328,14 @@ protected:
      */
     QPoint mousePressViewPos;
 
-    /** Selected MA row ids within the current view selection. */
-    QList<qint64> selectedMaRowIds;
-
-    /** Selected MA row columns within the current view selection. */
-    U2Region selectedColumns;
-
-    int maVersionBeforeShifting;
+    int maVersionBeforeShifting = -1;
     SelectionModificationHelper::MovableSide movableBorder;
 
     QList<U2MsaGap> ctrlModeGapModel;
     qint64 lengthOnMousePress;
 
-    QAction *replaceCharacterAction;
-    QAction *fillWithGapsinsSymAction;
+    QAction *replaceCharacterAction = nullptr;
+    QAction *fillWithGapsinsSymAction = nullptr;
 
 public:
     QAction *useDotsAction;

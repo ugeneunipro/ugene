@@ -42,6 +42,7 @@
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/UndoRedoFramework.h>
 
 #include "MaCollapseModel.h"
 #include "MaEditorState.h"
@@ -81,6 +82,10 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
         U2OpStatus2Log os;
         maObject->setTrackMod(os, TrackOnUpdate);
     }
+
+    undoRedoFramework = new MaUndoRedoFramework(this, obj);
+    undoAction = undoRedoFramework->getUndoAction();
+    redoAction = undoRedoFramework->getRedoAction();
 
     // SANGER_TODO: move to separate method
     // do that in createWidget along with initActions?
@@ -376,6 +381,11 @@ void MaEditor::initActions() {
     connect(selectionController,
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+
+    connect(undoAction, &QAction::triggered, [this]() { GCounter::increment("Undo", factoryId); });
+    connect(redoAction, &QAction::triggered, [this]() { GCounter::increment("Redo", factoryId); });
+    ui->addAction(undoAction);
+    ui->addAction(redoAction);
 }
 
 void MaEditor::initZoom() {
@@ -556,6 +566,10 @@ void MaEditor::sl_gotoSelectedRead() {
 
 MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
+}
+
+MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
+    return undoRedoFramework;
 }
 
 }  // namespace U2

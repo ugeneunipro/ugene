@@ -153,27 +153,18 @@ static int minutes(int minutes) {
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
 
-/**  Registers test on all platforms but with a global Ignored label. */
-#define REGISTER_TEST_IGNORED(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({Ignored}), MESSAGE)
 /**  Registers test on all platforms but with an IgnoredOnWindows label. */
 #define REGISTER_TEST_IGNORED_WINDOWS(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnWindows}), MESSAGE)
+
 /**  Registers test on all platforms but with an IgnoredOnMacOS label. */
 #define REGISTER_TEST_IGNORED_MAC(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnMacOS}), MESSAGE)
 
-/** Registers test on all platforms except Windows. */
-#define REGISTER_TEST_NOT_FOR_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
-/** Registers test on all platforms except Linux. */
-#define REGISTER_TEST_NOT_FOR_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows, MacOS}))
-/** Registers test on all platforms except MacOS. */
-#define REGISTER_TEST_NOT_FOR_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
-
-/** Registers test on all platforms and adds ignored labels for all of them, but not for the Linux. */
-#define REGISTER_TEST_LINUX(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnMacOS, IgnoredOnWindows}), MESSAGE)
-
-/** Registers test only on a single platform. */
-#define REGISTER_TEST_ONLY_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux}))
-#define REGISTER_TEST_ONLY_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows}))
-#define REGISTER_TEST_ONLY_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, MacOS}))
+/** Registers test only for the specified platforms only. */
+#define REGISTER_TEST_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux}))
+#define REGISTER_TEST_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, MacOS}))
+#define REGISTER_TEST_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows}))
+#define REGISTER_TEST_LINUX_AND_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
+#define REGISTER_TEST_LINUX_AND_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     CHECK(AppContext::getMainWindow() != nullptr, nullptr);
@@ -214,11 +205,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
-    REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");
-    REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3333, "drag and drop");
-    REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3452, "temporary ignored because of mac failing");
+    // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); // not completed yet
 
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3156, "drag and drop");
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3165, "drag and drop");
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3333, "drag and drop");
+    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3452, "temporary ignored because of mac failing");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0001, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0002, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0003, "It always fails on MacOS. Improve the test");
@@ -233,6 +225,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2829, "hotkeys on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3690, "hotkeys on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_4148, "It always fails on MacOS. Improve the test");
+
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_Assembly_browser::test_0012, "permission setter issue");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0006, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0007, "UTI-245");
@@ -243,74 +236,73 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Fails to grab OpenGL widget image on Windows");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5360, "UGENE-5371");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5371, "UGENE-5371");
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on mac
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_0889);  //"Spidey tool is not avaluable on mac"
-    REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_2140);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0001);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0002);  //"Restore when this tool becomes available");
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0003);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0004);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0005);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0006);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0005);  //, "Test should run not under admin user on WIN");
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_dna_assembly_conversions::test_0001);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1640);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1662);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_2);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1681_3);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1693);  // no tuxedo for windows
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1735);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2266_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2268);  // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log. This path can't be overriden via environment.
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2282);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2638);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2640);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2866);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_3950);  // too long for windows test server
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6301);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6378);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581);  // old MAFFT version  v7.212 for Windows32
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0025);
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0028_linux);
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);
-    REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_1551);
-    REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_1680);
-    REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_6238);
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_2089);  //, "no forbidden folder characters on linux and mac");
 
-    // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
-    // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
-    // REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
-    // REGISTER_TEST(GUITest_regression_scenarios::test_4881);
-    REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_0339);
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on Mac
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  //"Spidey tool is not available on Mac"
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_2140);
 
-    if (QSysInfo::WordSize == 32) {
-        REGISTER_TEST(GUITest_regression_scenarios::test_4563);
-    }
-    if (QSysInfo::WordSize == 64) {
-        REGISTER_TEST(GUITest_regression_scenarios::test_5027_1);
-    }
-    REGISTER_TEST_ONLY_LINUX(GUITest_regression_scenarios::test_5130);
-    if (QSysInfo::WordSize == 32) {
-        REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
-        REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
-    }
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0001);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0002);  //"Restore when this tool becomes available");
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0003);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0004);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0005);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0006);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_workflow_designer::test_0002_1);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_workflow_designer::test_0005);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_workflow_designer::test_0009);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_workflow_designer::test_0010);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0005);  //, "Test should run not under admin user on WIN");
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_dna_assembly_conversions::test_0001);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1640);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1662);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1664);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1681);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1681_1);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1681_2);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1681_3);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1693);  // no tuxedo for windows
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1735);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2266_1);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2268);  // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log.
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2282);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2475);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2638);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2640);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2866);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_3950);  // too long for windows test server
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6301);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6378);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6581);  // old MAFFT version  v7.212 for Windows32
+
+    REGISTER_TEST_LINUX(GUITest_common_scenarios_msa_editor::test_0025);
+    REGISTER_TEST_LINUX(GUITest_common_scenarios_msa_editor::test_0028_linux);
+    REGISTER_TEST_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
+    REGISTER_TEST_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);
+    REGISTER_TEST_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);
+    REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_5130);
+
+    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_0339);
+    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1551);
+    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1680);
+    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_6238);
+
+    REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
+    REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
+    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
+
+    // Memory allocation related tests. Test only 32-bit platforms.
+    // These tests should be rewritten to check 64-bit memory allocation.
+
+#ifdef Q_PROCESSOR_X86_32
+    REGISTER_TEST(GUITest_regression_scenarios::test_4563);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
+#endif
 
 #ifdef SW2_BUILD_WITH_CUDA
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_7360);  // Smith--Waterman CUDA
-#endif  // SW2_BUILD_WITH_CUDA
+    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7360);  // Smith--Waterman CUDA
+#endif
 
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
@@ -718,7 +710,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1919);
     REGISTER_TEST(GUITest_regression_scenarios::test_1921);
     REGISTER_TEST(GUITest_regression_scenarios::test_1924);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);  // TopHat
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1946);  // TopHat
     REGISTER_TEST(GUITest_regression_scenarios::test_1984);
     REGISTER_TEST(GUITest_regression_scenarios::test_1986);
 
@@ -1367,6 +1359,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5018);
     REGISTER_TEST(GUITest_regression_scenarios::test_5026);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5027_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5027_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5029);
     REGISTER_TEST(GUITest_regression_scenarios::test_5039);
@@ -1410,9 +1403,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5412);
     REGISTER_TEST(GUITest_regression_scenarios::test_5417);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_2);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_5425_1);
+    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_5425_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5431);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_2);
@@ -1681,7 +1674,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6718);
     REGISTER_TEST(GUITest_regression_scenarios::test_6730);
     REGISTER_TEST(GUITest_regression_scenarios::test_6734);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6736);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6736_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6736_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6739);
     REGISTER_TEST(GUITest_regression_scenarios::test_6740);
     REGISTER_TEST(GUITest_regression_scenarios::test_6742);
@@ -1814,6 +1808,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7506);
     REGISTER_TEST(GUITest_regression_scenarios::test_7507);
     REGISTER_TEST(GUITest_regression_scenarios::test_7508);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7509);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
