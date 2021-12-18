@@ -38,7 +38,6 @@
 #include "tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h"
 #include "tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h"
 #include "tests/common_scenarios/Assembling/sam/GTTestsSAM.h"
-#include "tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h"
 #include "tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h"
 #include "tests/common_scenarios/annotations/GTTestsAnnotations.h"
 #include "tests/common_scenarios/annotations/GTTestsCreateAnnotationWidget.h"
@@ -274,7 +273,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2282);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2638);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2640);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2721);  // no cistrome data on windows servers
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2866);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_3950);  // too long for windows test server
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6301);
@@ -637,7 +635,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1585);
     REGISTER_TEST(GUITest_regression_scenarios::test_1586);
     REGISTER_TEST(GUITest_regression_scenarios::test_1587);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1594);
     REGISTER_TEST(GUITest_regression_scenarios::test_1595);
     REGISTER_TEST(GUITest_regression_scenarios::test_1597);
 
@@ -686,7 +683,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1708);
     REGISTER_TEST(GUITest_regression_scenarios::test_1710_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1710_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1714);
     REGISTER_TEST(GUITest_regression_scenarios::test_1720);
     REGISTER_TEST(GUITest_regression_scenarios::test_1731);
     REGISTER_TEST(GUITest_regression_scenarios::test_1733);
@@ -768,7 +764,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2192);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_2202);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2204);
     REGISTER_TEST(GUITest_regression_scenarios::test_2225);
     REGISTER_TEST(GUITest_regression_scenarios::test_2259);
     REGISTER_TEST(GUITest_regression_scenarios::test_2267_1);
@@ -788,9 +783,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2314);
     REGISTER_TEST(GUITest_regression_scenarios::test_2316);
     REGISTER_TEST(GUITest_regression_scenarios::test_2318);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2342);
     REGISTER_TEST(GUITest_regression_scenarios::test_2343);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2344);
     REGISTER_TEST(GUITest_regression_scenarios::test_2351);
     REGISTER_TEST(GUITest_regression_scenarios::test_2352);
     REGISTER_TEST(GUITest_regression_scenarios::test_2360);
@@ -896,8 +889,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2863);
     REGISTER_TEST(GUITest_regression_scenarios::test_2884);
     REGISTER_TEST(GUITest_regression_scenarios::test_2887);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2891);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2891_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2894);
     REGISTER_TEST(GUITest_regression_scenarios::test_2895);
     REGISTER_TEST(GUITest_regression_scenarios::test_2897);
@@ -1015,7 +1006,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3373);
     REGISTER_TEST(GUITest_regression_scenarios::test_3379);
     REGISTER_TEST(GUITest_regression_scenarios::test_3384);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3396);
     REGISTER_TEST(GUITest_regression_scenarios::test_3398_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3398_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_3398_3);
@@ -1718,7 +1708,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6847);
     REGISTER_TEST(GUITest_regression_scenarios::test_6860);
     REGISTER_TEST(GUITest_regression_scenarios::test_6862);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6862_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6872);
     REGISTER_TEST(GUITest_regression_scenarios::test_6875);
     REGISTER_TEST(GUITest_regression_scenarios::test_6897);
@@ -3234,23 +3223,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0004);
-
-    /////////////////////////////////////////////////////////////////////////
-    // Common scenarios/NIAID_pipelines
-    /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0002);
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0003, minutes(20), labels({Cistrome, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0004, minutes(20), labels({Cistrome, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
-    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0007);
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0008, minutes(7), labels({Cistrome, Windows, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0009, labels({Nightly, Cistrome, Windows, Linux, MacOS}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0010, minutes(7), labels({Cistrome, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0011, labels({Nightly, Cistrome, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0012, labels({Nightly, Cistrome, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0013, labels({Nightly, Cistrome, Linux, MacOS}));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer

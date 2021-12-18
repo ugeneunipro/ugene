@@ -107,7 +107,6 @@ namespace U2 {
 #define EDITOR_STATE SETTINGS + "editor"
 #define PALETTE_STATE SETTINGS + "palette"
 #define TABS_STATE SETTINGS + "tabs"
-#define CHECK_R_PACKAGE SETTINGS + "check_r_for_cistrome"
 
 enum { ElementsTab,
        SamplesTab };

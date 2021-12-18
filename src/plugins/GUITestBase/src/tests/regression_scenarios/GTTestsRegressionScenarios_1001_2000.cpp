@@ -5619,40 +5619,6 @@ GUI_TEST_CLASS_DEFINITION(test_1587) {
     CHECK_SET_ERR(outputFile.exists() && outputFile.size() > 0, "Workflow output file is invalid");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_1594) {
-    //    1. Create a WD scheme: Read Annotations -> MACS.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem *read = GTUtilsWorkflowDesigner::addElement(os, "Read Annotations");
-    WorkflowProcessItem *write = GTUtilsWorkflowDesigner::addElement(os, "Find Peaks with MACS");
-    GTUtilsWorkflowDesigner::connect(os, read, write);
-    //    2. Set the input annotations file: "_common_data/bed/valid_input/Treatment_tags.bed".
-    GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bed/valid_input/Treatment_tags.bed");
-    //    3. Set the correct output folder for the MACS element.
-    GTUtilsWorkflowDesigner::click(os, write);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir().absoluteFilePath(sandBoxDir + "test_1594"), GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setTableValue(os, "Treatment features", 3, GTUtilsWorkflowDesigner::comboValue, GTUtilsWorkflowDesigner::getInputPortsTable(os, 0));
-    GTUtilsWorkflowDesigner::click(os, read);
-    //    4. Run the scheme.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    //    Expected: the progress of the workflow process changes correctly (from 0% up to 100%).
-    QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
-    for (int i = 0; i < 180; i++) {
-        if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) == nullptr) {
-            break;
-        }
-        QString text = taskProgressBar->text();
-        text = text.left(text.length() - 1);
-        bool isNumber = false;
-        int progress = text.toInt(&isNumber);
-        CHECK_SET_ERR(isNumber, QString("The progress must be a number: %1").arg(text));
-        CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
-    }
-    if (GTUtilsTask::getTaskByName(os, "Execute workflow", GTGlobals::FindOptions(false)) != nullptr) {
-        GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
-    }
-}
-
 GUI_TEST_CLASS_DEFINITION(test_1595) {
     //    The scenario is the following:
     //    1) Open WD.
@@ -7154,42 +7120,6 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastN\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_1714) {
-    //    1. Open the "external tools" configuration window using Settings/Preferences menu
-    //    2. Select path for external tools package (if not set).
-    //    3. Deselect all Cistrome tools
-    //    4. Deselect python external tool
-    //    Expected state: the python tool is deselected. UGENE doesn't hangs up (or crashes)
-
-    class DeselectCistromeAndPython : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QStringList cistromeTools;
-            cistromeTools << "go_analysis"
-                          << "seqpos"
-                          << "conservation_plot"
-                          << "peak2gene"
-                          << "MACS"
-                          << "CEAS Tools";
-
-            foreach (QString toolName, cistromeTools) {
-                AppSettingsDialogFiller::clearToolPath(os, toolName);
-            }
-
-            AppSettingsDialogFiller::clearToolPath(os, "python");
-
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new DeselectCistromeAndPython()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_1720) {
     GTLogTracer l;
 
@@ -8167,7 +8097,7 @@ GUI_TEST_CLASS_DEFINITION(test_1946) {
 GUI_TEST_CLASS_DEFINITION(test_1984) {
     //    1) Run UGENE
     //    2) Open Settings/Preferences/External tools
-    //    3) Set incorrect path for any external tool (cistrome toolkit, cufflinks toolkit, samtools toolkit, Rscript with its modules, python, perl, tophat)
+    //    3) Set incorrect path for any external tool.
     //    4) Press OK
     //    Expected state: UGENE doesn't show any warning to user. Error should be at UGENE log ("Details" columns should be enabled)
 

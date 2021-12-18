@@ -1157,10 +1157,6 @@ data/workflow_samples/HMMER/build-test-HMM.uwl
 data/workflow_samples/HMMER/searchHMM.uwl
 data/workflow_samples/NGS
 data/workflow_samples/NGS/chipseq_coverage.uwl
-data/workflow_samples/NGS/cistrome
-data/workflow_samples/NGS/cistrome/chip_seq.uwl
-data/workflow_samples/NGS/cistrome/chip_seq_with_control.uwl
-data/workflow_samples/NGS/cistrome.uwl
 data/workflow_samples/NGS/consensus.uwl
 data/workflow_samples/NGS/extract_coverage.uwl
 data/workflow_samples/NGS/extract_transcript_seq.uwl
@@ -1382,7 +1378,6 @@ tools/bowtie1
 tools/bowtie2
 tools/bwa
 tools/cap3
-tools/cistrome
 tools/clustalo
 tools/clustalw
 tools/cufflinks

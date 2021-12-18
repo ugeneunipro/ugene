@@ -32,13 +32,9 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/AppSettingsGUI.h>
-
 #include "ExternalToolSupportSettingsController.h"
 
 namespace U2 {
-
-const QString ExternalToolUtils::CISTROME_DATA_DIR = "CISTROME_DATA_DIR";
 
 void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
     QStringList missingTools;
@@ -73,40 +69,4 @@ void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
         }
     }
 }
-
-void ExternalToolUtils::addDefaultCistromeDirToSettings() {
-    QString cistromeDefaultPath;
-    QString customDataDir = qgetenv("UGENE_DATA_PATH");
-    if (!customDataDir.isEmpty()) {
-        cistromeDefaultPath = QFileInfo(customDataDir + "/cistrome").absoluteFilePath();
-    } else {
-        cistromeDefaultPath = QFileInfo(QString(PATH_PREFIX_DATA) + QString(":") + "cistrome").absoluteFilePath();
-    }
-
-    bool defaultExists = QFile::exists(cistromeDefaultPath);
-    QString savedValue = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString();
-
-    bool addNew = savedValue.isEmpty() && defaultExists;
-    bool removeOld = !savedValue.isEmpty() && !QFile::exists(savedValue);
-    bool replaceOld = removeOld && defaultExists;
-
-    if (addNew || replaceOld) {
-        AppContext::getSettings()->setValue(CISTROME_DATA_DIR, cistromeDefaultPath);
-    } else if (removeOld) {
-        AppContext::getSettings()->remove(CISTROME_DATA_DIR);
-    }
-}
-
-void ExternalToolUtils::addCistromeDataPath(const QString &dataName, const QString &dirName, bool entriesAreFolders) {
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
-    CHECK(nullptr != dpr, );
-
-    const QString dataPath = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString() + QDir::separator() + dirName;
-    U2DataPath *dp = new U2DataPath(dataName, dataPath, "", U2DataPath::CutFileExtension | (entriesAreFolders ? U2DataPath::AddOnlyFolders : U2DataPath::None));
-    bool ok = dpr->registerEntry(dp);
-    if (!ok) {
-        delete dp;
-    }
-}
-
 }    // namespace U2

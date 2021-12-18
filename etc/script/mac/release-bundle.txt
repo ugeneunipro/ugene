@@ -1275,10 +1275,6 @@ Unipro UGENE.app/Contents/MacOS/data/workflow_samples/HMMER/build-test-HMM.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/HMMER/searchHMM.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/chipseq_coverage.uwl
-Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/cistrome
-Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/cistrome.uwl
-Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/cistrome/chip_seq.uwl
-Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/cistrome/chip_seq_with_control.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/consensus.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/extract_coverage.uwl
 Unipro UGENE.app/Contents/MacOS/data/workflow_samples/NGS/extract_transcript_seq.uwl
@@ -1467,7 +1463,6 @@ Unipro UGENE.app/Contents/MacOS/tools/bowtie1
 Unipro UGENE.app/Contents/MacOS/tools/bowtie2
 Unipro UGENE.app/Contents/MacOS/tools/bwa
 Unipro UGENE.app/Contents/MacOS/tools/cap3
-Unipro UGENE.app/Contents/MacOS/tools/cistrome
 Unipro UGENE.app/Contents/MacOS/tools/clustalo
 Unipro UGENE.app/Contents/MacOS/tools/clustalw
 Unipro UGENE.app/Contents/MacOS/tools/cufflinks

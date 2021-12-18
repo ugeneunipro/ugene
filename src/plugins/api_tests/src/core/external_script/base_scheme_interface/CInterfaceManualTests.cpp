@@ -622,28 +622,15 @@ IMPLEMENT_TEST(CInterfaceManualTests, call_variants) {
 }
 
 IMPLEMENT_TEST(CInterfaceManualTests, chip_seq) {
-    wchar_t readAnnotations[MAX_ELEMENT_NAME_LENGTH], macsId[MAX_ELEMENT_NAME_LENGTH],
-        ceasReport[MAX_ELEMENT_NAME_LENGTH], conservationPlotId[MAX_ELEMENT_NAME_LENGTH],
-        seqPosId[MAX_ELEMENT_NAME_LENGTH], peak2GeneId[MAX_ELEMENT_NAME_LENGTH],
-        conductGoId[MAX_ELEMENT_NAME_LENGTH], writeAnnotations[MAX_ELEMENT_NAME_LENGTH],
-        writeAnnotations1[MAX_ELEMENT_NAME_LENGTH];
+    wchar_t readAnnotations[MAX_ELEMENT_NAME_LENGTH];
+    wchar_t writeAnnotations[MAX_ELEMENT_NAME_LENGTH];
+    wchar_t writeAnnotations1[MAX_ELEMENT_NAME_LENGTH];
+
     SchemeHandle scheme = nullptr;
     U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readAnnotations);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"macs-id", MAX_ELEMENT_NAME_LENGTH, macsId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"ceas-report", MAX_ELEMENT_NAME_LENGTH, ceasReport);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"conservation_plot-id", MAX_ELEMENT_NAME_LENGTH, conservationPlotId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"seqpos-id", MAX_ELEMENT_NAME_LENGTH, seqPosId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"peak2gene-id", MAX_ELEMENT_NAME_LENGTH, peak2GeneId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"conduct-go-id", MAX_ELEMENT_NAME_LENGTH, conductGoId);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"write-annotations", MAX_ELEMENT_NAME_LENGTH, writeAnnotations);
     CHECK_U2_ERROR(error);
@@ -652,66 +639,12 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq) {
 
     error = setSchemeElementAttribute(scheme, readAnnotations, L"url-in.dataset", L"Dataset");
     CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, macsId, L"output-dir", L"tools_output");
-    CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, ceasReport, L"anns-file", L"ceas_annotations.xls");
-    CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, ceasReport, L"image-file", L"ceas_report.pdf");
-    CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, conservationPlotId, L"output-file", L"conservation.bmp");
-    CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, seqPosId, L"output-dir", L"tools_output");
-    CHECK_U2_ERROR(error);
-    error = setSchemeElementAttribute(scheme, conductGoId, L"output-dir", L"tools_output");
-    CHECK_U2_ERROR(error);
 
     error = setSchemeElementAttribute(scheme, writeAnnotations, L"url-out", L"genes.gb");
     CHECK_U2_ERROR(error);
 
     error = setSchemeElementAttribute(scheme, writeAnnotations1, L"url-out", L"peaks.gb");
     CHECK_U2_ERROR(error);
-
-    error = addFlowToScheme(scheme, readAnnotations, L"out-url", macsId, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, macsId, L"out-data", ceasReport, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, macsId, L"out-data", conservationPlotId, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, macsId, L"out-data", seqPosId, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, macsId, L"out-data", peak2GeneId, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, peak2GeneId, L"out-data", conductGoId, L"in-data");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, peak2GeneId, L"out-data", writeAnnotations, L"in-annotations");
-    CHECK_U2_ERROR(error);
-    error = addFlowToScheme(scheme, peak2GeneId, L"out-data", writeAnnotations1, L"in-annotations");
-    CHECK_U2_ERROR(error);
-
-    error = addSchemeActorsBinding(scheme, readAnnotations, L"url", macsId, L"in-data._treatment-ann");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, macsId, L"wiggle-treat", ceasReport, L"in-data.enrichment-signal");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, macsId, L"peak-regions", ceasReport, L"in-data.peak-regions");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, macsId, L"peak-summits", conservationPlotId, L"in-data.cp_treat-ann");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, macsId, L"peak-summits", seqPosId, L"in-data.cp_treat-ann");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, macsId, L"peak-summits", peak2GeneId, L"in-data._treat-ann");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, peak2GeneId, L"gene-annotation-url", conductGoId, L"in-data.in-ann");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, peak2GeneId, L"gene-annotation", writeAnnotations, L"in-annotations.annotations");
-    CHECK_U2_ERROR(error);
-    error = addSchemeActorsBinding(scheme, peak2GeneId, L"peak-annotation", writeAnnotations1, L"in-annotations.annotations");
-    CHECK_U2_ERROR(error);
-
-    U2OpStatusImpl stateInfo;
-    SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  getWdSchemesPath() + "/NGS/cistrome/chip_seq.uwl",
-                                                  stateInfo);
-    CHECK_NO_ERROR(stateInfo);
 
     releaseScheme(scheme);
 }
@@ -730,18 +663,6 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq_with_control) {
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readAnnotations1);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readAnnotations2);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"macs-id", MAX_ELEMENT_NAME_LENGTH, macsId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"ceas-report", MAX_ELEMENT_NAME_LENGTH, ceasReport);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"conservation_plot-id", MAX_ELEMENT_NAME_LENGTH, conservationPlotId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"seqpos-id", MAX_ELEMENT_NAME_LENGTH, seqPosId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"peak2gene-id", MAX_ELEMENT_NAME_LENGTH, peak2GeneId);
-    CHECK_U2_ERROR(error);
-    error = addElementToScheme(scheme, L"conduct-go-id", MAX_ELEMENT_NAME_LENGTH, conductGoId);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"multiplexer", MAX_ELEMENT_NAME_LENGTH, multiplexer);
     CHECK_U2_ERROR(error);
@@ -814,12 +735,6 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq_with_control) {
     CHECK_U2_ERROR(error);
     error = addSchemeActorsBinding(scheme, peak2GeneId, L"peak-annotation", writeAnnotations1, L"in-annotations.annotations");
     CHECK_U2_ERROR(error);
-
-    U2OpStatusImpl stateInfo;
-    SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  getWdSchemesPath() + "/NGS/cistrome/chip_seq_with_control.uwl",
-                                                  stateInfo);
-    CHECK_NO_ERROR(stateInfo);
 
     releaseScheme(scheme);
 }

@@ -2430,20 +2430,6 @@ GUI_TEST_CLASS_DEFINITION(test_3384) {
     GTUtilsLog::check(os, l);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_3396) {
-    // Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // Add macs worker
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Find Peaks with MACS");
-    // set paremeter wiggle output to false
-    GTUtilsWorkflowDesigner::click(os, "Find Peaks with MACS");
-    GTUtilsWorkflowDesigner::setParameter(os, "Wiggle output", 0, GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::click(os, "Find Peaks with MACS");
-    // Expected state: parrameter wiggle space is hidden
-    QStringList parameters = GTUtilsWorkflowDesigner::getAllParameters(os);
-    CHECK_SET_ERR(!parameters.contains("Wiggle space"), "Wiggle space parameter is shown");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_3398_1) {
     //    1. Open "_common_data/fasta/broken/data_in_the_name_line.fa".
     //    2. Select "As separate sequences" mode.
@@ -2646,8 +2632,9 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
 GUI_TEST_CLASS_DEFINITION(test_3439) {
     // Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // Add macs worker
+
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Alignment");
+
     // Validate workflow
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
