@@ -609,27 +609,22 @@ void MSAEditorSequenceArea::sl_cutSelection() {
 
 void MSAEditorSequenceArea::sl_addSeqFromFile() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
+    CHECK(!msaObject->isStateLocked(), );
 
     QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
 
     LastUsedDirHelper lod;
-    QStringList urls;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);
+    QStringList urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        editor->getSelectionController()->clearSelection();
+        int insertMaRowIndex = editor->getNumSequences();
         const MaEditorSelection &selection = editor->getSelection();
-        int insertViewRowIndex = selection.isEmpty() ? -1 : selection.getRectList().last().bottom() + 1;
-        int insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(insertViewRowIndex);
+        if (!selection.isEmpty()) {
+            // Insert after the last selected row.
+            int lastSelectedViewRowIndex = selection.getRectList().last().bottom();
+            insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(lastSelectedViewRowIndex + 1);
+        }
         auto task = new AddSequencesFromFilesToAlignmentTask(msaObject, urls, insertMaRowIndex);
         TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);

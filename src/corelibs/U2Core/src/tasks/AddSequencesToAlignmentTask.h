@@ -68,24 +68,24 @@ protected:
     /** Original list of sequences to add into the alignment. */
     QList<DNASequence> sequenceList;
 
-    /** Insert location for the sequence list. */
-    int insertMaRowIndex;
+    /** Insert location for the sequence list. '-1' or any other illegal value results to appending after the last row in the selection.*/
+    int insertMaRowIndex = -1;
 
     QPointer<MultipleSequenceAlignmentObject> maObj;
 
 private:
-    StateLock *stateLock;
-    const DNAAlphabet *msaAlphabet;
+    StateLock *stateLock = nullptr;
+    const DNAAlphabet *msaAlphabet = nullptr;
     QStringList errorList;
     MaModificationInfo mi;
 
     /*
      * If re-check alphabet is true and the alphabet of the new sequence is not the same as the alphabet of the alignment
-     * the task will re-test the sequence data if it fits into the alignment alphabet first and fall-back to the seqeuence alphabet only if it does not.
+     * the task will re-test the sequence data if it fits into the alignment alphabet first and fall-back to the sequence alphabet only if it does not.
      *
      * Example: paste symbol 'T' to amino alignment: 'T' is detected as Nucleic while it is also valid for Amino!
      */
-    bool recheckNewSequenceAlphabetOnMismatch;
+    bool recheckNewSequenceAlphabetOnMismatch = false;
 
     static const int maxErrorListSize;
 
