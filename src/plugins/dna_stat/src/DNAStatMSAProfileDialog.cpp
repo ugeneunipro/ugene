@@ -112,7 +112,7 @@ void DNAStatMSAProfileDialog::accept() {
     s.reportGaps = gapCB->isChecked();
     s.stripUnused = !unusedCB->isChecked();
     s.countGapsInConsensusNumbering = !skipGapPositionsCB->isChecked();
-    if (saveBox->isChecked()) {
+    if (!saveBox->isCheckable() || saveBox->isChecked()) {
         s.outURL = saveController->getSaveFileName();
         if (s.outURL.isEmpty()) {
             QMessageBox::critical(this, tr("Error"), tr("File URL is empty"));
