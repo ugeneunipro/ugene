@@ -157,9 +157,11 @@ void DigestSequenceDialog::accept() {
     for (int row = 0; row < itemCount; ++row) {
         const QString &annEncoded = conservedAnnsWidget->item(row)->text();
         QStringList annData = annEncoded.split(" ");
-        assert(annData.size() == 2);
-        QString aName = annData.at(0);
-        QString locationStr(annData.at(1));
+        assert(annData.size() >= 2);
+
+        QString regionString = annData.last();
+        QString aName = annEncoded.left(annEncoded.size() - regionString.size());
+        QString locationStr(regionString);
         U2Location l;
         Genbank::LocationParser::parseLocation(qPrintable(locationStr), locationStr.size(), l);
         foreach (const U2Region &region, l->regions) {
@@ -333,6 +335,7 @@ void DigestSequenceDialog::setUiEnabled(bool enabled) {
 
 void DigestSequenceDialog::sl_addAnnBtnClicked() {
     QObjectScopedPointer<QDialog> dlg = new QDialog(this);
+    dlg->setObjectName("select_annotations_dlalog");
     dlg->setWindowTitle(tr("Select annotations"));
     QVBoxLayout *layout = new QVBoxLayout(dlg.data());
     QListWidget *listWidget(new QListWidget(dlg.data()));
@@ -347,6 +350,7 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
     listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     layout->addWidget(listWidget);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dlg.data());
+    buttonBox->setObjectName("buttonBox");
     connect(buttonBox, SIGNAL(accepted()), dlg.data(), SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dlg.data(), SLOT(reject()));
     layout->addWidget(buttonBox);
