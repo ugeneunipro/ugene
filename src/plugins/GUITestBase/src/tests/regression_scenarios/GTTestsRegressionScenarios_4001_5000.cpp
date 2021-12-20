@@ -2611,15 +2611,12 @@ GUI_TEST_CLASS_DEFINITION(test_4308) {
     GTUtilsTask::waitTaskStart(os, "Loading documents");
 
     //    2. Remove the document while the file is opening.
-    const bool itemExistsBefore = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
-    CHECK_SET_ERR(itemExistsBefore, "A loading item not found");
-
-    // GTUtilsNotifications::waitForNotification(os, true, "Subtask {Load 'PF07724_full_family.fa'} is canceled Document was removed");
+    GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
     GTUtilsNotifications::waitForNotification(os, true, "Document was removed");
     GTUtilsDocument::removeDocument(os, "PF07724_full_family.fa");
 
     //    Expected state: the document is removed from the project, the loading task is canceled, a notification about the canceled task appears.
-    const bool itemExists = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
+    bool itemExists = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa", {false});
     CHECK_SET_ERR(!itemExists, "The document is not removed from the project");
     GTUtilsTask::checkNoTask(os, "Loading documents");
 }
