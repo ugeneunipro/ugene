@@ -199,10 +199,10 @@ void AddSequencesFromFilesToAlignmentTask::prepare() {
 
 QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subTask) {
     propagateSubtaskError();
-    CHECK(!isCanceled() && !hasError(), {});
+    CHECK_OP(stateInfo, {});
 
-    auto *loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
-    SAFE_POINT(loadDocumentSubTask != nullptr, "loadTask is NULL", {});
+    auto loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
+    SAFE_POINT(loadDocumentSubTask != nullptr, "Not a LoadDocumentTask", {});
 
     Document *doc = loadDocumentSubTask->getDocument();
     QList<GObject *> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
