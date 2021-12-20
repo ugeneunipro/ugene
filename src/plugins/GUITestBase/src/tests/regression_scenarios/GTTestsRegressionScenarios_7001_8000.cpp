@@ -365,6 +365,29 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7126) {
+    // Check that MSA re-ordered by tree is copied to clipboard using the visual row order.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7127");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::selectRows(os, 0, 3);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString clipboardText = GTClipboard::text(os);
+    QStringList lines = clipboardText.split("\n");
+
+    CHECK_SET_ERR(lines[2].startsWith("Isophya_altaica_EF540820"), "Unexpected line 2: " + lines[2]);
+    CHECK_SET_ERR(lines[3].startsWith("Bicolorana_bicolor_EF540830"), "Unexpected line 3: " + lines[3]);
+    CHECK_SET_ERR(lines[4].startsWith("Roeseliana_roeseli"), "Unexpected lines 4: " + lines[4]);
+    CHECK_SET_ERR(lines[5].startsWith("Montana_montana"), "Unexpected lines 5: " + lines[5]);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7127) {
     // Make an alignment ordered by tree and check that the row order shown in the status bar is correct.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

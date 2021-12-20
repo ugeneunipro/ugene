@@ -186,38 +186,47 @@ void AddSequencesFromFilesToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
     for (const QString &fileWithSequencesUrl : qAsConst(urlList)) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(fileWithSequencesUrl);
-        if (!detectedFormats.isEmpty()) {
-            IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            DocumentFormat *format = detectedFormats.first().format;
-            loadTask = new LoadDocumentTask(format->getFormatId(), fileWithSequencesUrl, factory);
-            addSubTask(loadTask);
-        } else {
-            setError("Unknown format");
+        if (detectedFormats.isEmpty()) {
+            setError(tr("Unsupported document format: %1").arg(fileWithSequencesUrl));
+            continue;
         }
+        IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        DocumentFormat *format = detectedFormats.first().format;
+        loadTask = new LoadDocumentTask(format->getFormatId(), fileWithSequencesUrl, factory);
+        addSubTask(loadTask);
     }
 }
 
 QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    const QList<Task *> emptySubTasks;  // Helper constant. This method never returns any subtasks.
-
     propagateSubtaskError();
-    if (isCanceled() || hasError()) {
-        return emptySubTasks;
-    }
+    CHECK_OP(stateInfo, {});
 
-    LoadDocumentTask *loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
-    SAFE_POINT(loadDocumentSubTask != nullptr, "loadTask is NULL", emptySubTasks);
+    auto loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
+    SAFE_POINT(loadDocumentSubTask != nullptr, "Not a LoadDocumentTask", {});
+
     Document *doc = loadDocumentSubTask->getDocument();
-    const QList<GObject *> sequenceObjectList = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    for (const GObject *objects : qAsConst(sequenceObjectList)) {
-        const U2SequenceObject *sequenceObject = qobject_cast<const U2SequenceObject *>(objects);
-        SAFE_POINT(sequenceObject != nullptr, "Cast to U2SequenceObject failed", emptySubTasks);
+    QList<GObject *> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    for (const GObject *object : qAsConst(sequenceObjects)) {
+        auto sequenceObject = qobject_cast<const U2SequenceObject *>(object);
+        SAFE_POINT(sequenceObject != nullptr, "Not a sequence object:" + object->getGObjectName(), {});
         DNASequence sequence = sequenceObject->getWholeSequence(stateInfo);
-        CHECK(!stateInfo.isCoR(), emptySubTasks);
-        sequence.alphabet = sequenceObject->getAlphabet();
+        CHECK(!stateInfo.isCoR(), {});
         sequenceList.append(sequence);
     }
-    return emptySubTasks;
+
+    QList<GObject *> msaObjects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    for (const GObject *object : qAsConst(msaObjects)) {
+        auto msaObject = qobject_cast<const MultipleSequenceAlignmentObject *>(object);
+        SAFE_POINT(msaObject != nullptr, "Not an alignment object:" + object->getGObjectName(), {});
+        for (int i = 0; i < msaObject->getNumRows(); i++) {
+            // Keep all gaps, so alignment sequences are added in the 'aligned' form.
+            MultipleAlignmentRow row = msaObject->getRow(i);
+            DNASequence sequence(row->getName(), row->getSequenceWithGaps(true, true), msaObject->getAlphabet());
+            sequenceList.append(sequence);
+        }
+    }
+
+    return {};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
