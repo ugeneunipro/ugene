@@ -4493,11 +4493,10 @@ GUI_TEST_CLASS_DEFINITION(test_5837) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5840) {
-    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
     QString fileName = "sanger_alignment.ugenedb";
 
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_short.ugenedb", sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     // 2. Select a read ""
@@ -4508,8 +4507,8 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected: The document has been deleted.
-    bool isExited = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
-    CHECK_SET_ERR(!isExited, "The document has not been deleted")
+    bool isFound = GTUtilsProjectTreeView::checkItem(os, "Aligned reads", {false});
+    CHECK_SET_ERR(!isFound, "The document has not been deleted")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5842) {
