@@ -3070,43 +3070,39 @@ GUI_TEST_CLASS_DEFINITION(test_3484_1) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "COI_3484_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI_3484_1.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != nullptr, "TreeView not found");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_3484_1", testDir + "_common_data/scenarios/sandbox/proj_3484_1"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/sandbox/", "proj_3484_1.uprj"));
-    // GTWidget::clickWindowTitle(os, AppContext::getMainWindow()->getQMainWindow());
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Open...");
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::loadDocument(os, "COI_3484_1.aln");
-    QGraphicsView *treeView1 = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView1 != nullptr, "TreeView not found");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::removeDocument(os, "COI_3484_1.nwk");
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save all");
+    GTMenu::clickMainMenuItem(os, {"File", "Save all"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // GTWidget::clickWindowTitle(os, AppContext::getMainWindow()->getQMainWindow());
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/sandbox/", "proj_3484_1.uprj"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Open...");
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
 
     GTUtilsDocument::loadDocument(os, "COI_3484_1.aln");
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484_1.nwk") == false, "Unauthorized tree opening!");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484_1.nwk", {false}) == false, "Unauthorized tree opening!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3504) {
