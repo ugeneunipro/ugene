@@ -502,8 +502,8 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa,
     int rowCount = resultMa->getNumRows();
     CHECK(rowCount == originalMa->getNumRows() || !prefix.isEmpty(), false);
 
-    for (int i = 0; i < rowCount; i++) {
-        MultipleSequenceAlignmentRow resultRow = resultMa->getMsaRow(i);
+    for (int resultMaIndex = 0; resultMaIndex < rowCount; resultMaIndex++) {
+        MultipleSequenceAlignmentRow resultRow = resultMa->getMsaRow(resultMaIndex);
         QString indexedName = resultRow->getName();
         if (!prefix.isEmpty()) {
             if (!indexedName.startsWith(prefix)) {
@@ -516,9 +516,9 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa,
         CHECK(ok && originalRowIndex >= 0 && originalRowIndex < rowCount, false);
         MultipleSequenceAlignmentRow originalRow = originalMa->getMsaRow(originalRowIndex);
         U2MsaRow originalRowInfo = originalRow->getRowDbInfo();
-        resultMa->setRowId(originalRowIndex, originalRowInfo.rowId);
-        resultMa->setSequenceId(originalRowIndex, originalRowInfo.sequenceId);
-        resultMa->renameRow(originalRowIndex, originalRow->getName());
+        resultMa->setRowId(resultMaIndex, originalRowInfo.rowId);
+        resultMa->setSequenceId(resultMaIndex, originalRowInfo.sequenceId);
+        resultMa->renameRow(resultMaIndex, originalRow->getName());
     }
     return true;
 }
