@@ -107,8 +107,19 @@ public:
      *  The optional 'prefix' field may be used to detect indexed rows. In this case all rows with no given prefix will not be renamed, but passed as is.
      *
      *  The method returns 'true' if all rows with a correct prefix were renamed.
+     *
+     *  TODO: this method is deprecated and all usages of it will be removed. Use 'restoreOriginalRowProperties' instead.
      **/
     static bool restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment &msa, const QStringList &names, const QString &prefix = "");
+
+    /**
+     * Restores original rowId, sequenceId and rowName from using the by-name mapping in resultMa.
+     * With the by-name mapping the resultMa contains sequence names with 'prefix<Row-Index>' where '<Row-Index>' is the original row index.
+     *
+     * If the prefix is not empty and the result sequence does not start with the prefix - do not update result row properties.
+     * The method returns 'true' if all rows with a non-empty prefix were found and updated.
+     */
+    static bool restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa, const MultipleSequenceAlignment &originalMa, const QString &prefix = "");
 
     static QList<U2Region> getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount = -1);
     static void removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount = -1);

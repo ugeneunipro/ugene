@@ -6101,6 +6101,31 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5000) {
+    // Check that MSA object can be added to another MSA object via context menu.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/dna.fasta.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/collapse_mode_1.aln"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that sequences appended to the file.
+    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList1.size() == 18, "1. Invalid sequence count: " + QString::number(nameList1.size()));
+
+    // Check insertion into the middle (after the first row).
+    GTUtilsMsaEditor::selectRows(os, 0, 0);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/collapse_mode_1.aln"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2.size() == 26, "2. Invalid sequence count: " + QString::number(nameList2.size()));
+    CHECK_SET_ERR(nameList2[1] == "a_1", "Invalid sequence name: " + nameList2[1]);
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

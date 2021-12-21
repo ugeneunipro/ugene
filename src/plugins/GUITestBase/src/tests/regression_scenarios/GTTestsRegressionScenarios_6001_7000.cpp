@@ -5749,7 +5749,8 @@ GUI_TEST_CLASS_DEFINITION(test_6807) {
             QLabel *warningLabel = GTWidget::findExactWidget<QLabel *>(os, "warningLabel", dialog);
             CHECK_SET_ERR(!warningLabel->text().isEmpty(), "Warning message is empty");
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTLineEdit::setText(os, "fileEdit", sandBoxDir + "/test_6807.html", dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     // 1. Open document test/_common_data/clustal/big.aln
@@ -5757,9 +5758,12 @@ GUI_TEST_CLASS_DEFINITION(test_6807) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Do MSA area context menu->Statistics->generate grid profile
     // Expected state: grid profile dialog contains warning label
+    // 3. Accept dialog
+    // Expected state: grid profile task finished
     GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, new CheckWarningScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6808) {
