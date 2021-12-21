@@ -8191,18 +8191,12 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "mouse", false, 5, "Organism"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Search NCBI GenBank...");
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", false, 10, "Organism", "OF270726"));
+    GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    ProjectViewModel *model = qobject_cast<ProjectViewModel *>(treeView->model());
-    QString text = model->data(model->index(0, 0, QModelIndex()), Qt::DisplayRole).toString();
-
-    CHECK_SET_ERR(text.contains(".fasta"), text);
+    GTUtilsProjectTreeView::checkItem(os, ".fasta", GTGlobals::FindOptions(true, Qt::MatchContains));
 }
 
 }  // namespace GUITest_regression_scenarios

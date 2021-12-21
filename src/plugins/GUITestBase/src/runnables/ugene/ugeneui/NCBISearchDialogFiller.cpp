@@ -312,49 +312,61 @@ void NcbiSearchDialogFiller::waitTasksFinish() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogSimpleFiller"
+
+NCBISearchDialogSimpleFiller::NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os,
+                                                           const QString &_query,
+                                                           bool _doubleEnter,
+                                                           int _resultLimit,
+                                                           const QString &_term,
+                                                           const QString &_resultToLoad)
+    : Filler(os, "SearchGenbankSequenceDialog"),
+      query(_query),
+      doubleEnter(_doubleEnter),
+      resultLimit(_resultLimit),
+      term(_term), resultToLoad(_resultToLoad) {
+}
+
 #define GT_METHOD_NAME "commonScenario"
 void NCBISearchDialogSimpleFiller::commonScenario() {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *queryEditLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "queryEditLineEdit", dialog));
-    GT_CHECK(queryEditLE != nullptr, "queryEdit line not found");
-    GTLineEdit::setText(os, queryEditLE, query);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", dialog), query);
 
     if (term != "") {
-        QComboBox *term_box = GTWidget::findExactWidget<QComboBox *>(os, "term_box", dialog);
-        GTComboBox::selectItemByText(os, term_box, term);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", dialog), term);
     }
     if (resultLimit != -1) {
-        QSpinBox *resultLimitBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "resultLimitBox", dialog));
-        GTSpinBox::setValue(os, resultLimitBox, resultLimit, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "resultLimitBox", dialog), resultLimit, GTGlobals::UseKeyBoard);
     }
 
     // Run search
     GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
-    // Wait the search is finished.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     if (doubleEnter) {
-        QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-        GT_CHECK(box != nullptr, "buttonBox is NULL");
+        auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
         QPushButton *button = box->button(QDialogButtonBox::Cancel);
         GT_CHECK(button != nullptr, "cancel button is NULL");
         GTWidget::click(os, button);
         return;
     }
 
-    QTreeWidget *resultsTreeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "treeWidget", dialog));
-
     if (resultLimit != -1) {
         int resultCount = getResultNumber();
         GT_CHECK(resultCount == resultLimit, QString("unexpected number of results. Expected: %1, found: %2").arg(resultLimit).arg(resultCount))
     }
 
+    auto resultsTreeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
-    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));  // fast fix, clicking first result
+    if (resultToLoad.isEmpty()) {
+        // Click the first result. Original behavior.
+        GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));
+    } else {
+        auto item = GTTreeWidget::findItem(os, resultsTreeWidget, resultToLoad, nullptr, 0, GTGlobals::FindOptions(true, Qt::MatchContains));
+        GTTreeWidget::click(os, item);
+    }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
+    auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
     QPushButton *button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
