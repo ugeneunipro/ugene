@@ -155,15 +155,11 @@ void DigestSequenceDialog::accept() {
 
     int itemCount = conservedAnnsWidget->count();
     for (int row = 0; row < itemCount; ++row) {
-        const QString &annEncoded = conservedAnnsWidget->item(row)->text();
-        QStringList annData = annEncoded.split(" ");
-        assert(annData.size() >= 2);
-
-        QString regionString = annData.last();
-        QString aName = annEncoded.left(annEncoded.size() - regionString.size());
-        QString locationStr(regionString);
+        auto item = conservedAnnsWidget->item(row);
+        QString aName = item->data((int)ItemDataRole::AnnotationNameRole).toString();
+        QString aRegion = item->data((int)ItemDataRole::AnnotationLocationRole).toString();
         U2Location l;
-        Genbank::LocationParser::parseLocation(qPrintable(locationStr), locationStr.size(), l);
+        Genbank::LocationParser::parseLocation(qPrintable(aRegion), aRegion.size(), l);
         foreach (const U2Region &region, l->regions) {
             cfg.conservedRegions.insertMulti(aName, region);
         }
@@ -344,7 +340,12 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
         QList<Annotation *> anns = aObj->getAnnotations();
         foreach (Annotation *a, anns) {
             const SharedAnnotationData &d = a->getData();
-            listWidget->addItem(QString("%1 %2").arg(d->name).arg(U1AnnotationUtils::buildLocationString(d)));
+            auto location = U1AnnotationUtils::buildLocationString(d);
+            auto itemText = QString("%1 %2").arg(d->name).arg(location);
+            auto item = new QListWidgetItem(itemText, listWidget);
+            item->setData((int)ItemDataRole::AnnotationNameRole, d->name);
+            item->setData((int)ItemDataRole::AnnotationLocationRole, location);
+            listWidget->addItem(item);
         }
     }
     listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -364,7 +365,12 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
         foreach (QListWidgetItem *item, items) {
             const QString &itemText = item->text();
             if (conservedAnnsWidget->findItems(itemText, Qt::MatchExactly).isEmpty()) {
-                conservedAnnsWidget->addItem(itemText);
+                auto newItem = new QListWidgetItem(itemText, conservedAnnsWidget);
+                auto aName = item->data((int)ItemDataRole::AnnotationNameRole).toString();
+                auto aLocation = item->data((int)ItemDataRole::AnnotationLocationRole).toString();
+                newItem->setData((int)ItemDataRole::AnnotationNameRole, aName);
+                newItem->setData((int)ItemDataRole::AnnotationLocationRole, aLocation);
+                conservedAnnsWidget->addItem(newItem);
             }
         }
     }

@@ -60,6 +60,11 @@ private slots:
     void sl_taskStateChanged();
 
 private:
+    enum class ItemDataRole {
+        AnnotationNameRole = Qt::UserRole,
+        AnnotationLocationRole
+    };
+
     void addAnnotationWidget();
     void searchForAnnotatedEnzymes(ADVSequenceObjectContext *ctx);
     void updateAvailableEnzymeWidget();

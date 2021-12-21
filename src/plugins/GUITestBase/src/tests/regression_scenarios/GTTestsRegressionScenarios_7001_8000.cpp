@@ -1401,9 +1401,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
             // 4. Select "AaaI" and click "Add---->"
             // 5. Go to the "Conserved annotations" tab
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QListWidget* availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
-            CHECK_SET_ERR(availableEnzymeWidget != nullptr, "Cannot find available enzyme list widget");
-
+            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
             QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
 
@@ -1426,7 +1424,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
                 }
             };
 
-            GTUtilsDialog::waitForDialog(os, new Filler(os, "select_annotations_dlalog", new SelectAnnotationScenario));
+            GTUtilsDialog::waitForDialog(os, new Filler(os, "select_annotations_dlalog", new SelectAnnotationScenario()));
 
             // 7. Click "OK"
             GTWidget::click(os, GTWidget::findWidget(os, "addAnnBtn", dialog));
@@ -1438,13 +1436,13 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     };
 
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario));
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Cloning", "Digest into fragments..." } ));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the task finished with an error: Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
-    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature  (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
+    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7456) {
