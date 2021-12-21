@@ -167,7 +167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.addResultToProject = true;
-    settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_000F4_1").absoluteFilePath();
+    settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0004_1").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
