@@ -56,6 +56,7 @@ namespace U2 {
 #define MOBJECT_DEFAULT_FONT_SIZE 10
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
+class MaCollapseModel;
 class MaEditorWgt;
 class MaEditorMultilineWgt;
 class MaEditorOverviewArea;
@@ -218,6 +219,9 @@ public:
 
     /** Returns collapse model instance. The returned value is never null. */
     MaCollapseModel* getCollapseModel() const;
+
+    /** Returns undo-redo framework. The returned value is never null. */
+    MaUndoRedoFramework *getUndoRedoFramework() const;
 
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};

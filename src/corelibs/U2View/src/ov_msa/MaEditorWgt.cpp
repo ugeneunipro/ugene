@@ -89,9 +89,6 @@ MaEditorWgt::MaEditorWgt(MaEditor* _editor)
       cutSelectionAction(nullptr) {
     SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     setFocusPolicy(Qt::ClickFocus);
-
-    connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
-    connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
 QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment alignment, QWidget* heightTarget, bool proxyMouseEventsToNameList) {
@@ -101,18 +98,6 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
-}
-
-QAction *MaEditorWgt::getUndoAction() const {
-    QAction *a = undoFWK->getUndoAction();
-    a->setObjectName("msa_action_undo");
-    return a;
-}
-
-QAction *MaEditorWgt::getRedoAction() const {
-    QAction *a = undoFWK->getRedoAction();
-    a->setObjectName("msa_action_redo");
-    return a;
 }
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
