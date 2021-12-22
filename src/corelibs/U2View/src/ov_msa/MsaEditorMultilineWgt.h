@@ -51,6 +51,8 @@ public:
 
     MaEditorWgt *getUI(uint index = 0) const override;
 
+    void addPhylTreeWidget(QWidget *multiTreeViewer) override;
+
 private slots:
 
 protected:

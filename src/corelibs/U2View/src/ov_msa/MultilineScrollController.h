@@ -47,11 +47,6 @@ public:
 
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
-    QPoint getScreenPosition() const;  // in pixels
-    QPoint getGlobalMousePosition(const QPoint &mousePos) const;
-
-    void updateVerticalScrollBar();
-
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
     void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
@@ -103,10 +98,6 @@ public slots:
     void sl_zoomScrollBars();
     void sl_hScrollValueChanged();
     void sl_vScrollValueChanged();
-
-private slots:
-    void sl_collapsibleModelIsAboutToBeChanged();
-    void sl_collapsibleModelChanged();
 
 private:
     int getAdditionalXOffset() const;  // in pixels;

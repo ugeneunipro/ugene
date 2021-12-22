@@ -242,6 +242,7 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
         }
     }
 
+    // Save toolbar for future switching singleline <-> multiline modes
     this->staticToolBar = tb;
     tb->addAction(getMaEditorWgt(0)->copyFormattedSelectionAction);
 
@@ -274,11 +275,16 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
 
 void MSAEditor::buildMenu(QMenu *m, const QString &type) {
     if (type != MsaEditorMenuType::STATIC) {
-        GObjectView::buildMenu(m, type);
+        fillMenu(m, type);
         return;
     }
-    // TODO:ichebyki
-    // 0 must be changed for all, move action to this object?
+
+    // Save menu for future switching singleline <-> multiline modes
+    this->staticMenu = m;
+    this->staticMenuType = type;
+
+    // create menu for 0th child, as all children use the same sequeance
+    // so menu action's result will applyed to all lines
     addAppearanceMenu(m, 0);
 
     addNavigationMenu(m);
@@ -297,14 +303,16 @@ void MSAEditor::buildMenu(QMenu *m, const QString &type) {
 
     addAdvancedMenu(m);
 
-    GObjectView::buildMenu(m, type);
+    fillMenu(m, type);
 
     GUIUtils::disableEmptySubmenus(m);
 }
 
+void MSAEditor::fillMenu(QMenu *m, const QString &type) {
+    GObjectView::buildMenu(m, type);
+}
+
 void MSAEditor::addCopyPasteMenu(QMenu *m, uint uiIndex) {
-    // TODO:ichebyki
-    // do we need to use different ui ?
     MaEditor::addCopyPasteMenu(m, uiIndex);
 
     QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
@@ -988,14 +996,15 @@ void MSAEditor::sl_exportImage() {
     dlg->exec();
 }
 
-void MSAEditor::sl_multilineViewAction()
-{
+void MSAEditor::sl_multilineViewAction() {
     bool childrenChanged = getUI()->setMultilineMode(multilineViewAction->isChecked());
+
     if (childrenChanged) {
         initChildrenActionsAndSignals();
         updateActions();
+        buildStaticToolbar(staticToolBar);
+        fillMenu(staticMenu, staticMenuType);
     }
-    buildStaticToolbar(staticToolBar);
 }
 
 }  // namespace U2
