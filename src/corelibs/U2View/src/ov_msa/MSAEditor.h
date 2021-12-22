@@ -94,7 +94,8 @@ public:
 
     void buildStaticToolbar(QToolBar* tb) override;
 
-    void buildMenu(QMenu* m, const QString& type) override;
+    void buildMenu(QMenu *m, const QString &type) override;
+    void fillMenu(QMenu *m, const QString &type);
 
     // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
@@ -291,9 +292,11 @@ private:
     /** Selection state controller. */
     MaEditorSelectionController *selectionController;
 
-    // Main windows toolbar
+    // Main windows toolbar and menu
     // we need to save it for recreating actions while switching singleline <-> multiline modes
     QToolBar *staticToolBar;
+    QMenu *staticMenu;
+    QString staticMenuType;
 
     bool multilineMode = false;
 };
