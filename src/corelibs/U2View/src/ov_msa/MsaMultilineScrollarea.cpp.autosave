@@ -1,5 +1,0 @@
-#include "MsaMultilineScrollarea.h"
-
-MsaMultilineScrollArea::MsaMultilineScrollArea() {
-
-}
