@@ -57,11 +57,13 @@ echo copy Qt libraries
 function copy_with_pdb() {
   LIB_PATH="${1}"
   TARGET_DIR="${2}"
+  echo "Copying ${LIB_PATH}"
   cp "${LIB_PATH}" "${TARGET_DIR}"
 
-  if [ -z "${UGENE_BUILD_KEEP_PDB_FILES}" ]; then
-    PDB_PATH="$(echo LIB_PATH | sed 's/\.[^.]*$//').pdb"
+  if [ "${UGENE_BUILD_KEEP_PDB_FILES}" == "1" ]; then
+    PDB_PATH="${LIB_PATH/.dll/.pdb}"
     if [ -f "${PDB_PATH}" ]; then
+      echo "Copying ${PDB_PATH}"
       cp "${PDB_PATH}" "${TARGET_DIR}"
     fi
   fi
