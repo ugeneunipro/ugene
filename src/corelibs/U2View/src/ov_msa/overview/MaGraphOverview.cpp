@@ -149,6 +149,8 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
     } else {
         recalculateScale();
 
+        // range width is a sum of the widths of all children
+        // X position is defined by the first child
         qint64 screenWidth = 0;
         MaEditorWgt *wgt = editor->getMaEditorWgt(0);
         const int screenPositionX = wgt->getScrollController()->getScreenPosition().x();

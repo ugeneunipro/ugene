@@ -347,8 +347,8 @@ void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
 
     int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
-    QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
+    QWidget *nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    QPoint localCoord = QPoint(15, msaEditArea->getEditor()->getUI()->getUI(0)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNum).startPos + 7);
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();

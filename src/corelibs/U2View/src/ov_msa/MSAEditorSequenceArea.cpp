@@ -203,8 +203,8 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     Q_UNUSED(v);
 
-    MaEditorWgt *child = editor->getMaEditorMultilineWgt()->getActiveChild();
-    if (child != ui) {
+    MaEditorWgt *child0 = editor->getMaEditorMultilineWgt()->getUI(0);
+    if (child0 != ui) {
         return;
     }
     t->addAction(ui->getUndoAction());
@@ -240,9 +240,7 @@ void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString 
                 << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
         editMenu->addActions(actions);
-        coreLog.info("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n");
     }
-    coreLog.error("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\n");
 
     m->setObjectName("msa sequence area context menu");
 }

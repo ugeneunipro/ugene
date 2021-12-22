@@ -277,7 +277,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
     auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
     connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow*)), this, SLOT(sl_onWindowClosed(GObjectViewWindow*)));
 
-    MsaEditorWgt *msaUI = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI());
+    MsaEditorWgt *msaUI = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI(0));
     msaUI->addTreeView(viewWindow);
 
     // Once tree is added to the splitter make the tree-view viewport state consistent:

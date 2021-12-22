@@ -38,7 +38,6 @@ class QVBoxLayout;
 
 namespace U2 {
 
-class MultilineBaseWidthController;
 class DrawHelper;
 class GScrollBar;
 class MaEditorConsensusArea;
@@ -52,6 +51,7 @@ class RowHeightController;
 class MsaUndoRedoFramework;
 class MultilineScrollController;
 class SequenceAreaRenderer;
+class MSAEditorMultiTreeViewer;
 
 /************************************************************************/
 /* MaEditorMultilineWgt */
@@ -72,14 +72,6 @@ public:
 
     MultilineScrollController *getScrollController() const {
         return scrollController;
-    }
-
-    MultilineBaseWidthController *getBaseWidthController() const {
-        return baseWidthController;
-    }
-
-    RowHeightController *getRowHeightController() const {
-        return rowHeightController;
     }
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
@@ -124,6 +116,10 @@ public:
     MaEditorWgt *getActiveChild();
     void setActiveChild(MaEditorWgt *child);
 
+    virtual void addPhylTreeWidget(QWidget *multiTreeViewer) {
+        Q_UNUSED(multiTreeViewer);
+    };
+
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);
@@ -154,6 +150,9 @@ protected:
     MaEditorOverviewArea *overviewArea;
     MaEditorStatusBar *statusBar;
 
+    bool treeView = false;
+    QSplitter *treeSplitter;
+
     QVector<MaEditorWgt *> uiChild;
     MaEditorWgt *activeChild = nullptr;
     uint uiChildLength = 0;
@@ -162,8 +161,6 @@ protected:
 
     bool enableCollapsingOfSingleRowGroups;
     MultilineScrollController *scrollController;
-    MultilineBaseWidthController *baseWidthController;
-    RowHeightController *rowHeightController;
 
 public:
 
