@@ -97,6 +97,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/MsaEditorWgt.h \
            src/ov_msa/MsaEditorMultilineWgt.h \
+           src/ov_msa/MsaMultilineScrollArea.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MsaRowHeightController.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
@@ -383,6 +384,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \
            src/ov_msa/MsaEditorWgt.cpp \
            src/ov_msa/MsaEditorMultilineWgt.cpp \
+           src/ov_msa/MsaMultilineScrollArea.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MsaRowHeightController.cpp \
            src/ov_msa/MultilineScrollController.cpp \

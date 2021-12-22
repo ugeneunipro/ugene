@@ -223,11 +223,18 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     int newPosX = qBound(cachedVisibleRange.width() / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2);
     int newPosY = qBound(cachedVisibleRange.height() / 2, pos.y(), height() - (cachedVisibleRange.height() - 1) / 2);
     QPoint newPos(newPosX, newPosY);
+    MaEditorMultilineWgt *multiUi = qobject_cast<MaEditorMultilineWgt *>(ui);
+    CHECK(multiUi != nullptr, );
 
     newVisibleRange.moveCenter(newPos);
 
     const int newScrollBarValue = newVisibleRange.x() * stepX;
-    qobject_cast<MaEditorMultilineWgt *>(ui)->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    multiUi->getScrollController()->setHScrollbarValue(newScrollBarValue);
+
+    if (!multiUi->getMultilineMode()) {
+        const int newVScrollBarValue = newVisibleRange.y() * stepY;
+        multiUi->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+    }
 
     update();
 }

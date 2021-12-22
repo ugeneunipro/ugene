@@ -43,8 +43,7 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor *maEditor,
-                     MaEditorWgt *ui);
+    ScrollController(MaEditor *maEditor, MaEditorWgt *ui);
 
     void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar);
 

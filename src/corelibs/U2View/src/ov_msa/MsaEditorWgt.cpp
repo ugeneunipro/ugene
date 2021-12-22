@@ -86,7 +86,8 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
     if (multiTreeViewer == nullptr) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
-        MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, multiTreeViewer, 0.41, nameAreaContainer);  // Tree will occupy 41% of the current view.
+
+        getEditor()->getUI()->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);
         multiTreeViewer->setMinimumWidth(250);
         emit si_showTreeOP();

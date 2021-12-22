@@ -52,8 +52,10 @@ MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, GObject* obj, 
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
     if (editor != nullptr && isSyncModeEnabled()) {
-        MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI());
-        msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
+        MsaEditorWgt *msaEditorUi = qobject_cast<MsaEditorWgt *>(editor->getUI()->getUI(0));
+        if (msaEditorUi != nullptr) {
+            msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
+        }
     }
 }
 

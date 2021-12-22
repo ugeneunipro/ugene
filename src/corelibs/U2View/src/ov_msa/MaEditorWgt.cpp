@@ -54,18 +54,7 @@ bool MaEditorWgtEventFilter::eventFilter(QObject *obj, QEvent *event)
 
     // Please, don't forget about QWidget::setAttribute(Qt::WA_Hover, true);
     if (event->type() == QEvent::HoverEnter) {
-#ifdef _DEBUG
-        coreLog.info(tr("=============== HoverEnter %1")
-                         .arg(QString("0x%1").arg((qulonglong) maEditorWgt)));
-#endif
         maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(maEditorWgt);
-    } else if (event->type() == QEvent::HoverLeave) {
-#ifdef _DEBUG
-        coreLog.info(tr("=============== HoverLeave %1")
-                         .arg(QString("0x%1").arg((qulonglong) maEditorWgt)));
-#endif
-        maEditorWgt->getEditor()->getMaEditorMultilineWgt()->setActiveChild(
-            maEditorWgt->getEditor()->getMaEditorMultilineWgt()->getUI(0));
     }
     // standard event processing
     return QObject::eventFilter(obj, event);
@@ -128,6 +117,7 @@ QAction *MaEditorWgt::getRedoAction() const {
 
 void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     setContextMenuPolicy(Qt::CustomContextMenu);
+    setMinimumSize(300, 200);
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 

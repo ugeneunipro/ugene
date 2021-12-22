@@ -35,8 +35,7 @@
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor,
-                                   MaEditorWgt *maEditorUi)
+ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -47,8 +46,7 @@ ScrollController::ScrollController(MaEditor *maEditor,
     connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
-void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar)
-{
+void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
     this->hScrollBar = hScrollBar;
     hScrollBar->setValue(0);
     connect(hScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
@@ -415,9 +413,6 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     QSignalBlocker signalBlocker(hScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
-    // don't show horz scrollbar in multiline mode
-    // TODO:ichebyki temporary disabled
-    // CHECK_EXT(maEditor->getMultilineMode(), hScrollBar->setVisible(false), );
 
     int alignmentLength = maEditor->getAlignmentLen();
     int columnWidth = maEditor->getColumnWidth();
@@ -432,6 +427,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
     int numVisibleBases = getLastVisibleBase(sequenceAreaWidth) - getFirstVisibleBase();
     SAFE_POINT(numVisibleBases <= alignmentLength, "Horizontal scrollbar appears unexpectedly: numVisibleBases is too small", );
 
+    // hide scrollbar
     hScrollBar->setVisible(hScrollBarVisible && numVisibleBases < alignmentLength);
 }
 
@@ -455,6 +451,7 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     int numVisibleSequences = lastVisibleViewRowIndex - firstVisibleViewRowIndex + 1;
     SAFE_POINT(numVisibleSequences <= viewRowCount, "Vertical scrollbar appears unexpectedly: numVisibleSequences is too small", );
 
+    // hide scrollbar
     vScrollBar->setVisible(vScrollBarVisible && numVisibleSequences < viewRowCount);
 }
 
@@ -474,23 +471,19 @@ QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool repor
 }
 
 
-void ScrollController::setHScrollBarVisible(bool visible)
-{
+void ScrollController::setHScrollBarVisible(bool visible) {
     hScrollBarVisible = visible;
 }
 
-bool ScrollController::getHScrollBarVisible()
-{
+bool ScrollController::getHScrollBarVisible() {
     return hScrollBarVisible;
 }
 
-void ScrollController::setVScrollBarVisible(bool visible)
-{
+void ScrollController::setVScrollBarVisible(bool visible) {
     vScrollBarVisible = visible;
 }
 
-bool ScrollController::getVScrollBarVisible()
-{
+bool ScrollController::getVScrollBarVisible() {
     return vScrollBarVisible;
 }
 
