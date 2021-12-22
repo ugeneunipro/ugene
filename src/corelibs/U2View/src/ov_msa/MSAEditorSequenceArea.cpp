@@ -207,8 +207,8 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     if (child0 != ui) {
         return;
     }
-    t->addAction(ui->getUndoAction());
-    t->addAction(ui->getRedoAction());
+    t->addAction(editor->undoAction);
+    t->addAction(editor->redoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 

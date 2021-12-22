@@ -578,20 +578,8 @@ MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-void MaEditor::setMultilineMode(bool multilinemode) {
-    multilineMode = multilinemode;
-}
-
-MaEditorWgt *MaEditor::getActiveChild() {
-    return activeChild;
-}
-
-void MaEditor::setActiveChild(MaEditorWgt *child) {
-    if (child == nullptr) {
-        activeChild = getUI(0);
-    } else {
-        activeChild = child;
-    }
+MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
+    return undoRedoFramework;
 }
 
 }  // namespace U2
