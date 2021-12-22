@@ -26,7 +26,7 @@
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/SignalBlocker.h>
 
-#include "MultilineBaseWidthController.h"
+#include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ov_msa/MaCollapseModel.h"
@@ -46,10 +46,6 @@ MultilineScrollController::MultilineScrollController(MaEditor *maEditor, MaEdito
       savedFirstVisibleMaRowOffset(0) {
     connect(this, SIGNAL(si_hScrollValueChanged()), SLOT(sl_hScrollValueChanged()));
     connect(this, SIGNAL(si_vScrollValueChanged()), SLOT(sl_vScrollValueChanged()));
-    // TODO:ichebyki
-    // cleare dead code
-    //connect(maEditor->getCollapseModel(), SIGNAL(si_aboutToBeToggled()), SLOT(sl_collapsibleModelIsAboutToBeChanged()));
-    //connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
 void MultilineScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
@@ -70,7 +66,9 @@ void MultilineScrollController::sl_hScrollValueChanged()
 
     const int columnWidth = maEditor->getColumnWidth();
     const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth() * columnWidth;
-    ui->getScrollController()->setVScrollbarValue(h);
+    if (ui->getMultilineMode()) {
+        ui->getScrollController()->setVScrollbarValue(h);
+    }
     for (uint i = 0; i < ui->getChildrenCount(); i++) {
         ui->getUI(i)->getScrollController()->setHScrollbarValue(h + i * sequenceAreaWidth);
     }
@@ -78,31 +76,23 @@ void MultilineScrollController::sl_hScrollValueChanged()
 
 void MultilineScrollController::sl_vScrollValueChanged()
 {
-    int v = vScrollBar->value();
+    if (ui->getMultilineMode()) {
+        int v = vScrollBar->value();
 
-    const int columnWidth = maEditor->getColumnWidth();
-    const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth() * columnWidth;
-    ui->getScrollController()->setHScrollbarValue(v);
-    for (uint i = 0; i < ui->getChildrenCount(); i ++) {
-        ui->getUI(i)->getScrollController()->setHScrollbarValue(v + i * sequenceAreaWidth);
+        const int columnWidth = maEditor->getColumnWidth();
+        const int sequenceAreaWidth = ui->getSequenceAreaBaseWidth() * columnWidth;
+        ui->getScrollController()->setHScrollbarValue(v);
+        for (uint i = 0; i < ui->getChildrenCount(); i ++) {
+            ui->getUI(i)->getScrollController()->setHScrollbarValue(v + i * sequenceAreaWidth);
+        }
+    } else {
+        int v = vScrollBar->value();
+        ui->getUI(0)->getScrollController()->setHScrollbarValue(v);
     }
 }
 
-QPoint MultilineScrollController::getScreenPosition() const {
-    return QPoint(hScrollBar->value(), vScrollBar->value());
-}
-
-QPoint MultilineScrollController::getGlobalMousePosition(const QPoint &mousePos) const {
-    return mousePos + getScreenPosition();
-}
-
-void MultilineScrollController::updateVerticalScrollBar() {
-    updateVerticalScrollBarPrivate();
-    emit si_visibleAreaChanged();
-}
-
 void MultilineScrollController::scrollToViewRow(int viewRowIndex, int widgetHeight) {
-    const U2Region rowRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex);
+    const U2Region rowRegion = ui->getUI(0)->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex);
     const U2Region visibleRegion = getVerticalRangeToDrawIn(widgetHeight);
     if (rowRegion.startPos < visibleRegion.startPos) {
         vScrollBar->setValue(static_cast<int>(rowRegion.startPos));
@@ -116,7 +106,7 @@ void MultilineScrollController::scrollToViewRow(int viewRowIndex, int widgetHeig
 }
 
 void MultilineScrollController::scrollToBase(int baseNumber, int widgetWidth) {
-    const U2Region baseRange = U2Region(ui->getBaseWidthController()->getBaseGlobalOffset(baseNumber), maEditor->getColumnWidth());
+    const U2Region baseRange = U2Region(ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(baseNumber), maEditor->getColumnWidth());
     const U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
     if (baseRange.startPos < visibleRange.startPos) {
         hScrollBar->setValue(static_cast<int>(baseRange.startPos));
@@ -131,14 +121,14 @@ void MultilineScrollController::scrollToPoint(const QPoint &maPoint, const QSize
 }
 
 void MultilineScrollController::centerBase(int baseNumber, int widgetWidth) {
-    const U2Region baseGlobalRange = ui->getBaseWidthController()->getBaseGlobalRange(baseNumber);
+    const U2Region baseGlobalRange = ui->getUI(0)->getBaseWidthController()->getBaseGlobalRange(baseNumber);
     const U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
     const int newScreenXOffset = baseGlobalRange.startPos - visibleRange.length / 2;
     hScrollBar->setValue(newScreenXOffset);
 }
 
 void MultilineScrollController::centerViewRow(int viewRowIndex, int widgetHeight) {
-    const U2Region rowGlobalRange = ui->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex);
+    const U2Region rowGlobalRange = ui->getUI(0)->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex);
     const U2Region visibleRange = getVerticalRangeToDrawIn(widgetHeight);
     const int newScreenYOffset = rowGlobalRange.startPos - visibleRange.length / 2;
     vScrollBar->setValue(newScreenYOffset);
@@ -158,17 +148,24 @@ void MultilineScrollController::setVScrollbarValue(int value) {
 }
 
 void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
-    hScrollBar->setValue(ui->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase));
+    if (!ui->getMultilineMode()) {
+        ui->getUI(0)->getScrollController()->setFirstVisibleBase(firstVisibleBase);
+    } else {
+        int x = ui->getUI(0)->getBaseWidthController()->getBaseGlobalOffset(firstVisibleBase);
+        hScrollBar->setValue(x);
+    }
 }
 
 void MultilineScrollController::setFirstVisibleViewRow(int viewRowIndex) {
-    int y = ui->getRowHeightController()->getGlobalYRegionByViewRowIndex(viewRowIndex).startPos;
-    vScrollBar->setValue(y);
+    if (!ui->getMultilineMode()) {
+        ui->getUI(0)->getScrollController()->setFirstVisibleViewRow(viewRowIndex);
+    }
 }
 
 void MultilineScrollController::setFirstVisibleMaRow(int maRowIndex) {
-    int y = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(maRowIndex);
-    vScrollBar->setValue(y);
+    if (!ui->getMultilineMode()) {
+        ui->getUI(0)->getScrollController()->setFirstVisibleMaRow(maRowIndex);
+    }
 }
 
 void MultilineScrollController::scrollSmoothly(const Directions &directions) {
@@ -314,20 +311,26 @@ int MultilineScrollController::getFirstVisibleBase(bool countClipped) const {
         return 0;
     }
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
-    const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
+    const int firstVisibleBase = ui->getMultilineMode()
+                                     ? ui->getUI(0)->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0)
+                                     : ui->getUI(0)->getScrollController()->getFirstVisibleBase(countClipped);
     assert(firstVisibleBase < maEditor->getAlignmentLen());
     return qMin(firstVisibleBase, maEditor->getAlignmentLen() - 1);
 }
 
 int MultilineScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
     const bool removeClippedBase = !countClipped && ((hScrollBar->value() + widgetWidth) % maEditor->getColumnWidth() != 0);
-    const int lastVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value() + widgetWidth - 1) - (removeClippedBase ? 1 : 0);
+    const int lastVisibleBase = ui->getMultilineMode()
+                                    ? ui->getUI(0)->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value() + widgetWidth - 1) - (removeClippedBase ? 1 : 0)
+                                    : ui->getUI(0)->getScrollController()->getLastVisibleBase(widgetWidth, countClipped);
     return qMin(lastVisibleBase, maEditor->getAlignmentLen() - 1);
 }
 
 int MultilineScrollController::getFirstVisibleMaRowIndex(bool countClipped) const {
     const bool removeClippedRow = !(countClipped || getAdditionalYOffset() == 0);
-    return ui->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value()) + (removeClippedRow ? 1 : 0);
+    return ui->getMultilineMode()
+               ? ui->getUI(0)->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value()) + (removeClippedRow ? 1 : 0)
+               : ui->getUI(0)->getScrollController()->getFirstVisibleMaRowIndex(countClipped);
 }
 
 int MultilineScrollController::getFirstVisibleViewRowIndex(bool countClipped) const {
@@ -336,11 +339,11 @@ int MultilineScrollController::getFirstVisibleViewRowIndex(bool countClipped) co
 }
 
 int MultilineScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countClipped) const {
-    int lastVisibleViewRow = ui->getRowHeightController()->getViewRowIndexByGlobalYPosition(vScrollBar->value() + widgetHeight);
+    int lastVisibleViewRow = ui->getUI(0)->getRowHeightController()->getViewRowIndexByGlobalYPosition(ui->getMultilineMode() ? vScrollBar->value() + widgetHeight : ui->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(widgetHeight, countClipped));
     if (lastVisibleViewRow < 0) {
         lastVisibleViewRow = maEditor->getCollapseModel()->getViewRowCount() - 1;
     }
-    U2Region lastRowScreenRegion = ui->getRowHeightController()->getScreenYRegionByViewRowIndex(lastVisibleViewRow);
+    U2Region lastRowScreenRegion = ui->getUI(0)->getRowHeightController()->getScreenYRegionByViewRowIndex(lastVisibleViewRow);
     bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
     return lastVisibleViewRow - (removeClippedRow ? 1 : 0);
 }
@@ -365,25 +368,13 @@ void MultilineScrollController::sl_updateScrollBars() {
     emit si_visibleAreaChanged();
 }
 
-void MultilineScrollController::sl_collapsibleModelIsAboutToBeChanged() {
-    savedFirstVisibleMaRow = getFirstVisibleMaRowIndex(true);
-    savedFirstVisibleMaRowOffset = getScreenPosition().y() -
-                                   ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(savedFirstVisibleMaRow);
-}
-
-void MultilineScrollController::sl_collapsibleModelChanged() {
-    int firstVisibleMaRowOffset = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(savedFirstVisibleMaRow);
-    setVScrollbarValue(firstVisibleMaRowOffset + savedFirstVisibleMaRowOffset);
-    updateVerticalScrollBar();
-}
-
 int MultilineScrollController::getAdditionalXOffset() const {
     return hScrollBar->value() % maEditor->getColumnWidth();
 }
 
 int MultilineScrollController::getAdditionalYOffset() const {
-    int maRow = ui->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value());
-    int viewRow = ui->getRowHeightController()->getGlobalYPositionByMaRowIndex(maRow);
+    int maRow = ui->getUI(0)->getRowHeightController()->getMaRowIndexByGlobalYPosition(vScrollBar->value());
+    int viewRow = ui->getUI(0)->getRowHeightController()->getGlobalYPositionByMaRowIndex(maRow);
     return vScrollBar->value() - viewRow;
 }
 

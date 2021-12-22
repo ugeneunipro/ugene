@@ -39,7 +39,6 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
-#include "ov_msa/helpers/MultilineBaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/ScrollController.h"
 #include "ov_msa/helpers/MultilineScrollController.h"
@@ -54,9 +53,7 @@ MaEditorMultilineWgt::MaEditorMultilineWgt(MaEditor *_editor)
       overviewArea(nullptr),
       statusBar(nullptr),
       enableCollapsingOfSingleRowGroups(false),
-      scrollController(new MultilineScrollController(editor, this)),
-      baseWidthController(new MultilineBaseWidthController(this)),
-      rowHeightController(nullptr) {
+      scrollController(new MultilineScrollController(editor, this)) {
     SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     setFocusPolicy(Qt::ClickFocus);
 }
@@ -90,7 +87,11 @@ void MaEditorMultilineWgt::initWidgets() {
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
     uiChildrenArea->layout()->setSizeConstraint(QLayout::SetMaximumSize);
-    uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    if (multilineMode) {
+        uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    } else {
+        uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    }
 
     QGridLayout *layoutMultilineArea = new QGridLayout;
     layoutMultilineArea->setContentsMargins(0, 0, 0, 0);
@@ -107,6 +108,9 @@ void MaEditorMultilineWgt::initWidgets() {
     // the following must be after initing children area
     scrollController->init(shBar, cvBar);
 
+    treeSplitter = new QSplitter(Qt::Horizontal, this);
+    treeSplitter->setContentsMargins(0, 0, 0, 0);
+
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(multilineArea);
     mainSplitter->addWidget(statusBar);
@@ -115,7 +119,9 @@ void MaEditorMultilineWgt::initWidgets() {
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    mainLayout->addWidget(mainSplitter);
+    treeSplitter->addWidget(mainSplitter);
+    treeSplitter->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    mainLayout->addWidget(treeSplitter);
     mainLayout->addWidget(statusBar);
     mainLayout->addWidget(overviewArea);
 
@@ -156,6 +162,11 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
     multilineMode = newmode;
     if (oldmode != newmode) {
         updateChildren();
+        if (multilineMode) {
+            uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        } else {
+            uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        }
         return true;
     }
     return false;
