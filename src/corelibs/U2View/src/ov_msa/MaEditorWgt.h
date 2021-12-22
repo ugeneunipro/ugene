@@ -124,8 +124,6 @@ public:
 
     QSplitter* getMainSplitter() const;
 
-    MsaUndoRedoFramework *getUndoRedoFramework() const { return undoFWK; }
-
     MaEditorWgtEventFilter *getEventFilter() const { return eventFilter; };
 
 signals:
@@ -149,8 +147,8 @@ protected:
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;
     MaEditorOverviewArea *overviewArea;
-    MaEditorStatusBar *statusBar;
     MSAEditorOffsetsViewController *offsetsViewController;
+    MaEditorStatusBar *statusBar;
 
     /** Horizontal splitter in the main layout.  Separates main widgets (NameList + SequenceArea), Exclude List and Overview. */
     QSplitter* mainSplitter = nullptr;
