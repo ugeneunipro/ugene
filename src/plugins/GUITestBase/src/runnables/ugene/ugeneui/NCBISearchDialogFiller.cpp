@@ -344,10 +344,7 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     if (doubleEnter) {
-        auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
-        QPushButton *button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != nullptr, "cancel button is NULL");
-        GTWidget::click(os, button);
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         return;
     }
 
@@ -366,14 +363,8 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
         GTTreeWidget::click(os, item);
     }
 
-    auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GTWidget::click(os, button);
-
-    button = box->button(QDialogButtonBox::Cancel);
-    GT_CHECK(button != nullptr, "cancel button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 
