@@ -61,8 +61,6 @@ fi
 echo "Version of UGENE is ${VERSION}"
 echo "##teamcity[blockClosed name='Get version']"
 
-echo "##teamcity[blockOpened name='Validate bundle content']"
-
 echo "##teamcity[blockOpened name='Dump symbols']"
 
 function dump_symbols() {
@@ -86,6 +84,7 @@ find "${APP_BUNDLE_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe 
 done
 
 # Remove pdb files used for symbol generation.
+echo "Removing not needed PDB files."
 rm "${APP_BUNDLE_DIR_NAME}/"*.pdb
 rm "${APP_BUNDLE_DIR_NAME}/imageformats/"*.pdb
 rm "${APP_BUNDLE_DIR_NAME}/platforms/"*.pdb
@@ -95,6 +94,7 @@ rm "${APP_BUNDLE_DIR_NAME}/styles/"*.pdb
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 # Validate bundle content.
+echo "##teamcity[blockOpened name='Validate bundle content']"
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
