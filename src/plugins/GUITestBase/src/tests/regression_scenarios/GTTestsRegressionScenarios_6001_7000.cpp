@@ -734,6 +734,65 @@ GUI_TEST_CLASS_DEFINITION(test_6071) {
     CHECK_SET_ERR(firstVisibleRange == secondVisibleRange, "Visible range was changed after clicking on the annotation");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6075) {
+    // Check that default group and document name in Create Annotations dialog are set to
+    // the selected item values in the annotations tree view.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "test_group", "test_feature", "1..100", true, testDir + "_common_data/scenarios/sandbox/test-6075.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that in the new dialog the default group name and document path are set.
+    QString selectedFeatureName = GTUtilsAnnotationsTreeView::getSelectedItem(os);
+    CHECK_SET_ERR(selectedFeatureName == "test_feature", "Annotation is not selected");
+
+    class CheckCreateAnnotationsDialogScenario1 : public CustomScenario {
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            auto groupNameEdit = GTWidget::findLineEdit(os, "leGroupName", dialog);
+            CHECK_SET_ERR(groupNameEdit->text() == "test_group", "Group name is not set");
+
+            auto featureNameEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
+            CHECK_SET_ERR(featureNameEdit->text().isEmpty(), "Feature name must be empty");
+
+            auto documentNameCombo = GTWidget::findComboBox(os, "cbExistingTable", dialog);
+            QString documentName = documentNameCombo->currentText();
+            CHECK_SET_ERR(documentNameCombo->isEnabled(), "Document selector must be enabled");
+            CHECK_SET_ERR(documentName.startsWith("test-6075.gb"), "Document name must be set: " + documentName);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CheckCreateAnnotationsDialogScenario1()));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // Check that in the new dialog the default group name and document path are not set.
+    GTUtilsSequenceView::clickOnDetView(os);  // drop the selection.
+    selectedFeatureName = GTUtilsAnnotationsTreeView::getSelectedItem(os);
+    CHECK_SET_ERR(selectedFeatureName.isEmpty(), "Annotation must not be selected");
+
+    class CheckCreateAnnotationsDialogScenario2 : public CustomScenario {
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            auto groupNameEdit = GTWidget::findLineEdit(os, "leGroupName", dialog);
+            QString groupName = groupNameEdit->text();
+            CHECK_SET_ERR(groupName.isEmpty() || groupName == "<auto>", "Group name must be empty, current value: " + groupName);
+
+            auto documentNameCombo = GTWidget::findComboBox(os, "cbExistingTable", dialog);
+            QString documentName = documentNameCombo->currentText();
+            CHECK_SET_ERR(documentNameCombo->isEnabled(), "Document selector must be enabled");
+            CHECK_SET_ERR(documentName.startsWith("test-6075.gb"), "Document name must be set: " + documentName);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CheckCreateAnnotationsDialogScenario2()));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6078) {
     // 1. Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
