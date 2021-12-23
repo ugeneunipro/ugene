@@ -78,8 +78,6 @@ protected:
 
     MaEditor *editor;
     QWidget *ui;
-    // TODO:ichebyki
-    // MaEditorSequenceArea *sequenceArea;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;
