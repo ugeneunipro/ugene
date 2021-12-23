@@ -78,7 +78,7 @@ void MsaEditorMultilineWgt::updateChildren()
     if (treeView) {
         // TODO:ichebyki
         // Need complex save/update for phyl-tree
-        // If so, we have to reuse tree view
+        // Then, we will able to reuse tree view
         MSAEditorMultiTreeViewer *treeViewer = qobject_cast<MsaEditorWgt *>(uiChild[0])
                                                    ->getMultiTreeViewer();
         if (treeViewer != nullptr) {
