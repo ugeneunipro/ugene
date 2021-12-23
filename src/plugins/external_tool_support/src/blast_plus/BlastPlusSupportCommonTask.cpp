@@ -633,7 +633,7 @@ QString BlastPlusSupportMultiTask::generateReport() const {
     res += "<tr><td width=200><b>" + tr("Source file") + "</b></td><td>" + settingsList.at(0).queryFile + "</td></tr>";
     res += "<tr><td width=200><b>" + tr("Used database") + "</b></td><td>" + settingsList.at(0).databaseNameAndPath + "</td></tr>";
     res += "<tr></tr>";
-    res += "<tr><td width=200><b>" + tr("No any results found") + "</b></td><td></td></tr>";
+    res += "<tr><td width=200><b>" + tr("No results found") + "</b></td><td></td></tr>";
     res += "</table>";
     return res;
 }

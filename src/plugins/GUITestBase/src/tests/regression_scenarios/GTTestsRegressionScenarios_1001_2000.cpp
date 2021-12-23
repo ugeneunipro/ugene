@@ -6595,7 +6595,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_5) {
 namespace {
 class customFileDialog_1681 : public GTFileDialogUtils {
 public:
-    customFileDialog_1681(HI::GUITestOpStatus &os, const QString& path)
+    customFileDialog_1681(HI::GUITestOpStatus &os, const QString &path)
         : GTFileDialogUtils(os, path) {
     }
     void commonScenario() {
@@ -8183,26 +8183,19 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CuffDiffIncorrectPath()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
     CHECK_SET_ERR(l.checkMessage("Cuffdiff validate task failed: Tool does not start."), "No error in the log!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "mouse", false, 5, "Organism"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Search NCBI GenBank...");
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", false, 10, "Organism"));
+    GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    ProjectViewModel *model = qobject_cast<ProjectViewModel *>(treeView->model());
-    QString text = model->data(model->index(0, 0, QModelIndex()), Qt::DisplayRole).toString();
-
-    CHECK_SET_ERR(text.contains(".fasta"), text);
+    GTUtilsProjectTreeView::checkItem(os, ".fasta", GTGlobals::FindOptions(true, Qt::MatchContains));
 }
 
 }  // namespace GUITest_regression_scenarios

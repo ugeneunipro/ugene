@@ -83,21 +83,24 @@ private:
 
 class NCBISearchDialogSimpleFiller : public Filler {
 public:
-    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os, QString _query, bool _doubleEnter = false, int _resultLimit = -1, QString _term = "")
-        : Filler(os, "SearchGenbankSequenceDialog"),
-          query(_query),
-          doubleEnter(_doubleEnter),
-          resultLimit(_resultLimit),
-          term(_term) {
-    }
-    void commonScenario();
+    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os,
+                                 const QString &query,
+                                 bool doubleEnter = false,
+                                 int _esultLimit = -1,
+                                 const QString &term = "",
+                                 const QString &resultToLoad = "");
+
+    void commonScenario() override;
 
 private:
     QString query;
 
-    bool doubleEnter;
-    int resultLimit;
+    bool doubleEnter = false;
+    int resultLimit = -1;
     QString term;
+
+    /** If not empty the filler will look for this result (Qt::MatchContains) and load it. */
+    QString resultToLoad;
 
     bool shownCorrect();
     int getResultNumber();
