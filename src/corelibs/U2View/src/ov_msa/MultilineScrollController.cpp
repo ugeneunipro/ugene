@@ -260,52 +260,6 @@ void MultilineScrollController::scrollToEnd(MultilineScrollController::Direction
     }
 }
 
-void MultilineScrollController::scrollToMovedSelection(int deltaX, int deltaY) {
-    const Direction direction = (deltaX != 0 ? (deltaX < 0 ? MultilineScrollController::Left : MultilineScrollController::Right) : (deltaY != 0 ? (deltaY < 0 ? MultilineScrollController::Up : MultilineScrollController::Down) : MultilineScrollController::None));
-    scrollToMovedSelection(direction);
-}
-
-void MultilineScrollController::scrollToMovedSelection(MultilineScrollController::Direction direction) {
-    U2Region fullyVisibleRegion;
-    U2Region selectionRegion;
-    int selectionEdgePosition;
-    // TODO:
-    // QSize widgetSize = ui->getSequenceArea()->size();
-    // QRect selectionRect = ui->getEditor()->getSelection().toRect();
-    switch (direction) {
-        case Up:
-            break;
-        case Down:
-            break;
-        case Left:
-            break;
-        case Right:
-            break;
-        case None:
-            return;
-        default:
-            FAIL("An unknown direction", );
-            break;
-    }
-
-    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
-    if (!selectionEdgeIsFullyVisible) {
-        switch (direction) {
-            case Up:
-            case Down:
-                break;
-            case Left:
-            case Right:
-                break;
-            case None:
-                return;
-            default:
-                FAIL("An unknown direction", );
-                break;
-        }
-    }
-}
-
 int MultilineScrollController::getFirstVisibleBase(bool countClipped) const {
     if (maEditor->getAlignmentLen() == 0) {
         return 0;
@@ -430,9 +384,6 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
 
     // don't show vert scrollbar in non-multiline mode
     vScrollBar->setVisible(ui->getMultilineMode());
-}
-
-QPoint MultilineScrollController::getViewPosByScreenPoint(const QPoint &point, bool reportOverflow) const {
 }
 
 }  // namespace U2

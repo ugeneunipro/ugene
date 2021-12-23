@@ -40,22 +40,26 @@ MaOverview::MaOverview(MaEditor *_editor, QWidget *_ui)
       editor(_editor),
       ui(_ui),
       stepX(0),
-      stepY(0) {
-    // TODO:ichebyki
-    // connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
+      stepY(0)
+{
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(),
             SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
             SLOT(sl_redraw()));
-    MaEditorMultilineWgt *wgt = qobject_cast<MaEditorMultilineWgt *>(_ui);
-    if (wgt != nullptr) {
-        connect(wgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+
+    // The hack
+    // for MSA we have MaEditorMultilineWgt
+    // for MCA we have MaEditorWgt
+    MaEditorMultilineWgt *mwgt = qobject_cast<MaEditorMultilineWgt *>(_ui);
+    if (mwgt != nullptr) {
+        connect(mwgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     } else {
-        MaEditorWgt *wgt = qobject_cast<MaEditorWgt *>(_ui);
-        if (wgt != nullptr) {
-            connect(wgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+        MaEditorWgt *swgt = qobject_cast<MaEditorWgt *>(_ui);
+        if (swgt != nullptr) {
+            connect(swgt->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
+            connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
         }
     }
     connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
