@@ -97,16 +97,17 @@ void ADVAnnotationCreation::sl_createAnnotation() {
         m.data->location->regions << seqCtx->getSequenceSelection()->getSelectedRegions();
     }
 
-    // setup default object and group if possible from AnnotationsTreeView
-    AnnotationsTreeView *tv = ctx->getAnnotationsView();
-    AVItem *ai = tv->currentItem();
-    if (ai != nullptr && !ai->isReadonly()) {
-        AnnotationTableObject *aobj = ai->getAnnotationTableObject();
-        if (seqCtx->getAnnotationGObjects().contains(aobj)) {
-            m.annotationObjectRef = aobj;
-            AnnotationGroup *ag = ai->getAnnotationGroup();
-            if (ag != aobj->getRootGroup()) {
-                m.groupName = ag->getGroupPath();
+    // The default document and group are derived from the currently selected item.
+    // This way we optimize a scenario when a user creates many annotations in a sequence: one after another.
+    AnnotationsTreeView *treeView = ctx->getAnnotationsView();
+    AVItem *annotationItem = treeView->currentItem();
+    if (annotationItem != nullptr && !annotationItem->isReadonly() && annotationItem->isSelected()) {
+        AnnotationTableObject *annotationObject = annotationItem->getAnnotationTableObject();
+        if (seqCtx->getAnnotationGObjects().contains(annotationObject)) {
+            m.annotationObjectRef = annotationObject;
+            AnnotationGroup *annotationGroup = annotationItem->getAnnotationGroup();
+            if (annotationGroup != annotationObject->getRootGroup()) {
+                m.groupName = annotationGroup->getGroupPath();
             }
         }
     }

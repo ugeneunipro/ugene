@@ -2202,7 +2202,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Annotations", testDir + "_common_data/bedtools/introns.bed");
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
-    const QString outputFilePath = QDir(sandBoxDir).absolutePath() + "/out.bed";
+    QString outputFilePath = QDir(sandBoxDir).absolutePath() + "/out.bed";
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2210,7 +2210,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218) {
 
     GTFileDialog::openFile(os, sandBoxDir + "out.bed");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::checkItem(os, "chr2 features");
+    GTUtilsProjectTreeView::checkItem(os, "ann features");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4218_1) {
@@ -2221,7 +2221,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218_1) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Annotations", testDir + "_common_data/regression/4218/test.bed");
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
-    const QString outputFilePath = QDir(sandBoxDir).absolutePath() + "/out.bed";
+    QString outputFilePath = QDir(sandBoxDir).absolutePath() + "/out.bed";
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2229,7 +2229,9 @@ GUI_TEST_CLASS_DEFINITION(test_4218_1) {
 
     GTFileDialog::openFile(os, sandBoxDir + "out.bed");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::checkItem(os, "Annotations features");
+
+    GTUtilsProjectTreeView::checkItem(os, "chr2 features");
+    GTUtilsProjectTreeView::checkItem(os, "chr5 features");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4221) {
@@ -2609,15 +2611,12 @@ GUI_TEST_CLASS_DEFINITION(test_4308) {
     GTUtilsTask::waitTaskStart(os, "Loading documents");
 
     //    2. Remove the document while the file is opening.
-    const bool itemExistsBefore = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
-    CHECK_SET_ERR(itemExistsBefore, "A loading item not found");
-
-    // GTUtilsNotifications::waitForNotification(os, true, "Subtask {Load 'PF07724_full_family.fa'} is canceled Document was removed");
+    GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
     GTUtilsNotifications::waitForNotification(os, true, "Document was removed");
     GTUtilsDocument::removeDocument(os, "PF07724_full_family.fa");
 
     //    Expected state: the document is removed from the project, the loading task is canceled, a notification about the canceled task appears.
-    const bool itemExists = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa");
+    bool itemExists = GTUtilsProjectTreeView::checkItem(os, "PF07724_full_family.fa", {false});
     CHECK_SET_ERR(!itemExists, "The document is not removed from the project");
     GTUtilsTask::checkNoTask(os, "Loading documents");
 }
@@ -3631,13 +3630,13 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma.fa");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma_1.fa");
-    GTLogTracer l;
+
     // 5. Run the workflow.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
 
     // 6. check log message
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    l.checkMessage("Can't allocate enough memory");
+    GTLogTracer::checkMessage("Can't allocate enough memory");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {

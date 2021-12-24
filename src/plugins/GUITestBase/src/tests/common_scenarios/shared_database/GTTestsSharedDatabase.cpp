@@ -246,11 +246,10 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
         params.connectionName = newConName;
         GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params, EditConnectionDialogFiller::FROM_SETTINGS));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             checkConnectionItemIcon(os, "cm_test_0003: new shared database 1", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "cm_test_0003: new shared database 1", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -258,8 +257,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     {
         QList<SharedConnectionsDialogFiller::Action> actions;
@@ -268,11 +266,10 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             checkConnectionItemIcon(os, "cm_test_0003: new shared database 1", "");
             checkButtonStateForConnectionItem(os, "cm_test_0003: new shared database 1", "Edit", true);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -280,10 +277,9 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario2));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
-    const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
+    bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex(), {false});
     CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -348,8 +344,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -360,8 +355,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     {
         QList<SharedConnectionsDialogFiller::Action> actions;
@@ -370,8 +364,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -382,10 +375,9 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario2));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
-    const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
+    const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex(), {false});
     CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -2248,7 +2240,6 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
     const QString folderName = "view_test_0005";
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString sequenceObjectName = "A1#berezikov";
-    const QString sequenceVisibleName = sequenceObjectName;
     const QString chromatogramVisibleName = "Chromatogram";
     const QString databaseChromatogramObjectPath = folderPath + U2ObjectDbi::PATH_SEP + chromatogramVisibleName;
 
@@ -2256,7 +2247,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseChromatogramObjectPath);
 
-    QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleName);
+    QWidget *seqView = GTWidget::findWidget(os, sequenceObjectName);
     CHECK_SET_ERR(nullptr != seqView, "Sequence view wasn't opened");
 
     QWidget *chromaView = seqView->findChild<QWidget *>("chromatogram_view_" + sequenceObjectName);

@@ -150,7 +150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    GTLogTracer l;
+    GTLogTracer logTracer;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -161,25 +161,21 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     settings.addResultToProject = false;
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
-
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.addResultToProject = true;
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0004_1").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
-
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::checkItem(os, "sanger_test_0004_4");
 
-    GTUtilsLog::check(os, l);
+    GTUtilsProjectTreeView::checkItem(os, "sanger_test_0004_1");
+
+    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {

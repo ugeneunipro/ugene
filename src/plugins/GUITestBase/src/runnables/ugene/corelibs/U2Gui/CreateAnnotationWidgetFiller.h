@@ -38,7 +38,7 @@ public:
                                  const QString &description = "");
     CreateAnnotationWidgetFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString groupName;

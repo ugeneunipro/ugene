@@ -1739,7 +1739,7 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "reference.ugenedb");
 
-    const bool hasMessage = logTracer.checkMessage("50% reads aligned.");
+    bool hasMessage = GTLogTracer::checkMessage("50% reads aligned.");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 }
 
@@ -3816,10 +3816,10 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
-    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
+    GTUtilsProjectTreeView::checkObjectTypes(os, {GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
 
     //    2. Open file "data/samples/ACE/BL060C3.ace" as assembly.
     //    Expected state: there are 2 assembly objects in document.
@@ -3830,14 +3830,13 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1371.ugenedb"));
     GTUtilsProject::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
-    GTUtilsProjectTreeView::checkItem(os, "ref1");
+    GTUtilsProjectTreeView::checkItem(os, "Contig1_ref");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
-    GTUtilsProjectTreeView::checkItem(os, "ref2");
+    GTUtilsProjectTreeView::checkItem(os, "Contig2_ref");
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::ASSEMBLY << GObjectTypes::SEQUENCE,
+                                             {GObjectTypes::ASSEMBLY, GObjectTypes::SEQUENCE},
                                              GTUtilsProjectTreeView::findIndex(os, "test_1371.ugenedb"));
 }
 
@@ -4095,10 +4094,10 @@ GUI_TEST_CLASS_DEFINITION(test_1420) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const int expectedLength = 4938920;
-    const int expectedReads = 269;
-    const int assemblyLength = GTUtilsAssemblyBrowser::getLength(os);
-    const int assemblyReads = GTUtilsAssemblyBrowser::getReadsCount(os);
+    qint64 expectedLength = 4938920;
+    qint64 expectedReads = 269;
+    qint64 assemblyLength = GTUtilsAssemblyBrowser::getLength(os);
+    qint64 assemblyReads = GTUtilsAssemblyBrowser::getReadsCount(os);
     CHECK_SET_ERR(expectedLength == assemblyLength, QString("An unexpected assembly length: expect  %1, got %2").arg(expectedLength).arg(assemblyLength));
     CHECK_SET_ERR(expectedReads == assemblyReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads));
 }
@@ -6562,7 +6561,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_5) {
 namespace {
 class customFileDialog_1681 : public GTFileDialogUtils {
 public:
-    customFileDialog_1681(HI::GUITestOpStatus &os, QString path)
+    customFileDialog_1681(HI::GUITestOpStatus &os, const QString &path)
         : GTFileDialogUtils(os, path) {
     }
     void commonScenario() {
@@ -8094,26 +8093,19 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CuffDiffIncorrectPath()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
     CHECK_SET_ERR(l.checkMessage("Cuffdiff validate task failed: Tool does not start."), "No error in the log!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "mouse", false, 5, "Organism"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Search NCBI GenBank...");
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", false, 10, "Organism"));
+    GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    ProjectViewModel *model = qobject_cast<ProjectViewModel *>(treeView->model());
-    QString text = model->data(model->index(0, 0, QModelIndex()), Qt::DisplayRole).toString();
-
-    CHECK_SET_ERR(text.contains(".fasta"), text);
+    GTUtilsProjectTreeView::checkItem(os, ".fasta", GTGlobals::FindOptions(true, Qt::MatchContains));
 }
 
 }  // namespace GUITest_regression_scenarios

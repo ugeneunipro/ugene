@@ -22,6 +22,8 @@
 #ifndef _U2_GT_RUNNABLES_DNA_SEQUENCE_GENERATOR_DIALOG_FILLER_H_
 #define _U2_GT_RUNNABLES_DNA_SEQUENCE_GENERATOR_DIALOG_FILLER_H_
 
+#include <U2Core/U2IdTypes.h>
+
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -48,6 +50,9 @@ public:
     int percentT = 25;
 
     int seed = -1;
+
+    /** Document format to use. If empty - the default one is used. */
+    DocumentFormatId formatId;
 };
 
 class DNASequenceGeneratorDialogFiller : public Filler {

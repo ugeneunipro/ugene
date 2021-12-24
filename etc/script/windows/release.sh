@@ -61,22 +61,6 @@ fi
 echo "Version of UGENE is ${VERSION}"
 echo "##teamcity[blockClosed name='Get version']"
 
-echo "##teamcity[blockOpened name='Validate bundle content']"
-
-# Validate bundle content.
-REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
-CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-
-if diff --strip-trailing-cr "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"; then
-  echo "Bundle content validated successfully."
-else
-  echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
-  exit 1
-fi
-echo "##teamcity[blockClosed name='Validate bundle content']"
-
 echo "##teamcity[blockOpened name='Dump symbols']"
 
 function dump_symbols() {
@@ -98,7 +82,30 @@ function dump_symbols() {
 find "${APP_BUNDLE_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
+
+# Remove pdb files used for symbol generation.
+echo "Removing not needed PDB files."
+rm "${APP_BUNDLE_DIR_NAME}/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/imageformats/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/platforms/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/styles/"*.pdb
+
 echo "##teamcity[blockClosed name='Dump symbols']"
+
+# Validate bundle content.
+echo "##teamcity[blockOpened name='Validate bundle content']"
+REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
+CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
+find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
+
+if diff --strip-trailing-cr "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"; then
+  echo "Bundle content validated successfully."
+else
+  echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
+  exit 1
+fi
+echo "##teamcity[blockClosed name='Validate bundle content']"
 
 echo "##teamcity[blockOpened name='Sign']"
 function code_sign() {

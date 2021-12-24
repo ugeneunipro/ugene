@@ -25,6 +25,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
@@ -40,8 +41,11 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QListWidget>
 #include <QPlainTextEdit>
 #include <QRadioButton>
+
+#include <U2Core/BaseDocumentFormats.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -75,6 +79,8 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
@@ -1137,6 +1143,20 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
     GTUtilsLog::check(os, lt);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7410) {
+    // Check sequence generation dialog uses correct file extension for MSA and generates MSA, not a sequence.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7410");
+    model.formatId = BaseDocumentFormats::CLUSTAL_ALN;
+    model.numberOfSequences = 3;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Invalid number of sequence in the alignment");
+
+    GTUtilsProjectTreeView::checkItem(os, "test_7410.aln");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7414) {
     // Check that 1 char window selects a random char from the origin.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7414.fa");
@@ -1447,6 +1467,67 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
     GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7455) {
+    // 1. Open "_common_data/regression/7455/clipboard.gb"
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/7455/clipboard.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // 2. Open the "Find restriction sites" dialog, choose "AaaI" (vary first one) only and click OK.
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"AaaI"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Right click -> Cloning -> Digest into fragments...
+    class DigestScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            // 4. Select "AaaI" and click "Add---->"
+            // 5. Go to the "Conserved annotations" tab
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
+            QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
+            CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
+
+            GTListWidget::click(os, availableEnzymeWidget, "AaaI : 2 cut(s)");
+            GTWidget::click(os, GTWidget::findWidget(os, "addButton", dialog));
+            GTTabWidget::clickTab(os, "tabWidget", dialog, 1);
+
+
+            class SelectAnnotationScenario : public CustomScenario {
+            public:
+                void run(HI::GUITestOpStatus& os) override {
+                    // 6. Click "Add", choose the only option and click "OK".
+                    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+                    auto selectAnnotationsList = GTWidget::findWidgetByType<QListWidget*>(os, dialog, "Cant find the \"Select annotations\" list");
+                    auto items = GTListWidget::getItems(os, selectAnnotationsList);
+                    CHECK_SET_ERR(items.size() == 1, "Unexpected number of annotations");
+
+                    GTListWidget::click(os, selectAnnotationsList, items.first());
+                    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+                }
+            };
+
+            GTUtilsDialog::waitForDialog(os, new Filler(os, "select_annotations_dlalog", new SelectAnnotationScenario()));
+
+            // 7. Click "OK"
+            GTWidget::click(os, GTWidget::findWidget(os, "addAnnBtn", dialog));
+
+
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Cloning", "Digest into fragments..." } ));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the task finished with an error: Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
+    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7456) {
     // Check that UGENE can open a FASTA file with a 100k small sequences as an alignment.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7456.fa");
@@ -1522,9 +1603,9 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected state: there is a notification about lacking of memory.
+    //Expected state: there is a notification about lacking of memory.
     CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"),
-                  "No expected message about lacking of memory in notifications");
+        "No expected message about lacking of memory in notifications");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {

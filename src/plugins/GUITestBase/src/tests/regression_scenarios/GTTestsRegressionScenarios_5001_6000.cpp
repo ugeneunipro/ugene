@@ -1238,14 +1238,14 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5263) {
-    //1. Open _common_data/genbank/pBR322.gb
-    //2. Find the following restriction site: EcoRI
-    //Expected state: it is located on the sequence junction point
-    //3. Remove the circular mark
-    //Expected state: the restriction sites of sequence junction disappear
-    //4. Set back the circular mark
-    //Expected state: 1 auto annotation appeared
-    
+    // 1. Open _common_data/genbank/pBR322.gb
+    // 2. Find the following restriction site: EcoRI
+    // Expected state: it is located on the sequence junction point
+    // 3. Remove the circular mark
+    // Expected state: the restriction sites of sequence junction disappear
+    // 4. Set back the circular mark
+    // Expected state: 1 auto annotation appeared
+
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/PBR322.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -2782,7 +2782,7 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
 GUI_TEST_CLASS_DEFINITION(test_5681) {
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *comboBox = dialog->findChild<QComboBox *>();
             CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
@@ -2808,13 +2808,12 @@ GUI_TEST_CLASS_DEFINITION(test_5681) {
     // 4. Set any valid output path, select "UGENE Database" format.
     // 5. Accept the dialog.
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "murine_annotations.gb", ExportAnnotationsFiller::ugenedb, true, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import"
-                                                                              << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export annotations..."}));
     GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: No safe point
-    GTUtilsProjectTreeView::checkItem(os, "murine_annotations.gb");
+    // Expected: the imported annotations are loaded. The file extension was fixed according to the document format.
+    GTUtilsProjectTreeView::checkItem(os, "murine_annotations.ugenedb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5696) {
@@ -4494,11 +4493,10 @@ GUI_TEST_CLASS_DEFINITION(test_5837) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5840) {
-    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
     QString fileName = "sanger_alignment.ugenedb";
 
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_short.ugenedb", sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     // 2. Select a read ""
@@ -4509,8 +4507,8 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected: The document has been deleted.
-    bool isExited = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
-    CHECK_SET_ERR(!isExited, "The document has not been deleted")
+    bool isFound = GTUtilsProjectTreeView::checkItem(os, "Aligned reads", {false});
+    CHECK_SET_ERR(!isFound, "The document has not been deleted")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5842) {
