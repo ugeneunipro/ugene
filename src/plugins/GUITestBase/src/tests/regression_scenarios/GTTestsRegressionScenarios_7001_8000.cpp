@@ -171,7 +171,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     if (!wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
-    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 2);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
 
     // 3. copy selected annotation
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
@@ -1344,7 +1344,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_2) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..5000000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+    GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 1);
 
     GTUtilsDialog::waitForDialog(os,
                                  new ExportSequenceOfSelectedAnnotationsFiller(os,
@@ -1376,7 +1376,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_3) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(1..5000000)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", 1);
+    GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", 1);
 
     GTUtilsDialog::waitForDialog(os,
                                  new ExportSequenceOfSelectedAnnotationsFiller(os,
@@ -1413,7 +1413,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_4) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "join(10..16,18..20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 10);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 10);
 
     GTUtilsDialog::waitForDialog(os,
                                  new ExportSequenceOfSelectedAnnotationsFiller(os,
@@ -1524,8 +1524,8 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: the task finished with an error: Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
-    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
+    // Expected: the task finished with an error: Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
+    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7456) {

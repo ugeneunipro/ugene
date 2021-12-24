@@ -1042,7 +1042,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
 
     // Check annotaions
     foreach (const int i, QList<int>() << 30 << 376) {
-        GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
+        GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", i, 0, true);
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
         CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
@@ -7220,7 +7220,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     //                      3) Annotations tree has "annot.gb" item.
     GTUtilsLog::checkContainsMessage(os, log);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
     GTLogTracer log1("Task {Shutdown} canceled");
 
@@ -7233,7 +7233,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log1);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
     GTLogTracer log2("Task {Shutdown} canceled");
 
@@ -7245,11 +7245,11 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log2);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
     // 10. Create another annotation with region 1..1 and path "path to/read_only_dir/annot1.gb".
     annotationPath = QFileInfo(sandBoxDir + "read_only_dir/annot1.gb").absoluteFilePath();
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "Misc. Feature", "", "1..1", annotationPath));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "misc_feature", "", "1..1", annotationPath));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     class Clicker : public CustomScenario {

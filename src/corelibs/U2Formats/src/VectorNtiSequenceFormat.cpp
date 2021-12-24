@@ -594,7 +594,7 @@ QMap<U2FeatureType, VectorNtiSequenceFormat::VntiProteinFeatureTypes> VectorNtiS
     proteinFeatureTypesMap.insert(U2FeatureTypes::MiscRegion, ProteinRegionMisc);
     proteinFeatureTypesMap.insert(U2FeatureTypes::RepetitiveRegion, ProteinRepetitiveRegion);
     proteinFeatureTypesMap.insert(U2FeatureTypes::MiscResidueModification, ProteinResidueModificationMisc);
-    proteinFeatureTypesMap.insert(U2FeatureTypes::SeconadaryStructure, ProteinSeconadaryStructure);
+    proteinFeatureTypesMap.insert(U2FeatureTypes::SecondaryStructure, ProteinSeconadaryStructure);
     proteinFeatureTypesMap.insert(U2FeatureTypes::Sh2, ProteinSh2);
     proteinFeatureTypesMap.insert(U2FeatureTypes::Sh3, ProteinSh3);
     proteinFeatureTypesMap.insert(U2FeatureTypes::SignalSequence, ProteinSignalSequence);

@@ -1653,7 +1653,7 @@ GUI_TEST_CLASS_DEFINITION(test_1133) {
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, patttern));
     GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find pattern [Smith-Waterman]"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 }
 
@@ -2425,8 +2425,8 @@ GUI_TEST_CLASS_DEFINITION(test_1220) {
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: misc_feature annotations created with pattern subsequence length qualifiers set to 6
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Misc. Feature");
-    QString val = GTUtilsAnnotationsTreeView::getQualifierValue(os, "pattern_match_len", "Misc. Feature");
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "misc_feature");
+    QString val = GTUtilsAnnotationsTreeView::getQualifierValue(os, "pattern_match_len", "misc_feature");
     CHECK_SET_ERR(val == "6", "unexpected value: " + val);
     //    Current state: "pattern_subseq_length" qualifiers created and set to 5.
 }
@@ -2653,7 +2653,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     //    3. Delete found annotations from human_t1 annotations tree
     GTMouseDriver::click();
@@ -2678,7 +2678,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252) {
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -2699,7 +2699,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     //    3. Delete found annotations from human_t1 annotations tree
     GTMouseDriver::click();
@@ -2723,7 +2723,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -2872,7 +2872,7 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     // delete new doc

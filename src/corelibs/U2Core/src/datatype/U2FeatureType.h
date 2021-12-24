@@ -176,7 +176,7 @@ public:
         SRegion = 144,
         Satellite = 145,
         ScRna = 146,
-        SeconadaryStructure = 147,
+        SecondaryStructure = 147,
         Sh2 = 148,
         Sh3 = 149,
         SignalPeptide = 150,

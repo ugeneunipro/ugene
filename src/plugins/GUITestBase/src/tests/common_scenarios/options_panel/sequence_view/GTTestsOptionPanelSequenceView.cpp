@@ -115,7 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "annotations_tree_widget"));
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {

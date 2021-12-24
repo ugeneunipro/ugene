@@ -128,7 +128,7 @@ QList<SharedAnnotationData> SecStructPredictUtils::saveAlgorithmResultsAsAnnotat
         if ((curChar != prevChar) || (i == numAcronyms - 1)) {
             if (prevChar != emptyCoil) {
                 SharedAnnotationData sd(new AnnotationData);
-                sd->type = U2FeatureTypes::SeconadaryStructure;
+                sd->type = U2FeatureTypes::SecondaryStructure;
                 sd->name = annotationName;
                 sd->location->regions.append(U2Region(lastRecordedPos, i - lastRecordedPos));
                 sd->qualifiers.append(U2Qualifier(BioStruct3D::SecStructTypeQualifierName, getStructNameForCharTag(prevChar)));

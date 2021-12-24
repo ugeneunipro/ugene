@@ -369,7 +369,7 @@ static void checkQualifierRegionsShift(HI::GUITestOpStatus &os, int shift) {
 }
 
 static void doMagic(HI::GUITestOpStatus &os) {
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
     GTTreeWidget::getItemCenter(os, annotationGroup);
     for (int i = 0; i < annotationGroup->childCount(); ++i) {
         GTTreeWidget::getItemCenter(os, annotationGroup->child(i));
