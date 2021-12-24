@@ -56,7 +56,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor)
     initWidgets();
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
-    connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));
+    connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_updateStatusBar()));
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
