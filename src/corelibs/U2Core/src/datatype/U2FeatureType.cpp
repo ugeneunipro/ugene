@@ -67,7 +67,7 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
 
     // The DDBJ/ENA/GenBank/EMBL Feature Table Definition.
     // See https://www.insdc.org/files/feature_table.html#7.2 (Genbank)
-    // or https://www.ebi.ac.uk/ena/WebFeat/ (EMBL)
+    // or https://www.ebi.ac.uk/ena/WebFeat/ (EMBL).
     r(AssemblyGap, "assembly_gap", Alphabet_Nucleic);
     r(CRegion, "C_region", Alphabet_Nucleic);
     r(Cds, "CDS", Alphabet_Nucleic);

@@ -368,11 +368,13 @@ static void checkQualifierRegionsShift(HI::GUITestOpStatus &os, int shift) {
     }
 }
 
-static void doMagic(HI::GUITestOpStatus &os) {
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    for (int i = 0; i < annotationGroup->childCount(); ++i) {
-        GTTreeWidget::getItemCenter(os, annotationGroup->child(i));
+/** Expands all annotation in "Misc. Feature" group. This action lazily creates qualifier tree items. */
+static void expandAllAnnotationsInGroup(HI::GUITestOpStatus &os) {
+    QTreeWidgetItem *groupItem = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+    GTTreeWidget::expand(os, groupItem);
+    for (int i = 0; i < groupItem->childCount(); ++i) {
+        QTreeWidgetItem *annotationItem = groupItem->child(i);
+        GTTreeWidget::expand(os, annotationItem);
     }
 }
 
@@ -382,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..10", false));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
@@ -403,7 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1_neg) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1000..1100", true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
@@ -453,7 +455,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
 
@@ -475,7 +477,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1_neg) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 100000, 100000);
 
@@ -532,7 +534,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
 
@@ -559,7 +561,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1_neg) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1000, 1010);
 
@@ -619,7 +621,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..600", true));
     GTUtilsNotifications::waitForNotification(os, false);
@@ -638,7 +640,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 600);
 

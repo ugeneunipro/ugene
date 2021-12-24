@@ -4817,15 +4817,13 @@ GUI_TEST_CLASS_DEFINITION(test_5903) {
         }
     };
 
-    // 2. Create annotation with "propertide" type
+    // 2. Create annotation with "propertide" type.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected type - propeptide
     QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "NewAnn");
-    CHECK_SET_ERR(type == "Propeptide", QString("incorrect type, expected: Propeptide, current: %1").arg(type));
+    CHECK_SET_ERR(type == "propeptide", QString("incorrect type, expected: Propeptide, current: %1").arg(type));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5905) {

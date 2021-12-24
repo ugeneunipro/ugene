@@ -161,25 +161,21 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7022) {
-    // 1. Open _common_data/scenarios/_regression/7022/test_7022.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7022/test_7022.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // 2. Turn on "Wrap mode" and click on the first annotation in DetView
+    // Turn on "Wrap mode" and click on the first annotation in DetView.
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 2);
 
-    // 3. copy selected annotation
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy annotation sequence"));
+    // Copy selected annotation.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy annotation sequence"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC
     QString expected = "TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC";
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text == expected, QString("Unexpected annotation, expected: %1, current: %2").arg(expected).arg(text));
@@ -679,7 +675,7 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
     CHECK_SET_ERR(sequenceNameList2 != sequenceNameList1, "Name list must change as the result of sorting");
 
     // Align with KAlign now.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN,  "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1480,25 +1476,24 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     // 3. Right click -> Cloning -> Digest into fragments...
     class DigestScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
+        void run(HI::GUITestOpStatus &os) override {
             // 4. Select "AaaI" and click "Add---->"
             // 5. Go to the "Conserved annotations" tab
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
-            QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget *>(os, "availableEnzymeWidget", dialog);
+            QList<QListWidgetItem *> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
 
             GTListWidget::click(os, availableEnzymeWidget, "AaaI : 2 cut(s)");
             GTWidget::click(os, GTWidget::findWidget(os, "addButton", dialog));
             GTTabWidget::clickTab(os, "tabWidget", dialog, 1);
 
-
             class SelectAnnotationScenario : public CustomScenario {
             public:
-                void run(HI::GUITestOpStatus& os) override {
+                void run(HI::GUITestOpStatus &os) override {
                     // 6. Click "Add", choose the only option and click "OK".
-                    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-                    auto selectAnnotationsList = GTWidget::findWidgetByType<QListWidget*>(os, dialog, "Cant find the \"Select annotations\" list");
+                    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+                    auto selectAnnotationsList = GTWidget::findWidgetByType<QListWidget *>(os, dialog, "Cant find the \"Select annotations\" list");
                     auto items = GTListWidget::getItems(os, selectAnnotationsList);
                     CHECK_SET_ERR(items.size() == 1, "Unexpected number of annotations");
 
@@ -1507,25 +1502,22 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
                 }
             };
 
-            GTUtilsDialog::waitForDialog(os, new Filler(os, "select_annotations_dlalog", new SelectAnnotationScenario()));
+            GTUtilsDialog::waitForDialog(os, new Filler(os, "select_annotations_dialog", new SelectAnnotationScenario()));
 
             // 7. Click "OK"
             GTWidget::click(os, GTWidget::findWidget(os, "addAnnBtn", dialog));
-
-
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Cloning", "Digest into fragments..." } ));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the task finished with an error: Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
-    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
+    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7456) {
@@ -1603,9 +1595,9 @@ GUI_TEST_CLASS_DEFINITION(test_7465) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //Expected state: there is a notification about lacking of memory.
+    // Expected state: there is a notification about lacking of memory.
     CHECK_SET_ERR(GTUtilsDashboard::getJoinedNotificationsString(os).contains("There is not enough memory to align these sequences with MUSCLE"),
-        "No expected message about lacking of memory in notifications");
+                  "No expected message about lacking of memory in notifications");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7469) {

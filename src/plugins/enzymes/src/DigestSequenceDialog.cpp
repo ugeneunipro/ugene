@@ -331,7 +331,7 @@ void DigestSequenceDialog::setUiEnabled(bool enabled) {
 
 void DigestSequenceDialog::sl_addAnnBtnClicked() {
     QObjectScopedPointer<QDialog> dlg = new QDialog(this);
-    dlg->setObjectName("select_annotations_dlalog");
+    dlg->setObjectName("select_annotations_dialog");
     dlg->setWindowTitle(tr("Select annotations"));
     QVBoxLayout *layout = new QVBoxLayout(dlg.data());
     QListWidget *listWidget(new QListWidget(dlg.data()));
