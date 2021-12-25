@@ -268,8 +268,7 @@ void BlastRunCommonDialog::sl_megablastChecked() {
     }
 }
 
-void BlastRunCommonDialog::sl_onProgNameChange(int index) {
-    Q_UNUSED(index);
+void BlastRunCommonDialog::sl_onProgNameChange(int) {
     setupCompositionBasedStatistics();
     settings.programName = programName->currentText();
     if (programName->currentText() == "blastn") {    //nucl
@@ -278,10 +277,6 @@ void BlastRunCommonDialog::sl_onProgNameChange(int index) {
         thresholdSpinBox->setValue(0);
     } else if (programName->currentText() == "blastp") {    //amino
         programName->setToolTip(tr("Direct protein alignment"));
-        gappedAlignmentCheckBox->setEnabled(true);
-        thresholdSpinBox->setValue(11);
-    } else if (programName->currentText() == "gpu-blastp") {    //amino
-        programName->setToolTip(tr("Direct protein alignment (on GPU)"));
         gappedAlignmentCheckBox->setEnabled(true);
         thresholdSpinBox->setValue(11);
     } else if (programName->currentText() == "blastx") {    //nucl
@@ -297,7 +292,7 @@ void BlastRunCommonDialog::sl_onProgNameChange(int index) {
         gappedAlignmentCheckBox->setEnabled(false);
         thresholdSpinBox->setValue(13);
     } else {
-        assert(0);
+        FAIL("Unsupported blast program name: " + settings.programName, );
     }
     enableStrandBox((programName->currentText() == "blastn") || (programName->currentText().contains("blastx")));
 
@@ -446,7 +441,6 @@ void BlastRunCommonDialog::getSettings(BlastTaskSettings &localSettings) {
     localSettings.xDropoffFGA = xDropoffFGASpinBox->value();
     if ((localSettings.programName == "blastn" && localSettings.threshold != 0) ||
         (localSettings.programName == "blastp" && localSettings.threshold != 11) ||
-        (localSettings.programName == "gpu-blastp" && localSettings.threshold != 11) ||
         (localSettings.programName == "blastx" && localSettings.threshold != 12) ||
         (localSettings.programName == "tblastn" && localSettings.threshold != 13) ||
         (localSettings.programName == "tblastx" && localSettings.threshold != 13)) {

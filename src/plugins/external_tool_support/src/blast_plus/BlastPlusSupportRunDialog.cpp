@@ -68,10 +68,10 @@ QStringList getCompValues() {
     result << "tblastn";
     return result;
 }
-}    // namespace
+}  // namespace
 
 ////////////////////////////////////////
-//BlastAllSupportRunDialog
+// BlastAllSupportRunDialog
 BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext *seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
     : BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx), regionSelector(nullptr) {
     dnaso = seqCtx->getSequenceObject();
@@ -88,17 +88,14 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext *s
     regionSelector = new RegionSelector(this, seqCtx->getSequenceLength(), false, seqCtx->getSequenceSelection());
     settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
 
-    //programName->removeItem(3);//cuda-blastp
-    if (dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO) {
-        programName->removeItem(0);    //blastn
-        programName->removeItem(1);    //blastx
-        programName->removeItem(2);    //tblastx
-        settings.isNucleotideSeq = false;
-    } else {
-        programName->removeItem(1);    //blastp
-        programName->removeItem(1);    //gpu-blastp
-        programName->removeItem(2);    //tblastn
-        settings.isNucleotideSeq = true;
+    settings.isNucleotideSeq = dnaso->getAlphabet()->getType() != DNAAlphabet_AMINO;
+    QStringList programsToKeep = settings.isNucleotideSeq
+                                     ? QStringList({"blastn", "blastx", "tblastx"})
+                                     : QStringList({"blastp", "tblastn"});
+    for (int i = programName->count(); --i >= 0;) {
+        if (!programsToKeep.contains(programName->itemText(i))) {
+            programName->removeItem(i);
+        }
     }
     dbSelector->databasePathLineEdit->setText(lastDBPath);
     dbSelector->baseNameLineEdit->setText(lastDBName);
@@ -114,75 +111,44 @@ void BlastPlusSupportRunDialog::sl_lineEditChanged() {
 }
 
 bool BlastPlusSupportRunDialog::checkToolPath() {
-    bool needSetToolPath = false;
-    QString toolName;
-    QString toolId;
     QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-    msgBox->setWindowTitle("BLAST+ Search");
+    msgBox->setWindowTitle(tr("BLAST+ Search"));
     msgBox->setInformativeText(tr("Do you want to select it now?"));
     msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox->setDefaultButton(QMessageBox::Yes);
-    if ((programName->currentText() == "blastn") &&
-        (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_BLASTN_ID)->getPath().isEmpty())) {
-        needSetToolPath = true;
+    QString programText = programName->currentText();
+    QString toolName;
+    QString toolId;
+    if (programText == "blastn") {
         toolName = BlastPlusSupport::ET_BLASTN;
         toolId = BlastPlusSupport::ET_BLASTN_ID;
-
-    } else if ((programName->currentText() == "blastp") &&
-               (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_BLASTP_ID)->getPath().isEmpty())) {
-        needSetToolPath = true;
+    } else if (programText == "blastp") {
         toolName = BlastPlusSupport::ET_BLASTP;
         toolId = BlastPlusSupport::ET_BLASTP_ID;
-
-        // https://ugene.net/tracker/browse/UGENE-945
-        //     }else if((programName->currentText() == "gpu-blastp") &&
-        //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
-        //         needSetToolPath=true;
-        //         toolName=GPU_BLASTP_TOOL_NAME;
-
-    } else if ((programName->currentText() == "blastx") &&
-               (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTX_ID)->getPath().isEmpty())) {
-        needSetToolPath = true;
+    } else if (programText == "blastx") {
         toolName = BlastPlusSupport::ET_BLASTX;
         toolId = BlastPlusSupport::ET_BLASTX_ID;
-
-    } else if ((programName->currentText() == "tblastn") &&
-               (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTN_ID)->getPath().isEmpty())) {
-        needSetToolPath = true;
+    } else if (programText == "tblastn") {
         toolName = BlastPlusSupport::ET_TBLASTN;
         toolId = BlastPlusSupport::ET_TBLASTN_ID;
-
-    } else if ((programName->currentText() == "tblastx") &&
-               (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTX_ID)->getPath().isEmpty())) {
-        needSetToolPath = true;
+    } else if (programText == "tblastx") {
         toolName = BlastPlusSupport::ET_TBLASTX;
         toolId = BlastPlusSupport::ET_TBLASTX_ID;
-    }
-    if (needSetToolPath) {
-        msgBox->setText(tr("Path for <i>BLAST+ %1</i> tool not selected.").arg(toolName));
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), false);
-
-        switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-                break;
-            case QMessageBox::No:
-                return false;
-                break;
-            default:
-                assert(false);
-                break;
-        }
-        if (!AppContext::getExternalToolRegistry()->getById(toolId)->getPath().isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
-
     } else {
+        FAIL("Unexpected blast tool name: " + programText, false);
+    }
+
+    ExternalToolRegistry *toolsRegistry = AppContext::getExternalToolRegistry();
+    if (!toolsRegistry->getById(toolId)->getPath().isEmpty()) {
         return true;
     }
+
+    msgBox->setText(tr("Path for <i>BLAST+ %1</i> tool not selected.").arg(toolName));
+    int ret = msgBox->exec();
+    CHECK(!msgBox.isNull(), false);
+    CHECK(ret == QMessageBox::Yes, false);
+    AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+    return !toolsRegistry->getById(toolId)->getPath().isEmpty();
 }
 
 void BlastPlusSupportRunDialog::sl_runQuery() {
@@ -220,19 +186,19 @@ void BlastPlusSupportRunDialog::sl_runQuery() {
     settings.alphabet = dnaso->getAlphabet();
     lastDBPath = dbSelector->databasePathLineEdit->text();
     lastDBName = dbSelector->baseNameLineEdit->text();
-    settings.outputType = 5;    //By default set output file format to xml
+    settings.outputType = 5;  // By default set output file format to xml
     if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(settings.aobj);
     }
     accept();
 }
 ////////////////////////////////////////
-//BlastPlusWithExtFileSpecifySupportRunDialog
+// BlastPlusWithExtFileSpecifySupportRunDialog
 BlastPlusWithExtFileSpecifySupportRunDialog::BlastPlusWithExtFileSpecifySupportRunDialog(QString &lastDBPath, QString &lastDBName, QWidget *parent)
     : BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), hasValidInput(false) {
     ca_c = nullptr;
     wasNoOpenProject = false;
-    //create input file widget
+    // create input file widget
     QWidget *widget = new QWidget(parent);
     inputFileLineEdit = new FileLineEdit("", "", false, widget);
     inputFileLineEdit->setReadOnly(true);
@@ -255,7 +221,7 @@ BlastPlusWithExtFileSpecifySupportRunDialog::BlastPlusWithExtFileSpecifySupportR
     assert(parentLayout);
     parentLayout->insertWidget(0, inputFileGroupBox);
 
-    programName->removeItem(3);    //cuda-blastp
+    programName->removeItem(3);  // cuda-blastp
 
     dbSelector->databasePathLineEdit->setText(lastDBPath);
     dbSelector->baseNameLineEdit->setText(lastDBName);
@@ -411,12 +377,6 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath() {
         needSetToolPath = true;
         toolId = BlastPlusSupport::ET_BLASTP_ID;
 
-        // https://ugene.net/tracker/browse/UGENE-945
-        //     }else if((programName->currentText() == "gpu-blastp") &&
-        //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
-        //         needSetToolPath=true;
-        //         toolName=GPU_BLASTP_TOOL_NAME;
-
     } else if ((programName->currentText() == "blastx") &&
                (AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_BLASTX_ID)->getPath().isEmpty())) {
         needSetToolPath = true;
@@ -479,12 +439,12 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_runQuery() {
             settingsList[i].aobj = new AnnotationTableObject(sequencesRefList[i].objName + " annotations", dbiRef);
             settingsList[i].aobj->addObjectRelation(GObjectRelation(sequencesRefList[i], ObjectRole_Sequence));
         } else {
-            assert(false);    //always created new document for annotations
+            assert(false);  // always created new document for annotations
         }
         settingsList[i].groupName = ca_c->getModel().groupName;
 
         getSettings(settingsList[i]);
-        settingsList[i].outputType = 5;    //By default set output file format to xml
+        settingsList[i].outputType = 5;  // By default set output file format to xml
     }
     bool docAlreadyInProject = false;
     Project *proj = AppContext::getProject();
@@ -518,4 +478,4 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_cancel() {
         AppContext::getTaskScheduler()->registerTopLevelTask(projService->closeProjectTask());
     }
 }
-}    // namespace U2
+}  // namespace U2

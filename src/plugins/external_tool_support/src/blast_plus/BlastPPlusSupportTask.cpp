@@ -91,10 +91,6 @@ ExternalToolRunTask *BlastPPlusSupportTask::createBlastPlusTask() {
     if (settings.windowSize != 40) {
         arguments << "-window_size" << QString::number(settings.windowSize);
     }
-    if (settings.programName == "gpu-blastp") {
-        arguments << "-gpu"
-                  << "t";
-    }
     if (!settings.compStats.isEmpty()) {
         arguments << "-comp_based_stats" << settings.compStats;
     }

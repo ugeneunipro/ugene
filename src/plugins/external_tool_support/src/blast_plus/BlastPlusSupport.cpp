@@ -171,11 +171,7 @@ BlastPlusSupport::BlastPlusSupport(const QString &id, const QString &name, const
         description = "";
         versionRegExp = QRegExp("Reverse Position Specific BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     }
-    if (id == ET_GPU_BLASTP_ID) {
-        toolKitName = "GPU-BLAST+";
-    } else {
-        toolKitName = "BLAST+";
-    }
+    toolKitName = "BLAST+";
     lastDBName = "";
     lastDBPath = "";
 }
@@ -394,7 +390,7 @@ void BlastPlusSupportContext::sl_showDialog() {
         Task *t = nullptr;
         if (settings.programName == "blastn") {
             t = new BlastNPlusSupportTask(settings);
-        } else if (settings.programName == "blastp" || settings.programName == "gpu-blastp") {
+        } else if (settings.programName == "blastp") {
             t = new BlastPPlusSupportTask(settings);
         } else if (settings.programName == "blastx") {
             t = new BlastXPlusSupportTask(settings);

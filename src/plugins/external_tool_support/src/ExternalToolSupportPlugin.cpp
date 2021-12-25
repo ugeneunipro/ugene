@@ -356,13 +356,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new TrimmomaticSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
-        etRegistry->setToolkitDescription("BLAST", tr("The <i>Basic Local Alignment Search Tool</i> (BLAST) finds regions of local similarity between sequences. "
-                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. "
-                                                      "BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families."));
-
-        etRegistry->setToolkitDescription("BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
-
-        etRegistry->setToolkitDescription("GPU-BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
+        etRegistry->setToolkitDescription("BLAST", tr("<i>BLAST</i> finds regions of similarity between biological sequences. "
+                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance."));
 
         etRegistry->setToolkitDescription("Bowtie", tr("<i>Bowtie<i> is an ultrafast, memory-efficient short read aligner. "
                                                        "It aligns short DNA sequences (reads) to the human genome at "

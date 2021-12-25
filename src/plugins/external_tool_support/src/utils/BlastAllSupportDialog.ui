@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1110</width>
-    <height>363</height>
+    <width>1169</width>
+    <height>373</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -67,32 +67,27 @@
           <widget class="QComboBox" name="programName">
            <item>
             <property name="text">
-             <string extracomment="qwe">blastn</string>
+             <string notr="true">blastn</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>blastp</string>
+             <string notr="true">blastp</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>gpu-blastp</string>
+             <string notr="true">blastx</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>blastx</string>
+             <string notr="true">tblastn</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>tblastn</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>tblastx</string>
+             <string notr="true">tblastx</string>
             </property>
            </item>
           </widget>
@@ -328,9 +323,6 @@
          </property>
          <item row="4" column="1" colspan="4">
           <widget class="QComboBox" name="compStatsComboBox">
-           <property name="sizeAdjustPolicy">
-            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-           </property>
            <item>
             <property name="text">
              <string>D or d: default (equivalent to 2 )</string>
