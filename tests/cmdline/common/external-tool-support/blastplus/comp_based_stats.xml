@@ -1,7 +1,7 @@
 <multi-test>
     <!-- blastp: comp_based_stats. Just check that it can be set -->
     <run-cmdline
-            task="local-blast+"
+            task="local-blast"
             in="!common_data_dir!swiss_prot/Q9XHP0.sw"
             out="!tmp_data_dir!blastp_maxhits.gb"
             dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/sushi"

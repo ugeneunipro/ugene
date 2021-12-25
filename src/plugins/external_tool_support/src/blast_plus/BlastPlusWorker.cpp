@@ -96,9 +96,9 @@ void BlastPlusWorkerFactory::init() {
     outM[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
     p << new PortDescriptor(oud, DataTypePtr(new MapDataType("blast.plus.annotations", outM)), false /*input*/, true /*multi*/);
 
-    Descriptor pn(BLASTPLUS_PROGRAM_NAME, BlastPlusWorker::tr("Search type"), BlastPlusWorker::tr("Select type of BLAST+ searches."));
+    Descriptor pn(BLASTPLUS_PROGRAM_NAME, BlastPlusWorker::tr("Search type"), BlastPlusWorker::tr("Select type of BLAST searches."));
     Descriptor dp(BLASTPLUS_DATABASE_PATH, BlastPlusWorker::tr("Database Path"), BlastPlusWorker::tr("Path with database files."));
-    Descriptor dn(BLASTPLUS_DATABASE_NAME, BlastPlusWorker::tr("Database Name"), BlastPlusWorker::tr("Base name for BLAST+ DB files."));
+    Descriptor dn(BLASTPLUS_DATABASE_NAME, BlastPlusWorker::tr("Database Name"), BlastPlusWorker::tr("Base name for BLAST DB files."));
     Descriptor ev(BLASTPLUS_EXPECT_VALUE, BlastPlusWorker::tr("Expected value"), BlastPlusWorker::tr("This setting specifies the statistical significance threshold for reporting matches against database sequences."));
     Descriptor cbs(BLASTPLUS_COMP_STATS, BlastPlusWorker::tr("Composition-based statistics"), BlastPlusWorker::tr("Composition-based statistics."));
     Descriptor mh(BLASTPLUS_MAX_HITS, getHitsName(), getHitsDescription());
@@ -147,7 +147,7 @@ void BlastPlusWorkerFactory::init() {
     a << new Attribute(output, BaseTypes::STRING_TYPE(), false, QVariant(""));
     a << new Attribute(outtype, BaseTypes::STRING_TYPE(), false, QVariant("5"));
 
-    Descriptor desc(ACTOR_ID, BlastPlusWorker::tr("Local BLAST+ Search"), BlastPlusWorker::tr("Finds annotations for DNA sequence in local database."));
+    Descriptor desc(ACTOR_ID, BlastPlusWorker::tr("Local BLAST Search"), BlastPlusWorker::tr("Finds annotations for DNA sequence in local database."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate *> delegates;
 

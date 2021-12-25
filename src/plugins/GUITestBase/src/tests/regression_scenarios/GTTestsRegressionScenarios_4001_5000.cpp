@@ -5071,7 +5071,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Sequence context menu Analyze -> Query with local BLAST+...
+    // 2. Sequence context menu Analyze -> Query with local BLAST...
     // 3. Press "Select a database file".
     // 4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     // 6. Press "Search".
@@ -5082,7 +5082,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
-                                                << "Query with local BLAST+...",
+                                                << "Query with local BLAST...",
                               GTGlobals::UseMouse);
     GTGlobals::sleep(100);
 

@@ -51,7 +51,7 @@ namespace U2 {
 
 ETSProjectViewItemsContoller::ETSProjectViewItemsContoller(QObject *p)
     : QObject(p) {
-    makeBLASTDBOnSelectionAction = new ExternalToolSupportAction(tr("BLAST+ make DB..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
+    makeBLASTDBOnSelectionAction = new ExternalToolSupportAction(tr("BLAST make DB..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
     connect(makeBLASTDBOnSelectionAction, SIGNAL(triggered()), SLOT(sl_runMakeBlastDbOnSelection()));
 
     ProjectView *pv = AppContext::getProjectView();
@@ -88,8 +88,8 @@ void ETSProjectViewItemsContoller::sl_runMakeBlastDbOnSelection() {
     if (AppContext::getExternalToolRegistry()->getById(s->getToolIds().at(0))->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         QString toolName = AppContext::getExternalToolRegistry()->getById(s->getToolIds().at(0))->getName();
-        msgBox->setWindowTitle("BLAST+ " + s->getToolIds().at(0));
-        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(toolName));
+        msgBox->setWindowTitle("BLAST " + s->getToolIds().at(0));
+        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(toolName));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

@@ -1324,13 +1324,13 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5363_2) {
-    //    1. {Tools --> BLAST --> BLAST+ make database}
+    //    1. {Tools --> BLAST --> BLAST make database}
     //    2. Set murine.gb as input file
     //    3. Check nucleotide radiobutton
     //    4. Create database
     //    Expected state: database was successfully created
     //    5. Open murine.gb
-    //    6. {Analyze --> Query with local BLAST+}
+    //    6. {Analyze --> Query with local BLAST}
     //    7. Select the created database and accept the dialog
     //    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
 
@@ -1340,7 +1340,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
-                                                << "BLAST+ make database...");
+                                                << "BLAST make database...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1354,7 +1354,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
-                                                << "Query with local BLAST+...");
+                                                << "Query with local BLAST...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
@@ -2059,7 +2059,7 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
-                                                << "Query with local BLAST+...");
+                                                << "Query with local BLAST...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

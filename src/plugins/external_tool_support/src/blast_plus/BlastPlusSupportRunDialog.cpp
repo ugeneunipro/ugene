@@ -112,7 +112,7 @@ void BlastPlusSupportRunDialog::sl_lineEditChanged() {
 
 bool BlastPlusSupportRunDialog::checkToolPath() {
     QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-    msgBox->setWindowTitle(tr("BLAST+ Search"));
+    msgBox->setWindowTitle(tr("BLAST Search"));
     msgBox->setInformativeText(tr("Do you want to select it now?"));
     msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox->setDefaultButton(QMessageBox::Yes);
@@ -143,7 +143,7 @@ bool BlastPlusSupportRunDialog::checkToolPath() {
         return true;
     }
 
-    msgBox->setText(tr("Path for <i>BLAST+ %1</i> tool not selected.").arg(toolName));
+    msgBox->setText(tr("Path for <i>BLAST %1</i> tool not selected.").arg(toolName));
     int ret = msgBox->exec();
     CHECK(!msgBox.isNull(), false);
     CHECK(ret == QMessageBox::Yes, false);
@@ -268,7 +268,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(co
 }
 
 void BlastPlusWithExtFileSpecifySupportRunDialog::onFormatError() {
-    QMessageBox::critical(this, tr("Wrong input file"), tr("This file has the incompatible format for the BLAST+ search."));
+    QMessageBox::critical(this, tr("Wrong input file"), tr("This file has the incompatible format for the BLAST search."));
     inputFileLineEdit->setText("");
 }
 
@@ -363,7 +363,7 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath() {
     bool needSetToolPath = false;
     QString toolId;
     QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-    msgBox->setWindowTitle("BLAST+ Search");
+    msgBox->setWindowTitle("BLAST Search");
     msgBox->setInformativeText(tr("Do you want to select it now?"));
     msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox->setDefaultButton(QMessageBox::Yes);
@@ -393,7 +393,7 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath() {
         toolId = BlastPlusSupport::ET_TBLASTX_ID;
     }
     if (needSetToolPath) {
-        msgBox->setText(tr("Path for <i>BLAST+ %1</i> tool not selected.").arg(AppContext::getExternalToolRegistry()->getById(toolId)->getName()));
+        msgBox->setText(tr("Path for <i>BLAST %1</i> tool not selected.").arg(AppContext::getExternalToolRegistry()->getById(toolId)->getName()));
         const int ret = msgBox->exec();
         CHECK(!msgBox.isNull(), false);
 

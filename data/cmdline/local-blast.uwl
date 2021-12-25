@@ -1,9 +1,7 @@
 #@UGENE_WORKFLOW
 #Run local NCBI BLAST search. BLAST finds regions of similarity between biological sequences. Must have an installed NCBI BLAST package.
 
-
-
-workflow local-blast+{
+workflow local-blast{
 
     read-sequence {
         type:read-sequence;
@@ -19,7 +17,7 @@ workflow local-blast+{
     }
     blast-plus {
         type:blast-plus;
-        name:"Local BLAST+ search";
+        name:"Local BLAST search";
     }
 
 
@@ -85,7 +83,7 @@ workflow local-blast+{
             }
             blast-plus.tool-path {
                 alias:toolpath;
-                description:"BLAST+ location (using the path specified in UGENE by default)";
+                description:"BLAST location (using the path specified in UGENE by default)";
             }
             blast-plus.type-output {
                 alias:blast-out-type;

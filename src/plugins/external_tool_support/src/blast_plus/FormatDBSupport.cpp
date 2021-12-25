@@ -61,17 +61,17 @@ FormatDBSupport::FormatDBSupport(const QString &path)
     validMessage = "makeblastdb";
     description = tr("The <i>makeblastdb</i> formats protein or"
                      " nucleotide source databases before these databases"
-                     " can be searched by other BLAST+ tools.");
+                     " can be searched by other BLAST tools.");
     versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
-    toolKitName = "BLAST+";
+    toolKitName = "BLAST";
 }
 
 void FormatDBSupport::sl_runWithExtFileSpecify() {
     //Check that makeblastdb and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ " + name);
-        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(name));
+        msgBox->setWindowTitle("BLAST " + name);
+        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(name));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

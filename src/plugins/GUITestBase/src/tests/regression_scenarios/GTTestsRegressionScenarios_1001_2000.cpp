@@ -1914,10 +1914,10 @@ GUI_TEST_CLASS_DEFINITION(test_1175) {
     GTUtilsWorkflowDesigner::addSample(os, "Gene-by-gene approach");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    GTUtilsExternalTools::removeTool(os, "Blast+");
+    GTUtilsExternalTools::removeTool(os, "Blast");
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsWorkflowDesigner::click(os, "Local BLAST+ Search");
+    GTUtilsWorkflowDesigner::click(os, "Local BLAST Search");
     GTUtilsWorkflowDesigner::setParameter(os, "Database Path", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Database Name", "test", GTUtilsWorkflowDesigner::textValue);
 
@@ -7128,7 +7128,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     // 1. Open Settings -> Preferences -> External Tools.
-    // 2. Select any invalid file for Blast+ -> BlastN.
+    // 2. Select any invalid file for Blast -> BlastN.
     GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "this-file-does-not-exist");
 
     // 3. Open WD.
@@ -7140,7 +7140,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
 
     // 5. Setup inputs and outputs.
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsWorkflowDesigner::click(os, "Local BLAST+ Search");
+    GTUtilsWorkflowDesigner::click(os, "Local BLAST Search");
     GTUtilsWorkflowDesigner::setParameter(os, "Database Path", sandBoxDir, GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Database Name", "test", GTUtilsWorkflowDesigner::textValue);
 

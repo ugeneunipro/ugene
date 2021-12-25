@@ -518,7 +518,7 @@ GUI_TEST_CLASS_DEFINITION(test_3086) {
 GUI_TEST_CLASS_DEFINITION(test_3092) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
 
-    //    2. Do {Actions -> Analyze -> Query with BLAST+...} in the main menu.
+    //    2. Do {Actions -> Analyze -> Query with BLAST...} in the main menu.
     //    Expected state: a dialog "Request to Local BLAST Database" appears, UGENE doesn't crash.
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
@@ -527,7 +527,7 @@ GUI_TEST_CLASS_DEFINITION(test_3092) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(BlastAllSupportDialogFiller::Parameters(), os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
-                                                << "Query with local BLAST+...",
+                                                << "Query with local BLAST...",
                               GTGlobals::UseMouse);
 }
 
@@ -1086,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
                                                                         << "Sequence region"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    // 3. Context menu -> Analyze -> Query with BLAST+.
+    // 3. Context menu -> Analyze -> Query with BLAST.
     // 5. Select the database.
     // 6. Run.
     BlastAllSupportDialogFiller::Parameters blastParams;
@@ -1095,7 +1095,7 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
-                                                << "Query with local BLAST+...",
+                                                << "Query with local BLAST...",
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1139,7 +1139,7 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3209_1) {
-    // BLAST+ from file
+    // BLAST from file
     BlastAllSupportDialogFiller::Parameters blastParams;
     blastParams.runBlast = true;
     blastParams.programNameText = "blastn";
@@ -1149,7 +1149,7 @@ GUI_TEST_CLASS_DEFINITION(test_3209_1) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
-                                                << "BLAST+ search...");
+                                                << "BLAST search...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));

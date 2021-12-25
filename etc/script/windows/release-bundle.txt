@@ -127,7 +127,7 @@ data/cmdline/hmm2-search.uwl
 data/cmdline/hmm3-build-and-search.uwl
 data/cmdline/hmm3-search.uwl
 data/cmdline/join-quality.uwl
-data/cmdline/local-blast+.uwl
+data/cmdline/local-blast.uwl
 data/cmdline/pfm-build.uwl
 data/cmdline/pfm-search.uwl
 data/cmdline/pwm-build.uwl

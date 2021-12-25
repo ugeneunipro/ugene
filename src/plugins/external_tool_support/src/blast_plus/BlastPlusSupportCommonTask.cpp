@@ -55,7 +55,7 @@
 namespace U2 {
 
 BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings &_settings)
-    : ExternalToolSupportTask("Run NCBI Blast+ task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
+    : ExternalToolSupportTask("Run NCBI Blast task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
     GCOUNTER(cvar, "BlastPlusSupportCommonTask");
     blastPlusTask = nullptr;
@@ -65,7 +65,7 @@ BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings &
     circularization = new U2PseudoCircularization(this, settings.isSequenceCircular, settings.querySequence);
     addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
     if (nullptr != settings.querySequenceObject) {
-        TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST+. The sequence is no more available."));
+        TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST. The sequence is no more available."));
     }
 }
 
@@ -74,8 +74,8 @@ void BlastPlusSupportCommonTask::prepare() {
         stateInfo.setError("Database path have space(s). Try select any other folder without spaces.");
         return;
     }
-    //Add new subdir for temporary files
-    //Folder name is ExternalToolName + CurrentDate + CurrentTime
+    // Add new subdir for temporary files
+    // Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirPath = getAcceptableTempDir();
     CHECK_EXT(!tmpDirPath.isEmpty(), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
@@ -95,8 +95,8 @@ void BlastPlusSupportCommonTask::prepare() {
         stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
-    //Create ncbi.ini for windows or .ncbirc for unix like systems
-    //See issue UGENE-791 (https://ugene.net/tracker/browse/UGENE-791)
+    // Create ncbi.ini for windows or .ncbirc for unix like systems
+    // See issue UGENE-791 (https://ugene.net/tracker/browse/UGENE-791)
 #ifdef Q_OS_UNIX
     QString iniNCBIFile = tmpDir.absolutePath() + QString("/.ncbirc");
 #else
@@ -152,7 +152,7 @@ QList<Task *> BlastPlusSupportCommonTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
     if (subTask == saveTemporaryDocumentTask) {
-        delete tmpDoc;    //sequenceObject also deleted at this place
+        delete tmpDoc;  // sequenceObject also deleted at this place
         blastPlusTask = createBlastPlusTask();
         blastPlusTask->setSubtaskProgressWeight(95);
         res.append(blastPlusTask);
@@ -203,7 +203,7 @@ Task::ReportResult BlastPlusSupportCommonTask::report() {
         return ReportResult_Finished;
     }
 
-    //Remove subdir for temporary files, that created in prepare
+    // Remove subdir for temporary files, that created in prepare
     QDir tmpDir(QFileInfo(url).absoluteDir());
     foreach (QString file, tmpDir.entryList(QDir::Files | QDir::Hidden)) {
         tmpDir.remove(file);
@@ -236,7 +236,7 @@ void BlastPlusSupportCommonTask::parseTabularResult() {
     }
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
-        if (line.startsWith("#")) {    //skip comment
+        if (line.startsWith("#")) {  // skip comment
             continue;
         }
         parseTabularLine(line);
@@ -247,7 +247,7 @@ void BlastPlusSupportCommonTask::parseTabularLine(const QByteArray &line) {
     SharedAnnotationData ad(new AnnotationData);
     bool isOk;
     int from = -1, to = -1, align_len = -1, gaps = -1, hitFrom = -1, hitTo = -1;
-    //Fields: Query id (0), Subject id(1), % identity(2), alignment length(3), mismatches(4), gap openings(5), q. start(6), q. end(7), s. start(8), s. end(9), e-value(10), bit score(11)
+    // Fields: Query id (0), Subject id(1), % identity(2), alignment length(3), mismatches(4), gap openings(5), q. start(6), q. end(7), s. start(8), s. end(9), e-value(10), bit score(11)
     QList<QByteArray> elements = line.split('\t');
     if (elements.size() != 12) {
         stateInfo.setError(tr("Incorrect number of fields in line: %1").arg(elements.size()));
@@ -304,7 +304,7 @@ void BlastPlusSupportCommonTask::parseTabularLine(const QByteArray &line) {
     }
     QString elem = QString(elements.at(11));
     if (elem.endsWith('\n')) {
-        elem.resize(elem.size() - 1);    //remove \n symbol
+        elem.resize(elem.size() - 1);  // remove \n symbol
     }
     double bitScore = elem.toDouble(&isOk);
     if (isOk) {
@@ -333,7 +333,7 @@ void BlastPlusSupportCommonTask::parseTabularLine(const QByteArray &line) {
             ad->qualifiers.push_back(U2Qualifier("gaps", str));
         }
         if (identitiesPercent != -1) {
-            //float percent = (float)identities / (float)align_len * 100;
+            // float percent = (float)identities / (float)align_len * 100;
             int identities = (float)align_len * identitiesPercent / 100.;
             QString str = QString::number(identities) + '/' + QString::number(align_len) + " (" + QString::number(identitiesPercent, 'g', 4) + "%)";
             ad->qualifiers.push_back(U2Qualifier("identities", str));
@@ -481,7 +481,7 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml, const QString 
         stateInfo.setError(tr("Can't get align length"));
         return;
     }
-    //at new blast+ not need check strand
+    // No need to check strand with BLAST
     ad->location->regions << U2Region(from - 1, to - from + 1);
     circularization->uncircularizeLocation(ad->location);
     CHECK(!ad->location->regions.isEmpty(), );
@@ -557,16 +557,16 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml, const QString 
 }
 
 ///////////////////////////////////////
-//BlastPlusSupportMultiTask
+// BlastPlusSupportMultiTask
 BlastPlusSupportMultiTask::BlastPlusSupportMultiTask(QList<BlastTaskSettings> &_settingsList, QString &_url)
     : Task("Run NCBI BlastAll multitask", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settingsList(_settingsList), doc(nullptr), url(_url) {
 }
 void BlastPlusSupportMultiTask::prepare() {
-    //create document
+    // create document
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
-    //url=settingsList[0].outputResFile;
+    // url=settingsList[0].outputResFile;
     doc = df->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
 
@@ -656,4 +656,4 @@ QString BlastPlusSupportCommonTask::toolIdByProgram(const QString &program) {
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

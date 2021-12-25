@@ -1925,7 +1925,7 @@ GUI_TEST_CLASS_DEFINITION(test_7506) {
     blastParams.withInputFile = true;
     blastParams.inputPath = dataDir + "samples/FASTA/human_T1.fa";
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
-    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST+ search..."});
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool hasExpectedResult = GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(5061, 291));

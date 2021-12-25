@@ -3893,13 +3893,13 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastDbCmdSupport</name>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="63"/>
-        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST+ database based on a query.</source>
+        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST database based on a query.</source>
         <translation>&lt;i&gt;BlastDBCmd&lt;/i&gt;, bir sorguya dayalı olarak BLAST + veritabanından protein veya nükleotid dizilerini alır.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="75"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="76"/>
@@ -3911,8 +3911,8 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastPlusSupport</name>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="196"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>BLAST+ araçları için yol seçilmedi.</translation>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>BLAST araçları için yol seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="197"/>
@@ -3924,8 +3924,8 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastPlusSupportCommonTask</name>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="68"/>
-        <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
-        <translation>BLAST+ yapılırken bir sorun oluştu. Sıra artık mevcut değil.</translation>
+        <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
+        <translation>BLAST yapılırken bir sorun oluştu. Sıra artık mevcut değil.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="81"/>
@@ -4045,8 +4045,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="277"/>
-        <source>Query with local BLAST+...</source>
-        <translation>Yerel BLAST+ ile sorgulama...</translation>
+        <source>Query with local BLAST...</source>
+        <translation>Yerel BLAST ile sorgulama...</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="320"/>
@@ -4060,8 +4060,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="344"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>BLAST+ araçları için yol seçilmedi.</translation>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>BLAST araçları için yol seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="345"/>
@@ -4076,8 +4076,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="417"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
@@ -4107,8 +4107,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="162"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>&lt;i&gt;BLAST+ %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="195"/>
@@ -4141,7 +4141,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="305"/>
-        <source>This file has the incompatible format for the BLAST+ search.</source>
+        <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
     </message>
     <message>
@@ -4156,8 +4156,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="436"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>&lt;i&gt;BLAST+ %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="469"/>
@@ -4977,8 +4977,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <name>U2::ETSProjectViewItemsContoller</name>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="54"/>
-        <source>BLAST+ make DB...</source>
-        <translation>BLAST+ yap DB...</translation>
+        <source>BLAST make DB...</source>
+        <translation>BLAST yap DB...</translation>
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="77"/>
@@ -4987,8 +4987,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="92"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="93"/>
@@ -5135,8 +5135,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="361"/>
-        <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
-        <translation>&lt;i&gt;BLAST+&lt;/i&gt;, NCBI&apos;den BLAST paketinin yeni bir sürümüdür.</translation>
+        <source>&lt;i&gt;BLAST&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
+        <translation>&lt;i&gt;BLAST&lt;/i&gt;, NCBI&apos;den BLAST paketinin yeni bir sürümüdür.</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
@@ -5160,8 +5160,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="388"/>
-        <source>BLAST+ make database...</source>
-        <translation>BLAST+ veritabanı yap...</translation>
+        <source>BLAST make database...</source>
+        <translation>BLAST veritabanı yap...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
@@ -5175,12 +5175,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="403"/>
-        <source>BLAST+ search...</source>
-        <translation>BLAST+ arama...</translation>
+        <source>BLAST search...</source>
+        <translation>BLAST arama...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
-        <source>BLAST+ query database...</source>
+        <source>BLAST query database...</source>
         <translation>BLAST + sorgu veritabanı...</translation>
     </message>
     <message>
@@ -5425,13 +5425,13 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <name>U2::FormatDBSupport</name>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="62"/>
-        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST+ tools.</source>
-        <translation>&lt;i&gt;makeblastdb&lt;/i&gt;, bu veritabanları diğer BLAST+ araçlarıyla aranmadan önce protein veya nükleotid kaynak veritabanlarını biçimlendirir.</translation>
+        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST tools.</source>
+        <translation>&lt;i&gt;makeblastdb&lt;/i&gt;, bu veritabanları diğer BLAST araçlarıyla aranmadan önce protein veya nükleotid kaynak veritabanlarını biçimlendirir.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="74"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="75"/>
@@ -6668,8 +6668,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="99"/>
-        <source>Select type of BLAST+ searches.</source>
-        <translation>BLAST+ aramalarının türünü seçin.</translation>
+        <source>Select type of BLAST searches.</source>
+        <translation>BLAST aramalarının türünü seçin.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="62"/>
@@ -6688,8 +6688,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="101"/>
-        <source>Base name for BLAST+ DB files.</source>
-        <translation>BLAST+ DB dosyaları için temel ad.</translation>
+        <source>Base name for BLAST DB files.</source>
+        <translation>BLAST DB dosyaları için temel ad.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="103"/>
@@ -6743,8 +6743,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
-        <source>Local BLAST+ Search</source>
-        <translation>Yerel BLAST+ Arama</translation>
+        <source>Local BLAST Search</source>
+        <translation>Yerel BLAST Arama</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
@@ -13519,7 +13519,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::BlastAllSupport</name>
     <message>
-        <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</source>
+        <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST package instead.</source>
         <translation>&lt;i&gt;blastall&lt;/i&gt;, BLAST aramalarını çalıştırmak için NCBI tarafından geliştirilen ve dağıtılan eski programdır. NCBI, insanların bunun yerine BLAST + paketinin programlarını kullanmaya başlamasını önerir.</translation>
     </message>
 </context>
@@ -13670,7 +13670,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <translation>Giriş dosyasını seçin</translation>
     </message>
     <message>
-        <source>This file has the incompatible format for the BLAST+ search.</source>
+        <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
     </message>
     <message>

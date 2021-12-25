@@ -203,7 +203,7 @@ Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm2-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm3-build-and-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/hmm3-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/join-quality.uwl
-Unipro UGENE.app/Contents/MacOS/data/cmdline/local-blast+.uwl
+Unipro UGENE.app/Contents/MacOS/data/cmdline/local-blast.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/pfm-build.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/pfm-search.uwl
 Unipro UGENE.app/Contents/MacOS/data/cmdline/pwm-build.uwl

@@ -34,7 +34,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
     }
     blast-plus {
         type:blast-plus;
-        name:"Local BLAST+ Search";
+        name:"Local BLAST Search";
     }
 
     .actor-bindings {
@@ -104,10 +104,10 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             page {
                 id:2;
                 next:3;
-                title:"BLAST+ search";
+                title:"BLAST search";
                 parameters-area {
                     group {
-                        title:"Local BLAST+ search parameters";
+                        title:"Local BLAST search parameters";
                         label-size:120;
                         blast-plus.blast-type {
                         }

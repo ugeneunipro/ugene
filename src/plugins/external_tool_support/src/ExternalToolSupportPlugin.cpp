@@ -243,7 +243,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    // MakeBLASTDB from BLAST+
+    // MakeBLASTDB from BLAST
     FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
@@ -384,7 +384,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
                                                          "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
 
-        ExternalToolSupportAction *makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
+        ExternalToolSupportAction *makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
         makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
         connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
 
@@ -399,11 +399,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         blastPlusViewCtx->init();
         QStringList toolList;
         toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
-        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST+ search..."), this, toolList);
+        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST search..."), this, toolList);
         blastPlusAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
         connect(blastPlusAction, SIGNAL(triggered()), blastNPlusTool, SLOT(sl_runWithExtFileSpecify()));
 
-        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST+ query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
+        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
         blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
         connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 

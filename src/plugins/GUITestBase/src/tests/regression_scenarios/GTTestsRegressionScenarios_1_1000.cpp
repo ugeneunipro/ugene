@@ -1032,7 +1032,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0685) {
-    // 1. Do menu tools->Blast+ Search (ext. tools must be configured)
+    // 1. Do menu tools->Blast Search (ext. tools must be configured)
     // 2. Set next parameters:
     // {Select input file} _common_data\scenarios\external_tools\blast\SequenceLength_00003000.txt
     // {Select search} blastp
@@ -1046,7 +1046,7 @@ GUI_TEST_CLASS_DEFINITION(test_0685) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
-                                                << "BLAST+ search...");
+                                                << "BLAST search...");
     GTGlobals::sleep();
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);

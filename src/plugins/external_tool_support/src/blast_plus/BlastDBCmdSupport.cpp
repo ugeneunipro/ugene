@@ -61,18 +61,18 @@ BlastDbCmdSupport::BlastDbCmdSupport(const QString &path)
     validationArguments << "--help";
     validMessage = "blastdbcmd";
     description = tr("The <i>BlastDBCmd</i> fetches protein or"
-                     " nucleotide sequences from BLAST+ database based on a query.");
+                     " nucleotide sequences from BLAST database based on a query.");
 
     versionRegExp = QRegExp("BLAST database client, version (\\d+\\.\\d+\\.\\d+\\+?)");
-    toolKitName = "BLAST+";
+    toolKitName = "BLAST";
 }
 
 void BlastDbCmdSupport::sl_runWithExtFileSpecify() {
     //Check that BlastDBCmd folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ " + name);
-        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(ET_BLASTDBCMD));
+        msgBox->setWindowTitle("BLAST " + name);
+        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(ET_BLASTDBCMD));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

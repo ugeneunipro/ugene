@@ -3886,13 +3886,13 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastDbCmdSupport</name>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="63"/>
-        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST+ database based on a query.</source>
-        <translation>&lt;i&gt;BlastDBCmd&lt;/i&gt; получает белковые или нуклеотидные последовательности из базы данных BLAST+ основанной на запросе.</translation>
+        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST database based on a query.</source>
+        <translation>&lt;i&gt;BlastDBCmd&lt;/i&gt; получает белковые или нуклеотидные последовательности из базы данных BLAST основанной на запросе.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="75"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>Путь для BLAST+ %1 не установлен.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="76"/>
@@ -3904,8 +3904,8 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastPlusSupport</name>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="196"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>Путь для BLAST+ не установлен.</translation>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>Путь для BLAST не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="197"/>
@@ -3917,8 +3917,8 @@ p, li { white-space: pre-wrap; }
     <name>U2::BlastPlusSupportCommonTask</name>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="68"/>
-        <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
-        <translation>A problem occurred during doing BLAST+. The sequence is no more available.</translation>
+        <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
+        <translation>A problem occurred during doing BLAST. The sequence is no more available.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="81"/>
@@ -4038,8 +4038,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="277"/>
-        <source>Query with local BLAST+...</source>
-        <translation>Поиск с помощью локальной базы данных BLAST+...</translation>
+        <source>Query with local BLAST...</source>
+        <translation>Поиск с помощью локальной базы данных BLAST...</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="320"/>
@@ -4053,8 +4053,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="344"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>Путь для BLAST+ не установлен.</translation>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>Путь для BLAST не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="345"/>
@@ -4069,8 +4069,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="417"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>Путь для BLAST+ %1 не установлен.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>Путь для BLAST %1 не установлен.</translation>
     </message>
 </context>
 <context>
@@ -4100,8 +4100,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="162"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>Путь до &lt;i&gt;BLAST+ %1&lt;/i&gt; не установлен.</translation>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>Путь до &lt;i&gt;BLAST %1&lt;/i&gt; не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="195"/>
@@ -4134,8 +4134,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="305"/>
-        <source>This file has the incompatible format for the BLAST+ search.</source>
-        <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
+        <source>This file has the incompatible format for the BLAST search.</source>
+        <translation>Этот файл имеет несовместимый формат для поиска BLAST.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="351"/>
@@ -4149,8 +4149,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="436"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>Путь до &lt;i&gt;BLAST+ %1&lt;/i&gt; не установлен.</translation>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>Путь до &lt;i&gt;BLAST %1&lt;/i&gt; не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="469"/>
@@ -4992,8 +4992,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <name>U2::ETSProjectViewItemsContoller</name>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="54"/>
-        <source>BLAST+ make DB...</source>
-        <translation>Создать БД BLAST+...</translation>
+        <source>BLAST make DB...</source>
+        <translation>Создать БД BLAST...</translation>
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="77"/>
@@ -5002,8 +5002,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="92"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>Путь для BLAST+ %1 не установлен.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
         <location filename="../src/ETSProjectViewItemsContoller.cpp" line="93"/>
@@ -5138,8 +5138,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="365"/>
-        <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
-        <translation>&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
+        <source>&lt;i&gt;BLAST&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
+        <translation>&lt;i&gt;BLAST&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="367"/>
@@ -5163,8 +5163,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
-        <source>BLAST+ make database...</source>
-        <translation>Создание базы данных BLAST+...</translation>
+        <source>BLAST make database...</source>
+        <translation>Создание базы данных BLAST...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="396"/>
@@ -5178,13 +5178,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
-        <source>BLAST+ search...</source>
-        <translation>Поиск с помощью BLAST+...</translation>
+        <source>BLAST search...</source>
+        <translation>Поиск с помощью BLAST...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="411"/>
-        <source>BLAST+ query database...</source>
-        <translation>Запрос с помощью BLAST+...</translation>
+        <source>BLAST query database...</source>
+        <translation>Запрос с помощью BLAST...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="35"/>
@@ -5416,13 +5416,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <name>U2::FormatDBSupport</name>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="62"/>
-        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST+ tools.</source>
-        <translation>The &lt;i&gt;makeblastdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы другими инструментами BLAST+.</translation>
+        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST tools.</source>
+        <translation>The &lt;i&gt;makeblastdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы другими инструментами BLAST.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="74"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>Путь для BLAST+ %1 не установлен.</translation>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/FormatDBSupport.cpp" line="75"/>
@@ -6692,8 +6692,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="99"/>
-        <source>Select type of BLAST+ searches.</source>
-        <translation>Выберите тип BLAST+ поиска.</translation>
+        <source>Select type of BLAST searches.</source>
+        <translation>Выберите тип BLAST поиска.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="62"/>
@@ -6712,8 +6712,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="101"/>
-        <source>Base name for BLAST+ DB files.</source>
-        <translation>Базовое имя для файлов базы данных BLAST+.</translation>
+        <source>Base name for BLAST DB files.</source>
+        <translation>Базовое имя для файлов базы данных BLAST.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="103"/>
@@ -6767,8 +6767,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
-        <source>Local BLAST+ Search</source>
-        <translation>Локальный поиск c помощью BLAST+</translation>
+        <source>Local BLAST Search</source>
+        <translation>Локальный поиск c помощью BLAST</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
