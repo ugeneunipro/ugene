@@ -1044,13 +1044,13 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     foreach (const int i, QList<int>() << 30 << 376) {
         GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
-        CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
+        CHECK_SET_ERR(sel.size() == 1, QString("1. Unexpected selection annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
 
     foreach (const int i, QList<int>() << 1 << 376) {
-        GTUtilsSequenceView::clickAnnotationPan(os, "Misc. Feature", i, 0, true);
+        GTUtilsSequenceView::clickAnnotationPan(os, "misc_feature", i, 0, true);
         QVector<U2Region> sel = GTUtilsSequenceView::getSelection(os);
-        CHECK_SET_ERR(sel.size() == 1, QString("Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
+        CHECK_SET_ERR(sel.size() == 1, QString("2. Unexpected selection primer annotation regions, expected: 1, current: %1").arg(sel.size()));
     }
 }
 

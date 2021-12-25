@@ -5763,8 +5763,9 @@ GUI_TEST_CLASS_DEFINITION(test_2998) {
 
     // 2. Find any pattern
     GTUtilsOptionsPanel::runFindPatternWithHotKey("TTTTTAAAAA", os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: the task will finished without errors.
+    // Expected state: the task is finished without errors.
     GTUtilsLog::check(os, l);
 }
 
