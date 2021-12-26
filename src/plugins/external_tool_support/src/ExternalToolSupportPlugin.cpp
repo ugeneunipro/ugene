@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -49,7 +48,6 @@
 #include "ETSProjectViewItemsContoller.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "R/RSupport.h"
 #include "bedtools/BedToolsWorkersLibrary.h"
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
@@ -78,16 +76,10 @@
 #include "bwa/bwa_tests/bwaTests.h"
 #include "cap3/CAP3Support.h"
 #include "cap3/CAP3Worker.h"
-#include "ceas/CEASReportWorker.h"
-#include "ceas/CEASSupport.h"
 #include "clustalo/ClustalOSupport.h"
 #include "clustalo/ClustalOWorker.h"
 #include "clustalw/ClustalWSupport.h"
 #include "clustalw/ClustalWWorker.h"
-#include "conduct_go/ConductGOSupport.h"
-#include "conduct_go/ConductGOWorker.h"
-#include "conservation_plot/ConservationPlotSupport.h"
-#include "conservation_plot/ConservationPlotWorker.h"
 #include "cufflinks/CuffdiffWorker.h"
 #include "cufflinks/CufflinksSupport.h"
 #include "cufflinks/CufflinksWorker.h"
@@ -103,20 +95,14 @@
 #include "hmmer/HmmerTests.h"
 #include "iqtree/IQTreeSupport.h"
 #include "java/JavaSupport.h"
-#include "macs/MACSSupport.h"
-#include "macs/MACSWorker.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mrbayes/MrBayesSupport.h"
 #include "mrbayes/MrBayesTests.h"
-#include "peak2gene/Peak2GeneSupport.h"
-#include "peak2gene/Peak2GeneWorker.h"
 #include "perl/PerlSupport.h"
 #include "phyml/PhyMLSupport.h"
 #include "phyml/PhyMLTests.h"
 #include "python/PythonSupport.h"
-#include "seqpos/SeqPosSupport.h"
-#include "seqpos/SeqPosWorker.h"
 #include "snpeff/SnpEffSupport.h"
 #include "snpeff/SnpEffWorker.h"
 #include "spades/SpadesWorker.h"
@@ -132,7 +118,6 @@
 #include "trimmomatic/TrimmomaticSupport.h"
 #include "trimmomatic/TrimmomaticWorkerFactory.h"
 #include "utils/ExternalToolSupportAction.h"
-#include "utils/ExternalToolValidateTask.h"
 #include "vcftools/VcfConsensusSupport.h"
 #include "vcftools/VcfConsensusWorker.h"
 #include "vcfutils/VcfutilsSupport.h"
@@ -157,26 +142,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // python with modules
     etRegistry->registerEntry(new PythonSupport());
-    etRegistry->registerEntry(new PythonModuleDjangoSupport());
-    etRegistry->registerEntry(new PythonModuleNumpySupport());
     etRegistry->registerEntry(new PythonModuleBioSupport());
-
-    // Rscript with modules
-    etRegistry->registerEntry(new RSupport());
-    etRegistry->registerEntry(new RModuleGostatsSupport());
-    etRegistry->registerEntry(new RModuleGodbSupport());
-    etRegistry->registerEntry(new RModuleHgu133adbSupport());
-    etRegistry->registerEntry(new RModuleHgu133bdbSupport());
-    etRegistry->registerEntry(new RModuleHgu133plus2dbSupport());
-    etRegistry->registerEntry(new RModuleHgu95av2dbSupport());
-    etRegistry->registerEntry(new RModuleMouse430a2dbSupport());
-    etRegistry->registerEntry(new RModuleCelegansdbSupport());
-    etRegistry->registerEntry(new RModuleDrosophila2dbSupport());
-    etRegistry->registerEntry(new RModuleOrghsegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgmmegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgceegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgdmegdbSupport());
-    etRegistry->registerEntry(new RModuleSeqlogoSupport());
 
     // perl
     etRegistry->registerEntry(new PerlSupport());
@@ -317,24 +283,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_CUFFMERGE_ID, CufflinksSupport::ET_CUFFMERGE));
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_GFFREAD_ID, CufflinksSupport::ET_GFFREAD));
 
-    // CEAS
-    etRegistry->registerEntry(new CEASSupport());
-
-    // MACS
-    etRegistry->registerEntry(new MACSSupport());
-
-    // peak2gene
-    etRegistry->registerEntry(new Peak2GeneSupport());
-
-    // ConservationPlot
-    etRegistry->registerEntry(new ConservationPlotSupport());
-
-    // SeqPos
-    etRegistry->registerEntry(new SeqPosSupport());
-
-    // ConductGO
-    etRegistry->registerEntry(new ConductGOSupport());
-
     // Vcfutils
     etRegistry->registerEntry(new VcfutilsSupport());
 
@@ -385,9 +333,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
                                                         " <br/><br/>It indexes the genome with an FM index to keep its memory footprint small:"
                                                         " for the human genome, its memory footprint is typically around 3.2Gb."
                                                         " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
-
-        etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
-                                                         "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
 
         ExternalToolSupportAction *makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
         makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
@@ -493,12 +438,6 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::CuffmergeWorkerFactory::init();
     LocalWorkflow::GffreadWorkerFactory::init();
     LocalWorkflow::TopHatWorkerFactory::init();
-    LocalWorkflow::CEASReportWorkerFactory::init();
-    LocalWorkflow::MACSWorkerFactory::init();
-    LocalWorkflow::Peak2GeneWorkerFactory::init();
-    LocalWorkflow::ConservationPlotWorkerFactory::init();
-    LocalWorkflow::SeqPosWorkerFactory::init();
-    LocalWorkflow::ConductGOWorkerFactory::init();
     LocalWorkflow::CAP3WorkerFactory::init();
     LocalWorkflow::VcfConsensusWorkerFactory::init();
     LocalWorkflow::BwaMemWorkerFactory::init();

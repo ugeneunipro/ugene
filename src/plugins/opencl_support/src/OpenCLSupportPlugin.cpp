@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,10 +49,7 @@ extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
 }
 
 extern "C" Q_DECL_EXPORT QString *U2_PLUGIN_FAIL_MASSAGE_FUNC() {
-    return new QString(OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
-                                               you're going to make calculations on your video card. For details see this page: \
-                                               <a href=\"%1\">%1</a>")
-                           .arg("http://ugene.net/using-video-cards.html"));
+    return new QString(OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please update video drivers"));
 }
 
 const char *OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";

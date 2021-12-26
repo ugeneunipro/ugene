@@ -7,7 +7,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ExternalToolSupportPlugin.h \
            src/ExternalToolSupportSettings.h \
            src/ExternalToolSupportSettingsController.h \
-           src/R/RSupport.h \
            src/RnaSeqCommon.h \
            src/RunnerTool.h \
            src/TaskLocalStorage.h \
@@ -62,10 +61,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cap3/CAP3SupportDialog.h \
            src/cap3/CAP3SupportTask.h \
            src/cap3/CAP3Worker.h \
-           src/ceas/CEASReportWorker.h \
-           src/ceas/CEASSettings.h \
-           src/ceas/CEASSupport.h \
-           src/ceas/CEASSupportTask.h \
            src/clustalo/ClustalOSupport.h \
            src/clustalo/ClustalOSupportRunDialog.h \
            src/clustalo/ClustalOSupportTask.h \
@@ -74,14 +69,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/clustalw/ClustalWSupportRunDialog.h \
            src/clustalw/ClustalWSupportTask.h \
            src/clustalw/ClustalWWorker.h \
-           src/conduct_go/ConductGOSettings.h \
-           src/conduct_go/ConductGOSupport.h \
-           src/conduct_go/ConductGOTask.h \
-           src/conduct_go/ConductGOWorker.h \
-           src/conservation_plot/ConservationPlotSettings.h \
-           src/conservation_plot/ConservationPlotSupport.h \
-           src/conservation_plot/ConservationPlotTask.h \
-           src/conservation_plot/ConservationPlotWorker.h \
            src/cufflinks/CuffdiffSupportTask.h \
            src/cufflinks/CuffdiffWorker.h \
            src/cufflinks/CufflinksSettings.h \
@@ -126,10 +113,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/iqtree/IQTreeSupport.h \
            src/iqtree/IQTreeWidget.h \
            src/java/JavaSupport.h \
-           src/macs/MACSSettings.h \
-           src/macs/MACSSupport.h \
-           src/macs/MACSTask.h \
-           src/macs/MACSWorker.h \
            src/mafft/MAFFTSupport.h \
            src/mafft/MAFFTSupportRunDialog.h \
            src/mafft/MAFFTSupportTask.h \
@@ -139,12 +122,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/mrbayes/MrBayesSupport.h \
            src/mrbayes/MrBayesTask.h \
            src/mrbayes/MrBayesTests.h \
-           src/peak2gene/Gene2PeakFormatLoader.h \
-           src/peak2gene/Peak2GeneFormatLoader.h \
-           src/peak2gene/Peak2GeneSettings.h \
-           src/peak2gene/Peak2GeneSupport.h \
-           src/peak2gene/Peak2GeneTask.h \
-           src/peak2gene/Peak2GeneWorker.h \
            src/perl/PerlSupport.h \
            src/phyml/PhyMLDialogWidget.h \
            src/phyml/PhyMLSupport.h \
@@ -155,10 +132,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/samtools/SamToolsExtToolSupport.h \
            src/samtools/TabixSupport.h \
            src/samtools/TabixSupportTask.h \
-           src/seqpos/SeqPosSettings.h \
-           src/seqpos/SeqPosSupport.h \
-           src/seqpos/SeqPosTask.h \
-           src/seqpos/SeqPosWorker.h \
            src/snpeff/SnpEffDatabaseDelegate.h \
            src/snpeff/SnpEffDatabaseListModel.h \
            src/snpeff/SnpEffDatabaseListTask.h \
@@ -218,7 +191,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/utils/BlastDBSelectorWidgetController.h \
            src/utils/BlastRunCommonDialog.h \
            src/utils/BlastTaskSettings.h \
-           src/utils/CistromeDelegate.h \
            src/utils/ExportTasks.h \
            src/utils/ExternalToolSearchTask.h \
            src/utils/ExternalToolSupportAction.h \
@@ -270,7 +242,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolSupportPlugin.cpp \
            src/ExternalToolSupportSettings.cpp \
            src/ExternalToolSupportSettingsController.cpp \
-           src/R/RSupport.cpp \
            src/RnaSeqCommon.cpp \
            src/RunnerTool.cpp \
            src/TaskLocalStorage.cpp \
@@ -325,10 +296,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cap3/CAP3SupportDialog.cpp \
            src/cap3/CAP3SupportTask.cpp \
            src/cap3/CAP3Worker.cpp \
-           src/ceas/CEASReportWorker.cpp \
-           src/ceas/CEASSettings.cpp \
-           src/ceas/CEASSupport.cpp \
-           src/ceas/CEASSupportTask.cpp \
            src/clustalo/ClustalOSupport.cpp \
            src/clustalo/ClustalOSupportRunDialog.cpp \
            src/clustalo/ClustalOSupportTask.cpp \
@@ -337,14 +304,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/clustalw/ClustalWSupportRunDialog.cpp \
            src/clustalw/ClustalWSupportTask.cpp \
            src/clustalw/ClustalWWorker.cpp \
-           src/conduct_go/ConductGOSettings.cpp \
-           src/conduct_go/ConductGOSupport.cpp \
-           src/conduct_go/ConductGOTask.cpp \
-           src/conduct_go/ConductGOWorker.cpp \
-           src/conservation_plot/ConservationPlotSettings.cpp \
-           src/conservation_plot/ConservationPlotSupport.cpp \
-           src/conservation_plot/ConservationPlotTask.cpp \
-           src/conservation_plot/ConservationPlotWorker.cpp \
            src/cufflinks/CuffdiffSupportTask.cpp \
            src/cufflinks/CuffdiffWorker.cpp \
            src/cufflinks/CufflinksSettings.cpp \
@@ -388,10 +347,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/iqtree/IQTreeSupport.cpp \
            src/iqtree/IQTreeWidget.cpp \
            src/java/JavaSupport.cpp \
-           src/macs/MACSSettings.cpp \
-           src/macs/MACSSupport.cpp \
-           src/macs/MACSTask.cpp \
-           src/macs/MACSWorker.cpp \
            src/mafft/MAFFTSupport.cpp \
            src/mafft/MAFFTSupportRunDialog.cpp \
            src/mafft/MAFFTSupportTask.cpp \
@@ -401,12 +356,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/mrbayes/MrBayesSupport.cpp \
            src/mrbayes/MrBayesTask.cpp \
            src/mrbayes/MrBayesTests.cpp \
-           src/peak2gene/Gene2PeakFormatLoader.cpp \
-           src/peak2gene/Peak2GeneFormatLoader.cpp \
-           src/peak2gene/Peak2GeneSettings.cpp \
-           src/peak2gene/Peak2GeneSupport.cpp \
-           src/peak2gene/Peak2GeneTask.cpp \
-           src/peak2gene/Peak2GeneWorker.cpp \
            src/perl/PerlSupport.cpp \
            src/phyml/PhyMLDialogWidget.cpp \
            src/phyml/PhyMLSupport.cpp \
@@ -417,10 +366,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/samtools/SamToolsExtToolSupport.cpp \
            src/samtools/TabixSupport.cpp \
            src/samtools/TabixSupportTask.cpp \
-           src/seqpos/SeqPosSettings.cpp \
-           src/seqpos/SeqPosSupport.cpp \
-           src/seqpos/SeqPosTask.cpp \
-           src/seqpos/SeqPosWorker.cpp \
            src/snpeff/SnpEffDatabaseDelegate.cpp \
            src/snpeff/SnpEffDatabaseListModel.cpp \
            src/snpeff/SnpEffDatabaseListTask.cpp \
@@ -480,7 +425,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BlastRunCommonDialog.cpp \
            src/utils/BlastTaskSettings.cpp \
-           src/utils/CistromeDelegate.cpp \
            src/utils/ExportTasks.cpp \
            src/utils/ExternalToolSearchTask.cpp \
            src/utils/ExternalToolSupportAction.cpp \
