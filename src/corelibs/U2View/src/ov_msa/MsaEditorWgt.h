@@ -22,7 +22,7 @@
 #ifndef _U2_MSA_EDITOR_WGT_H_
 #define _U2_MSA_EDITOR_WGT_H_
 
-#include "view_rendering/MaEditorWgt.h"
+#include "MaEditorWgt.h"
 
 namespace U2 {
 

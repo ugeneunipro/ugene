@@ -34,7 +34,7 @@
 #include <U2Gui/SaveDocumentController.h>
 
 #include "ov_msa/MSAEditorSequenceArea.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/MaEditorSelection.h"
 #include "ui_ExportHighlightedDialog.h"
 
 namespace U2 {

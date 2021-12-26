@@ -24,7 +24,7 @@
 #include <QVBoxLayout>
 
 #include "MaGraphOverview.h"
-#include "ov_msa/view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 

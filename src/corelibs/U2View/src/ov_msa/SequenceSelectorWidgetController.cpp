@@ -24,7 +24,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "./view_rendering/MaEditorSelection.h"
+#include "MaEditorSelection.h"
 
 const int CURSOR_START_POSITION = 0;
 

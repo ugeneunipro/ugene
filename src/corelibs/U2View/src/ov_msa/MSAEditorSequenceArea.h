@@ -33,9 +33,9 @@
 #include "DeleteGapsDialog.h"
 #include "ExportHighlightedDialogController.h"
 #include "MaCollapseModel.h"
+#include "MaEditorSequenceArea.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
-#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 

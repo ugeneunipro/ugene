@@ -30,7 +30,7 @@
 #include <U2View/MSAEditor.h>
 
 #include "MsaEditorTreeTabArea.h"
-#include "ov_msa/view_rendering/MaEditorUtils.h"
+#include "ov_msa/MaEditorUtils.h"
 
 namespace U2 {
 

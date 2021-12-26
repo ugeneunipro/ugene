@@ -26,7 +26,7 @@
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
-#include "view_rendering/MaEditorConsensusArea.h"
+#include "../ov_msa/MaEditorConsensusArea.h"
 
 namespace U2 {
 

@@ -26,7 +26,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include "MSAEditorSequenceArea.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "MaEditorSelection.h"
 
 namespace U2 {
 

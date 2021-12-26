@@ -31,8 +31,8 @@
 #include "MSAEditor.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
-#include "McaEditor.h"
 #include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
+#include "ov_mca/McaEditor.h"
 
 namespace U2 {
 

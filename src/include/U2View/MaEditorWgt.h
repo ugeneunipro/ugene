@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/view_rendering/MaEditorWgt.h"
+#include "../../corelibs/U2View/src/ov_msa/MaEditorWgt.h"

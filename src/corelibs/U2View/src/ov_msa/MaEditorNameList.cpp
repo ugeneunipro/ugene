@@ -37,17 +37,13 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include "DrawHelper.h"
 #include "MSAEditor.h"
-#include "McaEditor.h"
-#include "McaEditorNameList.h"
-#include "McaEditorSequenceArea.h"
-#include "helpers/DrawHelper.h"
-#include "helpers/RowHeightController.h"
-#include "helpers/ScrollController.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
-#include "view_rendering/MaEditorSequenceArea.h"
-#include "view_rendering/MaEditorWgt.h"
-#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
+#include "MaEditorSelection.h"
+#include "MaEditorSequenceArea.h"
+#include "MaEditorWgt.h"
+#include "RowHeightController.h"
+#include "ScrollController.h"
 
 namespace U2 {
 

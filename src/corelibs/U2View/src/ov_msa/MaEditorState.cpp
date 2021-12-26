@@ -27,7 +27,7 @@
 
 #include "MSAEditor.h"
 #include "MaEditorFactory.h"
-#include "helpers/ScrollController.h"
+#include "ScrollController.h"
 
 namespace U2 {
 
