@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,7 +107,6 @@ namespace U2 {
 #define EDITOR_STATE SETTINGS + "editor"
 #define PALETTE_STATE SETTINGS + "palette"
 #define TABS_STATE SETTINGS + "tabs"
-#define CHECK_R_PACKAGE SETTINGS + "check_r_for_cistrome"
 
 enum { ElementsTab,
        SamplesTab };

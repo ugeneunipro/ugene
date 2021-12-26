@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,6 @@ DECLARE_TEST(CInterfaceManualTests, search_HMM);
 DECLARE_TEST(CInterfaceManualTests, search_TFBS);
 DECLARE_TEST(CInterfaceManualTests, call_variants);
 DECLARE_TEST(CInterfaceManualTests, chip_seq);
-DECLARE_TEST(CInterfaceManualTests, chip_seq_with_control);
 DECLARE_TEST(CInterfaceManualTests, tuxedo_main);
 DECLARE_TEST(CInterfaceManualTests, tuxedo_main_paired);
 DECLARE_TEST(CInterfaceManualTests, tuxedo_multiple_dataset);
@@ -64,7 +63,6 @@ DECLARE_METATYPE(CInterfaceManualTests, search_HMM);
 DECLARE_METATYPE(CInterfaceManualTests, search_TFBS);
 DECLARE_METATYPE(CInterfaceManualTests, call_variants);
 DECLARE_METATYPE(CInterfaceManualTests, chip_seq);
-DECLARE_METATYPE(CInterfaceManualTests, chip_seq_with_control);
 DECLARE_METATYPE(CInterfaceManualTests, tuxedo_main);
 DECLARE_METATYPE(CInterfaceManualTests, tuxedo_main_paired);
 DECLARE_METATYPE(CInterfaceManualTests, tuxedo_multiple_dataset);

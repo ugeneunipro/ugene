@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,22 +41,6 @@ class PythonModuleSupport : public ExternalToolModule {
     Q_OBJECT
 public:
     PythonModuleSupport(const QString &id, const QString &name);
-};
-
-class PythonModuleDjangoSupport : public PythonModuleSupport {
-    Q_OBJECT
-public:
-    PythonModuleDjangoSupport();
-
-    static const QString ET_PYTHON_DJANGO_ID;
-};
-
-class PythonModuleNumpySupport : public PythonModuleSupport {
-    Q_OBJECT
-public:
-    PythonModuleNumpySupport();
-
-    static const QString ET_PYTHON_NUMPY_ID;
 };
 
 class PythonModuleBioSupport : public PythonModuleSupport {
