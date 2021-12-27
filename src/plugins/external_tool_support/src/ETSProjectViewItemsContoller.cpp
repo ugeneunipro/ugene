@@ -43,9 +43,9 @@
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "blast_plus/FormatDBSupport.h"
-#include "blast_plus/FormatDBSupportRunDialog.h"
-#include "blast_plus/FormatDBSupportTask.h"
+#include "blast/FormatDBSupport.h"
+#include "blast/FormatDBRunDialog.h"
+#include "blast/FormatDBTask.h"
 
 namespace U2 {
 
@@ -121,7 +121,7 @@ void ETSProjectViewItemsContoller::sl_runMakeBlastDbOnSelection() {
     MultiGSelection ms;
     ms.addSelection(pv->getGObjectSelection());
     ms.addSelection(pv->getDocumentSelection());
-    FormatDBSupportTaskSettings settings;
+    FormatDBTaskSettings settings;
     foreach (Document *doc, pv->getDocumentSelection()->getSelectedDocuments()) {
         if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA) {
             settings.inputFilesPath.append(doc->getURLString());
@@ -139,14 +139,14 @@ void ETSProjectViewItemsContoller::sl_runMakeBlastDbOnSelection() {
     }
     QString toolId = s->getToolIds().at(0);
     QString toolName = AppContext::getExternalToolRegistry()->getById(toolId)->getName();
-    QObjectScopedPointer<FormatDBSupportRunDialog> formatDBRunDialog = new FormatDBSupportRunDialog(toolName, settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<FormatDBRunDialog> formatDBRunDialog = new FormatDBRunDialog(toolName, settings, AppContext::getMainWindow()->getQMainWindow());
     formatDBRunDialog->exec();
     CHECK(!formatDBRunDialog.isNull(), );
 
     if (formatDBRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    AppContext::getTaskScheduler()->registerTopLevelTask(new FormatDBSupportTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new FormatDBTask(settings));
 }
 
 }    // namespace U2

@@ -52,12 +52,12 @@
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast_plus/AlignToReferenceBlastWorker.h"
-#include "blast_plus/BlastDBCmdSupport.h"
-#include "blast_plus/BlastPlusSupport.h"
-#include "blast_plus/BlastPlusWorker.h"
-#include "blast_plus/FormatDBSupport.h"
-#include "blast_plus/RPSBlastSupportTask.h"
+#include "blast/AlignToReferenceBlastWorker.h"
+#include "blast/BlastDBCmdSupport.h"
+#include "blast/BlastSupport.h"
+#include "blast/BlastWorker.h"
+#include "blast/FormatDBSupport.h"
+#include "blast/RPSBlastTask.h"
 #include "bowtie/BowtieSettingsWidget.h"
 #include "bowtie/BowtieSupport.h"
 #include "bowtie/BowtieTask.h"
@@ -213,20 +213,20 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
-    // BlastAll
-    BlastPlusSupport *blastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTN_ID, BlastPlusSupport::ET_BLASTN);
-    etRegistry->registerEntry(blastNPlusTool);
-    BlastPlusSupport *blastPPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTP_ID, BlastPlusSupport::ET_BLASTP);
-    etRegistry->registerEntry(blastPPlusTool);
-    BlastPlusSupport *blastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTX_ID, BlastPlusSupport::ET_BLASTX);
-    etRegistry->registerEntry(blastXPlusTool);
-    BlastPlusSupport *tBlastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTN_ID, BlastPlusSupport::ET_TBLASTN);
-    etRegistry->registerEntry(tBlastNPlusTool);
-    BlastPlusSupport *tBlastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTX_ID, BlastPlusSupport::ET_TBLASTX);
-    etRegistry->registerEntry(tBlastXPlusTool);
-    BlastPlusSupport *rpsblastTool = new BlastPlusSupport(BlastPlusSupport::ET_RPSBLAST_ID, BlastPlusSupport::ET_RPSBLAST);
+    // Blast tools.
+    auto blastNTool = new BlastSupport(BlastSupport::ET_BLASTN_ID, BlastSupport::ET_BLASTN);
+    etRegistry->registerEntry(blastNTool);
+    auto blastPTool = new BlastSupport(BlastSupport::ET_BLASTP_ID, BlastSupport::ET_BLASTP);
+    etRegistry->registerEntry(blastPTool);
+    auto blastXTool = new BlastSupport(BlastSupport::ET_BLASTX_ID, BlastSupport::ET_BLASTX);
+    etRegistry->registerEntry(blastXTool);
+    auto tBlastNTool = new BlastSupport(BlastSupport::ET_TBLASTN_ID, BlastSupport::ET_TBLASTN);
+    etRegistry->registerEntry(tBlastNTool);
+    auto tBlastXTool = new BlastSupport(BlastSupport::ET_TBLASTX_ID, BlastSupport::ET_TBLASTX);
+    etRegistry->registerEntry(tBlastXTool);
+    auto rpsblastTool = new BlastSupport(BlastSupport::ET_RPSBLAST_ID, BlastSupport::ET_RPSBLAST);
     etRegistry->registerEntry(rpsblastTool);
-    BlastDbCmdSupport *blastDbCmdSupport = new BlastDbCmdSupport();
+    auto blastDbCmdSupport = new BlastDbCmdSupport();
     etRegistry->registerEntry(blastDbCmdSupport);
 
     // CAP3
@@ -329,33 +329,33 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
                                                         " for the human genome, its memory footprint is typically around 3.2Gb."
                                                         " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
 
-        auto makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {FormatDBSupport::ET_MAKEBLASTDB_ID});
-        makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
-        connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
+        auto blastMakeDbAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {FormatDBSupport::ET_MAKEBLASTDB_ID});
+        blastMakeDbAction->setObjectName(ToolsMenu::BLAST_DBP);
+        connect(blastMakeDbAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
 
         ExternalToolSupportAction *alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
                                                                                          this,
-                                                                                         QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastPlusSupport::ET_BLASTN_ID);
+                                                                                         QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastSupport::ET_BLASTN_ID);
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
-        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
+        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNTool, SLOT(sl_runAlign()));
 
-        BlastPlusSupportContext *blastPlusViewCtx = new BlastPlusSupportContext(this);
-        blastPlusViewCtx->setParent(this);  // may be problems???
-        blastPlusViewCtx->init();
+        auto blastViewCtx = new BlastSupportContext(this);
+        blastViewCtx->setParent(this);  // may be problems???
+        blastViewCtx->init();
         QStringList toolList;
-        toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
-        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST search..."), this, toolList);
-        blastPlusAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
-        connect(blastPlusAction, SIGNAL(triggered()), blastNPlusTool, SLOT(sl_runWithExtFileSpecify()));
+        toolList << BlastSupport::ET_BLASTN_ID << BlastSupport::ET_BLASTP_ID << BlastSupport::ET_BLASTX_ID << BlastSupport::ET_TBLASTN_ID << BlastSupport::ET_TBLASTX_ID << BlastSupport::ET_RPSBLAST_ID;
+        auto blastSearchAction = new ExternalToolSupportAction(tr("BLAST search..."), this, toolList);
+        blastSearchAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
+        connect(blastSearchAction, SIGNAL(triggered()), blastNTool, SLOT(sl_runWithExtFileSpecify()));
 
-        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
-        blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
-        connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
+        auto blastQueryDbAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
+        blastQueryDbAction->setObjectName(ToolsMenu::BLAST_QUERYP);
+        connect(blastQueryDbAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 
         // Add to menu NCBI Toolkit
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, makeBLASTDBAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusCmdAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastMakeDbAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastSearchAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastQueryDbAction);
 
         ExternalToolSupportAction *cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
@@ -425,7 +425,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::MAFFTWorkerFactory::init();
 
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
-    LocalWorkflow::BlastPlusWorkerFactory::init();
+    LocalWorkflow::BlastWorkerFactory::init();
 
     LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();

@@ -423,7 +423,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, join_sequences_into_alignment_sas) {
     releaseScheme(scheme);
 }
 
-IMPLEMENT_TEST(CInterfaceSasTests, local_blast_plus_search_sas) {
+IMPLEMENT_TEST(CInterfaceSasTests, local_blast_search_sas) {
     SchemeHandle scheme = nullptr;
     U2ErrorType error = createSas(L"blast-plus", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);

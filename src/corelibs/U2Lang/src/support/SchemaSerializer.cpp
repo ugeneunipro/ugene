@@ -99,7 +99,7 @@ QMap<QString, QString> SchemaSerializer::initElemTypesMap() {
     map["find.pattern"] = "search";
     map["import.phred.quality"] = "import-phred-qualities";
     map["blastall"] = "blast";
-    map["blastPlus"] = "blast-plus";
+    map["blastPlus"] = "TBlastNTask";
     map["orf.marker"] = "orf-search";
     map["remote.query"] = "blast-ncbi";
     map["find.smithwaterman"] = "ssearch";

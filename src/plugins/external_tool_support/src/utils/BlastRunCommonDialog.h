@@ -39,9 +39,7 @@ namespace U2 {
 class BlastRunCommonDialog : public QDialog, public Ui_BlastAllSupportDialog {
     Q_OBJECT
 public:
-    enum BlastType { BlastAll,
-                     BlastPlus };
-    BlastRunCommonDialog(QWidget *parent, BlastType blastType, bool useCompValues, QStringList compValues);
+    BlastRunCommonDialog(QWidget *parent,bool useCompValues, const QStringList& compValues);
 
     const BlastTaskSettings &getSettings() const;
     QPushButton *okButton;
