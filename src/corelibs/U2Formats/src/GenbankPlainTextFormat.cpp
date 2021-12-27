@@ -332,7 +332,7 @@ void GenbankPlainTextFormat::createCommentAnnotation(const QStringList &comments
     SharedAnnotationData f(new AnnotationData);
     f->type = U2FeatureTypes::Comment;
     f->name = "comment";
-    f->location->regions.append(U2Region(0, sequenceLength));
+    f->location->regions.append(U2Region(0, sequenceLength == 0 ? 1 : sequenceLength));
     for (int i = 0, digitsCount = QString::number(comments.size()).size(); i < comments.size(); ++i) {
         f->qualifiers.append(U2Qualifier(QString("%1").arg(i + 1, digitsCount, 10, QChar('0')), comments[i]));
     }

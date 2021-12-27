@@ -1117,6 +1117,19 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
     CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7406) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Annotations");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/7406/ABCGTD000000000.gb");
+    
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "UGENE Database", GTUtilsWorkflowDesigner::comboValue);
+
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Annotations"), GTUtilsWorkflowDesigner::getWorker(os, "Write Annotations"));
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7407) {
     // Check that UGENE can generate a single character sequence.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7407.fa");
