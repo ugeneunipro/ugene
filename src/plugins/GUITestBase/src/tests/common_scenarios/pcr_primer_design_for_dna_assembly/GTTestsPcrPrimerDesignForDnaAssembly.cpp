@@ -491,7 +491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Open the PCR Primer Design tab.
     // Set common_data/pcr_primer_design/backbone_bad.fa as "Open the backbone sequence".
     // Click "Insert to backbone bearings" -> "5' insert to 3' backbone".
-    // Set "Insert to backbone bearings" -> "5' backbone length" = 12.
+    // Set "Insert to backbone bearings" -> "3' backbone length" = 12.
     // Click "Start".
     //     Expected: the "The unwanted structures have been found in the following backbone sequence candidate" dialog
     //               has appeared.

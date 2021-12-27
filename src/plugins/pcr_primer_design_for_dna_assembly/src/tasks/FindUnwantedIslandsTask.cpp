@@ -31,7 +31,7 @@
 namespace U2 {
 
 FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence, bool _isComplement)
-    : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
+    : Task(tr("Find Unwanted Islands Task"), TaskFlags_FOSCOE),
       searchArea(_searchArea),
       possibleOverlap(_possibleOverlap),
       sequence(_sequence),
@@ -40,8 +40,10 @@ FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, in
 void FindUnwantedIslandsTask::run() {
     taskLog.details(tr("Searching of unwanted islands and areas between them "
                        "in the region \"%1\" (+ %2 nucleotides to the %3, deep into the amplified fragment) has been started")
-                       .arg(regionToString(searchArea)).arg(possibleOverlap).arg(isComplement ? "left" : "right"));
-    taskLog.details(tr("The following unwanted parametes are used. Free Gibbs energy: %1 kj/mol, "
+                        .arg(regionToString(searchArea))
+                        .arg(possibleOverlap)
+                        .arg(isComplement ? tr("left") : tr("right")));
+    taskLog.details(tr("The following unwanted parameters are used. Free Gibbs energy: %1 kj/mol, "
                        "melting temperature: %2 C, maximum dimer length: %3 nt")
                        .arg(UNWANTED_DELTA_G).arg(UNWANTED_MELTING_TEMPERATURE).arg(UNWANTED_MAX_LENGTH));
     /**
