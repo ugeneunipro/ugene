@@ -342,7 +342,7 @@
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="44"/>
         <source>PCR Primer Design for DNA assembly.</source>
-        <translation>Дизайн праймеров для ПЦР для сборки ДНК,.</translation>
+        <translation>Дизайн праймеров для ПЦР для сборки ДНК.</translation>
     </message>
     <message>
         <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="33"/>
