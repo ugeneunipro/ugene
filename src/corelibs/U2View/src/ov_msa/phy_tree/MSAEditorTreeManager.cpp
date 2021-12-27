@@ -55,7 +55,7 @@
 
 #include "MsaEditorTreeTabArea.h"
 #include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/phy_tree_options/TreeOptionsWidgetFactory.h"
+#include "ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h"
 #include "ov_phyltree/GraphicsRectangularBranchItem.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"

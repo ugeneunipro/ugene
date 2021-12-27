@@ -30,7 +30,7 @@
 #include <U2View/MSAEditor.h>
 
 #include "MaExportConsensusWidget.h"
-#include "ov_msa/general/MaConsensusModeWidget.h"
+#include "ov_msa/general_tab/MaConsensusModeWidget.h"
 
 namespace U2 {
 

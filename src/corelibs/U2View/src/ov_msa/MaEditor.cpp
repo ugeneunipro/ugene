@@ -45,10 +45,10 @@
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaCollapseModel.h"
+#include "MaEditorSelection.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
-#include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorSelection.h"
+#include "ScrollController.h"
 
 namespace U2 {
 

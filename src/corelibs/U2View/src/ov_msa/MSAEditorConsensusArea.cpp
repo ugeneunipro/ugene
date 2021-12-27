@@ -28,7 +28,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "MSAEditor.h"
-#include "view_rendering/MaConsensusAreaRenderer.h"
+#include "MaConsensusAreaRenderer.h"
 
 namespace U2 {
 

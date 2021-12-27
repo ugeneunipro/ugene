@@ -37,7 +37,7 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "MaGraphCalculationTask.h"
-#include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/ScrollController.h"
 
 namespace U2 {
 

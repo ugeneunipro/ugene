@@ -27,7 +27,7 @@
 #include <U2View/MSAEditor.h>
 
 #include "FindPatternMsaWidgetSavableTab.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/MaEditorSelection.h"
 #include "ui_FindPatternMsaForm.h"
 
 namespace U2 {

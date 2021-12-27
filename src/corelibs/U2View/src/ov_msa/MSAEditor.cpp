@@ -50,17 +50,17 @@
 
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
+#include "MaEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
+#include "MaEditorSelection.h"
+#include "MaEditorSequenceArea.h"
 #include "MaEditorTasks.h"
 #include "align_to_alignment/RealignSequencesInAlignmentTask.h"
-#include "export/MSAImageExportTask.h"
+#include "export_image/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
-#include "view_rendering/MaEditorConsensusArea.h"
-#include "view_rendering/MaEditorSelection.h"
-#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 

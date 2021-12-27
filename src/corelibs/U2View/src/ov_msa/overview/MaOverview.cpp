@@ -27,10 +27,10 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "ov_msa/helpers/BaseWidthController.h"
-#include "ov_msa/helpers/RowHeightController.h"
-#include "ov_msa/helpers/ScrollController.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/BaseWidthController.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/RowHeightController.h"
+#include "ov_msa/ScrollController.h"
 
 namespace U2 {
 

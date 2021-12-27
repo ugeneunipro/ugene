@@ -49,7 +49,7 @@
 #include "MSAEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorState.h"
-#include "McaEditor.h"
+#include "ov_mca/McaEditor.h"
 
 namespace U2 {
 

@@ -70,10 +70,10 @@
 #include "ExportSequencesTask.h"
 #include "MSAEditor.h"
 #include "MaEditorNameList.h"
+#include "MaEditorSelection.h"
+#include "ScrollController.h"
+#include "SequenceAreaRenderer.h"
 #include "clipboard/SubalignmentToClipboardTask.h"
-#include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorSelection.h"
-#include "view_rendering/SequenceAreaRenderer.h"
 
 namespace U2 {
 

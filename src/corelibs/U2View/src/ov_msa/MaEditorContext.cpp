@@ -24,8 +24,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "MaEditor.h"
-#include "view_rendering/MaEditorSelection.h"
-#include "view_rendering/MaEditorWgt.h"
+#include "MaEditorSelection.h"
+#include "MaEditorWgt.h"
 
 namespace U2 {
 

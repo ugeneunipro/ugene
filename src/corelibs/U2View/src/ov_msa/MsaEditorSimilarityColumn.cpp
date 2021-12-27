@@ -35,7 +35,7 @@
 
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
-#include "view_rendering/MaEditorUtils.h"
+#include "MaEditorUtils.h"
 
 namespace U2 {
 

@@ -5824,7 +5824,7 @@ GUI_TEST_CLASS_DEFINITION(test_3996) {
     // 2. Zoom In
     GTWidget::click(os, GTAction::button(os, "action_zoom_in_A1#berezikov"));
 
-    // 3. Click on the chrom.view
+    // 3. Click on the chroma view.
     QWidget *chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
     const QRect chromaViewRect = chromaView->rect();
 
@@ -5840,53 +5840,47 @@ GUI_TEST_CLASS_DEFINITION(test_3996) {
 GUI_TEST_CLASS_DEFINITION(test_3997) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "3000_sequences.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::removeDocument(os, "3000_sequences.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3998) {
-    //    1. Open attached sequence
-    GTLogTracer l;
-    //    2. a) Use menu
-    //    {Edit sequence->Reverse complement sequence}
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace the whole sequence by"
-                                                << "Complementary (5'-3') sequence");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::click(os, "sequence.fasta");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Current state: UGENE crashes
-    //    b) Use menu
-    //    {Edit sequence->Reverse sequence}
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace the whole sequence by"
-                                                << "Reverse (3'-5') sequence");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::click(os, "sequence.fasta");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Current state: UGENE crashes
-    //    c) Use menu
-    //    {Edit sequence->Complement sequence}
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace the whole sequence by"
-                                                << "Complementary (5'-3') sequence");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::click(os, "sequence.fasta");
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    // Check that UGENE does not crash on 'Replace the whole sequence action'
+    GTLogTracer logTracer;
 
-    //    Current state: error occurred, sequence disappeared from the display
-    GTUtilsLog::check(os, l);
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace the whole sequence by", "Complementary (5'-3') sequence"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::click(os, "sequence.fasta");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace the whole sequence by", "Reverse (3'-5') sequence"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::click(os, "sequence.fasta");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/3998/sequence.fasta");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace the whole sequence by", "Complementary (5'-3') sequence"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::click(os, "sequence.fasta");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that there are no errors in the log.
+    GTUtilsLog::check(os, logTracer);
 }
 
 }  // namespace GUITest_regression_scenarios

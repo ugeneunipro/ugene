@@ -47,8 +47,8 @@
 #include <U2View/MaEditorTasks.h>
 
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/view_rendering/MaEditorConsensusArea.h"
-#include "ov_msa/view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorConsensusArea.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 

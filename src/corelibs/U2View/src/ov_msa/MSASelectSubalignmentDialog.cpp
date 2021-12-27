@@ -29,8 +29,8 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include "./view_rendering/MaEditorSelection.h"
 #include "MaEditor.h"
+#include "MaEditorSelection.h"
 
 namespace U2 {
 

@@ -31,7 +31,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "../view_rendering/MaEditorSequenceArea.h"
+#include "ov_msa/MaEditorSequenceArea.h"
 
 namespace U2 {
 

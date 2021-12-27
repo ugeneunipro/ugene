@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/helpers/ScrollController.h"
+#include "../../corelibs/U2View/src/ov_msa/ScrollController.h"
