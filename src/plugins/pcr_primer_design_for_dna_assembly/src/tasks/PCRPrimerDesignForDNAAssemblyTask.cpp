@@ -237,7 +237,7 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
             return { checkBackboneSequence };
         } else {
             backboneSequence = QByteArray();
-            taskLog.error(tr("The file \"%1\" doesn't contain the backbone sequence, which matchs the parameters. "
+            taskLog.error(tr("The file \"%1\" doesn't contain the backbone sequence, which matches the parameters. "
                 "Skip the backbone sequence parameter.").arg(settings.backboneSequenceUrl));
         }
     } else if (subTask == loadOtherSequencesInPcr) {

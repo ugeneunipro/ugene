@@ -56,7 +56,7 @@ p, li { white-space: pre-wrap; }
    <item>
     <widget class="QLabel" name="questionLabel">
      <property name="text">
-      <string>There no sequences in the file left. Use this sequence as the backbone?</string>
+      <string>There are no sequences in the file left. Use this sequence as the backbone?</string>
      </property>
     </widget>
    </item>
