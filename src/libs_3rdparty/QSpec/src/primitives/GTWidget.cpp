@@ -22,7 +22,6 @@
 #include "primitives/GTWidget.h"
 
 #include <QApplication>
-#include <QComboBox>
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
@@ -112,6 +111,10 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, co
     return widget;
 }
 #undef GT_METHOD_NAME
+
+QRadioButton *GTWidget::findRadioButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QRadioButton *>(os, widgetName, parentWidget, options);
+}
 
 QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);

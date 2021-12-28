@@ -1334,14 +1334,11 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     //    7. Select the created database and accept the dialog
     //    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
 
-    FormatDBSupportRunDialogFiller::Parameters parametersDB;
+    FormatDBRunDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
     parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
-    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "BLAST"
-                                                << "BLAST make database...");
-
+    GTUtilsDialog::waitForDialog(os, new FormatDBRunDialogFiller(os, parametersDB));
+    GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST make database..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
@@ -1352,15 +1349,13 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     parametersSearch.dbPath = sandBoxDir + "/murine.nin";
 
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Query with local BLAST...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Query with local BLAST..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
-    CHECK_SET_ERR(treeItem != nullptr, "blast result annotations not found");
+
     bool ok;
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "blast result");
+    GTUtilsAnnotationsTreeView::selectItems(os, {"blast result"});
     int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
     CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
 

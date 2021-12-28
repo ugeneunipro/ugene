@@ -29,27 +29,24 @@
 namespace U2 {
 using namespace HI;
 
-class FormatDBSupportRunDialogFiller : public Filler {
+class FormatDBRunDialogFiller : public Filler {
 public:
     class Parameters {
     public:
-        Parameters()
-            : justCancel(false), checkAlphabetType(false), alphabetType(Nucleotide), customFiller_3551(false) {
-        }
-        enum Type { Nucleotide,
-                    Protein };
+        enum Type {
+            Nucleotide,
+            Protein,
+        };
 
-        bool justCancel;
-        bool checkAlphabetType;
+        bool justCancel = false;
+        bool checkAlphabetType = false;
         QString inputFilePath;
-        Type alphabetType;
+        Type alphabetType = Nucleotide;
         QString outputDirPath;
-
-        bool customFiller_3551;
     };
 
-    FormatDBSupportRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
-    void commonScenario();
+    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    void commonScenario() override;
 
 private:
     Parameters parameters;
