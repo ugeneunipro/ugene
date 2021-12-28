@@ -3199,27 +3199,27 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     //    3. Ensure that description field is empty. Click "Create annotations" button.
     setAnnotationName(os, "test_0043_1");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leDescription"), "");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription"), "");
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0043_1");
+    GTUtilsAnnotationsTreeView::selectItems(os, {"test_0043_1"});
     QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
     CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Set any description. Click "Create annotations" button.
     setAnnotationName(os, "test_0043_2");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leDescription"), "test_0043_2 description");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription"), "test_0043_2 description");
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a new annotation appears, it has a qualifier "note" with description.
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0043_2");
-    const QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0043_2");
-    CHECK_SET_ERR("test_0043_2 description" == description,
+    GTUtilsAnnotationsTreeView::selectItems(os, {"test_0043_2"});
+    QString description = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", "test_0043_2");
+    CHECK_SET_ERR(description == "test_0043_2 description",
                   QString("An unexpected annotation description: expect '%1', got '%2'")
                       .arg("test_0043_2 description")
                       .arg(description));

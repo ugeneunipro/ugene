@@ -120,7 +120,7 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     r(MaturePeptide, "mat_peptide", Alphabet_Nucleic, QObject::tr("Mature peptide coding region (does not include stop codon)"), "", true);
     r(MiscBindingSite, "misc_binding", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Miscellaneous binding site"));
     r(MiscDifference, "misc_difference", Alphabet_Nucleic, QObject::tr("Miscellaneous difference feature"));
-    r(MiscFeature, "misc_feature", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Region of biological significance that cannot be described by any other feature"));
+    r(MiscFeature, "misc_feature", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Region of biological significance that cannot be described by any other feature"), "#ffff99");
     r(MiscRecombination, "misc_recomb", Alphabet_Nucleic, QObject::tr("Miscellaneous, recombination feature"));
     r(MiscRna, "misc_RNA", Alphabet_Nucleic, QObject::tr("Miscellaneous transcript feature not defined by other RNA keys"));
     r(MiscStructure, "misc_structure", Alphabet_Nucleic, QObject::tr("Miscellaneous DNA or RNA structure"));

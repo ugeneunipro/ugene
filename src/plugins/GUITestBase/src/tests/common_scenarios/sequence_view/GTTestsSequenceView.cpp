@@ -1328,7 +1328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
 GUI_TEST_CLASS_DEFINITION(test_0043) {
     //    Open murine.gb
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    move mouse to annotation on det view
@@ -1338,11 +1338,11 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     QString expected = "<table><tr><td bgcolor=#ffff99 bordercolor=black width=15></td><td><big>misc_feature</big></td></tr><tr><td></td><td><b>Location"
                        "</b> = 2..590</td></tr><tr><td/><td><nobr><b>note</b> = 5' terminal repeat</nobr><br><nobr><b>Sequence</b> = AATGAAAGACCCCACCCGTAGGTGGCAAGCTAGCTTAAGT"
                        " ...</nobr><br><nobr><b>Translation</b> = NERPHP*VAS*LK ...</nobr></td></tr></table>";
-    CHECK_SET_ERR(tooltip == expected, "Unexpected toolip: " + tooltip)
+    CHECK_SET_ERR(tooltip == expected, "Unexpected tooltip: " + tooltip)
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044) {
-    // Overview weel event
+    // Overview wheel event
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
