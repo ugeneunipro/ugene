@@ -27,7 +27,6 @@
 
 #include <U2Core/GUrl.h>
 #include <U2Core/U2Assembly.h>
-#include <U2Core/U2Feature.h>
 #include <U2Core/U2FormatCheckResult.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2Msa.h>

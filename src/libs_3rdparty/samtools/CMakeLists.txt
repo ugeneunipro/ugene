@@ -19,7 +19,7 @@ file(GLOB TS_FILES transl/*.ts)
 
 qt5_add_translation(QM_FILES ${TS_FILES})
 
-# Supress original samtools warnings
+# Suppress original samtools warnings
 if (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
 endif (CMAKE_COMPILER_IS_GNUCC)

@@ -29,18 +29,15 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
 
 namespace U2 {
 
@@ -81,20 +78,6 @@ AnnotationTableObject *DocumentFormatUtils::addAnnotationsForMergedU2Sequence(co
     return ao;
 }
 
-class ExtComparator {
-public:
-    ExtComparator(const QString &_ext)
-        : ext(_ext) {
-    }
-
-    bool operator()(const DocumentFormat *f1, const DocumentFormat *f2) const {
-        int v1 = f1->getSupportedDocumentFileExtensions().contains(ext) ? 1 : 0;
-        int v2 = f2->getSupportedDocumentFileExtensions().contains(ext) ? 1 : 0;
-        return v2 < v1;  // reverse sort -> make higher vals on the top
-    }
-    QString ext;
-};
-
 QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat *> &formats) {
     QList<DocumentFormatId> result;
     foreach (DocumentFormat *f, formats) {
@@ -106,16 +89,16 @@ QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat *>
 QList<AnnotationSettings *> DocumentFormatUtils::predefinedSettings() {
     QList<AnnotationSettings *> predefined;
     foreach (GBFeatureKeyInfo fi, GBFeatureUtils::allKeys()) {
-        AnnotationSettings *as = new AnnotationSettings();
-        as->name = fi.text;
-        as->amino = fi.showOnaminoFrame;
-        as->color = fi.color;
-        as->visible = as->name != "source";
-        as->nameQuals = fi.namingQuals;
+        auto settings = new AnnotationSettings();
+        settings->name = fi.text;
+        settings->amino = U2FeatureTypes::isShowOnAminoFrame(fi.type);
+        settings->color = U2FeatureTypes::getColor(fi.type);
+        settings->visible = settings->name != "source";
+        settings->nameQuals = fi.namingQuals;
         if (!fi.namingQuals.isEmpty()) {
-            as->showNameQuals = true;
+            settings->showNameQuals = true;
         }
-        predefined.append(as);
+        predefined.append(settings);
     }
     AnnotationSettings *secStructAnnotationSettings = new AnnotationSettings(BioStruct3D::SecStructAnnotationTag, true, QColor(102, 255, 0), true);
     secStructAnnotationSettings->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
