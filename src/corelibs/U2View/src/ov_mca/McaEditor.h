@@ -29,8 +29,6 @@
 #include <U2View/MaEditorWgt.h>
 
 #include "McaEditorWgt.h"
-#include "ov_msa/MaEditorMultilineWgt.h"
-#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 

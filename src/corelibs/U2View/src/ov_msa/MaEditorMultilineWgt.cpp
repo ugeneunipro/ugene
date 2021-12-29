@@ -39,9 +39,9 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
-#include "ov_msa/helpers/DrawHelper.h"
-#include "ov_msa/helpers/ScrollController.h"
-#include "ov_msa/helpers/MultilineScrollController.h"
+#include "ov_msa/DrawHelper.h"
+#include "ov_msa/ScrollController.h"
+#include "ov_msa/MultilineScrollController.h"
 
 namespace U2 {
 
