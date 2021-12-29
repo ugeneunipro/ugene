@@ -4,7 +4,7 @@
 #include <U2Gui/GScrollBar.h>
 #include "MaEditor.h"
 #include "MsaMultilineScrollArea.h"
-#include "helpers/MultilineScrollController.h"
+#include "MultilineScrollController.h"
 
 namespace U2 {
 
