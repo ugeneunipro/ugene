@@ -31,10 +31,10 @@
 #include "RowHeightController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
-#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
-#include "ov_msa/view_rendering/MaEditorMultilineWgt.h"
-#include "ov_msa/view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorMultilineWgt.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MaEditorSequenceArea.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 
