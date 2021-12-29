@@ -28,8 +28,8 @@
 #include "MsaEditorStatusBar.h"
 #include "MsaEditorWgt.h"
 #include "MsaMultilineScrollArea.h"
-#include "helpers/MultilineScrollController.h"
-#include "helpers/ScrollController.h"
+#include "MultilineScrollController.h"
+#include "ScrollController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 #include "phy_tree/MsaEditorTreeTabArea.h"
 
