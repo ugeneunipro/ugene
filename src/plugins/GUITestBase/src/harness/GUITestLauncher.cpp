@@ -134,23 +134,21 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
 QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
-    if (suiteCount == 3) {
-        testsPerSuite << 980 << 800 << -1;
+    if (suiteCount == 3) {  // Windows.
+        testsPerSuite << 1000 << 820 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 550 << 575 << 480 << 550 << -1;
+        testsPerSuite << 555 << 580 << 485 << 555 << -1;  // Linux.
     }
+    CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest *> tests;
-    if (testsPerSuite.size() == suiteCount) {
-        SAFE_POINT(testsPerSuite.size() == suiteCount, QString("Illegal testsPerSuite size: %1").arg(testsPerSuite.size()), tests);
-        int offset = 0;
-        for (int i = 0; i < suiteIndex; i++) {
-            offset += testsPerSuite[i];
-        }
-        int testCount = testsPerSuite[suiteIndex];  // last index is -1 => list.mid(x, -1) returns a tail.
-        tests << allTests.mid(offset, testCount);
+    int offset = 0;
+    for (int i = 0; i < suiteIndex; i++) {
+        offset += testsPerSuite[i];
     }
+    int testCount = testsPerSuite[suiteIndex];  // last index is -1 => list.mid(x, -1) returns a tail.
+    tests << allTests.mid(offset, testCount);
     return tests;
 }
 
