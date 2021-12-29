@@ -64,9 +64,9 @@
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
-#include "view_rendering/MaEditorConsensusArea.h"
-#include "view_rendering/MaEditorSelection.h"
-#include "view_rendering/MaEditorSequenceArea.h"
+#include "ov_msa/MaEditorConsensusArea.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/MaEditorSequenceArea.h"
 
 namespace U2 {
 

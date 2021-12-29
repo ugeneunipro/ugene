@@ -22,7 +22,7 @@
 #include "McaEditorOverviewArea.h"
 
 #include "overview/MaSangerOverview.h"
-#include "view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 
