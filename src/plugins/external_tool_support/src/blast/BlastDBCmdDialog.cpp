@@ -32,10 +32,8 @@
 
 namespace U2 {
 
-BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWidget *_parent)
-    : QDialog(_parent),
-      saveController(nullptr),
-      settings(_settings) {
+BlastDBCmdDialog::BlastDBCmdDialog(QWidget *parent)
+    : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "");
 
@@ -66,6 +64,10 @@ void BlastDBCmdDialog::accept() {
     settings.addToProject = addToProjectBox->isChecked();
 
     QDialog::accept();
+}
+
+const BlastDBCmdSupportTaskSettings &BlastDBCmdDialog::getTaskSettings() const {
+    return settings;
 }
 
 void BlastDBCmdDialog::sl_update() {

@@ -160,13 +160,12 @@ void BlastSupport::sl_runBlastSearch() {
 
 void BlastSupport::sl_runBlastDbCmd() {
     // Call select input file and setup settings dialog.
-    BlastDBCmdSupportTaskSettings settings;
-    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(AppContext::getMainWindow()->getQMainWindow());
     blastDBCmdDialog->exec();
     CHECK(!blastDBCmdDialog.isNull() && blastDBCmdDialog->result() == QDialog::Accepted, );
 
     checkBlastTool(id);
-    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(blastDBCmdDialog->getTaskSettings()));
 }
 
 void BlastSupport::sl_runAlignToReference() {
@@ -184,15 +183,14 @@ void BlastSupport::sl_runAlignToReference() {
 
 void BlastSupport::sl_runMakeBlastDb() {
     // Call select input file and setup settings dialog
-    MakeBlastDbSettings settings;
-    QObjectScopedPointer<MakeBlastDbDialog> makeBlastDbDialog = new MakeBlastDbDialog(settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<MakeBlastDbDialog> makeBlastDbDialog = new MakeBlastDbDialog(AppContext::getMainWindow()->getQMainWindow());
     makeBlastDbDialog->exec();
     CHECK(!makeBlastDbDialog.isNull() && makeBlastDbDialog->result() == QDialog::Accepted, );
 
     CHECK(checkBlastTool(ET_MAKEBLASTDB_ID), );
     CHECK(ExternalToolSupportSettings::checkTemporaryDir(), );
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(makeBlastDbDialog->getTaskSettings()));
 }
 
 QString BlastSupport::getToolIdByProgramName(const QString &programName) {
@@ -337,13 +335,12 @@ void BlastSupportContext::sl_showDialog() {
 void BlastSupportContext::sl_fetchSequenceById() {
     CHECK(BlastSupport::checkBlastTool({BlastSupport::ET_BLASTDBCMD_ID}), );
 
-    BlastDBCmdSupportTaskSettings settings;
-    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(AppContext::getMainWindow()->getQMainWindow());
     blastDBCmdDialog->setQueryId(commaSeparatedSelectedSequenceIds);
     blastDBCmdDialog->exec();
 
     CHECK(!blastDBCmdDialog.isNull() && blastDBCmdDialog->result() == QDialog::Accepted, );
-    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(blastDBCmdDialog->getTaskSettings()));
 }
 
 }  // namespace U2

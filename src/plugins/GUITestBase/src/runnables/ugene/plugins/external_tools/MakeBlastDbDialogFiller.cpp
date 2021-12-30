@@ -66,7 +66,7 @@ void MakeBlastDbDialogFiller::commonScenario() {
     GTWidget::click(os, GTWidget::findWidget(os, "databasePathToolButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Format", GTUtilsDialog::buttonBox(os, dialog)));
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Build", GTUtilsDialog::buttonBox(os, dialog)));
 }
 
 #undef GT_METHOD_NAME

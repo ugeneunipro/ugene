@@ -2173,7 +2173,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209_1) {
     GTLogTracer logTracer;
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/crash.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "Align to Reference");

@@ -33,11 +33,11 @@ namespace U2 {
 
 ////////////////////////////////////////
 // MakeBlastDbDialog
-MakeBlastDbDialog::MakeBlastDbDialog(const MakeBlastDbSettings &_settings, QWidget *_parent)
-    : QDialog(_parent), settings(_settings) {
+MakeBlastDbDialog::MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &_settings)
+    : QDialog(parent), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930721");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     makeButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
@@ -142,11 +142,10 @@ void MakeBlastDbDialog::sl_makeBlastDb() {
     if (inputFilesRadioButton->isChecked()) {
         settings.inputFilesPath = inputFilesLineEdit->text().split(';');
     } else {
-        if (includeFilterRadioButton->isChecked()) {
-            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), includeFFLineEdit->text());
-        } else {
-            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), excludeFFLineEdit->text(), false);
-        }
+        QDir inputDir(inputDirLineEdit->text());
+        settings.inputFilesPath = includeFilterRadioButton->isChecked()
+                                      ? getAllFiles(inputDir, includeFFLineEdit->text())
+                                      : getAllFiles(inputDir, excludeFFLineEdit->text(), false);
     }
     settings.databaseTitle = databaseTitleLineEdit->text();
     if ((!databasePathLineEdit->text().endsWith('/')) && (!databasePathLineEdit->text().endsWith('\\'))) {
@@ -192,4 +191,9 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
         return excludeFilesList;
     }
 }
+
+const MakeBlastDbSettings &MakeBlastDbDialog::getTaskSettings() const {
+    return settings;
+}
+
 }  // namespace U2

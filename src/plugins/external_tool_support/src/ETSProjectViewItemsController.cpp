@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "ETSProjectViewItemsController.h"
+
 #include <QMainWindow>
 #include <QMessageBox>
 
@@ -36,7 +38,6 @@
 
 #include <U2Gui/ProjectView.h>
 
-#include "ETSProjectViewItemsController.h"
 #include "ExternalToolSupportSettingsController.h"
 #include "blast/BlastSupport.h"
 #include "blast/MakeBlastDbDialog.h"
@@ -99,12 +100,12 @@ void ETSProjectViewItemsController::sl_runMakeBlastDbOnSelection() {
             }
         }
     }
-    QObjectScopedPointer<MakeBlastDbDialog> makeBlastDbDialog = new MakeBlastDbDialog(settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<MakeBlastDbDialog> makeBlastDbDialog = new MakeBlastDbDialog(AppContext::getMainWindow()->getQMainWindow(), settings);
     makeBlastDbDialog->exec();
     CHECK(!makeBlastDbDialog.isNull() && makeBlastDbDialog->result() == QDialog::Accepted, );
 
     CHECK(BlastSupport::checkBlastTool(BlastSupport::ET_MAKEBLASTDB_ID), );
-    AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(makeBlastDbDialog->getTaskSettings()));
 }
 
 }  // namespace U2

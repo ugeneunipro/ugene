@@ -56,7 +56,7 @@ MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings &_settings)
 }
 
 void MakeBlastDbTask::prepare() {
-    const QString tempDir = prepareTempDir();
+    QString tempDir = prepareTempDir();
     CHECK_OP(stateInfo, );
 
     prepareTask = new PrepareInputFastaFilesTask(settings.inputFilesPath, tempDir);
@@ -162,6 +162,10 @@ void MakeBlastDbTask::initMakeBlastDbExternalToolTask() {
     SAFE_POINT_EXT(makeBlastDbExternalToolTask == nullptr, setError(tr("Trying to initialize Format DB task second time")), );
     if (settings.outputPath.contains(" ")) {
         stateInfo.setError(tr("Output database path contain space characters."));
+        return;
+    }
+    if (inputFastaFiles.isEmpty()) {
+        stateInfo.setError(tr("Input file set is empty."));
         return;
     }
 

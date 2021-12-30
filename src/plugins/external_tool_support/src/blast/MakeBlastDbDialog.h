@@ -35,7 +35,10 @@ namespace U2 {
 class MakeBlastDbDialog : public QDialog, public Ui_MakeBlastDbDialog {
     Q_OBJECT
 public:
-    MakeBlastDbDialog(const MakeBlastDbSettings &settings, QWidget *parent);
+    MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &settings = {});
+
+    /** Returns the original settings adjusted after the dialog is accepted. */
+    const MakeBlastDbSettings &getTaskSettings() const;
 
 private slots:
     void sl_makeBlastDb();
