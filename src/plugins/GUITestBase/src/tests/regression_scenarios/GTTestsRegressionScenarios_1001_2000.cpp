@@ -7094,8 +7094,8 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     // 1. Open Settings -> Preferences -> External Tools.
-    // 2. Select any invalid file for Blast -> BlastN.
-    GTUtilsExternalTools::setToolUrl(os, "BlastN", dataDir + "this-file-does-not-exist");
+    // 2. Select any invalid file for BLAST -> blastn.
+    GTUtilsExternalTools::setToolUrl(os, "blastn", dataDir + "this-file-does-not-exist");
 
     // 3. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -7116,7 +7116,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     GTUtilsDialog::waitAllFinished(os);
 
     // Expected state: there must be a warning "External tool is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected".
-    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"BlastN\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
+    GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"blastn\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1720) {
