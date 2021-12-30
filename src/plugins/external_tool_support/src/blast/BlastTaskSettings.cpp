@@ -30,7 +30,7 @@ BlastTaskSettings::BlastTaskSettings() {
     isNucleotideSeq = false;
     numberOfHits = 0;
     isDefaultMatrix = true;
-    isDefautScores = true;
+    isDefaultScores = true;
     isDefaultCosts = true;
     isGappedAlignment = true;
     isDefaultThreshold = true;

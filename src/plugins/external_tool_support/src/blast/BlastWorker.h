@@ -47,9 +47,9 @@ class BlastWorker : public BaseWorker {
 public:
     BlastWorker(Actor *a);
 
-    virtual void init();
-    virtual Task *tick();
-    virtual void cleanup();
+    void init() override;
+    Task *tick() override;
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -71,20 +71,20 @@ public:
     BlastWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    Worker *createWorker(Actor *a) override {
         return new BlastWorker(a);
     }
 };
 
 class ToolsValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const override;
 
 private:
     ExternalTool *getTool(const QString &program) const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

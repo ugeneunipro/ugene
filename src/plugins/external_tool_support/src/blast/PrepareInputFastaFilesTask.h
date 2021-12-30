@@ -35,8 +35,8 @@ public:
     QStringList getTempFiles() const;
 
 private:
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
     QString getBestFormatId(const QString &filePath);
     bool isFilePathAcceptable(const QString &filePath) const;
@@ -49,6 +49,6 @@ private:
     QStringList tempFiles;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PREPARE_INPUT_FASTA_FILES_TASK_H_
+#endif  // _U2_PREPARE_INPUT_FASTA_FILES_TASK_H_

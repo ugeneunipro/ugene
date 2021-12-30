@@ -22,14 +22,14 @@
 #ifndef _U2_BLAST_DB_CMD_DIALOG_H
 #define _U2_BLAST_DB_CMD_DIALOG_H
 
-#include <ui_BlastDBCmdDialog.h>
-
 #include <QDialog>
 
 #include <U2Gui/DialogUtils.h>
 
 #include "BlastDBCmdTask.h"
-#include "utils/BlastDBSelectorWidgetController.h"
+#include "BlastDBSelectorWidgetController.h"
+
+#include <ui_BlastDBCmdDialog.h>
 
 namespace U2 {
 
@@ -42,7 +42,7 @@ public:
     void setQueryId(const QString &queryId);
 
 private slots:
-    void accept();
+    void accept() override;
     void sl_update();
 
 private:
@@ -54,5 +54,5 @@ private:
     QPushButton *fetchButton;
 };
 
-}    // namespace U2
-#endif    // _U2_BLAST_DB_CMD_DIALOG_H
+}  // namespace U2
+#endif  // _U2_BLAST_DB_CMD_DIALOG_H

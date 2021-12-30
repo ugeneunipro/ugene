@@ -19,32 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
-#include <QComboBox>
 #include <QGroupBox>
-#include <QToolButton>
 
-#include "FormatDBDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
+#include "MakeBlastDbDialogFiller.h"
 
 namespace U2 {
 
-FormatDBRunDialogFiller::FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)
-    : Filler(os, "FormatDBRunDialog"), parameters(parameters) {
+MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)
+    : Filler(os, "MakeBlastDbDialog"), parameters(parameters) {
 }
 
-#define GT_CLASS_NAME "GTUtilsDialog::FormatDBRunDialogFiller"
+#define GT_CLASS_NAME "GTUtilsDialog::MakeBlastDbDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
-void FormatDBRunDialogFiller::commonScenario() {
+void MakeBlastDbDialogFiller::commonScenario() {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     auto inputFilesRadioButton = GTWidget::findRadioButton(os, "inputFilesRadioButton", dialog);

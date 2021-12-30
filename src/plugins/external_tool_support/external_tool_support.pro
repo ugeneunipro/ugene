@@ -1,7 +1,7 @@
 include (external_tool_support.pri)
 
 # Input
-HEADERS += src/ETSProjectViewItemsContoller.h \
+HEADERS += src/ETSProjectViewItemsController.h \
            src/ExternalToolManager.h \
            src/ExternalToolSupportL10N.h \
            src/ExternalToolSupportPlugin.h \
@@ -19,19 +19,20 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/blast/AlignToReferenceBlastDialog.h \
            src/blast/AlignToReferenceBlastWorker.h \
+           src/blast/BlastCommonTask.h \
            src/blast/BlastDBCmdDialog.h \
-           src/blast/BlastDBCmdSupport.h \
            src/blast/BlastDBCmdTask.h \
+           src/blast/BlastDBSelectorWidgetController.h \
            src/blast/BlastNTask.h \
            src/blast/BlastPTask.h \
-           src/blast/BlastSupport.h \
-           src/blast/BlastCommonTask.h \
+           src/blast/BlastRunCommonDialog.h \
            src/blast/BlastRunDialog.h \
+           src/blast/BlastSupport.h \
+           src/blast/BlastTaskSettings.h \
            src/blast/BlastWorker.h \
            src/blast/BlastXTask.h \
-           src/blast/FormatDBSupport.h \
-           src/blast/FormatDBRunDialog.h \
-           src/blast/FormatDBTask.h \
+           src/blast/MakeBlastDbDialog.h \
+           src/blast/MakeBlastDbTask.h \
            src/blast/PrepareInputFastaFilesTask.h \
            src/blast/RPSBlastTask.h \
            src/blast/TBlastNTask.h \
@@ -109,8 +110,8 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/PhmmerSearchSettings.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
-           src/iqtree/IQTreeTask.h \
            src/iqtree/IQTreeSupport.h \
+           src/iqtree/IQTreeTask.h \
            src/iqtree/IQTreeWidget.h \
            src/java/JavaSupport.h \
            src/mafft/MAFFTSupport.h \
@@ -188,9 +189,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/trimmomatic/util/QualitySettingsWidget.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
-           src/utils/BlastDBSelectorWidgetController.h \
-           src/utils/BlastRunCommonDialog.h \
-           src/utils/BlastTaskSettings.h \
            src/utils/ExportTasks.h \
            src/utils/ExternalToolSearchTask.h \
            src/utils/ExternalToolSupportAction.h \
@@ -205,13 +203,15 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
 FORMS += src/ETSSettingsWidget.ui \
          src/blast/AlignToReferenceBlastDialog.ui \
          src/blast/BlastDBCmdDialog.ui \
-         src/blast/FormatDBRunDialog.ui \
+         src/blast/BlastDBSelectorWidget.ui \
+         src/blast/BlastLocalSearchDialog.ui \
+         src/blast/MakeBlastDbDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
          src/bowtie/BowtieSettings.ui \
          src/bowtie2/Bowtie2Settings.ui \
          src/bwa/BwaBuildSettings.ui \
-         src/bwa/BwaSettings.ui \
          src/bwa/BwaMemSettings.ui \
+         src/bwa/BwaSettings.ui \
          src/bwa/BwaSwSettings.ui \
          src/cap3/CAP3SupportDialog.ui \
          src/clustalo/ClustalOSupportRunDialog.ui \
@@ -233,11 +233,9 @@ FORMS += src/ETSSettingsWidget.ui \
          src/trimmomatic/steps/MaxInfoSettingsWidget.ui \
          src/trimmomatic/steps/SlidingWindowSettingsWidget.ui \
          src/trimmomatic/util/LengthSettingsWidget.ui \
-         src/trimmomatic/util/QualitySettingsWidget.ui \
-         src/utils/BlastAllSupportDialog.ui \
-         src/utils/BlastDBSelectorWidget.ui
+         src/trimmomatic/util/QualitySettingsWidget.ui
 
-SOURCES += src/ETSProjectViewItemsContoller.cpp \
+SOURCES += src/ETSProjectViewItemsController.cpp \
            src/ExternalToolManager.cpp \
            src/ExternalToolSupportPlugin.cpp \
            src/ExternalToolSupportSettings.cpp \
@@ -254,19 +252,20 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/blast/AlignToReferenceBlastDialog.cpp \
            src/blast/AlignToReferenceBlastWorker.cpp \
+           src/blast/BlastCommonTask.cpp \
            src/blast/BlastDBCmdDialog.cpp \
-           src/blast/BlastDBCmdSupport.cpp \
            src/blast/BlastDBCmdTask.cpp \
+           src/blast/BlastDBSelectorWidgetController.cpp \
            src/blast/BlastNTask.cpp \
            src/blast/BlastPTask.cpp \
-           src/blast/BlastSupport.cpp \
-           src/blast/BlastCommonTask.cpp \
+           src/blast/BlastRunCommonDialog.cpp \
            src/blast/BlastRunDialog.cpp \
+           src/blast/BlastSupport.cpp \
+           src/blast/BlastTaskSettings.cpp \
            src/blast/BlastWorker.cpp \
            src/blast/BlastXTask.cpp \
-           src/blast/FormatDBSupport.cpp \
-           src/blast/FormatDBRunDialog.cpp \
-           src/blast/FormatDBTask.cpp \
+           src/blast/MakeBlastDbDialog.cpp \
+           src/blast/MakeBlastDbTask.cpp \
            src/blast/PrepareInputFastaFilesTask.cpp \
            src/blast/RPSBlastTask.cpp \
            src/blast/TBlastNTask.cpp \
@@ -343,8 +342,8 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/hmmer/PhmmerSearchSettings.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
-           src/iqtree/IQTreeTask.cpp \
            src/iqtree/IQTreeSupport.cpp \
+           src/iqtree/IQTreeTask.cpp \
            src/iqtree/IQTreeWidget.cpp \
            src/java/JavaSupport.cpp \
            src/mafft/MAFFTSupport.cpp \
@@ -422,9 +421,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/trimmomatic/util/QualitySettingsWidget.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \
-           src/utils/BlastDBSelectorWidgetController.cpp \
-           src/utils/BlastRunCommonDialog.cpp \
-           src/utils/BlastTaskSettings.cpp \
            src/utils/ExportTasks.cpp \
            src/utils/ExternalToolSearchTask.cpp \
            src/utils/ExternalToolSupportAction.cpp \

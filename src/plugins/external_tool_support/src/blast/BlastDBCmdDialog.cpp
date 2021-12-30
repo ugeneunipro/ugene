@@ -90,9 +90,7 @@ void BlastDBCmdDialog::initSaveController() {
     config.parentWidget = this;
     config.saveTitle = tr("Set a result FASTA file name");
 
-    const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::FASTA;
-
-    saveController = new SaveDocumentController(config, formats, this);
+    saveController = new SaveDocumentController(config, {BaseDocumentFormats::FASTA}, this);
 }
 
 void BlastDBCmdDialog::setQueryId(const QString &queryId) {
@@ -102,4 +100,4 @@ void BlastDBCmdDialog::setQueryId(const QString &queryId) {
     initSaveController();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -47,7 +47,7 @@ QStringList PrepareInputFastaFilesTask::getTempFiles() const {
 }
 
 void PrepareInputFastaFilesTask::prepare() {
-    foreach (const QString &filePath, inputFiles) {
+    for (const QString &filePath : qAsConst(inputFiles)) {
         const QString formatId = getBestFormatId(filePath);
         CHECK_CONTINUE(!formatId.isEmpty());
 
@@ -102,4 +102,4 @@ QString PrepareInputFastaFilesTask::getFixedFileName(const QString &filePath) co
     return fileInfo.fileName().replace(" ", "_");
 }
 
-}    // namespace U2
+}  // namespace U2

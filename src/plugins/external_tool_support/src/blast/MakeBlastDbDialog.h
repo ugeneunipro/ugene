@@ -19,29 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
-#define _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
+#ifndef _U2_MAKE_BLAST_DB_DIALOG_H
+#define _U2_MAKE_BLAST_DB_DIALOG_H
 
-#include <QAction>
-#include <QMenu>
+#include <QDialog>
 
-#include <U2Core/global.h>
+#include <U2Gui/DialogUtils.h>
 
-#include "utils/ExternalToolSupportAction.h"
+#include "MakeBlastDbTask.h"
+
+#include <ui_MakeBlastDbDialog.h>
 
 namespace U2 {
 
-class ETSProjectViewItemsContoller : public QObject {
+class MakeBlastDbDialog : public QDialog, public Ui_MakeBlastDbDialog {
     Q_OBJECT
 public:
-    ETSProjectViewItemsContoller(QObject *p);
-private slots:
-    void sl_addToProjectViewMenu(QMenu &);
+    MakeBlastDbDialog(const MakeBlastDbSettings &settings, QWidget *parent);
 
-    void sl_runMakeBlastDbOnSelection();
+private slots:
+    void sl_makeBlastDb();
+    void sl_lineEditChanged();
+
+    void sl_onBrowseInputFiles();
+    void sl_onBrowseInputDir();
+    void sl_onBrowseDatabasePath();
 
 private:
-    ExternalToolSupportAction *makeBLASTDBOnSelectionAction;
+    MakeBlastDbSettings settings;
+    QPushButton *makeButton;
+    QPushButton *cancelButton;
 };
-}    // namespace U2
-#endif    // _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
+
+}  // namespace U2
+#endif  // _U2_MAKE_BLAST_DB_DIALOG_H

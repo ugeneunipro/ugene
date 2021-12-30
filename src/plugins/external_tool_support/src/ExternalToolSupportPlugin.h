@@ -28,7 +28,7 @@
 #include "ExternalToolManager.h"
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
+class ETSProjectViewItemsController;
 
 class ExternalToolSupportPlugin : public Plugin {
     Q_OBJECT
@@ -49,7 +49,7 @@ public:
 protected:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
-    ETSProjectViewItemsContoller *projectViewController;
+    ETSProjectViewItemsController *projectViewController;
 };
 
 }    // namespace U2

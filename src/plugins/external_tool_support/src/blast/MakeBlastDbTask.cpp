@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "FormatDBTask.h"
+#include "MakeBlastDbTask.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -27,7 +27,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -36,29 +35,27 @@
 
 #include <U2Formats/ConvertFileTask.h>
 
-#include "FormatDBSupport.h"
+#include "BlastSupport.h"
 #include "PrepareInputFastaFilesTask.h"
 
 namespace U2 {
 
-void FormatDBTaskSettings::reset() {
+void MakeBlastDbSettings::reset() {
     inputFilesPath = QList<QString>();
     outputPath = "";
     databaseTitle = "";
     isInputAmino = true;
-    tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FormatDBSupport::FORMATDB_TMP_DIR);
+    tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BlastSupport::BLAST_TMP_DIR);
 }
 
-FormatDBTask::FormatDBTask(const FormatDBTaskSettings &_settings)
-    : Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      prepareTask(nullptr),
-      formatDBTask(nullptr),
+MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings &_settings)
+    : Task(tr("Run 'MakeBlastDbTask' task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(_settings) {
-    GCOUNTER(cvar, "FormatDBTask");
+    GCOUNTER(cvar, "MakeBlastDbTask");
     externalToolLog = settings.outputPath + "MakeBLASTDB.log";
 }
 
-void FormatDBTask::prepare() {
+void MakeBlastDbTask::prepare() {
     const QString tempDir = prepareTempDir();
     CHECK_OP(stateInfo, );
 
@@ -66,7 +63,7 @@ void FormatDBTask::prepare() {
     addSubTask(prepareTask);
 }
 
-QList<Task *> FormatDBTask::onSubTaskFinished(Task *subTask) {
+QList<Task *> MakeBlastDbTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
@@ -74,15 +71,15 @@ QList<Task *> FormatDBTask::onSubTaskFinished(Task *subTask) {
     if (subTask == prepareTask) {
         inputFastaFiles << prepareTask->getFastaFiles();
         fastaTmpFiles << prepareTask->getTempFiles();
-        createFormatDbTask();
+        initMakeBlastDbExternalToolTask();
         CHECK_OP(stateInfo, result);
-        result << formatDBTask;
+        result << makeBlastDbExternalToolTask;
     }
 
     return result;
 }
 
-Task::ReportResult FormatDBTask::report() {
+Task::ReportResult MakeBlastDbTask::report() {
     // remove tmp files
     if (!fastaTmpFiles.isEmpty()) {
         QDir dir(QFileInfo(fastaTmpFiles.first()).absoluteDir());
@@ -94,7 +91,7 @@ Task::ReportResult FormatDBTask::report() {
     return ReportResult_Finished;
 }
 
-QString FormatDBTask::generateReport() const {
+QString MakeBlastDbTask::generateReport() const {
     QString res;
     if (isCanceled()) {
         res += QString(tr("Blast database creation has been cancelled")) + "<br>";
@@ -117,13 +114,13 @@ QString FormatDBTask::generateReport() const {
         QString type = settings.isInputAmino ? "protein" : "nucleotide";
         res += QString(tr("Type: %1")).arg(type) + "<br>";
         if (QFile::exists(externalToolLog)) {
-            res += QString(tr("Formatdb log file path: "));
+            res += QString(tr("Log file path: "));
             res += prepareLink(externalToolLog);
         }
     } else {
         res += QString(tr("Blast database creation has been failed")) + "<br><br>";
         if (QFile::exists(externalToolLog)) {
-            res += QString(tr("Formatdb log file path: "));
+            res += QString(tr("Log file path: "));
             res += prepareLink(externalToolLog);
         }
     }
@@ -133,15 +130,15 @@ QString FormatDBTask::generateReport() const {
 namespace {
 
 QString getTempDirName(qint64 taskId) {
-    return "FormatDB_" + QString::number(taskId) + "_" +
+    return "makeblastdb_" + QString::number(taskId) + "_" +
            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
            QString::number(QCoreApplication::applicationPid()) + "/";
 }
 
-}    // namespace
+}  // namespace
 
-QString FormatDBTask::prepareTempDir() {
+QString MakeBlastDbTask::prepareTempDir() {
     const QString tmpDirName = getTempDirName(getTaskId());
     const QString tmpDir = GUrlUtils::prepareDirLocation(settings.tempDirPath + "/" + tmpDirName, stateInfo);
     CHECK_OP(stateInfo, "");
@@ -149,7 +146,7 @@ QString FormatDBTask::prepareTempDir() {
     return tmpDir;
 }
 
-QString FormatDBTask::prepareLink(const QString &path) const {
+QString MakeBlastDbTask::prepareLink(const QString &path) const {
     QString preparedPath = path;
     if (preparedPath.startsWith("'") || preparedPath.startsWith("\"")) {
         preparedPath.remove(0, 1);
@@ -161,8 +158,8 @@ QString FormatDBTask::prepareLink(const QString &path) const {
            QDir::toNativeSeparators(preparedPath) + "</a><br>";
 }
 
-void FormatDBTask::createFormatDbTask() {
-    SAFE_POINT_EXT(formatDBTask == nullptr, setError(tr("Trying to initialize Format DB task second time")), );
+void MakeBlastDbTask::initMakeBlastDbExternalToolTask() {
+    SAFE_POINT_EXT(makeBlastDbExternalToolTask == nullptr, setError(tr("Trying to initialize Format DB task second time")), );
     if (settings.outputPath.contains(" ")) {
         stateInfo.setError(tr("Output database path contain space characters."));
         return;
@@ -177,14 +174,15 @@ void FormatDBTask::createFormatDbTask() {
     arguments << "-out" << settings.outputPath;
     arguments << "-dbtype" << (settings.isInputAmino ? "prot" : "nucl");
 
-    formatDBTask = new ExternalToolRunTask(FormatDBSupport::ET_MAKEBLASTDB_ID, arguments, new ExternalToolLogParser());
-#ifdef Q_OS_WIN
-    // Blast 2.10.1 has some issues with Windows. See https://www.biostars.org/p/413294/#415002
-    QMap<QString, QString> env;
-    env["BLASTDB_LMDB_MAP_SIZE"] = "1000000";
-    formatDBTask->setAdditionalEnvVariables(env);
-#endif
-    formatDBTask->setSubtaskProgressWeight(95);
+    makeBlastDbExternalToolTask = new ExternalToolRunTask(BlastSupport::ET_MAKEBLASTDB_ID, arguments, new ExternalToolLogParser());
+    if (isOsWindows()) {
+        // Blast 2.10.1 has some issues with Windows. See https://www.biostars.org/p/413294/#415002
+        // TODO: recheck if this fix is still needed with Blast 2.12 or later and recheck the MAP_SIZE value below.
+        QMap<QString, QString> env;
+        env["BLASTDB_LMDB_MAP_SIZE"] = "1000000";
+        makeBlastDbExternalToolTask->setAdditionalEnvVariables(env);
+    }
+    makeBlastDbExternalToolTask->setSubtaskProgressWeight(95);
 }
 
-}    // namespace U2
+}  // namespace U2

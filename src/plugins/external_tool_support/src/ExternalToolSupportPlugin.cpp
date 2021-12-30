@@ -45,7 +45,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/MaEditorFactory.h>
 
-#include "ETSProjectViewItemsContoller.h"
+#include "ETSProjectViewItemsController.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
 #include "bedtools/BedToolsWorkersLibrary.h"
@@ -53,10 +53,8 @@
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
 #include "blast/AlignToReferenceBlastWorker.h"
-#include "blast/BlastDBCmdSupport.h"
 #include "blast/BlastSupport.h"
 #include "blast/BlastWorker.h"
-#include "blast/FormatDBSupport.h"
 #include "blast/RPSBlastTask.h"
 #include "bowtie/BowtieSettingsWidget.h"
 #include "bowtie/BowtieSupport.h"
@@ -135,7 +133,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     // External tools serialize additional tool info into QSettings and using StrStrMap type.
     qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
 
-    // External tools registry keeps order of items added
+    // External tool registry keeps order of items added
     // it is important because there might be dependencies
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry != nullptr, "ExternalToolRegistry is null", );
@@ -209,25 +207,23 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    // MakeBLASTDB from BLAST
-    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
-    etRegistry->registerEntry(makeBLASTDBTool);
-
     // Blast tools.
-    auto blastNTool = new BlastSupport(BlastSupport::ET_BLASTN_ID, BlastSupport::ET_BLASTN);
+    auto blastNTool = new BlastSupport(BlastSupport::ET_BLASTN_ID);
     etRegistry->registerEntry(blastNTool);
-    auto blastPTool = new BlastSupport(BlastSupport::ET_BLASTP_ID, BlastSupport::ET_BLASTP);
+    auto blastPTool = new BlastSupport(BlastSupport::ET_BLASTP_ID);
     etRegistry->registerEntry(blastPTool);
-    auto blastXTool = new BlastSupport(BlastSupport::ET_BLASTX_ID, BlastSupport::ET_BLASTX);
+    auto blastXTool = new BlastSupport(BlastSupport::ET_BLASTX_ID);
     etRegistry->registerEntry(blastXTool);
-    auto tBlastNTool = new BlastSupport(BlastSupport::ET_TBLASTN_ID, BlastSupport::ET_TBLASTN);
+    auto tBlastNTool = new BlastSupport(BlastSupport::ET_TBLASTN_ID);
     etRegistry->registerEntry(tBlastNTool);
-    auto tBlastXTool = new BlastSupport(BlastSupport::ET_TBLASTX_ID, BlastSupport::ET_TBLASTX);
+    auto tBlastXTool = new BlastSupport(BlastSupport::ET_TBLASTX_ID);
     etRegistry->registerEntry(tBlastXTool);
-    auto rpsblastTool = new BlastSupport(BlastSupport::ET_RPSBLAST_ID, BlastSupport::ET_RPSBLAST);
+    auto rpsblastTool = new BlastSupport(BlastSupport::ET_RPSBLAST_ID);
     etRegistry->registerEntry(rpsblastTool);
-    auto blastDbCmdSupport = new BlastDbCmdSupport();
-    etRegistry->registerEntry(blastDbCmdSupport);
+    auto blastDbCmdTool = new BlastSupport(BlastSupport::ET_BLASTDBCMD_ID);
+    etRegistry->registerEntry(blastDbCmdTool);
+    auto makeBlastDbTool = new BlastSupport(BlastSupport::ET_MAKEBLASTDB_ID);
+    etRegistry->registerEntry(makeBlastDbTool);
 
     // CAP3
     CAP3Support *cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
@@ -329,35 +325,39 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
                                                         " for the human genome, its memory footprint is typically around 3.2Gb."
                                                         " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
 
-        auto blastMakeDbAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {FormatDBSupport::ET_MAKEBLASTDB_ID});
+        auto blastMakeDbAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {BlastSupport::ET_MAKEBLASTDB_ID});
         blastMakeDbAction->setObjectName(ToolsMenu::BLAST_DBP);
-        connect(blastMakeDbAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
+        connect(blastMakeDbAction, &QAction::triggered, makeBlastDbTool, &BlastSupport::sl_runMakeBlastDb);
 
-        ExternalToolSupportAction *alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
-                                                                                         this,
-                                                                                         QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastSupport::ET_BLASTN_ID);
+        auto alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
+                                                                   this,
+                                                                   {BlastSupport::ET_MAKEBLASTDB_ID, BlastSupport::ET_BLASTN_ID});
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
-        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNTool, SLOT(sl_runAlign()));
+        connect(alignToRefBlastAction, &QAction::triggered, blastNTool, &BlastSupport::sl_runAlignToReference);
 
         auto blastViewCtx = new BlastSupportContext(this);
-        blastViewCtx->setParent(this);  // may be problems???
         blastViewCtx->init();
-        QStringList toolList;
-        toolList << BlastSupport::ET_BLASTN_ID << BlastSupport::ET_BLASTP_ID << BlastSupport::ET_BLASTX_ID << BlastSupport::ET_TBLASTN_ID << BlastSupport::ET_TBLASTX_ID << BlastSupport::ET_RPSBLAST_ID;
-        auto blastSearchAction = new ExternalToolSupportAction(tr("BLAST search..."), this, toolList);
+        auto blastSearchAction = new ExternalToolSupportAction(tr("BLAST search..."),
+                                                               this,
+                                                               {BlastSupport::ET_BLASTN_ID,
+                                                                BlastSupport::ET_BLASTP_ID,
+                                                                BlastSupport::ET_BLASTX_ID,
+                                                                BlastSupport::ET_TBLASTN_ID,
+                                                                BlastSupport::ET_TBLASTX_ID,
+                                                                BlastSupport::ET_RPSBLAST_ID});
         blastSearchAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
-        connect(blastSearchAction, SIGNAL(triggered()), blastNTool, SLOT(sl_runWithExtFileSpecify()));
+        connect(blastSearchAction, &QAction::triggered, blastNTool, &BlastSupport::sl_runBlastSearch);
 
-        auto blastQueryDbAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
-        blastQueryDbAction->setObjectName(ToolsMenu::BLAST_QUERYP);
-        connect(blastQueryDbAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
+        auto blastDbCmdAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, {BlastSupport::ET_BLASTDBCMD_ID});
+        blastDbCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
+        connect(blastDbCmdAction, &QAction::triggered, blastDbCmdTool, &BlastSupport::sl_runBlastDbCmd);
 
         // Add to menu NCBI Toolkit
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastMakeDbAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastSearchAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastQueryDbAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastDbCmdAction);
 
-        ExternalToolSupportAction *cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
+        auto cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
         connect(cap3Action, SIGNAL(triggered()), cap3Tool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
@@ -468,7 +468,7 @@ void ExternalToolSupportService::serviceStateChangedCallback(ServiceState oldSta
         return;
     }
     if (isEnabled()) {
-        projectViewController = new ETSProjectViewItemsContoller(this);
+        projectViewController = new ETSProjectViewItemsController(this);
     } else {
         delete projectViewController;
         projectViewController = nullptr;

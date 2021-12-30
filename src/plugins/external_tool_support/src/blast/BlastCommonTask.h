@@ -25,7 +25,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "utils/BlastTaskSettings.h"
+#include "BlastTaskSettings.h"
 
 class QDomNode;
 
@@ -38,30 +38,32 @@ class BlastCommonTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BlastCommonTask(const BlastTaskSettings &settings);
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    Task::ReportResult report();
-    virtual QString generateReport() const;
+    void prepare() override;
+
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
+    ReportResult report() override;
+
+    QString generateReport() const override;
 
     QList<SharedAnnotationData> getResultedAnnotations() const;
+
     BlastTaskSettings getSettings() const;
 
     virtual ExternalToolRunTask *createBlastTask() = 0;
-
-    static QString toolIdByProgram(const QString &program);
 
 protected:
     BlastTaskSettings settings;
     QString url;
 
 private:
-    SaveDocumentTask *saveTemporaryDocumentTask;
-    ExternalToolRunTask *blastTask;
-    U2SequenceObject *sequenceObject;
-    Document *tmpDoc;
+    SaveDocumentTask *saveTemporaryDocumentTask = nullptr;
+    ExternalToolRunTask *blastTask = nullptr;
+    U2SequenceObject *sequenceObject = nullptr;
+    Document *tmpDoc = nullptr;
     QList<SharedAnnotationData> result;
-    U2PseudoCircularization *circularization;
+    U2PseudoCircularization *circularization = nullptr;
 
     void parseTabularResult();
     void parseTabularLine(const QByteArray &line);
@@ -88,8 +90,5 @@ private:
     QString url;
 };
 
-class BlastDbCmdSupportTask : public Task {
-};
-
-}    // namespace U2
-#endif    // _U2_BLAST_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_BLAST_SUPPORT_TASK_H

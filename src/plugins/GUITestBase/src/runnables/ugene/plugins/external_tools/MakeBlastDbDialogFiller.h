@@ -19,25 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_DB_CMD_SUPPORT_H
-#define _U2_BLAST_DB_CMD_SUPPORT_H
+#ifndef _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_
+#define _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <base_dialogs/GTFileDialog.h>
 
-#include "utils/ExternalToolSupportAction.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-class BlastDbCmdSupport : public ExternalTool {
-    Q_OBJECT
+class MakeBlastDbDialogFiller : public Filler {
 public:
-    BlastDbCmdSupport(const QString &path = "");
+    class Parameters {
+    public:
+        enum Type {
+            Nucleotide,
+            Protein,
+        };
 
-    static const QString ET_BLASTDBCMD;
-    static const QString ET_BLASTDBCMD_ID;
-public slots:
-    void sl_runWithExtFileSpecify();
+        bool justCancel = false;
+        bool checkAlphabetType = false;
+        QString inputFilePath;
+        Type alphabetType = Nucleotide;
+        QString outputDirPath;
+    };
+
+    MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    void commonScenario() override;
+
+private:
+    Parameters parameters;
 };
 
-}    // namespace U2
-#endif    // _U2_BLAST_DB_CMD_SUPPORT_H
+}  // namespace U2
+
+#endif  // _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_

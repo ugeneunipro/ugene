@@ -35,8 +35,8 @@
 
 #include <U2Lang/DbiDataStorage.h>
 
-#include "blast/FormatDBSupport.h"
-#include "blast/FormatDBTask.h"
+#include "blast/BlastSupport.h"
+#include "blast/MakeBlastDbTask.h"
 
 namespace U2 {
 namespace Workflow {
@@ -51,7 +51,7 @@ FormatDBSubTask::FormatDBSubTask(const QString &referenceUrl,
 }
 
 void FormatDBSubTask::prepare() {
-    FormatDBTaskSettings settings;
+    MakeBlastDbSettings settings;
     settings.inputFilesPath << referenceUrl;
 
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, referenceDbHandler));
@@ -70,7 +70,7 @@ void FormatDBSubTask::prepare() {
     settings.outputPath = workingDir + QFileInfo(referenceUrl).completeBaseName();
     CHECK_OP(stateInfo, );
 
-    addSubTask(new FormatDBTask(settings));
+    addSubTask(new MakeBlastDbTask(settings));
 
     databaseNameAndPath = settings.outputPath;
 }
@@ -88,7 +88,7 @@ bool isTempDirAcceptable(const QString &tempDir) {
     return true;
 }
 
-}    // namespace
+}  // namespace
 
 QString FormatDBSubTask::getAcceptableTempDir() const {
     QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
@@ -117,5 +117,5 @@ QString FormatDBSubTask::getAcceptableTempDir() const {
     return QString();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

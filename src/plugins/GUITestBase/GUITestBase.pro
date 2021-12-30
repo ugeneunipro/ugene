@@ -121,9 +121,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
-            src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h \
+            src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h \
-            src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h \
+            src/runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h \
@@ -403,9 +403,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
-            src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.cpp \
-            src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.cpp \

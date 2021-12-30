@@ -30,7 +30,7 @@
 #include <U2Gui/DialogUtils.h>
 
 #include "BlastCommonTask.h"
-#include "utils/BlastRunCommonDialog.h"
+#include "BlastRunCommonDialog.h"
 
 namespace U2 {
 
@@ -40,32 +40,30 @@ class RegionSelector;
 class BlastRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastRunDialog(ADVSequenceObjectContext *seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    BlastRunDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent);
 
     U2Region getSelectedRegion() const;
 
 protected slots:
-    virtual void sl_runQuery();
-    virtual void sl_lineEditChanged();
+    void sl_runQuery() override;
+    void sl_lineEditChanged() override;
 
 private:
-    bool checkToolPath();
-
-    U2SequenceObject *dnaso;
-    QString &lastDBPath;
-    QString &lastDBName;
-    ADVSequenceObjectContext *seqCtx;
-    RegionSelector *regionSelector;
+    U2SequenceObject *sequenceObject = nullptr;
+    ADVSequenceObjectContext *seqCtx = nullptr;
+    RegionSelector *regionSelector = nullptr;
 };
 
-class BlastWithExtFileSpecifySupportRunDialog : public BlastRunCommonDialog {
+class BlastWithExtFileRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastWithExtFileSpecifySupportRunDialog(QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    BlastWithExtFileRunDialog(QWidget *parent);
     const QList<BlastTaskSettings> &getSettingsList() const;
+
 protected slots:
-    void sl_runQuery();
-    void sl_lineEditChanged();
+    void sl_runQuery() override;
+    void sl_lineEditChanged() override;
+
 private slots:
     void sl_cancel();
 
@@ -73,19 +71,16 @@ private slots:
     void sl_inputFileOpened();
 
 private:
-    bool checkToolPath();
     void tryApplyDoc(Document *doc);
     void onFormatError();
     void loadDoc(const QString &url);
 
-    FileLineEdit *inputFileLineEdit;
-    bool wasNoOpenProject;
+    FileLineEdit *inputFileLineEdit = nullptr;
+    bool wasNoOpenProject = false;
 
     QList<BlastTaskSettings> settingsList;
     QList<GObjectReference> sequencesRefList;
-    QString &lastDBPath;
-    QString &lastDBName;
-    bool hasValidInput;
+    bool hasValidInput = false;
 };
-}    // namespace U2
-#endif    // _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
+}  // namespace U2
+#endif  // _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
