@@ -47,32 +47,32 @@ public:
             FileName
         };
 
-        Settings();
+        Settings() = default;
 
         QString getRowNamingPolicyString() const;
 
         QString referenceUrl;
         QStringList readUrls;
-        int minIdentity;
-        int minLength;
-        int qualityThreshold;
-        RowNaming rowNaming;
+        int minIdentity = 60;
+        int minLength = 0;
+        int qualityThreshold = 30;
+        RowNaming rowNaming = SequenceName;
         QString resultAlignmentFile;
-        bool addResultToProject;
+        bool addResultToProject = true;
     };
 
     AlignToReferenceBlastCmdlineTask(const Settings &settings);
 
 private:
-    void prepare();
-    QString generateReport() const;
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    void run();
-    ReportResult report();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    void run() override;
+    ReportResult report() override;
+    QString generateReport() const override;
 
     Settings settings;
-    CmdlineInOutTaskRunner *cmdlineTask;
-    LoadDocumentTask *loadRef;
+    CmdlineInOutTaskRunner *cmdlineTask = nullptr;
+    LoadDocumentTask *loadRef = nullptr;
 
     QTemporaryFile reportFile;
     QString reportString;
@@ -114,6 +114,6 @@ private:
     QString defaultOutputUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
+#endif  // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_

@@ -19,9 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "FormatDBRunDialog.h"
+#include "MakeBlastDbDialog.h"
 
-#include <QPushButton>
 #include <QToolButton>
 
 #include <U2Core/DNAAlphabet.h>
@@ -30,19 +29,17 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 
-#include "FormatDBSupport.h"
-
 namespace U2 {
 
 ////////////////////////////////////////
-//FormatDBWithExtFileSpecifySupportRunDialog
-FormatDBRunDialog::FormatDBRunDialog(const QString &_name, FormatDBTaskSettings &_settings, QWidget *_parent)
-    : QDialog(_parent), name(_name), settings(_settings) {
+// MakeBlastDbDialog
+MakeBlastDbDialog::MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &_settings)
+    : QDialog(parent), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930721");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-    formatButton = buttonBox->button(QDialogButtonBox::Ok);
+    makeButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(inputFilesToolButton, SIGNAL(clicked()), SLOT(sl_onBrowseInputFiles()));
@@ -63,12 +60,12 @@ FormatDBRunDialog::FormatDBRunDialog(const QString &_name, FormatDBTaskSettings 
     if (!settings.isInputAmino) {
         nucleotideTypeRadioButton->setChecked(true);
     }
-    formatButton->setEnabled(false);
+    makeButton->setEnabled(false);
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-    connect(formatButton, SIGNAL(clicked()), this, SLOT(sl_formatDB()));
+    connect(makeButton, SIGNAL(clicked()), this, SLOT(sl_makeBlastDb()));
 }
 
-void FormatDBRunDialog::sl_onBrowseInputFiles() {
+void MakeBlastDbDialog::sl_onBrowseInputFiles() {
     LastUsedDirHelper lod("");
     QString name;
     QStringList lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lod.dir, "");
@@ -90,7 +87,7 @@ void FormatDBRunDialog::sl_onBrowseInputFiles() {
         }
     }
 }
-void FormatDBRunDialog::sl_onBrowseInputDir() {
+void MakeBlastDbDialog::sl_onBrowseInputDir() {
     LastUsedDirHelper lod("");
 
     QString name;
@@ -101,7 +98,7 @@ void FormatDBRunDialog::sl_onBrowseInputDir() {
     inputDirLineEdit->setFocus();
 }
 
-void FormatDBRunDialog::sl_onBrowseDatabasePath() {
+void MakeBlastDbDialog::sl_onBrowseDatabasePath() {
     LastUsedDirHelper lod("Database folder");
 
     QString name;
@@ -111,9 +108,8 @@ void FormatDBRunDialog::sl_onBrowseDatabasePath() {
     }
     databasePathLineEdit->setFocus();
 }
-void FormatDBRunDialog::sl_lineEditChanged() {
+void MakeBlastDbDialog::sl_lineEditChanged() {
     bool hasSpacesInInputFiles = false;
-    bool hasSpacesInOutputDBPath = false;
     bool pathWarning = databasePathLineEdit->text().contains(' ');
     QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
     GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
@@ -124,33 +120,32 @@ void FormatDBRunDialog::sl_lineEditChanged() {
     GUIUtils::setWidgetWarning(baseNamelineEdit, nameWarning);
     baseNamelineEdit->setToolTip(nameTooltip);
 
-    hasSpacesInOutputDBPath = pathWarning || nameWarning;
+    bool hasSpacesInOutputDBPath = pathWarning || nameWarning;
 
     bool isFilledInputFilesOrDirLineEdit =
         (!inputFilesLineEdit->text().isEmpty() && inputFilesRadioButton->isChecked()) ||
         (!inputDirLineEdit->text().isEmpty() && inputDirRadioButton->isChecked());
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
     bool isFilledDatabaseTitleLineEdit = !databaseTitleLineEdit->text().isEmpty();
-    bool isFilledBaseNamelineEdit = !baseNamelineEdit->text().isEmpty();
-    formatButton->setEnabled(isFilledBaseNamelineEdit &&
-                             isFilledDatabasePathLineEdit &&
-                             isFilledDatabaseTitleLineEdit &&
-                             isFilledInputFilesOrDirLineEdit &&
-                             !hasSpacesInInputFiles &&
-                             !hasSpacesInOutputDBPath);
+    bool isFilledBaseNameLineEdit = !baseNamelineEdit->text().isEmpty();
+    makeButton->setEnabled(isFilledBaseNameLineEdit &&
+                           isFilledDatabasePathLineEdit &&
+                           isFilledDatabaseTitleLineEdit &&
+                           isFilledInputFilesOrDirLineEdit &&
+                           !hasSpacesInInputFiles &&
+                           !hasSpacesInOutputDBPath);
 }
 
 QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter = true);
 
-void FormatDBRunDialog::sl_formatDB() {
+void MakeBlastDbDialog::sl_makeBlastDb() {
     if (inputFilesRadioButton->isChecked()) {
         settings.inputFilesPath = inputFilesLineEdit->text().split(';');
     } else {
-        if (includeFilterRadioButton->isChecked()) {
-            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), includeFFLineEdit->text());
-        } else {
-            settings.inputFilesPath = getAllFiles(QDir(inputDirLineEdit->text()), excludeFFLineEdit->text(), false);
-        }
+        QDir inputDir(inputDirLineEdit->text());
+        settings.inputFilesPath = includeFilterRadioButton->isChecked()
+                                      ? getAllFiles(inputDir, includeFFLineEdit->text())
+                                      : getAllFiles(inputDir, excludeFFLineEdit->text(), false);
     }
     settings.databaseTitle = databaseTitleLineEdit->text();
     if ((!databasePathLineEdit->text().endsWith('/')) && (!databasePathLineEdit->text().endsWith('\\'))) {
@@ -167,8 +162,8 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
     QStringList includeFileList;
     QStringList excludeFilesList;
     QStringList filters = filter.split(';');
-    //IsIncludeFilter == true
-    //get files from input dir
+    // IsIncludeFilter == true
+    // get files from input dir
     foreach (QString inputFileName, inputDir.entryList(filters, QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)) {
         inputFileName = inputDir.absolutePath() + "/" + inputFileName;
         QFileInfo inputFileInfo(inputFileName);
@@ -176,7 +171,7 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
             includeFileList.append(inputFileName);
         }
     }
-    //get files from subdirs
+    // get files from subdirs
     foreach (QString inputFileName, inputDir.entryList(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Dirs | QDir::Files)) {
         inputFileName = inputDir.absolutePath() + "/" + inputFileName;
         QFileInfo inputFileInfo(inputFileName);
@@ -185,7 +180,7 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
             excludeFilesList.append(getAllFiles(QDir(inputFileName), filter, false));
         } else {
             if (!includeFileList.contains(inputFileName)) {
-                //IsIncludeFilter == false
+                // IsIncludeFilter == false
                 excludeFilesList.append(inputFileName);
             }
         }
@@ -196,4 +191,9 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
         return excludeFilesList;
     }
 }
-}    // namespace U2
+
+const MakeBlastDbSettings &MakeBlastDbDialog::getTaskSettings() const {
+    return settings;
+}
+
+}  // namespace U2

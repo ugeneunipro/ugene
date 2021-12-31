@@ -53,13 +53,13 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
             result = true;
         }
         ExternalTool *exTool = AppContext::getExternalToolRegistry()->getById(toolId);
-        if (connectSignals == true) {
+        if (connectSignals) {
             connect(exTool, SIGNAL(si_pathChanged()), SLOT(sl_pathChanged()));
             connect(exTool, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolStateChanged(bool)));
         }
     }
 
-    if (connectSignals == true) {
+    if (connectSignals) {
         connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_temporaryPathChanged()), SLOT(sl_pathChanged()));
     }
 

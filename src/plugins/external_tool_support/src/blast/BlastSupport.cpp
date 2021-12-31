@@ -42,42 +42,37 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "AlignToReferenceBlastDialog.h"
+#include "BlastCommonTask.h"
 #include "BlastDBCmdDialog.h"
-#include "BlastDBCmdSupport.h"
 #include "BlastDBCmdTask.h"
 #include "BlastNTask.h"
 #include "BlastPTask.h"
-#include "BlastCommonTask.h"
 #include "BlastRunDialog.h"
 #include "BlastXTask.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
+#include "MakeBlastDbDialog.h"
+#include "MakeBlastDbTask.h"
 #include "RPSBlastTask.h"
 #include "TBlastNTask.h"
 #include "TBlastXTask.h"
-#include "blast/FormatDBSupport.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolUtils.h"
 
 namespace U2 {
 
-const QString BlastSupport::ET_BLASTN = "BlastN";
 const QString BlastSupport::ET_BLASTN_ID = "USUPP_BLASTN";
-const QString BlastSupport::ET_BLASTP = "BlastP";
 const QString BlastSupport::ET_BLASTP_ID = "USUPP_BLASTP";
-const QString BlastSupport::ET_GPU_BLASTP_ID = "UGENE_GPU_BLASTP";
-const QString BlastSupport::ET_BLASTX = "BlastX";
 const QString BlastSupport::ET_BLASTX_ID = "USUPP_BLASTX";
-const QString BlastSupport::ET_TBLASTN = "TBlastN";
 const QString BlastSupport::ET_TBLASTN_ID = "USUPP_TBLASTN";
-const QString BlastSupport::ET_TBLASTX = "TBlastX";
 const QString BlastSupport::ET_TBLASTX_ID = "USUPP_TBLASTX";
-const QString BlastSupport::ET_RPSBLAST = "RPSBlast";
 const QString BlastSupport::ET_RPSBLAST_ID = "USUPP_RPS_BLAST";
 const QString BlastSupport::BLAST_TMP_DIR = "blast";
+const QString BlastSupport::ET_BLASTDBCMD_ID = "USUPP_BLAST_DB_CMD";
+const QString BlastSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
 
-BlastSupport::BlastSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "blast", name, path) {
+BlastSupport::BlastSupport(const QString &id)
+    : ExternalTool(id, "blast", getProgramNameByToolId(id)) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
@@ -86,179 +81,159 @@ BlastSupport::BlastSupport(const QString &id, const QString &name, const QString
     validationArguments << "-h";
 
     if (id == ET_BLASTN_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "blastn.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "blastn";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "blastn.exe" : "blastn";
         validMessage = "Nucleotide-Nucleotide BLAST";
-        description = "The <i>blastn</i> tool searches a nucleotide database \
-                using a nucleotide query.";
+        description = tr("The <i>blastn</i> tool searches a nucleotide database using a nucleotide query.");
         versionRegExp = QRegExp("Nucleotide-Nucleotide BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_BLASTP_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "blastp.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "blastp";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "blastp.exe" : "blastp";
         validMessage = "Protein-Protein BLAST";
-        description = "The <i>blastp</i> tool searches a protein database \
-                using a protein query.";
+        description = tr("The <i>blastp</i> tool searches a protein database using a protein query.");
         versionRegExp = QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-        // https://ugene.net/tracker/browse/UGENE-945
-        //     }else if(name == GPU_BLASTP_TOOL_NAME) {
-        // #ifdef Q_OS_WIN
-        //     executableFileName="blastp.exe";
-        // #else
-        //     #ifdef Q_OS_UNIX
-        //     executableFileName="blastp";
-        //     #endif
-        // #endif
-        //     validMessage="[-gpu boolean]";
-        //     description="The <i>blastp</i> tool searches a protein database using a protein query.";
-        //     versionRegExp=QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_BLASTX_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "blastx.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "blastx";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "blastx.exe" : "blastx";
         validMessage = "Translated Query-Protein Subject";
-        description = "The <i>blastx</i> tool searches a protein database \
-                using a translated nucleotide query.";
+        description = tr("The <i>blastx</i> tool searches a protein database using a translated nucleotide query.");
         versionRegExp = QRegExp("Translated Query-Protein Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_TBLASTN_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "tblastn.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "tblastn";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "tblastn.exe" : "tblastn";
         validMessage = "Protein Query-Translated Subject";
-        description = "The <i>tblastn</i> compares a protein query against \
-                a translated nucleotide database";
+        description = tr("The <i>tblastn</i> compares a protein query against a translated nucleotide database");
         versionRegExp = QRegExp("Protein Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_TBLASTX_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "tblastx.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "tblastx";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "tblastx.exe" : "tblastx";
         validMessage = "Translated Query-Translated Subject";
-        description = "The <i>tblastx</i> translates the query nucleotide \
-                sequence in all six possible frames and compares it \
-                against the six-frame translations of a nucleotide \
-                sequence database.";
+        description = tr("The <i>tblastx</i> translates the query nucleotide sequence in all six possible frames and compares it against the six-frame translations of a nucleotide sequence database.");
         versionRegExp = QRegExp("Translated Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_RPSBLAST_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "rpsblast.exe";
-#else
-#    if defined(Q_OS_UNIX)
-        executableFileName = "rpsblast";
-#    endif
-#endif
+        executableFileName = isOsWindows() ? "rpsblast.exe" : "rpsblast";
         validMessage = "Reverse Position Specific BLAST";
         description = "";
         versionRegExp = QRegExp("Reverse Position Specific BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
+    } else if (id == ET_BLASTDBCMD_ID) {
+        executableFileName = isOsWindows() ? "blastdbcmd.exe" : "blastdbcmd";
+        validationArguments << "--help";
+        validMessage = "blastdbcmd";
+        description = tr("The <i>BlastDBCmd</i> fetches protein or nucleotide sequences from BLAST database based on a query.");
+        versionRegExp = QRegExp("BLAST database client, version (\\d+\\.\\d+\\.\\d+\\+?)");
+    } else if (id == ET_MAKEBLASTDB_ID) {
+        executableFileName = isOsWindows() ? "makeblastdb.exe" : "makeblastdb";
+        validationArguments << "-help";
+        validMessage = "makeblastdb";
+        description = tr("The <i>makeblastdb</i> formats protein or nucleotide source databases before these databases can be searched by other BLAST tools.");
+        versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
+    } else {
+        FAIL("Unsupported blast tool: " + id, );
     }
     toolKitName = "BLAST";
-    lastDBName = "";
-    lastDBPath = "";
 }
 
-void BlastSupport::sl_runWithExtFileSpecify() {
-    //Check that blastal and tempory folder path defined
-    QStringList toolList;
-    toolList << ET_BLASTN_ID << ET_BLASTP_ID << ET_BLASTX_ID << ET_TBLASTN_ID << ET_TBLASTX_ID << ET_RPSBLAST_ID;
-    bool isOneOfToolConfigured = false;
-    foreach (QString id, toolList) {
-        if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
-            isOneOfToolConfigured = true;
-        }
-    }
-    if (!isOneOfToolConfigured) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST Search");
-        msgBox->setText(tr("Path for BLAST tools not selected."));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+bool BlastSupport::checkBlastTool(const QString &toolId) {
+    ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
+    SAFE_POINT(tool != nullptr, "Blast tool not found: " + toolId, false);
+    CHECK(tool->getPath().isEmpty(), true);
 
-        switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-                break;
-            case QMessageBox::No:
-                return;
-            default:
-                assert(false);
-        }
-        for (const QString &id : qAsConst(toolList)) {
-            if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
-                isOneOfToolConfigured = true;
-                break;
-            }
-        }
-        if (!isOneOfToolConfigured) {
-            return;
-        }
-    }
-    U2OpStatus2Log os;
-    ExternalToolSupportSettings::checkTemporaryDir(os);
-    CHECK_OP(os, );
+    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
+    msgBox->setWindowTitle("BLAST toolbox");
+    msgBox->setText(tr("Path for BLAST tools is not selected."));
+    msgBox->setInformativeText(tr("Do you want to select it now?"));
+    msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox->setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox->exec();
+    CHECK(!msgBox.isNull() && ret == QMessageBox::Yes, false);
+    AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
 
-    //Call select input file and setup settings dialog
-    QObjectScopedPointer<BlastWithExtFileSpecifySupportRunDialog> blastRunDialog = new BlastWithExtFileSpecifySupportRunDialog(lastDBPath, lastDBName, AppContext::getMainWindow()->getQMainWindow());
+    return !tool->getPath().isEmpty();
+}
+
+void BlastSupport::sl_runBlastSearch() {
+    // Call select input file and setup settings dialog
+    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<BlastWithExtFileRunDialog> blastRunDialog = new BlastWithExtFileRunDialog(mainWindow);
     blastRunDialog->exec();
-    CHECK(!blastRunDialog.isNull(), );
+    CHECK(!blastRunDialog.isNull() && blastRunDialog->result() == QDialog::Accepted, );
 
-    if (blastRunDialog->result() != QDialog::Accepted) {
-        return;
-    }
     QList<BlastTaskSettings> settingsList = blastRunDialog->getSettingsList();
     auto blastMultiTask = new BlastMultiTask(settingsList, settingsList[0].outputResFile);
     AppContext::getTaskScheduler()->registerTopLevelTask(blastMultiTask);
 }
 
-void BlastSupport::sl_runAlign() {
-    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTN_ID << FormatDBSupport::ET_MAKEBLASTDB_ID);
+void BlastSupport::sl_runBlastDbCmd() {
+    // Call select input file and setup settings dialog.
+    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(AppContext::getMainWindow()->getQMainWindow());
+    blastDBCmdDialog->exec();
+    CHECK(!blastDBCmdDialog.isNull() && blastDBCmdDialog->result() == QDialog::Accepted, );
 
-    if (AppContext::getExternalToolRegistry()->getById(ET_BLASTN_ID)->getPath().isEmpty() || AppContext::getExternalToolRegistry()->getById(FormatDBSupport::ET_MAKEBLASTDB_ID)->getPath().isEmpty()) {
-        return;
-    }
+    checkBlastTool(id);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(blastDBCmdDialog->getTaskSettings()));
+}
 
+void BlastSupport::sl_runAlignToReference() {
     QObjectScopedPointer<AlignToReferenceBlastDialog> dlg = new AlignToReferenceBlastDialog(AppContext::getMainWindow()->getQMainWindow());
     dlg->exec();
-    CHECK(!dlg.isNull(), );
-    CHECK(dlg->result() == QDialog::Accepted, );
+    CHECK(!dlg.isNull() && dlg->result() == QDialog::Accepted, );
+
+    // Check that tool is valid before run.
+    CHECK(checkBlastTool(ET_BLASTN_ID) && checkBlastTool(ET_MAKEBLASTDB_ID), );
+    CHECK(ExternalToolSupportSettings::checkTemporaryDir(), );
 
     AlignToReferenceBlastCmdlineTask::Settings settings = dlg->getSettings();
-    AlignToReferenceBlastCmdlineTask *task = new AlignToReferenceBlastCmdlineTask(settings);
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new AlignToReferenceBlastCmdlineTask(settings));
+}
+
+void BlastSupport::sl_runMakeBlastDb() {
+    // Call select input file and setup settings dialog
+    QObjectScopedPointer<MakeBlastDbDialog> makeBlastDbDialog = new MakeBlastDbDialog(AppContext::getMainWindow()->getQMainWindow());
+    makeBlastDbDialog->exec();
+    CHECK(!makeBlastDbDialog.isNull() && makeBlastDbDialog->result() == QDialog::Accepted, );
+
+    CHECK(checkBlastTool(ET_MAKEBLASTDB_ID), );
+    CHECK(ExternalToolSupportSettings::checkTemporaryDir(), );
+
+    AppContext::getTaskScheduler()->registerTopLevelTask(new MakeBlastDbTask(makeBlastDbDialog->getTaskSettings()));
+}
+
+QString BlastSupport::getToolIdByProgramName(const QString &programName) {
+    QString toolId = programName == "blastn"        ? ET_BLASTN_ID
+                     : programName == "blastp"      ? ET_BLASTP_ID
+                     : programName == "blastx"      ? ET_BLASTX_ID
+                     : programName == "tblastn"     ? ET_TBLASTN_ID
+                     : programName == "tblastx"     ? ET_TBLASTX_ID
+                     : programName == "rpsblast"    ? ET_RPSBLAST_ID
+                     : programName == "blastdbcmd"  ? ET_BLASTDBCMD_ID
+                     : programName == "makeblastdb" ? ET_MAKEBLASTDB_ID
+                                                    : "";
+    SAFE_POINT(!toolId.isEmpty(), "Unsupported blast program name: " + programName, "");
+    return toolId;
+}
+
+QString BlastSupport::getProgramNameByToolId(const QString &toolId) {
+    QString programName = toolId == ET_BLASTN_ID        ? "blastn"
+                          : toolId == ET_BLASTP_ID      ? "blastp"
+                          : toolId == ET_BLASTX_ID      ? "blastx"
+                          : toolId == ET_TBLASTN_ID     ? "tblastn"
+                          : toolId == ET_TBLASTX_ID     ? "tblastx"
+                          : toolId == ET_RPSBLAST_ID    ? "rpsblast"
+                          : toolId == ET_BLASTDBCMD_ID  ? "blastdbcmd"
+                          : toolId == ET_MAKEBLASTDB_ID ? "makeblastdb"
+                                                        : "";
+    SAFE_POINT(!programName.isEmpty(), "Unsupported blast tool: " + toolId, "");
+    return programName;
 }
 
 ////////////////////////////////////////
-//BlastSupportContext
+// BlastSupportContext
 
 #define BLAST_ANNOTATION_NAME "blast result"
 
 BlastSupportContext::BlastSupportContext(QObject *p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
-    toolIdList << BlastSupport::ET_BLASTN_ID << BlastSupport::ET_BLASTP_ID << BlastSupport::ET_BLASTX_ID << BlastSupport::ET_TBLASTN_ID << BlastSupport::ET_TBLASTX_ID << BlastSupport::ET_RPSBLAST_ID;
-    lastDBName = "";
-    lastDBPath = "";
+    searchToolIds = QStringList({BlastSupport::ET_BLASTN_ID,
+                                 BlastSupport::ET_BLASTP_ID,
+                                 BlastSupport::ET_BLASTX_ID,
+                                 BlastSupport::ET_TBLASTN_ID,
+                                 BlastSupport::ET_TBLASTX_ID,
+                                 BlastSupport::ET_RPSBLAST_ID});
 
     fetchSequenceByIdAction = new QAction(tr("Fetch sequences by 'id'"), this);
     fetchSequenceByIdAction->setObjectName("fetchSequenceById");
@@ -266,180 +241,106 @@ BlastSupportContext::BlastSupportContext(QObject *p)
 }
 
 void BlastSupportContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    assert(av != nullptr);
-    Q_UNUSED(av);
+    SAFE_POINT(qobject_cast<AnnotatedDNAView *>(view) != nullptr, "Object view is not an AnnotatedDNAView", );
 
-    ExternalToolSupportAction *queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST..."), 2000, toolIdList);
+    auto queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST..."), 2000, searchToolIds);
     queryAction->setObjectName("query_with_blast");
-
     addViewAction(queryAction);
     connect(queryAction, SIGNAL(triggered()), SLOT(sl_showDialog()));
 }
 
-static void setActionFontItalic(QAction *action, bool italic) {
-    QFont font = action->font();
-    font.setItalic(italic);
-    action->setFont(font);
+/**  Returns comma-separated sequence ids from the list of annotations.  */
+static QString getCommaSeparatedIdsFromAnnotations(const QList<Annotation *> &annotations) {
+    QStringList idList;
+    for (const Annotation *ann : qAsConst(annotations)) {
+        QString value = ann->findFirstQualifierValue("id");
+        if (!value.isEmpty() && !idList.contains(value)) {
+            idList.append(value);
+        }
+    }
+    return idList.join(",");
 }
 
 void BlastSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
+    auto dnaView = qobject_cast<AnnotatedDNAView *>(view);
+    CHECK(dnaView != nullptr, );
+
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
     SAFE_POINT(analyseMenu != nullptr, "analyseMenu", );
-    foreach (GObjectViewAction *a, actions) {
+    for (GObjectViewAction *a : qAsConst(actions)) {
         a->addToMenuWithOrder(analyseMenu);
     }
 
-    AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(view);
-    if (!dnaView) {
-        return;
-    }
+    QList<Annotation *> selectedAnnotations = dnaView->getAnnotationsSelection()->getAnnotations();
+    CHECK(!selectedAnnotations.isEmpty(), );
 
-    QString name;
-    if (!dnaView->getAnnotationsSelection()->getAnnotations().isEmpty()) {
-        name = dnaView->getAnnotationsSelection()->getAnnotations().first()->getName();
-    }
-    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getAnnotations(), true);
-    bool isShowId = !selectedId.isEmpty();
+    bool isBlastResultSelected = std::all_of(selectedAnnotations.begin(), selectedAnnotations.end(), [](auto &a) { return a->getName() == BLAST_ANNOTATION_NAME; });
+    CHECK(isBlastResultSelected, );
 
-    bool isBlastResult = false;
-    for (const Annotation *annotation : qAsConst(dnaView->getAnnotationsSelection()->getAnnotations())) {
-        if (name != annotation->getName()) {
-            name = "";
-        }
-        isBlastResult = name == BLAST_ANNOTATION_NAME;
-    }
+    commaSeparatedSelectedSequenceIds = getCommaSeparatedIdsFromAnnotations(selectedAnnotations);
+    CHECK(!commaSeparatedSelectedSequenceIds.isEmpty(), );
 
-    if (isShowId && isBlastResult) {
-        name = name.isEmpty() ? "" : "from '" + name + "'";
-        QMenu *fetchMenu = new QMenu(tr("Fetch sequences from local BLAST database"));
-        fetchMenu->menuAction()->setObjectName("fetchMenu");
-        QMenu *exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
-        SAFE_POINT(exportMenu != nullptr, "exportMenu", );
-        m->insertMenu(exportMenu->menuAction(), fetchMenu);
-        fetchSequenceByIdAction->setText(tr("Fetch sequences by 'id' %1").arg(name));
-        bool emptyToolPath = AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty();
-        setActionFontItalic(fetchSequenceByIdAction, emptyToolPath);
-        fetchMenu->addAction(fetchSequenceByIdAction);
-    }
+    fetchSequenceByIdAction->setText(tr("Fetch sequences by 'id' %1").arg(BLAST_ANNOTATION_NAME));
+
+    auto fetchMenu = new QMenu(tr("Fetch sequences from local BLAST database"));
+    fetchMenu->menuAction()->setObjectName("fetchMenu");
+    fetchMenu->addAction(fetchSequenceByIdAction);
+
+    auto exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
+    SAFE_POINT(exportMenu != nullptr, "exportMenu", );
+    m->insertMenu(exportMenu->menuAction(), fetchMenu);
 }
 
 void BlastSupportContext::sl_showDialog() {
-    //Check that any of BLAST tools and temporary folder path defined
-    bool isOneOfToolConfigured = false;
-    for (const QString &id : qAsConst(toolIdList)) {
-        if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
-            isOneOfToolConfigured = true;
-            break;
-        }
-    }
-    if (!isOneOfToolConfigured) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST Search");
-        msgBox->setText(tr("Path for BLAST tools not selected."));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+    auto viewAction = qobject_cast<GObjectViewAction *>(sender());
+    SAFE_POINT(viewAction != nullptr, "Not a GObjectViewAction!", );
 
-        switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-                break;
-            case QMessageBox::No:
-                return;
-            default:
-                assert(false);
-        }
-        for (const QString &id : qAsConst(toolIdList)) {
-            if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
-                isOneOfToolConfigured = true;
-                break;
-            }
-        }
-        if (!isOneOfToolConfigured) {
-            return;
-        }
-    }
+    auto view = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    SAFE_POINT(view != nullptr, "Not an AnnotatedDNAView!", );
+
+    ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
+    QObjectScopedPointer<BlastRunDialog> dlg = new BlastRunDialog(seqCtx, view->getWidget());
+    dlg->exec();
+    CHECK(!dlg.isNull() && dlg->result() == QDialog::Accepted, );
+
+    BlastTaskSettings settings = dlg->getSettings();
+    U2Region region = dlg->getSelectedRegion();
 
     U2OpStatus2Log os(LogLevel_DETAILS);
-    ExternalToolSupportSettings::checkTemporaryDir(os);
-    CHECK_OP(os, );
+    settings.querySequence = seqCtx->getSequenceData(region, os);
+    CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
-    QAction *a = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    assert(av);
+    settings.offsInGlobalSeq = region.startPos;
+    SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
-    QObjectScopedPointer<BlastRunDialog> dlg = new BlastRunDialog(seqCtx, lastDBPath, lastDBName, av->getWidget());
-    dlg->exec();
-    CHECK(!dlg.isNull(), );
+    settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
+    settings.querySequenceObject = seqCtx->getSequenceObject();
 
-    if (dlg->result() == QDialog::Accepted) {
-        BlastTaskSettings settings = dlg->getSettings();
-        U2Region region = dlg->getSelectedRegion();
-        settings.querySequence = seqCtx->getSequenceData(region, os);
-        CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-        settings.offsInGlobalSeq = region.startPos;
-        SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
-        settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
-        settings.querySequenceObject = seqCtx->getSequenceObject();
-        Task *t = nullptr;
-        if (settings.programName == "blastn") {
-            t = new BlastNTask(settings);
-        } else if (settings.programName == "blastp") {
-            t = new BlastPTask(settings);
-        } else if (settings.programName == "blastx") {
-            t = new BlastXTask(settings);
-        } else if (settings.programName == "tblastn") {
-            t = new TBlastNTask(settings);
-        } else if (settings.programName == "tblastx") {
-            t = new TBlastXTask(settings);
-        } else if (settings.programName == "rpsblast") {
-            t = new RPSBlastTask(settings);
-        }
-        assert(t);
-        AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    }
+    QString toolId = BlastSupport::getToolIdByProgramName(settings.programName);
+    CHECK(BlastSupport::checkBlastTool(toolId), );
+    CHECK(ExternalToolSupportSettings::checkTemporaryDir(), );
+
+    auto task = settings.programName == "blastn"     ? new BlastNTask(settings)
+                : settings.programName == "blastp"   ? new BlastPTask(settings)
+                : settings.programName == "blastx"   ? new BlastXTask(settings)
+                : settings.programName == "tblastn"  ? new TBlastNTask(settings)
+                : settings.programName == "tblastx"  ? new TBlastXTask(settings)
+                : settings.programName == "rpsblast" ? new RPSBlastTask(settings)
+                                                     : (Task *)nullptr;
+    SAFE_POINT(task != nullptr, "Unsupported blast program name: " + settings.programName, );
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void BlastSupportContext::sl_fetchSequenceById() {
-    if (AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty()) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST " + QString(BlastDbCmdSupport::ET_BLASTDBCMD));
-        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(BlastDbCmdSupport::ET_BLASTDBCMD));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+    CHECK(BlastSupport::checkBlastTool({BlastSupport::ET_BLASTDBCMD_ID}), );
 
-        switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-                break;
-            case QMessageBox::No:
-                return;
-            default:
-                assert(false);
-        }
-    }
-
-    BlastDBCmdSupportTaskSettings settings;
-    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(settings, AppContext::getMainWindow()->getQMainWindow());
-    blastDBCmdDialog->setQueryId(selectedId);
+    QObjectScopedPointer<BlastDBCmdDialog> blastDBCmdDialog = new BlastDBCmdDialog(AppContext::getMainWindow()->getQMainWindow());
+    blastDBCmdDialog->setQueryId(commaSeparatedSelectedSequenceIds);
     blastDBCmdDialog->exec();
-    CHECK(!blastDBCmdDialog.isNull(), );
 
-    if (blastDBCmdDialog->result() != QDialog::Accepted) {
-        return;
-    }
-
-    BlastDBCmdTask *blastDBCmdSupportTask = new BlastDBCmdTask(settings);
-    AppContext::getTaskScheduler()->registerTopLevelTask(blastDBCmdSupportTask);
+    CHECK(!blastDBCmdDialog.isNull() && blastDBCmdDialog->result() == QDialog::Accepted, );
+    AppContext::getTaskScheduler()->registerTopLevelTask(new BlastDBCmdTask(blastDBCmdDialog->getTaskSettings()));
 }
 
-}    // namespace U2
+}  // namespace U2

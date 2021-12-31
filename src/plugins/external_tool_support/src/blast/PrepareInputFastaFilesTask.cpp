@@ -32,10 +32,10 @@
 
 namespace U2 {
 
-PrepareInputFastaFilesTask::PrepareInputFastaFilesTask(const QStringList &inputFiles, const QString &tempDir)
+PrepareInputFastaFilesTask::PrepareInputFastaFilesTask(const QStringList &_inputFiles, const QString &_tempDir)
     : Task(tr("Prepare input FASTA files"), TaskFlags_NR_FOSE_COSC),
-      inputFiles(inputFiles),
-      tempDir(tempDir) {
+      inputFiles(_inputFiles),
+      tempDir(_tempDir) {
 }
 
 QStringList PrepareInputFastaFilesTask::getFastaFiles() const {
@@ -47,16 +47,16 @@ QStringList PrepareInputFastaFilesTask::getTempFiles() const {
 }
 
 void PrepareInputFastaFilesTask::prepare() {
-    foreach (const QString &filePath, inputFiles) {
-        const QString formatId = getBestFormatId(filePath);
+    for (const QString &filePath : qAsConst(inputFiles)) {
+        QString formatId = getBestFormatId(filePath);
         CHECK_CONTINUE(!formatId.isEmpty());
 
         if (formatId != BaseDocumentFormats::FASTA) {
-            const QString targetFilePath = tempDir + "/" + getFixedFileName(filePath);
-            DefaultConvertFileTask *convertTask = new DefaultConvertFileTask(filePath, formatId, targetFilePath, BaseDocumentFormats::FASTA, tempDir);
+            QString targetFilePath = tempDir + "/" + getFixedFileName(filePath);
+            auto convertTask = new DefaultConvertFileTask(filePath, formatId, targetFilePath, BaseDocumentFormats::FASTA, tempDir);
             addSubTask(convertTask);
         } else if (!isFilePathAcceptable(filePath)) {
-            CopyFileTask *copyTask = new CopyFileTask(filePath, tempDir + "/" + getFixedFileName(filePath));
+            auto copyTask = new CopyFileTask(filePath, tempDir + "/" + getFixedFileName(filePath));
             addSubTask(copyTask);
         } else {
             fastaFiles << filePath;
@@ -68,14 +68,10 @@ QList<Task *> PrepareInputFastaFilesTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
-    DefaultConvertFileTask *convertTask = qobject_cast<DefaultConvertFileTask *>(subTask);
-    if (nullptr != convertTask) {
+    if (auto convertTask = qobject_cast<DefaultConvertFileTask *>(subTask)) {
         fastaFiles << convertTask->getResult();
         tempFiles << convertTask->getResult();
-    }
-
-    CopyFileTask *copyTask = qobject_cast<CopyFileTask *>(subTask);
-    if (nullptr != copyTask) {
+    } else if (auto copyTask = qobject_cast<CopyFileTask *>(subTask)) {
         fastaFiles << copyTask->getTargetFilePath();
         tempFiles << copyTask->getTargetFilePath();
     }
@@ -89,7 +85,7 @@ QString PrepareInputFastaFilesTask::getBestFormatId(const QString &filePath) {
         stateInfo.addWarning(tr("File '%1' was skipped. Cannot detect the file format.").arg(filePath));
         return "";
     }
-    SAFE_POINT_EXT(nullptr != formats.first().format, setError("An incorrect format found. An importer?"), "");
+    SAFE_POINT_EXT(formats.first().format != nullptr, setError("An incorrect format found. An importer?"), "");
     return formats.first().format->getFormatId();
 }
 
@@ -102,4 +98,4 @@ QString PrepareInputFastaFilesTask::getFixedFileName(const QString &filePath) co
     return fileInfo.fileName().replace(" ", "_");
 }
 
-}    // namespace U2
+}  // namespace U2

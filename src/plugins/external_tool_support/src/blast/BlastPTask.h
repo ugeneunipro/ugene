@@ -32,8 +32,8 @@ public:
     BlastPTask(const BlastTaskSettings &settings)
         : BlastCommonTask(settings) {
     }
-    virtual ExternalToolRunTask *createBlastTask();
+    ExternalToolRunTask *createBlastTask() override;
 };
 
-}    // namespace U2
-#endif    // _U2_BLASTP_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_BLASTP_SUPPORT_TASK_H

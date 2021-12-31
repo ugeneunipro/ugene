@@ -32,10 +32,8 @@
 
 namespace U2 {
 
-BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWidget *_parent)
-    : QDialog(_parent),
-      saveController(nullptr),
-      settings(_settings) {
+BlastDBCmdDialog::BlastDBCmdDialog(QWidget *parent)
+    : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "");
 
@@ -68,6 +66,10 @@ void BlastDBCmdDialog::accept() {
     QDialog::accept();
 }
 
+const BlastDBCmdSupportTaskSettings &BlastDBCmdDialog::getTaskSettings() const {
+    return settings;
+}
+
 void BlastDBCmdDialog::sl_update() {
     bool outputPathIsSet = !saveController->getSaveFileName().isEmpty();
     bool queryIsSet = !queryIdEdit->text().isEmpty();
@@ -90,9 +92,7 @@ void BlastDBCmdDialog::initSaveController() {
     config.parentWidget = this;
     config.saveTitle = tr("Set a result FASTA file name");
 
-    const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::FASTA;
-
-    saveController = new SaveDocumentController(config, formats, this);
+    saveController = new SaveDocumentController(config, {BaseDocumentFormats::FASTA}, this);
 }
 
 void BlastDBCmdDialog::setQueryId(const QString &queryId) {
@@ -102,4 +102,4 @@ void BlastDBCmdDialog::setQueryId(const QString &queryId) {
     initSaveController();
 }
 
-}    // namespace U2
+}  // namespace U2

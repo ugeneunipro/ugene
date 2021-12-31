@@ -139,7 +139,7 @@
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
@@ -519,16 +519,13 @@ GUI_TEST_CLASS_DEFINITION(test_3092) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
 
     //    2. Do {Actions -> Analyze -> Query with BLAST...} in the main menu.
-    //    Expected state: a dialog "Request to Local BLAST Database" appears, UGENE doesn't crash.
+    //    Expected state: a dialog "Search using Local BLAST database" appears, UGENE doesn't crash.
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(BlastAllSupportDialogFiller::Parameters(), os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Query with local BLAST...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(BlastLocalSearchDialogFiller::Parameters(), os));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Query with local BLAST..."}, GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3101) {
@@ -1089,10 +1086,10 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
     // 3. Context menu -> Analyze -> Query with BLAST.
     // 5. Select the database.
     // 6. Run.
-    BlastAllSupportDialogFiller::Parameters blastParams;
+    BlastLocalSearchDialogFiller::Parameters blastParams;
     blastParams.runBlast = true;
     blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
                                                 << "Query with local BLAST...",
@@ -1140,13 +1137,13 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
 
 GUI_TEST_CLASS_DEFINITION(test_3209_1) {
     // BLAST from file
-    BlastAllSupportDialogFiller::Parameters blastParams;
+    BlastLocalSearchDialogFiller::Parameters blastParams;
     blastParams.runBlast = true;
     blastParams.programNameText = "blastn";
     blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
     blastParams.withInputFile = true;
     blastParams.inputPath = dataDir + "samples/FASTA/human_T1.fa";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
                                                 << "BLAST search...");

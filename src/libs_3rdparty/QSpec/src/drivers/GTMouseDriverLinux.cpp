@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <utils/GTThread.h>
+
 #include <QByteArray>
 
 #include "GTMouseDriver.h"
-
 #ifdef __linux__
 #    include <X11/extensions/XTest.h>
 #endif
@@ -49,7 +50,7 @@ bool GTMouseDriver::moveTo(const QPoint &p) {
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
     Display *display = XOpenDisplay(display_name.constData());
-    DRIVER_CHECK(display != 0, "display is NULL");
+    DRIVER_CHECK(display != nullptr, "display is NULL");
 
     int horres = XDisplayWidth(display, 0);
     int vertres = XDisplayHeight(display, 0);
@@ -103,7 +104,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
     Display *display = XOpenDisplay(display_name.constData());
-    DRIVER_CHECK(display != 0, "display is NULL");
+    DRIVER_CHECK(display != nullptr, "display is NULL");
 
     // 1 = Left, 2 = Middle, 3 = Right
     unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
@@ -127,7 +128,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
     Display *display = XOpenDisplay(display_name.constData());
-    DRIVER_CHECK(display != 0, "display is NULL");
+    DRIVER_CHECK(display != nullptr, "display is NULL");
 
     unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
                                                   : button == Qt::MidButton     ? 2
@@ -149,7 +150,7 @@ bool GTMouseDriver::scroll(int value) {
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
     Display *display = XOpenDisplay(display_name.constData());
-    DRIVER_CHECK(display != 0, "display is NULL");
+    DRIVER_CHECK(display != nullptr, "display is NULL");
 
     unsigned button = value > 0 ? Button4 : Button5;  // Button4 - scroll up, Button5 - scroll down
     value = value > 0 ? value : -value;
@@ -162,6 +163,7 @@ bool GTMouseDriver::scroll(int value) {
     XFlush(display);
     XCloseDisplay(display);
 
+    GTThread::waitForMainThread();
     return true;
 }
 #    undef GT_METHOD_NAME

@@ -35,8 +35,8 @@
 
 #include <U2Lang/DbiDataStorage.h>
 
-#include "blast/FormatDBSupport.h"
-#include "blast/FormatDBTask.h"
+#include "blast/BlastSupport.h"
+#include "blast/MakeBlastDbTask.h"
 
 namespace U2 {
 namespace Workflow {
@@ -44,14 +44,14 @@ namespace Workflow {
 FormatDBSubTask::FormatDBSubTask(const QString &referenceUrl,
                                  const SharedDbiDataHandler &referenceDbHandler,
                                  DbiDataStorage *storage)
-    : Task(tr("Format DB task wrapper"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("'makeblastdb' task wrapper"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       referenceDbHandler(referenceDbHandler),
       storage(storage) {
 }
 
 void FormatDBSubTask::prepare() {
-    FormatDBTaskSettings settings;
+    MakeBlastDbSettings settings;
     settings.inputFilesPath << referenceUrl;
 
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, referenceDbHandler));
@@ -61,16 +61,16 @@ void FormatDBSubTask::prepare() {
     settings.isInputAmino = refObject->getAlphabet()->isAmino();
     settings.databaseTitle = refObject->getSequenceName();
 
-    const QString tempDirPath = getAcceptableTempDir();
+    QString tempDirPath = getAcceptableTempDir();
     CHECK_EXT(!tempDirPath.isEmpty(), setError(tr("The task uses a temporary folder to process the data. It is required that the folder path doesn't have spaces. "
                                                   "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
-    const QString workingDir = GUrlUtils::getSlashEndedPath(ExternalToolSupportUtils::createTmpDir(tempDirPath, "align_to_ref", stateInfo));
+    QString workingDir = GUrlUtils::getSlashEndedPath(ExternalToolSupportUtils::createTmpDir(tempDirPath, "align_to_ref", stateInfo));
     settings.tempDirPath = workingDir;
     settings.outputPath = workingDir + QFileInfo(referenceUrl).completeBaseName();
     CHECK_OP(stateInfo, );
 
-    addSubTask(new FormatDBTask(settings));
+    addSubTask(new MakeBlastDbTask(settings));
 
     databaseNameAndPath = settings.outputPath;
 }
@@ -88,7 +88,7 @@ bool isTempDirAcceptable(const QString &tempDir) {
     return true;
 }
 
-}    // namespace
+}  // namespace
 
 QString FormatDBSubTask::getAcceptableTempDir() const {
     QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
@@ -117,5 +117,5 @@ QString FormatDBSubTask::getAcceptableTempDir() const {
     return QString();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

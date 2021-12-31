@@ -31,7 +31,7 @@ namespace Workflow {
 class BlastReadsSubTask;
 class FormatDBSubTask;
 class ComposeResultSubTask;
-}    // namespace Workflow
+}  // namespace Workflow
 
 namespace LocalWorkflow {
 
@@ -54,10 +54,10 @@ public:
     QList<QPair<QString, int>> getDiscardedReads() const;
 
 private:
-    void prepare();
-    QString generateReport() const;
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    ReportResult report() override;
+    QString generateReport() const override;
 
     const QString referenceUrl;
     const QString resultUrl;
@@ -66,10 +66,10 @@ private:
     const QMap<SharedDbiDataHandler, QString> readsNames;
     const int minIdentityPercent;
 
-    FormatDBSubTask *formatDbSubTask;
-    BlastReadsSubTask *blastTask;
-    ComposeResultSubTask *composeSubTask;
-    SaveDocumentTask *saveTask;
+    FormatDBSubTask *formatDbSubTask = nullptr;
+    BlastReadsSubTask *blastTask = nullptr;
+    ComposeResultSubTask *composeSubTask = nullptr;
+    SaveDocumentTask *saveTask = nullptr;
 
     DbiDataStorage *storage;
 };
@@ -126,7 +126,7 @@ public:
     static const QString ROW_NAMING_FILE_NAME_VALUE;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_ALIGN_TO_REFERENCE_BLAST_WORKER_H_
+#endif  // _U2_ALIGN_TO_REFERENCE_BLAST_WORKER_H_

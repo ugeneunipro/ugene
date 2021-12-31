@@ -73,10 +73,5 @@ private:
     ADVGlobalActionFlags flags;
 };
 
-class U2VIEW_EXPORT ADVSelectionUtils {
-public:
-    static QString getSequenceIdsFromSelection(const QList<Annotation *> &selection, bool localBase = false);
-};
-
 }  // namespace U2
 #endif

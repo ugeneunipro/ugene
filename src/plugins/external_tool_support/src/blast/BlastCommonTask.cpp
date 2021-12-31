@@ -32,7 +32,6 @@
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
@@ -55,23 +54,19 @@
 namespace U2 {
 
 BlastCommonTask::BlastCommonTask(const BlastTaskSettings &_settings)
-    : ExternalToolSupportTask("Run NCBI Blast task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
+    : ExternalToolSupportTask(tr("Run NCBI Blast task"), TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
     GCOUNTER(cvar, "BlastCommonTask");
-    blastTask = nullptr;
-    tmpDoc = nullptr;
-    saveTemporaryDocumentTask = nullptr;
-    sequenceObject = nullptr;
     circularization = new U2PseudoCircularization(this, settings.isSequenceCircular, settings.querySequence);
     addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
-    if (nullptr != settings.querySequenceObject) {
+    if (settings.querySequenceObject != nullptr) {
         TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST. The sequence is no more available."));
     }
 }
 
 void BlastCommonTask::prepare() {
     if (settings.databaseNameAndPath.contains(" ")) {
-        stateInfo.setError("Database path have space(s). Try select any other folder without spaces.");
+        stateInfo.setError(tr("Database path have space(s). Try select any other folder without spaces."));
         return;
     }
     // Add new subdir for temporary files
@@ -95,24 +90,18 @@ void BlastCommonTask::prepare() {
         stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
-    // Create ncbi.ini for windows or .ncbirc for unix like systems
+    // Create 'ncbi.ini' for windows or '.ncbirc' for unix like systems
     // See issue UGENE-791 (https://ugene.net/tracker/browse/UGENE-791)
-#ifdef Q_OS_UNIX
-    QString iniNCBIFile = tmpDir.absolutePath() + QString("/.ncbirc");
-#else
-    QString iniNCBIFile = tmpDir.absolutePath() + QString("\\ncbi.ini");
-#endif
-    if (!QFileInfo(iniNCBIFile).exists()) {
+    QString iniNCBIFile = tmpDir.absolutePath() + QString(isOsWindows() ? "/ncbi.ini" : "/.ncbirc");
+    if (!QFileInfo::exists(iniNCBIFile)) {
         QFile file(iniNCBIFile);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             algoLog.details(tr("Can not create fake NCBI ini file"));
-        } else {
-            file.close();
         }
     }
     url = tmpDirPath + "tmp.fa";
     if (url.contains(" ")) {
-        stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
+        stateInfo.setError(tr("Temporary folder path have space(s). Try select any other folder without spaces."));
         return;
     }
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
@@ -136,10 +125,7 @@ QString BlastCommonTask::getAcceptableTempDir() const {
                          QString::number(QCoreApplication::applicationPid()) + "/";
 
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BlastSupport::BLAST_TMP_DIR);
-    if (!GUrlUtils::containSpaces(tmpDirPath)) {
-        return tmpDirPath + "/" + tmpDirName;
-    }
-    return QString();
+    return !GUrlUtils::containSpaces(tmpDirPath) ? tmpDirPath + "/" + tmpDirName : "";
 }
 
 QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
@@ -158,8 +144,8 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
         res.append(blastTask);
     } else if (subTask == blastTask) {
         if (settings.outputType == 5 || settings.outputType == 6) {
-            if (!QFileInfo(settings.outputOriginalFile).exists()) {
-                QString curToolId = toolIdByProgram(settings.programName);
+            if (!QFileInfo::exists(settings.outputOriginalFile)) {
+                QString curToolId = BlastSupport::getToolIdByProgramName(settings.programName);
                 if (AppContext::getExternalToolRegistry()->getById(curToolId)->isValid()) {
                     stateInfo.setError(tr("Output file not found"));
                 } else {
@@ -174,7 +160,7 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
             } else if (settings.outputType == 6) {
                 parseTabularResult();
             }
-            if ((!result.isEmpty()) && (settings.needCreateAnnotations)) {
+            if (!result.isEmpty() && settings.needCreateAnnotations) {
                 if (!settings.outputResFile.isEmpty()) {
                     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
                     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
@@ -198,6 +184,7 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
     }
     return res;
 }
+
 Task::ReportResult BlastCommonTask::report() {
     if (url.isEmpty()) {
         return ReportResult_Finished;
@@ -216,18 +203,17 @@ Task::ReportResult BlastCommonTask::report() {
 }
 
 QString BlastCommonTask::generateReport() const {
-    if (result.isEmpty()) {
-        return tr("There were no hits found for your BLAST search.");
-    }
-    return QString();
+    return result.isEmpty() ? tr("There were no hits found for your BLAST search.") : "";
 }
 
 QList<SharedAnnotationData> BlastCommonTask::getResultedAnnotations() const {
     return result;
 }
+
 BlastTaskSettings BlastCommonTask::getSettings() const {
     return settings;
 }
+
 void BlastCommonTask::parseTabularResult() {
     QFile file(settings.outputOriginalFile);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -243,22 +229,22 @@ void BlastCommonTask::parseTabularResult() {
     }
     file.close();
 }
+
 void BlastCommonTask::parseTabularLine(const QByteArray &line) {
     SharedAnnotationData ad(new AnnotationData);
-    bool isOk;
-    int from = -1, to = -1, align_len = -1, gaps = -1, hitFrom = -1, hitTo = -1;
     // Fields: Query id (0), Subject id(1), % identity(2), alignment length(3), mismatches(4), gap openings(5), q. start(6), q. end(7), s. start(8), s. end(9), e-value(10), bit score(11)
     QList<QByteArray> elements = line.split('\t');
     if (elements.size() != 12) {
         stateInfo.setError(tr("Incorrect number of fields in line: %1").arg(elements.size()));
         return;
     }
-    from = elements.at(6).toInt(&isOk);
+    bool isOk;
+    int from = elements.at(6).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get location"));
         return;
     }
-    to = elements.at(7).toInt(&isOk);
+    int to = elements.at(7).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get location"));
         return;
@@ -276,12 +262,12 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
         return;
     }
 
-    hitFrom = elements.at(8).toInt(&isOk);
+    int hitFrom = elements.at(8).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get hit location"));
         return;
     }
-    hitTo = elements.at(9).toInt(&isOk);
+    int hitTo = elements.at(9).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get hit location"));
         return;
@@ -311,12 +297,12 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
         ad->qualifiers.push_back(U2Qualifier("bit-score", QString::number(bitScore)));
     }
 
-    align_len = elements.at(3).toInt(&isOk);
+    int align_len = elements.at(3).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get align length"));
         return;
     }
-    gaps = elements.at(4).toInt(&isOk);
+    int gaps = elements.at(4).toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get gaps"));
         return;
@@ -350,17 +336,17 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
 
 void BlastCommonTask::parseXMLResult() {
     QDomDocument xmlDoc;
-    QFile file(settings.outputOriginalFile);
-    if (!file.open(QIODevice::ReadOnly)) {
-        stateInfo.setError(tr("Can't open output file"));
-        return;
+    {
+        QFile file(settings.outputOriginalFile);
+        if (!file.open(QIODevice::ReadOnly)) {
+            stateInfo.setError(tr("Can't open output file"));
+            return;
+        }
+        if (!xmlDoc.setContent(&file)) {
+            stateInfo.setError(tr("Can't read output file"));
+            return;
+        }
     }
-    if (!xmlDoc.setContent(&file)) {
-        stateInfo.setError(tr("Can't read output file"));
-        file.close();
-        return;
-    }
-    file.close();
 
     QDomNodeList hits = xmlDoc.elementsByTagName("Hit");
     for (int i = 0; i < hits.count(); i++) {
@@ -393,8 +379,6 @@ void BlastCommonTask::parseXMLHit(const QDomNode &xml) {
 
 void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession) {
     SharedAnnotationData ad(new AnnotationData);
-    bool isOk;
-    int from = -1, to = -1, align_len = -1, gaps = -1, identities = -1;
 
     QDomElement elem = xml.lastChildElement("Hsp_bit-score");
     if (!elem.isNull()) {
@@ -412,15 +396,15 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
     }
 
     elem = xml.lastChildElement("Hsp_query-from");
-    QString fr = elem.text();
-    from = elem.text().toInt(&isOk);
+    bool isOk;
+    int from = elem.text().toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get location"));
         return;
     }
 
     elem = xml.lastChildElement("Hsp_query-to");
-    to = elem.text().toInt(&isOk);
+    int to = elem.text().toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get location"));
         return;
@@ -446,7 +430,6 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
             break;
         default:
             SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
-            break;
     }
     elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);
@@ -460,13 +443,14 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
     ad->setStrand(frame < 0 ? U2Strand::Complementary : U2Strand::Direct);
 
     elem = xml.lastChildElement("Hsp_identity");
-    identities = elem.text().toInt(&isOk);
+    int identities = elem.text().toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get identity"));
         return;
     }
 
     elem = xml.lastChildElement("Hsp_gaps");
+    int gaps = -1;
     if (!elem.isNull()) {
         gaps = elem.text().toInt(&isOk);
         if (!isOk) {
@@ -476,7 +460,7 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
     }
 
     elem = xml.lastChildElement("Hsp_align-len");
-    align_len = elem.text().toInt(&isOk);
+    int align_len = elem.text().toInt(&isOk);
     if (!isOk) {
         stateInfo.setError(tr("Can't get align length"));
         return;
@@ -636,24 +620,6 @@ QString BlastMultiTask::generateReport() const {
     res += "<tr><td width=200><b>" + tr("No results found") + "</b></td><td></td></tr>";
     res += "</table>";
     return res;
-}
-
-QString BlastCommonTask::toolIdByProgram(const QString &program) {
-    QString result;
-    if ("blastn" == program) {
-        result = BlastSupport::ET_BLASTN_ID;
-    } else if ("blastp" == program) {
-        result = BlastSupport::ET_BLASTP_ID;
-    } else if ("blastx" == program) {
-        result = BlastSupport::ET_BLASTX_ID;
-    } else if ("tblastn" == program) {
-        result = BlastSupport::ET_TBLASTN_ID;
-    } else if ("tblastx" == program) {
-        result = BlastSupport::ET_TBLASTX_ID;
-    } else if ("rpsblast" == program) {
-        result = BlastSupport::ET_RPSBLAST_ID;
-    }
-    return result;
 }
 
 }  // namespace U2
