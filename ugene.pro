@@ -9,20 +9,35 @@ use_bundled_zlib() {
 }
 
 SUBDIRS += \
-          src/corelibs/U2Algorithm \
-          src/corelibs/U2Core \
-          src/corelibs/U2Designer \
-          src/corelibs/U2Formats \
-          src/corelibs/U2Gui \
-          src/corelibs/U2Lang \
-          src/corelibs/U2Private \
-          src/corelibs/U2Script \
-          src/corelibs/U2Test \
-          src/corelibs/U2View \
-          src/libs_3rdparty/QSpec \
           src/libs_3rdparty/breakpad \
           src/libs_3rdparty/qscore \
           src/libs_3rdparty/samtools \
+          src/libs_3rdparty/QSpec \
+          src/corelibs/U2Core \
+          src/corelibs/U2Test \
+          src/corelibs/U2Algorithm \
+          src/corelibs/U2Formats \
+          src/corelibs/U2Lang \
+          src/corelibs/U2Private \
+          src/corelibs/U2Gui \
+          src/corelibs/U2View \
+          src/corelibs/U2Designer \
+          src/corelibs/U2Script \
+          src/ugeneui \
+          src/ugenecl \
+          src/ugenem \
+          src/plugins_checker \
+          src/plugins_3rdparty/ball \
+          src/plugins_3rdparty/sitecon \
+          src/plugins_3rdparty/umuscle \
+          src/plugins_3rdparty/hmm2 \
+          src/plugins_3rdparty/gor4 \
+          src/plugins_3rdparty/psipred \
+          src/plugins_3rdparty/primer3 \
+          src/plugins_3rdparty/phylip \
+          src/plugins_3rdparty/kalign \
+          src/plugins_3rdparty/ptools \
+          src/plugins_3rdparty/variants \
           src/plugins/CoreTests \
           src/plugins/GUITestBase \
           src/plugins/annotator \
@@ -49,22 +64,7 @@ SUBDIRS += \
           src/plugins/smith_waterman \
           src/plugins/test_runner \
           src/plugins/weight_matrix \
-          src/plugins/workflow_designer \
-          src/plugins_3rdparty/ball \
-          src/plugins_3rdparty/gor4 \
-          src/plugins_3rdparty/hmm2 \
-          src/plugins_3rdparty/kalign \
-          src/plugins_3rdparty/phylip \
-          src/plugins_3rdparty/primer3 \
-          src/plugins_3rdparty/psipred \
-          src/plugins_3rdparty/ptools \
-          src/plugins_3rdparty/sitecon \
-          src/plugins_3rdparty/umuscle \
-          src/plugins_3rdparty/variants \
-          src/plugins_checker \
-          src/ugenecl \
-          src/ugenem \
-          src/ugeneui
+          src/plugins/workflow_designer
 
 use_cuda() {
     SUBDIRS += src/plugins/cuda_support
