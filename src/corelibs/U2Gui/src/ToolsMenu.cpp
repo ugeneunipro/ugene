@@ -52,7 +52,6 @@ const QString ToolsMenu::NGS_RNA = "NGS_RNA";
 const QString ToolsMenu::NGS_TRANSCRIPT = "NGS_TRANSCRIPT";
 const QString ToolsMenu::NGS_RAW_CHIP = "NGS_RAW_CHIP";
 const QString ToolsMenu::NGS_CHIP = "NGS_CHIP";
-const QString ToolsMenu::NGS_CLASSIFICATION = "NGS_CLASSIFICATION";
 const QString ToolsMenu::NGS_COVERAGE = "NGS_COVERAGE";
 const QString ToolsMenu::NGS_CONSENSUS = "NGS_CONSENSUS";
 const QString ToolsMenu::NGS_CONVERT_SAM = "NGS_CONVERT_SAM";
@@ -137,8 +136,6 @@ void ToolsMenu::init() {
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_RAW_CHIP;
         subMenuAction[NGS_MENU] << NGS_CHIP;
-        subMenuAction[NGS_MENU] << LINE;
-        subMenuAction[NGS_MENU] << NGS_CLASSIFICATION;
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_COVERAGE;
         subMenuAction[NGS_MENU] << NGS_CONSENSUS;

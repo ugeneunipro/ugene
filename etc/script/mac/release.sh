@@ -49,29 +49,14 @@ rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
-# Deprecated workflows
-rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/ngs_classification"*
-rm -rf "${APP_EXE_DIR}/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl"
-
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 
 # These tools can't be notarized today:
-# diamond:  "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/diamond"
-# kraken:  "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/kraken"
 # python2.7: "The signature does not include a secure timestamp."
 rm -rf "${APP_EXE_DIR}/tools/python2"
-# wevote: "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/wevote"
-
-# Deprecated/removed tools:
-rm -rf "${APP_EXE_DIR}/tools/clark"
-rm -rf "${APP_EXE_DIR}/tools/metaphlan2"
-rm -rf "${APP_EXE_DIR}/tools/ngs_reads_classification"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 

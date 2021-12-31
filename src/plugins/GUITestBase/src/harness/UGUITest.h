@@ -47,9 +47,6 @@ public:
      */
     static const QString Nightly;
 
-    /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
-    static const QString Metagenomics;
-
     /** A test with this label is safe to run on Linux. */
     static const QString Linux;
 
