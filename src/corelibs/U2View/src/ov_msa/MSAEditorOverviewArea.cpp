@@ -36,6 +36,9 @@ const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_a
 
 MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
+    // The MSAEditorOverviewArea can't be resized vertically.
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     graphOverview = new MaGraphOverview(ui);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 
@@ -59,7 +62,25 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)), graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
     connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)), graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
 
-    setMaximumHeight(U2::MaGraphOverview::FIXED_HEIGHT + U2::MaSimpleOverview::FIXED_HEIGTH + 5);
+    updateFixedHeightGeometry();
+
+    simpleOverview->installEventFilter(this);
+    graphOverview->installEventFilter(this);
+}
+
+bool MSAEditorOverviewArea::eventFilter(QObject *watched, QEvent *event) {
+    CHECK(watched == simpleOverview || watched == graphOverview, false);
+    auto type = event->type();
+    if (type == QEvent::Show || type == QEvent::Hide) {
+        updateFixedHeightGeometry();
+    }
+    return false;
+}
+
+void MSAEditorOverviewArea::updateFixedHeightGeometry() {
+    int height = (simpleOverview->isVisible() ? U2::MaSimpleOverview::FIXED_HEIGHT : 0) +
+                 (graphOverview->isVisible() ? U2::MaGraphOverview::FIXED_HEIGHT : 0);
+    setFixedHeight(height);
 }
 
 void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
@@ -73,6 +94,7 @@ void MSAEditorOverviewArea::cancelRendering() {
 
 void MSAEditorOverviewArea::setVisible(bool isVisible) {
     MaEditorOverviewArea::setVisible(isVisible);
+    updateFixedHeightGeometry();
     if (isVisible) {
         graphOverview->sl_unblockRendering(true);
     } else {

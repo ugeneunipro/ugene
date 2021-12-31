@@ -23,6 +23,7 @@
 #define _U2_MSA_EDITOR_OVERVIEW_H_
 
 #include <QAction>
+
 #include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {
@@ -46,6 +47,11 @@ public:
     void setVisible(bool isVisible) override;
 
 private:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    /** Updates fixed-height value of the widget. Recomputes the new height by checking children visibility. */
+    void updateFixedHeightGeometry();
+
     MaGraphOverview *graphOverview = nullptr;
     MaSimpleOverview *simpleOverview = nullptr;
     MaOverviewContextMenu *contextMenu = nullptr;

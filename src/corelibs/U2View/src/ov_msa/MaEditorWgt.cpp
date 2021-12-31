@@ -191,12 +191,16 @@ void MaEditorWgt::initWidgets() {
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
-    if (overviewArea->isResizable()) {
-        mainSplitter->addWidget(overviewArea);
-        mainSplitter->setCollapsible(1, false);
-    } else {
-        maContainerLayout->addWidget(overviewArea);
+    mainSplitter->addWidget(overviewArea);
+    mainSplitter->setCollapsible(1, false);
+    if (overviewArea->sizePolicy().verticalPolicy() == QSizePolicy::Fixed) {  // Disable resizing.
+        mainSplitter->setStretchFactor(1, 0);
+        mainSplitter->handle(1)->setEnabled(false);
+        // Hide the handle completely to have 1:1 look with the older versions of UGENE:
+        // no handle is visible when there are no resizable widgets in the editor.
+        mainSplitter->setHandleWidth(0);
     }
+
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 

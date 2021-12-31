@@ -48,6 +48,7 @@ MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
       lastDrawnVersion(-1),
       method(Strict),
       graphCalculationTask(nullptr) {
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 
     displaySettings = new MaGraphOverviewDisplaySettings();

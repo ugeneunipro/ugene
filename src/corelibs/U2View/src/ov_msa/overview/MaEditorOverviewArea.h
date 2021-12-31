@@ -41,12 +41,8 @@ public:
 
     virtual void cancelRendering();
 
-    bool isResizable() const;
-
 protected:
     void addOverview(QWidget *overviewWgt);
-
-    bool isWidgetResizable;
 
 private:
     QVBoxLayout *layout;

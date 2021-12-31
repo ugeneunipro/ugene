@@ -36,7 +36,7 @@ public:
     MaSimpleOverview(MaEditorWgt *ui);
 
     /** Height of the overview. */
-    const static int FIXED_HEIGTH = 70;
+    const static int FIXED_HEIGHT = 70;
 
     bool isValid() const override;
 

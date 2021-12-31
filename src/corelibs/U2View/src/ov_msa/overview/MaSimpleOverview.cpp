@@ -44,8 +44,8 @@ namespace U2 {
 
 MaSimpleOverview::MaSimpleOverview(MaEditorWgt *ui)
     : MaOverview(ui) {
-    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    setFixedHeight(FIXED_HEIGTH);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setFixedHeight(FIXED_HEIGHT);
 }
 
 bool MaSimpleOverview::isValid() const {
@@ -54,7 +54,6 @@ bool MaSimpleOverview::isValid() const {
 }
 
 QPixmap MaSimpleOverview::getView() {
-    resize(ui->width(), FIXED_HEIGTH);
     if (cachedMSAOverview.isNull()) {
         cachedMSAOverview = QPixmap(size());
         QPainter pOverview(&cachedMSAOverview);

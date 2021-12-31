@@ -29,8 +29,7 @@
 namespace U2 {
 
 MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName)
-    : QWidget(ui),
-      isWidgetResizable(false) {
+    : QWidget(ui) {
     setObjectName(objectName);
 
     layout = new QVBoxLayout();
@@ -38,15 +37,10 @@ MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objec
     layout->setSpacing(0);
     setLayout(layout);
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setContextMenuPolicy(Qt::PreventContextMenu);
 }
 
 void MaEditorOverviewArea::cancelRendering() {
-}
-
-bool MaEditorOverviewArea::isResizable() const {
-    return isWidgetResizable;
 }
 
 void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
