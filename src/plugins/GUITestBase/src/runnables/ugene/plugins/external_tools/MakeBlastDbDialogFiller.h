@@ -19,29 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
-#define _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
+#ifndef _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_
+#define _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_
 
-#include <QAction>
-#include <QMenu>
+#include <base_dialogs/GTFileDialog.h>
 
-#include <U2Core/global.h>
-
-#include "utils/ExternalToolSupportAction.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-class ETSProjectViewItemsContoller : public QObject {
-    Q_OBJECT
+class MakeBlastDbDialogFiller : public Filler {
 public:
-    ETSProjectViewItemsContoller(QObject *p);
-private slots:
-    void sl_addToProjectViewMenu(QMenu &);
+    class Parameters {
+    public:
+        enum Type {
+            Nucleotide,
+            Protein,
+        };
 
-    void sl_runMakeBlastDbOnSelection();
+        bool justCancel = false;
+        bool checkAlphabetType = false;
+        QString inputFilePath;
+        Type alphabetType = Nucleotide;
+        QString outputDirPath;
+    };
+
+    MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    void commonScenario() override;
 
 private:
-    ExternalToolSupportAction *makeBLASTDBOnSelectionAction;
+    Parameters parameters;
 };
-}    // namespace U2
-#endif    // _U2_ETS_PROJECT_VIEW_ITEMS_CONTOLLER_H
+
+}  // namespace U2
+
+#endif  // _U2_MAKE_BLAST_DB_DIALOG_FILLER_H_

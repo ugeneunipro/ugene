@@ -19,33 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_DIALOG_FILLER_H_
-#define _U2_FORMAT_DB_DIALOG_FILLER_H_
-
-#include <base_dialogs/GTFileDialog.h>
+#ifndef _U2_BLAST_LOCAL_SEARCH_DIALOG_FILLER_H_
+#define _U2_BLAST_LOCAL_SEARCH_DIALOG_FILLER_H_
 
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 using namespace HI;
 
-class FormatDBRunDialogFiller : public Filler {
+/**
+ * @brief The BlastAllSupportDialogFiller class
+ * It is very simple filler. It can only click the "Cancel" button.
+ */
+class BlastLocalSearchDialogFiller : public Filler {
 public:
     class Parameters {
     public:
-        enum Type {
-            Nucleotide,
-            Protein,
-        };
+        Parameters()
+            : runBlast(false),
+              programNameText("blastn"),
+              withInputFile(false) {
+        }
 
-        bool justCancel = false;
-        bool checkAlphabetType = false;
-        QString inputFilePath;
-        Type alphabetType = Nucleotide;
-        QString outputDirPath;
+        bool runBlast;
+        QString programNameText;
+        QString dbPath;
+        bool withInputFile;
+        QString inputPath;
     };
 
-    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    BlastLocalSearchDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os);
+    BlastLocalSearchDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+
     void commonScenario() override;
 
 private:
@@ -54,4 +59,4 @@ private:
 
 }  // namespace U2
 
-#endif  // _U2_FORMAT_DB_DIALOG_FILLER_H_
+#endif  // _U2_BLAST_LOCAL_SEARCH_DIALOG_FILLER_H_

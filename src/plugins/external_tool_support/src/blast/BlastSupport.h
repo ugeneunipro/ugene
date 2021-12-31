@@ -31,29 +31,39 @@ namespace U2 {
 class BlastSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BlastSupport(const QString &id, const QString &name, const QString &path = "");
+    BlastSupport(const QString &id);
 
-    static const QString ET_BLASTN;
     static const QString ET_BLASTN_ID;
-    static const QString ET_BLASTP;
     static const QString ET_BLASTP_ID;
-    static const QString ET_GPU_BLASTP_ID;
-    static const QString ET_BLASTX;
     static const QString ET_BLASTX_ID;
-    static const QString ET_TBLASTN;
     static const QString ET_TBLASTN_ID;
-    static const QString ET_TBLASTX;
     static const QString ET_TBLASTX_ID;
-    static const QString ET_RPSBLAST;
     static const QString ET_RPSBLAST_ID;
-    static const QString BLAST_TMP_DIR;
-private slots:
-    void sl_runWithExtFileSpecify();
-    void sl_runAlign();
+    static const QString ET_BLASTDBCMD_ID;
+    static const QString ET_MAKEBLASTDB_ID;
 
-private:
-    QString lastDBPath;
-    QString lastDBName;
+    static const QString BLAST_TMP_DIR;
+
+    /**
+     * Checks if the tool is configured correctly and is ready to run.
+     * Asks user to set-up the BLAST tool correctly (shows a dialog) if needed.
+     */
+    static bool checkBlastTool(const QString &toolId);
+
+    /** Returns BLAST tool id (ex: 'USUPP_BLASTX') by the visual program name (ex: 'blastx'). */
+    static QString getToolIdByProgramName(const QString &programName);
+
+    /** Returns BLAST program name (ex: 'blastp') by  the tool id (ex: 'USUPP_BLASTP'). */
+    static QString getProgramNameByToolId(const QString &toolId);
+
+public slots:
+    void sl_runAlignToReference();
+
+    void sl_runBlastSearch();
+
+    void sl_runBlastDbCmd();
+
+    void sl_runMakeBlastDb();
 };
 
 class BlastSupportContext : public GObjectViewWindowContext {
@@ -70,12 +80,10 @@ protected:
     void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 private:
-    QStringList toolIdList;
-    QString lastDBPath;
-    QString lastDBName;
-    QString selectedId;
-    QAction *fetchSequenceByIdAction;
+    QStringList searchToolIds;
+    QString commaSeparatedSelectedSequenceIds;
+    QAction *fetchSequenceByIdAction = nullptr;
 };
 
-}    // namespace U2
-#endif    // _U2_BLAST_SUPPORT_H
+}  // namespace U2
+#endif  // _U2_BLAST_SUPPORT_H

@@ -54,17 +54,13 @@ ExternalToolRunTask *TBlastNTask::createBlastTask() {
         arguments << "-gapopen" << QString::number(settings.gapOpenCost);
         arguments << "-gapextend" << QString::number(settings.gapExtendCost);
     }
-    if (settings.isNucleotideSeq && (!settings.isDefautScores)) {
-        assert(false);
-        arguments << "-penalty" << QString::number(settings.mismatchPenalty);
-        arguments << "-reward" << QString::number(settings.matchReward);
-    } else {
-        if (!settings.isDefaultMatrix) {
-            arguments << "-matrix" << settings.matrix;
-        }
+    if (settings.isNucleotideSeq && (!settings.isDefaultScores)) {
+        FAIL("'tblastn' does not support nucleic scores: penalty/reward", nullptr)
+    } else if (!settings.isDefaultMatrix) {
+        arguments << "-matrix" << settings.matrix;
     }
     if (settings.numberOfHits != 0) {
-        arguments << "-culling_limit" << QString::number(settings.numberOfHits);    //???
+        arguments << "-culling_limit" << QString::number(settings.numberOfHits);  //???
     }
     if (!settings.isGappedAlignment) {
         arguments << "-ungapped";
@@ -91,7 +87,7 @@ ExternalToolRunTask *TBlastNTask::createBlastTask() {
         arguments << "-comp_based_stats" << settings.compStats;
     }
     arguments << "-num_threads" << QString::number(settings.numberOfProcessors);
-    arguments << "-outfmt" << QString::number(settings.outputType);    //"5";//Set output file format to xml
+    arguments << "-outfmt" << QString::number(settings.outputType);  //"5";//Set output file format to xml
     if (settings.outputOriginalFile.isEmpty()) {
         arguments << "-out" << url + ".xml";
         settings.outputOriginalFile = url + ".xml";
@@ -106,4 +102,4 @@ ExternalToolRunTask *TBlastNTask::createBlastTask() {
     return runTask;
 }
 
-}    // namespace U2
+}  // namespace U2

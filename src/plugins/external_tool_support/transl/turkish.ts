@@ -4127,7 +4127,7 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>U2::BlastWithExtFileSpecifySupportRunDialog</name>
+    <name>U2::BlastWithExtFileRunDialog</name>
     <message>
         <location filename="../src/blast/BlastRunDialog.cpp" line="252"/>
         <source>Select input file</source>
@@ -4974,24 +4974,24 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
 </context>
 <context>
-    <name>U2::ETSProjectViewItemsContoller</name>
+    <name>U2::ETSProjectViewItemsController</name>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="54"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="54"/>
         <source>BLAST make DB...</source>
         <translation>BLAST yap DB...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="77"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="77"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="92"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="92"/>
         <source>Path for BLAST %1 tool not selected.</source>
         <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="93"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="93"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>

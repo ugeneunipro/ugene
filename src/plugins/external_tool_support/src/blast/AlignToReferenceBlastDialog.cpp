@@ -31,7 +31,6 @@
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -46,7 +45,6 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/OpenViewTask.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -57,22 +55,12 @@
 
 namespace U2 {
 
-AlignToReferenceBlastCmdlineTask::Settings::Settings()
-    : minIdentity(60),
-      minLength(0),
-      qualityThreshold(30),
-      rowNaming(SequenceName),
-      addResultToProject(true) {
-}
-
 QString AlignToReferenceBlastCmdlineTask::Settings::getRowNamingPolicyString() const {
     switch (rowNaming) {
         case SequenceName:
             return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
-            break;
         case FileName:
             return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
-            break;
         default:
             FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
@@ -94,8 +82,6 @@ const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-u
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
     : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      cmdlineTask(nullptr),
-      loadRef(nullptr),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
     GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
 }
@@ -108,7 +94,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
 
     GUrl referenceUrl(settings.referenceUrl);
     if (referenceUrl.isLocalFile()) {
-        CHECK_EXT(QFileInfo(referenceUrl.getURLString()).exists(), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)), );
+        CHECK_EXT(QFileInfo::exists(referenceUrl.getURLString()), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)), );
     }
 
     FormatDetectionConfig config;
@@ -156,7 +142,7 @@ QMap<QString, QMultiMap<QString, QString>> splitReports(U2OpStatus &os, const QS
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 QString AlignToReferenceBlastCmdlineTask::generateReport() const {
     U2OpStatusImpl os;
@@ -336,10 +322,7 @@ void AlignToReferenceBlastDialog::accept() {
                                                                        this);
         messageBox->setIcon(QMessageBox::Question);
         messageBox->exec();
-        CHECK(!messageBox.isNull(), )
-        if (messageBox->result() == QMessageBox::Cancel) {
-            return;
-        }
+        CHECK(!messageBox.isNull() && messageBox->result() == QMessageBox::Yes, );
         if (!outFile.remove()) {
             QMessageBox::critical(this, tr("Error"), tr("Unable to delete the file."));
             return;
@@ -365,11 +348,8 @@ void AlignToReferenceBlastDialog::sl_addRead() {
     QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
 
     QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select File(s) with Read(s)"), lod.dir, filter);
-    if (readFiles.isEmpty()) {
-        return;
-    }
-
-    foreach (const QString &read, readFiles) {
+    CHECK(!readFiles.isEmpty(), );
+    for (const QString &read : qAsConst(readFiles)) {
         if (readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
             readsListWidget->addItem(read);
         }
@@ -380,14 +360,14 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
     QList<QListWidgetItem *> selection = readsListWidget->selectedItems();
     CHECK(!selection.isEmpty(), );
 
-    foreach (QListWidgetItem *item, selection) {
+    for (QListWidgetItem *item : qAsConst(selection)) {
         readsListWidget->takeItem(readsListWidget->row(item));
     }
     qDeleteAll(selection);
 }
 
 void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
-    if (outputLineEdit->text() != defaultOutputUrl) {    // file name is set by user -> do not change
+    if (outputLineEdit->text() != defaultOutputUrl) {  // file name is set by user -> do not change
         return;
     }
     // set default file name based on reference file name
@@ -404,4 +384,4 @@ void AlignToReferenceBlastDialog::connectSlots() {
     connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
 }
 
-}    // namespace U2
+}  // namespace U2

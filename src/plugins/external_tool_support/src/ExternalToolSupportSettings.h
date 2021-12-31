@@ -28,6 +28,7 @@
 #include <QQueue>
 #include <QString>
 
+#include <U2Core/Log.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -53,6 +54,12 @@ public:
 
     static void checkTemporaryDir(U2OpStatus &os);
 
+    /**
+     * Calls checkTemporaryDir(os) with 'U2OpStatus2Log os'.
+     * Returns true if the dir set correctly.
+     */
+    static bool checkTemporaryDir(const LogLevel &logLevel = LogLevel::LogLevel_DETAILS);
+
     static Watcher *const watcher;
 
 private:
@@ -62,8 +69,8 @@ private:
 /**Helper class that iterates through subfolders up to given deep level*/
 class LimitedDirIterator {
 public:
-    //deepLevel = 0 - returns only the root dir
-    //deepLevel = 1 - returns the root dir and its subdirs
+    // deepLevel = 0 - returns only the root dir
+    // deepLevel = 1 - returns the root dir and its subdirs
     //...
     LimitedDirIterator(const QDir &dir, int deepLevel = DEFAULT_DEEP_LEVEL);
 
@@ -85,6 +92,6 @@ private:
     QString curPath;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

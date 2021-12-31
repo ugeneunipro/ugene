@@ -26,7 +26,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/Log.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -38,7 +37,6 @@
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 
@@ -276,7 +274,7 @@ Task *BlastWorker::tick() {
         cfg.databaseNameAndPath = getValue<QString>(BLAST_DATABASE_PATH) + "/" + getValue<QString>(BLAST_DATABASE_NAME);
         cfg.isDefaultCosts = true;
         cfg.isDefaultMatrix = true;
-        cfg.isDefautScores = true;
+        cfg.isDefaultScores = true;
         cfg.expectValue = getValue<double>(BLAST_EXPECT_VALUE);
         if (actor->isAttributeVisible(actor->getParameter(BLAST_COMP_STATS))) {
             cfg.compStats = getValue<QString>(BLAST_COMP_STATS);
@@ -289,23 +287,16 @@ Task *BlastWorker::tick() {
         cfg.wordSize = 0;
         cfg.isGappedAlignment = getValue<bool>(BLAST_GAPPED_ALN);
 
-        QString path = actor->getParameter(BLAST_EXT_TOOL_PATH)->getAttributeValue<QString>(context);
-        if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
-            if (cfg.programName == "blastn") {
-                AppContext::getExternalToolRegistry()->getById(BlastSupport::ET_TBLASTN_ID)->setPath(path);
-            } else if (cfg.programName == "blastp") {
-                AppContext::getExternalToolRegistry()->getById(BlastSupport::ET_BLASTP_ID)->setPath(path);
-            } else if (cfg.programName == "blastx") {
-                AppContext::getExternalToolRegistry()->getById(BlastSupport::ET_BLASTX_ID)->setPath(path);
-            } else if (cfg.programName == "tblastn") {
-                AppContext::getExternalToolRegistry()->getById(BlastSupport::ET_TBLASTN_ID)->setPath(path);
-            } else if (cfg.programName == "tblastx") {
-                AppContext::getExternalToolRegistry()->getById(BlastSupport::ET_TBLASTX)->setPath(path);
-            }
+        QString toolPath = actor->getParameter(BLAST_EXT_TOOL_PATH)->getAttributeValue<QString>(context);
+        if (QString::compare(toolPath, "default", Qt::CaseInsensitive) != 0) {
+            QString blastToolId = BlastSupport::getToolIdByProgramName(cfg.programName);
+            auto tool = AppContext::getExternalToolRegistry()->getById(blastToolId);
+            SAFE_POINT(tool != nullptr, "Blast tool not found: " + cfg.programName, nullptr);
+            tool->setPath(toolPath);
         }
-        path = actor->getParameter(BLAST_TMP_DIR_PATH)->getAttributeValue<QString>(context);
-        if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
-            AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(path);
+        QString tmpDirPath = actor->getParameter(BLAST_TMP_DIR_PATH)->getAttributeValue<QString>(context);
+        if (QString::compare(tmpDirPath, "default", Qt::CaseInsensitive) != 0) {
+            AppContext::getAppSettings()->getUserAppsSettings()->setUserTemporaryDirPath(tmpDirPath);
         }
 
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
@@ -342,6 +333,7 @@ Task *BlastWorker::tick() {
             return new FailTask(tr("Not selected BLAST output file"));
         }
 
+        // TODO: big copy-paste with what we have in BlastSupport.
         if (cfg.programName == "blastn") {
             cfg.megablast = true;
             cfg.wordSize = 28;
@@ -351,7 +343,7 @@ Task *BlastWorker::tick() {
             cfg.wordSize = 3;
             cfg.windowSize = 40;
         }
-        // set X dropoff values
+        // set X drop-off values
         if (cfg.programName == "blastn") {
             cfg.xDropoffFGA = 100;
             cfg.xDropoffGA = 20;
@@ -440,8 +432,8 @@ bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificatio
     return isValid;
 }
 
-ExternalTool *ToolsValidator::getTool(const QString &program) const {
-    QString toolId = BlastCommonTask::toolIdByProgram(program);
+ExternalTool *ToolsValidator::getTool(const QString &programName) const {
+    QString toolId = BlastSupport::getToolIdByProgramName(programName);
     return AppContext::getExternalToolRegistry()->getById(toolId);
 }
 

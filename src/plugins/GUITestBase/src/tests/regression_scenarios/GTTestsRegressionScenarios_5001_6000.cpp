@@ -119,8 +119,8 @@
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
@@ -1334,21 +1334,21 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     //    7. Select the created database and accept the dialog
     //    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
 
-    FormatDBRunDialogFiller::Parameters parametersDB;
+    MakeBlastDbDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
     parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
-    GTUtilsDialog::waitForDialog(os, new FormatDBRunDialogFiller(os, parametersDB));
+    GTUtilsDialog::waitForDialog(os, new MakeBlastDbDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST make database..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    BlastAllSupportDialogFiller::Parameters parametersSearch;
+    BlastLocalSearchDialogFiller::Parameters parametersSearch;
     parametersSearch.runBlast = true;
     parametersSearch.dbPath = sandBoxDir + "/murine.nin";
 
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(parametersSearch, os));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Query with local BLAST..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2051,7 +2051,7 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
                                                 << "Query with local BLAST...");

@@ -128,7 +128,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
@@ -2173,7 +2173,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209_1) {
     GTLogTracer logTracer;
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/crash.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "Align to Reference");
@@ -5075,11 +5075,11 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     // 3. Press "Select a database file".
     // 4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     // 6. Press "Search".
-    BlastAllSupportDialogFiller::Parameters settings;
+    BlastLocalSearchDialogFiller::Parameters settings;
     settings.runBlast = true;
     settings.inputPath = sandBoxDir + "regression_test_4784_2.fa";
     settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
                                                 << "Query with local BLAST...",

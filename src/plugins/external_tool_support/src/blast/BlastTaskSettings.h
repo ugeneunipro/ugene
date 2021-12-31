@@ -111,7 +111,7 @@ public:
     //only for nucleotide sequence
     int mismatchPenalty;    //-q Penalty for a nucleotide mismatch (blastn only) [Integer]
     int matchReward;    //-r Reward for a nucleotide match (blastn only) [Integer]
-    bool isDefautScores;
+    bool isDefaultScores;
     //only for protein sequence
     QString matrix;    //-M Matrix [String] : default = BLOSUM62
     bool isDefaultMatrix;
