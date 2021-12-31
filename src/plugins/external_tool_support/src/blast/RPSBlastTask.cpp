@@ -33,28 +33,29 @@ ExternalToolRunTask *RPSBlastTask::createBlastTask() {
     arguments << "-evalue" << QString::number(settings.expectValue);
     arguments << "-query" << url;
     arguments << "-outfmt"
-              << "5";    //Set output file format to xml
-    arguments << "-out" << url + ".xml";    //settings.outputRepFile;
+              << "5";  // Set output file format to xml
+    arguments << "-out" << url + ".xml";  // settings.outputRepFile;
 
     algoLog.trace("RPSBlast arguments: " + arguments.join(" "));
+
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(BlastSupport::ET_RPSBLAST_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    auto runTask = new ExternalToolRunTask(BlastSupport::ET_RPSBLAST_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }
 
-LocalCDSearch::LocalCDSearch(const CDSearchSettings &settings) {
-    BlastTaskSettings stngs;
-    stngs.databaseNameAndPath = settings.localDbFolder + "/" + settings.dbName;
-    stngs.querySequence = settings.query;
-    stngs.expectValue = settings.ev;
-    stngs.alphabet = settings.alp;
-    stngs.needCreateAnnotations = false;
-    task = new RPSBlastTask(stngs);
+LocalCDSearch::LocalCDSearch(const CDSearchSettings &cdSearchSettings) {
+    BlastTaskSettings settings;
+    settings.databaseNameAndPath = cdSearchSettings.localDbFolder + "/" + cdSearchSettings.dbName;
+    settings.querySequence = cdSearchSettings.query;
+    settings.expectValue = cdSearchSettings.ev;
+    settings.alphabet = cdSearchSettings.alp;
+    settings.needCreateAnnotations = false;
+    task = new RPSBlastTask(settings);
 }
 
 QList<SharedAnnotationData> LocalCDSearch::getCDSResults() const {
     return task->getResultedAnnotations();
 }
 
-}    // namespace U2
+}  // namespace U2

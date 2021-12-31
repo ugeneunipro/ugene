@@ -28,11 +28,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
-#include <U2Core/ProjectModel.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include "BlastSupport.h"
 
@@ -40,10 +36,10 @@ namespace U2 {
 
 ExternalToolRunTask *BlastNTask::createBlastTask() {
     QStringList arguments;
-    //arguments <<"-p"<< settings.programName; //taskname
-    //    if(!settings.filter.isEmpty()){
-    //        arguments <<"-F"<<settings.filter;
-    //    }
+    // arguments <<"-p"<< settings.programName; //taskname
+    //     if(!settings.filter.isEmpty()){
+    //         arguments <<"-F"<<settings.filter;
+    //     }
     arguments << "-db" << settings.databaseNameAndPath;
     arguments << "-evalue" << QString::number(settings.expectValue);
     arguments << "-task" << (settings.megablast ? "megablast" : "blastn");
@@ -65,17 +61,14 @@ ExternalToolRunTask *BlastNTask::createBlastTask() {
         arguments << "-gapopen" << QString::number(settings.gapOpenCost);
         arguments << "-gapextend" << QString::number(settings.gapExtendCost);
     }
-    if (settings.isNucleotideSeq && (!settings.isDefautScores)) {
+    if (settings.isNucleotideSeq && (!settings.isDefaultScores)) {
         arguments << "-penalty" << QString::number(settings.mismatchPenalty);
         arguments << "-reward" << QString::number(settings.matchReward);
-    } else {
-        if (!settings.isDefaultMatrix) {
-            assert(false);
-            arguments << "-M" << settings.matrix;
-        }
+    } else if (!settings.isDefaultMatrix) {
+        FAIL("'blastn' does not support custom matrix option", nullptr)
     }
     if (settings.numberOfHits != 0) {
-        arguments << "-culling_limit" << QString::number(settings.numberOfHits);    //???
+        arguments << "-culling_limit" << QString::number(settings.numberOfHits);  //???
     }
     if (!settings.isGappedAlignment) {
         arguments << "-ungapped";
@@ -98,7 +91,7 @@ ExternalToolRunTask *BlastNTask::createBlastTask() {
         arguments << "-window_size" << QString::number(settings.windowSize);
     }
     arguments << "-num_threads" << QString::number(settings.numberOfProcessors);
-    arguments << "-outfmt" << QString::number(settings.outputType);    //"5";//Set output file format to xml
+    arguments << "-outfmt" << QString::number(settings.outputType);  //"5";//Set output file format to xml
     if (settings.outputOriginalFile.isEmpty()) {
         arguments << "-out" << url + ".xml";
         settings.outputOriginalFile = url + ".xml";
@@ -108,8 +101,8 @@ ExternalToolRunTask *BlastNTask::createBlastTask() {
 
     algoLog.trace("BlastN+ arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
-    ExternalToolRunTask *toolRunTask = new ExternalToolRunTask(BlastSupport::ET_BLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    auto toolRunTask = new ExternalToolRunTask(BlastSupport::ET_BLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(toolRunTask);
     return toolRunTask;
 }
-}    // namespace U2
+}  // namespace U2

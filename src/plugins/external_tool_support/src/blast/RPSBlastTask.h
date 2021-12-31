@@ -34,16 +34,16 @@ public:
     RPSBlastTask(const BlastTaskSettings &settings)
         : BlastCommonTask(settings) {
     }
-    virtual ExternalToolRunTask *createBlastTask();
+    ExternalToolRunTask *createBlastTask() override;
 };
 
 class LocalCDSearch : public CDSearchResultListener {
 public:
     LocalCDSearch(const CDSearchSettings &settings);
-    virtual Task *getTask() const {
+    Task *getTask() const override {
         return task;
     }
-    virtual QList<SharedAnnotationData> getCDSResults() const;
+    QList<SharedAnnotationData> getCDSResults() const override;
 
 private:
     RPSBlastTask *task;
@@ -56,6 +56,6 @@ public:
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

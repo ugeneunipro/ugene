@@ -22,8 +22,6 @@
 #ifndef _U2_BLAST_RUN_COMMON_DIALOG_H
 #define _U2_BLAST_RUN_COMMON_DIALOG_H
 
-#include <ui_BlastAllSupportDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/DNASequenceObject.h>
@@ -34,22 +32,25 @@
 #include "BlastDBSelectorWidgetController.h"
 #include "BlastTaskSettings.h"
 
+#include <ui_BlastLocalSearchDialog.h>
+
 namespace U2 {
 
-class BlastRunCommonDialog : public QDialog, public Ui_BlastAllSupportDialog {
+class BlastRunCommonDialog : public QDialog, public Ui_BlastLocalSearchDialog {
     Q_OBJECT
 public:
-    BlastRunCommonDialog(QWidget *parent,bool useCompValues, const QStringList& compValues);
+    BlastRunCommonDialog(QWidget *parent, bool useCompValues, const QStringList &compValues);
 
     const BlastTaskSettings &getSettings() const;
     QPushButton *okButton;
     QPushButton *cancelButton;
     QPushButton *restoreButton;
+
 protected slots:
     virtual void sl_runQuery() = 0;
     virtual void sl_lineEditChanged() = 0;
 
-    void sl_onProgNameChange(int i);
+    void sl_onProgramNameChange(int i);
     void sl_onMatchScoresChanged(int i);
     void sl_onMatrixChanged(int i);
     void sl_megablastChecked();
@@ -57,19 +58,21 @@ protected slots:
     void sl_onCompStatsChanged();
 
 protected:
-    void getSettings(BlastTaskSettings &settings);
+    bool checkSelectedToolPath() const;
+
+    void getSettings(BlastTaskSettings &settingsSnapshot);
     void enableStrandBox(bool enable);
 
     BlastTaskSettings settings;
     bool needRestoreDefault;
-    CreateAnnotationWidgetController *ca_c;
-    BlastDBSelectorWidgetController *dbSelector;
+    CreateAnnotationWidgetController *ca_c = nullptr;
+    BlastDBSelectorWidgetController *dbSelector = nullptr;
 
 private:
     void setupCompositionBasedStatistics();
 
-    bool useCompValues;
+    bool useCompValues = false;
     QStringList compValues;
 };
-}    // namespace U2
-#endif    // _U2_BLAST_RUN_COMMON_DIALOG_H
+}  // namespace U2
+#endif  // _U2_BLAST_RUN_COMMON_DIALOG_H

@@ -28,11 +28,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
-#include <U2Core/ProjectModel.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include "BlastSupport.h"
 
@@ -58,16 +54,13 @@ ExternalToolRunTask *TBlastXTask::createBlastTask() {
                   << "minus";
     }
 
-    if (settings.isNucleotideSeq && (!settings.isDefautScores)) {
-        assert(false);
-        coreLog.error(tr("Unexpected settings combination"));
-    } else {
-        if (!settings.isDefaultMatrix) {
-            arguments << "-matrix" << settings.matrix;
-        }
+    if (settings.isNucleotideSeq && (!settings.isDefaultScores)) {
+        FAIL("'tblastx' does not support nucleic scores: penalty/reward", nullptr)
+    } else if (!settings.isDefaultMatrix) {
+        arguments << "-matrix" << settings.matrix;
     }
     if (settings.numberOfHits != 0) {
-        arguments << "-culling_limit" << QString::number(settings.numberOfHits);    //???
+        arguments << "-culling_limit" << QString::number(settings.numberOfHits);  //???
     }
     arguments << "-query" << url;
 
@@ -81,7 +74,7 @@ ExternalToolRunTask *TBlastXTask::createBlastTask() {
         arguments << "-window_size" << QString::number(settings.windowSize);
     }
     arguments << "-num_threads" << QString::number(settings.numberOfProcessors);
-    arguments << "-outfmt" << QString::number(settings.outputType);    //"5";//Set output file format to xml
+    arguments << "-outfmt" << QString::number(settings.outputType);  //"5";//Set output file format to xml
     if (settings.outputOriginalFile.isEmpty()) {
         arguments << "-out" << url + ".xml";
         settings.outputOriginalFile = url + ".xml";
@@ -92,9 +85,9 @@ ExternalToolRunTask *TBlastXTask::createBlastTask() {
     algoLog.trace("TBlastX+ arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
 
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
+    auto runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }
 
-}    // namespace U2
+}  // namespace U2

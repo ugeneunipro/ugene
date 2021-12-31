@@ -19,25 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMATDB_SUPPORT_H
-#define _U2_FORMATDB_SUPPORT_H
+#ifndef _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H
+#define _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <QAction>
+#include <QMenu>
+
+#include <U2Core/global.h>
 
 #include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class FormatDBSupport : public ExternalTool {
+class ETSProjectViewItemsController : public QObject {
     Q_OBJECT
 public:
-    FormatDBSupport(const QString &path = "");
+    ETSProjectViewItemsController(QObject *p);
 
-    static const QString ET_MAKEBLASTDB_ID;
-    static const QString FORMATDB_TMP_DIR;
-public slots:
-    void sl_runWithExtFileSpecify();
+private slots:
+    void sl_addToProjectViewMenu(QMenu &);
+
+    void sl_runMakeBlastDbOnSelection();
+
+private:
+    ExternalToolSupportAction *makeBlastDbOnSelectionAction;
 };
-
-}    // namespace U2
-#endif    // _U2_FORMATDB_SUPPORT_H
+}  // namespace U2
+#endif  // _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H

@@ -21,18 +21,14 @@
 
 #include "BlastDBCmdTask.h"
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 
 #include <U2Gui/OpenViewTask.h>
 
-#include "BlastDBCmdSupport.h"
+#include "BlastSupport.h"
 
 namespace U2 {
 
@@ -48,7 +44,7 @@ BlastDBCmdTask::BlastDBCmdTask(const BlastDBCmdSupportTaskSettings &_settings)
     : Task("Run NCBI BlastDBCmd task", TaskFlags_NR_FOSCOE), settings(_settings) {
     GCOUNTER(cvar, "BlastDBCmdSupportTask");
     blastDBCmdTask = nullptr;
-    toolId = BlastDbCmdSupport::ET_BLASTDBCMD_ID;
+    toolId = BlastSupport::ET_BLASTDBCMD_ID;
 }
 
 void BlastDBCmdTask::prepare() {
@@ -64,22 +60,16 @@ void BlastDBCmdTask::prepare() {
     blastDBCmdTask->setSubtaskProgressWeight(95);
     addSubTask(blastDBCmdTask);
 }
-Task::ReportResult BlastDBCmdTask::report() {
-    return ReportResult_Finished;
-}
 
 QList<Task *> BlastDBCmdTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
-
-    if (subTask == blastDBCmdTask) {
-        if (settings.addToProject) {
-            IOAdapterFactory *iow = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            LoadDocumentTask *loadTask = new LoadDocumentTask(BaseDocumentFormats::FASTA, settings.outputPath, iow);
-            res.append(new AddDocumentAndOpenViewTask(loadTask));
-        }
+    CHECK(subTask == blastDBCmdTask, res);
+    if (settings.addToProject) {
+        IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        auto loadTask = new LoadDocumentTask(BaseDocumentFormats::FASTA, settings.outputPath, ioFactory);
+        res.append(new AddDocumentAndOpenViewTask(loadTask));
     }
-
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

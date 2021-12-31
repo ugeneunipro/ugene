@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_DB_CMD_SUPPORT_TASK_H
-#define _U2_BLAST_DB_CMD_SUPPORT_TASK_H
+#ifndef _U2_MAKE_BLAST_DB_TASK_H
+#define _U2_MAKE_BLAST_DB_TASK_H
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/IOAdapter.h>
@@ -32,33 +32,46 @@
 
 namespace U2 {
 
-class BlastDBCmdSupportTaskSettings {
+class PrepareInputFastaFilesTask;
+
+class MakeBlastDbSettings {
 public:
-    BlastDBCmdSupportTaskSettings() {
+    MakeBlastDbSettings() {
         reset();
     }
     void reset();
 
-    QString query;
+    QStringList inputFilesPath;
     QString outputPath;
-    QString databasePath;
-    bool isNuclDatabase;
-    bool addToProject;
+    QString databaseTitle;
+    QString tempDirPath;
+    bool isInputAmino;
 };
 
-class BlastDBCmdTask : public Task {
+class MakeBlastDbTask : public Task {
     Q_OBJECT
 public:
-    BlastDBCmdTask(const BlastDBCmdSupportTaskSettings &settings);
-
-    void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    MakeBlastDbTask(const MakeBlastDbSettings &settings);
 
 private:
-    ExternalToolRunTask *blastDBCmdTask;
-    BlastDBCmdSupportTaskSettings settings;
-    QString toolId;
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    Task::ReportResult report() override;
+    QString generateReport() const override;
+
+    QString prepareTempDir();
+    QString prepareLink(const QString &path) const;
+    void initMakeBlastDbExternalToolTask();
+
+    QString externalToolLog;
+    PrepareInputFastaFilesTask *prepareTask = nullptr;
+    ExternalToolRunTask *makeBlastDbExternalToolTask = nullptr;
+    MakeBlastDbSettings settings;
+
+    QStringList inputFastaFiles;
+    QStringList fastaTmpFiles;
 };
 
 }  // namespace U2
-#endif  // _U2_BLAST_DB_CMD_SUPPORT_TASK_H
+
+#endif  // _U2_MAKE_BLAST_DB_TASK_H

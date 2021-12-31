@@ -19,25 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_DB_CMD_SUPPORT_H
-#define _U2_BLAST_DB_CMD_SUPPORT_H
+#ifndef _U2_MAKE_BLAST_DB_DIALOG_H
+#define _U2_MAKE_BLAST_DB_DIALOG_H
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <QDialog>
 
-#include "utils/ExternalToolSupportAction.h"
+#include <U2Gui/DialogUtils.h>
+
+#include "MakeBlastDbTask.h"
+
+#include <ui_MakeBlastDbDialog.h>
 
 namespace U2 {
 
-class BlastDbCmdSupport : public ExternalTool {
+class MakeBlastDbDialog : public QDialog, public Ui_MakeBlastDbDialog {
     Q_OBJECT
 public:
-    BlastDbCmdSupport(const QString &path = "");
+    MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &settings = {});
 
-    static const QString ET_BLASTDBCMD;
-    static const QString ET_BLASTDBCMD_ID;
-public slots:
-    void sl_runWithExtFileSpecify();
+    /** Returns the original settings adjusted after the dialog is accepted. */
+    const MakeBlastDbSettings &getTaskSettings() const;
+
+private slots:
+    void sl_makeBlastDb();
+    void sl_lineEditChanged();
+
+    void sl_onBrowseInputFiles();
+    void sl_onBrowseInputDir();
+    void sl_onBrowseDatabasePath();
+
+private:
+    MakeBlastDbSettings settings;
+    QPushButton *makeButton;
+    QPushButton *cancelButton;
 };
 
-}    // namespace U2
-#endif    // _U2_BLAST_DB_CMD_SUPPORT_H
+}  // namespace U2
+#endif  // _U2_MAKE_BLAST_DB_DIALOG_H

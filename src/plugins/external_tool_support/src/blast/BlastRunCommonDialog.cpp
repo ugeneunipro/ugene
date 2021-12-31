@@ -22,24 +22,19 @@
 #include "BlastRunCommonDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 #include <QToolButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectReference.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
 
-#include "blast/BlastWorker.h"
+#include "BlastSupport.h"
+#include "BlastWorker.h"
 
 namespace U2 {
 
@@ -48,7 +43,7 @@ using namespace LocalWorkflow;
 ////////////////////////////////////////
 // BlastAllSupportRunCommonDialog
 BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, bool _useCompValues, const QStringList &_compValues)
-    : QDialog(parent), ca_c(nullptr), useCompValues(_useCompValues), compValues(_compValues) {
+    : QDialog(parent), useCompValues(_useCompValues), compValues(_compValues) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930723");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
@@ -68,11 +63,11 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, bool _useCompValues,
     // I don`t know what this in local BLAST
     phiPatternEdit->hide();
     phiPatternLabel->hide();
-    // set avaliable number of threads
+    // set available number of threads
     numberOfCPUSpinBox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numberOfCPUSpinBox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     // Connecting people
-    connect(programName, SIGNAL(currentIndexChanged(int)), SLOT(sl_onProgNameChange(int)));
+    connect(programNameComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onProgramNameChange(int)));
     connect(matrixComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onMatrixChanged(int)));
     sl_onMatrixChanged(0);
 
@@ -85,7 +80,7 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, bool _useCompValues,
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     connect(okButton, SIGNAL(clicked()), SLOT(sl_runQuery()));
     connect(restoreButton, SIGNAL(clicked()), SLOT(sl_restoreDefault()));
-    sl_onProgNameChange(0);
+    sl_onProgramNameChange(0);
     okButton->setEnabled(false);
 
     connect(compStatsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onCompStatsChanged()));
@@ -95,7 +90,7 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, bool _useCompValues,
 }
 
 void BlastRunCommonDialog::setupCompositionBasedStatistics() {
-    bool visible = useCompValues && compValues.contains(programName->currentText());
+    bool visible = useCompValues && compValues.contains(programNameComboBox->currentText());
     compStatsLabel->setVisible(visible);
     compStatsComboBox->setVisible(visible);
 }
@@ -103,9 +98,8 @@ void BlastRunCommonDialog::setupCompositionBasedStatistics() {
 const BlastTaskSettings &BlastRunCommonDialog::getSettings() const {
     return settings;
 }
-void BlastRunCommonDialog::sl_onMatchScoresChanged(int index) {
-    Q_UNUSED(index);
-    if (programName->currentText() != "blastn") {
+void BlastRunCommonDialog::sl_onMatchScoresChanged(int) {
+    if (programNameComboBox->currentText() != "blastn") {
         return;
     }
     settings.matchReward = scoresComboBox->currentText().split(" ").at(0).toInt();
@@ -170,15 +164,15 @@ void BlastRunCommonDialog::sl_onMatchScoresChanged(int index) {
     }
 }
 
-void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
-    Q_UNUSED(index);
-    if (programName->currentText() == "blastn") {
+void BlastRunCommonDialog::sl_onMatrixChanged(int) {
+    if (programNameComboBox->currentText() == "blastn") {
         return;
     }
-    settings.matrix = matrixComboBox->currentText();
+    QString matrix = matrixComboBox->currentText();
+    settings.matrix = matrix;
     // For help see http://www.ncbi.nlm.nih.gov/staff/tao/URLAPI/blastall/blastall_node77.html
     // Last values is default
-    if (matrixComboBox->currentText() == "PAM30") {  //-G 5 -E 2; -G 6 -E 2; -G 7 -E 2; -G 8 -E 1; -G 10 -E 1; -G 9 -E 1
+    if (matrix == "PAM30") {  //-G 5 -E 2; -G 6 -E 2; -G 7 -E 2; -G 8 -E 1; -G 10 -E 1; -G 9 -E 1
         costsComboBox->clear();
         costsComboBox->addItem("9 1");
         costsComboBox->addItem("5 2");
@@ -186,7 +180,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
         costsComboBox->addItem("7 2");
         costsComboBox->addItem("8 1");
         costsComboBox->addItem("10 1");
-    } else if (matrixComboBox->currentText() == "PAM70") {  //-G 6 -E 2; -G 7 -E 2; -G 8 -E 2; -G 9 -E 2; -G 11 -E 1; -G 10 -E 1
+    } else if (matrix == "PAM70") {  //-G 6 -E 2; -G 7 -E 2; -G 8 -E 2; -G 9 -E 2; -G 11 -E 1; -G 10 -E 1
         costsComboBox->clear();
         costsComboBox->addItem("10 1");
         costsComboBox->addItem("6 2");
@@ -194,7 +188,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
         costsComboBox->addItem("8 2");
         costsComboBox->addItem("9 2");
         costsComboBox->addItem("11 1");
-    } else if (matrixComboBox->currentText() == "BLOSUM45") {  //-G 10 -E 3; -G 11 -E 3; -G 12 -E 3; -G 12 -E 2; -G 13 -E 2, -G 14 -E 2;
+    } else if (matrix == "BLOSUM45") {  //-G 10 -E 3; -G 11 -E 3; -G 12 -E 3; -G 12 -E 2; -G 13 -E 2, -G 14 -E 2;
         //-G 16 -E 2; -G 15 -E 1; -G 16 -E 1; -G 17 -E 1; -G 18 -E 1; -G 19 -E 1; -G 15 -E 2
         costsComboBox->clear();
         costsComboBox->addItem("15 2");
@@ -210,7 +204,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
         costsComboBox->addItem("17 1");
         costsComboBox->addItem("18 1");
         costsComboBox->addItem("19 1");
-    } else if (matrixComboBox->currentText() == "BLOSUM62") {  //-G 7 -E 2; -G 8 -E 2; -G 9 -E 2; -G 10 -E 1; -G 12 -E 1; -G 11 -E 1
+    } else if (matrix == "BLOSUM62") {  //-G 7 -E 2; -G 8 -E 2; -G 9 -E 2; -G 10 -E 1; -G 12 -E 1; -G 11 -E 1
         costsComboBox->clear();
         costsComboBox->addItem("11 1");
         costsComboBox->addItem("7 2");
@@ -218,7 +212,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
         costsComboBox->addItem("9 2");
         costsComboBox->addItem("10 1");
         costsComboBox->addItem("12 1");
-    } else if (matrixComboBox->currentText() == "BLOSUM80") {  //-G 6 -E 2; -G 7 -E 2; -G 8 -E 2; -G 9 -E 1; -G 11 -E 1; -G 10 -E 1
+    } else if (matrix == "BLOSUM80") {  //-G 6 -E 2; -G 7 -E 2; -G 8 -E 2; -G 9 -E 1; -G 11 -E 1; -G 10 -E 1
         costsComboBox->clear();
         costsComboBox->addItem("10 1");
         costsComboBox->addItem("6 2");
@@ -227,7 +221,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index) {
         costsComboBox->addItem("9 1");
         costsComboBox->addItem("11 1");
     } else {
-        assert(0);
+        FAIL("Unsupported matrix type: " + matrix, );
     }
 }
 
@@ -242,6 +236,7 @@ void BlastRunCommonDialog::sl_restoreDefault() {
     needRestoreDefault = false;
     bothStrandsButton->setChecked(true);
 }
+
 void BlastRunCommonDialog::sl_megablastChecked() {
     if (megablastCheckBox->isChecked()) {
         if (wordSizeSpinBox->value() < 12 || needRestoreDefault) {
@@ -262,42 +257,36 @@ void BlastRunCommonDialog::sl_megablastChecked() {
     }
 }
 
-void BlastRunCommonDialog::sl_onProgNameChange(int) {
+void BlastRunCommonDialog::sl_onProgramNameChange(int) {
     setupCompositionBasedStatistics();
-    settings.programName = programName->currentText();
-    if (programName->currentText() == "blastn") {  // nucl
-        programName->setToolTip(tr("Direct nucleotide alignment"));
-        gappedAlignmentCheckBox->setEnabled(true);
+    QString programName = programNameComboBox->currentText();
+    settings.programName = programName;
+    if (programName == "blastn") {
+        programNameComboBox->setToolTip(tr("Direct nucleotide alignment"));
         thresholdSpinBox->setValue(0);
-    } else if (programName->currentText() == "blastp") {  // amino
-        programName->setToolTip(tr("Direct protein alignment"));
-        gappedAlignmentCheckBox->setEnabled(true);
+    } else if (programName == "blastp") {
+        programNameComboBox->setToolTip(tr("Direct protein alignment"));
         thresholdSpinBox->setValue(11);
-    } else if (programName->currentText() == "blastx") {  // nucl
-        programName->setToolTip(tr("Protein alignment, input nucleotide is translated input protein before the search"));
-        gappedAlignmentCheckBox->setEnabled(true);
+    } else if (programName == "blastx") {
+        programNameComboBox->setToolTip(tr("Protein alignment, input nucleotide is translated input protein before the search"));
         thresholdSpinBox->setValue(12);
-    } else if (programName->currentText() == "tblastn") {  // amino
-        programName->setToolTip(tr("Protein alignment, nucleotide database is translated input protein before the search"));
-        gappedAlignmentCheckBox->setEnabled(true);
+    } else if (programName == "tblastn") {
+        programNameComboBox->setToolTip(tr("Protein alignment, nucleotide database is translated input protein before the search"));
         thresholdSpinBox->setValue(13);
-    } else if (programName->currentText() == "tblastx") {  // nucl
-        programName->setToolTip(tr("Protein alignment, both input query and database are translated before the search"));
-        gappedAlignmentCheckBox->setEnabled(false);
+    } else if (programName == "tblastx") {
+        programNameComboBox->setToolTip(tr("Protein alignment, both input query and database are translated before the search"));
         thresholdSpinBox->setValue(13);
     } else {
         FAIL("Unsupported blast program name: " + settings.programName, );
     }
-    enableStrandBox((programName->currentText() == "blastn") || (programName->currentText().contains("blastx")));
 
-    if (programName->currentText() == "tblastx") {
-        costsLabel->hide();
-        costsComboBox->hide();
-    } else {
-        costsLabel->show();
-        costsComboBox->show();
-    }
-    if (programName->currentText() == "blastn") {
+    enableStrandBox(programName == "blastn" || programName.contains("blastx"));
+
+    costsLabel->setVisible(programName != "tblastx");
+    costsComboBox->setVisible(programName != "tblastx");
+    gappedAlignmentCheckBox->setEnabled(programName != "tblastx");
+
+    if (programName == "blastn") {
         megablastCheckBox->setEnabled(true);
         if (megablastCheckBox->isChecked()) {
             wordSizeSpinBox->setValue(28);
@@ -336,8 +325,8 @@ void BlastRunCommonDialog::sl_onProgNameChange(int) {
         thresholdLabel->show();
         sl_onMatrixChanged(0);
     }
-    // set X dropoff values
-    if (programName->currentText() == "blastn") {
+    // Set X drop-off values.
+    if (programName == "blastn") {
         megablastCheckBox->setEnabled(true);
         if (megablastCheckBox->isChecked()) {
             xDropoffGASpinBox->setValue(20);
@@ -349,7 +338,7 @@ void BlastRunCommonDialog::sl_onProgNameChange(int) {
         xDropoffFGASpinBox->setValue(100);
         xDropoffGASpinBox->setEnabled(true);
         xDropoffFGASpinBox->setEnabled(true);
-    } else if (programName->currentText() == "tblastx") {
+    } else if (programName == "tblastx") {
         xDropoffGASpinBox->setValue(0);
         xDropoffGASpinBox->setEnabled(false);
         xDropoffUnGASpinBox->setValue(7);
@@ -369,79 +358,67 @@ void BlastRunCommonDialog::sl_onCompStatsChanged() {
     settings.compStats = value.left(1);
 }
 
-void BlastRunCommonDialog::getSettings(BlastTaskSettings &localSettings) {
-    localSettings.programName = programName->currentText();
-    localSettings.databaseNameAndPath = dbSelector->databasePathLineEdit->text() + "/" + dbSelector->baseNameLineEdit->text();
-    localSettings.expectValue = evalueSpinBox->value();
-    localSettings.wordSize = wordSizeSpinBox->value();
-    localSettings.megablast = megablastCheckBox->isChecked();
-    localSettings.numberOfHits = numberOfHitsSpinBox->value();
-    localSettings.numberOfProcessors = numberOfCPUSpinBox->value();
+void BlastRunCommonDialog::getSettings(BlastTaskSettings &settingsSnapshot) {
+    settingsSnapshot.programName = programNameComboBox->currentText();
+    settingsSnapshot.databaseNameAndPath = dbSelector->databasePathLineEdit->text() + "/" + dbSelector->baseNameLineEdit->text();
+    settingsSnapshot.expectValue = evalueSpinBox->value();
+    settingsSnapshot.wordSize = wordSizeSpinBox->value();
+    settingsSnapshot.megablast = megablastCheckBox->isChecked();
+    settingsSnapshot.numberOfHits = numberOfHitsSpinBox->value();
+    settingsSnapshot.numberOfProcessors = numberOfCPUSpinBox->value();
 
-    if (directStrandButton->isChecked()) {
-        settings.directStrand = TriState_Yes;
-    } else if (complStrandButton->isChecked()) {
-        settings.directStrand = TriState_No;
-    } else {
-        settings.directStrand = TriState_Unknown;
-    }
+    settingsSnapshot.directStrand = directStrandButton->isChecked() ? TriState_Yes : (complStrandButton->isChecked() ? TriState_No : TriState_Unknown);
 
-    localSettings.gapOpenCost = costsComboBox->currentText().split(" ").at(0).toInt();
-    localSettings.gapExtendCost = costsComboBox->currentText().split(" ").at(1).toInt();
+    QString cost = costsComboBox->currentText();
+    settingsSnapshot.gapOpenCost = cost.split(" ").at(0).toInt();
+    settingsSnapshot.gapExtendCost = cost.split(" ").at(1).toInt();
     // setup filters
     if (lowComplexityFilterCheckBox->isChecked()) {
-        localSettings.filter = "L";
+        settingsSnapshot.filter = "L";
     }
     if (repeatsCheckBox->isChecked()) {
-        localSettings.filter = localSettings.filter.isEmpty() ? "R" : localSettings.filter + "; R";
+        settingsSnapshot.filter = settingsSnapshot.filter.isEmpty() ? "R" : settingsSnapshot.filter + "; R";
     }
     //    if(lowerCaseCheckBox->isChecked()){
     //        settings.filter=settings.filter.isEmpty() ? "???" : settings.filter+"; ???";
     //    }
     if (lookupMaskCheckBox->isChecked()) {
-        localSettings.filter = localSettings.filter.isEmpty() ? "m" : "m " + localSettings.filter;
+        settingsSnapshot.filter = settingsSnapshot.filter.isEmpty() ? "m" : "m " + settingsSnapshot.filter;
     }
 
-    if (localSettings.isNucleotideSeq) {
-        if ((((scoresComboBox->currentText() == "1 -4") || (scoresComboBox->currentText() == "1 -3")) && costsComboBox->currentText() == "2 2") ||  //-G 2 -E 2
-            ((scoresComboBox->currentText() == "1 -2") && costsComboBox->currentText() == "2 2") ||  //-G 2 -E 2
-            ((scoresComboBox->currentText() == "1 -1") && costsComboBox->currentText() == "4 2") ||  //-G 4 -E 2
-            (((scoresComboBox->currentText() == "2 -7") || (scoresComboBox->currentText() == "2 -5")) && costsComboBox->currentText() == "4 4") ||  //-G 4 -E 4
-            ((scoresComboBox->currentText() == "2 -3") && costsComboBox->currentText() == "6 4") ||  //-G 6 -E 4
-            (((scoresComboBox->currentText() == "4 -5") || (scoresComboBox->currentText() == "5 -4")) && costsComboBox->currentText() == "12 8"))  //-G 12 -E 8
-        {
-            localSettings.isDefaultCosts = true;
-        } else {
-            localSettings.isDefaultCosts = false;
-        }
-        localSettings.isDefautScores = (scoresComboBox->currentText() == "1 -3");
+    if (settingsSnapshot.isNucleotideSeq) {
+        QString score = scoresComboBox->currentText();
+        settingsSnapshot.isDefaultCosts = (((score == "1 -4") || (score == "1 -3")) && cost == "2 2") ||  //-G 2 -E 2
+                                          ((score == "1 -2") && cost == "2 2") ||  //-G 2 -E 2
+                                          ((score == "1 -1") && cost == "4 2") ||  //-G 4 -E 2
+                                          (((score == "2 -7") || (score == "2 -5")) && cost == "4 4") ||  //-G 4 -E 4
+                                          ((score == "2 -3") && cost == "6 4") ||  //-G 6 -E 4
+                                          (((score == "4 -5") || (score == "5 -4")) && cost == "12 8");
+        settingsSnapshot.isDefaultScores = (score == "1 -3");
     } else {
-        if (((matrixComboBox->currentText() == "PAM30") && costsComboBox->currentText() == "9 1") ||  //-G 9 -E 1
-            ((matrixComboBox->currentText() == "PAM70") && costsComboBox->currentText() == "10 1") ||  //-G 10 -E 1
-            ((matrixComboBox->currentText() == "BLOSUM45") && costsComboBox->currentText() == "15 2") ||
-            ((matrixComboBox->currentText() == "BLOSUM62") && costsComboBox->currentText() == "11 1") ||
-            ((matrixComboBox->currentText() == "BLOSUM80") && costsComboBox->currentText() == "10 1")) {
-            localSettings.isDefaultCosts = true;
-        } else {
-            localSettings.isDefaultCosts = false;
-        }
-        localSettings.isDefaultMatrix = (matrixComboBox->currentText() == "BLOSUM62");
+        QString matrix = matrixComboBox->currentText();
+        settingsSnapshot.isDefaultCosts = ((matrix == "PAM30") && cost == "9 1") ||  //-G 9 -E 1
+                                          ((matrix == "PAM70") && cost == "10 1") ||  //-G 10 -E 1
+                                          ((matrix == "BLOSUM45") && cost == "15 2") ||
+                                          ((matrix == "BLOSUM62") && cost == "11 1") ||
+                                          ((matrix == "BLOSUM80") && cost == "10 1");
+        settingsSnapshot.isDefaultMatrix = matrix == "BLOSUM62";
     }
-    localSettings.isGappedAlignment = gappedAlignmentCheckBox->isChecked();
-    localSettings.windowSize = windowSizeSpinBox->value();
-    localSettings.threshold = thresholdSpinBox->value();
-    localSettings.xDropoffGA = xDropoffGASpinBox->value();
-    localSettings.xDropoffUnGA = xDropoffUnGASpinBox->value();
-    localSettings.xDropoffFGA = xDropoffFGASpinBox->value();
-    if ((localSettings.programName == "blastn" && localSettings.threshold != 0) ||
-        (localSettings.programName == "blastp" && localSettings.threshold != 11) ||
-        (localSettings.programName == "blastx" && localSettings.threshold != 12) ||
-        (localSettings.programName == "tblastn" && localSettings.threshold != 13) ||
-        (localSettings.programName == "tblastx" && localSettings.threshold != 13)) {
-        localSettings.isDefaultThreshold = false;
+    settingsSnapshot.isGappedAlignment = gappedAlignmentCheckBox->isChecked();
+    settingsSnapshot.windowSize = windowSizeSpinBox->value();
+    settingsSnapshot.threshold = thresholdSpinBox->value();
+    settingsSnapshot.xDropoffGA = xDropoffGASpinBox->value();
+    settingsSnapshot.xDropoffUnGA = xDropoffUnGASpinBox->value();
+    settingsSnapshot.xDropoffFGA = xDropoffFGASpinBox->value();
+    if ((settingsSnapshot.programName == "blastn" && settingsSnapshot.threshold != 0) ||
+        (settingsSnapshot.programName == "blastp" && settingsSnapshot.threshold != 11) ||
+        (settingsSnapshot.programName == "blastx" && settingsSnapshot.threshold != 12) ||
+        (settingsSnapshot.programName == "tblastn" && settingsSnapshot.threshold != 13) ||
+        (settingsSnapshot.programName == "tblastx" && settingsSnapshot.threshold != 13)) {
+        settingsSnapshot.isDefaultThreshold = false;
     }
     if (useCompValues && compValues.contains(settings.programName)) {
-        localSettings.compStats = settings.compStats;
+        settingsSnapshot.compStats = settings.compStats;
     }
 }
 
@@ -449,6 +426,12 @@ void BlastRunCommonDialog::enableStrandBox(bool enable) {
     bothStrandsButton->setEnabled(enable);
     directStrandButton->setEnabled(enable);
     complStrandButton->setEnabled(enable);
+}
+
+bool BlastRunCommonDialog::checkSelectedToolPath() const {
+    QString programName = programNameComboBox->currentText();
+    QString toolId = BlastSupport::getToolIdByProgramName(programName);
+    return BlastSupport::checkBlastTool(toolId);
 }
 
 }  // namespace U2

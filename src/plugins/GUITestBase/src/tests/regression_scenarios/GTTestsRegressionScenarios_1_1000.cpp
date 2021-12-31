@@ -121,7 +121,7 @@
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
@@ -1037,13 +1037,13 @@ GUI_TEST_CLASS_DEFINITION(test_0685) {
     // {Select input file} _common_data\scenarios\external_tools\blast\SequenceLength_00003000.txt
     // {Select search} blastp
     // Expected state: UGENE not crashes
-    BlastAllSupportDialogFiller::Parameters blastParams;
+    BlastLocalSearchDialogFiller::Parameters blastParams;
     blastParams.runBlast = true;
     blastParams.programNameText = "blastp";
     blastParams.withInputFile = true;
     blastParams.inputPath = testDir + "_common_data/scenarios/external_tools/blast/SequenceLength_00003000.txt";
     blastParams.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
-    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(blastParams, os));
+    GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(blastParams, os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
                                                 << "BLAST search...");

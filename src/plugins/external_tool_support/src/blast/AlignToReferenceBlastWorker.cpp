@@ -44,12 +44,11 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "FormatDBSupport.h"
+#include "BlastSupport.h"
 #include "align_worker_subtasks/BlastReadsSubTask.h"
 #include "align_worker_subtasks/ComposeResultSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
-#include "blast/BlastSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -66,7 +65,7 @@ const QString REF_ATTR_ID = "reference";
 const QString RESULT_URL_ATTR_ID = "result-url";
 const QString IDENTITY_ID = "identity";
 const QString ROW_NAMING_ID = "row-naming-policy";
-}    // namespace
+}  // namespace
 
 /************************************************************************/
 /* AlignToReferenceBlastWorkerFactory */
@@ -135,7 +134,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(nullptr));
     proto->addExternalTool(BlastSupport::ET_BLASTN_ID);
-    proto->addExternalTool(FormatDBSupport::ET_MAKEBLASTDB_ID);
+    proto->addExternalTool(BlastSupport::ET_MAKEBLASTDB_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -167,8 +166,8 @@ AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor *a)
 }
 
 Task *AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus & /*os*/) const {
-    const QString referenceUrl = getValue<QString>(REF_ATTR_ID);
-    return new PrepareReferenceSequenceTask(referenceUrl, context->getDataStorage()->getDbiRef());
+    QString referenceUrlValue = getValue<QString>(REF_ATTR_ID);
+    return new PrepareReferenceSequenceTask(referenceUrlValue, context->getDataStorage()->getDbiRef());
 }
 
 void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
@@ -217,7 +216,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     }
 
     const QString resultUrl = alignTask->getResultUrl();
-    if (QFileInfo(resultUrl).exists()) {
+    if (QFileInfo::exists(resultUrl)) {
         monitor()->addOutputFile(resultUrl, actor->getId());
     } else {
         os.setError(tr("The result file was not produced"));
@@ -226,7 +225,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     QVariantMap result;
     result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
     result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
-    if (QFileInfo(resultUrl).exists()) {
+    if (QFileInfo::exists(resultUrl)) {
         result[BaseSlots::URL_SLOT().getId()] = resultUrl;
     }
     return result;
@@ -254,10 +253,6 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &refUrl, cons
       reads(reads),
       readsNames(readsNames),
       minIdentityPercent(minIdentityPercent),
-      formatDbSubTask(nullptr),
-      blastTask(nullptr),
-      composeSubTask(nullptr),
-      saveTask(nullptr),
       storage(storage) {
     GCOUNTER(cvar, "AlignToReferenceBlastTask");
 }
@@ -311,31 +306,27 @@ Task::ReportResult AlignToReferenceBlastTask::report() {
 }
 
 QString AlignToReferenceBlastTask::generateReport() const {
-    QString result;
-
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    CHECK(nullptr != refObject, "");
+    CHECK(refObject != nullptr, "");
 
     const QList<QPair<QString, QPair<int, bool>>> acceptedReads = getAcceptedReads();
-    const QList<QPair<QString, int>> filtredReads = getDiscardedReads();
+    const QList<QPair<QString, int>> filteredReads = getDiscardedReads();
 
-    result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
+    QString result = "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
     result += "<u>" + tr("Mapped reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
-    QPair<QString, QPair<int, bool>> acceptedPair;
-    foreach (acceptedPair, acceptedReads) {
-        const QString arrow = acceptedPair.second.second ? "&#x2190;" : "&#x2192;";
-        const QString read = acceptedPair.first.replace("-", "&#8209;");
-        const QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
+    for (const auto &acceptedPair : qAsConst(acceptedReads)) {
+        QString arrow = acceptedPair.second.second ? "&#x2190;" : "&#x2192;";
+        QString read = QString(acceptedPair.first).replace("-", "&#8209;");
+        QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
         result += "<tr><td align=right width=50>" + arrow + QString("</td><td><nobr>") + read + "</nobr></td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
     }
-    QPair<QString, int> filtredPair;
-    if (!filtredReads.isEmpty()) {
-        result += "<tr><td colspan=3><u>" + tr("Filtered by low similarity (%1):").arg(filtredReads.size()) + "</u></td></tr>";
-        foreach (filtredPair, filtredReads) {
-            const QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
-            result += QString("<tr><td></td><td style=white-space:nowrap>") + filtredPair.first.replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
+    if (!filteredReads.isEmpty()) {
+        result += "<tr><td colspan=3><u>" + tr("Filtered by low similarity (%1):").arg(filteredReads.size()) + "</u></td></tr>";
+        for (const auto &filteredPair : qAsConst(filteredReads)) {
+            QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filteredPair.second) + "%";
+            result += QString("<tr><td></td><td style=white-space:nowrap>") + QString(filteredPair.first).replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
         }
     }
     result += "</table>";
@@ -376,5 +367,5 @@ QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const 
     return discardedReads;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

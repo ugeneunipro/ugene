@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BlastAllSupportDialog</class>
- <widget class="QDialog" name="BlastAllSupportDialog">
+ <class>BlastLocalSearchDialog</class>
+ <widget class="QDialog" name="BlastLocalSearchDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Request to Local BLAST Database</string>
+   <string>Search using local BLAST database</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -64,7 +64,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="programName">
+          <widget class="QComboBox" name="programNameComboBox">
            <item>
             <property name="text">
              <string notr="true">blastn</string>
