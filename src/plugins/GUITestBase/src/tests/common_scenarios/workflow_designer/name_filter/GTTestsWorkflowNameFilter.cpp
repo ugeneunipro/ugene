@@ -164,13 +164,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
-        foreach (QTreeWidgetItem *item, innerList) {
+        for (QTreeWidgetItem *item : qAsConst(innerList)) {
             if (!item->isHidden()) {
                 count++;
             }
         }
     }
-    CHECK_SET_ERR(count == 21, QString("Wrong number of visible items in sample tree: %1").arg(count));
+    CHECK_SET_ERR(count == 18, QString("Wrong number of visible items in sample tree: %1").arg(count));
 }
 
 }  // namespace GUITest_common_scenarios_workflow_name_filter

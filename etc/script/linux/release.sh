@@ -33,30 +33,10 @@ rm -rf "${APP_BUNDLE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 
-# Deprecated plugins.
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*clark*
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*diamond*
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*kraken*
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*metaphlan2*
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*ngs_reads_classification*
-rm -rf "${APP_BUNDLE_DIR}/plugins/"*wevote*
-
-# Deprecated workflows
-rm -rf "${APP_BUNDLE_DIR}/data/workflow_samples/NGS/ngs_classification"*
-rm -rf "${APP_BUNDLE_DIR}/data/workflow_samples/NGS/from_tools_menu_only/ngs_classification.uwl"
-
 # Copy UGENE files & tools into 'app' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
-
-# Deprecated tools.
-rm -rf "${APP_BUNDLE_DIR}/tools/clark"
-rm -rf "${APP_BUNDLE_DIR}/tools/diamond"
-rm -rf "${APP_BUNDLE_DIR}/tools/kraken"
-rm -rf "${APP_BUNDLE_DIR}/tools/metaphlan2"
-rm -rf "${APP_BUNDLE_DIR}/tools/wevote"
-
 echo "##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Get version']"

@@ -59,8 +59,6 @@
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
-#include "tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h"
-#include "tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
@@ -120,11 +118,6 @@ static QStringList nightly(const QStringList &labelList = QStringList()) {
     QStringList resultLabelList = labelList;
     resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
     return resultLabelList;
-}
-
-/** Converts minutes into milliseconds. Used to make tests registration more readable. */
-static int minutes(int minutes) {
-    return 60 * 1000 * minutes;
 }
 
 /** Registers a GUI test included into nightly build with a default timeout. */
@@ -272,8 +265,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2866);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_3950);  // too long for windows test server
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6301);
-    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6378);
-    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_6581);  // old MAFFT version  v7.212 for Windows32
 
     REGISTER_TEST_LINUX(GUITest_common_scenarios_msa_editor::test_0025);
     REGISTER_TEST_LINUX(GUITest_common_scenarios_msa_editor::test_0028_linux);
@@ -1504,15 +1495,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6008);
     REGISTER_TEST(GUITest_regression_scenarios::test_6031);
     REGISTER_TEST(GUITest_regression_scenarios::test_6033);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6038_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6038_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6038_3);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6038_4);
     REGISTER_TEST(GUITest_regression_scenarios::test_6043);
     REGISTER_TEST(GUITest_regression_scenarios::test_6045);
     REGISTER_TEST(GUITest_regression_scenarios::test_6047);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6058_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6058_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6058);
     REGISTER_TEST(GUITest_regression_scenarios::test_6062);
     REGISTER_TEST(GUITest_regression_scenarios::test_6066);
     REGISTER_TEST(GUITest_regression_scenarios::test_6071);
@@ -1530,7 +1516,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6167);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6204);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6207);
     REGISTER_TEST(GUITest_regression_scenarios::test_6212);
     REGISTER_TEST(GUITest_regression_scenarios::test_6225);
     REGISTER_TEST(GUITest_regression_scenarios::test_6226);
@@ -1562,8 +1547,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6309);
     REGISTER_TEST(GUITest_regression_scenarios::test_6314);
-    REGISTER_TEST(GUITest_regression_scenarios::test_6334);
     REGISTER_TEST(GUITest_regression_scenarios::test_6350);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6581);
     REGISTER_TEST(GUITest_regression_scenarios::test_6397);
     REGISTER_TEST(GUITest_regression_scenarios::test_6398);
 
@@ -2203,33 +2188,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0008_1);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0008_2);
-
-    /////////////////////////////////////////////////////////////////////////
-    // Common scenarios/ngs_classification/metaphlan2
-    /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, labels({Metagenomics, Linux}));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, labels({Metagenomics, Linux}));
-
-    /////////////////////////////////////////////////////////////////////////
-    // Common scenarios/ngs_classification/workflow_designer
-    /////////////////////////////////////////////////////////////////////////
-
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, minutes(10), labels({Metagenomics, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, minutes(10), labels({Metagenomics, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, minutes(10), labels({Metagenomics, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, minutes(10), labels({Metagenomics, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, minutes(10), labels({Metagenomics, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, minutes(10), labels({Metagenomics, Linux}));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor
@@ -3155,7 +3113,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0004);
 
-    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, labels({Metagenomics, Linux}));  // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0004);
@@ -3172,7 +3129,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0011);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0012);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0013);
-    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, labels({Metagenomics, Linux}));  // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);

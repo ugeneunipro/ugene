@@ -2157,7 +2157,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    // Wait for some period to ensure that the long running sub-task is started with no crash and cancel it next.
+    // Wait for some period to ensure that the long-running sub-task is started with no crash and cancel it next.
     GTGlobals::sleep(20000);
     GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
