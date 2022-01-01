@@ -671,27 +671,22 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *hSeqScroll = GTWidget::findWidget(os, "horizontal_sequence_scroll");
-    CHECK_SET_ERR(hSeqScroll != nullptr, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bar at the bottom of sequence area is invisible");
 
     QWidget *vSeqScroll = GTWidget::findWidget(os, "vertical_sequence_scroll");
-
-    CHECK_SET_ERR(vSeqScroll != nullptr, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
 
     QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]", GTWidget::findWidget(os, "COI [COI.aln]_SubWindow"));
     QWidget *hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
-    CHECK_SET_ERR(hNameScroll != nullptr, "No scroll bar at the bottom of name list area");
 
-    QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
-    CHECK_SET_ERR(splitter != nullptr, "MSA Splitter not found");
+    auto splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter");
+
     QSplitterHandle *handle = splitter->handle(1);
     CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
 
     QWidget *nameList = GTWidget::findWidget(os, "msa_editor_name_list");
-    CHECK_SET_ERR(nameList != nullptr, "MSA Editor name list not found");
-
     GTWidget::click(os, handle);
+
     QPoint p = GTMouseDriver::getMousePosition();
     const bool isHorVisible = hNameScroll->isVisible();
     if (isHorVisible) {
@@ -710,7 +705,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
+    // remove the longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
     GTUtilsMsaEditor::removeRows(os, 14, 14);
 
     parent = GTWidget::findWidget(os, "fungal - all [fungal - all.aln]", GTWidget::findWidget(os, "fungal - all [fungal - all.aln]_SubWindow"));

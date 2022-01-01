@@ -34,7 +34,9 @@
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QSlider>
 #include <QSpinBox>
+#include <QSplitter>
 #include <QTextEdit>
 #include <QToolButton>
 #include <QWidget>
@@ -48,7 +50,7 @@ namespace HI {
  */
 class HI_EXPORT GTWidget {
 public:
-    // fails if widget is NULL, not visible or not enabled; if p isNull, clicks on the center of widget
+    // fails if widget is NULL, not visible or not enabled; if p isNull, clicks in the center of widget
     static void click(GUITestOpStatus &os, QWidget *w, Qt::MouseButton mouseButton = Qt::LeftButton, QPoint p = QPoint());
 
     // fails if widget is NULL, GTWidget::click fails or widget hasn't got focus
@@ -71,7 +73,7 @@ public:
 
     /**
      * Returns set of colors found in the image.
-     * Once 'maxColors' limit is reached the algorihtm stops and returns the current set.
+     * Once 'maxColors' limit is reached the algorithm stops and returns the current set.
      * This parameter helps to avoid out of memory errors and optimize performance.
      */
     static QSet<QRgb> countColors(const QImage &image, int maxColors = 100000);
@@ -147,6 +149,9 @@ public:
 
     /** Calls findExactWidget with QSlider type. Shortcut method. */
     static QSlider *findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QSplitter type. Shortcut method. */
+    static QSplitter *findSplitter(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QLabel type. Shortcut method. */
     static QLabel *findLabel(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});

@@ -1,5 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
+ * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
@@ -150,6 +151,10 @@ QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widget
 
 QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
+}
+
+QSplitter *GTWidget::findSplitter(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSplitter *>(os, widgetName, parentWidget, options);
 }
 
 QLabel *GTWidget::findLabel(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
