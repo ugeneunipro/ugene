@@ -46,16 +46,32 @@ void MaSplitterUtils::insertWidgetWithScale(QSplitter *splitter, QWidget *widget
     insertWidgetWithScale(splitter, index, widget, scale);
 }
 
+/** A constant to store the original splitter handle width. */
+static const char *CACHED_HANDLE_WIDTH_PROPERTY = "MaSplitterUtils_handle_width";
+
 void MaSplitterUtils::updateFixedSizeHandleStyle(QSplitter *splitter) {
+    int resizableWidgetCount = 0;
     for (int i = 0; i < splitter->count(); i++) {
         QWidget *widget = splitter->widget(i);
         if (widget->sizePolicy().verticalPolicy() == QSizePolicy::Fixed) {  // Disable resizing.
             splitter->setStretchFactor(i, 0);
             splitter->handle(i)->setEnabled(false);
-            // Hide the handle completely to have 1:1 look with the older versions of UGENE:
-            // no handle is visible when there are no resizable widgets in the editor.
+        } else {
+            resizableWidgetCount++;
+        }
+    }
+    // Hide the handle completely to have 1:1 look with the older versions of UGENE:
+    // no handle is visible when there are no resizable widgets (at least 2) in the editor.
+    int currentHandleWidth = splitter->handleWidth();
+    bool isHandleHidden = resizableWidgetCount < 2;
+    if (isHandleHidden) {
+        if (currentHandleWidth > 0) {
+            splitter->setProperty(CACHED_HANDLE_WIDTH_PROPERTY, currentHandleWidth);
             splitter->setHandleWidth(0);
         }
+    } else if (currentHandleWidth == 0) {
+        int handleWidth = splitter->property(CACHED_HANDLE_WIDTH_PROPERTY).toInt();
+        splitter->setHandleWidth(handleWidth);
     }
 }
 
