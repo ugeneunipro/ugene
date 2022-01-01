@@ -36,73 +36,7 @@
 namespace U2 {
 
 /************************************************************************/
-/* MaSplitterController */
-/************************************************************************/
-MaSplitterController::MaSplitterController()
-    : seqArea(nullptr) {
-    splitter = new QSplitter(Qt::Horizontal);
-    splitter->setObjectName("msa_editor_horizontal_splitter");
-}
-MaSplitterController::MaSplitterController(QSplitter *spliter)
-    : seqArea(nullptr),
-      splitter(spliter) {
-}
-
-void MaSplitterController::setSequenceArea(MSAEditorSequenceArea *_seqArea) {
-    seqArea = _seqArea;
-}
-
-QSplitter *MaSplitterController::getSplitter() {
-    return splitter;
-}
-
-void MaSplitterController::addWidget(QWidget *wgt, int index, qreal coef) {
-    SAFE_POINT(coef >= 0, QString("Incorrect parameters were passed to SinchronizedObjectView::addObject: coef < 0"), );
-
-    widgets.append(wgt);
-    int baseSize = splitter->width();
-    widgetSizes.insert(index, qRound(coef * baseSize));
-    int widgetsWidth = 0;
-    foreach (int curSize, widgetSizes) {
-        widgetsWidth += curSize;
-    }
-    for (int i = 0; i < widgetSizes.size(); i++) {
-        widgetSizes[i] = widgetSizes[i] * baseSize / widgetsWidth;
-    }
-    splitter->insertWidget(index, wgt);
-    splitter->setSizes(widgetSizes);
-}
-void MaSplitterController::addWidget(QWidget *neighboringWidget, QWidget *wgt, qreal coef, int neighboringShift) {
-    int index = splitter->indexOf(neighboringWidget) + neighboringShift;
-    addWidget(wgt, index, coef);
-}
-
-void MaSplitterController::removeWidget(QWidget *wgt) {
-    int widgetsWidth = 0;
-    int baseSize = splitter->width();
-    int index = splitter->indexOf(wgt);
-    if (index < 0) {
-        return;
-    }
-    widgetSizes.removeAt(index);
-
-    foreach (int curSize, widgetSizes) {
-        widgetsWidth += curSize;
-    }
-    for (int i = 0; i < widgetSizes.size(); i++) {
-        widgetSizes[i] = widgetSizes[i] * baseSize / widgetsWidth;
-    }
-    foreach (QWidget *curObj, widgets) {
-        curObj->disconnect(wgt);
-        wgt->disconnect(curObj);
-    }
-    widgets.removeAll(wgt);
-    wgt->setParent(nullptr);
-    splitter->setSizes(widgetSizes);
-}
-
-/************************************************************************/
-/* MSAWidget */
+/* MaUtilsWidget */
 /************************************************************************/
 MaUtilsWidget::MaUtilsWidget(MaEditorWgt *ui, QWidget *heightWidget)
     : ui(ui),

@@ -32,32 +32,6 @@ class MaEditorWgt;
 class MSAEditorSequenceArea;
 
 /************************************************************************/
-/* MaSplitterController */
-/************************************************************************/
-class MaSplitterController : public QObject {
-    Q_OBJECT
-public:
-    MaSplitterController();
-    MaSplitterController(QSplitter *spliter);
-
-    void setSequenceArea(MSAEditorSequenceArea *_seqArea);
-
-    QSplitter *getSplitter();
-
-    void addWidget(QWidget *wgt, int index, qreal coef);
-    void addWidget(QWidget *neighboringWidget, QWidget *wgt, qreal coef, int neighboringShift = 0);
-
-    void removeWidget(QWidget *wgt);
-
-private:
-    MSAEditorSequenceArea *seqArea;
-    QSplitter *splitter;
-
-    QList<QWidget *> widgets;
-    QList<int> widgetSizes;
-};
-
-/************************************************************************/
 /* MaUtilsWidget */
 /************************************************************************/
 class MaUtilsWidget : public QWidget {

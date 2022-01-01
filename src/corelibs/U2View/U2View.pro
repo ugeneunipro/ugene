@@ -84,6 +84,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/MaEditorSelection.h \
            src/ov_msa/MaEditorSequenceArea.h \
+           src/ov_msa/MaEditorSplitters.h \
            src/ov_msa/MaEditorState.h \
            src/ov_msa/MaEditorStatusBar.h \
            src/ov_msa/MaEditorTasks.h \
@@ -365,6 +366,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/MaEditorSelection.cpp \
            src/ov_msa/MaEditorSequenceArea.cpp \
+           src/ov_msa/MaEditorSplitters.cpp \
            src/ov_msa/MaEditorState.cpp \
            src/ov_msa/MaEditorStatusBar.cpp \
            src/ov_msa/MaEditorTasks.cpp \

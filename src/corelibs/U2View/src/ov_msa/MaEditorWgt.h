@@ -37,13 +37,13 @@ namespace U2 {
 class BaseWidthController;
 class DrawHelper;
 class GScrollBar;
-class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
-class MaEditorStatusBar;
 class MaEditor;
+class MaEditorConsensusArea;
 class MaEditorNameList;
 class MaEditorOverviewArea;
 class MaEditorSequenceArea;
+class MaEditorStatusBar;
 class RowHeightController;
 class ScrollController;
 class SequenceAreaRenderer;
@@ -64,52 +64,32 @@ public:
     /** Returns MA editor instance. The instance is always defined and is never null. */
     MaEditor *getEditor() const;
 
-    MaEditorSequenceArea *getSequenceArea() const {
-        return sequenceArea;
-    }
+    MaEditorSequenceArea *getSequenceArea() const;
 
-    MaEditorNameList *getEditorNameList() const {
-        return nameList;
-    }
+    MaEditorNameList *getEditorNameList() const;
 
-    MaEditorConsensusArea *getConsensusArea() const {
-        return consensusArea;
-    }
+    MaEditorConsensusArea *getConsensusArea() const;
 
-    MaEditorOverviewArea *getOverviewArea() const {
-        return overviewArea;
-    }
+    MaEditorOverviewArea *getOverviewArea() const;
 
-    MSAEditorOffsetsViewController *getOffsetsViewController() const {
-        return offsetsViewController;
-    }
+    MSAEditorOffsetsViewController *getOffsetsViewController() const;
 
     MaEditorStatusBar *getStatusBar() const;
 
-    ScrollController *getScrollController() const {
-        return scrollController;
-    }
+    ScrollController *getScrollController() const;
 
-    BaseWidthController *getBaseWidthController() const {
-        return baseWidthController;
-    }
+    BaseWidthController *getBaseWidthController() const;
 
-    RowHeightController *getRowHeightController() const {
-        return rowHeightController;
-    }
+    RowHeightController *getRowHeightController() const;
 
-    DrawHelper *getDrawHelper() const {
-        return drawHelper;
-    }
+    DrawHelper *getDrawHelper() const;
 
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
-    bool isCollapsingOfSingleRowGroupsEnabled() const {
-        return enableCollapsingOfSingleRowGroups;
-    }
+    bool isCollapsingOfSingleRowGroupsEnabled() const;
 
-    QWidget *getHeaderWidget() const {
-        return seqAreaHeader;
-    }
+    QWidget *getHeaderWidget() const;
+
+    QSplitter *getMainSplitter() const;
 
 signals:
     void si_startMaChanging();
@@ -135,13 +115,18 @@ protected:
     MSAEditorOffsetsViewController *offsetsViewController;
     MaEditorStatusBar *statusBar;
 
+    /** Horizontal splitter in the main layout.  Separates main widgets (NameList + SequenceArea), Exclude List and Overview. */
+    QSplitter *mainSplitter = nullptr;
+
     QWidget *nameAreaContainer;
     QWidget *seqAreaHeader;
     QVBoxLayout *seqAreaHeaderLayout;
 
     QGridLayout *seqAreaLayout;
     QVBoxLayout *nameAreaLayout;
-    MaSplitterController maSplitter;
+
+    /** Vertical splitter with NameList & SequenceArea stacked horizontally. */
+    QSplitter *nameAndSequenceAreasSplitter = nullptr;
 
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;

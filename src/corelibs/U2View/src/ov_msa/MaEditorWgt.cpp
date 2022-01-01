@@ -36,6 +36,7 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
 
+#include "MaEditorSplitters.h"
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/BaseWidthController.h"
@@ -167,15 +168,20 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer->setStyleSheet("background-color: white;");
     nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");  // avoid white background of scrollbar set 1 line above.
 
-    nameAreaContainer->setMinimumWidth(15);  // splitter uses min-size to collapse a widget
-    maSplitter.addWidget(nameAreaContainer, 0, 0.1);
-    maSplitter.addWidget(seqAreaContainer, 1, 3);
+    nameAreaContainer->setMinimumWidth(15);  // Splitter uses min-size to collapse a widget
+
+    mainSplitter = new QSplitter(Qt::Vertical, this);
+    nameAndSequenceAreasSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+    nameAndSequenceAreasSplitter->setObjectName("name_and_sequence_areas_splitter");
+    nameAndSequenceAreasSplitter->addWidget(nameAreaContainer);
+    nameAndSequenceAreasSplitter->addWidget(seqAreaContainer);
+    nameAndSequenceAreasSplitter->setSizes({50, 100});  // Initial proportions of the name & sequence are (splitter has no real size at this moment).
 
     QVBoxLayout *maContainerLayout = new QVBoxLayout();
     maContainerLayout->setContentsMargins(0, 0, 0, 0);
     maContainerLayout->setSpacing(0);
 
-    maContainerLayout->addWidget(maSplitter.getSplitter());
+    maContainerLayout->addWidget(nameAndSequenceAreasSplitter);
     maContainerLayout->setStretch(0, 1);
     maContainerLayout->addWidget(statusBar);
 
@@ -187,20 +193,12 @@ void MaEditorWgt::initWidgets() {
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
     mainSplitter->addWidget(overviewArea);
     mainSplitter->setCollapsible(1, false);
-    if (overviewArea->sizePolicy().verticalPolicy() == QSizePolicy::Fixed) {  // Disable resizing.
-        mainSplitter->setStretchFactor(1, 0);
-        mainSplitter->handle(1)->setEnabled(false);
-        // Hide the handle completely to have 1:1 look with the older versions of UGENE:
-        // no handle is visible when there are no resizable widgets in the editor.
-        mainSplitter->setHandleWidth(0);
-    }
-
+    MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
@@ -261,6 +259,54 @@ void MaEditorWgt::initActions() {
 
 MaEditor *MaEditorWgt::getEditor() const {
     return editor;
+}
+
+MaEditorSequenceArea *MaEditorWgt::getSequenceArea() const {
+    return sequenceArea;
+}
+
+MaEditorNameList *MaEditorWgt::getEditorNameList() const {
+    return nameList;
+}
+
+MaEditorConsensusArea *MaEditorWgt::getConsensusArea() const {
+    return consensusArea;
+}
+
+MaEditorOverviewArea *MaEditorWgt::getOverviewArea() const {
+    return overviewArea;
+}
+
+MSAEditorOffsetsViewController *MaEditorWgt::getOffsetsViewController() const {
+    return offsetsViewController;
+}
+
+ScrollController *MaEditorWgt::getScrollController() const {
+    return scrollController;
+}
+
+BaseWidthController *MaEditorWgt::getBaseWidthController() const {
+    return baseWidthController;
+}
+
+RowHeightController *MaEditorWgt::getRowHeightController() const {
+    return rowHeightController;
+}
+
+DrawHelper *MaEditorWgt::getDrawHelper() const {
+    return drawHelper;
+}
+
+bool MaEditorWgt::isCollapsingOfSingleRowGroupsEnabled() const {
+    return enableCollapsingOfSingleRowGroups;
+}
+
+QWidget *MaEditorWgt::getHeaderWidget() const {
+    return seqAreaHeader;
+}
+
+QSplitter *MaEditorWgt::getMainSplitter() const {
+    return mainSplitter;
 }
 
 }  // namespace U2

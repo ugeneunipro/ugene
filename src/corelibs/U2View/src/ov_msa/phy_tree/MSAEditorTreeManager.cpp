@@ -22,6 +22,7 @@
 #include "MSAEditorTreeManager.h"
 
 #include <QApplication>
+#include <QGraphicsView>
 #include <QMessageBox>
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
@@ -278,6 +279,13 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
 
     MsaEditorWgt *msaUI = editor->getUI();
     msaUI->addTreeView(viewWindow);
+
+    // Once tree is added to the splitter make the tree-view viewport state consistent:
+    // scroll to the top-right corner to make sequence names visible.
+    QTimer::singleShot(0, [treeViewer]() {
+        QGraphicsView *ui = treeViewer->getTreeViewerUI();
+        ui->centerOn(ui->scene()->width(), 0);
+    });
 
     if (!addExistingTree) {
         treeViewer->setCreatePhyTreeSettings(settings);
