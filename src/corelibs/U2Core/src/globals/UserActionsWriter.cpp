@@ -43,8 +43,6 @@
 namespace U2 {
 
 bool UserActionsWriter::eventFilter(QObject *obj, QEvent *event) {
-    QMutexLocker locker(&guard);
-
     if (event->type() == QEvent::MouseButtonPress ||
         event->type() == QEvent::MouseButtonRelease ||
         event->type() == QEvent::MouseButtonDblClick) {
@@ -106,7 +104,7 @@ void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
         message.append(getAdditionalWidgetInfo(m, w));
 
     } else {
-        message.append("Widget under corsor is NULL");
+        message.append("Widget under cursor is NULL");
     }
     filterMouseMessages(message);
 }
@@ -116,11 +114,9 @@ QString UserActionsWriter::getMouseButtonInfo(QMouseEvent *m) {
     switch (m->button()) {
         case Qt::RightButton: {
             return QString("Right_button ");
-            break;
         }
         case Qt::LeftButton: {
             return QString("Left_button ");
-            break;
         }
         default: {
             return QString("Other_button ");

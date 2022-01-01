@@ -38,7 +38,7 @@ public:
     UserActionsWriter();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
     void generateMouseMessage(QMouseEvent *m);
@@ -54,12 +54,11 @@ private:
     void filterMouseMessages(QString message);
     void filterKeyboardMessages(QKeyEvent *k, QString message);
 
-    QMutex guard;
     QMap<QEvent::Type, QString> typeMap;
     QMap<Qt::Key, QString> keys;
     QString prevMessage;
     QString buffer;
-    int counter;
+    int counter = 0;
     QPoint prevWindowSize;
 };
 
