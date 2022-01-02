@@ -72,14 +72,14 @@ void GTLineEdit::setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString
 
 #define GT_METHOD_NAME "setText"
 void GTLineEdit::setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget const *const parent, bool noCheck, bool useCopyPaste) {
-    setText(os, GTWidget::findExactWidget<QLineEdit *>(os, lineEditName, parent), text, noCheck, useCopyPaste);
+    setText(os, GTWidget::findLineEdit(os, lineEditName, parent), text, noCheck, useCopyPaste);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getText"
 QString GTLineEdit::getText(GUITestOpStatus &os, QLineEdit *lineEdit) {
     Q_UNUSED(os);
-    GT_CHECK_RESULT(NULL != lineEdit, "lineEdit is NULL", "");
+    GT_CHECK_RESULT(lineEdit != NULL, "lineEdit is NULL", "");
     return lineEdit->text();
 }
 #undef GT_METHOD_NAME

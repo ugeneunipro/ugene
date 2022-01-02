@@ -373,7 +373,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. In MSA context menu choose "Statistics" > "Generate distance matrix".
-    // 3. Try to generate distance matrix with both "Haming dissimilarity" and "Identity" algorithms.
+    // 3. Try to generate distance matrix with both "Hamming dissimilarity" and "Identity" algorithms.
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, true, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -1259,15 +1259,13 @@ GUI_TEST_CLASS_DEFINITION(test_1078) {  // Need to add the test
      * System: Ubuntu 12.04
      */
     GTUtilsNotifications::waitForNotification(os, false);
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1078/", "HannaRescued.fa");
-    GTUtilsDialog::waitForDialog(os, ob);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1078/", "HannaRescued.fa"));
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "FASTA"));
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Open as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTextEdit *textEdit = dynamic_cast<QTextEdit *>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
+    auto textEdit = GTWidget::findTextEdit(os, "reportTextEdit", GTUtilsMdi::activeWindow(os));
     CHECK_SET_ERR(textEdit->toPlainText().contains("Loaded sequences: 24."), "Expected message is not found in the report text");
 }
 

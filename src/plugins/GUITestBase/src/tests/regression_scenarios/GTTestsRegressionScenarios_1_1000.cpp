@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0490) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -2061,20 +2061,20 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoComboBox", dialog), "Suffix array");
 
-            GTLineEdit::setText(os, "leNewTablePath", sandBoxDir + "test_0844.gb", dialog);
-
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget"), 1);
+
+            GTLineEdit::setText(os, "leNewTablePath", sandBoxDir + "test_0844.gb", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, new Scenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandem repeats");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
