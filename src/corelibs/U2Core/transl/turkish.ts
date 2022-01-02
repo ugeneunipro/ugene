@@ -2583,7 +2583,7 @@ UGENE kaydedilmemiş değişiklikler içeriyor.</translation>
     <name>U2::StringAdapterFactory</name>
     <message>
         <location filename="../src/io/StringAdapter.cpp" line="30"/>
-        <source>String buffer</source>
+        <source>String typedTextBuffer</source>
         <translation>Dize arabelleği</translation>
     </message>
 </context>
@@ -2798,7 +2798,7 @@ UGENE kaydedilmemiş değişiklikler içeriyor.</translation>
     <name>U2::VFSAdapterFactory</name>
     <message>
         <location filename="../src/io/VFSAdapter.cpp" line="33"/>
-        <source>Memory buffer</source>
+        <source>Memory typedTextBuffer</source>
         <translation>Hafıza önbelleği</translation>
     </message>
 </context>
