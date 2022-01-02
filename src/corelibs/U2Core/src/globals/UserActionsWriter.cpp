@@ -30,6 +30,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QThread>
 #include <QTreeWidget>
 #include <QWidget>
 
@@ -42,21 +43,22 @@
 
 namespace U2 {
 
-bool UserActionsWriter::eventFilter(QObject *obj, QEvent *event) {
-    if (event->type() == QEvent::MouseButtonPress ||
-        event->type() == QEvent::MouseButtonRelease ||
-        event->type() == QEvent::MouseButtonDblClick) {
-        QMouseEvent *m = dynamic_cast<QMouseEvent *>(event);
-        generateMouseMessage(m);
-        return false;
-    } else if (event->type() == QEvent::KeyPress ||
-               event->type() == QEvent::KeyRelease) {
-        QKeyEvent *k = dynamic_cast<QKeyEvent *>(event);
-        generateKeyMessage(k);
-        return false;
-    } else {
-        return QObject::eventFilter(obj, event);
+bool UserActionsWriter::eventFilter(QObject *, QEvent *event) {
+    QThread *currentThread = QThread::currentThread();
+    QEvent::Type eventType = event->type();
+    SAFE_POINT(currentThread == QCoreApplication::instance()->thread(), "Got UX event out of the main thread: " + QString::number(eventType), false);
+
+    if (eventType == QEvent::MouseButtonPress ||
+        eventType == QEvent::MouseButtonRelease ||
+        eventType == QEvent::MouseButtonDblClick) {
+        auto mouseEvent = dynamic_cast<QMouseEvent *>(event);
+        generateMouseMessage(mouseEvent);
+    } else if (eventType == QEvent::KeyPress ||
+               eventType == QEvent::KeyRelease) {
+        auto keyEvent = dynamic_cast<QKeyEvent *>(event);
+        generateKeyMessage(keyEvent);
     }
+    return false;
 }
 
 void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
