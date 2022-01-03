@@ -35,6 +35,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
@@ -52,7 +53,6 @@
 #include <U2Designer/RemoveDashboardsTask.h>
 #include <U2Designer/WizardController.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
@@ -853,7 +853,7 @@ QString copyIntoUgene(const QString &url, U2OpStatus &os) {
 }  // namespace
 
 void WorkflowView::sl_appendExternalToolWorker() {
-    QString filter = DialogUtils::prepareFileFilter(WorkflowUtils::tr("UGENE workflow element"), QStringList() << "etc", true);
+    QString filter = FileFilters::createFileFilter(WorkflowUtils::tr("UGENE workflow element"), {"etc"});
     QString url = U2FileDialog::getOpenFileName(this, tr("Add element"), QString(), filter);
     if (!url.isEmpty()) {
         IOAdapter *io = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(GUrl(url)))->createIOAdapter();
@@ -2151,7 +2151,7 @@ void WorkflowView::sl_loadScene() {
     }
 
     QString dir = AppContext::getSettings()->getValue(LAST_DIR, QString("")).toString();
-    QString filter = DesignerUtils::getSchemaFileFilter(true, true);
+    QString filter = DesignerUtils::getSchemaFileFilter();
     QString url;
 #ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {

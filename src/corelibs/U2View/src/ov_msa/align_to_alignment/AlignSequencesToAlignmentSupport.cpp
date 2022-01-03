@@ -25,10 +25,10 @@
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/TaskWatchdog.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
@@ -164,7 +164,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
             AppContext::getTaskScheduler()->registerTopLevelTask(task);
         }
     } else {
-        QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE}, true);
+        QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
         LastUsedDirHelper lod;
         QStringList urls = U2FileDialog::getOpenFileNames(nullptr, tr("Open file with sequences"), lod.dir, filter);
 

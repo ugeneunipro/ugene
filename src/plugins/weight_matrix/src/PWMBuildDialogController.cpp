@@ -22,19 +22,16 @@
 #include "PWMBuildDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Algorithm/PWMConversionAlgorithm.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DIProperties.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -44,16 +41,12 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Formats/DocumentFormatUtils.h>
-
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "WeightMatrixIO.h"
-#include "WeightMatrixPlugin.h"
 
 #define SETTINGS_ROOT QString("plugin_weight_matrix/")
 
@@ -85,7 +78,11 @@ PWMBuildDialogController::PWMBuildDialogController(QWidget *w)
 
 void PWMBuildDialogController::sl_inFileButtonClicked() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true).append("\n").append(DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, false)));
+    lod.url = U2FileDialog::getOpenFileName(this,
+                                            tr("Select file with alignment"),
+                                            lod,
+                                            FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE}));
+
     if (lod.url.isEmpty()) {
         return;
     }
@@ -350,10 +347,6 @@ void PFMatrixBuildTask::run() {
         m = PFMatrix(ma, PFM_DINUCLEOTIDE);
     }
     stateInfo.progress += 50;
-    if (stateInfo.hasError() || isCanceled()) {
-        return;
-    }
-    return;
 }
 
 PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString &inFile, const QString &_outFile, const PMBuildSettings &s)
@@ -547,7 +540,7 @@ QList<Task *> PWMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
                 auto firstObject = qobject_cast<U2SequenceObject *>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
                 MultipleSequenceAlignment ma(baseName, firstObject->getAlphabet());
-                for (GObject *obj: qAsConst(mobjs)) {
+                for (GObject *obj : qAsConst(mobjs)) {
                     auto dnaObj = qobject_cast<U2SequenceObject *>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
                         stateInfo.setError(tr("Wrong sequence alphabet"));

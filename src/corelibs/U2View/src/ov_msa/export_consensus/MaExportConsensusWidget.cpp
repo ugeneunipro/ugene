@@ -27,8 +27,6 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TaskWatchdog.h>
@@ -39,7 +37,6 @@
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>

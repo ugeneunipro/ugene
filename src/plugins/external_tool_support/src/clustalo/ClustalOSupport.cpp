@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -179,9 +180,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
-    QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    QString filter = f2 + "\n" + f1;
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with another alignment"), lod, filter);

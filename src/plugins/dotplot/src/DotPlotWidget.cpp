@@ -30,7 +30,6 @@
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
@@ -44,17 +43,14 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GraphUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/U2FileDialog.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/PanView.h>
 
 #include "DotPlotDialog.h"
 #include "DotPlotFilterDialog.h"

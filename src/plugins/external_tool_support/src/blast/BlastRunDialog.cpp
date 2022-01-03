@@ -42,7 +42,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/RegionSelector.h>
 

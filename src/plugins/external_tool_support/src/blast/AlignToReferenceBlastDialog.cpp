@@ -32,6 +32,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -42,7 +43,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -334,7 +334,7 @@ void AlignToReferenceBlastDialog::accept() {
 
 void AlignToReferenceBlastDialog::sl_setReference() {
     LastUsedDirHelper lod;
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open Reference Sequence"), lod.dir, filter);
     if (lod.url.isEmpty()) {
@@ -345,7 +345,7 @@ void AlignToReferenceBlastDialog::sl_setReference() {
 
 void AlignToReferenceBlastDialog::sl_addRead() {
     LastUsedDirHelper lod;
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select File(s) with Read(s)"), lod.dir, filter);
     CHECK(!readFiles.isEmpty(), );

@@ -38,7 +38,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -51,7 +50,7 @@
 #include "EnzymesIO.h"
 #include "FindEnzymesTask.h"
 
-// TODO: group by TYPE, ORGANIZM
+// TODO: group by TYPE, ORGANISM
 // TODO: check whole group (tristate mode)
 
 namespace U2 {
@@ -436,7 +435,7 @@ void EnzymesSelectorWidget::initSelection() {
 
 void EnzymesSelectorWidget::sl_loadSelectionFromFile() {
     LastUsedDirHelper dir;
-    dir.url = U2FileDialog::getOpenFileName(this, tr("Select enzymes selection"), dir.dir, DialogUtils::prepareFileFilter(tr("Selection files"), QStringList("*")));
+    dir.url = U2FileDialog::getOpenFileName(this, tr("Select enzymes selection"), dir.dir);
     if (!dir.url.isEmpty()) {
         QFile selectionFile(dir.url);
         if (!selectionFile.open(QIODevice::ReadOnly)) {

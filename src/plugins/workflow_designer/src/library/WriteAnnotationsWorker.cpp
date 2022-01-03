@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -40,7 +41,6 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -480,7 +480,7 @@ void WriteAnnotationsWorkerFactory::init() {
         formatDelegate->setSortFlag(true);
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
-            new URLDelegate(DialogUtils::prepareDocumentsFileFilter(format, true), QString(), false, false, true, nullptr, format);
+            new URLDelegate(FileFilters::createFileFilterByDocumentFormatId(format), "", false, false, true, nullptr, format);
         delegates[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
 
         delegates[BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::DATA_STORAGE_ATTRIBUTE_VALUES_MAP());

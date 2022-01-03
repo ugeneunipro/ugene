@@ -228,6 +228,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/DatatypeSerializeUtils.h \
            src/util/FileAndDirectoryUtils.h \
            src/util/FilesIterator.h \
+           src/util/FileFilters.h \
            src/util/FileStorageUtils.h \
            src/util/FormatUtils.h \
            src/util/Formatters.h \
@@ -462,6 +463,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/DatatypeSerializeUtils.cpp \
            src/util/FileAndDirectoryUtils.cpp \
            src/util/FilesIterator.cpp \
+           src/util/FileFilters.cpp \
            src/util/FileStorageUtils.cpp \
            src/util/FormatUtils.cpp \
            src/util/Formatters.cpp \

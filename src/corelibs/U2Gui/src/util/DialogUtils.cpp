@@ -22,15 +22,11 @@
 #include "DialogUtils.h"
 
 #include <QCoreApplication>
-#include <QDir>
 #include <QMessageBox>
 #include <QWizard>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
-#include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -38,40 +34,7 @@
 
 namespace U2 {
 
-void DialogUtils::showProjectIsLockedWarning(QWidget *p) {
-    QMessageBox::critical(p, tr("Error"), tr("Project is locked"), QMessageBox::Ok, QMessageBox::NoButton);
-}
-
-QString DialogUtils::prepareFileFilter(const QString &name, const QStringList &exts, bool any, const QStringList &extra) {
-    return FormatUtils::prepareFileFilter(name, exts, any, extra);
-}
-
-QString DialogUtils::prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extra) {
-    return FormatUtils::prepareDocumentsFileFilter(fid, any, extra);
-}
-
-QString DialogUtils::prepareDocumentsFileFilter(bool any, const QStringList &extra) {
-    return FormatUtils::prepareDocumentsFileFilter(any, extra);
-}
-
-QString DialogUtils::prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any) {
-    return FormatUtils::prepareDocumentsFileFilter(c, any);
-}
-
-QString DialogUtils::prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any) {
-    return FormatUtils::prepareDocumentsFileFilterByObjType(t, any);
-}
-
-QString DialogUtils::prepareDocumentsFileFilterByObjTypes(const QList<GObjectType>& types, bool any) {
-    DocumentFormatConstraints c;
-    c.allowPartialTypeMapping = true;
-    for (const auto& t : types) {
-        c.supportedObjectTypes.insert(t);
-    }
-    return FormatUtils::prepareDocumentsFileFilter(c, any);
-}
-
-void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
+void WizardUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
     QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
         QWizardPage *page = wizard->page(pageId);

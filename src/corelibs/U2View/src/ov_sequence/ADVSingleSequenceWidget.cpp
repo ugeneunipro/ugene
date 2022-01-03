@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDialog>
-#include <QMessageBox>
 #include <QToolButton>
 #include <QWidgetAction>
 
@@ -41,7 +40,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OrderedToolbar.h>

@@ -27,7 +27,6 @@
 #include <U2Core/DNASequenceObject.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 
 #include "BlastDBSelectorWidgetController.h"
 #include "BlastTaskSettings.h"

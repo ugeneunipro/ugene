@@ -56,13 +56,11 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/SaveDocumentController.h>
-#include <U2Gui/ShowHideSubgroupWidget.h>
 
 #include "CreateAnnotationFullWidget.h"
 #include "CreateAnnotationNormalWidget.h"

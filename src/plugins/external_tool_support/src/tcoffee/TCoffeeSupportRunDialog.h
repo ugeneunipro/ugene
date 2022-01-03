@@ -22,13 +22,11 @@
 #ifndef _U2_TCOFFEE_SUPPORT_RUN_DIALOG_H
 #define _U2_TCOFFEE_SUPPORT_RUN_DIALOG_H
 
-#include <ui_TCoffeeSupportRunDialog.h>
-
 #include <QDialog>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "TCoffeeSupportTask.h"
+
+#include <ui_TCoffeeSupportRunDialog.h>
 
 namespace U2 {
 
@@ -62,5 +60,5 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
-#endif    // _U2_TCOFFEE_SUPPORT_RUN_DIALOG_H
+}  // namespace U2
+#endif  // _U2_TCOFFEE_SUPPORT_RUN_DIALOG_H

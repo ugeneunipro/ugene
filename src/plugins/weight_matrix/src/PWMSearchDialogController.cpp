@@ -211,7 +211,10 @@ bool PWMSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
 
 void PWMSearchDialogController::sl_selectModelFile() {
     LastUsedDirHelper lod(WeightMatrixIO::WEIGHT_MATRIX_ID);
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with frequency or weight matrix"), lod, WeightMatrixIO::getAllMatrixFileFilter(false) + ";;" + WeightMatrixIO::getPFMFileFilter(false) + ";;" + WeightMatrixIO::getPWMFileFilter(true));
+    QString fileFilter = WeightMatrixIO::getAllMatrixFileFilter(true) + ";;" +
+                         WeightMatrixIO::getPFMFileFilter(true) + ";;" +
+                         WeightMatrixIO::getPWMFileFilter();
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with frequency or weight matrix"), lod, fileFilter);
     if (lod.url.isEmpty()) {
         return;
     }

@@ -24,6 +24,7 @@
 #include <QApplication>
 
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
@@ -33,12 +34,10 @@
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLAttribute.h>
 
 #include "../util/DatasetValidator.h"
-#include "CoreLib.h"
 
 namespace U2 {
 namespace Workflow {
@@ -70,10 +69,10 @@ bool DocActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params, c
 
 QString DocActorProto::prepareDocumentFilter() {
     if (!fid.isEmpty()) {
-        return FormatUtils::prepareDocumentsFileFilter(fid, true);
+        return FileFilters::createFileFilterByDocumentFormatId(fid);
     } else {
-        assert(!type.isEmpty());
-        return FormatUtils::prepareDocumentsFileFilterByObjType(type, true);
+        SAFE_POINT(!type.isEmpty(), "Both format id and type are empty!", "");
+        return FileFilters::createFileFilterByObjectTypes({type});
     }
 }
 

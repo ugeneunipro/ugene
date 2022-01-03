@@ -27,7 +27,7 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT DesignerUtils {
 public:
-    static QString getSchemaFileFilter(bool any, bool addOldExt = false);
+    static QString getSchemaFileFilter();
 };  // DesignerUtils
 
 }  // namespace U2

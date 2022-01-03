@@ -29,8 +29,6 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include <U2Lang/BaseTypes.h>
 
 #include "HMMIO.h"

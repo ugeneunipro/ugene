@@ -37,6 +37,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
@@ -56,7 +57,6 @@
 
 #include <U2Formats/ConvertAssemblyToSamTask.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -990,9 +990,9 @@ Task *createLoadReferenceTask(const QString &url) {
 }  // namespace
 
 QString AssemblyBrowser::chooseReferenceUrl() const {
-    const QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
     LastUsedDirHelper lod;
-    const QString url = U2FileDialog::getOpenFileName(ui, tr("Open file with a sequence"), lod.dir, filter);
+    QString url = U2FileDialog::getOpenFileName(ui, tr("Open file with a sequence"), lod.dir, filter);
     CHECK(!url.isEmpty(), "");
     lod.url = url;
     return url;

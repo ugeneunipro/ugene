@@ -27,8 +27,6 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "GenomeAlignerTask.h"
 
 static const int MIN_PART_SIZE = 1;

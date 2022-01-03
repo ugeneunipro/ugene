@@ -22,15 +22,10 @@
 #include "EnzymesQuery.h"
 
 #include <QCoreApplication>
-#include <QDir>
 #include <QInputDialog>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
-#include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include <U2Lang/BaseTypes.h>

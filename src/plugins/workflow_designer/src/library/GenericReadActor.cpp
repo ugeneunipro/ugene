@@ -25,17 +25,14 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAInfo.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>

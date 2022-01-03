@@ -30,6 +30,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -43,7 +44,6 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/OpenViewTask.h>
 
 static const int MBYTE_TO_BYTE = 1048576;
@@ -53,9 +53,7 @@ namespace U2 {
 const QString DNASequenceGenerator::ID("dna_generator");
 
 QString DNASequenceGenerator::prepareReferenceFileFilter() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true) +
-                     ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
-    return filter;
+    return FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
 }
 
 void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,

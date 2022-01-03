@@ -24,13 +24,12 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -102,7 +101,7 @@ void CuffdiffWorkerFactory::init() {
                                                      " and the latter lets one see changes in relative promoter use within"
                                                      " a gene."));
 
-    {    // Define parameters of the element
+    {  // Define parameters of the element
         Descriptor outDir(OUT_DIR,
                           CuffdiffWorker::tr("Output folder"),
                           CuffdiffWorker::tr("The base name of output folder. It could be modified with a suffix."));
@@ -201,7 +200,7 @@ void CuffdiffWorkerFactory::init() {
         attributes << new Attribute(tmpDir, BaseTypes::STRING_TYPE(), true, QVariant(L10N::defaultStr()));
     }
 
-    {    // Define ports of the element
+    {  // Define ports of the element
         Descriptor assemblyDesc(BasePorts::IN_ASSEMBLY_PORT_ID(),
                                 CuffdiffWorker::tr("Assembly"),
                                 CuffdiffWorker::tr("RNA-Seq reads assemblies"));
@@ -263,7 +262,7 @@ void CuffdiffWorkerFactory::init() {
 
     delegates[OUT_DIR] = new URLDelegate("", "", false, true /*path*/);
     delegates[FRAG_BIAS_CORRECT] = new URLDelegate("", "", false, false, false);
-    delegates[MASK_FILE] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
+    delegates[MASK_FILE] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false, false);
     delegates[EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);
 
@@ -272,7 +271,7 @@ void CuffdiffWorkerFactory::init() {
     proto->setPrompter(new CuffdiffPrompter());
     proto->setPortValidator(BasePorts::IN_ASSEMBLY_PORT_ID(), new InputSlotValidator());
 
-    {    // external tools
+    {  // external tools
         proto->addExternalTool(CufflinksSupport::ET_CUFFDIFF_ID, EXT_TOOL_PATH);
     }
 
@@ -421,5 +420,5 @@ void CuffdiffWorker::takeAssembly() {
     assemblyUrls[sampleName] << data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

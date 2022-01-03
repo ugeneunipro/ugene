@@ -21,21 +21,19 @@
 
 #include "SiteconIO.h"
 
-#include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QVector>
 #include <QtMath>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include "DIPropertiesSitecon.h"
 #include "SiteconMath.h"
@@ -47,8 +45,9 @@ namespace U2 {
 
 const QString SiteconIO::SITECON_ID("sitecon");
 const QString SiteconIO::SITECON_EXT = SiteconIO::SITECON_ID;
-QString SiteconIO::getFileFilter(bool includeAll) {
-    return DialogUtils::prepareFileFilter(tr("Sitecon models"), QStringList(SITECON_EXT), includeAll);
+
+QString SiteconIO::getFileFilter() {
+    return FileFilters::createFileFilter(tr("Sitecon models"), {SITECON_EXT}, false);
 }
 
 #define FILE_HEADER "SITECON MODEL"

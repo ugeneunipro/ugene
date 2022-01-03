@@ -23,11 +23,11 @@
 
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -36,7 +36,6 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -344,7 +343,7 @@ void ImportAnnotationsFromCSVDialog::sl_prefixToSkipChanged(const QString &v) {
 void ImportAnnotationsFromCSVDialog::sl_readFileClicked() {
     // show the dialog
     LastUsedDirHelper lod("CSV");
-    QString filter = DialogUtils::prepareFileFilter(tr("CSV Files"), QStringList() << "csv", true, QStringList());
+    QString filter = FileFilters::createFileFilter(tr("CSV Files"), {"csv"});
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select CSV file to read"), lod, filter);
     if (lod.url.isEmpty()) {
         return;
@@ -455,7 +454,7 @@ void ImportAnnotationsFromCSVDialog::preview(bool silent) {
     for (int row = 0; row < lines.size(); row++) {
         const QStringList &rowData = lines.at(row);
         for (int column = 0; column < rowData.size(); column++) {
-            QString token = rowData.at(column);
+            const QString &token = rowData.at(column);
             QTableWidgetItem *item = new QTableWidgetItem(token);
             item->setFlags(Qt::ItemIsEnabled);
             previewTable->setItem(row, column, item);

@@ -24,6 +24,7 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -32,8 +33,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include "TaskLocalStorage.h"
 #include "hmmer2/funcs.h"
@@ -654,7 +653,7 @@ plan7_s *HMMIO::cloneHMM(plan7_s *src) {
 }
 
 QString HMMIO::getHMMFileFilter() {
-    return DialogUtils::prepareFileFilter(tr("HMM models"), QStringList(HMM_EXT));
+    return FileFilters::createFileFilter(tr("HMM models"), {HMM_EXT}, false);
 }
 
 DNAAlphabetType HMMIO::convertHMMAlphabet(int atype) {

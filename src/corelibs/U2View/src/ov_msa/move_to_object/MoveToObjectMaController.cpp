@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
@@ -36,7 +37,6 @@
 
 #include <U2Formats/ExportTasks.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
@@ -140,8 +140,9 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     LastUsedDirHelper lod;
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
-    QString filter = DialogUtils::prepareDocumentsFileFilter(formatConstraints, false);
-    QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    formatConstraints.flagsToSupport.setFlag(DocumentFormatFlag_SupportWriting, true);
+    QString filter = FileFilters::createFileFilter(formatConstraints);
+    QString selectedFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
     lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
@@ -195,7 +196,7 @@ void RemoveRowsFromMaObjectTask::run() {
     CHECK_OP(stateInfo, );
 
     maObject->removeRowsById(rowIds);
-    // If not cleared explicitly another row is auto-selected and the result may be misinterpret like not all rows were moved.
+    // If not cleared explicitly another row is auto-selected and the result may be misinterpreted like not all rows were moved.
     maEditor->getSelectionController()->clearSelection();
 }
 

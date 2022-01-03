@@ -23,14 +23,13 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -78,7 +77,7 @@ void ImportPhredQualityWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
 
-    delegates[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), true, false, false);
+    delegates[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", true, false, false);
 
     {
         QVariantMap m;

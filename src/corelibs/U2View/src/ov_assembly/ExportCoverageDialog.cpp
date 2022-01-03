@@ -24,11 +24,9 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/GUrlUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>

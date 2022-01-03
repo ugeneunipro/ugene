@@ -27,13 +27,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CustomExternalTool.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -190,7 +190,7 @@ QTreeWidgetItem *ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeW
     toolkitItem->setIcon(0, icon);
     treeWidget->addTopLevelItem(toolkitItem);
 
-    //draw widget for path select button
+    // draw widget for path select button
     QWidget *widget = new QWidget(treeWidget);
     QToolButton *selectToolKitPathButton = new QToolButton(widget);
     selectToolKitPathButton->setVisible(true);
@@ -222,12 +222,12 @@ void ExternalToolSupportSettingsPageWidget::sl_onClickLink(const QUrl &url) {
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_importCustomToolButtonClicked() {
-    //UGENE-6553 temporary removed
-    //QObjectScopedPointer<ImportExternalToolDialog> dialog = new ImportExternalToolDialog(this);
-    //dialog->exec();
+    // UGENE-6553 temporary removed
+    // QObjectScopedPointer<ImportExternalToolDialog> dialog = new ImportExternalToolDialog(this);
+    // dialog->exec();
 
     LastUsedDirHelper lod("import external tool");
-    const QString filter = DialogUtils::prepareFileFilter("UGENE external tool config file", {"xml"}, true, {});
+    QString filter = FileFilters::createFileFilter(tr("UGENE external tool config file"), {"xml"}, false);
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select configuration file to import"), lod.dir, filter);
     if (!lod.url.isEmpty()) {
         AppContext::getTaskScheduler()->registerTopLevelTask(new ImportCustomToolsTask(QDir::toNativeSeparators(lod.url)));
@@ -607,7 +607,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
     twIntegratedTools->clearSelection();
     foreach (QTreeWidgetItem *item, listOfItems) {
         QWidget *itemWid = item->treeWidget()->itemWidget(item, 1);
-        if (par == itemWid) {    //may be no good method for check QTreeWidgetItem
+        if (par == itemWid) {  // may be no good method for check QTreeWidgetItem
             emit si_setLockState(true);
             QString toolId = item->data(0, Qt::ItemDataRole::UserRole).toString();
             if (path.isEmpty()) {
@@ -674,7 +674,7 @@ void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
         }
     }
 
-    //no description or tool custom description
+    // no description or tool custom description
     ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(id);
     setDescription(tool);
 }
@@ -698,7 +698,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onPathEditWidgetClick() {
     }
 }
 
-//looks in selected folder +1 level 1 subfolders
+// looks in selected folder +1 level 1 subfolders
 void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
     LastUsedDirHelper lod("toolkit path");
     QString dir;
@@ -821,7 +821,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
 }
 
 ////////////////////////////////////////
-//PathLineEdit
+// PathLineEdit
 void PathLineEdit::sl_onBrowse() {
     LastUsedDirHelper lod(type);
 
@@ -855,4 +855,4 @@ void PathLineEdit::focusInEvent(QFocusEvent * /*event*/) {
     emit si_focusIn();
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -22,11 +22,9 @@
 #include "TCoffeeSupportRunDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
-#include <QToolButton>
 
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GUrlUtils.h>
+#include <U2Core/FileFilters.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -37,7 +35,7 @@
 namespace U2 {
 
 ////////////////////////////////////////
-//TCoffeeSupportRunDialog
+// TCoffeeSupportRunDialog
 TCoffeeSupportRunDialog::TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
@@ -63,7 +61,7 @@ void TCoffeeSupportRunDialog::accept() {
     QDialog::accept();
 }
 ////////////////////////////////////////
-//TCoffeeWithExtFileSpecifySupportRunDialog
+// TCoffeeWithExtFileSpecifySupportRunDialog
 TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
@@ -81,7 +79,7 @@ TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDi
 
 void TCoffeeWithExtFileSpecifySupportRunDialog::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     if (lod.url.isEmpty()) {
         return;
     }
@@ -123,4 +121,4 @@ void TCoffeeWithExtFileSpecifySupportRunDialog::accept() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

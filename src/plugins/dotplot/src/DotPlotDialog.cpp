@@ -27,14 +27,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/global.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -308,7 +307,7 @@ void DotPlotDialog::sl_invertedDefaultColorButton() {
 }
 
 void DotPlotDialog::sl_loadSequenceButton() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
     LastUsedDirHelper lod("DotPlot file");
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open file"), lod.dir, filter);
     if (!lod.url.isEmpty()) {

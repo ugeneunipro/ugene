@@ -28,7 +28,6 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2Region.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/SeqPasterWidgetController.h>
 
 class Ui_EditSequenceDialog;

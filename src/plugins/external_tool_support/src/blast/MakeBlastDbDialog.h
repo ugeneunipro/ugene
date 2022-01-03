@@ -24,8 +24,6 @@
 
 #include <QDialog>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "MakeBlastDbTask.h"
 
 #include <ui_MakeBlastDbDialog.h>

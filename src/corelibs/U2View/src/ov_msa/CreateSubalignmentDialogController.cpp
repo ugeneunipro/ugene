@@ -31,7 +31,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -39,7 +38,6 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/SaveDocumentController.h>

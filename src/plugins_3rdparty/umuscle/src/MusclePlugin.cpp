@@ -25,10 +25,10 @@
 #include <QMainWindow>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -45,7 +45,6 @@
 #include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
-#include <U2View/RealignSequencesInAlignmentTask.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MuscleTask.h"
@@ -185,7 +184,7 @@ void MuscleMSAEditorContext::sl_align() {
     }
 
     AlignGObjectTask *muscleTask = new MuscleGObjectRunFromSchemaTask(obj, s);
-    Task *alignTask = nullptr;
+    Task *alignTask;
 
     if (dlg->translateToAmino()) {
         QString trId = dlg->getTranslationId();
@@ -208,9 +207,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
-    QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    QString filter = f2 + "\n" + f1;
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with sequences"), lod, filter);
@@ -231,7 +228,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
     assert(!obj->isStateLocked());
 
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE}, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with alignment"), lod, filter);
 

@@ -25,23 +25,15 @@
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPixmap>
-#include <QPrinter>
 #include <QScrollArea>
 #include <QTreeWidget>
-#include <QVBoxLayout>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/OrderedToolbar.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>

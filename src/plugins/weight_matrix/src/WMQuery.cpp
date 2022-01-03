@@ -27,14 +27,9 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Log.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/TaskSignalMapper.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/BaseTypes.h>
 

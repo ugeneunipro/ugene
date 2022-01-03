@@ -22,15 +22,13 @@
 #ifndef _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
 #define _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
 
-#include <ui_KalignDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/GAutoDeleteList.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "KalignTask.h"
+
+#include <ui_KalignDialog.h>
 
 namespace U2 {
 

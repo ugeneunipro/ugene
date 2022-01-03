@@ -35,7 +35,6 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
