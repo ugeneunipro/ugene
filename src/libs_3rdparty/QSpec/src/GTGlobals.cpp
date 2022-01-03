@@ -28,6 +28,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
+#include "utils/GTThread.h"
+
 #ifdef Q_OS_WIN
 #    include <windows.h>
 #else
@@ -60,9 +62,27 @@ void GTGlobals::sendEvent(QObject *obj, QEvent *e) {
     qApp->notify(obj, e);
 }
 
-void GTGlobals::takeScreenShot(const QString &path) {
-    QPixmap originalPixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-    originalPixmap.save(path);
+QPixmap GTGlobals::takeScreenShot(HI::GUITestOpStatus &os) {
+    if (GTThread::isMainThread()) {
+        return QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
+    }
+    class TakeScreenshotScenario : public CustomScenario {
+    public:
+        TakeScreenshotScenario();
+        void run(HI::GUITestOpStatus &) override {
+            pixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
+        }
+        QPixmap pixmap;
+    };
+    auto takeScreenshotScenario = new TakeScreenshotScenario();
+    GTThread::runInMainThread(os, takeScreenshotScenario);
+    return takeScreenshotScenario->pixmap;
+}
+
+void GTGlobals::takeScreenShot(HI::GUITestOpStatus &os, const QString &path) {
+    QPixmap originalPixmap = takeScreenShot(os);
+    bool ok = originalPixmap.save(path);
+    CHECK_SET_ERR(ok, "Failed to save pixmap to file: " + path);
 }
 
 GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchPolicy, int _depth)

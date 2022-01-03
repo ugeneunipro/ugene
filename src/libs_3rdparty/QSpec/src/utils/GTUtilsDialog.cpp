@@ -181,7 +181,7 @@ void HangChecker::sl_check() {
             mightHung = false;
         }
     } catch (GUITestOpStatus *) {
-        GTGlobals::takeScreenShot(GUITest::screenshotDir + QDateTime::currentDateTime().toString() + ".jpg");
+        GTGlobals::takeScreenShot(os, GUITest::screenshotDir + QDateTime::currentDateTime().toString() + ".jpg");
         QWidget *w = QApplication::activeModalWidget();
         while (w != NULL) {
             w->close();

@@ -43,9 +43,10 @@
 namespace U2 {
 
 bool UserActionsWriter::eventFilter(QObject *, QEvent *event) {
-    QThread *currentThread = QThread::currentThread();
     QEvent::Type eventType = event->type();
-    SAFE_POINT(currentThread == QCoreApplication::instance()->thread(), "Got UX event out of the main thread: " + QString::number(eventType), false);
+
+    QThread *currentThread = QThread::currentThread();
+    SAFE_POINT(currentThread == QCoreApplication::instance()->thread(), "Got UX event not in the main thread: " + QString::number(eventType), false);
 
     if (eventType == QEvent::MouseButtonPress ||
         eventType == QEvent::MouseButtonRelease ||
