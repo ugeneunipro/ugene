@@ -2762,7 +2762,7 @@ UGENE содержит несохраненные изменения.</translati
     <name>U2::StringAdapterFactory</name>
     <message>
         <location filename="../src/io/StringAdapter.cpp" line="30"/>
-        <source>String typedTextBuffer</source>
+        <source>String buffer</source>
         <translation>Буфер строки</translation>
     </message>
 </context>
@@ -2977,7 +2977,7 @@ UGENE содержит несохраненные изменения.</translati
     <name>U2::VFSAdapterFactory</name>
     <message>
         <location filename="../src/io/VFSAdapter.cpp" line="33"/>
-        <source>Memory typedTextBuffer</source>
+        <source>Memory buffer</source>
         <translation>Буфер в памяти</translation>
     </message>
 </context>

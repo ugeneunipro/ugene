@@ -5,7 +5,7 @@
     <name>ADVClipboard</name>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="53"/>
-        <source>Cannot put sequence data into the clipboard typedTextBuffer.
+        <source>Cannot put sequence data into the clipboard buffer.
 Probably, the data are too big.</source>
         <translation>Sıra verileri pano arabelleğine koyulamıyor.
 Muhtemelen veriler çok büyük.</translation>
