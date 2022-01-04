@@ -707,8 +707,18 @@ void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoi
 }
 
 void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus &os) {
-    QSplitter *splitter = GTWidget::findExactWidget<QSplitter *>(os, "splitter", GTWidget::findWidget(os, "project_view"));
-    splitter->setSizes(QList<int>() << splitter->height() << 0);
+    class SetSizesScenario : public CustomScenario {
+    public:
+        SetSizesScenario(QSplitter *_splitter)
+            : splitter(_splitter) {
+        }
+        void run(HI::GUITestOpStatus &) override {
+            splitter->setSizes(QList<int>() << splitter->height() << 0);
+        }
+        QSplitter *splitter = nullptr;
+    };
+    auto splitter = GTWidget::findExactWidget<QSplitter *>(os, "splitter", GTWidget::findWidget(os, "project_view"));
+    GTThread::runInMainThread(os, new SetSizesScenario(splitter));
 }
 
 #define GT_METHOD_NAME "markSequenceAsCircular"

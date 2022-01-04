@@ -42,7 +42,7 @@ public:
 
     static FindTandemsTaskSettings defaultSettings();
 
-    virtual void accept();
+    void accept() override;
 
 protected slots:
     void minPeriodChanged(int min);
