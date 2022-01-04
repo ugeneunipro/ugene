@@ -24,10 +24,8 @@
 
 #include <QEvent>
 #include <QMouseEvent>
-#include <QMutex>
 #include <QObject>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -38,29 +36,50 @@ public:
     UserActionsWriter();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
-    void generateMouseMessage(QMouseEvent *m);
-    QString getTreeWidgetInfo(QMouseEvent *m, QWidget *parent);
-    QString getAdditionalWidgetInfo(QMouseEvent *m, QWidget *w);
-    QString getMouseButtonInfo(QMouseEvent *m);
-    QString getWidgetText(QMouseEvent *m, QWidget *w);
+    /** Logs message for the current event. Calls 'logMouseEventMessage' to do it. */
+    void logMouseEvent(QMouseEvent *mouseEvent);
 
-    void generateKeyMessage(QKeyEvent *k);
-    QString getKeyModifiersInfo(QKeyEvent *k);
+    /** Logs mouse event message only if it is different from the previous message. Saves the logged event into 'prevMessage'.  */
+    void logMouseEventMessage(const QString &message);
 
-    QString getDialogInfo();
-    void filterMouseMessages(QString message);
-    void filterKeyboardMessages(QKeyEvent *k, QString message);
+    /** Logs message for the current event. Calls 'logKeyEventMessage' to do it. */
+    void logKeyEvent(QKeyEvent *keyEvent);
 
-    QMutex guard;
-    QMap<QEvent::Type, QString> typeMap;
-    QMap<Qt::Key, QString> keys;
+    /** Logs key event message only if it is different from the previous message. Saves the logged event into 'prevMessage'.  */
+    void logKeyEventMessage(QKeyEvent *keyEvent, const QString &message);
+
+    static QString getTreeWidgetInfo(QMouseEvent *mouseEvent, QWidget *parent);
+
+    static QString getAdditionalWidgetInfo(QMouseEvent *mouseEvent, QWidget *widget);
+
+    static QString getMouseButtonInfo(QMouseEvent *mouseEvent);
+
+    static QString getWidgetText(QMouseEvent *mouseEvent, QWidget *widget);
+
+    static QString getKeyModifiersInfo(QKeyEvent *keyEvent);
+
+    static QString getActiveModalWidgetInfo();
+
+    /** Map of all loggable events by QEvent:Type. */
+    QMap<QEvent::Type, QString> loggableEventNames;
+
+    /** Map of all loggable key names. */
+    QMap<Qt::Key, QString> keyNameByKeyCode;
+
+    /** Previously logged message. */
     QString prevMessage;
-    QString buffer;
-    int counter;
-    QPoint prevWindowSize;
+
+    /** Stores typed text. Used to avoid 'by-char' logging in favor of 'by-full-string' logging. */
+    QString typedTextBuffer;
+
+    /** Keeps the number of times the same key is pressed before logging. */
+    int keyPressCounter = 0;
+
+    /** Last reported windows size. */
+    QSize lastReportedWindowSize;
 };
 
 }  // namespace U2

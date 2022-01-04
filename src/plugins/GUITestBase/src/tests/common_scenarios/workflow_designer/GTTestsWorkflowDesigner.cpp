@@ -52,7 +52,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
@@ -136,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    // 1. Do menu Settings->Prefrences
+    // 1. Do menu Settings->Preferences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::minimal));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
@@ -164,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
-    // 1. Do menu Settings->Prefrences
+    // 1. Do menu Settings->Preferences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::extended));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
@@ -192,27 +191,21 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    // 1. Do menu {Settings->Prefrences}
+    // Activate WD preferences page. Change Background color for workers.
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, 255, 0, 0));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
-    // 2. Activate WD prefrences page. Change Backgrounf color for workers.
-
-    // 3. Open WD and place any worker on working area.
+    // Open WD and place any worker on working area.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    // Expected state: workers background color must be same as in prefrences
+    // Expected state: workers background color must be same as in preferences
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
-    QPoint p(GTUtilsWorkflowDesigner::getItemLeft(os, "Read Alignment") + 20,
-             GTUtilsWorkflowDesigner::getItemTop(os, "Read Alignment") + 20);
+    QImage image = GTGlobals::takeScreenShot(os);
 
-    QPixmap pixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(p);
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name() == "#ffbfbf", QString("Expected: #ffbfbf, found: %1").arg(c.name()));
+    QPoint samplePoint(GTUtilsWorkflowDesigner::getItemLeft(os, "Read Alignment") + 10, GTUtilsWorkflowDesigner::getItemTop(os, "Read Alignment") + 10);
+    QRgb rgb = image.pixel(samplePoint);
+    QColor color(rgb);
+    CHECK_SET_ERR(color.name() == "#ffbfbf", QString("Expected: #ffbfbf, found: %1").arg(color.name()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {

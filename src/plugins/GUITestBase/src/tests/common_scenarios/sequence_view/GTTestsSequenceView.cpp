@@ -29,6 +29,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
@@ -1737,8 +1738,9 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff range"));
-            QGroupBox *minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
-            minmaxGroup->setChecked(true);
+
+            auto minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
+            GTGroupBox::setChecked(os, minmaxGroup);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);

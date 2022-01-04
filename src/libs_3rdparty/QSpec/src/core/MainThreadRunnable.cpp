@@ -27,10 +27,10 @@
 namespace HI {
 
 MainThreadRunnable::MainThreadRunnable(GUITestOpStatus &os, CustomScenario *scenario)
-    : QObject(NULL),
+    : QObject(nullptr),
       os(os),
       scenario(scenario) {
-    if (Q_UNLIKELY(NULL == scenario)) {
+    if (scenario == nullptr) {
         os.setError("Scenario is NULL");
         return;
     }
