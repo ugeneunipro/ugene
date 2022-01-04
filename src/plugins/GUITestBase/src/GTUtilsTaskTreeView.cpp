@@ -145,7 +145,7 @@ QList<QTreeWidgetItem *> GTUtilsTaskTreeView::getTaskTreeViewItems(QTreeWidgetIt
 }
 
 void GTUtilsTaskTreeView::cancelTask(HI::GUITestOpStatus &os, const QString &itemName) {
-    Runnable *popupChooser = new PopupChooser(os, QStringList() << "Cancel task", GTGlobals::UseMouse);
+    Runnable *popupChooser = new PopupChooser(os, {"Cancel task"}, GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, popupChooser);
     click(os, itemName, Qt::RightButton);
     GTGlobals::sleep(3000);
@@ -184,14 +184,13 @@ QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(HI::GUITestOpStatus &os, con
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QTreeWidgetItem *item = getTreeWidgetItem(os, itemName);
-        if (item) {
+        if (item != nullptr) {
             QPoint itemCenter = treeWidget->visualItemRect(item).center();
             itemCenter.setY(itemCenter.y() + treeWidget->visualItemRect(item).height() + 5);  //+ height because of header item; +5 because height is not enough
             return treeWidget->mapToGlobal(itemCenter);
         }
     }
-    // TODO: report error?
-    return treeWidget->mapToGlobal(treeWidget->rect().center());
+    GT_FAIL("Tree item not found: " + itemName, {});
 }
 #undef GT_METHOD_NAME
 

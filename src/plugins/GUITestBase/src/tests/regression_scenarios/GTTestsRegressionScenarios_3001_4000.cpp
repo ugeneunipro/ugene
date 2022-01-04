@@ -456,9 +456,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     file.open(QIODevice::WriteOnly);
     file.write(data);
     file.close();
-    // QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_1.gb");
-    // QFile(testDir + "_common_data/regression/3085/murine_1.gb").copy(sandBoxDir + "murine_3085_1.gb");
-    GTGlobals::sleep(6000);
+    GTGlobals::sleep(6000);  // Wait until UGENE detects the changes.
 
     // Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
@@ -476,7 +474,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     file1.write(data);
     file1.close();
 
-    GTGlobals::sleep(6000);
+    GTGlobals::sleep(6000);  // Wait until UGENE detects the changes.
 
     // Expected state:: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded2Sv = GTUtilsMdi::activeWindow(os);
@@ -496,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QByteArray data = GTFile::readAll(os, testDir + "_common_data/regression/3085/test_1.gb");
 
-    GTGlobals::sleep(1000);  // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
+    GTGlobals::sleep(1000);  // Wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     QFile file(sandBoxDir + "murine_3085_2.gb");
     file.open(QIODevice::WriteOnly);
     file.write(data);
@@ -1122,17 +1120,12 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     // Expected: the task becomes cancelled.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Restriction Sites"}));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
-    GTGlobals::systemSleep();
-    for (Task *task : qAsConst(AppContext::getTaskScheduler()->getTopLevelTasks())) {
-        if (task->getTaskName() != "Auto-annotations update task") {
-            continue;
-        }
-        GTGlobals::systemSleep();
-        task->cancel();
-    }
-    CHECK_SET_ERR(AppContext::getTaskScheduler()->getTopLevelTasks().isEmpty(), "Task is not cancelled");
+
+    GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3209_1) {
@@ -1830,7 +1823,7 @@ GUI_TEST_CLASS_DEFINITION(test_3288) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
 
-    // 3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "opti,ized", build the tree
+    // 3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "optimized", build the tree
     QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
     int percent = 0;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && percent == 0; time += GT_OP_CHECK_MILLIS) {
@@ -2002,43 +1995,38 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     CHECK_OP(os, );
 
     // 3. Drag the sequence to the alignment
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from current project"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from current project"}));
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "human_T1.fa", "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 4. Make the sequence reference
+    // 4. Make the sequence reference.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-5, 18));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_seq_as_reference"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 5. Change the highlighting mode to "Disagreements"
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    QComboBox *highlightingSchemeCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
+    auto highlightingSchemeCombo = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingSchemeCombo, "Disagreements");
 
     // 6. Use the dots
-    QCheckBox *useDotsCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "useDots"));
+    auto useDotsCheckBox = GTWidget::findCheckBox(os, "useDots");
     GTCheckBox::setChecked(os, useDotsCheckBox);
 
-    // 7. Drag the reference sequence in the list of sequences
-    const QPoint mouseDragPosition(-5, 18);
+    // 7. Drag the reference sequence in the list of sequences.
+    QPoint mouseDragPosition(-5, 18);
     GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition);
-    //    GTMouseDriver::click();
-    //    GTGlobals::sleep();
-    // GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), GTMouseDriver::getMousePosition() + QPoint(0, -200));
 
     GTMouseDriver::click();
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);  // To avoid double click.
     GTMouseDriver::press();
     for (int i = 0; i < 50; i++) {
         GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, -5));
     }
     GTGlobals::sleep(200);
-    // GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition + QPoint(0, -10));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(200);
 
     // Expected result: the highlighting mode is the same, human_T1 is still the reference.
     CHECK_SET_ERR(highlightingSchemeCombo->currentText() == "Disagreements", "Invalid highlighting scheme");
@@ -2564,9 +2552,9 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/PF07724_full_family.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    QLabel *timeLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
+    auto timeLabel = GTWidget::findLabel(os, "timeLabel", GTUtilsDashboard::getDashboard(os));
     QString timeBefore = timeLabel->text();
-    GTGlobals::sleep(3000);
+    GTGlobals::sleep(3000);  // Wait for label to change.
     QString timeAfter = timeLabel->text();
     CHECK_SET_ERR(timeBefore != timeAfter, "timer is not changed, timeBefore: " + timeBefore + ", timeAfter: " + timeAfter);
     GTUtilsTask::cancelTask(os, "Execute workflow");
@@ -2796,13 +2784,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             GTSpinBox::checkLimits(os, startPos, 1, 604);
             GTSpinBox::checkLimits(os, endPos, 1, 604);
 
-            // GTGlobals::sleep();
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
 
@@ -2877,6 +2859,7 @@ GUI_TEST_CLASS_DEFINITION(test_3471) {
 GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Conocephalus_discolor");
@@ -2884,8 +2867,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
 
-    QLineEdit *outputFilePathEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outputFileLineEdit"));
-    CHECK_SET_ERR(nullptr != outputFilePathEdit, "Invalid output file path edit field");
+    auto outputFilePathEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
 
     GTWidget::setFocus(os, outputFilePathEdit);
 #ifndef Q_OS_DARWIN
@@ -2897,14 +2879,14 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTKeyboardDriver::keySequence("///123/123/123");
 
     int deleteCounter = 100;
-    while (0 < --deleteCounter) {
+    while (--deleteCounter > 0) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
     }
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));
 
-    GTGlobals::sleep(5000);  // needed for windows
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::setFocus(os, outputFilePathEdit);
 #ifndef Q_OS_DARWIN
@@ -2916,7 +2898,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTKeyboardDriver::keySequence(sandBoxDir + "123/123/123/1.aln");
 
     deleteCounter = 15;
-    while (0 < --deleteCounter) {
+    while (--deleteCounter > 0) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
     }
 
@@ -3224,15 +3206,12 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     };
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new AllEnzymesSearchScenario()));
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
-    GTThread::waitForMainThread();
 
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);  // Wait for the task to run.
 
     GTUtilsTaskTreeView::openView(os);
     GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find TFBS with SITECON...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find TFBS with SITECON..."});
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "SITECON search") == false, "SITECON task is still running");
     GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
@@ -3700,27 +3679,27 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(1000);
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-            CHECK_SET_ERR(plainText != nullptr, "plain text not found");
+
+            auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
             GTWidget::click(os, plainText);
+
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+
             GTKeyboardDriver::keyClick('=');
+
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep();
+
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
-            GTGlobals::sleep();
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
@@ -4878,7 +4857,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     // 4. Delete the object from the document.
     GTUtilsProjectTreeView::click(os, "fungal - all");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
 
     // Expected: task is cancelled.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");

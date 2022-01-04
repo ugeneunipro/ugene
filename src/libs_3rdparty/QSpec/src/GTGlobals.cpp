@@ -28,31 +28,12 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
-#ifdef Q_OS_WIN
-#    include <windows.h>
-#else
-#    include <unistd.h>
-#endif
-
 namespace HI {
-namespace {
-void sysSleep(int sec) {
-#ifdef Q_OS_WIN
-    Sleep(1000 * sec);
-#else
-    sleep(sec);
-#endif
-}
-}  // namespace
 
 void GTGlobals::sleep(int msec) {
     if (msec > 0) {
         QTest::qWait(msec);
     }
-}
-
-void GTGlobals::systemSleep(int sec) {
-    sysSleep(sec);
 }
 
 void GTGlobals::sendEvent(QObject *obj, QEvent *e) {

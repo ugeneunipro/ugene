@@ -655,19 +655,19 @@ GUI_TEST_CLASS_DEFINITION(test_2076) {
     WorkflowProcessItem *write = GTUtilsWorkflowDesigner::addElement(os, "Write Alignment");
     GTUtilsWorkflowDesigner::connect(os, read, write);
     GTUtilsWorkflowDesigner::click(os, read);
+
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "test_2076.uwl", "test_2076");
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    Expected state: workflow monitor appeared
 
     //    3) Click on the 'Dashboards manager' tool button
-    QWidget *dmButton = GTAction::button(os, GTAction::findAction(os, "Dashboards manager"));
-    GTWidget::click(os, dmButton);
     //    Expected state: 'Dashboards manager' dialog appeared
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             //    4) Select some dashboards in the dialog
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    5) Click on the 'Remove selected' button
@@ -679,13 +679,13 @@ GUI_TEST_CLASS_DEFINITION(test_2076) {
 
             //    Expected state: selected dashboards were removed
             bool pres = DashboardsManagerDialogFiller::isDashboardPresent(os, "test_2076 1");
-            CHECK_SET_ERR(!pres, "dashboard unexpectidly present")
+            CHECK_SET_ERR(!pres, "dashboard is unexpectedly present")
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new custom()));
-    GTGlobals::sleep();
+    GTWidget::click(os, GTAction::button(os, GTAction::findAction(os, "Dashboards manager")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2077) {
@@ -1019,15 +1019,11 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
-    GTGlobals::sleep();
 
     // 4. Set some name to the result file.
-    //    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
-    //    CHECK_SET_ERR(table,"tableView not found");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
-    //    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,1));
-    //    GTMouseDriver::click();
+
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
     GTKeyboardDriver::keySequence(s + "/2150_0001.sto");
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", s + "/2150_0001.aln", GTUtilsWorkflowDesigner::textValue);
@@ -1036,11 +1032,9 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
     // 5. Run the workflow.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTGlobals::sleep(5000);
-    // GTUtilsTaskTreeView::waitTaskFinished(os,1000);
 
     // 6. During the workflow execution open the "Tasks" panel in the bottom, find in the task tree the "MUSCLE alignment" subtask and cancel it.
     GTUtilsTask::cancelSubTask(os, "MUSCLE alignment");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2152) {
@@ -1177,7 +1171,6 @@ GUI_TEST_CLASS_DEFINITION(test_2188) {
     CHECK_OP(os, );
     GTFileDialog::openFile(os, helper.dir, helper.fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 
     // 2. At the same time open the file with a text editor
     // 3. Change something and save
@@ -1190,12 +1183,12 @@ GUI_TEST_CLASS_DEFINITION(test_2188) {
     qint64 writed = file.write("AAAAAAAAAA");
     CHECK_SET_ERR(10 == writed, "Can not write to the file");
     file.close();
-    GTGlobals::sleep(6000);
+    GTGlobals::sleep(6000);  // Wait for the dialog.
 
     // Expected state: All the sequences were reloaded and displayed correctly in sequence view
     int length = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_OP(os, );
-    CHECK_SET_ERR(199960 == length, "The file lenght is wrong");
+    CHECK_SET_ERR(199960 == length, "The file length is wrong");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2187) {
@@ -1707,13 +1700,12 @@ GUI_TEST_CLASS_DEFINITION(test_2282) {
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 
     GTUtilsMdi::closeWindow(os, GTUtilsMdi::activeWindowTitle(os));
-    GTGlobals::sleep(100);
 
     // 3. Delete "chrM.sorted.bam.ugenedb" from the file system (i.e. not from UGENE).
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     bool deleteResult = QFile::remove(QFileInfo(assFileName).absoluteFilePath());
     CHECK_SET_ERR(deleteResult, "Unable to remove assembly file");
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(5000);  // Wait for the dialog.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2284) {
@@ -2091,18 +2083,12 @@ GUI_TEST_CLASS_DEFINITION(test_2375) {
     //    2. Fill the import dialog with valid data. Begin the importing.
     //    Expected state: importing fails, UGENE doesn't crash.
     QString destUrl = testDir + "_common_data/scenarios/sandbox/test_2375.ugenedb";
-    GTLogTracer logtracer;
+    GTLogTracer logTracer;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, destUrl));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "broken_invalid_cigar.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    CHECK_SET_ERR(scheduler, "Task scheduler is NULL");
-    while (!scheduler->getTopLevelTasks().isEmpty()) {
-        GTGlobals::sleep();
-    }
-
-    CHECK_SET_ERR(logtracer.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(logTracer.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2377) {
@@ -4060,7 +4046,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 
     fileData.replace("gag polyprotein", "ggg_polyprotein");
 
-    GTGlobals::sleep(1000);  // wait at least 1 second: UGENE does not detect file changes within 1 second interval.
+    GTGlobals::sleep(1000);  // Wait at least 1 second: UGENE does not detect file changes within 1 second interval.
     opened = file.open(QIODevice::WriteOnly);
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713.gb");
     file.write(fileData);
@@ -4517,9 +4503,9 @@ GUI_TEST_CLASS_DEFINITION(test_2801_1) {
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT", GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep(20000);
+    GTGlobals::sleep(10000);  // Give a task some time to run.
 
-    // 3. Cancel the align task.
+    // 3. Cancel the "align" task.
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::checkTask(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
@@ -4934,7 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
 
 GUI_TEST_CLASS_DEFINITION(test_2903) {
     //    1. Open the attached file
-    GTLogTracer l;
+    GTLogTracer logTracer;
     GTFileDialog::openFile(os, testDir + "_common_data/regression/2903", "unknown_virus.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4956,7 +4942,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
                                                          "der_area_virus_X"));
     QString blastTaskName = "RemoteBLASTTask";
     GTUtilsTaskTreeView::checkTask(os, blastTaskName);
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep(10000); // Give a task some time to run.
 
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
     bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
@@ -4964,7 +4950,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
         GTUtilsTaskTreeView::cancelTask(os, blastTaskName);
     }
 
-    GTUtilsLog::check(os, l);
+    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2907) {
