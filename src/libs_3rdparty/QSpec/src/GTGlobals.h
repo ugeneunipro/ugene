@@ -80,8 +80,8 @@ public:
     /** Takes a screenshot and saves to file. */
     static void takeScreenShot(HI::GUITestOpStatus &os, const QString &path);
 
-    /** Takes a screenshot and returns a pixmap. */
-    static QPixmap takeScreenShot(HI::GUITestOpStatus &os);
+    /** Takes a screenshot and returns an image. */
+    static QImage takeScreenShot(HI::GUITestOpStatus &os);
 
     static void GUITestFail();
 };

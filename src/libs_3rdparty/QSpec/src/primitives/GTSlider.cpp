@@ -52,7 +52,8 @@ void GTSlider::setValue(GUITestOpStatus &os, QSlider *slider, int value) {
 
     GTThread::runInMainThread(os, new MainThreadScenario(slider, value));
 }
-#undef GT_CLASS_NAME
 
 #undef GT_METHOD_NAME
+
+#undef GT_CLASS_NAME
 }  // namespace HI

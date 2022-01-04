@@ -155,8 +155,8 @@ void GUITestThread::removeDir(const QString &dirName) {
 
 void GUITestThread::saveScreenshot() {
     HI::GUITestOpStatus os;
-    QPixmap pixmap = GTGlobals::takeScreenShot(os);
-    pixmap.save(HI::GUITest::screenshotDir + testToRun->getFullName() + ".jpg");
+    QImage image = GTGlobals::takeScreenShot(os);
+    image.save(HI::GUITest::screenshotDir + testToRun->getFullName() + ".jpg");
 }
 
 void GUITestThread::cleanup() {
