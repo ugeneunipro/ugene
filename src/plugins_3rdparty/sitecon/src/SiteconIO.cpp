@@ -39,15 +39,13 @@
 #include "SiteconMath.h"
 #include "SiteconPlugin.h"
 
-/* TRANSLATOR U2::IOAdapter */
-
 namespace U2 {
 
 const QString SiteconIO::SITECON_ID("sitecon");
 const QString SiteconIO::SITECON_EXT = SiteconIO::SITECON_ID;
 
 QString SiteconIO::getFileFilter() {
-    return FileFilters::createFileFilter(tr("Sitecon models"), {SITECON_EXT}, false);
+    return FileFilters::createFileFilter(tr("Sitecon models"), {SITECON_EXT}, true);
 }
 
 #define FILE_HEADER "SITECON MODEL"
