@@ -733,7 +733,6 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, sandBoxDir + "test_1038_seq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // get the list of sequences in file and read names in assembly
     Document *seqDoc = GTUtilsDocument::getDocument(os, "test_1038_seq");
@@ -747,7 +746,6 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_1038_bam"));
     GTFileDialog::openFile(os, testDir + "_common_data/bam", "small.bam.sorted.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "ref_and_others [test_1038_bam]");
@@ -789,7 +787,6 @@ GUI_TEST_CLASS_DEFINITION(test_1047) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_1047.ugenedb", dataDir + "samples/Assembly", "chrM.fa"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Choose a color scheme in options panel of assembly browser. Try zooming with mouse wheel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     QComboBox *colorBox = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
@@ -812,11 +809,9 @@ GUI_TEST_CLASS_DEFINITION(test_1048) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/1.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/2.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *act = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "readHintEnabledAction");
@@ -1087,7 +1082,6 @@ GUI_TEST_CLASS_DEFINITION(test_1064) {
     // Expected state: "Import SAM file" dialog opened with Reference lineedit and red text saying that the SAM file doesn't contain the header
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_1064.ugenedb", dataDir + "samples/Assembly", "chrM.fa"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -2578,7 +2572,6 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_1246.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly/", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class ExportDocumentCustomFiller : public Filler {
     public:
@@ -3842,7 +3835,6 @@ GUI_TEST_CLASS_DEFINITION(test_1376) {
     // 1. Open data/position_weight_matrix/JASPAR/fungi/MA0276.1.pfm.
     GTFileDialog::openFile(os, dataDir + "position_weight_matrix/JASPAR/fungi/MA0276.1.pfm");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: PFM matrix view with logo and weight table is opened.
     // QWidget *mdi = GTUtilsMdi::findWindow(os, "Matrix Viewer");
@@ -3897,7 +3889,6 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
     QString ugenedbFileName = testDir + "_common_data/scenarios/sandbox/test_1390.ugenedb";
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, ugenedbFileName));
     GTFileDialog::openFile(os, testDir + "_common_data/bam", "chrM.sorted.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
@@ -4060,7 +4051,6 @@ GUI_TEST_CLASS_DEFINITION(test_1419) {
     GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, lt);
 }
 
@@ -4089,7 +4079,6 @@ GUI_TEST_CLASS_DEFINITION(test_1420) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     qint64 expectedLength = 4938920;
@@ -5101,7 +5090,6 @@ GUI_TEST_CLASS_DEFINITION(test_1528) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Make the "chrM.sorted.bam.ugenedb" read-only
 
     //    3. Open "chrM.fa" in UGENE
@@ -6010,7 +5998,6 @@ GUI_TEST_CLASS_DEFINITION(test_1626) {
     // TEST UPDATED: for now it is impossible to run KALIGN on raw alphabet alignment
     // 1. Open file _common_data/regression/1626/1626.fa
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1626", "1626.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Change color scheme

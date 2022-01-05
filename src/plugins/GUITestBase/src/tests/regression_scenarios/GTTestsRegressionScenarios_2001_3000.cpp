@@ -1694,7 +1694,6 @@ GUI_TEST_CLASS_DEFINITION(test_2282) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, assFileName));
     GTFileDialog::openFile(os, testDir + "_common_data/bam", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3) The Project View with document "chrM.sorted.bam.ugenedb" has been opened.
     GTUtilsProjectTreeView::findIndex(os, assDocName);
@@ -3004,7 +3003,6 @@ GUI_TEST_CLASS_DEFINITION(test_2540) {
     //    2. Try to open this file with UGENE.
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, sandBoxDir + "test_2540/chrM.sorted.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: an import dialog appeared.
     //    3. Set the destination location with enough permissions.
@@ -5206,7 +5204,6 @@ GUI_TEST_CLASS_DEFINITION(test_2930) {
 GUI_TEST_CLASS_DEFINITION(test_2931) {
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2931"));
     GTUtilsProject::openFile(os, dataDir + "samples/ACE/K26.ace");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTLogTracer l;

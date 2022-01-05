@@ -2113,7 +2113,6 @@ GUI_TEST_CLASS_DEFINITION(test_0854) {
      */
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/PBR322.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "PBR322.gb"));
     GTMouseDriver::click();
@@ -2551,7 +2550,6 @@ GUI_TEST_CLASS_DEFINITION(test_0899) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -2791,7 +2789,6 @@ GUI_TEST_CLASS_DEFINITION(test_0940) {
     GTFile::copy(os, dataDir + "samples/CLUSTALW/COI.aln", sandBoxDir + "test_0940.aln");
 
     GTFileDialog::openFile(os, sandBoxDir, "test_0940.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));

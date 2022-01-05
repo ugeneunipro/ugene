@@ -510,7 +510,6 @@ GUI_TEST_CLASS_DEFINITION(test_3086) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_3086/test_3086.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/3086/", "UGENE-3086.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3092) {
@@ -679,7 +678,6 @@ GUI_TEST_CLASS_DEFINITION(test_3128) {
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
     GTLogTracer l;
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/read-write/", "read_db_write_gen.uws");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Set parameters:     db="NCBI protein sequence database", id="AAA59172.1"
@@ -4292,7 +4290,6 @@ GUI_TEST_CLASS_DEFINITION(test_3710) {
     //    1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open the Highlighting option panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Phaneroptera_falcata" as the reference sequence.
@@ -5227,7 +5224,6 @@ GUI_TEST_CLASS_DEFINITION(test_3868) {
     // 1. Open "VectorNTI_CAN_READ.gb"
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/", "VectorNTI_CAN_READ.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Open the "Annotation highlighting" OP widget.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));
     // Expected state: labels from genbank features are shown in annotations widgets
@@ -5250,7 +5246,6 @@ GUI_TEST_CLASS_DEFINITION(test_3869) {
 GUI_TEST_CLASS_DEFINITION(test_3870) {
     // 1. Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
 
@@ -5301,7 +5296,6 @@ GUI_TEST_CLASS_DEFINITION(test_3886) {
 GUI_TEST_CLASS_DEFINITION(test_3895) {
     // 1. Open '_common_data/genbank/pBR322.gb' (file contains circular marker)
     GTFileDialog::openFile(os, testDir + "_common_data/genbank", "pBR322.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Export document to genbank format
