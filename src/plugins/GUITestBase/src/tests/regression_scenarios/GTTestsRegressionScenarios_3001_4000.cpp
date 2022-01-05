@@ -1118,14 +1118,13 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     // 2. Click the "Find restriction sites" button on the main toolbar.
     // 3. Accept the dialog.
     // Expected: the task becomes cancelled.
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Restriction Sites"}));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
 
-    GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
+    GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3209_1) {
@@ -3671,10 +3670,10 @@ GUI_TEST_CLASS_DEFINITION(test_3609_3) {
 GUI_TEST_CLASS_DEFINITION(test_3610) {
     // Open "data/samples/FASTA/human_T1.fa".
     // Select whole sequence.
-    // Call context menu, select {Edit sequence -> Replace subsequence...}menu item.
+    // Call context menu, select {Edit sequence -> Replace subsequence...} menu item.
     // Replace whole sequence with any inappropriate symbol, e.g. '='. Accept the dialog, agree with message box.
     // Expected state: UGENE doesn't crash.
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
@@ -3685,25 +3684,27 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMouseDriver::click(Qt::RightButton);
 
-    class Scenario : public CustomScenario {
+    class ReplaceSequenceScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
             GTWidget::click(os, plainText);
 
+            // Select the whole sequence and replace it with '='. Try applying the change.
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
-
             GTKeyboardDriver::keyClick('=');
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            // Exit from the warning dialog with Escape. Click "OK" on "Input sequence is empty" notification.
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+            // Close the dialog. There is no other way to close it except 'Cancel'.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, new ReplaceSequenceScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }

@@ -49,9 +49,12 @@ class GTUtilsTaskTreeView {
 public:
     static void waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis = 180000);
     static void click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b = Qt::LeftButton);
-    static void openView(HI::GUITestOpStatus &os);
+
+    /** Opens view if it is not opened and returns tree widget. */
+    static QTreeWidget *openView(HI::GUITestOpStatus &os);
+
     static void toggleView(HI::GUITestOpStatus &os);
-    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName);
+    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true);
     static QTreeWidgetItem *getTreeWidgetItem(HI::GUITestOpStatus &os, const QString &itemName, bool failOnNull = true);
     static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
     static void moveToOpenedView(HI::GUITestOpStatus &os, const QString &itemName);
@@ -59,6 +62,10 @@ public:
     static void moveTo(HI::GUITestOpStatus &os, const QString &itemName);
     static int getTopLevelTasksCount(HI::GUITestOpStatus &os);
     static bool checkTask(HI::GUITestOpStatus &os, const QString &itemName);
+
+    /** Check that there/there-is-no task with the given name. Wait up to 30 seconds for the condition. */
+    static void checkTaskWithWait(HI::GUITestOpStatus &os, const QString &taskName, bool checkIfPresent);
+
     static int countTasks(HI::GUITestOpStatus &os, const QString &itemName);
     static QString getTaskStatus(HI::GUITestOpStatus &os, const QString &itemName);
 
