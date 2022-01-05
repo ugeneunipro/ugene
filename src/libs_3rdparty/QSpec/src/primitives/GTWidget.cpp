@@ -29,7 +29,6 @@
 #include <QStyle>
 
 #include "drivers/GTMouseDriver.h"
-#include "primitives/GTMainWindow.h"
 #include "utils/GTThread.h"
 
 #ifdef Q_OS_DARWIN
@@ -95,7 +94,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findWidget"
-QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     QWidget *widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -113,51 +112,51 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, co
 }
 #undef GT_METHOD_NAME
 
-QRadioButton *GTWidget::findRadioButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QRadioButton *GTWidget::findRadioButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QRadioButton *>(os, widgetName, parentWidget, options);
 }
 
-QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
 }
 
-QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
 }
 
-QPlainTextEdit *GTWidget::findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QPlainTextEdit *GTWidget::findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QPlainTextEdit *>(os, widgetName, parentWidget, options);
 }
 
-QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
 }
 
-QComboBox *GTWidget::findComboBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QComboBox *GTWidget::findComboBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QComboBox *>(os, widgetName, parentWidget, options);
 }
 
-QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
 }
 
-QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
 }
 
-QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QPushButton *>(os, widgetName, parentWidget, options);
 }
 
-QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
 }
 
-QSplitter *GTWidget::findSplitter(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QSplitter *GTWidget::findSplitter(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSplitter *>(os, widgetName, parentWidget, options);
 }
 
-QLabel *GTWidget::findLabel(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+QLabel *GTWidget::findLabel(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QLabel *>(os, widgetName, parentWidget, options);
 }
 
@@ -502,7 +501,7 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkEnabled"
-void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, const QWidget *parent) {
+void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, QWidget *parent) {
     checkEnabled(os, GTWidget::findWidget(os, widgetName, parent), expectedEnabledState);
 }
 #undef GT_METHOD_NAME

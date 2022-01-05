@@ -71,7 +71,7 @@ void GTLineEdit::setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setText"
-void GTLineEdit::setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget const *const parent, bool noCheck, bool useCopyPaste) {
+void GTLineEdit::setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget *parent, bool noCheck, bool useCopyPaste) {
     setText(os, GTWidget::findLineEdit(os, lineEditName, parent), text, noCheck, useCopyPaste);
 }
 #undef GT_METHOD_NAME
@@ -149,7 +149,7 @@ void GTLineEdit::checkText(GUITestOpStatus &os, QLineEdit *lineEdit, const QStri
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkText"
-void GTLineEdit::checkText(GUITestOpStatus &os, const QString &lineEditName, const QWidget *const parent, const QString &expectedText) {
+void GTLineEdit::checkText(GUITestOpStatus &os, const QString &lineEditName, QWidget *parent, const QString &expectedText) {
     checkText(os, GTWidget::findExactWidget<QLineEdit *>(os, lineEditName, parent), expectedText);
 }
 #undef GT_METHOD_NAME

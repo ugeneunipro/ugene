@@ -23,6 +23,7 @@
 #define _HI_GUI_GTWIDGET_H_
 
 #include <functional>
+#include <utils/GTThread.h>
 
 #include <QAbstractButton>
 #include <QAbstractItemView>
@@ -57,7 +58,7 @@ public:
     static void setFocus(GUITestOpStatus &os, QWidget *w);
 
     // finds widget with the given object name using given FindOptions. Parent widget is QMainWindow, if not set
-    static QWidget *findWidget(GUITestOpStatus &os, const QString &objectName, const QWidget *const parentWidget = nullptr, const GTGlobals::FindOptions & = {});
+    static QWidget *findWidget(GUITestOpStatus &os, const QString &objectName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = {});
     static QPoint getWidgetCenter(QWidget *widget);
 
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = {});
@@ -102,14 +103,14 @@ public:
     static QMenu *getActivePopupMenu(GUITestOpStatus &os);
 
     static void checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedEnabledState = true);
-    static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, const QWidget *parent = nullptr);
+    static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, QWidget *parent = nullptr);
 
     static void scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index);
 
 #define GT_CLASS_NAME "GTWidget"
 #define GT_METHOD_NAME "findExactWidget"
     template<class T>
-    static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {}) {
+    static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {}) {
         QWidget *w = findWidget(os, widgetName, parentWidget, options);
         T result = qobject_cast<T>(w);
         if (options.failIfNotFound) {
@@ -121,40 +122,40 @@ public:
 #undef GT_METHOD_NAME
 
     /** Calls findExactWidget with QRadioButton type. Shortcut method. */
-    static QRadioButton *findRadioButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QRadioButton *findRadioButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
-    static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QTextEdit type. Shortcut method. */
-    static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QPlainTextEdit type. Shortcut method. */
-    static QPlainTextEdit *findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QPlainTextEdit *findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QCheckBox type. Shortcut method. */
-    static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QComboBox type. Shortcut method. */
-    static QComboBox *findComboBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QComboBox *findComboBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
-    static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QToolButton type. Shortcut method. */
-    static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QPushButton type. Shortcut method. */
-    static QPushButton *findPushButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QPushButton *findPushButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QSlider type. Shortcut method. */
-    static QSlider *findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QSlider *findSlider(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QSplitter type. Shortcut method. */
-    static QSplitter *findSplitter(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QSplitter *findSplitter(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QLabel type. Shortcut method. */
-    static QLabel *findLabel(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+    static QLabel *findLabel(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */
@@ -174,35 +175,38 @@ public:
     /**
      * Finds all children of the 'parent' using 'findChildren' method and checkFn to check if the child is matched.
      * If parent is null, find all child in all main windows.
-     * Note 1: this function does not wait until any child is found and returns immediately.
-     * Note 2: if 'parent' is provided this function will stop lookup after the first child is found.
-     *  This is a legacy behaviour and must be fixed.
+     * Note: this function does not wait until any child is found and returns immediately.
      */
     template<class ChildType>
-    static QList<ChildType *> findChildren(GUITestOpStatus &os, const QObject *parent, std::function<bool(ChildType *)> matchFn) {
-        QList<ChildType *> children;
-        auto checkAndAddToList = [&children, &matchFn](const QList<ChildType *> candidates, bool addOnlyOneChild) {
-            for (ChildType *child : candidates) {
-                if (matchFn(child)) {
-                    children.append(child);
-                    if (addOnlyOneChild) {
-                        break;
+    static QList<ChildType *> findChildren(GUITestOpStatus &os, QWidget *parent, std::function<bool(ChildType *)> matchFn) {
+        QList<ChildType *> result;
+
+        /** object->findChildren must be run in the main thread only to avoid parallel modification on GUI restructuring. */
+        class FindChildrenScenario : public CustomScenario {
+        public:
+            FindChildrenScenario(QWidget *_parent, std::function<bool(ChildType *)> &_matchFn, QList<ChildType *> &_result)
+                : parent(_parent), matchFn(_matchFn), result(_result) {
+            }
+
+            QWidget *parent = nullptr;
+            std::function<bool(ChildType *)> &matchFn;
+            QList<ChildType *> &result;
+
+            void run(HI::GUITestOpStatus &os) override {
+                // If parent is null, start from QMainWindows.
+                QList<QWidget *> roots = parent == nullptr ? GTMainWindow::getMainWindowsAsWidget(os) : QList<QWidget *>({parent});
+                for (QWidget *root : qAsConst(roots)) {
+                    QList<ChildType *> children = root->findChildren<ChildType *>();
+                    for (ChildType *child : qAsConst(children)) {
+                        if (matchFn(child)) {
+                            result.append(child);
+                        }
                     }
                 }
             }
         };
-        if (parent == nullptr) {
-            // If parent is null, start from QMainWindows.
-            QList<QWidget *> mainWindows = GTMainWindow::getMainWindowsAsWidget(os);
-            for (QWidget *mainWindowWidget : qAsConst(mainWindows)) {
-                checkAndAddToList(mainWindowWidget->findChildren<ChildType *>(), false);
-            }
-        } else {
-            // TODO: a lot of tests will fail if all child are searched in this branch.
-            //  This should be fixed: UGENE tests should not run ambiguous lookups.
-            checkAndAddToList(parent->findChildren<ChildType *>(), true);
-        }
-        return children;
+        GTThread::runInMainThread(os, new FindChildrenScenario(parent, matchFn, result));
+        return result;
     }
 #undef GT_METHOD_NAME
 

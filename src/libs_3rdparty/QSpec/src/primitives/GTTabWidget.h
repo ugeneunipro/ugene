@@ -36,9 +36,9 @@ public:
     static QTabBar *getTabBar(GUITestOpStatus &os, QTabWidget *tabWidget);
 
     static void clickTab(GUITestOpStatus &os, QTabWidget *const tabWidget, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, QWidget const *const parent, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, QWidget  *parent, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
     static void clickTab(GUITestOpStatus &os, QTabWidget *const tabWidget, const QString &tabName, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, const QWidget *const parent, const QString &tabName, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(GUITestOpStatus &os, const QString &tabWidgetName, QWidget  *parent, const QString &tabName, Qt::MouseButton button = Qt::LeftButton);
 
     static QString getTabName(GUITestOpStatus &os, QTabWidget *tabWidget, int idx);
 
