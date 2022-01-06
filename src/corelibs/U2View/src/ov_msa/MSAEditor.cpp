@@ -25,6 +25,7 @@
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>
@@ -648,6 +649,8 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
                     AppContext::getTaskScheduler()->registerTopLevelTask(task);
                 }
             }
+        } else if (md->hasFormat(U2Clipboard::UGENE_MIME_TYPE)) {
+            uiLog.info("Drop " + md->text());
         }
     }
 

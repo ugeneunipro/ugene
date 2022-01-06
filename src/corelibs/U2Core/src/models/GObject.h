@@ -137,6 +137,9 @@ public:
 
     static bool objectLessThan(GObject *first, GObject *second);
 
+    /** Returns object version in the ObjectDbi. Returns '-1' if the dbiRef is invalid. */
+    int getObjectVersion();
+
 signals:
     void si_nameChanged(const QString &oldName);
     void si_relationChanged(const QList<GObjectRelation> &previousRelations);
