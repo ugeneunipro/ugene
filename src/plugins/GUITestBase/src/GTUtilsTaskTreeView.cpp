@@ -162,6 +162,7 @@ void GTUtilsTaskTreeView::cancelTask(HI::GUITestOpStatus &os, const QString &ite
 
     checkTaskWithWait(os, itemName, false);
 }
+#undef GT_METHOD_NAME
 
 void GTUtilsTaskTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b) {
     moveTo(os, itemName);
