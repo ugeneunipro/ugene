@@ -176,8 +176,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_4007/murine.gb");
     murineFile.write("L");
     murineFile.close();
-    GTGlobals::sleep(5000); // Wait until UGENE detects the change.
-
+    GTGlobals::sleep(5000);  // Wait until UGENE detects the change.
 
     GTGlobals::FindOptions murineOptions(false);
     GTUtilsDocument::removeDocument(os, "human_T1.fa");
@@ -190,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     // there is no errors in the log.
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(5000); // Wait until UGENE detects the change.
+    GTGlobals::sleep(5000);  // Wait until UGENE detects the change.
 
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -2137,6 +2136,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209) {
     // Run a task with 10k reads to align (total run time is 20-30 minutes).
     // Check that the task runs correctly.
     // Cancel the task: check that UI is not frozen and the task can be canceled correctly.
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));  // Workflow dir selector.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
     GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
@@ -3985,7 +3985,8 @@ GUI_TEST_CLASS_DEFINITION(test_4628) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4628", "cow.chr13.repeats.shifted.bed");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto textEdit = GTWidget::findTextEdit(os, "reportTextEdit", GTUtilsMdi::activeWindow(os));
+    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Report");
+    auto textEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
     CHECK_SET_ERR(textEdit->toPlainText().contains("incorrect strand value '+379aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...' at line 5333"),
                   "Expected message is not found in the report text");
 }
