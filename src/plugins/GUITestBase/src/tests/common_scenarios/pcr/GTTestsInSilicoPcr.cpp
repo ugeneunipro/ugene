@@ -171,8 +171,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the product table is shown with one result [9..1196].
-    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
-    CHECK_SET_ERR("9 - 1196" == GTUtilsPcr::getResultRegion(os, 0), "Wrong result");
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
+    CHECK_SET_ERR(GTUtilsPcr::getResultRegion(os, 0) == "9 - 1196", "Wrong result");
 
     // 5. Click the result.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));

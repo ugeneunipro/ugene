@@ -57,7 +57,7 @@ void GTUtilsPcr::setMaxProductSize(HI::GUITestOpStatus &os, int number) {
     GTSpinBox::setValue(os, spinBox, number, GTGlobals::UseKeyBoard);
 }
 
-void GTUtilsPcr::setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases) {
+void GTUtilsPcr::setUseAmbiguousBases(HI::GUITestOpStatus &os, bool useAmbiguousBases) {
     auto checkBox = GTWidget::findCheckBox(os, "useAmbiguousBasesCheckBox");
     GTCheckBox::setChecked(os, checkBox, useAmbiguousBases);
 }
@@ -67,15 +67,15 @@ QWidget *GTUtilsPcr::browseButton(HI::GUITestOpStatus &os, U2Strand::Direction d
 }
 
 int GTUtilsPcr::productsCount(HI::GUITestOpStatus &os) {
-    return GTTableView::rowCount(os, table(os));
+    return GTTableView::rowCount(os, getTable(os));
 }
 
 QString GTUtilsPcr::getResultRegion(HI::GUITestOpStatus &os, int number) {
-    return GTTableView::data(os, table(os), number, 0);
+    return GTTableView::data(os, getTable(os), number, 0);
 }
 
 QPoint GTUtilsPcr::getResultPoint(HI::GUITestOpStatus &os, int number) {
-    return GTTableView::getCellPoint(os, table(os), number, 0);
+    return GTTableView::getCellPoint(os, getTable(os), number, 0);
 }
 
 QPoint GTUtilsPcr::getDetailsPoint(HI::GUITestOpStatus &os) {
@@ -99,8 +99,8 @@ QWidget *GTUtilsPcr::primerBox(HI::GUITestOpStatus &os, U2Strand::Direction dire
     return GTWidget::findWidget(os, boxName);
 }
 
-QTableView *GTUtilsPcr::table(HI::GUITestOpStatus &os) {
-    return dynamic_cast<QTableView *>(GTWidget::findWidget(os, "productsTable"));
+QTableView *GTUtilsPcr::getTable(HI::GUITestOpStatus &os) {
+    return GTWidget::findTableWidget(os, "productsTable");
 }
 
 void GTUtilsPcr::clearPcrDir(HI::GUITestOpStatus &os) {

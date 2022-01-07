@@ -124,6 +124,10 @@ QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName
     return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
 }
 
+QTableWidget *GTWidget::findTableWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTableWidget *>(os, widgetName, parentWidget, options);
+}
+
 QPlainTextEdit *GTWidget::findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QPlainTextEdit *>(os, widgetName, parentWidget, options);
 }
@@ -142,6 +146,14 @@ QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, 
 
 QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+}
+
+QToolBar *GTWidget::findToolBar(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QToolBar *>(os, widgetName, parentWidget, options);
+}
+
+QMenu *GTWidget::findMenuWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QMenu *>(os, widgetName, parentWidget, options);
 }
 
 QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {

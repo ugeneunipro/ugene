@@ -38,7 +38,9 @@
 #include <QSlider>
 #include <QSpinBox>
 #include <QSplitter>
+#include <QTableWidget>
 #include <QTextEdit>
+#include <QToolBar>
 #include <QToolButton>
 #include <QWidget>
 
@@ -59,14 +61,18 @@ public:
 
     // finds widget with the given object name using given FindOptions. Parent widget is QMainWindow, if not set
     static QWidget *findWidget(GUITestOpStatus &os, const QString &objectName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = {});
+
     static QPoint getWidgetCenter(QWidget *widget);
 
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = {});
+
     static QList<QLabel *> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = {});
 
     // returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
+
     static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
+
     static bool hasPixelWithColor(const QImage &image, const QColor &expectedColor);
 
     /** Returns true if the image has only the given color. */
@@ -130,6 +136,9 @@ public:
     /** Calls findExactWidget with QTextEdit type. Shortcut method. */
     static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
+    /** Calls findExactWidget with QTableWidget type. Shortcut method. */
+    static QTableWidget *findTableWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
     /** Calls findExactWidget with QPlainTextEdit type. Shortcut method. */
     static QPlainTextEdit *findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
@@ -144,6 +153,12 @@ public:
 
     /** Calls findExactWidget with QToolButton type. Shortcut method. */
     static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QToolBar type. Shortcut method. */
+    static QToolBar *findToolBar(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QMenu type. Shortcut method. */
+    static QMenu *findMenuWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QPushButton type. Shortcut method. */
     static QPushButton *findPushButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});

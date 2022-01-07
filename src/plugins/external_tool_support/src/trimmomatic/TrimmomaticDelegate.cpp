@@ -237,9 +237,9 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
 }
 
 void TrimmomaticPropertyDialog::sl_currentRowChanged() {
-    const int currentStepNumber = listSteps->currentRow();
-    CHECK(-1 != currentStepNumber, );
-    SAFE_POINT(0 <= currentStepNumber && currentStepNumber < listSteps->count(), "Unexpected selected item", );
+    int currentStepNumber = listSteps->currentRow();
+    CHECK(currentStepNumber != -1, );
+    SAFE_POINT(currentStepNumber >= 0 && currentStepNumber < listSteps->count(), "Unexpected selected item", );
     SAFE_POINT(currentStepNumber < steps.size(), "Unexpected selected row", );
 
     TrimmomaticStep *selectedStep = steps[currentStepNumber];
@@ -248,6 +248,7 @@ void TrimmomaticPropertyDialog::sl_currentRowChanged() {
 
     currentWidget->hide();
     currentWidget = selectedStep->getSettingsWidget();
+    currentWidget->setObjectName("TrimmomaticStepSettingsWidget_step_" + QString::number(currentStepNumber));
     widgetStepSettings->layout()->addWidget(currentWidget);
     currentWidget->show();
 }
@@ -361,5 +362,5 @@ void TrimmomaticPropertyDialog::parseCommand(const QString &command) {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
