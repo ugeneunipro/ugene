@@ -124,6 +124,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         if (isOsMac()) {
             GTMenu::clickMainMenuItem(os, {"File", "Close project"});
         } else {
+            if (isOsWindows()) {
+                GTGlobals::sleep(500);
+            }
             GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
         }
         GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
