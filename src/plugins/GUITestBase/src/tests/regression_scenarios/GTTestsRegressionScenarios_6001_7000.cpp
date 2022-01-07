@@ -1809,11 +1809,7 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 GUI_TEST_CLASS_DEFINITION(test_6309) {
     class SetToolUrlScenario : public CustomScenario {
     public:
-        SetToolUrlScenario()
-            : CustomScenario() {
-        }
-
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");

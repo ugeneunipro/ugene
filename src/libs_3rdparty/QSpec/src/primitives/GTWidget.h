@@ -217,13 +217,13 @@ public:
             std::function<bool(ChildType *)> &matchFn;
             QList<ChildType *> &result;
 
-            void run(HI::GUITestOpStatus &) override {
+            void run(HI::GUITestOpStatus &os) override {
                 // If parent is null, start from QMainWindows.
                 QList<QObject *> roots;
                 if (parent != nullptr) {
                     roots << parent;
                 } else {
-                    QList<QWidget *> topLevelWidgets = QApplication::topLevelWidgets();
+                    QList<QWidget *> topLevelWidgets = GTMainWindow::getMainWindowsAsWidget(os);
                     for (const auto &topLevelWidget : qAsConst(topLevelWidgets)) {
                         roots << topLevelWidget;
                     }
