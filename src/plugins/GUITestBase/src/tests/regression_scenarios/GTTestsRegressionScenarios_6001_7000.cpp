@@ -47,7 +47,6 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QGroupBox>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
@@ -55,7 +54,6 @@
 #include <QTableWidget>
 #include <QWizard>
 
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -211,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_6033) {
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
     //    1. Open "_common_data/ugenedb/sec1_9_ugenedb.ugenedb".
-    //    Expected state: the assembly is successfully opened, the coverage calculation finished, UGENE doens't crash
+    //    Expected state: the assembly is successfully opened, the coverage calculation finished, UGENE doesn't crash
     QString filePath = sandBoxDir + "test_6043.ugenedb";
     GTFile::copy(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb", filePath);
 
@@ -606,32 +604,30 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     // 2. Make workflow "Read FASTQ File with SE Reads" -> "Improve Reads with Trimmomatic"
-    const QString readSEName = "Read FASTQ File with SE Reads";
-    const QString trimmomaticName = "Improve Reads with Trimmomatic";
-
-    WorkflowProcessItem *readSEElement = GTUtilsWorkflowDesigner::addElement(os, readSEName);
-    WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    WorkflowProcessItem *readSEElement = GTUtilsWorkflowDesigner::addElement(os, "Read FASTQ File with SE Reads");
+    WorkflowProcessItem *trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, "Improve Reads with Trimmomatic");
     GTUtilsWorkflowDesigner::connect(os, readSEElement, trimmomaticElement);
 
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+    class TrimmomaticScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            auto menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
+            auto settingsStep1Widget = GTWidget::findWidget(os, "TrimmomaticStepSettingsWidget_step_1", dialog);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", settingsStep1Widget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -641,8 +637,8 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
 
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
-    QTableView *table = GTWidget::findExactWidget<QTableView *>(os, "table");
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new TrimmomaticScenario()));
+    auto table = GTWidget::findExactWidget<QTableView *>(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
     GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", table));
@@ -2297,7 +2293,6 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
     // 3. Select the "Percentage identity (colored)" color scheme
-    QString colorSchemeName = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     // Zoom to max
@@ -2320,7 +2315,6 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
     // Select the "Percentage identity (colored)" color scheme.
-    QString colorSchemeName = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     // Zoom to max.

@@ -152,6 +152,14 @@ QToolBar *GTWidget::findToolBar(GUITestOpStatus &os, const QString &widgetName, 
     return findExactWidget<QToolBar *>(os, widgetName, parentWidget, options);
 }
 
+QTreeWidget *GTWidget::findTreeWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTreeWidget *>(os, widgetName, parentWidget, options);
+}
+
+QGraphicsView *GTWidget::findGraphicsView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QGraphicsView *>(os, widgetName, parentWidget, options);
+}
+
 QMenu *GTWidget::findMenuWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QMenu *>(os, widgetName, parentWidget, options);
 }

@@ -22,10 +22,8 @@
 #include "TrimmomaticDelegate.h"
 
 #include <QAbstractItemView>
-#include <QListView>
 #include <QMenu>
 
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SignalBlocker.h>
 
@@ -121,8 +119,6 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget *parent,
     toolButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_showDialog()));
     layout()->addWidget(toolButton);
-
-    setObjectName("TrimmomaticPropertyWidget");
 }
 
 QVariant TrimmomaticPropertyWidget::value() {

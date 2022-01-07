@@ -46,17 +46,19 @@ QList<QMainWindow *> GTMainWindow::getMainWindows(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getMainWindowsAsWidget"
 QList<QWidget *> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus &os) {
-    QList<QWidget *> list;
-    foreach (QWidget *widget, qApp->topLevelWidgets()) {
+    QList<QWidget *> mainWindows;
+    QList<QWidget *> topLevelWidgets = qApp->topLevelWidgets();
+    for (QWidget *widget : qAsConst(topLevelWidgets)) {
         if (widget->inherits("QMainWindow")) {
-            list.append(widget);
+            mainWindows.append(widget);
         }
     }
-    if (list.isEmpty()) {
-        list = qApp->topLevelWidgets();
+    // TODO: remove this hack.
+    if (mainWindows.isEmpty()) {
+        mainWindows = qApp->topLevelWidgets();
     }
-    GT_CHECK_RESULT(!list.isEmpty(), "No one main window widget found", list);
-    return list;
+    GT_CHECK_RESULT(!mainWindows.isEmpty(), "No main window widget found", mainWindows);
+    return mainWindows;
 }
 #undef GT_METHOD_NAME
 

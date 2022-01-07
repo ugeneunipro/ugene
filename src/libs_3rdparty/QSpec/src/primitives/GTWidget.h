@@ -27,8 +27,11 @@
 
 #include <QAbstractButton>
 #include <QAbstractItemView>
+#include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QCoreApplication>
+#include <QGraphicsView>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
@@ -42,6 +45,7 @@
 #include <QTextEdit>
 #include <QToolBar>
 #include <QToolButton>
+#include <QTreeWidget>
 #include <QWidget>
 
 #include "GTGlobals.h"
@@ -157,6 +161,12 @@ public:
     /** Calls findExactWidget with QToolBar type. Shortcut method. */
     static QToolBar *findToolBar(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
+    /** Calls findExactWidget with QTreeWidget type. Shortcut method. */
+    static QTreeWidget *findTreeWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QGraphicsView type. Shortcut method. */
+    static QGraphicsView *findGraphicsView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
     /** Calls findExactWidget with QMenu type. Shortcut method. */
     static QMenu *findMenuWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
@@ -189,28 +199,36 @@ public:
 #define GT_METHOD_NAME "findChildren"
     /**
      * Finds all children of the 'parent' using 'findChildren' method and checkFn to check if the child is matched.
-     * If parent is null, find all child in all main windows.
-     * Note: this function does not wait until any child is found and returns immediately.
+     * If parent is null, find all child in all main window.
+     * The function is run in main thread.
      */
     template<class ChildType>
-    static QList<ChildType *> findChildren(GUITestOpStatus &os, QWidget *parent, std::function<bool(ChildType *)> matchFn) {
+    static QList<ChildType *> findChildren(GUITestOpStatus &os, QObject *parent, std::function<bool(ChildType *)> matchFn) {
         QList<ChildType *> result;
 
-        /** object->findChildren must be run in the main thread only to avoid parallel modification on GUI restructuring. */
+        // object->findChildren for UX objects (widgets, actions) must be run in the main thread only to avoid parallel modification on GUI restructuring.
         class FindChildrenScenario : public CustomScenario {
         public:
-            FindChildrenScenario(QWidget *_parent, std::function<bool(ChildType *)> &_matchFn, QList<ChildType *> &_result)
+            FindChildrenScenario(QObject *_parent, std::function<bool(ChildType *)> &_matchFn, QList<ChildType *> &_result)
                 : parent(_parent), matchFn(_matchFn), result(_result) {
             }
 
-            QWidget *parent = nullptr;
+            QObject *parent = nullptr;
             std::function<bool(ChildType *)> &matchFn;
             QList<ChildType *> &result;
 
-            void run(HI::GUITestOpStatus &os) override {
+            void run(HI::GUITestOpStatus &) override {
                 // If parent is null, start from QMainWindows.
-                QList<QWidget *> roots = parent == nullptr ? GTMainWindow::getMainWindowsAsWidget(os) : QList<QWidget *>({parent});
-                for (QWidget *root : qAsConst(roots)) {
+                QList<QObject *> roots;
+                if (parent != nullptr) {
+                    roots << parent;
+                } else {
+                    QList<QWidget *> topLevelWidgets = QApplication::topLevelWidgets();
+                    for (const auto &topLevelWidget : qAsConst(topLevelWidgets)) {
+                        roots << topLevelWidget;
+                    }
+                }
+                for (auto root : qAsConst(roots)) {
                     QList<ChildType *> children = root->findChildren<ChildType *>();
                     for (ChildType *child : qAsConst(children)) {
                         if (matchFn(child)) {

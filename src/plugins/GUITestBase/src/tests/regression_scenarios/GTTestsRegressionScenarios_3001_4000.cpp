@@ -143,7 +143,6 @@
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
@@ -1463,26 +1462,20 @@ GUI_TEST_CLASS_DEFINITION(test_3250) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3253) {
-    /*  1. Open "data/samples/ABIF/A01.abi".
-     *  2. Minimaze annotation tree view
-     *    Expected state: Chromatagram view resized
-     */
+    // Open "data/samples/ABIF/A01.abi".
+    // Minimize annotation tree view.
+    // Expected state: Chromatogram view is resized.
 
-    GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
+    GTFileDialog::openFile(os, dataDir + "/samples/ABIF/A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
-
-    QWidget *chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
-    CHECK_SET_ERR(nullptr != chromaView, "chromaView is NULL");
-
-    QWidget *annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
-    CHECK_SET_ERR(nullptr != annotationTreeWidget, "annotationTreeWidget is NULL");
+    auto chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
+    auto annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
 
     QSize startSize = chromaView->size();
-    GTMouseDriver::moveTo(QPoint(annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).x() + 100, annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).y()));
+    QPoint treeGlobalTopLeft = annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos());
+    GTMouseDriver::moveTo(QPoint(treeGlobalTopLeft.x() + 100, treeGlobalTopLeft.y()));
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(QPoint(annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).x() + 100, annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).y() + annotationTreeWidget->size().height()));
+    GTMouseDriver::moveTo(QPoint(treeGlobalTopLeft.x() + 100, treeGlobalTopLeft.y() + annotationTreeWidget->height()));
     GTMouseDriver::release();
 
     QSize endSize = chromaView->size();
@@ -1745,7 +1738,6 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
 
     QWidget *seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
     QColor before = GTWidget::getColor(os, seqArea, QPoint(1, 1));
-    QString bName = before.name();
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Set any reference sequence.
@@ -1757,8 +1749,6 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     //    Current state: the highlighting doesn't work for all sequences except the reference sequence.
 
     QColor after = GTWidget::getColor(os, seqArea, QPoint(1, 1));
-    QString aName = after.name();
-
     CHECK_SET_ERR(before != after, "colors not changed");
 }
 
@@ -5132,7 +5122,6 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString assemblyVisibleName = "chrM";
     const QString assemblyVisibleNameWidget = " [as] chrM";
-    const QString databaseAssemblyObjectPath = folderPath + U2ObjectDbi::PATH_SEP + assemblyVisibleName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 

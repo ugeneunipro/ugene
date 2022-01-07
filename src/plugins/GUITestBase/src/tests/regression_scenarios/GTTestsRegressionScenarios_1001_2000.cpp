@@ -5287,10 +5287,9 @@ GUI_TEST_CLASS_DEFINITION(test_1567) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Open the "RNA-seq analysis with Tuxedo tools" sample.
 
-    class customWizard : public CustomScenario {
+    class WizardScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            GTGlobals::sleep();
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
@@ -5316,9 +5315,8 @@ GUI_TEST_CLASS_DEFINITION(test_1567) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "Full"
-                                                                                                                  << "Paired-end"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new customWizard()));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"Full", "Paired-end"}));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", new WizardScenario()));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
     //    Expected state: a wizard for the scheme appears.
 
@@ -6672,8 +6670,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681) {
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "No-new-transcripts"
-                                                                                                                  << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", {"No-new-transcripts", "Single-end"}));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>() << (QStringList() << testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq") << (QStringList() << testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"), map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
     //    3. Click {show wizard} toolbar button
@@ -6893,12 +6890,12 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    const int tasksCount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
-    CHECK_SET_ERR(1 == tasksCount, QString("An unexpected top level tasks count: expect %1, got %2. Workflow didn't launch?").arg(1).arg(tasksCount));
+    int tasksCount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
+    CHECK_SET_ERR(tasksCount == 1, QString("An unexpected top level tasks count: expect %1, got %2. Workflow didn't launch?").arg(1).arg(tasksCount));
 
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
     QWidget *samplesWidget = GTWidget::findWidget(os, "samples");
-    CHECK_SET_ERR(nullptr != samplesWidget, "Samples widget is NULL");
+    CHECK_SET_ERR(samplesWidget != nullptr, "Samples widget is NULL");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
     GTUtilsTask::cancelTask(os, "Execute workflow");
 }
