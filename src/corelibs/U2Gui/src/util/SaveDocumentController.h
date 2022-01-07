@@ -65,13 +65,15 @@ public:
         QString getFirstExtensionByName(const QString &formatName) const;
 
         QString getFormatNameById(const QString &id) const;
-        QString getFormatNameByExtension(const QString &ext) const;
+        QString getFormatNameByExtension(const QString &extension) const;
 
         QString getIdByName(const QString &name) const;
 
     private:
-        QMap<QString, QStringList> extensions;
-        QMap<QString, QString> names;
+        QMap<QString, QStringList> extensionsByFormatId;
+        QMap<QString, QString> formatIdByExtension;
+        QMap<QString, QString> nameByFormatId;
+        QMap<QString, QString> formatIdByName;
     };
 
     SaveDocumentController(const SaveDocumentControllerConfig &config,
@@ -84,7 +86,7 @@ public:
                            const SimpleFormatsInfo &formatsDesc,
                            QObject *parent);
 
-    void addFormat(const QString &id, const QString &name, const QStringList &extenstions);
+    void addFormat(const QString &id, const QString &name, const QStringList &extensions);
 
     void setPath(const QString &path, const QSet<QString> &excludeList = QSet<QString>());
     void setFormat(const QString &formatId);
@@ -121,7 +123,7 @@ private:
 
     SaveDocumentControllerConfig conf;
     SimpleFormatsInfo formatsInfo;
-    QString currentFormat;
+    QString currentFormatName;
     bool overwritingConfirmed;
 };
 

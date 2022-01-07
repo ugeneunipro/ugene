@@ -751,7 +751,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
-    prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);
+    prepareMAFromBlastAnnotations(ma, d->qualifierId, d->addRefFlag, os);
 
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());

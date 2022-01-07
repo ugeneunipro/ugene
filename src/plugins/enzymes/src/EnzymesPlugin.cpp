@@ -21,20 +21,15 @@
 
 #include "EnzymesPlugin.h"
 
-#include <QDir>
 #include <QMenu>
 #include <QMessageBox>
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AutoAnnotationsSupport.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/QObjectScopedPointer.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Test/GTestFrameworkComponents.h>

@@ -21,19 +21,16 @@
 
 #include "DesignerUtils.h"
 
-#include <U2Gui/DialogUtils.h>
+#include <U2Core/FileFilters.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
-// TODO FIX translator
 namespace U2 {
 
-QString DesignerUtils::getSchemaFileFilter(bool any, bool addOldExt) {
-    QStringList exts(WorkflowUtils::WD_FILE_EXTENSIONS);
-    if (addOldExt) {
-        exts << WorkflowUtils::WD_XML_FORMAT_EXTENSION;
-    }
-    return DialogUtils::prepareFileFilter(WorkflowUtils::tr("UGENE workflow documents"), exts, any);
+QString DesignerUtils::getSchemaFileFilter() {
+    QStringList extensions(WorkflowUtils::WD_FILE_EXTENSIONS);
+    extensions << WorkflowUtils::WD_XML_FORMAT_EXTENSION;
+    return FileFilters::createFileFilter(WorkflowUtils::tr("UGENE workflow documents"), extensions);
 }
 
 }  // namespace U2

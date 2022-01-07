@@ -1213,7 +1213,6 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     WorkflowProcessItem *read = GTUtilsWorkflowDesigner::getWorker(os, "Read alignment");
     WorkflowProcessItem *write = GTUtilsWorkflowDesigner::getWorker(os, "Write alignment");
@@ -3376,7 +3375,6 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Call a context menu in the Project view on the opened MCA document.

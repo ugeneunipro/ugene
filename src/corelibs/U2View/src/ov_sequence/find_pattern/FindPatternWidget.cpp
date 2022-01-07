@@ -37,6 +37,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
@@ -50,7 +51,6 @@
 #include <U2Formats/FastaFormat.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -996,11 +996,8 @@ void FindPatternWidget::updateAnnotationsWidget() {
 void FindPatternWidget::sl_onFileSelectorClicked() {
     LastUsedDirHelper lod(FIND_PATTER_LAST_DIR);
 
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-    lod.url = U2FileDialog::getOpenFileName(dynamic_cast<QWidget *>(AppContext::getMainWindow()),
-                                            tr("Select file to open..."),
-                                            lod.dir,
-                                            filter);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
+    lod.url = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select file to open..."), lod.dir, filter);
     if (!lod.url.isEmpty())
         filePathLineEdit->setText(lod.url);
 }

@@ -21,10 +21,6 @@
 
 #include "FormatUtils.h"
 
-#include <U2Core/AppContext.h>
-#include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
-
 namespace U2 {
 
 QString FormatUtils::splitThousands(qint64 num) {
@@ -116,104 +112,6 @@ QString FormatUtils::getShortMonthName(int num) {
         default:
             return QString();
     }
-}
-
-static QString getAllFilesFilter() {
-    return QObject::tr("All files") + " ( * )";
-}
-
-QString FormatUtils::prepareFileFilter(const QMap<QString, QStringList> &formatNamesWithExtensions, bool allowAnyFiles, const QStringList &extraExtensions) {
-    QStringList filters;
-    foreach (const QString &formatName, formatNamesWithExtensions.keys()) {
-        filters << prepareFileFilter(formatName, formatNamesWithExtensions[formatName], false, extraExtensions);
-    }
-
-    if (allowAnyFiles) {
-        filters << getAllFilesFilter();
-    }
-
-    return filters.join(";;");
-}
-
-QString FormatUtils::prepareFileFilter(const QString &name, const QStringList &exts, bool any, const QStringList &extra) {
-    QString line = name + " (";
-    for (const QString &ext : qAsConst(exts)) {
-        line += " *." + ext;
-    }
-    for (const QString &ext : qAsConst(exts)) {
-        for (const QString &s : qAsConst(extra)) {
-            line += " *." + ext + s;
-        }
-    }
-    line += " )";
-    if (any) {
-        line += ";;" + getAllFilesFilter();
-    }
-    return line;
-}
-
-static QStringList getExtra(DocumentFormat *df, const QStringList &originalExtra) {
-    bool useExtra = !df->getFlags().testFlag(DocumentFormatFlag_NoPack);
-    if (useExtra) {
-        return originalExtra;
-    }
-    return QStringList();
-}
-
-QString FormatUtils::prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extra) {
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
-    QStringList effectiveExtra = getExtra(df, extra);
-    QString result = prepareFileFilter(df->getFormatName(), df->getSupportedDocumentFileExtensions(), any, effectiveExtra);
-    return result;
-}
-
-QString FormatUtils::prepareDocumentsFileFilter(bool any, const QStringList &extra) {
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
-    QList<DocumentFormatId> ids = fr->getRegisteredFormats();
-    QStringList result;
-    foreach (DocumentFormatId id, ids) {
-        DocumentFormat *df = fr->getFormatById(id);
-        if (df->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
-            continue;
-        }
-        QStringList effectiveExtra = getExtra(df, extra);
-        result << prepareFileFilter(df->getFormatName(), df->getSupportedDocumentFileExtensions(), false, effectiveExtra);
-    }
-    foreach (DocumentImporter *importer, fr->getImportSupport()->getImporters()) {
-        QStringList importerExts = importer->getSupportedFileExtensions();
-        result << prepareFileFilter(importer->getImporterName(), importerExts, false, QStringList());
-    }
-
-    result.sort();
-    if (any) {
-        result.prepend(getAllFilesFilter());
-    }
-    return result.join(";;");
-}
-
-QString FormatUtils::prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any) {
-    QStringList result;
-
-    DocumentFormatConstraints internalConstraints(c);
-    internalConstraints.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
-    QList<DocumentFormatId> ids = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-    foreach (const DocumentFormatId &id, ids) {
-        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(id);
-        if (df->checkConstraints(internalConstraints)) {
-            result.append(prepareDocumentsFileFilter(id, false));
-        }
-    }
-    result.sort();
-    if (any) {
-        result.prepend(getAllFilesFilter());
-    }
-    return result.join(";;");
-}
-
-QString FormatUtils::prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any) {
-    DocumentFormatConstraints c;
-    c.supportedObjectTypes += t;
-    return prepareDocumentsFileFilter(c, any);
 }
 
 }  // namespace U2

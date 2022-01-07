@@ -23,21 +23,17 @@
 
 #include <QDir>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 

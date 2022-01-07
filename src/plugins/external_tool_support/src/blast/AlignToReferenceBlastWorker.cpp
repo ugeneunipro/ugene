@@ -25,7 +25,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/FormatUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -116,7 +116,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         delegates[REF_ATTR_ID] = new URLDelegate("", "", false, false, false);
-        delegates[RESULT_URL_ATTR_ID] = new URLDelegate(FormatUtils::prepareDocumentsFileFilter(BaseDocumentFormats::UGENEDB, false, QStringList()), "", false, false, true, nullptr, BaseDocumentFormats::UGENEDB);
+        delegates[RESULT_URL_ATTR_ID] = new URLDelegate(FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::UGENEDB}, true), "", false, false, true, nullptr, BaseDocumentFormats::UGENEDB);
         QVariantMap m;
         m["minimum"] = 0;
         m["maximum"] = 100;

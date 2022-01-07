@@ -27,9 +27,9 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -37,7 +37,7 @@
 
 namespace U2 {
 ////////////////////////////////////////
-//ClustalWSupportRunDialog
+// ClustalWSupportRunDialog
 ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MultipleSequenceAlignment &_ma, ClustalWSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
@@ -110,7 +110,7 @@ void ClustalWSupportRunDialog::accept() {
 }
 
 ////////////////////////////////////////
-//ClustalWWithExtFileSpecifySupportRunDialog
+// ClustalWWithExtFileSpecifySupportRunDialog
 ClustalWWithExtFileSpecifySupportRunDialog::ClustalWWithExtFileSpecifySupportRunDialog(ClustalWSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
@@ -135,7 +135,7 @@ ClustalWWithExtFileSpecifySupportRunDialog::ClustalWWithExtFileSpecifySupportRun
 
 void ClustalWWithExtFileSpecifySupportRunDialog::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     if (lod.url.isEmpty()) {
         return;
     }
@@ -203,4 +203,4 @@ void ClustalWWithExtFileSpecifySupportRunDialog::accept() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -32,7 +32,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/TextUtils.h>
@@ -43,7 +42,6 @@
 
 #include <U2Formats/FastaFormat.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>

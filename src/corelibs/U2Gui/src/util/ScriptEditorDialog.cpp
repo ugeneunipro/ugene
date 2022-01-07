@@ -25,10 +25,10 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ScriptEngine.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -150,14 +150,14 @@ void ScriptEditorDialog::save(const QString &url) {
 }
 
 QString ScriptEditorDialog::getScriptsFileFilter() {
-    return DialogUtils::prepareFileFilter(tr("Script files"), QStringList("js"), true);
+    return FileFilters::createFileFilter(tr("Script files"), {"js"});
 }
 
 void ScriptEditorDialog::sl_checkSyntax() {
     QScriptEngine engine;
     QString header = scriptEdit->variablesText();
     QString scriptText = header + "\n" + scriptEdit->scriptText();
-    QScriptSyntaxCheckResult syntaxResult = engine.checkSyntax(scriptText);
+    QScriptSyntaxCheckResult syntaxResult = QScriptEngine::checkSyntax(scriptText);
     if (syntaxResult.state() != QScriptSyntaxCheckResult::Valid) {
         int line = syntaxResult.errorLineNumber();
         line -= header.split("\n").size();

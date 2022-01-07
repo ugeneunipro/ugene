@@ -27,6 +27,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
@@ -35,7 +36,6 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/ActorModel.h>
@@ -351,7 +351,7 @@ void RemoteDBFetcherFactory::init() {
         sourceItems.insert(localFileString, localFileString);
         delegates[SOURCE_CHOOSER_ID] = new ComboBoxDelegate(sourceItems);
 
-        delegates[SOURCE_FILE_ID] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), true, false, false);
+        delegates[SOURCE_FILE_ID] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", true, false, false);
         delegates[SEQID_ID] = new StringListDelegate();
         delegates[PATH_ID] = new URLDelegate(QString(), QString(), false, true);
     }

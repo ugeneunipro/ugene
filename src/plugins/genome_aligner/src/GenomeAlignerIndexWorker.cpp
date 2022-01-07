@@ -21,11 +21,10 @@
 
 #include "GenomeAlignerIndexWorker.h"
 
+#include <U2Core/FileFilters.h>
 #include <U2Core/Log.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -78,8 +77,9 @@ void GenomeAlignerBuildWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
 
-    delegates[REFSEQ_URL_ATTR] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), true);
-    delegates[INDEX_URL_ATTR] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), false);
+    QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
+    delegates[REFSEQ_URL_ATTR] = new URLDelegate(allFormatsFilter, QString(), true);
+    delegates[INDEX_URL_ATTR] = new URLDelegate(allFormatsFilter, QString(), false);
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerBuildPrompter());
@@ -170,7 +170,8 @@ void GenomeAlignerIndexReaderWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
 
-    delegates[INDEX_URL_ATTR] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), false, false, false);
+    QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
+    delegates[INDEX_URL_ATTR] = new URLDelegate(allFormatsFilter, QString(), false, false, false);
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomeAlignerIndexReaderPrompter());

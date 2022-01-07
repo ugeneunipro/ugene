@@ -34,6 +34,7 @@
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -227,12 +228,10 @@ void ProjectLoaderImpl::sl_newProject() {
 
 void ProjectLoaderImpl::sl_openProject() {
     LastUsedDirHelper h;
-    QString filter = DialogUtils::prepareDocumentsFileFilter(true);
-
-    filter.append("\n" + tr("UGENE project file") + " (*" + PROJECTFILE_EXT + ")");
+    QMap<QString, QStringList> extraFormats = {{tr("UGENE project file"), {PROJECTFILE_EXT}}};
+    QString filter = FileFilters::createAllSupportedFormatsFileFilter(extraFormats);
 
     QStringList files;
-
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir, filter, 0, QFileDialog::DontUseNativeDialog);
     } else {
@@ -989,7 +988,7 @@ Project *ProjectLoaderImpl::createProject(const QString &name, const QString &ur
 
 void ProjectLoaderImpl::sl_onAddExistingDocument() {
     LastUsedDirHelper h;
-    QString filter = DialogUtils::prepareDocumentsFileFilter(true);
+    QString filter = FileFilters::createAllSupportedFormatsFileFilter();
     QString file = U2FileDialog::getOpenFileName(nullptr, tr("Select files to open"), h.dir, filter);
     if (file.isEmpty()) {
         return;

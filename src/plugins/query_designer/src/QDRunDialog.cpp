@@ -32,8 +32,8 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -41,14 +41,12 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/QDScheduler.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
@@ -57,7 +55,6 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/AnnotatedDNAViewTasks.h>
 
 #include "QDSceneIOTasks.h"
 #include "QueryViewController.h"
@@ -102,7 +99,7 @@ void QDRunDialog::sl_selectInputFile() {
         dir.dir = fi.absolutePath();
     }
 
-    QString fileFilter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString fileFilter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
     dir.url = U2FileDialog::getOpenFileName(this, tr("Select input file"), dir, fileFilter);
 
     if (!dir.url.isEmpty()) {

@@ -27,9 +27,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/global.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>

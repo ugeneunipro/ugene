@@ -22,10 +22,9 @@
 #include "StringtieGeneAbundanceReportWorkerFactory.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -88,11 +87,9 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
         DelegateTags outputFileTags;
         outputFileTags.set(DelegateTags::PLACEHOLDER_TEXT, tr("Auto"));
         outputFileTags.set(DelegateTags::FILTER,
-                           DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT,
-                                                                   true,
-                                                                   QStringList()));
+                           FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::PLAIN_TEXT}, true));
         outputFileTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
-        delegates[OUTPUT_FILE_ATTR_ID] = new URLDelegate(outputFileTags, "stringtie/gene_abudance_report");
+        delegates[OUTPUT_FILE_ATTR_ID] = new URLDelegate(outputFileTags, "stringtie/gene-abundance-report");
     }
 
     const Descriptor desc(ACTOR_ID,
@@ -120,5 +117,5 @@ void StringtieGeneAbundanceReportWorkerFactory::cleanup() {
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

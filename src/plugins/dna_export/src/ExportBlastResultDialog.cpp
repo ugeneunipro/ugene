@@ -22,14 +22,11 @@
 #include "ExportBlastResultDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
@@ -63,7 +60,7 @@ void ExportBlastResultDialog::accept() {
     url = saveController->getSaveFileName();
     format = saveController->getFormatIdToSave();
     addToProjectFlag = addToProjectBox->isChecked();
-    qualiferId = nameIdBox->currentText();
+    qualifierId = nameIdBox->currentText();
     addRefFlag = addRefBox->isChecked();
     QDialog::accept();
 }
@@ -82,11 +79,6 @@ void ExportBlastResultDialog::initSaveController(const QString &defaultUrl) {
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
-}
-
-void ExportBlastResultDialog::setOkButtonText(const QString &text) const {
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    okButton->setText(text);
 }
 
 void ExportBlastResultDialog::setFileLabelText(const QString &text) const {

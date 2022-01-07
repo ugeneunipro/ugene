@@ -22,14 +22,12 @@
 #include "ExportMSA2SequencesDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 

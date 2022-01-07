@@ -23,14 +23,12 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/FormatUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -198,7 +196,7 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-        const QString filter = FormatUtils::prepareFileFilter(ExportCoverageSettings::BEDGRAPH, QStringList() << ExportCoverageSettings::BEDGRAPH_EXTENSION, true);
+        const QString filter = FileFilters::createFileFilter(ExportCoverageSettings::BEDGRAPH, {ExportCoverageSettings::BEDGRAPH_EXTENSION}, false);
         DelegateTags tags;
         tags.set("filter", filter);
         tags.set("extensions", QStringList() << ExportCoverageSettings::BEDGRAPH_EXTENSION << ExportCoverageSettings::BEDGRAPH_EXTENSION + ExportCoverageSettings::COMPRESSED_EXTENSION);
@@ -300,7 +298,7 @@ void ExtractAssemblyCoverageFileExtensionRelation::updateDelegateTags(const QVar
     const ExportCoverageSettings::Format newFormat = static_cast<ExportCoverageSettings::Format>(influencingValue.toInt());
     if (nullptr != dependentTags) {
         dependentTags->set("extensions", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat) << ExportCoverageSettings::getFormatExtension(newFormat) + ExportCoverageSettings::COMPRESSED_EXTENSION);
-        const QString filter = FormatUtils::prepareFileFilter(ExportCoverageSettings::getFormat(newFormat) + " coverage files", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat));
+        QString filter = FileFilters::createFileFilter(ExportCoverageSettings::getFormat(newFormat) + " coverage files", {ExportCoverageSettings::getFormatExtension(newFormat)});
         dependentTags->set("filter", filter);
     }
 }

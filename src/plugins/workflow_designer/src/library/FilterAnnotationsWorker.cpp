@@ -22,12 +22,11 @@
 #include "FilterAnnotationsWorker.h"
 
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -35,7 +34,6 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/ConfigurationEditor.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/WorkflowEnv.h>
 
 namespace U2 {
@@ -137,7 +135,7 @@ void FilterAnnotationsWorkerFactory::init() {
     proto->setPrompter(new FilterAnnotationsPrompter());
     {
         QMap<QString, PropertyDelegate *> delegateMap;
-        delegateMap[FILTER_NAMES_FILE_ATTR] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), false, false, false);
+        delegateMap[FILTER_NAMES_FILE_ATTR] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false, false);
         proto->setEditor(new DelegateEditor(delegateMap));
     }
     proto->setValidator(new FilterAnnotationsValidator());

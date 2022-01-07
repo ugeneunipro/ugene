@@ -24,19 +24,15 @@
 #include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -176,7 +172,7 @@ void ImportAnnotationsWorkerFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         delegates[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(
-            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::ANNOTATION_TABLE, true), QString(), true, false, false);
+            FileFilters::createFileFilterByObjectTypes({GObjectTypes::ANNOTATION_TABLE}), "", true, false, false);
     }
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ReadDocPrompter(ImportAnnotationsWorker::tr("Merge input annotations with annotations from <u>%1</u>.")));

@@ -22,7 +22,7 @@
 #include "ImportPrimersDialog.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/FormatUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
@@ -75,7 +75,7 @@ void ImportPrimersDialog::sl_connectClicked() {
 
 void ImportPrimersDialog::sl_addFileClicked() {
     LastUsedDirHelper dirHelper("ImportPrimersDialog");
-    const QString filter = FormatUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    const QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);

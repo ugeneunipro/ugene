@@ -29,12 +29,10 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QVBoxLayout>
-#include <QWheelEvent>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -47,8 +45,6 @@
 #include <U2Core/U2AssemblyReadIterator.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "AddReadsToDocumentTask.h"
 #include "AssemblyBrowser.h"

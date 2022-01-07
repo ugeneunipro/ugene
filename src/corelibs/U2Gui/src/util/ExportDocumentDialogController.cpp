@@ -21,15 +21,12 @@
 
 #include "ExportDocumentDialogController.h"
 
-#include <QDir>
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GUrlUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include "SaveDocumentController.h"

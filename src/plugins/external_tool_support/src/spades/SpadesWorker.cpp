@@ -25,19 +25,15 @@
 
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
 
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Formats/GenbankLocationParser.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -206,7 +202,7 @@ QVariantMap uniteUniquely(const QVariantMap &first, const QVariantMap &second) {
     return result;
 }
 
-}    // namespace
+}  // namespace
 
 Task *SpadesWorker::tick() {
     U2OpStatus2Log os;
@@ -403,7 +399,7 @@ GenomeAssemblyTaskSettings SpadesWorker::getSettings(U2OpStatus &os) {
 void SpadesWorkerFactory::init() {
     QList<PortDescriptor *> portDescs;
 
-    //in port
+    // in port
     QList<Descriptor> readDescriptors;
     foreach (const QString &readId, QStringList() << IN_PORT_PAIRED_ID_LIST << IN_PORT_ID_LIST) {
         const QString dataName = SpadesWorkerFactory::getPortNameById(readId);
@@ -444,7 +440,7 @@ void SpadesWorkerFactory::init() {
         portDescs << new PortDescriptor(readDescriptors[i], inTypeSet, true);
     }
 
-    //out port
+    // out port
     QMap<Descriptor, DataTypePtr> outTypeMap;
     Descriptor scaffoldOutDesc(SCAFFOLD_OUT_SLOT_ID,
                                SpadesWorker::tr("Scaffolds URL"),
@@ -607,5 +603,5 @@ QString SpadesPrompter::composeRichDoc() {
     return tr("Assemble de novo the input data into contigs and scaffolds.");
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

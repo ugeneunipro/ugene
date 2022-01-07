@@ -28,9 +28,10 @@
 #include <QLineEdit>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/FormatUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatus.h>
@@ -57,30 +58,30 @@ void SaveDocumentController::SimpleFormatsInfo::addFormat(const QString &name, c
     addFormat(name, name, extensions);
 }
 
-void SaveDocumentController::SimpleFormatsInfo::addFormat(const QString &id, const QString &name, const QStringList &_extensions) {
-    extensions.insert(id, _extensions);
-    names.insert(id, name);
+void SaveDocumentController::SimpleFormatsInfo::addFormat(const QString &id, const QString &name, const QStringList &extensions) {
+    extensionsByFormatId.insert(id, extensions);
+    nameByFormatId.insert(id, name);
+    formatIdByName.insert(name, id);
+    for (const QString &extension : qAsConst(extensions)) {
+        formatIdByExtension.insert(extension, id);
+    }
 }
 
 QStringList SaveDocumentController::SimpleFormatsInfo::getNames() const {
-    return names.values();
+    return nameByFormatId.values();
 }
 
 QString SaveDocumentController::SimpleFormatsInfo::getFormatNameById(const QString &id) const {
-    return names.value(id);
+    return nameByFormatId.value(id);
 }
 
-QString SaveDocumentController::SimpleFormatsInfo::getFormatNameByExtension(const QString &ext) const {
-    foreach (const QStringList &exts, extensions.values()) {
-        if (exts.contains(ext)) {
-            return names.value(extensions.key(exts));
-        }
-    }
-    return QString();
+QString SaveDocumentController::SimpleFormatsInfo::getFormatNameByExtension(const QString &extension) const {
+    QString formatId = formatIdByExtension.value(extension);
+    return nameByFormatId.value(formatId);
 }
 
 QString SaveDocumentController::SimpleFormatsInfo::getIdByName(const QString &name) const {
-    return names.key(name);
+    return formatIdByName.value(name);
 }
 
 void SaveDocumentController::forceRoll(const QSet<QString> &excludeList) {
@@ -88,23 +89,23 @@ void SaveDocumentController::forceRoll(const QSet<QString> &excludeList) {
 }
 
 QStringList SaveDocumentController::SimpleFormatsInfo::getExtensionsByName(const QString &formatName) const {
-    CHECK(names.values().contains(formatName), QStringList());
-    return extensions.value(names.key(formatName));
+    QString formatId = formatIdByName.value(formatName);
+    return extensionsByFormatId.value(formatId);
 }
 
 QString SaveDocumentController::SimpleFormatsInfo::getFirstExtensionByName(const QString &formatName) const {
-    const QStringList extensions = getExtensionsByName(formatName);
-    CHECK(!extensions.isEmpty(), QString());
-    return extensions.first();
+    QStringList formatExtensions = getExtensionsByName(formatName);
+    CHECK(!formatExtensions.isEmpty(), "");
+    return formatExtensions.first();
 }
 
 SaveDocumentController::SaveDocumentController(const SaveDocumentControllerConfig &config,
-                                               const DocumentFormatConstraints &formatCnstr,
+                                               const DocumentFormatConstraints &formatConstraints,
                                                QObject *parent)
     : QObject(parent),
       conf(config),
       overwritingConfirmed(false) {
-    initSimpleFormatInfo(formatCnstr);
+    initSimpleFormatInfo(formatConstraints);
     init();
 }
 
@@ -128,8 +129,8 @@ SaveDocumentController::SaveDocumentController(const SaveDocumentControllerConfi
     init();
 }
 
-void SaveDocumentController::addFormat(const QString &id, const QString &name, const QStringList &extenstions) {
-    formatsInfo.addFormat(id, name, extenstions);
+void SaveDocumentController::addFormat(const QString &id, const QString &name, const QStringList &extensions) {
+    formatsInfo.addFormat(id, name, extensions);
     initFormatComboBox();
 }
 
@@ -138,8 +139,8 @@ QString SaveDocumentController::getSaveFileName() const {
 }
 
 DocumentFormatId SaveDocumentController::getFormatIdToSave() const {
-    SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId());
-    return formatsInfo.getIdByName(currentFormat);
+    SAFE_POINT(!currentFormatName.isEmpty(), "Current format is not set", DocumentFormatId());
+    return formatsInfo.getIdByName(currentFormatName);
 }
 
 QString SaveDocumentController::getValidatedSaveFilePath(U2OpStatus &os) const {
@@ -154,7 +155,7 @@ QString SaveDocumentController::getValidatedSaveFilePath(U2OpStatus &os) const {
 void SaveDocumentController::sl_fileNameChanged(const QString &newName) {
     GUrl url(newName);
     QString ext = GUrlUtils::getUncompressedExtension(url);
-    if (!formatsInfo.getExtensionsByName(currentFormat).contains(ext) &&
+    if (!formatsInfo.getExtensionsByName(currentFormatName).contains(ext) &&
         !formatsInfo.getFormatNameByExtension(ext).isEmpty()) {
         overwritingConfirmed = true;
         setFormat(formatsInfo.getIdByName(formatsInfo.getFormatNameByExtension(ext)));
@@ -185,7 +186,7 @@ void SaveDocumentController::sl_fileDialogButtonClicked() {
 }
 
 void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
-    currentFormat = newFormat;
+    currentFormatName = newFormat;
 
     if (conf.compressCheckbox != nullptr) {
         DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
@@ -260,7 +261,7 @@ void SaveDocumentController::initSimpleFormatInfo(const QList<DocumentFormatId> 
 }
 
 void SaveDocumentController::initFormatComboBox() {
-    currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
+    currentFormatName = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != nullptr, );
 
     conf.formatCombo->blockSignals(true);
@@ -270,10 +271,10 @@ void SaveDocumentController::initFormatComboBox() {
     items.sort(Qt::CaseInsensitive);
     conf.formatCombo->addItems(items);
 
-    if (currentFormat.isEmpty()) {
-        currentFormat = conf.formatCombo->itemText(0);
+    if (currentFormatName.isEmpty()) {
+        currentFormatName = conf.formatCombo->itemText(0);
     }
-    conf.formatCombo->setCurrentText(currentFormat);
+    conf.formatCombo->setCurrentText(currentFormatName);
 
     connect(conf.formatCombo, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_formatChanged(const QString &)), Qt::UniqueConnection);
     sl_formatChanged(conf.formatCombo->currentText());
@@ -296,7 +297,7 @@ void SaveDocumentController::addGzExtension(QString &path) const {
 void SaveDocumentController::addFormatExtension(QString &path) const {
     bool gzWasCut = cutGzExtension(path);
     QFileInfo fileInfo(path);
-    const QStringList extensions = formatsInfo.getExtensionsByName(currentFormat);
+    const QStringList extensions = formatsInfo.getExtensionsByName(currentFormatName);
     if (!extensions.isEmpty() && !extensions.contains(fileInfo.suffix())) {
         path += "." + extensions.first();
     }
@@ -307,26 +308,17 @@ void SaveDocumentController::addFormatExtension(QString &path) const {
 }
 
 QString SaveDocumentController::prepareDefaultFileFilter() const {
-    QStringList extraExtensions;
-    if (nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
-        extraExtensions << ".gz";
-    }
-
-    return FormatUtils::prepareFileFilter(currentFormat, formatsInfo.getExtensionsByName(currentFormat), false, extraExtensions);
+    bool useGzipVariant = conf.compressCheckbox && conf.compressCheckbox->isEnabled();
+    return FileFilters::createFileFilter(currentFormatName, formatsInfo.getExtensionsByName(currentFormatName), useGzipVariant);
 }
 
 QString SaveDocumentController::prepareFileFilter() const {
-    QMap<QString, QStringList> formatsWithExtensions;
+    QMap<QString, QStringList> extensionByFormatName;
     foreach (const QString &formatName, formatsInfo.getNames()) {
-        formatsWithExtensions.insert(formatName, formatsInfo.getExtensionsByName(formatName));
+        extensionByFormatName.insert(formatName, formatsInfo.getExtensionsByName(formatName));
     }
-
-    QStringList extraExtensions;
-    if (nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
-        extraExtensions << ".gz";
-    }
-
-    return FormatUtils::prepareFileFilter(formatsWithExtensions, false, extraExtensions);
+    bool useGzipVariant = conf.compressCheckbox && conf.compressCheckbox->isEnabled();
+    return FileFilters::createFileFilter(extensionByFormatName, useGzipVariant);
 }
 
 void SaveDocumentController::setPath(const QString &path, const QSet<QString> &excludeList) {

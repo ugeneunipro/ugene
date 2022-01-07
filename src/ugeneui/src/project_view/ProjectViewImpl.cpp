@@ -21,29 +21,21 @@
 
 #include <AppContextImpl.h>
 
-#include <QClipboard>
 #include <QDesktopServices>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QTimer>
 #include <QUrl>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/CopyDataTask.h>
-#include <U2Core/CopyDocumentTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DbiDocumentFormat.h>
 #include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/LocalFileAdapter.h>
@@ -52,18 +44,12 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ProjectService.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/RemoveDocumentTask.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/Settings.h>
-#include <U2Core/StringAdapter.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportDocumentDialogController.h>
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -72,9 +58,7 @@
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/ReloadDocumentsTask.h>
-#include <U2Gui/UnloadDocumentTask.h>
 
-#include <U2View/ADVSequenceWidget.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
 

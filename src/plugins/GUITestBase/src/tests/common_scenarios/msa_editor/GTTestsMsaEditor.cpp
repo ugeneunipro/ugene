@@ -2841,7 +2841,6 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     // fail to export big alignment
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class CustomFiller_0048 : public Filler {
     public:
@@ -2947,7 +2946,6 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
     //    3. Select a small region
     //    Expected state: warning is gone, export is enabled
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/3000_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class CustomFiller_0052 : public Filler {

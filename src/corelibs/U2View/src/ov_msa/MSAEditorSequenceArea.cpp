@@ -37,6 +37,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -56,7 +57,6 @@
 
 #include <U2Formats/FastaFormat.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/Notification.h>
@@ -611,7 +611,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
     QStringList urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);

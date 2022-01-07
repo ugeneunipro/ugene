@@ -27,8 +27,6 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/global.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "SeqPasterWidgetController.h"
 
 class Ui_CreateDocumentFromTextDialog;

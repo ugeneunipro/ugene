@@ -33,8 +33,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
-#include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/MSAEditor.h>
@@ -168,7 +166,7 @@ int MrBayesWidget::getRandomSeed() {
 }
 
 bool MrBayesWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
-    //Check that MrBayes and temporary folder path defined
+    // Check that MrBayes and temporary folder path defined
     ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
     ExternalTool *mb = reg->getById(MrBayesSupport::ET_MRBAYES_ID);
     assert(mb);
@@ -222,7 +220,7 @@ QString MrBayesWidget::generateMrBayesSettingsScript() {
         } else if (currentNst == MrBayesModelTypes::GTR) {
             nst = 6;
         } else {
-            nst = 2;    //by default
+            nst = 2;  // by default
         }
 
         script = script.append("Nst=%1 ").arg(nst);
@@ -269,4 +267,4 @@ QString MrBayesWidget::generateMrBayesSettingsScript() {
     return script;
 }
 
-}    // namespace U2
+}  // namespace U2

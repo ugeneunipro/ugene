@@ -22,11 +22,11 @@
 #ifndef _U2_EXPORT_BLAST_RESULT_DIALOG_H_
 #define _U2_EXPORT_BLAST_RESULT_DIALOG_H_
 
-#include <ui_ExportBlastResultDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/global.h>
+
+#include <ui_ExportBlastResultDialog.h>
 
 namespace U2 {
 
@@ -37,17 +37,15 @@ class ExportBlastResultDialog : public QDialog, private Ui_ExportBlastResultDial
 public:
     ExportBlastResultDialog(QWidget *p, const QString &defaultUrl = QString());
 
-    void setOkButtonText(const QString &text) const;
     void setFileLabelText(const QString &text) const;
 
-    virtual void accept();
+    void accept() override;
 
 public:
     QString url;
     DocumentFormatId format;
-    QString qualiferId;
+    QString qualifierId;
     bool addToProjectFlag;
-    bool useGenbankHeader;
     bool addRefFlag;
 
 private:
