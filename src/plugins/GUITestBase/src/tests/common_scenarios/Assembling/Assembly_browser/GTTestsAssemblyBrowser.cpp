@@ -103,7 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     // 2. convert bam file to example-alignment.ugenedb
     // Expected state: conversion finished without error
 }
@@ -830,7 +830,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "COI");
     //    Expected: error message box appears
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
@@ -847,7 +847,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
     // Expected: Error message appears
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
@@ -867,7 +867,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
     CHECK_SET_ERR(scrollVal == 1999, QString("Unexpected scroll value2: %1").arg(scrollVal))
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
@@ -905,7 +905,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    Check zoom
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Export"));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0032) {

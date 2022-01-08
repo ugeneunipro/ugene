@@ -106,7 +106,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Close project. No questions must be asked
     GTMenu::clickMainMenuItem(os, QStringList() << "File"

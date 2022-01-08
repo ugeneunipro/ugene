@@ -197,7 +197,8 @@ GUI_TEST_CLASS_DEFINITION(test_6033) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool correct = false;
-    foreach (const QString &name, GTUtilsProjectTreeView::getDocuments(os).keys()) {
+    QList<QString> documentKeys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    for (const QString &name : qAsConst(documentKeys)) {
         if (name.contains("clipboard") && name.contains(".seq")) {
             correct = true;
             break;
@@ -238,7 +239,7 @@ GUI_TEST_CLASS_DEFINITION(test_6047) {
     // 1. Open and convert APR file
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "test_6047", "MSF"));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/apr/", "DNA.apr");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Check msa length and number of sequences
     int columns = GTUtilsMSAEditorSequenceArea::getLength(os);
@@ -1084,20 +1085,23 @@ GUI_TEST_CLASS_DEFINITION(test_6232_4) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6233) {
-    // 1. Find the link to the ET downloadp page in the application settings
+    // 1. Find the link to the ET download page in the application settings.
     class FindUrlScenario : public CustomScenario {
+    public:
+        FindUrlScenario(QString &_url)
+            : url(_url) {
+        }
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
-            QLabel *selectToolPackLabel = GTWidget::findExactWidget<QLabel *>(os, "selectToolPackLabel");
-            CHECK_SET_ERR(selectToolPackLabel != nullptr, "selectToolPackLabel unexpectedly not found");
+            auto selectToolPackLabel = GTWidget::findLabel(os, "selectToolPackLabel");
 
             QPoint labelGlobalPos = selectToolPackLabel->mapToGlobal(selectToolPackLabel->pos());
             GTMouseDriver::moveTo(labelGlobalPos);
             GTClipboard::clear(os);
             for (int row = 0; row < 70 && url.isEmpty(); row += 10) {
                 for (int column = 0; column < 200 && url.isEmpty(); column += 10) {
-                    GTGlobals::sleep(100);
+                    GTThread::waitForMainThread();
                     QPoint newMousePos = labelGlobalPos + QPoint(column, row);
                     GTMouseDriver::moveTo(newMousePos);
                     Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
@@ -1112,25 +1116,24 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
-    public:
-        QString url;
+        QString &url;
     };
 
-    auto findUrlScenario = new FindUrlScenario();
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, findUrlScenario));
+    QString url;
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new FindUrlScenario(url)));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
-    CHECK_SET_ERR(!findUrlScenario->url.isEmpty(), "URL was not found");
+    CHECK_SET_ERR(!url.isEmpty(), "URL was not found");
 
     // 2. Fetch html by the link.
     auto factory = new HttpFileAdapterFactory();
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
-    bool isOpened = io->open(findUrlScenario->url, IOAdapterMode_Read);
-    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened, url: " + findUrlScenario->url);
+    bool isOpened = io->open(url, IOAdapterMode_Read);
+    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened, url: " + url);
 
     QByteArray data(10000, 0);
     int bytesRead = io->readBlock(data.data(), data.size());
-    CHECK_SET_ERR(bytesRead > 100, "Expected at least some data to be read from url: " + findUrlScenario->url + ", error: " + io->errorString());
+    CHECK_SET_ERR(bytesRead > 100, "Expected at least some data to be read from url: " + url + ", error: " + io->errorString());
     CHECK_SET_ERR(!data.contains("Page not found"), "External Tools page is not found");
 }
 
@@ -1307,54 +1310,42 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
     // Run the workflow and wait for the expected message.
+    GTLogTracer logTracer;
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    bool isMessageFound = false;
-    for (int second = 0; second < 90 && !isMessageFound; second++) {
-        GTGlobals::sleep(1000);
-        isMessageFound = GTLogTracer::checkMessage("Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID");
-    }
-    // Check id of the blast job in the log.
-    CHECK_SET_ERR(isMessageFound, "No expected message in the log");
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
-    QString fastqFile = testDir + "_common_data/regression/6238/eas.fastq";
+    // Open sandBoxDir + "eas.fastq".
     QString sandboxFastqFile = sandBoxDir + "eas.fastq";
-    QString badFastqFile = testDir + "_common_data/regression/6238/6238.fastq";
-    // 1. Open "data/samples/FASTQ/eas.fastq".
-    GTFile::copy(os, fastqFile, sandboxFastqFile);
+    GTFile::copy(os, testDir + "_common_data/regression/6238/eas.fastq", sandboxFastqFile);
 
     GTUtilsProject::openMultiSequenceFileAsSequences(os, sandboxFastqFile);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Open the file in some external text editor.
-    QFile file(sandboxFastqFile);
-    QFile badFile(badFastqFile);
-    file.open(QFile::ReadWrite);
-    badFile.open(QFile::ReadOnly);
-
-    // 3. Replace the file content with the content if the file "_common_data/regression/6238/6238.fastq".
+    // Replace the file content with the content if the file "_common_data/regression/6238/6238.fastq".
     // Expected state : UGENE offers to reload the modified file.
-    // 4. Accept the offering.
-    // Expected state: the file reloading failed, an error notification appeared, there are error messages in the log.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::YesAll));
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsNotifications::waitForNotification(os, false, "The text file can't be read. Check the file encoding and make sure the file is not corrupted");
-    QByteArray badData = badFile.readAll();
-    file.write(badData);
+    // Accept the offering.
+    // Expected state: the file reloading failed, an error message in the log appears.
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "was modified. Do you want to reload"));
+
+    QFile file(sandboxFastqFile);
+    file.open(QFile::ReadWrite);
+    QString badContent = GTFile::readAll(os, testDir + "_common_data/regression/6238/6238.fastq");
+    file.write(badContent.toLocal8Bit());
     file.close();
-    badFile.close();
-    GTGlobals::sleep(10000);
+
+    GTUtilsDialog::checkNoActiveWaiters(os, 20000);
+    GTUtilsLog::checkContainsError(os, logTracer, "Failed to detect");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6240) {
     // 1. Open WD. This step allows us to prevent a bad case, when, at the first opening of WD, the dialog "Choose output directory" appears and the filler below is catching it
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(wizard != nullptr, "Wizard isn't found");
-
+        void run(HI::GUITestOpStatus &os) override {
             GTUtilsWizard::setParameter(os, "Input file(s)", dataDir + "samples/Assembly/chrM.sam");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -1415,7 +1406,7 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     QString exportToFile = sandBoxDir + "Aligned reads_consensus.txt";
     GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
     GTUtilsOptionPanelMca::pushExportButton(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Open "alignment.ugenedb" again
@@ -1424,7 +1415,7 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     // 4. And again open "Export consensus" tab, and click export
     GTUtilsOptionPanelMca::pushExportButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected: there are 3 documents in the project tree: "alignment.ugenedb", "Aligned reads_consensus.txt" and "Aligned reads_consensus_1.txt"
     QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
@@ -2021,7 +2012,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     // Expected result: first visible symbol "C" with green background color.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsAssemblyBrowser::scrollToStart(os, Qt::Horizontal);
@@ -2033,7 +2024,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     // 5. Edit chrM by add 5 symbols at start
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: chrM [regression_6455.fa]"));
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsSequenceView::enableEditingMode(os);
 
@@ -2054,7 +2045,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     // Remove association for assembly file or GUI framework will fail on shutdown on de-association dialog called from window->close().
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
     GTWidget::click(os, refArea, Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     QString colorOfT = "#ba546c";
     CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfT, 10), QString("color is %1, expected: %2").arg(colorOfT).arg(color));
@@ -3541,7 +3532,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the COI alignment is not modified,
@@ -3569,7 +3560,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected result: the COI alignment is not modified,
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
@@ -6125,12 +6116,12 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new AddCustomToolScenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckCustomToolScenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6927) {

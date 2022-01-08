@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4026) {
@@ -2862,26 +2862,25 @@ GUI_TEST_CLASS_DEFINITION(test_4356) {
 
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank", "murine.gb"));
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
             GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
 
-            auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
-            QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "Ok button is NULL");
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::unloadDocument(os, "murine.gb", true);
 
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new Test_4356(os));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     Document *doc = GTUtilsDocument::getDocument(os, "murine.gb");
     CHECK_SET_ERR(doc->isLoaded(), "Document is unexpectedly unloaded");
@@ -3985,7 +3984,7 @@ GUI_TEST_CLASS_DEFINITION(test_4628) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4628", "cow.chr13.repeats.shifted.bed");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Report");
+    QWidget *reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Report");
     auto textEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
     CHECK_SET_ERR(textEdit->toPlainText().contains("incorrect strand value '+379aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...' at line 5333"),
                   "Expected message is not found in the report text");
@@ -4814,7 +4813,7 @@ GUI_TEST_CLASS_DEFINITION(test_4732) {
     scenario->setFiller(filler);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "test_4732.fa", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);  // wait for all GTUtilsDialog::waitForDialog waiters are finished (file removed message box).
+    GTUtilsDialog::checkNoActiveWaiters(os);  // wait for all GTUtilsDialog::waitForDialog waiters are finished (file removed message box).
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4734) {
@@ -5072,9 +5071,10 @@ GUI_TEST_CLASS_DEFINITION(test_4785_1) {
 
     // 2. Use context menu { Align->Align profile to profile with MUSCLE }
     // 3. Select any alignment and press "Ok"
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align profile to profile with MUSCLE"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW", "COI.aln"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::checkTopLevelTaskWithWait(os, "MUSCLE");
 
     // 4. Delete "test_4785.aln"
     // Expected result : An error notification appears :
@@ -5098,7 +5098,7 @@ GUI_TEST_CLASS_DEFINITION(test_4785_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align profile to profile with MUSCLE"));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/clustal/", "1000_sequences.aln"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Delete "test_4785.aln"
     // Expected result : An error notification appears :
@@ -5107,7 +5107,7 @@ GUI_TEST_CLASS_DEFINITION(test_4785_2) {
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.");
     QFile::remove(sandBoxDir + "test_4785.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4795) {
@@ -5302,7 +5302,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_5) {
@@ -5315,7 +5315,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_6) {
@@ -5329,7 +5329,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_6) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //   Undo the changes: no notification is expected.
     GTUtilsMsaEditor::undo(os);
@@ -5339,7 +5339,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_6) {
     //   Redo the changes and check the notification again.
     GTUtilsMsaEditor::redo(os);
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4833_1) {
@@ -5400,7 +5400,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_5) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to alignment with MUSCLE");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4833_6) {
@@ -5434,7 +5434,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_8) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align alignment to alignment with MUSCLE");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4839_1) {
@@ -5797,7 +5797,7 @@ GUI_TEST_CLASS_DEFINITION(test_4936) {
     file.write(data);
     file.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Accept the offer.
     //    Expected state: the document is successfully reloaded, there are no errors in the log.

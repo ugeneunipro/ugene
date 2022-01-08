@@ -182,7 +182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     // Here "%1" is one of the values : "Standard DNA", "Extended DNA", "Standard RNA", "Extended RNA", "Standard amino acid", "Extended amino acid", "Raw".
     GTKeyboardDriver::keyClick('r');  // Type 'R' character.
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Click "Undo".
     // Expected state : There is NO notifications.
@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     // Expected state : The warning notification appears again.
     GTUtilsMsaEditor::redo(os);
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString selectionContent = GTClipboard::text(os);

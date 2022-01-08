@@ -499,7 +499,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     file.write(data);
     file.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -1267,7 +1267,7 @@ GUI_TEST_CLASS_DEFINITION(test_3220) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Save the file and reload it
     GTUtilsDocument::unloadDocument(os, "human_T1.fa", true);
@@ -1527,7 +1527,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber(os, 0)));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
@@ -2252,7 +2252,7 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     out << fileData;
     copiedFile.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
@@ -5557,7 +5557,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Build index for reads mapping...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));

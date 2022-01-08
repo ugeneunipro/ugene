@@ -191,7 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsAnnotationsTreeView::getItemCenter(os, "C");
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
@@ -199,7 +199,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu1"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsAnnotationsTreeView::findItem(os, "qu");
 }
@@ -562,7 +562,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "long") != nullptr, "Item long not found in tree widget1");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
@@ -597,7 +597,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "noSpaces") != nullptr, "Item long not found in tree widget1");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");

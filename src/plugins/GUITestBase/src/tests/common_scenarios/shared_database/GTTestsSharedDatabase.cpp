@@ -2373,7 +2373,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "empty_rb"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QModelIndex rbItemAfter = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");

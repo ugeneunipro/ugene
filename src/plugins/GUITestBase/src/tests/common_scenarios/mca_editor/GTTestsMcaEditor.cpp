@@ -864,7 +864,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Select "SZYD_Cas9_5B71" read
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
@@ -1458,11 +1458,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_2) {
-    QString filePath = testDir + "_common_data/sanger/alignment_read_is_reference.ugenedb";
     QString fileName = "alignment_read_is_reference.ugenedb";
 
     // 1. Copy to 'sandbox' and open alignment_short.ugenedb
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, testDir + "_common_data/sanger/" + fileName, sandBoxDir + "/" + fileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
@@ -1473,29 +1472,26 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 3. Push "Jump to next variation" button
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to next variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to next variation" from main menu
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to next variation");
-    GTUtilsDialog::waitAllFinished(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1746,7 +1742,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 3. Push "Jump to previous variation" button
     // Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1755,7 +1751,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "prev_ambiguous");
     GTWidget::click(os, prevAmbiguousButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Push "Jump to next variation" from context menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1764,7 +1760,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
                                                                               << "Jump to previous ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Push "Jump to previous variation" from main menu
     // Expected state : Notification "There are no ambiguous characters in the alignment.
@@ -1774,7 +1770,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
                                                 << "Navigation"
                                                 << "Jump to previous ambiguous character");
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0018_2) {
@@ -3304,7 +3300,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     // close the view with ugenedb
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -3324,7 +3320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     // close the view with COI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // open ugenedb and check consensus settings
     GTFileDialog::openFile(os, sandBoxDir, fileName);
@@ -3335,7 +3331,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // open COI.aln and check consensus settings
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -3362,7 +3358,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
                                                                               << "Change characters font..."));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     ScaleBar *scaleBar = GTWidget::findExactWidget<ScaleBar *>(os, "peak_height_slider");
 
@@ -3378,7 +3374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     // close ugenedb
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);

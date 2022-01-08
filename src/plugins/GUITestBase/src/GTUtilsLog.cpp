@@ -52,13 +52,8 @@ QList<LogMessage *> GTLogTracer::getMessages() {
 
 bool GTLogTracer::checkMessage(const QString &s) {
     QList<LogMessage *> messages = getMessages();
-    QList<QString> textMessages;
-    foreach (LogMessage *message, messages) {
-        textMessages.append(message->text);
-    }
-
-    foreach (QString message, textMessages) {
-        if (message.contains(s, Qt::CaseInsensitive)) {
+    for (LogMessage *message : qAsConst(messages)) {
+        if (message->text.contains(s, Qt::CaseInsensitive)) {
             return true;
         }
     }
@@ -110,6 +105,18 @@ QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTrace
         }
     }
     return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkMessageWithWait"
+void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis) {
+    for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        if (logTracer.checkMessage(message)) {
+            return;
+        }
+    }
+    GT_FAIL("Message was not found in log: " + message, );
 }
 #undef GT_METHOD_NAME
 
