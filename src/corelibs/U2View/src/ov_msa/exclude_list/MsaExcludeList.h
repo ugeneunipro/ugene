@@ -22,6 +22,8 @@
 #ifndef _U2_MSA_EXCLUDE_LIST_H_
 #define _U2_MSA_EXCLUDE_LIST_H_
 
+// TODO: size limits.
+
 #include <QSet>
 #include <QWidget>
 
@@ -29,8 +31,12 @@
 
 #include <U2Gui/ObjectViewModel.h>
 
+class QLabel;
 class QListWidget;
+class QListWidgetItem;
 class QPlainTextEdit;
+class QSplitter;
+class QToolButton;
 
 namespace U2 {
 
@@ -38,12 +44,15 @@ class MSAEditor;
 class MaModificationInfo;
 class MsaExcludeList;
 class MultipleAlignment;
+class LoadDocumentTask;
 
 /** MSA editor built-in support for "Align-Sequences-To-Alignment" algorithms. */
 class MsaExcludeListContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
     MsaExcludeListContext(QObject *parent);
+
+    QAction *getMoveMsaSelectionToExcludeListAction(MSAEditor *msaEditor);
 
 protected:
     void initViewContext(GObjectView *view) override;
@@ -76,26 +85,58 @@ struct UndoRedoContext {
 class MsaExcludeList : public QWidget {
     Q_OBJECT
 public:
-    MsaExcludeList(QWidget *parent, MSAEditor *msaEditor);
+    MsaExcludeList(QWidget *parent, MSAEditor *msaEditor, MsaExcludeListContext *viewContext);
 
     void moveMsaSelectionToExcludeList();
     void moveExcludeListSelectionToMaObject();
 
+    void trackMsaObjectSaveTask(Task *task);
+
+    /** Returns preferred size hint used on instantiation. This size defines initial widget height in the MSA splitter. */
+    QSize sizeHint() const override;
+
 private:
     void updateSequenceView();
+
     void updateState();
+
     void handleUndoRedoInMsaEditor(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
-    void addEntry(const QString &name, const QByteArray &sequence, int msaRowId);
+
+    int addEntry(const QString &name, const QByteArray &sequence, int msaRowId = -1);
+    void removeEntries(const QList<QListWidgetItem *> &items);
 
     void showNameListContextMenu(const QPoint &pos);
+
+    void loadExcludeList(bool create = false);
+
+    void unloadExcludeList();
+
+    Task *runSaveTask(const QString &savePath);
+
+    void changeExcludeListFile();
+
+    void saveExcludeFileToNewLocation();
+
+    void handleLoadTaskStateChange();
+
+    bool hasActiveTask() const;
 
     MSAEditor *msaEditor = nullptr;
     QListWidget *nameListView = nullptr;
     QPlainTextEdit *sequenceView = nullptr;
+    QToolButton *selectFileButton = nullptr;
+    QToolButton *saveAsButton = nullptr;
+    QSplitter *namesAndSequenceSplitter = nullptr;
+    QLabel *stateLabel = nullptr;
     QAction *moveSelectionToMaObjectAction = nullptr;
     QMap<int, UndoRedoContext> trackedUndoMsaVersions;
     QMap<int, UndoRedoContext> trackedRedoMsaVersions;
     int excludeListRowIdGenerator = 0;
+    QString excludeListFilePath;
+    bool isLoaded = false;
+    bool isDirty = false;
+    Task *saveTask = nullptr;
+    LoadDocumentTask *loadTask = nullptr;
 };
 
 }  // namespace U2

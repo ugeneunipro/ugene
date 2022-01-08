@@ -253,16 +253,16 @@ LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const
 }
 
 LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints) {
-    CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), nullptr);
+    CHECK_EXT(!url.isEmpty(), os.setError(tr("The file path is empty")), nullptr);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    CHECK_EXT(iof != nullptr, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), nullptr);
+    CHECK_EXT(iof != nullptr, os.setError(tr("Cannot get an IO file adapter factory for the file: %1").arg(url.getURLString())), nullptr);
 
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
-    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), nullptr);
+    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect file format: %1").arg(url.getURLString())), nullptr);
 
     DocumentFormat *df = dfs.first().format;
-    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is NULL (format ID: '%1', file URL: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
+    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is unknown (format id: '%1', file path: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
     return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 

@@ -116,6 +116,9 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 #define DocumentReadingMode_DontMakeUniqueNames "no-unique-names"
 #define DocumentReadingMode_LoadAsModified "load-as-modified"
 
+/** By default document format parsers treat empty files as error. This flag makes empty files valid. */
+#define DocumentReadingMode_AllowEmptyFile "allow-empty-file"
+
 /** Set of hints that can be processed during document storing */
 #define DocumentWritingMode_SimpleNames "simple-names"
 
