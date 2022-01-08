@@ -47,13 +47,13 @@ void GTCheckBox::setChecked(GUITestOpStatus &os, QCheckBox *checkBox, bool check
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, bool checked, QWidget const *const parent) {
+void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, bool checked, QWidget *parent) {
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, checkBoxName, parent), checked);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget const *const parent) {
+void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget  *parent) {
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, checkBoxName, parent));
 }
 #undef GT_METHOD_NAME
@@ -82,7 +82,7 @@ void GTCheckBox::checkState(GUITestOpStatus &os, QCheckBox const *const checkBox
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkState"
-void GTCheckBox::checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget const *const parent) {
+void GTCheckBox::checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget  *parent) {
     checkState(os, GTWidget::findExactWidget<QCheckBox *>(os, checkBoxName, parent), expectedState);
 }
 #undef GT_METHOD_NAME

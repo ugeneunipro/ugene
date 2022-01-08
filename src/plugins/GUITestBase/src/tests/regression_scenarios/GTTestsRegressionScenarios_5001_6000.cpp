@@ -1548,41 +1548,43 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+    class TrimmomaticScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            QMenu *menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
+            auto settingsStep1Widget = GTWidget::findWidget(os, "TrimmomaticStepSettingsWidget_step_1", dialog);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", settingsStep1Widget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    class custom : public CustomScenario {
+    class IlluminaAssemblyWizardScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             // GTUtilsWizard::clickButton
 
-            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
+            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new TrimmomaticScenario()));
 
-            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton"));
+            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", wizard));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -1590,12 +1592,10 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", QStringList() << "Illumina SE reads"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina SE reads"}));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new IlluminaAssemblyWizardScenario()));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Reads de novo assembly (with SPAdes)...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads de novo assembly (with SPAdes)..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -1617,20 +1617,25 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+
+            QMenu *menu = GTWidget::findMenuWidget(os, "stepsMenu");
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
+
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+
+            menu = GTWidget::findMenuWidget(os, "stepsMenu");
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
+
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            auto settingsStep1Widget = GTWidget::findWidget(os, "TrimmomaticStepSettingsWidget_step_1", dialog);
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", settingsStep1Widget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1640,7 +1645,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     public:
         void run(HI::GUITestOpStatus &os) {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()}});
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 

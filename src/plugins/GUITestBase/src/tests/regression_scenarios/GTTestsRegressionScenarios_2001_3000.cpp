@@ -54,7 +54,6 @@
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QWizard>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -130,7 +129,6 @@
 #include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DashboardsManagerDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DefaultWizardFiller.h"
@@ -611,19 +609,24 @@ GUI_TEST_CLASS_DEFINITION(test_2032) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2049) {
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
-    QWidget *w = GTWidget::findWidget(os, "Codon table widget");
-    int ititHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
+    auto codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
+    auto labelBefore = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
+    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: "+ labelBefore->text());
+    int heightBefore = labelBefore->geometry().height();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "3. The Yeast Mitochondrial Code"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"3. The Yeast Mitochondrial Code"}));
     GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton"));
 
-    w = GTWidget::findWidget(os, "Codon table widget");
-    int finalHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
-    CHECK_SET_ERR(ititHeight != finalHeight, "codon table not changed");
+    codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
+    auto labelAfter = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
+    CHECK_SET_ERR(labelAfter->text().contains("Threonine (Thr, T)"), "2. Invalid cell text: " + labelAfter->text());
+    int heightAfter = labelAfter->geometry().height();
+
+    CHECK_SET_ERR(heightBefore == heightAfter, "Codon table layout is changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2053) {
@@ -1576,7 +1579,6 @@ GUI_TEST_CLASS_DEFINITION(test_2281) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2292) {
-    QString destName = testDir + "_common_data/ugenedb/example-alignment.ugenedb";
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4940,7 +4942,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
                                                          "der_area_virus_X"));
     QString blastTaskName = "RemoteBLASTTask";
     GTUtilsTaskTreeView::checkTask(os, blastTaskName);
-    GTGlobals::sleep(10000); // Give a task some time to run.
+    GTGlobals::sleep(10000);  // Give a task some time to run.
 
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
     bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);

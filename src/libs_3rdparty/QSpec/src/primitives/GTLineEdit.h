@@ -39,10 +39,10 @@ public:
     // or a set text differs from a given string
 #ifdef Q_OS_DARWIN
     static void setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str, bool noCheck = false, bool useCopyPaste = true);
-    static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, const QWidget *const parent, bool noCheck = false, bool useCopyPaste = true);
+    static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget  *parent, bool noCheck = false, bool useCopyPaste = true);
 #else
     static void setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str, bool noCheck = false, bool useCopyPaste = false);
-    static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget const *const parent, bool noCheck = false, bool useCopyPaste = false);
+    static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget  *parent, bool noCheck = false, bool useCopyPaste = false);
 #endif
     static QString getText(GUITestOpStatus &os, QLineEdit *lineEdit);
     static QString getText(GUITestOpStatus &os, const QString &lineEditName, QWidget *parent = NULL);
@@ -57,7 +57,7 @@ public:
     // considering lineEdit's fontMetrics and textMargins
     static void checkTextSize(GUITestOpStatus &os, QLineEdit *lineEdit);
     static void checkText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &expectedText);
-    static void checkText(GUITestOpStatus &os, const QString &lineEditName, QWidget const *const parent, const QString &expectedText);
+    static void checkText(GUITestOpStatus &os, const QString &lineEditName, QWidget  *parent, const QString &expectedText);
 
     static QString copyText(GUITestOpStatus &os, QLineEdit *lineEdit);
 
