@@ -45,9 +45,9 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "BlastSupport.h"
-#include "align_worker_subtasks/BlastReadsSubTask.h"
-#include "align_worker_subtasks/ComposeResultSubTask.h"
-#include "align_worker_subtasks/FormatDBSubTask.h"
+#include "align_worker_subtasks/BlastReadsSubtask.h"
+#include "align_worker_subtasks/ComposeResultSubtask.h"
+#include "align_worker_subtasks/MakeBlastDbAlignerSubtask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
 
 namespace U2 {
@@ -258,7 +258,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &refUrl, cons
 }
 
 void AlignToReferenceBlastTask::prepare() {
-    formatDbSubTask = new U2::Workflow::FormatDBSubTask(referenceUrl, reference, storage);
+    formatDbSubTask = new U2::Workflow::MakeBlastDbAlignerSubtask(referenceUrl, reference, storage);
     addSubTask(formatDbSubTask);
 }
 
@@ -269,10 +269,10 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
+        blastTask = new BlastReadsSubtask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
-        composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);
+        composeSubTask = new ComposeResultSubtask(reference, reads, blastTask->getBlastSubtasks(), storage);
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
     } else if (subTask == composeSubTask) {

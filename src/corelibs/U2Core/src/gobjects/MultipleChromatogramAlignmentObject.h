@@ -88,7 +88,7 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
 
     QList<U2Region> getColumnsWithGaps() const;
-    U2MsaRowGapModel getReferenceGapModel() const;
+    QList<U2MsaGap> getReferenceGapModel() const;
 
     mutable U2SequenceObject *referenceObj;
 };

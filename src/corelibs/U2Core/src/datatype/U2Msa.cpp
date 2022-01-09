@@ -23,11 +23,6 @@
 
 namespace U2 {
 
-U2MsaGap::U2MsaGap()
-    : offset(0),
-      gap(0) {
-}
-
 U2MsaGap::U2MsaGap(qint64 off, qint64 gap)
     : offset(off),
       gap(gap) {

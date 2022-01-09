@@ -44,7 +44,7 @@ public:
     MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MsaRowGapModel &gaps, MultipleSequenceAlignmentData *msaData);
+    MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData);
     MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignmentData *msaData);
     MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignmentData *msaData);
 
@@ -90,7 +90,7 @@ public:
     void setName(const QString &name);
 
     /** Returns the list of gaps for the row */
-    inline const U2MsaRowGapModel &getGapModel() const;
+    inline const QList<U2MsaGap> &getGapModel() const;
 
     /** Careful, the new gap model is not validated! */
     void setGapModel(const QList<U2MsaGap> &newGapModel);
@@ -150,7 +150,7 @@ public:
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    void setRowContent(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void setRowContent(const DNASequence &sequence, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
     void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
 
     /**
@@ -253,7 +253,7 @@ private:
     U2MsaRow initialRowInDb;
 };
 
-inline const U2MsaRowGapModel &MultipleSequenceAlignmentRowData::getGapModel() const {
+inline const QList<U2MsaGap> &MultipleSequenceAlignmentRowData::getGapModel() const {
     return gaps;
 }
 

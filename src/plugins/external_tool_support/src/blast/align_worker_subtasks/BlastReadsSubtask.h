@@ -40,10 +40,10 @@ namespace Workflow {
 /* BlastReadsSubTask */
 /************************************************************************/
 class BlastAndSwReadTask;
-class BlastReadsSubTask : public Task {
+class BlastReadsSubtask : public Task {
     Q_OBJECT
 public:
-    BlastReadsSubTask(const QString &dbPath,
+    BlastReadsSubtask(const QString &dbPath,
                       const QList<SharedDbiDataHandler> &reads,
                       const SharedDbiDataHandler &reference,
                       const int minIdentityPercent,
@@ -85,8 +85,8 @@ public:
 
     bool isComplement() const;
     const SharedDbiDataHandler &getRead() const;
-    const U2MsaRowGapModel &getReferenceGaps() const;
-    const U2MsaRowGapModel &getReadGaps() const;
+    const QList<U2MsaGap> &getReferenceGaps() const;
+    const QList<U2MsaGap> &getReadGaps() const;
 
     bool isReadAligned() const;
     QString getReadName() const;
@@ -95,16 +95,16 @@ public:
     int getReadIdentity() const;
 
 private:
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    ReportResult report();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    ReportResult report() override;
 
     BlastNTask *getBlastTask();
     void checkRead(const QByteArray &sequenceData);
 
     U2Region getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations);
     void createAlignment(const U2Region &refRegion);
-    void shiftGaps(U2MsaRowGapModel &gaps) const;
+    void shiftGaps(QList<U2MsaGap> &gaps) const;
 
     static AbstractAlignmentTaskFactory *getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
     static PairwiseAlignmentTaskSettings *createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os);
@@ -126,14 +126,14 @@ private:
     AbstractAlignmentTask *alignTask = nullptr;
     QString blastResultDir;
 
-    U2MsaRowGapModel referenceGaps;
-    U2MsaRowGapModel readGaps;
+    QList<U2MsaGap> referenceGaps;
+    QList<U2MsaGap> readGaps;
     QString readName;
     bool complement;
     bool skipped;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_BLAST_READS_SUBTASK_H_
+#endif  // _U2_BLAST_READS_SUBTASK_H_

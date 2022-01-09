@@ -34,16 +34,14 @@ namespace U2 {
 
 class U2MsaGap;
 
-typedef QList<U2MsaGap> U2MsaRowGapModel;
-typedef QList<U2MsaRowGapModel> U2MsaListGapModel;
-typedef QMap<qint64, U2MsaRowGapModel> U2MsaMapGapModel;
-
 class U2CORE_EXPORT U2MsaGap {
 public:
-    U2MsaGap();
+    U2MsaGap() = default;
+
     U2MsaGap(qint64 off, qint64 gap);
 
     qint64 endPos() const;  // not inclusive
+
     void setEndPos(qint64 endPos);  // not inclusive
 
     bool isValid() const;
@@ -57,10 +55,10 @@ public:
     operator U2Region() const;
 
     /** Offset of the gap in sequence*/
-    qint64 offset;
+    qint64 offset = 0;
 
-    /** number of gaps */
-    qint64 gap;
+    /** Number of gaps */
+    qint64 gap = 0;
 };
 
 /**

@@ -111,7 +111,7 @@ public:
     DNASequence getUngappedSequence() const;
 
     /** Returns the list of gaps for the row */
-    virtual const U2MsaRowGapModel &getGapModel() const = 0;
+    virtual const QList<U2MsaGap> &getGapModel() const = 0;
     virtual void removeChars(int pos, int count, U2OpStatus &os) = 0;
 
     /** Name of the row, can be empty */

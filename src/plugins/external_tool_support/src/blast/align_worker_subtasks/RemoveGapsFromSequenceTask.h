@@ -33,7 +33,7 @@ class FindGapsInSequenceCallback : public SequenceDbiWalkerCallback {
 public:
     FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject);
 
-    void onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo);
+    void onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo) override;
 
     const QList<U2Region> &getGappedRegions() const;
 
@@ -52,17 +52,15 @@ public:
     RemoveGapsFromSequenceTask(U2SequenceObject *const sequenceObject);
 
 private:
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     U2SequenceObject *const sequenceObject;
 
     FindGapsInSequenceCallback callback;
-    SequenceDbiWalkerTask *findGapsTask;
-
-    static const int CHUNK_SIZE = 128000;
+    SequenceDbiWalkerTask *findGapsTask = nullptr;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_
+#endif  // _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_

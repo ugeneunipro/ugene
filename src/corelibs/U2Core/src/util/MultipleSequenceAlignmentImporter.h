@@ -47,9 +47,9 @@ private:
     static U2DataId createEmptyMsaObject(const DbiConnection &con, const QString &folder, const QString &name, const DNAAlphabet *alphabet, U2OpStatus &os);
     static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const QVariantMap &alInfo, U2OpStatus &os);
     static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
-    static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaListGapModel &gapModel, U2OpStatus &os);
+    static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, QList<QList<U2MsaGap>> &gapModel, U2OpStatus &os);
     static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
-    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &rows, const U2MsaListGapModel &msaGapModel, U2OpStatus &os);
+    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &rows, const QList<QList<U2MsaGap>> &msaGapModel, U2OpStatus &os);
 };
 
 }  // namespace U2
