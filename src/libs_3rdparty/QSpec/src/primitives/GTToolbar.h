@@ -23,6 +23,7 @@
 #define _HI_GUI_GTTOOLBAR_H_
 
 #include <QToolBar>
+#include <QToolButton>
 
 #include "GTGlobals.h"
 
@@ -35,6 +36,8 @@ public:
     static QWidget *getWidgetForAction(GUITestOpStatus &os, const QToolBar *toolbar, QAction *action);
     static QWidget *getWidgetForActionObjectName(GUITestOpStatus &os, const QToolBar *toolbar, const QString &actionName);
     static QWidget *getWidgetForActionTooltip(GUITestOpStatus &os, const QToolBar *toolbar, const QString &tooltip);
+
+    static QToolButton *getToolButtonByAction(GUITestOpStatus &os, const QToolBar *toolbar, const QString &actionName);
 
     static void clickButtonByTooltipOnToolbar(GUITestOpStatus &os, const QString &toolbarSysName, const QString &tooltip);
 

@@ -65,8 +65,8 @@ MsaExcludeListContext::MsaExcludeListContext(QObject *parent)
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-static const char *TOGGLE_EXCLUDE_LIST_ACTION_NAME = "toggle_exclude_list_action";
-static const char *MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "move_msa_selection_to_exclude_list_action";
+static const char *TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action";
+static const char *MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
 
 void MsaExcludeListContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
@@ -160,6 +160,10 @@ static const char *EXCLUDE_LIST_FILE_SUFFIX = "exclude-list.fasta";
 
 class SequenceNamesListWidget : public QListWidget {
 public:
+    SequenceNamesListWidget() {
+        setObjectName("exclude_list_name_list_widget");
+    }
+
 protected:
     QMimeData *mimeData(const QList<QListWidgetItem *> items) const override {
         auto mimeData = QListWidget::mimeData(items);
@@ -174,6 +178,7 @@ protected:
 
 MsaExcludeList::MsaExcludeList(QWidget *parent, MSAEditor *_msaEditor, MsaExcludeListContext *viewContext)
     : QWidget(parent), msaEditor(_msaEditor) {
+    setObjectName("msa_exclude_list");
     auto layout = new QVBoxLayout(this);
     setLayout(layout);
 
@@ -182,17 +187,20 @@ MsaExcludeList::MsaExcludeList(QWidget *parent, MSAEditor *_msaEditor, MsaExclud
 
     toolbarLayout->addWidget(new QLabel("Exclude List file: ", this));
     selectFileButton = new QToolButton(this);
+    selectFileButton->setObjectName("exclude_list_select_file_button");
     connect(selectFileButton, &QToolButton::clicked, this, &MsaExcludeList::changeExcludeListFile);
     toolbarLayout->addStrut(10);
     toolbarLayout->addWidget(selectFileButton);
 
     saveAsButton = new QToolButton(this);
     saveAsButton->setText("Save as ...");
+    saveAsButton->setObjectName("exclude_list_save_as_button");
     connect(saveAsButton, &QToolButton::clicked, this, &MsaExcludeList::saveExcludeFileToNewLocation);
     toolbarLayout->addStrut(10);
     toolbarLayout->addWidget(saveAsButton);
 
     stateLabel = new QLabel(tr("Exclude list file is not loaded"));
+    stateLabel->setObjectName("exclude_list_state_label");
     stateLabel->setContentsMargins(0, 20, 0, 20);
     layout->addWidget(stateLabel);
 
@@ -211,6 +219,7 @@ MsaExcludeList::MsaExcludeList(QWidget *parent, MSAEditor *_msaEditor, MsaExclud
     connect(nameListView, &QWidget::customContextMenuRequested, this, &MsaExcludeList::showNameListContextMenu);
 
     sequenceView = new QPlainTextEdit(this);
+    sequenceView->setObjectName("exclude_list_sequence_view");
     sequenceView->setReadOnly(true);
     sequenceView->setTextInteractionFlags(Qt::TextSelectableByKeyboard | Qt::TextSelectableByMouse);
 
@@ -230,15 +239,17 @@ MsaExcludeList::MsaExcludeList(QWidget *parent, MSAEditor *_msaEditor, MsaExclud
     connect(moveSelectionToMaObjectAction, &QAction::triggered, this, &MsaExcludeList::moveExcludeListSelectionToMaObject);
     connect(nameListView, &QListWidget::itemSelectionChanged, this, &MsaExcludeList::updateState);
 
-    auto moveSelectionToMaObjectButton = new QToolButton();
-    moveSelectionToMaObjectButton->setDefaultAction(moveSelectionToMaObjectAction);
-    moveSelectionToMaObjectButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    toolbarLayout->addWidget(moveSelectionToMaObjectButton);
+    auto moveSelectionToMsaButton = new QToolButton();
+    moveSelectionToMsaButton->setObjectName("exclude_list_move_to_msa_button");
+    moveSelectionToMsaButton->setDefaultAction(moveSelectionToMaObjectAction);
+    moveSelectionToMsaButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    toolbarLayout->addWidget(moveSelectionToMsaButton);
     toolbarLayout->addStrut(10);
 
     auto moveMsaSelectionToExcludeListAction = viewContext->getMoveMsaSelectionToExcludeListAction(msaEditor);
     if (moveMsaSelectionToExcludeListAction != nullptr) {
         auto moveSelectionToExcludeListButton = new QToolButton();
+        moveSelectionToExcludeListButton->setObjectName("exclude_list_move_to_exclude_list_button");
         moveSelectionToExcludeListButton->setDefaultAction(moveMsaSelectionToExcludeListAction);
         moveSelectionToExcludeListButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
         toolbarLayout->addWidget(moveSelectionToExcludeListButton);
@@ -311,7 +322,8 @@ void MsaExcludeList::showNameListContextMenu(const QPoint &) {
 void MsaExcludeList::moveMsaSelectionToExcludeList() {
     const MaEditorSelection &selection = msaEditor->getSelection();
     SAFE_POINT(!selection.isEmpty(), "Msa editor selection is empty!", );
-    QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
+    QList<QRect> selectedRects = selection.getRectList();
+    QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects);
     QList<int> excludeListRowIds;
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
     for (int msaRowIndex : qAsConst(selectedMsaRowIndexes)) {
@@ -328,6 +340,13 @@ void MsaExcludeList::moveMsaSelectionToExcludeList() {
         // Exclude list re-uses msa row ids.
         trackedUndoMsaVersions.insert(versionBefore, {true, excludeListRowIds});
         trackedRedoMsaVersions.insert(msaObject->getObjectVersion(), {true, excludeListRowIds});
+
+        // Select the first row before the removed ones.
+        if (!msaEditor->isAlignmentEmpty()) {
+            int firstSelectedRowIndexBefore = selectedRects.first().top();
+            int newSelectedRowIndex = qMin(msaEditor->getCollapseModel()->getViewRowCount() - 1, firstSelectedRowIndexBefore);
+            msaEditor->selectRows(newSelectedRowIndex, 1);
+        }
     }
     updateState();
 }

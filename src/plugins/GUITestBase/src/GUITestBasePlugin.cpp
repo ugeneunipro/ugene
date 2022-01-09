@@ -56,6 +56,7 @@
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
+#include "tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
@@ -2380,6 +2381,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0094);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0095);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0096);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/exclude_list
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
