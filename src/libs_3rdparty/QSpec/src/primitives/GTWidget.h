@@ -32,6 +32,7 @@
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QGraphicsView>
+#include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
@@ -134,6 +135,9 @@ public:
     /** Calls findExactWidget with QRadioButton type. Shortcut method. */
     static QRadioButton *findRadioButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
+    /** Calls findExactWidget with QGroupBox type. Shortcut method. */
+    static QGroupBox *findGroupBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
     static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
@@ -142,6 +146,9 @@ public:
 
     /** Calls findExactWidget with QTableWidget type. Shortcut method. */
     static QTableWidget *findTableWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QTabWidget type. Shortcut method. */
+    static QTabWidget *findTabWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QPlainTextEdit type. Shortcut method. */
     static QPlainTextEdit *findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});

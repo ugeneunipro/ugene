@@ -615,7 +615,7 @@ GUI_TEST_CLASS_DEFINITION(test_2049) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
     auto codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
     auto labelBefore = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
-    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: "+ labelBefore->text());
+    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: " + labelBefore->text());
     int heightBefore = labelBefore->geometry().height();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"3. The Yeast Mitochondrial Code"}));
@@ -1903,28 +1903,11 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
               projectFile(_projectFile) {
         }
 
-        virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
-            QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
-            if (nullptr == projectNameEdit) {
-                os.setError("projectNameEdit not found");
-                return;
-            }
-            projectNameEdit->setText(projectName);
-
-            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-            if (nullptr == projectFileEdit) {
-                os.setError("projectFileEdit not found");
-                return;
-            }
-            projectFileEdit->setText(projectFolder + "/" + projectFile);
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, projectName, "projectNameEdit", dialog);
+            GTLineEdit::setText(os, projectFolder + "/" + projectFile, "projectFilePathEdit", dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
     private:

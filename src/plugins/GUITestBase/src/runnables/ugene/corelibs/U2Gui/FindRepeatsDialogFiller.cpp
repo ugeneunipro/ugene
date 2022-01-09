@@ -20,15 +20,14 @@
  */
 
 #include "FindRepeatsDialogFiller.h"
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QAbstractButton>
 #include <QApplication>
-#include <QCheckBox>
 #include <QDialogButtonBox>
-#include <QPushButton>
 #include <QSpinBox>
 
 namespace U2 {
@@ -77,13 +76,11 @@ void FindRepeatsDialogFiller::commonScenario() {
         GTSpinBox::setValue(os, minDistBox, minDistance);
     }
 
-    QLineEdit *resultLocationEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
-    resultLocationEdit->setText(resultAnnotationFilesPath);
+    GTLineEdit::setText(os, "leNewTablePath", resultAnnotationFilesPath, dialog);
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 1);
 
-    QCheckBox *invertedRepeatsIndicator = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "invertCheck", dialog));
-    invertedRepeatsIndicator->setChecked(searchInverted);
+    GTWidget::findCheckBox(os, "invertCheck", dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

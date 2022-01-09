@@ -325,14 +325,13 @@ void GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation 
     QScrollBar *scrollBar = getScrollBar(os, orientation);
     class MainThreadAction : public CustomScenario {
     public:
-        MainThreadAction(QScrollBar *scrollbar)
-            : CustomScenario(), scrollbar(scrollbar) {
+        MainThreadAction(QScrollBar *_scrollbar)
+            : scrollbar(_scrollbar) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             scrollbar->setValue(0);
         }
-        QScrollBar *scrollbar;
+        QScrollBar *scrollbar = nullptr;
     };
     GTThread::runInMainThread(os, new MainThreadAction(scrollBar));
     GTThread::waitForMainThread();

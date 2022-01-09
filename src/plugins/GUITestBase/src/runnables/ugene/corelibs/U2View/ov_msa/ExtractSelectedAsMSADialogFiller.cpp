@@ -25,15 +25,12 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QPushButton>
-#include <QSpinBox>
 #include <QTableWidget>
 
 namespace U2 {
@@ -152,11 +149,12 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
         GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
         for (int i = 0; i < table->rowCount(); i++) {
-            foreach (QString s, sequenceNameList) {
+            for (const QString &sequenceName : qAsConst(sequenceNameList)) {
                 QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
-                if (s == box->text()) {
+                GT_CHECK(box != nullptr, "Not a QCheckBox cell");
+                if (sequenceName == box->text()) {
                     GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                    box->setChecked(true);
+                    GTCheckBox::setChecked(os, box, true);
                 }
             }
         }

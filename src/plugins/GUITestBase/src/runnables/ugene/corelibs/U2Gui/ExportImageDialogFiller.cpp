@@ -241,20 +241,16 @@ void SelectSubalignmentFiller::commonScenario() {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
     for (int i = 0; i < table->rowCount(); i++) {
-        foreach (QString s, msaRegion.sequences) {
-            QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
-            if (s == box->text()) {
+        for (const QString &sequence : qAsConst(msaRegion.sequences)) {
+            auto box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+            GT_CHECK(box != nullptr, "Not a QCheckBox cell");
+            if (sequence == box->text()) {
                 GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                box->setChecked(true);
+                GTCheckBox::setChecked(os, box, true);
             }
         }
     }
-
-    QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *ok = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(ok != nullptr, "ok button is NULL");
-    GTWidget::click(os, ok);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

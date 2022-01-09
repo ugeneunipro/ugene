@@ -130,7 +130,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
             // Dialog filling
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
 
-            GTWidget::findButtonByText(os, "Add", dialog)->click();
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Add", dialog));
             GTUtilsDialog::waitForDialog(os,
                                          new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
 

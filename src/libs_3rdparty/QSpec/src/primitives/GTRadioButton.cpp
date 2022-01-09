@@ -53,7 +53,7 @@ void GTRadioButton::click(GUITestOpStatus &os, QRadioButton *radioButton) {
 
 #define GT_METHOD_NAME "click"
 void GTRadioButton::click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent) {
-    click(os, GTWidget::findExactWidget<QRadioButton *>(os, radioButtonName, parent));
+    click(os, GTWidget::findRadioButton(os, radioButtonName, parent));
 }
 #undef GT_METHOD_NAME
 
