@@ -32,32 +32,32 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTUtilsDialog::MessageBoxDialogFiller"
 
-MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, QMessageBox::StandardButton b, const QString &message, const QString &objectName)
+MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, QMessageBox::StandardButton b, const QString &_message, const QString &objectName)
     : Filler(os, objectName),
       b(b),
-      message(message) {
+      message(_message) {
 }
 
-MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, const QString &buttonText, const QString &message)
+MessageBoxDialogFiller::MessageBoxDialogFiller(GUITestOpStatus &os, const QString &_buttonText, const QString &_message)
     : Filler(os, ""),
       b(QMessageBox::NoButton),
-      buttonText(buttonText),
-      message(message) {
+      buttonText(_buttonText),
+      message(_message) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxDialogFiller::commonScenario() {
-    QWidget *activeModal = QApplication::activeModalWidget();
-    QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
-    GT_CHECK(messageBox != NULL, "messageBox is NULL");
+    auto modalWidget = GTWidget::getActiveModalWidget(os);
+    auto messageBox = qobject_cast<QMessageBox *>(modalWidget);
+    GT_CHECK(messageBox != nullptr, "messageBox is NULL");
 
-    if (message != "") {
+    if (!message.isEmpty()) {
         QString actualText = messageBox->text();
         GT_CHECK(messageBox->text().contains(message, Qt::CaseInsensitive),
                  QString("Expected: %1, found: %2").arg(message).arg(actualText));
     }
 
-    if (buttonText != "") {
+    if (!buttonText.isEmpty()) {
         for (QAbstractButton *button : messageBox->buttons()) {
             if (button->text().contains(buttonText, Qt::CaseInsensitive)) {
                 GTWidget::click(os, button);

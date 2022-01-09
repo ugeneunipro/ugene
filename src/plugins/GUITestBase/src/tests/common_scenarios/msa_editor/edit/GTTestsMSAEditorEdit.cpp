@@ -736,7 +736,7 @@ static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QS
                                                                         << "Copy consensus",
                                                       GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString clipboardText = GTClipboard::text(os);

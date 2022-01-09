@@ -116,12 +116,12 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
-    U2MsaRowGapModel thisGaps = gaps;
+    QList<U2MsaGap> thisGaps = gaps;
     if (!thisGaps.isEmpty() && charAt(0) == U2Msa::GAP_CHAR) {
         thisGaps.removeFirst();
     }
 
-    U2MsaRowGapModel otherGaps = other.getGapModel();
+    QList<U2MsaGap> otherGaps = other.getGapModel();
     if (!otherGaps.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
         otherGaps.removeFirst();
     }

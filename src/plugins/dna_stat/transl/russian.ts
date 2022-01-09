@@ -170,12 +170,12 @@
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="128"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="130"/>
         <source>Warning: report is too big to be shown in UGENE.</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение: отчет слишком большой чтобы отобразить его в UGENE.</translation>
     </message>
 </context>
 <context>

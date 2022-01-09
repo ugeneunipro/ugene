@@ -25,6 +25,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/L10n.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -32,13 +33,13 @@ namespace U2 {
 
 FindGapsInSequenceCallback::FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject)
     : sequenceObject(sequenceObject) {
-    SAFE_POINT(nullptr != sequenceObject, "Sequence object is NULL", );
+    SAFE_POINT(sequenceObject != nullptr, "Sequence object is NULL", );
 }
 
 void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo) {
     CHECK_OP(stateInfo, );
 
-    const QByteArray sequenceData = sequenceObject->getSequenceData(subtask->getGlobalRegion(), stateInfo);
+    QByteArray sequenceData = sequenceObject->getSequenceData(subtask->getGlobalRegion(), stateInfo);
     CHECK_OP(stateInfo, );
 
     QByteArray ungappedSequenceData;
@@ -55,8 +56,7 @@ const QList<U2Region> &FindGapsInSequenceCallback::getGappedRegions() const {
 
 void FindGapsInSequenceCallback::addGaps(const QList<U2MsaGap> &gaps) {
     QMutexLocker mutexLocker(&mutex);
-    Q_UNUSED(mutex);
-    foreach (const U2MsaGap &gap, gaps) {
+    for (const U2MsaGap &gap : qAsConst(gaps)) {
         gappedRegions << gap;
     }
 }
@@ -64,15 +64,14 @@ void FindGapsInSequenceCallback::addGaps(const QList<U2MsaGap> &gaps) {
 RemoveGapsFromSequenceTask::RemoveGapsFromSequenceTask(U2SequenceObject *const sequenceObject)
     : Task(tr("Remove gaps from the sequence"), TaskFlags_FOSE_COSC),
       sequenceObject(sequenceObject),
-      callback(sequenceObject),
-      findGapsTask(nullptr) {
-    SAFE_POINT_EXT(nullptr != sequenceObject, setError("Sequence object is NULL"), );
+      callback(sequenceObject) {
+    SAFE_POINT_EXT(sequenceObject != nullptr, setError(L10N::nullPointerError("Sequence object")), );
 }
 
 void RemoveGapsFromSequenceTask::prepare() {
     SequenceDbiWalkerConfig config;
     config.seqRef = sequenceObject->getEntityRef();
-    config.chunkSize = CHUNK_SIZE;
+    config.chunkSize = 128000;
     config.overlapSize = 0;
     config.nThreads = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     config.strandToWalk = StrandOption_DirectOnly;
@@ -90,4 +89,4 @@ void RemoveGapsFromSequenceTask::run() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

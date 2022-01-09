@@ -299,57 +299,57 @@
 <context>
     <name>U2::CircularViewSplitter</name>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="57"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="59"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="49"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="51"/>
         <source>Zoom In</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="62"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="64"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="54"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="56"/>
         <source>Zoom Out</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="66"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="68"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="58"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="60"/>
         <source>Fit To Full View</source>
         <translation>Полный размер</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="70"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="72"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="62"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="64"/>
         <source>Save circular view as image</source>
         <translation>Сохранить круговой вид как изображение</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="74"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="76"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="66"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="68"/>
         <source>Show/hide restriction sites map</source>
         <translation>Показать/скрыть карту сайтов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="167"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="159"/>
         <source>Circular View is NULL</source>
         <translation>Circular View is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="169"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="161"/>
         <source>Circular View viewport is NULL</source>
         <translation>Circular View viewport is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="171"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="163"/>
         <source>Scroll area is NULL</source>
         <translation>Scroll area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="226"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="218"/>
         <source>Sequence context is NULL</source>
         <translation>Sequence context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="228"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="220"/>
         <source>Sequence obejct is NULL</source>
         <translation>Sequence obejct is NULL</translation>
     </message>

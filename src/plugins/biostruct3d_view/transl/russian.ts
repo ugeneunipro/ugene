@@ -57,10 +57,6 @@
         <translation>Выпуклая структура</translation>
     </message>
     <message>
-        <source>Ball-and-Stick</source>
-        <translation type="vanished">Шаростержневая модель</translation>
-    </message>
-    <message>
         <location filename="../src/BioStruct3DColorScheme.cpp" line="78"/>
         <source>Molecular Chains</source>
         <translation>Молекулярные цепи</translation>
@@ -221,10 +217,6 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <source>The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</source>
-        <translation type="vanished">The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</translation>
-    </message>
-    <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="563"/>
         <source>Unable to open file %1 for writing</source>
         <translation>Невозможно открыть файл %1 для записи</translation>
@@ -306,14 +298,6 @@
         <location filename="../src/SettingsDialog.cpp" line="222"/>
         <source>(not supported by your videocard)</source>
         <translation>(не поддерживается видеокартой)</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
     </message>
 </context>
 <context>

@@ -38,28 +38,24 @@ public:
     PrepareReferenceSequenceTask(const QString &referenceUrl, const U2DbiRef &dstDbiRef);
 
     const U2EntityRef &getReferenceEntityRef() const;
-    const QString getPreparedReferenceUrl() const {
-        return preparedReferenceUrl;
-    }
+
+    const QString &getPreparedReferenceUrl() const;
 
 private:
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
 
-    void performAdditionalChecks(Document *document);
-    void removeGaps(Document *document);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
     const QString referenceUrl;
     const U2DbiRef dstDbiRef;
 
-    CopyFileTask *copyTask;
-    LoadDocumentTask *loadTask;
-    RemoveGapsFromSequenceTask *removeGapsTask;
+    CopyFileTask *copyTask = nullptr;
+    LoadDocumentTask *loadTask = nullptr;
 
     U2EntityRef referenceEntityRef;
     QString preparedReferenceUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PREPARE_REFERENCE_SEQUENCE_TASK_H_
+#endif  // _U2_PREPARE_REFERENCE_SEQUENCE_TASK_H_

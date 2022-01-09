@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_SUBTASK_H_
-#define _U2_FORMAT_DB_SUBTASK_H_
+#ifndef _U2_MAKE_BLAST_DB_ALIGNER_SUBTASK_H_
+#define _U2_MAKE_BLAST_DB_ALIGNER_SUBTASK_H_
 
 #include <U2Core/Task.h>
 
@@ -30,13 +30,13 @@
 namespace U2 {
 namespace Workflow {
 
-class FormatDBSubTask : public Task {
+class MakeBlastDbAlignerSubtask : public Task {
     Q_OBJECT
 public:
-    FormatDBSubTask(const QString &referenceUrl,
-                    const SharedDbiDataHandler &referenceDbHandler,
-                    DbiDataStorage *storage);
-    void prepare();
+    MakeBlastDbAlignerSubtask(const QString &referenceUrl,
+                              const SharedDbiDataHandler &referenceDbHandler,
+                              DbiDataStorage *storage);
+    void prepare() override;
 
     const QString &getResultPath() const;
 
@@ -45,12 +45,13 @@ private:
 
     const QString referenceUrl;
     const SharedDbiDataHandler referenceDbHandler;
-    DbiDataStorage *storage;
+
+    DbiDataStorage *storage = nullptr;
 
     QString databaseNameAndPath;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_FORMAT_DB_SUBTASK_H_
+#endif  // _U2_MAKE_BLAST_DB_ALIGNER_SUBTASK_H_

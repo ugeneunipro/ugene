@@ -137,7 +137,7 @@ public:
     /** Returns the number of rows in the alignment */
     int getNumRows() const;
 
-    U2MsaListGapModel getGapModel() const;
+    QList<QList<U2MsaGap>> getGapModel() const;
 
     /** Sorts rows. If range is provided and is not empty sorts only given range. */
     void sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());

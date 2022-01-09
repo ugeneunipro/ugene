@@ -64,7 +64,7 @@ public:
     static bool checkTask(HI::GUITestOpStatus &os, const QString &itemName);
 
     /** Check that there/there-is-no task with the given name. Wait up to 30 seconds for the condition. */
-    static void checkTaskWithWait(HI::GUITestOpStatus &os, const QString &taskName, bool checkIfPresent);
+    static void checkTopLevelTaskWithWait(HI::GUITestOpStatus &os, const QString &itemNamePart, bool checkIfPresent = true);
 
     static int countTasks(HI::GUITestOpStatus &os, const QString &itemName);
     static QString getTaskStatus(HI::GUITestOpStatus &os, const QString &itemName);

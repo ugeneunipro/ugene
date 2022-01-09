@@ -628,7 +628,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Open...");
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList windowsNames;
@@ -1488,7 +1488,7 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     const QModelIndex table = GTUtilsProjectTreeView::findIndex(os, "SYNPBR322 features", GTUtilsProjectTreeView::findIndex(os, "PBR322_blast_annotations.gb"));
     GTUtilsProjectTreeView::dragAndDrop(os, table, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    3. Select two or more BLAST annotations.
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
@@ -1506,7 +1506,7 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export"
                                                                               << "Export BLAST result to alignment"));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, blastResultItems.first());
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    6. Check that annotations are correctly exported.
@@ -4859,7 +4859,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     // Break sync mode by sorting sequences in the MSA.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_name"}));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
     const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -7071,7 +7071,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_1) {
     // Expected state: The message appeared saying "Well done!".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Well done!"));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1710_2) {
@@ -7095,7 +7095,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2) {
     // 6. Press the validate button.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "non-critical warnings"));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: there must be a warning "External tool is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected".
     GTUtilsWorkflowDesigner::checkErrorList(os, "External tool \"blastn\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");

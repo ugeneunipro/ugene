@@ -273,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
     GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    2. Click "Read Alignment" element.
     GTUtilsWorkflowDesigner::click(os, "Read Alignment");

@@ -45,7 +45,7 @@ public:
     MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &rawData, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
 
@@ -89,7 +89,7 @@ public:
     void setName(const QString &name);
 
     /** Returns the list of gaps for the row */
-    inline const U2MsaRowGapModel &getGapModel() const;
+    inline const QList<U2MsaGap> &getGapModel() const;
 
     /** Careful, the new gap model is not validated! */
     void setGapModel(const QList<U2MsaGap> &newGapModel);
@@ -155,7 +155,7 @@ public:
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
@@ -290,7 +290,7 @@ private:
     QVariantMap additionalInfo;
 };
 
-inline const U2MsaRowGapModel &MultipleChromatogramAlignmentRowData::getGapModel() const {
+inline const QList<U2MsaGap> &MultipleChromatogramAlignmentRowData::getGapModel() const {
     return gaps;
 }
 

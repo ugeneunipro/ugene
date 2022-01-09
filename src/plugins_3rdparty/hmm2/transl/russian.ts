@@ -346,83 +346,83 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMM2QDActor</name>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="68"/>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="153"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="66"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="151"/>
         <source>HMM2</source>
         <translation>HMM2</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="79"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="77"/>
         <source>QD HMM2 search</source>
         <translation>Искать сигналы HMM2</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="85"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="83"/>
         <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
         <translation>Степень e-value должна быть меньше или равна нулю. Исползутся значение по умолчанию: 1е-1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="154"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="152"/>
         <source>Searches HMM signals in a sequence with one or more profile HMM2 and saves the results as annotations.</source>
         <translation>Поиск HMM сигналов в последовательности, используя один или несколько HMM2 профилей и сохранение результирующих аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="160"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="158"/>
         <source>Profile HMM</source>
         <translation>Профиль HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="161"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="159"/>
         <source>Semicolon-separated list of input HMM files.</source>
         <translation>Список входных HMM-профилей, разделенных точкой с запятой.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="164"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="162"/>
         <source>Min Length</source>
         <translation>Мин длина</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="165"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="163"/>
         <source>Minimum length of a result region.</source>
         <translation>Мин длина результирующего региона.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="168"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="166"/>
         <source>Max Length</source>
         <translation>Макс длина</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="169"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="167"/>
         <source>Maximum length of a result region.</source>
         <translation>Максимальная длина результируюшего региона.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="172"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="170"/>
         <source>Filter by High E-value</source>
         <translation>Фильтрация по высокому Е-значению</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="173"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="171"/>
         <source>Reports domains &amp;lt;= this E-value threshold in output.</source>
         <translation>Возвращать результаты &amp;lt;= данного E-value (математическое ожидание).</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="177"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="175"/>
         <source>Filter by Low Score</source>
         <translation>Фильтрация по низкому score</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="178"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="176"/>
         <source>Reports domains &amp;gt;= this score cutoff in output.</source>
         <translation>Возвращать результаты &amp;lt;= данного score (веса).</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="181"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="179"/>
         <source>Number of Sequences</source>
         <translation>Число последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="182"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="180"/>
         <source>Specifies number of significant sequences. It is used for domain E-value calculations.</source>
         <translation>Число значимых последовательностей. Используется для вычисления E-value.</translation>
     </message>
@@ -785,85 +785,85 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMIO</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="222"/>
-        <location filename="../src/HMMIO.cpp" line="242"/>
-        <location filename="../src/HMMIO.cpp" line="411"/>
-        <location filename="../src/HMMIO.cpp" line="417"/>
-        <location filename="../src/HMMIO.cpp" line="443"/>
-        <location filename="../src/HMMIO.cpp" line="474"/>
-        <location filename="../src/HMMIO.cpp" line="499"/>
+        <location filename="../src/HMMIO.cpp" line="221"/>
+        <location filename="../src/HMMIO.cpp" line="241"/>
+        <location filename="../src/HMMIO.cpp" line="410"/>
+        <location filename="../src/HMMIO.cpp" line="416"/>
+        <location filename="../src/HMMIO.cpp" line="442"/>
+        <location filename="../src/HMMIO.cpp" line="473"/>
+        <location filename="../src/HMMIO.cpp" line="498"/>
         <source>Illegal line</source>
         <translation>Ошибка формата</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="229"/>
+        <location filename="../src/HMMIO.cpp" line="228"/>
         <source>File format is not supported</source>
         <translation>Формат не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="297"/>
-        <location filename="../src/HMMIO.cpp" line="302"/>
-        <location filename="../src/HMMIO.cpp" line="309"/>
-        <location filename="../src/HMMIO.cpp" line="314"/>
-        <location filename="../src/HMMIO.cpp" line="321"/>
-        <location filename="../src/HMMIO.cpp" line="326"/>
-        <location filename="../src/HMMIO.cpp" line="333"/>
-        <location filename="../src/HMMIO.cpp" line="339"/>
-        <location filename="../src/HMMIO.cpp" line="348"/>
-        <location filename="../src/HMMIO.cpp" line="353"/>
-        <location filename="../src/HMMIO.cpp" line="365"/>
-        <location filename="../src/HMMIO.cpp" line="374"/>
-        <location filename="../src/HMMIO.cpp" line="379"/>
-        <location filename="../src/HMMIO.cpp" line="423"/>
-        <location filename="../src/HMMIO.cpp" line="428"/>
-        <location filename="../src/HMMIO.cpp" line="432"/>
-        <location filename="../src/HMMIO.cpp" line="449"/>
-        <location filename="../src/HMMIO.cpp" line="453"/>
-        <location filename="../src/HMMIO.cpp" line="458"/>
-        <location filename="../src/HMMIO.cpp" line="465"/>
-        <location filename="../src/HMMIO.cpp" line="480"/>
-        <location filename="../src/HMMIO.cpp" line="489"/>
-        <location filename="../src/HMMIO.cpp" line="505"/>
-        <location filename="../src/HMMIO.cpp" line="513"/>
-        <location filename="../src/HMMIO.cpp" line="520"/>
-        <location filename="../src/HMMIO.cpp" line="525"/>
+        <location filename="../src/HMMIO.cpp" line="296"/>
+        <location filename="../src/HMMIO.cpp" line="301"/>
+        <location filename="../src/HMMIO.cpp" line="308"/>
+        <location filename="../src/HMMIO.cpp" line="313"/>
+        <location filename="../src/HMMIO.cpp" line="320"/>
+        <location filename="../src/HMMIO.cpp" line="325"/>
+        <location filename="../src/HMMIO.cpp" line="332"/>
+        <location filename="../src/HMMIO.cpp" line="338"/>
+        <location filename="../src/HMMIO.cpp" line="347"/>
+        <location filename="../src/HMMIO.cpp" line="352"/>
+        <location filename="../src/HMMIO.cpp" line="364"/>
+        <location filename="../src/HMMIO.cpp" line="373"/>
+        <location filename="../src/HMMIO.cpp" line="378"/>
+        <location filename="../src/HMMIO.cpp" line="422"/>
+        <location filename="../src/HMMIO.cpp" line="427"/>
+        <location filename="../src/HMMIO.cpp" line="431"/>
+        <location filename="../src/HMMIO.cpp" line="448"/>
+        <location filename="../src/HMMIO.cpp" line="452"/>
+        <location filename="../src/HMMIO.cpp" line="457"/>
+        <location filename="../src/HMMIO.cpp" line="464"/>
+        <location filename="../src/HMMIO.cpp" line="479"/>
+        <location filename="../src/HMMIO.cpp" line="488"/>
+        <location filename="../src/HMMIO.cpp" line="504"/>
+        <location filename="../src/HMMIO.cpp" line="512"/>
+        <location filename="../src/HMMIO.cpp" line="519"/>
+        <location filename="../src/HMMIO.cpp" line="524"/>
         <source>Invalid file structure near %1</source>
         <translation>Некорректная структура файла вблизи &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="359"/>
+        <location filename="../src/HMMIO.cpp" line="358"/>
         <source>ALPH must precede NULE in HMM save files</source>
         <translation>ALPH must precede NULE in HMM save files</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="266"/>
-        <location filename="../src/HMMIO.cpp" line="394"/>
-        <location filename="../src/HMMIO.cpp" line="398"/>
+        <location filename="../src/HMMIO.cpp" line="265"/>
+        <location filename="../src/HMMIO.cpp" line="393"/>
+        <location filename="../src/HMMIO.cpp" line="397"/>
         <source>Value is illegal: %1</source>
         <translation>Некорректное значение: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="72"/>
+        <location filename="../src/HMMIO.cpp" line="71"/>
         <source>Alphabet is not set</source>
         <translation>Не установлен алфавит</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="227"/>
+        <location filename="../src/HMMIO.cpp" line="226"/>
         <source>Model &quot;%1&quot; is a HMMER3 model, it can&apos;t be used with HMMER2.</source>
         <translation>Модель &quot;%1&quot; это HMMER3 модель, она не может быть использована с HMMER2.</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="402"/>
+        <location filename="../src/HMMIO.cpp" line="401"/>
         <source>Value is not set for &apos;%1&apos;</source>
         <translation>Не установлено значение для &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="539"/>
+        <location filename="../src/HMMIO.cpp" line="538"/>
         <source>No &apos;//&apos; symbol found</source>
         <translation>Не найден маркер конца структуры: &apos;//&apos;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="657"/>
+        <location filename="../src/HMMIO.cpp" line="656"/>
         <source>HMM models</source>
         <translation>Профайлы HMM</translation>
     </message>
@@ -879,7 +879,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMReadTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="671"/>
+        <location filename="../src/HMMIO.cpp" line="670"/>
         <source>Read HMM profile &apos;%1&apos;.</source>
         <translation>Чтение HMM профайла &apos;%1&apos;.</translation>
     </message>
@@ -1044,7 +1044,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::HMMWriteTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="690"/>
+        <location filename="../src/HMMIO.cpp" line="689"/>
         <source>Write HMM profile &apos;%1&apos;</source>
         <translation>Запись HMM профайла &apos;%1&apos;</translation>
     </message>

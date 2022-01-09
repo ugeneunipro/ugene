@@ -58,7 +58,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDocument::checkDocument(os, "result");
     GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");

@@ -409,7 +409,7 @@ QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int &shift) {
     CHECK(shift > 0, QList<U2MsaGap>());
 
     int numOfRemovableColumns = 0;
-    U2MsaRowGapModel commonGapColumns = findCommonGapColumns(numOfRemovableColumns);
+    QList<U2MsaGap> commonGapColumns = findCommonGapColumns(numOfRemovableColumns);
     if (numOfRemovableColumns < shift) {
         int count = shift - numOfRemovableColumns;
         commonGapColumns << addTrailingGapColumns(count);
@@ -444,9 +444,9 @@ QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int &numOfColumns) {
     CHECK(!selectedMaRowIndexes.isEmpty(), {});
 
     U2Region columnRegion = editor->getSelection().getColumnRegion();
-    U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
+    QList<QList<U2MsaGap>> listGapModel = editor->getMaObject()->getGapModel();
 
-    U2MsaRowGapModel gapModelToUpdate;
+    QList<U2MsaGap> gapModelToUpdate;
     const QList<U2MsaGap> &firstRowGapList = listGapModel[selectedMaRowIndexes[0]];
     for (const U2MsaGap &gap : qAsConst(firstRowGapList)) {
         if (gap.offset + gap.gap <= columnRegion.endPos()) {

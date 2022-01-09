@@ -121,12 +121,12 @@ void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardUtils::selectAll();
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
     GTMenu::showContextMenu(os, sequenceWidget);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 #undef GT_METHOD_NAME
 
@@ -162,7 +162,7 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os,
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new GTSequenceReader(os, &sequence));
     openPopupMenuOnSequenceViewArea(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     return sequence;
 }

@@ -37,9 +37,9 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/blast/RPSBlastTask.h \
            src/blast/TBlastNTask.h \
            src/blast/TBlastXTask.h \
-           src/blast/align_worker_subtasks/BlastReadsSubTask.h \
-           src/blast/align_worker_subtasks/ComposeResultSubTask.h \
-           src/blast/align_worker_subtasks/FormatDBSubTask.h \
+           src/blast/align_worker_subtasks/BlastReadsSubtask.h \
+           src/blast/align_worker_subtasks/ComposeResultSubtask.h \
+           src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.h \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
            src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
            src/bowtie/BowtieSettingsWidget.h \
@@ -270,9 +270,9 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/blast/RPSBlastTask.cpp \
            src/blast/TBlastNTask.cpp \
            src/blast/TBlastXTask.cpp \
-           src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
-           src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
-           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
+           src/blast/align_worker_subtasks/BlastReadsSubtask.cpp \
+           src/blast/align_worker_subtasks/ComposeResultSubtask.cpp \
+           src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
            src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
            src/bowtie/BowtieSettingsWidget.cpp \

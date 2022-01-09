@@ -239,12 +239,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="57"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="51"/>
         <source>Local file</source>
         <translation>Локальный файл</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="58"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="52"/>
         <location filename="../src/import/ImportPrimersDialog.cpp" line="46"/>
         <source>Shared database</source>
         <translation>Общая база данных</translation>
@@ -266,7 +266,7 @@
 <context>
     <name>U2::ExportPrimersDialog</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="190"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="184"/>
         <source>Export to</source>
         <translation>Экспортировать в</translation>
     </message>
@@ -311,17 +311,17 @@
 <context>
     <name>U2::FindPrimersTask</name>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="164"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="163"/>
         <source>FindPrimersTask</source>
         <translation>FindPrimersTask</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="211"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="210"/>
         <source>Correct primers pairs</source>
         <translation>Correct primers pairs</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="233"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="232"/>
         <source>No IO adapter found for URL: %1</source>
         <translation>No IO adapter found for URL: %1</translation>
     </message>
@@ -463,57 +463,62 @@
 <context>
     <name>U2::InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="64"/>
         <source>Forward primer</source>
         <translation>Прямой праймер</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
         <source>Reverse primer</source>
         <translation>Обратный праймер</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="67"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="68"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="67"/>
         <source>Inner</source>
         <translation>Внутренний</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="69"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="68"/>
         <source>All intersected</source>
         <translation>Все пересечения</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="70"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="69"/>
         <source>None</source>
         <translation>Ни один</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="87"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="86"/>
         <source>Show primers details</source>
         <translation>Показать информацию о праймерах</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="130"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="138"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="137"/>
         <source>Warning: </source>
         <translation>Предупреждение: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="139"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="138"/>
         <source>Find product(s) anyway</source>
         <translation>Найти продукт(ы) в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="217"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="140"/>
+        <source>Error: </source>
+        <translation>Ошибка:</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="220"/>
         <source>Extract In Silico PCR products</source>
         <translation>Извлечь продукты ПЦР in silico</translation>
     </message>
@@ -536,7 +541,7 @@
     <message>
         <location filename="../src/InSilicoPcrTask.cpp" line="110"/>
         <source>One of the given do not fits acceptable length. Task cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>One of the given do not fits acceptable length. Task cancelled.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrTask.cpp" line="129"/>
@@ -575,12 +580,12 @@
 <context>
     <name>U2::LocalWorkflow::FindPrimerPairsPromter</name>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="56"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="55"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="59"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="58"/>
         <source>Find correct pairs over primers from &quot;%1&quot;.</source>
         <translation>Поиск корректных пар праймеров из &quot;%1&quot;.</translation>
     </message>
@@ -588,62 +593,62 @@
 <context>
     <name>U2::LocalWorkflow::FindPrimerPairsWorker</name>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="103"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="102"/>
         <source>No correct primers pairs found</source>
         <translation>No correct primers pairs found</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="121"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="120"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="122"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="121"/>
         <source>Set of primers, which must be tested.</source>
         <translation>Набор праймеров, которые будут протестированы.</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="130"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="129"/>
         <source>Find correct primer pairs</source>
         <translation>Поиск корректных пар праймеров</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="131"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="130"/>
         <source>Find correct primer pairs, which consist of valid primers without dimers.</source>
         <translation>Ищет корректные пары праймеров, которые состоят из корректных праймеров без димеров.</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="134"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="133"/>
         <source>Output report file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="135"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="134"/>
         <source>Path to the report output file.</source>
         <translation>Путь до выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="143"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="142"/>
         <source>Report file</source>
         <translation>Отчетный файл</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="215"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="214"/>
         <source>Forward primer name</source>
         <translation>Имя прямого праймера</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="216"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="215"/>
         <source>Reverse primer name</source>
         <translation>Имя обратного праймера</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="217"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="216"/>
         <source>Forward Tm</source>
         <translation>Прямой Tm</translation>
     </message>
     <message>
-        <location filename="../src/FindPrimerPairsWorker.cpp" line="218"/>
+        <location filename="../src/FindPrimerPairsWorker.cpp" line="217"/>
         <source>Reverse Tm</source>
         <translation>Обратный Tm</translation>
     </message>
@@ -768,7 +773,7 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="101"/>
-        <source>Search for ambiguous bases (as &quot;N) if checked.</source>
+        <source>Search for ambiguous bases (as &quot;N&quot;) if checked.</source>
         <translation>Поиск для расширенного алфавита.</translation>
     </message>
     <message>
@@ -865,12 +870,12 @@
 <context>
     <name>U2::LocalWorkflow::PrimersGrouperPromter</name>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="56"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="55"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="62"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="61"/>
         <source>Read primers from &lt;u&gt;%1&lt;/u&gt; by pairs. Select groups of primer pairs, which can be simultaneously used in one reaction tube. Save result to &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Читает праймеры из &lt;u&gt;%1&lt;/u&gt; по парам. Выбирает группы пар праймеров, которые могут быть использованы в одной реакции. Сохраняет результаты в &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
@@ -878,67 +883,67 @@
 <context>
     <name>U2::LocalWorkflow::PrimersGrouperWorker</name>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="109"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="108"/>
         <source>No valid groups found</source>
         <translation>No valid groups found</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="127"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="126"/>
         <source>Primer pairs</source>
         <translation>Пары праймеров</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="128"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="127"/>
         <source>Pairs of primers, which must be grouped.</source>
         <translation>Пары праймеров, которые будут сгруппированы.</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="136"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="135"/>
         <source>Group Primer Pairs</source>
         <translation>Группировка пар праймеров</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="137"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="136"/>
         <source>Select groups of primer pairs, which can be simultaneously used in one reaction tube.&lt;p&gt;The primers must be supplied in the following order: pair1_direct_primer, pair1_reverse_primer, pair2_direct_primer, pair2_reverse_primer, etc.</source>
         <translation>Выбирает группы пар праймеров, которые могут быть использованы в одной реакции.&lt;p&gt;Праймеры должны быть представлены в следующем порядке: pair1_direct_primer, pair1_reverse_primer, pair2_direct_primer, pair2_reverse_primer, и т.д.</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="142"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="141"/>
         <source>Output report file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="143"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="142"/>
         <source>Path to the report output file.</source>
         <translation>Путь до выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="151"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="150"/>
         <source>Report file</source>
         <translation>Отчетный файл</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="248"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="247"/>
         <source>Group name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="249"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="248"/>
         <source>Forward primer name</source>
         <translation>Имя прямого праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="250"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="249"/>
         <source>Forward primer sequence</source>
         <translation>Последовательность прямого праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="251"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="250"/>
         <source>Reverse primer name</source>
         <translation>Имя обратного праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="252"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="251"/>
         <source>Reverse primer sequence</source>
         <translation>Последовательность обратного праймера</translation>
     </message>
@@ -977,17 +982,17 @@
 <context>
     <name>U2::PrimerGrouperTask</name>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="172"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="171"/>
         <source>Primer grouper task</source>
         <translation>Primer grouper task</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="278"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="277"/>
         <source>Group %1</source>
         <translation>Группа %1</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="286"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="285"/>
         <source>No IO adapter found for URL: %1</source>
         <translation>No IO adapter found for URL: %1</translation>
     </message>
@@ -1079,69 +1084,6 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
         <location filename="../src/PrimerLibraryWidget.cpp" line="69"/>
         <source>Export primer(s)</source>
         <translation>Экспортировать праймер(ы)</translation>
-    </message>
-</context>
-<context>
-    <name>U2::PrimerStatistics</name>
-    <message>
-        <source>The primers contain a character from the Extended DNA alphabet.</source>
-        <translation type="vanished">Праймеры содержат символы из расширенного ДНК алфавита.</translation>
-    </message>
-    <message>
-        <source>The forward primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="vanished">Прямой праймер содержит символы из расширенного ДНК алфавита.</translation>
-    </message>
-    <message>
-        <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="vanished">Обратный праймер содержит символы из расширенного ДНК алфавита.</translation>
-    </message>
-    <message>
-        <source>low GC-content</source>
-        <translation type="vanished">low GC-content</translation>
-    </message>
-    <message>
-        <source>high GC-content</source>
-        <translation type="vanished">high GC-content</translation>
-    </message>
-    <message>
-        <source>low melting temperature</source>
-        <translation type="vanished">low melting temperature</translation>
-    </message>
-    <message>
-        <source>high melting temperature</source>
-        <translation type="vanished">high melting temperature</translation>
-    </message>
-    <message>
-        <source>low GC clamp</source>
-        <translation type="vanished">low GC clamp</translation>
-    </message>
-    <message>
-        <source>high base runs value</source>
-        <translation type="vanished">high base runs value</translation>
-    </message>
-    <message>
-        <source>forward primer has %1.</source>
-        <translation type="vanished">прямой праймер имеет %1.</translation>
-    </message>
-    <message>
-        <source>reverse primer has %1.</source>
-        <translation type="vanished">обратный праймер имеет %1.</translation>
-    </message>
-    <message>
-        <source>Criteria</source>
-        <translation type="vanished">Критерий</translation>
-    </message>
-    <message>
-        <source>Valid Values</source>
-        <translation type="vanished">Допустимые значения</translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation type="vanished">Прямой</translation>
-    </message>
-    <message>
-        <source>Reverse</source>
-        <translation type="vanished">Обратный</translation>
     </message>
 </context>
 </TS>

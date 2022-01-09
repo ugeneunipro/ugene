@@ -122,17 +122,6 @@ private:
     void releaseMouseButtons();
 };
 
-#define DIALOG_FILLER_DECLARATION(className, DialogName) \
-    class className : public Filler { \
-    public: \
-        className(HI::GUITestOpStatus &os) : Filler(os, DialogName) { \
-        } \
-        virtual void run(); \
-    }
-
-#define DIALOG_FILLER_DEFFINITION(className) \
-    void className::run()
-
 class HI_EXPORT HangChecker : public QObject {
     Q_OBJECT
 public:
@@ -146,7 +135,6 @@ public slots:
 };
 
 class HI_EXPORT GTUtilsDialog {
-    friend class TimerLauncher;
     friend class GUIDialogWaiter;
     friend class HangChecker;
 
@@ -172,9 +160,9 @@ public:
     static void waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable *r);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
-    static void waitAllFinished(GUITestOpStatus &os, int timeoutMillis = 30000);
+    static void checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis = 30000);
 
-    static void removeRunnable(Runnable const *const runnable);
+    static void removeRunnable(Runnable *runnable);
 
     /** Deletes all GUIDialogWaiters, sets err if there are unfinished waiters. */
     static void cleanup(GUITestOpStatus &os, CleanupSettings s = FailOnUnfinished);
@@ -184,8 +172,6 @@ public:
     static void stopHangChecking();
 
 private:
-    static void checkAllFinished(GUITestOpStatus &os);
-
     static QList<GUIDialogWaiter *> pool;
     static HangChecker *hangChecker;
     static const int timerPeriod = 100;

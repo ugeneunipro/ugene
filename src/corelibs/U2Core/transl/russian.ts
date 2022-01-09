@@ -54,7 +54,7 @@
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/FormatUtils.cpp" line="122"/>
+        <location filename="../src/util/FileFilters.cpp" line="36"/>
         <source>All files</source>
         <translation>Все файлы</translation>
     </message>
@@ -89,444 +89,394 @@
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="503"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="515"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Невозможно определить алфавит последовательности. Возможно это вызвано тем, что некоторые из последовательностей являются пустыми.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="655"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="717"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Неверное число символов: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="73"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="108"/>
         <source>Gap between two components of a genome or transcriptome assembly</source>
         <translation>Gap between two components of a genome or transcriptome assembly</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="74"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="173"/>
         <source>Sequence related to transcription termination</source>
         <translation>Sequence related to transcription termination</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="75"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="195"/>
         <source>Describes disulfide bonds (for protein files)</source>
         <translation>Describes disulfide bonds (for protein files)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="76"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="109"/>
         <source>Span of the C immunological feature</source>
         <translation>Span of the C immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="77"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="181"/>
         <source>`CAAT box&apos; in eukaryotic promoters</source>
         <translation>`CAAT box&apos; in eukaryotic promoters</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="78"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="110"/>
         <source>Sequence coding for amino acids in protein (includes stop codon)</source>
         <translation>Sequence coding for amino acids in protein (includes stop codon)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="79"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="191"/>
         <source>Independent sequence determinations differ</source>
         <translation>Independent sequence determinations differ</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="80"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="111"/>
         <source>Region of biological interest identified as a centromere and which has been experimentally characterized</source>
         <translation>Region of biological interest identified as a centromere and which has been experimentally characterized</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="81"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="112"/>
         <source>Displacement loop</source>
         <translation>Displacement loop</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="82"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="113"/>
         <source>Span of the D immunological feature</source>
         <translation>Span of the D immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="83"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="197"/>
         <source>Cis-acting enhancer of promoter function</source>
         <translation>Cis-acting enhancer of promoter function</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="84"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="114"/>
         <source>Region that codes for part of spliced mRNA</source>
         <translation>Region that codes for part of spliced mRNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="85"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="115"/>
         <source>Gap in the sequence</source>
         <translation>Gap in the sequence</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="86"/>
-        <source>Region that defines a functional gene, possibly including upstream (promotor, enhancer, etc) and downstream control elements, and for which a name has been assigned.</source>
-        <translation>Region that defines a functional gene, possibly including upstream (promotor, enhancer, etc) and downstream control elements, and for which a name has been assigned.</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="87"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="205"/>
         <source>`GC box&apos; in eukaryotic promoters</source>
         <translation>`GC box&apos; in eukaryotic promoters</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="88"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="117"/>
         <source>Intervening DNA eliminated by recombination</source>
         <translation>Intervening DNA eliminated by recombination</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="89"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="118"/>
         <source>Transcribed region excised by mRNA splicing</source>
         <translation>Transcribed region excised by mRNA splicing</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="90"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="220"/>
         <source>Span of the J immunological feature</source>
         <translation>Span of the J immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="91"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="119"/>
         <source>Joining segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains</source>
         <translation>Joining segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="92"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="226"/>
         <source>Long terminal repeat</source>
         <translation>Long terminal repeat</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="93"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="120"/>
         <source>Mature peptide coding region (does not include stop codon)</source>
         <translation>Mature peptide coding region (does not include stop codon)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="94"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="121"/>
         <source>Miscellaneous binding site</source>
         <translation>Miscellaneous binding site</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="95"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="122"/>
         <source>Miscellaneous difference feature</source>
         <translation>Miscellaneous difference feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="96"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="123"/>
         <source>Region of biological significance that cannot be described by any other feature</source>
         <translation>Region of biological significance that cannot be described by any other feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="97"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="124"/>
         <source>Miscellaneous, recombination feature</source>
         <translation>Miscellaneous, recombination feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="98"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="125"/>
         <source>Miscellaneous transcript feature not defined by other RNA keys</source>
         <translation>Miscellaneous transcript feature not defined by other RNA keys</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="99"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="240"/>
         <source>Miscellaneous signal</source>
         <translation>Miscellaneous signal</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="100"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="126"/>
         <source>Miscellaneous DNA or RNA structure</source>
         <translation>Miscellaneous DNA or RNA structure</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="101"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="127"/>
         <source>Region of genome containing mobile elements</source>
         <translation>Region of genome containing mobile elements</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="102"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="128"/>
         <source>The indicated base is a modified nucleotide</source>
         <translation>The indicated base is a modified nucleotide</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="103"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="129"/>
         <source>Messenger RNA</source>
         <translation>Messenger RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="104"/>
-        <source>A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcrip</source>
-        <translation>A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcrip</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="105"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="131"/>
         <source>Span of the N immunological feature</source>
         <translation>Span of the N immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="106"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="132"/>
         <source>Presented sequence revises a previous version</source>
         <translation>Presented sequence revises a previous version</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="107"/>
-        <source>Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promotor and in the same biological pathway</source>
-        <translation>Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promotor and in the same biological pathway</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="108"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="134"/>
         <source>Origin of transfer; region of a DNA molecule where transfer is initiated during the process of conjugation or mobilization</source>
         <translation>Origin of transfer; region of a DNA molecule where transfer is initiated during the process of conjugation or mobilization</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="109"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="252"/>
         <source>Signal for cleavage &amp; polyadenylation</source>
         <translation>Signal for cleavage &amp; polyadenylation</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="110"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="135"/>
         <source>Site at which polyadenine is added to mRNA</source>
         <translation>Site at which polyadenine is added to mRNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="111"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="136"/>
         <source>Any RNA species that is not yet the mature RNA product</source>
         <translation>Any RNA species that is not yet the mature RNA product</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="112"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="137"/>
         <source>Primary (unprocessed) transcript</source>
         <translation>Primary (unprocessed) transcript</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="113"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="255"/>
         <source>Primer binding region used with PCR</source>
         <translation>Primer binding region used with PCR</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="114"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="138"/>
         <source>Non-covalent primer binding site</source>
         <translation>Non-covalent primer binding site</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="115"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="257"/>
         <source>A region involved in transcription initiation</source>
         <translation>A region involved in transcription initiation</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="116"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="140"/>
         <source>Non-covalent protein binding site on DNA or RNA</source>
         <translation>Non-covalent protein binding site on DNA or RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="117"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="266"/>
         <source>Ribosome binding site</source>
         <translation>Ribosome binding site</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="118"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="145"/>
         <source>Replication origin for duplex DNA</source>
         <translation>Replication origin for duplex DNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="119"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="144"/>
         <source>Sequence containing repeated subsequences</source>
         <translation>Sequence containing repeated subsequences</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="120"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="268"/>
         <source>One repeated unit of a repeat_region</source>
         <translation>One repeated unit of a repeat_region</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="121"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="146"/>
         <source>Ribosomal RNA</source>
         <translation>Ribosomal RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="122"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="147"/>
         <source>Span of the S immunological feature</source>
         <translation>Span of the S immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="123"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="271"/>
         <source>Satellite repeated sequence</source>
         <translation>Satellite repeated sequence</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="124"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="272"/>
         <source>Small cytoplasmic RNA</source>
         <translation>Small cytoplasmic RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="125"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="148"/>
         <source>Signal peptide coding region</source>
         <translation>Signal peptide coding region</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="126"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="280"/>
         <source>Small nuclear RNA</source>
         <translation>Small nuclear RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="127"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="149"/>
         <source>Identifies the biological source of the specified span of the sequence</source>
         <translation>Identifies the biological source of the specified span of the sequence</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="128"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="150"/>
         <source>Hair-pin loop structure in DNA or RNA</source>
         <translation>Hair-pin loop structure in DNA or RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="129"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="151"/>
         <source>Sequence Tagged Site; operationally unique sequence that identifies the combination of primer spans used in a PCR assay</source>
         <translation>Sequence Tagged Site; operationally unique sequence that identifies the combination of primer spans used in a PCR assay</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="130"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="285"/>
         <source>`TATA box&apos; in eukaryotic promoters</source>
         <translation>`TATA box&apos; in eukaryotic promoters</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="131"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="152"/>
         <source>Region of biological interest identified as a telomere and which has been experimentally characterized</source>
         <translation>Region of biological interest identified as a telomere and which has been experimentally characterized</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="132"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="286"/>
         <source>Sequence causing transcription termination</source>
         <translation>Sequence causing transcription termination</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="133"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="153"/>
         <source>Transfer messenger RNA; tmRNA acts as a tRNA first, and then as an mRNA that encodes a peptide tag; the ribosome translates this mRNA region of tmRNA and attaches the encoded peptide tag to the C-terminus of the unfinished protein; this attached tag targets the protein for destruction or proteolysis</source>
         <translation>Transfer messenger RNA; tmRNA acts as a tRNA first, and then as an mRNA that encodes a peptide tag; the ribosome translates this mRNA region of tmRNA and attaches the encoded peptide tag to the C-terminus of the unfinished protein; this attached tag targets the protein for destruction or proteolysis</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="134"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="154"/>
         <source>Transit peptide coding region</source>
         <translation>Transit peptide coding region</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="135"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="291"/>
         <source>Transposable element (TN)</source>
         <translation>Transposable element (TN)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="136"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="155"/>
         <source>Transfer RNA</source>
         <translation>Transfer RNA</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="137"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="116"/>
+        <source>Region that defines a functional gene, possibly including upstream (promoter, enhancer, etc) and downstream control elements, and for which a name has been assigned.</source>
+        <translation>Region that defines a functional gene, possibly including upstream (promotor, enhancer, etc) and downstream control elements, and for which a name has been assigned.</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="130"/>
+        <source>A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcript</source>
+        <translation>A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcript</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="133"/>
+        <source>Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promoter and in the same biological pathway</source>
+        <translation>Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promotor and in the same biological pathway</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="139"/>
+        <source>Coding sequence for the domain of a proprotein that is cleaved to form the mature protein product</source>
+        <translation>Coding sequence for the domain of a proprotein that is cleaved to form the mature protein product</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="156"/>
         <source>Authors are unsure about the sequence in this region</source>
         <translation>Authors are unsure about the sequence in this region</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="138"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="157"/>
         <source>Span of the V immunological feature</source>
         <translation>Span of the V immunological feature</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="139"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="158"/>
         <source>Variable segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains; codes for most of the variable region (V_region) and the last few amino acids of the leader peptide</source>
         <translation>Variable segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains; codes for most of the variable region (V_region) and the last few amino acids of the leader peptide</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="140"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="159"/>
         <source>A related population contains stable mutation</source>
         <translation>A related population contains stable mutation</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="141"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="229"/>
         <source>`Pribnow box&apos; in prokaryotic promoters</source>
         <translation>`Pribnow box&apos; in prokaryotic promoters</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="142"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="230"/>
         <source>`-35 box&apos; in prokaryotic promoters</source>
         <translation>`-35 box&apos; in prokaryotic promoters</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="143"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="289"/>
         <source>3&apos;-most region of a precursor transcript removed in processing</source>
         <translation>3&apos;-most region of a precursor transcript removed in processing</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="144"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="160"/>
         <source>3&apos; untranslated region (trailer)</source>
         <translation>3&apos; untranslated region (trailer)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="145"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="202"/>
         <source>5&apos;-most region of a precursor transcript removed in processing</source>
         <translation>5&apos;-most region of a precursor transcript removed in processing</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="146"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="161"/>
         <source>5&apos; untranslated region (leader)</source>
         <translation>5&apos; untranslated region (leader)</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="147"/>
-        <source>&apos;Protein&apos; feature key</source>
-        <translation>&apos;Protein&apos; feature key</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="148"/>
-        <source>&apos;Region&apos; feature key</source>
-        <translation>&apos;Region&apos; feature key</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="149"/>
-        <source>&apos;Site&apos; feature key</source>
-        <translation>&apos;Site&apos; feature key</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="150"/>
+        <location filename="../src/datatype/U2FeatureType.cpp" line="143"/>
         <source>Any region of sequence that functions in the regulation of transcription or translation</source>
         <translation>Any region of sequence that functions in the regulation of transcription or translation</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="169"/>
-        <source>Genes</source>
-        <translation>Гены</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="184"/>
-        <source>Signals</source>
-        <translation>Сигналы</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="205"/>
-        <source>Binding</source>
-        <translation>Связывание</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="211"/>
-        <source>Variation</source>
-        <translation>Вариация</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="220"/>
-        <source>Repeats</source>
-        <translation>Повторы</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="227"/>
-        <source>RNA</source>
-        <translation>РНК</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="237"/>
-        <source>Misc</source>
-        <translation>Разное</translation>
-    </message>
-    <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="257"/>
-        <source>Spans</source>
-        <translation>Диапазоны</translation>
     </message>
     <message>
         <location filename="../src/util/U2FeatureUtils.cpp" line="138"/>
@@ -636,6 +586,14 @@
         <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="175"/>
         <source> and others</source>
         <translation> и другие</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AddSequencesFromFilesToAlignmentTask</name>
+    <message>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="190"/>
+        <source>Unsupported document format: %1</source>
+        <translation>Неподдерживаемый формат документа: %1</translation>
     </message>
 </context>
 <context>
@@ -2174,10 +2132,6 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <source>Not enough memory to load document %1</source>
-        <translation type="vanished">Недостаточно памяти для загрузки документа %1</translation>
-    </message>
-    <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="452"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
@@ -2378,10 +2332,6 @@ The session database file is removed after closing of UGENE.</source>
         <source>Invalid crop row ids</source>
         <translation>Неверные названия строк</translation>
     </message>
-    <message>
-        <source>Failed to crop an alignment!</source>
-        <translation type="vanished">Не удалось обрезать выравнивание!</translation>
-    </message>
 </context>
 <context>
     <name>U2::MultipleSequenceAlignmentObject</name>
@@ -2429,97 +2379,97 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="43"/>
         <source>The primers contain a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Праймеры содержат символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="45"/>
         <source>The forward primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямой праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="47"/>
         <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратный праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="49"/>
         <source>The forward primer length should be between %1 and %2 bp.</source>
-        <translation type="unfinished"></translation>
+        <translation>Длина прямого праймера должна быть между %1 и %2 нк.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="51"/>
         <source>The reverse primer length should be between %1 and %2 bp.</source>
-        <translation type="unfinished"></translation>
+        <translation>Длина обратного праймера должна быть между %1 и %2 нк.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="54"/>
         <source> Unable to calculate primer statistics.</source>
-        <translation type="unfinished"></translation>
+        <translation> Невозможно рассчитать статистики праймера.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="150"/>
         <source>Unexpected symbol: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный символ: %1</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="243"/>
         <source>low GC-content</source>
-        <translation type="unfinished"></translation>
+        <translation>low GC-content</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="244"/>
         <source>high GC-content</source>
-        <translation type="unfinished"></translation>
+        <translation>high GC-content</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="250"/>
         <source>low melting temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>low melting temperature</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="251"/>
         <source>high melting temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>high melting temperature</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="257"/>
         <source>low GC clamp</source>
-        <translation type="unfinished"></translation>
+        <translation>low GC clamp</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="263"/>
         <source>high base runs value</source>
-        <translation type="unfinished"></translation>
+        <translation>high base runs value</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="270"/>
         <source>forward primer has %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>прямой праймер имеет %1.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="272"/>
         <source>reverse primer has %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="344"/>
         <source>Criteria</source>
-        <translation type="unfinished"></translation>
+        <translation>Критерий</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="345"/>
         <source>Valid Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Допустимые значения</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="346"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямой</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="347"/>
         <source>Reverse</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратный</translation>
     </message>
 </context>
 <context>
@@ -2666,14 +2616,6 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="150"/>
         <source>Can&apos;t rename saved tmp file to original file: %1</source>
         <translation>Невозможно переименовать временный файл в исходный файл: %1</translation>
-    </message>
-    <message>
-        <source>Can&apos;t remove original file to place tmp file instead</source>
-        <translation type="vanished">Невозможно удалить оригинальный файл чтобы заменить его временным</translation>
-    </message>
-    <message>
-        <source>Can&apos;t rename saved tmp file to original file</source>
-        <translation type="vanished">Невозможно переименовать сохраненный временный файл в оригинальный</translation>
     </message>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
@@ -2935,12 +2877,17 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2SequenceObject</name>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="195"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="108"/>
+        <source>Failed to derive sequence alphabet: </source>
+        <translation>Failed to derive sequence alphabet: </translation>
+    </message>
+    <message>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="196"/>
         <source>Internal error, sequence alphabet id &apos;%1&apos; is invalid</source>
         <translation>Внутренняя ошибка, неверный алфавит последовательности &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="208"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="209"/>
         <source>Modified sequence &amp; region have different alphabet</source>
         <translation>Измененная последовательность и регион имеют разные алфавиты</translation>
     </message>
@@ -2948,19 +2895,19 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2SequenceUtils</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="54"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="55"/>
         <source>Alphabet is not found!</source>
         <translation>Алфавит не найден!</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="101"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="117"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="102"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="118"/>
         <source>Invalid sequence DBI</source>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="468"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="644"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="480"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="706"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Не удалось распознать алфавит!</translation>
     </message>
@@ -2984,7 +2931,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="394"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="395"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Последовательность не была импортирована. Возможно это произошло из-за того, что последовательность является пустой.</translation>
     </message>

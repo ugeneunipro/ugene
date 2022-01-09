@@ -423,10 +423,6 @@
         <translation>Аннотации не найдены: %1</translation>
     </message>
     <message>
-        <source>Sequence size is too large!</source>
-        <translation type="vanished">Последовательность слишком большая!</translation>
-    </message>
-    <message>
         <location filename="../src/FindTandemsDialog.cpp" line="207"/>
         <source>Not enough memory error ocurred while preparing data. Try to set smaller region.</source>
         <translation>Недостаточно памяти, возникла ошибка в процессе подготовки данных. Попробуйте указать меньший регион.</translation>

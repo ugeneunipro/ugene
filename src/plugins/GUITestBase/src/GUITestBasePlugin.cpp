@@ -276,7 +276,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_0339);
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1551);
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1680);
-    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_6238);
 
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
@@ -1531,6 +1530,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_4);
     REGISTER_TEST(GUITest_regression_scenarios::test_6236);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6238);
     REGISTER_TEST(GUITest_regression_scenarios::test_6240);
     REGISTER_TEST(GUITest_regression_scenarios::test_6243);
     REGISTER_TEST(GUITest_regression_scenarios::test_6247);

@@ -84,7 +84,7 @@ static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *d
                 GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove selected items", GTGlobals::UseMouse));
                 GTUtilsProjectTreeView::callContextMenu(os, itemIndex);
                 GTThread::waitForMainThread();
-                GTUtilsDialog::waitAllFinished(os);
+                GTUtilsDialog::checkNoActiveWaiters(os);
                 isRemoved = true;
                 break;
             }
@@ -113,7 +113,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     Document *document = GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
     if (isRemoveTempContent) {
@@ -140,7 +140,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
 
     CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), nullptr);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
 }
 #undef GT_METHOD_NAME

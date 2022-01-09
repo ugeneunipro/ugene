@@ -887,7 +887,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     GTUtilsDialog::waitForDialog(os, new SvgLimitsChecker(os), 180000);
     GTWidget::click(os, GTAction::button(os, "export_image"));
-    GTUtilsDialog::waitAllFinished(os, 180000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 180000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     qint64 fileSize = GTFile::getSize(os, sandBoxDir + "seq_view_test_0030.svg");
@@ -997,7 +997,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckComplement()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //  Check "Show direct only"
     class DirectPopupChecker : public CustomScenario {
@@ -1022,7 +1022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new DirectPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Check "Show complement only"
     class UncheckDirectCheckComplement : public CustomScenario {
@@ -1040,7 +1040,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckDirectCheckComplement()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     class ComplPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
@@ -1063,7 +1063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new ComplPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Check "Show all".
     class ShowAllFramesScenario : public CustomScenario {
@@ -1075,7 +1075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new ShowAllFramesScenario()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Check results of Show all frames.
     class AllPopupChecker : public CustomScenario {
@@ -1100,7 +1100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 #undef GET_ACTIONS
 
@@ -1639,7 +1639,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     //    Open any graph
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)", GTGlobals::UseMouse));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Add label with shift+left mouse
     QWidget *graphView = GTUtilsSequenceView::getGraphView(os);
@@ -2181,7 +2181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }

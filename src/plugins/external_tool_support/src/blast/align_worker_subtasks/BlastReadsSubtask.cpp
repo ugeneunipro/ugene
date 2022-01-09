@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "BlastReadsSubTask.h"
+#include "BlastReadsSubtask.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BuiltInDistanceAlgorithms.h>
@@ -44,7 +44,7 @@ namespace Workflow {
 /************************************************************************/
 /* BlastReadsSubTask */
 /************************************************************************/
-BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
+BlastReadsSubtask::BlastReadsSubtask(const QString &dbPath,
                                      const QList<SharedDbiDataHandler> &reads,
                                      const SharedDbiDataHandler &reference,
                                      const int minIdentityPercent,
@@ -62,7 +62,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
     tpm = Progress_Manual;
 }
 
-void BlastReadsSubTask::prepare() {
+void BlastReadsSubtask::prepare() {
     QString tempPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
@@ -80,7 +80,7 @@ void BlastReadsSubTask::prepare() {
     }
 }
 
-QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task * /*task*/) {
+QList<Task *> BlastReadsSubtask::onSubTaskFinished(Task * /*task*/) {
     QList<Task *> newSubtasks;
     CHECK(!isCanceled() && !hasError(), newSubtasks);
     stateInfo.progress = qRound(100.0 * (readIndex + 1) / reads.size());
@@ -92,7 +92,7 @@ QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task * /*task*/) {
     return newSubtasks;
 }
 
-const QList<BlastAndSwReadTask *> &BlastReadsSubTask::getBlastSubtasks() const {
+const QList<BlastAndSwReadTask *> &BlastReadsSubtask::getBlastSubtasks() const {
     return blastSubTasks;
 }
 
@@ -220,11 +220,11 @@ const SharedDbiDataHandler &BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-const U2MsaRowGapModel &BlastAndSwReadTask::getReferenceGaps() const {
+const QList<U2MsaGap> &BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-const U2MsaRowGapModel &BlastAndSwReadTask::getReadGaps() const {
+const QList<U2MsaGap> &BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -256,7 +256,7 @@ BlastNTask *BlastAndSwReadTask::getBlastTask() {
 
     settings.programName = "blastn";
     settings.databaseNameAndPath = dbPath;
-    //settings.megablast = true;
+    // settings.megablast = true;
     settings.wordSize = 11;
     settings.xDropoffGA = 20;
     settings.xDropoffUnGA = 10;
@@ -305,9 +305,9 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     U2Region refRegion;
     U2Region blastReadRegion;
     int maxIdentity = 0;
-    foreach (const SharedAnnotationData &ann, blastAnnotations) {
+    for (const SharedAnnotationData &ann : qAsConst(blastAnnotations)) {
         QString percentQualifier = ann->findFirstQualifierValue("identities");
-        int annIdentity = percentQualifier.left(percentQualifier.indexOf('/')).toInt();
+        int annIdentity = percentQualifier.leftRef(percentQualifier.indexOf('/')).toInt();
         if (annIdentity > maxIdentity) {
             // identity
             maxIdentity = annIdentity;
@@ -357,7 +357,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region &refRegion) {
     if (readShift != 0) {
         alignment->addRow(readObject->getSequenceName(),
                           complement ? DNASequenceUtils::reverseComplement(readData) : readData,
-                          U2MsaRowGapModel() << U2MsaGap(0, readShift),
+                          QList<U2MsaGap>() << U2MsaGap(0, readShift),
                           stateInfo);
     } else {
         alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
@@ -371,7 +371,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region &refRegion) {
     offset = refRegion.startPos;
 }
 
-void BlastAndSwReadTask::shiftGaps(U2MsaRowGapModel &gaps) const {
+void BlastAndSwReadTask::shiftGaps(QList<U2MsaGap> &gaps) const {
     for (int i = 0; i < gaps.size(); i++) {
         gaps[i].offset += offset;
     }
@@ -403,5 +403,5 @@ PairwiseAlignmentTaskSettings *BlastAndSwReadTask::createSettings(DbiDataStorage
     return settings;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
