@@ -2261,28 +2261,20 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
 GUI_TEST_CLASS_DEFINITION(test_3348) {
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/", "DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "DNA.fa");
 
-    Runnable *findDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", true, 10, 75, 100);
-    GTUtilsDialog::waitForDialog(os, findDialog);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find repeats...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", true, 10, 75, 100));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
+    auto treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)", treeWidget);
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
     CHECK_SET_ERR(generalItem != nullptr, "Invalid annotation tree item");
 
-    AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
-    CHECK_SET_ERR(nullptr != annotation, "Annotation tree item not found");
-    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_identity"), "Annotation qualifier not found");
-
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
+    auto annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
+    CHECK_SET_ERR(annotation != nullptr, "Annotation tree item not found");
+    QString identityQualifierValue = annotation->annotation->findFirstQualifierValue("repeat_identity");
+    CHECK_SET_ERR(identityQualifierValue == "76", "Annotation qualifier has invalid value: " + identityQualifierValue);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3357) {

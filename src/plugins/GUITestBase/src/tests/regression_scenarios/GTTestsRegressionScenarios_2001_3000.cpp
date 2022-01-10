@@ -1905,22 +1905,22 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
 
         void run() override {
             auto dialog = GTWidget::getActiveModalWidget(os);
-            GTLineEdit::setText(os, projectName, "projectNameEdit", dialog);
-            GTLineEdit::setText(os, projectFolder + "/" + projectFile, "projectFilePathEdit", dialog);
+            GTLineEdit::setText(os, "projectNameEdit", projectName, dialog);
+            GTLineEdit::setText(os, "projectFilePathEdit", projectFolder + "/" + projectFile, dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
     private:
-        const QString projectName;
-        const QString projectFolder;
-        const QString projectFile;
+        QString projectName;
+        QString projectFolder;
+        QString projectFile;
     };
 
-    const QString projectName = "test_2351";
-    const QString projectFolder = testDir + "_common_data/scenarios/sandbox";
-    const QString projectFile = "test_2351";
+    QString projectName = "test_2351";
+    QString projectFolder = testDir + "_common_data/scenarios/sandbox";
+    QString projectFile = "test_2351";
 
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 10; ++i) {
         GTUtilsDialog::waitForDialog(os, new RapidProjectCreator(os, projectName, projectFolder, projectFile));
         GTWidget::click(os,
                         GTToolbar::getWidgetForActionObjectName(os,
@@ -2142,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
     class CreateProjectFiller : public Filler {
         // It is a local support class, it is the same as SaveProjectAsDialogFiller,
         // but it clicks the final button with keyboard.
-        // I know that it is bad practice to create so useless classes, but I don't need to extend the original class.
+        // I know that it is bad practice creating so useless classes, but I don't need to extend the original class.
         // Do not move it to another place: if you need the same filler than extend the original class.
     public:
         CreateProjectFiller(HI::GUITestOpStatus &_os,

@@ -1271,7 +1271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
     GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    GTGlobals::sleep(10000); // Wait up to 10 seconds so UGENE will find the changes.
+    GTGlobals::sleep(10000);  // Wait up to 10 seconds so UGENE will find the changes.
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
@@ -2673,14 +2673,18 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     // select a few sequences
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
-    QStringList sequences;
-    sequences << "Montana_montana"
-              << "Conocephalus_percaudata"
-              << "Podisma_sapporensis";
+    QStringList sequences = {"Montana_montana", "Conocephalus_percaudata", "Podisma_sapporensis"};
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0043.png", ExportMsaImage::Settings(), false, false, RegionMsa(U2Region(1, 594), sequences)));
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportMsaImage(os,
+                                                    testDir + "_common_data/scenarios/sandbox/test_0043.png",
+                                                    ExportMsaImage::Settings(),
+                                                    false,
+                                                    false,
+                                                    RegionMsa(U2Region(1, 594), sequences)));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -4109,7 +4113,6 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
 
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 
     QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
