@@ -116,6 +116,10 @@ QRadioButton *GTWidget::findRadioButton(GUITestOpStatus &os, const QString &widg
     return findExactWidget<QRadioButton *>(os, widgetName, parentWidget, options);
 }
 
+QGroupBox *GTWidget::findGroupBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QGroupBox *>(os, widgetName, parentWidget, options);
+}
+
 QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
 }
@@ -126,6 +130,10 @@ QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName
 
 QTableWidget *GTWidget::findTableWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QTableWidget *>(os, widgetName, parentWidget, options);
+}
+
+QTabWidget *GTWidget::findTabWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTabWidget *>(os, widgetName, parentWidget, options);
 }
 
 QPlainTextEdit *GTWidget::findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {

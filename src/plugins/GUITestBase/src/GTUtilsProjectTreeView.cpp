@@ -192,14 +192,13 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
 
     class MainThreadActionExpand : public CustomScenario {
     public:
-        MainThreadActionExpand(QTreeView *treeView, const QModelIndex &index)
-            : CustomScenario(), treeView(treeView), index(index) {
+        MainThreadActionExpand(QTreeView *_treeView, const QModelIndex &_index)
+            : treeView(_treeView), index(_index) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             treeView->setExpanded(index, true);
         }
-        QTreeView *treeView;
+        QTreeView *treeView = nullptr;
         QModelIndex index;
     };
 

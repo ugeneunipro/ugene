@@ -27,13 +27,10 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
-#include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QPushButton>
-#include <QRadioButton>
 #include <QTableWidget>
 
 #include "ExportImageDialogFiller.h"
@@ -57,20 +54,15 @@ ExportImage::ExportImage(HI::GUITestOpStatus &os, CustomScenario *scenario)
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportImage::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GTLineEdit::setText(os, fileEdit, filePath);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
 
     if (comboValue != "") {
-        QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::selectItemByText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        QSpinBox *spin = dialog->findChild<QSpinBox *>("qualitySpinBox");
-        GTSpinBox::setValue(os, spin, spinValue, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -81,32 +73,21 @@ void ExportImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::CircularViewExportImage"
 #define GT_METHOD_NAME "commonScenario"
 void CircularViewExportImage::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
 
-    QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GTLineEdit::setText(os, fileEdit, filePath);
-
-    if (comboValue != "") {
-        QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::selectItemByText(os, formatsBox, comboValue);
+    if (!comboValue.isEmpty()) {
+        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        QSpinBox *spin = dialog->findChild<QSpinBox *>("qualitySpinBox");
-        GTSpinBox::setValue(os, spin, spinValue, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
     if (!exportedSequenceName.isEmpty()) {
-        QComboBox *seqsCombo = dialog->findChild<QComboBox *>("Exported_sequence_combo");
-        GTComboBox::selectItemByText(os, seqsCombo, exportedSequenceName);
+        GTComboBox::selectItemByText(os, "Exported_sequence_combo", dialog, exportedSequenceName);
     }
-
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "Ok button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -116,44 +97,28 @@ void CircularViewExportImage::commonScenario() {
 void ExportMsaImage::commonScenario() {
     GT_CHECK((exportWholeAlignment && exportCurrentSelection) != true, "Wrong filler parameters");
 
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (!exportWholeAlignment) {
         if (!exportCurrentSelection) {
             GTUtilsDialog::waitForDialog(os, new SelectSubalignmentFiller(os, region));
         }
-        QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-        GTComboBox::selectItemByText(os, exportType, "Custom region");
+        GTComboBox::selectItemByText(os, "comboBox", dialog, "Custom region");
     }
 
-    QCheckBox *namesCB = dialog->findChild<QCheckBox *>("exportSeqNames");
-    GTCheckBox::setChecked(os, namesCB, settings.includeNames);
+    GTCheckBox::setChecked(os, "exportSeqNames", settings.includeNames, dialog);
+    GTCheckBox::setChecked(os, "exportConsensus", settings.includeConsensus, dialog);
+    GTCheckBox::setChecked(os, "exportRuler", settings.includeRuler, dialog);
+    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
 
-    QCheckBox *consensusCB = dialog->findChild<QCheckBox *>("exportConsensus");
-    GTCheckBox::setChecked(os, consensusCB, settings.includeConsensus);
-
-    QCheckBox *rulerCB = dialog->findChild<QCheckBox *>("exportRuler");
-    GTCheckBox::setChecked(os, rulerCB, settings.includeRuler);
-
-    QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GTLineEdit::setText(os, fileEdit, filePath);
-
-    if (comboValue != "") {
-        QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::selectItemByText(os, formatsBox, comboValue);
+    if (!comboValue.isEmpty()) {
+        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        QSpinBox *spin = dialog->findChild<QSpinBox *>("qualitySpinBox");
-        GTSpinBox::setValue(os, spin, spinValue, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
-
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -161,9 +126,7 @@ void ExportMsaImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceImage"
 #define GT_METHOD_NAME "commonScenario"
 void ExportSequenceImage::commonScenario() {
-    GTGlobals::sleep(500);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QString radioButtonName;
     switch (settings.type) {
@@ -178,36 +141,25 @@ void ExportSequenceImage::commonScenario() {
             break;
     }
 
-    QRadioButton *radioButton = dialog->findChild<QRadioButton *>(radioButtonName);
-    GTRadioButton::click(os, radioButton);
+    GTRadioButton::click(os, radioButtonName, dialog);
 
     if (settings.type != CurrentView) {
-        // set region
-        QLineEdit *start = dialog->findChild<QLineEdit *>("start_edit_line");
-        GTLineEdit::setText(os, start, QString::number(settings.region.startPos));
-
-        QLineEdit *end = dialog->findChild<QLineEdit *>("end_edit_line");
-        GTLineEdit::setText(os, end, QString::number(settings.region.endPos()));
+        // Set region.
+        GTLineEdit::setText(os, "start_edit_line", QString::number(settings.region.startPos), dialog);
+        GTLineEdit::setText(os, "end_edit_line", QString::number(settings.region.endPos()), dialog);
     }
 
-    QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GTLineEdit::setText(os, fileEdit, filePath);
+    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
 
     if (comboValue != "") {
-        QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::selectItemByText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        QSpinBox *spin = dialog->findChild<QSpinBox *>("qualitySpinBox");
-        GTSpinBox::setValue(os, spin, spinValue, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -215,23 +167,13 @@ void ExportSequenceImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::SelectSubalignmentFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SelectSubalignmentFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTSpinBox::setValue(os, "startLineEdit", msaRegion.region.startPos, GTGlobals::UseKeyBoard, dialog);
+    GTSpinBox::setValue(os, "endLineEdit", msaRegion.region.endPos(), GTGlobals::UseKeyBoard, dialog);
 
-    QSpinBox *startLineEdit = dialog->findChild<QSpinBox *>("startLineEdit");
-    GT_CHECK(startLineEdit != nullptr, "startLineEdit is NULL");
-    GTSpinBox::setValue(os, startLineEdit, msaRegion.region.startPos, GTGlobals::UseKeyBoard);
+    GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
 
-    QSpinBox *endLineEdit = dialog->findChild<QSpinBox *>("endLineEdit");
-    GT_CHECK(endLineEdit != nullptr, "endPoxBox is NULL");
-    GTSpinBox::setValue(os, endLineEdit, msaRegion.region.endPos(), GTGlobals::UseKeyBoard);
-
-    QWidget *noneButton = dialog->findChild<QWidget *>("noneButton");
-    GT_CHECK(noneButton != nullptr, "noneButton is NULL");
-    GTWidget::click(os, noneButton);
-
-    QTableWidget *table = dialog->findChild<QTableWidget *>("sequencesTableWidget");
-    GT_CHECK(table != nullptr, "tableWidget is NULL");
+    QTableWidget *table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
 
     QPoint p = table->geometry().topRight();
     p.setX(p.x() - 2);
@@ -241,20 +183,17 @@ void SelectSubalignmentFiller::commonScenario() {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
     for (int i = 0; i < table->rowCount(); i++) {
-        foreach (QString s, msaRegion.sequences) {
-            QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
-            if (s == box->text()) {
+        for (const QString &sequence : qAsConst(msaRegion.sequences)) {
+            auto box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+            GT_CHECK(box != nullptr, "Not a QCheckBox cell");
+            if (sequence == box->text()) {
+                GTWidget::scrollToIndex(os, table, table->model()->index(i, 0));
                 GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                box->setChecked(true);
+                GTCheckBox::setChecked(os, box, true);
             }
         }
     }
-
-    QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *ok = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(ok != nullptr, "ok button is NULL");
-    GTWidget::click(os, ok);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -267,22 +206,14 @@ ImageExportFormFiller::ImageExportFormFiller(HI::GUITestOpStatus &os, const Para
 #define GT_METHOD_NAME "commonScenario"
 
 void ImageExportFormFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    QLineEdit *fileNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
-    GT_CHECK(fileNameEdit, "fileNameEdit is NULL");
-    GTLineEdit::setText(os, fileNameEdit, QDir::toNativeSeparators(parameters.fileName));
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTLineEdit::setText(os, "fileNameEdit", QDir::toNativeSeparators(parameters.fileName), dialog);
 
     QComboBox *formatsBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatsBox", dialog));
     GT_CHECK(formatsBox, "formatsBox is NULL");
     GTComboBox::selectItemByText(os, formatsBox, parameters.format);
 
-    QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *ok = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(ok != nullptr, "ok button is NULL");
-    GTWidget::click(os, ok);
+    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

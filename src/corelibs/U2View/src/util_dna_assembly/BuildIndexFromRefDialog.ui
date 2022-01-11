@@ -112,9 +112,6 @@
          <property name="toolTip">
           <string>Specify the index to build for the reference sequence. This parameter is &lt;b&gt;required&lt;/b&gt;.</string>
          </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
        <item row="1" column="2">

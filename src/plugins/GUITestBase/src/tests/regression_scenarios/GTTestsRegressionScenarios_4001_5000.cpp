@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     // Expected: UGENE shows warning & does not crash.
 
     // 10Mb (40 * 250_000)
-    QApplication::clipboard()->setText(QString("AAAAAAAAAACCCCCCCCCCGGGGGGGGGGTTTTTTTTTT").repeated(250000));
+    GTClipboard::setText(os, QString("AAAAAAAAAACCCCCCCCCCGGGGGGGGGGTTTTTTTTTT").repeated(250000));
 
     class Scenario : public CustomScenario {
     public:
@@ -1757,13 +1757,10 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
 
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
 
-    QLineEdit *annotationNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leAnnotationName"));
-    CHECK_SET_ERR(annotationNameEdit != nullptr, "chbUsePatternNames not found!");
-    annotationNameEdit->setText("pat");
+    auto annotationNameEdit = GTWidget::findLineEdit(os, "leAnnotationName");
+    GTLineEdit::setText(os, annotationNameEdit, "pat");
 
-    QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "chbUsePatternNames"));
-    CHECK_SET_ERR(check != nullptr, "chbUsePatternNames not found!");
-    GTCheckBox::setChecked(os, check, 1);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), 1);
 
     CHECK_SET_ERR(annotationNameEdit->isEnabled() != true, "annotationNameEdit is enabled!");
 

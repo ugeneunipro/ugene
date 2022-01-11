@@ -41,7 +41,7 @@ public:
     static void setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str, bool noCheck = false, bool useCopyPaste = true);
     static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget  *parent, bool noCheck = false, bool useCopyPaste = true);
 #else
-    static void setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str, bool noCheck = false, bool useCopyPaste = false);
+    static void setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &text, bool noCheck = false, bool useCopyPaste = false);
     static void setText(GUITestOpStatus &os, const QString &lineEditName, const QString &text, QWidget  *parent, bool noCheck = false, bool useCopyPaste = false);
 #endif
     static QString getText(GUITestOpStatus &os, QLineEdit *lineEdit);
@@ -55,7 +55,6 @@ public:
 
     // fails if lineEdit is NULL or lineEdit text is not in lineEdit's rect
     // considering lineEdit's fontMetrics and textMargins
-    static void checkTextSize(GUITestOpStatus &os, QLineEdit *lineEdit);
     static void checkText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &expectedText);
     static void checkText(GUITestOpStatus &os, const QString &lineEditName, QWidget  *parent, const QString &expectedText);
 
@@ -63,7 +62,7 @@ public:
 
     // fails if lineEdit is NULL
     // checks if str can be pasted in lineEdit
-    static bool tryToSetText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &str);
+    static bool tryToSetText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &text);
 };
 
 }  // namespace HI

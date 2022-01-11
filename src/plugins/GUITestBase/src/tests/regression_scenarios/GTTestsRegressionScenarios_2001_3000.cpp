@@ -615,7 +615,7 @@ GUI_TEST_CLASS_DEFINITION(test_2049) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
     auto codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
     auto labelBefore = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
-    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: "+ labelBefore->text());
+    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: " + labelBefore->text());
     int heightBefore = labelBefore->geometry().height();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"3. The Yeast Mitochondrial Code"}));
@@ -1903,41 +1903,24 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
               projectFile(_projectFile) {
         }
 
-        virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
-            QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
-            if (nullptr == projectNameEdit) {
-                os.setError("projectNameEdit not found");
-                return;
-            }
-            projectNameEdit->setText(projectName);
-
-            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-            if (nullptr == projectFileEdit) {
-                os.setError("projectFileEdit not found");
-                return;
-            }
-            projectFileEdit->setText(projectFolder + "/" + projectFile);
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "projectNameEdit", projectName, dialog);
+            GTLineEdit::setText(os, "projectFilePathEdit", projectFolder + "/" + projectFile, dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
     private:
-        const QString projectName;
-        const QString projectFolder;
-        const QString projectFile;
+        QString projectName;
+        QString projectFolder;
+        QString projectFile;
     };
 
-    const QString projectName = "test_2351";
-    const QString projectFolder = testDir + "_common_data/scenarios/sandbox";
-    const QString projectFile = "test_2351";
+    QString projectName = "test_2351";
+    QString projectFolder = testDir + "_common_data/scenarios/sandbox";
+    QString projectFile = "test_2351";
 
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 10; ++i) {
         GTUtilsDialog::waitForDialog(os, new RapidProjectCreator(os, projectName, projectFolder, projectFile));
         GTWidget::click(os,
                         GTToolbar::getWidgetForActionObjectName(os,
@@ -2159,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
     class CreateProjectFiller : public Filler {
         // It is a local support class, it is the same as SaveProjectAsDialogFiller,
         // but it clicks the final button with keyboard.
-        // I know that it is bad practice to create so useless classes, but I don't need to extend the original class.
+        // I know that it is bad practice creating so useless classes, but I don't need to extend the original class.
         // Do not move it to another place: if you need the same filler than extend the original class.
     public:
         CreateProjectFiller(HI::GUITestOpStatus &_os,

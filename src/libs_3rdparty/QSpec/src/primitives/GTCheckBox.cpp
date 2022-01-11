@@ -29,20 +29,22 @@ namespace HI {
 
 #define GT_METHOD_NAME "setChecked"
 void GTCheckBox::setChecked(GUITestOpStatus &os, QCheckBox *checkBox, bool checked) {
-    GT_CHECK(checkBox != NULL, "QCheckBox == NULL");
-    if (checkBox->isChecked() == checked) {
+    GT_CHECK(checkBox != nullptr, "QCheckBox == NULL");
+    if (checkBox->isChecked() == checked) {  // TODO: this should not be used this way: setChecked() must not be called on the disabled checkbox.
         return;
     }
-    GT_CHECK(checkBox->isEnabled(), "QcheckBox is disabled");
+    GT_CHECK(checkBox->isEnabled(), "QCheckBox is disabled: " + checkBox->objectName());
 
-    bool checkBoxState = checkBox->isChecked();
-    if (checked != checkBoxState) {
-        QPoint p = QPoint(5, checkBox->rect().height() / 2);
-        GTWidget::click(os, checkBox, Qt::LeftButton, p);
+    if (checked != checkBox->isChecked()) {
+        GTWidget::click(os, checkBox, Qt::LeftButton, {5, checkBox->rect().height() / 2});
     }
-    GTGlobals::sleep(500);
-
-    GT_CHECK(checked == checkBox->isChecked(), "Can't set checked state");
+    // Wait up to 5 seconds for the checked state to be updated.
+    bool isChecked = checkBox->isChecked();
+    for (int time = 0; time <= 5000 && isChecked != checked; time += 100) {
+        GTGlobals::sleep(100);
+        isChecked = checkBox->isChecked();
+    }
+    GT_CHECK(checked == isChecked, "Can't set checked state: " + checkBox->objectName());
 }
 #undef GT_METHOD_NAME
 
@@ -53,7 +55,7 @@ void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, bo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget  *parent) {
+void GTCheckBox::setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget *parent) {
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, checkBoxName, parent));
 }
 #undef GT_METHOD_NAME
@@ -82,7 +84,7 @@ void GTCheckBox::checkState(GUITestOpStatus &os, QCheckBox const *const checkBox
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkState"
-void GTCheckBox::checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget  *parent) {
+void GTCheckBox::checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget *parent) {
     checkState(os, GTWidget::findExactWidget<QCheckBox *>(os, checkBoxName, parent), expectedState);
 }
 #undef GT_METHOD_NAME
