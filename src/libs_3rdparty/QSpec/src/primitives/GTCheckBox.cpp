@@ -30,6 +30,9 @@ namespace HI {
 #define GT_METHOD_NAME "setChecked"
 void GTCheckBox::setChecked(GUITestOpStatus &os, QCheckBox *checkBox, bool checked) {
     GT_CHECK(checkBox != nullptr, "QCheckBox == NULL");
+    if (checkBox->isChecked() == checked) {  // TODO: this should not be used this way: setChecked() must not be called on the disabled checkbox.
+        return;
+    }
     GT_CHECK(checkBox->isEnabled(), "QCheckBox is disabled: " + checkBox->objectName());
 
     if (checked != checkBox->isChecked()) {

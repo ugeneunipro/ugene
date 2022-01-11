@@ -60,12 +60,9 @@ public:
     }
 
     void run(HI::GUITestOpStatus &os) override {
-        QWidget *const dialog = GTWidget::getActiveModalWidget(os);
-
-        // Dialog filling
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
-
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog), outFile);
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        GTLineEdit::setText(os, "Assembly widget", inputPaths.join(';'), dialog);
+        GTLineEdit::setText(os, "Output file widget", outFile, dialog);
 
         GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
     }

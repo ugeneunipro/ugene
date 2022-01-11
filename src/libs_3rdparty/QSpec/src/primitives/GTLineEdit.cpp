@@ -31,6 +31,11 @@ namespace HI {
 
 #define GT_METHOD_NAME "setText"
 void GTLineEdit::setText(GUITestOpStatus &os, QLineEdit *lineEdit, const QString &text, bool noCheck /* = false*/, bool useCopyPaste) {
+    GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
+    GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
+    if (lineEdit->text() == text) {
+        return;
+    }
     clear(os, lineEdit);
 
     if (useCopyPaste) {
