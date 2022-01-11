@@ -22,11 +22,10 @@
 #ifndef _U2_MSA_EXCLUDE_LIST_H_
 #define _U2_MSA_EXCLUDE_LIST_H_
 
-// TODO: size limits.
-
 #include <QSet>
 #include <QWidget>
 
+#include <U2Core/DNASequence.h>
 #include <U2Core/global.h>
 
 #include <U2Gui/ObjectViewModel.h>
@@ -40,13 +39,14 @@ class QToolButton;
 
 namespace U2 {
 
+class LoadDocumentTask;
 class MSAEditor;
 class MaModificationInfo;
-class MsaExcludeList;
+class MsaExcludeListWidget;
 class MultipleAlignment;
-class LoadDocumentTask;
+class MultipleAlignmentRow;
 
-/** MSA editor built-in support for "Align-Sequences-To-Alignment" algorithms. */
+/** MSA editor built-in support for "MSA Exclude List" widget. */
 class MsaExcludeListContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
@@ -64,79 +64,136 @@ private:
 
     void updateState(MSAEditor *msaEditor);
 
-    MsaExcludeList *findActiveExcludeList(MSAEditor *msaEditor);
+    MsaExcludeListWidget *findActiveExcludeList(MSAEditor *msaEditor);
 
-    MsaExcludeList *openExcludeList(MSAEditor *msaEditor);
+    MsaExcludeListWidget *openExcludeList(MSAEditor *msaEditor);
 
     void updateMsaEditorSplitterStyle(MSAEditor *msaEditor);
 };
 
-// todo: document
-struct UndoRedoContext {
+/** Stores per step (Undo or Redo) information used by Exclude List to keep synchronized state with MSA Editor during Undo/Redo ops. */
+struct UndoRedoStep {
+    /** Direction of the original move. */
     bool isMoveFromMsaToExcludeList = false;
+    /** Affected Exclude List row ids. The row ids keeps the same order as MSA rows being changed during the move. */
     QList<int> excludeListRowIdsDelta;
 };
 
 /**
  * Exclude list widget component for MsaEditor.
- * The 'exclude list' renders list of sequences excluded (temporary) from the multiple alignment object.
- * These sequences are stored in a ''
+ * The 'exclude list' renders a list of sequences excluded from the multiple alignment object.
+ *
+ * The widget contains a data model for Exclude List and a limited Undo/Redo support for MSA:
+ * the Undo-Redo is supported only for the life-time of the widget: when Exclude List is closed the Undo/Redo stack of the widget is reset.
  */
-class MsaExcludeList : public QWidget {
+class MsaExcludeListWidget : public QWidget {
     Q_OBJECT
 public:
-    MsaExcludeList(QWidget *parent, MSAEditor *msaEditor, MsaExcludeListContext *viewContext);
+    MsaExcludeListWidget(QWidget *parent, MSAEditor *msaEditor, MsaExcludeListContext *viewContext);
 
+    /** Triggers auto-save of the current exclude list state. */
+    ~MsaExcludeListWidget();
+
+    /** Moves currently selected MSA rows to the Exclude List. */
     void moveMsaSelectionToExcludeList();
+
+    /** Moves currently selected Exclude List rows to MSA. */
     void moveExcludeListSelectionToMaObject();
 
+    /** Tracks MSA object "Save Document" task and auto-saves Exclude List on successfull taks completion. */
     void trackMsaObjectSaveTask(Task *task);
 
     /** Returns preferred size hint used on instantiation. This size defines initial widget height in the MSA splitter. */
     QSize sizeHint() const override;
 
 private:
-    void updateSequenceView();
-
+    /** Updates state of all child widgets. */
     void updateState();
 
+    /** Updates currently visible sequence text based on name-list selection. */
+    void updateSequenceView();
+
+    /** Adds a minimal support of the synchronized Undo/Redo for the Exclude List and MSA Editor. */
     void handleUndoRedoInMsaEditor(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
 
-    int addEntry(const QString &name, const QByteArray &sequence, int msaRowId = -1);
+    /** Adds a name list entry. If excludeListRowId <= 0 auto-assigns a new row id. Returns a valid exclude list row id. */
+    int addEntry(const DNASequence &sequence, int excludeListRowId = 0);
+
+    /** Adds a name list entry from MSA row. Fixes non-defined DNA sequence alphabet of MSA row. */
+    int addMsaRowEntry(const MultipleAlignmentRow &row, int excludeListRowId = 0);
+
+    /** Remove sequence entries from the Exclude List model. */
     void removeEntries(const QList<QListWidgetItem *> &items);
 
+    /** Triggers context menu for the name list. */
     void showNameListContextMenu(const QPoint &pos);
 
+    /** Triggers loading of new exclude list from the 'excludeListFilePath'. */
     void loadExcludeList(bool create = false);
 
+    /** Unloads current exclude list. Used on the Exclude List file switch. */
     void unloadExcludeList();
 
+    /** Runs save task for Exclude list. */
     Task *runSaveTask(const QString &savePath);
 
+    /** Opens "FileDialog" and selects a new exclude list name to open. */
     void changeExcludeListFile();
 
+    /** Opens "FileDialog" and selects a new exclude list name to save. Saves the current state into the selected file. */
     void saveExcludeFileToNewLocation();
 
+    /** Takes data from the load FASTA document task and updates Exclude List internal model. */
     void handleLoadTaskStateChange();
 
+    /** Returns true if there is an active Exclude List load/save task. */
     bool hasActiveTask() const;
 
+    /** Returns Exclude List row id associated with the given item. */
+    int getExcludeListRowId(const QListWidgetItem *item) const;
+
+    /** Returns Exclude List DNA sequence associated with the given item. */
+    DNASequence getExcludeListRowSequence(const QListWidgetItem *item) const;
+
     MSAEditor *msaEditor = nullptr;
+
+    /** A name list widget. Used as a data model for Exclude List: keeps row names & sequences in user data slots. */
     QListWidget *nameListView = nullptr;
+
+    /** Selected sequence viewer. Works in sync with "nameListView". */
     QPlainTextEdit *sequenceView = nullptr;
+
     QToolButton *selectFileButton = nullptr;
+
     QToolButton *saveAsButton = nullptr;
+
     QSplitter *namesAndSequenceSplitter = nullptr;
+
     QLabel *stateLabel = nullptr;
-    QAction *moveSelectionToMaObjectAction = nullptr;
-    QMap<int, UndoRedoContext> trackedUndoMsaVersions;
-    QMap<int, UndoRedoContext> trackedRedoMsaVersions;
-    int excludeListRowIdGenerator = 0;
+
+    QAction *moveToMsaAction = nullptr;
+
+    /** Stores Exclude List state for UNDO ops. */
+    QMap<int, UndoRedoStep> trackedUndoMsaVersions;
+
+    /** Stores Exclude List state for REDO ops. */
+    QMap<int, UndoRedoStep> trackedRedoMsaVersions;
+
+    /** Used to generate unique row id for each row in Exclude List. */
+    int excludeListRowIdGenerator = 1;
+
+    /** Current Exclude List file path. */
     QString excludeListFilePath;
+
     bool isLoaded = false;
+
     bool isDirty = false;
+
     Task *saveTask = nullptr;
+
     LoadDocumentTask *loadTask = nullptr;
+
+    QHash<int, DNASequence> sequenceByExcludeListRowId;
 };
 
 }  // namespace U2

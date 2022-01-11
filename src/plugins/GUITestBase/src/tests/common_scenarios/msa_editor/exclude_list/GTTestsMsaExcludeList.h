@@ -32,6 +32,10 @@ namespace GUITest_common_scenarios_msa_exclude_list {
 #define GUI_TEST_SUITE "GUITest_common_scenarios_msa_exclude_list"
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0002)
+GUI_TEST_CLASS_DECLARATION(test_0003)
+GUI_TEST_CLASS_DECLARATION(test_0004)
+GUI_TEST_CLASS_DECLARATION(test_0005)
 
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_common_scenarios_msa_exclude_list

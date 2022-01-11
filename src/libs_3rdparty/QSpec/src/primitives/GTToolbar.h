@@ -40,7 +40,6 @@ public:
     static QToolButton *getToolButtonByAction(GUITestOpStatus &os, const QToolBar *toolbar, const QString &actionName);
 
     static void clickButtonByTooltipOnToolbar(GUITestOpStatus &os, const QString &toolbarSysName, const QString &tooltip);
-
 private:
     static QAction *getActionByObjectName(GUITestOpStatus &os, const QString &actionName, const QToolBar *toolbar);
 };

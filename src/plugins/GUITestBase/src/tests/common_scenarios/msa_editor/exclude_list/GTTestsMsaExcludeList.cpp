@@ -20,66 +20,23 @@
  */
 
 #include <api/GTUtils.h>
-#include <base_dialogs/ColorDialogFiller.h>
-#include <base_dialogs/DefaultDialogFiller.h>
-#include <base_dialogs/FontDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
-#include <harness/UGUITestBase.h>
-#include <primitives/GTAction.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
-#include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
-
-#include <QApplication>
-
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/TextUtils.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MaEditorNameList.h>
 
 #include "GTTestsMsaExcludeList.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-#include "GTUtilsNotifications.h"
-#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
-#include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 
 namespace U2 {
 
@@ -136,5 +93,133 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked");
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0002) {
+    // Checks that rows can be moved between MSA & Exclude List.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {});
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a", "c"});
+
+    // Check that a sibling sequence to the original selection is selected.
+    GTUtilsMsaEditor::checkSelectionByNames(os, {"b"});
+    GTUtilsMsaEditor::checkNameList(os, {"b", "d", "e", "f", "g", "h"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "c"});
+
+    GTUtilsMsaEditor::moveRowFromExcludeList(os, "c");
+    GTUtilsMsaEditor::checkNameList(os, {"b", "c", "d", "e", "f", "g", "h"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0003) {
+    // Checks that UNDO/REDO in MSA Editor affects Exclude List.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {});
+
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a"});
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {});
+
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a"});
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"b"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "b"});
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a"});
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {});
+
+    GTUtilsMsaEditor::redo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a"});
+    GTUtilsMsaEditor::redo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "b"});
+
+    GTUtilsMsaEditor::removeRows(os, 1, 1);
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "b"});
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0004) {
+    // Checks that Exclude List is saved correctly.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Check that Exclude List is auto-saved on close.
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a", "h"});
+    GTUtilsMsaEditor::closeExcludeList(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::check(os, sandBoxDir + baseFileName + ".exclude-list.fasta");
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "h"});
+
+    // Check that Exclude List is auto-saved on MSA save.
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"c"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c"});
+    GTUtilsDocument::saveDocument(os, baseFileName + ".aln");
+    GTUtilsMdi::closeAllWindows(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::doubleClickItem(os, baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c"});
+
+    // Check that Exclude List is auto-saved on project close.
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"d"});
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c", "d"});
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));  // Save the document.
+    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));  // Do not save the project.
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c", "d"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005) {
+    // Check that Exclude List shows sequence text.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"e", "f"});
+
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
+    auto nameListArea = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeListWidget);
+    auto sequenceViewArea = GTWidget::findPlainTextEdit(os, "exclude_list_sequence_view", excludeListWidget);
+
+    CHECK_SET_ERR(nameListArea->currentItem() == nullptr, "Name list must have no selection");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText().isEmpty(), "Sequence view must be empty");
+
+    GTListWidget::click(os, nameListArea, "e");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText() == "TTAGTTTATTAATT", "Sequence e does not match");
+
+    GTListWidget::click(os, nameListArea, "f");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText() == "TTAGTCTACTAATT", "Sequence f does not match");
+}
+
 }  // namespace GUITest_common_scenarios_msa_exclude_list
 }  // namespace U2.

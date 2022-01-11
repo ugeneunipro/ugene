@@ -102,6 +102,9 @@ public:
 
     static void clearSelection(HI::GUITestOpStatus &os);
 
+    /** Checks current sequence (row) name list (with order). */
+    static void checkNameList(HI::GUITestOpStatus &os, const QStringList &nameList);
+
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);
     static void setReference(HI::GUITestOpStatus &os, const QString &sequenceName);
 
@@ -136,6 +139,21 @@ public:
 
     /** Clicks "Align sequence(s) to alignment" button has the given state. */
     static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
+
+    /** Clicks "Exclude list" button on the toolbar (if needed) and checks that "Exclude List" widget is present. */
+    static void openExcludeList(HI::GUITestOpStatus &os);
+
+    /** Ensures exclude list is closed. */
+    static void closeExcludeList(HI::GUITestOpStatus &os);
+
+    /** Moves rows with the given names from MSA to Exclude List. */
+    static void moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Moves row with the given name from Exclude List to MSA. */
+    static void moveRowFromExcludeList(HI::GUITestOpStatus &os, const QString &rowName);
+
+    /** Check current exclude list content. The Exclude List must be opened. */
+    static void checkExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
 };
 
 }  // namespace U2
