@@ -212,7 +212,8 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     mainSplitter->setStretchFactor(0, 2);
 
     if (addOverviewArea) {
-        if (overviewArea->isResizable()) {
+        MsaEditorWgt *wgt = qobject_cast<MsaEditorWgt *>(this);
+        if (wgt == nullptr) {
             mainSplitter->addWidget(overviewArea);
             mainSplitter->setCollapsible(1, false);
             MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
@@ -294,19 +295,7 @@ MaEditorConsensusArea* MaEditorWgt::getConsensusArea() const {
     return consensusArea;
 }
 
-MaEditorOverviewArea* MaEditorWgt::getOverviewArea() const {
-    return overviewArea;
-}
-
-MSAEditorOffsetsViewController* MaEditorWgt::getOffsetsViewController() const {
-    return offsetsViewController;
-}
-
-ScrollController* MaEditorWgt::getScrollController() const {
-    return scrollController;
-}
-
-BaseWidthController* MaEditorWgt::getBaseWidthController() const {
+BaseWidthController *MaEditorWgt::getBaseWidthController() const {
     return baseWidthController;
 }
 
