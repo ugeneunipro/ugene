@@ -45,8 +45,8 @@ namespace U2 {
 
 MaSimpleOverview::MaSimpleOverview(MaEditor *editor, QWidget *ui)
     : MaOverview(editor, ui) {
-    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    setFixedHeight(FIXED_HEIGTH);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setFixedHeight(FIXED_HEIGHT);
 }
 
 bool MaSimpleOverview::isValid() const {
