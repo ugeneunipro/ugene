@@ -649,8 +649,6 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
                     AppContext::getTaskScheduler()->registerTopLevelTask(task);
                 }
             }
-        } else if (md->hasFormat(U2Clipboard::UGENE_MIME_TYPE)) {
-            uiLog.info("Drop " + md->text());
         }
     }
 

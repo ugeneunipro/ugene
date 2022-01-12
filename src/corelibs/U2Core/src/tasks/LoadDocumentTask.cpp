@@ -262,7 +262,7 @@ LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const 
     CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect file format: %1").arg(url.getURLString())), nullptr);
 
     DocumentFormat *df = dfs.first().format;
-    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is unknown (format id: '%1', file path: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
+    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is unknown (format: '%1', file path: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
     return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 

@@ -388,7 +388,7 @@ void GObject::removeAllLocks() {
     modLocks.clear();
 }
 
-int GObject::getObjectVersion() {
+int GObject::getObjectVersion() const {
     CHECK(entityRef.dbiRef.isValid(), -1);
 
     U2OpStatus2Log os;
