@@ -126,7 +126,7 @@ private:
     void removeEntries(const QList<QListWidgetItem *> &items);
 
     /** Triggers context menu for the name list. */
-    void showNameListContextMenu(const QPoint &pos);
+    void showNameListContextMenu();
 
     /** Triggers loading of new exclude list from the 'excludeListFilePath'. */
     void loadExcludeList(bool create = false);

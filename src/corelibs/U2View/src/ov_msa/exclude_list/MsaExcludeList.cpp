@@ -336,7 +336,7 @@ void MsaExcludeListWidget::updateSequenceView() {
     sequenceView->setPlainText(QString::fromUtf8(sequence.seq));
 }
 
-void MsaExcludeListWidget::showNameListContextMenu(const QPoint &) {
+void MsaExcludeListWidget::showNameListContextMenu() {
     QMenu menu;
     menu.addAction(moveToMsaAction);
     menu.exec(QCursor::pos());
@@ -430,7 +430,7 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment &ma
         }
         SAFE_POINT(msaRows.size() == undoRedoContext.excludeListRowIdsDelta.size(), "Failed to map Exclude List rows to Msa rows", )
         for (int i = 0; i < msaRows.size(); i++) {
-            auto &msaRow = msaRows[i];
+            const auto &msaRow = msaRows[i];
             int excludeListRowId = undoRedoContext.excludeListRowIdsDelta[i];
             addMsaRowEntry(msaRow, excludeListRowId);
         }
