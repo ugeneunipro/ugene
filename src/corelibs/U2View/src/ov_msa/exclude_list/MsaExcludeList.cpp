@@ -71,7 +71,7 @@ static const char *MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_lis
 void MsaExcludeListContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
-    CHECK(msaEditor->getMaObject() != nullptr, );
+    auto msaObject = msaEditor->getMaObject();
     msaEditor->registerActionProvider(this);
 
     // Toggles exclude list view in MSA editor. See MsaExcludeList for details.
@@ -93,7 +93,8 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
         excludeList->moveMsaSelectionToExcludeList();
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
-    connect(msaEditor->getMaObject(), &GObject::si_lockedStateChanged, this, [this, msaEditor]() { updateState(msaEditor); });
+    connect(msaObject, &GObject::si_lockedStateChanged, this, [this, msaEditor]() { updateState(msaEditor); });
+    connect(msaEditor, &GObject::destroyed, this, [this, msaObject]() { msaObject->disconnect(this); });
     connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
         QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->cutSelectionAction, moveFromMsaAction);
@@ -243,6 +244,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget *parent, MSAEditor *_msaEdito
 
     auto msaObject = msaEditor->getMaObject();
     connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &MsaExcludeListWidget::handleUndoRedoInMsaEditor);
+    connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &MsaExcludeListWidget::updateState);
 
     excludeListFilePath = msaEditor->property(PROPERTY_LAST_USED_EXCLUDE_LIST_FILE).toString();
     if (excludeListFilePath.isEmpty() || !QFileInfo::exists(excludeListFilePath)) {
@@ -297,7 +299,7 @@ void MsaExcludeListWidget::updateState() {
     selectFileButton->setText(isLoaded ? GUrl(excludeListFilePath).fileName() : tr("<empty>"));
     selectFileButton->setToolTip(isLoaded ? excludeListFilePath : tr("<empty>"));
     saveAsButton->setEnabled(!hasActiveTask() && isLoaded);
-    moveToMsaAction->setEnabled(!hasActiveTask() && isLoaded && !nameListView->selectedItems().isEmpty());
+    moveToMsaAction->setEnabled(!hasActiveTask() && isLoaded && !nameListView->selectedItems().isEmpty() && !msaEditor->getMaObject()->isStateLocked());
     namesAndSequenceSplitter->setVisible(isLoaded);
 
     if (isLoaded) {
