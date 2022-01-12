@@ -34,8 +34,6 @@ McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
     // The McaEditorOverview can be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
-    isWidgetResizable = true;
-
     sangerOverview = new MaSangerOverview(ui->getEditor(), ui);
     sangerOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_sanger"));
 
