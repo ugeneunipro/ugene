@@ -588,7 +588,7 @@ void GTUtilsMsaEditor::moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStr
     GTUtilsMsaEditor::selectRowsByName(os, rowNames);
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
-    auto button = GTWidget::findToolButton(os, "exclude_list_move_to_exclude_list_button", excludeList);
+    auto button = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", excludeList);
     CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
     GTWidget::click(os, button);
 }

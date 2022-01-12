@@ -71,7 +71,6 @@ static const char *MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_lis
 void MsaExcludeListContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
-    auto msaObject = msaEditor->getMaObject();
     msaEditor->registerActionProvider(this);
 
     // Toggles exclude list view in MSA editor. See MsaExcludeList for details.
@@ -93,8 +92,17 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
         excludeList->moveMsaSelectionToExcludeList();
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
-    connect(msaObject, &GObject::si_lockedStateChanged, this, [this, msaEditor]() { updateState(msaEditor); });
-    connect(msaEditor, &GObject::destroyed, this, [this, msaObject]() { msaObject->disconnect(this); });
+
+    QPointer<MultipleSequenceAlignmentObject> msaObject = msaEditor->getMaObject();
+    connect(msaObject, &GObject::si_lockedStateChanged, this, [this, msaEditor]() {
+        updateState(msaEditor);
+    });
+    connect(msaEditor, &GObject::destroyed, this, [this, msaObject]() {
+        // MSA object may be destroyed before MSA Editor when the object is deleted from the Project Tree View with an opened MSA editor.
+        // This is a bug in UGENE: views must be closed before object is destroyed.
+        CHECK(!msaObject.isNull(), );
+        msaObject->disconnect(this);
+    });
     connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
         QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->cutSelectionAction, moveFromMsaAction);
@@ -137,6 +145,10 @@ void MsaExcludeListContext::toggleExcludeListView(MSAEditor *msaEditor) {
 }
 
 void MsaExcludeListContext::updateState(MSAEditor *msaEditor) {
+    bool isRegisteredView = viewResources.contains(msaEditor);
+    CHECK(isRegisteredView, );
+    // MSA editor emits signals during the destruction process (TreeWidget resets rows ordering and updates collapse model & selection).
+    // We need to check if the view is still registered first.
     auto moveAction = getMoveMsaSelectionToExcludeListAction(msaEditor);
     SAFE_POINT(moveAction != nullptr, "Can't find move action in Msa editor", )
     bool isEnabled = !msaEditor->getMaObject()->isStateLocked() && !msaEditor->getSelection().isEmpty();
@@ -235,7 +247,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget *parent, MSAEditor *_msaEdito
     auto moveFromMsaAction = viewContext->getMoveMsaSelectionToExcludeListAction(msaEditor);
     if (moveFromMsaAction != nullptr) {
         auto moveFromMsaButton = new QToolButton();
-        moveFromMsaButton->setObjectName("exclude_list_move_to_exclude_list_button");
+        moveFromMsaButton->setObjectName("exclude_list_move_from_msa_button");
         moveFromMsaButton->setDefaultAction(moveFromMsaAction);
         moveFromMsaButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
         toolbarLayout->addWidget(moveFromMsaButton);

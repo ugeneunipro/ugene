@@ -79,8 +79,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", excludeListWidget);
     CHECK_SET_ERR(!moveToMsaButton->isEnabled(), "moveToMsa button must not be enabled");
 
-    auto moveToExcludeListButton = GTWidget::findToolButton(os, "exclude_list_move_to_exclude_list_button", excludeListWidget);
-    CHECK_SET_ERR(!moveToExcludeListButton->isEnabled(), "moveToExcludeList button must not be enabled");
+    auto moveFromMsaButton = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", excludeListWidget);
+    CHECK_SET_ERR(!moveFromMsaButton->isEnabled(), "moveToExcludeList button must not be enabled");
 
     auto nameListArea = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeListWidget);
     CHECK_SET_ERR(nameListArea->isVisible(), "Name list must be visible");
@@ -198,7 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Check that Exclude List shows sequence text.
-    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0005");
     GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
     GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -219,6 +219,34 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTListWidget::click(os, nameListArea, "f");
     CHECK_SET_ERR(sequenceViewArea->toPlainText() == "TTAGTCTACTAATT", "Sequence f does not match");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0006) {
+    // Check that Exclude List correctly handles read-only o object state.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0006");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"g"});
+
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto nameListArea = GTWidget::findListWidget(os, "exclude_list_name_list_widget", msaEditorWindow);
+    auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
+    auto moveFromMsaButton = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", msaEditorWindow);
+
+    GTListWidget::click(os, nameListArea, "g");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton is not enabled/1");
+    CHECK_SET_ERR(moveFromMsaButton->isEnabled(), "moveFromMsaButton is not enabled/1");
+
+    GTUtilsDocument::lockDocument(os, baseFileName + ".aln");
+    CHECK_SET_ERR(!moveToMsaButton->isEnabled(), "moveToMsaButton is enabled");
+    CHECK_SET_ERR(!moveFromMsaButton->isEnabled(), "moveFromMsaButton is enabled");
+
+    GTUtilsDocument::unlockDocument(os, baseFileName + ".aln");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton is not enabled/2");
+    CHECK_SET_ERR(moveFromMsaButton->isEnabled(), "moveFromMsaButton is not enabled/2");
 }
 
 }  // namespace GUITest_common_scenarios_msa_exclude_list
