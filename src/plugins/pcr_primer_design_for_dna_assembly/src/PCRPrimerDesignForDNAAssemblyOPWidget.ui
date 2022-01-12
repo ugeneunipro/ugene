@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>367</width>
+    <width>263</width>
     <height>1147</height>
    </rect>
   </property>
@@ -332,6 +332,9 @@
             <widget class="QLabel" name="label_2">
              <property name="text">
               <string>Overlap length</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -663,6 +666,15 @@
             <string>Primer search areas for insert</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_21">
               <item>
@@ -685,6 +697,12 @@
              <layout class="QVBoxLayout" name="verticalLayout_20">
               <item>
                <widget class="QSpinBox" name="sbLeftAreaStart">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -695,6 +713,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="sbRightAreaStart">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -739,6 +763,12 @@
              <layout class="QVBoxLayout" name="verticalLayout_18">
               <item>
                <widget class="QSpinBox" name="sbLeftAreaEnd">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>2</number>
                 </property>
@@ -749,6 +779,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="sbRightAreaEnd">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>2</number>
                 </property>
@@ -763,8 +799,11 @@
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
                <widget class="QToolButton" name="tbLeftAreaSelectManually">
-                <property name="styleSheet">
-                 <string notr="true"/>
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>0</height>
+                 </size>
                 </property>
                 <property name="text">
                  <string>Select manually</string>
@@ -776,6 +815,12 @@
               </item>
               <item>
                <widget class="QToolButton" name="tbRightAreaSelectManually">
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Select manually</string>
                 </property>
@@ -827,10 +872,22 @@
             <string>Insert to backbone bearings</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="spacing">
+               <number>3</number>
+              </property>
               <item>
                <widget class="QRadioButton" name="backbone5">
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton::indicator{width:10px;height:10px;}</string>
+                </property>
                 <property name="text">
                  <string>5' insert to 5' backbone</string>
                 </property>
@@ -841,6 +898,9 @@
               </item>
               <item>
                <widget class="QRadioButton" name="backbone3">
+                <property name="styleSheet">
+                 <string notr="true">QRadioButton::indicator{width:10px;height:10px;}</string>
+                </property>
                 <property name="text">
                  <string>5' insert to 3' backbone</string>
                 </property>
@@ -850,20 +910,30 @@
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_7">
-              <property name="spacing">
-               <number>20</number>
-              </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
                 <item>
                  <widget class="QLabel" name="label_9">
+                  <property name="minimumSize">
+                   <size>
+                    <width>92</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>5' backbone length:</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="sbBackbone5Length"/>
+                 <widget class="QSpinBox" name="sbBackbone5Length">
+                  <property name="minimumSize">
+                   <size>
+                    <width>10</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -871,13 +941,26 @@
                <layout class="QHBoxLayout" name="horizontalLayout_9">
                 <item>
                  <widget class="QLabel" name="label_12">
+                  <property name="minimumSize">
+                   <size>
+                    <width>92</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>3' backbone length:</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="sbBackbone3Length"/>
+                 <widget class="QSpinBox" name="sbBackbone3Length">
+                  <property name="minimumSize">
+                   <size>
+                    <width>10</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
