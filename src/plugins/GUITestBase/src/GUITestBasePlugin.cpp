@@ -2391,6 +2391,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment

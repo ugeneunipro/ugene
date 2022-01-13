@@ -113,6 +113,9 @@ private:
     /** Updates currently visible sequence text based on name-list selection. */
     void updateSequenceView();
 
+    /** Moves specified row indexes to exclude list. */
+    void moveMsaRowIndexesToExcludeList(const QList<int> &msaRowIndexes);
+
     /** Adds a minimal support of the synchronized Undo/Redo for the Exclude List and MSA Editor. */
     void handleUndoRedoInMsaEditor(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
 
@@ -194,6 +197,9 @@ private:
     LoadDocumentTask *loadTask = nullptr;
 
     QHash<int, DNASequence> sequenceByExcludeListRowId;
+
+    /** Keeps MSA row ids need to be moved to the widget after load task is finished. */
+    QList<qint64> pendingMoveFromMsaRowIds;
 };
 
 }  // namespace U2

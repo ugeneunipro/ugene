@@ -87,21 +87,25 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
     moveFromMsaAction->setIcon(QIcon(":core/images/arrow-move-down.png"));
     moveFromMsaAction->setObjectName(MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     moveFromMsaAction->setToolTip(tr("Move selected MSA sequences to Exclude List"));
-    connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor]() {
-        MsaExcludeListWidget *excludeList = openExcludeList(msaEditor);
+    connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor, toggleExcludeListAction]() {
+        toggleExcludeListAction->trigger();
+        MsaExcludeListWidget *excludeList = findActiveExcludeList(msaEditor);
+        CHECK(excludeList != nullptr, );
         excludeList->moveMsaSelectionToExcludeList();
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
 
-    QPointer<MultipleSequenceAlignmentObject> msaObject = msaEditor->getMaObject();
-    connect(msaObject, &GObject::si_lockedStateChanged, this, [this, msaEditor]() {
-        updateState(msaEditor);
+    QPointer<MultipleSequenceAlignmentObject> msaObjectPtr = msaEditor->getMaObject();
+    QPointer<MSAEditor> msaEditorPtr = msaEditor;
+    connect(msaObjectPtr, &GObject::si_lockedStateChanged, this, [this, msaEditorPtr]() {
+        CHECK(!msaEditorPtr.isNull(), );
+        updateState(msaEditorPtr);
     });
-    connect(msaEditor, &GObject::destroyed, this, [this, msaObject]() {
+    connect(msaEditor, &GObject::destroyed, this, [this, msaObjectPtr]() {
         // MSA object may be destroyed before MSA Editor when the object is deleted from the Project Tree View with an opened MSA editor.
         // This is a bug in UGENE: views must be closed before object is destroyed.
-        CHECK(!msaObject.isNull(), );
-        msaObject->disconnect(this);
+        CHECK(!msaObjectPtr.isNull(), );
+        msaObjectPtr->disconnect(this);
     });
     connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
         QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
@@ -361,26 +365,46 @@ void MsaExcludeListWidget::moveMsaSelectionToExcludeList() {
     SAFE_POINT(!selection.isEmpty(), "Msa editor selection is empty!", );
     QList<QRect> selectedRects = selection.getRectList();
     QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects);
+    if (loadTask == nullptr) {
+        moveMsaRowIndexesToExcludeList(selectedMsaRowIndexes);
+        return;
+    }
+    // Make the move later, after the task is finished.
+    // This is possible when user moves & opens Exclude List from the single action in MSA Editor: the widget is opened
+    // and starts loading at the same time.
+    QList<qint64> selectedMsaRowIds = msaEditor->getMaObject()->getRowIdsByRowIndexes(selectedMsaRowIndexes);
+    for (qint64 msaRowId : qAsConst(selectedMsaRowIds)) {
+        if (!pendingMoveFromMsaRowIds.contains(msaRowId)) {
+            pendingMoveFromMsaRowIds << msaRowId;
+        }
+    }
+}
+
+void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int> &msaRowIndexes) {
+    CHECK(!msaRowIndexes.isEmpty(), )
+    SAFE_POINT(loadTask == nullptr, "Can't add rows with an active load task!", )
+
     QList<int> excludeListRowIds;
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
-    for (int msaRowIndex : qAsConst(selectedMsaRowIndexes)) {
+    for (int msaRowIndex : qAsConst(msaRowIndexes)) {
         excludeListRowIds << addMsaRowEntry(msaObject->getRow(msaRowIndex));
     }
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
     if (!os.hasError()) {
+        auto collapseModel = msaEditor->getCollapseModel();
+        int firstSelectedMsaRowBefore = msaEditor->getSelection().getFirstSelectedRowIndex();
         int versionBefore = msaObject->getObjectVersion();
-        msaObject->removeRows(selectedMsaRowIndexes);
+        msaObject->removeRows(msaRowIndexes);
         // Exclude list re-uses msa row ids.
         trackedUndoMsaVersions.insert(versionBefore, {true, excludeListRowIds});
         trackedRedoMsaVersions.insert(msaObject->getObjectVersion(), {true, excludeListRowIds});
 
-        // Select the first row before the removed ones.
-        if (!msaEditor->isAlignmentEmpty()) {
-            int firstSelectedRowIndexBefore = selectedRects.first().top();
-            int newSelectedRowIndex = qMin(msaEditor->getCollapseModel()->getViewRowCount() - 1, firstSelectedRowIndexBefore);
-            msaEditor->selectRows(newSelectedRowIndex, 1);
+        // Select the first row in the position of the first removed one.
+        if (!msaEditor->isAlignmentEmpty() && msaEditor->getSelection().isEmpty() && firstSelectedMsaRowBefore >= 0) {
+            int newSelectedViewRowIndex = qMin(collapseModel->getViewRowCount() - 1, firstSelectedMsaRowBefore);
+            msaEditor->selectRows(newSelectedViewRowIndex, 1);
         }
     }
     updateState();
@@ -586,6 +610,17 @@ void MsaExcludeListWidget::handleLoadTaskStateChange() {
             DNASequence sequence = sequenceObject->getWholeSequence(os);
             SAFE_POINT_OP(os, );
             addEntry(sequence);
+        }
+        if (!pendingMoveFromMsaRowIds.isEmpty()) {
+            QList<int> pendingMsaRowIndexes;
+            QList<qint64> allMsaRowIds = msaEditor->getMaRowIds();
+            for (qint64 msaRowId : qAsConst(pendingMoveFromMsaRowIds)) {
+                int msaRowIndex = allMsaRowIds.indexOf(msaRowId);
+                if (msaRowIndex >= 0) {
+                    pendingMsaRowIndexes << msaRowIndex;
+                }
+            }
+            moveMsaRowIndexesToExcludeList(pendingMsaRowIndexes);
         }
         isLoaded = true;
         isDirty = false;

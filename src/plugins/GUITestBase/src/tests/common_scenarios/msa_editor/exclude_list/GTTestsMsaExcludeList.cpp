@@ -249,5 +249,29 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(moveFromMsaButton->isEnabled(), "moveFromMsaButton is not enabled/2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    // Check that moving rows to a non-loaded Exclude List works correctly.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0007");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::selectRowsByName(os, {"b"});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "exclude_list_move_from_msa_action"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::checkExcludeList(os, {"b"});
+    GTUtilsMsaEditor::closeExcludeList(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Exclude list is unloaded now. Move new columns and check that the columns are added after the list is loaded.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "exclude_list_move_from_msa_action"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::checkExcludeList(os, {"b", "c"});
+}
+
 }  // namespace GUITest_common_scenarios_msa_exclude_list
 }  // namespace U2.

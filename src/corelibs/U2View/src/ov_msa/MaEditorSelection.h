@@ -93,6 +93,9 @@ public:
     /** Returns view row indexes of all rows present in the selection. */
     QList<int> getSelectedRowIndexes() const;
 
+    /** Returns the first selected view row index of -1 if the selection is empty. */
+    int getFirstSelectedRowIndex() const;
+
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
 
