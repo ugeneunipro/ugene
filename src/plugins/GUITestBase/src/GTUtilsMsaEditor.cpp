@@ -48,6 +48,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 
@@ -560,22 +561,28 @@ void GTUtilsMsaEditor::setReference(GUITestOpStatus &os, const QString &sequence
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openExcludeList"
-void GTUtilsMsaEditor::openExcludeList(HI::GUITestOpStatus &os) {
+void GTUtilsMsaEditor::openExcludeList(HI::GUITestOpStatus &os, bool waitUntilLoaded) {
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "exclude_list_toggle_action");
     if (!toggleExcludeListButton->isChecked()) {
         GTWidget::click(os, toggleExcludeListButton);
+        if (waitUntilLoaded) {
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+        }
     }
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);  // Test that Exclude List is present.
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "closeExcludeList"
-void GTUtilsMsaEditor::closeExcludeList(HI::GUITestOpStatus &os) {
+void GTUtilsMsaEditor::closeExcludeList(HI::GUITestOpStatus &os, bool waitUntilFinished) {
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "exclude_list_toggle_action");
     if (toggleExcludeListButton->isChecked()) {
         GTWidget::click(os, toggleExcludeListButton);
+        if (waitUntilFinished) {
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+        }
     }
     // Test that Exclude List is not present.
     CHECK_SET_ERR(GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, {false}) == nullptr, "Exclude List widget is present");

@@ -62,8 +62,10 @@ private:
 
     void moveMaSelectionToExcludeList(MSAEditor *msaEditor);
 
+    /** Updates Exclude List actions associated with Msa Editor based on the current editor's state. */
     void updateState(MSAEditor *msaEditor);
 
+    /** Returns active Exclude List widget or nullptr if the widget is not found. */
     MsaExcludeListWidget *findActiveExcludeList(MSAEditor *msaEditor);
 
     MsaExcludeListWidget *openExcludeList(MSAEditor *msaEditor);

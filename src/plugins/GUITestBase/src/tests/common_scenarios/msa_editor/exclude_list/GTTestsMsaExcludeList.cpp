@@ -96,7 +96,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Checks that rows can be moved between MSA & Exclude List.
-    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0002");
     GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
     GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -117,7 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Checks that UNDO/REDO in MSA Editor affects Exclude List.
-    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0004");
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0003");
     GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
     GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -161,11 +161,9 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsMsaEditor::openExcludeList(os);
     GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a", "h"});
     GTUtilsMsaEditor::closeExcludeList(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::check(os, sandBoxDir + baseFileName + ".exclude-list.fasta");
 
     GTUtilsMsaEditor::openExcludeList(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkExcludeList(os, {"a", "h"});
 
     // Check that Exclude List is auto-saved on MSA save.
@@ -178,7 +176,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsProjectTreeView::doubleClickItem(os, baseFileName + ".aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMsaEditor::openExcludeList(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c"});
 
     // Check that Exclude List is auto-saved on project close.
@@ -192,7 +189,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMsaEditor::openExcludeList(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkExcludeList(os, {"a", "h", "c", "d"});
 }
 
@@ -263,7 +259,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsMsaEditor::checkExcludeList(os, {"b"});
     GTUtilsMsaEditor::closeExcludeList(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Exclude list is unloaded now. Move new columns and check that the columns are added after the list is loaded.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "exclude_list_move_from_msa_action"}));

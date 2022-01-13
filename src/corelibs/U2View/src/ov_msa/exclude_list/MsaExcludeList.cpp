@@ -88,10 +88,13 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
     moveFromMsaAction->setObjectName(MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     moveFromMsaAction->setToolTip(tr("Move selected MSA sequences to Exclude List"));
     connect(moveFromMsaAction, &QAction::triggered, this, [this, msaEditor, toggleExcludeListAction]() {
-        toggleExcludeListAction->trigger();
-        MsaExcludeListWidget *excludeList = findActiveExcludeList(msaEditor);
-        CHECK(excludeList != nullptr, );
-        excludeList->moveMsaSelectionToExcludeList();
+        auto excludeListWidget = findActiveExcludeList(msaEditor);
+        if (excludeListWidget == nullptr) {
+            toggleExcludeListAction->trigger();
+            excludeListWidget = findActiveExcludeList(msaEditor);
+            CHECK(excludeListWidget != nullptr, );
+        }
+        excludeListWidget->moveMsaSelectionToExcludeList();
     });
     connect(msaEditor->getSelectionController(), &MaEditorSelectionController::si_selectionChanged, this, [this, msaEditor]() { updateState(msaEditor); });
 

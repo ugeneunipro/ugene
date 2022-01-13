@@ -140,11 +140,17 @@ public:
     /** Clicks "Align sequence(s) to alignment" button has the given state. */
     static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
 
-    /** Clicks "Exclude list" button on the toolbar (if needed) and checks that "Exclude List" widget is present. */
-    static void openExcludeList(HI::GUITestOpStatus &os);
+    /**
+     * Clicks "Exclude list" button on the toolbar (if needed) and checks that "Exclude List" widget is present.
+     * 'waitUntilLoaded' calls to 'waitTaskFinished' and is needed to wait until the content of exclude list is loaded.
+     */
+    static void openExcludeList(HI::GUITestOpStatus &os, bool waitUntilLoaded = true);
 
-    /** Ensures exclude list is closed. */
-    static void closeExcludeList(HI::GUITestOpStatus &os);
+    /**
+     * Ensures exclude list is closed.
+     * 'waitUntilSaved' calls to 'waitTaskFinished' and is needed to wait until the content of exclude list is saved.
+     */
+    static void closeExcludeList(HI::GUITestOpStatus &os, bool waitUntilSaved = true);
 
     /** Moves rows with the given names from MSA to Exclude List. */
     static void moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
