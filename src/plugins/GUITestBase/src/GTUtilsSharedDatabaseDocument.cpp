@@ -66,7 +66,7 @@ static QString getSuiteFolderPrefix() {
  * This helps to limit unstable drag & drop + scroll behavior when project tree is too large.
  */
 static void removeTempContentFromOtherTests(HI::GUITestOpStatus &os, Document *document) {
-    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, document->getName(), QModelIndex(), 0, GTGlobals::FindOptions(false));
+    QModelIndexList documentItems = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, document->getName(), QModelIndex(), 0, {false});
     if (documentItems.isEmpty()) {
         return;
     }

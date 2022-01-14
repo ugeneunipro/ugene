@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 1");
     CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
 
     // 8. Choose "All annotations" annotation extraction.
@@ -476,8 +476,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 2");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", {false}) == nullptr, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

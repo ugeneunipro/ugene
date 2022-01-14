@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_3133) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "test_3133.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: project view is present, there are no documents presented.
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, dbName, GTGlobals::FindOptions(false));
+    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, dbName, {false});
     CHECK_SET_ERR(!idx.isValid(), "The database document is in the project");
 }
 
@@ -983,7 +983,7 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
             CHECK(nullptr != buttonBox, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK(nullptr != button, );
-            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, GTGlobals::FindOptions(false)));
+            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, {false}));
             CHECK(nullptr == check, );
             GTWidget::click(os, button);
         }
@@ -2571,17 +2571,17 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
     QWidget *circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
 
-    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
 
     // 3. Press "Toggle circular views" button
 
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
-    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, GTGlobals::FindOptions(false));
+    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView1, "Unexpected circular view is opened!");
 
-    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
     // 4. Press "Toggle circular views" again
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
@@ -3907,7 +3907,7 @@ GUI_TEST_CLASS_DEFINITION(test_3629) {
     //    Expected state: there are no attached annotations.
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTThread::waitForMainThread();
-    QList<QTreeWidgetItem *> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", GTGlobals::FindOptions(false));
+    QList<QTreeWidgetItem *> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", {false});
     CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.count()));
 }
 
@@ -4959,7 +4959,7 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     // 7. Select all types of annotating
 
     QWidget *toolbar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, GTGlobals::FindOptions(false));
+    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, {false});
     if (toolbarExtButton != nullptr && toolbarExtButton->isVisible()) {
         GTWidget::click(os, toolbarExtButton);
     }

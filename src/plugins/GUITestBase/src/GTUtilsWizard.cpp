@@ -124,7 +124,7 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus &os, QMap<QString, QVar
                 ++iter;
             }
         }
-        nextButton = GTWidget::findButtonByText(os, "&Next >", wizard, GTGlobals::FindOptions(false));
+        nextButton = GTWidget::findButtonByText(os, "&Next >", wizard, {false});
         if (nextButton != nullptr && nextButton->isVisible()) {
             GTWidget::click(os, nextButton);
         }
@@ -176,7 +176,7 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus &os, const QString &par
     if (line != nullptr) {
         return QVariant(line->text());
     }
-    GT_FAIL(QString("unsupported widget class: %1").arg(w->metaObject()->className()), QVariant());
+    GT_FAIL(QString("unsupported widget class: %1").arg(w->metaObject()->className()), {});
 }
 #undef GT_METHOD_NAME
 
@@ -208,7 +208,7 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value
         GTLineEdit::setText(os, line, value.toString());
         return;
     }
-    GT_CHECK(false, QString("unsupported widget class: %1").arg(w->metaObject()->className()));
+    GT_FAIL(QString("unsupported widget class: %1").arg(w->metaObject()->className()), );
 }
 #undef GT_METHOD_NAME
 

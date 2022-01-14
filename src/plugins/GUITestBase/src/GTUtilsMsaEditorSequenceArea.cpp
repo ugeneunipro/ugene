@@ -134,9 +134,9 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
             GTMouseDriver::dragAndDrop(convertCoordinates(os, p1), convertCoordinates(os, p2));
             break;
         case GTGlobals::UseKeyBoard:
-            GT_CHECK(false, "Not implemented");
+            GT_FAIL("Not implemented", );
         default:
-            GT_CHECK(false, "An unknown method");
+            GT_FAIL("An unknown method", );
     }
 }
 #undef GT_METHOD_NAME

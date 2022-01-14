@@ -112,7 +112,7 @@ void ImportToDatabaseDialogFiller::commonScenario() {
                 cancel(action);
                 break;
             default:
-                GT_CHECK(false, "An unrecognized action");
+                GT_FAIL("An unrecognized action", );
         }
         CHECK_OP(os, );
         GTGlobals::sleep(200);

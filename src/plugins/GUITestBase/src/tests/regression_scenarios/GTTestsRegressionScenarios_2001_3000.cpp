@@ -1751,7 +1751,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
 
     //    4. Set the cursor to the 14 line (the "Mecopoda_elongata__Ishigaki__J" sequence), 45 base.
 
-    QWidget *documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, GTGlobals::FindOptions(false));
+    QWidget *documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, {false});
     if (documentTreeWidget != nullptr) {
         GTUtilsProjectTreeView::toggleView(os);
     }
@@ -2594,7 +2594,7 @@ GUI_TEST_CLASS_DEFINITION(test_2431) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence", GTGlobals::FindOptions(false));
+    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence", {false});
     CHECK_SET_ERR(readSeq == nullptr, "Item didn't deleted");
 }
 
@@ -3522,7 +3522,7 @@ GUI_TEST_CLASS_DEFINITION(test_2612) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // Expected state: there is no annotation in sequence view.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false)) == nullptr, "Annotations document not deleted");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", {false}) == nullptr, "Annotations document not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2619) {
@@ -4134,7 +4134,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737_1) {
 
     // 2. Delete all annotations in random order;
     QTreeWidgetItem *annotation = nullptr;
-    while (nullptr != (annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, GTGlobals::FindOptions(false)))) {
+    while (nullptr != (annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, {false}))) {
         uiLog.trace("annotation text is: " + annotation->text(0));
         GTUtilsAnnotationsTreeView::deleteItem(os, annotation);
     }
@@ -4638,7 +4638,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 
     // 4) Choose some annotation by left mouse button on the upper sequence view
     // Expected state: horisontal or vertical selection is shown on DotPlot
-    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", GTGlobals::FindOptions(false));
+    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", {false});
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, geneItems.at(1)));
     GTMouseDriver::click();
 
@@ -4943,7 +4943,7 @@ GUI_TEST_CLASS_DEFINITION(test_2907) {
 
     // 2. In annotations tree view go to element Auto - annotations->enzyme->EcoRI(0, 1)->EcoRI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
+    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -5085,7 +5085,7 @@ GUI_TEST_CLASS_DEFINITION(test_2923) {
     GTUtilsMdi::activeWindow(os);
 
     GTKeyboardDriver::keyClick('w', Qt::ControlModifier);
-    QWidget *mdi = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
+    QWidget *mdi = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(nullptr == mdi, "Sequence view is not closed");
 }
 

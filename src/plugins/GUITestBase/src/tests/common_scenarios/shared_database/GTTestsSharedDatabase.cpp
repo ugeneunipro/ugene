@@ -597,7 +597,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     //           3) There are no errors in the log.
     //           4) The "Edit" button is enabled.
     GTLogTracer lt;
-    if (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
+    if (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::click(os, GTGlobals::Close);
     }
     QString conName = "cm_test_0013: new shared database";
@@ -2342,9 +2342,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, GTGlobals::FindOptions(false));
+    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == seqView, "Sequence view is not closed");
-    QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, GTGlobals::FindOptions(false));
+    QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
     CHECK_SET_ERR(nullptr == msaView, "MSA Editor is not closed");
 
     const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");

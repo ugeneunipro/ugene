@@ -1768,7 +1768,7 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "pattern1");
-    QTreeWidgetItem *item2 = GTUtilsAnnotationsTreeView::findItem(os, "pat", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *item2 = GTUtilsAnnotationsTreeView::findItem(os, "pat", {false});
     CHECK_SET_ERR(item1 != nullptr, "item1 not found!");
     CHECK_SET_ERR(item2 == nullptr, "item2 found!");
 
@@ -2383,7 +2383,7 @@ GUI_TEST_CLASS_DEFINITION(test_4272) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *mainTb = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", mainTb, GTGlobals::FindOptions(false));
+    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", mainTb, {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -2398,7 +2398,7 @@ GUI_TEST_CLASS_DEFINITION(test_4272) {
     GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: no annotations are displayed
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 837)", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 837)", {false});
     CHECK_SET_ERR(item == nullptr, "orfs are unexpectidly shown");
 }
 
@@ -5158,7 +5158,7 @@ GUI_TEST_CLASS_DEFINITION(test_4803_1) {
     // bug state : tab is colsed, but tree view is empty, and tree settings on options panel still present.Any change of tree settings causes crash
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Close tab"));
     GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
-    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab", nullptr, GTGlobals::FindOptions(false)), "Msa editor tree tab widget is not closed");
+    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_2) {
@@ -5211,7 +5211,7 @@ GUI_TEST_CLASS_DEFINITION(test_4803_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Close tab"));
     GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 
-    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab", nullptr, GTGlobals::FindOptions(false)), "Msa editor tree tab widget is not closed");
+    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_4) {

@@ -75,7 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has closed.
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -110,7 +110,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 

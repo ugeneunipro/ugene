@@ -34,10 +34,13 @@ class HI_EXPORT GTRadioButton {
 public:
     // fails if the radioButton is NULL or can't click
     static void click(GUITestOpStatus &os, QRadioButton *radioButton);
-    static void click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent = NULL);
+    static void click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent = nullptr);
 
-    static QRadioButton *getRadioButtonByText(GUITestOpStatus &os, QString text, QWidget *parent = NULL);
-    static QList<QRadioButton *> getAllButtonsByText(GUITestOpStatus &os, const QString& text, QWidget *parent = nullptr);
+    static QRadioButton *getRadioButtonByText(GUITestOpStatus &os, QString text, QWidget *parent = nullptr);
+    static QList<QRadioButton *> getAllButtonsByText(GUITestOpStatus &os, const QString &text, QWidget *parent = nullptr);
+
+    /** Checks if the radio button is checked. */
+    static void checkIsChecked(GUITestOpStatus &os, QRadioButton *button, bool expectedState = true);
 };
 
 }  // namespace HI

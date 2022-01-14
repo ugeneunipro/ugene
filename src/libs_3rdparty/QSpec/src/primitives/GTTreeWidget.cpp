@@ -84,7 +84,7 @@ void GTTreeWidget::checkItem(GUITestOpStatus &os, QTreeWidgetItem *item, int col
             break;
         }
         default:
-            GT_CHECK(false, "Method is not implemented");
+            GT_FAIL("Method is not implemented", );
     }
 }
 #undef GT_METHOD_NAME

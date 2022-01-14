@@ -140,7 +140,7 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
     // Use PanView or DetView but not the sequence widget itself: there are internal scrollbars in the SequenceWidget that may affect popup menu content.
-    QWidget *panOrDetView = getDetViewByNumber(os, number, GTGlobals::FindOptions(false));
+    QWidget *panOrDetView = getDetViewByNumber(os, number, {false});
     if (panOrDetView == nullptr) {
         panOrDetView = getPanViewByNumber(os, number);
     }
@@ -309,7 +309,7 @@ void GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "getPanOrDetView"
 QWidget *GTUtilsSequenceView::getPanOrDetView(HI::GUITestOpStatus &os, int number) {
-    QWidget *panOrDetView = getDetViewByNumber(os, number, GTGlobals::FindOptions(false));
+    QWidget *panOrDetView = getDetViewByNumber(os, number, {false});
     if (panOrDetView == nullptr) {
         panOrDetView = getPanViewByNumber(os, number);
     }

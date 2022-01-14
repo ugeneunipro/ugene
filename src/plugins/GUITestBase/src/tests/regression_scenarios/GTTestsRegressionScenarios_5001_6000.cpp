@@ -1837,7 +1837,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
     const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_2.csv");
     CHECK_SET_ERR(0 != fileSize, "Result file is empty");
 
-    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", GTGlobals::FindOptions(false));
+    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", {false});
     CHECK_SET_ERR(!newDocumentExists, "New document unexpectedly exists");
 }
 
