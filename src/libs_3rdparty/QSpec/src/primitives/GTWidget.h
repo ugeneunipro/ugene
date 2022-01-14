@@ -39,6 +39,7 @@
 #include <QSplitter>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QTreeView>
 #include <QWidget>
 
 #include "GTGlobals.h"
@@ -125,6 +126,9 @@ public:
 
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
     static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QTreeWidget type. Shortcut method. */
+    static QTreeView *findTreeView(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QTextEdit type. Shortcut method. */
     static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});

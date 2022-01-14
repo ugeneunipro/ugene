@@ -121,6 +121,10 @@ QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
 }
 
+QTreeView *GTWidget::findTreeView(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QTreeView *>(os, widgetName, parentWidget, options);
+}
+
 QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
 }
