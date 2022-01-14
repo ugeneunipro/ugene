@@ -547,14 +547,13 @@ void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, c
     // Find cell. TODO: scroll to parameter by mouse/keyboard?
     class MainThreadActionScroll : public CustomScenario {
     public:
-        MainThreadActionScroll(QAbstractItemView *itemView, const QModelIndex &index)
-            : CustomScenario(), itemView(itemView), index(index) {
+        MainThreadActionScroll(QAbstractItemView *_itemView, const QModelIndex &_index)
+            : itemView(_itemView), index(_index) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             itemView->scrollTo(index);
         }
-        QAbstractItemView *itemView;
+        QAbstractItemView *itemView = nullptr;
         QModelIndex index;
     };
     GTThread::runInMainThread(os, new MainThreadActionScroll(itemView, index));
