@@ -127,6 +127,7 @@ MsaExcludeListWidget *MsaExcludeListContext::findActiveExcludeList(MSAEditor *ms
 MsaExcludeListWidget *MsaExcludeListContext::openExcludeList(MSAEditor *msaEditor) {
     MsaExcludeListWidget *excludeList = findActiveExcludeList(msaEditor);
     CHECK(excludeList == nullptr, excludeList);
+    GCOUNTER(cvar, "MsaExcludeListWidget");
 
     auto mainSplitter = msaEditor->getUI()->getMainSplitter();
     excludeList = new MsaExcludeListWidget(mainSplitter, msaEditor, this);
@@ -369,6 +370,7 @@ void MsaExcludeListWidget::moveMsaSelectionToExcludeList() {
     QList<QRect> selectedRects = selection.getRectList();
     QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects);
     if (loadTask == nullptr) {
+        GCOUNTER(cvar, "MsaExcludeListWidget::moveFromMsa");
         moveMsaRowIndexesToExcludeList(selectedMsaRowIndexes);
         return;
     }
@@ -414,6 +416,7 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int> &msaR
 }
 
 void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
+    GCOUNTER(cvar, "MsaExcludeListWidget::moveToMsa");
     MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
     QList<DNASequence> sequences;
     QList<int> excludeListRowIdsMovedToMsa;
