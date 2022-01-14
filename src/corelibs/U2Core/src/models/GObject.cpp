@@ -388,6 +388,22 @@ void GObject::removeAllLocks() {
     modLocks.clear();
 }
 
+int GObject::getObjectVersion() const {
+    CHECK(entityRef.dbiRef.isValid(), -1);
+
+    U2OpStatus2Log os;
+    DbiConnection con(entityRef.dbiRef, os);
+    CHECK_OP(os, -1);
+    CHECK(con.dbi != nullptr, -1);
+
+    U2ObjectDbi *objectDbi = con.dbi->getObjectDbi();
+    CHECK(objectDbi != nullptr, -1);
+
+    int version = objectDbi->getObjectVersion(entityRef.entityId, os);
+    CHECK_OP(os, -1);
+    return version;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // mime
 const QString GObjectMimeData::MIME_TYPE("application/x-ugene-object-mime");
