@@ -77,6 +77,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
@@ -468,6 +469,69 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
                           GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
     GTMSAEditorStatusWidget::getColumnNumberString(os);
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7161) {
+    class ItemPopupChooserByPosition : public PopupChooser {
+    //for some reason PopupChooser don not work properly, so we choose item by position
+    public:
+        ItemPopupChooserByPosition(HI::GUITestOpStatus &os, int _pos)
+            : PopupChooser(os, QStringList()), pos(_pos) {
+        }
+
+        virtual void run() override {
+            GTMouseDriver::release();
+            for (int i = 0; i < pos; i++) {
+                GTKeyboardDriver::keyClick(Qt::Key_Down);
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+
+    private:
+        int pos;
+    };
+
+    class CustomFiller : public FindAnnotationCollocationsDialogFiller {
+    public:
+        CustomFiller(HI::GUITestOpStatus &os) : FindAnnotationCollocationsDialogFiller(os) {
+        }
+
+        virtual void run() override {
+            QToolButton *plusButton = getPlusButton();
+            CHECK_SET_ERR(plusButton, "First plus toolbutton is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
+            GTWidget::click(os, plusButton);
+            
+            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
+            GTWidget::click(os, plusButton);
+
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            
+            GTSpinBox::setValue(os, "regionSpin", 60000, GTGlobals::UseKeyBoard, dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    //1. Open data/samples/sars.gb
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Use context menu: {Analyze -> Find annotated regions}
+    //3. Click plus button, select "comment", repeat and select "cds"
+    //4. Set "Region size" to 60000
+    //5. Press "Search button"
+    //Expected state: no crash or assert on run
+    QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    CHECK_SET_ERR(toolbar, "Toolbar is NULL");
+    QWidget *farButton = GTToolbar::getWidgetForActionTooltip(os, toolbar, "Find annotated regions");
+    CHECK_SET_ERR(farButton, "Find annotated region button is NULL");
+
+    GTUtilsDialog::waitForDialog(os, new CustomFiller(os));
+    GTWidget::click(os, farButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7183) {
