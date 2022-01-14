@@ -47,6 +47,9 @@ public:
 
     static QMenu *findSubMenu(QMenu *m, const QString &name);
 
+    /** Inserts 'actionToInsert' right after 'insertionPointMarkerAction' in the menu. */
+    static void insertActionAfter(QMenu *menu, QAction *insertionPointMarkerAction, QAction *actionToInsert);
+
     static void updateActionToolTip(QAction *action);
     static void updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut);
 

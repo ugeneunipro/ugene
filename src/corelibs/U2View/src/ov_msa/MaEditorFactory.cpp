@@ -32,6 +32,7 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
+#include "exclude_list/MsaExcludeList.h"
 #include "ov_mca/McaEditor.h"
 
 namespace U2 {
@@ -178,8 +179,8 @@ OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(Document *doc) {
 }
 
 void MsaEditorFactory::registerMsaEditorViewFeatures() {
-    auto alignSequencesToAlignmentSupport = new AlignSequencesToAlignmentSupport(this);
-    alignSequencesToAlignmentSupport->init();
+    (new AlignSequencesToAlignmentSupport(this))->init();
+    (new MsaExcludeListContext(this))->init();
 }
 
 /************************************************************************/

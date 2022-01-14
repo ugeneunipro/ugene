@@ -193,6 +193,7 @@ void MaEditorWgt::initWidgets() {
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
+    mainSplitter = new QSplitter(Qt::Vertical, this);
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 

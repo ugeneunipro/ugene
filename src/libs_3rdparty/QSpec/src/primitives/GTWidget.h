@@ -35,6 +35,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
 #include <QMenu>
 #include <QPlainTextEdit>
 #include <QPushButton>
@@ -170,6 +171,9 @@ public:
 
     /** Calls findExactWidget with QTreeWidget type. Shortcut method. */
     static QTreeWidget *findTreeWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QListWidget type. Shortcut method. */
+    static QListWidget *findListWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QGraphicsView type. Shortcut method. */
     static QGraphicsView *findGraphicsView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
