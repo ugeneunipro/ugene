@@ -29,7 +29,6 @@
 #include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
-#include <QVBoxLayout>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
@@ -432,9 +431,9 @@ void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     if (!msaEditor->getSelection().isEmpty() && msaEditor->getRowOrderMode() == MaEditorRowOrderMode::Original) {
         insertionIndex = msaEditor->getSelection().getRectList().last().bottom() + 1;
     }
-    AddSequenceObjectsToAlignmentTask task(msaObject, sequences, insertionIndex, true);
-    task.run();  // TODO: extract as an utility method.
-    if (!task.hasError()) {
+    U2OpStatus2Log os;
+    AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(os, msaObject, sequences, insertionIndex, true);
+    if (!os.hasError()) {
         trackedUndoMsaVersions.insert(versionBefore, {false, excludeListRowIdsMovedToMsa});
         trackedRedoMsaVersions.insert(msaObject->getObjectVersion(), {false, excludeListRowIdsMovedToMsa});
     }
