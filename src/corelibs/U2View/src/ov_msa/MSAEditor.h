@@ -186,7 +186,6 @@ protected:
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
     void onObjectRenamed(GObject *obj, const QString &oldName) override;
-    bool onCloseEvent() override;
 
     void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;

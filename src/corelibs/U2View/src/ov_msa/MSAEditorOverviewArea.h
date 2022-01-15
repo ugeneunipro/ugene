@@ -40,8 +40,6 @@ public:
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
-    void cancelRendering() override;
-
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
     void setVisible(bool isVisible) override;

@@ -50,7 +50,7 @@ public slots:
     void sl_graphTypeActionTriggered(QAction *);
     void sl_graphOrientationActionTriggered(QAction *);
     void sl_colorActionTriggered();
-    void sl_caclulationMethodActionTriggered(QAction *);
+    void sl_calculationMethodActionTriggered(QAction *);
 
 private:
     void initSimpleOverviewAction();

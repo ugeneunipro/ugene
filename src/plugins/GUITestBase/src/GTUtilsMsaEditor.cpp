@@ -120,6 +120,14 @@ QWidget *GTUtilsMsaEditor::getOverviewArea(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getShowOverviewButton"
+QToolButton *GTUtilsMsaEditor::getShowOverviewButton(HI::GUITestOpStatus &os) {
+    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
+    CHECK_SET_ERR_RESULT(showOverviewButton != nullptr, "Overview button is not found", nullptr);
+    return showOverviewButton;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getGraphOverview"
 QWidget *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
     QWidget *overviewArea = getOverviewArea(os);

@@ -38,9 +38,9 @@ MaOverview::MaOverview(MaEditorWgt *ui)
     : QWidget(ui),
       editor(ui->getEditor()),
       ui(ui),
-      sequenceArea(ui->getSequenceArea()),
       stepX(0),
       stepY(0) {
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),

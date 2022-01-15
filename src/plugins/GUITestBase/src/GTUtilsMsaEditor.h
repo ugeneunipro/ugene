@@ -27,6 +27,7 @@
 
 #include <QColor>
 #include <QRect>
+#include <QToolButton>
 
 namespace U2 {
 
@@ -48,6 +49,9 @@ public:
 
     /** Checks that there are no MSA editor window opened (active or not active). */
     static void checkNoMsaEditorWindowIsOpened(HI::GUITestOpStatus &os);
+
+    /** Returns "Show overview" toolbar button. */
+    static QToolButton *getShowOverviewButton(HI::GUITestOpStatus &os);
 
     static QColor getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);

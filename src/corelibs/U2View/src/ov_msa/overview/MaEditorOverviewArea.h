@@ -39,8 +39,6 @@ class U2VIEW_EXPORT MaEditorOverviewArea : public QWidget {
 public:
     MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName);
 
-    virtual void cancelRendering();
-
 protected:
     void addOverview(QWidget *overviewWgt);
 

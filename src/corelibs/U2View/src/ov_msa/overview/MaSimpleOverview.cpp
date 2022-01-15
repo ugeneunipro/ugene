@@ -119,6 +119,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
 
     recalculateScale();
 
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();
