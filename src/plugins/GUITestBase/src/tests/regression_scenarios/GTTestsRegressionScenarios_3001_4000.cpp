@@ -572,12 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_3112) {
 
     auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not checked");
 
     // Modify the alignment.
     // Expected state: the overview task starts.
@@ -846,16 +841,6 @@ GUI_TEST_CLASS_DEFINITION(test_3140) {
     GTUtilsTaskTreeView::openView(os);
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // By default, the overview is hidden - the sequence is too large.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
 
     // Select the first symbol of the first line.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
@@ -3226,14 +3211,6 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     // Open a large alignment.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln", GTFileDialog::Open, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // By default, the overview is hidden - the sequence is too large.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
 
     auto taskInfoLabel = GTWidget::findLabel(os, "taskInfoLabel");
     while (!taskInfoLabel->text().contains("Render")) {
