@@ -34,31 +34,42 @@ namespace U2 {
 
 class U2MsaGap;
 
+/**
+ * Gap represention in MSA row sequence.
+ * Same as U2Region but uses 32 bit values (we do not support MSA sizes above 32 bits).
+ *
+ * 'startPos' in the gap is a position in the gapped sequence.
+ *
+ * TODO: create a templated U2Region<size> variant and make U2MsaGap to extend it.
+ */
 class U2CORE_EXPORT U2MsaGap {
 public:
     U2MsaGap() = default;
 
-    U2MsaGap(qint64 off, qint64 gap);
+    U2MsaGap(int startPos, int length);
 
-    qint64 endPos() const;  // not inclusive
+    int endPos() const;  // not inclusive
 
     void setEndPos(qint64 endPos);  // not inclusive
 
+    /** The gap is valid if it has a length >= 0 & startPos >=0. */
     bool isValid() const;
 
     bool operator==(const U2MsaGap &g) const;
 
+    /** Compares 2 gaps by 'startPos'. */
     static bool lessThan(const U2MsaGap &first, const U2MsaGap &second);
 
+    /** Returns another gap (region) that is intersection of this and 'anotherGap' regions. */
     U2MsaGap intersect(const U2MsaGap &anotherGap) const;
 
     operator U2Region() const;
 
-    /** Offset of the gap in sequence*/
-    qint64 offset = 0;
+    /** Offset of the gap in the gapped sequence*/
+    int startPos = 0;
 
     /** Number of gaps */
-    qint64 gap = 0;
+    int length = 0;
 };
 
 /**
@@ -84,7 +95,7 @@ public:
     qint64 gend;
 
     /** A gap model for the row */
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64 length;

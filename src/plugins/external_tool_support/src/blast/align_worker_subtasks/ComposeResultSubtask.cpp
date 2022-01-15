@@ -138,7 +138,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     MultipleChromatogramAlignment result("Mapped reads");
     result->setAlphabet(referenceSequenceObject->getAlphabet());
 
-    QList<U2MsaGap> referenceGaps = getReferenceGaps();
+    QVector<U2MsaGap> referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
     // initialize annotations table on reference
@@ -161,16 +161,16 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         DNAChromatogram readChromatogram = getReadChromatogram(i);
         CHECK_OP(stateInfo, );
 
-        result->addRow(subTask->getReadName(), readChromatogram, readSeq, QList<U2MsaGap>(), stateInfo);
+        result->addRow(subTask->getReadName(), readChromatogram, readSeq, QVector<U2MsaGap>(), stateInfo);
         CHECK_OP(stateInfo, );
 
         if (subTask->isComplement()) {
             result->getMcaRow(result->getNumRows() - 1)->reverseComplement();
         }
 
-        const QList<U2MsaGap> &gaps = subTask->getReadGaps();
+        const QVector<U2MsaGap> &gaps = subTask->getReadGaps();
         for (const U2MsaGap &gap : qAsConst(gaps)) {
-            result->insertGaps(rowsCounter, gap.offset, gap.gap, stateInfo);
+            result->insertGaps(rowsCounter, gap.startPos, gap.length, stateInfo);
             CHECK_OP(stateInfo, );
         }
 
@@ -233,26 +233,26 @@ void ComposeResultSubtask::enlargeReferenceByGaps() {
     }
 }
 
-U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const {
+U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QVector<U2MsaGap> &referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
-    if (!readRow->getGapModel().isEmpty()) {
-        U2MsaGap firstGap = readRow->getGapModel().first();
-        if (0 == firstGap.offset) {
-            region.startPos += firstGap.gap;
-            region.length -= firstGap.gap;
+    if (!readRow->getGaps().isEmpty()) {
+        U2MsaGap firstGap = readRow->getGaps().first();
+        if (0 == firstGap.startPos) {
+            region.startPos += firstGap.length;
+            region.length -= firstGap.length;
         }
     }
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
     foreach (const U2MsaGap &gap, referenceGapModel) {
-        qint64 endPos = gap.offset + gap.gap;
-        if (gap.offset < region.startPos) {
-            leftGap += gap.gap;
+        qint64 endPos = gap.startPos + gap.length;
+        if (gap.startPos < region.startPos) {
+            leftGap += gap.length;
         } else if (endPos <= region.endPos()) {
-            innerGap += gap.gap;
+            innerGap += gap.length;
         } else {
             break;
         }
@@ -313,12 +313,12 @@ DNAChromatogram ComposeResultSubtask::getReadChromatogram(int readNum) {
 
 namespace {
 bool compare(const U2MsaGap &gap1, const U2MsaGap &gap2) {
-    return gap1.offset < gap2.offset;
+    return gap1.startPos < gap2.startPos;
 }
 }  // namespace
 
-QList<U2MsaGap> ComposeResultSubtask::getReferenceGaps() {
-    QList<U2MsaGap> result;
+QVector<U2MsaGap> ComposeResultSubtask::getReferenceGaps() {
+    QVector<U2MsaGap> result;
 
     for (int i = 0; i < reads.size(); i++) {
         result << getShiftedGaps(i);
@@ -328,16 +328,16 @@ QList<U2MsaGap> ComposeResultSubtask::getReferenceGaps() {
     return result;
 }
 
-QList<U2MsaGap> ComposeResultSubtask::getShiftedGaps(int rowNum) {
-    QList<U2MsaGap> result;
+QVector<U2MsaGap> ComposeResultSubtask::getShiftedGaps(int rowNum) {
+    QVector<U2MsaGap> result;
 
     BlastAndSwReadTask *subTask = getBlastSwTask(rowNum);
     CHECK_OP(stateInfo, result);
 
     qint64 wholeGap = 0;
     foreach (const U2MsaGap &gap, subTask->getReferenceGaps()) {
-        result << U2MsaGap(gap.offset - wholeGap, gap.gap);
-        wholeGap += gap.gap;
+        result << U2MsaGap(gap.startPos - wholeGap, gap.length);
+        wholeGap += gap.length;
     }
     return result;
 }
@@ -345,14 +345,14 @@ QList<U2MsaGap> ComposeResultSubtask::getShiftedGaps(int rowNum) {
 void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     CHECK_EXT(referenceSequenceObject != nullptr, setError(L10N::nullPointerError("Reference sequence")), );
 
-    QList<U2MsaGap> referenceGaps = getReferenceGaps();
+    QVector<U2MsaGap> referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
     DNASequence dnaSeq = referenceSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
     for (int i = referenceGaps.size() - 1; i >= 0; i--) {
         const U2MsaGap &gap = referenceGaps[i];
-        dnaSeq.seq.insert(gap.offset, QByteArray(gap.gap, U2Msa::GAP_CHAR));
+        dnaSeq.seq.insert(gap.startPos, QByteArray(gap.length, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
 
@@ -360,20 +360,20 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
-void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps) {
-    QList<U2MsaGap> ownGaps = getShiftedGaps(readNum);
+void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QVector<U2MsaGap> &gaps) {
+    QVector<U2MsaGap> ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 
     qint64 globalOffset = 0;
     for (const U2MsaGap &gap : qAsConst(gaps)) {
         if (ownGaps.contains(gap)) {  // Task takes gaps into account but don't insert them.
-            globalOffset += gap.gap;
+            globalOffset += gap.length;
             ownGaps.removeOne(gap);
             continue;
         }
-        alignment->insertGaps(rowNum, globalOffset + gap.offset, gap.gap, stateInfo);
+        alignment->insertGaps(rowNum, globalOffset + gap.startPos, gap.length, stateInfo);
         CHECK_OP(stateInfo, );
-        globalOffset += gap.gap;
+        globalOffset += gap.length;
     }
 }
 

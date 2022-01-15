@@ -38,7 +38,7 @@ public:
     const QList<U2Region> &getGappedRegions() const;
 
 private:
-    void addGaps(const QList<U2MsaGap> &gaps);
+    void addGaps(const QVector<U2MsaGap> &gaps);
 
     U2SequenceObject *const sequenceObject;
 

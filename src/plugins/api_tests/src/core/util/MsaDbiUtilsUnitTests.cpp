@@ -131,7 +131,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const QStringList &rowsData 
     QList<U2MsaRow> rows;
     for (int i = 0; i < rowCount; ++i) {
         QByteArray seqData;
-        QList<U2MsaGap> gapModel;
+        QVector<U2MsaGap> gapModel;
         MaDbiUtils::splitBytesToCharsAndGaps(rowsData[i].toLatin1(), seqData, gapModel);
 
         U2Sequence sequence;
@@ -178,7 +178,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(QList<U2MsaRow> &rows) {
     return msaRef;
 }
 
-void Utils::addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
+void Utils::addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
@@ -199,7 +199,7 @@ void Utils::addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, co
     dbi->getMsaDbi()->addRow(msaId, -1, row, os);
 }
 
-U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
+U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
@@ -231,19 +231,19 @@ U2EntityRef MsaDbiUtilsTestUtils::removeRegionTestAlignment(U2OpStatus &os) {
     U2Dbi *dbi = msaDbi->getRootDbi();
     SAFE_POINT(nullptr != dbi, "Root dbi is NULL", U2EntityRef());
 
-    Utils::addRow(dbi, msaId, "1", "TAAGACTTCTAA", QList<U2MsaGap>() << U2MsaGap(12, 2), os);
-    Utils::addRow(dbi, msaId, "2", "TAAGCTTACTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "3", "TTAGTTTATTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "4", "TCAGTCTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "5", "TCAGTTTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "6", "TTAGTCTACTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "7", "TCAGATTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "8", "TTAGATTGCTA", QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(12, 2), os);
-    Utils::addRow(dbi, msaId, "9", "TTAGATTATTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "10", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "11", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "12", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "13", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "1", "TAAGACTTCTAA", QVector<U2MsaGap>() << U2MsaGap(12, 2), os);
+    Utils::addRow(dbi, msaId, "2", "TAAGCTTACTA", QVector<U2MsaGap>() << U2MsaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "3", "TTAGTTTATTA", QVector<U2MsaGap>() << U2MsaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "4", "TCAGTCTATTA", QVector<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "5", "TCAGTTTATTA", QVector<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "6", "TTAGTCTACTA", QVector<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "7", "TCAGATTATTA", QVector<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "8", "TTAGATTGCTA", QVector<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(12, 2), os);
+    Utils::addRow(dbi, msaId, "9", "TTAGATTATTA", QVector<U2MsaGap>() << U2MsaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "10", "", QVector<U2MsaGap>() << U2MsaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "11", "", QVector<U2MsaGap>() << U2MsaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "12", "", QVector<U2MsaGap>() << U2MsaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "13", "", QVector<U2MsaGap>() << U2MsaGap(0, 14), os);
     CHECK_OP(os, U2EntityRef());
 
     return U2EntityRef(msaDbi->getRootDbi()->getDbiRef(), msaId);
@@ -1444,7 +1444,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_empty) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1503,7 +1503,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1565,7 +1565,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1627,7 +1627,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newName) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1690,7 +1690,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newAlphabet) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1752,7 +1752,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1832,7 +1832,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
         CHECK_EQUAL(expMaRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(expMaRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(expMaRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(expMaRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(expMaRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1895,7 +1895,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -1960,7 +1960,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);
@@ -2022,7 +2022,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
         CHECK_EQUAL(maRows[i]->getCoreStart(), rows[i].gstart, "row start");
         CHECK_EQUAL(maRows[i]->getUngappedLength(), rows[i].gend, "row end");
         CHECK_EQUAL(maRows[i]->getRowLengthWithoutTrailing(), rows[i].length, "row length");
-        CHECK_TRUE(maRows[i]->getGapModel() == rows[i].gaps, "row gaps");
+        CHECK_TRUE(maRows[i]->getGaps() == rows[i].gaps, "row gaps");
 
         // Verify sequence object
         U2Sequence seq = seqDbi->getSequenceObject(rows[i].sequenceId, os);

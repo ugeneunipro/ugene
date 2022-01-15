@@ -52,7 +52,7 @@ void ConvertMca2MsaTask::run() {
     }
 
     foreach (const MultipleChromatogramAlignmentRow &mcaRow, mcaObject->getMca()->getMcaRows()) {
-        msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGapModel(), stateInfo);
+        msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
     }
 }

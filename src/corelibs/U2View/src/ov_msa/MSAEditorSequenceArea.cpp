@@ -403,9 +403,9 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QMap<qint64, QList<U2MsaGap>> noGapModel;
+    QMap<qint64, QVector<U2MsaGap>> noGapModel;
     foreach (qint64 rowId, msa->getMultipleAlignment()->getRowsIds()) {
-        noGapModel[rowId] = QList<U2MsaGap>();
+        noGapModel[rowId] = QVector<U2MsaGap>();
     }
 
     msa->updateGapModel(os, noGapModel);
@@ -753,7 +753,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
 
         // Split the sequence into gaps and chars
         QByteArray seqBytes;
-        QList<U2MsaGap> gapModel;
+        QVector<U2MsaGap> gapModel;
         MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
         maObj->updateRow(os, maRowIndex, name, seqBytes, gapModel);

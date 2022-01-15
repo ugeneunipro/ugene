@@ -138,7 +138,7 @@ public:
      * Assumes that the row index is valid.
      * Can modify the overall alignment length (increase or decrease).
      */
-    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gapModel);
+    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gapModel);
     void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
 
     /** Converts all rows' sequences to upper case */
@@ -158,7 +158,7 @@ public:
      */
     MultipleChromatogramAlignment mid(int start, int len) const;
 
-    void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    void setRowGapModel(int rowNumber, const QVector<U2MsaGap> &gapModel);
 
     void setSequenceId(int rowIndex, const U2DataId &sequenceId);
 
@@ -172,7 +172,7 @@ public:
     void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes);
     void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes, int rowIndex);
     void addRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    void addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
     void addRow(const U2MsaRow &rowInDb, const McaRowMemoryData &mcaRowMemoryData, U2OpStatus &os);
 
     /**
@@ -225,7 +225,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleChromatogramAlignmentRow createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    MultipleChromatogramAlignmentRow createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     MultipleChromatogramAlignmentRow createRow(const MultipleChromatogramAlignmentRow &row);
 

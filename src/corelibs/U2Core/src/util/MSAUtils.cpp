@@ -523,7 +523,7 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QList<U2MsaGap>> &maGapModel, int length, int requiredGapsCount) {
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>> &maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
@@ -581,7 +581,7 @@ void MSAUtils::addRowsToMsa(U2EntityRef &msaObjectRef, QList<MultipleSequenceAli
         SAFE_POINT_OP(os, );
         msaDbi->addRow(msaObjectRef.entityId, -1, msaRow, os);
         SAFE_POINT_OP(os, );
-        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGapModel(), os);
+        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGaps(), os);
         SAFE_POINT_OP(os, );
 
         row->setRowId(msaRow.rowId);

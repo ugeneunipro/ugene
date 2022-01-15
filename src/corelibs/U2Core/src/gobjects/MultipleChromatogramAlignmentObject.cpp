@@ -138,14 +138,14 @@ void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<in
 }
 
 QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps() const {
-    QList<QList<U2MsaGap>> gapModel = getGapModel();
+    QList<QVector<U2MsaGap>> gapModel = getGapModel();
     gapModel.prepend(getReferenceGapModel());
     return MSAUtils::getColumnsWithGaps(gapModel, getLength());
 }
 
-QList<U2MsaGap> MultipleChromatogramAlignmentObject::getReferenceGapModel() const {
+QVector<U2MsaGap> MultipleChromatogramAlignmentObject::getReferenceGapModel() const {
     QByteArray unusedSequence;
-    QList<U2MsaGap> referenceGapModel;
+    QVector<U2MsaGap> referenceGapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(getReferenceObj()->getSequenceData(U2_REGION_MAX), unusedSequence, referenceGapModel);
     return referenceGapModel;
 }
@@ -282,10 +282,10 @@ void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, co
 int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
     int lengthWithoutGaps = getLength();
 
-    QList<U2MsaGap> refGapModel = getReferenceGapModel();
+    QVector<U2MsaGap> refGapModel = getReferenceGapModel();
     int gapLength = 0;
     foreach (const U2MsaGap gap, refGapModel) {
-        gapLength += gap.gap;
+        gapLength += gap.length;
     }
 
     return lengthWithoutGaps + gapLength;

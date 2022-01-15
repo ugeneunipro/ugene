@@ -199,10 +199,10 @@ Task::ReportResult KalignGObjectTask::report() {
         return ReportResult_Finished;
     }
 
-    QMap<qint64, QList<U2MsaGap>> rowsGapModel;
+    QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
     for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
         qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-        const QList<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGapModel();
+        const QVector<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGaps();
         rowsGapModel.insert(rowId, newGapModel);
     }
 

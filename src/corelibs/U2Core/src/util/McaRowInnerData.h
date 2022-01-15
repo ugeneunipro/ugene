@@ -34,7 +34,7 @@ public:
     McaRowMemoryData();
 
     DNAChromatogram chromatogram;
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     DNASequence sequence;
     qint64 rowLength;
     QVariantMap additionalInfo;
@@ -46,7 +46,7 @@ public:
 
     U2Chromatogram chromatogram;
     U2Sequence sequence;
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     qint64 rowLength;
     QVariantMap additionalInfo;
 };

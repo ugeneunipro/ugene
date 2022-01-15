@@ -35,7 +35,7 @@ class U2SequenceDbi;
 
 class Utils {
 public:
-    static void addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static void addRow(U2Dbi *dbi, const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 };
 
 class MsaDbiUtilsTestUtils {
@@ -63,7 +63,7 @@ private:
     static U2SequenceDbi *sequenceDbi;
 
 private:
-    static U2MsaRow addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static U2MsaRow addRow(const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 };
 
 /**
