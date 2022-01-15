@@ -89,7 +89,7 @@ bool TrimmomaticStep::validate() const {
 }
 
 TrimmomaticStepSettingsWidget *TrimmomaticStep::getSettingsWidget() const {
-    if (nullptr == settingsWidget) {
+    if (settingsWidget == nullptr) {
         settingsWidget = createWidget();
         settingsWidget->setState(widgetState);
         settingsWidget->setVisible(false);

@@ -69,7 +69,7 @@ void ScriptEditorDialogFiller::commonScenario() {
     if (checkSyntax) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, checkSyntaxResult));
         GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
-        GTUtilsDialog::waitAllFinished(os);
+        GTUtilsDialog::checkNoActiveWaiters(os);
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));

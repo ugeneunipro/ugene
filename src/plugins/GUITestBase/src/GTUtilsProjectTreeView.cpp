@@ -61,7 +61,7 @@ void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
     QWidget *documentTreeWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, GTGlobals::FindOptions(false));
+        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
         if (documentTreeWidget == nullptr) {
             break;
         }
@@ -76,7 +76,7 @@ void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMet
     QWidget *documentTreeWidget = nullptr;
     for (int time = 0; time < 3000 && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, GTGlobals::FindOptions(false));
+        documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
     }
     if (documentTreeWidget == nullptr) {
         toggleView(os, method);
@@ -192,14 +192,13 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
 
     class MainThreadActionExpand : public CustomScenario {
     public:
-        MainThreadActionExpand(QTreeView *treeView, const QModelIndex &index)
-            : CustomScenario(), treeView(treeView), index(index) {
+        MainThreadActionExpand(QTreeView *_treeView, const QModelIndex &_index)
+            : treeView(_treeView), index(_index) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             treeView->setExpanded(index, true);
         }
-        QTreeView *treeView;
+        QTreeView *treeView = nullptr;
         QModelIndex index;
     };
 
@@ -525,7 +524,7 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &i
 
 #define GT_METHOD_NAME "checkNoItem"
 void GTUtilsProjectTreeView::checkNoItem(HI::GUITestOpStatus &os, const QString &itemName) {
-    bool isFound = checkItem(os, itemName, GTGlobals::FindOptions(false));
+    bool isFound = checkItem(os, itemName, {false});
     GT_CHECK(!isFound, "Unexpected item was found in the project: " + itemName);
 }
 #undef GT_METHOD_NAME

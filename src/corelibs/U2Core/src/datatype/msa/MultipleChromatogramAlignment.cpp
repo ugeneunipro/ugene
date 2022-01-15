@@ -300,7 +300,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
     return MultipleChromatogramAlignmentRow(row, chromatogram, newSequence, newGapsModel, this);
 }
 
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os) {
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
     QString errorDescr = "Failed to create a multiple alignment row";
     if (-1 != sequence.constSequence().indexOf(U2Msa::GAP_CHAR)) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -345,7 +345,7 @@ void MultipleChromatogramAlignmentData::addRow(const U2MsaRow &rowInDb, const DN
     addRowPrivate(newRow, rowInDb.length, -1);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os) {
+void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
     U2MsaRow row;
     MultipleChromatogramAlignmentRow newRow = createRow(row, chromatogram, sequence, gaps, os);
     CHECK_OP(os, );
@@ -488,7 +488,7 @@ void MultipleChromatogramAlignmentData::replaceChars(int row, char origChar, cha
     getMcaRow(row)->replaceChars(origChar, resultChar, os);
 }
 
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel) {
+void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getNumRows(),
                QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::setRowContent: "
                        "the number of rows is '%2'")

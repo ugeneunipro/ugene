@@ -674,13 +674,13 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="261"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="338"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="335"/>
         <source>Smith-Waterman pairwise alignment: no results</source>
         <translation>Парное выравнивание Smith-Waterman: нет результатов</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="268"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="343"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="340"/>
         <source>Sequences aren&apos;t stored in the source msa dbi</source>
         <translation>Последовательности не хранятся в источнике msa dbi</translation>
     </message>
@@ -692,27 +692,27 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="290"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="292"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="352"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="354"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="349"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="351"/>
         <source>Failed to get the sequence object.</source>
         <translation>Неудачная попытка получения объекта последовательности.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="306"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="308"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="368"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="365"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="369"/>
         <source>Failed to get the sequence data.</source>
         <translation>Неудачная попытка получения данных последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="381"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="378"/>
         <source>Failed to get msa from dbi</source>
         <translation>Неудачная попытка получения msa из dbi</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="404"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="406"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="401"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="403"/>
         <source>Failed to update row gap model</source>
         <translation>Неудачная попытка обновить модель пробелов строк</translation>
     </message>

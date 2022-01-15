@@ -523,7 +523,7 @@ bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa,
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount) {
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QList<U2MsaGap>> &maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;

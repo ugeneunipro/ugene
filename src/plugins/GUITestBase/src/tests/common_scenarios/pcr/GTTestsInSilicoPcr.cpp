@@ -171,8 +171,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the product table is shown with one result [9..1196].
-    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
-    CHECK_SET_ERR("9 - 1196" == GTUtilsPcr::getResultRegion(os, 0), "Wrong result");
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
+    CHECK_SET_ERR(GTUtilsPcr::getResultRegion(os, 0) == "9 - 1196", "Wrong result");
 
     // 5. Click the result.
     GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));
@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 1");
     CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
 
     // 8. Choose "All annotations" annotation extraction.
@@ -476,8 +476,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 2");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", {false}) == nullptr, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

@@ -56,6 +56,7 @@
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
+#include "tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
@@ -276,7 +277,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_0339);
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1551);
     REGISTER_TEST_MAC(GUITest_regression_scenarios::test_1680);
-    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_6238);
 
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
@@ -1531,6 +1531,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_4);
     REGISTER_TEST(GUITest_regression_scenarios::test_6236);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6238);
     REGISTER_TEST(GUITest_regression_scenarios::test_6240);
     REGISTER_TEST(GUITest_regression_scenarios::test_6243);
     REGISTER_TEST(GUITest_regression_scenarios::test_6247);
@@ -2380,6 +2381,17 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0094);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0095);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0096);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/exclude_list
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_msa_exclude_list::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment

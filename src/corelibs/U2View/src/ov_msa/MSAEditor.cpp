@@ -25,6 +25,7 @@
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>

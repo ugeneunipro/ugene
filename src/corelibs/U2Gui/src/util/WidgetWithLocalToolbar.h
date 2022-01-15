@@ -44,10 +44,11 @@ public:
 
 protected:
     void setLocalToolbarVisible(bool visible);
-    QWidget *contentWidget;
+
+    QWidget *contentWidget = nullptr;
 
 private:
-    LocalToolbar *toolBar;
+    LocalToolbar *toolBar = nullptr;
 };
 
 }  // namespace U2

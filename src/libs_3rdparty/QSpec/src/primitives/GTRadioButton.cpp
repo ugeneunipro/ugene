@@ -53,7 +53,7 @@ void GTRadioButton::click(GUITestOpStatus &os, QRadioButton *radioButton) {
 
 #define GT_METHOD_NAME "click"
 void GTRadioButton::click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent) {
-    click(os, GTWidget::findExactWidget<QRadioButton *>(os, radioButtonName, parent));
+    click(os, GTWidget::findRadioButton(os, radioButtonName, parent));
 }
 #undef GT_METHOD_NAME
 
@@ -72,6 +72,18 @@ QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, co
     return GTWidget::findChildren<QRadioButton>(os,
                                                 parent,
                                                 [text](auto button) { return button->text() == text; });
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkIsChecked"
+void GTRadioButton::checkIsChecked(GUITestOpStatus &os, QRadioButton *button, bool expectedState) {
+    GT_CHECK(button != nullptr, "QRadioButton == NULL");
+    bool state = button->isChecked();
+    for (int time = 0; time <= GT_OP_WAIT_MILLIS && state != expectedState; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        state = button->isChecked();
+    }
+    GT_CHECK(state == expectedState, QString("Incorrect radio button state: expected '%1', got '%2'").arg(expectedState).arg(state));
 }
 #undef GT_METHOD_NAME
 

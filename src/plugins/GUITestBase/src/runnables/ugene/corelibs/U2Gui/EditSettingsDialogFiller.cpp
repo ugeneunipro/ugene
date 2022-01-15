@@ -57,7 +57,7 @@ void EditSettingsDialogFiller::commonScenario() {
             radioButtonName = "split_separateRadioButton";
             break;
         default:
-            GT_CHECK(false, "An unexpected AnnotationPolicy");
+            GT_FAIL("An unexpected AnnotationPolicy", );
     }
 
     GTRadioButton::click(os, radioButtonName, dialog);

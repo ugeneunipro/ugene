@@ -38,17 +38,16 @@ namespace Workflow {
 
 class BlastAndSwReadTask;
 
-class ComposeResultSubTask : public Task {
+class ComposeResultSubtask : public Task {
     Q_OBJECT
 public:
-    ComposeResultSubTask(const SharedDbiDataHandler &reference,
+    ComposeResultSubtask(const SharedDbiDataHandler &reference,
                          const QList<SharedDbiDataHandler> &reads,
                          const QList<BlastAndSwReadTask *> subTasks,
                          DbiDataStorage *storage);
-    ~ComposeResultSubTask();
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     const SharedDbiDataHandler &getAnnotations() const;
 
@@ -59,26 +58,26 @@ private:
     BlastAndSwReadTask *getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNAChromatogram getReadChromatogram(int readNum);
-    U2MsaRowGapModel getReferenceGaps();
-    U2MsaRowGapModel getShiftedGaps(int rowNum);
+    QList<U2MsaGap> getReferenceGaps();
+    QList<U2MsaGap> getShiftedGaps(int rowNum);
     void insertShiftedGapsIntoReference();
-    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
+    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps);
     void createAlignmentAndAnnotations();
     void enlargeReferenceByGaps();
-    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
+    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
     const QList<BlastAndSwReadTask *> subTasks;
-    DbiDataStorage *storage;
-    MultipleChromatogramAlignmentObject *mcaObject;
-    U2SequenceObject *referenceSequenceObject;
-    SharedDbiDataHandler annotations;
+    DbiDataStorage *storage = nullptr;
+    MultipleChromatogramAlignmentObject *mcaObject = nullptr;
+    U2SequenceObject *referenceSequenceObject = nullptr;
+    SharedDbiDataHandler annotationsDataHandler;
 };
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_COMPOSE_RESULT_SUBTASK_H_
+#endif  // _U2_COMPOSE_RESULT_SUBTASK_H_

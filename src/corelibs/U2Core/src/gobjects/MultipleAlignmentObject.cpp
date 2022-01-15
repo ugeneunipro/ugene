@@ -202,7 +202,7 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
 }
 
-U2MsaListGapModel MultipleAlignmentObject::getGapModel() const {
+QList<QList<U2MsaGap>> MultipleAlignmentObject::getGapModel() const {
     return getMultipleAlignment()->getGapModel();
 }
 

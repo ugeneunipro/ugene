@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
-#include <QProcess>
 #include <QPushButton>
 #include <QTimer>
 
@@ -32,8 +31,10 @@
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
 #include "utils/GTThread.h"
-#include "utils/GTUtilsMac.h"
 
+#ifdef Q_OS_DARWIN
+#    include "utils/GTUtilsMac.h"
+#endif
 namespace HI {
 
 #define GT_CLASS_NAME "GUIDialogWaiter"
@@ -128,7 +129,7 @@ void GUIDialogWaiter::checkDialog() {
                 qDebug("-------------------------");
 
                 finishWaiting();
-                GT_CHECK(false, "TIMEOUT, waiterId = " + QString::number(waiterId));
+                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId), );
             }
         }
 
@@ -166,14 +167,14 @@ void HangChecker::sl_check() {
 
             if (!found) {
                 if (mightHung) {
-                    GT_CHECK(false, "dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up");
+                    GT_FAIL("dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up", );
                 }
             }
 
             if (!found) {
                 if (!mightHung) {
                     mightHung = true;
-                    qWarning("GT_DEBUG_MESSAGE dialog mignt hang up");
+                    qWarning("GT_DEBUG_MESSAGE dialog might hang up");
                 }
             }
 
@@ -296,8 +297,8 @@ void GTUtilsDialog::waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable 
     waitForDialog(os, r, settings);
 }
 
-#define GT_METHOD_NAME "waitAllFinished"
-void GTUtilsDialog::waitAllFinished(GUITestOpStatus &os, int timeoutMillis) {
+#define GT_METHOD_NAME "checkNoActiveWaiters"
+void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis) {
     bool isAllFinished = pool.isEmpty();
     for (int time = 0; time < timeoutMillis && !isAllFinished; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -324,42 +325,36 @@ void GTUtilsDialog::waitAllFinished(GUITestOpStatus &os, int timeoutMillis) {
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsDialog::removeRunnable(Runnable const *const runnable) {
-    foreach (GUIDialogWaiter *waiter, pool) {
+void GTUtilsDialog::removeRunnable(Runnable *runnable) {
+    for (GUIDialogWaiter *waiter : qAsConst(pool)) {
         if (waiter->getRunnable() == runnable) {
             pool.removeOne(waiter);
             delete waiter;
+            return;
         }
     }
 }
 
-#define GT_METHOD_NAME "checkAllFinished"
-void GTUtilsDialog::checkAllFinished(GUITestOpStatus &os) {
-    Q_UNUSED(os);
-
-    foreach (GUIDialogWaiter *waiter, pool) {
-        GT_CHECK(waiter != nullptr, "GUIDialogWaiter is null");
-        switch (waiter->getSettings().destiny) {
-            case GUIDialogWaiter::MustBeRun:
-                GT_CHECK(waiter->isFinished, QString("\"%1\" not run but should be").arg((waiter->getSettings().objectName)));
-                break;
-            case GUIDialogWaiter::MustNotBeRun:
-                GT_CHECK(!waiter->isFinished, QString("\"%1\" had run but should not").arg((waiter->getSettings().objectName)));
-                break;
-            case GUIDialogWaiter::NoMatter:
-                break;
-        }
-    }
-}
-#undef GT_METHOD_NAME
-
+#define GT_METHOD_NAME "cleanup"
 void GTUtilsDialog::cleanup(GUITestOpStatus &os, CleanupSettings s) {
-    foreach (GUIDialogWaiter *waiter, pool) {
+    for (GUIDialogWaiter *waiter : qAsConst(pool)) {
         waiter->stopTimer();
     }
 
     if (s == FailOnUnfinished) {
-        checkAllFinished(os);
+        for (GUIDialogWaiter *waiter : qAsConst(pool)) {
+            GT_CHECK(waiter != nullptr, "GUIDialogWaiter is null");
+            switch (waiter->getSettings().destiny) {
+                case GUIDialogWaiter::MustBeRun:
+                    GT_CHECK(waiter->isFinished, QString("\"%1\" not run but should be").arg((waiter->getSettings().objectName)));
+                    break;
+                case GUIDialogWaiter::MustNotBeRun:
+                    GT_CHECK(!waiter->isFinished, QString("\"%1\" had run but should not").arg((waiter->getSettings().objectName)));
+                    break;
+                case GUIDialogWaiter::NoMatter:
+                    break;
+            }
+        }
     }
 
     stopHangChecking();
@@ -367,6 +362,7 @@ void GTUtilsDialog::cleanup(GUITestOpStatus &os, CleanupSettings s) {
     qDeleteAll(pool);
     pool.clear();
 }
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -479,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0567) {
     GTUtilsDialog::waitForDialog(os, new Test_0567(os));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0574) {
@@ -860,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem, GTUtilsSequenceView::getPanOrDetView(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
                                                               << "pair 10  (0, 2)"
@@ -1613,7 +1613,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "somename"));
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     class ApplyScenario : public CustomScenario {
     public:
@@ -1898,7 +1898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTThread::waitForMainThread();
 
-    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", nullptr, GTGlobals::FindOptions(false));
+    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", nullptr, {false});
     CHECK_SET_ERR(nullptr == restrictionMapTreeWidget, "Restriction map widget is visible unexpectedly");
 }
 
@@ -2791,7 +2791,7 @@ GUI_TEST_CLASS_DEFINITION(test_0940) {
     GTFileDialog::openFile(os, sandBoxDir, "test_0940.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_0940.aln", GTUtilsMSAEditorSequenceArea::getNameList(os)));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }

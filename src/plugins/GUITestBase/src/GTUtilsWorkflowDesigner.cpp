@@ -856,7 +856,7 @@ void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus &os, WorkflowProcessIt
         }
     }
 
-    GT_CHECK(false, "no suitable ports to connect");
+    GT_FAIL("no suitable ports to connect", );
 }
 #undef GT_METHOD_NAME
 

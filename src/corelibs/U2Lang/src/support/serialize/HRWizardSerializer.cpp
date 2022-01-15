@@ -271,6 +271,7 @@ void WizardWidgetParser::visit(WidgetsArea *wa) {
 
     foreach (const StrStrPair &pair, pairs.blockPairsList) {
         WizardWidgetParser wParser(pair.first, pair.second, actorMap, vars, os);
+        uiLog.info("Create: " + pair.first + "/" + pair.second);
         QScopedPointer<WizardWidget> w(createWidget(pair.first));
         CHECK_OP(os, );
         w->accept(&wParser);

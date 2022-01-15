@@ -434,12 +434,12 @@
         <translation>Внешняя ошибка UGENE. Пожалуйста попробуйте снова</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="526"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="527"/>
         <source>Wrong label size value: %1</source>
         <translation>Wrong label size value: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="567"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="568"/>
         <source>The variable is already defined: %1</source>
         <translation>The variable is already defined: %1</translation>
     </message>
@@ -1975,68 +1975,68 @@
         <translation>Double definition of next id in the page with id: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="304"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="305"/>
         <source>Element id is undefined in the element selector</source>
         <translation>Element id is undefined in the element selector</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="309"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="310"/>
         <source>Undefined actor id: %1</source>
         <translation>Undefined actor id: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="319"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="320"/>
         <source>Unknown block name in element selector definition: %1</source>
         <translation>Unknown block name in element selector definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="428"/>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="432"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="429"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="433"/>
         <source>Not enough attributes for Tophat samples widget</source>
         <translation>Not enough attributes for Tophat samples widget</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="442"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="443"/>
         <source>Not enough attributes for the label widget</source>
         <translation>Not enough attributes for the label widget</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="458"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="459"/>
         <source>Id is undefined in some selector value definition</source>
         <translation>Id is undefined in some selector value definition</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="463"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="464"/>
         <source>Prototype is undefined in the selector value definition: %1</source>
         <translation>Prototype is undefined in the selector value definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="471"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="472"/>
         <source>The same prototype could not be mapped: %1</source>
         <translation>The same prototype could not be mapped: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="477"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="478"/>
         <source>Unknown block name in selector value definition: %1</source>
         <translation>Unknown block name in selector value definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="490"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="491"/>
         <source>Undefined source port id for some port mapping</source>
         <translation>Undefined source port id for some port mapping</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="494"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="495"/>
         <source>Undefined destination port id for some port mapping</source>
         <translation>Undefined destination port id for some port mapping</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="502"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="503"/>
         <source>Unknown block name in port mapping definition: %1</source>
         <translation>Unknown block name in port mapping definition: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="576"/>
+        <location filename="../src/support/serialize/HRWizardSerializer.cpp" line="577"/>
         <source>Unknown widget name: %1</source>
         <translation>Unknown widget name: %1</translation>
     </message>

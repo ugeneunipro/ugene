@@ -23,10 +23,8 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 
-#include <QApplication>
 #include <QClipboard>
 #include <QMainWindow>
 
@@ -147,28 +145,28 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
+    auto toolbar = GTWidget::findToolBar(os, "views_tool_bar_se2");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
+    auto sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
 
-    toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
+    toolbar = GTWidget::findToolBar(os, "views_tool_bar_se1");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
+    auto sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
     CHECK_SET_ERR(sequenceWidget1 == nullptr, "sequenceWidget is present");
 
-    QWidget *activeMDIWindow = GTUtilsMdi::activeWindow(os, false);
+    auto activeMDIWindow = GTUtilsMdi::activeWindow(os, false);
     CHECK_SET_ERR(activeMDIWindow == nullptr, "there is active MDI window");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "se2"));
     GTMouseDriver::doubleClick();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
+    toolbar = GTWidget::findToolBar(os, "views_tool_bar_se2");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -340,7 +338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide all. CHANGES: using 'Toggle views' insetead 'Toggle view'
+    // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide all. CHANGES: using 'Toggle views' instead 'Toggle view'
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
     GTWidget::click(os, toggleViewButton);
@@ -355,7 +353,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     CHECK_SET_ERR(!overViewSe2->isVisible() && !detailsViewSe2->isVisible() && !zoomViewSe2->isVisible(), "there are widgets not hidden widgets of ADV_single_sequence_widget");
     CHECK_SET_ERR(toolBarSe2->isVisible(), "toolbar is hidden");
 
-    // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show all. CHANGES: using 'Toggle views' insetead 'Toggle view'
+    // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show all. CHANGES: using 'Toggle views' instead 'Toggle view'
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -435,13 +433,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     CHECK_SET_ERR(!detailsViewSe2->isVisible(), "details view isn't hidden");
 
-    // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show details. CHANGES: using 'Toggle views' instead 'Toggle view', clicking twice to avoid missunderstanding
+    // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show details. CHANGES: using 'Toggle views' instead 'Toggle view', clicking twice to avoid misunderstanding
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // checking hiding all detviews
+    // checking hiding all det.views
     detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     QWidget *detailsViewSe1 = GTWidget::findWidget(os, "det_view_se1");
     CHECK_SET_ERR(!detailsViewSe2->isVisible() && !detailsViewSe1->isVisible(), "details view isn't hidden");
@@ -487,7 +485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_4) {
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: hiding all views for all sequences, instead hidding only deatails
+    // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: hiding all views for all sequences, instead hiding only details
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
     GTWidget::click(os, toggleViewButton);
@@ -518,7 +516,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: overview for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     CHECK_SET_ERR(!overViewSe2->isVisible(), "overview is visible")
 
@@ -526,7 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been appeared
+    // Expected state: overview for se2 sequence has been appeared
     CHECK_SET_ERR(overViewSe2->isVisible(), "overview is hidden")
 }
 
@@ -542,7 +540,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: overview for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     CHECK_SET_ERR(!overViewSe2->isVisible(), "overview is visible");
 
@@ -551,7 +549,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been appeared
+    // Expected state: overview for se2 sequence has been appeared
     CHECK_SET_ERR(overViewSe2->isVisible(), "overview is hidden")
 }
 
@@ -566,7 +564,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: overview for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     CHECK_SET_ERR(!overViewSe2->isVisible(), "overview is visible");
 
@@ -580,7 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been appeared
+    // Expected state: overview for se2 sequence has been appeared
     CHECK_SET_ERR(overViewSe2->isVisible(), "overview is hidden")
 }
 
@@ -595,7 +593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: overview for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se1");
     CHECK_SET_ERR(!overViewSe2->isVisible(), "overview is visible");
 
@@ -603,7 +601,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been appeared
+    // Expected state: overview for se2 sequence has been appeared
     CHECK_SET_ERR(overViewSe2->isVisible(), "overview is hidden")
 }
 
@@ -618,7 +616,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_4) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_all_views", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: overview for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     CHECK_SET_ERR(!overViewSe2->isVisible(), "overview is visible")
 
@@ -626,7 +624,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_4) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: over view for se2 sequence has been appeared
+    // Expected state: overview for se2 sequence has been appeared
     CHECK_SET_ERR(overViewSe2->isVisible(), "overview is hidden")
 }
 
@@ -645,9 +643,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: panoramical views for both sequences has been closed, all zoom buttons at sequence views becomes disabled
+    // Expected state: panoramic views for both sequences has been closed, all zoom buttons at sequence views becomes disabled
     CHECK_SET_ERR(!overViewSe1->isVisible() && !overViewSe2->isVisible(),
-                  "panoramical views for both sequences has not been closed");
+                  "panoramic views for both sequences has not been closed");
 
     // 3. Click on toolbar button Toggle views. Click menu item Show all overviews.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
@@ -657,9 +655,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // QWidget *_overViewSe1 = GTWidget::findWidget(os, "overview_se1");
     // QWidget *_overViewSe2 = GTWidget::findWidget(os, "overview_se2");
 
-    // Expected state: panoramical view for both sequences has been appeared
+    // Expected state: panoramic view for both sequences has been appeared
     CHECK_SET_ERR(overViewSe1->isVisible() && overViewSe2->isVisible(),
-                  "panoramical view for both sequences has not been shown");
+                  "panoramic view for both sequences has not been shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -680,8 +678,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: views for both sequences has been closed, but toolbars still present.
-    CHECK_SET_ERR(!detailsViewSe1->isVisible() && !detailsViewSe2->isVisible(), "panoramical view for both sequences has not been shown");
-    CHECK_SET_ERR(toolBarSe1->isVisible() && toolBarSe2->isVisible(), "panoramical view for both sequences has not been shown");
+    CHECK_SET_ERR(!detailsViewSe1->isVisible() && !detailsViewSe2->isVisible(), "panoramic view for both sequences has not been shown");
+    CHECK_SET_ERR(toolBarSe1->isVisible() && toolBarSe2->isVisible(), "panoramic view for both sequences has not been shown");
 
     // 3. Click on toolbar button Toggle views. Click menu item Show all details.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
@@ -690,7 +688,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     // Expected state: view for both sequences has been appeared
     CHECK_SET_ERR(detailsViewSe1->isVisible() && detailsViewSe2->isVisible(),
-                  "panoramical view for both sequences has not been shown");
+                  "panoramic view for both sequences has not been shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -715,7 +713,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: all views for both sequences has been closed, but toolbars still present.
-    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramical views for both sequences has not been closed");
+    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramic views for both sequences has not been closed");
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
     CHECK_SET_ERR(zoomViewSe1->isHidden() && zoomViewSe2->isHidden(), "zoom views for both sequences has not been closed");
     CHECK_SET_ERR(!toolBarSe1->isHidden() && !toolBarSe2->isHidden(), "toolbars view for both sequences has not been shown");
@@ -726,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: all views for both sequences has been appeared
-    CHECK_SET_ERR(!overViewSe1->isHidden() && !overViewSe2->isHidden(), "panoramical view for both sequences has not been shown");
+    CHECK_SET_ERR(!overViewSe1->isHidden() && !overViewSe2->isHidden(), "panoramic view for both sequences has not been shown");
     CHECK_SET_ERR(!detailsViewSe1->isHidden() && !detailsViewSe2->isHidden(), "details view for both sequences has not been shown");
     CHECK_SET_ERR(!zoomViewSe1->isHidden() && !zoomViewSe2->isHidden(), "zoom view for both sequences has not been shown");
 }
@@ -758,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: sequence overview show 20..50 sequence region, all zoom buttons at this toolbar becomes enabled
-    //  TODO: Expected state: sequence overview showh 20..50 sequence region
+    //  TODO: Expected state: sequence overview show 20..50 sequence region
     CHECK_SET_ERR(zoomInButton->isEnabled(), "Zoom In button is not enabled");
     CHECK_SET_ERR(zoomOutButton->isEnabled(), "Zoom Out button is not enabled");
 
@@ -767,9 +765,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: panoramical view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
+    // Expected state: panoramic view for se2 sequence has been closed, all zoom buttons at this toolbar becomes disabled
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
-    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramical view for se2 sequence has been not closed");
+    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramic view for se2 sequence has been not closed");
     CHECK_SET_ERR(!zoomInButton->isEnabled(), "Zoom In button is enabled");
     CHECK_SET_ERR(!zoomOutButton->isEnabled(), "Zoom Out button is enabled");
 
@@ -777,8 +775,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: panoramical view for se2 sequence has been appeared, all zoom buttons at this toolbar becomes enabled
-    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramical view for se2 sequence has been not appeared");
+    // Expected state: panoramic view for se2 sequence has been appeared, all zoom buttons at this toolbar becomes enabled
+    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramic view for se2 sequence has been not appeared");
     CHECK_SET_ERR(zoomInButton->isEnabled(), "Zoom In button is not enabled");
     CHECK_SET_ERR(zoomOutButton->isEnabled(), "Zoom Out button is not enabled");
 }
@@ -796,21 +794,21 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(overViewSe2->isHidden(), "panoramical view for se2 sequence has been not closed");
+    CHECK_SET_ERR(overViewSe2->isHidden(), "panoramic view for se2 sequence has been not closed");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramical views for both sequences has been not closed");
+    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramic views for both sequences has been not closed");
 
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_overview", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!overViewSe2->isHidden(), "panoramical view for se2 sequence has been not shown");
+    CHECK_SET_ERR(!overViewSe2->isHidden(), "panoramic view for se2 sequence has been not shown");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramical view for both sequences has been not closed");
+    CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramic view for both sequences has been not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -831,15 +829,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTWidget::click(os, zoomInButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *zoomViewSe1 = GTWidget::findWidget(os, "pan_view_se1");
-    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not appeared");
+    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not appeared");
 
     // 3. Close zoom view for seq1
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Zoom area (grey rectangle) has disappered from overview for seq1
-    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not closed");
+    // Expected state: Zoom area (grey rectangle) has disappeared from overview for seq1
+    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -865,12 +863,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTWidget::click(os, zoomInButton1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *zoomViewSe1 = GTWidget::findWidget(os, "pan_view_se1");
-    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not appeared");
+    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not appeared");
 
     GTWidget::click(os, zoomInButton2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
-    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramical view for se1 sequence has been not appeared");
+    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramic view for se1 sequence has been not appeared");
 
     // 3. Close zoom view for both. CHANGES: for both instead of seq1
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
@@ -881,9 +879,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Zoom area (grey rectangle) has disappered from overview for both. CHANGES: for both instead of seq1
-    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not closed");
-    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramical view for se2 sequence has been not closed");
+    // Expected state: Zoom area (grey rectangle) has disappeared from overview for both. CHANGES: for both instead of seq1
+    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not closed");
+    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramic view for se2 sequence has been not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -909,23 +907,23 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTWidget::click(os, zoomInButton1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *zoomViewSe1 = GTWidget::findWidget(os, "pan_view_se1");
-    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not appeared");
+    CHECK_SET_ERR(!zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not appeared");
 
     GTWidget::click(os, zoomInButton2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
-    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramical view for se1 sequence has been not appeared");
+    CHECK_SET_ERR(!zoomViewSe2->isHidden(), "panoramic view for se1 sequence has been not appeared");
 
-    // 3. Close zoom views by global Toogle View Button. CHANGES: for both instead of seq1 + global Toggle View Button instead of the seq1 and buttons
+    // 3. Close zoom views by global Toggle View Button. CHANGES: for both instead of seq1 + global Toggle View Button instead of the seq1 and buttons
 
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Zoom area (grey rectangle) has disappered from overview for both.
-    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramical view for se1 sequence has been not closed");
-    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramical view for se2 sequence has been not closed");
+    // Expected state: Zoom area (grey rectangle) has disappeared from overview for both.
+    CHECK_SET_ERR(zoomViewSe1->isHidden(), "panoramic view for se1 sequence has been not closed");
+    CHECK_SET_ERR(zoomViewSe2->isHidden(), "panoramic view for se2 sequence has been not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -945,7 +943,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappered from overview
+    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappeared from overview
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_1) {
@@ -967,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappered from overview
+    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappeared from overview
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_2) {
@@ -1001,7 +999,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe1->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappered from overview
+    // TODO: Expected state: position indicator(Yellow triangle) on overview has disappeared from overview
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
@@ -1022,7 +1020,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from zoom view
+    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from zoom view
 }
 GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
@@ -1044,7 +1042,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from zoom view
+    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from zoom view
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013_2) {
@@ -1077,7 +1075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe1->isHidden(), "details views for both sequences has not been closed");
 
-    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from zoom view
+    // TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from zoom view
 }
 GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
@@ -1096,7 +1094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //  3. Close detailed view
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
-    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from graph view
+    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from graph view
 }
 GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
@@ -1125,7 +1123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
-    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from graph view for both sequences
+    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from graph view for both sequences
 }
 GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     // 1. Use menu {File->Open}. Open file _common_data/scenarios/project/multiple.fa
@@ -1155,7 +1153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     //  3. Close detailed view. Changes: for 2 sequences
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
-    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappered from graph view for both sequences
+    //  TODO: Expected state: position indicator (Grey dotted line rectangle)  has disappeared from graph view for both sequences
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015) {

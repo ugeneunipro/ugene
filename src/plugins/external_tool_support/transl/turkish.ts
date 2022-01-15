@@ -4999,10 +4999,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <source>FormatDB...</source>
         <translation>FormatDB...</translation>
     </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
-    </message>
 </context>
 <context>
     <name>U2::ExternalToolJustValidateTask</name>
@@ -5196,14 +5192,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <source>Search tools in PATH</source>
         <translation>YOL içindeki arama araçları</translation>
-    </message>
-    <message>
-        <source>BLAST make database...</source>
-        <translation>BLAST veritabanı yap...</translation>
-    </message>
-    <message>
-        <source>BLAST search...</source>
-        <translation>BLAST arama...</translation>
     </message>
 </context>
 <context>
@@ -5441,10 +5429,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <source>The &lt;i&gt;formatdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by &lt;i&gt;blastall&lt;/i&gt;.</source>
         <translation>&lt;i&gt;formatdb&lt;/i&gt;, bu veritabanları &lt;i&gt;blastall&lt;/i&gt; tarafından aranmadan önce protein veya nükleotid kaynak veritabanlarını formatlar.</translation>
-    </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>

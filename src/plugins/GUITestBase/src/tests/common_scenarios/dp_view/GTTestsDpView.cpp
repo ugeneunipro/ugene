@@ -62,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has appeared. There is 1 line at view.
     // 6. Use context menu on dot plot view {Dotplot->Remove}
@@ -72,10 +72,10 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                                         << "Remove"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has closed.
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -85,15 +85,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot"
                                                                         << "Remove"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -104,13 +104,13 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -120,13 +120,13 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 8, 80, false, false));
 
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -136,7 +136,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
@@ -158,7 +158,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsProjectTreeView::openView(os);
 
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName));
         QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
-        GTUtilsDialog::waitAllFinished(os);
+        GTUtilsDialog::checkNoActiveWaiters(os);
     }
 }
 
@@ -185,7 +185,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsProjectTreeView::openView(os);
 
@@ -194,7 +194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsAnnotationsTreeView::widgetName));
         QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
-        GTUtilsDialog::waitAllFinished(os);
+        GTUtilsDialog::checkNoActiveWaiters(os);
     }
 }
 
@@ -205,7 +205,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsProjectTreeView::openView(os);
 
@@ -214,7 +214,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsAnnotationsTreeView::widgetName));
         QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
-        GTUtilsDialog::waitAllFinished(os);
+        GTUtilsDialog::checkNoActiveWaiters(os);
     }
 }
 
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsProjectTreeView::openView(os);
 
@@ -310,7 +310,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
                                                                                 << "Save/Load"
                                                                                 << "Save as image"));
             GTWidget::click(os, GTWidget::findWidget(os, "dotplot widget"), Qt::RightButton);
-            GTUtilsDialog::waitAllFinished(os);
+            GTUtilsDialog::checkNoActiveWaiters(os);
         }
 
     private:
@@ -322,7 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "/samples/Genbank/murine.gb", testDir + "_common_data/genbank/pBR322.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Build dotplot...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     DotPlotExportImageFiller::runScenario(os, 1);
 

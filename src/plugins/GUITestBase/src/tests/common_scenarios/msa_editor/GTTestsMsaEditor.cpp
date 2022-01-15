@@ -283,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name"));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "a"
                                                                                  << "C"
                                                                                  << "d"
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_name_descending"));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "d"
                                                                                  << "D"
                                                                                  << "C"
@@ -301,7 +301,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length"));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "D"
                                                                                  << "d"
                                                                                  << "a"
@@ -310,7 +310,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_length_descending"));
     GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os) == QStringList() << "C"
                                                                                  << "d"
                                                                                  << "a"
@@ -325,14 +325,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
     GTMenu::showContextMenu(os, msaWindow);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
@@ -547,7 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsBookmarksTreeView::deleteBookmark(os, "start bookmark");
 
     //     Expected state: start bookmark isn't present
-    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", {false});
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
 }
 
@@ -832,7 +832,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_2.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
     GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // copy to clipboard
@@ -1044,7 +1044,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
     GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // CHANGES: close and open MDI window
@@ -1059,7 +1059,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -1241,7 +1241,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Multiple sequence alignment"
                                                 << "Align with Kalign...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // CHANGES: close MDI window
@@ -1271,7 +1271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
     GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    GTGlobals::sleep(10000); // Wait up to 10 seconds so UGENE will find the changes.
+    GTGlobals::sleep(10000);  // Wait up to 10 seconds so UGENE will find the changes.
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     // 3. Press 'Yes'.
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
@@ -1499,7 +1499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
                                                                         << "remove_columns_of_gaps"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: UGENE not crashes, deletion is not performed
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 9));
@@ -2673,14 +2673,18 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     // select a few sequences
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
 
-    QStringList sequences;
-    sequences << "Montana_montana"
-              << "Conocephalus_percaudata"
-              << "Podisma_sapporensis";
+    QStringList sequences = {"Montana_montana", "Conocephalus_percaudata", "Podisma_sapporensis"};
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_0043.png", ExportMsaImage::Settings(), false, false, RegionMsa(U2Region(1, 594), sequences)));
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportMsaImage(os,
+                                                    testDir + "_common_data/scenarios/sandbox/test_0043.png",
+                                                    ExportMsaImage::Settings(),
+                                                    false,
+                                                    false,
+                                                    RegionMsa(U2Region(1, 594), sequences)));
 
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
@@ -4110,7 +4114,6 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-
     QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // The sequence was added to the bottom of the alignment.
@@ -4135,7 +4138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
 
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 

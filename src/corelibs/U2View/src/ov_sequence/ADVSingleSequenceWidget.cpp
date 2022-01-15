@@ -167,7 +167,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
 void ADVSingleSequenceWidget::init() {
     ADVSequenceObjectContext *seqCtx = getSequenceContext();
     detView = new DetView(this, seqCtx);
-    const QString objName = getSequenceObject()->getGObjectName();
+    QString objName = getSequenceObject()->getGObjectName();
     detView->setObjectName("det_view_" + objName);
     detView->setMouseTracking(true);
     detView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);

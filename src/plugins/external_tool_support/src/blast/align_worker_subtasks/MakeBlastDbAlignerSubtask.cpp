@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "FormatDBSubTask.h"
+#include "MakeBlastDbAlignerSubtask.h"
 
 #include <QDir>
 #include <QTemporaryDir>
@@ -41,16 +41,16 @@
 namespace U2 {
 namespace Workflow {
 
-FormatDBSubTask::FormatDBSubTask(const QString &referenceUrl,
-                                 const SharedDbiDataHandler &referenceDbHandler,
-                                 DbiDataStorage *storage)
+MakeBlastDbAlignerSubtask::MakeBlastDbAlignerSubtask(const QString &referenceUrl,
+                                                     const SharedDbiDataHandler &referenceDbHandler,
+                                                     DbiDataStorage *storage)
     : Task(tr("'makeblastdb' task wrapper"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       referenceDbHandler(referenceDbHandler),
       storage(storage) {
 }
 
-void FormatDBSubTask::prepare() {
+void MakeBlastDbAlignerSubtask::prepare() {
     MakeBlastDbSettings settings;
     settings.inputFilesPath << referenceUrl;
 
@@ -75,22 +75,17 @@ void FormatDBSubTask::prepare() {
     databaseNameAndPath = settings.outputPath;
 }
 
-const QString &FormatDBSubTask::getResultPath() const {
+const QString &MakeBlastDbAlignerSubtask::getResultPath() const {
     return databaseNameAndPath;
 }
 
-namespace {
+QString MakeBlastDbAlignerSubtask::getAcceptableTempDir() const {
+    auto isTempDirAcceptable = [](const QString &tempDir) {
+        CHECK(!tempDir.contains(QRegExp("\\s")), false);
+        QTemporaryDir testSubDir(tempDir + "/XXXXXX");
+        return testSubDir.isValid();
+    };
 
-bool isTempDirAcceptable(const QString &tempDir) {
-    CHECK(!tempDir.contains(QRegExp("\\s")), false);
-    QTemporaryDir testSubDir(tempDir + "/XXXXXX");
-    CHECK(testSubDir.isValid(), false);
-    return true;
-}
-
-}  // namespace
-
-QString FormatDBSubTask::getAcceptableTempDir() const {
     QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (isTempDirAcceptable(tempDirPath)) {
         return tempDirPath;
@@ -101,20 +96,8 @@ QString FormatDBSubTask::getAcceptableTempDir() const {
         return tempDirPath;
     }
 
-#if defined(Q_OS_WIN)
-    tempDirPath = "C:/ugene_tmp";
-#elif defined(Q_OS_UNIX)
-    tempDirPath = "/tmp/ugene_tmp";
-#else
-    return QString();
-#endif
-
-    const bool created = QDir().mkpath(tempDirPath);
-    if (created && isTempDirAcceptable(tempDirPath)) {
-        return tempDirPath;
-    }
-
-    return QString();
+    tempDirPath = isOsWindows() ? "C:/ugene_tmp" : "/tmp/ugene_tmp";
+    return QDir().mkpath(tempDirPath) && isTempDirAcceptable(tempDirPath) ? tempDirPath : "";
 }
 
 }  // namespace Workflow

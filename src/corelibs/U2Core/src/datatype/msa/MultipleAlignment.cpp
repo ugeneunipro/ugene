@@ -134,8 +134,8 @@ int MultipleAlignmentData::getNumRows() const {
     return rows.size();
 }
 
-U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
-    U2MsaListGapModel gapModel;
+QList<QList<U2MsaGap>> MultipleAlignmentData::getGapModel() const {
+    QList<QList<U2MsaGap>> gapModel;
     const int alignmentLength = getLength();
     for (const MultipleAlignmentRow &row : qAsConst(rows)) {
         gapModel << row->getGapModel();

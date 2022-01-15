@@ -49,7 +49,7 @@ public:
     static void clearPcrDir(HI::GUITestOpStatus &os);
 
 private:
-    static QTableView *table(HI::GUITestOpStatus &os);
+    static QTableView *getTable(HI::GUITestOpStatus &os);
 };
 
 }  // namespace U2

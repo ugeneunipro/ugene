@@ -54,7 +54,6 @@
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QWizard>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -130,7 +129,6 @@
 #include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DashboardsManagerDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DefaultWizardFiller.h"
@@ -611,19 +609,24 @@ GUI_TEST_CLASS_DEFINITION(test_2032) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2049) {
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
-    QWidget *w = GTWidget::findWidget(os, "Codon table widget");
-    int ititHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
+    auto codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
+    auto labelBefore = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
+    CHECK_SET_ERR(labelBefore->text().contains("Leucine (Leu, L)"), "1. Invalid cell text: " + labelBefore->text());
+    int heightBefore = labelBefore->geometry().height();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "3. The Yeast Mitochondrial Code"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"3. The Yeast Mitochondrial Code"}));
     GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton"));
 
-    w = GTWidget::findWidget(os, "Codon table widget");
-    int finalHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
-    CHECK_SET_ERR(ititHeight != finalHeight, "codon table not changed");
+    codonTableWidget = GTWidget::findWidget(os, "Codon table widget");
+    auto labelAfter = GTWidget::findLabel(os, "row_6_column_2", codonTableWidget);
+    CHECK_SET_ERR(labelAfter->text().contains("Threonine (Thr, T)"), "2. Invalid cell text: " + labelAfter->text());
+    int heightAfter = labelAfter->geometry().height();
+
+    CHECK_SET_ERR(heightBefore == heightAfter, "Codon table layout is changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2053) {
@@ -782,14 +785,14 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::amino));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2091) {
@@ -1576,7 +1579,6 @@ GUI_TEST_CLASS_DEFINITION(test_2281) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2292) {
-    QString destName = testDir + "_common_data/ugenedb/example-alignment.ugenedb";
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1749,7 +1751,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
 
     //    4. Set the cursor to the 14 line (the "Mecopoda_elongata__Ishigaki__J" sequence), 45 base.
 
-    QWidget *documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, GTGlobals::FindOptions(false));
+    QWidget *documentTreeWidget = GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName, nullptr, {false});
     if (documentTreeWidget != nullptr) {
         GTUtilsProjectTreeView::toggleView(os);
     }
@@ -1901,41 +1903,24 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
               projectFile(_projectFile) {
         }
 
-        virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
-            QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
-            if (nullptr == projectNameEdit) {
-                os.setError("projectNameEdit not found");
-                return;
-            }
-            projectNameEdit->setText(projectName);
-
-            QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
-            if (nullptr == projectFileEdit) {
-                os.setError("projectFileEdit not found");
-                return;
-            }
-            projectFileEdit->setText(projectFolder + "/" + projectFile);
-
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != nullptr, "ok button is NULL");
-            GTWidget::click(os, button);
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "projectNameEdit", projectName, dialog);
+            GTLineEdit::setText(os, "projectFilePathEdit", projectFolder + "/" + projectFile, dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
     private:
-        const QString projectName;
-        const QString projectFolder;
-        const QString projectFile;
+        QString projectName;
+        QString projectFolder;
+        QString projectFile;
     };
 
-    const QString projectName = "test_2351";
-    const QString projectFolder = testDir + "_common_data/scenarios/sandbox";
-    const QString projectFile = "test_2351";
+    QString projectName = "test_2351";
+    QString projectFolder = testDir + "_common_data/scenarios/sandbox";
+    QString projectFile = "test_2351";
 
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 10; ++i) {
         GTUtilsDialog::waitForDialog(os, new RapidProjectCreator(os, projectName, projectFolder, projectFile));
         GTWidget::click(os,
                         GTToolbar::getWidgetForActionObjectName(os,
@@ -2157,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
     class CreateProjectFiller : public Filler {
         // It is a local support class, it is the same as SaveProjectAsDialogFiller,
         // but it clicks the final button with keyboard.
-        // I know that it is bad practice to create so useless classes, but I don't need to extend the original class.
+        // I know that it is bad practice creating so useless classes, but I don't need to extend the original class.
         // Do not move it to another place: if you need the same filler than extend the original class.
     public:
         CreateProjectFiller(HI::GUITestOpStatus &_os,
@@ -2474,7 +2459,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "10000_sequences.aln"));
     GTMouseDriver::doubleClick();
@@ -2609,7 +2594,7 @@ GUI_TEST_CLASS_DEFINITION(test_2431) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence", GTGlobals::FindOptions(false));
+    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence", {false});
     CHECK_SET_ERR(readSeq == nullptr, "Item didn't deleted");
 }
 
@@ -3088,7 +3073,7 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
     GTUtilsDialog::waitForDialog(os, new CustomSaver(os));
     GTUtilsProjectTreeView::click(os, "test_2544.fa", Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2545) {
@@ -3537,7 +3522,7 @@ GUI_TEST_CLASS_DEFINITION(test_2612) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // Expected state: there is no annotation in sequence view.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false)) == nullptr, "Annotations document not deleted");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", {false}) == nullptr, "Annotations document not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2619) {
@@ -3810,7 +3795,7 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
 
     GTUtilsDialog::waitForDialog(os, new DotplotLoadSequenceFiller(os, testDir + "_common_data/fasta", "empty_2.fa"));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
@@ -4022,7 +4007,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     QPoint endPoint = GTWidget::getWidgetCenter(GTUtilsAnnotationsTreeView::getTreeWidget(os));
     GTMouseDriver::dragAndDrop(point, endPoint);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some modification and save file
     //    Expected state: dialog about detected file modification has appeared in UGENE window
@@ -4050,7 +4035,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     file.write(fileData);
     file.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     //    7. Open "human_T1" sequence view
     //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
@@ -4149,7 +4134,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737_1) {
 
     // 2. Delete all annotations in random order;
     QTreeWidgetItem *annotation = nullptr;
-    while (nullptr != (annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, GTGlobals::FindOptions(false)))) {
+    while (nullptr != (annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, {false}))) {
         uiLog.trace("annotation text is: " + annotation->text(0));
         GTUtilsAnnotationsTreeView::deleteItem(os, annotation);
     }
@@ -4653,7 +4638,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 
     // 4) Choose some annotation by left mouse button on the upper sequence view
     // Expected state: horisontal or vertical selection is shown on DotPlot
-    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", GTGlobals::FindOptions(false));
+    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", {false});
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, geneItems.at(1)));
     GTMouseDriver::click();
 
@@ -4940,7 +4925,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
                                                          "der_area_virus_X"));
     QString blastTaskName = "RemoteBLASTTask";
     GTUtilsTaskTreeView::checkTask(os, blastTaskName);
-    GTGlobals::sleep(10000); // Give a task some time to run.
+    GTGlobals::sleep(10000);  // Give a task some time to run.
 
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
     bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
@@ -4958,7 +4943,7 @@ GUI_TEST_CLASS_DEFINITION(test_2907) {
 
     // 2. In annotations tree view go to element Auto - annotations->enzyme->EcoRI(0, 1)->EcoRI
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
+    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -5100,7 +5085,7 @@ GUI_TEST_CLASS_DEFINITION(test_2923) {
     GTUtilsMdi::activeWindow(os);
 
     GTKeyboardDriver::keyClick('w', Qt::ControlModifier);
-    QWidget *mdi = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
+    QWidget *mdi = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(nullptr == mdi, "Sequence view is not closed");
 }
 

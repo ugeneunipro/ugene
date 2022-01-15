@@ -708,7 +708,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new CheckDocumentReadingModeSelectorTextScenario()));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
     GTMenu::clickMainMenuItem(os, {"File", "Open..."});
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Now check preview text for the second dialog.
     class CheckDocumentFormatSelectorTextScenario : public CustomScenario {
@@ -1574,7 +1574,7 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
     GTUtilsNotifications::waitForNotification(os);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     auto tab = GTTabWidget::getTabBar(os, GTUtilsDashboard::getTabWidget(os));
     GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
 }

@@ -143,7 +143,7 @@ void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
             }
         }
     }
-    GT_CHECK(false, "Notification widget is not found!");
+    GT_FAIL("Notification widget is not found!", );
 }
 #undef GT_METHOD_NAME
 

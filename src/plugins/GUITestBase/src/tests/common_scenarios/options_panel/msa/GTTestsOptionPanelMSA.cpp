@@ -1665,70 +1665,62 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QCheckBox *showNamesCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showNamesCheck"));
-    CHECK_SET_ERR(showNamesCheck != nullptr, "showNamesCheck not found");
-    QCheckBox *showDistancesCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showDistancesCheck"));
-    CHECK_SET_ERR(showDistancesCheck != nullptr, "showDistancesCheck not found");
-    QCheckBox *alignLabelsCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "alignLabelsCheck"));
-    CHECK_SET_ERR(alignLabelsCheck != nullptr, "alignLabelsCheck not found");
-    QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]_SubWindow");
-    QWidget *parent2 = GTWidget::findWidget(os, "COI [COI.aln]", parent);
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
+    auto showNamesCheck = GTWidget::findCheckBox(os, "showNamesCheck");
+    auto showDistancesCheck = GTWidget::findCheckBox(os, "showDistancesCheck");
+    auto alignLabelsCheck = GTWidget::findCheckBox(os, "alignLabelsCheck");
+    auto subWindow = GTWidget::findWidget(os, "COI [COI.aln]_SubWindow");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView", subWindow);
 
     QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
-    QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
-    int initNamesNumber = initNames.count();
-    int initDistansesNumber = initDistanses.count();
+    QList<QGraphicsSimpleTextItem *> initDistances = GTUtilsPhyTree::getVisibleDistances(os, treeView);
 
     //    3. Uncheck "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, false);
 
     //    Expected state: names are not shown, align labels checkbox is disabled
     QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
-    CHECK_SET_ERR(names.count() == 0, QString("unexpected number of names: %1").arg(names.count()));
-    CHECK_SET_ERR(!alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly enabled");
+    CHECK_SET_ERR(names.isEmpty(), QString("unexpected number of names: %1").arg(names.count()));
+    CHECK_SET_ERR(!alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectedly enabled");
 
     //    4. Check "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, true);
 
     //    Expected state: names are shown, align labels checkbox is enabled
     names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
-    CHECK_SET_ERR(names.count() == initNamesNumber, QString("unexpected number of names: %1").arg(names.count()));
-    CHECK_SET_ERR(alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly disabled");
+    CHECK_SET_ERR(names.count() == initNames.count(), QString("unexpected number of names: %1").arg(names.count()));
+    CHECK_SET_ERR(alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectedly disabled");
 
-    //    5. Uncheck "show distanses" checkbox.
+    //    5. Uncheck "show distances" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, false);
 
-    //    Expected state: distanses are not shown
-    QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
-    CHECK_SET_ERR(distanses.count() == 0, QString("unexpected number of distanses: %1").arg(names.count()));
+    //    Expected state: distances are not shown
+    QList<QGraphicsSimpleTextItem *> distances = GTUtilsPhyTree::getVisibleDistances(os, treeView);
+    CHECK_SET_ERR(distances.isEmpty(), QString("unexpected number of distances: %1").arg(names.count()));
 
-    //    6. Check "show distanses" checkbox.
+    //    6. Check "show distances" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, true);
 
-    //    Expected state: distanses are shown
-    distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
-    CHECK_SET_ERR(distanses.count() == initDistansesNumber, QString("unexpected number of distanses: %1").arg(names.count()));
+    //    Expected state: distances are shown
+    distances = GTUtilsPhyTree::getVisibleDistances(os, treeView);
+    CHECK_SET_ERR(distances.count() == initDistances.count(), QString("unexpected number of distances: %1").arg(names.count()));
 
     //    7. Check "align labels" checkbox.
-    // saving init image
+    // Saving init image
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
-    QWidget *w = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w != nullptr, "tree view not found");
-    QImage initImg = GTWidget::getImage(os, w);  // initial state
+    QImage initImg = GTWidget::getImage(os, treeView);  // initial state
 
     GTCheckBox::setChecked(os, alignLabelsCheck, true);
 
     //    Expected state: labels are aligned
-    QImage alignedImg = GTWidget::getImage(os, w);
-    CHECK_SET_ERR(alignedImg != initImg, "labels not aligned");
+    QImage alignedImg = GTWidget::getImage(os, treeView);
+    CHECK_SET_ERR(alignedImg != initImg, "labels are not aligned");
 
     //    8. Uncheck "align labels" checkbox.
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
 
     //    Expected state: labels are not aligned
-    QImage finalImg = GTWidget::getImage(os, w);
-    CHECK_SET_ERR(finalImg == initImg, "tree ialigned");
+    QImage finalImg = GTWidget::getImage(os, treeView);
+    CHECK_SET_ERR(finalImg == initImg, "tree is aligned");
 }
 
 namespace {

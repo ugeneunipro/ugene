@@ -43,11 +43,12 @@ public:
     StructuralAlignmentTask *getTask();
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 private:
-    StructuralAlignmentTask *task;
-    BioStruct3DSubsetEditor *ref, *mob;
+    StructuralAlignmentTask *task = nullptr;
+    BioStruct3DSubsetEditor *ref = nullptr;
+    BioStruct3DSubsetEditor *mob = nullptr;
 };
 
 }  // namespace U2

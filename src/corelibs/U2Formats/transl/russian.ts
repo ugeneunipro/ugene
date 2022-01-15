@@ -2147,12 +2147,12 @@
     <message>
         <location filename="../src/PhylipFormat.cpp" line="78"/>
         <source>Wrong row count. Header: %1, actual: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong row count. Header: %1, actual: %2</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="80"/>
         <source>Wrong column count. Header: %1, actual: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong column count. Header: %1, actual: %2</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="85"/>
@@ -2162,7 +2162,7 @@
     <message>
         <location filename="../src/PhylipFormat.cpp" line="90"/>
         <source>Incorrect number of objects in document: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Incorrect number of objects in document: %1</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="109"/>
@@ -2173,33 +2173,29 @@
         <location filename="../src/PhylipFormat.cpp" line="144"/>
         <location filename="../src/PhylipFormat.cpp" line="257"/>
         <source>Failed to find MSA object to store</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to find MSA object to store</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="221"/>
         <location filename="../src/PhylipFormat.cpp" line="350"/>
         <source>Failed to parse header line</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to parse header line</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="224"/>
         <source>Unexpected end of data in Phylip file</source>
-        <translation type="unfinished"></translation>
+        <translation>Unexpected end of data in Phylip file</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="230"/>
         <location filename="../src/PhylipFormat.cpp" line="356"/>
         <source>Line with a name is too short %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Line with a name is too short %1</translation>
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="236"/>
         <source>Unexpected end of file</source>
-        <translation type="unfinished">Неожиданный конец файла</translation>
-    </message>
-    <message>
-        <source>Error parsing file</source>
-        <translation type="vanished">Ошибка разбора формата</translation>
+        <translation>Неожиданный конец файла</translation>
     </message>
 </context>
 <context>
@@ -2209,26 +2205,6 @@
         <source>PHYLIP Interleaved</source>
         <translation>PHYLIP Interleaved</translation>
     </message>
-    <message>
-        <source>Illegal line</source>
-        <translation type="vanished">Неправильная строка</translation>
-    </message>
-    <message>
-        <source>Wrong header</source>
-        <translation type="vanished">Неверный заголовок</translation>
-    </message>
-    <message>
-        <source>Block is incomplete</source>
-        <translation type="vanished">Block is incomplete</translation>
-    </message>
-    <message>
-        <source>Block is incomlete</source>
-        <translation type="vanished">Block is incomlete</translation>
-    </message>
-    <message>
-        <source>Number of characters does not correspond to the stated number</source>
-        <translation type="vanished">Число символов не соответствует установленному числу</translation>
-    </message>
 </context>
 <context>
     <name>U2::PhylipSequentialFormat</name>
@@ -2236,26 +2212,6 @@
         <location filename="../src/PhylipFormat.cpp" line="139"/>
         <source>PHYLIP Sequential</source>
         <translation>PHYLIP Sequential</translation>
-    </message>
-    <message>
-        <source>Illegal line</source>
-        <translation type="vanished">Неправильная строка</translation>
-    </message>
-    <message>
-        <source>Wrong header</source>
-        <translation type="vanished">Неверный заголовок</translation>
-    </message>
-    <message>
-        <source>There is not enough data</source>
-        <translation type="vanished">Недостаточно данных</translation>
-    </message>
-    <message>
-        <source>Error parsing file</source>
-        <translation type="vanished">Ошибка разбора формата</translation>
-    </message>
-    <message>
-        <source>Number of characters does not correspond to the stated number</source>
-        <translation type="vanished">Число символов не соответствует установленному числу</translation>
     </message>
 </context>
 <context>
@@ -2343,22 +2299,22 @@
     <message>
         <location filename="../src/StockholmFormat.cpp" line="358"/>
         <source>Invalid file: empty sequence name</source>
-        <translation type="unfinished"></translation>
+        <translation>Не указано имя последовательности</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="359"/>
         <source>Invalid file: duplicate sequence names in one block: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>одинаковые имена последовательностей в блоке: %1</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="363"/>
         <source>Invalid file: sequence names are not equal in blocks</source>
-        <translation type="unfinished"></translation>
+        <translation>Непарное имя последовательности в блоке</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="370"/>
         <source>Invalid file: sequences in block are not of equal size</source>
-        <translation type="unfinished"></translation>
+        <translation>Блок содержит последовательности разной длины</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="523"/>
@@ -2373,31 +2329,7 @@
     <message>
         <location filename="../src/StockholmFormat.cpp" line="543"/>
         <source>Not an alignment object: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown error occurred</source>
-        <translation type="vanished">Ошибка</translation>
-    </message>
-    <message>
-        <source>invalid file: bad header line</source>
-        <translation type="vanished">Неверный заголовок</translation>
-    </message>
-    <message>
-        <source>invalid file: empty sequence name</source>
-        <translation type="vanished">Не указано имя последовательности</translation>
-    </message>
-    <message>
-        <source>invalid file: equal sequence names in one block</source>
-        <translation type="vanished">одинаковые имена последовательностей в блоке</translation>
-    </message>
-    <message>
-        <source>invalid file: sequence names are not equal in blocks</source>
-        <translation type="vanished">Непарное имя последовательности в блоке</translation>
-    </message>
-    <message>
-        <source>invalid file: sequences in block are not of equal size</source>
-        <translation type="vanished">Блок содержит последовательности разной длины</translation>
+        <translation>Не является объектом выравнивания: </translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="392"/>

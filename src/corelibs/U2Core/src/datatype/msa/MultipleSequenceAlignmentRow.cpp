@@ -48,7 +48,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlign
     : MultipleAlignmentRow(msaRowData) {
 }
 
-MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MsaRowGapModel &gaps, MultipleSequenceAlignmentData *msaData)
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData)
     : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, sequence, gaps, msaData)) {
 }
 
@@ -110,7 +110,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
       alignment(msaData),
       initialRowInDb(rowInDb) {
     QByteArray sequenceData;
-    U2MsaRowGapModel gapModel;
+    QList<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
@@ -244,7 +244,7 @@ void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRow
     DNASequenceUtils::append(sequence, anotherRow.sequence);
 }
 
-void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSequence, const U2MsaRowGapModel &newGapModel, U2OpStatus &os) {
+void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSequence, const QList<U2MsaGap> &newGapModel, U2OpStatus &os) {
     SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
     sequence = newSequence;
     setGapModel(newGapModel);

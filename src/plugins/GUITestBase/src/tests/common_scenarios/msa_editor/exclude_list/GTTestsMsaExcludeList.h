@@ -19,38 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_SUBTASK_H_
-#define _U2_FORMAT_DB_SUBTASK_H_
+#ifndef _U2_GUI_TEST_MSA_EXCLUDE_LIST_H_
+#define _U2_GUI_TEST_MSA_EXCLUDE_LIST_H_
 
-#include <U2Core/Task.h>
-
-#include <U2Lang/DbiDataHandler.h>
-#include <U2Lang/DbiDataStorage.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
-namespace Workflow {
 
-class FormatDBSubTask : public Task {
-    Q_OBJECT
-public:
-    FormatDBSubTask(const QString &referenceUrl,
-                    const SharedDbiDataHandler &referenceDbHandler,
-                    DbiDataStorage *storage);
-    void prepare();
+namespace GUITest_common_scenarios_msa_exclude_list {
 
-    const QString &getResultPath() const;
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_msa_exclude_list"
 
-private:
-    QString getAcceptableTempDir() const;
+GUI_TEST_CLASS_DECLARATION(test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0002)
+GUI_TEST_CLASS_DECLARATION(test_0003)
+GUI_TEST_CLASS_DECLARATION(test_0004)
+GUI_TEST_CLASS_DECLARATION(test_0005)
+GUI_TEST_CLASS_DECLARATION(test_0006)
+GUI_TEST_CLASS_DECLARATION(test_0007)
 
-    const QString referenceUrl;
-    const SharedDbiDataHandler referenceDbHandler;
-    DbiDataStorage *storage;
+#undef GUI_TEST_SUITE
+}  // namespace GUITest_common_scenarios_msa_exclude_list
 
-    QString databaseNameAndPath;
-};
+}  // namespace U2
 
-}    // namespace Workflow
-}    // namespace U2
-
-#endif    // _U2_FORMAT_DB_SUBTASK_H_
+#endif  // _U2_GUI_TEST_MSA_EXCLUDE_LIST_H_

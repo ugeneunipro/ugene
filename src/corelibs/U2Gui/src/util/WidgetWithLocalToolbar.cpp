@@ -32,6 +32,7 @@ namespace U2 {
 WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget *p)
     : QWidget(p) {
     toolBar = new LocalToolbar(this);
+    toolBar->setObjectName("WidgetWithLocalToolbar_toolbar");
     contentWidget = new QWidget(this);
 
     QHBoxLayout *layout = new QHBoxLayout();

@@ -28,9 +28,9 @@
 namespace U2 {
 
 namespace Workflow {
-class BlastReadsSubTask;
-class FormatDBSubTask;
-class ComposeResultSubTask;
+class BlastReadsSubtask;
+class MakeBlastDbAlignerSubtask;
+class ComposeResultSubtask;
 }  // namespace Workflow
 
 namespace LocalWorkflow {
@@ -66,9 +66,9 @@ private:
     const QMap<SharedDbiDataHandler, QString> readsNames;
     const int minIdentityPercent;
 
-    FormatDBSubTask *formatDbSubTask = nullptr;
-    BlastReadsSubTask *blastTask = nullptr;
-    ComposeResultSubTask *composeSubTask = nullptr;
+    MakeBlastDbAlignerSubtask *formatDbSubTask = nullptr;
+    BlastReadsSubtask *blastTask = nullptr;
+    ComposeResultSubtask *composeSubTask = nullptr;
     SaveDocumentTask *saveTask = nullptr;
 
     DbiDataStorage *storage;

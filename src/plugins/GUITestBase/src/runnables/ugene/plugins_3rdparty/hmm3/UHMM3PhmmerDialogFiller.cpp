@@ -21,11 +21,8 @@
 
 #include "UHMM3PhmmerDialogFiller.h"
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTTabBar.h>
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
-
-#include <QApplication>
-#include <QTabWidget>
 
 namespace U2 {
 
@@ -33,15 +30,11 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 
 void UHMM3PhmmerDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    auto dialog = GTWidget::getActiveModalWidget(os);
 
-    GTGlobals::sleep(1000);
-    QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "mainTabWidget", dialog);
+    GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "mainTabWidget", dialog), 0);
 
-    tabWidget->setCurrentIndex(0);
-    QLineEdit *queryLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "queryLineEdit", dialog);
-    GTLineEdit::setText(os, queryLineEdit, input);
+    GTLineEdit::setText(os, "queryLineEdit", input, dialog);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

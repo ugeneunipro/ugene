@@ -69,7 +69,9 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
 
     QList<BioStruct3DObject *> biostructs = findAvailableBioStructs();
     ref = new BioStruct3DSubsetEditor(biostructs, fixedRef, fixedRefModel);
+    ref->setObjectName("ref_editor");
     mob = new BioStruct3DSubsetEditor(biostructs);
+    mob->setObjectName("mob_editor");
 
     if (fixedRef) {
         ref->setBiostructDisabled();

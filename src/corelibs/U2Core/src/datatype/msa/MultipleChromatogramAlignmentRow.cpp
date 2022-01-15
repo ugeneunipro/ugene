@@ -57,7 +57,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChrom
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb,
                                                                    const DNAChromatogram &chromatogram,
                                                                    const DNASequence &sequence,
-                                                                   const U2MsaRowGapModel &gaps,
+                                                                   const QList<U2MsaGap> &gaps,
                                                                    MultipleChromatogramAlignmentData *mcaData)
     : MultipleAlignmentRow(new MultipleChromatogramAlignmentRowData(rowInDb, chromatogram, sequence, gaps, mcaData)) {
 }
@@ -131,7 +131,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       chromatogram(chromatogram),
       initialRowInDb(rowInDb) {
     QByteArray sequenceData;
-    U2MsaRowGapModel gapModel;
+    QList<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
@@ -284,7 +284,7 @@ void MultipleChromatogramAlignmentRowData::append(const MultipleChromatogramAlig
     ChromatogramUtils::append(chromatogram, anotherRow.chromatogram);
 }
 
-void MultipleChromatogramAlignmentRowData::setRowContent(const DNAChromatogram &newChromatogram, const DNASequence &newSequence, const U2MsaRowGapModel &newGapModel, U2OpStatus &os) {
+void MultipleChromatogramAlignmentRowData::setRowContent(const DNAChromatogram &newChromatogram, const DNASequence &newSequence, const QList<U2MsaGap> &newGapModel, U2OpStatus &os) {
     // TODO: this method is strange. It is hard to synchronize a chromatogram with a sequence. I think, it should be removed.
     SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
     chromatogram = newChromatogram;

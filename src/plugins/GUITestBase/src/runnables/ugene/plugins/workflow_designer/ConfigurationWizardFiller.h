@@ -35,7 +35,7 @@ public:
     ConfigurationWizardFiller(HI::GUITestOpStatus &os, QString name, CustomScenario *c)
         : Filler(os, name, c) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QStringList radioNames;

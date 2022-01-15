@@ -45,10 +45,7 @@ namespace U2 {
 PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString &referenceUrl, const U2DbiRef &dstDbiRef)
     : DocumentProviderTask(tr("Prepare reference sequence"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
-      dstDbiRef(dstDbiRef),
-      copyTask(nullptr),
-      loadTask(nullptr),
-      removeGapsTask(nullptr) {
+      dstDbiRef(dstDbiRef) {
     SAFE_POINT_EXT(!referenceUrl.isEmpty(), setError("Reference URL is empty"), );
     SAFE_POINT_EXT(dstDbiRef.isValid(), setError("Destination DBI reference is not valid"), );
 }
@@ -73,20 +70,19 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);
         loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, preparedReferenceUrl, hints);
         CHECK_OP(stateInfo, newSubTasks);
-
         newSubTasks << loadTask;
     } else if (loadTask == subTask) {
-        Document *const document = loadTask->getDocument(false);
-        SAFE_POINT(nullptr != document, "Document is NULL", newSubTasks);
+        Document *document = loadTask->getDocument(false);
+        SAFE_POINT(document != nullptr, "Document is NULL", newSubTasks);
 
         document->setDocumentOwnsDbiResources(false);
 
         QList<GObject *> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
         CHECK_EXT(!objects.isEmpty(), setError(tr("No reference sequence in the file: ") + referenceUrl), newSubTasks);
-        CHECK_EXT(1 == objects.size(), setError(tr("More than one sequence in the reference file: ") + referenceUrl), newSubTasks);
+        CHECK_EXT(objects.size() == 1, setError(tr("More than one sequence in the reference file: ") + referenceUrl), newSubTasks);
 
         U2SequenceObject *referenceObject = qobject_cast<U2SequenceObject *>(objects.first());
-        SAFE_POINT_EXT(nullptr != referenceObject, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
+        SAFE_POINT_EXT(referenceObject != nullptr, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
         CHECK_EXT(referenceObject->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(referenceObject->getSequenceName())), newSubTasks);
 
         referenceEntityRef = referenceObject->getEntityRef();
@@ -94,12 +90,12 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         newSubTasks << new RemoveGapsFromSequenceTask(referenceObject);
     } else if (qobject_cast<RemoveGapsFromSequenceTask *>(subTask) != nullptr) {
         Document *doc = loadTask->getDocument(false);
-        SAFE_POINT(nullptr != doc, "Document is NULL", newSubTasks);
+        SAFE_POINT(doc != nullptr, "Document is NULL", newSubTasks);
 
         DocumentFormat *fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
         IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));
 
-        preparedReferenceUrl = GUrlUtils::rollFileName(doc->getURL().getURLString(), "_");    // we roll the URL here because there was a strange problem when UGENE couldn't overwrite the file (UTI-242)
+        preparedReferenceUrl = GUrlUtils::rollFileName(doc->getURL().getURLString(), "_");  // we roll the URL here because there was a strange problem when UGENE couldn't overwrite the file (UTI-242)
         Document *fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, preparedReferenceUrl);
         SaveDocumentTask *saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_DestroyButDontUnload);
         newSubTasks << saveTask;
@@ -108,4 +104,8 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
     return newSubTasks;
 }
 
-}    // namespace U2
+const QString &PrepareReferenceSequenceTask::getPreparedReferenceUrl() const {
+    return preparedReferenceUrl;
+}
+
+}  // namespace U2

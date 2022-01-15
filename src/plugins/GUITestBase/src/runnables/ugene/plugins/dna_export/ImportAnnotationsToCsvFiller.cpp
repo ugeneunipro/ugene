@@ -207,8 +207,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
         //        GTWidget::click(os, separatorEdit);
         //        GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
     } else {
-        QRadioButton *scriptRadioButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "scriptRadioButton", dialog));
-        scriptRadioButton->setChecked(true);
+        GTRadioButton::click(os, "scriptRadioButton", dialog);
     }
 
     QLineEdit *firstLinesLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("prefixToSkipEdit"));

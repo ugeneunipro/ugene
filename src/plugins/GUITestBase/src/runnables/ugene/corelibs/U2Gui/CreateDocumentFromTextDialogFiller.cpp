@@ -25,15 +25,14 @@
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QGroupBox>
 #include <QPushButton>
-#include <QRadioButton>
 
 #include <U2Core/Log.h>
 
@@ -98,26 +97,17 @@ void CreateDocumentFiller::commonScenario() {
     GTGlobals::sleep();
 
     if (customSettings) {
-        QGroupBox *customSettingsCheckBox = qobject_cast<QGroupBox *>(GTWidget::findWidget(os, "groupBox", dialog));
-        GTGroupBox::setChecked(os, customSettingsCheckBox, true);
-
-        QComboBox *alphabetComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "alphabetBox", dialog));
-        GT_CHECK(alphabetComboBox != nullptr, "ComboBox not found");
-
+        GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog), true);
         if (skipUnknownSymbols) {
-            QRadioButton *skipUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "skipRB", dialog));
-            skipUnknownSymbols->setChecked(true);
+            GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
-            QRadioButton *replaceUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "replaceRB", dialog));
-            replaceUnknownSymbols->setChecked(true);
-
-            QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("symbolToReplaceEdit");
-            GT_CHECK(lineEdit != nullptr, "line edit not found");
-            GTLineEdit::setText(os, lineEdit, symbol);
+            GTRadioButton::click(os, "replaceRB", dialog);
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
         } else {
-            assert(false);  // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
+            GT_FAIL("Unsupported state", );  // replace skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
 
+        auto alphabetComboBox = GTWidget::findComboBox(os, "alphabetBox", dialog);
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 
@@ -179,26 +169,18 @@ void CancelCreateDocumentFiller::commonScenario() {
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     if (customSettings) {
-        QGroupBox *customSettingsCheckBox = qobject_cast<QGroupBox *>(GTWidget::findWidget(os, "groupBox", dialog));
-        customSettingsCheckBox->setChecked(true);
-
-        QComboBox *alphabetComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "alphabetBox", dialog));
-        GT_CHECK(alphabetComboBox != nullptr, "ComboBox not found");
+        GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog), true);
 
         if (skipUnknownSymbols) {
-            QRadioButton *skipUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "skipRB", dialog));
-            skipUnknownSymbols->setChecked(true);
+            GTRadioButton::click(os, "skipRB", dialog);
         } else if (replaceUnknownSymbols) {
-            QRadioButton *replaceUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "replaceRB", dialog));
-            replaceUnknownSymbols->setChecked(true);
-
-            QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("symbolToReplaceEdit");
-            GT_CHECK(lineEdit != nullptr, "line edit not found");
-            GTLineEdit::setText(os, lineEdit, symbol);
+            GTRadioButton::click(os, "replaceRB", dialog);
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), symbol);
         } else {
-            assert(false);  // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
+            GT_FAIL("Unsupported state", );
         }
 
+        auto alphabetComboBox = GTWidget::findComboBox(os, "alphabetBox", dialog);
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 

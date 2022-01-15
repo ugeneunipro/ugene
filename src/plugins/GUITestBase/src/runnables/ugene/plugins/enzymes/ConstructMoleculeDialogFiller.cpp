@@ -64,7 +64,7 @@ void ConstructMoleculeDialogFiller::commonScenario() {
                 clickOk();
                 break;
             default:
-                GT_CHECK(false, "An unrecognized action type");
+                GT_FAIL("An unrecognized action type", );
         }
     }
 }

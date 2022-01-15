@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-TmpDirChangeDialogController::TmpDirChangeDialogController(QString path, QWidget *p)
+TmpDirChangeDialogController::TmpDirChangeDialogController(const QString &path, QWidget *p)
     : QDialog(p), tmpDirPath(path) {
     setupUi(this);
     QString message = "You do not have permission to write to \"" + tmpDirPath +
@@ -39,13 +39,13 @@ TmpDirChangeDialogController::TmpDirChangeDialogController(QString path, QWidget
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_okButtonClicked()));
 }
 
-QString TmpDirChangeDialogController::getTmpDirPath() {
+const QString &TmpDirChangeDialogController::getTmpDirPath() const {
     return tmpDirPath;
 }
 
 void TmpDirChangeDialogController::sl_changeDirButtonClicked() {
     QString newPath = U2FileDialog::getExistingDirectory(parentWidget(), tr("Choose Folder"), tmpDirPath, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (newPath.isEmpty() == false)
+    if (!newPath.isEmpty())
         tmpDirPathEdit->setText(newPath);
 }
 

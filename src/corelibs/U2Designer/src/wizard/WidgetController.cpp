@@ -41,12 +41,13 @@ WidgetController::~WidgetController() {
 /************************************************************************/
 LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent)
     : QWidget(parent) {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    setObjectName(labelText + "_propertyWidget");
+    auto layout = new QHBoxLayout(this);
     setLayout(layout);
 
     label = new QLabel(labelText, this);
     label->setObjectName(labelText + " label");
-    QWidget *mainWidget = widget->findChild<QWidget *>("mainWidget");
+    auto mainWidget = widget->findChild<QWidget *>("mainWidget");
     if (mainWidget != nullptr) {
         mainWidget->setObjectName(labelText + " widget");
     }

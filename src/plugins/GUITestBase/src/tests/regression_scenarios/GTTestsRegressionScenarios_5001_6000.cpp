@@ -242,17 +242,15 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5018) {
-#ifdef Q_OS_WIN
-    const QString homePlaceholder = "%UserProfile%";
-#else
-    const QString homePlaceholder = "~";
-#endif
+    QString homePlaceholder = isOsWindows() ? "%UserProfile%" : "~";
+
+    QString homePath = QDir::homePath();
+    QString testFilePath = homePath + "/test_5018.fa";
 
     //    1. Ensure that there is no "test_5018.fa" file in the home dir.
-    const QString homePath = QDir::homePath();
-    if (GTFile::check(os, homePath + "/test_5018.fa")) {
-        QFile(homePath + "/test_5018.fa").remove();
-        CHECK_SET_ERR(!GTFile::check(os, homePath + "/test_5018.fa"), "File can't be removed");
+    if (GTFile::check(os, testFilePath)) {
+        QFile(testFilePath).remove();
+        CHECK_SET_ERR(!GTFile::check(os, testFilePath), "File can't be removed");
     }
 
     //    2. Open "data/samples/FASTA/human_T1.fa".
@@ -261,18 +259,16 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 
     //    3. Call context menu on the sequence object in the Project View, select {Export/Import -> Export sequences...} item.
     //    4. Set output path to "~/test_5018.fa" for *nix and "%HOME_DIR%\test_5018.fa" for Windows. Accept the dialog.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import"
-                                                                              << "Export sequences..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export sequences..."}));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, homePlaceholder + "/test_5018.fa"));
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", Qt::RightButton);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "test_5018.fa" appears in the home dir.
-    CHECK_SET_ERR(GTFile::check(os, homePath + "/test_5018.fa"), "File was not created");
+    // Expected state: "test_5018.fa" appears in the home dir.
+    CHECK_SET_ERR(GTFile::check(os, testFilePath), "File was not created");
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
-    QFile(homePath + "/test_5018.fa").remove();
-    GTGlobals::sleep(5000);
+    QFile(testFilePath).remove();
+    GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5026) {
@@ -483,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
 
     // Expected: Error notification appears with a correct human readable error. There is a error in log wit memory requirements.
     GTUtilsNotifications::waitForNotification(os, true, "There is not enough memory to align these sequences with MUSCLE.");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(l.checkMessage("Not enough resources for the task, resource name:"), "No default error in log");
 }
 
@@ -607,7 +603,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
     GTUtilsProjectTreeView::click(os, "COI");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
@@ -987,7 +983,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os, 60000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 60000);
 
     //    3. Open "Highlighting" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -1007,7 +1003,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTUtilsDialog::waitAllFinished(os, 60000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 60000);
 
     //    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
     const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
@@ -1548,41 +1544,43 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+    class TrimmomaticScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            QMenu *menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd", dialog));
+            menu = GTWidget::findMenuWidget(os, "stepsMenu", dialog);
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
+            auto settingsStep1Widget = GTWidget::findWidget(os, "TrimmomaticStepSettingsWidget_step_1", dialog);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", settingsStep1Widget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    class custom : public CustomScenario {
+    class IlluminaAssemblyWizardScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             // GTUtilsWizard::clickButton
 
-            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
+            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new TrimmomaticScenario()));
 
-            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton"));
+            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", wizard));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -1590,12 +1588,10 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", QStringList() << "Illumina SE reads"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", {"Illumina SE reads"}));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new IlluminaAssemblyWizardScenario()));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Reads de novo assembly (with SPAdes)...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads de novo assembly (with SPAdes)..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -1617,20 +1613,25 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+
+            QMenu *menu = GTWidget::findMenuWidget(os, "stepsMenu");
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
+
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+
+            menu = GTWidget::findMenuWidget(os, "stepsMenu");
+            GTMenu::clickMenuItemByName(os, menu, {"ILLUMINACLIP"});
+
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            auto settingsStep1Widget = GTWidget::findWidget(os, "TrimmomaticStepSettingsWidget_step_1", dialog);
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", settingsStep1Widget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1640,7 +1641,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     public:
         void run(HI::GUITestOpStatus &os) {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
+            GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()}});
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
@@ -1836,7 +1837,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
     const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_2.csv");
     CHECK_SET_ERR(0 != fileSize, "Result file is empty");
 
-    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", GTGlobals::FindOptions(false));
+    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", {false});
     CHECK_SET_ERR(!newDocumentExists, "New document unexpectedly exists");
 }
 
@@ -2658,7 +2659,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
 
     // 3. Press Ctrl and drag and drop selection to the right for a few symbols
-    U2MsaListGapModel startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QList<U2MsaGap>> startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::press();
@@ -2666,7 +2667,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     QPoint moveMouseTo(curPos.x() + 200, curPos.y());
     GTMouseDriver::moveTo(moveMouseTo);
 
-    U2MsaListGapModel gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QList<U2MsaGap>> gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
     if (gapModel.size() < 11) {
         GTMouseDriver::release();
         GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -2684,7 +2685,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     GTMouseDriver::release();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QList<U2MsaGap>> finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
     CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
 }
 
@@ -2824,14 +2825,14 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTClipboard::setText(os, "фыва...");
     // GTClipboard::setText(os, "#$%^&*(");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
 
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
@@ -4588,8 +4589,7 @@ GUI_TEST_CLASS_DEFINITION(test_5851) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetTempDirPathScenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
     GTLogTracer logTracer("The task uses a temporary folder to process the data. "
                           "The folder path is required not to have spaces. "

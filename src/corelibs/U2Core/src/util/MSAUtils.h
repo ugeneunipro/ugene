@@ -121,7 +121,7 @@ public:
      */
     static bool restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa, const MultipleSequenceAlignment &originalMa, const QString &prefix = "");
 
-    static QList<U2Region> getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount = -1);
+    static QList<U2Region> getColumnsWithGaps(const QList<QList<U2MsaGap>> &maGapModel, int length, int requiredGapsCount = -1);
     static void removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount = -1);
 
     /**

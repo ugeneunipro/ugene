@@ -141,11 +141,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");
@@ -203,7 +203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogChecker(os, "project.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "multiple.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     QModelIndex se1 = GTUtilsProjectTreeView::findIndex(os, "se1");
     QModelIndex se2 = GTUtilsProjectTreeView::findIndex(os, "se2");
@@ -336,7 +336,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "multiple.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     QModelIndex se1 = GTUtilsProjectTreeView::findIndex(os, "se1");
     GTUtilsProjectTreeView::itemActiveCheck(os, se1);
@@ -358,7 +358,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "multiple.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "se1");
     QFont font = GTUtilsProjectTreeView::getFont(os, item);
@@ -450,7 +450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::Cancel));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsLog::check(os, logTracer);
 }
@@ -485,7 +485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/ace/", "ace_test_1.ace");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MsaEditorFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(os,
@@ -499,7 +499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     //    Expected state: file opens, document contains two assembly objects and two sequence objects, the Assembly Browser is shown.
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
     GTFileDialog::openFileWithDialog(os, testDir + "_common_data/ace/", "ace_test_2.ace");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDocument::checkDocument(os, "project_test_0033.ugenedb", AssemblyBrowserFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(os,
@@ -563,7 +563,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     // test for several alignments in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE/", "BL060C3.ace");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
@@ -576,7 +576,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 
     // reopening windows z
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
+    while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
@@ -600,7 +600,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     // test for several assembly documents in one document
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3637_1.ugenedb"));
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE/", "BL060C3.ace");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
@@ -613,7 +613,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 
     // reopening windows
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
+    while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
@@ -666,7 +666,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsProjectTreeView::findIndex(os, "human_T1");
     GTUtilsProjectTreeView::findIndex(os, "human_T2");
@@ -808,7 +808,7 @@ GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 }
 
@@ -973,7 +973,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "project_test_0058/project_test_0058.ugenedb", "", "", true));
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "BAM/SAM file import"));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 }
 

@@ -61,6 +61,9 @@ public:
     static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &messagePart);
     static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
+
+    /** Waits for the message to appear in the log with the given timeout. */
+    static void checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis = 30000);
 };
 
 }  // namespace U2

@@ -22,6 +22,7 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
+#include <primitives/GTListWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -47,6 +48,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 
@@ -307,9 +309,9 @@ void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int l
                                        getSequenceNameRect(os, lastRowNumber).center());
             break;
         case GTGlobals::UseKeyBoard:
-            GT_CHECK(false, "Not implemented");
+            GT_FAIL("Not implemented", );
         default:
-            GT_CHECK(false, "An unknown method");
+            GT_FAIL("An unknown method", );
     }
 }
 #undef GT_METHOD_NAME
@@ -336,9 +338,9 @@ void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber,
                                        getColumnHeaderRect(os, lastColumnNumber).center());
             break;
         case GTGlobals::UseKeyBoard:
-            GT_CHECK(false, "Not implemented");
+            GT_FAIL("Not implemented", );
         default:
-            GT_CHECK(false, "An unknown method");
+            GT_FAIL("An unknown method", );
     }
 }
 #undef GT_METHOD_NAME
@@ -348,6 +350,14 @@ void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
     if (!getEditor(os)->getSelection().isEmpty()) {
         GTKeyboardDriver::keyClick(Qt::Key_Escape);
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkNameList"
+void GTUtilsMsaEditor::checkNameList(GUITestOpStatus &os, const QStringList &nameList) {
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
+    QStringList nameListInEditor = editor->getMaObject()->getMultipleAlignment()->getRowNames();
+    CHECK_SET_ERR(nameListInEditor == nameList, "Name list does not match");
 }
 #undef GT_METHOD_NAME
 
@@ -547,6 +557,70 @@ void GTUtilsMsaEditor::setReference(GUITestOpStatus &os, const QString &sequence
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference", GTGlobals::UseMouse));
     clickSequenceName(os, sequenceName, Qt::RightButton);
     GTGlobals::sleep(100);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "openExcludeList"
+void GTUtilsMsaEditor::openExcludeList(HI::GUITestOpStatus &os, bool waitUntilLoaded) {
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "exclude_list_toggle_action");
+    if (!toggleExcludeListButton->isChecked()) {
+        GTWidget::click(os, toggleExcludeListButton);
+        if (waitUntilLoaded) {
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+        }
+    }
+    GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);  // Test that Exclude List is present.
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "closeExcludeList"
+void GTUtilsMsaEditor::closeExcludeList(HI::GUITestOpStatus &os, bool waitUntilFinished) {
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "exclude_list_toggle_action");
+    if (toggleExcludeListButton->isChecked()) {
+        GTWidget::click(os, toggleExcludeListButton);
+        if (waitUntilFinished) {
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+        }
+    }
+    // Test that Exclude List is not present.
+    CHECK_SET_ERR(GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, {false}) == nullptr, "Exclude List widget is present");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveRowsToExcludeList"
+void GTUtilsMsaEditor::moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::selectRowsByName(os, rowNames);
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
+    auto button = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", excludeList);
+    CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
+    GTWidget::click(os, button);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveRowFromExcludeList"
+void GTUtilsMsaEditor::moveRowFromExcludeList(HI::GUITestOpStatus &os, const QString &rowName) {
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
+    auto listWidget = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
+    GTListWidget::click(os, listWidget, rowName);
+
+    auto button = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
+    CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
+    GTWidget::click(os, button);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkExcludeList"
+void GTUtilsMsaEditor::checkExcludeList(GUITestOpStatus &os, const QStringList &nameList) {
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
+    auto listWidget = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
+    QStringList actualNameList = GTListWidget::getItems(os, listWidget);
+    CHECK_SET_ERR(actualNameList == nameList, "Name list does not match, expected: " + nameList.join(";") + ", got: " + actualNameList.join(";"));
 }
 #undef GT_METHOD_NAME
 

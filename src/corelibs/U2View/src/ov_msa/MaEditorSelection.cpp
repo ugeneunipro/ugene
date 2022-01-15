@@ -165,6 +165,11 @@ QList<int> MaEditorSelection::getSelectedRowIndexes() const {
     return selectedRowIndexes;
 }
 
+int MaEditorSelection::getFirstSelectedRowIndex() const {
+    CHECK(!isEmpty(), -1);
+    return getSelectedRowIndexes().first();
+}
+
 U2Region MaEditorSelection::getColumnRegion() const {
     if (isEmpty()) {
         return {};

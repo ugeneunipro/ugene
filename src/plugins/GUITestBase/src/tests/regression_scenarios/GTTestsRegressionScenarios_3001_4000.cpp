@@ -143,7 +143,6 @@
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
@@ -500,7 +499,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     file.write(data);
     file.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
@@ -757,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_3133) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "test_3133.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: project view is present, there are no documents presented.
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, dbName, GTGlobals::FindOptions(false));
+    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, dbName, {false});
     CHECK_SET_ERR(!idx.isValid(), "The database document is in the project");
 }
 
@@ -984,7 +983,7 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
             CHECK(nullptr != buttonBox, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK(nullptr != button, );
-            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, GTGlobals::FindOptions(false)));
+            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, {false}));
             CHECK(nullptr == check, );
             GTWidget::click(os, button);
         }
@@ -1268,7 +1267,7 @@ GUI_TEST_CLASS_DEFINITION(test_3220) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_ADD << "add_qualifier_action"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "D"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Save the file and reload it
     GTUtilsDocument::unloadDocument(os, "human_T1.fa", true);
@@ -1463,26 +1462,20 @@ GUI_TEST_CLASS_DEFINITION(test_3250) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3253) {
-    /*  1. Open "data/samples/ABIF/A01.abi".
-     *  2. Minimaze annotation tree view
-     *    Expected state: Chromatagram view resized
-     */
+    // Open "data/samples/ABIF/A01.abi".
+    // Minimize annotation tree view.
+    // Expected state: Chromatogram view is resized.
 
-    GTFileDialog::openFile(os, dataDir + "/samples/ABIF/", "A01.abi");
+    GTFileDialog::openFile(os, dataDir + "/samples/ABIF/A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QSplitterHandle *splitterHandle = qobject_cast<QSplitterHandle *>(GTWidget::findWidget(os, "qt_splithandle_", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
-
-    QWidget *chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
-    CHECK_SET_ERR(nullptr != chromaView, "chromaView is NULL");
-
-    QWidget *annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
-    CHECK_SET_ERR(nullptr != annotationTreeWidget, "annotationTreeWidget is NULL");
+    auto chromaView = GTWidget::findWidget(os, "chromatogram_view_A1#berezikov");
+    auto annotationTreeWidget = GTWidget::findWidget(os, "annotations_tree_widget");
 
     QSize startSize = chromaView->size();
-    GTMouseDriver::moveTo(QPoint(annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).x() + 100, annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).y()));
+    QPoint treeGlobalTopLeft = annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos());
+    GTMouseDriver::moveTo(QPoint(treeGlobalTopLeft.x() + 100, treeGlobalTopLeft.y()));
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(QPoint(annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).x() + 100, annotationTreeWidget->mapToGlobal(annotationTreeWidget->pos()).y() + annotationTreeWidget->size().height()));
+    GTMouseDriver::moveTo(QPoint(treeGlobalTopLeft.x() + 100, treeGlobalTopLeft.y() + annotationTreeWidget->height()));
     GTMouseDriver::release();
 
     QSize endSize = chromaView->size();
@@ -1534,7 +1527,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_2) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber(os, 0)));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
@@ -1745,7 +1738,6 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
 
     QWidget *seqArea = GTWidget::findWidget(os, "msa_editor_sequence_area");
     QColor before = GTWidget::getColor(os, seqArea, QPoint(1, 1));
-    QString bName = before.name();
     //    Open the "Highlighting" options panel tab.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Set any reference sequence.
@@ -1757,8 +1749,6 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     //    Current state: the highlighting doesn't work for all sequences except the reference sequence.
 
     QColor after = GTWidget::getColor(os, seqArea, QPoint(1, 1));
-    QString aName = after.name();
-
     CHECK_SET_ERR(before != after, "colors not changed");
 }
 
@@ -2262,7 +2252,7 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
     out << fileData;
     copiedFile.close();
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
@@ -2271,28 +2261,20 @@ GUI_TEST_CLASS_DEFINITION(test_3346) {
 GUI_TEST_CLASS_DEFINITION(test_3348) {
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/", "DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "DNA.fa");
 
-    Runnable *findDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", true, 10, 75, 100);
-    GTUtilsDialog::waitForDialog(os, findDialog);
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find repeats...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", true, 10, 75, 100));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
+    auto treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)", treeWidget);
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
     CHECK_SET_ERR(generalItem != nullptr, "Invalid annotation tree item");
 
-    AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
-    CHECK_SET_ERR(nullptr != annotation, "Annotation tree item not found");
-    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_identity"), "Annotation qualifier not found");
-
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
+    auto annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
+    CHECK_SET_ERR(annotation != nullptr, "Annotation tree item not found");
+    QString identityQualifierValue = annotation->annotation->findFirstQualifierValue("repeat_identity");
+    CHECK_SET_ERR(identityQualifierValue == "76", "Annotation qualifier has invalid value: " + identityQualifierValue);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3357) {
@@ -2589,17 +2571,17 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
     QWidget *circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0");
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
 
-    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    QWidget *circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
 
     // 3. Press "Toggle circular views" button
 
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
-    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, GTGlobals::FindOptions(false));
+    circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView1, "Unexpected circular view is opened!");
 
-    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, GTGlobals::FindOptions(false));
+    circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
     CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
     // 4. Press "Toggle circular views" again
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
@@ -3925,7 +3907,7 @@ GUI_TEST_CLASS_DEFINITION(test_3629) {
     //    Expected state: there are no attached annotations.
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTThread::waitForMainThread();
-    QList<QTreeWidgetItem *> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", GTGlobals::FindOptions(false));
+    QList<QTreeWidgetItem *> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", {false});
     CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.count()));
 }
 
@@ -4977,7 +4959,7 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     // 7. Select all types of annotating
 
     QWidget *toolbar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, GTGlobals::FindOptions(false));
+    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, {false});
     if (toolbarExtButton != nullptr && toolbarExtButton->isVisible()) {
         GTWidget::click(os, toolbarExtButton);
     }
@@ -5132,7 +5114,6 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString assemblyVisibleName = "chrM";
     const QString assemblyVisibleNameWidget = " [as] chrM";
-    const QString databaseAssemblyObjectPath = folderPath + U2ObjectDbi::PATH_SEP + assemblyVisibleName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
@@ -5568,7 +5549,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Build index for reads mapping...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));

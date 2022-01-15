@@ -1600,7 +1600,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: there is an annotation with region "100..200".
     QString expectedLocation = "100..200";
@@ -1625,7 +1625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: there is an annotation with region "complement(100..200)".
     expectedLocation = "complement(100..200)";
@@ -1649,7 +1649,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario3));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: there is an annotation with region "join(200..199950,1..100)".
     expectedLocation = "join(200..199950,1..100)";
@@ -1673,7 +1673,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario4));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: there is an annotation with region "complement(join(200..199950,1..100))".
     expectedLocation = "complement(join(200..199950,1..100))";
@@ -3093,11 +3093,11 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0041_1");
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Call "Create new annotation" dialog.
@@ -3116,7 +3116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0041_2");
 
@@ -3151,11 +3151,11 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario1));
     openFileAndCallSmithWatermanDialog(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0042_1");
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(nullptr == descriptionItem, "There is an unexpected note qualifier");
 
     //    4. Call "Smith-Waterman" dialog. Set any pattern. Open "Input and output" tab.
@@ -3177,7 +3177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario2));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Expected state: a new annotation appears, it has a qualifier "note" with description.
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0042_2");
@@ -3206,7 +3206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, {"test_0043_1"});
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Set any description. Click "Create annotations" button.

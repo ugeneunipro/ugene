@@ -55,6 +55,15 @@ QWidget *GTToolbar::getWidgetForActionObjectName(GUITestOpStatus &os, const QToo
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getToolButtonByAction"
+QToolButton *GTToolbar::getToolButtonByAction(GUITestOpStatus &os, const QToolBar *toolbar, const QString &actionName) {
+    auto widget = GTToolbar::getWidgetForActionObjectName(os, toolbar, actionName);
+    auto button = qobject_cast<QToolButton *>(widget);
+    GT_CHECK_RESULT(button != nullptr, "Not a tool button: " + actionName, nullptr);
+    return button;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getWidgetForActionTooltip"
 QWidget *GTToolbar::getWidgetForActionTooltip(GUITestOpStatus &os, const QToolBar *toolbar, const QString &tooltip) {
     GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);
