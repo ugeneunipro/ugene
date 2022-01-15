@@ -269,7 +269,7 @@ void GTFileDialogUtils::setViewMode(const ViewMode &viewMode) {
         {List, "listModeButton"},
         {Detail, "detailModeButton"},
     };
-    auto targetButton = GTWidget::findButtonByText(os, BUTTON_NAME_MAP[viewMode], fileDialog);
+    auto targetButton = GTWidget::findToolButton(os, BUTTON_NAME_MAP[viewMode], fileDialog);
     GTWidget::checkEnabled(os, targetButton);
 
     switch (method) {
