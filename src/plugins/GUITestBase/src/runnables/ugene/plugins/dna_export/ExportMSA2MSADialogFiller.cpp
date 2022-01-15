@@ -80,7 +80,7 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     } else if (frame == -3) {
         widgetName = "rbThirdComplementFrame";
     } else {
-        GT_CHECK(false, "incorrect frame");
+        GT_FAIL("incorrect frame", );
     }
     GTRadioButton::click(os, widgetName, dialog);
 

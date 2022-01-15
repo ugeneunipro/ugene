@@ -3464,12 +3464,13 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
     // Open "COI.aln" file.
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Click "align_new_sequences_to_alignment_action" button on the Alignment Editor toolbar.
     // Select "_common_data\empty_sequences\gap_only_seq.fa".
-    int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
+    int sequenceCountBefore = GTUtilsMsaEditor::getSequencesCount(os);
+
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
@@ -3477,18 +3478,15 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the alignment is not modified.
-    int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
-    CHECK_SET_ERR(sequenceNumberAfterAlignment == sequenceNumberBeforeAlignment,
-                  QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
+    int sequenceCountAfter = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCountAfter == sequenceCountBefore,
+                  QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceCountBefore).arg(sequenceCountAfter));
 
     // Also, an error it the log appears: The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".
     GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
 
     // The "Undo" button is disabled
-    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled< but shouldn't be");
-
-    // The "Undo" button is enabled
-    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be")
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The Undo button is enabled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_4) {

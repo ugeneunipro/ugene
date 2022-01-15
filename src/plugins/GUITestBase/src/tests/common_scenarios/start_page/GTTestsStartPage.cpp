@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
     //    Close Start page
     GTUtilsMdi::click(os, GTGlobals::Close);
-    QWidget *window = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
+    QWidget *window = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(window == nullptr, "start page was not closed");
     //    Repeat step 2
     GTMenu::clickMainMenuItem(os, QStringList() << "Help"

@@ -80,7 +80,7 @@ void clickConnection(HI::GUITestOpStatus &os, QListWidget *list, const QString &
 }
 
 void checkDocument(HI::GUITestOpStatus &os, const QString &name, bool mustBe) {
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, name, GTGlobals::FindOptions(false));
+    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, name, {false});
     if (!mustBe) {
         CHECK_SET_ERR(!idx.isValid(), "Document is not deleted");
     }
@@ -126,7 +126,7 @@ void deleteConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFill
     GTGlobals::sleep(2000);
 
     // Check connection item
-    QListWidgetItem *item = findConnection(os, list, action.itemName, GTGlobals::FindOptions(false));
+    QListWidgetItem *item = findConnection(os, list, action.itemName, {false});
     CHECK_SET_ERR(item == nullptr, "Item is not deleted");
 
     // Check project view

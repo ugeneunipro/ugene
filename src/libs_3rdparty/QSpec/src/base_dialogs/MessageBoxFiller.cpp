@@ -94,7 +94,7 @@ void AppCloseMessageBoxDialogFiller::commonScenario() {
     } else if (NULL != noButton) {
         GTWidget::click(os, noButton);
     } else {
-        GT_CHECK(false, "There are neither \"No\" or \"No to all\" buttons in the message box");
+        GT_FAIL("There are neither \"No\" or \"No to all\" buttons in the message box", );
     }
 }
 #undef GT_METHOD_NAME

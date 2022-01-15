@@ -3097,7 +3097,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0041_1");
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Call "Create new annotation" dialog.
@@ -3155,7 +3155,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test_0042_1");
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(nullptr == descriptionItem, "There is an unexpected note qualifier");
 
     //    4. Call "Smith-Waterman" dialog. Set any pattern. Open "Input and output" tab.
@@ -3206,7 +3206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     //    Expected state: a new annotation appears, it hasn't qualifier "note".
     GTUtilsAnnotationsTreeView::selectItems(os, {"test_0043_1"});
-    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *descriptionItem = GTUtilsAnnotationsTreeView::findItem(os, "note", {false});
     CHECK_SET_ERR(descriptionItem == nullptr, "There is an unexpected note qualifier");
 
     //    4. Set any description. Click "Create annotations" button.

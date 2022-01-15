@@ -129,7 +129,7 @@ void GUIDialogWaiter::checkDialog() {
                 qDebug("-------------------------");
 
                 finishWaiting();
-                GT_CHECK(false, "TIMEOUT, waiterId = " + QString::number(waiterId));
+                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId), );
             }
         }
 
@@ -167,7 +167,7 @@ void HangChecker::sl_check() {
 
             if (!found) {
                 if (mightHung) {
-                    GT_CHECK(false, "dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up");
+                    GT_FAIL("dialog " + QString(dialog->metaObject()->className()) + " name: " + dialog->objectName() + " hang up", );
                 }
             }
 

@@ -31,26 +31,35 @@ class GTFileDialogUtils : public Filler {
     friend class GTFileDialogUtils_list;
 
 public:
-    enum Button { Open,
-                  Cancel,
-                  Save,
-                  Choose };
-    enum ViewMode { List,
-                    Detail };
-    enum TextInput { Typing,
-                     CopyPaste };
+    enum Button {
+        Open,
+        Cancel,
+        Save,
+        Choose
+    };
+
+    enum ViewMode {
+        List,
+        Detail
+    };
+
+    enum TextInput {
+        Typing,
+        CopyPaste
+    };
 
 #ifdef Q_OS_DARWIN
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste, const QString& filter = QString());
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste, const QString& filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste, const QString &filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste, const QString &filter = QString());
 #else
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing, const QString& filter = QString());
-    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing, const QString& filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing, const QString &filter = QString());
+    GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing, const QString &filter = QString());
 #endif
 
     GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *customScenario);
     void openFileDialog();
-    void commonScenario();
+
+    void commonScenario() override;
 
 protected:
     void init(const QString &filePath);
@@ -58,11 +67,11 @@ protected:
     bool setPath();
     void setName();
     void selectFile();
-    void clickButton(Button);
-    void setViewMode(ViewMode);
+    void clickButton(const Button &buttonType);
+    void setViewMode(const ViewMode &);
     void applyFilter();
 
-    QWidget *fileDialog;
+    QWidget *fileDialog = nullptr;
     QString path, fileName;
     Button button;
     GTGlobals::UseMethod method;
@@ -80,7 +89,8 @@ public:
     GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &filePaths);
 
     void setNameList(GUITestOpStatus &os, const QStringList &filePaths, QWidget *parent);
-    void commonScenario();
+
+    void commonScenario() override;
 
 private:
     void selectFile();

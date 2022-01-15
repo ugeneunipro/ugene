@@ -36,7 +36,7 @@ namespace U2 {
 #define GT_METHOD_NAME "getButton"
 QRadioButton *DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus &os) {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, GTGlobals::FindOptions(false));
+    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, {false});
 }
 #undef GT_METHOD_NAME
 

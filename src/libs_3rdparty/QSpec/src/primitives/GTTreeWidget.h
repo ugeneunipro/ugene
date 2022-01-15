@@ -57,6 +57,9 @@ public:
     // Returns item level, 0 - top level item
     static int getItemLevel(GUITestOpStatus &os, QTreeWidgetItem *item);
 
+    /** Scroll to the item to guarantee the item is visible. */
+    static void scrollToItem(GUITestOpStatus &os, QTreeWidgetItem *item);
+
 private:
     static QTreeWidgetItem *findItemPrivate(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent = NULL, int column = 0, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 };

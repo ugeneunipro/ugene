@@ -29,12 +29,9 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
-#include <QComboBox>
 #include <QFileSystemModel>
 #include <QHeaderView>
-#include <QLineEdit>
 #include <QPushButton>
-#include <QTreeView>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
@@ -68,7 +65,6 @@ GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePat
 
 GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *customScenario)
     : Filler(os, "QFileDialog", customScenario),
-      fileDialog(nullptr),
       button(Open),
       method(GTGlobals::UseMouse),
       textInput(Typing) {
@@ -76,14 +72,9 @@ GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *custom
 
 #define GT_METHOD_NAME "commonScenario"
 void GTFileDialogUtils::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr && QString(dialog->metaObject()->className()) == "QFileDialog",
-             "file dialog not found");
+    fileDialog = GTWidget::getActiveModalWidget(os);
 
-    fileDialog = dialog;
-    GTGlobals::sleep(300);
-    const bool dirWasChanged = setPath();
-    GTGlobals::sleep(300);
+    bool dirWasChanged = setPath();
     if (button == Choose) {
         clickButton(button);
         return;
@@ -91,7 +82,6 @@ void GTFileDialogUtils::commonScenario() {
 
     if (dirWasChanged) {
         clickButton(Open);
-        GTGlobals::sleep(300);
     }
 
     if (button == Save) {  // saving file
@@ -101,19 +91,14 @@ void GTFileDialogUtils::commonScenario() {
     }
 
     // opening file or getting size
-    GTGlobals::sleep(300);
     setViewMode(Detail);
     applyFilter();
-    GTGlobals::sleep(300);
     selectFile();
-    GTGlobals::sleep(300);
     if (method == GTGlobals::UseKey) {
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
-
     } else {
         clickButton(button);
     }
-    GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
@@ -128,26 +113,24 @@ void GTFileDialogUtils::init(const QString &filePath) {
 }
 #undef GT_METHOD_NAME
 
-GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &_os, const QString &_path, const QStringList &fileNames)
+GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &_os, const QString &_path, const QStringList &_fileNamesList)
     : GTFileDialogUtils(_os, _path, "", Open, GTGlobals::UseMouse),
-      fileNamesList(fileNames) {
-    foreach (const QString &name, fileNames) {
+      fileNamesList(_fileNamesList) {
+    for (const QString &name : qAsConst(fileNamesList)) {
         filePaths << _path + "/" + name;
     }
 }
 
-GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &filePaths)
+GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &_filePaths)
     : GTFileDialogUtils(os, "", "", Open, GTGlobals::UseMouse),
-      filePaths(filePaths) {
+      filePaths(_filePaths) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void GTFileDialogUtils_list::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog && QString(dialog->metaObject()->className()) == "QFileDialog", "file dialog not found");
+    auto dialog = GTWidget::getActiveModalWidget(os);
 
     setNameList(os, filePaths, dialog);
-    GTGlobals::sleep(200);
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
@@ -156,21 +139,20 @@ void GTFileDialogUtils_list::commonScenario() {
 #define GT_METHOD_NAME "setNameList"
 void GTFileDialogUtils_list::setNameList(GUITestOpStatus &os, const QStringList &nameList, QWidget *parent) {
     QString str;
-    foreach (QString name, nameList) {
+    for (QString name : qAsConst(nameList)) {
         if (QFileInfo(name).isRelative()) {
             name = QApplication::applicationDirPath() + "/" + name;
         }
         str.append('\"' + name + "\" ");
     }
-
-    QLineEdit *fileEdit = GTWidget::findExactWidget<QLineEdit *>(os, FILE_NAME_LINE_EDIT, parent);
+    auto fileEdit = GTWidget::findLineEdit(os, FILE_NAME_LINE_EDIT, parent);
     GTLineEdit::setText(os, fileEdit, str, false, true);
 }
 #undef GT_METHOD_NAME
 
 void GTFileDialogUtils_list::selectFile() {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    foreach (QString name, fileNamesList) {
+    for (const QString &name : qAsConst(fileNamesList)) {
         GTFileDialogUtils::fileName = name;
         GTFileDialogUtils::selectFile();
     }
@@ -180,8 +162,7 @@ void GTFileDialogUtils_list::selectFile() {
 void GTFileDialogUtils::openFileDialog() {
     switch (method) {
         case GTGlobals::UseMouse:
-            GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                        << "Open...");
+            GTMenu::clickMainMenuItem(os, {"File", "Open..."});
             break;
         case GTGlobals::UseKey:
             GTKeyboardDriver::keyClick('O', Qt::ControlModifier);
@@ -189,19 +170,16 @@ void GTFileDialogUtils::openFileDialog() {
         default:
             break;
     }
-    GTGlobals::sleep(500);
 }
 
 #define GT_METHOD_NAME "setPath"
 bool GTFileDialogUtils::setPath() {
-    QComboBox *comboBox = fileDialog->findChild<QComboBox *>(CURRENT_FODLER_COMBO_BOX);
-    if (nullptr != comboBox && QDir::toNativeSeparators(comboBox->currentText()) + QDir::separator() == QDir::toNativeSeparators(path)) {
-        // already there
-        return false;
+    auto comboBox = GTWidget::findComboBox(os, CURRENT_FODLER_COMBO_BOX, fileDialog);
+    if (QDir::toNativeSeparators(comboBox->currentText()) + QDir::separator() == QDir::toNativeSeparators(path)) {
+        return false;  // Already there.
     }
 
-    QLineEdit *lineEdit = fileDialog->findChild<QLineEdit *>(FILE_NAME_LINE_EDIT);
-    GT_CHECK_RESULT(lineEdit != 0, QString("line edit \"%1\" not found").arg(FILE_NAME_LINE_EDIT), false);
+    auto lineEdit = GTWidget::findLineEdit(os, FILE_NAME_LINE_EDIT, fileDialog);
     lineEdit->setCompleter(nullptr);
     GTLineEdit::setText(os, lineEdit, path, false, textInput == CopyPaste);
 
@@ -212,84 +190,65 @@ bool GTFileDialogUtils::setPath() {
 
 #define GT_METHOD_NAME "setName"
 void GTFileDialogUtils::setName() {
-    QLineEdit *lineEdit = fileDialog->findChild<QLineEdit *>(FILE_NAME_LINE_EDIT);
-    GT_CHECK(lineEdit != 0, QString("line edit \"%1\" not found").arg(FILE_NAME_LINE_EDIT));
+    auto lineEdit = GTWidget::findLineEdit(os, FILE_NAME_LINE_EDIT, fileDialog);
     lineEdit->setCompleter(nullptr);
-
     GTLineEdit::setText(os, lineEdit, fileName, false, textInput == CopyPaste);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectFile"
 void GTFileDialogUtils::selectFile() {
-    QTreeView *w = fileDialog->findChild<QTreeView *>("treeView");
-    GT_CHECK(w != nullptr, "widget, which contains list of file, not found");
+    auto treeWidget = GTWidget::findTreeView(os, "treeView", fileDialog);
 
-    QFileSystemModel *model = qobject_cast<QFileSystemModel *>(w->model());
+    auto model = qobject_cast<QFileSystemModel *>(treeWidget->model());
+    GT_CHECK(model != nullptr, "QFileSystemModel is null");
+
     QModelIndex index = model->index(path + fileName);
     GT_CHECK(index.isValid(), "File <" + path + fileName + "> not found");
 
     QPoint indexCenter;
-
     switch (method) {
         case GTGlobals::UseKey: {
-            QLineEdit *lineEdit = fileDialog->findChild<QLineEdit *>(FILE_NAME_LINE_EDIT);
-            GT_CHECK(lineEdit != 0, QString("line edit \"1\" not found").arg(FILE_NAME_LINE_EDIT));
+            auto lineEdit = GTWidget::findLineEdit(os, FILE_NAME_LINE_EDIT, fileDialog);
             GTLineEdit::setText(os, lineEdit, fileName, false, textInput == CopyPaste);
-
             GTWidget::click(os, lineEdit);
             break;
         }
 
         case GTGlobals::UseMouse:
-#ifdef Q_OS_DARWIN
-            w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
-#else
-            w->scrollTo(index);
-#endif
-            indexCenter = w->visualRect(index).center();
-            indexCenter.setY(indexCenter.y() + w->header()->rect().height());
+            GTWidget::scrollToIndex(os, treeWidget, index);
+            indexCenter = treeWidget->visualRect(index).center();
+            indexCenter.setY(indexCenter.y() + treeWidget->header()->rect().height());
             indexCenter.setX(indexCenter.x() + 1);
-            GTMouseDriver::moveTo(w->mapToGlobal(indexCenter));
+            GTMouseDriver::moveTo(treeWidget->mapToGlobal(indexCenter));
             GTMouseDriver::click();
             break;
         default:
             break;
     }
-
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickButton"
-void GTFileDialogUtils::clickButton(Button btn) {
-    QMap<Button, QString> button;
-    button[Open] = "Open";
-    button[Cancel] = "Cancel";
-    button[Save] = "Save";
-    button[Choose] = "Choose";
-
-    QAbstractButton *button_to_click = GTWidget::findButtonByText(os, button[btn], fileDialog);
-    GT_CHECK(button_to_click != nullptr, "button not found");
-
-    while (!button_to_click->isEnabled()) {
-        GTGlobals::sleep(100);
-    }
-
-    GTGlobals::sleep(500);
+void GTFileDialogUtils::clickButton(const Button &buttonType) {
+    static const QMap<Button, QString> BUTTON_NAME_MAP = {
+        {Open, "Open"},
+        {Cancel, "Cancel"},
+        {Save, "Save"},
+        {Choose, "Choose"},
+    };
+    auto targetButton = GTWidget::findButtonByText(os, BUTTON_NAME_MAP[buttonType], fileDialog);
+    GTWidget::checkEnabled(os, targetButton);
 
     switch (method) {
         case GTGlobals::UseKey:
-            while (!button_to_click->hasFocus()) {
+            while (!targetButton->hasFocus()) {
                 GTKeyboardDriver::keyClick(Qt::Key_Tab);
-                GTGlobals::sleep(100);
             }
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
-
         case GTGlobals::UseMouse:
-            GTGlobals::sleep(100);
-            GTWidget::click(os, button_to_click);
+            GTWidget::click(os, targetButton);
             break;
         default:
             break;
@@ -298,33 +257,27 @@ void GTFileDialogUtils::clickButton(Button btn) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setViewMode"
-void GTFileDialogUtils::setViewMode(ViewMode v) {
-    QMap<ViewMode, QString> button;
-    button[List] = "listModeButton";
-    button[Detail] = "detailModeButton";
-    QAbstractButton *w = qobject_cast<QAbstractButton *>(fileDialog->findChild<QWidget *>(button[v]));
-
-    GT_CHECK(w != nullptr, "view mode button not found");
-    GT_CHECK(!w->isChecked(), );
+void GTFileDialogUtils::setViewMode(const ViewMode &viewMode) {
+    static const QMap<ViewMode, QString> BUTTON_NAME_MAP = {
+        {List, "listModeButton"},
+        {Detail, "detailModeButton"},
+    };
+    auto targetButton = GTWidget::findToolButton(os, BUTTON_NAME_MAP[viewMode], fileDialog);
+    GTWidget::checkEnabled(os, targetButton);
 
     switch (method) {
         case GTGlobals::UseMouse:
-            GTWidget::click(os, w);
+            GTWidget::click(os, targetButton);
             break;
-
         case GTGlobals::UseKey:
-            while (!w->hasFocus()) {
+            while (!targetButton->hasFocus()) {
                 GTKeyboardDriver::keyClick(Qt::Key_Tab);
-                GTGlobals::sleep(100);
             }
             GTKeyboardDriver::keyClick(Qt::Key_Space);
             break;
-
         default:
             break;
     }
-
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
@@ -333,9 +286,7 @@ void GTFileDialogUtils::applyFilter() {
     if (filter.isEmpty()) {
         return;
     }
-
-    GTGlobals::sleep(300);
-    QComboBox *comboBox = GTWidget::findComboBox(os, FILE_TYPE_COMBO_BOX, fileDialog);
+    auto comboBox = GTWidget::findComboBox(os, FILE_TYPE_COMBO_BOX, fileDialog);
     GTComboBox::selectItemByText(os, comboBox, filter, GTGlobals::UseMouse);
 }
 #undef GT_METHOD_NAME
@@ -352,7 +303,7 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
         OpenFileScenario(const QString &pathToFile)
             : pathToFile(pathToFile) {
         }
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             auto openFileTask = U2::AppContext::getProjectLoader()->openWithProjectTask(pathToFile);
             if (openFileTask == nullptr) {
                 os.setError("Failed to create open file task: " + pathToFile + ". Is the file already in the project?");
@@ -373,7 +324,6 @@ void GTFileDialog::openFileWithDialog(GUITestOpStatus &os, const QString &path, 
     GTUtilsDialog::waitForDialog(os, utils);
     utils->openFileDialog();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
@@ -392,12 +342,9 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &filePath, Button
 #undef GT_METHOD_NAME
 
 void GTFileDialog::openFileList(GUITestOpStatus &os, const QString &path, const QStringList &fileNameList) {
-    GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, path, fileNameList);
-    GTUtilsDialog::waitForDialog(os, ob);
-
-    ob->openFileDialog();
-
-    GTGlobals::sleep();
+    auto fileListFiller = new GTFileDialogUtils_list(os, path, fileNameList);
+    GTUtilsDialog::waitForDialog(os, fileListFiller);
+    fileListFiller->openFileDialog();
 }
 
 void GTFileDialog::openFileList(GUITestOpStatus &os, const QStringList &filePaths) {

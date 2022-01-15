@@ -576,7 +576,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 
     // reopening windows z
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
+    while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
@@ -613,7 +613,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 
     // reopening windows
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
+    while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"

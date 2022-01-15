@@ -106,7 +106,7 @@ void GTUtilsOptionPanelMsa::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, GTGlobals::FindOptions(false));
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, {false});
     return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -352,7 +352,7 @@ void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus &os, GTUtilsO
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdMoreRb"));
             break;
         default:
-            GT_CHECK(false, QString("An unknown threshold comparison type: %1").arg(comparison));
+            GT_FAIL(QString("An unknown threshold comparison type: %1").arg(comparison), );
     }
 }
 #undef GT_METHOD_NAME

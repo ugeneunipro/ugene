@@ -437,7 +437,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)); //Start page blocks this check. It is enought without it.
+        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
@@ -471,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)); //Start page blocks this check. It is enought without it.
+        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_2) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)); //Start page blocks this check. It is enought without it.
+        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
@@ -541,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)); //Start page blocks this check. It is enought without it.
+        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false}); //Start page blocks this check. It is enought without it.
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
@@ -577,7 +577,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         // Expected state: there are no empty MDI window opened, no bookmarks
-        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));//Start page blocks this check. It is enought without it.
+        // QWidget* activeWindow = GTUtilsMdi::activeWindow(os, {false});//Start page blocks this check. It is enought without it.
         // CHECK_SET_ERR(activeWindow == NULL, "there is active window");
 
         QTreeWidget *bookmarksTree = GTUtilsBookmarksTreeView::getTreeWidget(os);
@@ -1209,7 +1209,7 @@ GUI_TEST_CLASS_DEFINITION(test_1069) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: auto-annotations are switched off
-    QTreeWidgetItem *annItem = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, GTGlobals::FindOptions(false));
+    QTreeWidgetItem *annItem = GTUtilsAnnotationsTreeView::findFirstAnnotation(os, {false});
     CHECK_SET_ERR(annItem == nullptr, "Auto-annotations are switched on");
 }
 
@@ -2663,7 +2663,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
     // check delition of annotation document
-    GTUtilsProjectTreeView::findIndex(os, "Annotations", GTGlobals::FindOptions(false));
+    GTUtilsProjectTreeView::findIndex(os, "Annotations", {false});
     //    5. Click search again
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
@@ -2709,7 +2709,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // check delition of annotation document
-    GTUtilsProjectTreeView::findIndex(os, "Annotations", GTGlobals::FindOptions(false));  // checks inside
+    GTUtilsProjectTreeView::findIndex(os, "Annotations", {false});  // checks inside
     //    5. Click search again
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
@@ -4140,7 +4140,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 profile");
 
-    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, GTGlobals::FindOptions(false)) == nullptr, "addButton is shown");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, {false}) == nullptr, "addButton is shown");
 
     GTUtilsWorkflowDesigner::click(os, "Read HMM2 Profile");
 
@@ -4165,7 +4165,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
     GTUtilsWorkflowDesigner::click(os, "Read HMM2 Profile");
 
-    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, GTGlobals::FindOptions(false)) == nullptr, "addButton is shown");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "addButton", nullptr, {false}) == nullptr, "addButton is shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1427) {
@@ -6281,7 +6281,7 @@ GUI_TEST_CLASS_DEFINITION(test_1658) {
     GTGlobals::sleep(500);
     //    Expected state: MSA view opens without tree view, no error messages in log appear
 
-    QWidget *treeWidget = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    QWidget *treeWidget = GTWidget::findWidget(os, "treeView", nullptr, {false});
     CHECK_SET_ERR(treeWidget == nullptr, "tree view unexpectidly presents");
 }
 
@@ -6522,7 +6522,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_4) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     // Expected result: "Search in Sequence" tab has been opened, other tabs have been closed
-    QWidget *prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, GTGlobals::FindOptions(false));
+    QWidget *prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, {false});
     CHECK_SET_ERR(nullptr == prevButton, "Annotations options panel is not closed");
     GTWidget::findWidget(os, "FindPatternWidget");
     CHECK_SET_ERR(GTWidget::findWidget(os, "textPattern")->hasFocus(), "Find pattern field has no focus");

@@ -47,7 +47,7 @@ void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serv
             }
         }
     }
-    GT_CHECK(false, "Service was not enabled within required period: " + serviceName);
+    GT_FAIL("Service was not enabled within required period: " + serviceName, );
 }
 #undef GT_METHOD_NAME
 

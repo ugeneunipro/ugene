@@ -47,6 +47,7 @@
 #include <QTextEdit>
 #include <QToolBar>
 #include <QToolButton>
+#include <QTreeView>
 #include <QTreeWidget>
 #include <QWidget>
 
@@ -141,6 +142,9 @@ public:
 
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
     static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
+
+    /** Calls findExactWidget with QTreeWidget type. Shortcut method. */
+    static QTreeView *findTreeView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});
 
     /** Calls findExactWidget with QTextEdit type. Shortcut method. */
     static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = {});

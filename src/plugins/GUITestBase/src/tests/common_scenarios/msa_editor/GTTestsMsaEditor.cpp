@@ -547,7 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsBookmarksTreeView::deleteBookmark(os, "start bookmark");
 
     //     Expected state: start bookmark isn't present
-    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", {false});
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
 }
 

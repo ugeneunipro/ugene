@@ -83,7 +83,7 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus &os, QComboBox *comboBox, int
                     break;
                 }
                 default:
-                    GT_CHECK(false, "Unexpected method");
+                    GT_FAIL("Unexpected method", );
             }
         }
         QComboBox *comboBox;

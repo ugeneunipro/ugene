@@ -487,7 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // 6. CHECK if misc_feature annotation is removed
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 0)");
-    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", {false});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
@@ -581,8 +581,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
     // 6. CHECK if misc_feature annotation is removed
     // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
-    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
-    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", GTGlobals::FindOptions(false));
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", {false});
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", {false});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

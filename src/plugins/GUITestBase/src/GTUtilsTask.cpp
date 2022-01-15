@@ -96,7 +96,7 @@ void GTUtilsTask::checkTask(HI::GUITestOpStatus &os, QString taskName) {
 
 #define GT_METHOD_NAME "checkNoTask"
 void GTUtilsTask::checkNoTask(HI::GUITestOpStatus &os, QString taskName) {
-    Task *t = getTaskByName(os, taskName, GTGlobals::FindOptions(false));
+    Task *t = getTaskByName(os, taskName, {false});
     GT_CHECK(t == nullptr, "tast " + taskName + " unexpectidly found");
 }
 #undef GT_METHOD_NAME
@@ -118,11 +118,11 @@ void GTUtilsTask::cancelSubTask(HI::GUITestOpStatus &os, QString taskName) {
 #define GT_METHOD_NAME "waitTaskStart"
 void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus &os, QString taskName, int timeOut) {
     int i = 0;
-    while (getTaskByName(os, taskName, GTGlobals::FindOptions(false)) == nullptr) {
+    while (getTaskByName(os, taskName, {false}) == nullptr) {
         GTGlobals::sleep(100);
         i++;
         if (i > (timeOut / 100)) {
-            GT_CHECK(false, "task " + taskName + " not launched");
+            GT_FAIL("task " + taskName + " not launched", );
             break;
         }
     }
